@@ -383,7 +383,7 @@ msgstr ""
 #. module: account_yodlee
 #: selection:account.online.provider,provider_type:0
 msgid "Ponto"
-msgstr ""
+msgstr "Ponto"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:342

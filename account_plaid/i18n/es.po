@@ -7,6 +7,7 @@
 # Pedro M. Baeza <pedro.baeza@gmail.com>, 2018
 # Christopher Ormaza <chris.ormaza@gmail.com>, 2018
 # Rick Hunter <rick.hunter.ec@gmail.com>, 2019
+# Jon Perez <jop@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Rick Hunter <rick.hunter.ec@gmail.com>, 2019\n"
+"Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +26,7 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Additional information on error"
-msgstr ""
+msgstr "Información adicional sobre error"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:55
@@ -44,7 +45,7 @@ msgstr "Interfaz para el diario de cuenta en línea"
 #: code:addons/account_plaid/models/plaid.py:136
 #, python-format
 msgid "Only an Accountant is allowed to perform this operation."
-msgstr ""
+msgstr "Solo un contador puede realizar esta operación."
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -54,17 +55,17 @@ msgstr "Plaid"
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Plaid Error Type"
-msgstr ""
+msgstr "Tipo de error Plaid"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_item_id
 msgid "Plaid Item"
-msgstr ""
+msgstr "Elemento Plaid"
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
 msgid "Ponto"
-msgstr ""
+msgstr "Ponto"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type
@@ -86,6 +87,11 @@ msgid ""
 "error type: %s,\n"
 "request id: %s}"
 msgstr ""
+"¡Hubo un error con los servicios Plaid!\n"
+"{mensaje:,\n"
+"código de error: ,\n"
+"tipo de error:\n"
+"id de solicitud:}"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:74
@@ -101,4 +107,4 @@ msgstr "Yodlee"
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_item_id
 msgid "item id in plaid database"
-msgstr ""
+msgstr "ID del elemento en la base de datos de Plaid"

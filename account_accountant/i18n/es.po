@@ -17,6 +17,7 @@
 # Emilio Silva <efsilvay@gmail.com>, 2019
 # Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
 # Martin Trigaux, 2019
+# Juan Pablo Mora <jpm@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -24,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:28+0000\n"
 "PO-Revision-Date: 2016-08-05 12:55+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Juan Pablo Mora <jpm@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -185,6 +186,8 @@ msgid ""
 "Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
 "%s"
 msgstr ""
+"Fecha de año fiscal incorrecta: el día está fuera del rango del mes. Mes: "
+"%s; Día: %s"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__transfer_account_id

@@ -1,21 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents_product
+# 	* documents_product
 # 
 # Translators:
 # Martin Trigaux, 2019
-# zbik2607 <darek@krokus.com.pl>, 2019
+# Dariusz Żbikowski <darek@krokus.com.pl>, 2019
 # Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
 # Maksym <ms@myodoo.pl>, 2019
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Natalia Gros <nag@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019\n"
+"Last-Translator: Natalia Gros <nag@odoo.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,7 +54,17 @@ msgstr "Utwórz"
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
+msgid "Create signature request"
+msgstr ""
+
+#. module: documents_product
+#: selection:documents.workflow.rule,create_model:0
 msgid "Credit note"
+msgstr ""
+
+#. module: documents_product
+#: selection:documents.workflow.rule,create_model:0
+msgid "Customer invoice"
 msgstr ""
 
 #. module: documents_product
@@ -83,7 +95,12 @@ msgstr "Nowa"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_plans_tag
 msgid "Plans"
-msgstr ""
+msgstr "Plany"
+
+#. module: documents_product
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
+msgid "Product"
+msgstr "Produkt"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
@@ -93,7 +110,6 @@ msgstr ""
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product Workspace"
 msgstr ""
 
@@ -114,14 +130,12 @@ msgstr ""
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
-msgid ""
-"Select the workspace to be used for product's documents for the products of\n"
-"                                    your company."
+msgid "Select the workspace to be used for product's documents"
 msgstr ""
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
+msgid "Sign directly"
 msgstr ""
 
 #. module: documents_product

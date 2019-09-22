@@ -139,7 +139,7 @@ msgstr "Carte"
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid "Map View"
-msgstr ""
+msgstr "Vue cartographique"
 
 #. module: web_map
 #. openerp-web

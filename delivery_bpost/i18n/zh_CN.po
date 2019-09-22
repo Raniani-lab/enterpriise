@@ -13,6 +13,7 @@
 # neter ji <jifuyi@qq.com>, 2018
 # liAnGjiA <liangjia@qq.com>, 2018
 # Martin Trigaux, 2019
+# Felix Yuen <fyu@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -20,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2017-12-13 15:20+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Felix Yuen <fyu@odoo.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -227,7 +228,7 @@ msgstr "服务商"
 #: code:addons/delivery_bpost/models/delivery_bpost.py:126
 #, python-format
 msgid "Return shipment created into bpost <br/> <b>Tracking Number : </b>%s"
-msgstr ""
+msgstr "返回发货到比利时邮政<br/><b>追踪编号：</b>%s"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
@@ -253,13 +254,13 @@ msgstr "<br/><b/>"
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "送货方式"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:301
 #, python-format
 msgid "The BPost shipping service is unresponsive, please retry later."
-msgstr ""
+msgstr "比利时邮政送货服务没有响应，请稍后再试。"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:63
@@ -400,7 +401,7 @@ msgstr "Bpost国际仅用于在比利时境外运输。请更改运输方式为B
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
 msgid "bpost Shipping Methods"
-msgstr ""
+msgstr "比利时比利时运输方式运输方式"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:120

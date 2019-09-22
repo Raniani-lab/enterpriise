@@ -46,7 +46,7 @@ msgstr "Алдаа үүссэн"
 #: code:addons/account_invoice_extract/models/account_invoice.py:27
 #, python-format
 msgid "An error occurred"
-msgstr ""
+msgstr "Алдаа гарлаа"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr

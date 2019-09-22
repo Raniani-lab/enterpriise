@@ -44,30 +44,30 @@ msgstr "${(object.name or '').replace('/','_')}"
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:44
 #, python-format
 msgid "${(object.name)} appraisal reminder"
-msgstr ""
+msgstr "${(object.name)} Przypomnienie o ocenie pracownika"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:47
 #, python-format
 msgid "${(object.name)}'s appraisal reminder"
-msgstr ""
+msgstr "Przypomnienie o ocenie ${(object.name)}"
 
 #. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.mail_template_appraisal_request_from_employee
 msgid "${object.name} requests an Appraisal"
-msgstr ""
+msgstr "${object.name} prosi o swoją ocenę"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:188
 #, python-format
 msgid "%s appraisal"
-msgstr ""
+msgstr "%s ocena pracownika"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:38
 #, python-format
 msgid "%s: %s months %s"
-msgstr ""
+msgstr "%s: %s miesięcy %s"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:129
@@ -76,6 +76,8 @@ msgid ""
 "<a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">Meeting</a> for <a "
 "href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s's</a> appraisal"
 msgstr ""
+"<a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">Spotkanie</a> w sprawie"
+" oceny <a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s</a>"
 
 #. module: hr_appraisal
 #: model:mail.template,body_html:hr_appraisal.mail_template_appraisal_request_from_employee
@@ -97,6 +99,22 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        Szanowny ${ctx['partner_to_name']},\n"
+"                        <br/><br/>\n"
+"                        Składam wniosek o ocenę pracowniczą.<br/>\n"
+"                        Oto link do mojej oceny:\n"
+"                        <p style=\"margin: 16px 0px 16px 0px;\">\n"
+"                            <a href=\"${ctx['url']}\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
+"                                Wyświetl ocenę\n"
+"                            </a>\n"
+"                        </p>\n"
+"                        <br/><br/>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.employee_id.user_id.signature or '')| safe}</td></tr>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: hr_appraisal
 #: model:mail.template,body_html:hr_appraisal.mail_template_appraisal_request
@@ -117,6 +135,21 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        Szanowny/a ${ctx['partner_to_name']},\n"
+"                        <br/><br/>\n"
+"                        Chciałbym/abym rozpocząć Twoją ocenę.\n"
+"                        <p style=\"margin: 16px 0px 16px 0px;\">\n"
+"                            <a href=\"${ctx['url']}\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
+"                                Wyświetl ocenę\n"
+"                            </a>\n"
+"                        </p>\n"
+"                        <br/><br/>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.signature or '')| safe}</td></tr>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -125,6 +158,10 @@ msgid ""
 "specific.\" role=\"img\" aria-label=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Wartości tutaj wyświetlone są"
+" typowe dla danej firmy.\" role=\"img\" aria-label=\"Wartości tutaj "
+"wyświetlone są typowe dla danej firmy.\" "
+"groups=\"base.group_multi_company\"/>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -225,7 +262,7 @@ msgstr "Administrator"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__event
 msgid "After event"
-msgstr ""
+msgstr "Po wydarzeniu"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -257,34 +294,34 @@ msgstr "Analiza oceny"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_collaborators
 msgid "Appraisal By Collaborators"
-msgstr ""
+msgstr "Ocena przez współpracowników"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_colleagues
 msgid "Appraisal By Colleagues"
-msgstr ""
+msgstr "Ocena przez Kolegów z pracy"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_manager
 msgid "Appraisal By Manager"
-msgstr ""
+msgstr "Ocena przez Managera"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_collaborators_ids
 msgid "Appraisal Collaborators"
-msgstr ""
+msgstr "Ocena współpracowników"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_colleagues_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_colleagues_ids
 msgid "Appraisal Colleagues"
-msgstr ""
+msgstr "Ocena kolegów z pracy"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_date
 msgid "Appraisal Date"
-msgstr ""
+msgstr "Data oceny"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__date_close
@@ -294,24 +331,24 @@ msgstr "Termin oceny"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__employee_id
 msgid "Appraisal Employee"
-msgstr ""
+msgstr "Ocena pracownika"
 
 #. module: hr_appraisal
 #: model:mail.activity.type,name:hr_appraisal.mail_act_appraisal_form
 msgid "Appraisal Form to Fill"
-msgstr ""
+msgstr "Formularz oceny do wypełnienia"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_manager_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_manager_ids
 msgid "Appraisal Manager"
-msgstr ""
+msgstr "Ocena managera"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:120
 #, python-format
 msgid "Appraisal Meeting For %s"
-msgstr ""
+msgstr "Spotkanie o ocenę dla %s"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.appraisal_reminderlist_action
@@ -321,18 +358,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_tree
 msgid "Appraisal Reminder"
-msgstr ""
+msgstr "Przypomnienie o ocenie"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/wizard/request_appraisal.py:109
 #, python-format
 msgid "Appraisal Request"
-msgstr ""
+msgstr "Prośba o ocenę"
 
 #. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.mail_template_appraisal_request
 msgid "Appraisal Requested"
-msgstr ""
+msgstr "Prośba o ocenę wysłana"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:289
@@ -350,30 +387,30 @@ msgstr "Statystyki ocen"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_appraisal
 msgid "Appraisal by Manager"
-msgstr ""
+msgstr "Ocena przez Managera"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:209
 #, python-format
 msgid "Appraisal form(s) have been sent"
-msgstr ""
+msgstr "Formularz(e) o ocenę został(y) wysłane/y"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_from_department
 msgid "Appraisal to start"
-msgstr ""
+msgstr "Ocena na początek"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_department_view_kanban
 msgid "Appraisal(s)"
-msgstr ""
+msgstr "Ocena/y"
 
 #. module: hr_appraisal
 #: model:ir.actions.server,name:hr_appraisal.ir_cron_scheduler_appraisal_ir_actions_server
 #: model:ir.cron,cron_name:hr_appraisal.ir_cron_scheduler_appraisal
 #: model:ir.cron,name:hr_appraisal.ir_cron_scheduler_appraisal
 msgid "Appraisal: Run employee appraisal"
-msgstr ""
+msgstr "Ocena: Rozpocznik ocenę pracownika"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_count
@@ -389,7 +426,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_department__appraisals_to_process_count
 msgid "Appraisals to Process"
-msgstr ""
+msgstr "Ocena do przetworzenia"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
@@ -414,12 +451,12 @@ msgstr "Autor"
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__author_id
 msgid "Author of the message."
-msgstr ""
+msgstr "Autor wiadomości."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__is_autorized_to_send
 msgid "Autorized Employee to Start Appraisal"
-msgstr ""
+msgstr "Pracownik Upoważniony by Rozpocząć Ocenę"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__body_html
@@ -442,18 +479,18 @@ msgstr "Anulowano"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_appraisal
 msgid "Collaborator Appraisal"
-msgstr ""
+msgstr "Ocena współpracownika"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_collaborators_body_html
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_collaborators_body_html
 msgid "Collaborator Mail Content"
-msgstr ""
+msgstr "Treść wiadomości współpracownika"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_body_html
 msgid "Collaborator's Appraisal Invite Body Email"
-msgstr ""
+msgstr "Zarys zaproszenia oceny współpracownika"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_ids
@@ -467,12 +504,12 @@ msgstr "Współpracownicy"
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_colleagues_body_html
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_colleagues_body_html
 msgid "Colleague Mail Content"
-msgstr ""
+msgstr "Treść wiadomości kolegi z pracy"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_body_html
 msgid "Colleague's Appraisal Invite Body Email"
-msgstr ""
+msgstr "Zarys zaproszenia oceny kolegi z pracy"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_ids
@@ -485,7 +522,7 @@ msgstr "Koledzy"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_appraisal
 msgid "Colleagues Appraisal"
-msgstr ""
+msgstr "Ocena kolegów z pracy"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__color
@@ -531,7 +568,7 @@ msgstr "Data utworzenia"
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
 msgid "Create a new appraisal"
-msgstr ""
+msgstr "Stwórz nową ocenę"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__create_uid
@@ -583,7 +620,7 @@ msgstr "Dział"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__deadline
 msgid "Desired Deadline"
-msgstr ""
+msgstr "Pożądany termin ostateczny"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__display_name
@@ -611,6 +648,7 @@ msgstr "Manu typu dropdown"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__last_duration_reminder_send
 msgid "Duration after last appraisal when we send last reminder mail"
 msgstr ""
+"Okres po ostatniej ocenie kiedy wysyłamy ostatnią wiadomość z przypomnieniem"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -620,7 +658,7 @@ msgstr "Edytuj"
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__email_from
 msgid "Email address of the sender"
-msgstr ""
+msgstr "Adres e-mail osoby wysyłającej"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_employee
@@ -643,18 +681,18 @@ msgstr "Ocena pracownika"
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_appraisal_reminder
 msgid "Employee Appraisal Reminder Setting"
-msgstr ""
+msgstr "Ustawienia przypomnień oceny pracownika"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_self
 msgid "Employee Himself"
-msgstr ""
+msgstr "Pracownik"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_employee_body_html
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_employee_body_html
 msgid "Employee Mail Content"
-msgstr ""
+msgstr "Treść wiadomości pracownika"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_employee
@@ -664,17 +702,17 @@ msgstr "Nazwisko pracownika"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
 msgid "Employee name:"
-msgstr ""
+msgstr "Imię pracownika:"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
 msgid "Employee profile creation:"
-msgstr ""
+msgstr "Utworzenie profilu pracownika:"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_body_html
 msgid "Employee's Appraisal Invite Body Email"
-msgstr ""
+msgstr "Zarys zaproszenia oceny pracownika"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -695,12 +733,12 @@ msgstr "Rozszerzone filtry..."
 #: code:addons/hr_appraisal/models/hr_appraisal.py:206
 #, python-format
 msgid "Fill appraisal for <a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s</a>"
-msgstr ""
+msgstr "Wypełnij ocenę dla <a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s</a>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Final Evaluation"
-msgstr ""
+msgstr "Ostateczna ewaluacja"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__date_final_interview
@@ -710,7 +748,7 @@ msgstr "Ostateczna rozmowa kwalifikacyjna"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Final Interview Date"
-msgstr ""
+msgstr "Ostateczna data rozmowy"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_follower_ids
@@ -793,7 +831,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "W #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -817,6 +855,8 @@ msgid ""
 "It has been a while since the last appraisal of one of your employee, go to "
 "his employee profile to request an appraisal."
 msgstr ""
+"Minęło sporo czasu od ostatniej oceny jednego z Twoich pracowników, przejdź "
+"do jego profilu by wystąpić z prośbą o ocenę."
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:48
@@ -825,6 +865,8 @@ msgid ""
 "It has been a while since your last appraisal, go to your employee profile "
 "to request an appraisal to your manager."
 msgstr ""
+"Minęło sporo czasu od Twojej ostatniej oceny, przejdź do swojego profilu i "
+"wystąp z prośbą o ocenę."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal____last_update
@@ -851,7 +893,7 @@ msgstr "Data ostatniej aktualizacji"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
 msgid "Last appraisal:"
-msgstr ""
+msgstr "Ostatnia ocena:"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
@@ -861,7 +903,7 @@ msgstr "Spóźnione czynności"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Mail To Send"
-msgstr ""
+msgstr "Wiadomość do wysłania"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_main_attachment_id
@@ -879,12 +921,12 @@ msgstr "Menedżer"
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_manager_body_html
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_manager_body_html
 msgid "Manager Mail Content"
-msgstr ""
+msgstr "Treść wiadomości managera"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_body_html
 msgid "Manager's Appraisal Invite Body Email"
-msgstr ""
+msgstr "Zarys zaproszenia oceny managera"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_manager
@@ -930,7 +972,7 @@ msgstr "Moje czynności"
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_my
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "My Appraisals"
-msgstr ""
+msgstr "Moje oceny"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
@@ -960,7 +1002,7 @@ msgstr "Następna data oceny"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__notify
 msgid "Notify"
-msgstr ""
+msgstr "Powiadom"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_needaction_counter
@@ -995,7 +1037,7 @@ msgstr "Przeterminowane"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__periodic_appraisal_created
 msgid "Periodic Appraisal has been created"
-msgstr ""
+msgstr "Okresowa ocena została stworzona"
 
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
@@ -1026,12 +1068,12 @@ msgstr "Raportowanie"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 msgid "Request Appraisal"
-msgstr ""
+msgstr "Wyślij prośbę o ocenę"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_request_appraisal
 msgid "Request an Appraisal"
-msgstr ""
+msgstr "Wyślij prośbę o ocenę"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_user_id
@@ -1041,7 +1083,7 @@ msgstr "Użytkownik odpowiedzialny"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Schedule The Final Interview"
-msgstr ""
+msgstr "Zaplanuj Ostateczną Rozmowę"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
@@ -1052,28 +1094,28 @@ msgstr "Szukaj oceny"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Select Appraisal Reviewer..."
-msgstr ""
+msgstr "Wybierz recenzenta oceny..."
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 msgid "Send Appraisals Form To"
-msgstr ""
+msgstr "Wyślij formularz ocen do"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_send_reminder
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_send_reminder
 msgid "Send Automatic Appraisals Reminder"
-msgstr ""
+msgstr "Wyślij automatyczne przypomnienie o ocenie"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__appraisal_reminder
 msgid "Send Reminder (in months)"
-msgstr ""
+msgstr "Wyślij Przypomnienie (w miesiącach)"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
 msgid "Send Request"
-msgstr ""
+msgstr "Wyślij prośbę"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -1138,7 +1180,7 @@ msgstr "Temat..."
 #: code:addons/hr_appraisal/models/hr_employee.py:73
 #, python-format
 msgid "The date of the next appraisal cannot be in the past"
-msgstr ""
+msgstr "Data następnej oceny nie może się odbyć w przeszłości"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_employee__appraisal_date
@@ -1152,32 +1194,32 @@ msgstr ""
 #. module: hr_appraisal
 #: sql_constraint:hr.appraisal.reminder:0
 msgid "The reminder time must be bigger or equal to 1 month."
-msgstr ""
+msgstr "Czas przypomnienia musi być większy lub równy 1 miesiącowi."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__color
 msgid "This color will be used in the kanban view."
-msgstr ""
+msgstr "Ten kolor będzie użyty w widoku kanban."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__collaborators_appraisal
 msgid "This employee will be appraised by his collaborators"
-msgstr ""
+msgstr "Ten pracownik będzie oceniony przez współpracowników"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__colleagues_appraisal
 msgid "This employee will be appraised by his colleagues"
-msgstr ""
+msgstr "Ten pracownik będzie oceniony przez kolegów z pracy"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__manager_appraisal
 msgid "This employee will be appraised by his managers"
-msgstr ""
+msgstr "Ten pracownik będzie oceniony przez managera"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__employee_appraisal
 msgid "This employee will do a self-appraisal"
-msgstr ""
+msgstr "Ten pracownik przeprowadzi samoocenę"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:289
@@ -1250,12 +1292,13 @@ msgstr ""
 #, python-format
 msgid "You cannot delete appraisal which is not in draft or canceled state"
 msgstr ""
+"Nie możesz usunąć oceny, która nie jest szkicem lub nie została usunięta"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:170
 #, python-format
 msgid "You must configure your mail address."
-msgstr ""
+msgstr "Musisz ustawić swój adres e-mail."
 
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
@@ -1264,6 +1307,9 @@ msgid ""
 "            to whom and the evaluation deadline. Once you have defined it,\n"
 "            change the stage to send it and view the results."
 msgstr ""
+"Będziesz w stanie wybrać które formularze mają zostać wysłane (Pracownik,Managerowie,Współpracownicy or Koledzy),\n"
+"            do kogo oraz ostateczny termin ewaluacji. Po zdefiniowaniu,\n"
+"            zmień etap by wysłać i zobaczyć wyniki."
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:232
@@ -1273,40 +1319,43 @@ msgid ""
 "appraisal on %s %s. If you think it's too late, feel free to have a chat "
 "with your manager."
 msgstr ""
+"Twoja ostatnia ocena odbyła się %s %s. Prośba o kolejną ocenę bedzie mogła "
+"zostać wysłana %s %s. Jeżeli uważasz że to za późno, porozmawiaj ze swoim "
+"managerem."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__parent_user_id
 msgid "Zboub"
-msgstr ""
+msgstr "Zboub"
 
 #. module: hr_appraisal
 #: selection:hr.appraisal.reminder,event:0
 msgid "after the arrival date"
-msgstr ""
+msgstr "po dacie dotarcia"
 
 #. module: hr_appraisal
 #: selection:hr.appraisal.reminder,event:0
 msgid "after the last appraisal"
-msgstr ""
+msgstr "po ostatniej ocenie"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:198
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:78
 #, python-format
 msgid "appraisal"
-msgstr ""
+msgstr "ocena"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:196
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:72
 #, python-format
 msgid "appraisal about %s"
-msgstr ""
+msgstr "ocena o %s"
 
 #. module: hr_appraisal
 #: selection:hr.appraisal.reminder,notify:0
 msgid "employee"
-msgstr ""
+msgstr "pracownik"
 
 #. module: hr_appraisal
 #: selection:hr.appraisal.reminder,notify:0
@@ -1321,4 +1370,4 @@ msgstr "oe_kanban_text_red"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_activity
 msgid "text-danger"
-msgstr ""
+msgstr "text-danger"

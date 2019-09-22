@@ -306,12 +306,12 @@ msgstr "Базова заробітна плата"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__payslip_run_id
 msgid "Batche Name"
-msgstr "Назва партії"
+msgstr "Назва групи"
 
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payslip_run
 msgid "Batches"
-msgstr "Партії"
+msgstr "Групи"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_benefit_tree

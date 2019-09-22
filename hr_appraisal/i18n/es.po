@@ -32,8 +32,8 @@
 # Carlos Lopez <celm1990@hotmail.com>, 2019
 # Rick Hunter <rick_hunter_ec@yahoo.com>, 2019
 # Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
-# Jon Perez <jop@odoo.com>, 2019
 # Mariana Santos Romo <msn@odoo.com>, 2019
+# Jon Perez <jop@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -41,7 +41,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:28+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Mariana Santos Romo <msn@odoo.com>, 2019\n"
+"Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,13 +76,13 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:188
 #, python-format
 msgid "%s appraisal"
-msgstr ""
+msgstr "%sevaluación"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:38
 #, python-format
 msgid "%s: %s months %s"
-msgstr ""
+msgstr "%s: %s meses%s"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:129
@@ -244,7 +244,7 @@ msgstr "Administradora"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__event
 msgid "After event"
-msgstr ""
+msgstr "Después del evento"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -276,17 +276,17 @@ msgstr "Análisis de evaluaciones"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_collaborators
 msgid "Appraisal By Collaborators"
-msgstr ""
+msgstr "Evaluación por colaboradores"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_colleagues
 msgid "Appraisal By Colleagues"
-msgstr ""
+msgstr "Evaluación por colegas"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_manager
 msgid "Appraisal By Manager"
-msgstr ""
+msgstr "Evaluación por gerente"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_ids
@@ -303,7 +303,7 @@ msgstr "Colegas evaluadores"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_date
 msgid "Appraisal Date"
-msgstr ""
+msgstr "Fecha de Evaluación "
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__date_close

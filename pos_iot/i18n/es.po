@@ -41,7 +41,7 @@ msgstr "Cancelar"
 #: code:addons/pos_iot/static/src/xml/pos.xml:58
 #, python-format
 msgid "Cancel Payment Request"
-msgstr ""
+msgstr "Cancelar solicitud de pago"
 
 #. module: pos_iot
 #. openerp-web
@@ -78,7 +78,7 @@ msgstr "La configuración del terminal de pago falló"
 #: code:addons/pos_iot/static/src/xml/pos.xml:47
 #, python-format
 msgid "Connection error"
-msgstr ""
+msgstr "Error de conexión"
 
 #. module: pos_iot
 #. openerp-web
@@ -93,7 +93,7 @@ msgstr "La conexión a la caja IoT falló"
 #: code:addons/pos_iot/static/src/js/payment.js:231
 #, python-format
 msgid "Connection to terminal failed"
-msgstr ""
+msgstr "La conexión al terminal falló"
 
 #. module: pos_iot
 #. openerp-web
@@ -119,21 +119,21 @@ msgstr "Error"
 #: code:addons/pos_iot/static/src/xml/pos.xml:117
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
-msgstr ""
+msgstr "Solo Firefox: haga clic en Confirmar excepción de seguridad"
 
 #. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/xml/pos.xml:50
 #, python-format
 msgid "Force Done"
-msgstr ""
+msgstr "Forzar terminación"
 
 #. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/xml/pos.xml:50
 #, python-format
 msgid "Force done"
-msgstr ""
+msgstr "Forzar terminación"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__proxy_ip
@@ -147,6 +147,7 @@ msgstr "Dirección IP"
 msgid ""
 "If you are on a secure server (HTTPS) check if you accepted the certificate:"
 msgstr ""
+"Si está en un servidor seguro (HTTPS), verifique si aceptó el certificado:"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
@@ -158,7 +159,7 @@ msgstr "IoT Box"
 #: code:addons/pos_iot/static/src/xml/pos.xml:114
 #, python-format
 msgid "IoT Box Homepage"
-msgstr ""
+msgstr "Página de caja de IoT "
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
@@ -182,7 +183,7 @@ msgstr "Aceptar"
 #: code:addons/pos_iot/static/src/xml/pos.xml:71
 #, python-format
 msgid "Payment Successful"
-msgstr ""
+msgstr "Pago exitoso"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_payment_terminal
@@ -194,7 +195,7 @@ msgstr "Terminal de pago"
 #: code:addons/pos_iot/static/src/xml/pos.xml:31
 #, python-format
 msgid "Payment request pending"
-msgstr ""
+msgstr "Solicitud de pago pendiente"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
@@ -206,7 +207,7 @@ msgstr ""
 #: code:addons/pos_iot/static/src/js/payment.js:195
 #, python-format
 msgid "Payment terminal error"
-msgstr ""
+msgstr "Error de terminal de pago"
 
 #. module: pos_iot
 #. openerp-web
@@ -214,14 +215,14 @@ msgstr ""
 #: code:addons/pos_iot/static/src/xml/pos.xml:111
 #, python-format
 msgid "Please check if the IoT Box is still connected."
-msgstr ""
+msgstr "Verifique si la caja de IoT todavía está conectada."
 
 #. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/js/payment.js:232
 #, python-format
 msgid "Please check if the terminal is still connected."
-msgstr ""
+msgstr "Verifique si el terminal todavía está conectado."
 
 #. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_config
@@ -236,7 +237,7 @@ msgstr ""
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iotbox_id
 msgid "Related Box"
-msgstr ""
+msgstr "Caja relacionada"
 
 #. module: pos_iot
 #. openerp-web
@@ -272,7 +273,7 @@ msgstr "Enviar"
 #: code:addons/pos_iot/static/src/xml/pos.xml:42
 #, python-format
 msgid "Send Payment Request"
-msgstr ""
+msgstr "Enviar solicitud de pago"
 
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__proxy_ip
@@ -288,7 +289,7 @@ msgstr ""
 #: code:addons/pos_iot/static/src/js/payment.js:114
 #, python-format
 msgid "There is already an electronic payment in progress."
-msgstr ""
+msgstr "Ya hay un pago electrónico en progreso."
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_account_journal__use_payment_terminal
@@ -300,11 +301,11 @@ msgstr "Use una terminal de pago"
 #: code:addons/pos_iot/static/src/xml/pos.xml:55
 #, python-format
 msgid "Waiting for card"
-msgstr ""
+msgstr "Esperando tarjeta"
 
 #. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/js/payment.js:253
 #, python-format
 msgid "You must select a payment terminal in your POS config."
-msgstr ""
+msgstr "Debe seleccionar un terminal de pago en su configuración de POS."

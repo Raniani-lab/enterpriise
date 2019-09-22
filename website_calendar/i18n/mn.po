@@ -338,7 +338,7 @@ msgstr "Холбох хаяг"
 #: code:addons/website_calendar/static/src/js/appointment_employee_url.js:67
 #, python-format
 msgid "Copied !"
-msgstr ""
+msgstr "Хуулбарласан !"
 
 #. module: website_calendar
 #: model_terms:ir.actions.act_window,help:website_calendar.calendar_appointment_type_action

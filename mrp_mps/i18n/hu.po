@@ -520,7 +520,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "Készlet szabály"
 
 #. module: mrp_mps
 #: sql_constraint:mrp.production.schedule:0

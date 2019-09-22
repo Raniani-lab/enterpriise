@@ -11,6 +11,7 @@
 # Miguel Orueta <mo@landoo.es>, 2019
 # Cristopher Cravioto <ccr@odoo.com>, 2019
 # Martin Trigaux, 2019
+# Jon Perez <jop@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +31,7 @@ msgstr ""
 #: code:addons/inter_company_rules/models/account_move.py:82
 #, python-format
 msgid "%s Invoice: %s"
-msgstr ""
+msgstr "%sFactura:%s"
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
@@ -157,13 +158,13 @@ msgstr "Apunte contable"
 #: code:addons/inter_company_rules/models/purchase_order.py:54
 #, python-format
 msgid "Partner:"
-msgstr ""
+msgstr "Socio:"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:53
 #, python-format
 msgid "Pricelist:"
-msgstr ""
+msgstr "Lista de precios:"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:39
@@ -202,7 +203,7 @@ msgstr "Tipo de regla"
 #: code:addons/inter_company_rules/models/purchase_order.py:52
 #, python-format
 msgid "SO currency:"
-msgstr ""
+msgstr "Moneda de orden de venta:"
 
 #. module: inter_company_rules
 #: selection:res.company,applicable_on:0
@@ -271,6 +272,8 @@ msgid ""
 "The currency of the SO is obtained from the pricelist of the company "
 "partner."
 msgstr ""
+"La moneda del pedido de cliente se obtiene de la lista de precios del socio "
+"de la empresa."
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__warehouse_id
@@ -314,7 +317,7 @@ msgstr ""
 #: selection:res.company,auto_validation:0
 #: selection:res.config.settings,auto_validation:0
 msgid "draft"
-msgstr ""
+msgstr "borrador"
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
@@ -335,4 +338,4 @@ msgstr ""
 #: selection:res.company,auto_validation:0
 #: selection:res.config.settings,auto_validation:0
 msgid "validated"
-msgstr ""
+msgstr "validado"

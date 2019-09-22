@@ -216,7 +216,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:45
 #, python-format
 msgid "Add new value"
-msgstr ""
+msgstr "Шинэ утга нэмэх"
 
 #. module: web_studio
 #. openerp-web

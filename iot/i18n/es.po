@@ -61,7 +61,7 @@ msgstr "Cámara"
 #: code:addons/iot/static/src/js/iot.js:534
 #, python-format
 msgid "Click here to open your IoT Homepage"
-msgstr ""
+msgstr "Haga clic aquí para abrir su página de IoT"
 
 #. module: iot
 #. openerp-web
@@ -84,12 +84,12 @@ msgstr ""
 #: code:addons/iot/static/src/js/tours/iot.js:13
 #, python-format
 msgid "Click on iot App."
-msgstr ""
+msgstr "Haga clic en la aplicación caja de IoT."
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "Click on the"
-msgstr ""
+msgstr "Haga clic en el"
 
 #. module: iot
 #. openerp-web
@@ -136,14 +136,14 @@ msgstr "La conexión a la caja IoT falló"
 #: code:addons/iot/static/src/js/iot.js:42
 #, python-format
 msgid "Connection to Printer failed"
-msgstr ""
+msgstr "La conexión a la impresora falló"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:599
 #, python-format
 msgid "Connection to device failed"
-msgstr ""
+msgstr "La conexión al dispositivo falló"
 
 #. module: iot
 #. openerp-web
@@ -169,7 +169,7 @@ msgstr "Creado el"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Detect and Add IoT devices in the network"
-msgstr ""
+msgstr "Detectar y agregar dispositivos IoT en la red"
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -201,7 +201,7 @@ msgstr "Nombre mostrado"
 #: code:addons/iot/static/src/js/iot.js:538
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
-msgstr ""
+msgstr "Solo Firefox: haga clic en Confirmar excepción de seguridad"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -239,7 +239,7 @@ msgstr "Identificador"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__identifier
 msgid "Identifier (Mac Address)"
-msgstr ""
+msgstr "Identificador (dirección Mac)"
 
 #. module: iot
 #. openerp-web
@@ -248,6 +248,7 @@ msgstr ""
 msgid ""
 "If you are on a secure server (HTTPS) check if you accepted the certificate:"
 msgstr ""
+"Si está en un servidor seguro (HTTPS), verifique si aceptó el certificado:"
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
@@ -283,7 +284,7 @@ msgstr "Dispositivo IoT"
 #: code:addons/iot/static/src/js/iot.js:294
 #, python-format
 msgid "IoTBox connected"
-msgstr ""
+msgstr "Caja de IoT conectada"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box____last_update
@@ -332,7 +333,7 @@ msgstr "OK"
 #: code:addons/iot/static/src/js/iot.js:531
 #, python-format
 msgid "Odoo cannot reach the IoT Box."
-msgstr ""
+msgstr "Odoo no puede alcanzar la caja de IoT."
 
 #. module: iot
 #. openerp-web
@@ -354,27 +355,29 @@ msgid ""
 "Please accept the certificate of your IoT Box (procedure depends on your "
 "browser) :"
 msgstr ""
+"Acepte el certificado de su caja de IoT (el procedimiento depende de su "
+"navegador):"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:532
 #, python-format
 msgid "Please check if the IoT Box is still connected."
-msgstr ""
+msgstr "Verifique si la caja de IoT todavía está conectada."
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:597
 #, python-format
 msgid "Please check if the device is still connected."
-msgstr ""
+msgstr "Compruebe si el dispositivo todavía está conectado."
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:42
 #, python-format
 msgid "Please check if the printer is still connected."
-msgstr ""
+msgstr "Verifique si la impresora todavía está conectada."
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -428,14 +431,14 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__screen_url
 msgid "Screen URL"
-msgstr ""
+msgstr "URL de pantalla"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:40
 #, python-format
 msgid "Successfully sent to printer!"
-msgstr ""
+msgstr "¡Exitosamente enviado a la impresora!"
 
 #. module: iot
 #. openerp-web
@@ -449,7 +452,7 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
 msgid "There is no device connected to your IoT Boxes"
-msgstr ""
+msgstr "No hay ningún dispositivo conectado a sus cajas de IoT "
 
 #. module: iot
 #. openerp-web
@@ -461,7 +464,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__type
@@ -471,17 +474,17 @@ msgstr "Tipo"
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connection
 msgid "Type of connection."
-msgstr ""
+msgstr "Tipo de conexión."
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__type
 msgid "Type of device."
-msgstr ""
+msgstr "Tipo de dispositivo."
 
 #. module: iot
 #: selection:iot.device,connection:0
 msgid "USB"
-msgstr ""
+msgstr "USB"
 
 #. module: iot
 #: code:addons/iot/drivers/SylvacUSBDriver.py:34
@@ -498,7 +501,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_box__screen_url
 msgid "Url of the page that will be displayed by hdmi port of the box."
-msgstr ""
+msgstr "URL de la página que se mostrará por el puerto hdmi de la caja."
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
@@ -511,13 +514,15 @@ msgid ""
 "When setting a device here, the report will be printed through this device "
 "on the IoT Box"
 msgstr ""
+"Al configurar un dispositivo aquí, el informe se imprimirá a través de este "
+"dispositivo en la caja de IoT "
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "connect"
-msgstr ""
+msgstr "conectar"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "to add an IoT Box."
-msgstr ""
+msgstr "para agregar una caja de IoT."

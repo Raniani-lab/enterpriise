@@ -13,10 +13,11 @@
 # Allen Xie <xfz@forisen.com>, 2019
 # Lisa Zhang <lzh@odoo.com>, 2019
 # Martin Trigaux, 2019
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# Jeffery CHEN <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # keecome <7017511@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# Felix Yuen <fyu@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -24,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 13:49+0000\n"
 "PO-Revision-Date: 2016-08-05 12:59+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
+"Last-Translator: Felix Yuen <fyu@odoo.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -84,7 +85,7 @@ msgstr "<span class=\"o_form_label\">薪资规则</span>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
 msgid "<span class=\"o_stat_text\">Payslips</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">工资单</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees
@@ -97,7 +98,7 @@ msgstr "<span colspan=\"4\" nolabel=\"1\">向导将根据工资单生成器上�
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
 msgid "<span> hours/week</span>"
-msgstr ""
+msgstr "<span> 小时/周</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -117,17 +118,17 @@ msgstr "<strong>银行账号</strong>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Basic Salary</strong>"
-msgstr ""
+msgstr "<strong>基本工资</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Company Information</strong>"
-msgstr ""
+msgstr "<strong>公司信息</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Computed On</strong>"
-msgstr ""
+msgstr "<strong>计算上</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_contributionregister
@@ -182,7 +183,7 @@ msgstr "<strong>登记名称 :</strong>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Registration Number</strong>"
-msgstr ""
+msgstr "<strong>注册号码</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_contributionregister
@@ -204,7 +205,7 @@ msgstr ""
 #: code:addons/hr_payroll/models/hr_leave.py:90
 #, python-format
 msgid "A leave cannot be set across multiple contracts."
-msgstr ""
+msgstr "不能跨多个合同设置休假。"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
@@ -243,7 +244,7 @@ msgstr "所有下级规则"
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_employee_all_payslips
 msgid "All Payslips"
-msgstr ""
+msgstr "所有工资单"
 
 #. module: hr_payroll
 #: model:hr.salary.rule.category,name:hr_payroll.ALW
@@ -301,7 +302,7 @@ msgstr "基本工资"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__basic_wage
 msgid "Basic Wage"
-msgstr ""
+msgstr "基本工资"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__payslip_run_id
@@ -311,7 +312,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payslip_run
 msgid "Batches"
-msgstr ""
+msgstr "批量"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_benefit_tree
@@ -503,7 +504,7 @@ msgstr "计算表"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__compute_date
 msgid "Computed On"
-msgstr ""
+msgstr "计算上"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__condition_select
@@ -870,13 +871,13 @@ msgstr "来自"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
 msgid "Full Time"
-msgstr ""
+msgstr "全职"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__full_time_required_hours
 #: model:ir.model.fields,field_description:hr_payroll.field_resource_calendar__full_time_required_hours
 msgid "Fulltime Hours"
-msgstr ""
+msgstr "全职时间"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_rule_form
@@ -907,7 +908,7 @@ msgstr "生成工资单"
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_generate_payslips_from_benefits
 msgid "Generate payslips"
-msgstr ""
+msgstr "生成工资单"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payslip_employees
@@ -917,7 +918,7 @@ msgstr "为已选的所有员工生成工资单"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
 msgid "Generated Payslips"
-msgstr ""
+msgstr "生成的薪资单"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_benefit_form
@@ -941,7 +942,7 @@ msgstr "分组"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__hours_per_week
 #: model:ir.model.fields,field_description:hr_payroll.field_resource_calendar__hours_per_week
 msgid "Hours per Week"
-msgstr ""
+msgstr "每周几小时"
 
 #. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_houserentallowance1
@@ -1012,7 +1013,7 @@ msgstr "内部备注"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__is_fulltime
 #: model:ir.model.fields,field_description:hr_payroll.field_resource_calendar__is_fulltime
 msgid "Is Full Time"
-msgstr ""
+msgstr "是全职的"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_view_kanban
@@ -1171,7 +1172,7 @@ msgstr "名称"
 msgid ""
 "Name to be set on a payslip. Example: 'End of the year bonus'. If not set, "
 "the default value is 'Salary Slip'"
-msgstr ""
+msgstr "要在工资单上设置的名称。示例：'年终奖金'。如果未设置，则默认值为 “工资单”"
 
 #. module: hr_payroll
 #: model:hr.salary.rule.category,name:hr_payroll.NET
@@ -1186,12 +1187,12 @@ msgstr "工资净额"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__net_wage
 msgid "Net Wage"
-msgstr ""
+msgstr "净工资"
 
 #. module: hr_payroll
 #: sql_constraint:hr.employee:0
 msgid "No duplication of registration numbers is allowed"
-msgstr ""
+msgstr "不允许重复注册号码"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_resource_calendar__normal_attendance_ids
@@ -1219,7 +1220,7 @@ msgstr "工时数"
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract__full_time_required_hours
 #: model:ir.model.fields,help:hr_payroll.field_resource_calendar__full_time_required_hours
 msgid "Number of hours to work to be considered as fulltime."
-msgstr ""
+msgstr "工作小时数被视为全职。"
 
 #. module: hr_payroll
 #: model:res.groups,name:hr_payroll.group_hr_payroll_user
@@ -1310,7 +1311,7 @@ msgstr "适用于贵国的薪资规则"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_res_config_settings__module_hr_payroll_account
 msgid "Payroll with Accounting"
-msgstr ""
+msgstr "工资核算与会计"
 
 #. module: hr_payroll
 #: model:ir.actions.report,name:hr_payroll.action_report_payslip
@@ -1526,7 +1527,7 @@ msgstr "记录明细"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_employee__registration_number
 msgid "Registration Number of the Employee"
-msgstr ""
+msgstr "员工的注册号码"
 
 #. module: hr_payroll
 #: selection:hr.payslip,state:0
@@ -1551,7 +1552,7 @@ msgstr "资源装饰"
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_resource_calendar_leaves
 msgid "Resource Time Off Detail"
-msgstr ""
+msgstr "休假详细信息"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_resource_calendar
@@ -1566,7 +1567,7 @@ msgstr "规则"
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_salary_rule_category
 msgid "Rule Categories"
-msgstr ""
+msgstr "规则类别"
 
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_action_hr_salary_rule_form
@@ -1576,7 +1577,7 @@ msgstr "规则"
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_salary_configuration
 msgid "Salary"
-msgstr ""
+msgstr "薪水"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_rule_category_form
@@ -1622,7 +1623,7 @@ msgstr "薪资规则"
 #: code:addons/hr_payroll/models/hr_payslip.py:296
 #, python-format
 msgid "Salary Slip"
-msgstr ""
+msgstr "工资单"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payroll_structure
@@ -1697,7 +1698,7 @@ msgstr "设置"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
 msgid "Slips to Confirm"
-msgstr ""
+msgstr "单据确认"
 
 #. module: hr_payroll
 #: sql_constraint:hr.benefit:0
@@ -1728,7 +1729,7 @@ msgstr "结构"
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_structure_view
 msgid "Structures"
-msgstr ""
+msgstr "结构"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_line__code
@@ -1758,7 +1759,7 @@ msgstr "符合这些输入的合同"
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_worked_days__contract_id
 msgid "The contract for which applied this worked days"
-msgstr ""
+msgstr "合同适用于这个工作日"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_rule__condition_range_max
@@ -1800,12 +1801,12 @@ msgstr "这个规则将用于计算%字段的值；一般来说是基数，你�
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_leave
 msgid "Time Off"
-msgstr ""
+msgstr "休息时间"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_leave_type
 msgid "Time Off Type"
-msgstr ""
+msgstr "休假类型"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_benefit__date_stop
@@ -1816,12 +1817,12 @@ msgstr "至"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
 msgid "To Compute"
-msgstr ""
+msgstr "计算"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
 msgid "To Confirm"
-msgstr ""
+msgstr "确认"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__total
@@ -1927,6 +1928,8 @@ msgid ""
 "Wrong percentage base or quantity defined for salary rule %s (%s).\n"
 "Error: %s"
 msgstr ""
+"为薪资规则定义的百分比基数或数量错误%s （%s）。\n"
+"错误：%s"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_salary_rule.py:217
@@ -1935,6 +1938,8 @@ msgid ""
 "Wrong python code defined for salary rule %s (%s).\n"
 "Error: %s"
 msgstr ""
+"为薪水规则定义了错误的python代码%s（%s）。\n"
+"错误：%s"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_salary_rule.py:240
@@ -1949,6 +1954,9 @@ msgid ""
 "Wrong quantity defined for salary rule %s (%s).\n"
 "Error: %s"
 msgstr ""
+"为薪资规则定义的数量错误\n"
+" %s（%s）。\n"
+"错误： %s"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_salary_rule.py:234

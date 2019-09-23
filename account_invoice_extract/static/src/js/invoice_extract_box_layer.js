@@ -101,6 +101,17 @@ var InvoiceExtractBoxLayer = Widget.extend({
         });
     },
 
+    /**
+     * Sets the textLayer for this box layer.
+     *
+     * @param {Object} params
+     * @param {$.Element} [params.$textLayer] the new text layer
+     */
+    setTextLayer: function(params) {
+        var $textLayer = params.$textLayer;
+        this._$textLayer = $textLayer;
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------

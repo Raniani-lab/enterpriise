@@ -953,7 +953,7 @@ var Table = AbstractEditComponent.extend({
 });
 
 var TextSelectorTags = 'span, p, h1, h2, h3, h4, h5, h6, blockquote, pre, small, u, i, b, font, strong, ul, li, dl, dt, ol';
-var filter = ':not([t-field]):not(:has(t, [t-' + QWeb2.ACTIONS_PRECEDENCE.join('], [t-') + ']))';
+var filter = ':not([t-field]):not(:has(t, [t-' + QWeb2.ACTIONS_PRECEDENCE.join('], [t-field], [t-') + ']))';
 var Text = AbstractEditComponent.extend({
     name: 'text',
     template : 'web_studio.ReportText',

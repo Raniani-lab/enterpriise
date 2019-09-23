@@ -15,13 +15,13 @@ class ResConfigSettings(models.TransientModel):
                                            help='When ticked, totals and subtotals appear below the sections of the report.')
     account_tax_periodicity = fields.Selection(related='company_id.account_tax_periodicity', string='Periodicity', readonly=False, required=True)
     account_tax_periodicity_reminder_day = fields.Integer(related='company_id.account_tax_periodicity_reminder_day', string='Reminder', readonly=False, required=True)
-    account_tax_periodicity_journal_id = fields.Many2one(related='company_id.account_tax_periodicity_journal_id', string='Journal', readonly=False, required=True)
+    account_tax_periodicity_journal_id = fields.Many2one(related='company_id.account_tax_periodicity_journal_id', string='Journal', readonly=False)
 
     @api.multi
     def set_values(self):
         super(ResConfigSettings, self).set_values()
         company = self.company_id or self.env.company
-        if company.account_tax_original_periodicity_reminder_day and company.account_tax_original_periodicity_reminder_day == self.account_tax_periodicity_reminder_day:
+        if not self.has_chart_of_accounts or (company.account_tax_original_periodicity_reminder_day and company.account_tax_original_periodicity_reminder_day == self.account_tax_periodicity_reminder_day):
             return True
         else:
             move_id = self._create_edit_tax_reminder()

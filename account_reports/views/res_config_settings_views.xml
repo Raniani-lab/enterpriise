@@ -46,7 +46,7 @@
                             </div>
                             <div class="row">
                                 <label string="Journal" for="account_tax_periodicity_journal_id" class="col-lg-3 o_light_label"/>
-                                <field name="account_tax_periodicity_journal_id"/>
+                                <field name="account_tax_periodicity_journal_id" attrs="{'required': [('has_chart_of_accounts', '=', True)]}"/>
                             </div>
                             <div>
                                 <button name="%(account.action_tax_group)d" icon="fa-arrow-right" type="action" string="Configure your tax accounts" class="btn-link"/>

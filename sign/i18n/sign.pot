@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:59+0000\n"
-"PO-Revision-Date: 2019-09-09 11:59+0000\n"
+"POT-Creation-Date: 2019-09-23 11:39+0000\n"
+"PO-Revision-Date: 2019-09-23 11:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1658,6 +1658,7 @@ msgstr ""
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/sign_backend.js:0
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -1985,7 +1986,14 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid ""
-"The final document and this completion history have been sent by email on"
+"The final document and this completion history have been sent by email "
+"on&amp;nbsp;"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/wizard/sign_send_request.py:0
+#, python-format
+msgid "The following roles must be set to create the signature request: "
 msgstr ""
 
 #. module: sign

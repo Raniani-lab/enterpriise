@@ -582,6 +582,36 @@ file_filter = snailmail_account_followup/i18n/<lang>.po
 source_file = snailmail_account_followup/i18n/snailmail_account_followup.pot
 source_lang = en
 
+[odoo-13.social]
+file_filter = social/i18n/<lang>.po
+source_file = social/i18n/social.pot
+source_lang = en
+
+[odoo-13.social_crm]
+file_filter = social_crm/i18n/<lang>.po
+source_file = social_crm/i18n/social_crm.pot
+source_lang = en
+
+[odoo-13.social_facebook]
+file_filter = social_facebook/i18n/<lang>.po
+source_file = social_facebook/i18n/social_facebook.pot
+source_lang = en
+
+[odoo-13.social_push_notifications]
+file_filter = social_push_notifications/i18n/<lang>.po
+source_file = social_push_notifications/i18n/social_push_notifications.pot
+source_lang = en
+
+[odoo-13.social_sale]
+file_filter = social_sale/i18n/<lang>.po
+source_file = social_sale/i18n/social_sale.pot
+source_lang = en
+
+[odoo-13.social_twitter]
+file_filter = social_twitter/i18n/<lang>.po
+source_file = social_twitter/i18n/social_twitter.pot
+source_lang = en
+
 [odoo-13.stock_account_enterprise]
 file_filter = stock_account_enterprise/i18n/<lang>.po
 source_file = stock_account_enterprise/i18n/stock_account_enterprise.pot

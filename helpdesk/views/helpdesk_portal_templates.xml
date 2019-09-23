@@ -58,7 +58,7 @@
 
             <t t-set="o_portal_fullwidth_alert" groups="helpdesk.group_helpdesk_user">
                 <t t-call="portal.portal_back_in_edit_mode">
-                    <t t-set="backend_url" t-value="'/web#return_label=Website&amp;model=helpdesk.ticket&amp;id=%s&amp;view_type=form' % (ticket.id)"/>
+                    <t t-set="backend_url" t-value="'/web#model=helpdesk.ticket&amp;id=%s&amp;view_type=form' % (ticket.id)"/>
                 </t>
             </t>
 

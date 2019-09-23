@@ -21,21 +21,25 @@ class ResConfigSettings(models.TransientModel):
         company = self.company_id or self.env.company
         if not self.has_chart_of_accounts or (company.account_tax_original_periodicity_reminder_day and company.account_tax_original_periodicity_reminder_day == self.account_tax_periodicity_reminder_day):
             return True
-        else:
-            move_id = self._create_edit_tax_reminder()
-            move_to_delete = self.env['account.move'].search([
-                ('id', '!=', move_id.id),
-                ('state', '=', 'draft'),
-                ('activity_ids.activity_type_id', '=', company.account_tax_next_activity_type.id),
-                ('company_id', '=', company.id)
-            ])
-            if len(move_to_delete):
-                journal_to_reset = [a.journal_id.id for a in move_to_delete]
-                move_to_delete.unlink()
-                self.env['account.journal'].browse(journal_to_reset).write({'show_on_dashboard': False})
+        self._update_account_tax_periodicity_reminder_day()
 
-            # Finally, add the journal visible in the dashboard
-            self.account_tax_periodicity_journal_id.show_on_dashboard = True
+    @api.model
+    def _update_account_tax_periodicity_reminder_day(self):
+        company = self.company_id or self.env.company
+        move_id = self._create_edit_tax_reminder()
+        move_to_delete = self.env['account.move'].search([
+            ('id', '!=', move_id.id),
+            ('state', '=', 'draft'),
+            ('activity_ids.activity_type_id', '=', company.account_tax_next_activity_type.id),
+            ('company_id', '=', company.id)
+        ])
+        if len(move_to_delete):
+            journal_to_reset = [a.journal_id.id for a in move_to_delete]
+            move_to_delete.unlink()
+            self.env['account.journal'].browse(journal_to_reset).write({'show_on_dashboard': False})
+
+        # Finally, add the journal visible in the dashboard
+        company.account_tax_periodicity_journal_id.show_on_dashboard = True
 
     def _create_edit_tax_reminder(self, values=None):
         # Create/Edit activity type if needed
@@ -46,7 +50,7 @@ class ResConfigSettings(models.TransientModel):
         activity_type = company.account_tax_next_activity_type or False
         vals = {
             'category': 'tax_report',
-            'delay_count': values.get('account_tax_periodicity', self.account_tax_periodicity) == 'monthly' and 1 or 3,
+            'delay_count': values.get('account_tax_periodicity', company.account_tax_periodicity) == 'monthly' and 1 or 3,
             'delay_unit': 'months',
             'delay_from': 'previous_activity',
             'res_model_id': move_res_model_id,
@@ -61,7 +65,7 @@ class ResConfigSettings(models.TransientModel):
             activity_type.write(vals)
 
         # search for an existing reminder for given journal and change it's date
-        account_tax_periodicity_journal_id = values.get('account_tax_periodicity_journal_id', self.account_tax_periodicity_journal_id)
+        account_tax_periodicity_journal_id = values.get('account_tax_periodicity_journal_id', company.account_tax_periodicity_journal_id)
         date = values.get('account_tax_periodicity_next_deadline', False)
         if not date:
             date = date_utils.end_of(fields.Date.today(), "quarter") + relativedelta(days=company.account_tax_periodicity_reminder_day)

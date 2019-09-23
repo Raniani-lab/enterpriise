@@ -95,7 +95,7 @@ var EventScanView = AbstractAction.extend({
                         {text: _t('Close'), close: true, classes: 'btn-primary'},
                         {text: _t('Print'), click: function () {
                           self.do_action({
-                              type: 'ir.actions.report.xml',
+                              type: 'ir.actions.report',
                               report_type: 'qweb-pdf',
                               report_name: 'event.event_registration_report_template_badge/' + result.registration.id,
                           });

@@ -96,7 +96,7 @@ class TestDeliveryBpost(TransactionCase):
             picking.action_done()
         except UserError as exc:
             if exc.name == "The BPost shipping service is unresponsive, please retry later.":
-                _logger.warning("BPost test aborted, service is unresponsive.", exc_info=exc)
+                _logger.warning("BPost test aborted, service is unresponsive.")
                 return
             raise
         self.assertIsNot(picking.carrier_tracking_ref, False, "bpost did not return any tracking number")
@@ -138,7 +138,7 @@ class TestDeliveryBpost(TransactionCase):
             picking.action_done()
         except UserError as exc:
             if exc.name == "The BPost shipping service is unresponsive, please retry later.":
-                _logger.warning("BPost test aborted, service is unresponsive.", exc_info=exc)
+                _logger.warning("BPost test aborted, service is unresponsive.")
                 return
             raise
         self.assertIsNot(picking.carrier_tracking_ref, False, "bpost did not return any tracking number")
@@ -185,7 +185,7 @@ class TestDeliveryBpost(TransactionCase):
             picking.action_done()
         except UserError as exc:
             if exc.name == "The BPost shipping service is unresponsive, please retry later.":
-                _logger.warning("BPost test aborted, service is unresponsive.", exc_info=exc)
+                _logger.warning("BPost test aborted, service is unresponsive.")
                 return
             raise
         self.assertIsNot(picking.carrier_tracking_ref, False, "bpost did not return any tracking number")
@@ -232,7 +232,7 @@ class TestDeliveryBpost(TransactionCase):
             delivery_order.button_validate()
         except UserError as exc:
             if exc.name == "The BPost shipping service is unresponsive, please retry later.":
-                _logger.warning("BPost test aborted, service is unresponsive.", exc_info=exc)
+                _logger.warning("BPost test aborted, service is unresponsive.")
                 return
             raise
         self.assertEqual(delivery_order.state, 'done', 'Shipment state should be done.')

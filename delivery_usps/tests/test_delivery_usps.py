@@ -80,7 +80,7 @@ class TestDeliveryUSPS(TransactionCase):
         except UserError as exc:
             m = country_unavailable_re.search(exc.name)
             if m:
-                _logger.warning(country_unavailable_msg, m.group(1), exc_info=True)
+                _logger.warning(country_unavailable_msg, m.group(1))
                 return
             raise
         self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "USPS delivery cost for this SO has not been correctly estimated.")
@@ -128,7 +128,7 @@ class TestDeliveryUSPS(TransactionCase):
         except UserError as exc:
             m = country_unavailable_re.search(exc.name)
             if m:
-                _logger.warning(country_unavailable_msg, m.group(1), exc_info=True)
+                _logger.warning(country_unavailable_msg, m.group(1))
                 return
             raise
         self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "USPS delivery cost for this SO has not been correctly estimated.")
@@ -175,7 +175,7 @@ class TestDeliveryUSPS(TransactionCase):
         except UserError as exc:
             m = country_unavailable_re.search(exc.name)
             if m:
-                _logger.warning(country_unavailable_msg, m.group(1), exc_info=True)
+                _logger.warning(country_unavailable_msg, m.group(1))
                 return
             raise
         self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "USPS delivery cost for this SO has not been correctly estimated.")
@@ -238,7 +238,7 @@ class TestDeliveryUSPS(TransactionCase):
         except UserError as exc:
             m = country_unavailable_re.search(exc.name)
             if m:
-                _logger.warning(country_unavailable_msg, m.group(1), exc_info=True)
+                _logger.warning(country_unavailable_msg, m.group(1))
                 return
             raise
         self.assertEqual(delivery_order.state, 'done', 'Shipment state should be done.')

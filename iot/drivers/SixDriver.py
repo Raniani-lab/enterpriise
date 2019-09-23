@@ -27,6 +27,7 @@ class SixDriver(Driver):
         self._device_type = 'payment'
         self._device_connection = 'network'
         self._device_name = "Six Payment Terminal %s" % self.device_identifier
+        self._device_manufacturer = 'Six'
         self.actions = Queue()
         self.last_transaction = {}
         self.cid = None

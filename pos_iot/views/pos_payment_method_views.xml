@@ -6,7 +6,9 @@
         <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='use_payment_terminal']" position="after">
-                <field name="iot_device_id" attrs="{'invisible': [('use_payment_terminal', 'not in', ['six', 'ingenico'])], 'required': [('use_payment_terminal', 'in', ['six', 'ingenico'])]}"/>
+                <field name="payment_terminal_ids" invisible="1"/>
+                <field name="iot_device_id" domain="[('id', 'in', payment_terminal_ids)]"
+                    attrs="{'invisible': [('use_payment_terminal', 'not in', ['six', 'ingenico'])], 'required': [('use_payment_terminal', 'in', ['six', 'ingenico'])]}"/>
             </xpath>
         </field>
     </record>

@@ -109,6 +109,7 @@ class IoTController(http.Controller):
                             'name': data_device['name'],
                             'identifier': device_identifier,
                             'type': data_device['type'],
+                            'manufacturer': data_device['manufacturer'],
                             'connection': data_device['connection'],
                         })
                     connected_iot_devices |= device

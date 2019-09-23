@@ -457,8 +457,8 @@ class TestMpsMps(common.TransactionCase):
 
     def test_impacted_schedule(self):
         impacted_schedules = self.mps_screw.get_impacted_schedule()
-        self.assertEqual(impacted_schedules, (self.mps - self.mps_screw).ids)
+        self.assertEqual(sorted(impacted_schedules), sorted((self.mps - self.mps_screw).ids))
 
         impacted_schedules = self.mps_drawer.get_impacted_schedule()
-        self.assertEqual(impacted_schedules, (self.mps_table |
-            self.mps_wardrobe | self.mps_table_leg | self.mps_screw).ids)
+        self.assertEqual(sorted(impacted_schedules), sorted((self.mps_table |
+            self.mps_wardrobe | self.mps_table_leg | self.mps_screw).ids))

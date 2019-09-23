@@ -18,8 +18,6 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
     def _get_lines(self, options, line_id=None, get_xml_data=False):
         lines = []
         context = self.env.context
-        if not context.get('company_ids'):
-            return lines
         seq = amount_sum = 0
         tag_ids = [
             self.env.ref('l10n_be.tax_report_line_44').id,
@@ -51,7 +49,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
                       GROUP BY {group_by}
         """
         params = (tuple(tag_ids), context.get('date_from'),
-                  context.get('date_to'), tuple(context.get('company_ids')))
+                  context.get('date_to'), tuple(self.env.companies.ids))
         self.env.cr.execute(query.format(select=select, group_by=group_by), params)
         p_count = 0
 

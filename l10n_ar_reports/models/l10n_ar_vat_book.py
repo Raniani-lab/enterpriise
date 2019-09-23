@@ -40,7 +40,6 @@ class L10nARVatBook(models.AbstractModel):
     def _get_lines(self, options, line_id=None):
         context = self.env.context
         journal_type = context.get('journal_type', 'sale')
-        company_ids = context.get('company_ids')
 
         lines = []
         line_id = 0
@@ -52,7 +51,7 @@ class L10nARVatBook(models.AbstractModel):
 
         totals = {}.fromkeys(['taxed', 'not_taxed', 'vat_25', 'vat_5', 'vat_10', 'vat_21', 'vat_27', 'other_taxes', 'total'], 0)
         domain = [('journal_id.type', '=', journal_type), ('journal_id.l10n_latam_use_documents', '=', True),
-                  ('company_id', 'in', company_ids)]
+                  ('company_id', 'in', self.env.companies.ids)]
         state = context.get('state')
         if state and state.lower() != 'all':
             domain += [('state', '=', state)]

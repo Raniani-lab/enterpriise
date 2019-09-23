@@ -58,7 +58,7 @@ class ReportL10nNLIntrastat(models.AbstractModel):
             'country_ids': tuple(country_ids),
             'date_from': self._context['date_from'],
             'date_to': self._context['date_to'],
-            'company_ids': tuple(self._context.get('company_ids')),
+            'company_ids': tuple(self.env.companies.ids),
         }
         self.env.cr.execute(query, params)
 

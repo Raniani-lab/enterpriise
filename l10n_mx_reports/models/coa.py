@@ -64,7 +64,7 @@ class MXReportAccountCoa(models.AbstractModel):
         accounts = account_obj.search([
             ('id', 'not in', list(set(accounts))),
             ('deprecated', '=', False),
-            ('company_id', 'in', self.env.context['company_ids']),
+            ('company_id', 'in', self.env.companies.ids),
         ])
 
         if accounts:

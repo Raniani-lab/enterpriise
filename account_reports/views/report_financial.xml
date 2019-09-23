@@ -47,10 +47,8 @@
                 <br/>Companies:
                 <t t-set="company_value" t-value="'All'"/>
                 <t t-foreach="options['multi_company']" t-as="c">
-                    <t t-if="c.get('selected') == True">
-                        <t t-set="company_value" t-value="''"/>
-                        "<t t-esc="c.get('name')"/>"
-                    </t>
+                    <t t-set="company_value" t-value="''"/>
+                    "<t t-esc="c.get('name')"/>"
                 </t>
                 <t t-esc="company_value"/>
             </t>
@@ -61,10 +59,8 @@
                     Companies:
                     <t t-set="company_value" t-value="'All'"/>
                     <t t-foreach="options['multi_company']" t-as="c">
-                        <t t-if="c.get('selected') == True">
-                            <t t-set="company_value" t-value="''"/>
-                            <t t-esc="c.get('name')"/>
-                        </t>
+                        <t t-set="company_value" t-value="''"/>
+                        <t t-esc="c.get('name')"/>
                     </t>
                     <t t-esc="company_value"/>
                 </t>

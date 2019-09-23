@@ -63,43 +63,6 @@ class AccountReport(models.AbstractModel):
     order_selected_column = None
 
     ####################################################
-    # OPTIONS: multi_company
-    ####################################################
-
-    @api.model
-    def _init_filter_multi_company(self, options, previous_options=None):
-        if not self.filter_multi_company:
-            return
-
-        companies = self.env.user.company_ids
-        if len(companies) > 1:
-            allowed_company_ids = self._context.get('allowed_company_ids', self.env.company.ids)
-            options['multi_company'] = [
-                {'id': c.id, 'name': c.name, 'selected': c.id in allowed_company_ids} for c in companies
-            ]
-
-    @api.model
-    def _get_options_companies(self, options):
-        if not options.get('multi_company'):
-            company = self.env.company
-            return [{'id': company.id, 'name': company.name, 'selected': True}]
-
-        all_companies = []
-        companies = []
-        for company_option in options['multi_company']:
-            if company_option['selected']:
-                companies.append(company_option)
-            all_companies.append(company_option)
-        return companies or all_companies
-
-    @api.model
-    def _get_options_companies_domain(self, options):
-        if options.get('multi_company'):
-            return [('company_id', 'in', [c['id'] for c in self._get_options_companies(options)])]
-        else:
-            return [('company_id', '=', self.env.company.id)]
-
-    ####################################################
     # OPTIONS: journals
     ####################################################
 
@@ -690,7 +653,15 @@ class AccountReport(models.AbstractModel):
         }
 
         # Multi-company is there for security purpose and can't be disabled by a filter.
-        self._init_filter_multi_company(options, previous_options=previous_options)
+        if self.filter_multi_company:
+            if 'allowed_company_ids' in self.env.context:
+                companies = self.env.companies
+            else:
+                companies = self.env.company
+            if len(companies) > 1:
+                options['multi_company'] = [
+                    {'id': c.id, 'name': c.name} for c in companies
+                ]
 
         # Call _init_filter_date/_init_filter_comparison because the second one must be called after the first one.
         if self.filter_date:
@@ -699,7 +670,7 @@ class AccountReport(models.AbstractModel):
             self._init_filter_comparison(options, previous_options=previous_options)
 
         filter_list = [attr for attr in dir(self)
-                       if (attr.startswith('filter_') or attr.startswith('order_')) and attr not in ('filter_date', 'filter_comparison') and len(attr) > 7 and not callable(getattr(self, attr))]
+                       if (attr.startswith('filter_') or attr.startswith('order_')) and attr not in ('filter_date', 'filter_comparison', 'filter_multi_company') and len(attr) > 7 and not callable(getattr(self, attr))]
         for filter_key in filter_list:
             options_key = filter_key[7:]
             init_func = getattr(self, '_init_%s' % filter_key, None)
@@ -720,7 +691,10 @@ class AccountReport(models.AbstractModel):
             ('display_type', 'not in', ('line_section', 'line_note')),
             ('move_id.state', '!=', 'cancel'),
         ]
-        domain += self._get_options_companies_domain(options)
+        if options.get('multi_company', False):
+            domain += [('company_id', 'in', self.env.companies.ids)]
+        else:
+            domain += [('company_id', '=', self.env.company.id)]
         domain += self._get_options_journals_domain(options)
         domain += self._get_options_date_domain(options)
         domain += self._get_options_analytic_domain(options)
@@ -743,10 +717,8 @@ class AccountReport(models.AbstractModel):
 
         user_company = self.env.company
         user_currency = user_company.currency_id
-        if options.get('multi_company'):
-            company_ids = [c['id'] for c in self._get_options_companies(options) if c['id'] != user_company.id and c['selected']]
-            company_ids.append(self.env.company.id)
-            companies = self.env['res.company'].browse(company_ids)
+        if options.get('multi_company', False):
+            companies = self.env.companies
             conversion_date = options['date']['date_to']
             currency_rates = companies.mapped('currency_id')._get_rates(user_company, conversion_date)
         else:
@@ -1159,11 +1131,6 @@ class AccountReport(models.AbstractModel):
             ctx['state'] = options.get('all_entries') and 'all' or 'posted'
         if options.get('journals'):
             ctx['journal_ids'] = [j.get('id') for j in options.get('journals') if j.get('selected')]
-        company_ids = []
-        if options.get('multi_company'):
-            company_ids = [c.get('id') for c in options['multi_company'] if c.get('selected')]
-            company_ids = company_ids if len(company_ids) > 0 else [c.get('id') for c in options['multi_company']]
-        ctx['company_ids'] = len(company_ids) > 0 and company_ids or [self.env.company.id]
         if options.get('analytic_accounts'):
             ctx['analytic_account_ids'] = self.env['account.analytic.account'].browse([int(acc) for acc in options['analytic_accounts']])
         if options.get('analytic_tags'):
@@ -1172,6 +1139,15 @@ class AccountReport(models.AbstractModel):
             ctx['partner_ids'] = self.env['res.partner'].browse([int(partner) for partner in options['partner_ids']])
         if options.get('partner_categories'):
             ctx['partner_categories'] = self.env['res.partner.category'].browse([int(category) for category in options['partner_categories']])
+        if not ctx.get('allowed_company_ids') or not options.get('multi_company'):
+            """Contrary to the generic multi_company strategy,
+            If we have not specified multiple companies, we only use
+            the user company for account reports.
+
+            To do so, we set the allowed_company_ids to only the main current company
+            so that self.env.company == self.env.companies
+            """
+            ctx['allowed_company_ids'] = self.env.company.ids
         return ctx
 
     def get_report_informations(self, options):
@@ -1214,20 +1190,6 @@ class AccountReport(models.AbstractModel):
                 }
         return info
 
-    def _check_report_security(self, options):
-        '''The security check must be done in this method. It ensures no-one can by-passing some access rules
-        (e.g. falsifying the options).
-
-        :param options:     The report options.
-        '''
-        # Check the options has not been falsified in order to access not allowed companies.
-        user_company_ids = self.env.user.company_ids.ids
-        if options.get('multi_company'):
-            group_multi_company = self.env.ref('base.group_multi_company')
-            if self.env.user.id not in group_multi_company.users.ids:
-                options.pop('multi_company')
-            else:
-                options['multi_company'] = [opt for opt in options['multi_company'] if opt['id'] in user_company_ids]
 
     def get_html(self, options, line_id=None, additional_context=None):
         '''
@@ -1236,9 +1198,6 @@ class AccountReport(models.AbstractModel):
         otherwise it uses the main_template. Reason is for efficiency, when unfolding a line in the report
         we don't want to reload all lines, just get the one we unfolded.
         '''
-        # Check the security before updating the context to make sure the options are safe.
-        self._check_report_security(options)
-
         # Prevent inconsistency between options and context.
         self = self.with_context(self._set_context(options))
 
@@ -1351,14 +1310,18 @@ class AccountReport(models.AbstractModel):
     def _get_report_manager(self, options):
         domain = [('report_name', '=', self._name)]
         domain = (domain + [('financial_report_id', '=', self.id)]) if 'id' in dir(self) else domain
-        selected_companies = []
-        if options.get('multi_company'):
-            selected_companies = [c['id'] for c in options['multi_company'] if c.get('selected')]
-        if len(selected_companies) == 1:
-            domain += [('company_id', '=', selected_companies[0])]
+        multi_company_report = options.get('multi_company', False)
+        if not multi_company_report:
+            domain += [('company_id', '=', self.env.company.id)]
+        else:
+            domain += [('company_id', '=', False)]
         existing_manager = self.env['account.report.manager'].search(domain, limit=1)
         if not existing_manager:
-            existing_manager = self.env['account.report.manager'].create({'report_name': self._name, 'company_id': selected_companies and selected_companies[0] or False, 'financial_report_id': self.id if 'id' in dir(self) else False})
+            existing_manager = self.env['account.report.manager'].create({
+                'report_name': self._name,
+                'company_id': self.env.company.id if not multi_company_report else False,
+                'financial_report_id': self.id if 'id' in dir(self) else False,
+            })
         return existing_manager
 
     @api.model

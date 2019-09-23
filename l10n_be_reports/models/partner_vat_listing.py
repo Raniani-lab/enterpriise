@@ -18,8 +18,6 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
     def _get_lines(self, options, line_id=None):
         lines = []
         context = self.env.context
-        if not context.get('company_ids'):
-            return lines
         partner_ids = self.env['res.partner'].search([('vat', 'ilike', 'BE%')]).ids
         if not partner_ids:
             return lines
@@ -81,7 +79,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
             'partner_ids': tuple(partner_ids),
             'date_from': context['date_from'],
             'date_to': context['date_to'],
-            'company_ids': tuple(context.get('company_ids')),
+            'company_ids': tuple(self.env.companies.ids),
         }
         self.env.cr.execute(query, params)
 

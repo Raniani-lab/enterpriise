@@ -170,17 +170,11 @@ class generic_tax_report(models.AbstractModel):
          the correct receivable/payable account. Also takes into account amount already paid via advance tax payment account.
         """
         # make the preliminary checks
-        company = self.env.company
-        if options.get('multi_company'):
+        if options.get('multi_company', False):
             # Ensure that we only have one company selected
-            selected_company = False
-            for c in options.get('multi_company'):
-                if c.get('selected') and selected_company:
-                    raise UserError(_("You can only post tax entries for one company at a time"))
-                elif c.get('selected'):
-                    selected_company = c.get('id')
-            if selected_company:
-                company = self.env['res.company'].browse(selected_company)
+            raise UserError(_("You can only post tax entries for one company at a time"))
+
+        company = self.env.company
 
         start_date = fields.Date.from_string(options.get('date').get('date_from'))
         end_date = fields.Date.from_string(options.get('date').get('date_to'))

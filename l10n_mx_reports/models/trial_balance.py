@@ -154,7 +154,7 @@ class MxReportAccountTrial(models.AbstractModel):
         domain = safe_eval(line.domain or '[]')
         domain += [
             ('deprecated', '=', False),
-            ('company_id', 'in', self.env.context['company_ids']),
+            ('company_id', 'in', self.env.companies.ids),
         ]
         basis_account_ids = self.env['account.tax'].search_read(
             [('cash_basis_base_account_id', '!=', False)], ['cash_basis_base_account_id'])

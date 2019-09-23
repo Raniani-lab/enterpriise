@@ -16,8 +16,6 @@ class ReportL10nDePartnerVatIntra(models.AbstractModel):
     def _get_lines(self, options, line_id=None):
         lines = []
         context = self.env.context
-        if not context.get('company_ids'):
-            return lines
         tag_ids = [self.env['ir.model.data'].xmlid_to_res_id(k) for k in [
             'l10n_de.tag_de_intracom_community_delivery',
             'l10n_de.tag_de_intracom_community_supplies',
@@ -39,7 +37,7 @@ class ReportL10nDePartnerVatIntra(models.AbstractModel):
                       GROUP BY p.name, l.partner_id, p.vat, intra_code, partner_country
         """
         params = (tuple(tag_ids), context.get('date_from'),
-                  context.get('date_to'), tuple(context.get('company_ids')))
+                  context.get('date_to'), self.env.companies.ids)
         self.env.cr.execute(query, params)
 
         for row in self.env.cr.dictfetchall():

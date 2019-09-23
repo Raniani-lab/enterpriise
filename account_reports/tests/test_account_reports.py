@@ -2454,7 +2454,7 @@ class TestAccountReports(TestAccountReportsCommon):
         bank_journal = self.env['account.journal'].search([('company_id', '=', self.company_child_eur.id), ('type', '=', 'bank')])
 
         # Init options.
-        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
+        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id).with_company(self.company_child_eur)
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
         self.assertLinesValues(

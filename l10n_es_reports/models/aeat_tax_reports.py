@@ -219,14 +219,10 @@ class AEATAccountFinancialReport(models.Model):
         if not self.l10n_es_reports_modelo_number:
             return super(AEATAccountFinancialReport, self).get_txt(options)
 
-        selected_company_ids = [data['id'] for data in options.get('multi_company', []) if data['selected']]
-        if len(selected_company_ids) > 1:
+        if options.get('multi_company', False):
             raise UserError(_("Cannot generate a BOE file for multiple companies at once. Please select only one."))
 
-        if selected_company_ids:
-            current_company = self.env['res.company'].browse(selected_company_ids)
-        else:
-            current_company = self.env.company
+        current_company = self.env.company
 
         period, year = self._get_mod_period_and_year(options)
 

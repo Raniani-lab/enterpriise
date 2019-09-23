@@ -39,7 +39,7 @@ This feature is only supported/useful in spanish MOD347 report.""")
                 if self.groupby != 'partner_id':
                     raise UserError(_("Trying to use a groupby threshold for a line without grouping by partner_id isn't supported."))
 
-                company = self.env['res.company'].browse(self.env.context['company_ids'][0])
+                company = self.env.company
                 from_fiscalyear_dates = company.compute_fiscalyear_dates(datetime.strptime(self.env.context['date_from'], DEFAULT_SERVER_DATE_FORMAT))
                 to_fiscalyear_dates = company.compute_fiscalyear_dates(datetime.strptime(self.env.context['date_to'], DEFAULT_SERVER_DATE_FORMAT))
 

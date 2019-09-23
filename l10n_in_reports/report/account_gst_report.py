@@ -98,10 +98,9 @@ class L10nInReportAccount(models.AbstractModel):
         gst_section = options.get('gst_section')
         filter_domain = [
             ('date', '>=', options['date'].get('date_from')),
-            ('date', '<=', options['date'].get('date_to'))]
+            ('date', '<=', options['date'].get('date_to')),
+            ('company_id', 'in', self.env.companies.ids)]
         context = self.env.context
-        if context.get('company_ids'):
-            filter_domain += [('company_id', 'in', context['company_ids'])]
         if context.get('partner_ids'):
             filter_domain += [
                 ('partner_id', 'in', context['partner_ids'].ids)]

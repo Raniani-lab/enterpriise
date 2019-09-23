@@ -234,7 +234,10 @@ class assets_report(models.AbstractModel):
 
         date_to = options['date']['date_to']
         date_from = options['date']['date_from']
-        company_ids = tuple(t['id'] for t in self._get_options_companies(options))
+        if options.get('multi_company', False):
+            company_ids = tuple(self.env.companies.ids)
+        else:
+            company_ids = tuple(self.env.company.ids)
 
         self.flush()
         self.env.cr.execute(sql, {'date_to': date_to, 'date_from': date_from, 'company_ids': company_ids})

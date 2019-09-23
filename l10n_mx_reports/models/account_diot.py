@@ -46,8 +46,7 @@ class MxReportPartnerLedger(models.AbstractModel):
         sql = "SELECT \"account_move_line\".partner_id%s FROM %s WHERE %s%s AND \"account_move_line_account_tax_rel\".account_move_line_id = \"account_move_line\".id GROUP BY \"account_move_line\".partner_id, \"account_move_line_account_tax_rel\".account_tax_id"  # noqa
         context = self.env.context
         journal_ids = []
-        for company in self.env['res.company'].browse(context[
-                'company_ids']).filtered('tax_cash_basis_journal_id'):
+        for company in self.env.companies.filtered('tax_cash_basis_journal_id'):
             journal_ids.append(company.tax_cash_basis_journal_id.id)
         tax_ids = self.env['account.tax'].search([
             ('type_tax_use', '=', 'purchase'),
@@ -79,8 +78,7 @@ class MxReportPartnerLedger(models.AbstractModel):
         mx_country = self.env.ref('base.mx')
         context = self.env.context
         journal_ids = []
-        for company in self.env['res.company'].browse(
-                context['company_ids']).filtered('tax_cash_basis_journal_id'):
+        for company in self.env.companies.filtered('tax_cash_basis_journal_id'):
             journal_ids.append(company.tax_cash_basis_journal_id.id)
         tax_ids = self.env['account.tax'].search([
             ('type_tax_use', '=', 'purchase'),
@@ -88,7 +86,7 @@ class MxReportPartnerLedger(models.AbstractModel):
         account_tax_ids = tax_ids.mapped('invoice_repartition_line_ids.account_id')
         base_domain = [
             ('date', '<=', context['date_to']),
-            ('company_id', 'in', context['company_ids']),
+            ('company_id', 'in', self.env.companies.ids),
             ('journal_id', 'in', journal_ids),
             ('account_id', 'not in', account_tax_ids.ids),
             ('tax_ids', 'in', tax_ids.ids),

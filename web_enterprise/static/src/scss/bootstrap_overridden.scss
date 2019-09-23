@@ -68,7 +68,7 @@ $component-active-bg: $o-brand-primary !default;
 //
 // Font, line-height, and color for body text, headings, and more.
 
-$font-family-sans-serif: 'Roboto', 'Noto' !default;
+$font-family-sans-serif: o-add-unicode-support-font(('Roboto', sans-serif)) !default;
 
 $font-size-base: $o-font-size-base !default;
 

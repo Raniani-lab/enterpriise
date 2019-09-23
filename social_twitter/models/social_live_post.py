@@ -80,7 +80,7 @@ class SocialLivePostTwitter(models.Model):
             )
 
             result_tweets = result.json()
-            if isinstance(result_tweets, dict) and result_tweets.get('errors'):
+            if isinstance(result_tweets, dict) and result_tweets.get('errors') or result_tweets is None:
                 account.sudo().write({'is_media_disconnected': True})
                 return
 

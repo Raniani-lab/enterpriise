@@ -662,7 +662,7 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.deepEqual(args.operations[0], {
                         node: {
-                            attrs: {name: 'display_name', modifiers: {}},
+                            attrs: {name: 'display_name', modifiers: {}, relativeWidth: 1},
                             children: [],
                             tag: 'field',
                         },

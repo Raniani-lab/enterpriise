@@ -146,28 +146,23 @@
         }
     }
 
-    //--------------------------------------------------------------------------
-    // Editable
-    //--------------------------------------------------------------------------
-    &.o_editable_list {
-        .o_data_row:not(.o_selected_row) > .o_data_cell:not(.o_readonly_modifier):not(:last-child) {
-            border-right: 1px solid transparent;
-        }
-        .o_data_row.o_selected_row > .o_data_cell {
-            border-bottom: 1px solid $table-border-color;
-            &.o_required_modifier:not(.o_readonly_modifier) {
-                border-bottom: 1px solid black;
-                &.o_invalid_cell {
-                    border-bottom: 1px solid red;
-                }
-            }
-            &:not(.o_readonly_modifier):not(:last-child) {
-                border-right: 1px solid $table-border-color;
+    .o_data_row:not(.o_selected_row) > .o_data_cell:not(.o_readonly_modifier):not(:last-child) {
+        border-right: 1px solid transparent;
+    }
+    .o_data_row.o_selected_row > .o_data_cell {
+        border-bottom: 1px solid $table-border-color;
+        &.o_required_modifier:not(.o_readonly_modifier) {
+            border-bottom: 1px solid black;
+            &.o_invalid_cell {
+                border-bottom: 1px solid red;
             }
         }
-        .o_data_row.o_selected_row > .o_list_record_remove {
-            border-bottom: 1px solid $table-border-color;
+        &:not(.o_readonly_modifier):not(:last-child) {
+            border-right: 1px solid $table-border-color;
         }
+    }
+    .o_data_row.o_selected_row > .o_list_record_remove {
+        border-bottom: 1px solid $table-border-color;
     }
 }
 

@@ -157,6 +157,8 @@ def _load_xsd_complements(cr, registry, content):
          'http://www.sat.gob.mx/sitio_internet/cfd/ine/INE11.xsd'],
         ['http://www.sat.gob.mx/acreditamiento',
          'http://www.sat.gob.mx/sitio_internet/cfd/acreditamiento/AcreditamientoIEPS10.xsd'],
+        ['http://www.sat.gob.mx/TimbreFiscalDigital',
+         'http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd'],
     ]
     for complement in complements:
         xsd = {'namespace': complement[0], 'schemaLocation': complement[1]}

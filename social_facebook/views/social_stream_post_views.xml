@@ -27,8 +27,23 @@
                         <b class="o_social_kanban_likes_count" t-esc="record.facebook_likes_count.raw_value !== 0 ? record.facebook_likes_count.raw_value : ''"/>
                     </div>
                     <div class="o_social_facebook_comments o_social_subtle_btn px-3"
+                        data-media-type="facebook"
+                        t-att-data-post-message="record.message.raw_value"
+                        t-att-data-post-images="record.stream_post_image_urls.raw_value"
+                        t-att-data-post-link="record.post_link.raw_value"
+                        t-att-data-facebook-author-id="record.facebook_author_id.raw_value"
+                        t-att-data-author-name="record.author_name.raw_value"
+                        t-att-data-published-date="record.published_date.value"
+                        t-att-data-link-url="record.link_url.raw_value"
+                        t-att-data-link-image="record.link_image_url.raw_value"
+                        t-att-data-link-title="record.link_title.raw_value"
+                        t-att-data-link-description="record.link_description.raw_value"
                         t-att-data-post-id="record.id.raw_value"
-                        t-att-data-facebook-page-id="record.account_id.raw_value">
+                        t-att-data-facebook-page-id="record.account_id.raw_value"
+                        t-att-data-facebook-user-likes="record.facebook_user_likes.raw_value"
+                        t-att-data-facebook-likes-count="record.facebook_likes_count.raw_value"
+                        t-att-data-facebook-shares-count="record.facebook_shares_count.raw_value"
+                        t-att-data-facebook-reach="record.facebook_reach.raw_value">
                         <i class="fa fa-comments" title="Comments"></i>
                         <b t-esc="record.facebook_comments_count.value !== '0' ? record.facebook_comments_count.value : ''"/>
                     </div>

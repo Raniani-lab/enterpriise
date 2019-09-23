@@ -29,6 +29,7 @@ StreamPostKanbanController.include({
                 {
                     postId: postId,
                     accountId: $target.data('facebookPageId'),
+                    originalPost: $target.data(),
                     comments: result.comments,
                     summary: result.summary,
                     nextRecordsToken: result.nextRecordsToken

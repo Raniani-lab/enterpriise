@@ -59,12 +59,21 @@ $o-social-border-radius-base: 3px;
         }
     }
 
-    .o_social_stream_post_image {
-        .o_social_stream_post_image_click, .o_social_stream_post_image_more_overlay {
+    .o_social_original_post_image {
+        img {
+            max-height: 18rem;
+        }
+    }
+
+    .o_social_stream_post_image, .o_social_original_post_image {
+        .o_social_stream_post_image_click,
+        .o_social_stream_post_image_more_overlay,
+        .o_social_original_post_image_click,
+        .o_social_original_post_image_more_overlay {
             cursor: pointer;
         }
 
-        .o_social_stream_post_image_more_overlay {
+        .o_social_stream_post_image_more_overlay, .o_social_original_post_image_more_overlay {
             background-color: rgba(black, .2);
 
             &:hover {
@@ -282,6 +291,7 @@ $o-social-border-radius-base: 3px;
 // Comments
 .o_social_comments_modal {
     min-height: 280px;
+    overflow-x: hidden;
 
     .o_social_comment_controls, .o_social_manage_comment {
         .dropdown-toggle:after {
@@ -302,6 +312,10 @@ $o-social-border-radius-base: 3px;
     }
 
     .o_social_add_comment {
+        // Emulate form-control-lg design without adding the class
+        // to avoid issues with JS resize code.
+        @include font-size($input-font-size-lg);
+        line-height: $input-line-height-lg;
         resize: none;
     }
 
@@ -309,8 +323,24 @@ $o-social-border-radius-base: 3px;
         @include o-position-absolute(0, 0);
     }
 
-    .o_social_comments_messages .o_social_author_image {
-        @include size(32px);
+    .o_social_original_post_author_image img {
+        @include size(42px);
+    }
+
+    .o_social_comments_messages, .o_social_write_reply {
+        .o_social_author_image {
+            @include size(32px);
+        }
+    }
+
+    .o_social_original_post_image.o_social_stream_post_image img {
+        @media (min-height: 800px) {
+            max-height: 200px;
+        }
+    }
+
+    .o_social_original_post_message_text {
+        max-height: 160px;
     }
 
     .o_social_comment_message {

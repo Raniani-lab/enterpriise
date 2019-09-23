@@ -56,7 +56,7 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '                        </div>' +
     '                        <div class="o_social_stream_post_published_date col-md-4 m-0 p-0 text-right">' +
     '                            <small>' +
-    '                                <span t-esc="record.published_date.value and record.published_date.value.split(\' \')[0] or False"' +
+    '                                <span t-esc="record.published_date.value and record.published_date.value.split(\' \')[0] or \'\'"' +
     '                                    t-att-title="record.published_date.value">' +
     '                                </span>' +
     '                            </small>' +

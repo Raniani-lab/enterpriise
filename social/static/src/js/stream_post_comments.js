@@ -5,6 +5,7 @@ var core = require('web.core');
 var Dialog = require('web.Dialog');
 var dom = require('web.dom');
 var emojis = require('mail.emojis');
+var PostKanbanImagesCarousel = require('social.social_post_kanban_images_carousel');
 var SocialEmojisMixin = require('social.emoji_mixin');
 var time = require('web.time');
 
@@ -55,6 +56,7 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
         'click .o_social_comment_reply': '_onReplyComment',
         'click .o_social_load_more_comments': '_onLoadMoreComments',
         'click .o_social_comment_load_replies': '_onLoadReplies',
+        'click .o_social_original_post_image_more, .o_social_original_post_image_click': '_onClickMoreImages',
     },
 
     init: function (parent, options) {
@@ -64,6 +66,7 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
             size: 'medium',
         });
 
+        this.originalPost = options.originalPost;
         this.emojis = emojis;
         this.postId = options.postId;
         this.comments = options.comments;
@@ -353,6 +356,24 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
         });
         $commentsRepliesContainer.removeClass('d-none');
         $target.remove();
+    },
+
+    /**
+     * Triggers when the user clicks on an image or on the '+' if there are too many images.
+     * We open a 'carousel' in a popup window so that the user can browse all the images.
+     *
+     * @param {MouseEvent} ev
+     * @private
+     */
+    _onClickMoreImages: function (ev) {
+        var $target = $(ev.currentTarget);
+
+        new PostKanbanImagesCarousel(
+            this, {
+                'activeIndex': $target.data('currentIndex'),
+                'images': this.originalPost.postImages
+            }
+        ).open();
     },
 
     //--------------------------------------------------------------------------

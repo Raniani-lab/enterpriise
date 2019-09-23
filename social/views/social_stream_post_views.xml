@@ -67,7 +67,7 @@
                                         t-raw="author_info"/>
 
                                     <time class="o_social_stream_post_published_date small"
-                                        t-esc="record.published_date.value and record.published_date.value.split(' ')[0] or False"
+                                        t-esc="record.published_date.value and record.published_date.value.split(' ')[0] or ''"
                                         t-att-title="record.published_date.value"/>
                                 </div>
                                 <t t-set="has_attachments" t-value="record.stream_post_image_ids.raw_value.length !== 0 || record.link_url.value"/>

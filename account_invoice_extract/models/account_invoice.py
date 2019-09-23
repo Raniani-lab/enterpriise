@@ -477,10 +477,21 @@ class AccountInvoice(models.Model):
                 for taxes, taxes_type in zip(taxes, taxes_type_ocr):
                     if taxes != 0.0:
                         if (taxes, taxes_type) not in taxes_found:
-                            taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
-                            if taxes_record:
-                                taxes_found[(taxes, taxes_type)] = taxes_record.id
+                            related_documents = self.env['account.invoice'].search([('state', '!=', 'draft'), ('type', '=', self.type), ('partner_id', '=', self.partner_id.id)])
+                            lines = related_documents.invoice_line_ids
+                            taxes_ids = related_documents.invoice_line_ids.invoice_line_tax_ids
+                            taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == 'purchase')
+                            taxes_by_document = []
+                            for tax in taxes_ids:
+                                taxes_by_document.append((tax, lines.filtered(lambda line: tax in line.tax_ids)))
+                            if len(taxes_by_document) != 0:
+                                taxes_found[(taxes, taxes_type)] = max(taxes_by_document, key=lambda tax: len(tax[1]))[0].id
                                 keys.append(taxes_found[(taxes, taxes_type)])
+                            else:
+                                taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
+                                if taxes_record:
+                                    taxes_found[(taxes, taxes_type)] = taxes_record.id
+                                    keys.append(taxes_found[(taxes, taxes_type)])
                         else:
                             keys.append(taxes_found[(taxes, taxes_type)])
 
@@ -533,14 +544,28 @@ class AccountInvoice(models.Model):
                             else:
                                 vals['invoice_line_tax_ids'].append((4, taxes_found[(taxes, taxes_type)]))
                         else:
-                            taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
-                            if taxes_record:
-                                taxes_found[(taxes, taxes_type)] = taxes_record.id
+                            related_documents = self.env['account.invoice'].search([('state', '!=', 'draft'), ('type', '=', self.type), ('partner_id', '=', self.partner_id.id)])
+                            lines = related_documents.invoice_line_ids
+                            taxes_ids = related_documents.invoice_line_ids.invoice_line_tax_ids
+                            taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == 'purchase')
+                            taxes_by_document = []
+                            for tax in taxes_ids:
+                                taxes_by_document.append((tax, lines.filtered(lambda line: tax in line.tax_ids)))
+                            if len(taxes_by_document) != 0:
+                                taxes_found[(taxes, taxes_type)] = max(taxes_by_document, key=lambda tax: len(tax[1]))[0].id
                                 if 'invoice_line_tax_ids' not in vals:
-                                    vals['invoice_line_tax_ids'] = [(4, taxes_record.id)]
+                                    vals['invoice_line_tax_ids'] = [(4, taxes_found[(taxes, taxes_type)])]
                                 else:
-                                    vals['invoice_line_tax_ids'].append((4, taxes_record.id))
-
+                                    vals['invoice_line_tax_ids'].append((4, taxes_found[(taxes, taxes_type)]))
+                            else:
+                                taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
+                                if taxes_record:
+                                    taxes_found[(taxes, taxes_type)] = taxes_record.id
+                                    if 'invoice_line_tax_ids' not in vals:
+                                        vals['invoice_line_tax_ids'] = [(4, taxes_record.id)]
+                                    else:
+                                        vals['invoice_line_tax_ids'].append((4, taxes_record.id))
+                
                 invoice_lines_to_create.append(vals)
 
         invoice_lines = self.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create(invoice_lines_to_create)

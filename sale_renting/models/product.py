@@ -14,6 +14,9 @@ class ProductTemplate(models.Model):
     rental_pricing_ids = fields.One2many(
         'rental.pricing', 'product_template_id',
         string="Rental Pricings", auto_join=True, copy=True)
+    display_price = fields.Char(
+        "Rental price", help="First rental pricing of the product",
+        compute="_compute_display_price")
 
     # Delays pricing
 
@@ -26,6 +29,15 @@ class ProductTemplate(models.Model):
         not_rentable.update({'qty_in_rent': 0.0})
         for template in rentable:
             template.qty_in_rent = sum(template.mapped('product_variant_ids.qty_in_rent'))
+
+    def _compute_display_price(self):
+        rentable_products = self.filtered('rent_ok')
+        rental_priced_products = rentable_products.filtered('rental_pricing_ids')
+        (self - rentable_products).display_price = ""
+        (rentable_products - rental_priced_products).display_price = _("Fallback on Sales price")
+        # No rental pricing defined, fallback on list price
+        for product in rental_priced_products:
+            product.display_price = product.rental_pricing_ids[0].display_name
 
     def action_view_rentals(self):
         """Access Gantt view of rentals (sale.rental.schedule), filtered on variants of the current template."""

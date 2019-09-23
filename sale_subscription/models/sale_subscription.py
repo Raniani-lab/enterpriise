@@ -1190,11 +1190,11 @@ class SaleSubscriptionAlert(models.Model):
         self.filtered(lambda alert: alert.action != 'next_activity' and alert.child_ids).unlink()
         for alert in self:
             if alert.action == 'set_tag' and alert.tag_id:
-                alert.set_field_action('tag_ids', alert.tag_id.id)
+                alert._set_field_action('tag_ids', alert.tag_id.id)
             elif alert.action == 'set_stage' and alert.stage_id:
-                alert.set_field_action('stage_id', alert.stage_id.id)
+                alert._set_field_action('stage_id', alert.stage_id.id)
             elif alert.action == 'set_to_renew':
-                alert.set_field_action('to_renew', True)
+                alert._set_field_action('to_renew', True)
             elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
                 alert.set_activity_action()
             elif vals.get('action') in ('email', 'sms'):
@@ -1231,8 +1231,8 @@ class SaleSubscriptionAlert(models.Model):
             'context': {'create': False},
         }
 
-    def set_field_action(self, field_name, value):
-        for alert in self:
+    def _set_field_action(self, field_name, value):
+        for alert in self.sudo():  # Require sudo to write on ir.actions.server fields
             tag_field = self.env['ir.model.fields'].search([('model', '=', alert.model_name), ('name', '=', field_name)])
             super(SaleSubscriptionAlert, alert).write({
                 'state': 'object_write',

@@ -445,7 +445,8 @@
                                     <field name="partner_id"/>
                                 </div>
                                 <div t-if="record.sla_fail.raw_value"> <!-- here  -->
-                                <t t-if="new Date(record.sla_deadline.raw_value) &lt; (new Date())" t-set="red">oe_kanban_text_red</t>
+                                <t t-if="new Date(record.sla_deadline.raw_value) &lt; (new Date())"
+                                    t-set="red" t-value="'oe_kanban_text_red'" />
                                     <span class="fa fa-clock-o" title="Deadline" role="img" aria-label="Deadline"/> <span t-attf-class="#{red}"><i><field name="sla_deadline"/></i></span>
                                 </div>
                                 <div class="o_kanban_record_bottom">

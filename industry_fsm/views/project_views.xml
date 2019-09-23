@@ -505,8 +505,10 @@
                 <!-- color of the span -->
                 <t t-if="record.is_fsm.raw_value" t-set="date" t-value="" />
                 <t t-if="record.is_fsm.raw_value" t-set="deadline_class" t-value="" />
-                <t t-if="record.is_fsm.raw_value and !record.fsm_done.raw_value and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().startOf('day')" t-set="deadline_class">oe_kanban_text_red</t>
-                <t t-elif="record.is_fsm.raw_value and !record.fsm_done.raw_value and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().endOf('day')" t-set="deadline_class">text-warning font-weight-bold</t>
+                <t t-if="record.is_fsm.raw_value and !record.fsm_done.raw_value and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().startOf('day')"
+                    t-set="deadline_class" t-value="'oe_kanban_text_red'" />
+                <t t-elif="record.is_fsm.raw_value and !record.fsm_done.raw_value and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().endOf('day')"
+                    t-set="deadline_class" t-value="'text-warning font-weight-bold'" />
                 <!-- field -->
                 <t t-if="record.is_fsm.raw_value and record.planned_date_begin.raw_value" t-set="date" t-value="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)" />
             </xpath>
@@ -537,7 +539,7 @@
         <field name="inherit_id" ref="project.view_task_kanban"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <xpath expr="//kanban" position="attributes">
+            <xpath expr="//kanban" position="attributes" t-translation="off">
                 <attribute name="default_order">planned_date_begin</attribute>
                 <attribute name="default_group_by">planned_date_begin:day</attribute>
                 <attribute name="class">o_fsm_kanban</attribute>
@@ -551,7 +553,8 @@
                 <!-- in fsm, use only red color when displaying date as hours -->
                 <!-- also take into account the time instead of the day if we display hours -->
                 <t t-if="!context.fsm_task_kanban_whole_date" t-set="deadline_class"></t>
-                <t t-if="!context.fsm_task_kanban_whole_date and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()) lt moment()" t-set="deadline_class">oe_kanban_text_red</t>
+                <t t-if="!context.fsm_task_kanban_whole_date and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()) lt moment()"
+                    t-set="deadline_class" t-value="'oe_kanban_text_red'" />
             </xpath>
             <xpath expr="//t[@t-set='date_format']" position="after">
                 <!-- force date formatting to hours in fsm, wether we show deadline or planned_date_begin -->

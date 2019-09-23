@@ -681,7 +681,6 @@ class AccountAsset(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            original_move_line_ids = 'original_move_line_ids' in vals and self.resolve_2many_commands('original_move_line_ids', vals['original_move_line_ids'], ['date'])
             if 'state' in vals and vals['state'] != 'draft' and not (set(vals) - set({'account_depreciation_id', 'account_depreciation_expense_id', 'journal_id'})):
                 raise UserError(_("Some required values are missing"))
             if self._context.get('import_file', False) and 'category_id' in vals:

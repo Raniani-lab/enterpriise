@@ -12,5 +12,3 @@ class ResConfigSettings(models.TransientModel):
 
     planning_allow_self_unassign = fields.Boolean("Allow Unassignment", default=False, readonly=False,
         related="company_id.planning_allow_self_unassign", help="Let your employees un-assign themselves from shifts when unavailable")
-
-    module_project_forecast = fields.Boolean("Manage Project Structure")

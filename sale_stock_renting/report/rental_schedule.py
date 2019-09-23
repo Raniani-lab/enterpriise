@@ -14,7 +14,7 @@ class RentalSchedule(models.Model):
         return """COALESCE(lot_info.name, t.name) as product_name,"""
 
     def _id(self):
-        return """COALESCE(lot_info.lot_id, sol.id) as id,"""
+        return """CONCAT(lot_info.lot_id, pdg.max_id, sol.id) as id,"""
 
     def _quantity(self):
         return """
@@ -57,7 +57,13 @@ class RentalSchedule(models.Model):
                     WHERE
                         lot.id = res.stock_production_lot_id
                         OR lot.id = pickedup.stock_production_lot_id
-                )
+                ),
+                sol_id_max (id) AS
+                    (SELECT MAX(id) FROM sale_order),
+                lot_id_max (id) AS
+                    (SELECT MAX(id) FROM stock_production_lot),
+                padding (max_id) AS
+                    (SELECT CASE when lot_id_max > sol_id_max then lot_id_max ELSE sol_id_max END as max_id from lot_id_max, sol_id_max)
         """
 
     def _select(self):
@@ -68,11 +74,13 @@ class RentalSchedule(models.Model):
 
     def _from(self):
         return super(RentalSchedule, self)._from() + """
-            LEFT OUTER JOIN ordered_lots lot_info ON sol.id=lot_info.sol_id
+            LEFT OUTER JOIN ordered_lots lot_info ON sol.id=lot_info.sol_id,
+            padding pdg
         """
 
     def _groupby(self):
         return super(RentalSchedule, self)._groupby() + """,
+            pdg.max_id,
             lot_info.lot_id,
             lot_info.name,
             lot_info.report_line_status"""

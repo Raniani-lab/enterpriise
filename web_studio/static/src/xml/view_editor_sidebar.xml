@@ -72,6 +72,55 @@
                     </select>
                 </div>
             </t>
+            <!-- Map view settings -->
+            <t t-if="widget.view_type === 'map'">
+                <div class="o_web_studio_sidebar_select">
+                    <label for="res_partner">Contact Field</label>
+                    <select id="res_partner" name="res_partner">
+                        <option></option>
+                        <option t-if="widget.model_name === 'res.partner'" t-att-selected="widget.state.attrs.res_partner ===  'id' ? 'selected' : undefined" value="id">
+                            ID <span t-if="widget.debug">(id)</span>
+                        </option>
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.type === 'many2one' and field.relation === 'res.partner'" t-att-selected="widget.state.attrs.res_partner ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                            <t t-esc="field.string" /> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
+                        </option>
+                    </select>
+                </div>
+                <div class="o_web_studio_sidebar_checkbox">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" id="hide_name" name="hide_name" class="custom-control-input" data-leave-empty='unchecked'
+                            t-att-checked="widget.state.attrs.hide_name ? 'checked' : undefined"/>
+                        <label for="hide_name" class="custom-control-label">Hide Name</label>
+                    </div>
+                </div>
+                <div class="o_web_studio_sidebar_checkbox">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" id="hide_address" name="hide_address" class="custom-control-input" data-leave-empty='unchecked'
+                            t-att-checked="widget.state.attrs.hide_address ? 'checked' : undefined"/>
+                        <label for="hide_address" class="custom-control-label">Hide Address</label>
+                    </div>
+                </div>
+                <div class="o_web_studio_sidebar_tags">
+                    <label for="map_popup_fields">Additional Fields</label>
+                    <div class="o_map_popup_fields"/>
+                </div>
+                <div class="o_web_studio_sidebar_checkbox">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" id="routing" name="routing" class="custom-control-input" data-leave-empty='unchecked'
+                            t-att-checked="widget.state.attrs.routing ? 'checked' : undefined"/>
+                        <label for="routing" class="custom-control-label">Enable Routing</label>
+                    </div>
+                </div>
+                <div class="o_web_studio_sidebar_select mt-0" t-if="widget.state.attrs.routing">
+                    <label for="default_order">Sort by</label>
+                    <select id="default_order" name="default_order">
+                        <option></option>
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and !_.contains(['one2many', 'many2many', 'binary'], field.type)" t-att-selected="widget.state.attrs.default_order ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                            <t t-esc="field.string" /> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
+                        </option>
+                    </select>
+                </div>
+            </t>
             <!-- Calendar view settings -->
             <t t-if="widget.view_type === 'calendar'">
                 <div class="o_web_studio_sidebar_checkbox">

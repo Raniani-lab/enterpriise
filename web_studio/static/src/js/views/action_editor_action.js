@@ -10,6 +10,7 @@ var session = require('web.session');
 var ActionEditor = require('web_studio.ActionEditor');
 var bus = require('web_studio.bus');
 var NewViewDialog = require('web_studio.NewViewDialog');
+var MapViewDialog = require('web_studio.MapViewDialog');
 var ViewEditorManager = require('web_studio.ViewEditorManager');
 
 var _t = core._t;
@@ -150,6 +151,8 @@ var ActionEditorAction = AbstractAction.extend({
                             params.mandatory_stop_date = true;
                         }
                         new NewViewDialog(self, params).open();
+                    } else if (view_type === 'map') {
+                        new MapViewDialog(self, params).open();
                     } else {
                         var message = result;
                         if (!message) {

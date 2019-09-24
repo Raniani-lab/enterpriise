@@ -312,6 +312,23 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     },
     /**
      * @private
+     * @param {OdooEvent} ev
+     * @param {Object} oldMapPopupField
+     */
+    _changeMapPopupFields: function (ev, oldMapPopupField) {
+        const options = {structure: 'map_popup'};
+        if (ev.data.changes.map_popup.operation === 'ADD_M2M') {
+            const ids = ev.data.changes.map_popup.ids;
+            options.type = 'add';
+            options.field_ids = Array.isArray(ids) ? ids.map(i => i.id) : [ids.id];
+        } else {
+            options.type = 'remove';
+            options.field_ids = [oldMapPopupField.data.find(i => i.id === ev.data.changes.map_popup.ids[0]).res_id];
+        }
+        this.trigger_up('view_change', options);
+    },
+    /**
+     * @private
      */
     _computeFieldAttrs: function () {
         /* Compute field attributes.
@@ -408,6 +425,9 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             if (this.$('.o_groups').length) {
                 return this._renderWidgetsM2MGroups();
             }
+        }
+        if (this.view_type === 'map' && this.$('.o_map_popup_fields').length) {
+            return this._renderWidgetsMapPopupFields();
         }
     },
     /**
@@ -527,6 +547,40 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             var many2many = new Many2ManyTags(self, 'groups', record, options);
             self._registerWidget(self.groupsHandle, 'groups', many2many);
             return many2many.appendTo(self.$('.o_groups'));
+        });
+    },
+    /**
+     * @private
+     * @returns {Promise}
+     */
+    _renderWidgetsMapPopupFields: function () {
+        const fieldIDs = JSON.parse(this.state.attrs.studio_map_field_ids || '[]');
+        return this.model.makeRecord('ir.model', [{
+            name: 'map_popup',
+            fields: [{
+                name: 'id',
+                type: 'integer',
+            }, {
+                name: 'display_name',
+                type: 'char',
+            }],
+            domain: [
+                ['model', '=', this.model_name],
+                ['ttype', 'not in', ['many2many', 'one2many', 'binary']]
+            ],
+            relation: 'ir.model.fields',
+            type: 'many2many',
+            value: fieldIDs,
+        }], {
+            map_popup: {
+                can_create: false
+            },
+        }).then(recordID => {
+            this.mapPopupFieldHandle = recordID;
+            const record = this.model.get(this.mapPopupFieldHandle);
+            const many2many = new Many2ManyTags(this, 'map_popup', record, {mode: 'edit'});
+            this._registerWidget(this.mapPopupFieldHandle, 'map_popup', many2many);
+            return many2many.appendTo(this.$('.o_map_popup_fields'));
         });
     },
 
@@ -721,12 +775,17 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         }
     },
     /**
+     * @override
      * @private
      */
-    _onFieldChanged: function () {
-        var self = this;
-        return StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments).then(function () {
-            self._changeFieldGroup();
+    _onFieldChanged: function (ev) {
+        const oldMapPopupField = this.mapPopupFieldHandle && this.model.get(this.mapPopupFieldHandle).data.map_popup;
+        return StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments).then(() => {
+            if (ev.data.changes.map_popup) {
+                this._changeMapPopupFields(ev, oldMapPopupField);
+            } else {
+                this._changeFieldGroup();
+            }
         });
     },
     /**
@@ -923,7 +982,20 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                     precision: JSON.stringify(newPrecision),
                 },
             });
-
+        } else if (this.view_type === 'map' && attribute === 'routing') {
+            // Remove Sort By(default_order) value when routing is disabled
+            const newAttrs = {};
+            if ($input.is(':checked')) {
+                newAttrs[attribute] = $input.data('leave-empty') === 'checked' ? '' : 'true';
+            } else {
+                newAttrs[attribute] = $input.data('leave-empty') === 'unchecked' ? '' : 'false';
+                newAttrs['default_order'] = '';
+            }
+            this.trigger_up('view_change', {
+                type: 'attributes',
+                structure: 'view_attribute',
+                new_attrs: newAttrs,
+            });
         } else if (attribute) {
             var new_attrs = {};
             if ($input.attr('type') === 'checkbox') {

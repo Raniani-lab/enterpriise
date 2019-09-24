@@ -2,6 +2,9 @@
     xmlns:rng="http://relaxng.org/ns/structure/1.0">
     <define name="map">
         <element name="map">
+            <optional>
+                <attribute name="string"/>
+            </optional>
             <choice>
                 <attribute name="res_partner"/>
                 <empty/>

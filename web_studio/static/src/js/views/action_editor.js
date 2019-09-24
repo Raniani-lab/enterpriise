@@ -17,6 +17,7 @@ var ActionEditor = Widget.extend({
         'activity',
         'list',
         'kanban',
+        'map',
         'graph',
         'pivot',
         'calendar',
@@ -115,6 +116,9 @@ var ActionEditor = Widget.extend({
                 category = 'multiple';
                 break;
             case 'kanban':
+                category = 'multiple';
+                break;
+            case 'map':
                 category = 'multiple';
                 break;
             case 'graph':

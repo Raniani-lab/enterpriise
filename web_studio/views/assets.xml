@@ -59,6 +59,7 @@
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_components.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editor_manager.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editor_sidebar.js"></script>
+        <script type="text/javascript" src="/web_studio/static/src/js/views/map_view_dialog.js"></script>
 
         <script type="text/javascript" src="/web_studio/static/src/js/views/renderers/search_renderer.js"></script>
 

@@ -45,6 +45,8 @@ class ProjectWorksheetTemplate(models.Model):
         # while creating model it will initialize the init_models method from create of ir.model
         # and there is related field of model_id in mail template so it's going to recusrive loop while recompute so used flush
         self.flush()
+
+        # generate the ir.model (and so the SQL table)
         model = self.env['ir.model'].sudo().create({
             'name': template.name,
             'model': name,
@@ -69,6 +71,7 @@ class ProjectWorksheetTemplate(models.Model):
                 }),
             ]
         })
+        # create access rights and rules
         self.env['ir.model.access'].sudo().create({
             'name': name + '_access',
             'model_id': model.id,
@@ -99,9 +102,12 @@ class ProjectWorksheetTemplate(models.Model):
             'domain_force': [(1, '=', 1)],
             'groups': [(6, 0, [self.env.ref('project.group_project_manager').id])]
         })
+        # make the name field related to the task, so we keep consistence with task name
         x_name_field = self.env['ir.model.fields'].search([('model_id', '=', model.id), ('name', '=', 'x_name')])
         x_name_field.sudo().write({'related': 'x_task_id.name'})  # possible only after target field have been created
-        self.env['ir.ui.view'].sudo().create({
+
+        # create the view to extend by 'studio' and add the user custom fields
+        form_view = self.env['ir.ui.view'].sudo().create({
             'type': 'form',
             'model': model.model,
             'arch': """
@@ -133,15 +139,35 @@ class ProjectWorksheetTemplate(models.Model):
                 'duplicate': False,
             }
         })
-        # generate an xmlid for the action, studio requires it to activate the studio
-        # systray item
-        self.env['ir.model.data'].sudo().create({
+
+        # generate xml ids for some records: views, actions and models. This will let the ORM handle the module uninstallation (removing all data belonging
+        # to the module using their xml ids).
+        # NOTE: this is not needed for ir.model.fields, ir.model.access and ir.rule, as they are in delete 'cascade' mode, so their databse entries will removed
+        # (no need their xml id).
+        action_xmlid_values = {
             'name': 'template_action_' + "_".join(template.name.split(' ')),
             'model': 'ir.actions.act_window',
             'module': 'industry_fsm_report',
             'res_id': action.id,
             'noupdate': True,
-        })
+        }
+        model_xmlid_values = {
+            'name': 'model_x_custom_worksheet_' + "_".join(model.model.split('.')),
+            'model': 'ir.model',
+            'module': 'industry_fsm_report',
+            'res_id': model.id,
+            'noupdate': True,
+        }
+        view_xmlid_values = {
+            'name': 'form_view_custom_' + "_".join(model.model.split('.')),
+            'model': 'ir.ui.view',
+            'module': 'industry_fsm_report',
+            'res_id': form_view.id,
+            'noupdate': True,
+        }
+        self.env['ir.model.data'].sudo().create([action_xmlid_values, model_xmlid_values, view_xmlid_values])
+
+        # link the worksheet template to its generated model and action
         template.write({
             'action_id': action.id,
             'model_id': model.id,
@@ -151,14 +177,20 @@ class ProjectWorksheetTemplate(models.Model):
         return template
 
     def unlink(self):
+        # When uninstalling module, let the ORM take care of everything. As the xml ids are correctly generated, all data will
+        # be properly removed.
+        if self.env.context.get(MODULE_UNINSTALL_FLAG):
+            return super(ProjectWorksheetTemplate, self).unlink()
+
+        # When manual deletion of worksheet, we need to handle explicitly the removal of depending data
         models_ids = self.mapped('model_id.id')
-        self.env['ir.ui.view'].search([('model', 'in', self.mapped('model_id.model'))]).unlink()
+        self.env['ir.ui.view'].search([('model', 'in', self.mapped('model_id.model'))]).unlink()  # backednd views (form, pivot, ...)
+        self.mapped('report_view_id').unlink()  # qweb templates
         self.env['ir.model.access'].search([('model_id', 'in', models_ids)]).unlink()
         x_name_fields = self.env['ir.model.fields'].search([('model_id', 'in', models_ids), ('name', '=', 'x_name')])
         x_name_fields.write({'related': False})  # we need to manually remove relation to allow the deletion of fields
         self.env['ir.rule'].search([('model_id', 'in', models_ids)]).unlink()
         self.mapped('action_id').unlink()
-
         # context needed to avoid "manual" removal of related fields
         self.mapped('model_id').with_context(**{MODULE_UNINSTALL_FLAG: True}).unlink()
 
@@ -275,7 +307,7 @@ class ProjectWorksheetTemplate(models.Model):
 
     def _generate_qweb_report_template(self):
         for worksheet_template in self:
-            report_name = ('%s_%s') % (worksheet_template.model_id.model.replace('.', '_'), str(time.time()))
+            report_name = ('%s_%s') % (worksheet_template.model_id.model.replace('.', '_'), str(int(time.time())))
             new_arch = self._get_qweb_arch(worksheet_template.model_id, report_name)
             if worksheet_template.report_view_id:  # update existing one
                 worksheet_template.report_view_id.write({'arch': new_arch})

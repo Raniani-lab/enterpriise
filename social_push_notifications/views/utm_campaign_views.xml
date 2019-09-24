@@ -6,8 +6,7 @@
         <field name="inherit_id" ref="utm.utm_campaign_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="action_send_push_notification" type="object" class="oe_highlight order-3" string="Send Push Notification"
-                    attrs="{'invisible': [('id', '=', False)]}" />
+                <button name="action_send_push_notification" type="object" class="oe_highlight order-3" string="Push Notification"/>
             </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <button name="action_redirect_to_push_notifications"

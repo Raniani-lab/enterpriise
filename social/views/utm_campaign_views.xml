@@ -9,8 +9,7 @@
                 <button name="action_create_new_post"
                         type="object"
                         class="oe_highlight order-2"
-                        string="Send Post"
-                        attrs="{'invisible': [('id', '=', False)]}" />
+                        string="Send Social Post"/>
             </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <button name="action_redirect_to_social_media_posts"
@@ -48,7 +47,7 @@
     </record>
 
     <record id="action_view_utm_campaigns" model="ir.actions.act_window">
-        <field name="name">UTM Campaigns</field>
+        <field name="name">Campaigns</field>
         <field name="res_model">utm.campaign</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">

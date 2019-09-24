@@ -2,6 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
+from odoo.osv import expression
+
 
 class UtmCampaign(models.Model):
     _inherit = 'utm.campaign'
@@ -25,7 +27,7 @@ class UtmCampaign(models.Model):
 
     def _compute_social_push_notifications_count(self):
         push_notifications_data = self.env['social.post'].read_group(
-            [('utm_campaign_id', 'in', self.ids), ('media_ids.media_type', '!=', 'push_notifications')],
+            [('utm_campaign_id', 'in', self.ids), ('media_ids.media_type', '=', 'push_notifications')],
             ['utm_campaign_id'], ['utm_campaign_id'])
         mapped_data = {datum['utm_campaign_id'][0]: datum['utm_campaign_id_count'] for datum in push_notifications_data}
         for campaign in self:
@@ -54,5 +56,8 @@ class UtmCampaign(models.Model):
 
     def _get_campaign_social_posts_domain(self):
         domain = super(UtmCampaign, self)._get_campaign_social_posts_domain()
-        domain.append(('media_ids.media_type', '!=', 'push_notifications'))
-        return domain
+        return expression.AND([domain, [('media_ids.media_type', '!=', 'push_notifications')]])
+
+    def _get_social_media_accounts_domain(self):
+        domain = super(UtmCampaign, self)._get_social_media_accounts_domain()
+        return expression.AND([domain, [('media_type', '!=', 'push_notifications')]])

@@ -28,11 +28,14 @@ class Applicant(models.Model):
     @api.depends('source_id')
     def _compute_ref_user_id(self):
         for applicant in self:
-            applicant.ref_user_id = self.env['hr.employee'].search([('utm_source_id', '=', applicant.source_id.id)], limit=1).user_id
+            if applicant.source_id:
+                applicant.ref_user_id = self.env['res.users'].search([('utm_source_id', '=', applicant.source_id.id)], limit=1)
+            else:
+                applicant.ref_user_id = False
 
     def _inverse_ref_user_id(self):
         for applicant in self:
-            applicant.source_id = applicant.ref_user_id.employee_ids[0].utm_source_id if applicant.ref_user_id.employee_ids else False
+            applicant.source_id = applicant.ref_user_id.utm_source_id
 
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
@@ -99,8 +102,6 @@ class Applicant(models.Model):
         )
 
     def _update_points(self, new_state_id, old_state_id):
-        if not self.ref_user_id.employee_ids:
-            return
         if not self.company_id:
             raise UserError(_("Applicant must have a company."))
         new_state = self.env['hr.recruitment.stage'].browse(new_state_id)
@@ -158,7 +159,7 @@ class Applicant(models.Model):
         if not self.env.user:
             return
         if self_sudo.ref_user_id == self.env.user and not self_sudo.friend_id:
-            # Use sudo, employee has normaly not the right to write on applicant
+            # Use sudo, user has normaly not the right to write on applicant
             self_sudo.write({'friend_id': friend_id})
 
     def _get_onboarding_steps(self):
@@ -187,8 +188,6 @@ class Applicant(models.Model):
     @api.model
     def retrieve_referral_welcome_screen(self):
         result = {}
-        if not self.env.user.employee_ids:
-            raise UserError(_("You don't have access to this application as your user is not linked to an employee."))
         user_id = self.env.user
 
         result['id'] = user_id.id
@@ -239,9 +238,10 @@ class Applicant(models.Model):
             step_level = next_level['points'] - current_level['points']
             result['level_percentage'] = round((min(result['point_received'], next_level['points']) - current_level['points']) * 100 / step_level)
 
+        applicant = self.search([('ref_user_id', '=', user_id.id)])
         result['referral'] = {
             'all': len(applicant),
-            'hired': len(applicants_hired),
+            'hired': len(applicant.filtered(lambda r: r.referral_state == 'hired')),
             'progress': len(applicant.filtered(lambda r: r.referral_state == 'progress')),
         }
 

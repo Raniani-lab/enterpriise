@@ -11,7 +11,7 @@
                 <filter domain="[('hr_referral_reward_id', '!=', False)]" string="Gifts" name="filter_gifts"/>
                 <filter domain="[('hr_referral_reward_id', '=', False)]" string="Points" name="filter_points"/>
                 <group expand="1" string="Group By">
-                    <filter string="Employee" name="group_by_employee_id" context="{'group_by':'ref_user_id'}"/>
+                    <filter string="User" name="group_by_user_id" context="{'group_by':'ref_user_id'}"/>
                     <filter string="Referral" name="group_by_applicant_id" context="{'group_by':'applicant_id'}"/>
                 </group>
             </search>
@@ -76,7 +76,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="view_hr_referral_points_tree"/>
         <field name="groups_id" eval="[(4, ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
-        <field name="context">{'search_default_group_by_employee_id': 1}</field>
+        <field name="context">{'search_default_group_by_user_id': 1}</field>
     </record>
 
     <record id="action_hr_referral_welcome_screen" model="ir.actions.client">

@@ -5,8 +5,6 @@ import logging
 
 from odoo import api, fields, models
 
-_logger = logging.getLogger(__name__)
-
 
 class ResUsers(models.Model):
     _inherit = 'res.users'
@@ -14,6 +12,7 @@ class ResUsers(models.Model):
     hr_referral_level_id = fields.Many2one('hr.referral.level', groups="hr.group_hr_user")
     hr_referral_onboarding_page = fields.Boolean(default=False, groups="hr.group_hr_user")
     referral_point_ids = fields.One2many('hr.referral.points', 'ref_user_id')
+    utm_source_id = fields.Many2one('utm.source', 'Source', ondelete='cascade', groups="hr.group_hr_user")
 
     @api.model
     def action_complete_onboarding(self, complete):

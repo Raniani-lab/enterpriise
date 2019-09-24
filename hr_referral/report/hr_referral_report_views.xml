@@ -14,7 +14,7 @@
                                 <aggregate name="applicant_id" string="Applicant Referred" field="applicant_id"/>
                                 <aggregate name="employee_referral_hired" string="Applicant Referred Hired" field="employee_referral_hired"/>
                                 <aggregate name="employee_referral_refused" string="Applicant Referred Refused" field="employee_referral_refused"/>
-                                <aggregate name="ref_user_id" string="Employees Referrer" field="ref_user_id"/>
+                                <aggregate name="ref_user_id" string="Users Referrer" field="ref_user_id"/>
                             </group>
                             <group>
                                 <aggregate name="earned_points" string="Earned Points" field="earned_points"/>

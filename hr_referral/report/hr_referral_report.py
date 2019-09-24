@@ -17,7 +17,7 @@ class HrReferralReport(models.Model):
     applicant_id = fields.Many2one('hr.applicant', readonly=True)
     employee_referral_hired = fields.Integer('Employee Referral Hired', readonly=True)
     employee_referral_refused = fields.Integer('Employee Referral Refused', readonly=True)
-    ref_user_id = fields.Many2one('hr.employee', readonly=True)
+    ref_user_id = fields.Many2one('res.users', 'User', readonly=True)
     job_id = fields.Many2one('hr.job', readonly=True)
     department_id = fields.Many2one('hr.department', readonly=True)
     medium_id = fields.Many2one('utm.medium', readonly=True)

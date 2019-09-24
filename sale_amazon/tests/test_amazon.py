@@ -462,14 +462,16 @@ class TestAmazon(TransactionCase):
 
     def test_get_partners_no_creation_same_partners(self):
         """ Test the partners search with contact as delivery. """
+        country_id = self.env['res.country'].search([('code', '=', 'US')], limit=1).id
         self.env['res.partner'].create({
             'name': 'Gederic Frilson',
             'is_company': True,
             'street': '123 RainBowMan Street',
             'zip': '12345-1234',
             'city': 'OdooCity',
-            'country_id': self.env['res.country'].search([('code', '=', 'US')], limit=1).id,
-            'state_id': self.env['res.country.state'].search([('code', '=', 'CA')], limit=1).id,
+            'country_id': country_id,
+            'state_id': self.env['res.country.state'].search(
+                [('country_id', '=', country_id), ('code', '=', 'CA')], limit=1).id,
             'phone': '+1 234-567-8910 ext. 12345',
             'company_id': self.account.company_id.id,
             'amazon_email': 'iliketurtles@marketplace.amazon.com',
@@ -483,13 +485,15 @@ class TestAmazon(TransactionCase):
 
     def test_get_partners_no_creation_different_partners(self):
         """ Test the partners search with different partners for contact and delivery. """
+        country_id = self.env['res.country'].search([('code', '=', 'US')], limit=1).id
         new_partner_vals = {
             'is_company': True,
             'street': '123 RainBowMan Street',
             'zip': '12345-1234',
             'city': 'OdooCity',
-            'country_id': self.env['res.country'].search([('code', '=', 'US')], limit=1).id,
-            'state_id': self.env['res.country.state'].search([('code', '=', 'CA')], limit=1).id,
+            'country_id': country_id,
+            'state_id': self.env['res.country.state'].search(
+                [('country_id', '=', country_id), ('code', '=', 'CA')], limit=1).id,
             'phone': '+1 234-567-8910 ext. 12345',
             'company_id': self.account.company_id.id,
             'amazon_email': 'iliketurtles@marketplace.amazon.com',

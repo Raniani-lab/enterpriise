@@ -299,7 +299,7 @@ var GanttRenderer = AbstractRenderer.extend({
                 scales: self.SCALES,
                 unavailabilities: row.unavailabilities,
             };
-            if (self.thumbnails && row.groupedByField && (!params.consolidate) && row.groupedByField in self.thumbnails){
+            if (self.thumbnails && row.groupedByField && row.groupedByField in self.thumbnails){
                 params.thumbnail = {model: self.fieldsInfo[row.groupedByField].relation, field: self.thumbnails[row.groupedByField],};
             }
             rowWidgets.push(self._renderRow(pillsInfo, params));

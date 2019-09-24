@@ -7,6 +7,7 @@ var dom = require('web.dom');
 var emojis = require('mail.emojis');
 var PostKanbanImagesCarousel = require('social.social_post_kanban_images_carousel');
 var SocialEmojisMixin = require('social.emoji_mixin');
+var SocialStreamPostFormatterMixin = require('social.stream_post_formatter_mixin');
 var time = require('web.time');
 
 
@@ -14,7 +15,6 @@ var _t = core._t;
 var FieldBinaryImage = BasicFields.FieldBinaryImage;
 var QWeb = core.qweb;
 
-var DATE_FORMAT = time.getLangDateFormat();
 var DATE_TIME_FORMAT = time.getLangDatetimeFormat();
 
 
@@ -41,7 +41,7 @@ var StreamPostCommentDelete = require('social.social_post_kanban_comments_delete
  * - The comment link (getCommentLink)
  * - ...
  */
-var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
+var StreamPostComments = Dialog.extend(SocialEmojisMixin, SocialStreamPostFormatterMixin, {
     template: 'social.StreamPostComments',
     events: {
         'keydown .o_social_add_comment': '_onAddComment',
@@ -97,6 +97,10 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
     },
 
     getCommentLink: function (comment) {
+        return "";
+    },
+
+    getAuthorLink: function (comment) {
         return "";
     },
 
@@ -464,8 +468,17 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
         return $.ajax(endpoint, params);
     },
 
-    _htmlEscape: function (message) {
-        return QWeb.tools.html_escape(message);
+    /**
+     * Adapted from qweb2.js#html_escape to avoid formatting '&'
+     *
+     * @param {String} s
+     * @private
+     */
+    _htmlEscape: function (s) {
+        if (s == null) {
+            return '';
+        }
+        return String(s).replace(/</g, '&lt;').replace(/>/g, '&gt;');
     },
 
     /**
@@ -534,12 +547,22 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
         }
     },
 
-    _formatDate: function (date) {
-        return moment(date).format(DATE_FORMAT);
-    },
-
     _formatDateTime: function (date) {
         return moment(date).format(DATE_TIME_FORMAT);
+    },
+
+    /**
+     * We want both emojis capabilities of _formatText
+     * and various wrapping of _formatStreamPost
+     *
+     * @param {String} message
+     * @private
+     */
+    _formatCommentStreamPost: function (message) {
+        var formattedMessage = message;
+        formattedMessage = this._formatText(formattedMessage);
+        formattedMessage = this._formatStreamPost(formattedMessage);
+        return formattedMessage;
     },
 
     _getTargetTextArea($emoji) {

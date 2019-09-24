@@ -20,8 +20,15 @@
     }
 }
 
-.o_social_comments_modal .o_social_facebook_radius {
-    border-radius: 16px;
+.o_social_comments_modal_facebook {
+    a:not(.btn-outline-secondary):not(.o_social_comment_published_date):not(.o_social_post_published_date) {
+        color: #385898;
+
+        @include hover-focus () {
+            color: #385898;
+            text-decoration: underline;
+        }
+    }
 }
 
 .o_social_stream_post_facebook_stats {

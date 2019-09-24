@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
+    <!-- Enable "Bubble Design" in comments' modal to emulate Facebbok  -->
+    <t t-name="social.StreamPostComment" t-extend="social.StreamPostComment">
+        <t t-jquery="t[t-set='bubble_design']" t-operation="replace">
+             <t t-set="bubble_design" t-value="true" t-if="widget.options.originalPost.mediaType === 'facebook'"/>
+        </t>
+    </t>
+    <t t-name="social.StreamPostComments" t-extend="social.StreamPostComments">
+        <t t-jquery="t[t-set='bubble_design']" t-operation="replace">
+             <t t-set="bubble_design" t-value="true" t-if="widget.options.originalPost.mediaType === 'facebook'"/>
+        </t>
+    </t>
+
     <t t-name="social.StreamPostCommentsOriginalPost" t-extend="social.StreamPostCommentsOriginalPost">
         <t t-jquery="span.o_social_original_post_author_image" t-operation="append">
             <img t-if="originalPost.facebookAuthorId" t-attf-src="https://graph.facebook.com/v3.3/#{originalPost.facebookAuthorId}/picture" alt="Author Image"/>

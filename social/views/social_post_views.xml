@@ -187,15 +187,16 @@
                     <group>
                         <group string="Your Post" name="social_post_global">
                             <field name="has_active_accounts" invisible="1" />
-                            <field name="account_ids" options="{'no_create': True}" string="Accounts" widget="many2many_checkboxes"
+                            <field name="account_ids" options="{'no_create': True}" string="Post on" widget="many2many_checkboxes"
                                  attrs="{'invisible': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}" />
                             <div colspan="2" class="alert alert-info o_social_post_no_accounts_available" role="alert" attrs="{'invisible': [('has_active_accounts', '=', True)]}">
                                 <p><a href="/web#action=social.action_social_media">Link social accounts</a> before posting.</p>
                             </div>
                             <field name="message" widget="social_text_emojis"
-                                 attrs="{'readonly': [('has_active_accounts', '=', False)]}" />
+                                 attrs="{'readonly': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}" />
                             <field name="image_ids" widget="many2many_binary" />
-                            <field string="Campaign" name="utm_campaign_id"/>
+                            <field string="Campaign" name="utm_campaign_id"
+                                attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>
                             <field name="post_method" widget="radio" attrs="{'readonly': [('id', '!=', False)]}"/>
                             <field name="scheduled_date" attrs="{'invisible': [('post_method', '=', 'now')], 'required': [('post_method', '!=', 'now')]}" />
                         </group>

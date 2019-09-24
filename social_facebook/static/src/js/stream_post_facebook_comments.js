@@ -56,6 +56,10 @@ var StreamPostFacebookComments = StreamPostComments.extend({
         return _.str.sprintf("https://www.facebook.com/%s", comment.id);
     },
 
+    getAuthorLink: function (comment) {
+        return _.str.sprintf("https://www.facebook.com/%s", comment.from.id);
+    },
+
     isCommentEditable: function (comment) {
         return comment.from.id === this.pageFacebookId;
     },

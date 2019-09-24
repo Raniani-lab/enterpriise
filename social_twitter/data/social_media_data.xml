@@ -15,13 +15,13 @@
         </record>
 
         <record id="stream_type_twitter_follow" model="social.stream.type">
-            <field name="name">Follow</field>
+            <field name="name">Tweets of</field>
             <field name="stream_type">twitter_follow</field>
             <field name="media_id" ref="social_media_twitter"></field>
         </record>
 
         <record id="stream_type_twitter_likes" model="social.stream.type">
-            <field name="name">Favorites</field>
+            <field name="name">Favorites of</field>
             <field name="stream_type">twitter_likes</field>
             <field name="media_id" ref="social_media_twitter"></field>
         </record>

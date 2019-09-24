@@ -144,4 +144,5 @@ class SocialFacebookController(http.Controller):
         else:
             result = stream_post._add_facebook_comment(message, stream_post.facebook_post_id, existing_attachment_id, attachment)
 
+        result['formatted_created_time'] = request.env['social.stream.post']._format_facebook_published_date(result)
         return json.dumps(result)

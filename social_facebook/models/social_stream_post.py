@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import dateutil.parser
 import requests
 
-from odoo import models, fields
+from odoo import api, models, fields
 from werkzeug.urls import url_join
 
 
@@ -19,6 +20,13 @@ class SocialStreamPostFacebook(models.Model):
     facebook_comments_count = fields.Integer('Comments')
     facebook_shares_count = fields.Integer('Shares')
     facebook_reach = fields.Integer('Reach')
+
+    def _compute_author_link(self):
+        facebook_posts = self.filtered(lambda post: post.stream_id.media_id.media_type == 'facebook')
+        super(SocialStreamPostFacebook, (self - facebook_posts))._compute_author_link()
+
+        for post in facebook_posts:
+            post.author_link = 'https://www.facebook.com/%s' % post.facebook_author_id
 
     def _compute_post_link(self):
         facebook_posts = self.filtered(lambda post: post.stream_id.media_id.media_type == 'facebook')
@@ -44,11 +52,23 @@ class SocialStreamPostFacebook(models.Model):
         result = requests.get(comments_endpoint_url, params)
 
         result_json = result.json()
+        for comment in result_json.get('data'):
+            comment['formatted_created_time'] = self._format_facebook_published_date(comment)
+            inner_comments = comment.get('comments', {}).get('data', [])
+            for inner_comment in inner_comments:
+                inner_comment['formatted_created_time'] = self._format_facebook_published_date(inner_comment)
+
         return {
             'comments': result_json.get('data'),
             'summary': result_json.get('summary'),
             'nextRecordsToken': result_json.get('paging').get('cursors').get('after') if result_json.get('paging') else None
         }
+
+    @api.model
+    def _format_facebook_published_date(self, comment):
+        return self.env['social.stream.post']._format_published_date(fields.Datetime.from_string(
+            dateutil.parser.parse(comment.get('created_time')).strftime('%Y-%m-%d %H:%M:%S')
+        ))
 
     def like_facebook_post(self, like):
         self.ensure_one()

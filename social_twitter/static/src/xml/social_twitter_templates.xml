@@ -5,7 +5,9 @@
             t-attf-class="dropdown-item o_social_twitter_users_autocomplete_suggestion clearfix#{suggestion_index == 0 and ' active' or ''}">
             <img t-att-src="suggestion['profile_image_url_https']" alt="Twiter Profile Image"/>
             <div class="o_twitter_users_autocomplete_info">
-                <span t-esc="suggestion['name']" class="o_twitter_users_autocomplete_info_name"><strong /></span>
+                <strong><span class="o_twitter_users_autocomplete_info_name">
+                    <t t-esc="suggestion['name']" /> - @<t t-esc="suggestion['screen_name']" />
+                </span></strong>
                 <br/>
                 <span><small t-esc="suggestion['description']" /></span>
             </div>

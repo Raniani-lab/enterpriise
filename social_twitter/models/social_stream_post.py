@@ -19,6 +19,13 @@ class SocialStreamPostTwitter(models.Model):
     twitter_comments_count = fields.Integer('Twitter Comments')
     twitter_retweet_count = fields.Integer('Re-tweets')
 
+    def _compute_author_link(self):
+        twitter_posts = self.filtered(lambda post: post.stream_id.media_id.media_type == 'twitter')
+        super(SocialStreamPostTwitter, (self - twitter_posts))._compute_author_link()
+
+        for post in twitter_posts:
+            post.author_link = 'https://twitter.com/intent/user?user_id=%s' % post.twitter_author_id
+
     def _compute_post_link(self):
         twitter_posts = self.filtered(lambda post: post.stream_id.media_id.media_type == 'twitter')
         super(SocialStreamPostTwitter, (self - twitter_posts))._compute_post_link()

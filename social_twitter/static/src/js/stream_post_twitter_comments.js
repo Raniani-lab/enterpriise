@@ -65,6 +65,10 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
             return _.str.sprintf("https://www.twitter.com/%s/statuses/%s", comment.from.id, comment.id);
         },
 
+        getAuthorLink: function (comment) {
+            return _.str.sprintf("https://twitter.com/intent/user?user_id=%s", comment.from.id);
+        },
+
         isCommentEditable: function (comment) {
             return comment.from.id === this.twitterUserId;
         },

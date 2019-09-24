@@ -84,10 +84,14 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
     _prependNewContentElement: function () {
         var self = this;
         this.$el.closest('.o_content').prepend($('<a>', {
-            class: 'o_social_stream_post_kanban_new_content' + (this.refreshRequired ? '' : ' d-none'),
+            class: 'o_social_stream_post_kanban_new_content alert alert-info mb-0 text-center border-bottom' + (this.refreshRequired ? '' : ' d-none'),
             href: '#',
-            text: _('New content available. Click here to refresh.')
-        }).on('click', function (ev) {
+            text: _('New content available.')
+        }).append($('<i>', {
+            class: 'fa fa-refresh ml-2 mr-1'
+        })).append($('<b>', {
+            text: _('Click to refresh.')
+        })).on('click', function (ev) {
             ev.preventDefault();
             $(ev.currentTarget).addClass('d-none');
             self.refreshRequired = false;

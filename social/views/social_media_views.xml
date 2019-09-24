@@ -21,7 +21,7 @@
                 <field name="name"/>
                 <field name="description"/>
                 <field name="media_type"/>
-                <field name="has_streams"/>
+                <field name="can_link_accounts"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_color_5">
@@ -33,7 +33,7 @@
                                 <t t-if="record.description.raw_value" t-raw="record.description.raw_value"/>
                             </div>
                             <div>
-                                <button t-if="record.has_streams.raw_value" type="object" class="btn btn-primary float-right" name="action_add_account">Link account</button>
+                                <button t-if="record.can_link_accounts.raw_value" type="object" class="btn btn-primary float-right" name="action_add_account">Link account</button>
                             </div>
                         </div>
                     </t>

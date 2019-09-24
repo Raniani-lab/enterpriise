@@ -9,11 +9,9 @@ class SMSComposer(models.TransientModel):
 
     marketing_activity_id = fields.Many2one('marketing.activity', string='Marketing Activity')
 
-    def _prepare_mass_sms_values(self, records=None):
-        result = super(SMSComposer, self)._prepare_mass_sms_values(records=records)
+    def _prepare_mass_sms_values(self, records):
+        result = super(SMSComposer, self)._prepare_mass_sms_values(records)
         if self.composition_mode == 'mass' and self.mailing_id and self.marketing_activity_id:
-            records = records if records is not None else self._get_records()
-
             # retrieve traces linked to recipients
             traces = self.env['marketing.trace'].search([('activity_id', '=', self.marketing_activity_id.id), ('res_id', 'in', records.ids)])
             res_id_to_trace_id = dict((trace.res_id, trace.id) for trace in traces)

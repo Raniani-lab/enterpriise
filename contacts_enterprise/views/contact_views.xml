@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="contact_map_view" model="ir.ui.view">
-        <field name="name">contact.partner.map.view</field>
+    <record id="res_partner_view_map" model="ir.ui.view">
+        <field name="name">res.partner.view.map</field>
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <map res_partner="id">
@@ -12,10 +12,10 @@
             </map>
         </field>
     </record>
-    <record id="action_contacts_map_view" model="ir.actions.act_window.view">
+    <record id="res_partner_action_contacts_view_map" model="ir.actions.act_window.view">
         <field name="sequence" eval="3"/>
         <field name="view_mode">map</field>
-        <field name="view_id" ref="contact_map_view"/>
+        <field name="view_id" ref="res_partner_view_map"/>
         <field name="act_window_id" ref="contacts.action_contacts"/>
     </record>
 </odoo>

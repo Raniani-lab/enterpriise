@@ -91,7 +91,7 @@ class QualityCheck(models.Model):
         'quality.check', 'Parent Quality Check', check_company=True)
     component_id = fields.Many2one(
         'product.product', 'Component', check_company=True)
-    component_uom_id = fields.Many2one(related='workorder_line_id.product_uom_id', readonly=True)
+    component_uom_id = fields.Many2one('uom.uom', compute='_compute_component_uom', readonly=True)
     workorder_line_id = fields.Many2one(
         'mrp.workorder.line', 'Workorder Line', check_company=True)
     qty_done = fields.Float('Done', default=1.0, digits='Product Unit of Measure')
@@ -120,6 +120,12 @@ class QualityCheck(models.Model):
                 if point:
                     value['component_id'] = point.component_id.id
         return super(QualityCheck, self).create(values)
+
+    @api.depends('component_id', 'workorder_id')
+    def _compute_component_uom(self):
+        for check in self:
+            move = check.workorder_id.move_raw_ids.filtered(lambda move: move.product_id == check.component_id)
+            check.component_uom_id = move.product_uom
 
     def _compute_title(self):
         for check in self:

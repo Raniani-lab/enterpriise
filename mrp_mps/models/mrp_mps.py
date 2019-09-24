@@ -726,7 +726,8 @@ class MrpProductionSchedule(models.Model):
             (location, 'child_of', self.mapped('warehouse_id.lot_stock_id').ids),
             ('product_id', 'in', self.mapped('product_id').ids),
             ('state', 'not in', ['done', 'cancel', 'draft']),
-            (location_dest + '.usage', '!=', 'internal'),
+            (location + '.usage', '!=', 'inventory'),
+            (location_dest + '.usage', 'not in', ('internal', 'inventory')),
             ('inventory_id', '=', False),
             ('date_expected', '>=', date_start),
             ('date_expected', '<=', date_stop)
@@ -735,7 +736,8 @@ class MrpProductionSchedule(models.Model):
             (location, 'child_of', self.mapped('warehouse_id.lot_stock_id').ids),
             ('product_id', 'in', self.mapped('product_id').ids),
             ('state', '=', 'done'),
-            (location_dest + '.usage', '!=', 'internal'),
+            (location + '.usage', '!=', 'inventory'),
+            (location_dest + '.usage', 'not in', ('internal', 'inventory')),
             ('inventory_id', '=', False),
             ('date', '>=', date_start),
             ('date', '<=', date_stop)

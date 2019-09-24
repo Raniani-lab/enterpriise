@@ -680,7 +680,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 },
             });
             assert.strictEqual(map.renderer.state.records.length, 2, 'There should be no records');
-            assert.strictEqual(map.$('div.leaflet-marker-icon').length, 2, 'There should be 2 markers');
+            assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2', 'There should be a marker for two records');
             assert.strictEqual(map.$('.leaflet-overlay-pane').find('path').length, 1, 'There should be one route showing');
             assert.equal(map.renderer.state.records[0].partner, map.renderer.state.records[1].partner, 'The records should have the same partner object as a property');
             map.destroy();
@@ -717,7 +717,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 },
             });
             assert.strictEqual(map.renderer.state.records.length, 2, 'There should be no records');
-            assert.strictEqual(map.$('div.leaflet-marker-icon').length, 2, 'There should be 2 markers');
+            assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2', 'There should be a marker for two records');
             assert.strictEqual(map.$('.leaflet-overlay-pane').find('path').length, 1, 'There should be one route showing');
             assert.notEqual(map.renderer.state.records[0].partner, map.renderer.state.records[1].partner, 'The records should have the same partner object as a property');
             map.destroy();
@@ -768,7 +768,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 },
             });
             assert.strictEqual(map.renderer.state.records.length, 2, 'There should be two records');
-            assert.strictEqual(map.$('img.leaflet-marker-icon').length, 2, 'There should be 2 markers');
+            assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2', 'There should be a marker for two records');
             assert.strictEqual(map.$('.leaflet-overlay-pane').find('path').length, 0, 'There should be no route showing');
             map.destroy();
         });
@@ -833,7 +833,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 },
             });
             assert.strictEqual(map.$('a.btn.btn-primary').attr('href'), 'https://www.google.com/maps/dir/?api=1&waypoints=10.5,10|10.5,10', 'The link\'s URL should contain the right sets of coordinates');
-            await testUtils.dom.click(map.$('img.leaflet-marker-icon').eq(1));
+            await testUtils.dom.click(map.$('.leaflet-marker-icon'));
             assert.strictEqual(map.$('div.leaflet-popup').find('a.btn.btn-primary').attr('href'), 'https://www.google.com/maps/dir/?api=1&destination=10.5,10', 'The link\'s URL should the right set of coordinates');
             map.destroy();
         });
@@ -860,7 +860,7 @@ odoo.define('web_map.view_view_tests', function (require) {
         });
 
         QUnit.test('test the position of pin', async function (assert) {
-            assert.expect(5);
+            assert.expect(4);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -880,11 +880,10 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: ''
                 },
             });
-            assert.strictEqual(map.renderer.markers.length, 2, 'Should have two markers created');
+            assert.strictEqual(map.renderer.markers.length, 1, 'Should have one marker created');
+            assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2', 'There should be a marker for two records');
             assert.strictEqual(map.renderer.markers[0].getLatLng().lat, 10, 'The latitude should be the same as the record');
             assert.strictEqual(map.renderer.markers[0].getLatLng().lng, 10.5, 'The longitude should be the same as the record');
-            assert.strictEqual(map.renderer.markers[1].getLatLng().lat, 10, 'The latitude should be the same as the record');
-            assert.strictEqual(map.renderer.markers[1].getLatLng().lng, 10.5, 'The longitude should be the same as the record');
             map.destroy();
         });
 
@@ -958,10 +957,10 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.notOk(map.renderer.numbering, 'the numbering option should not be enabled');
             assert.notOk(map.model.routing, 'The routing option should not be enabled');
 
-            assert.strictEqual(map.$('img.leaflet-marker-icon').length, 2, 'There should be 2 markers');
+            assert.strictEqual(map.$('.leaflet-marker-icon').length, 1, 'There should be 1 marker');
             assert.strictEqual(map.$('.leaflet-overlay-pane').find('path').length, 0, 'There should be no route showing');
 
-            await testUtils.dom.click(map.$('img.leaflet-marker-icon').eq(0)[0]);
+            await testUtils.dom.click(map.$('.leaflet-marker-icon'));
             assert.strictEqual(map.$('.leaflet-popup-pane').children().length, 1, 'Should have one showing popup');
 
             await testUtils.dom.click(map.$('div.leaflet-container'));
@@ -978,7 +977,7 @@ odoo.define('web_map.view_view_tests', function (require) {
          */
 
         QUnit.test('Create a view with default_order', async function (assert) {
-            assert.expect(6);
+            assert.expect(7);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -1001,9 +1000,10 @@ odoo.define('web_map.view_view_tests', function (require) {
             });
             assert.ok(map.renderer.numbering === false, 'the numbering option should not be enabled');
             assert.notOk(map.model.routing, 'The routing option should not be enabled');
-            assert.strictEqual(map.$('img.leaflet-marker-icon').length, 2, 'There should be 2 markers');
+            assert.strictEqual(map.$('div.leaflet-marker-icon').length, 1, 'There should be 1 marker');
+            assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2', 'There should be a marker for two records');
             assert.strictEqual(map.$('.leaflet-popup-pane').children().length, 0, 'Should have no showing popup');
-            await testUtils.dom.click(map.$('img.leaflet-marker-icon').eq(1));
+            await testUtils.dom.click(map.$('div.leaflet-marker-icon'));
             assert.strictEqual(map.$('.leaflet-popup-pane').children().length, 1, 'Should have one showing popup');
             map.destroy();
         });
@@ -1016,7 +1016,7 @@ odoo.define('web_map.view_view_tests', function (require) {
          */
 
         QUnit.test('Create a view with routing', async function (assert) {
-            assert.expect(10);
+            assert.expect(9);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -1041,8 +1041,7 @@ odoo.define('web_map.view_view_tests', function (require) {
 
             assert.strictEqual(map.model.numberOfLocatedRecords, 2, 'Should have 2 located Records');
             assert.strictEqual(map.renderer.state.route.routes.length, 1, 'Should have 1 computed route');
-            assert.strictEqual(map.$('div.leaflet-marker-icon').eq(0).children().text(), "1", 'The first marker should display 1');
-            assert.strictEqual(map.$('div.leaflet-marker-icon').eq(1).children().text(), "2", 'The second marker should display 2');
+            assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2', 'There should be a marker for two records');
             assert.strictEqual(map.$('path.leaflet-interactive').attr('stroke'), 'blue', 'The route should be blue if it has not been clicked');
             assert.strictEqual(map.$('path.leaflet-interactive').attr('stroke-opacity'), '0.3', 'The opacity of the polyline should be 0.3');
             map.renderer.polylines[0].fire('click');
@@ -1242,7 +1241,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 },
             });
             assert.notOk(map.$('.leaflet-pane .leaflet-popup-pane').children().length, 'The popup div should be empty');
-            await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0));
+            await testUtils.dom.click(map.$('div.leaflet-marker-icon'));
             assert.ok(map.renderer.markers[0].isPopupOpen(), 'The marker\'s popup should be open');
             assert.strictEqual(map.$('.leaflet-popup-pane').children().length, 1, 'The popup div should contain one element');
 
@@ -1250,9 +1249,9 @@ odoo.define('web_map.view_view_tests', function (require) {
 
             assert.notOk(map.renderer.markers[0].isPopupOpen(), 'The marker\'s popup should be close');
 
-            await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(1));
+            await testUtils.dom.click(map.$('div.leaflet-marker-icon'));
 
-            assert.ok(map.renderer.markers[1].isPopupOpen());
+            assert.ok(map.renderer.markers[0].isPopupOpen());
 
 
             map.destroy();
@@ -1264,7 +1263,7 @@ odoo.define('web_map.view_view_tests', function (require) {
          */
 
         QUnit.test('assert that all the records are shown on the map', async function (assert) {
-            assert.expect(4);
+            assert.expect(3);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -1288,8 +1287,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             var mapY = map.$('.leaflet-map-pane')[0]._leaflet_pos.y;
             assert.ok(mapX - map.$('div.leaflet-marker-icon').eq(0)[0]._leaflet_pos.x < 0, 'If the marker is currently shown on the map, the subtraction of latitude should be under 0');
             assert.ok(mapY - map.$('div.leaflet-marker-icon').eq(0)[0]._leaflet_pos.y < 0);
-            assert.ok(mapX - map.$('div.leaflet-marker-icon').eq(1)[0]._leaflet_pos.x < 0);
-            assert.ok(mapY - map.$('div.leaflet-marker-icon').eq(1)[0]._leaflet_pos.y < 0);
+            assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2', 'There should be a marker for two records');
             map.destroy();
         });
 
@@ -1314,9 +1312,9 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             assert.ok(args.fields.includes('display_name'));
-                            return Promise.resolve(this.data['project.task'].twoRecords);
+                            return Promise.resolve(this.data['project.task'].oneRecord);
                         case '/web/dataset/call_kw/res.partner/search_read':
-                            return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
+                            return Promise.resolve(this.data['res.partner'].twoRecordsAddressCoordinates);
                     }
                     return Promise.resolve();
                 },
@@ -1330,7 +1328,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.$('tbody').children().children().length, 3, 'The popup should have one field');
             assert.strictEqual(map.$('tbody').children().children().eq(0).prop("innerText"), 'Name',
                 'The first element of the table should \'Name\'');
-            assert.strictEqual(map.$('tbody').children().children().eq(2).prop("innerText"), 'FooProject',
+            assert.strictEqual(map.$('tbody').children().children().eq(2).prop("innerText"), 'Foo',
                 'The second element of the table should \'Foo\'');
             assert.strictEqual(map.$('div.center').children().length, 3, 'The popup should contain 2 buttons and one divider');
             map.destroy();
@@ -1563,7 +1561,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             });
             assert.strictEqual(map.model.data.records.length, 2, 'There should be 2 records');
             assert.strictEqual(map.$('.leaflet-overlay-pane').find('path').length, 1, 'There should be one route displayed');
-            assert.strictEqual(map.$('div.leaflet-marker-icon').length, 2, 'There should be 2 markers displayed'),
+            assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2', 'There should be a marker for two records');
 
                 await map.update({domain: [['name', '=', 'FooProject']]});
 
@@ -1586,8 +1584,8 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.model.data.records.length, 2, 'There should be 2 record');
             assert.strictEqual(map.renderer.polylines.length, 1, 'There should be one road computed');
             assert.strictEqual(map.$('.leaflet-overlay-pane').find('path').length, 1, 'There should be 1 route on the map');
-            assert.strictEqual(map.renderer.markers.length, 2, 'There should be 2 marker generated');
-            assert.strictEqual(map.$('div.leaflet-marker-icon').length, 2, 'There should be 2 marker on the map');
+            assert.strictEqual(map.renderer.markers.length, 1, 'There should be 1 marker generated');
+            assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2', 'There should be a marker for two records');
 
             map.destroy();
         });
@@ -1628,7 +1626,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 assert.strictEqual(event.data.model, 'project.task', 'The form view should be on the \'res.partner\' model');
             });
             testUtils.mock.intercept(map, 'open_clicked', function (event) {
-                assert.strictEqual(event.data.id, 1, 'The record\'s id should be 1');
+                assert.deepEqual(event.data.ids, [1], 'The record\'s id should be 1');
 
             }, true);
             await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0));

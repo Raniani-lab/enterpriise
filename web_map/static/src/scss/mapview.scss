@@ -106,6 +106,19 @@ $map-number-font-size: 19px;
         background-image: url("../../lib/leaflet/images/marker-icon-numbered.png");
     }
 
+    .o_custom_marker {
+        height: 45px !important;
+        width: 28px !important;
+        margin-top: -45px !important;
+        margin-left: -14px !important;
+        background-image: url("../../lib/leaflet/images/marker-icon.png");
+        background-repeat: no-repeat;
+    }
+    .o_map_marker_badge {
+        @include o-position-absolute($top: -8px, $right: -10px);
+        font-size: 12px;
+    }
+
     .o_number_icon {
         color: $map-number-color;
         font-size: $map-number-font-size;

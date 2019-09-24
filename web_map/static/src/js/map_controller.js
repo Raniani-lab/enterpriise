@@ -12,6 +12,14 @@ odoo.define('web_map.MapController', function (require) {
             'open_clicked': '_onOpenClicked',
         }),
 
+        /**
+         * @constructor
+         */
+        init: function (parent, model, renderer, params) {
+            this._super.apply(this, arguments);
+            this.actionName = params.actionName;
+        },
+
         //---------------------------------------------------------------------------------
         //Public
         //-----------------------------------------------------------------------------
@@ -108,15 +116,26 @@ odoo.define('web_map.MapController', function (require) {
          *
          * @param {MouseEvent} ev
          * @private
-         * Redirects to a form view in edit mode
+         *
+         * Redirects to views when clicked on open button in marker popup
          */
         _onOpenClicked: function (ev) {
-            this.trigger_up('switch_view', {
-                view_type: 'form',
-                res_id: ev.data.id,
-                mode: 'readonly',
-                model: this.modelName
-            });
+            if (ev.data.ids.length > 1) {
+                this.do_action({
+                    type: 'ir.actions.act_window',
+                    name: this.actionName,
+                    views: [[false, 'list'], [false, 'form']],
+                    res_model: this.modelName,
+                    domain: [['id', 'in', ev.data.ids]],
+                });
+            } else {
+                this.trigger_up('switch_view', {
+                    view_type: 'form',
+                    res_id: ev.data.ids[0],
+                    mode: 'readonly',
+                    model: this.modelName
+                });
+            }
         }
     });
     return MapController;

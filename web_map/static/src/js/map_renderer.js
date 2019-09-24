@@ -165,17 +165,38 @@ odoo.define('web_map.MapRenderer', function (require) {
         _addMakers: function (records) {
             var self = this;
             this._removeMakers();
-            records.forEach(function (record) {
+
+            const uniqueMarkerLocations = {};
+            for (const record of records) {
                 if (record.partner && record.partner.partner_latitude && record.partner.partner_longitude) {
-                    var popup = {};
-                    popup.records = self._getMarkerPopupFields(record, self.fieldsMarkerPopup);
+                    const key = _.str.sprintf('%s-%s', record.partner.partner_latitude, record.partner.partner_longitude);
+                    if (key in uniqueMarkerLocations) {
+                        uniqueMarkerLocations[key].record = record;
+                        uniqueMarkerLocations[key].ids.push(record.id);
+                    } else {
+                        uniqueMarkerLocations[key] = {record: record, ids: [record.id]};
+                    }
+                }
+            }
+
+            uniqueMarkerLocations.forEach(markerLocation => {
+                    const record = markerLocation.record;
+                    var popup = {records: []};
+                    // Only display address in multi co-ordinates marker popup
+                    if (markerLocation.ids.length > 1) {
+                        if (!self.hideAddress) {
+                            popup.records = [{field: record.partner.contact_address_complete, string: _t("Address")}];
+                        }
+                    } else {
+                        popup.records = self._getMarkerPopupFields(record, self.fieldsMarkerPopup);
+                    }
                     popup.url = 'https://www.google.com/maps/dir/?api=1&destination=' + record.partner.partner_latitude + ',' + record.partner.partner_longitude;
                     var $popup = $(qweb.render('map-popup', { records: popup }));
                     var openButton = $popup.find('button.btn.btn-primary.o_open')[0];
                     if (self.hasFormView) {
                         openButton.onclick = function () {
                             self.trigger_up('open_clicked',
-                                { id: record.id });
+                                { ids: markerLocation.ids });
                         };
                     } else {
                         openButton.remove();
@@ -184,16 +205,33 @@ odoo.define('web_map.MapRenderer', function (require) {
                     var marker;
                     var offset;
                     if (self.numbering) {
+                        let iconElement = '<p class ="o_number_icon">' + (self.state.records.indexOf(record) + 1) + '</p>';
+                        if (markerLocation.ids.length > 1) {
+                            iconElement = '<p class ="o_number_icon">' +
+                                    (self.state.records.indexOf(record) + 1) +
+                                    '<span class="badge badge-danger badge-pill border-0 o_map_marker_badge">' + markerLocation.ids.length + '</span>' +
+                                    '</p>';
+                        }
+
                         var number = L.divIcon({
                             className: 'o_numbered_marker',
-                            html: '<p class ="o_number_icon">' + (self.state.records.indexOf(record) + 1) + '</p>'
+                            html: iconElement
                         });
                         marker = L.marker([record.partner.partner_latitude, record.partner.partner_longitude], { icon: number });
-                        offset = new L.Point(0, -35);
+                        offset = new L.Point(0, -38);
 
                     } else {
-                        marker = L.marker([record.partner.partner_latitude, record.partner.partner_longitude]);
-                        offset = new L.Point(0, 0);
+                        if (markerLocation.ids.length > 1) {
+                            var number = L.divIcon({
+                                className: 'o_custom_marker',
+                                html: '<span class="badge badge-danger badge-pill border-0 o_map_marker_badge">' + markerLocation.ids.length + '</span>',
+                            });
+                            marker = L.marker([record.partner.partner_latitude, record.partner.partner_longitude], {icon: number});
+                            offset = new L.Point(0, -38);
+                        } else {
+                            marker = L.marker([record.partner.partner_latitude, record.partner.partner_longitude]);
+                            offset = new L.Point(0, 0);
+                        }
                     }
                     marker
                         .addTo(self.leafletMap)
@@ -205,7 +243,6 @@ odoo.define('web_map.MapRenderer', function (require) {
                             return divPopup;
                         }, { offset: offset });
                     self.markers.push(marker);
-                }
             });
         },
         /**

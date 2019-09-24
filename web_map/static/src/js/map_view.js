@@ -62,6 +62,8 @@ odoo.define('web_map.MapView', function (require) {
             this.rendererParams.hasFormView = params.actionViews.find(function (view) {
                 return view.type === "form";
             });
+
+            this.controllerParams.actionName = params.action ? params.action.name : _t("Untitled");
         },
     });
     viewRegistry.add('map', MapView);

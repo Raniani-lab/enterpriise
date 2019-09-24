@@ -13,6 +13,12 @@
                 <attribute name="routing"/>
             </optional>
             <optional>
+                <attribute name="hide_name"/>
+            </optional>
+            <optional>
+                <attribute name="hide_address"/>
+            </optional>
+            <optional>
                 <attribute name="panel_title" />
             </optional>
             <zeroOrMore>

@@ -5,6 +5,7 @@ odoo.define('web_map.MapView', function (require) {
     var MapController = require('web_map.MapController');
     var MapRenderer = require('web_map.MapRenderer');
     var AbstractView = require('web.AbstractView');
+    var utils = require('web.utils');
     var viewRegistry = require('web.view_registry');
     var _t = require('web.core')._t;
 
@@ -41,6 +42,13 @@ odoo.define('web_map.MapView', function (require) {
             this.rendererParams.numbering = this.arch.attrs.routing ? true: false;
             this.rendererParams.defaultOrder = this.arch.attrs.default_order;
             this.rendererParams.panelTitle = this.arch.attrs.panel_title || params.displayName || _t('Items');
+
+            const hideName = utils.toBoolElse(this.arch.attrs.hide_name || '', false);
+            this.rendererParams.hideName = hideName;
+            if (!hideName) {
+                fieldNames.push('display_name');
+            }
+            this.rendererParams.hideAddress = utils.toBoolElse(this.arch.attrs.hide_address || '', false);
 
             this.arch.children.forEach(function (node) {
                 if (node.tag === 'field') {

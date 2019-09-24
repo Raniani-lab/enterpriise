@@ -1304,7 +1304,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 View: MapView,
                 model: 'project.task',
                 data: this.data,
-                arch: '<map res_partner="partner_id"  routing="true">' +
+                arch: '<map res_partner="partner_id"  routing="true" hide_name="true" hide_address="true">' +
                     '<field name="display_name" string="Name"/>' +
                     '</map>',
                 viewOptions: {
@@ -1347,7 +1347,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 View: MapView,
                 model: 'project.task',
                 data: this.data,
-                arch: '<map res_partner="partner_id"  routing="true">' +
+                arch: '<map res_partner="partner_id" routing="true" hide_name="true" hide_address="true">' +
                     '</map>',
                 viewOptions: {
                     actionViews: [{type: 'form'}]
@@ -1368,6 +1368,130 @@ odoo.define('web_map.view_view_tests', function (require) {
             await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0)[0]);
             assert.strictEqual(map.$('tbody').children().length, 0, 'The popup should have only the button');
             assert.strictEqual(map.$('div.center').children().length, 3, 'The popup should contain 2 buttons and one divider');
+            map.destroy();
+        });
+
+        QUnit.test('Attribute: hide_name', async function (assert) {
+            assert.expect(2);
+
+            const map = await createView({
+                View: MapView,
+                model: 'project.task',
+                data: this.data,
+                arch: '<map res_partner="partner_id" routing="true" hide_name="true">' +
+                    '</map>',
+                mockRPC: route => {
+                    switch (route) {
+                        case '/web/dataset/search_read':
+                            return Promise.resolve(this.data['project.task'].twoRecords);
+                        case '/web/dataset/call_kw/res.partner/search_read':
+                            return Promise.resolve(this.data['res.partner'].twoRecordsAddressCoordinates);
+                    }
+                    return Promise.resolve();
+                },
+                session: {
+                    map_box_token: 'token'
+                },
+            });
+
+            await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0)[0]);
+            assert.containsOnce(map, 'tbody > tr', 'The popup should have one field');
+            assert.strictEqual(map.$('tbody tr .contentName').text().trim(), 'Address', 'The popup should have address field');
+
+            map.destroy();
+        });
+
+        QUnit.test('Render partner address field in popup', async function (assert) {
+            assert.expect(3);
+
+            const map = await createView({
+                View: MapView,
+                model: 'project.task',
+                data: this.data,
+                arch: '<map res_partner="partner_id" routing="true" hide_name="true">' +
+                    '</map>',
+                mockRPC: route => {
+                    switch (route) {
+                        case '/web/dataset/search_read':
+                            return Promise.resolve(this.data['project.task'].oneRecord);
+                        case '/web/dataset/call_kw/res.partner/search_read':
+                            return Promise.resolve(this.data['res.partner'].oneLocatedRecord);
+                    }
+                    return Promise.resolve();
+                },
+                session: {
+                    map_box_token: 'token'
+                },
+            });
+
+            await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0)[0]);
+
+            assert.containsOnce(map, 'tbody tr', 'The popup should have one field');
+            assert.strictEqual(map.$('tbody tr .contentName').text().trim(), 'Address', 'The popup should have address field');
+            assert.strictEqual(map.$('tbody tr .contentString').text().trim(), 'Chaussée de Namur 40, 1367, Ramillies', 'The popup should have correct address');
+            map.destroy();
+        });
+
+        QUnit.test('Hide partner address field in popup', async function (assert) {
+            assert.expect(3);
+
+            const map = await createView({
+                View: MapView,
+                model: 'project.task',
+                data: this.data,
+                arch: '<map res_partner="partner_id" routing="true" hide_address="true">' +
+                    '</map>',
+                mockRPC: route => {
+                    switch (route) {
+                        case '/web/dataset/search_read':
+                            return Promise.resolve(this.data['project.task'].oneRecord);
+                        case '/web/dataset/call_kw/res.partner/search_read':
+                            return Promise.resolve(this.data['res.partner'].oneLocatedRecord);
+                    }
+                    return Promise.resolve();
+                },
+                session: {
+                    map_box_token: 'token'
+                },
+            });
+
+            await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0)[0]);
+
+            assert.containsOnce(map, 'tbody tr', 'The popup should have one field');
+            assert.strictEqual(map.$('tbody tr .contentName').text().trim(), 'Name', 'The popup should have name field');
+            assert.strictEqual(map.$('tbody tr .contentString').text().trim(), 'Foo', 'The popup should have correct address');
+            map.destroy();
+        });
+
+        QUnit.test('Handle records of same co-ordinates in marker', async function (assert) {
+            assert.expect(4);
+
+            const map = await createView({
+                View: MapView,
+                model: 'project.task',
+                data: this.data,
+                arch: '<map res_partner="partner_id"/>',
+                mockRPC: route => {
+                    switch (route) {
+                        case '/web/dataset/search_read':
+                            return Promise.resolve(this.data['project.task'].twoRecords);
+                        case '/web/dataset/call_kw/res.partner/search_read':
+                            return Promise.resolve(this.data['res.partner'].twoRecordsAddressCoordinates);
+                    }
+                    return Promise.resolve();
+                },
+                session: {
+                    map_box_token: 'token'
+                },
+            });
+
+            assert.containsOnce(map, 'div.leaflet-marker-icon', "There should be a one marker");
+            assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2', "There should be a marker for two records");
+
+            await testUtils.dom.click(map.$('div.leaflet-marker-icon'));
+
+            assert.containsOnce(map, 'tbody tr', "The popup should have one field");
+            assert.strictEqual(map.$('tbody tr .contentName').text().trim(), 'Address', "The popup should have address field");
             map.destroy();
         });
 

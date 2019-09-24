@@ -3,6 +3,7 @@ odoo.define('web_map.MapRenderer', function (require) {
     var core = require('web.core');
     var AbstractRenderer = require('web.AbstractRenderer');
     var qweb = core.qweb;
+    var _t = core._t;
 
     var MapRenderer = AbstractRenderer.extend({
         className: "o_map_view row no-gutters",
@@ -16,6 +17,8 @@ odoo.define('web_map.MapRenderer', function (require) {
             this.numbering = params.numbering;
             this.hasFormView = params.hasFormView;
             this.defaultOrder = params.defaultOrder;
+            this.hideName = params.hideName;
+            this.hideAddress = params.hideAddress;
 
             this.isInDom = false;
             this.mapIsInit = false;
@@ -131,6 +134,13 @@ odoo.define('web_map.MapRenderer', function (require) {
          */
         _getMarkerPopupFields: function (record, fields) {
             var fieldsView = [];
+            // Add 'hide_name' and 'hide_address' options field
+            if (!this.hideName) {
+                fieldsView.push({field: record.display_name, string: _t("Name")});
+            }
+            if (!this.hideAddress) {
+                fieldsView.push({field: record.partner.contact_address_complete, string: _t("Address")});
+            }
             fields.forEach(function (field) {
                 if (record[field['fieldName']]) {
                     if (record[field['fieldName']] instanceof Array) {

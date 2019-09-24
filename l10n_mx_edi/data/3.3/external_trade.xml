@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="external_tradev11" inherit_id="l10n_mx_edi.cfdiv33">
+        <xpath expr="//*[name()='cfdi:Comprobante']" position="attributes" t-if="record.l10n_mx_edi_origin">
+            <attribute name="xmlns__cce11">http://www.sat.gob.mx/ComercioExterior11</attribute>
+        </xpath>
         <xpath expr="(//*[local-name()='Receptor'])" position="attributes">
             <attribute name="t-att-ResidenciaFiscal">customer.country_id.l10n_mx_edi_code if customer.country_id.l10n_mx_edi_code != 'MEX' and record.l10n_mx_edi_external_trade else False</attribute>
         </xpath>

@@ -1003,6 +1003,7 @@ class AccountMove(models.Model):
 
         # -Compute cfdi
         cfdi = qweb.render(CFDI_TEMPLATE_33, values=values)
+        cfdi = cfdi.replace(b'xmlns__', b'xmlns:')
         node_sello = 'Sello'
         attachment = self.env.ref('l10n_mx_edi.xsd_cached_cfdv33_xsd', False)
         xsd_datas = base64.b64decode(attachment.datas) if attachment else b''

@@ -19,7 +19,7 @@ class ResConfigSettings(models.TransientModel):
     def set_values(self):
         super(ResConfigSettings, self).set_values()
         company = self.company_id or self.env.company
-        if company.account_tax_original_periodicity_reminder_day and company.account_tax_original_periodicity_reminder_day == self.account_tax_periodicity_reminder_day:
+        if not self.has_chart_of_accounts or (company.account_tax_original_periodicity_reminder_day and company.account_tax_original_periodicity_reminder_day == self.account_tax_periodicity_reminder_day):
             return True
         else:
             move_id = self._create_edit_tax_reminder()

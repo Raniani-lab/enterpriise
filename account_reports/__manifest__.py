@@ -29,4 +29,5 @@ Accounting Reports
     'auto_install': True,
     'installable': True,
     'license': 'OEEL-1',
+    'post_init_hook': 'set_periodicity_journal_on_companies',
 }

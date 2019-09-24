@@ -36,6 +36,7 @@ class TestAccountAsset(common.TransactionCase):
         })
         self.truck.validate()
         self.env['account.move']._autopost_draft_entries()
+        self.assert_counterpart_account_id = self.env.ref('account_asset.a_sale').id
 
     def _load(self, module, *args):
         tools.convert_file(self.cr, 'account_asset',
@@ -230,6 +231,7 @@ class TestAccountAsset(common.TransactionCase):
             'asset_id': self.truck.id,
             'name': 'Test reason',
             'method_number': 10.0,
+            "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
 
         # I check the proper depreciation lines created.
@@ -247,6 +249,7 @@ class TestAccountAsset(common.TransactionCase):
             'asset_id': self.truck.id,
             'value_residual': 4000,
             'salvage_value': 3000,
+            "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
         self.assertEqual(self.truck.value_residual, 3000)
         self.assertEqual(self.truck.salvage_value, 2500)
@@ -260,6 +263,7 @@ class TestAccountAsset(common.TransactionCase):
             'asset_id': self.truck.id,
             'value_residual': 1000,
             'salvage_value': 2000,
+            "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
         self.assertEqual(self.truck.value_residual, 1000)
         self.assertEqual(self.truck.salvage_value, 2000)
@@ -274,6 +278,7 @@ class TestAccountAsset(common.TransactionCase):
             'asset_id': self.truck.id,
             'value_residual': 1000,
             'salvage_value': 4500,
+            "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
         self.assertEqual(self.truck.value_residual, 1000)
         self.assertEqual(self.truck.salvage_value, 4500)
@@ -287,6 +292,7 @@ class TestAccountAsset(common.TransactionCase):
             'asset_id': self.truck.id,
             'value_residual': 1000,
             'salvage_value': 6000,
+            "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
         self.assertEqual(self.truck.value_residual, 1000)
         self.assertEqual(self.truck.salvage_value, 4500)
@@ -300,6 +306,7 @@ class TestAccountAsset(common.TransactionCase):
             'asset_id': self.truck.id,
             'value_residual': 4000,
             'salvage_value': 2000,
+            "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
         self.assertEqual(self.truck.value_residual, 3500)
         self.assertEqual(self.truck.salvage_value, 2000)
@@ -361,6 +368,7 @@ class TestAccountAsset(common.TransactionCase):
             'asset_id': self.truck.id,
             'value_residual': 4000,
             'salvage_value': 3000,
+            "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
         self.assertEqual(self.truck.value_residual + sum(self.truck.children_ids.mapped('value_residual')), 4000)
         self.assertEqual(self.truck.salvage_value + sum(self.truck.children_ids.mapped('salvage_value')), 3000)
@@ -383,12 +391,14 @@ class TestAccountAsset(common.TransactionCase):
             'asset_id': self.truck.children_ids.id,
             'value_residual': 0,
             'salvage_value': 500,
+            "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
         self.env['asset.modify'].create({
             'name': "Huge scratch on beautiful sticker :'( It went through...",
             'asset_id': self.truck.id,
             'value_residual': 1000,
             'salvage_value': 2500,
+            "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
         self.assertEqual(self.truck.value_residual + sum(self.truck.children_ids.mapped('value_residual')), 1000)
         self.assertEqual(self.truck.salvage_value + sum(self.truck.children_ids.mapped('salvage_value')), 3000)

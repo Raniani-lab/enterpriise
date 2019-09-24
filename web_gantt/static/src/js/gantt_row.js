@@ -58,12 +58,12 @@ var GanttRow = Widget.extend({
         this.isGroup = options.isGroup;
         this.isOpen = options.isOpen;
         this.rowId = options.rowId;
-        this.unavailabilities = _.map(options.unavailabilities, function(u) {
-            u.startDate = self._convertToUserTime(u.start);
-            u.stopDate = self._convertToUserTime(u.stop);
-            return u;
+        this.unavailabilities = (options.unavailabilities || []).map(u => {
+            return {
+                startDate: self._convertToUserTime(u.start),
+                stopDate: self._convertToUserTime(u.stop)
+            };
         });
-        this._snapToGrid(this.unavailabilities);
 
         this.consolidate = options.consolidate;
         this.consolidationParams = viewInfo.consolidationParams;
@@ -89,7 +89,6 @@ var GanttRow = Widget.extend({
             this._evaluateDecoration();
         }
         this._calculateMarginAndWidth();
-        this._insertIntoSlot();
 
         // Add the 16px odoo window default padding.
         this.leftPadding = (this.groupLevel + 1) * this.LEVEL_LEFT_OFFSET;
@@ -100,6 +99,9 @@ var GanttRow = Widget.extend({
 
         this.cellMinWidth = this.MIN_WIDTHS[this.viewInfo.activeScaleInfo.precision];
         this.cellPart = this.PARTS[this.viewInfo.activeScaleInfo.precision];
+
+        this._prepareSlots();
+        this._insertIntoSlot();
 
         this.childrenRows = [];
 
@@ -532,72 +534,11 @@ var GanttRow = Widget.extend({
         return this.firstCell.getBoundingClientRect().width / this.cellPart;
     },
     /**
-     * Insert pill into gantt row slot according to its start date
+     * Insert the pills into the gantt row slots according to their start dates
      *
      * @private
      */
     _insertIntoSlot: function () {
-        var self = this;
-        var scale = this.state.scale;
-        var intervalToken = this.SCALES[scale].interval;
-        var precision = this.viewInfo.activeScaleInfo.precision;
-        var x, y;
-        this.slots = _.map(this.viewInfo.slots, function (date, key) {
-            var slotStart = date;
-            var slotStop = date.clone().add(1, intervalToken);
-            var slotHalf = moment((slotStart + slotStop) / 2);
-            var slotUnavailability;
-            var morningUnavailabilities = 0; //morning hours unavailabilities
-            var afternoonUnavailabilities = 0; //afternoon hours unavailabilities
-            self.unavailabilities.forEach(function (unavailability) {
-                if (unavailability.start < slotStop && unavailability.stop > slotStart) {
-                    if ((scale === 'month' || scale === 'week')) {
-                        // We can face to 3 different cases and we will compute the sum
-                        // of all unavailability periods for the morning and the afternoon:
-                        //
-                        // slotStart                slotHalf            slotStop
-                        //    |      ______________     :                   |
-                        // 1. |     |______________|    :                   |
-                        //    |                         :    ___________    |
-                        // 2. |                         :   |___________|   |
-                        //    |                 ________:_______            |
-                        // 3. |                |________:_______|           |
-                        //    |                         :                   |
-                        //    |                         :                   |
-                        x = unavailability.start.diff(slotHalf) / (3600 * 1000);
-                        y = unavailability.stop.diff(slotHalf) / (3600 * 1000);
-                        if (x < 0 && y < 0) { // Case 1.
-                            morningUnavailabilities += Math.min(-x, 12) - Math.min(-y, 12);
-                        } else if (x > 0 && y > 0) { // Case 2.
-                            afternoonUnavailabilities += Math.min(y, 12) - Math.min(x, 12);
-                        } else { // Case 3.
-                            morningUnavailabilities += Math.min(-x, 12);
-                            afternoonUnavailabilities += Math.min(y, 12);
-                        }
-                    } else {
-                        slotUnavailability = 'full';
-                    }
-                }
-            });
-            if (scale === 'month' || scale === 'week') {
-                if ((morningUnavailabilities > 10 && afternoonUnavailabilities > 10) || (precision !== 'half' && morningUnavailabilities + afternoonUnavailabilities > 22)) {
-                    slotUnavailability = 'full';
-                } else if (morningUnavailabilities > 10 && precision === 'half') {
-                    slotUnavailability = 'first_half';
-
-                } else if (afternoonUnavailabilities > 10 && precision === 'half') {
-                    slotUnavailability = 'second_half';
-                }
-            }
-            return {
-                isToday: date.isSame(new Date(), 'day') && self.state.scale !== 'day',
-                unavailability: slotUnavailability,
-                hasButtons: !self.isGroup && !self.isTotal,
-                start: slotStart,
-                stop: slotStop,
-                pills: [],
-            };
-        });
         var slotsToFill = this.slots;
         this.pills.forEach(function (currentPill) {
             var skippedSlots = [];
@@ -614,6 +555,84 @@ var GanttRow = Widget.extend({
             // for this pill will not be suitable for any of the next pills
             slotsToFill = _.difference(slotsToFill, skippedSlots);
         });
+    },
+    /**
+     * Prepare the gantt row slots
+     *
+     * @private
+     */
+    _prepareSlots: function () {
+        const { interval, time, cellPrecisions } = this.SCALES[this.state.scale];
+        const precision = this.viewInfo.activeScaleInfo.precision;
+        const cellTime = cellPrecisions[precision];
+
+        function getSlotStyle(cellPart, subSlotUnavailabilities, isToday) {
+            function color(d) {
+                if (isToday) {
+                    return d ? '#f4f3ed' : '#fffaeb';
+                }
+                return d ? '#e9ecef' : '#ffffff';
+            }
+            const sum = subSlotUnavailabilities.reduce((acc, d) => acc + d);
+            if (!sum) {
+                return '';
+            }
+            if (cellPart === sum) {
+                return `background: ${color(1)}`;
+            }
+            if (cellPart === 2) {
+                const [c0, c1] = subSlotUnavailabilities.map(color);
+                return `background: linear-gradient(90deg, ${c0} 49%, ${c1} 50%);`
+            }
+            if (cellPart === 4) {
+                const [c0, c1, c2, c3] = subSlotUnavailabilities.map(color);
+                return `background: linear-gradient(90deg, ${c0} 24%, ${c1} 25%, ${c1} 49%, ${c2} 50%, ${c2} 74%, ${c3} 75%);`
+            }
+        }
+
+        this.slots = [];
+
+        // We assume that the 'slots' (dates) are naturally ordered
+        // and that unavailabilties have been normalized
+        // (i.e. naturally ordered and pairwise disjoint).
+        // A subslot is considered unavailable (and greyed) when totally covered by
+        // an unavailability.
+        let index = 0;
+        for (const date of this.viewInfo.slots) {
+            const slotStart = date;
+            const slotStop = date.clone().add(1, interval);
+            const isToday = date.isSame(new Date(), 'day') && this.state.scale !== 'day';
+
+            let slotStyle = '';
+            if (!this.isGroup && this.unavailabilities.slice(index).length) {
+                let subSlotUnavailabilities = [];
+                for (let j = 0; j < this.cellPart; j++) {
+                    const subSlotStart = date.clone().add(j * cellTime, time);
+                    const subSlotStop = date.clone().add((j + 1) * cellTime, time).subtract(1, 'seconds');
+                    let subSlotUnavailable = 0;
+                    for (let i = index; i < this.unavailabilities.length; i++) {
+                        let u = this.unavailabilities[i];
+                        if (subSlotStop > u.stopDate) {
+                            index++;
+                        } else if (u.startDate <= subSlotStart) {
+                            subSlotUnavailable = 1;
+                            break;
+                        }
+                    }
+                    subSlotUnavailabilities.push(subSlotUnavailable);
+                }
+                slotStyle = getSlotStyle(this.cellPart, subSlotUnavailabilities, isToday);
+            }
+
+            this.slots.push({
+                isToday: isToday,
+                style: slotStyle,
+                hasButtons: !this.isGroup && !this.isTotal,
+                start: slotStart,
+                stop: slotStop,
+                pills: [],
+            });
+        }
     },
     /**
      * Save drag changes

@@ -85,9 +85,9 @@
             <div class="row no-gutters">
 
                 <div t-foreach="widget.slots" t-as="slot"
-                    t-attf-class="col o_gantt_cell #{slot.unavailability ? ('o_gantt_unavailability o_gantt_unavailable_' + slot.unavailability) : ''} #{slot.isToday ? 'o_gantt_today' : ''} #{slot.hasButtons ? 'o_gantt_hoverable' : ''}"
+                    t-attf-class="col o_gantt_cell #{slot.isToday ? 'o_gantt_today' : ''} #{slot.hasButtons ? 'o_gantt_hoverable' : ''}"
                     t-att-data-date="slot.start.format('YYYY-MM-DD HH:mm:ss')"
-                    t-attf-style="height: #{widget.cellHeight}px;">
+                    t-attf-style="height: #{widget.cellHeight}px;#{slot.style ? ' ' + slot.style : ''}">
 
                     <!-- plan and add buttons -->
                     <div t-if="slot.hasButtons" class="o_gantt_cell_buttons justify-content-center">

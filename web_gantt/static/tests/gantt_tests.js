@@ -1,15 +1,25 @@
 odoo.define('web_gantt.tests', function (require) {
 'use strict';
 
-var concurrency = require('web.concurrency');
 var GanttView = require('web_gantt.GanttView');
 var GanttRenderer = require('web_gantt.GanttRenderer');
 var GanttRow = require('web_gantt.GanttRow');
 var testUtils = require('web.test_utils');
 
+const patchDate = testUtils.mock.patchDate;
 
 var initialDate = new Date(2018, 11, 20, 8, 0, 0);
 initialDate = new Date(initialDate.getTime() - initialDate.getTimezoneOffset() * 60 * 1000);
+
+const FORMAT = "YYYY-MM-DD HH:mm:ss";
+// This function is used to be sure that the unavailabilities will be displayed
+// where we want (independently of the timezone used when lauching the tests)
+function convertUnavailability(u) {
+    return {
+        start: moment(u.start).utc().format(FORMAT),
+        stop: moment(u.stop).utc().format(FORMAT)
+    };
+}
 
 var createView = testUtils.createView;
 
@@ -2423,10 +2433,150 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('display_unavailability attribute', async function (assert) {
-        assert.expect(16);
+    QUnit.test('Today style with unavailabilities ("week": "day:half")', async function (assert) {
+        assert.expect(2);
 
-        var gantt = await createView({
+        const unpatchDate = patchDate(2018, 11, 19, 2, 0, 0);
+
+        const unavailabilities = [{
+            start: '2018-12-16 10:00:00',
+            stop: '2018-12-18 14:00:00'
+        }].map(convertUnavailability);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop" display_unavailability="1"
+                        default_scale="week" scales="week" precision="{'week': 'day:half'}"/>`,
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'gantt_unavailability') {
+                    const rows = args.args[4];
+                    rows.forEach(function(r) {
+                        r.unavailabilities = unavailabilities;
+                    });
+                    return Promise.resolve(rows);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const cell4 = gantt.el.querySelectorAll('.o_gantt_row_container .o_gantt_cell')[3];
+        assert.hasClass(cell4, 'o_gantt_today');
+        assert.hasAttrValue(cell4, 'style', 'height: 95px;');
+
+        unpatchDate();
+        gantt.destroy();
+    });
+
+    QUnit.test('Today style of group rows', async function (assert) {
+        assert.expect(4);
+
+        const unpatchDate = patchDate(2018, 11, 19, 2, 0, 0);
+
+        this.data.tasks.records = this.data.tasks.records.filter(r => r.id === 4);
+
+        const unavailabilities = [{
+            start: '2018-12-18 09:00:00',
+            stop: '2018-12-19 13:00:00'
+        }].map(convertUnavailability);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop" display_unavailability="1"
+                        default_scale="week" scales="week" precision="{'week': 'day:half'}"/>`,
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id'],
+            mockRPC: function (route, args) {
+                if (args.method === 'gantt_unavailability') {
+                    const rows = args.args[4];
+                    rows.forEach(function(r) {
+                        r.unavailabilities = unavailabilities;
+                        r.rows.forEach(sr => {
+                            sr.unavailabilities = unavailabilities;
+                        })
+                    });
+                    return Promise.resolve(rows);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        let todayCells = gantt.el.querySelectorAll('div.o_gantt_today');
+        assert.deepEqual([...todayCells].map(c => c.getAttribute('style')), [
+            null,
+            "height: 0px;", // a css rule fix a minimal height
+            "height: 31px; background: linear-gradient(90deg, #f4f3ed 49%, #fffaeb 50%);"
+        ]);
+        assert.strictEqual(window.getComputedStyle(todayCells[1]).getPropertyValue('background-color'), "rgba(0, 0, 0, 0)");
+
+        await testUtils.dom.click(todayCells[1]);
+
+        todayCells = gantt.el.querySelectorAll('div.o_gantt_today');
+        assert.deepEqual([...todayCells].map(c => c.getAttribute('style')), [
+            null,
+            "height: 0px;"
+        ]);
+        assert.strictEqual(window.getComputedStyle(todayCells[1]).getPropertyValue('background-color'), "rgb(252, 250, 243)");
+
+        unpatchDate();
+        gantt.destroy();
+    });
+
+    QUnit.test('style without unavailabilities', async function (assert) {
+        assert.expect(3);
+
+        const unpatchDate = patchDate(2018, 11, 5, 2, 0, 0);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" display_unavailability="1" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'gantt_unavailability') {
+                    return Promise.resolve(args.args[4]);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const cells = gantt.el.querySelectorAll('.o_gantt_row_container .o_gantt_cell');
+
+        const cell5 = cells[4]
+        assert.hasClass(cell5, 'o_gantt_today');
+        assert.hasAttrValue(cell5, 'style', 'height: 95px;');
+        const cell6 = cells[5]
+        assert.hasAttrValue(cell6, 'style', 'height: 95px;');
+
+        unpatchDate();
+        gantt.destroy();
+    });
+
+    QUnit.test('Unavailabilities ("month": "day:half")', async function (assert) {
+        assert.expect(10);
+
+        const unpatchDate = patchDate(2018, 11, 5, 2, 0, 0);
+
+        const unavailabilities = [{
+            start: '2018-12-05 09:30:00',
+            stop: '2018-12-07 08:00:00'
+        }, {
+            start: '2018-12-16 09:00:00',
+            stop: '2018-12-18 13:00:00'
+        }].map(convertUnavailability);
+
+        const gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -2442,15 +2592,9 @@ QUnit.module('Views', {
                         "the start_date argument should be in the server format");
                     assert.strictEqual(args.args[1], '2018-12-31 23:59:59',
                         "the end_date argument should be in the server format");
-                    var rows = args.args[4];
+                    const rows = args.args[4];
                     rows.forEach(function(r) {
-                        r.unavailabilities = [{
-                            start: '2018-12-05 11:30:00',
-                            stop: '2018-12-08 08:00:00'
-                        }, {
-                            start: '2018-12-16 09:00:00',
-                            stop: '2018-12-18 13:00:00'
-                        }]
+                        r.unavailabilities = unavailabilities;
                     });
                     return Promise.resolve(rows);
                 }
@@ -2458,32 +2602,140 @@ QUnit.module('Views', {
             },
         });
 
-        var cell5 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-05 00:00:00"]');
-        assert.hasClass(cell5, 'o_gantt_unavailability', "the 5th cell should have unavailabilities");
-        assert.hasClass(cell5, 'o_gantt_unavailable_second_half', "the 5th cell should be gray in the afternoon");
+        const cells = gantt.el.querySelectorAll('.o_gantt_row_container .o_gantt_cell');
 
-        var cell6 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-06 00:00:00"]');
-        assert.hasClass(cell6, 'o_gantt_unavailability', "the 6th cell should have unavailabilities");
-        assert.hasClass(cell6, 'o_gantt_unavailable_full', "the 6th cell should be fully grayed-out");
+        const cell5 = cells[4];
+        assert.hasClass(cell5, 'o_gantt_today');
+        assert.hasAttrValue(cell5, 'style', 'height: 95px; background: linear-gradient(90deg, #fffaeb 49%, #f4f3ed 50%);');
+        const cell6 = cells[5];
+        assert.hasAttrValue(cell6, 'style', 'height: 95px; background: #e9ecef');
+        const cell7 = cells[6];
+        assert.hasAttrValue(cell7, 'style', 'height: 95px;');
+        const cell16 = cells[15];
+        assert.hasAttrValue(cell16,'style',  'height: 95px; background: linear-gradient(90deg, #ffffff 49%, #e9ecef 50%);');
+        const cell17 = cells[16];
+        assert.hasAttrValue(cell17,'style', 'height: 95px; background: #e9ecef');
+        const cell18 = cells[17];
+        assert.hasAttrValue(cell18,'style',  'height: 95px; background: linear-gradient(90deg, #e9ecef 49%, #ffffff 50%);');
 
-        var cell7 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-07 00:00:00"]');
-        assert.hasClass(cell7, 'o_gantt_unavailability', "the 7th cell should have unavailabilities");
-        assert.hasClass(cell7, 'o_gantt_unavailable_full', "the 7th cell should be fully grayed-out");
+        unpatchDate();
+        gantt.destroy();
+    });
 
-        var cell16 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-16 00:00:00"]');
-        assert.hasClass(cell16, 'o_gantt_unavailability', "the 16th cell should have unavailabilities");
-        assert.hasClass(cell16, 'o_gantt_unavailable_second_half', "the 16th cell should be gray in the afternoon");
+    QUnit.test('Unavailabilities ("day": "hours:quarter")', async function (assert) {
+        assert.expect(5);
 
-        var cell17 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-17 00:00:00"]');
-        assert.hasClass(cell17, 'o_gantt_unavailability', "the 18th cell should have unavailabilities");
-        assert.hasClass(cell17, 'o_gantt_unavailable_full', "the 18th cell should be fully grayed-out");
+        const unpatchDate = patchDate(2018, 11, 20, 8, 0, 0);
 
-        var cell18 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-18 00:00:00"]');
-        assert.hasClass(cell18, 'o_gantt_unavailability', "the 18th cell should have unavailabilities");
-        assert.hasClass(cell18, 'o_gantt_unavailable_first_half', "the 18th cell should be gray in the morning");
+        this.data.tasks.records = [];
 
-        assert.containsN(gantt, '.o_gantt_cell.o_gantt_unavailability', 6, "6 cells have unavailabilities data");
+        const unavailabilities = [
+            {
+                start: '2018-12-20 08:15:00',
+                stop: '2018-12-20 08:30:00',
+            }, {
+                start: '2018-12-20 10:35:00',
+                stop: '2018-12-20 12:29:00'
+            }, {
+                start: '2018-12-20 20:15:00',
+                stop: '2018-12-20 20:50:00',
+            }
+        ].map(convertUnavailability);
 
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop" display_unavailability="1"
+                        default_scale="day" scales="day" precision="{'day': 'hours:quarter'}"/>`,
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'gantt_unavailability') {
+                    const rows = args.args[4];
+                    rows.forEach(function(r) {
+                        r.unavailabilities = unavailabilities;
+                    });
+                    return Promise.resolve(rows);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const cells = gantt.el.querySelectorAll('.o_gantt_row_container .o_gantt_cell');
+
+        const cell9 = cells[8];
+        assert.hasAttrValue(cell9, 'style', 'height: 0px; background: linear-gradient(90deg, #ffffff 24%, #e9ecef 25%, #e9ecef 49%, #ffffff 50%, #ffffff 74%, #ffffff 75%);');
+        const cell11 = cells[10];
+        assert.hasAttrValue(cell11, 'style', 'height: 0px; background: linear-gradient(90deg, #ffffff 24%, #ffffff 25%, #ffffff 49%, #ffffff 50%, #ffffff 74%, #e9ecef 75%);');
+        const cell12 = cells[11];
+        assert.hasAttrValue(cell12, 'style', 'height: 0px; background: #e9ecef');
+        const cell13 = cells[12];
+        assert.hasAttrValue(cell13, 'style', 'height: 0px; background: linear-gradient(90deg, #e9ecef 24%, #ffffff 25%, #ffffff 49%, #ffffff 50%, #ffffff 74%, #ffffff 75%);');
+        const cell21 = cells[20];
+        assert.hasAttrValue(cell21, 'style', 'height: 0px; background: linear-gradient(90deg, #ffffff 24%, #e9ecef 25%, #e9ecef 49%, #e9ecef 50%, #e9ecef 74%, #ffffff 75%);');
+
+        unpatchDate();
+        gantt.destroy();
+    });
+
+    QUnit.test('Unavailabilities ("month": "day:half")', async function (assert) {
+        assert.expect(10);
+
+        const unpatchDate = patchDate(2018, 11, 5, 2, 0, 0);
+
+        const unavailabilities = [{
+            start: '2018-12-05 09:30:00',
+            stop: '2018-12-07 08:00:00'
+        }, {
+            start: '2018-12-16 09:00:00',
+            stop: '2018-12-18 13:00:00'
+        }].map(convertUnavailability);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" display_unavailability="1" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'gantt_unavailability') {
+                    assert.strictEqual(args.model, 'tasks',
+                        "the availability should be fetched on the correct model");
+                    assert.strictEqual(args.args[0], '2018-12-01 00:00:00',
+                        "the start_date argument should be in the server format");
+                    assert.strictEqual(args.args[1], '2018-12-31 23:59:59',
+                        "the end_date argument should be in the server format");
+                    const rows = args.args[4];
+                    rows.forEach(function(r) {
+                        r.unavailabilities = unavailabilities;
+                    });
+                    return Promise.resolve(rows);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const cells = gantt.el.querySelectorAll('.o_gantt_row_container .o_gantt_cell');
+
+        const cell5 = cells[4];
+        assert.hasClass(cell5, 'o_gantt_today');
+        assert.hasAttrValue(cell5, 'style', 'height: 95px; background: linear-gradient(90deg, #fffaeb 49%, #f4f3ed 50%);');
+        const cell6 = cells[5];
+        assert.hasAttrValue(cell6, 'style', 'height: 95px; background: #e9ecef');
+        const cell7 = cells[6];
+        assert.hasAttrValue(cell7, 'style', 'height: 95px;');
+        const cell16 = cells[15];;
+        assert.hasAttrValue(cell16,'style',  'height: 95px; background: linear-gradient(90deg, #ffffff 49%, #e9ecef 50%);');
+        const cell17 = cells[16];;
+        assert.hasAttrValue(cell17,'style', 'height: 95px; background: #e9ecef');
+        const cell18 = cells[17];;
+        assert.hasAttrValue(cell18,'style',  'height: 95px; background: linear-gradient(90deg, #e9ecef 49%, #ffffff 50%);');
+
+        unpatchDate();
         gantt.destroy();
     });
 

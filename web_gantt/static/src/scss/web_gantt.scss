@@ -60,10 +60,6 @@ $gantt-unavailability-bg: $gray-200;
         + .o_gantt_header_cell, + .o_gantt_cell {
             border-left-color: $gantt-highlight-today-border;
         }
-
-        &.o_gantt_unavailability {
-            background: mix($gantt-highlight-today-bg, $gantt-unavailability-bg);
-        }
     }
 }
 
@@ -251,31 +247,6 @@ $gantt-unavailability-bg: $gray-200;
             }
         }
 
-        .o_gantt_cell.o_gantt_unavailability {
-            background: linear-gradient(
-                $gantt-unavailability-bg,
-                $gantt-unavailability-bg
-            ) no-repeat;
-
-            &.o_gantt_unavailable_first_half {
-                background-size: 50%;
-            }
-
-            &.o_gantt_unavailable_second_half {
-                background-position: right;
-                background-size: 50%;
-            }
-        }
-
-        .o_gantt_cell.o_gantt_unavailable_second_half.o_gantt_today {
-            background: linear-gradient(
-                to right,
-                $gantt-highlight-today-bg 50%,
-                $gantt-unavailability-bg 50%
-            );
-            background-size: 100%;
-        }
-
         .o_gantt_cell_buttons {
             @include o-position-absolute(0, 0, $left: 0);
             display: none;
@@ -346,35 +317,6 @@ $gantt-unavailability-bg: $gray-200;
         .o_gantt_cell.o_gantt_hoverable.o_hovered {
             .o_gantt_cell_buttons {
                 display: flex;
-            }
-
-            &.o_gantt_unavailability {
-                &.o_gantt_unavailable_first_half {
-                    background: linear-gradient(
-                        to right,
-                        rgba($gantt-unavailability-bg, .7) 50%,
-                        $gantt-highlight-hover-row 50%
-                    );
-                    background-size: 100%;
-                }
-
-                &.o_gantt_unavailable_second_half {
-                    background: linear-gradient(
-                        to right,
-                        $gantt-highlight-hover-row 50%,
-                        rgba($gantt-unavailability-bg, .7) 50%
-                    );
-                    background-size: 100%;
-                }
-
-                &.o_gantt_unavailable_full {
-                    background: linear-gradient(
-                        to right,
-                        rgba($gantt-unavailability-bg, .7) 50%,
-                        rgba($gantt-unavailability-bg, .7) 50%
-                    );
-                    background-size: 100%;
-                }
             }
         }
     }

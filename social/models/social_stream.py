@@ -34,18 +34,24 @@ class SocialStream(models.Model):
     def create(self, vals_list):
         res = super(SocialStream, self).create(vals_list)
         res._apply_default_name()
-        res._fetch_stream_data()
-        return res
-
-    def write(self, vals):
-        res = super(SocialStream, self).write(vals)
-        self._fetch_stream_data()
+        for stream in res:
+            stream._fetch_stream_data()
         return res
 
     @api.model
     def refresh_all(self):
-        self.env['social.stream'].search([])._fetch_stream_data()
-        self.env['social.live.post']._refresh_live_posts_statistics()
+        """ Fetches the stream.post based on third party API endpoints (Facebook/Twitter/...) and inserts new stream.posts into database.
+        If any post is inserted into a stream created by the current user, the method returns 'True' to indicate caller that
+        changes were made and a refresh is required.
+
+        That means it will not always match the filter used on the view but it's the most common use case so it's not an issue.
+        (For cases when it does not match the user's filter, the view will need simple to be refreshed manually). """
+
+        new_content = False
+        for stream in self.env['social.stream'].search([]):
+            new_content |= stream._fetch_stream_data()
+
+        return new_content
 
     def _fetch_stream_data(self):
         """ Every social module should override this method.
@@ -58,8 +64,11 @@ class SocialStream(models.Model):
             - 'Feed' kanban loading
             - 'Refresh' button on 'Feed' kanban
             - ...
-        """
-        pass
+
+        This method should return 'True' if new social.posts are inserted,  please check the 'refresh_all' method for
+        further implementation instructions. """
+
+        self.ensure_one()
 
     def _apply_default_name(self):
         for stream in self:

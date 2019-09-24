@@ -131,6 +131,10 @@ $o-social-border-radius-base: 3px;
     }
 }
 
+.o_stream_post_kanban_refresh_now .fa-spinner {
+    margin-left: 5px;
+}
+
 // Record Design
 .o_social_stream_post_kanban_global {
     border-radius: $o-social-border-radius-base;
@@ -286,6 +290,14 @@ $o-social-border-radius-base: 3px;
             }
         }
     }
+}
+
+.o_social_stream_post_kanban_new_content {
+    display: block;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    background-color: rgba(0,0,0,0.05);
 }
 
 // Comments

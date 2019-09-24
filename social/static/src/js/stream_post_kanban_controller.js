@@ -14,11 +14,12 @@ var StreamPostKanbanController = KanbanController.extend({
     events: _.extend({}, KanbanController.prototype.events, {
         'click .o_social_stream_post_image_more, .o_social_stream_post_image_click': '_onClickMoreImages',
         'click .o_social_js_add_stream': '_onNewStream',
-        'click .o_social_account_link_disconnected': '_onRelinkAccount'
+        'click .o_social_account_link_disconnected': '_onRelinkAccount',
     }),
     custom_events: _.extend({}, KanbanController.prototype.custom_events, {
         'new_stream_account_clicked': '_onNewSteamAccountClicked',
         'new_stream_media_clicked': '_onNewSteamMediaClicked',
+        'new_content_clicked': '_onClickNewContent',
     }),
 
     /**
@@ -147,6 +148,13 @@ var StreamPostKanbanController = KanbanController.extend({
 
     /**
      * @private
+     */
+    _onClickNewContent: function () {
+        this.reload();
+    },
+
+    /**
+     * @private
      * @param {OdooEvent} event
      */
     _onNewSteamAccountClicked: function (event) {
@@ -188,14 +196,24 @@ var StreamPostKanbanController = KanbanController.extend({
     _onRefreshNow: function () {
         var self = this;
 
+        this.$buttons.find('.o_stream_post_kanban_refresh_now').addClass('disabled');
+        this.$buttons.find('.o_stream_post_kanban_refresh_now .fa-spinner').removeClass('d-none');
         Promise.all([
             this.model._refreshStreams(),
-            this.model._refreshAccountsStats().then(function (socialAccountsStats) {
-                self.renderer.state.socialAccountsStats = socialAccountsStats;
-                return Promise.resolve();
-            })
-        ]).then(function () {
-            self.reload();
+            this.model._refreshAccountsStats()
+        ]).then(function (results) {
+            var streamsNeedRefresh = results[0];
+            var socialAccountsStats = results[1];
+            if (streamsNeedRefresh) {
+                self.renderer._refreshStreamsRequired();
+            }
+
+            if (socialAccountsStats) {
+                self.renderer._refreshStats(socialAccountsStats);
+            }
+
+            self.$buttons.find('.o_stream_post_kanban_refresh_now').removeClass('disabled');
+            self.$buttons.find('.o_stream_post_kanban_refresh_now .fa-spinner').addClass('d-none');
         });
     },
 

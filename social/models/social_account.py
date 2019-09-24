@@ -72,4 +72,19 @@ class SocialAccount(models.Model):
     @api.model
     def refresh_statistics(self):
         """ Will re-compute the statistics of all active accounts. """
-        self.env['social.account'].search([]).sudo()._compute_statistics()
+        all_accounts = self.env['social.account'].search([('has_account_stats', '=', True)]).sudo()
+        all_accounts._compute_statistics()
+        return [{
+            'id': account.id,
+            'name': account.name,
+            'is_media_disconnected': account.is_media_disconnected,
+            'audience': account.audience,
+            'audience_trend': account.audience_trend,
+            'engagement': account.engagement,
+            'engagement_trend': account.engagement_trend,
+            'stories': account.stories,
+            'stories_trend': account.stories_trend,
+            'has_trends': account.has_trends,
+            'media_id': [account.media_id.id],
+            'stats_link': account.stats_link
+        } for account in all_accounts]

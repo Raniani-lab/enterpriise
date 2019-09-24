@@ -326,7 +326,7 @@
             New Post
         </button>
         <button type="button" class="btn btn-secondary o_stream_post_kanban_refresh_now">
-            Refresh
+            <span>Synchronize</span><i class="fa fa-spinner fa-spin d-none" />
         </button>
     </div>
 

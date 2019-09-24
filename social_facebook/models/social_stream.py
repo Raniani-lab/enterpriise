@@ -20,14 +20,13 @@ class SocialStreamFacebook(models.Model):
                 super(SocialStreamFacebook, stream)._apply_default_name()
 
     def _fetch_stream_data(self):
-        facebook_streams = self.filtered(lambda account: account.media_id.media_type == 'facebook')
-        super(SocialStreamFacebook, (self - facebook_streams))._fetch_stream_data()
+        if self.media_id.media_type != 'facebook':
+            return super(SocialStreamFacebook, self)._fetch_stream_data()
 
-        for stream in facebook_streams:
-            if stream.stream_type_id.stream_type == 'facebook_page_posts':
-                stream._fetch_page_posts('feed')
-            elif stream.stream_type_id.stream_type == 'facebook_page_mentions':
-                stream._fetch_page_posts('tagged')
+        if self.stream_type_id.stream_type == 'facebook_page_posts':
+            return self._fetch_page_posts('feed')
+        elif self.stream_type_id.stream_type == 'facebook_page_mentions':
+            return self._fetch_page_posts('tagged')
 
     def _fetch_page_posts(self, endpoint_name):
         self.ensure_one()
@@ -41,7 +40,7 @@ class SocialStreamFacebook(models.Model):
         result_posts = result.json().get('data')
         if not result_posts:
             self.account_id.sudo().write({'is_media_disconnected': True})
-            return
+            return False
 
         facebook_post_ids = [post.get('id') for post in result_posts]
         existing_posts = self.env['social.stream.post'].sudo().search([
@@ -76,7 +75,8 @@ class SocialStreamFacebook(models.Model):
                 values.update(self._extract_facebook_attachments(post))
                 posts_to_create.append(values)
 
-        self.env['social.stream.post'].sudo().create(posts_to_create)
+        stream_posts = self.env['social.stream.post'].sudo().create(posts_to_create)
+        return any(stream_post.stream_id.create_uid.id == self.env.uid for stream_post in stream_posts)
 
     @api.model
     def _extract_facebook_attachments(self, post):

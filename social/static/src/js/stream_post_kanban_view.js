@@ -15,32 +15,68 @@ var StreamPostKanbanView = KanbanView.extend({
         Controller: StreamPostKanbanController,
     }),
 
+    /**
+     * To summarize the flow:
+     *
+     * - We load the social.stream.post and display what we already have in database ("super" call) ;
+     * - We refresh the account statistics and re-render the statistics block ;
+     * - We refresh the streams and IF we detect new content, we display a link to the user to
+     *   reload the kanban.
+     *
+     * We only return the "superPromise" to allow the kanban to load normally while we're doing
+     * heavy third party API (facebook/Twitter/...) calls.
+     *
+     * This method allows speeding up the interface (A LOT).
+     *
+     * @param {Widget} parent
+     * @override
+     */
+    getController: function (parent) {
+        var model = this.getModel(parent);
+        var superPromise = this._super.apply(this, arguments);
+
+        Promise.all([
+            superPromise,
+            model._refreshStreams(),
+            model._refreshAccountsStats()
+        ]).then(function (results) {
+            var controller = results[0];
+            var streamsNeedRefresh = results[1];
+            var socialAccountsStats = results[2];
+            if (streamsNeedRefresh) {
+                controller.renderer._refreshStreamsRequired();
+            }
+
+            if (socialAccountsStats) {
+                controller.renderer._refreshStats(socialAccountsStats);
+            }
+        });
+
+        return superPromise;
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
 
     /**
-     * On first load of the kanban view, we need to refresh both the streams and the accounts stats
-     * BEFORE loading the kanban records.
+     * On first load of the kanban view, we also need to load the accounts stats.
      *
      * @override
+     * @private
      */
     _loadData: function (model) {
-        var self = this;
-        var superArguments = arguments;
-        var superMethod = this._super;
-
         return Promise.all([
-            model._refreshStreams(),
-            model._refreshAccountsStats().then(function (socialAccountsStats) {
-                return socialAccountsStats;
-            })
+            model._loadAccountsStats(),
+            this._super.apply(this, arguments)
         ]).then(function (results) {
-            var socialAccountsStats = results[1];
-            return superMethod.apply(self, superArguments).then(function (state) {
+            var socialAccountsStats = results[0];
+            var state = results[1];
+            if (!state.socialAccountsStats) {
                 state.socialAccountsStats = socialAccountsStats;
-                return state;
-            });
+            }
+
+            return state;
         });
     },
 });

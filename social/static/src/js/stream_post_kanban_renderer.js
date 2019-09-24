@@ -64,16 +64,36 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
      */
     start: function () {
         var self = this;
-        this.$before = $('<section/>', {class: 'o_social_stream_post_kanban_before d-flex flex-nowrap border-bottom'});
+        this.$before = this._createBeforeSectionElement();
         return this._super.apply(this, arguments).then(function () {
             self.$el.before(self.$before);
             self.$el.closest('.o_content').addClass('o_social_stream_post_kanban_view_wrapper bg-100');
+            self._prependNewContentElement();
         });
     },
 
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+
+    /**
+     * This method will prepend to the Kanban a "New Content" link that is shown whenever we detect
+     * new content available for the streams.
+     * When clicked, it triggers a 'new_content_clicked' event caught by the controller.
+     */
+    _prependNewContentElement: function () {
+        var self = this;
+        this.$el.closest('.o_content').prepend($('<a>', {
+            class: 'o_social_stream_post_kanban_new_content' + (this.refreshRequired ? '' : ' d-none'),
+            href: '#',
+            text: _('New content available. Click here to refresh.')
+        }).on('click', function (ev) {
+            ev.preventDefault();
+            $(ev.currentTarget).addClass('d-none');
+            self.refreshRequired = false;
+            self.trigger_up('new_content_clicked');
+        }));
+    },
 
     /**
      * Our socialAccountsStats cache variable need to be kept between state updates
@@ -87,10 +107,7 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
     },
 
     /**
-     * Overridden to:
-     * - display a custom dashboard on top of the kanban ;
-     * - handle custom "no content helper" messages.
-     * - render popover helpers
+     * Overridden to display a custom dashboard on top of the kanban.
      *
      * @override
      * @private
@@ -99,18 +116,50 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
     _render: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            self.$before.empty();
-            if (self.state.socialAccountsStats && self.state.socialAccountsStats.length !== 0) {
-                var $socialAccountsStats = QWeb.render(
-                    'social.AccountsStats',
-                    {socialAccounts: self.state.socialAccountsStats}
-                );
-
-                self.$before.append($socialAccountsStats);
-                self.$before.find('[data-toggle="popover"]').popover({
-                    trigger: 'hover'
-                });
+            if (!self.refreshRequired) {
+                self.$el
+                    .closest('.o_content')
+                    .find('.o_social_stream_post_kanban_new_content')
+                    .addClass('d-none');
             }
+            self._renderAccountStats();
+        });
+    },
+
+    /**
+     * Renders the custom account stats dashboard on top of the kanban and handles popovers.
+     *
+     * @private
+     */
+    _renderAccountStats: function () {
+        this.$before.empty();
+        if (this.state.socialAccountsStats && this.state.socialAccountsStats.length !== 0) {
+            var $socialAccountsStats = QWeb.render(
+                'social.AccountsStats',
+                {socialAccounts: this.state.socialAccountsStats}
+            );
+
+            if (this.$before.find('.o_social_stream_stat_box').length > 0) {
+                var $newElement = this._createBeforeSectionElement();
+                $newElement.append($socialAccountsStats);
+                // We use replaceWith to avoid as much flickering as possible.
+                this.$before.replaceWith($newElement);
+            } else {
+                this.$before.append($socialAccountsStats);
+            }
+
+            this.$before.find('[data-toggle="popover"]').popover({
+                trigger: 'hover'
+            });
+        }
+    },
+
+    /**
+     * @private
+     */
+    _createBeforeSectionElement: function () {
+        return $('<section/>', {
+            class: 'o_social_stream_post_kanban_before d-flex flex-nowrap border-bottom'
         });
     },
 
@@ -136,6 +185,45 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
         }
         if (!displayNoContentHelper && $noContentHelper.length) {
             $noContentHelper.remove();
+        }
+    },
+
+    /**
+     * Marks the renderer as 'Refresh Required', meaning we detected new content for the streams.
+     *
+     * We do it this way to avoid blocking the interface while the streams are refreshing because we
+     * depend on external service calls that can take a long time to answer.
+     *
+     * To summarize the flow:
+     * 1. We display what we already have in database
+     * 2. IF we detect new content, we display a link to the user to reload the kanban
+     *
+     * @private
+     */
+    _refreshStreamsRequired: function () {
+        this.refreshRequired = true;
+        if (this.$el) {
+            this.$el
+                .closest('.o_content')
+                .find('.o_social_stream_post_kanban_new_content')
+                .removeClass('d-none');
+        }
+    },
+
+    /**
+     * 2 use cases here:
+     * - We already have a "$el" element, meaning the rendering part is done and we need to
+     * refresh the statistics container by re-rendering it.
+     * - We don't have an "$el" element yet, meaning the rendering will use the refreshed stats
+     * from the state and we don't need to render anything.
+     *
+     * @param {Array} socialAccountsStats social.account statistics
+     * @private
+     */
+    _refreshStats: function (socialAccountsStats) {
+        this.state.socialAccountsStats = socialAccountsStats;
+        if (this.$el) {
+            this._renderAccountStats();
         }
     }
 });

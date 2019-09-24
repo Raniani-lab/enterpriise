@@ -6,8 +6,8 @@
         <field name="priority" eval="3"/>
         <field name="arch" type="xml">
             <map res_partner="partner_id">
-                <field name="name" string="Reference "/>
-                <field name="scheduled_date" string="Scheduled Date "/>
+                <field name="name" string="Reference"/>
+                <field name="scheduled_date" string="Scheduled Date"/>
             </map>
         </field>
     </record>

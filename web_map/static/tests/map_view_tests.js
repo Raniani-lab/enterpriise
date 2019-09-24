@@ -252,7 +252,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 model: 'project.task',
                 data: this.data,
                 arch: '<map res_partner="partner_id"  routing="true">' +
-                    '<field name="name" string="Project: "/>' +
+                    '<field name="name" string="Project"/>' +
                     '</map>',
                 mockRPC: function (route, args) {
                     switch (route) {
@@ -1305,7 +1305,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 model: 'project.task',
                 data: this.data,
                 arch: '<map res_partner="partner_id"  routing="true">' +
-                    '<field name="display_name" string="Name: "/>' +
+                    '<field name="display_name" string="Name"/>' +
                     '</map>',
                 viewOptions: {
                     actionViews: [{type: 'form'}]
@@ -1328,8 +1328,8 @@ odoo.define('web_map.view_view_tests', function (require) {
             await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0)[0]);
             assert.strictEqual(map.renderer.fieldsMarkerPopup.length, 1, 'fieldsMarkerPopup should contain one field');
             assert.strictEqual(map.$('tbody').children().children().length, 3, 'The popup should have one field');
-            assert.strictEqual(map.$('tbody').children().children().eq(0).prop("innerText"), 'Name:',
-                'The first element of the table should \'Name: \'');
+            assert.strictEqual(map.$('tbody').children().children().eq(0).prop("innerText"), 'Name',
+                'The first element of the table should \'Name\'');
             assert.strictEqual(map.$('tbody').children().children().eq(2).prop("innerText"), 'FooProject',
                 'The second element of the table should \'Foo\'');
             assert.strictEqual(map.$('div.center').children().length, 3, 'The popup should contain 2 buttons and one divider');

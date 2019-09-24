@@ -5,8 +5,8 @@
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <map res_partner="id">
-                <field name="name" string="Name "/>
-                <field name="contact_address_complete" string="Address "/>
+                <field name="name" string="Name"/>
+                <field name="contact_address_complete" string="Address"/>
             </map>
         </field>
     </record>

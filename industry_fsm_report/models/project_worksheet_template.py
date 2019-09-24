@@ -109,6 +109,7 @@ class ProjectWorksheetTemplate(models.Model):
         # create the view to extend by 'studio' and add the user custom fields
         form_view = self.env['ir.ui.view'].sudo().create({
             'type': 'form',
+            'name': 'template_view_' + "_".join(template.name.split(' ')),
             'model': model.model,
             'arch': """
             <form>

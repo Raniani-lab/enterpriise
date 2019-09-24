@@ -17,18 +17,10 @@
             </optional>
             <zeroOrMore>
                 <optional>
-                    <ref name="popup"/>
+                    <ref name="field"/>
                 </optional>
             </zeroOrMore>
 
-        </element>
-    </define>
-
-    <define name="popup">
-        <element name='marker-popup'>
-            <zeroOrMore>
-                <ref name="field"/>
-            </zeroOrMore>
         </element>
     </define>
 

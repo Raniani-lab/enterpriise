@@ -43,13 +43,9 @@ odoo.define('web_map.MapView', function (require) {
             this.rendererParams.panelTitle = this.arch.attrs.panel_title || params.displayName || _t('Items');
 
             this.arch.children.forEach(function (node) {
-                if (node.tag === 'marker-popup') {
-                    node.children.forEach(function (child) {
-                        if (child.tag === 'field') {
-                            fieldNames.push(child.attrs.name);
-                            fieldNamesMarkerPopup.push({ fieldName: child.attrs.name, string: child.attrs.string });
-                        }
-                    });
+                if (node.tag === 'field') {
+                    fieldNames.push(node.attrs.name);
+                    fieldNamesMarkerPopup.push({ fieldName: node.attrs.name, string: node.attrs.string });
                 }
             });
             this.loadParams.fieldNames = _.uniq(fieldNames);

@@ -252,9 +252,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 model: 'project.task',
                 data: this.data,
                 arch: '<map res_partner="partner_id"  routing="true">' +
-                    '<marker-popup>' +
                     '<field name="name" string="Project: "/>' +
-                    '</marker-popup>' +
                     '</map>',
                 mockRPC: function (route, args) {
                     switch (route) {
@@ -1307,9 +1305,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 model: 'project.task',
                 data: this.data,
                 arch: '<map res_partner="partner_id"  routing="true">' +
-                    '<marker-popup>' +
                     '<field name="display_name" string="Name: "/>' +
-                    '</marker-popup>' +
                     '</map>',
                 viewOptions: {
                     actionViews: [{type: 'form'}]

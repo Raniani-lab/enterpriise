@@ -63,14 +63,12 @@
         <field name="priority">12</field>
         <field name="arch" type="xml">
             <map res_partner="partner_id"  default_order="planned_date_begin" routing="true">
-                <marker-popup>
-                    <field name="name" string="Task"/>
-                    <field name="partner_id" string="Customer" />
-                    <field name="partner_street" string="Address" />
-                    <field name="partner_zip" string=""/>
-                    <field name="partner_city" string=""/>
-                    <field name="partner_phone" string="Phone"/>
-                </marker-popup>
+                <field name="name" string="Task"/>
+                <field name="partner_id" string="Customer" />
+                <field name="partner_street" string="Address" />
+                <field name="partner_zip" string=""/>
+                <field name="partner_city" string=""/>
+                <field name="partner_phone" string="Phone"/>
             </map>
         </field>
     </record>

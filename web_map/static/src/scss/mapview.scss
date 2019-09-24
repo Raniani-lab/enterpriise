@@ -32,6 +32,7 @@ $map-number-font-size: 19px;
                 display: flex;
                 justify-content: left;
                 align-items: flex-end;
+                margin-top: 8px;
             }
 
             .divider {
@@ -112,8 +113,14 @@ $map-number-font-size: 19px;
         margin-top: 10%;
     }
 
-    //used to disabled opening animation for the popups.
     .leaflet-fade-anim .leaflet-popup {
+        // used to disabled opening animation for the popups.
         transition: none;
+        .leaflet-popup-content-wrapper {
+            border-radius: $border-radius;
+            .leaflet-popup-content {
+                margin: 24px 20px 20px 20px;
+            }
+        }
     }
 }

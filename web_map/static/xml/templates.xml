@@ -21,9 +21,8 @@
                 </tr>
             </tbody>
         </table>
-        <br/>
-        <div class="center">
-            <button class ="btn btn-primary edit">edit</button>
+        <div class="center mt8">
+            <button class="btn btn-primary o_open">open</button>
             <div class="divider"/>
             <a class="btn btn-primary" style="color:white" t-att-href="records.url" target="_blank">navigate to</a>
         </div>

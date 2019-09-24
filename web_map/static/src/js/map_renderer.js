@@ -171,7 +171,7 @@ odoo.define('web_map.MapRenderer', function (require) {
                     popup.records = self._getMarkerPopupFields(record, self.fieldsMarkerPopup);
                     popup.url = 'https://www.google.com/maps/dir/?api=1&destination=' + record.partner.partner_latitude + ',' + record.partner.partner_longitude;
                     var $popup = $(qweb.render('map-popup', { records: popup }));
-                    var openButton = $popup.find('button.btn.btn-primary.edit')[0];
+                    var openButton = $popup.find('button.btn.btn-primary.o_open')[0];
                     if (self.hasFormView) {
                         openButton.onclick = function () {
                             self.trigger_up('open_clicked',

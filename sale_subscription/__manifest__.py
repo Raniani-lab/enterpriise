@@ -28,6 +28,7 @@ Features:
     'data': [
         'security/sale_subscription_security.xml',
         'security/ir.model.access.csv',
+        'security/sms_security.xml',
         'wizard/sale_subscription_close_reason_wizard_views.xml',
         'wizard/sale_subscription_wizard_views.xml',
         'views/sale_order_views.xml',

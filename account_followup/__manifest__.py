@@ -26,6 +26,7 @@ of recall defined. You can define different policies for different companies.
     'data': [
         'security/account_followup_security.xml',
         'security/ir.model.access.csv',
+        'security/sms_security.xml',
         'data/account_followup_data.xml',
         'data/cron.xml',
         'views/account_followup_views.xml',

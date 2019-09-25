@@ -15,6 +15,8 @@
         'views/marketing_activity_views.xml',
         'views/marketing_campaign_views.xml',
         'views/marketing_participant_views.xml',
+        'security/ir.model.access.csv',
+        'security/sms_security.xml',
     ],
     'demo': [
     ],

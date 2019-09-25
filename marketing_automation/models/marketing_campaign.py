@@ -317,7 +317,7 @@ class MarketingActivity(models.Model):
         ('months', 'Months')],
         default='hours', required=True)
 
-    require_sync = fields.Boolean('Require trace sync')
+    require_sync = fields.Boolean('Require trace sync', copy=False)
 
     domain = fields.Char(
         string='Applied Filter', default='[]',
@@ -333,7 +333,7 @@ class MarketingActivity(models.Model):
         ('email', 'Email'),
         ('action', 'Server Action')
         ], required=True, default='email')
-    mass_mailing_id = fields.Many2one('mailing.mailing', string='Email Template')
+    mass_mailing_id = fields.Many2one('mailing.mailing', string='Marketing Template')
     mass_mailing_id_mailing_type = fields.Selection([('mail', 'Email')])
     server_action_id = fields.Many2one('ir.actions.server', string='Server Action')
 

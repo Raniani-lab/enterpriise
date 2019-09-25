@@ -9,6 +9,7 @@
     'data':[
         "views/assets.xml",
         "views/res_config_settings.xml",
+        "views/res_partner_views.xml",
     ],
     'qweb':[
         "static/xml/templates.xml"

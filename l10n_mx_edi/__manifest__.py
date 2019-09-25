@@ -14,7 +14,6 @@ This module allows the creation of the EDI documents and the communication with 
     """,
     'depends': [
         'account',
-        'account_cancel',
         'base_vat',
         'base_address_extended',
         'attachment_indexation',

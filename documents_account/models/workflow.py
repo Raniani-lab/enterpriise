@@ -46,6 +46,7 @@ class WorkflowActionRuleAccount(models.Model):
                     new_obj.with_context(no_document=True, default_journal_id=journal.id, default_type=invoice_type).message_post(body=body, attachment_ids=[document.attachment_id.id])
                     invoice_ids.append(new_obj.id)
 
+            context = dict(self._context, default_type=invoice_type, default_journal_id=journal.id)
             action = {
                 'type': 'ir.actions.act_window',
                 'res_model': 'account.move',
@@ -54,7 +55,7 @@ class WorkflowActionRuleAccount(models.Model):
                 'view_mode': 'tree',
                 'views': [(False, "list"), (False, "form")],
                 'domain': [('id', 'in', invoice_ids)],
-                'context': self._context,
+                'context': context,
             }
             if len(invoice_ids) == 1:
                 record = new_obj or self.env['account.move'].browse(invoice_ids[0])

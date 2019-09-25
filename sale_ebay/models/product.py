@@ -973,7 +973,6 @@ class ProductTemplate(models.Model):
 
     def unlink_listing_product_ebay(self):
         for product in self:
-            product._sync_product_status()
             product.write({
                 'ebay_use': False,
                 'ebay_id': False,

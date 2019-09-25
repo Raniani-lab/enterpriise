@@ -740,5 +740,5 @@ class HelpdeskTicket(models.Model):
     def rating_apply(self, rate, token=None, feedback=None, subtype=None):
         return super(HelpdeskTicket, self).rating_apply(rate, token=token, feedback=feedback, subtype="helpdesk.mt_ticket_rated")
 
-    def rating_get_parent(self):
+    def _rating_get_parent_field_name(self):
         return 'team_id'

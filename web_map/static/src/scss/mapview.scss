@@ -142,4 +142,11 @@ $map-number-font-size: 19px;
         width: 100%;
         z-index: 401; // leaflet have 400
     }
+
+    .leaflet-container a {
+        color: $link-color;
+        @include hover {
+            color: $link-hover-color;
+        }
+    }
 }

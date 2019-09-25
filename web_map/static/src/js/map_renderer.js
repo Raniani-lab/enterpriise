@@ -47,9 +47,7 @@ odoo.define('web_map.MapRenderer', function (require) {
             } else {
                 this.leafletMap.fitWorld();
             }
-            if (!this.mapBoxToken && this.routing) {
-                $(qweb.render('MapView.no_map_token')).appendTo(this.$el);
-            }
+            this._addBanner();
             this._addMakers(this.state.records);
             this._addRoutes(this.state.route);
 
@@ -155,6 +153,23 @@ odoo.define('web_map.MapRenderer', function (require) {
                 }
             });
             return fieldsView;
+        },
+
+        /**
+         * Adds a warning banner when needed
+         */
+        _addBanner: function () {
+            let $banner;
+            if (this.state.routingError) {
+                $banner = $(qweb.render('MapView.routing_unavailable', {
+                    message: this.state.routingError,
+                }));
+            } else if (this.routing && !this.mapBoxToken) {
+                $banner = $(qweb.render('MapView.no_map_token'));
+            }
+            if ($banner) {
+                $banner.appendTo(this.$('.o_map_container'));
+            }
         },
 
         /**
@@ -360,12 +375,13 @@ odoo.define('web_map.MapRenderer', function (require) {
                 } else {
                     this.leafletMap.fitWorld();
                 }
+                this._addBanner();
                 this._addMakers(this.state.records);
                 this._addRoutes(this.state.route);
                 this._addPinList();
             }
             return Promise.resolve();
-        }
+        },
     });
     return MapRenderer;
 });

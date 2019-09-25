@@ -38,7 +38,7 @@ odoo.define('web_map.MapView', function (require) {
                 this.loadParams.orderBy = [{ name: this.arch.attrs.default_order || 'display_name', asc: true }];
             }
 
-            const routing = ["true", "1"].includes(this.arch.attrs.routing);
+            const routing = ["true", "True", "1"].includes(this.arch.attrs.routing);
 
             this.loadParams.routing = routing;
             this.rendererParams.routing = routing;

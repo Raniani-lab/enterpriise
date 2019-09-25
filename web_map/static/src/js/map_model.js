@@ -129,6 +129,10 @@ odoo.define('web_map.MapModel', function (require) {
                 case 403:
                     this.do_warn(_t('Unauthorized connection'), _t('The view has switched to another provider but functionalities will be limited'));
                     break;
+                case 422:   // Max. addresses reached
+                case 429:   // Max. requests reached
+                    this.data.routingError = this._getErrorMessage(err.responseJSON.message);
+                    break;
                 case 500:
                     this.do_warn(_t('MapBox servers unreachable'), _t('The view has switched to another provider but functionalities will be limited'));
             }
@@ -218,7 +222,11 @@ odoo.define('web_map.MapModel', function (require) {
                     self.data.route = { routes: [] };
                     if (self.numberOfLocatedRecords > 1 && self.routing) {
                         return self._fetchRoute().then(function (routeResult) {
-                            self.data.route = routeResult;
+                            if (routeResult.routes) {
+                                self.data.route = routeResult;
+                            } else {
+                                self.data.routingError = self._getErrorMessage(routeResult.message);
+                            }
                         });
                     } else {
                         return Promise.resolve();
@@ -368,6 +376,20 @@ odoo.define('web_map.MapModel', function (require) {
                     method: 'GET',
                 }).then(resolve).catch(reject);
             });
+        },
+
+        /**
+         * Converts a MapBox error message into a custom translatable one.
+         *
+         * @param {string} message
+         */
+        _getErrorMessage: function (message) {
+            const ERROR_MESSAGES = {
+                'Too many coordinates; maximum number of coordinates is 25': _t("Too many routing points (maximum 25)"),
+                'Route exceeds maximum distance limitation': _t("Some routing points are too further apart"),
+                'Too Many Requests': _t("Too many requests, try again in a few minutes"),
+            };
+            return ERROR_MESSAGES[message];
         },
     });
     return MapModel;

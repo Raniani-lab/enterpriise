@@ -92,6 +92,13 @@ class RentalOrder(models.Model):
             'context': context
         }
 
+    def _get_portal_return_action(self):
+        """ Return the action used to display orders when returning from customer portal. """
+        if self.is_rental_order:
+            return self.env.ref('sale_renting.rental_order_action')
+        else:
+            return super(RentalOrder, self)._get_portal_return_action()
+
 
 class RentalOrderLine(models.Model):
     _inherit = 'sale.order.line'

@@ -4,6 +4,7 @@
 from datetime import datetime
 
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class TestType(models.Model):
@@ -21,7 +22,10 @@ class QualityPoint(models.Model):
     _order = "sequence, id"
 
     def __get_default_team_id(self):
-        return self.env['quality.alert.team'].search([], limit=1).id
+        # rename in 12.5 (__ -> _)
+        company_id = self.company_id.id or self.env.context.get('default_company_id', self.env.company.id)
+        domain = ['|', ('company_id', '=', company_id), ('company_id', '=', False)]
+        return self.team_id._get_quality_team(domain)
 
     def _get_default_test_type_id(self):
         domain = self._get_type_default_domain()
@@ -106,6 +110,15 @@ class QualityAlertTeam(models.Model):
         alert_result = dict((data['team_id'][0], data['team_id_count']) for data in alert_data)
         for team in self:
             team.alert_count = alert_result.get(team.id, 0)
+
+    @api.model
+    def _get_quality_team(self, domain):
+        team_id = self.env['quality.alert.team'].search(domain, limit=1).id
+        if team_id:
+            return team_id
+        else:
+            raise UserError(_("No quality team found for this company.\n"
+                              "Please go to configuration and create one first."))
 
 
 class QualityReason(models.Model):
@@ -209,6 +222,11 @@ class QualityAlert(models.Model):
     _description = "Quality Alert"
     _inherit = ['mail.thread.cc', 'mail.activity.mixin']
 
+    def _get_default_team_id(self):
+        company_id = self.company_id.id or self.env.context.get('default_company_id', self.env.company.id)
+        domain = ['|', ('company_id', '=', company_id), ('company_id', '=', False)]
+        return self.team_id._get_quality_team(domain)
+
     name = fields.Char('Name', default=lambda self: _('New'))
     description = fields.Html('Description')
     stage_id = fields.Many2one('quality.alert.stage', 'Stage', ondelete='restrict',
@@ -225,7 +243,7 @@ class QualityAlert(models.Model):
     user_id = fields.Many2one('res.users', 'Responsible', tracking=True, default=lambda self: self.env.user)
     team_id = fields.Many2one(
         'quality.alert.team', 'Team', required=True,
-        default=lambda x: x.env['quality.alert.team'].search([], limit=1))
+        default=lambda x: x._get_default_team_id())
     partner_id = fields.Many2one('res.partner', 'Vendor')
     check_id = fields.Many2one('quality.check', 'Check')
     product_tmpl_id = fields.Many2one('product.template', 'Product')

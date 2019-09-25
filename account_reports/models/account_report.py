@@ -536,7 +536,7 @@ class AccountReport(models.AbstractModel):
         it will fallback on creating a hierarchy based on the account's code first 3
         digits.
         """
-        is_number = ['number' in c.get('class') for c in self.get_header(options)[-1][1:]]
+        is_number = ['number' in c.get('class', []) for c in self.get_header(options)[-1][1:]]
         # Avoid redundant browsing.
         accounts_cache = {}
 
@@ -630,7 +630,7 @@ class AccountReport(models.AbstractModel):
         for line in lines + [None]:
             # Only deal with lines grouped by accounts.
             # And discriminating sections defined by account.financial.html.report.line
-            is_grouped_by_account = line and line.get('caret_options')
+            is_grouped_by_account = line and line.get('caret_options') == 'account.account'
             if not is_grouped_by_account or not line:
 
                 # No group code found in any lines, compute it automatically.

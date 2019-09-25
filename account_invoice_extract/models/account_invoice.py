@@ -470,10 +470,21 @@ class AccountMove(models.Model):
                 for taxes, taxes_type in zip(taxes, taxes_type_ocr):
                     if taxes != 0.0:
                         if (taxes, taxes_type) not in taxes_found:
-                            taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
-                            if taxes_record:
-                                taxes_found[(taxes, taxes_type)] = taxes_record.id
+                            related_documents = self.search([('state', '!=', 'draft'), ('type', '=', self.type), ('partner_id', '=', self.partner_id.id)])
+                            lines = related_documents.invoice_line_ids
+                            taxes_ids = related_documents.invoice_line_ids.tax_ids
+                            taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == 'purchase')
+                            taxes_by_document = []
+                            for tax in taxes_ids:
+                                taxes_by_document.append((tax, lines.filtered(lambda line: tax in line.tax_ids)))
+                            if len(taxes_by_document) != 0:
+                                taxes_found[(taxes, taxes_type)] = max(taxes_by_document, key=lambda tax: len(tax[1]))[0]
                                 keys.append(taxes_found[(taxes, taxes_type)])
+                            else:
+                                taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
+                                if taxes_record:
+                                    taxes_found[(taxes, taxes_type)] = taxes_record
+                                    keys.append(taxes_found[(taxes, taxes_type)])
                         else:
                             keys.append(taxes_found[(taxes, taxes_type)])
 
@@ -522,10 +533,21 @@ class AccountMove(models.Model):
                         if (taxes, taxes_type) in taxes_found:
                             vals['tax_ids'].append(taxes_found[(taxes, taxes_type)])
                         else:
-                            taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
-                            if taxes_record:
-                                taxes_found[(taxes, taxes_type)] = taxes_record
+                            related_documents = self.search([('state', '!=', 'draft'), ('type', '=', self.type), ('partner_id', '=', self.partner_id.id)])
+                            lines = related_documents.invoice_line_ids
+                            taxes_ids = related_documents.invoice_line_ids.tax_ids
+                            taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == 'purchase')
+                            taxes_by_document = []
+                            for tax in taxes_ids:
+                                taxes_by_document.append((tax, lines.filtered(lambda line: tax in line.tax_ids)))
+                            if len(taxes_by_document) != 0:
+                                taxes_record = taxes_found[(taxes, taxes_type)] = max(taxes_by_document, key=lambda tax: len(tax[1]))[0]
                                 vals['tax_ids'].append(taxes_record)
+                            else:
+                                taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
+                                if taxes_record:
+                                    taxes_found[(taxes, taxes_type)] = taxes_record
+                                    vals['tax_ids'].append(taxes_record)
 
                 invoice_lines_to_create.append(vals)
 

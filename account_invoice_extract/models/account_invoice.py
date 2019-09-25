@@ -575,7 +575,6 @@ class AccountMove(models.Model):
             # Retry saving without the ref, then set the error status to show the user a warning
             except ValidationError as e:
                 self._save_form(ocr_results, no_ref=True)
-                self.extract_state = 'error_status'
                 self.extract_status_code = WARNING_DUPLICATE_VENDOR_REFERENCE
                 self.duplicated_vendor_ref = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
 

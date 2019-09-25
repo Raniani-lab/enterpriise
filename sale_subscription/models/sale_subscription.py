@@ -1217,10 +1217,10 @@ class SaleSubscriptionAlert(models.Model):
                 alert._set_field_action('stage_id', alert.stage_id.id)
             elif alert.action == 'set_to_renew':
                 alert._set_field_action('to_renew', True)
-            elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
-                alert.set_activity_action()
             elif vals.get('action') in ('email', 'sms'):
                 super(SaleSubscriptionAlert, alert).write({'state': vals.get('action')})
+            elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
+                alert.set_activity_action()
 
     @api.model
     def create(self, vals):

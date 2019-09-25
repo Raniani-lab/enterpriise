@@ -41,7 +41,8 @@ class UtmCampaign(models.Model):
         action = self.env.ref('social.action_social_post').read()[0]
         action['views'] = [[False, 'form']]
         action['context'] = {
-            'default_utm_campaign_id': self.id
+            'default_utm_campaign_id': self.id,
+            'default_account_ids': self.env['social.account'].search(self._get_social_media_accounts_domain()).ids
         }
         return action
 
@@ -57,3 +58,7 @@ class UtmCampaign(models.Model):
     def _get_campaign_social_posts_domain(self):
         """This method will need to be overriden in social_push_notifications to filter out posts who only are push notifications"""
         return [('utm_campaign_id', 'in', self.ids)]
+
+    def _get_social_media_accounts_domain(self):
+        """This method will need to be overriden in social_push_notifications to filter out push_notifications medium"""
+        return []

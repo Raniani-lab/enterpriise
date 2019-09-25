@@ -29,18 +29,17 @@ class SocialStreamTwitter(models.Model):
                 super(SocialStreamTwitter, stream)._apply_default_name()
 
     def _fetch_stream_data(self):
-        twitter_streams = self.filtered(lambda account: account.media_id.media_type == 'twitter')
-        super(SocialStreamTwitter, (self - twitter_streams))._fetch_stream_data()
+        if self.media_id.media_type != 'twitter':
+            return super(SocialStreamTwitter, self)._fetch_stream_data()
 
-        for stream in twitter_streams:
-            if stream.stream_type_id.stream_type == 'twitter_user_mentions':
-                stream._fetch_tweets('statuses/mentions_timeline')
-            elif stream.stream_type_id.stream_type == 'twitter_follow':
-                stream._fetch_tweets('statuses/user_timeline', {'user_id': stream.twitter_followed_account_id.twitter_id})
-            elif stream.stream_type_id.stream_type == 'twitter_likes':
-                stream._fetch_tweets('favorites/list', {'user_id': stream.twitter_followed_account_id.twitter_id})
-            elif stream.stream_type_id.stream_type == 'twitter_keyword':
-                stream._fetch_tweets('search/tweets', {'q': stream.twitter_searched_keyword + ' -filter:retweets', 'result_type': 'recent'})
+        if self.stream_type_id.stream_type == 'twitter_user_mentions':
+            return self._fetch_tweets('statuses/mentions_timeline')
+        elif self.stream_type_id.stream_type == 'twitter_follow':
+            return self._fetch_tweets('statuses/user_timeline', {'user_id': self.twitter_followed_account_id.twitter_id})
+        elif self.stream_type_id.stream_type == 'twitter_likes':
+            return self._fetch_tweets('favorites/list', {'user_id': self.twitter_followed_account_id.twitter_id})
+        elif self.stream_type_id.stream_type == 'twitter_keyword':
+            return self._fetch_tweets('search/tweets', {'q': self.twitter_searched_keyword + ' -filter:retweets', 'result_type': 'recent'})
 
     def _fetch_tweets(self, endpoint_name, extra_params={}):
         self.ensure_one()
@@ -64,9 +63,9 @@ class SocialStreamTwitter(models.Model):
         )
 
         result_tweets = result.json() if endpoint_name != 'search/tweets' else result.json().get('statuses')
-        if isinstance(result_tweets, dict) and result_tweets.get('errors'):
+        if isinstance(result_tweets, dict) and result_tweets.get('errors') or result_tweets is None:
             self.account_id.sudo().write({'is_media_disconnected': True})
-            return
+            return False
 
         tweets_ids = [tweet.get('id_str') for tweet in result_tweets]
         existing_tweets = self.env['social.stream.post'].sudo().search([
@@ -105,7 +104,8 @@ class SocialStreamTwitter(models.Model):
                 values.update(self._extract_twitter_attachments(tweet))
                 tweets_to_create.append(values)
 
-        self.env['social.stream.post'].sudo().create(tweets_to_create)
+        stream_posts = self.env['social.stream.post'].sudo().create(tweets_to_create)
+        return any(stream_post.stream_id.create_uid.id == self.env.uid for stream_post in stream_posts)
 
     @api.model
     def _extract_twitter_attachments(self, tweet):

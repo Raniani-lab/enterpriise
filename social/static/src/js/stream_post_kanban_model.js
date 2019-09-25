@@ -18,6 +18,8 @@ var StreamPostKanbanModel = KanbanModel.extend({
         return this._rpc({
             model: 'social.stream',
             method: 'refresh_all'
+        }, {
+            shadow: true
         });
     },
 
@@ -28,13 +30,11 @@ var StreamPostKanbanModel = KanbanModel.extend({
      * @private
      */
     _refreshAccountsStats: function () {
-        var self = this;
-
         return this._rpc({
             model: 'social.account',
             method: 'refresh_statistics'
-        }).then(function () {
-            return self._loadAccountsStats();
+        }, {
+            shadow: true
         });
     },
 

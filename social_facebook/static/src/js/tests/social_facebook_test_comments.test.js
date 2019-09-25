@@ -15,10 +15,13 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '    js_class="social_stream_post_kanban_view">' +
     '    <field name="id"/>' +
     '    <field name="author_name"/>' +
+    '    <field name="author_link"/>' +
     '    <field name="post_link"/>' +
     '    <field name="published_date"/>' +
+    '    <field name="formatted_published_date"/>' +
     '    <field name="message"/>' +
     '    <field name="media_type"/>' +
+    '    <field name="account_id"/>' +
     '    <field name="link_url"/>' +
     '    <field name="link_image_url"/>' +
     '    <field name="link_title"/>' +
@@ -56,7 +59,7 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '                        </div>' +
     '                        <div class="o_social_stream_post_published_date col-md-4 m-0 p-0 text-right">' +
     '                            <small>' +
-    '                                <span t-esc="record.published_date.value and record.published_date.value.split(\' \')[0] or False"' +
+    '                                <span t-esc="record.published_date.value and record.published_date.value.split(\' \')[0] or \'\'"' +
     '                                    t-att-title="record.published_date.value">' +
     '                                </span>' +
     '                            </small>' +
@@ -102,11 +105,28 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '                        <span class="o_social_kanban_likes_count" t-esc="record.facebook_likes_count.raw_value !== 0 ? record.facebook_likes_count.raw_value : \'\'"></span>' +
     '                        <i class="fa fa-thumbs-up" title="Likes"></i>' +
     '                    </div>' +
-    '                    <div t-attf-class="o_social_facebook_comments col-md-3 border border-left-0 border-bottom-0 m-0 p-0 text-center"' +
+    '                    <div class="o_social_facebook_comments o_social_comments o_social_subtle_btn px-3"' +
+    '                        data-media-type="facebook"' +
+    '                        t-att-data-post-message="record.message.raw_value"' +
+    '                        t-att-data-post-images="record.stream_post_image_urls.raw_value"' +
+    '                        t-att-data-post-link="record.post_link.raw_value"' +
+    '                        t-att-data-facebook-author-id="record.facebook_author_id.raw_value"' +
+    '                        t-att-data-author-name="record.author_name.raw_value"' +
+    '                        t-att-data-author-link="record.author_link.raw_value"' +
+    '                        t-att-data-published-date="record.published_date.value"' +
+    '                        t-att-data-formatted-published-date="record.formatted_published_date.value"' +
+    '                        t-att-data-link-url="record.link_url.raw_value"' +
+    '                        t-att-data-link-image="record.link_image_url.raw_value"' +
+    '                        t-att-data-link-title="record.link_title.raw_value"' +
+    '                        t-att-data-link-description="record.link_description.raw_value"' +
     '                        t-att-data-post-id="record.id.raw_value"' +
-    '                        t-att-data-facebook-page-id="record.facebook_page_id.raw_value">' +
-    '                        <t t-esc="record.facebook_comments_count.value"></t>' +
+    '                        t-att-data-facebook-page-id="record.account_id.raw_value"' +
+    '                        t-att-data-facebook-user-likes="record.facebook_user_likes.raw_value"' +
+    '                        t-att-data-facebook-likes-count="record.facebook_likes_count.raw_value"' +
+    '                        t-att-data-facebook-shares-count="record.facebook_shares_count.raw_value"' +
+    '                        t-att-data-facebook-reach="record.facebook_reach.raw_value">' +
     '                        <i class="fa fa-comments" title="Comments"></i>' +
+    '                        <b t-esc="record.facebook_comments_count.value !== \'0\' ? record.facebook_comments_count.value : \'\'"/>' +
     '                    </div>' +
     '                    <div class="col-md-3 border border-left-0 border-bottom-0 m-0 p-0 text-center">' +
     '                        <t t-esc="record.facebook_shares_count.value"></t>' +
@@ -187,12 +207,6 @@ QUnit.module('Facebook Comments', {
                     stories_trend: 0,
                     stats_link: 'facebook.com/jhon',
                     media_id: 1
-                }, {
-                    id: 3,
-                    name: 'Michel\'s Page',
-                    has_account_stats: false,
-                    stats_link: 'facebook.com/michel',
-                    media_id: 1
                 }]
             },
             social_stream: {
@@ -226,8 +240,10 @@ QUnit.module('Facebook Comments', {
                     id: {type: 'integer'},
                     name: {type: 'char'},
                     author_name: {type: 'char'},
+                    author_link: {type: 'char'},
                     post_link: {type: 'char'},
                     published_date: {type: 'datetime'},
+                    formatted_published_date: {type: 'char'},
                     message: {type: 'text'},
                     media_type: {type: 'char'},
                     link_url: {type: 'char'},
@@ -255,13 +271,20 @@ QUnit.module('Facebook Comments', {
                         string: 'Facebook Page',
                         type: 'many2one',
                         relation: 'social.account'
+                    },
+                    account_id: {
+                        string: 'Account',
+                        type: 'many2one',
+                        relation: 'social.account'
                     }
                 },
                 records: [{
                     id: 1,
                     author_name: 'Jhon',
                     post_link: 'www.odoosocial.com/link1',
+                    author_link: 'www.odoosocial.com/author1',
                     published_date: "2019-08-20 14:16:00",
+                    formatted_published_date: "2019-08-20 14:16:00",
                     message: 'Message 1 Youtube',
                     media_type: 'facebook',
                     link_url: 'blog.com/odoosocial',
@@ -275,12 +298,15 @@ QUnit.module('Facebook Comments', {
                     facebook_shares_count: 3,
                     facebook_reach: 18,
                     facebook_page_id: 1,
+                    account_id: 1,
                     stream_id: 1
                 }, {
                     id: 2,
                     author_name: 'Jack',
                     post_link: 'www.odoosocial.com/link2',
+                    author_link: 'www.odoosocial.com/author2',
                     published_date: "2019-08-20 14:17:00",
+                    formatted_published_date: "2019-08-20 14:17:00",
                     message: 'Message 2 Images',
                     media_type: 'facebook',
                     social_stream_post_image: '["photos.com/image1.png","photos.com/image2.png"]',
@@ -290,13 +316,16 @@ QUnit.module('Facebook Comments', {
                     facebook_comments_count: 25,
                     facebook_shares_count: 4,
                     facebook_page_id: 1,
+                    account_id: 1,
                     facebook_reach: 33,
                     stream_id: 2
                 }, {
                     id: 3,
                     author_name: 'Michel',
                     post_link: 'www.odoosocial.com/link3',
+                    author_link: 'www.odoosocial.com/author3',
                     published_date: "2019-08-20 14:18:00",
+                    formatted_published_date: "2019-08-20 14:18:00",
                     message: 'Message 3',
                     media_type: 'facebook',
                     facebook_author_id: 3,
@@ -305,6 +334,7 @@ QUnit.module('Facebook Comments', {
                     facebook_comments_count: 0,
                     facebook_shares_count: 0,
                     facebook_page_id: 1,
+                    account_id: 1,
                     facebook_reach: 42,
                     stream_id: 2
                 }]
@@ -313,6 +343,7 @@ QUnit.module('Facebook Comments', {
     }
 }, function (){
     QUnit.test('Check accounts statistics', async function (assert) {
+        var self = this;
         assert.expect(6);
 
         var kanban = await createView({
@@ -321,9 +352,12 @@ QUnit.module('Facebook Comments', {
             data: this.data,
             arch: getArch(),
             mockRPC: function (route, params) {
-                if (params.method === 'refresh_all' || params.method === 'refresh_statistics') {
+                if (params.method === 'refresh_all') {
                     assert.ok(true);
                     return Promise.resolve({});
+                } else if (params.method === 'refresh_statistics') {
+                    assert.ok(true);
+                    return Promise.resolve(self.data['social.account'].records);
                 } else if(route.startsWith('https://graph.facebook.com/')) {
                     return Promise.resolve('');
                 }

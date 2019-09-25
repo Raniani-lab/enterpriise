@@ -5,7 +5,9 @@ var core = require('web.core');
 var Dialog = require('web.Dialog');
 var dom = require('web.dom');
 var emojis = require('mail.emojis');
+var PostKanbanImagesCarousel = require('social.social_post_kanban_images_carousel');
 var SocialEmojisMixin = require('social.emoji_mixin');
+var SocialStreamPostFormatterMixin = require('social.stream_post_formatter_mixin');
 var time = require('web.time');
 
 
@@ -13,7 +15,6 @@ var _t = core._t;
 var FieldBinaryImage = BasicFields.FieldBinaryImage;
 var QWeb = core.qweb;
 
-var DATE_FORMAT = time.getLangDateFormat();
 var DATE_TIME_FORMAT = time.getLangDatetimeFormat();
 
 
@@ -40,7 +41,7 @@ var StreamPostCommentDelete = require('social.social_post_kanban_comments_delete
  * - The comment link (getCommentLink)
  * - ...
  */
-var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
+var StreamPostComments = Dialog.extend(SocialEmojisMixin, SocialStreamPostFormatterMixin, {
     template: 'social.StreamPostComments',
     events: {
         'keydown .o_social_add_comment': '_onAddComment',
@@ -55,6 +56,7 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
         'click .o_social_comment_reply': '_onReplyComment',
         'click .o_social_load_more_comments': '_onLoadMoreComments',
         'click .o_social_comment_load_replies': '_onLoadReplies',
+        'click .o_social_original_post_image_more, .o_social_original_post_image_click': '_onClickMoreImages',
     },
 
     init: function (parent, options) {
@@ -64,6 +66,7 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
             size: 'medium',
         });
 
+        this.originalPost = options.originalPost;
         this.emojis = emojis;
         this.postId = options.postId;
         this.comments = options.comments;
@@ -94,6 +97,10 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
     },
 
     getCommentLink: function (comment) {
+        return "";
+    },
+
+    getAuthorLink: function (comment) {
         return "";
     },
 
@@ -355,6 +362,24 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
         $target.remove();
     },
 
+    /**
+     * Triggers when the user clicks on an image or on the '+' if there are too many images.
+     * We open a 'carousel' in a popup window so that the user can browse all the images.
+     *
+     * @param {MouseEvent} ev
+     * @private
+     */
+    _onClickMoreImages: function (ev) {
+        var $target = $(ev.currentTarget);
+
+        new PostKanbanImagesCarousel(
+            this, {
+                'activeIndex': $target.data('currentIndex'),
+                'images': this.originalPost.postImages
+            }
+        ).open();
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -443,8 +468,17 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
         return $.ajax(endpoint, params);
     },
 
-    _htmlEscape: function (message) {
-        return QWeb.tools.html_escape(message);
+    /**
+     * Adapted from qweb2.js#html_escape to avoid formatting '&'
+     *
+     * @param {String} s
+     * @private
+     */
+    _htmlEscape: function (s) {
+        if (s == null) {
+            return '';
+        }
+        return String(s).replace(/</g, '&lt;').replace(/>/g, '&gt;');
     },
 
     /**
@@ -513,12 +547,22 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, {
         }
     },
 
-    _formatDate: function (date) {
-        return moment(date).format(DATE_FORMAT);
-    },
-
     _formatDateTime: function (date) {
         return moment(date).format(DATE_TIME_FORMAT);
+    },
+
+    /**
+     * We want both emojis capabilities of _formatText
+     * and various wrapping of _formatStreamPost
+     *
+     * @param {String} message
+     * @private
+     */
+    _formatCommentStreamPost: function (message) {
+        var formattedMessage = message;
+        formattedMessage = this._formatText(formattedMessage);
+        formattedMessage = this._formatStreamPost(formattedMessage);
+        return formattedMessage;
     },
 
     _getTargetTextArea($emoji) {

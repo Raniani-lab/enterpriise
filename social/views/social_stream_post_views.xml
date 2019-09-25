@@ -33,8 +33,10 @@
                 js_class="social_stream_post_kanban_view">
                 <field name="id"/>
                 <field name="author_name"/>
+                <field name="author_link"/>
                 <field name="post_link"/>
                 <field name="published_date"/>
+                <field name="formatted_published_date"/>
                 <field name="account_id"/>
                 <field name="message"/>
                 <field name="media_type"/>
@@ -51,13 +53,13 @@
                             <div class="o_social_stream_post_message p-2">
                                 <div class="d-flex justify-content-between mb-2">
                                     <t t-set="author_info">
-                                        <span class="o_social_stream_post_author_image rounded-circle overflow-hidden"/>
+                                        <span class="o_social_stream_post_author_image o_social_author_image position-relative rounded-circle overflow-hidden"/>
                                         <span class="text-truncate ml-2" t-esc="record.author_name.value or 'Unknown'"/>
                                     </t>
 
-                                    <a t-if="record.post_link.value"
+                                    <a t-if="record.author_link.value"
                                         class="o_social_stream_post_author d-flex align-items-center"
-                                        t-att-href="record.post_link.value"
+                                        t-att-href="record.author_link.value"
                                         t-att-title="record.author_name.value or 'Unknown'"
                                         t-raw="author_info"
                                         target="_blank"/>
@@ -66,15 +68,17 @@
                                         class="o_social_stream_post_author d-flex align-items-center"
                                         t-raw="author_info"/>
 
-                                    <time class="o_social_stream_post_published_date small"
-                                        t-esc="record.published_date.value and record.published_date.value.split(' ')[0] or False"
-                                        t-att-title="record.published_date.value"/>
+                                    <a t-att-href="record.post_link.value" target="_blank">
+                                        <time class="o_social_stream_post_published_date small"
+                                            t-esc="record.formatted_published_date.value"
+                                            t-att-title="record.published_date.value"/>
+                                    </a>
                                 </div>
                                 <t t-set="has_attachments" t-value="record.stream_post_image_ids.raw_value.length !== 0 || record.link_url.value"/>
                                 <div t-attf-class="o_social_stream_post_message_body pb-2 #{has_attachments ? 'o_social_stream_post_with_attachments' : 'mb-2 border-bottom'}">
 
                                     <div class="o_social_stream_post_message_text overflow-hidden mb-2">
-                                        <field name="message"  widget="social_kanban_field_emoji" />
+                                        <field name="message" widget="social_kanban_field_stream_post" />
                                     </div>
 
                                     <div t-if="has_attachments"

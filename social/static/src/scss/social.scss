@@ -1,6 +1,8 @@
 // Variables
 // ===================================================
 $o-social-border-radius-base: 3px;
+$o-social-border-radius-bubble: 16px;
+$o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 // Form Views
 // ===================================================
@@ -27,6 +29,7 @@ $o-social-border-radius-base: 3px;
     }
 
     .o_social_preview {
+        font-family: $o-social-font-family-reset;
         font-size: 1.2rem;
 
         .o_social_preview_icon_wrapper {
@@ -40,6 +43,11 @@ $o-social-border-radius-base: 3px;
                 max-height: 200px;
             }
         }
+    }
+
+    .o_social_add_emoji {
+        float: right;
+        margin-bottom: 1rem;
     }
 }
 
@@ -59,20 +67,6 @@ $o-social-border-radius-base: 3px;
         }
     }
 
-    .o_social_stream_post_image {
-        .o_social_stream_post_image_click, .o_social_stream_post_image_more_overlay {
-            cursor: pointer;
-        }
-
-        .o_social_stream_post_image_more_overlay {
-            background-color: rgba(black, .2);
-
-            &:hover {
-                background-color: rgba(black, .35);
-            }
-        }
-    }
-
     &.o_social_stream_post_with_attachments {
         .o_social_stream_post_message_text {
             max-height: 5rem;
@@ -83,6 +77,16 @@ $o-social-border-radius-base: 3px;
 
 // Kanban View (Feed)
 // ===================================================
+.o_social_stream_post_kanban_new_content {
+    display: block;
+
+    @include hover-focus {
+        $bg-color: theme-color-level('info', $alert-border-level + 1);
+        background: $bg-color;
+        color: color-yiq($bg-color);
+    }
+}
+
 .o_social_stream_post_kanban_before {
     &:empty {
         // Hide entire section if no streams
@@ -97,6 +101,13 @@ $o-social-border-radius-base: 3px;
 .o_content.o_social_stream_post_kanban_view_wrapper {
     .o_kanban_view {
         background-color: transparent;
+
+        .o_social_stream_post_published_date {
+            color: lighten($o-main-text-color, 10%);
+            &:hover {
+                color: $o-enterprise-primary-color;
+            }
+        }
     }
 
     .o_kanban_group {
@@ -122,29 +133,16 @@ $o-social-border-radius-base: 3px;
     }
 }
 
+.o_stream_post_kanban_refresh_now .fa-spinner {
+    margin-left: 5px;
+}
+
 // Record Design
 .o_social_stream_post_kanban_global {
     border-radius: $o-social-border-radius-base;
-
-    .o_social_stream_post_author {
-        .o_social_stream_post_author_image {
-            border: 1px solid gray('100');
-
-            img {
-                @include size(2em);
-            }
-        }
-    }
-
-    .o_social_stream_post_link {
-        img {
-            @include size(2.6em);
-        }
-
-        .o_social_stream_post_link_text {
-            min-width: 0; // allow text-truncate on flexbox
-            line-height: 1.35;
-        }
+    &:hover {
+        cursor: pointer;
+        box-shadow: 1px 1px 1px 0px #6c757d;
     }
 }
 
@@ -180,8 +178,39 @@ $o-social-border-radius-base: 3px;
     }
 }
 
+.o_social_author_image {
+    &:after {
+        @include o-position-absolute(0, 0, 0, 0);
+        border: 1px solid rgba(black, .1);
+        border-radius: 100%;
+        content: '';
+    }
+
+    img {
+        @include size(2em);
+    }
+}
+
+.o_social_bubble_radius {
+    border-radius: $o-social-border-radius-bubble;
+}
+
+.o_social_stream_post_link {
+    border-radius: $o-social-border-radius-base;
+
+    img {
+        @include size(2.6em);
+    }
+
+    .o_social_stream_post_link_text {
+        min-width: 0; // allow text-truncate on flexbox
+        line-height: 1.35;
+    }
+}
+
 .o_social_stream_post_image {
     img {
+        cursor: pointer;
         @include size(100%, auto);
         max-width: 100%;
         max-height: 50px;
@@ -194,7 +223,12 @@ $o-social-border-radius-base: 3px;
     }
 
     .o_social_stream_post_image_more_overlay {
-        background-color: rgba(black, .35);
+        cursor: pointer;
+        background-color: rgba(black, .2);
+
+        &:hover {
+            background-color: rgba(black, .35);
+        }
     }
 }
 
@@ -282,6 +316,8 @@ $o-social-border-radius-base: 3px;
 // Comments
 .o_social_comments_modal {
     min-height: 280px;
+    overflow-x: hidden;
+    font-family: $o-social-font-family-reset;
 
     .o_social_comment_controls, .o_social_manage_comment {
         .dropdown-toggle:after {
@@ -289,19 +325,24 @@ $o-social-border-radius-base: 3px;
         }
     }
 
-    .o_social_stream_post_link, .o_social_add_comment, .o_social_comment_image {
+    .o_social_add_comment, .o_social_comment_image {
         border-radius: $o-social-border-radius-base;
+
+        &.o_social_bubble_radius {
+            border-radius: $o-social-border-radius-bubble;
+        }
     }
 
-    .o_social_stream_post_link, .o_social_stream_post_link img, .o_social_comment_image {
+    .o_social_comment_image {
         max-width: 300px;
-    }
-
-    .o_social_stream_post_link img, .o_social_comment_image {
         max-height: 300px;
     }
 
     .o_social_add_comment {
+        // Emulate form-control-lg design without adding the class
+        // to avoid issues with JS resize code.
+        @include font-size($input-font-size-lg);
+        line-height: $input-line-height-lg;
         resize: none;
     }
 
@@ -309,8 +350,48 @@ $o-social-border-radius-base: 3px;
         @include o-position-absolute(0, 0);
     }
 
-    .o_social_comments_messages .o_social_author_image {
+    .o_social_comment_published_date, .o_social_post_published_date {
+        color: lighten($o-main-text-color, 10%);
+        &:hover {
+            color: $o-enterprise-primary-color;
+        }
+    }
+
+    .o_social_author_image img {
         @include size(32px);
+    }
+
+    // Original Post
+    .o_social_comments_modal_original_post {
+        .o_social_author_image img {
+            @include size(42px);
+        }
+
+        .o_social_original_post_message_text {
+            max-height: 160px;
+        }
+
+        .o_social_comments_modal_original_post_content {
+            min-width: 0; // allow text-truncate on flexbox
+        }
+
+        .o_social_stream_post_image img {
+            cursor: pointer;
+
+            @media (min-height: 800px) {
+                max-height: 200px;
+            }
+        }
+
+        .o_social_original_post_single {
+            @media (min-height: 800px) {
+                max-height: 400px;
+            }
+        }
+
+        .o_social_stream_post_link img {
+            @include size(4em);
+        }
     }
 
     .o_social_comment_message {

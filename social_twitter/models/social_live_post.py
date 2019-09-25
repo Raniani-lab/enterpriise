@@ -12,6 +12,51 @@ class SocialLivePostTwitter(models.Model):
 
     twitter_tweet_id = fields.Char('Twitter tweet id')
 
+    def _refresh_statistics(self):
+        super(SocialLivePostTwitter, self)._refresh_statistics()
+        accounts = self.env['social.account'].search([('media_type', '=', 'twitter')])
+        endpoint_name = 'statuses/user_timeline'
+        for account in accounts:
+            query_params = {
+                'user_id': account.twitter_user_id,
+                'tweet_mode': 'extended',
+                'count': 100
+            }
+            tweets_endpoint_url = url_join(self.env['social.media']._TWITTER_ENDPOINT, "/1.1/%s.json" % endpoint_name)
+            headers = account._get_twitter_oauth_header(
+                tweets_endpoint_url,
+                params=query_params,
+                method='GET'
+            )
+            result = requests.get(
+                tweets_endpoint_url,
+                query_params,
+                headers=headers
+            )
+
+            result_tweets = result.json()
+            if isinstance(result_tweets, dict) and result_tweets.get('errors') or result_tweets is None:
+                account.sudo().write({'is_media_disconnected': True})
+                return
+
+            tweets_ids = [tweet.get('id_str') for tweet in result_tweets]
+            existing_live_posts = self.env['social.live.post'].sudo().search([
+                ('twitter_tweet_id', 'in', tweets_ids)
+            ])
+
+            existing_live_posts_by_tweet_id = {
+                live_post.twitter_tweet_id: live_post for live_post in existing_live_posts
+            }
+
+            for tweet in result_tweets:
+                existing_live_post = existing_live_posts_by_tweet_id.get(tweet.get('id_str'))
+                if existing_live_post:
+                    likes_count = tweet.get('favorite_count', 0)
+                    retweets_count = tweet.get('retweet_count', 0)
+                    existing_live_post.write({
+                        'engagement': likes_count + retweets_count
+                    })
+
     def _post(self):
         twitter_live_posts = self.filtered(lambda post: post.account_id.media_type == 'twitter')
         super(SocialLivePostTwitter, (self - twitter_live_posts))._post()
@@ -56,48 +101,3 @@ class SocialLivePostTwitter(models.Model):
                 }
 
             live_post.write(values)
-
-    def _refresh_live_posts_statistics(self):
-        super(SocialLivePostTwitter, self)._refresh_live_posts_statistics()
-        accounts = self.env['social.account'].search([('media_type', '=', 'twitter')])
-        endpoint_name = 'statuses/user_timeline'
-        for account in accounts:
-            query_params = {
-                'user_id': account.twitter_user_id,
-                'tweet_mode': 'extended',
-                'count': 100
-            }
-            tweets_endpoint_url = url_join(self.env['social.media']._TWITTER_ENDPOINT, "/1.1/%s.json" % endpoint_name)
-            headers = account._get_twitter_oauth_header(
-                tweets_endpoint_url,
-                params=query_params,
-                method='GET'
-            )
-            result = requests.get(
-                tweets_endpoint_url,
-                query_params,
-                headers=headers
-            )
-
-            result_tweets = result.json()
-            if isinstance(result_tweets, dict) and result_tweets.get('errors'):
-                account.sudo().write({'is_media_disconnected': True})
-                return
-
-            tweets_ids = [tweet.get('id_str') for tweet in result_tweets]
-            existing_live_posts = self.env['social.live.post'].sudo().search([
-                ('twitter_tweet_id', 'in', tweets_ids)
-            ])
-
-            existing_live_posts_by_tweet_id = {
-                live_post.twitter_tweet_id: live_post for live_post in existing_live_posts
-            }
-
-            for tweet in result_tweets:
-                existing_live_post = existing_live_posts_by_tweet_id.get(tweet.get('id_str'))
-                if existing_live_post:
-                    likes_count = tweet.get('favorite_count', 0)
-                    retweets_count = tweet.get('retweet_count', 0)
-                    existing_live_post.write({
-                        'engagement': likes_count + retweets_count
-                    })

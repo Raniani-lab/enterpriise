@@ -18,6 +18,7 @@
         <field name="arch" type="xml">
             <tree string="Social Accounts" create="0">
                 <field name="name" />
+                <field name="media_id" />
             </tree>
         </field>
     </record>

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import dateutil.parser
 import base64
 import hmac
 import hashlib
@@ -183,6 +184,9 @@ class SocialMediaTwitter(models.Model):
                 'profile_image_url_https': tweet.get('user').get('profile_image_url_https')
             },
             'created_time': tweet.get('created_at'),
+            'formatted_created_time': self.env['social.stream.post']._format_published_date(fields.Datetime.from_string(
+                dateutil.parser.parse(tweet.get('created_at')).strftime('%Y-%m-%d %H:%M:%S')
+            )),
             'user_likes': tweet.get('favorited'),
             'likes': {
                 'summary': {

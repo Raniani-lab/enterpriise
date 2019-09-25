@@ -49,18 +49,33 @@
     .o_social_preview_icon_wrapper {
         color: #40AFF4;
     }
+}
 
-    .o_social_preview_header {
-        .o_social_preview_author {
-            // div {
-            //     color: #14171a;
-            //     font-weight: bold;
+.o_social_comments_modal_twitter {
+    a:not(.btn-outline-secondary):not(.o_social_comment_published_date):not(.o_social_post_published_date) {
+        color: #40AFF4;
+    }
 
-            //     span {
-            //         color: #657786;
-            //         font-weight: normal;
-            //     }
-            // }
+    a.o_social_original_post_author, a.o_social_comment_author_name {
+        color: #14171a;
+    }
+
+    a:not(.btn-outline-secondary):not(.o_social_comment_published_date:not(.o_social_post_published_date)), a.o_social_original_post_author, a.o_social_comment_author_name {
+        @include hover-focus () {
+            color: #40AFF4;
+            text-decoration: underline;
         }
+    }
+}
+
+.o_social_original_post_twitter_stats {
+    .o_social_twitter_likes.o_social_twitter_user_likes {
+        color: #e0245e;
+    }
+}
+
+.o_social_comments_modal_twitter {
+    .o_social_twitter_likes, .o_social_comment_likes_total.badge {
+        color: #e0245e;
     }
 }

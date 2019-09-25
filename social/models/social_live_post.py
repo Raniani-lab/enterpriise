@@ -48,12 +48,11 @@ class SocialLivePost(models.Model):
     def action_retry_post(self):
         self._post()
 
-    def _post(self):
-        """ Every social module should override this method.
-        This will make the actual post on the related social.account through the third party API """
-        pass
+    @api.model
+    def refresh_statistics(self):
+        self.env['social.live.post']._refresh_statistics()
 
-    def _refresh_live_posts_statistics(self):
+    def _refresh_statistics(self):
         """ Every social module should override this method.
 
         This is the method responsible for fetching the post data per social media.
@@ -64,6 +63,11 @@ class SocialLivePost(models.Model):
             - 'Refresh' button on 'Feed' kanban
             - ...
         """
+        pass
+
+    def _post(self):
+        """ Every social module should override this method.
+        This will make the actual post on the related social.account through the third party API """
         pass
 
     def _get_utm_values(self):

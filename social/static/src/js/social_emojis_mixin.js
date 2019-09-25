@@ -1,10 +1,8 @@
 odoo.define('social.emoji_mixin', function (require) {
 "use strict";
 
-var core = require('web.core');
 var dom = require('web.dom');
 var emojis = require('mail.emojis');
-var QWeb = core.qweb;
 
 /**
  * This mixin gathers a few methods that are used to handle emojis.
@@ -66,11 +64,24 @@ return {
      * @param {String} message a text message to format
      */
     _formatText: function (message) {
-        message = QWeb.tools.html_escape(message);
+        message = this._htmlEscape(message);
         message = this._wrapEmojis(message);
         message = message.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
         return message;
+    },
+
+    /**
+     * Adapted from qweb2.js#html_escape to avoid formatting '&'
+     *
+     * @param {String} s
+     * @private
+     */
+    _htmlEscape: function (s) {
+        if (s == null) {
+            return '';
+        }
+        return String(s).replace(/</g, '&lt;').replace(/>/g, '&gt;');
     },
 
     /**

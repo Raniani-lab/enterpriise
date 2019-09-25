@@ -28,6 +28,7 @@ StreamPostKanbanController.include({
                 self,
                 {
                     postId: postId,
+                    originalPost: $target.data(),
                     streamId: $target.data('streamId'),
                     accountId: $target.data('twitterAccountId'),
                     allComments: result.comments

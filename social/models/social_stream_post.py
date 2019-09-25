@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import datetime, timedelta
 import json
 
-from odoo import models, fields
+from odoo import api, models, fields
+from odoo.tools.misc import format_date, _format_time_ago
 
 
 class SocialStreamPost(models.Model):
@@ -24,11 +26,14 @@ class SocialStreamPost(models.Model):
     message = fields.Text("Message")
     author_name = fields.Char('Author Name',
         help="The post author name based on third party information (ex: 'John Doe').")
+    author_link = fields.Char('Author Link', compute='_compute_author_link',
+        help="Author link to the external social.media (ex: link to the Twitter Account).")
     post_link = fields.Char('Post Link', compute='_compute_post_link',
         help="Post link to the external social.media (ex: link to the actual Facebook Post).")
     stream_id = fields.Many2one('social.stream', string="Social Stream", ondelete="cascade")
     media_type = fields.Selection(related='stream_id.media_id.media_type', string="Related Social Media")
     published_date = fields.Datetime('Published date', help="The post published date based on third party information.")
+    formatted_published_date = fields.Char('Formatted Published Date', compute='_compute_formatted_published_date')
     account_id = fields.Many2one(related='stream_id.account_id', string='Related social Account')
 
     stream_post_image_ids = fields.One2many('social.stream.post.image', 'stream_post_id', string="Stream Post Images",
@@ -49,7 +54,24 @@ class SocialStreamPost(models.Model):
         for stream_post in self:
             stream_post.stream_post_image_urls = json.dumps([image.image_url for image in stream_post.stream_post_image_ids])
 
+    def _compute_author_link(self):
+        """ Every social module should override this method.
+        See field 'help' for more information. """
+        pass
+
     def _compute_post_link(self):
         """ Every social module should override this method.
         See field 'help' for more information. """
         pass
+
+    def _compute_formatted_published_date(self):
+        for post in self:
+            post.formatted_published_date = self._format_published_date(post.published_date)
+
+    @api.model
+    def _format_published_date(self, published_date):
+        """ Formats to '5 minutes' instead of date if not older than 12 hours. """
+        if (datetime.now() - published_date) < timedelta(hours=12):
+            return _format_time_ago(self.env, (datetime.now() - published_date), add_direction=False)
+        else:
+            return format_date(self.env, published_date)

@@ -30,11 +30,29 @@
                             <b class="o_social_kanban_likes_count" t-esc="record.twitter_likes_count.raw_value !== '0' ? record.twitter_likes_count.raw_value : ''"/>
                         </div>
 
-                        <div class="o_social_twitter_comments o_social_subtle_btn px-4"
+                        <div class="o_social_twitter_comments o_social_comments o_social_subtle_btn px-4"
                             t-att-data-stream-id="record.stream_id.raw_value"
                             t-att-data-post-id="record.id.raw_value"
                             t-att-data-twitter-account-id="record.account_id.raw_value"
-                            t-att-data-twitter-tweet-id="record.twitter_tweet_id.raw_value">
+                            t-att-data-twitter-tweet-id="record.twitter_tweet_id.raw_value"
+                            data-media-type="twitter"
+                            t-att-data-post-message="record.message.raw_value"
+                            t-att-data-post-images="record.stream_post_image_urls.raw_value"
+                            t-att-data-post-link="record.post_link.raw_value"
+                            t-att-data-twitter-author-id="record.twitter_author_id.raw_value"
+                            t-att-data-twitter-profile-image-url="record.twitter_profile_image_url.raw_value"
+                            t-att-data-author-name="record.author_name.raw_value"
+                            t-att-data-author-link="record.author_link.raw_value"
+                            t-att-data-published-date="record.published_date.value"
+                            t-att-data-formatted-published-date="record.formatted_published_date.value"
+                            t-att-data-link-url="record.link_url.raw_value"
+                            t-att-data-link-image="record.link_image_url.raw_value"
+                            t-att-data-link-title="record.link_title.raw_value"
+                            t-att-data-link-description="record.link_description.raw_value"
+                            t-att-data-twitter-user-likes="record.twitter_user_likes.raw_value"
+                            t-att-data-twitter-likes-count="record.twitter_likes_count.raw_value"
+                            t-att-data-twitter-retweet-count="record.twitter_retweet_count.raw_value"
+                            t-att-data-twitter-comments-count="record.twitter_comments_count.raw_value">
                             <i class="fa fa-comments" title="Comments"/>
                         </div>
                     </div>

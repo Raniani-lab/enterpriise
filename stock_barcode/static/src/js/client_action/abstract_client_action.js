@@ -89,7 +89,7 @@ var ClientAction = AbstractAction.extend({
             self._getProductBarcodes(),
             self._getLocationBarcodes()
         ]).then(function () {
-            self._loadNomenclature();
+            return self._loadNomenclature();
         });
     },
 
@@ -185,7 +185,7 @@ var ClientAction = AbstractAction.extend({
         // barcode nomenclature
         this.barcodeParser = new BarcodeParser({'nomenclature_id': this.currentState.nomenclature_id});
         if (this.barcodeParser) {
-            this.barcodeParser.load();
+            return this.barcodeParser.load();
         }
     },
 

@@ -13,7 +13,7 @@ class PlanningSend(models.TransientModel):
     start_datetime = fields.Datetime("Start Date", required=True)
     end_datetime = fields.Datetime("Stop Date", required=True)
     include_unassigned = fields.Boolean("Includes Open shifts", default=True)
-    note = fields.Text("Extra Message", help="Addionnal message displayed in the email sent to employees")
+    note = fields.Text("Extra Message", help="Additional message displayed in the email sent to employees")
     company_id = fields.Many2one('res.company', "Company", required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [

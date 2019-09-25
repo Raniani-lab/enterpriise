@@ -225,7 +225,7 @@
         <field name="name">planning.slot.graph</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <graph string="Panning Analysis" type="bar">
+            <graph string="Planning Analysis" type="bar">
                 <field name="role_id" type="row"/>
                 <field name="employee_id" type="col"/>
                 <field name="allocated_hours" type="measure"/>

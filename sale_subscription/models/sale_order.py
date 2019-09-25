@@ -3,7 +3,6 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _name = "sale.order"
@@ -145,16 +144,7 @@ class SaleOrder(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    subscription_id = fields.Many2one('sale.subscription', 'Subscription', copy=False)
-
-    @api.constrains('company_id', 'subscription_id')
-    def _company_coherence(self):
-        incoherent_lines = self.filtered(lambda l: l.subscription_id and l.company_id != l.subscription_id.company_id)
-        if incoherent_lines:
-            msg = _("The following Sale Order Line(s) are linked to a subscription belonging to a different company:")
-            for line in incoherent_lines:
-                msg += "\n - %s" % (line.name)
-            raise ValidationError(msg)
+    subscription_id = fields.Many2one('sale.subscription', 'Subscription', copy=False, check_company=True)
 
     def _prepare_invoice_line(self):
         """

@@ -425,6 +425,8 @@ class AccountMove(models.Model):
         return False
 
     def find_partner_id_with_name(self, partner_name):
+        if not partner_name:
+            return 0
         partner_names = self.env["res.partner"].search([("name", "ilike", partner_name)])
         if partner_names.exists():
             partner = min(partner_names, key=len)

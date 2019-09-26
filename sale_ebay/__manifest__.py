@@ -39,6 +39,7 @@ Key Features
       'wizard/ebay_link_listing_views.xml',
       'views/product_views.xml',
       'views/res_currency_views.xml',
+      'views/res_country_views.xml',
       'views/res_config_settings_views.xml',
       'views/res_partner_views.xml',
       'views/stock_picking_views.xml',

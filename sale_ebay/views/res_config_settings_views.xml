@@ -93,6 +93,8 @@
                                 <div class="row mt16">
                                     <label for="ebay_country" class="col-lg-4 o_light_label"/>
                                     <field name="ebay_country" class="col-lg-8 oe_inline" options="{'no_create': True, 'no_open': True}"/>
+                                    <button name="%(sale_ebay.action_country_all_form)d" icon="fa-arrow-right" type="action"
+                                            string="Add other countries" style="margin-left: 150px;" class="btn-link"/>
                                 </div>
                                 <div class="row">
                                     <label for="ebay_zip_code" class="col-lg-4 o_light_label"/>

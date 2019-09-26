@@ -21,7 +21,7 @@ class AccountMove(models.Model):
                         actions.append({
                             'type': 'ir.actions.act_window',
                             'res_model': 'documents.request_wizard',
-                            'name': "Request Document for %s" % line.name,
+                            'name': _("Request Document for %s") % line.name,
                             'view_id': view_id,
                             'views': [(view_id, 'form')],
                             'target': 'new',
@@ -33,24 +33,13 @@ class AccountMove(models.Model):
                         })
         return actions
 
-    def _get_domain_edition_mode_available(self):
+    def _get_domain_matching_suspense_moves(self):
         # OVERRIDE to handle the document requests in the suspense accounts domain.
-        domain = super(AccountMove, self)._get_domain_edition_mode_available()
+        domain = super(AccountMove, self)._get_domain_matching_suspense_moves()
         return expression.OR([
             domain,
             [('reconciliation_invoice_id', '=', self.id)]
         ])
-
-    def action_invoice_reconcile_to_check(self):
-        # OVERRIDE to handle the document requests in the suspense accounts mechanism.
-        action = super(AccountMove, self).action_invoice_reconcile_to_check()
-        line = self.document_request_line_id
-        if line:
-            if not line.partner_id:
-                line.partner_id = self.partner_id
-            action['context']['statement_line_ids'] = [line.statement_line_id.id]
-
-        return action
 
     def write(self, vals):
         main_attachment_id = vals.get('message_main_attachment_id')

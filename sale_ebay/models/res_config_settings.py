@@ -30,7 +30,7 @@ class ResConfigSettings(models.TransientModel):
                                    default=lambda self: self.env['res.country'].search([('ebay_available', '=', True)], limit=1).id,
                                    config_parameter='ebay_country')
     ebay_site = fields.Many2one("ebay.site", string="eBay Website",
-                                default=lambda self: self.env['ebay.site'].search([], limit=1).id,
+                                default=lambda self: self.env['ebay.site'].search([('ebay_id', '=', '0')], limit=1).id,
                                 config_parameter='ebay_site')
     ebay_zip_code = fields.Char(string="Zip", default='', config_parameter='ebay_zip_code')
     ebay_location = fields.Char(string="Location", default='', config_parameter='')

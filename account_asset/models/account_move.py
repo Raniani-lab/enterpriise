@@ -263,6 +263,7 @@ class AccountMoveLine(models.Model):
         ctx = self.env.context.copy()
         ctx.update({
             'default_original_move_line_ids': [(6, False, self.env.context['active_ids'])],
+            'default_company_id': self.company_id.id,
             'asset_type': asset_type,
         })
         if any(line.move_id.state == 'draft' for line in self):

@@ -90,8 +90,8 @@ class AccountAsset(models.Model):
 
     @api.depends('original_move_line_ids', 'original_move_line_ids.account_id', 'asset_type')
     def _compute_value(self):
-        misc_journal_id = self.env['account.journal'].search([('type', '=', 'general')], limit=1)
         for record in self:
+            misc_journal_id = self.env['account.journal'].search([('type', '=', 'general'), ('company_id', '=', record.company_id.id)], limit=1)
             if not record.original_move_line_ids:
                 record.account_asset_id = record.account_asset_id or False
                 record.original_value = record.original_value or False

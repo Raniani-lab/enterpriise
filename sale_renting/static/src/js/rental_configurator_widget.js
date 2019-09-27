@@ -163,7 +163,7 @@ ProductConfiguratorWidget.include({
         this.do_action('sale_renting.rental_configurator_action', {
             additional_context: self._defaultRentalData(data),
             on_close: function (result) {
-                if (result && result !== 'special') {
+                if (result && !result.special) {
                     self.trigger_up('field_changed', {
                         dataPointID: dataPointId,
                         changes: result.rentalConfiguration,

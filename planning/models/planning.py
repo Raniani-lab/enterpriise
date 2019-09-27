@@ -305,6 +305,9 @@ class Planning(models.Model):
         return result
 
     def write(self, values):
+        # detach planning entry from recurrency
+        if any(fname in values.keys() for fname in self._get_fields_breaking_recurrency()) and not values.get('recurrency_id'):
+            values.update({'recurrency_id': False})
         # warning on published shifts
         if 'publication_warning' not in values and (set(values.keys()) & set(self._get_fields_breaking_publication())):
             values['publication_warning'] = True

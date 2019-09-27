@@ -8,6 +8,7 @@
         <field name="interval_number">1</field>
         <field name="interval_type">weeks</field>
         <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(datetime.now() + timedelta(minutes=5)).strftime('%Y-%m-%d %H:%M:%S')"/>
         <field name="doall" eval="False"/>
     </record>
 
@@ -19,6 +20,7 @@
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(datetime.now() + timedelta(minutes=7)).strftime('%Y-%m-%d %H:%M:%S')"/>
     </record>
 
     <record id="ir_cron_sale_subscription_update_kpi" model="ir.cron">
@@ -29,6 +31,7 @@
         <field name="interval_number">1</field>
         <field name="interval_type">weeks</field>
         <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(datetime.now() + timedelta(minutes=9)).strftime('%Y-%m-%d %H:%M:%S')"/>
     </record>
 
     <!-- Standard Closing Reason -->

@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                             <div id="post-stats" class="d-flex bg-100 px-3 py-1 border-bottom">
-                                <div>
+                                <div class="px-2 text-center">
                                     <small>Clicks:</small>
                                     <small class="font-weight-bold" t-esc="record.click_count.raw_value"/>
                                 </div>
@@ -100,7 +100,7 @@
                                     <span t-esc="record.engagement.raw_value"/>
                                 </div>
 
-                                <img t-att-src="kanban_image('res.users', 'image', record.create_uid.raw_value)" t-att-title="record.create_uid.value" t-att-alt="record.create_uid.value" class="oe_kanban_avatar rounded-circle"/>
+                                <img t-att-src="kanban_image('res.users', 'image_128', record.create_uid.raw_value)" t-att-title="record.create_uid.value" t-att-alt="record.create_uid.value" class="oe_kanban_avatar rounded-circle"/>
                             </div>
                         </div>
                     </t>

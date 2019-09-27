@@ -28,7 +28,7 @@
                 <field name="leads_opportunities_count"/>
             </xpath>
             <xpath expr="//div[@id='post-stats']" position="inside">
-                <div class="">
+                <div class="px-2 text-center">
                     <small t-if="record.use_leads.raw_value">Leads:</small>
                     <small t-else="">Opportunities:</small>
                     <small class="font-weight-bold"><t t-esc="record.leads_opportunities_count.raw_value"/></small>

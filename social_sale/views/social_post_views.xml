@@ -29,11 +29,11 @@
                 <attribute name="class" add="justify-content-between" separator=" "/>
             </xpath>
             <xpath expr="//div[@id='post-stats']" position="inside">
-                <div>
+                <div class="px-2 text-center">
                     <small>Quotations:</small>
                     <small class="font-weight-bold"><t t-esc="record.sale_quotation_count.raw_value"/></small>
                 </div>
-                <div>
+                <div class="px-2 text-center">
                     <small>Revenues:</small>
                     <small class="font-weight-bold"><t t-esc="record.sale_invoiced_amount.raw_value"/></small>
                 </div>

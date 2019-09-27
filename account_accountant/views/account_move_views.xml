@@ -9,7 +9,11 @@
                 <attribute name="js_class">account_move_line_list</attribute>
             </xpath>
             <xpath expr="//tree" position= "inside">
-                <field name="move_attachment_ids" invisible="1"/>
+                <field name="move_attachment_ids" invisible="1">
+                    <tree>
+                        <field name="mimetype"/> <!--  We want to fetch the data for using it in the js-->
+                    </tree>
+                </field>
             </xpath>
         </field>
     </record>

@@ -197,8 +197,8 @@
                             <field name="image_ids" widget="many2many_binary" />
                             <field string="Campaign" name="utm_campaign_id"
                                 attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>
-                            <field name="post_method" widget="radio" attrs="{'readonly': [('id', '!=', False)]}"/>
-                            <field name="scheduled_date" attrs="{'invisible': [('post_method', '=', 'now')], 'required': [('post_method', '!=', 'now')]}" />
+                            <field name="post_method" widget="radio" attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>
+                            <field name="scheduled_date" attrs="{'invisible': [('post_method', '=', 'now')], 'required': [('post_method', '!=', 'now')], 'readonly': [('state', 'in', ['posting', 'posted'])]}" />
                         </group>
                         <group name="previews_placeholder" class="o_social_post_preview_group m-0">
                             <div class="o_social_post_empty_preview o_view_nocontent bg-100"

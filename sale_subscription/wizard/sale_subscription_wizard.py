@@ -11,7 +11,7 @@ class SaleSubscriptionWizard(models.TransientModel):
 
     subscription_id = fields.Many2one('sale.subscription', string="Subscription", required=True, default=_default_subscription, ondelete="cascade")
     option_lines = fields.One2many('sale.subscription.wizard.option', 'wizard_id', string="Options")
-    date_from = fields.Date('Discount Date', default=fields.Date.today,
+    date_from = fields.Date("Start Date", default=fields.Date.today,
                             help="The discount applied when creating a sales order will be computed as the ratio between "
                                  "the full invoicing period of the subscription and the period between this date and the "
                                  "next invoicing date.")
@@ -44,29 +44,6 @@ class SaleSubscriptionWizard(models.TransientModel):
             "views": [[False, "form"]],
             "res_id": order.id,
         }
-
-    def _prepare_subscription_lines(self):
-        rec_lines = []
-        for line in self.option_lines:
-            rec_line = False
-            for account_line in self.subscription_id.recurring_invoice_line_ids:
-                if (line.product_id, line.uom_id) == (account_line.product_id, account_line.uom_id):
-                    rec_line = (1, account_line.id, {'quantity': account_line.quantity + line.quantity})
-            if not rec_line:
-                rec_line = (0, 0, {'product_id': line.product_id.id,
-                                   'name': line.name,
-                                   'quantity': line.quantity,
-                                   'uom_id': line.uom_id.id,
-                                   'price_unit': self.subscription_id.pricelist_id.with_context({'uom': line.uom_id.id}).get_product_price(line.product_id, 1, False)
-                                   })
-            rec_lines.append(rec_line)
-        return rec_lines
-
-    def add_lines(self):
-        for wiz in self:
-            rec_lines = wiz._prepare_subscription_lines()
-            wiz.subscription_id.sudo().write({'recurring_invoice_line_ids': rec_lines})
-        return True
 
 
 class SaleSubscriptionWizardOption(models.TransientModel):

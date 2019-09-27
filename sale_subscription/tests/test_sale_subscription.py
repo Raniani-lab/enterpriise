@@ -18,7 +18,7 @@ class TestSubscription(TestSubscriptionCommon):
         # on_change_template on existing record (present in the db)
         self.subscription.template_id = self.subscription_tmpl
         self.subscription.on_change_template()
-        self.assertFalse(self.subscription.description, 'sale_subscription: recurring_invoice_line_ids copied on existing sale.subscription record')
+        self.assertTrue(self.subscription.description, 'sale_subscription: description not copied on existing sale.subscription record')
 
         # on_change_template on cached record (NOT present in the db)
         temp = Subscription.new({'name': 'CachedSubscription',

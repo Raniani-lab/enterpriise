@@ -22,6 +22,12 @@ _logger = logging.getLogger(__name__)
 _30DAYS = timedelta(days=30)
 # eBay api limits ItemRevise calls to 150 per day
 MAX_REVISE_CALLS = 150
+EBAY_DATEFORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
+
+
+def _ebay_parse_date(s):  # should be fromisoformat starting with datetime 3.7
+    return datetime.strptime(s, EBAY_DATEFORMAT)
+
 
 def _log_logging(env, message, function_name, path):
     env['ir.logging'].sudo().create({
@@ -438,8 +444,7 @@ class ProductTemplate(models.Model):
                 'ebay_listing_status': 'Active' if qty > 0 else 'Out Of Stock',
                 'ebay_id': response['ItemID'],
                 'ebay_url': item['Item']['ListingDetails']['ViewItemURL'],
-                'ebay_start_date': datetime.strptime(response['StartTime'].split('.')[0],
-                    '%Y-%m-%dT%H:%M:%S')
+                'ebay_start_date': _ebay_parse_date(response['StartTime']),
             })
 
     def push_product_ebay(self):

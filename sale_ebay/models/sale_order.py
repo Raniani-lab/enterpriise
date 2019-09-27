@@ -41,7 +41,7 @@ class SaleOrder(models.Model):
             'client_order_ref': order['OrderID'],
             'origin': 'eBay' + order['OrderID'],
             'fiscal_position_id': fp.id,
-            'date_order': order['PaidTime'],
+            'date_order': product._ebay_parse_date(order['PaidTime']),
         }
         if self.env['ir.config_parameter'].sudo().get_param('ebay_sales_team'):
             create_values['team_id'] = int(

@@ -17,9 +17,8 @@
                             <field name="state"/>
                         </group>
                     </group>
-                    <group>
-                        <field name="mailing_trace_ids"/>
-                    </group>
+                    <h3>Mass Mailing Statistics</h3>
+                    <field name="mailing_trace_ids" nolabel="1"/>
                     <group>
                         <field name="state_msg"/>
                     </group>

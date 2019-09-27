@@ -33,3 +33,17 @@ class HelpdeskTicket(models.Model):
         else:
             self.task_id = False
         return result
+
+
+class AccountAnalyticLine(models.Model):
+    _inherit = 'account.analytic.line'
+
+    @api.model
+    def _timesheet_preprocess(self, values):
+        values = super(AccountAnalyticLine, self)._timesheet_preprocess(values)
+        # TODO JEM: clean this. Need to set the SOL when changing the task in order to always have the SOL in project map, or task'SOL or SOL of the project (python constraint)
+        if 'task_id' in values and not values.get('so_line'):
+            task = self.env['project.task'].sudo().browse(values['task_id'])
+            if task.billable_type == 'task_rate':
+                values['so_line'] = task.sale_line_id.id
+        return values

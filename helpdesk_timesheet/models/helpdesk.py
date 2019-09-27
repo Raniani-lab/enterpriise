@@ -64,6 +64,20 @@ class HelpdeskTicket(models.Model):
     is_task_active = fields.Boolean(related="task_id.active", string='Is Task Active', readonly=True)
     use_helpdesk_timesheet = fields.Boolean('Timesheet activated on Team', related='team_id.use_helpdesk_timesheet', readonly=True)
 
+    @api.onchange('project_id')
+    def _onchange_project_id(self):
+        # force domain on task when project is set
+        if self.project_id:
+            if self.project_id != self.task_id.project_id:
+                # reset task when changing project
+                self.task_id = False
+            return {'domain': {
+                'task_id': [('project_id', '=', self.project_id.id)]
+            }}
+        return {'domain': {
+            'task_id': [('project_id.allow_timesheets', '=', True), ('company_id', '=', self.company_id.id)]
+        }}
+
     @api.onchange('task_id')
     def _onchange_task_id(self):
         if self.timesheet_ids:

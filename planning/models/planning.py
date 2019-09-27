@@ -194,7 +194,8 @@ class Planning(models.Model):
         existing_templates = self.env['planning.slot.template'].read_group([], ['role_id', 'start_time', 'duration'], ['role_id', 'start_time', 'duration'], limit=None, lazy=False)
         if len(existing_templates):
             for element in existing_templates:
-                existing_values.append({'role_id': element['role_id'][0], 'start_time': element['start_time'], 'duration': element['duration']})
+                role_id = element['role_id'][0] if element.get('role_id') else False
+                existing_values.append({'role_id': role_id, 'start_time': element['start_time'], 'duration': element['duration']})
         self.env['planning.slot.template'].create([x for x in values_list if x not in existing_values])
 
     @api.onchange('employee_id')

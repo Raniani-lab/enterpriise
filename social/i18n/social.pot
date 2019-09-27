@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:39+0000\n"
-"PO-Revision-Date: 2019-09-23 11:39+0000\n"
+"POT-Creation-Date: 2019-09-27 09:19+0000\n"
+"PO-Revision-Date: 2019-09-27 09:19+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,11 +23,6 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 msgid "<small>Clicks:</small>"
-msgstr ""
-
-#. module: social
-#: model_terms:ir.ui.view,arch_db:social.social_post_view_form
-msgid "Accounts"
 msgstr ""
 
 #. module: social
@@ -138,8 +133,19 @@ msgid "Audience Trend"
 msgstr ""
 
 #. module: social
+#: model:ir.model.fields,field_description:social.field_social_stream_post__author_link
+msgid "Author Link"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__author_name
 msgid "Author Name"
+msgstr ""
+
+#. module: social
+#: model:ir.model.fields,help:social.field_social_stream_post__author_link
+msgid ""
+"Author link to the external social.media (ex: link to the Twitter Account)."
 msgstr ""
 
 #. module: social
@@ -158,6 +164,7 @@ msgid "Campaign"
 msgstr ""
 
 #. module: social
+#: model:ir.actions.act_window,name:social.action_view_utm_campaigns
 #: model:ir.ui.menu,name:social.menu_social_campaign
 msgid "Campaigns"
 msgstr ""
@@ -373,6 +380,11 @@ msgid "Followers (Partners)"
 msgstr ""
 
 #. module: social
+#: model:ir.model.fields,field_description:social.field_social_stream_post__formatted_published_date
+msgid "Formatted Published Date"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,help:social.field_social_account__audience
 msgid ""
 "General audience of the Social Account (Page Likes, Account Follows, ...)."
@@ -535,6 +547,7 @@ msgstr ""
 #. module: social
 #. openerp-web
 #: code:addons/social/static/src/xml/social_templates.xml:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_kanban
 #, python-format
 msgid "Link Image"
@@ -684,6 +697,13 @@ msgstr ""
 
 #. module: social
 #. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid "No comments yet."
+msgstr ""
+
+#. module: social
+#. openerp-web
 #: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
 #, python-format
 msgid ""
@@ -805,8 +825,12 @@ msgid "Post"
 msgstr ""
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_kanban
+#, python-format
 msgid "Post Image"
 msgstr ""
 
@@ -833,6 +857,11 @@ msgstr ""
 msgid ""
 "Post link to the external social.media (ex: link to the actual Facebook "
 "Post)."
+msgstr ""
+
+#. module: social
+#: model_terms:ir.ui.view,arch_db:social.social_post_view_form
+msgid "Post on"
 msgstr ""
 
 #. module: social
@@ -905,13 +934,6 @@ msgid "Ready"
 msgstr ""
 
 #. module: social
-#. openerp-web
-#: code:addons/social/static/src/xml/social_templates.xml:0
-#, python-format
-msgid "Refresh"
-msgstr ""
-
-#. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__media_type
 msgid "Related Social Media"
 msgstr ""
@@ -966,7 +988,7 @@ msgstr ""
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
-msgid "Send Post"
+msgid "Send Social Post"
 msgstr ""
 
 #. module: social
@@ -1180,6 +1202,13 @@ msgid "Sub-posts that will be published on each selected social accounts."
 msgstr ""
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid "Synchronize"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,help:social.field_social_post__image_urls
 msgid ""
 "Technical JSON array capturing the URLs of the images to make it easy to "
@@ -1262,11 +1291,6 @@ msgstr ""
 #: model:ir.model,name:social.model_utm_campaign
 #: model:ir.model.fields,field_description:social.field_social_post__utm_campaign_id
 msgid "UTM Campaign"
-msgstr ""
-
-#. module: social
-#: model:ir.actions.act_window,name:social.action_view_utm_campaigns
-msgid "UTM Campaigns"
 msgstr ""
 
 #. module: social

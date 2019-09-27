@@ -116,11 +116,11 @@ class Planning(models.Model):
                     else:
                         slot.allocated_hours = 0.0
 
-    @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id')
+    @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_working_days_count(self):
         for slot in self:
             if slot.employee_id:
-                slot.working_days_count = days_span(slot.start_datetime, slot.end_datetime)
+                slot.working_days_count = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['days']
             else:
                 slot.working_days_count = 0
 

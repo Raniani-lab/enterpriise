@@ -2,8 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import hmac
 import hashlib
+import requests
 
-from odoo import models, fields, api
+from odoo import _, models, fields, api
+from odoo.exceptions import UserError
 from werkzeug.urls import url_encode, url_join
 
 
@@ -54,19 +56,21 @@ class SocialMediaLinkedin(models.Model):
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
 
-        social_iap_endpoint = url_join(social_iap_endpoint,
-                                       'iap/social_linkedin/add_accounts')
-
-        params = {
+        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'iap/social_linkedin/add_accounts'), params={
             'state': self._compute_linkedin_csrf(),
             'scope': 'r_liteprofile r_emailaddress w_member_social',
             'o_redirect_uri': o_redirect_uri,
             'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
-        }
+        }).text
+
+        if iap_add_accounts_url == 'unauthorized':
+            raise UserError(_("You don't have an active subscription. Please buy one here: %s") % 'https://www.odoo.com/buy')
+        elif iap_add_accounts_url == 'linkedin_missing_configuration' or iap_add_accounts_url == 'missing_parameters':
+            raise UserError(_("The url that this service requested returned an error. Please contact the author of the app."))
 
         return {
             'type': 'ir.actions.act_url',
-            'url': social_iap_endpoint + '?' + url_encode(params),
+            'url': iap_add_accounts_url,
             'target': 'self'
         }
 

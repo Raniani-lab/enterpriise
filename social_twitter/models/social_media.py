@@ -11,9 +11,9 @@ import time
 import xml.etree.ElementTree as XmlElementTree
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, AccessError
 from odoo.addons.iap import jsonrpc
-from werkzeug.urls import url_join, url_quote, url_encode
+from werkzeug.urls import url_join, url_quote
 
 
 class SocialMediaTwitter(models.Model):
@@ -76,12 +76,20 @@ class SocialMediaTwitter(models.Model):
             'social.social_iap_endpoint',
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
+
+        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'iap/social_twitter/add_accounts'), params={
+            'returning_url': url_join(base_url, 'social_twitter/callback'),
+            'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
+        }).text
+
+        if iap_add_accounts_url == 'unauthorized':
+            raise UserError(_("You don't have an active subscription. Please buy one here: %s") % 'https://www.odoo.com/buy')
+        elif iap_add_accounts_url == 'wrong_configuration':
+            raise UserError(_("The url that this service requested returned an error. Please contact the author of the app."))
+
         return {
             'type': 'ir.actions.act_url',
-            'url': url_join(social_iap_endpoint, 'iap/social_twitter/add_accounts') + '?' + url_encode({
-                'returning_url': url_join(base_url, 'social_twitter/callback'),
-                'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
-            }),
+            'url': iap_add_accounts_url,
             'target': 'self'
         }
 
@@ -170,7 +178,10 @@ class SocialMediaTwitter(models.Model):
             'social.social_iap_endpoint',
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
-        return jsonrpc(url_join(social_iap_endpoint, 'iap/social_twitter/get_signature'), params=json_params)
+        try:
+            return jsonrpc(url_join(social_iap_endpoint, 'iap/social_twitter/get_signature'), params=json_params)
+        except AccessError:
+            return None
 
     @api.model
     def _format_tweet(self, tweet):

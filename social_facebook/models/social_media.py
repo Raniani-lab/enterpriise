@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields
+import requests
+
+from odoo import _, models, fields
+from odoo.exceptions import UserError
 from werkzeug.urls import url_encode, url_join
 
 
@@ -54,11 +57,17 @@ class SocialMediaFacebook(models.Model):
             'social.social_iap_endpoint',
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
+
+        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'iap/social_facebook/add_accounts'), params={
+            'returning_url': url_join(base_url, 'social_facebook/callback'),
+            'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
+        }).text
+
+        if iap_add_accounts_url == 'unauthorized':
+            raise UserError(_("You don't have an active subscription. Please buy one here: %s") % 'https://www.odoo.com/buy')
+
         return {
             'type': 'ir.actions.act_url',
-            'url': url_join(social_iap_endpoint, 'iap/social_facebook/add_accounts') + '?' + url_encode({
-                'returning_url': url_join(base_url, 'social_facebook/callback'),
-                'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
-            }),
+            'url': iap_add_accounts_url,
             'target': 'self'
         }

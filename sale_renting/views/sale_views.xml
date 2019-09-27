@@ -84,16 +84,4 @@
       </field>
   </record>
 
-  <!-- Rental Orders Searchs -->
-
-  <record id="rental_order_line_search_view" model="ir.ui.view">
-    <field name="name">rental.order.line.search</field>
-    <field name="model">sale.order.line</field>
-    <field name="inherit_id" ref="sale.view_sales_order_line_filter"/>
-    <field name="arch" type="xml">
-      <xpath expr="//filter[@name='salesperson']" position="before">
-        <filter string="Customer" name="customer" context="{'group_by':'order_partner_id'}"/>
-      </xpath>
-    </field>
-  </record>
 </odoo>

@@ -313,13 +313,14 @@
         <field name="model">sale.subscription</field>
         <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
         <field name="arch" type="xml">
-            <tree string="Sale Subscriptions" decoration-warning="to_renew" decoration-muted="not in_progress">
-                <field name="code"/>
-                <field name="partner_id"/>
+            <tree string="Sale Subscriptions" decoration-warning="to_renew" decoration-muted="not in_progress" multi_edit="1">
+                <field name="code" readonly="1"/>
+                <field name="partner_id" readonly="1"/>
                 <field name="recurring_next_date"/>
                 <field name="pricelist_id" invisible="1"/>
-                <field name="user_id"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="user_id" optional="show"/>
+                <field name="team_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" readonly="1"/>
                 <field name="recurring_total"/>
                 <field name="percentage_satisfaction"/>
                 <field name="stage_id"/>

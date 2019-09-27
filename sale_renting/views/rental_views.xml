@@ -141,13 +141,14 @@
       <field name="name">rental.order.tree</field>
       <field name="model">sale.order</field>
       <field name="arch" type="xml">
-        <tree decoration-danger="rental_status in ['pickup', 'return'] and has_late_lines">
+        <tree decoration-danger="rental_status in ['pickup', 'return'] and has_late_lines" multi_edit="1">
           <field name="has_late_lines" invisible="1"/>
-          <field name="name"/>
+          <field name="name" readonly="1"/>
           <field name="date_order"/>
           <field name="next_action_date"/>
-          <field name="partner_id"/>
-          <field name="user_id"/>
+          <field name="partner_id" readonly="1"/>
+          <field name="user_id" optional="show"/>
+          <field name="team_id" optional="hide"/>
           <field name="amount_total" sum="Total Tax Included" widget="monetary"/>
           <field name="rental_status"/>
           <field name="state" invisible="1"/>

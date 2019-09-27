@@ -48,7 +48,7 @@
                     <group>
                         <field name="asset_type" invisible="1"/>
                         <field name="active" invisible="1"/>
-                        <group string="Original Values" attrs="{'invisible': [('state', '=', 'model')]}">
+                        <group string="Asset Values" attrs="{'invisible': [('state', '=', 'model')]}">
                             <span colspan="2" attrs="{'invisible': ['|', ('original_move_line_ids', '!=', []), ('original_value', '!=', 0)]}" class="oe_edit_only text-muted">Set manually the original values or <button class="btn btn-link oe_inline align-baseline p-0 add_original_move_line" string="selected related purchases"/></span>
                             <field name="original_value" attrs="{'invisible': [('state', '=', 'model')], 'readonly': ['|', ('state','!=','draft'), ('original_move_line_ids', '!=', [])]}"/>
                             <field name="gross_increase_value" widget="monetary" attrs="{'invisible': ['|', ('state', '=', 'model'), ('gross_increase_value', '=', 0)]}" options="{'currency_field': 'currency_id'}"/>

@@ -171,7 +171,7 @@ class Sign(http.Controller):
         return http.redirect_with_hash('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request.id, 'access_token': request_item.access_token})
 
     @http.route(['/sign/password/<int:sign_request_id>/<token>'], type='http', auth='public')
-    def check_password_page(self, sign_request_id, token):
+    def check_password_page(self, sign_request_id, token, **post):
         values = http.request.params.copy()
         request_item = http.request.env['sign.request.item'].sudo().search([
             ('sign_request_id', '=', sign_request_id),

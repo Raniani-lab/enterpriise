@@ -34,8 +34,7 @@
                   <field name="order_date"/>
                     <filter string="Date" name="year" invisible="1" date="order_date" default_period="this_year"/>
                     <filter name="Quotations" string="Quotations" domain="[('rental_status','=', 'draft')]"/>
-                    <filter name="Rentals" string="Rental Orders" domain="[('rental_status','not in',('draft', 'cancel', 'sent'))]"/>
-                    <filter name="confirmed_orders" string="Confirmed Orders" domain="[('state', '=', 'sale')]"/>
+                    <filter name="confirmed_orders" string="Confirmed Orders" domain="[('state', 'in', ['sale', 'done'])]"/>
                   <separator/>
                   <field name="user_id"/>
                   <field name="team_id"/>

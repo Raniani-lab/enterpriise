@@ -5,7 +5,6 @@ import logging
 from datetime import datetime
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-from odoo.osv import expression
 from . import product
 
 _logger = logging.getLogger(__name__)

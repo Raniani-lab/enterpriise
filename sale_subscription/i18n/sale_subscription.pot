@@ -1289,6 +1289,12 @@ msgid "Discount (%)"
 msgstr ""
 
 #. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:190
+#, python-format
+msgid "Discount computation failed because the upsell date is not between the next invoice date and the computed last invoice date. Defaulting to NO Discount policy."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__display_name
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__display_name
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason__display_name
@@ -1783,6 +1789,12 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:197
+#, python-format
+msgid "Last invoice date: "
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Late Activities"
 msgstr ""
@@ -1994,6 +2006,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_type_id
 msgid "Next Activity Type"
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:196
+#, python-format
+msgid "Next invoice date: "
 msgstr ""
 
 #. module: sale_subscription
@@ -3220,6 +3238,13 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__upsell
 msgid "Upselling"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__upsell
+#: code:addons/sale_subscription/models/sale_subscription.py:195
+#, python-format
+msgid "Upsell date: "
 msgstr ""
 
 #. module: sale_subscription

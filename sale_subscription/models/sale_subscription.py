@@ -171,19 +171,23 @@ class SaleSubscription(models.Model):
         """ Add an invoice line on the sales order for the specified option and add a discount
         to take the partial recurring period into account """
         order_line_obj = self.env['sale.order.line']
+        ratio, message = self._partial_recurring_invoice_ratio(date_from=date_from)
+        if message != "":
+            sale_order.message_post(body=message)
+        _discount = (1 - ratio) * 100
         values = {
             'order_id': sale_order.id,
             'product_id': option_line.product_id.id,
             'subscription_id': self.id,
             'product_uom_qty': option_line.quantity,
             'product_uom': option_line.uom_id.id,
-            'discount': (1 - self.partial_recurring_invoice_ratio(date_from=date_from)) * 100,
+            'discount': _discount,
             'price_unit': self.pricelist_id.with_context({'uom': option_line.uom_id.id}).get_product_price(option_line.product_id, 1, False),
             'name': option_line.name,
         }
         return order_line_obj.create(values)
 
-    def partial_recurring_invoice_ratio(self, date_from=False):
+    def _partial_recurring_invoice_ratio(self, date_from=False):
         """Computes the ratio of the amount of time remaining in the current invoicing period
         over the total length of said invoicing period"""
         if date_from:
@@ -196,7 +200,23 @@ class SaleSubscription(models.Model):
         recurring_last_invoice = recurring_next_invoice - invoicing_period
         time_to_invoice = recurring_next_invoice - date
         ratio = float(time_to_invoice.days) / float((recurring_next_invoice - recurring_last_invoice).days)
-        return ratio
+        if (ratio < 0 or ratio > 1):
+            message = _(
+                "Discount computation failed because the upsell date is not between the next " +
+                "invoice date and the computed last invoice date. Defaulting to NO Discount policy."
+            )
+            message += "<br/>{}{}<br/>{}{}<br/>{}{}".format(
+                _("Upsell date: "), format_date(self.env, date),
+                _("Next invoice date: "), format_date(self.env, recurring_next_invoice),
+                _("Last invoice date: "), format_date(self.env, recurring_last_invoice),
+            )
+            ratio = 1.00
+        else:
+            message = ""
+        return ratio, message
+
+    def partial_recurring_invoice_ratio(self, date_from=False):
+        return self._partial_recurring_invoice_ratio(date_from=False)[0]
 
     @api.model
     def default_get(self, fields):

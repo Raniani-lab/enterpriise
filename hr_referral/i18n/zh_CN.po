@@ -10,21 +10,21 @@
 # bower Guo <124358678@qq.com>, 2019
 # roye w <159820@qq.com>, 2019
 # 张宏奎 <zhanghongkui@inspur.com>, 2019
-# Martin Trigaux, 2019
 # Jeffery CHEN <jeffery9@gmail.com>, 2019
 # guohuadeng <guohuadeng@hotmail.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # Jeanphy <hzh0292@qq.com>, 2019
 # ChinaMaker <liuct@chinamaker.net>, 2019
 # Felix Yuen <fyu@odoo.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-09-27 09:18+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Felix Yuen <fyu@odoo.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,43 +36,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
 msgid "<b>Responsible: </b>"
 msgstr "<b>负责人： </b>"
-
-#. module: hr_referral
-#: model:mail.template,body_html:hr_referral.mail_template_referral
-msgid ""
-"<div style=\"margin: 0px; padding: 0px;\">\n"
-"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                        Hello,<br/><br/>\n"
-"                        <span>\n"
-"                            New job offer of ${ctx['job_name']} in company. Share it from referral application and earn points!\n"
-"                        </span>\n"
-"                        <br/>\n"
-"\n"
-"                        <div style=\"margin:16px 0px 16px 0px;\">\n"
-"                            <a href=\"${ctx['url']}\" style=\"padding: 8px 16px 8px 16px; border-radius: 3px; background-color:#875A7B; text-align:center; text-decoration:none; color: #FFFFFF;\">\n"
-"                                Referral Application\n"
-"                            </a>\n"
-"                        </div>\n"
-"                    </p>\n"
-"                </div>\n"
-"            "
-msgstr ""
-"<div style=\"margin: 0px; padding: 0px;\">\n"
-"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                        你好，<br/><br/>\n"
-"                        <span>\n"
-"                            公司中${ctx['job_name']}的新工作机会。从推荐申请中分享并获得积分！\n"
-"                        </span>\n"
-"                        <br/>\n"
-"\n"
-"                        <div style=\"margin:16px 0px 16px 0px;\">\n"
-"                            <a href=\"${ctx['url']}\" style=\"padding: 8px 16px 8px 16px; border-radius: 3px; background-color:#875A7B; text-align:center; text-decoration:none; color: #FFFFFF;\">\n"
-"                                推荐申请\n"
-"                            </a>\n"
-"                        </div>\n"
-"                    </p>\n"
-"                </div>\n"
-"            "
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_level_form
@@ -190,6 +153,12 @@ msgid "Applicant Referred Refused"
 msgstr "被推荐的申请人已被拒绝"
 
 #. module: hr_referral
+#: code:addons/hr_referral/models/hr_applicant.py:0
+#, python-format
+msgid "Applicant must have a company."
+msgstr ""
+
+#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_alert_view_search
 msgid "Archived"
 msgstr "已归档"
@@ -253,9 +222,8 @@ msgstr "关闭"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__company_id
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend__company_id
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_level__company_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__company_id
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__company_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__company_id
 msgid "Company"
 msgstr "公司"
@@ -403,10 +371,7 @@ msgid "Email a friend"
 msgstr "给朋友发电子邮件"
 
 #. module: hr_referral
-#: model:ir.model,name:hr_referral.model_hr_employee
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__ref_employee_id
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
-#: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "Employee"
 msgstr "员工"
 
@@ -441,11 +406,6 @@ msgstr "员工分析"
 #: model:ir.actions.act_window,name:hr_referral.employee_referral_report_action
 msgid "Employees Referral Analysis"
 msgstr "员工推荐分析"
-
-#. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
-msgid "Employees Referrer"
-msgstr "员工推荐人"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_alert__url
@@ -574,12 +534,12 @@ msgid "Hired"
 msgstr "被雇佣的"
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__hr_referral_level_id
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__hr_referral_level_id
 msgid "Hr Referral Level"
 msgstr "人力资源推荐级别"
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__hr_referral_onboarding_page
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__hr_referral_onboarding_page
 msgid "Hr Referral Onboarding Page"
 msgstr "人力资源推荐入职页面"
 
@@ -802,11 +762,6 @@ msgid "New gift awarded for %s"
 msgstr "新礼物获奖%s"
 
 #. module: hr_referral
-#: model:mail.template,subject:hr_referral.mail_template_referral
-msgid "New job to share"
-msgstr "分享新工作"
-
-#. module: hr_referral
 #. openerp-web
 #: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
 #, python-format
@@ -961,11 +916,6 @@ msgid "Recruitment Stages"
 msgstr "招聘阶段"
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__ref_employee_id
-msgid "Ref Employee"
-msgstr "参考员工"
-
-#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "Referral"
 msgstr "介绍人"
@@ -976,7 +926,7 @@ msgid "Referral Link To Share"
 msgstr "分享用推荐链接"
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__referral_point_ids
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__referral_point_ids
 msgid "Referral Point"
 msgstr "推荐积分"
 
@@ -995,6 +945,11 @@ msgstr "推荐发送邮件"
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__referral_state
 msgid "Referral State"
 msgstr "推荐状态`"
+
+#. module: hr_referral
+#: model:res.groups,name:hr_referral.group_hr_recruitment_referral_user
+msgid "Referral User"
+msgstr ""
 
 #. module: hr_referral
 #: code:addons/hr_referral/models/hr_applicant.py:0
@@ -1022,9 +977,9 @@ msgid "Referred By"
 msgstr "引荐于"
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__ref_employee_id
-msgid "Referred By Employee"
-msgstr "员工推荐"
+#: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__ref_user_id
+msgid "Referred By User"
+msgstr ""
 
 #. module: hr_referral
 #: model:ir.ui.menu,name:hr_referral.menu_report_employee_referral_all
@@ -1146,7 +1101,7 @@ msgid "Skip and Start"
 msgstr "跳过并开始"
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__utm_source_id
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__utm_source_id
 msgid "Source"
 msgstr "来源"
 
@@ -1279,9 +1234,26 @@ msgid "Url"
 msgstr "Url网址"
 
 #. module: hr_referral
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__ref_user_id
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__ref_user_id
+#: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
+msgid "User"
+msgstr "用户"
+
+#. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__gift_manager_id
 msgid "User responsible of this gift."
 msgstr "用户对此礼物负责。"
+
+#. module: hr_referral
+#: model:ir.model,name:hr_referral.model_res_users
+msgid "Users"
+msgstr "用户"
+
+#. module: hr_referral
+#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
+msgid "Users Referrer"
+msgstr ""
 
 #. module: hr_referral
 #. openerp-web
@@ -1314,16 +1286,10 @@ msgstr "欢迎入职推荐应用程序"
 #. module: hr_referral
 #: code:addons/hr_referral/models/hr_referral_reward.py:0
 #, python-format
-msgid "You do not have enough points to buy this product."
-msgstr "你没有足够的积分购买此产品。"
-
-#. module: hr_referral
-#: code:addons/hr_referral/models/hr_applicant.py:0
-#, python-format
 msgid ""
-"You don't have access to this application as your user is not linked to an "
-"employee."
-msgstr "你无权访问此应用程序，因为你的用户未链接到员工。"
+"You do not have enough points in this company to buy this product. In this "
+"company, you have %s points."
+msgstr ""
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban

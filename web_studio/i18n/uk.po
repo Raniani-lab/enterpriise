@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-27 09:19+0000\n"
 "PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -1458,6 +1458,13 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Hide by default"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #, python-format
 msgid "Home"
@@ -1885,6 +1892,20 @@ msgstr "Нове меню"
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "New record at the bottom"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "New record on top"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/js/app_creator.js:0
 #: code:addons/web_studio/static/src/js/app_creator.js:0
 #: code:addons/web_studio/static/src/xml/app_creator.xml:0
@@ -1989,6 +2010,13 @@ msgid ""
 msgstr ""
 "Тут можна використовувати лише групи із зовнішнім ID. Виберіть іншу групу "
 "або призначте вручну зовнішній ID для цієї групи."
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Optional"
+msgstr "Необов'язково"
 
 #. module: web_studio
 #. openerp-web
@@ -2285,18 +2313,17 @@ msgstr "Зберегти."
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:0
-#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:0
+#: code:addons/web_studio/static/src/js/submenu.js:0
 #, python-format
 msgid "Saved"
 msgstr "Збережено"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:0
+#: code:addons/web_studio/static/src/js/submenu.js:0
 #, python-format
-msgid "Saving..."
-msgstr "Збереження..."
+msgid "Saving"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -2398,6 +2425,13 @@ msgstr "Встановіть як Помилка"
 #, python-format
 msgid "Set expression"
 msgstr "Встановити вираз"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Show by default"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -3057,7 +3091,6 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:0
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "bottom"
 msgstr "знизу"
@@ -3140,7 +3173,6 @@ msgstr "тестова електронна пошта"
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:0
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "top"
 msgstr "зверху"

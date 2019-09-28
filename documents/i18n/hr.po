@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
 "Last-Translator: Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
@@ -547,11 +547,6 @@ msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
-msgid "Attached Document Name"
-msgstr "Naziv dokumenta u privitku"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Attached To"
 msgstr "Priloženo uz"
 
@@ -659,7 +654,6 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__company_id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
-#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Company"
 msgstr "Tvrtka"
 
@@ -1178,7 +1172,9 @@ msgstr "Ako je označeno, nove poruke zahtijevaju Vašu pažnju."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_has_error
+#: model:ir.model.fields,help:documents.field_documents_document__message_has_sms_error
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
+#: model:ir.model.fields,help:documents.field_documents_share__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -1737,6 +1733,12 @@ msgstr "Obnovi"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
 msgid "Rule name"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_has_sms_error
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_has_sms_error
+msgid "SMS Delivery error"
 msgstr ""
 
 #. module: documents

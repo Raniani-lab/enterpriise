@@ -24,13 +24,13 @@ msgstr ""
 #: code:addons/account_sepa/models/account_batch_payment.py:0
 #, python-format
 msgid "A bank account is not defined."
-msgstr ""
+msgstr "Bankovní účet není definován."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_journal.py:0
 #, python-format
 msgid "A partner has not a bank id."
-msgstr ""
+msgstr "Partner nemá identifikační číslo banky."
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_batch_payment
@@ -50,7 +50,7 @@ msgstr "Nastavení konfigurace"
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__display_qr_code
 msgid "Display Qr Code"
-msgstr ""
+msgstr "Zobrazit Qr kód"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_orgid_issr
@@ -143,7 +143,7 @@ msgstr "Upozorňujeme, že byla vznesena následující upozornění:"
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__qr_code_url
 msgid "Qr Code Url"
-msgstr ""
+msgstr "Qr kód Url"
 
 #. module: account_sepa
 #: model_terms:ir.ui.view,arch_db:account_sepa.view_sepa_credit_transfer_search
@@ -183,7 +183,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_payment.py:0
 #, python-format
 msgid "Scan me with your banking app."
-msgstr ""
+msgstr "Naskenujte mě pomocí své bankovní aplikace."
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_generic
@@ -193,12 +193,12 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_warning
 msgid "Sct Warning"
-msgstr ""
+msgstr "Varování Sct"
 
 #. module: account_sepa
 #: model:ir.model.fields.selection,name:account_sepa.selection__res_company__sepa_pain_version__pain_001_001_03_ch_02
 msgid "Swiss Version"
-msgstr ""
+msgstr "Švýcarská verze"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_account_batch_payment__sct_generic
@@ -217,7 +217,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_payment.py:0
 #, python-format
 msgid "The SEPA QR Code information is not set correctly."
-msgstr ""
+msgstr "Informace o QR kódu SEPA nejsou správně nastaveny."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_journal.py:0

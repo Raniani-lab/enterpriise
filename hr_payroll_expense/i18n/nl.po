@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:04+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +35,7 @@ msgstr "Declaraties"
 #. module: hr_payroll_expense
 #: model:ir.model.fields,field_description:hr_payroll_expense.field_hr_payslip__expenses_count
 msgid "Expenses Count"
-msgstr ""
+msgstr "Kosten aantal"
 
 #. module: hr_payroll_expense
 #: model:ir.model.fields,help:hr_payroll_expense.field_hr_payslip__expense_sheet_ids
@@ -60,12 +61,12 @@ msgstr ""
 #: code:addons/hr_payroll_expense/models/hr_payslip.py:0
 #, python-format
 msgid "Reimbursed Expenses"
-msgstr ""
+msgstr "Terugbetaalde onkosten"
 
 #. module: hr_payroll_expense
 #: model_terms:ir.ui.view,arch_db:hr_payroll_expense.hr_expense_sheet_view_form_inherit_payroll
 msgid "Report in Next Payslip"
-msgstr ""
+msgstr "Rapport in volgende loonstrook"
 
 #. module: hr_payroll_expense
 #: code:addons/hr_payroll_expense/models/hr_expense_sheet.py:0

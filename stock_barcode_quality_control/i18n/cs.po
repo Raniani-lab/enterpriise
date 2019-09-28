@@ -3,7 +3,6 @@
 # 	* stock_barcode_quality_control
 # 
 # Translators:
-# Martin Trigaux, 2019
 # trendspotter <j.podhorecky@volny.cz>, 2019
 # 
 msgid ""
@@ -25,14 +24,14 @@ msgstr ""
 #: code:addons/stock_barcode_quality_control/static/src/js/client_action/picking_client_action.js:36
 #, python-format
 msgid "All the quality checks have been done."
-msgstr ""
+msgstr "Všechny kontroly kvality byly provedeny."
 
 #. module: stock_barcode_quality_control
 #. openerp-web
 #: code:addons/stock_barcode_quality_control/static/src/js/client_action/picking_client_action.js:36
 #, python-format
 msgid "No more quality checks"
-msgstr ""
+msgstr "Žádné další kontroly kvality"
 
 #. module: stock_barcode_quality_control
 #. openerp-web
@@ -51,4 +50,4 @@ msgstr "Převod"
 #: code:addons/stock_barcode_quality_control/static/src/xml/qweb_templates.xml:6
 #, python-format
 msgid "Validate"
-msgstr "Schválit"
+msgstr "Ověřit"

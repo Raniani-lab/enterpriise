@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # 
 msgid ""
@@ -841,7 +841,7 @@ msgstr "Product"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.view_rental_order_product_search
 msgid "Product Category"
-msgstr "Product categorie"
+msgstr "Productcategorie"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__product_name
@@ -1345,7 +1345,7 @@ msgstr "Bevestig"
 #: code:addons/sale_renting/models/sale.py:0
 #, python-format
 msgid "Validate a delivery"
-msgstr ""
+msgstr "Valideer een levering"
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/sale.py:0

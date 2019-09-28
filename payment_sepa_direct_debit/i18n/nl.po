@@ -30,7 +30,7 @@ msgstr "${(object.name or '').replace('/','_')}"
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sepa_direct_debit_form
 msgid "+331234567890"
-msgstr ""
+msgstr "+331234567890"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
@@ -40,7 +40,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
 msgid "<strong>Date and place of signature:</strong>"
-msgstr ""
+msgstr "<strong>Datum en plaats van handtekening:</strong>"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
@@ -230,7 +230,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sepa_direct_debit_form
 msgid "A copy of the mandate will be sent by email"
-msgstr ""
+msgstr "Een kopie van het mandaat wordt via e-mail verzonden"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_acquirer__sepa_direct_debit_sms_enabled
@@ -246,7 +246,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sepa_direct_debit_form
 msgid "BE1234"
-msgstr ""
+msgstr "BE1234"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.payment_acquirer_form_sepa_direct_debit
@@ -258,7 +258,7 @@ msgstr "Koop krediet"
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "Can't register a mandate with an undefined partner."
-msgstr ""
+msgstr "Kan geen mandaat registreren met een niet gedefinieerde relatie."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_acquirer__currency_id
@@ -273,7 +273,7 @@ msgstr "Datum van de handtekening."
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.payment_sepa_direct_debit_mandate_form
 msgid "Electronic Signature"
-msgstr ""
+msgstr "Digitale handtekening"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sepa_direct_debit_form
@@ -284,19 +284,19 @@ msgstr "IBAN"
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
 #, python-format
 msgid "Identity mismatch"
-msgstr ""
+msgstr "Niet-overeenkomende identiteit"
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "Incorrect phone number."
-msgstr ""
+msgstr "Foutief telefoonnummer."
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
 #, python-format
 msgid "Invalid mandate"
-msgstr ""
+msgstr "Foutief mandaat"
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
@@ -309,19 +309,19 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Missing Signature"
-msgstr ""
+msgstr "Ontbrekende handtekening"
 
 #. module: payment_sepa_direct_debit
 #. openerp-web
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Missing Validation Code"
-msgstr ""
+msgstr "Ontbrekende validatie code"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_sdd_mandate__signed_by
 msgid "Name of the person that signed the mandate."
-msgstr ""
+msgstr "Naam van de persoon die het mandaat heeft ondertekend."
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
@@ -334,7 +334,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "No phone number provided."
-msgstr ""
+msgstr "Geen telefoonnummer opgegeven."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_acquirer__sepa_direct_debit_sign_enabled
@@ -377,7 +377,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
 #, python-format
 msgid "Phone number does not match"
-msgstr ""
+msgstr "Telefoonnummer komt niet overeen"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_sdd_mandate__phone_number
@@ -389,14 +389,14 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Please check your IBAN and phone number."
-msgstr ""
+msgstr "Gelieve uw IBAN en telefoonnummer te controleren."
 
 #. module: payment_sepa_direct_debit
 #. openerp-web
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Please enter the SMS validation code."
-msgstr ""
+msgstr "Gelieve een SMS validatie code in te geven."
 
 #. module: payment_sepa_direct_debit
 #. openerp-web
@@ -416,7 +416,7 @@ msgstr "Provider"
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Re-send SMS"
-msgstr ""
+msgstr "SMS opnieuw versturen"
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
@@ -452,7 +452,7 @@ msgstr "SMS authenticatie"
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_acquirer__iap_sms_credits
 msgid "SMS Credits"
-msgstr ""
+msgstr "SMS credits"
 
 #. module: payment_sepa_direct_debit
 #. openerp-web
@@ -465,7 +465,7 @@ msgstr "SMS verzonden"
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "SMS could not be sent due to insufficient credit."
-msgstr ""
+msgstr "SMS kon niet verzonden worden vanwege te weinig credits."
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sepa_direct_debit_form
@@ -496,7 +496,7 @@ msgstr "Getekend op"
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
 msgid "Signed online on"
-msgstr ""
+msgstr "Online ondertekend op"
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
@@ -516,7 +516,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
 #, python-format
 msgid "This mandate has already been verified"
-msgstr ""
+msgstr "Dit mandaat is al geverifieerd"
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
@@ -530,23 +530,23 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Unable to send SMS"
-msgstr ""
+msgstr "Kon SMS niet verzenden"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sepa_direct_debit_form
 msgid "Validation Code"
-msgstr ""
+msgstr "Validatie cod"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__verification_code
 msgid "Verification Code"
-msgstr ""
+msgstr "Verificatie code"
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
 #, python-format
 msgid "Verification code does not match"
-msgstr ""
+msgstr "Verificatiecode komt niet overeen"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__verified
@@ -591,4 +591,4 @@ msgstr "tot"
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sepa_direct_debit_form
 msgid "upon validation."
-msgstr ""
+msgstr "bij validatie."

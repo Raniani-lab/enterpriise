@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-23 11:39+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Language-Team: Luxembourgish (https://www.transifex.com/odoo/teams/41243/lb/)\n"
 "MIME-Version: 1.0\n"
@@ -262,6 +262,13 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_recovery
 msgid "Ebay: orders recovery"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_stock_sync_ir_actions_server
+#: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_stock_sync
+#: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_stock_sync
+msgid "Ebay: synchronise stock (for 'get new orders' synchronisation)"
 msgstr ""
 
 #. module: sale_ebay
@@ -766,11 +773,6 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_category
 msgid "eBay Category"
-msgstr ""
-
-#. module: sale_ebay
-#: model:product.category,name:sale_ebay.product_category_ebay
-msgid "eBay Delivery Services"
 msgstr ""
 
 #. module: sale_ebay

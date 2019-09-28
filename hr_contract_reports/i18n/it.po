@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
@@ -33,11 +33,6 @@ msgstr ""
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__count_new_employee
 msgid "# New Employees"
-msgstr ""
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Avg Employee"
 msgstr ""
 
 #. module: hr_contract_reports
@@ -144,7 +139,27 @@ msgstr "Ultima modifica il"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
+msgid "Max Date in Months"
+msgstr ""
+
+#. module: hr_contract_reports
+#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Mean Contract Duration"
+msgstr ""
+
+#. module: hr_contract_reports
+#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
+msgid "Min Date in Months"
+msgstr ""
+
+#. module: hr_contract_reports
+#: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__start_date_months
+msgid "Months of first date of this month since 01/01/1970"
+msgstr ""
+
+#. module: hr_contract_reports
+#: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__end_date_months
+msgid "Months of last date of this month since 01/01/1970"
 msgstr ""
 
 #. module: hr_contract_reports

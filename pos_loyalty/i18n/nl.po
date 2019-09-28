@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:28+0000\n"
+"POT-Creation-Date: 2019-09-23 11:37+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -52,7 +52,7 @@ msgid "An internal identification for this loyalty reward"
 msgstr "Een interne identificatie voor deze loyaliteitsbeloning"
 
 #. module: pos_loyalty
-#: selection:loyalty.rule,rule_type:0
+#: model:ir.model.fields.selection,name:pos_loyalty.selection__loyalty_rule__rule_type__category
 msgid "Category"
 msgstr "Categorie"
 
@@ -87,12 +87,22 @@ msgstr "Cumulatief"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__discount
-#: selection:loyalty.reward,reward_type:0
 msgid "Discount"
 msgstr "Korting"
 
 #. module: pos_loyalty
+#: model:ir.model.fields.selection,name:pos_loyalty.selection__loyalty_reward__reward_type__discount
+msgid "Discount (in %)"
+msgstr "Korting (in %)"
+
+#. module: pos_loyalty
+#: model:ir.model.fields.selection,name:pos_loyalty.selection__loyalty_reward__reward_type__resale
+msgid "Discount (in value)"
+msgstr "Korting (in waarde)"
+
+#. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__discount_product_id
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_reward_form
 msgid "Discount Product"
 msgstr "Productkorting"
 
@@ -109,7 +119,7 @@ msgid "Does this rule affects products, or a category of products ?"
 msgstr "Beïnvloed deze regel producten of een categorie van producten?"
 
 #. module: pos_loyalty
-#: selection:loyalty.reward,reward_type:0
+#: model:ir.model.fields.selection,name:pos_loyalty.selection__loyalty_reward__reward_type__gift
 msgid "Gift"
 msgstr "Cadeau"
 
@@ -153,6 +163,17 @@ msgstr "Hoeveel punten het product opbrengt geordend per waarde"
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__id
 msgid "ID"
 msgstr "ID"
+
+#. module: pos_loyalty
+#: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__point_cost
+msgid ""
+"If the reward is a gift, that's the cost of the gift in points. If the "
+"reward type is a discount that's the cost in point per currency (e.g. 1 "
+"point per $)"
+msgstr ""
+"Indien de beloning een cadeau is dan is het de kost van de cadeau in punten."
+" Indien het soort beloning een korting is dan is de kost in punten per "
+"valuta (bijvoorbeeld 1 punt per $)"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program____last_update
@@ -244,14 +265,14 @@ msgstr "Naam"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:370
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:0
 #, python-format
 msgid "No Rewards Available"
 msgstr "Geen beloningen beschikbaar"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:386
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:0
 #, python-format
 msgid "Please select a reward"
 msgstr "Selecteer een beloning"
@@ -273,9 +294,9 @@ msgstr "Kassa orders"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:6
-#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:71
-#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:81
+#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:0
+#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:0
+#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:0
 #, python-format
 msgid "Points"
 msgstr "Punten"
@@ -287,36 +308,17 @@ msgstr "Puntenafronding"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:57
+#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:0
 #, python-format
 msgid "Points Spent"
 msgstr "Uitgegeven punten"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:111
-#, python-format
-msgid "Points Spent:"
-msgstr "Uitgegeven punten:"
-
-#. module: pos_loyalty
-#. openerp-web
-#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:54
+#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:0
 #, python-format
 msgid "Points Won"
 msgstr "Gewonnen punten"
-
-#. module: pos_loyalty
-#. openerp-web
-#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:100
-#, python-format
-msgid "Points Won:"
-msgstr "Gewonnen punten:"
-
-#. module: pos_loyalty
-#: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
-msgid "Points per Currency"
-msgstr "Punten per valuta"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__pp_currency
@@ -341,14 +343,14 @@ msgid "Pos Loyalty Program"
 msgstr "Kassa getrouwheidsprogramma"
 
 #. module: pos_loyalty
-#: selection:loyalty.rule,rule_type:0
+#: model:ir.model.fields.selection,name:pos_loyalty.selection__loyalty_rule__rule_type__product
 msgid "Product"
 msgstr "Product"
 
 #. module: pos_loyalty
-#: selection:loyalty.reward,reward_type:0
-msgid "Resale"
-msgstr "Herverkoop"
+#: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
+msgid "Reward Cost"
+msgstr "Kost beloning"
 
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_reward_form
@@ -367,7 +369,7 @@ msgstr "Beloon de klant met cadeaus of kortingen voor loyaliteitspunten"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:25
+#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:0
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__reward_ids
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 #, python-format
@@ -432,23 +434,18 @@ msgid "The category affected by the rule"
 msgstr "De categorie beïnvloed door deze regel"
 
 #. module: pos_loyalty
-#: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__point_cost
-msgid "The cost of the reward"
-msgstr "De kost van de beloning"
-
-#. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__discount
 msgid "The discount percentage"
 msgstr "Het kortingspercentage"
 
 #. module: pos_loyalty
-#: code:addons/pos_loyalty/models/pos_loyalty.py:59
+#: code:addons/pos_loyalty/models/pos_loyalty.py:0
 #, python-format
 msgid "The discount product field is mandatory for discount rewards"
 msgstr "Het product kortingsveld is verplicht voor korting beloningen"
 
 #. module: pos_loyalty
-#: code:addons/pos_loyalty/models/pos_loyalty.py:53
+#: code:addons/pos_loyalty/models/pos_loyalty.py:0
 #, python-format
 msgid "The gift product field is mandatory for gift rewards"
 msgstr "Het productcadeau veld is verplicht voor cadeau beloningen"
@@ -483,7 +480,7 @@ msgstr ""
 "komen voor deze beloning"
 
 #. module: pos_loyalty
-#: code:addons/pos_loyalty/models/pos_loyalty.py:65
+#: code:addons/pos_loyalty/models/pos_loyalty.py:0
 #, python-format
 msgid "The point product field is mandatory for point resale rewards"
 msgstr "Het productpunt veld is verplicht voor punt herverkoop beloningen"
@@ -521,7 +518,7 @@ msgstr "het type van de beloning"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:371
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:0
 #, python-format
 msgid ""
 "There are no rewards available for this customer as part of the loyalty "
@@ -532,14 +529,7 @@ msgstr ""
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:60
+#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:0
 #, python-format
 msgid "Total Points"
 msgstr "Totaal punten"
-
-#. module: pos_loyalty
-#. openerp-web
-#: code:addons/pos_loyalty/static/src/xml/loyalty.xml:122
-#, python-format
-msgid "Total Points:"
-msgstr "Totaal punten:"

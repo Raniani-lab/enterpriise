@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
@@ -111,6 +111,11 @@ msgstr "Tempo scaduto: il server non ha risposto entro 60 secondi"
 #: model_terms:ir.ui.view,arch_db:account_ponto.ponto_online_provider_account_form_view
 msgid "Update Accounts"
 msgstr ""
+
+#. module: account_ponto
+#: model:ir.model,name:account_ponto.model_account_online_wizard
+msgid "Wizard to link synchronized accounts to journal"
+msgstr "Wizard per collegare i conti sincronizzati al registro"
 
 #. module: account_ponto
 #: model:ir.model.fields,help:account_ponto.field_account_online_journal__ponto_last_synchronization_identifier

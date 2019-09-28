@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
@@ -181,7 +181,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot_device_controller.js:0
 #, python-format
 msgid "Connection to Device failed"
-msgstr ""
+msgstr "Připojení k zařízení se nezdařilo"
 
 #. module: iot
 #. openerp-web
@@ -333,7 +333,7 @@ msgstr "Identifikátor (Mac adresa)"
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connected
 msgid "If device is connected to the IoT Box"
-msgstr ""
+msgstr "Pokud je zařízení připojeno k IoT Boxu"
 
 #. module: iot
 #. openerp-web
@@ -387,7 +387,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__keyboard
 msgid "Keyboard"
-msgstr ""
+msgstr "Klávesnice"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_keyboard_layout
@@ -406,7 +406,7 @@ msgstr "Naposled změněno"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
 msgid "Last Sent Value"
-msgstr ""
+msgstr "Poslední odeslaná hodnota"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_uid
@@ -428,6 +428,11 @@ msgstr "Naposled upraveno"
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__layout
 msgid "Layout"
 msgstr "Rozvržení"
+
+#. module: iot
+#: model:ir.model.fields,field_description:iot.field_iot_device__manufacturer
+msgid "Manufacturer"
+msgstr "Výrobce"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__name
@@ -499,7 +504,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot_device_controller.js:0
 #, python-format
 msgid "Please check if the device is still connected."
-msgstr ""
+msgstr "Zkontrolujte, zda je zařízení stále připojeno."
 
 #. module: iot
 #. openerp-web
@@ -677,7 +682,7 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "connect"
-msgstr ""
+msgstr "připojit"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action

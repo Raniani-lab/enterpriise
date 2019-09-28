@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-09-23 11:39+0000\n"
 "PO-Revision-Date: 2019-09-13 11:49+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -104,11 +104,6 @@ msgid "Follow-up Report"
 msgstr "Rapport de suivi"
 
 #. module: snailmail_account_followup
-#: model:ir.model,name:snailmail_account_followup.model_followup_send
-msgid "Followup Send"
-msgstr ""
-
-#. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_followup_send__id
 msgid "ID"
 msgstr "ID"
@@ -155,6 +150,11 @@ msgstr "Destinataires"
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.followup_send_wizard_form
 msgid "Send Follow-Ups"
 msgstr "Envoyer des Suivis"
+
+#. module: snailmail_account_followup
+#: model:ir.model,name:snailmail_account_followup.model_followup_send
+msgid "Send Follow-ups"
+msgstr ""
 
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_followup_line__send_letter

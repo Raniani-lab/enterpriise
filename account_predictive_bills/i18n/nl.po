@@ -5,7 +5,6 @@
 # Translators:
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Martin Trigaux, 2019
-# Maxim Vandenbroucke <mxv@odoo.com>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # 
 msgid ""
@@ -35,12 +34,12 @@ msgstr "Boeking"
 #. module: account_predictive_bills
 #: model:ir.model.fields,field_description:account_predictive_bills.field_account_move_line__predict_from_name
 msgid "Predict From Name"
-msgstr "Voorspellen Uit Naam"
+msgstr "Voorspellen op basis van naam"
 
 #. module: account_predictive_bills
 #: model:ir.model.fields,field_description:account_predictive_bills.field_account_move_line__predict_override_default_account
 msgid "Predict Override Default Account"
-msgstr "Voorspellen Overschrijven Standaard Account"
+msgstr "Voorspellen Standaard rekening"
 
 #. module: account_predictive_bills
 #: model:ir.model.fields,help:account_predictive_bills.field_account_move_line__predict_from_name

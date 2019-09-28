@@ -8,14 +8,12 @@
 # Jeffery CHEN <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # zpq001 <zpq001@live.com>, 2019
-# guohuadeng <guohuadeng@hotmail.com>, 2019
 # keecome <7017511@qq.com>, 2019
+# Felix Yuen <fyu@odoo.com>, 2019
 # wangting <39181819@qq.com>, 2019
-# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # John An <johnxan@163.com>, 2019
 # Martin Trigaux, 2019
-# 张宏奎 <zhanghongkui@inspur.com>, 2019
-# Felix Yuen <fyu@odoo.com>, 2019
+# guohuadeng <guohuadeng@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -23,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-09 11:59+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Felix Yuen <fyu@odoo.com>, 2019\n"
+"Last-Translator: guohuadeng <guohuadeng@hotmail.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,12 +52,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_product_form_view_rental_gantt
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental_gantt
 msgid "<span class=\"o_stat_text\">in Rental</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">租赁中</span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 msgid "<span> to </span>"
-msgstr ""
+msgstr "<span> 至 </span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
@@ -94,7 +92,7 @@ msgstr "添加"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
 msgid "Add a pricing"
-msgstr ""
+msgstr "添加一个价格"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -106,7 +104,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_renting.field_product_template__rent_ok
 #: model:ir.model.fields,help:sale_renting.field_sale_order_line__is_product_rentable
 msgid "Allow renting of this product."
-msgstr ""
+msgstr "允许租赁本产品"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__analytic_account_id
@@ -118,7 +116,7 @@ msgstr "分析账户"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Apply after"
-msgstr ""
+msgstr "此后计逾期"
 
 #. module: sale_renting
 #. openerp-web
@@ -130,12 +128,12 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__pricing_id
 msgid "Best Pricing Rule based on duration"
-msgstr ""
+msgstr "基于租期最佳定价规则"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__unit_price
 msgid "Best unit price for specified duration (less expensive)."
-msgstr ""
+msgstr "在指定期限内的最佳单价(较便宜)"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__rent_ok
@@ -143,13 +141,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__is_product_rentable
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_product_template_search_view
 msgid "Can be Rented"
-msgstr ""
+msgstr "可租赁"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form
 msgid "Cancel"
-msgstr "取消日期"
+msgstr "取消"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__cancel
@@ -207,17 +205,17 @@ msgstr "公司"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_res_config_settings
 msgid "Config Settings"
-msgstr "配置设置"
+msgstr "配置设定"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_config
 msgid "Configuration"
-msgstr "基础配置"
+msgstr "配置"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_wizard
 msgid "Configure the rental of a product"
-msgstr ""
+msgstr "设置租赁的产品"
 
 #. module: sale_renting
 #. openerp-web
@@ -248,12 +246,12 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_action
 msgid "Create a new quotation, the first step of a new rental!"
-msgstr ""
+msgstr "创建一个新的报价单，租赁的第一步"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_product_template_action
 msgid "Create a new rental product!"
-msgstr ""
+msgstr "创建一个可租赁产品"
 
 #. module: sale_renting
 #. openerp-web
@@ -265,7 +263,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__is_rental_order
 msgid "Created In App Rental"
-msgstr ""
+msgstr "在租赁模块中创建"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__create_uid
@@ -273,7 +271,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_rental_pricing__create_uid
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__create_uid
 msgid "Created by"
-msgstr "创建者"
+msgstr "创建人"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__create_date
@@ -348,7 +346,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__return_date
 msgid "Date of Return"
-msgstr ""
+msgstr "归还时间"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_pricing__unit__day
@@ -359,12 +357,12 @@ msgstr "天"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
 msgid "Delay Costs"
-msgstr ""
+msgstr "逾期归还费用"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__extra_product
 msgid "Delay Product"
-msgstr ""
+msgstr "逾期归还的产品"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__pickup_date
@@ -443,12 +441,12 @@ msgstr "草稿报价单"
 #: model:ir.model.fields,field_description:sale_renting.field_rental_pricing__duration
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__duration
 msgid "Duration"
-msgstr "时长"
+msgstr "持续时间"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__duration
 msgid "Duration of the rental (in unit of the pricing)"
-msgstr ""
+msgstr "租期(以定价单位计算)"
 
 #. module: sale_renting
 #. openerp-web
@@ -461,7 +459,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 msgid "Edited Rental Line"
-msgstr ""
+msgstr "编辑租凭订单行"
 
 #. module: sale_renting
 #. openerp-web
@@ -500,13 +498,13 @@ msgstr "扩展筛选"
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__extra_daily
 #: model:ir.model.fields,field_description:sale_renting.field_product_template__extra_daily
 msgid "Extra Day"
-msgstr ""
+msgstr "额外每天"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__extra_hourly
 #: model:ir.model.fields,field_description:sale_renting.field_product_template__extra_hourly
 msgid "Extra Hour"
-msgstr ""
+msgstr "额外每小时"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -517,13 +515,13 @@ msgstr ""
 #: model:ir.model.fields,help:sale_renting.field_product_product__extra_daily
 #: model:ir.model.fields,help:sale_renting.field_product_template__extra_daily
 msgid "Fine by day overdue"
-msgstr ""
+msgstr "逾期一天滞纳金"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_product_product__extra_hourly
 #: model:ir.model.fields,help:sale_renting.field_product_template__extra_hourly
 msgid "Fine by hour overdue"
-msgstr ""
+msgstr "逾期一小时滞纳金"
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/sale.py:0
@@ -554,17 +552,17 @@ msgstr "分组"
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__has_late_lines
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_late_lines
 msgid "Has Late Lines"
-msgstr ""
+msgstr "延迟行"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_pickable_lines
 msgid "Has Pickable Lines"
-msgstr ""
+msgstr "待借出的租赁明细"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_returnable_lines
 msgid "Has Returnable Lines"
-msgstr ""
+msgstr "待归还的租赁明细"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_pricing__unit__hour
@@ -599,17 +597,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report_abstract__late
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__late
 msgid "Is Late"
-msgstr "迟到"
+msgstr "延迟中"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__is_rental
 msgid "Is Rental"
-msgstr ""
+msgstr "租赁中"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__is_late
 msgid "Is overdue"
-msgstr "过期了"
+msgstr "逾期"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard____last_update
@@ -620,7 +618,7 @@ msgstr "过期了"
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report_abstract____last_update
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule____last_update
 msgid "Last Modified on"
-msgstr "最后更改日"
+msgstr "最后修改日"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__write_uid
@@ -628,7 +626,7 @@ msgstr "最后更改日"
 #: model:ir.model.fields,field_description:sale_renting.field_rental_pricing__write_uid
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__write_uid
 msgid "Last Updated by"
-msgstr "最后更新者"
+msgstr "最后更新人"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__write_date
@@ -636,12 +634,12 @@ msgstr "最后更新者"
 #: model:ir.model.fields,field_description:sale_renting.field_rental_pricing__write_date
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__write_date
 msgid "Last Updated on"
-msgstr "更新时间"
+msgstr "最后更新时间"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 msgid "Late"
-msgstr "最近"
+msgstr "迟到"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
@@ -653,7 +651,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
 msgid "Late Return"
-msgstr ""
+msgstr "归还逾时"
 
 #. module: sale_renting
 #. openerp-web
@@ -665,20 +663,20 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_res_company_min_extra_hour
 msgid "Minimal delay time before applying fines has to be positive."
-msgstr ""
+msgstr "产生逾期费用前的最短延迟时间必须为正。"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_company__min_extra_hour
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__min_extra_hour
 msgid "Minimum delay time before applying fines."
-msgstr ""
+msgstr "产生逾期费用前的最短延迟时间。"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_pricing__duration
 msgid ""
 "Minimum duration before this rule is applied. If set to 0, it represents a "
 "fixed rental price."
-msgstr ""
+msgstr "这条规则实施前的最短时间。如果设为0，则表示固定租金价格。"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_pricing__unit__month
@@ -697,7 +695,7 @@ msgstr "我的订单"
 msgid ""
 "Once the quotation is confirmed, it becomes a rental order.<br> You will be "
 "able to create an invoice and collect the payment."
-msgstr ""
+msgstr "“一旦报价被确认，它就变成了租赁订单。<br>你将能够创建发票并收取款项。"
 
 #. module: sale_renting
 #. openerp-web
@@ -745,7 +743,7 @@ msgstr "订单关联"
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report_abstract__order_line_id
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__order_line_id
 msgid "Order line #"
-msgstr ""
+msgstr "订单行"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.rental_order_menu
@@ -768,7 +766,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard
 msgid "Pick-up/Return products"
-msgstr ""
+msgstr "借出/归还产品"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__rental_status__return
@@ -776,30 +774,30 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__rental_status__return
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__report_line_status__pickedup
 msgid "Pickedup"
-msgstr ""
+msgstr "已借出"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__pickup_date
 msgid "Pickup"
-msgstr ""
+msgstr "借出"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__pickup_date
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report_abstract__pickup_date
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__pickup_date
 msgid "Pickup Date"
-msgstr ""
+msgstr "借出时间"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__reservation_begin
 msgid "Pickup date - padding time"
-msgstr ""
+msgstr "借出时间-缓冲时间"
 
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_rental_wizard_rental_period_coherence
 #: model:ir.model.constraint,message:sale_renting.constraint_sale_order_line_rental_period_coherence
 msgid "Please choose a return date that is after the pickup date."
-msgstr ""
+msgstr "请选择一个迟于取货时间的归还时间"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_pricing__price
@@ -815,12 +813,12 @@ msgstr "价格表"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__pricing_id
 msgid "Pricing"
-msgstr "定价"
+msgstr "价格"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_pricing
 msgid "Pricing rule of rentals"
-msgstr ""
+msgstr "租赁价格规则"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_product_product
@@ -835,7 +833,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:sale_renting.view_rental_order_product_search
 msgid "Product"
-msgstr "产品"
+msgstr "费用产品"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__categ_id
@@ -844,7 +842,7 @@ msgstr "产品"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.view_rental_order_product_search
 msgid "Product Category"
-msgstr "产品类别"
+msgstr "产品种类"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__product_name
@@ -864,7 +862,7 @@ msgstr "产品模板"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_pricing__product_template_id
 msgid "Product Templates"
-msgstr ""
+msgstr "产品模板"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_pricing__product_variant_ids
@@ -874,13 +872,13 @@ msgstr "产品变体"
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__product_id
 msgid "Product to rent (has to be rentable)"
-msgstr ""
+msgstr "产品出租(必须设置为可出租)"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.rental_product_template_action
 #: model:ir.ui.menu,name:sale_renting.menu_rental_products
 msgid "Products"
-msgstr "产品"
+msgstr "租赁产品"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__qty_delivered
@@ -922,7 +920,7 @@ msgstr "数量"
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__qty_in_rent
 #: model:ir.model.fields,field_description:sale_renting.field_product_template__qty_in_rent
 msgid "Quantity currently in rent"
-msgstr ""
+msgstr "当前在租数量"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__draft
@@ -930,7 +928,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report_abstract__rental_status__draft
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__rental_status__draft
 msgid "Quotation"
-msgstr "报价单"
+msgstr "报价"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__sent
@@ -941,7 +939,7 @@ msgstr "报价单"
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__rental_status__sent
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__state__sent
 msgid "Quotation Sent"
-msgstr "报价单送出"
+msgstr "发送报价"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
@@ -952,12 +950,12 @@ msgstr "报价单"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 msgid "RETURN"
-msgstr ""
+msgstr "确认归还"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.rental_configurator_action
 msgid "Rent a product"
-msgstr ""
+msgstr "租赁一个产品"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.rental_menu_root
@@ -966,7 +964,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Rental"
-msgstr "出租"
+msgstr "租赁"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.action_rental_report
@@ -975,37 +973,37 @@ msgstr "出租"
 #: model_terms:ir.ui.view,arch_db:sale_renting.view_rental_order_product_pivot
 #: model_terms:ir.ui.view,arch_db:sale_renting.view_rental_order_product_search
 msgid "Rental Analysis"
-msgstr ""
+msgstr "租赁分析"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_rental_report
 msgid "Rental Analysis Report"
-msgstr ""
+msgstr "租赁分析报告"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Rental Delay Product"
-msgstr ""
+msgstr "逾期费用对应的租金产品"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__next_action_date
 msgid "Rental Next Action Date"
-msgstr ""
+msgstr "下次可租赁日期"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
 msgid "Rental Order"
-msgstr ""
+msgstr "租赁订单"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__rental_order_line_id
 msgid "Rental Order Line"
-msgstr ""
+msgstr "租赁订单行"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__rental_order_wizard_id
 msgid "Rental Order Wizard"
-msgstr ""
+msgstr "租赁订单向导"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.rental_order_action
@@ -1013,28 +1011,28 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_renting.rental_order_today_return_action
 #: model_terms:ir.ui.view,arch_db:sale_renting.view_rental_order_product_search
 msgid "Rental Orders"
-msgstr ""
+msgstr "租赁订单"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
 msgid "Rental Pricing"
-msgstr ""
+msgstr "租赁价格"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__rental_pricing_ids
 #: model:ir.model.fields,field_description:sale_renting.field_product_template__rental_pricing_ids
 msgid "Rental Pricings"
-msgstr ""
+msgstr "租赁价格"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_rental_report_abstract
 msgid "Rental Report"
-msgstr ""
+msgstr "租赁报告 "
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_rental_schedule
 msgid "Rental Schedule"
-msgstr ""
+msgstr "租赁日程"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__rental_status
@@ -1042,7 +1040,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report_abstract__rental_status
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__rental_status
 msgid "Rental Status"
-msgstr ""
+msgstr "租赁状态"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__report_line_status
@@ -1052,17 +1050,17 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__rental_updatable
 msgid "Rental Updatable"
-msgstr ""
+msgstr "可更新租赁"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__rental_wizard_line_ids
 msgid "Rental Wizard Line"
-msgstr ""
+msgstr "租赁向导行"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard_line
 msgid "RentalOrderLine transient representation"
-msgstr ""
+msgstr "当前租赁情况一览 "
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_reporting
@@ -1087,7 +1085,7 @@ msgstr "已保留"
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_order_wizard__status__return
 #: model:ir.ui.menu,name:sale_renting.rental_orders_return
 msgid "Return"
-msgstr "退货"
+msgstr "归还"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__return_date
@@ -1097,7 +1095,7 @@ msgstr "退货"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.view_rental_order_product_search
 msgid "Return Date"
-msgstr ""
+msgstr "归还日期"
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/sale.py:0
@@ -1113,14 +1111,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 #, python-format
 msgid "Returned"
-msgstr "退货"
+msgstr "已归还"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__state__done
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report_abstract__state__done
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__state__done
 msgid "Sales Done"
-msgstr "销售完成"
+msgstr "完成销售"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_order
@@ -1133,7 +1131,7 @@ msgstr "销售订单"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "销售订单分录"
+msgstr "销售订单行"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__team_id
@@ -1160,7 +1158,7 @@ msgstr "销售员"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Save the product."
-msgstr ""
+msgstr "保存产品"
 
 #. module: sale_renting
 #. openerp-web
@@ -1172,7 +1170,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_schedule
 msgid "Schedule"
-msgstr "安排"
+msgstr "计划"
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/product.py:0
@@ -1180,7 +1178,7 @@ msgstr "安排"
 #: model:ir.actions.act_window,name:sale_renting.action_rental_order_schedule
 #, python-format
 msgid "Scheduled Rentals"
-msgstr ""
+msgstr "计划出租"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_pricing__product_variant_ids
@@ -1188,11 +1186,13 @@ msgid ""
 "Select Variants of the Product for which this rule applies.\n"
 " Leave empty if this rule applies for any variant of this template."
 msgstr ""
+"选择适用此规则的产品的变体。\n"
+"如果此规则适用于此模板的任何变体，则保持为空。"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_pricing__product_template_id
 msgid "Select products on which this pricing will be applied."
-msgstr ""
+msgstr "选择适用该定价的产品"
 
 #. module: sale_renting
 #. openerp-web
@@ -1210,7 +1210,7 @@ msgstr "设置"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form
 msgid "Some delay cost will be added to the sales order."
-msgstr ""
+msgstr "逾期费用会计算入订单中"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__status
@@ -1222,27 +1222,27 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.view_rental_order_product_search
 msgid "Status"
-msgstr "省份"
+msgstr "状态"
 
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_rental_pricing_rental_pricing_duration
 msgid "The pricing duration has to be greater or equal to 0."
-msgstr ""
+msgstr "定价持续时间必须大于或等于0"
 
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_rental_pricing_rental_pricing_price
 msgid "The pricing price has to be greater or equal to 0."
-msgstr ""
+msgstr "价格必须大于等于0"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_res_company__extra_product
 msgid "The product is used to add the cost to the sales order"
-msgstr ""
+msgstr "该产品将作为租赁费用添加到销售订单中"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_sale_order_line__is_late
 msgid "The products haven't been returned in time"
-msgstr ""
+msgstr "产品没有及时退回。"
 
 #. module: sale_renting
 #. openerp-web
@@ -1281,7 +1281,7 @@ msgstr ""
 msgid ""
 "Those values are applied to any new rental product and can be changed on "
 "product forms."
-msgstr ""
+msgstr "这些值将应用于新的可租赁产品，可以在该产品窗体中对这些值进行更改。"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search_without_searchpanel
@@ -1293,7 +1293,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "To Do Today"
-msgstr ""
+msgstr "今日计划"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search_without_searchpanel
@@ -1303,7 +1303,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__price_total
 msgid "Total"
-msgstr "合计"
+msgstr "总计"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_tree
@@ -1348,7 +1348,7 @@ msgstr ""
 #: code:addons/sale_renting/models/sale.py:0
 #, python-format
 msgid "Validate a return"
-msgstr ""
+msgstr "验证归还"
 
 #. module: sale_renting
 #. openerp-web
@@ -1365,6 +1365,8 @@ msgid ""
 "Want to <b>rent products</b>? \n"
 " Let's discover Odoo Rental App."
 msgstr ""
+"想 <b>租赁产品</b> 吗? \n"
+" 让我们来研究下Odoo租赁模块。"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_pricing__unit__week
@@ -1377,7 +1379,7 @@ msgstr "周"
 msgid ""
 "You can also create additional products or services to sell by checking *Can"
 " be Sold* in the product form (e.g. insurance)."
-msgstr ""
+msgstr "您也可以创建额外的产品或服务用于销售，只需勾选 *可销售* (例如保险)。"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_today_pickup_action
@@ -1386,7 +1388,7 @@ msgid ""
 "You can search on a larger period using the filters here above\n"
 "              <br>\n"
 "              or create a new rental order."
-msgstr ""
+msgstr "您可以使用上面的过滤器搜索更大的周期< br > \\ n或者创建一个新的租赁订单。"
 
 #. module: sale_renting
 #: code:addons/sale_renting/wizard/rental_processing.py:0
@@ -1397,7 +1399,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_sale_order_line_rental_stock_coherence
 msgid "You cannot return more than what has been picked up."
-msgstr ""
+msgstr "您不能归还高于借出数的产品"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -1408,4 +1410,4 @@ msgstr "小时"
 #: code:addons/sale_renting/models/sale.py:0
 #, python-format
 msgid "to"
-msgstr "到"
+msgstr "按"

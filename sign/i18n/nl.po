@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:59+0000\n"
+"POT-Creation-Date: 2019-09-27 09:19+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -104,7 +104,7 @@ msgstr "<b>Document ID:</b>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "<b>Signature:</b>"
-msgstr ""
+msgstr "<b>Handtekening:</b>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -131,7 +131,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "<i class=\"fa fa-globe\"/> View"
-msgstr ""
+msgstr "<i class=\"fa fa-globe\"/>Bekijk"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
@@ -177,6 +177,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "<span class=\"text-muted\"><i class=\"fa fa-times\"/> No SMS Validation</span>"
 msgstr ""
+"<span class=\"text-muted\"><i class=\"fa fa-times\"/> Geen SMS "
+"validatie</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -184,11 +186,13 @@ msgid ""
 "<span class=\"text-muted\"><i class=\"fa fa-times\"/> No email "
 "Validation</span>"
 msgstr ""
+"<span class=\"text-muted\"><i class=\"fa fa-times\"/>Geen e-mail "
+"validatie</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "<span class=\"text-muted\">Not available</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\">Niet beschikbaar</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_type_view_form
@@ -554,7 +558,7 @@ msgstr "Datum"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Date (UTC)"
-msgstr ""
+msgstr "Datum (UTC)"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__default_height
@@ -726,7 +730,7 @@ msgstr "E-mail"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Email Validation"
-msgstr ""
+msgstr "E-mail validatie"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_employee
@@ -1355,6 +1359,21 @@ msgid "Please Review And Act On This Document"
 msgstr "Controleer en reageer op dit document aub"
 
 #. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "Please configure the sender's email address"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "Please configure the signer's email address"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__posX
 msgid "Position X"
 msgstr "Positie X"
@@ -1401,7 +1420,7 @@ msgstr "Eigenschappen"
 #: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format
 msgid "Re-send SMS"
-msgstr ""
+msgstr "SMS opnieuw versturen"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
@@ -1531,7 +1550,7 @@ msgstr "SMS token"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "SMS Validation"
-msgstr ""
+msgstr "SMS validati"
 
 #. module: sign
 #. openerp-web
@@ -1684,6 +1703,7 @@ msgstr "Teken document"
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/sign_backend.js:0
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -1740,7 +1760,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request
 msgid "Sign send request"
-msgstr "Verstuurd handtekening verzoek"
+msgstr "Verstuur handtekening verzoek"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_send_copy
@@ -1842,7 +1862,7 @@ msgstr "Handtekeningsverzoekregels"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__start_sign
 msgid "Signature Started"
-msgstr ""
+msgstr "Handtekening gestart"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_template
@@ -1859,7 +1879,7 @@ msgstr "Handtekening configuratie"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Signature:"
-msgstr ""
+msgstr "Handtekening:"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_action
@@ -2016,7 +2036,14 @@ msgstr "Het document"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid ""
-"The final document and this completion history have been sent by email on"
+"The final document and this completion history have been sent by email "
+"on&amp;nbsp;"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/wizard/sign_send_request.py:0
+#, python-format
+msgid "The following roles must be set to create the signature request: "
 msgstr ""
 
 #. module: sign
@@ -2179,7 +2206,7 @@ msgstr "Bevestig &amp; Verzend voltooid document"
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Validation Code"
-msgstr ""
+msgstr "Validatie code"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sign_item_value_ids
@@ -2347,14 +2374,14 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "e.g. +1 415 555 0100"
-msgstr ""
+msgstr "bijvoorbeeld +1 415 555 0100"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "e.g. 314159"
-msgstr ""
+msgstr "Bijvoorbeeld 314159"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_checkbox
@@ -2376,7 +2403,7 @@ msgstr "is voltooid en getekend door iedereen."
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "ip"
-msgstr ""
+msgstr "ip"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action

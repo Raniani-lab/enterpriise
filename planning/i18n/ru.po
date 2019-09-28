@@ -3,20 +3,20 @@
 # 	* planning
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Evgeny <transingularity@gmail.com>, 2019
 # Vasiliy Korobatov <korobatov@gmail.com>, 2019
 # Dinar <gabbasov@it-projects.info>, 2019
 # Oleg Kuryan <oleg@ventor.tech>, 2019
 # Konstantin Korovin <korovin74@gmail.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:58+0000\n"
+"POT-Creation-Date: 2019-09-27 09:18+0000\n"
 "PO-Revision-Date: 2019-09-09 12:35+0000\n"
-"Last-Translator: Konstantin Korovin <korovin74@gmail.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,11 +52,11 @@ msgid ""
 "                    <table style=\"table-layout: fixed; width: 80%; margin: auto;\">\n"
 "                        <tr>\n"
 "                            <th style=\"padding: 5px;text-align: left; width: 15%;\">From</th>\n"
-"                            <td style=\"padding: 5px;\">${format_datetime(object.start_datetime, tz=employee.tz if employee else 'UTC', dt_format='short')}</td>\n"
+"                            <td style=\"padding: 5px;\">${format_datetime(object.start_datetime, tz=ctx.get('employee').tz or 'UTC', dt_format='short')}</td>\n"
 "                        </tr>\n"
 "                        <tr>\n"
 "                            <th style=\"padding: 5px;text-align: left; width: 15%;\">To</th>\n"
-"                            <td style=\"padding: 5px;\">${format_datetime(object.end_datetime, tz=employee.tz if employee else 'UTC', dt_format='short')}</td>\n"
+"                            <td style=\"padding: 5px;\">${format_datetime(object.end_datetime, tz=ctx.get('employee').tz or 'UTC', dt_format='short')}</td>\n"
 "                        </tr>\n"
 "                        % if object.project_id\n"
 "                        <tr>\n"
@@ -108,6 +108,12 @@ msgid ""
 "                        <tr>\n"
 "                            <th style=\"padding: 5px;text-align: left; width: 15%;\">Project</th>\n"
 "                            <td style=\"padding: 5px;\">${object.project_id.name or ''}</td>\n"
+"                        </tr>\n"
+"                        % endif\n"
+"                        % if object.name\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left; width: 15%;\">Note</th>\n"
+"                            <td style=\"padding: 5px;\">${object.name or ''}</td>\n"
 "                        </tr>\n"
 "                        % endif\n"
 "                    </table>\n"
@@ -224,13 +230,18 @@ msgstr ""
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_res_config_settings__planning_allow_self_unassign
-msgid "Allow unassignment"
+msgid "Allow Unassignment"
 msgstr ""
 
 #. module: planning
 #: code:addons/planning/models/planning_recurrency.py:0
 #, python-format
 msgid "An shift must be in the same company as its recurrency."
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
+msgid "Are you sure you want to do delete this shift?"
 msgstr ""
 
 #. module: planning
@@ -252,11 +263,6 @@ msgstr "Календарь"
 #: model:ir.model.fields,field_description:planning.field_res_company__planning_allow_self_unassign
 msgid "Can employee un-assign themselves?"
 msgstr ""
-
-#. module: planning
-#: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
-msgid "Cancel"
-msgstr "Отменить"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
@@ -349,7 +355,13 @@ msgid "Delay for the rate at which recurring shifts should be generated"
 msgstr ""
 
 #. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
+msgid "Delete"
+msgstr "Удалить"
+
+#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
+#: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "Discard"
 msgstr "Отменить"
 
@@ -417,11 +429,6 @@ msgid "Forecast"
 msgstr "Прогноз"
 
 #. module: planning
-#: model:ir.model.fields,field_description:planning.field_res_config_settings__module_project_forecast
-msgid "Forecasts"
-msgstr "Прогнозы"
-
-#. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_type__forever
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_type__forever
 msgid "Forever"
@@ -451,13 +458,11 @@ msgstr "Группировать по"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
-#: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "I am unavailable"
 msgstr ""
 
 #. module: planning
-#: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "I take it"
 msgstr "Я беру это"
@@ -579,7 +584,8 @@ msgid "Modified since last publication"
 msgstr ""
 
 #. module: planning
-#: model:ir.actions.act_window,name:planning.planning_action_my
+#: model:ir.actions.act_window,name:planning.planning_action_my_calendar
+#: model:ir.actions.act_window,name:planning.planning_action_my_gantt
 #: model:ir.ui.menu,name:planning.planning_menu_my_planning
 msgid "My Planning"
 msgstr ""
@@ -614,6 +620,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "Note"
 msgstr "Заметка"
+
+#. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.period_report_template
+msgid "Note:"
+msgstr ""
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__working_days_count
@@ -758,6 +769,18 @@ msgid "Previous"
 msgstr "Предыдущий"
 
 #. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
+#: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
+msgid "Publish"
+msgstr "Публичный"
+
+#. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
+#: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
+msgid "Publish & Send"
+msgstr ""
+
+#. module: planning
 #: model:ir.model.fields,field_description:planning.field_res_company__planning_generation_interval
 #: model:ir.model.fields,field_description:planning.field_res_config_settings__planning_generation_interval
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
@@ -846,7 +869,6 @@ msgid "Save as a Template"
 msgstr ""
 
 #. module: planning
-#: model:ir.ui.menu,name:planning.planning_menu_open_shift
 #: model:ir.ui.menu,name:planning.planning_menu_schedule
 msgid "Schedule"
 msgstr "Запланировать"
@@ -861,12 +883,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_planning__access_token
 msgid "Security Token"
 msgstr "Токен доступа"
-
-#. module: planning
-#: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
-#: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
-msgid "Send"
-msgstr "Отправить"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_send
@@ -999,21 +1015,6 @@ msgid "The company does not allow you to self unassign."
 msgstr ""
 
 #. module: planning
-#: code:addons/planning/models/planning.py:0
-#, python-format
-msgid ""
-"This action will remove the current shift from the recurrency. Are you sure "
-"you want to continue?"
-msgstr ""
-
-#. module: planning
-#: model:ir.model.fields,help:planning.field_hr_employee__planning_role_id
-msgid ""
-"This is used to auto-fill the role field on the "
-"planning.planning_create_slot wizard"
-msgstr ""
-
-#. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_slot_report_action
 msgid "This report performs analysis on your planning."
 msgstr ""
@@ -1065,12 +1066,6 @@ msgstr "Пользователь"
 #. module: planning
 #: code:addons/planning/models/planning.py:0
 #, python-format
-msgid "Warning"
-msgstr "Предупреждение"
-
-#. module: planning
-#: code:addons/planning/models/planning.py:0
-#, python-format
 msgid "You can not assign yourself to an already assigned shift."
 msgstr ""
 
@@ -1108,16 +1103,10 @@ msgid "You don't the right to self assign."
 msgstr ""
 
 #. module: planning
-#: code:addons/planning/models/planning.py:0
-#, python-format
-msgid "You don't the right to self unassign."
-msgstr ""
-
-#. module: planning
 #: model:mail.template,subject:planning.email_template_planning_planning
 msgid ""
-"Your planning from ${format_datetime(object.start_datetime, tz=employee.tz "
-"if employee else 'UTC', dt_format='short')} to "
+"Your planning from ${format_datetime(object.start_datetime, "
+"tz=ctx.get('employee').tz or 'UTC', dt_format='short')} to "
 "${format_datetime(object.end_datetime, tz=employee.tz if employee else "
 "'UTC', dt_format='short')}"
 msgstr ""

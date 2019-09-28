@@ -15,6 +15,7 @@ class PlanningReport(models.Model):
     entry_date = fields.Date('Date', readonly=True)
     employee_id = fields.Many2one('hr.employee', 'Employee', readonly=True)
     role_id = fields.Many2one('planning.role', string='Role', readonly=True)
+    company_id = fields.Many2one('res.company', string='Company', readonly=True)
     number_hours = fields.Float("Allocated Hours", readonly=True)
 
     def init(self):
@@ -29,6 +30,7 @@ class PlanningReport(models.Model):
                         p.id,
                         generate_series(start_datetime,end_datetime,'1 day'::interval) entry_date,
                         p.role_id AS role_id,
+                        p.company_id AS company_id,
                         p.employee_id AS employee_id,
                         p.allocated_hours / NULLIF(p.working_days_count, 0) AS number_hours
                     FROM

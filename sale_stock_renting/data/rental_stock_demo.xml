@@ -3,15 +3,16 @@
 
   <record id="sale_renting.rental_product_1" model="product.product">
       <field name="preparation_time" eval="0.05"/>
+      <!-- Projector : 3 minutes -->
   </record>
   <record id="sale_renting.rental_product_2" model="product.product">
       <field name="preparation_time" eval="0.5"/>
+      <!-- Meeting Room : 30 minutes -->
   </record>
   <record id="rental_stock_product_1" model="product.product">
     <field name="name">Printer</field>
     <field name="categ_id" ref="sale_renting.cat_renting"/>
     <field name="type">product</field>
-    <!--<field name="weight">0.01</field>-->
     <field name="uom_id" ref="uom.product_uom_unit"/>
     <field name="uom_po_id" ref="uom.product_uom_unit"/>
     <field name="default_code">RENT003</field>
@@ -119,8 +120,6 @@
       <field name="product_uom" ref="uom.product_uom_unit"/>
       <field name="name" eval="'[RENT003] Printer'"/>
       <field name="is_rental" eval="True"/>
-      <!--<field name="qty_delivered">1</field>-->
-      <!--<field name="pickedup_lot_ids" eval="[(6,0,[ref('rental_stock_lot_3')])]"/>-->
       <field name="pickup_date" eval="DateTime.today() + relativedelta(days=1)"/>
       <field name="return_date" eval="DateTime.today() + relativedelta(days=5)"/>
       <field name="price_unit" eval="100.0"/>

@@ -110,7 +110,7 @@ class AccountMove(models.Model):
                                      'Extract state', default='no_extract_requested', required=True, copy=False)
     extract_status_code = fields.Integer("Status code", copy=False)
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
-    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id", copy=False)
+    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id", copy=False, readonly=True)
     extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id", copy=False)
 
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)

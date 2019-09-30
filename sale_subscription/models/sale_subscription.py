@@ -33,14 +33,14 @@ class SaleSubscription(models.Model):
     name = fields.Char(required=True, tracking=True, default="New")
     code = fields.Char(string="Reference", required=True, tracking=True, index=True, copy=False)
     stage_id = fields.Many2one(
-        'sale.subscription.stage', string='Stage', index=True,
-        default=lambda s: s._get_default_stage_id(), group_expand='_read_group_stage_ids', tracking=True)
+        'sale.subscription.stage', string='Stage', index=True, default=lambda s: s._get_default_stage_id(),
+        copy=False, group_expand='_read_group_stage_ids', tracking=True)
     analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     company_id = fields.Many2one('res.company', string="Company", default=lambda s: s.env.company, required=True)
     partner_id = fields.Many2one('res.partner', string='Customer', required=True, auto_join=True, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     tag_ids = fields.Many2many('account.analytic.tag', string='Tags', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     date_start = fields.Date(string='Start Date', default=fields.Date.today)
-    date = fields.Date(string='End Date', tracking=True, help="If set in advance, the subscription will be set to pending 1 month before the date and will be closed on the date set in this field.")
+    date = fields.Date(string='End Date', tracking=True, help="If set in advance, the subscription will be set to renew 1 month before the date and will be closed on the date set in this field.")
     pricelist_id = fields.Many2one('product.pricelist',  domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", string='Pricelist', default=_get_default_pricelist, required=True)
     currency_id = fields.Many2one('res.currency', related='pricelist_id.currency_id', string='Currency', readonly=True)
     recurring_invoice_line_ids = fields.One2many('sale.subscription.line', 'analytic_account_id', string='Subscription Lines', copy=True)
@@ -50,11 +50,11 @@ class SaleSubscription(models.Model):
     recurring_invoice_day = fields.Integer('Recurring Invoice Day', copy=False, default=lambda e: fields.Date.today().day)
     recurring_total = fields.Float(compute='_compute_recurring_total', string="Recurring Price", store=True, tracking=True)
     recurring_monthly = fields.Float(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue", store=True)
-    close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", tracking=True)
+    close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", copy=False, tracking=True)
     template_id = fields.Many2one(
         'sale.subscription.template', string='Subscription Template',
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
-        required=True, tracking=True)
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", required=True,
+        default=lambda self: self.env['sale.subscription.template'].search([], limit=1), tracking=True)
     payment_mode = fields.Selection(related='template_id.payment_mode', readonly=False)
     description = fields.Text()
     user_id = fields.Many2one('res.users', string='Salesperson', tracking=True, default=lambda self: self.env.user)
@@ -265,11 +265,8 @@ class SaleSubscription(models.Model):
 
     @api.onchange('template_id')
     def on_change_template(self):
-        if self.template_id:
-            # Check if record is a new record or exists in db by checking its _origin
-            # note that this property is not always set, hence the getattr
-            if not getattr(self, '_origin', self.browse()) and not isinstance(self.id, int):
-                self.description = self.template_id.description
+        for subscription in self.filtered('template_id'):
+            subscription.description = subscription.template_id.description
 
     @api.model
     def create(self, vals):
@@ -331,9 +328,12 @@ class SaleSubscription(models.Model):
 
     def name_get(self):
         res = []
-        for sub in self:
-            name = '%s - %s' % (sub.code, sub.partner_id.sudo().display_name) if sub.code else sub.partner_id.sudo().display_name
-            res.append((sub.id, '%s/%s' % (sub.template_id.sudo().code, name) if sub.template_id.sudo().code else name))
+        for sub in self.filtered('id'):
+            partner_name = sub.partner_id.sudo().display_name
+            subscription_name = '%s - %s' % (sub.code, partner_name) if sub.code else partner_name
+            template_name = sub.template_id.sudo().code
+            display_name = '%s/%s' % (template_name, subscription_name) if template_name else subscription_name
+            res.append((sub.id, display_name))
         return res
 
     def action_subscription_invoice(self):
@@ -975,7 +975,7 @@ class SaleSubscriptionTemplate(models.Model):
                                            string='Recurrence', required=True,
                                            help="Invoice automatically repeat at specified interval",
                                            default='monthly', tracking=True)
-    recurring_interval = fields.Integer(string="Repeat Every", help="Repeat every (Days/Week/Month/Year)", required=True, default=1, tracking=True)
+    recurring_interval = fields.Integer(string="Invoicing Period", help="Repeat every (Days/Week/Month/Year)", required=True, default=1, tracking=True)
     recurring_rule_boundary = fields.Selection([
         ('unlimited', 'Forever'),
         ('limited', 'Fixed')
@@ -987,13 +987,13 @@ class SaleSubscriptionTemplate(models.Model):
         string="Recurrence Unit",
         related='recurring_rule_type', readonly=True, tracking=False)
 
-    user_closable = fields.Boolean(string="Closable by customer", help="If checked, the user will be able to close his account from the frontend")
+    user_closable = fields.Boolean(string="Closable by Customer", help="If checked, the user will be able to close his account from the frontend")
     payment_mode = fields.Selection([
-        ('manual', 'Manual'),
-        ('draft_invoice', 'Draft invoice'),
-        ('validate_send', 'Invoice'),
-        ('validate_send_payment', 'Invoice & try to charge'),
-        ('success_payment', 'Invoice only on successful payment'),
+        ('manual', 'Manually'),
+        ('draft_invoice', 'Draft'),
+        ('validate_send', 'Send'),
+        ('validate_send_payment', 'Send & try to charge'),
+        ('success_payment', 'Send after successful payment'),
     ], required=True, default='draft_invoice')
     product_ids = fields.One2many('product.template', 'subscription_template_id', copy=True)
     journal_id = fields.Many2one('account.journal', string="Accounting Journal", domain="[('type', '=', 'sale')]", company_dependent=True,
@@ -1003,13 +1003,17 @@ class SaleSubscriptionTemplate(models.Model):
     product_count = fields.Integer(compute='_compute_product_count')
     subscription_count = fields.Integer(compute='_compute_subscription_count')
     color = fields.Integer()
-    auto_close_limit = fields.Integer(string="Automatic closing limit", default=15,
-                                      help="Number of days before a subscription gets closed when the chosen payment mode trigger automatically the payment.")
+    auto_close_limit = fields.Integer(
+        string="Automatic Closing", default=15,
+        help="If the chosen payment method has failed to renew the subscription after this time, "
+             "the subscription is automatically closed.")
     good_health_domain = fields.Char(string='Good Health', default='[]',
                                      help="Domain used to change subscription's Kanban state with a 'Good' rating")
     bad_health_domain = fields.Char(string='Bad Health', default='[]',
                                     help="Domain used to change subscription's Kanban state with a 'Bad' rating")
-    invoice_mail_template_id = fields.Many2one('mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.move')])
+    invoice_mail_template_id = fields.Many2one(
+        'mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.move')],
+        default=lambda self: self.env.ref('sale_subscription.mail_template_subscription_invoice', raise_if_not_found=False))
     company_id = fields.Many2one('res.company')
 
     @api.constrains('recurring_interval')
@@ -1057,11 +1061,15 @@ class SaleSubscriptionStage(models.Model):
     _order = 'sequence, id'
 
     name = fields.Char(string='Stage Name', required=True, translate=True)
-    description = fields.Text(translate=True)
+    description = fields.Text(
+        "Requirements", help="Enter here the internal requirements for this stage. It will appear "
+                             "as a tooltip over the stage's name.", translate=True)
     sequence = fields.Integer(default=1)
     fold = fields.Boolean(string='Folded in Kanban',
                           help='This stage is folded in the kanban view when there are not records in that stage to display.')
-    rating_template_id = fields.Many2one('mail.template', string='Rating Email Template', domain=[('model', '=', 'sale.subscription')])
+    rating_template_id = fields.Many2one('mail.template', string='Rating Email Template',
+                                         help="Send an email to the customer when the subscription is moved to this stage.",
+                                         domain=[('model', '=', 'sale.subscription')])
     in_progress = fields.Boolean(string='In Progress', default=True)
 
 
@@ -1083,6 +1091,7 @@ class SaleSubscriptionAlert(models.Model):
     def default_get(self, default_fields):
         res = super(SaleSubscriptionAlert, self).default_get(default_fields)
         res['model_id'] = self.env['ir.model'].search([('model', '=', 'sale.subscription')]).id
+        res['model_name'] = 'sale.subscription'
         res['trigger'] = 'on_create_or_write'
         return res
 
@@ -1181,11 +1190,11 @@ class SaleSubscriptionAlert(models.Model):
         self.filtered(lambda alert: alert.action != 'next_activity' and alert.child_ids).unlink()
         for alert in self:
             if alert.action == 'set_tag' and alert.tag_id:
-                alert.set_field_action('tag_ids', alert.tag_id.id)
+                alert._set_field_action('tag_ids', alert.tag_id.id)
             elif alert.action == 'set_stage' and alert.stage_id:
-                alert.set_field_action('stage_id', alert.stage_id.id)
+                alert._set_field_action('stage_id', alert.stage_id.id)
             elif alert.action == 'set_to_renew':
-                alert.set_field_action('to_renew', True)
+                alert._set_field_action('to_renew', True)
             elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
                 alert.set_activity_action()
             elif vals.get('action') in ('email', 'sms'):
@@ -1210,8 +1219,20 @@ class SaleSubscriptionAlert(models.Model):
         self._configure_alert_from_action(vals)
         return res
 
-    def set_field_action(self, field_name, value):
-        for alert in self:
+    def action_view_subscriptions(self):
+        self.ensure_one()
+        domain = safe_eval(self.filter_domain) if self.filter_domain else []
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Subscriptions'),
+            'res_model': 'sale.subscription',
+            'view_mode': 'kanban,tree,form,pivot,graph,cohort,activity',
+            'domain': domain,
+            'context': {'create': False},
+        }
+
+    def _set_field_action(self, field_name, value):
+        for alert in self.sudo():  # Require sudo to write on ir.actions.server fields
             tag_field = self.env['ir.model.fields'].search([('model', '=', alert.model_name), ('name', '=', field_name)])
             super(SaleSubscriptionAlert, alert).write({
                 'state': 'object_write',

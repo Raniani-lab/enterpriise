@@ -8,6 +8,7 @@
         <field name="interval_number">1</field>
         <field name="interval_type">weeks</field>
         <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(datetime.now() + timedelta(minutes=5)).strftime('%Y-%m-%d %H:%M:%S')"/>
         <field name="doall" eval="False"/>
     </record>
 
@@ -19,6 +20,7 @@
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(datetime.now() + timedelta(minutes=7)).strftime('%Y-%m-%d %H:%M:%S')"/>
     </record>
 
     <record id="ir_cron_sale_subscription_update_kpi" model="ir.cron">
@@ -29,6 +31,7 @@
         <field name="interval_number">1</field>
         <field name="interval_type">weeks</field>
         <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(datetime.now() + timedelta(minutes=9)).strftime('%Y-%m-%d %H:%M:%S')"/>
     </record>
 
     <!-- Standard Closing Reason -->
@@ -87,4 +90,30 @@
         <field name="in_progress" eval="False"/>
         <field name="fold">True</field>
     </record>
+    
+    <!-- Default Subscription Templates -->
+    <data noupdate="1">
+        <record id="monthly_subscription" model="sale.subscription.template">
+            <field name="name">Monthly Subscription</field>
+            <field name="code">MON</field>
+            <field name="recurring_interval">1</field>
+            <field name="recurring_rule_type">monthly</field>
+            <field name="payment_mode">success_payment</field>
+            <field name="invoice_mail_template_id"
+                   eval="ref('sale_subscription.mail_template_subscription_invoice')"/>
+            <field name="user_closable">True</field>
+        </record>
+    
+        <record id="yearly_subscription" model="sale.subscription.template">
+            <field name="name">Yearly Subscription</field>
+            <field name="code">YEA</field>
+            <field name="recurring_interval">1</field>
+            <field name="recurring_rule_type">yearly</field>
+            <field name="payment_mode">success_payment</field>
+            <field name="invoice_mail_template_id"
+                   eval="ref('sale_subscription.mail_template_subscription_invoice')"/>
+            <field name="user_closable">True</field>
+        </record>
+    </data>
+    
 </odoo>

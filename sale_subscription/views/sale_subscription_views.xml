@@ -26,11 +26,11 @@
         <field name="arch" type="xml">
             <search string="Subscriptions">
                 <field name="name" string="Subscription" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
-                <field name="date"/>
                 <field name="partner_id" operator="child_of"/>
                 <field name="user_id"/>
-                <field name="template_id" string="Template"/>
-                <field name="code"/>
+                <field name="team_id"/>
+                <field name="recurring_invoice_line_ids" string="Product" filter_domain="[('recurring_invoice_line_ids.product_id', 'ilike', self)]"/>
+                <field name="template_id"/>
                 <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid)]"/>
                 <filter string="Unassigned" name="contracts_not_assigned" help="Subscriptions that are not assigned to an account manager." domain="[('user_id', '=', False)]"/>
                 <separator/>
@@ -123,8 +123,8 @@
         <field name="res_model">sale.subscription</field>
         <field name="view_mode">tree,form,pivot,graph,kanban,cohort,activity</field>
         <field name="context">{
+            "search_default_my_subscriptions":1,
             'search_default_stage':1,
-            'search_default_user_id':uid,
             'search_default_pending':1
         }</field>
         <field name="domain">[]</field>
@@ -133,13 +133,14 @@
           <p class="o_view_nocontent_smiling_face">
             Define a new subscription
           </p><p>
-            You will find here the subscriptions to be renewed because the
-            end date is passed or the working effort is higher than the
-            maximum authorized one.
+            You will find here the subscriptions to be renewed (end date is close or passed)
           </p><p>
             Odoo automatically sets subscriptions to be renewed in a pending
-            state. After the negociation, the salesman should close or renew
+            state. After the negotiation, the salesman should close or renew
             pending subscriptions.
+          </p><p>
+            Send a renewal quotation to the customer.
+            When it is confirmed, the subscription is running again.
           </p>
         </field>
     </record>
@@ -173,9 +174,9 @@
             <form string="Subscription" class="o_subscription_form">
                 <header>
                     <button string="Create Invoice" name="recurring_invoice" type="object" attrs="{'invisible': [('payment_mode', '!=', 'manual')]}" class="btn-primary"/>
-                    <button string="Create A Renewal Quotation" help="Create a sale order that will overwrite this subscription when confirmed (renewal quotation)" name="prepare_renewal_order" type="object" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited'), ('to_renew', '=', False)]}"/>
-                    <button string="Upsell" help="Add options to the subscription directly or through a quotation" name="%(sale_subscription.wizard_action)d" type="action" attrs="{'invisible': [('in_progress', '=', False)]}"/>
-                    <button string="Close" help="Close the subscription" name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action" attrs="{'invisible': [('in_progress', '=', False)]}"/>
+                    <button string="Renewal Quotation" name="prepare_renewal_order" type="object" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited'), ('to_renew', '=', False)]}"/>
+                    <button string="Upsell" name="%(sale_subscription.wizard_action)d" type="action" attrs="{'invisible': [('in_progress', '=', False)]}"/>
+                    <button string="Close" name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action" attrs="{'invisible': [('in_progress', '=', False)]}"/>
                     <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
                 <sheet string="Subscription">
@@ -185,8 +186,8 @@
                             name="open_website_url"
                             type="object">
                             <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Customer</span>
                                 <span class="o_stat_text">Preview</span>
-                                <span class="o_stat_text">on Portal</span>
                             </div>
                         </button>
                         <button class="oe_stat_button"
@@ -217,9 +218,19 @@
                         <group>
                             <field name="partner_id" required="1"/>
                             <field name="pricelist_id" groups="product.group_product_pricelist"/>
-                            <field name="code"/>
                             <field name="date_start"/>
                             <field name="date" attrs="{'invisible':[('recurring_rule_boundary','=','unlimited')]}"/>
+                            <label for="recurring_next_date" string="Date of Next Invoice" attrs="{'invisible': [('in_progress', '=', False)]}"/>
+                            <div attrs="{'invisible': [('in_progress', '=', False)]}">
+                                <field name="recurring_next_date"/>
+                                <button name="recurring_invoice"
+                                        string="Generate Invoice"
+                                        class="oe_link"
+                                        icon="fa-long-arrow-right"
+                                        type="object"
+                                        groups="base.group_no_one"
+                                        attrs="{'invisible': [('payment_mode', '=', 'manual')]}"/>
+                            </div>
                             <field name="close_reason_id" attrs="{'invisible': [('in_progress', '=', True)]}"/>
                             <field name="in_progress" invisible="1"/>
                         </group>
@@ -229,14 +240,7 @@
                             <field name="team_id" kanban_view_ref="%(sales_team.crm_team_view_kanban)s"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="currency_id" invisible="1"/>
-                            <label for="recurring_next_date" string="Date of Next Invoice" attrs="{'invisible': [('in_progress', '=', False)]}"/>
-                            <div attrs="{'invisible': [('in_progress', '=', False)]}">
-                                <field name="recurring_next_date"/>
-                                <button string="&#8658; Generate Invoice" class="oe_link" name="recurring_invoice"
-                                        type="object" attrs="{'invisible': [('payment_mode', '=', 'manual')]}" groups="base.group_no_one"/>
-                            </div>
                             <field name="recurring_rule_boundary" invisible="1"/>
-                            <field name="to_renew"/>
                         </group>
                     </group>
                     <div>
@@ -278,9 +282,14 @@
                                         />
                                     </group>
                                 </div>
+                                <div name="description">
+                                    <field name="description" placeholder="Terms and Conditions"/>
+                                </div>
                             </page>
-                            <page string="Settings" id="settings">
+                            <page string="Other Info" id="other_info">
                                 <group>
+                                    <field name="code"/>
+                                    <field name="to_renew"/>
                                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                     <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                                     <field name="payment_mode" invisible="1"/>
@@ -288,9 +297,6 @@
                                 </group>
                             </page>
                         </notebook>
-                    </div>
-                    <div name="description">
-                        <field name="description" placeholder="Terms and Conditions"/>
                     </div>
                 </sheet>
                 <div class="oe_chatter">
@@ -448,44 +454,53 @@
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="e.g. Monthly Subscription" class="oe_edit_only"/>
+                            <field name="name" placeholder="e.g. Monthly Subscription"/>
                         </h1>
                     </div>
-                    <group name="config">
-                        <group name="invoicing">
-                            <field name="company_id" groups="base.group_multi_company"/>
-                            <label for="recurring_interval" string="Invoice period"/>
-                            <div class="o_row">
-                                <span class="mr-1">Every</span>
-                                <field name="recurring_interval" required="1"/>
-                                <field name="recurring_rule_type" class="field_rule_type" required="1"/>
-                            </div>
-                            <field name="recurring_rule_boundary" widget="radio" options="{'horizontal':true}"/>
-                            <label for="" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}"/>
-                            <div class="o_row" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}">
-                                <span class="mr-1">For</span>
-                                <field name="recurring_rule_count"/>
-                                 <field name="recurring_rule_type_readonly" invisible="1"/>
-                                <span class="mr-1">period(s)</span>
-                            </div>
-                            <field name="active" invisible="1"/>
-                            <field name="payment_mode" widget="radio"/>
-                            <field name="invoice_mail_template_id"
-                                   attrs="{'invisible': [('payment_mode', 'not in', ['validate_send', 'validate_send_payment'])],
-                                           'required': [('payment_mode', 'in', ['validate_send', 'validate_send_payment'])]}"/>
-                        </group>
-                        <group name="online" string="Customer Portal">
-                            <field name="user_closable"/>
-                            <label for="auto_close_limit" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}"/>
-                            <div class="o_row" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}">
-                                <field name="auto_close_limit"/>
-                                <span class="ml-1">days</span>
-                            </div>
-                            <field name="tag_ids" string="Group of Subscription" widget="many2many_tags" options="{'color_field': 'color'}" />
-                            <field name="journal_id" string="Journal" options="{'no_create': True}" groups="account.group_account_manager"/>
-                        </group>
-                    </group>
                     <notebook>
+                        <page string="Invoicing">
+                            <group name="invoicing">
+                                <group>
+                                    <label for="recurring_interval"/>
+                                    <div class="o_row">
+                                        <span class="mr-1">Every</span>
+                                        <field name="recurring_interval" required="1"/>
+                                        <field name="recurring_rule_type" class="field_rule_type" required="1"/>
+                                    </div>
+                                    <field name="recurring_rule_boundary" widget="radio" options="{'horizontal':true}"/>
+                                    <label for="" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}"/>
+                                    <div class="o_row" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}">
+                                        <span class="mr-1">For</span>
+                                        <field name="recurring_rule_count"/>
+                                        <field name="recurring_rule_type_readonly" invisible="1"/>
+                                        <span class="mr-1">period(s)</span>
+                                    </div>
+                                    <field name="active" invisible="1"/>
+                                    <field name="payment_mode" string="Create Invoice" widget="radio"/>
+                                    <field name="invoice_mail_template_id"
+                                           string="Invoice Email"
+                                           attrs="{'invisible': [('payment_mode', 'not in', ['validate_send', 'validate_send_payment', 'success_payment'])],
+                                                   'required': [('payment_mode', 'in', ['validate_send', 'validate_send_payment', 'success_payment'])]}"/>
+                                </group>
+                            </group>
+                            <group name="online">
+                                <group>
+                                    <field name="user_closable"/>
+                                    <label for="auto_close_limit" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}"/>
+                                    <div class="o_row" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}">
+                                        <field name="auto_close_limit"/>
+                                        <span class="ml-1">days</span>
+                                    </div>
+                                    <field name="tag_ids" string="Group of Subscription" widget="many2many_tags" options="{'color_field': 'color'}" />
+                                    <field name="journal_id" string="Journal" options="{'no_create': True}" groups="account.group_account_manager"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="company_id" groups="base.group_multi_company"/>
+                                </group>
+                            </group>
+                        </page>
                         <page name="description" string="Terms and Conditions">
                             <field name="description" placeholder="Terms and Conditions"/>
                         </page>
@@ -512,7 +527,7 @@
         <field name="arch" type="xml">
             <kanban default_group_by="stage_id" class="o_kanban_mobile">
                 <field name="user_id"/>
-                <field name="stage_id"/>
+                <field name="stage_id" options="{'group_by_tooltip': {'description': 'Description'}}"/>
                 <field name="starred"/>
                 <field name="recurring_total"/>
                 <field name="template_id"/>
@@ -609,18 +624,17 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button"
-                            icon="fa-book"
-                            name="%(sale_subscription_action)d"
-                            context="{'search_default_template_id': [active_id], 'default_template_id': active_id, 'create': False}"
-                            attrs="{'invisible':[('id','=',False),('subscription_count','=',0)]}"
-                            type="action">
+                                icon="fa-book"
+                                name="action_view_subscriptions"
+                                attrs="{'invisible': [('subscription_count', '=', 0)]}"
+                                type="object">
                             <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
                         </button>
                     </div>
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only" string="Alert Name"/>
-                        <h1><field name="name" placeholder="e.g. Update order quantity"/></h1>
+                        <h1><field name="name" placeholder="e.g. Closed Subscription"/></h1>
                     </div>
                     <group name="apply_on_panel" string="Apply on">
                         <group name="subscription_details">
@@ -660,39 +674,49 @@
                     </group>
                     <group string="Action" name="action_wrapper">
                         <group name="action_content">
+                            <field name="action"/>
+                            <field name="tag_id"
+                                   attrs="{'invisible': [('action', '!=', 'set_tag')],
+                                           'required': [('action', '=', 'set_tag')]}"/>
+                            <field name="stage_id"
+                                   attrs="{'invisible': [('action', '!=', 'set_stage')],
+                                           'required': [('action', '=', 'set_stage')]}"/>
+                            <field name="template_id"
+                                   attrs="{'invisible': [('action', '!=', 'email')],
+                                           'required': [('action', '=', 'email')]}"/>
+                            <field name="sms_template_id"
+                                   context="{'default_model_id': model_id}"
+                                   attrs="{'invisible': [('action', '!=', 'sms')],
+                                           'required': [('action', '=', 'sms')]}"/>
+                        </group>
+                        <group name="action_details">
                             <field name="model_id" invisible="1"/>
                             <field name="model_name" invisible="1"/>
-                            <field name="action"/>
-
-                            <field name="filter_pre_domain" widget="domain" options="{'model': 'model_name', 'in_dialog': True}" readonly="1" groups="base.group_no_one" attrs="{'invisible': [('trigger_condition', 'not in', ['on_write','on_create_or_write'])]}"/>
-                            <field name="filter_domain" widget="domain" options="{'model': 'model_name', 'in_dialog': True}" readonly="1" groups="base.group_no_one"/>
-
+                            <field name="trigger_condition"/>
+                            <field name="filter_pre_domain"
+                                   widget="domain"
+                                   options="{'model': 'model_name', 'in_dialog': True}"
+                                   readonly="1"
+                                   groups="base.group_no_one"/>
+                            <field name="filter_domain"
+                                   string="Apply On"
+                                   widget="domain"
+                                   options="{'model': 'model_name', 'in_dialog': True}"
+                                   readonly="1"
+                                   groups="base.group_no_one"/>
                             <field name="trg_date_id"
-                                attrs="{'invisible': [('trigger_condition', '!=', 'on_time')], 'required': [('trigger_condition', '=', 'on_time')]}"/>
+                                   attrs="{'invisible': [('trigger_condition', '!=', 'on_time')],
+                                           'required': [('trigger_condition', '=', 'on_time')]}"
+                                   options="{'no_open': True, 'no_create_edit': True}"/>
                             <label for="trg_date_range"
-                                attrs="{'invisible': [('trigger_condition', '!=', 'on_time')]}"/>
+                                   string="Delay After Trigger"
+                                   attrs="{'invisible': [('trigger_condition', '!=', 'on_time')]}"/>
                             <div class="o_row" attrs="{'invisible': [('trigger_condition', '!=', 'on_time')]}">
                                 <field name="trg_date_range" attrs="{'required': [('trigger_condition','=','on_time')]}"/>
                                 <field name="trg_date_range_type" attrs="{'required': [('trigger_condition','=','on_time')]}"/>
                             </div>
                             <field name="trg_date_calendar_id"
-                                attrs="{'invisible': ['|', ('trg_date_id','=',False), ('trg_date_range_type', '!=', 'day')]}"/>
-                        </group>
-                        <group name="action_details">
-                            <field name="trigger_condition"/>
-                            <field name="tag_id"
-                                attrs="{'invisible': [('action', '!=', 'set_tag')],
-                                        'required': [('action', '=', 'set_tag')]}"/>
-                            <field name="stage_id"
-                                attrs="{'invisible': [('action', '!=', 'set_stage')],
-                                        'required': [('action', '=', 'set_stage')]}"/>
-                            <field name="template_id"
-                                attrs="{'invisible': [('action', '!=', 'email')],
-                                        'required': [('action', '=', 'email')]}"/>
-                            <field name="sms_template_id"
-                                context="{'default_model_id': model_id}"
-                                attrs="{'invisible': [('action', '!=', 'sms')],
-                                        'required': [('action', '=', 'sms')]}"/>
+                                   attrs="{'invisible': ['|', ('trg_date_id', '=', False), ('trg_date_range_type', '!=', 'day')]}"/>
                         </group>
                     </group>
                     <group string="Activity" name="next_activity" autofocus="autofocus" attrs="{'invisible': [('action', '!=', 'next_activity')]}">
@@ -742,9 +766,7 @@
               Create a new subscription alert
             </p>
             <p>
-              Alerts are used to inform the salesman which subscriptions
-              need their attention. It can be positive (upsell) or
-              negative (churn, invoice not paid...).
+              Trigger alerts for salespersons or customers: churn, invoice not paid, upsell, etc.
             </p>
         </field>
     </record>
@@ -758,6 +780,17 @@
             <p class="o_view_nocontent_smiling_face">
                 Create a new subscription stage
             </p>
+        </field>
+    </record>
+    
+    <record id="sale_subscription_stage_view_list" model="ir.ui.view">
+        <field name="name">sale.subscription.stage.list</field>
+        <field name="model">sale.subscription.stage</field>
+        <field name="arch" type="xml">
+            <tree string="Subscription Stages">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
         </field>
     </record>
 
@@ -778,8 +811,9 @@
                             <field name="in_progress"/>
                         </group>
                     </group>
-
-                    <field name="description" placeholder="Add a description..." nolabel="1" colspan="2"/>
+                    <separator string="Requirements"/>
+                    <field name="description"
+                           placeholder="Give your team the requirements to move a subscription to this stage."/>
                 </sheet>
             </form>
         </field>

@@ -43,10 +43,10 @@
             <xpath expr="//button[@name='action_schedule']" position="replace"/>
             <field name="mailing_domain" position="replace"/>
             <xpath expr="//label[@for='mailing_model_id']" position="attributes">
-                 <attribute name="invisible">1</attribute>
+                <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//div[@name='mailing_model_id_container']" position="attributes">
-                 <attribute name="invisible">1</attribute>
+                <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//field[@name='contact_list_ids']" position="replace"/>
             <xpath expr="//field[@name='medium_id']" position="after">
@@ -116,9 +116,6 @@
         <field name="name">Marketing Automation Mailings</field>
         <field name="res_model">mailing.mailing</field>
         <field name="view_mode">tree,form,graph</field>
-        <field name="context">{
-            'default_use_in_marketing_automation': True
-        }</field>
         <field name="domain">[('use_in_marketing_automation', '=', True)]</field>
     </record>
     <record id="mail_mass_mailing_action_marketing_automation_tree" model="ir.actions.act_window.view">

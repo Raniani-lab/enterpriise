@@ -212,6 +212,7 @@ class MarketingCampaign(models.Model):
         self.write({'state': 'stopped'})
 
     def action_view_mailings(self):
+        self.ensure_one()
         action = self.env.ref('marketing_automation.mail_mass_mailing_action_marketing_automation').read()[0]
         action['domain'] = [
             '&',
@@ -219,6 +220,14 @@ class MarketingCampaign(models.Model):
             ('id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids),
             ('mailing_type', '=', 'mail')
         ]
+        action['context'] = dict(self.env.context)
+        action['context'].update({
+            'default_mailing_model_id': self.model_id.id,
+            'default_campaign_id': self.utm_campaign_id.id,
+            'default_use_in_marketing_automation': True,
+            'default_mailing_type': 'mail',
+            'default_state': 'done'
+        })
         return action
 
     def action_view_tracker_statistics(self):

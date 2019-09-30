@@ -209,8 +209,8 @@ class Planning(models.Model):
             if end_datetime:
                 self.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
             # Set default role if the role field is empty
-            if not self.role_id and self.employee_id.planning_role_id:
-                self.role_id = self.employee_id.planning_role_id
+            if not self.role_id and self.employee_id.sudo().planning_role_id:
+                self.role_id = self.employee_id.sudo().planning_role_id
 
     @api.onchange('company_id')
     def _onchange_company_id(self):

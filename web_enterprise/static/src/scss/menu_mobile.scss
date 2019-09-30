@@ -124,3 +124,8 @@
     }
 
 }
+
+// Hide the arrow on the home menu
+body.o_home_menu_background .o_burger_menu > .o_burger_menu_topbar .dropdown-toggle::after {
+    display: none;
+}

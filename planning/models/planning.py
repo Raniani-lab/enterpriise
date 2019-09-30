@@ -587,7 +587,6 @@ class PlanningPlanning(models.Model):
     def _default_access_token(self):
         return str(uuid.uuid4())
 
-    name = fields.Char("Name")
     start_datetime = fields.Datetime("Start Date", required=True)
     end_datetime = fields.Datetime("Stop Date", required=True)
     include_unassigned = fields.Boolean("Includes Open shifts", default=True)
@@ -599,6 +598,13 @@ class PlanningPlanning(models.Model):
     _sql_constraints = [
         ('check_start_date_lower_stop_date', 'CHECK(end_datetime > start_datetime)', 'Planning end date should be greater than its start date'),
     ]
+
+    @api.depends('start_datetime', 'end_datetime')
+    def _compute_display_name(self):
+        """ This override is need to have a human readable string in the email light layout header (`message.record_name`) """
+        for planning in self:
+            number_days = (planning.end_datetime - planning.start_datetime).days
+            planning.display_name = _('Planning of %s days') % (number_days,)
 
     @api.depends('start_datetime', 'end_datetime', 'include_unassigned')
     def _compute_slot_ids(self):

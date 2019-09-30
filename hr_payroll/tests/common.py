@@ -91,7 +91,6 @@ class TestPayslipBase(SavepointCase):
         cls.developer_pay_structure = cls.env['hr.payroll.structure'].create({
             'name': 'Salary Structure for Software Developer',
             'type_id': cls.structure_type.id,
-            'regular_pay': True,
             'unpaid_work_entry_type_ids': [(4, cls.work_entry_type_unpaid.id, False)]
         })
 
@@ -158,6 +157,7 @@ class TestPayslipBase(SavepointCase):
             'category_id': cls.env.ref('hr_payroll.DED').id,
             'struct_id': cls.developer_pay_structure.id,
         })
+        cls.structure_type.default_struct_id = cls.developer_pay_structure
 
     def create_work_entry(self, start, stop, work_entry_type=None):
         work_entry_type = work_entry_type or self.work_entry_type

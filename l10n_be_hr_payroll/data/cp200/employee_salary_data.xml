@@ -7,7 +7,6 @@
             <field name="name">CP200: Employees Monthly Pay</field>
             <field name="country_id" ref="base.be"/>
             <field name="type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
-            <field name="regular_pay" eval="True"/>
             <field name="unpaid_work_entry_type_ids" eval="[
                 (4, ref('hr_payroll.work_entry_type_unpaid_leave')),
                 (4, ref('l10n_be_hr_payroll.work_entry_type_unpredictable')),
@@ -16,6 +15,9 @@
                 (4, ref('l10n_be_hr_payroll.work_entry_type_maternity')),
                 (4, ref('l10n_be_hr_payroll.work_entry_type_breast_feeding')),
             ]"/>
+        </record>
+        <record id="structure_type_employee_cp200" model="hr.payroll.structure.type">
+            <field name="default_struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
         <!-- Salary Rules -->

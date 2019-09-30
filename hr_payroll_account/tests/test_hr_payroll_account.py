@@ -108,6 +108,7 @@ class TestHrPayrollAccountCommon(TestPayslipContractBase):
         cls.hr_structure_type = cls.env['hr.payroll.structure.type'].create({
             'name': 'Salary Structure Type',
             'struct_ids': [(4, cls.hr_structure_softwaredeveloper.id)],
+            'default_struct_id': cls.hr_structure_softwaredeveloper.id,
         })
 
         cls.hr_contract_john = cls.env['hr.contract'].create({

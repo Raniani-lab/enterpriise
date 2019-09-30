@@ -59,7 +59,6 @@ class HrPayrollStructure(models.Model):
         string="Report", domain="[('model','=','hr.payslip'),('report_type','=','qweb-pdf')]", default=_get_default_report_id)
     payslip_name = fields.Char(string="Payslip Name", translate=True,
         help="Name to be set on a payslip. Example: 'End of the year bonus'. If not set, the default value is 'Salary Slip'")
-    regular_pay = fields.Boolean("Regular Pay", help="Check this option if this structure is the common one")
     unpaid_work_entry_type_ids = fields.Many2many('hr.work.entry.type')
     use_worked_day_lines = fields.Boolean(default=True, help="Worked days won't be computed/displayed in payslips.")
     schedule_pay = fields.Selection([
@@ -98,17 +97,12 @@ class HrPayrollStructureType(models.Model):
         'resource.calendar', 'Default Working Hours',
         default=lambda self: self.env.company.resource_calendar_id)
     struct_ids = fields.One2many('hr.payroll.structure', 'type_id', string="Structures")
-    default_struct_id = fields.Many2one('hr.payroll.structure', compute='_compute_default_struct_id')
+    default_struct_id = fields.Many2one('hr.payroll.structure', string="Regular Pay Structure")
     default_work_entry_type_id = fields.Many2one('hr.work.entry.type', help="Work entry type for regular attendances.", required=True,
                                                  default=lambda self: self.env.ref('hr_work_entry.work_entry_type_attendance', raise_if_not_found=False))
     country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
     wage_type = fields.Selection([('monthly', 'Monthly Fixed Wage'), ('hourly', 'Hourly Wage')], default='monthly', required=True)
     struct_type_count = fields.Integer(compute='_compute_struct_type_count', string='Structure Type Count')
-
-    def _compute_default_struct_id(self):
-        for structure_type in self:
-            sorted_structures = sorted(structure_type.struct_ids, key=lambda struct: struct.regular_pay, reverse=True)
-            structure_type.default_struct_id = sorted_structures[0] if sorted_structures else False
 
     def _compute_struct_type_count(self):
         for structure_type in self:

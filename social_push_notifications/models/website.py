@@ -17,7 +17,7 @@ class Website(models.Model):
 
     notification_request_title = fields.Char('Notification Request Title')
     notification_request_body = fields.Text('Notification Request Text')
-    notification_request_delay = fields.Integer('Notification Request Delay (seconds)')
+    notification_request_delay = fields.Integer('Notification Request Delay (seconds)', default=3)
     notification_request_icon = fields.Binary("Notification Request Icon")
 
     @api.model

@@ -45,7 +45,7 @@
                             <div class="o_social_post_header d-flex justify-content-between border-bottom py-2 px-3">
                                 <div>
                                     <t t-foreach="record.media_ids.raw_value" t-as="media_id">
-                                        <img class="img mr-1" t-att-title="JSON.parse(record.live_posts_by_media.raw_value)[media_id].join('\n')" t-attf-src="/web/image/social.media/#{media_id}/image/15x15" alt="Media"/>
+                                        <img class="img mr-1" width="16" t-att-title="JSON.parse(record.live_posts_by_media.raw_value)[media_id].join('\n')" t-attf-src="/web/image/social.media/#{media_id}/image/16x16" alt="Media"/>
                                     </t>
                                 </div>
                                 <div>
@@ -128,7 +128,7 @@
         <field name="name">social.post.view.calendar</field>
         <field name="model">social.post</field>
         <field name="arch" type="xml">
-            <calendar string="Social Posts" date_start="calendar_date" color="state" quick_add="false" mode="week">
+            <calendar string="Social Posts" date_start="calendar_date" color="state" quick_add="false" mode="month">
                 <field name="message"/>
             </calendar>
         </field>
@@ -171,7 +171,7 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box" attrs="{'invisible': [('id', '=', False)]}">
+                    <div class="oe_button_box" name="button_box" attrs="{'invisible': [('state', '=', 'draft')]}">
                         <button class="oe_stat_button" icon="fa-newspaper-o" type="object" name="social_stream_post_action_my"
                             attrs="{'invisible': [('stream_posts_count', '=', 0)]}">
                             <field string="Feed Posts" name="stream_posts_count" widget="statinfo" />
@@ -185,16 +185,16 @@
                         </button>
                     </div>
                     <group>
-                        <group string="Your Post" name="social_post_global">
+                        <group string="Your Post" name="social_post_global" class="o_social_post_form_content">
                             <field name="has_active_accounts" invisible="1" />
                             <field name="account_ids" options="{'no_create': True}" string="Post on" widget="many2many_checkboxes"
                                  attrs="{'invisible': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}" />
                             <div colspan="2" class="alert alert-info o_social_post_no_accounts_available" role="alert" attrs="{'invisible': [('has_active_accounts', '=', True)]}">
                                 <p><a href="/web#action=social.action_social_media">Link social accounts</a> before posting.</p>
                             </div>
-                            <field name="message" widget="social_text_emojis"
-                                 attrs="{'readonly': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}" />
-                            <field name="image_ids" widget="many2many_binary" />
+                            <field name="message" widget="social_text_emojis" class="o_social_post_message_wrapper"
+                                     attrs="{'readonly': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}" />
+                            <field name="image_ids" widget="many2many_binary" class="o_social_post_form_attachments"/>
                             <field string="Campaign" name="utm_campaign_id"
                                 attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>
                             <field name="post_method" widget="radio" attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>

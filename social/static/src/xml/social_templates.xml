@@ -130,7 +130,7 @@
             </div>
         </div>
         <div t-if="!isSubComment" class="pl-5 mt-2">
-            <div class="o_social_comment_replies mt-2 d-none">
+            <div class="o_social_comment_replies mt-4 d-none">
             </div>
             <div class="o_social_write_comment_reply d-none">
                 <t t-call="social.StreamPostReply">
@@ -269,14 +269,14 @@
 
     <t t-name="social.KanbanView.Group" t-extend="KanbanView.Group">
         <t t-jquery="span.o_column_title" t-operation="before">
-           <img t-if="widget.groupedBy === 'stream_id'" t-attf-src="/web/image/social.stream/#{widget.id}/media_image/15x15" class="mr8" />
+           <img t-if="widget.groupedBy === 'stream_id'" width="16" t-attf-src="/web/image/social.stream/#{widget.id}/media_image/16x16" class="mr8" />
         </t>
     </t>
 
     <div t-name="social.AddStreamMedia" class="o_social_media_cards d-flex">
         <t t-foreach="widget.socialMedia" t-as="media">
             <div class="o_social_media card text-center justify-content-center align-items-center mr-3 p-3" t-att-data-media-id="media.id" style="min-width: 90px;">
-                <img t-attf-src="/web/image/social.media/#{media.id}/image/48x48" />
+                <img width="48" t-attf-src="/web/image/social.media/#{media.id}/image/48x48" />
                 <h5 t-esc="media.name" class="o_social_media_name mb-0 mt-2" />
             </div>
         </t>
@@ -289,7 +289,7 @@
                 <div class="list-group">
                     <button t-foreach="widget.socialAccounts" t-as="socialAccount" class="list-group-item list-group-item-action">
                         <div class="o_social_account_card d-flex align-items-center" t-att-data-media-id="socialAccount.media_id[0]" t-att-data-account-id="socialAccount.id">
-                            <img t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/24x24" class="mr-4"/>
+                            <img width="24" t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/24x24" class="mr-4"/>
                             <img t-attf-src="/web/image/social.account/#{socialAccount.id}/image/32x32" class="o_social_account_image rounded-circle border mr-2" />
                             <h4 t-esc="socialAccount.name" class="o_social_account_name font-weight-bold flex-grow-1 m-0"/>
                         </div>
@@ -354,7 +354,7 @@
             class="o_social_stream_stat_box flex-shrink-0 w-auto d-flex flex-column bg-white border-bottom border-right">
             <div class="pt-3 pb-2 px-4 d-flex justify-content-between">
                 <div class="d-flex align-items-center">
-                    <img class="mr-2" t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/15x15" alt="Social Media"/>
+                    <img class="mr-2" width="16" t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/16x16" alt="Social Media"/>
                     <h5 class="d-inline m-0" t-esc="socialAccount.name"/>
                 </div>
                 <div class="d-flex align-items-center ml-4">

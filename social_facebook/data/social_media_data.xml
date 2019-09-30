@@ -5,7 +5,7 @@
             <field name="name">Facebook</field>
             <field name="media_type">facebook</field>
             <field name="description" type="html"><p>Manage your Facebook pages and schedule posts</p></field>
-            <field name="image" type="base64" file="social_facebook/static/src/img/facebook.png"/>
+            <field name="image" type="base64" file="social_facebook/static/src/img/facebook.svg"/>
         </record>
 
         <record id="stream_type_page_posts" model="social.stream.type">

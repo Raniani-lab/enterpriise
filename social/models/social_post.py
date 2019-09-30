@@ -18,7 +18,7 @@ class SocialPost(models.Model):
     _name = 'social.post'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Social Post'
-    _order = 'scheduled_date desc, published_date desc'
+    _order = 'create_date desc'
 
     message = fields.Text("Message", required=True)
     state = fields.Selection([
@@ -134,7 +134,25 @@ class SocialPost(models.Model):
             post.click_count = mapped_data.get(post.utm_source_id.id, 0)
 
     def name_get(self):
-        return [(r.id, _('Post')) for r in self]
+        """ We use the first 20 chars of the message (or "Post" if no message yet).
+        We also add "(Draft)" at the end if the post is still in draft state. """
+        result = []
+        state_description_values = {elem[0]: elem[1] for elem in self._fields['state']._description_selection(self.env)}
+        draft_translated = state_description_values.get('draft')
+        for post in self:
+            name = _('Post')
+            if post.message:
+                if len(post.message) < 20:
+                    name = post.message
+                else:
+                    name = post.message[:20] + '...'
+
+            if post.state == 'draft':
+                name += ' (' + draft_translated + ')'
+
+            result.append((post.id, name))
+
+        return result
 
     @api.model
     def default_get(self, fields):

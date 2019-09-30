@@ -16,15 +16,44 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
             }
 
             &.o_view_nocontent {
-                @include o-position-absolute(0, 0, 0, 50%);
+                @include o-position-absolute(0, 0, 0, 55%);
                 padding-top: 5%;
             }
         }
 
-        .o_social_post_preview_group {
+        .o_group.o_inner_group.o_social_post_preview_group {
             > tbody > tr > td {
                 padding-right: 0;
             }
+        }
+
+        .o_social_post_form_attachments .o_attachments,
+        .o_social_post_form_attachments .o_attachment {
+            width: 250px;
+            padding-left: 0;
+        }
+
+        .o_social_post_form_content td {
+            position: relative;
+        }
+
+        .o_social_post_message_wrapper {
+            &, & + textarea[disabled] {
+                padding-right: 50px;
+
+                @include media-breakpoint-up(sm) {
+                    width: 100%!important;
+                }
+            }
+
+            ~ .o_social_icon_dropdown {
+                @include o-position-absolute(0, 30px);
+
+                .dropdown-toggle:after {
+                    display: none;
+                }
+            }
+
         }
     }
 

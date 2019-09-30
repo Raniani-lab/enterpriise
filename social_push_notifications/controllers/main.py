@@ -16,9 +16,9 @@ class SocialPushNotificationsController(http.Controller):
         if not current_website or not current_website.firebase_enable_push_notifications:
             return {}
 
-        title = current_website.notification_request_title or _("Subscribe now!")
-        body = current_website.notification_request_body or _("Get the latest news by enabling push notifications.")
-        delay = current_website.notification_request_delay or 5
+        title = current_website.notification_request_title or _("Want to discover new versions?")
+        body = current_website.notification_request_body or _("Enable push notifications to be notified about new features and events.")
+        delay = current_website.notification_request_delay or 3
 
         if current_website.notification_request_icon:
             icon = '/web/image/website/%s/notification_request_icon/48x48' % current_website.id

@@ -33,9 +33,9 @@
             <xpath expr="//field[@name='user_id']" position="after">
                 <field name="social_push_notifications_count"/>
             </xpath>
-            <xpath expr="//div[hasclass('o_kanban_record_body')]">
+            <xpath expr="//ul[@id='o_utm_actions']">
                 <a name="action_redirect_to_push_notifications" type="object"
-                    class="d-inline-block mt-2">
+                    t-attf-class="#{record.social_push_notifications_count.raw_value === 0 ? 'text-muted' : ''}">
                     <t t-raw="record.social_push_notifications_count.raw_value"/> Notifications
                 </a>
             </xpath>

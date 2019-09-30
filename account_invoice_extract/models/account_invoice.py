@@ -433,7 +433,7 @@ class AccountMove(models.Model):
             return partner.id
         else:
             partners = {}
-            for single_word in re.findall(r"[\w]+", partner_name):
+            for single_word in [word for word in re.findall(r"[\w]+", partner_name) if len(word) >= 4]:
                 partner_names = self.env["res.partner"].search([("name", "ilike", single_word)], limit=30)
                 for partner in partner_names:
                     partners[partner.id] = partners[partner.id] + 1 if partner.id in partners else 1

@@ -97,17 +97,17 @@
                             <label for="planned_date_begin" string="Date"/>
                             <div class="w-100">
                                 <div class="o_row">
-                                    <field name="planned_date_begin"/>
-                                    <span attrs="{'invisible': [('planned_date_end', '=', False)]}"> to </span>
-                                    <field name="planned_date_end"/>
+                                    <field name="planned_date_begin" widget="daterange" options='{"related_end_date": "planned_date_end"}'/>
+                                    <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                                    <field name="planned_date_end" widget="daterange" options='{"related_start_date": "planned_date_begin"}'/>
                                 </div>
                             </div>
                             <label for="timesheet_timer_first_start" string="Effective Hours"/>
                             <div class="w-100">
                                 <div class="o_row">
-                                    <field name="timesheet_timer_first_start"/>
-                                    <span attrs="{'invisible': [('timesheet_timer_last_stop', '=', False)]}"> to </span>
-                                    <field name="timesheet_timer_last_stop"/>
+                                    <field name="timesheet_timer_first_start" widget="daterange" options='{"related_end_date": "timesheet_timer_last_stop"}'/>
+                                    <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                                    <field name="timesheet_timer_last_stop" widget="daterange" options='{"related_start_date": "timesheet_timer_first_start"}'/>
                                 </div>
                             </div>
                             <field name="user_id" options="{'no_open': True}"/>

@@ -33,10 +33,10 @@
                 <sheet string="Shift">
                     <field name="is_assigned_to_me" invisible="1"/>
                     <field name="allow_self_unassign" invisible="1"/>
-                    <group attrs="{'invisible': [('template_autocomplete_ids', '=', False)]}">
+                    <group attrs="{'invisible': ['|', ('template_autocomplete_ids', '=', []), ('template_creation', '=', True)]}">
                         <field name="template_id" class="text-break flex-wrap"
                             domain="[['id', 'in', template_autocomplete_ids]]"
-                            widget="radio" limit="5" options="{'horizontal': true}"
+                            widget="radio" options="{'horizontal': true}"
                         />
                     </group>
                     <field name="template_autocomplete_ids" invisible="1"/>
@@ -55,7 +55,6 @@
                         </group>
                     </group>
                     <group>
-                        <field name="template_creation"/>
                         <field name="repeat"/>
                         <label for="repeat_interval" string="Repeat Every" attrs="{'invisible': [('repeat', '=', False)]}"/>
                         <div class="o_row" attrs="{'invisible': [('repeat', '=', False)]}">
@@ -68,6 +67,8 @@
                     <group>
                         <field name="name"/>
                     </group>
+                    <label for="template_creation" class="float-sm-right mr-5"/>
+                    <field name="template_creation" class="float-sm-right"/>
                 </sheet>
             </form>
         </field>

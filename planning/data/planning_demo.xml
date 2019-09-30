@@ -78,18 +78,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_112" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_stw"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_113" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_mit"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Monday evening shifts -->
@@ -98,18 +101,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d  20:00:00')"/>
             <field name="employee_id" ref="hr.employee_jth"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_115" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_chs"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_116" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_niv"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Tuesday morning shifts -->
@@ -118,6 +124,7 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_122" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d 06:00:00')"/>
@@ -125,12 +132,14 @@
             <field name="employee_id" eval="False"/>
             <field name="role_id" ref="planning_role_chef"/>
             <field name="name" eval="'Check with Katy from the employment agency if they have someone to replace Randall this day'"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_123" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_jep"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Tuesday evening shifts -->
@@ -139,18 +148,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d  20:00:00')"/>
             <field name="employee_id" ref="hr.employee_jth"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_125" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_chs"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_126" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 1)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_niv"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Wednesday morning shifts -->
@@ -159,18 +171,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_132" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_stw"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_133" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_mit"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Wednesday evening shifts -->
@@ -179,19 +194,22 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d  20:00:00')"/>
             <field name="employee_id" ref="hr.employee_jth"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_135" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d  22:00:00')"/>
-            <field name="employee_id" ref="hr.employee_hne"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
             <field name="role_id" ref="planning_role_waiter"/>
-            <field name="name" eval="'Abigail is replacing Jennie until the end of the week'"/>
+            <field name="name" eval="'Mitchel is replacing Jennie until the end of the week'"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_136" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 2)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_niv"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Thursday morning shifts -->
@@ -200,18 +218,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_142" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_stw"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_143" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_mit"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Thursday evening shifts -->
@@ -220,18 +241,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d  20:00:00')"/>
             <field name="employee_id" ref="hr.employee_jth"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_145" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d  22:00:00')"/>
-            <field name="employee_id" ref="hr.employee_hne"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_146" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 3)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_niv"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Friday morning shifts -->
@@ -240,18 +264,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" eval="False"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_152" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_stw"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_153" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_mit"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Friday evening shifts -->
@@ -260,18 +287,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d  20:00:00')"/>
             <field name="employee_id" ref="hr.employee_jth"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_155" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d  22:00:00')"/>
-            <field name="employee_id" ref="hr.employee_hne"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_156" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_niv"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!--                                        Week 2                                        -->
@@ -282,18 +312,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_212" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_stw"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_213" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_mit"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Monday evening shifts -->
@@ -302,18 +335,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d  20:00:00')"/>
             <field name="employee_id" ref="hr.employee_jth"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_215" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_chs"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_216" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_niv"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Tuesday morning shifts -->
@@ -322,18 +358,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 1)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_222" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 1)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 1)).strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_stw"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_223" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 1)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 1)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_jep"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Tuesday evening shifts -->
@@ -342,18 +381,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 1)).strftime('%Y-%m-%d  20:00:00')"/>
             <field name="employee_id" ref="hr.employee_jth"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_225" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 1)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 1)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_chs"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_226" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 1)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 1)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" eval="False"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Wednesday morning shifts -->
@@ -362,18 +404,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 2)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_232" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 2)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 2)).strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_stw"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_233" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 2)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 2)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_mit"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Wednesday evening shifts -->
@@ -382,18 +427,21 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 2)).strftime('%Y-%m-%d  20:00:00')"/>
             <field name="employee_id" ref="hr.employee_jth"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_235" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 2)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 2)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_chs"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_236" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 2)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 2)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" eval="False"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Thursday morning shifts -->
@@ -402,39 +450,45 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_242" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_stw"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_243" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_mit"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Thursday evening shifts -->
         <record id="planning_slot_244" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d  20:00:00')"/>
-            <field name="employee_id" ref="hr.employee_hne"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
             <field name="role_id" ref="planning_role_chef"/>
-            <field name="name" eval="'Ask Toni if she can show Abigail how things are done in the kitchen because it is her first time working as a chef'"/>
+            <field name="name" eval="'Ask Toni if she can show Mitchel how things are done in the kitchen because it is her first time working as a chef'"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_245" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_chs"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_246" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 3)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_niv"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Friday morning shifts -->
@@ -444,6 +498,7 @@
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="role_id" ref="planning_role_bartender"/>
             <field name="recurrency_id" ref="planning_recurrency_1"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_252" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d 06:00:00')"/>
@@ -451,20 +506,23 @@
             <field name="employee_id" ref="hr.employee_stw"/>
             <field name="role_id" ref="planning_role_chef"/>
             <field name="recurrency_id" ref="planning_recurrency_2"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_253" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d 06:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" eval="False"/>
             <field name="role_id" ref="planning_role_waiter"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Friday evening shifts -->
         <record id="planning_slot_254" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d  20:00:00')"/>
-            <field name="employee_id" ref="hr.employee_hne"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
             <field name="role_id" ref="planning_role_chef"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_255" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d 14:00:00')"/>
@@ -472,12 +530,14 @@
             <field name="employee_id" ref="hr.employee_chs"/>
             <field name="role_id" ref="planning_role_waiter"/>
             <field name="recurrency_id" ref="planning_recurrency_3"/>
+            <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_256" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d 14:00:00')"/>
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d  22:00:00')"/>
             <field name="employee_id" ref="hr.employee_niv"/>
             <field name="role_id" ref="planning_role_bartender"/>
+            <field name="publication_warning" eval="False"/>
         </record>
 
         <!-- Duplicate shifts that have a recurrence set -->

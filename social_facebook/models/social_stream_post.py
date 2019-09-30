@@ -11,7 +11,7 @@ from werkzeug.urls import url_join
 class SocialStreamPostFacebook(models.Model):
     _inherit = 'social.stream.post'
 
-    FACEBOOK_COMMENT_FIELDS = 'id,from,message,created_time,attachment,comments.fields(id,from,message,created_time,attachment,user_likes,likes.limit(0).summary(true)),user_likes,likes.limit(0).summary(true)'
+    FACEBOOK_COMMENT_FIELDS = 'id,from.fields(id,name,picture),message,created_time,attachment,comments.fields(id,from.fields(id,name,picture),message,created_time,attachment,user_likes,likes.limit(0).summary(true)),user_likes,likes.limit(0).summary(true)'
 
     facebook_post_id = fields.Char('Facebook Post ID', index=True)
     facebook_author_id = fields.Char('Facebook Author ID')

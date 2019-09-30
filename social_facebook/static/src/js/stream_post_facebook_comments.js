@@ -48,8 +48,11 @@ var StreamPostFacebookComments = StreamPostComments.extend({
     //--------------------------------------------------------------------------
 
     getAuthorPictureSrc: function (comment) {
-        var userId = comment ? comment.from.id : this.pageFacebookId;
-        return _.str.sprintf("https://graph.facebook.com/v3.3/%s/picture?height=48&width=48", userId);
+        if (comment) {
+            return comment.from.picture.data.url;
+        } else {
+            return _.str.sprintf("https://graph.facebook.com/v3.3/%s/picture?height=48&width=48", this.pageFacebookId);
+        }
     },
 
     getCommentLink: function (comment) {

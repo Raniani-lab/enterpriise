@@ -441,7 +441,12 @@ QUnit.module('Facebook Comments', {
                         },
                         comments: [{
                             from: {
-                                id: 1
+                                id: 1,
+                                picture: {
+                                    data: {
+                                        url: 'picture1.png'
+                                    }
+                                }
                             },
                             user_likes: false,
                             message: 'Root Comment',
@@ -453,7 +458,12 @@ QUnit.module('Facebook Comments', {
                             comments: {
                                 data: [{
                                     from: {
-                                        id: 2
+                                        id: 2,
+                                        picture: {
+                                            data: {
+                                                url: 'picture2.png'
+                                            }
+                                        }
                                     },
                                     user_likes: true,
                                     message: 'Sub Comment 1',
@@ -464,7 +474,12 @@ QUnit.module('Facebook Comments', {
                                     }
                                 }, {
                                     from: {
-                                        id: 3
+                                        id: 3,
+                                        picture: {
+                                            data: {
+                                                url: 'picture3.png'
+                                            }
+                                        }
                                     },
                                     user_likes: false,
                                     message: 'Sub Comment 2',
@@ -565,7 +580,12 @@ QUnit.module('Facebook Comments', {
             _ajaxRequest: function (endpoint, params) {
                 return Promise.resolve(JSON.stringify({
                     from: {
-                        id: 1
+                        id: 1,
+                        picture: {
+                            data: {
+                                url: 'picture1.png'
+                            }
+                        }
                     },
                     message: params.data.get('message'),
                     likes: {

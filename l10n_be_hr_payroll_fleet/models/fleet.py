@@ -4,6 +4,7 @@
 import babel.dates
 
 from odoo import api, fields, models
+from odoo.tools.misc import format_date
 
 from odoo.fields import Datetime, Date
 
@@ -88,11 +89,7 @@ class FleetVehicle(models.Model):
 
     def _get_acquisition_date(self):
         self.ensure_one()
-        return babel.dates.format_date(
-            date=self.acquisition_date,
-            format='MMMM y',
-            locale=self._context.get('lang') or 'en_US'
-        )
+        return format_date(self.env, self.acquisition_date, date_format='MMMM y')
 
     def _get_car_atn(self, date=None):
         return self._get_car_atn_from_values(self.acquisition_date, self.car_value, self.fuel_type, self.co2, date)

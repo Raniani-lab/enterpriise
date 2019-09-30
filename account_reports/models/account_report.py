@@ -14,7 +14,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo.tools.misc import xlsxwriter
 from odoo import models, fields, api, _
-from odoo.tools import config, date_utils
+from odoo.tools import config, date_utils, get_lang
 from odoo.osv import expression
 from babel.dates import get_quarter_names, parse_date
 from odoo.tools.misc import formatLang, format_date
@@ -248,7 +248,7 @@ class AccountReport(models.AbstractModel):
             elif period_type == 'month':
                 string = format_date(self.env, fields.Date.to_string(date_to), date_format='MMM YYYY')
             elif period_type == 'quarter':
-                quarter_names = get_quarter_names('abbreviated', locale=self.env.context.get('lang') or 'en_US')
+                quarter_names = get_quarter_names('abbreviated', locale=get_lang(self.env).code)
                 string = u'%s\N{NO-BREAK SPACE}%s' % (
                     quarter_names[date_utils.get_quarter_number(date_to)], date_to.year)
             else:
@@ -1596,7 +1596,7 @@ class AccountReport(models.AbstractModel):
             return ('date', cell['name'])
         try:
             # the date is parsable to a xlsx compatible date
-            return ('date', parse_date(cell['name'], locale=self._context.get('lang', 'en_US')))
+            return ('date', parse_date(cell['name'], locale=get_lang(self.env).code))
         except:
             # the date is not parsable thus is returned as text
             return ('text', cell['name'])

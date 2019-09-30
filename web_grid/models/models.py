@@ -12,7 +12,7 @@ import pytz
 from odoo import _, api, models
 from odoo.exceptions import UserError
 from odoo.osv import expression
-from odoo.tools.misc import format_date
+from odoo.tools.misc import format_date, get_lang
 
 _GRID_TUP = [('grid', "Grid")]
 
@@ -297,7 +297,7 @@ class Base(models.AbstractModel):
             :param date: date of period beginning (datetime object)
             :param field: odoo.field object of the current model
         """
-        locale = self.env.context.get('lang', 'en_US')
+        locale = get_lang(self.env).code
         _labelize = self._get_date_formatter(step, field, locale=locale)
 
         if field.type == 'datetime':  # we want the column label to be the infos in user tz, while the date domain should still be in UTC

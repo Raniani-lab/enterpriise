@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import babel.dates
-
 from odoo import fields, models, _
 from odoo.tools.date_utils import start_of, end_of, add
+from odoo.tools.misc import format_date
 
 
 class Company(models.Model):
@@ -57,9 +56,9 @@ class Company(models.Model):
         lang = self.env.context.get('lang')
         for date_start, date_stop in date_range:
             if self.manufacturing_period == 'month':
-                dates_as_str.append(babel.dates.format_date(format="MMM YYYY", date=date_start, locale=lang or 'en_US'))
+                dates_as_str.append(format_date(self.env, date_start, date_format='MMM YYYY'))
             elif self.manufacturing_period == 'week':
-                dates_as_str.append(_('Week %s') % babel.dates.format_date(format="w", date=date_start, locale=lang or 'en_US'))
+                dates_as_str.append(_('Week %s') % format_date(self.env, date_start, date_format='w'))
             else:
-                dates_as_str.append(babel.dates.format_date(format="MMM d", date=date_start, locale=lang or 'en_US'))
+                dates_as_str.append(format_date(self.env, date_start, date_format='MMM d'))
         return dates_as_str

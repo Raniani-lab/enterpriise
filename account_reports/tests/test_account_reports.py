@@ -34,21 +34,21 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      5,              6,              7],
             [
                 # Accounts.
-                ('101200 Account Receivable',           2875.00,        800.00,         2075.00),
-                ('101300 Tax Paid',                     705.00,         0.00,           705.00),
                 ('101401 Bank',                         800.00,         1750.00,        -950.00),
-                ('111100 Account Payable',              1750.00,        5405.00,        -3655.00),
-                ('111200 Tax Received',                 0.00,           375.00,         -375.00),
-                ('200000 Product Sales',                0.00,           1300.00,        -1300.00),
-                ('220000 Expenses',                     1100.00,        0.00,           1100.00),
+                ('121000 Account Receivable',           2875.00,        800.00,         2075.00),
+                ('131000 Tax Paid',                     705.00,         0.00,           705.00),
+                ('211000 Account Payable',              1750.00,        5405.00,        -3655.00),
+                ('251000 Tax Received',                 0.00,           375.00,         -375.00),
+                ('400000 Product Sales',                0.00,           1300.00,        -1300.00),
+                ('600000 Expenses',                     1100.00,        0.00,           1100.00),
                 ('999999 Undistributed Profits/Losses', 3600.00,        1200.00,        2400.00),
                 # Report Total.
                 ('Total',                               10830.00,       10830.00,       0.00),
             ],
         )
 
-        # Mark the '101200 Account Receivable' line to be unfolded.
-        line_id = lines[0]['id']
+        # Mark the '121000 Account Receivable' line to be unfolded.
+        line_id = lines[1]['id']
         options['unfolded_lines'] = [line_id]
 
         self.assertLinesValues(
@@ -57,7 +57,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              3,              4,          5,              6,              7],
             [
                 # Account.
-                ('101200 Account Receivable',           '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('121000 Account Receivable',           '',             '',             '',         2875.00,        800.00,         2075.00),
                 # Initial Balance.
                 ('Initial Balance',                     '',             '',             '',         2185.00,        700.00,         1485.00),
                 # Account Move Lines.
@@ -69,7 +69,7 @@ class TestAccountReports(TestAccountReportsCommon):
             ],
         )
 
-        # Mark the '200000 Product Sales' line to be unfolded.
+        # Mark the '400000 Product Sales' line to be unfolded.
         # Note: this account has user_type_id.include_initial_balance = False.
         line_id = lines[5]['id']
         options['unfolded_lines'] = [line_id]
@@ -80,7 +80,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              3,              4,          5,              6,              7],
             [
                 # Account.
-                ('200000 Product Sales',                '',             '',             '',         0.00,           1300.00,        -1300.00),
+                ('400000 Product Sales',                '',             '',             '',         0.00,           1300.00,        -1300.00),
                 # Initial Balance.
                 ('Initial Balance',                     '',             '',             '',         0.00,           700.00,         -700.00),
                 # Account Move Lines.
@@ -105,20 +105,20 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      5,              6,              7],
             [
                 # Accounts.
-                ('101200 Account Receivable',           2875.00,        800.00,         2075.00),
-                ('101200 Account Receivable',           2875.00,        800.00,         2075.00),
-                ('101300 Tax Paid',                     705.00,         0.00,           705.00),
-                ('101300 Tax Paid',                     705.00,         0.00,           705.00),
                 ('101401 Bank',                         800.00,         1750.00,        -950.00),
                 ('101401 Bank',                         800.00,         1750.00,        -950.00),
-                ('111100 Account Payable',              1750.00,        5405.00,        -3655.00),
-                ('111100 Account Payable',              1750.00,        5405.00,        -3655.00),
-                ('111200 Tax Received',                 0.00,           375.00,         -375.00),
-                ('111200 Tax Received',                 0.00,           375.00,         -375.00),
-                ('200000 Product Sales',                0.00,           1300.00,        -1300.00),
-                ('200000 Product Sales',                0.00,           1300.00,        -1300.00),
-                ('220000 Expenses',                     1100.00,        0.00,           1100.00),
-                ('220000 Expenses',                     1100.00,        0.00,           1100.00),
+                ('121000 Account Receivable',           2875.00,        800.00,         2075.00),
+                ('121000 Account Receivable',           2875.00,        800.00,         2075.00),
+                ('131000 Tax Paid',                     705.00,         0.00,           705.00),
+                ('131000 Tax Paid',                     705.00,         0.00,           705.00),
+                ('211000 Account Payable',              1750.00,        5405.00,        -3655.00),
+                ('211000 Account Payable',              1750.00,        5405.00,        -3655.00),
+                ('251000 Tax Received',                 0.00,           375.00,         -375.00),
+                ('251000 Tax Received',                 0.00,           375.00,         -375.00),
+                ('400000 Product Sales',                0.00,           1300.00,        -1300.00),
+                ('400000 Product Sales',                0.00,           1300.00,        -1300.00),
+                ('600000 Expenses',                     1100.00,        0.00,           1100.00),
+                ('600000 Expenses',                     1100.00,        0.00,           1100.00),
                 ('999999 Undistributed Profits/Losses', 3600.00,        1200.00,        2400.00),
                 ('999999 Undistributed Profits/Losses', 3600.00,        1200.00,        2400.00),
                 # Report Total.
@@ -126,8 +126,8 @@ class TestAccountReports(TestAccountReportsCommon):
             ],
         )
 
-        # Mark the '101200 Account Receivable' line (for the company_child_eur company) to be unfolded.
-        line_id = lines[1]['id']
+        # Mark the '121000 Account Receivable' line (for the company_child_eur company) to be unfolded.
+        line_id = lines[3]['id']
         options['unfolded_lines'] = [line_id]
 
         self.assertLinesValues(
@@ -136,7 +136,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              3,              4,          5,              6,              7],
             [
                 # Account.
-                ('101200 Account Receivable',           '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('121000 Account Receivable',           '',             '',             '',         2875.00,        800.00,         2075.00),
                 # Initial Balance.
                 ('Initial Balance',                     '',             '',             '',         2185.00,        700.00,         1485.00),
                 # Account Move Lines.
@@ -151,10 +151,10 @@ class TestAccountReports(TestAccountReportsCommon):
     def test_general_ledger_load_more(self):
         ''' Test the load more feature. '''
         receivable_account = self.env['account.account'].search(
-            [('company_id', '=', self.company_parent.id), ('internal_type', '=', 'receivable')], limit=1)
+            [('company_id', '=', self.company_parent.id), ('internal_type', '=', 'receivable'), ('code', 'like', '1210%')], limit=1)
         line_id = 'account_%s' % receivable_account.id
 
-        # Mark the '101200 Account Receivable' line to be unfolded.
+        # Mark the '121000 Account Receivable' line to be unfolded.
         report = self.env['account.general.ledger']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['unfolded_lines'] = [line_id]
@@ -170,7 +170,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              3,              4,          5,              6,              7],
             [
                 # Account.
-                ('101200 Account Receivable',           '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('121000 Account Receivable',           '',             '',             '',         2875.00,        800.00,         2075.00),
                 # Initial Balance.
                 ('Initial Balance',                     '',             '',             '',         2185.00,        700.00,         1485.00),
                 # Account Move Lines.
@@ -237,9 +237,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      5,              6,              7],
             [
                 # Accounts.
-                ('101200 Account Receivable',           2875.00,        0.00,           2875.00),
-                ('111200 Tax Received',                 0.00,           375.00,         -375.00),
-                ('200000 Product Sales',                0.00,           1300.00,        -1300.00),
+                ('121000 Account Receivable',           2875.00,        0.00,           2875.00),
+                ('251000 Tax Received',                 0.00,           375.00,         -375.00),
+                ('400000 Product Sales',                0.00,           1300.00,        -1300.00),
                 ('999999 Undistributed Profits/Losses', 0.00,           1200.00,        -1200.00),
                 # Report Total.
                 ('Total',                               2875.00,        2875.00,        0.00),
@@ -287,8 +287,8 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Partner.
                 ('partner_a',           '',         '',             '',             665.00,         300.00,         345.00,         620.00),
                 # Account Move Lines.
-                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   665.00,         '',             345.00,         320.00),
-                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   320.00,         300.00,         '',             620.00),
+                ('03/01/2017',          'BILL',     '211000',       '03/01/2017',   665.00,         '',             345.00,         320.00),
+                ('03/01/2017',          'BNK1',     '211000',       '03/01/2017',   320.00,         300.00,         '',             620.00),
             ],
         )
 
@@ -327,10 +327,10 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Partner.
                 ('partner_a',           '',         '',             '',             1330.00,        600.00,         690.00,         1240.00),
                 # Account Move Lines.
-                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   1330.00,        '',             345.00,         985.00),
-                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   985.00,         300.00,         '',             1285.00),
-                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   1285.00,        '',             345.00,         940.00),
-                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   940.00,         300.00,         '',             1240.00),
+                ('03/01/2017',          'BILL',     '211000',       '03/01/2017',   1330.00,        '',             345.00,         985.00),
+                ('03/01/2017',          'BNK1',     '211000',       '03/01/2017',   985.00,         300.00,         '',             1285.00),
+                ('03/01/2017',          'BILL',     '211000',       '03/01/2017',   1285.00,        '',             345.00,         940.00),
+                ('03/01/2017',          'BNK1',     '211000',       '03/01/2017',   940.00,         300.00,         '',             1240.00),
             ],
         )
 
@@ -356,7 +356,7 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Partner.
                 ('partner_a',           '',         '',             '',             1330.00,        600.00,         690.00,         1240.00),
                 # Account Move Lines.
-                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   1330.00,        '',             345.00,         985.00),
+                ('03/01/2017',          'BILL',     '211000',       '03/01/2017',   1330.00,        '',             345.00,         985.00),
                 ('Load more... (3 remaining)', '',  '',             '',             '',             '',             '',             ''),
             ],
         )
@@ -377,8 +377,8 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                      1,          2,              4,              6,              7,              8,              9],
             [
                 # Account Move Lines.
-                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   985.00,         300.00,         '',             1285.00),
-                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   1285.00,        '',             345.00,         940.00),
+                ('03/01/2017',          'BNK1',     '211000',       '03/01/2017',   985.00,         300.00,         '',             1285.00),
+                ('03/01/2017',          'BILL',     '211000',       '03/01/2017',   1285.00,        '',             345.00,         940.00),
                 # Load more.
                 ('Load more... (1 remaining)', '',  '',             '',             '',             '',             '',             ''),
             ],
@@ -397,7 +397,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                      1,          2,              4,              6,              7,              8,              9],
             [
                 # Account Move Lines.
-                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   940.00,         300.00,         '',             1240.00),
+                ('03/01/2017',          'BNK1',     '211000',       '03/01/2017',   940.00,         300.00,         '',             1240.00),
             ],
         )
 
@@ -436,8 +436,8 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Partner.
                 ('partner_c',           '',         '',             '',             230.00,         345.00,         100.00,         475.00),
                 # Account Move Lines.
-                ('03/01/2017',          'BNK1',     '101200',       '03/01/2017',   230.00,         '',             100.00,         130.00),
-                ('03/01/2017',          'INV',      '101200',       '03/01/2017',   130.00,         345.00,         '',             475.00),
+                ('03/01/2017',          'BNK1',     '121000',       '03/01/2017',   230.00,         '',             100.00,         130.00),
+                ('03/01/2017',          'INV',      '121000',       '03/01/2017',   130.00,         345.00,         '',             475.00),
             ],
         )
 
@@ -539,8 +539,8 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Partner.
                 ('partner_d',           '',         '',             0.00,           345.00,         0.00,           115.00,         0.00,           0.00,       460.00),
                 # Account Move Lines.
-                ('INV/2017/0003',    'INV',   '101200 Account Receivable', '',      '',             '',             115.00,         '',             '',         ''),
-                ('INV/2017/0007',    'INV',   '101200 Account Receivable', '',      345.00,         '',             '',             '',             '',         ''),
+                ('INV/2017/0003',    'INV',   '121000 Account Receivable', '',      '',             '',             115.00,         '',             '',         ''),
+                ('INV/2017/0007',    'INV',   '121000 Account Receivable', '',      345.00,         '',             '',             '',             '',         ''),
             ],
         )
 
@@ -581,10 +581,10 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Partner.
                 ('partner_d',           '',         '',             0.00,           690.00,         0.00,           230.00,         0.00,           0.00,       920.00),
                 # Account Move Lines.
-                ('INV/2017/0003',    'INV', '101200 Account Receivable', '',        '',             '',             115.00,         '',             '',         ''),
-                ('INV/2017/0003',    'INV', '101200 Account Receivable', '',        '',             '',             115.00,         '',             '',         ''),
-                ('INV/2017/0007',    'INV', '101200 Account Receivable', '',        345.00,         '',             '',             '',             '',         ''),
-                ('INV/2017/0007',    'INV', '101200 Account Receivable', '',        345.00,         '',             '',             '',             '',         ''),
+                ('INV/2017/0003',    'INV', '121000 Account Receivable', '',        '',             '',             115.00,         '',             '',         ''),
+                ('INV/2017/0003',    'INV', '121000 Account Receivable', '',        '',             '',             115.00,         '',             '',         ''),
+                ('INV/2017/0007',    'INV', '121000 Account Receivable', '',        345.00,         '',             '',             '',             '',         ''),
+                ('INV/2017/0007',    'INV', '121000 Account Receivable', '',        345.00,         '',             '',             '',             '',         ''),
             ],
         )
 
@@ -652,8 +652,8 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Partner.
                 ('partner_d',           '',         '',             0.00,           0.00,           30.00,          0.00,           1380.00,        0.00,       1410.00),
                 # Account Move Lines.
-                ('BILL/2016/0003',  'BILL', '111100 Account Payable', '',           '',             '',             '',             1380.00,        '',         ''),
-                ('BILL/2017/0003',  'BILL', '111100 Account Payable', '',           '',             30.00,          '',             '',             '',         ''),
+                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',           '',             '',             '',             1380.00,        '',         ''),
+                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',           '',             30.00,          '',             '',             '',         ''),
             ],
         )
 
@@ -694,10 +694,10 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Partner.
                 ('partner_d',           '',         '',             0.00,           0.00,           60.00,          0.00,           2760.00,        0.00,       2820.00),
                 # Account Move Lines.
-                ('BILL/2016/0003',  'BILL', '111100 Account Payable', '',             '',             '',             '',             1380.00,        '',         ''),
-                ('BILL/2016/0003',  'BILL', '111100 Account Payable', '',             '',             '',             '',             1380.00,        '',         ''),
-                ('BILL/2017/0003',  'BILL', '111100 Account Payable', '',             '',             30.00,          '',             '',             '',         ''),
-                ('BILL/2017/0003',  'BILL', '111100 Account Payable', '',             '',             30.00,          '',             '',             '',         ''),
+                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',             '',             '',             '',             1380.00,        '',         ''),
+                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',             '',             '',             '',             1380.00,        '',         ''),
+                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',             '',             30.00,          '',             '',             '',         ''),
+                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',             '',             30.00,          '',             '',             '',         ''),
             ],
         )
 
@@ -742,17 +742,17 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                      2,                 3,          5,              6,              7,              8,              9,              10,            11],
             [
                 ('partner_a',           '',               '',       0.00,          45.00,         230.00,           0.00,           0.00,            0.00,        275.00),
-                ('BILL/2017/0002',  'BILL', '111100 Account Payable', '',             '',         230.00,             '',             '',              '',            ''),
-                ('BILL/2017/0004',  'BILL', '111100 Account Payable', '',          45.00,             '',             '',             '',              '',            ''),
+                ('BILL/2017/0002',  'BILL', '211000 Account Payable', '',             '',         230.00,             '',             '',              '',            ''),
+                ('BILL/2017/0004',  'BILL', '211000 Account Payable', '',          45.00,             '',             '',             '',              '',            ''),
                 ('partner_b',           '',               '',       0.00,         345.00,           0.00,           0.00,         180.00,            0.00,        525.00),
-                ('BILL/2016/0001',  'BILL', '111100 Account Payable', '',             '',             '',             '',         180.00,              '',            ''),
-                ('BILL/2017/0005',  'BILL', '111100 Account Payable', '',         345.00,             '',             '',             '',              '',            ''),
+                ('BILL/2016/0001',  'BILL', '211000 Account Payable', '',             '',             '',             '',         180.00,              '',            ''),
+                ('BILL/2017/0005',  'BILL', '211000 Account Payable', '',         345.00,             '',             '',             '',              '',            ''),
                 ('partner_c',           '',               '',       0.00,           0.00,           0.00,          65.00,        1380.00,            0.00,       1445.00),
-                ('BILL/2016/0002',  'BILL', '111100 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0001',  'BILL', '111100 Account Payable', '',             '',             '',          65.00,             '',              '',            ''),
+                ('BILL/2016/0002',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/0001',  'BILL', '211000 Account Payable', '',             '',             '',          65.00,             '',              '',            ''),
                 ('partner_d',           '',               '',       0.00,           0.00,          30.00,           0.00,        1380.00,            0.00,       1410.00),
-                ('BILL/2016/0003',  'BILL', '111100 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0003',  'BILL', '111100 Account Payable', '',             '',          30.00,             '',             '',              '',            ''),
+                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',             '',          30.00,             '',             '',              '',            ''),
                 ('Total',               '',               '',       0.00,         390.00,         260.00,          65.00,        2940.00,            0.00,       3655.00),
             ],
         )
@@ -763,17 +763,17 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                      2,                 3,          5,              6,              7,              8,              9,              10,            11],
             [
                 ('partner_b',           '',               '',       0.00,         345.00,           0.00,           0.00,         180.00,            0.00,        525.00),
-                ('BILL/2017/0005',  'BILL', '111100 Account Payable', '',         345.00,             '',             '',             '',              '',            ''),
-                ('BILL/2016/0001',  'BILL', '111100 Account Payable', '',             '',             '',             '',         180.00,              '',            ''),
+                ('BILL/2017/0005',  'BILL', '211000 Account Payable', '',         345.00,             '',             '',             '',              '',            ''),
+                ('BILL/2016/0001',  'BILL', '211000 Account Payable', '',             '',             '',             '',         180.00,              '',            ''),
                 ('partner_a',           '',               '',       0.00,          45.00,         230.00,           0.00,           0.00,            0.00,        275.00),
-                ('BILL/2017/0004',  'BILL', '111100 Account Payable', '',          45.00,             '',             '',             '',              '',            ''),
-                ('BILL/2017/0002',  'BILL', '111100 Account Payable', '',             '',         230.00,             '',             '',              '',            ''),
+                ('BILL/2017/0004',  'BILL', '211000 Account Payable', '',          45.00,             '',             '',             '',              '',            ''),
+                ('BILL/2017/0002',  'BILL', '211000 Account Payable', '',             '',         230.00,             '',             '',              '',            ''),
                 ('partner_c',           '',               '',       0.00,           0.00,           0.00,          65.00,        1380.00,            0.00,       1445.00),
-                ('BILL/2016/0002',  'BILL', '111100 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0001',  'BILL', '111100 Account Payable', '',             '',             '',          65.00,             '',              '',            ''),
+                ('BILL/2016/0002',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/0001',  'BILL', '211000 Account Payable', '',             '',             '',          65.00,             '',              '',            ''),
                 ('partner_d',           '',               '',       0.00,           0.00,          30.00,           0.00,        1380.00,            0.00,       1410.00),
-                ('BILL/2016/0003',  'BILL', '111100 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0003',  'BILL', '111100 Account Payable', '',             '',          30.00,             '',             '',              '',            ''),
+                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',             '',          30.00,             '',             '',              '',            ''),
                 ('Total',               '',               '',       0.00,         390.00,         260.00,          65.00,        2940.00,            0.00,       3655.00),
             ],
         )
@@ -784,17 +784,17 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                      2,                 3,          5,              6,              7,              8,              9,              10,            11],
             [
                 ('partner_a',           '',               '',       0.00,          45.00,         230.00,           0.00,           0.00,            0.00,        275.00),
-                ('BILL/2017/0002',  'BILL', '111100 Account Payable', '',             '',         230.00,             '',             '',              '',            ''),
-                ('BILL/2017/0004',  'BILL', '111100 Account Payable', '',          45.00,             '',             '',             '',              '',            ''),
+                ('BILL/2017/0002',  'BILL', '211000 Account Payable', '',             '',         230.00,             '',             '',              '',            ''),
+                ('BILL/2017/0004',  'BILL', '211000 Account Payable', '',          45.00,             '',             '',             '',              '',            ''),
                 ('partner_b',           '',               '',       0.00,         345.00,           0.00,           0.00,         180.00,            0.00,        525.00),
-                ('BILL/2016/0001',  'BILL', '111100 Account Payable', '',             '',             '',             '',         180.00,              '',            ''),
-                ('BILL/2017/0005',  'BILL', '111100 Account Payable', '',         345.00,             '',             '',             '',              '',            ''),
+                ('BILL/2016/0001',  'BILL', '211000 Account Payable', '',             '',             '',             '',         180.00,              '',            ''),
+                ('BILL/2017/0005',  'BILL', '211000 Account Payable', '',         345.00,             '',             '',             '',              '',            ''),
                 ('partner_d',           '',               '',       0.00,           0.00,          30.00,           0.00,        1380.00,            0.00,       1410.00),
-                ('BILL/2016/0003',  'BILL', '111100 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0003',  'BILL', '111100 Account Payable', '',             '',          30.00,             '',             '',              '',            ''),
+                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',             '',          30.00,             '',             '',              '',            ''),
                 ('partner_c',           '',               '',       0.00,           0.00,           0.00,          65.00,        1380.00,            0.00,       1445.00),
-                ('BILL/2016/0002',  'BILL', '111100 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0001',  'BILL', '111100 Account Payable', '',             '',             '',          65.00,             '',              '',            ''),
+                ('BILL/2016/0002',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/0001',  'BILL', '211000 Account Payable', '',             '',             '',          65.00,             '',              '',            ''),
                 ('Total',               '',               '',       0.00,         390.00,         260.00,          65.00,        2940.00,            0.00,       3655.00),
             ],
         )
@@ -816,13 +816,13 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              2,              3,              4,              5,              6],
             [
                 # Accounts.
-                ('101200 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
-                ('101300 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
                 ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
-                ('111100 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
-                ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
-                ('200000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
-                ('220000 Expenses',                     500.00,         '',             600,            '',             1100.00,        ''),
+                ('121000 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
+                ('131000 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
+                ('211000 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
+                ('251000 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
+                ('400000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
+                ('600000 Expenses',                     500.00,         '',             600,            '',             1100.00,        ''),
                 ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
                 # Report Total.
                 ('Total',                               5000.00,        5000.00,        1780.00,        1780.00,        6280.00,        6280.00),
@@ -843,20 +843,20 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              2,              3,              4,              5,              6],
             [
                 # Accounts.
-                ('101200 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
-                ('101200 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
-                ('101300 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
-                ('101300 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
                 ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
                 ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
-                ('111100 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
-                ('111100 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
-                ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
-                ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
-                ('200000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
-                ('200000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
-                ('220000 Expenses',                     500.00,         '',             600.00,         '',             1100.00,        ''),
-                ('220000 Expenses',                     500.00,         '',             600.00,         '',             1100.00,        ''),
+                ('121000 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
+                ('121000 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
+                ('131000 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
+                ('131000 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
+                ('211000 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
+                ('211000 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
+                ('251000 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
+                ('251000 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
+                ('400000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
+                ('400000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
+                ('600000 Expenses',                     500.00,         '',             600.00,         '',             1100.00,        ''),
+                ('600000 Expenses',                     500.00,         '',             600.00,         '',             1100.00,        ''),
                 ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
                 ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
                 # Report Total.
@@ -880,9 +880,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              2,              3,              4,              5,              6],
             [
                 # Accounts.
-                ('101200 Account Receivable',           2185.00,        '',             690.00,         '',             2875.00,        ''),
-                ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
-                ('200000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
+                ('121000 Account Receivable',           2185.00,        '',             690.00,         '',             2875.00,        ''),
+                ('251000 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
+                ('400000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
                 ('999999 Undistributed Profits/Losses', '',             1200.00,        '',             '',             '',             1200.00),
                 # Report Total.
                 ('Total',                               2185.00,        2185.00,        690.00,         690.00,         2875.00,        2875.00),
@@ -903,13 +903,13 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              2,              3,              4,              5,              6,              7,              8],
             [
                 # Accounts.
-                ('101200 Account Receivable',           1025.00,        '',             460.00,         '',             690.00,         100.00,         2075.00,        ''),
-                ('101300 Tax Paid',                     555.00,         '',             60.00,         '',              90.00,          '',             705.00,         ''),
                 ('101401 Bank',                         '',             500.00,         '',             250.00,         100.00,         300.00,         '',             950.00),
-                ('111100 Account Payable',              '',             3055.00,        250.00,         460.00,         300.00,         690.00,         '',             3655.00),
-                ('111200 Tax Received',                 '',             225.00,         '',             60.00,          '',             90.00,          '',             375.00),
-                ('200000 Product Sales',                '',             300.00,         '',             400.00,         '',             600.00,         '',             1300.00),
-                ('220000 Expenses',                     100.00,         '',             400.00,         '',             600.00,         '',             1100.00,        ''),
+                ('121000 Account Receivable',           1025.00,        '',             460.00,         '',             690.00,         100.00,         2075.00,        ''),
+                ('131000 Tax Paid',                     555.00,         '',             60.00,         '',              90.00,          '',             705.00,         ''),
+                ('211000 Account Payable',              '',             3055.00,        250.00,         460.00,         300.00,         690.00,         '',             3655.00),
+                ('251000 Tax Received',                 '',             225.00,         '',             60.00,          '',             90.00,          '',             375.00),
+                ('400000 Product Sales',                '',             300.00,         '',             400.00,         '',             600.00,         '',             1300.00),
+                ('600000 Expenses',                     100.00,         '',             400.00,         '',             600.00,         '',             1100.00,        ''),
                 ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             '',             '',             2400.00,        ''),
                 # Report Total.
                 ('Total',                               4080.00,        4080.00,        1170.00,        1170.00,        1780.00,        1780.00,        6280.00,        6280.00),
@@ -1001,7 +1001,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                              1],
             [
                 ('Receivables',                                 2075.00),
-                ('101200 Account Receivable',                   2075.00),
+                ('121000 Account Receivable',                   2075.00),
                 ('Total Receivables',                           2075.00),
             ],
         )
@@ -1015,7 +1015,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                              1],
             [
                 ('Receivables',                                 2075.00),
-                ('101200 Account Receivable',                   2075.00),
+                ('121000 Account Receivable',                   2075.00),
             ],
         )
 
@@ -1079,8 +1079,8 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                              1],
             [
                 ('Receivables',                                 4150.00),
-                ('101200 Account Receivable',                   2075.00),
-                ('101200 Account Receivable',                   2075.00),
+                ('121000 Account Receivable',                   2075.00),
+                ('121000 Account Receivable',                   2075.00),
                 ('Total Receivables',                           4150.00),
             ],
         )
@@ -1148,7 +1148,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                              1,          2,          3,          4],
             [
                 ('Receivables',                                 895.00,     245.00,     475.00,     460.00),
-                ('101200 Account Receivable',                   895.00,     245.00,     475.00,     460.00),
+                ('121000 Account Receivable',                   895.00,     245.00,     475.00,     460.00),
                 ('Total Receivables',                           895.00,     245.00,     475.00,     460.00),
             ],
         )
@@ -1209,7 +1209,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                              1,          2],
             [
                 ('Receivables',                                 895.00,     245.00),
-                ('101200 Account Receivable',                   895.00,     245.00),
+                ('121000 Account Receivable',                   895.00,     245.00),
                 ('Total Receivables',                           895.00,     245.00),
             ],
         )
@@ -1275,7 +1275,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                              1,          2,          3],
             [
                 ('Receivables',                                 0.00,       0.00,       2075.00),
-                ('101200 Account Receivable',                   2875.00,    800.00,     2075.00),
+                ('121000 Account Receivable',                   2875.00,    800.00,     2075.00),
                 ('Total Receivables',                           0.00,       0.00,       2075.00),
             ],
         )
@@ -1390,7 +1390,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                              1,          2],
             [
                 ('Receivables',                                 2075.00,    1485.00),
-                ('101200 Account Receivable',                   2075.00,    1485.00),
+                ('121000 Account Receivable',                   2075.00,    1485.00),
                 ('Total Receivables',                           2075.00,    1485.00),
             ],
         )
@@ -1454,7 +1454,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                              1,          2,          3,          4,          5,          6,          7,          8],
             [
                 ('Receivables',                                 895.00,     245.00,     475.00,     460.00,     895.00,     245.00,     230.00,     115.00),
-                ('101200 Account Receivable',                   895.00,     245.00,     475.00,     460.00,     895.00,     245.00,     230.00,     115.00),
+                ('121000 Account Receivable',                   895.00,     245.00,     475.00,     460.00,     895.00,     245.00,     230.00,     115.00),
                 ('Total Receivables',                           895.00,     245.00,     475.00,     460.00,     895.00,     245.00,     230.00,     115.00),
             ],
         )
@@ -1502,7 +1502,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                              1],
             [
                 ('Operating Income',                            600.00),
-                ('200000 Product Sales',                        600.00),
+                ('400000 Product Sales',                        600.00),
                 ('Total Operating Income',                      600.00),
             ],
         )
@@ -1547,7 +1547,7 @@ class TestAccountReports(TestAccountReportsCommon):
         ], limit=1)
         liquidity_account = liquidity_journal_1.default_credit_account_id
         receivable_account_1 = self.env['account.account'].search([
-            ('user_type_id.type', '=', 'receivable'), ('company_id', '=', self.company_parent.id),
+            ('user_type_id.type', '=', 'receivable'), ('company_id', '=', self.company_parent.id), ('code', 'like', '1210%')
         ], limit=1)
         receivable_account_2 = receivable_account_1.copy()
         receivable_account_2.name = 'Account Receivable 2'
@@ -1823,11 +1823,11 @@ class TestAccountReports(TestAccountReportsCommon):
             ['Net increase in cash and cash equivalents',                           -1150.0],
             ['Cash flows from operating activities',                                1850.0],
             ['Advance Payments received from customers',                            -150.0],
-            ['101220 Account Receivable 2',                                         -200.0],
-            ['101230 Account Receivable 3',                                         50.0],
+            ['121010 Account Receivable 2',                                         -200.0],
+            ['121020 Account Receivable 3',                                         50.0],
             ['Total Advance Payments received from customers',                      -150.0],
             ['Cash received from operating activities',                             2000.0],
-            ['200000 Product Sales',                                                2000.0],
+            ['400000 Product Sales',                                                2000.0],
             ['Total Cash received from operating activities',                       2000.0],
             ['Advance payments made to suppliers',                                  0.0],
             ['Cash paid for operating activities',                                  0.0],
@@ -1836,15 +1836,15 @@ class TestAccountReports(TestAccountReportsCommon):
             ['Cash out',                                                            0.0],
             ['Cash flows from financing activities',                                -3875.0],
             ['Cash in',                                                             400.0],
-            ['101250 Other account 2',                                              400.0],
+            ['121040 Other account 2',                                              400.0],
             ['Total Cash in',                                                       400.0],
             ['Cash out',                                                            -4275.0],
-            ['101250 Other account 2',                                              -4275.0],
+            ['121040 Other account 2',                                              -4275.0],
             ['Total Cash out',                                                      -4275.0],
             ['Cash flows from unclassified activities',                             875.0],
             ['Cash in',                                                             875.0],
-            ['111200 Tax Received',                                                 150.0],
-            ['101240 Other account 1',                                              725.0],
+            ['251000 Tax Received',                                                 150.0],
+            ['121030 Other account 1',                                              725.0],
             ['Total Cash in',                                                       875.0],
             ['Cash out',                                                            0.0],
             ['Cash and cash equivalents, closing balance',                          -1150.0],
@@ -2403,8 +2403,8 @@ class TestAccountReports(TestAccountReportsCommon):
             ['Cash flows from operating activities',                                1800.0],
             ['Advance Payments received from customers',                            0.0],
             ['Cash received from operating activities',                             1800.0],
-            ['200000 Product Sales',                                                900.0],
-            ['200000 Product Sales',                                                900.0],
+            ['400000 Product Sales',                                                900.0],
+            ['400000 Product Sales',                                                900.0],
             ['Total Cash received from operating activities',                       1800.0],
             ['Advance payments made to suppliers',                                  0.0],
             ['Cash paid for operating activities',                                  0.0],
@@ -2416,8 +2416,8 @@ class TestAccountReports(TestAccountReportsCommon):
             ['Cash out',                                                            0.0],
             ['Cash flows from unclassified activities',                             270.0],
             ['Cash in',                                                             270.0],
-            ['111200 Tax Received',                                                 135.0],
-            ['111200 Tax Received',                                                 135.0],
+            ['251000 Tax Received',                                                 135.0],
+            ['251000 Tax Received',                                                 135.0],
             ['Total Cash in',                                                       270.0],
             ['Cash out',                                                            0.0],
             ['Cash and cash equivalents, closing balance',                          2070.0],
@@ -2571,13 +2571,13 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              2,              3],
             [
                 ('Customer Invoices (INV)',             1495.00,        1495.00,        0.00),
-                ('101200 Account Receivable',           1495.00,        0.00,           1495.00),
-                ('111200 Tax Received',                 0.00,           195.00,         -195.00),
-                ('200000 Product Sales',                0.00,           1300.00,        -1300.00),
+                ('121000 Account Receivable',           1495.00,        0.00,           1495.00),
+                ('251000 Tax Received',                 0.00,           195.00,         -195.00),
+                ('400000 Product Sales',                0.00,           1300.00,        -1300.00),
             ],
         )
 
-        # Mark the '101200 Account Receivable' line to be unfolded.
+        # Mark the '121000 Account Receivable' line to be unfolded.
         line_id = lines[1]['id']
         options['unfolded_lines'] = [line_id]
         report = report.with_context(report._set_context(options))
@@ -2631,14 +2631,14 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              2,              3],
             [
                 ('Bank (BNK1)',                         1350.00,        1350.00,        0.00),
-                ('101200 Account Receivable',           0.00,           800.00,         -800.00),
                 ('101401 Bank',                         800.00,         550.00,         250.00),
-                ('111100 Account Payable',              550.00,         0.00,           550.00),
+                ('121000 Account Receivable',           0.00,           800.00,         -800.00),
+                ('211000 Account Payable',              550.00,         0.00,           550.00),
             ],
         )
 
-        # Mark the '101200 Account Receivable' line to be unfolded.
-        line_id = lines[1]['id']
+        # Mark the '121000 Account Receivable' line to be unfolded.
+        line_id = lines[2]['id']
         options['unfolded_lines'] = [line_id]
         report = report.with_context(report._set_context(options))
 

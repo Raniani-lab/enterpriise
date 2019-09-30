@@ -53,8 +53,10 @@ class Task(models.Model):
                         tag_user_rows(row.get('rows'))
 
         tag_user_rows(rows)
-        users = self.env['res.users'].browse(user_ids)
-        resources = users.mapped('resource_ids')
+        resources = self.env['res.users'].browse(user_ids).mapped('resource_ids').filtered(lambda r: r.company_id.id == self.env.company.id)
+        # we reverse sort the resources by date to keep the first one created in the dictionary
+        # to anticipate the case of a resource added later for the same employee and company
+        user_resource_mapping = {resource.user_id.id : resource.id for resource in resources.sorted('create_date', True)}
         leaves_mapping = resources._get_unavailable_intervals(start_datetime, end_datetime)
 
         # function to recursively replace subrows with the ones returned by func
@@ -71,14 +73,14 @@ class Task(models.Model):
         # for a single row, inject unavailability data
         def inject_unavailability(row):
             new_row = dict(row)
-            # if (not row.get('groupedBy') or row.get('groupedBy')[0] == 'user_id'):
-            if row.get('user_id'):
-                resource_ids = self.env['res.users'].browse(row.get('user_id')).resource_ids
-                if resource_ids:
+            user_id = row.get('user_id')
+            if user_id:
+                resource_id = user_resource_mapping.get(user_id)
+                if resource_id:
                     # remove intervals smaller than a cell, as they will cause half a cell to turn grey
                     # ie: when looking at a week, a employee start everyday at 8, so there is a unavailability
                     # like: 2019-05-22 20:00 -> 2019-05-23 08:00 which will make the first half of the 23's cell grey
-                    notable_intervals = filter(lambda interval: interval[1] - interval[0] >= cell_dt, leaves_mapping[resource_ids.id])
+                    notable_intervals = filter(lambda interval: interval[1] - interval[0] >= cell_dt, leaves_mapping[resource_id])
                     new_row['unavailabilities'] = [{'start': interval[0], 'stop': interval[1]} for interval in notable_intervals]
             return new_row
 

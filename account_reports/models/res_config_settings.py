@@ -96,6 +96,9 @@ class ResConfigSettings(models.TransientModel):
                 'is_tax_closing': True,
                 'ref': _('Tax Return for %s') % (formatted_date,)
             })
+            advisor_user = self.env['res.users'].search(
+                [('company_ids', 'in', (company.id,)), ('groups_id', 'in', self.env.ref('account.group_account_manager').ids)],
+                limit=1, order="id ASC")
             activity_vals = {
                 'res_id': move_id.id,
                 'res_model_id': move_res_model_id,
@@ -103,7 +106,7 @@ class ResConfigSettings(models.TransientModel):
                 'summary': _('TAX Report'),
                 'date_deadline': date,
                 'automated': True,
-                'user_id': self.env.user.id
+                'user_id':  advisor_user.id or self.env.user.id
             }
             self.env['mail.activity'].create(activity_vals)
         return move_id

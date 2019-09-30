@@ -100,10 +100,10 @@
                                 </group>
                                 <group name="right_details">
                                     <field name="appointment_tz"/>
-                                    <field name="reminder_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                    <field name="reminder_ids" widget="many2many_tags"/>
                                     <field name="location"/>
                                     <field name="assignation_method"/>
-                                    <field name="country_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="base.group_no_one"/>
+                                    <field name="country_ids" widget="many2many_tags" groups="base.group_no_one"/>
                                 </group>
                             </group>
                             <separator string="Available Employees"/>
@@ -138,7 +138,7 @@
                                             <field name="question_type" widget="radio"/>
                                         </group>
                                         <group name="question_form_right">
-                                            <field name="answer_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
+                                            <field name="answer_ids" widget="many2many_tags" options="{'no_create_edit': True}"
                                                    attrs="{'invisible': [('question_type','in',('char','text'))], 'required':[('question_type','in',('select','radio','checkbox'))]}"/>
                                             <field name="placeholder" attrs="{'invisible': [('question_type','in',('select','radio','checkbox'))]}"/>
                                             <field name="question_required"/>

@@ -104,7 +104,8 @@ class WebsiteCalendar(http.Controller):
             if not Employee.user_id.partner_id.calendar_verify_availability(date_start, date_end):
                 return request.redirect('/website/calendar/%s/appointment?failed=employee' % appointment_type.id)
 
-        country_name = country_id and request.env['res.country'].browse(int(country_id)).name or ''
+        country_id = int(country_id) if country_id else None
+        country_name = country_id and request.env['res.country'].browse(country_id).name or ''
         Partner = request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
         if Partner:
             if not Partner.calendar_verify_availability(date_start, date_end):

@@ -15,13 +15,6 @@ class AccountMoveReversal(models.TransientModel):
             result['reason'] = _('Helpdesk Ticket #%s') % ticket_id
         return result
 
-    @api.model
-    def _get_default_move(self):
-        # OVERRIDE allowing to select the journal entry manually in case of helpdesk ticket.
-        if self._context.get('default_helpdesk_ticket_id'):
-            return False
-        return super(AccountMoveReversal, self)._get_default_move()
-
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket')
     helpdesk_sale_order_id = fields.Many2one('sale.order', related="helpdesk_ticket_id.sale_order_id", string='Sales Order')
 
@@ -30,7 +23,7 @@ class AccountMoveReversal(models.TransientModel):
         domain = [('state', '=', 'posted'), ('type', '=', 'out_invoice')]
         if self.helpdesk_sale_order_id:
             domain += [('id', 'in', self.helpdesk_sale_order_id.invoice_ids.ids)]
-        elif self.helpdesk_ticket_id:
+        elif self.helpdesk_ticket_id.partner_id:
             domain += [('partner_id', 'child_of', self.helpdesk_ticket_id.partner_id.commercial_partner_id.id)]
         return {'domain': {'move_id': domain}}
 

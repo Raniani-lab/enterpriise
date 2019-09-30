@@ -9,9 +9,9 @@ class ResConfigSettings(models.TransientModel):
 
     linkedin_use_own_account = fields.Boolean("Use your own LinkedIn Account",
         config_parameter='social.linkedin_use_own_account')
-    linkedin_app_id = fields.Char("LinkedIn App ID", config_parameter='social.linkedin_app_id',
+    linkedin_app_id = fields.Char("App ID", config_parameter='social.linkedin_app_id',
         compute='_compute_linkedin_app_id', inverse='_inverse_linkedin_app_id')
-    linkedin_client_secret = fields.Char("LinkedIn App Secret", config_parameter='social.linkedin_client_secret',
+    linkedin_client_secret = fields.Char("App Secret", config_parameter='social.linkedin_client_secret',
         compute='_compute_linkedin_client_secret', inverse='_inverse_linkedin_client_secret')
 
     @api.onchange('linkedin_use_own_account')

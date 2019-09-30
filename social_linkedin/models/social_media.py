@@ -4,7 +4,7 @@ import hmac
 import hashlib
 import requests
 
-from odoo import _, models, fields, api
+from odoo import _, models, fields
 from odoo.exceptions import UserError
 from werkzeug.urls import url_encode, url_join
 
@@ -30,6 +30,11 @@ class SocialMediaLinkedin(models.Model):
             return self._add_linkedin_accounts_from_configuration(linkedin_app_id)
         else:
             return self._add_linkedin_accounts_from_iap()
+
+    def _compute_linkedin_csrf(self):
+        return hmac.new(
+            self.env['ir.config_parameter'].sudo().get_param('database.secret').encode('utf-8'),
+            str(self.id).encode('utf-8'), hashlib.sha256).hexdigest()
 
     def _add_linkedin_accounts_from_configuration(self, linkedin_app_id):
         params = {
@@ -73,11 +78,6 @@ class SocialMediaLinkedin(models.Model):
             'url': iap_add_accounts_url,
             'target': 'self'
         }
-
-    def _compute_linkedin_csrf(self):
-        return hmac.new(
-            self.env['ir.config_parameter'].sudo().get_param('database.secret').encode('utf-8'),
-            str(self.id).encode('utf-8'), hashlib.sha256).hexdigest()
 
     def _get_linkedin_redirect_uri(self):
         return url_join(

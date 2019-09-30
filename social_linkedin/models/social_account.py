@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 import base64
 import requests
 from odoo import models, fields
@@ -8,10 +9,10 @@ from odoo import models, fields
 class SocialAccountLinkedin(models.Model):
     _inherit = 'social.account'
 
-    linkedin_account_id = fields.Char(string='LinkedIn Account ID/URN', readonly=True,
-        help='LinkedIn Account ID/URN')
+    linkedin_account_id = fields.Char(string='LinkedIn Account ID/URN',
+        readonly=True, help='LinkedIn Account ID/URN')
     linkedin_access_token = fields.Char(string='LinkedIn access token',
-        help='The access token is used to perform request to the REST API')
+        readonly=True, help='The access token is used to perform request to the REST API')
 
     def _bearer_headers(self):
         headers = {
@@ -61,13 +62,6 @@ class SocialAccountLinkedin(models.Model):
         return []
 
     def _create_linkedin_accounts(self, access_token, media):
-        """
-        1. The client has opened his browser with our our URL
-        2. He gave us an "authorization code"
-        3. We can exchange this "authorization code" for an access token
-        4. This "access token" has a life time
-            -> we should refresh it after its life
-        """
         linkedin_accounts = self._get_linkedin_accounts(access_token)
         social_accounts = self.search([
             ('media_id', '=', media.id),

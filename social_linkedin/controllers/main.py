@@ -11,15 +11,20 @@ from werkzeug.urls import url_encode
 class SocialLinkedin(http.Controller):
     @http.route(['/social_linkedin/callback'], type='http', auth='user')
     def social_linkedin_callback(self, **kw):
+        """
+        We can receive
+        - authorization_code directly from LinkedIn
+        - access_token from IAP
+        """
         if not request.env.user.has_group('social.group_social_manager'):
             return 'unauthorized'
 
         # we received the access_token from IAP
-        access_token = request.params.get('access_token')
+        access_token = kw.get('access_token')
         # we receive authorization_code from LinkedIn
-        authorization_code = request.params.get('code')
+        authorization_code = kw.get('code')
 
-        linkedin_csrf = request.params.get('state')
+        linkedin_csrf = kw.get('state')
         media = request.env.ref('social_linkedin.social_media_linkedin')
 
         if media._compute_linkedin_csrf() != linkedin_csrf:
@@ -27,8 +32,7 @@ class SocialLinkedin(http.Controller):
 
         if not access_token:
             if not authorization_code:
-                return 'An error occurred. Authorization code is missing. <br>' \
-                    + html_escape(str(request.params))
+                return 'An error occurred. Authorization code is missing.'
             else:
                 # if we do not have the acces_token, we should exchange the
                 # authorization_code for an access token

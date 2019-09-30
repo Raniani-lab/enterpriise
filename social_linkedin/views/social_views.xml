@@ -19,10 +19,11 @@
         <field name="model">social.media</field>
         <field name="inherit_id" ref="social.social_media_view_kanban"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_add_account']" position="before">
-                <div class="alert alert-primary" role="alert" attrs="{'invisible': [('media_type', '!=', 'linkedin')]}">
-                  Only posting features are currently available for LinkedIn
-                </div>
+            <xpath expr="//div[hasclass('o_kanban_image')]" position="before">
+                <i class="float-right fa fa-exclamation-circle text-danger"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Only posting features are currently available for LinkedIn"
+                    attrs="{'invisible': [('media_type', '!=', 'linkedin')]}"/>
             </xpath>
         </field>
     </record>

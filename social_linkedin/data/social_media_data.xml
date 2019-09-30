@@ -5,7 +5,7 @@
             <field name="name">LinkedIn</field>
             <field name="media_type">linkedin</field>
             <field name="has_streams" eval="False"></field>
-            <field name="description" type="html"><p>Manage your LinkedIn accounts and schedule posts</p></field>
+            <field name="description" type="html"><p>Manage your LinkedIn account and schedule posts</p></field>
             <field name="image" type="base64" file="social_linkedin/static/src/img/linkedin.svg"/>
         </record>
     </data>

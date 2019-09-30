@@ -181,3 +181,9 @@
         padding: 8px 10px;
     }
 }
+// Restore on mobile the scroll on list view
+@include media-breakpoint-down(sm) {
+    .o_view_controller > .o_content > .o_list_view > .table-responsive {
+        overflow: auto;
+    }
+}

@@ -26,7 +26,7 @@
                 <page string="SMS Content" name="sms_body" attrs="{'invisible': [('mailing_type', '!=', 'sms')]}">
                     <field name="body_plaintext" widget="sms_widget"/>
                     <group>
-                        <field name="sms_template_id" domain="[('model', '=', mailing_model_real)]"/>
+                        <field name="sms_template_id" domain="[('model', '=', mailing_model_real)]" invisible="1"/>
                         <field name="sms_allow_unsubscribe"/>
                     </group>
                 </page>
@@ -34,8 +34,9 @@
          </field>
     </record>
 
-    <record id="mail_mass_mailing_action_marketing_automation" model="ir.actions.act_window">
-        <field name="name">Marketing Automation Mailings</field>
+    <record id="mass_mailing_sms.mailing_mailing_action_sms" model="ir.actions.act_window">
+        <field name="domain">['&amp;', ('mailing_type', '=', 'sms'), ('use_in_marketing_automation', '=', False)]</field>
+    </record>    
         <field name="res_model">mailing.mailing</field>
         <field name="view_mode">kanban,tree,form,graph</field>
         <field name="context">{

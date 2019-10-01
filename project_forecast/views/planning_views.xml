@@ -20,7 +20,7 @@
         <field name="inherit_id" ref="planning.planning_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
-                <field name="project_id"/>
+                <field name="project_id" context="{'default_allow_forecast': True}"/>
                 <field name="task_id" attrs="{'invisible': [('project_id', '=', False)]}"/>
             </xpath>
         </field>

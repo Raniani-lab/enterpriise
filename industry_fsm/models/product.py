@@ -25,6 +25,10 @@ class ProductProduct(models.Model):
         if task_id:
             task = self.env['project.task'].browse(task_id)
 
+            # don't add material on confirmed SO to avoid inconsistence with the stock picking
+            if task.fsm_done:
+                return False
+
             # project user with no sale rights should be able to add materials
             SaleOrderLine = self.env['sale.order.line']
             if self.user_has_groups('project.group_project_user'):
@@ -65,6 +69,10 @@ class ProductProduct(models.Model):
         task_id = self.env.context.get('fsm_task_id')
         if task_id:
             task = self.env['project.task'].browse(task_id)
+
+            # don't remove material on confirmed SO to avoid inconsistence with the stock picking
+            if task.fsm_done:
+                return False
 
             # project user with no sale rights should be able to remove materials
             SaleOrderLine = self.env['sale.order.line']

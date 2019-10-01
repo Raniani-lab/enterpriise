@@ -307,6 +307,7 @@ class Task(models.Model):
                 'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
                 'partner': self.partner_id.id if self.partner_id else False,
                 'search_default_consumable': 1,
+                'hide_qty_buttons': self.fsm_done
             },
             'help': _("""<p class="o_view_nocontent_smiling_face">
                             Create a new product

@@ -60,6 +60,10 @@ html {
                 }
             }
         }
+
+        .o_viewer_content .o_viewer_img_wrapper .o_viewer_zoomer {
+            overflow: scroll;
+        }
     }
 
     // FIXME: Fix scrolling in modal on focus input due to a bug between Chrome (Android) and Bootstrap

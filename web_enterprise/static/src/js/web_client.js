@@ -321,17 +321,19 @@ return AbstractWebClient.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the left and top scroll positions of the main scrolling area
-     * (i.e. the action manager in desktop and the webclient itself in mobile).
+     * Overrides to return the left and top scroll positions of the webclient
+     * in mobile (as it is the main scrolling element in that case).
      *
      * @returns {Object} with keys left and top
      */
     getScrollPosition: function () {
-        var isMobile = config.device.isMobile;
-        return {
-            left: isMobile ? $(window).scrollLeft() : this.action_manager.el.scrollLeft,
-            top: isMobile ? $(window).scrollTop() : this.action_manager.el.scrollTop,
-        };
+        if (config.device.isMobile) {
+            return {
+                left: $(window).scrollLeft(),
+                top: $(window).scrollTop(),
+            };
+        }
+        return this._super.apply(this, arguments);
     },
 
     //--------------------------------------------------------------------------
@@ -342,29 +344,16 @@ return AbstractWebClient.extend({
      * @override
      * @private
      */
-    _onGetScrollPosition: function (ev) {
-        ev.data.callback(this.getScrollPosition());
-    },
-    /**
-     * @override
-     * @private
-     */
     _onScrollTo: function (ev) {
-        var offset = {top: ev.data.top, left: ev.data.left || 0};
-        var isMobile = config.device.isMobile;
-        if (!offset.top) {
-            offset = dom.getPosition(document.querySelector(ev.data.selector));
-            if (!isMobile) {
-                // Substract the position of the action_manager as it is the scrolling part
-                offset.top -= dom.getPosition(this.action_manager.el).top;
+        if (config.device.isMobile) {
+            var offset = {top: ev.data.top, left: ev.data.left || 0};
+            if (!offset.top) {
+                offset = dom.getPosition(document.querySelector(ev.data.selector));
             }
+            $(window).scrollTop(offset.top);
+            $(window).scrollLeft(offset.left);
         }
-        if (isMobile) {
-            this.el.scrollTop = offset.top;
-        } else {
-            this.action_manager.el.scrollTop = offset.top;
-        }
-        this.action_manager.el.scrollLeft = offset.left;
+        this._super.apply(this, arguments);
     },
 });
 

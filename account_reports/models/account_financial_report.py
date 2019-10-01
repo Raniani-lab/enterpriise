@@ -592,24 +592,6 @@ class AccountFinancialReportLine(models.Model):
             strict_range = True
         return date_from, date_to, strict_range
 
-    def report_move_lines_action(self):
-        domain = ast.literal_eval(self.domain)
-        if 'date_from' in self.env.context.get('context', {}):
-            if self.env.context['context'].get('date_from'):
-                domain = expression.AND([domain, [('date', '>=', self.env.context['context']['date_from'])]])
-            if self.env.context['context'].get('date_to'):
-                domain = expression.AND([domain, [('date', '<=', self.env.context['context']['date_to'])]])
-            if self.env.context['context'].get('state', 'all') == 'posted':
-                domain = expression.AND([domain, [('move_id.state', '=', 'posted')]])
-            if self.env.context['context'].get('company_ids'):
-                domain = expression.AND([domain, [('company_id', 'in', self.env.context['context']['company_ids'])]])
-        return {'type': 'ir.actions.act_window',
-                'name': 'Journal Items (%s)' % self.name,
-                'res_model': 'account.move.line',
-                'view_mode': 'tree,form',
-                'domain': domain,
-                }
-
     @api.constrains('groupby')
     def _check_same_journal(self):
         for rec in self:

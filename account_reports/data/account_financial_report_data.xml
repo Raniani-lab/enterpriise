@@ -2,16 +2,6 @@
 <odoo>
     <data>
 
-
-        <record model="ir.actions.server" id="action_journal_items">
-            <field name="name">Journal Items by tax</field>
-            <field name="model_id" ref="account_reports.model_account_financial_html_report_line"/>
-            <field name="state">code</field>
-            <field name="code">
-                action = env['account.financial.html.report.line'].browse(env.context['active_id']).report_move_lines_action()
-            </field>
-        </record>
-
         <!-- PROFIT AND LOSS -->
 
         <record id="account_financial_report_profitandloss0" model="account.financial.html.report">

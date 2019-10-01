@@ -8,7 +8,7 @@ class RentalSchedule(models.Model):
     _description = "Rental Schedule"
     _auto = False
     _order = 'order_date desc'
-    _rec_name = 'partner_name'
+    _rec_name = 'card_name'
 
     @api.model
     def _read_group_report_line_status(self, report_line_status, domain, order):
@@ -32,7 +32,7 @@ class RentalSchedule(models.Model):
     qty_delivered = fields.Float('Qty Delivered', readonly=True)
     qty_returned = fields.Float('Qty Returned', readonly=True)
     partner_id = fields.Many2one('res.partner', 'Customer', readonly=True)
-    partner_name = fields.Char(string="Customer Name", readonly=True)
+    card_name = fields.Char(string="Customer Name", readonly=True)
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
     user_id = fields.Many2one('res.users', 'Salesperson', readonly=True)
     product_tmpl_id = fields.Many2one('product.template', 'Product Template', readonly=True)
@@ -137,7 +137,7 @@ class RentalSchedule(models.Model):
             p.product_tmpl_id,
             partner.country_id as country_id,
             partner.commercial_partner_id as commercial_partner_id,
-            partner.name as partner_name,
+            CONCAT(partner.name, ', ', s.name) as card_name,
             s.id as order_id,
             sol.id as order_line_id,
             %s,

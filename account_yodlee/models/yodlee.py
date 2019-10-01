@@ -28,7 +28,8 @@ class YodleeProviderAccount(models.Model):
         ICP_obj = self.env['ir.config_parameter'].sudo()
         login = self._cr.dbname
         secret = ICP_obj.get_param('database.uuid')
-        url = 'https://onlinesync.odoo.com/yodlee/api/2'
+        base_url = self.sudo().env['ir.config_parameter'].get_param('odoo.online_sync_proxy') or 'https://onlinesync.odoo.com'
+        url = base_url + '/yodlee/api/2'
         fastlink_url = 'https://usyirestmasternode.yodleeinteractive.com/authenticate/odooinc/?channelAppName=usyirestmaster'
         return {'login': login, 'secret': secret, 'url': url, 'fastlink_url': fastlink_url}
 

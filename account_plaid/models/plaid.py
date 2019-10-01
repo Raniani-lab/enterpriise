@@ -27,7 +27,8 @@ class PlaidProviderAccount(models.Model):
         ICP_obj = self.env['ir.config_parameter'].sudo()
         login = self._cr.dbname
         secret = ICP_obj.get_param('database.uuid')
-        url = 'https://onlinesync.odoo.com/plaid/api/2'
+        base_url = self.sudo().env['ir.config_parameter'].get_param('odoo.online_sync_proxy') or 'https://onlinesync.odoo.com'
+        url = base_url + '/plaid/api/2'
         return {'login': login, 'secret': secret, 'url': url}
 
     def check_plaid_error(self, resp):
@@ -66,6 +67,10 @@ class PlaidProviderAccount(models.Model):
             data['secret'] = credentials['secret']
             if len(self.ids) and self.provider_account_identifier:
                 data['access_token'] = self.provider_account_identifier
+                if self.provider_identifier.startswith('development_'):
+                    data['environment'] = 'development'
+                elif self.provider_identifier.startswith('sandbox_'):
+                    data['environment'] = 'sandbox'
             # This is only intended to work with Odoo proxy, if user wants to use his own plaid account
             # replace the query by requests.post(url, json=data, timeout=60)
             resp = requests.post(url, data=json.dumps(data, default=date_utils.json_default),
@@ -85,12 +90,20 @@ class PlaidProviderAccount(models.Model):
             return super(PlaidProviderAccount, self).get_login_form(site_id, provider, beta)
         ctx = self.env.context.copy()
         ctx['method'] = 'add'
+        environment = 'production'
+        if site_id.startswith('development_'):
+            environment = 'development'
+            site_id = site_id.replace('development_', '')
+        if site_id.startswith('sandbox_'):
+            environment = 'sandbox'
+            site_id = site_id.replace('sandbox_', '')
         return {
             'type': 'ir.actions.client',
             'tag': 'plaid_online_sync_widget',
             'target': 'new',
             'institution_id': site_id,
             'open_link': True,
+            'environment': environment,
             'public_key': self.plaid_fetch('/public_key', {}).get('public_key'),
             'context': ctx,
         }
@@ -98,19 +111,27 @@ class PlaidProviderAccount(models.Model):
     def link_success(self, public_token, metadata):
         # convert public token to access_token and create a provider with accounts defined in metadata
         data = {'public_token': public_token}
+        environment = metadata.get('environment', 'production')
+        if environment != 'production':
+            data['environment'] = environment
         resp_json = self.plaid_fetch('/item/public_token/exchange', data)
+        provider_identifier = metadata.get('institution', {}).get('institution_id', '')
+        if environment != 'production':
+            provider_identifier = environment + '_' + provider_identifier
         item_vals = {
             'name': metadata.get('institution', {}).get('name', ''), 
             'provider_type': 'plaid', 
             'provider_account_identifier': resp_json.get('access_token'),
             'plaid_item_id': resp_json.get('item_id'),
-            'provider_identifier': metadata.get('institution', {}).get('institution_id', ''),
+            'provider_identifier': provider_identifier,
             'status': 'SUCCESS',
             'status_code': 0
         }
         accounts_ids = [m.get('id') for m in metadata.get('accounts') if m.get('id')]
         # Call plaid to get balance on all selected accounts.
         data = { 'access_token': resp_json.get('access_token'), 'options': {'account_ids': accounts_ids}}
+        if environment != 'production':
+            data['environment'] = environment
         resp_json = self.plaid_fetch('/accounts/balance/get',data)
         account_vals = []
         for acc in resp_json.get('accounts'):

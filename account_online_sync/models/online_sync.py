@@ -65,7 +65,8 @@ class ProviderAccount(models.Model):
     def _get_favorite_institutions(self, country):
         resp_json = {}
         try:
-            resp = requests.post(url='https://onlinesync.odoo.com/onlinesync/search/favorite', data={'country': country, 'provider': json.dumps(self._get_available_providers())}, timeout=60)
+            url = self.sudo().env['ir.config_parameter'].get_param('odoo.online_sync_proxy') or 'https://onlinesync.odoo.com'
+            resp = requests.post(url=url + '/onlinesync/search/favorite', data={'country': country, 'provider': json.dumps(self._get_available_providers())}, timeout=60)
             resp_json = resp.json()
         except requests.exceptions.Timeout:
             raise UserError(_('Timeout: the server did not reply within 60s'))
@@ -78,7 +79,14 @@ class ProviderAccount(models.Model):
             raise UserError(_('Please enter at least a character for the search'))
         resp_json = {}
         try:
-            resp = requests.post(url='https://onlinesync.odoo.com/onlinesync/search/', data={'query': searchString, 'country': country, 'provider': json.dumps(self._get_available_providers())}, timeout=60)
+            data = {
+                'include_environment': self.env["ir.config_parameter"].sudo().get_param("plaid.include.environment") or False,
+                'query': searchString,
+                'country': country,
+                'provider': json.dumps(self._get_available_providers())
+            }
+            url = self.sudo().env['ir.config_parameter'].get_param('odoo.online_sync_proxy') or 'https://onlinesync.odoo.com'
+            resp = requests.post(url=url + '/onlinesync/search/', data=data, timeout=60)
             resp_json = resp.json()
         except requests.exceptions.Timeout:
             raise UserError(_('Timeout: the server did not reply within 60s'))

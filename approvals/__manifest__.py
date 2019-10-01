@@ -27,6 +27,7 @@ creates next activities for the related approvers.
         'views/approval_template.xml',
         'views/approval_category_views.xml',
         'views/approval_request_views.xml',
+        'views/res_users_views.xml',
     ],
     'demo':[
         'data/approval_demo.xml',

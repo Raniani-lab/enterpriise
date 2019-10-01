@@ -178,10 +178,10 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
             params: {
                 token: token
             }
-        }).then(function (newVisitorSignature) {
+        }).then(function (res) {
             // If new visitor has been created, store signature in cookie.
-            if (newVisitorSignature) {
-                utils.set_cookie('visitor_id', newVisitorSignature);
+            if (res && res.visitor_uuid) {
+                utils.set_cookie('visitor_uuid', res.visitor_uuid);
             }
 
             localStorage.setItem('social_push_notifications.configuration', JSON.stringify({

@@ -68,13 +68,13 @@ class SocialPushNotificationsController(http.Controller):
         to store it in cookie.
 
         Will also clean the token from other visitors if necessary. """
-        new_visitor_signature = False
+
+        res = {}
 
         Visitor = request.env['website.visitor'].sudo()
-        visitor_sudo = Visitor._get_visitor_from_request()
-        if not visitor_sudo:
-            visitor_sudo = Visitor._create_visitor()
-            new_visitor_signature = visitor_sudo.access_token
+        visitor_sudo = Visitor._get_visitor_from_request_or_create()
+        if request.httprequest.cookies.get('visitor_uuid', '') != visitor_sudo.access_token:
+            res['visitor_uuid'] = visitor_sudo.access_token
 
         visitor_sudo.write({'push_token': token})
 
@@ -84,7 +84,7 @@ class SocialPushNotificationsController(http.Controller):
         if other_visitors_sudo:
             other_visitors_sudo.write({'push_token': False})
 
-        return new_visitor_signature
+        return res
 
     @http.route('/social_push_notifications/unregister', type='json', auth='public')
     def unregister(self, token):

@@ -165,6 +165,7 @@
       <field name="arch" type="xml">
         <xpath expr="//kanban" position="attributes">
           <attribute name="quick_create">false</attribute>
+          <attribute name="class">o_kanban_mobile align-content-start</attribute>
         </xpath>
         <field name="state" position="after">
           <field name="next_action_date"/>

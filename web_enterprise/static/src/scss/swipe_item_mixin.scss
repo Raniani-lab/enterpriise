@@ -1,17 +1,18 @@
-.o_swipe_hide_overflow {
-    overflow: hidden;
-}
-
 .o_swipe_item {
-    position: relative;
+    &, > * {
+        position: relative;
+    }
 
     &.o_swipe_current {
         overflow: visible;
-        div.o_swipe_separator {
+        border-color: transparent !important;
+
+        .o_swipe_separator {
             border-radius: 5px;
         }
     }
-    div.o_swipe_separator {
+
+    .o_swipe_separator {
         position: absolute;
         top: 0;
         right: 0;
@@ -20,29 +21,22 @@
         background-color: lightgrey;
     }
 
-    > div {
-        position: relative;
-    }
-
-    button.o_swipe_action {
+    .o_swipe_action {
         position: absolute;
         width: 100%;
-        height: 100%;
         top: 0;
-        border: none;
-        outline: none;
-        -webkit-transition: background 100ms; /* For Safari 3.0 to 6.0 */
-        transition: background 100ms; /* For modern browsers */
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        padding: 0 28px;
+        transition: background-color 100ms;
+
         &.left {
-            right: 0;
-            text-align: right;
-            padding-right: 28px;
+            justify-content: flex-end;
         }
 
         &.right {
-            left: 0;
-            text-align: left;
-            padding-left: 28px;
+            justify-content: flex-start;
         }
     }
 }

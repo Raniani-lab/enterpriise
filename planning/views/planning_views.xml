@@ -162,7 +162,7 @@
                 scales="day,week,month"
                 precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
                 decoration-info="not is_published"
-                decoration-warning="publication_warning"
+                decoration-warning="publication_warning and is_published"
                 decoration-danger="overlap_slot_count > 0"
                 display_unavailability="1"
                 thumbnails="{'employee_id': 'image_128'}">

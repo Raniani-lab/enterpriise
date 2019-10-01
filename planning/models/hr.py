@@ -38,7 +38,7 @@ class Employee(models.Model):
         result = {}
         for employee in self:
             if employee.user_id and employee.user_id.has_group('planning.group_planning_user'):
-                result[employee.id] = '/web?#action=planning.planning_action_my_gantt'
+                result[employee.id] = '/web?#action=planning.planning_action_open_shift'
             else:
                 result[employee.id] = '/planning/%s/%s' % (planning.access_token, employee.employee_token)
         return result

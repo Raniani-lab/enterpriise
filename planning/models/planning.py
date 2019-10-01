@@ -468,7 +468,7 @@ class Planning(models.Model):
         view_context = dict(self._context)
         view_context.update({
             'menu_id': str(self.env.ref('planning.planning_menu_root').id),
-            'action_id': str(self.env.ref('planning.planning_action_my_gantt').id),
+            'action_id': str(self.env.ref('planning.planning_action_open_shift').id),
             'dbname': self.env.cr.dbname,
             'render_link': self.employee_id.user_id and self.employee_id.user_id in group_planning_user.users,
             'unavailable_path': '/planning/myshifts/',

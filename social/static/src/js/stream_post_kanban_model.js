@@ -27,9 +27,18 @@ var StreamPostKanbanModel = KanbanModel.extend({
      * Method responsible for refreshing the 'dashboard' view of social.accounts.
      * It will be called on view loading as well as when the user clicks on the 'Refresh' button.
      *
+     * Also refreshes live.post statistics (for 'engagement' field).
+     *
      * @private
      */
     _refreshAccountsStats: function () {
+        this._rpc({
+            model: 'social.live.post',
+            method: 'refresh_statistics'
+        }, {
+            shadow: true
+        });
+
         return this._rpc({
             model: 'social.account',
             method: 'refresh_statistics'

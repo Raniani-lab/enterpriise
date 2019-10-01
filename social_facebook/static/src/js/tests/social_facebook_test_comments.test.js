@@ -344,7 +344,7 @@ QUnit.module('Facebook Comments', {
 }, function (){
     QUnit.test('Check accounts statistics', async function (assert) {
         var self = this;
-        assert.expect(6);
+        assert.expect(7);
 
         var kanban = await createView({
             View: StreamPostKanbanView,

@@ -25,4 +25,7 @@
             border-top: 0;
         }
     }
+    .show.o_mail_systray_dropdown {
+        z-index: $zindex-tooltip + 10;
+    }
 }

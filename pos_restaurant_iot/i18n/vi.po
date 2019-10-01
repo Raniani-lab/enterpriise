@@ -27,7 +27,7 @@ msgstr "Địa chỉ IP"
 #. module: pos_restaurant_iot
 #: model:ir.model.fields,field_description:pos_restaurant_iot.field_restaurant_printer__device_identifier
 msgid "Identifier"
-msgstr ""
+msgstr "Nhận dạng"
 
 #. module: pos_restaurant_iot
 #: model:ir.model.fields,field_description:pos_restaurant_iot.field_restaurant_printer__device_id

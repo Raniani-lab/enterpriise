@@ -118,7 +118,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "<span class=\"fa fa-calendar\" title=\"Dates\" role=\"img\" aria-label=\"Dates\"/>"
-msgstr "<span class=\"fa fa-calendar\" title=\"Dates\" role=\"img\" aria-label=\"Dates\"/>"
+msgstr "<span class=\"fa fa-calendar\" title=\"Date\" role=\"img\" aria-label=\"Dates\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_aged_partner_balance_line_report
@@ -1048,7 +1048,7 @@ msgstr "Attivare l'opzione di gerarchia"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "End Date :"
-msgstr "Data finale:"
+msgstr "Data fine:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -1084,7 +1084,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_move_line__expected_pay_date
 #, python-format
 msgid "Expected Payment Date"
-msgstr "Data prevista Pagamento"
+msgstr "Data pagamento prevista"
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_partner.py:0
@@ -1252,7 +1252,7 @@ msgstr "Resoconto generale"
 #: code:addons/account_reports/wizard/report_export_wizard.py:0
 #, python-format
 msgid "Generated Documents"
-msgstr ""
+msgstr "Documenti generati"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report

@@ -910,7 +910,7 @@ msgstr "У закладках, вилучити"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__log_hash
 msgid "Inalterability Hash"
-msgstr ""
+msgstr "Хеш непрацездатності"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form

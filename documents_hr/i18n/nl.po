@@ -89,7 +89,7 @@ msgstr "Werknemer"
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees
 msgid "Employees Documents"
-msgstr ""
+msgstr "Documenten werknemer"
 
 #. module: documents_hr
 #: model:documents.folder,name:documents_hr.documents_hr_folder
@@ -119,4 +119,4 @@ msgstr ""
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_folder
 msgid "hr default workspace"
-msgstr ""
+msgstr "hr standaard werkplaats"

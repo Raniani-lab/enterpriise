@@ -235,7 +235,7 @@ msgstr "Een kopie van het mandaat wordt via e-mail verzonden"
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_acquirer__sepa_direct_debit_sms_enabled
 msgid "A verification code is sent by SMS to the customer."
-msgstr ""
+msgstr "Een verificatie code is via SMS verstuurd naar de klant."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_acquirer__sepa_direct_debit_sign_enabled
@@ -404,7 +404,7 @@ msgstr "Gelieve een SMS validatie code in te geven."
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Please enter your signature."
-msgstr ""
+msgstr "Gelieve uw handtekening in te vullen."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_acquirer__provider

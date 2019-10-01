@@ -1082,7 +1082,7 @@ msgstr "Ultime attività"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__email_cc
 msgid "List of cc from incoming emails."
-msgstr ""
+msgstr "Elenco dei CC dalle e-mail in ingresso."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_main_attachment_id
@@ -1596,7 +1596,7 @@ msgstr ""
 "Stato basato sulle attività\n"
 "In ritardo: data di scadenza già superata\n"
 "Oggi: attività in data odierna\n"
-"Pianificata: attività future."
+"Pianificato: attività future."
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:0

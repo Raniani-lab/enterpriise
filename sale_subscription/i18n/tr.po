@@ -10,23 +10,23 @@
 # Saban Yildiz <sabany@projetgrup.com>, 2019
 # Mehmet Demirel <mdemirell@gmail.com>, 2019
 # Abdullah Onur Uğur <aonurugur@outlook.com>, 2019
-# Buket Şeker <buket_skr@hotmail.com>, 2019
 # Ediz Duman <neps1192@gmail.com>, 2019
-# Martin Trigaux, 2019
-# Murat Kaplan <muratk@projetgrup.com>, 2019
 # Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2019
 # Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2019
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2019
+# Martin Trigaux, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
 # Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
 # Umur Akın <umura@projetgrup.com>, 2019
+# Buket Şeker <buket_skr@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:19+0000\n"
+"POT-Creation-Date: 2019-10-01 12:16+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
+"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -258,7 +258,6 @@ msgid ""
 "                <table style=\"width:600px;margin:auto;text-align:center;font-size:12px;\">\n"
 "                    <tbody>\n"
 "                        <tr><td style=\"padding-top:10px;color:#afafaf;\">\n"
-"                            <p>This customer survey has been sent because your subscription has been moved to the stage <b>${object.stage_id.name}</b></p>\n"
 "                            <p>Email automatically sent by <a target=\"_blank\" href=\"https://www.odoo.com/page/subscriptions\" style=\"color:#875A7B;text-decoration:none;\">Odoo Subscription</a> for <a href=\"${object.company_id.website}\" style=\"color:#875A7B;text-decoration:none;\">${object.company_id.name}</a></p>\n"
 "                        </td></tr>\n"
 "                    </tbody>\n"
@@ -280,14 +279,14 @@ msgid "<i class=\"fa fa-check\"/> Closable by customer"
 msgstr "<i class=\"fa fa-check\"></i>Müşteri tarafından iptal edilebilir"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+msgid "<i class=\"fa fa-comment\"/> Send message"
+msgstr "<i class=\"fa fa-comment\"/>Mesaj Gönder"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
 msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<i class=\"fa fa-envelope\"/> Send email"
-msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -353,8 +352,8 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid ""
-"<span class=\"o_stat_text\">Preview</span>\n"
-"                                <span class=\"o_stat_text\">on Portal</span>"
+"<span class=\"o_stat_text\">Customer</span>\n"
+"                                <span class=\"o_stat_text\">Preview</span>"
 msgstr ""
 
 #. module: sale_subscription
@@ -419,7 +418,7 @@ msgid ""
 "                    <br/><br/>\n"
 "                    You will find your invoice attached.\n"
 "                    %if ctx.get('next_date'):\n"
-"                        Your next invoice will be on ${ctx.get('next_date')}.\n"
+"                        Your next invoice will be on ${format_date(ctx.get('next_date'))}.\n"
 "                    %endif\n"
 "                    <br/><br/>\n"
 "                    If you have any questions, do not hesitate to contact us.\n"
@@ -607,7 +606,7 @@ msgid ""
 "                    % endif\n"
 "                    <br/><br/>\n"
 "                    Your subscription ${ctx.get('code')} is still valid but will be <strong>suspended</strong>\n"
-"                    on ${ctx.get('date_close')} unless the payment succeeds in the mean time (we will retry once every day).\n"
+"                    on ${format_date(ctx.get('date_close'))} unless the payment succeeds in the mean time (we will retry once every day).\n"
 "                    Please double-check that you have sufficient funds.<br/><br/>\n"
 "                    If you have any questions, do not hesitate to contact us.<br/><br/>\n"
 "                    Thank you for choosing ${company.name}!\n"
@@ -764,21 +763,6 @@ msgid "Add Followers"
 msgstr "Takipçi ekle"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
-msgid "Add a description..."
-msgstr "Bir açıklama ekle..."
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
-msgid "Add in Subscription"
-msgstr "Aboneliğe Ekle"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid "Add options to the subscription directly or through a quotation"
-msgstr "Teklif kanalı ile aboneliğe seçenekler ekleme"
-
-#. module: sale_subscription
 #: model:res.groups,name:sale_subscription.group_sale_subscription_manager
 msgid "Administrator"
 msgstr ""
@@ -796,14 +780,6 @@ msgid "Alerts"
 msgstr "Uyarılar"
 
 #. module: sale_subscription
-#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_alert_action
-msgid ""
-"Alerts are used to inform the salesman which subscriptions\n"
-"              need their attention. It can be positive (upsell) or\n"
-"              negative (churn, invoice not paid...)."
-msgstr ""
-
-#. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "All"
@@ -815,6 +791,11 @@ msgstr "Tümü"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__analytic_account_id
 msgid "Analytic Account"
 msgstr "Analitik Hesap"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+msgid "Apply On"
+msgstr "Şuna Uygula"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__filter_domain
@@ -845,7 +826,7 @@ msgstr "Otomatik Eylem"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__auto_close_limit
-msgid "Automatic closing limit"
+msgid "Automatic Closing"
 msgstr ""
 
 #. module: sale_subscription
@@ -877,11 +858,6 @@ msgid "Available on the Website"
 msgstr "Web Sitesinde Görünür"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Back"
-msgstr "Geri"
-
-#. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription__health__bad
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__health__bad
 msgid "Bad"
@@ -899,11 +875,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__filter_pre_domain
 msgid "Before Update Domain"
 msgstr "Güncelleme Alanından Önce"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Billing:"
-msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__binding_model_id
@@ -928,6 +899,7 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid "Cancel"
@@ -942,11 +914,6 @@ msgstr "Kategori"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Change Payment Method"
-msgstr "Ödeme Yöntemini Değiştir"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Change payment method"
 msgstr "Ödeme Yöntemini Değiştir"
 
 #. module: sale_subscription
@@ -967,6 +934,11 @@ msgid ""
 msgstr ""
 "Yürütülecek alt sunucu eylemleri. Geri gönderilen son iade işlemi değerinin "
 "genel geri dönüş değeri olarak kullanılacağını unutmayın."
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+msgid "Choose Payment Method"
+msgstr ""
 
 #. module: sale_subscription
 #. openerp-web
@@ -992,8 +964,8 @@ msgstr "İlk abonelik şablonunuzu<b>oluşturmak için tıklayın</b>"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__user_closable
-msgid "Closable by customer"
-msgstr "Müşteri tarafından kapatılabilir"
+msgid "Closable by Customer"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
@@ -1019,13 +991,8 @@ msgstr "Kapatma & İptal Nedenleri"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Close subscription"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid "Close the subscription"
-msgstr ""
+msgid "Close Subscription"
+msgstr "Kapat"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:0
@@ -1118,11 +1085,7 @@ msgid "Create & View Quotation"
 msgstr "Teklif Oluştur & Görüntüle"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid "Create A Renewal Quotation"
-msgstr ""
-
-#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Create Invoice"
 msgstr "Fatura Oluştur"
@@ -1154,13 +1117,12 @@ msgid "Create a new template of subscription"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
+#: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid ""
-"Create a sale order that will overwrite this subscription when confirmed "
-"(renewal quotation)"
+"Create a quotation with new products and send it to the customer for approval.\n"
+"                    When the quotation is confirmed, the products will be added to the subscription.\n"
+"                    Quotation prices will be prorated to the remaining time of the current invoicing period."
 msgstr ""
-"Onaylandığında bu aboneliğin üzerine yazılacak bir satış siparişi oluşturun "
-"(yenileme teklifi)"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_alert__action__next_activity
@@ -1239,8 +1201,8 @@ msgstr "Para Birimi"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Current plan:"
-msgstr "Güncel Plan:"
+msgid "Current Plan:"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__partner_id
@@ -1254,11 +1216,6 @@ msgstr "Müşteri"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__commercial_partner_id
 msgid "Customer Company"
 msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
-msgid "Customer Portal"
-msgstr "Müşteri Portalı"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__customer_ids
@@ -1287,6 +1244,11 @@ msgid "Define a new subscription"
 msgstr ""
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+msgid "Delay After Trigger"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__trg_date_range
 msgid ""
 "Delay after the trigger date.\n"
@@ -1310,7 +1272,6 @@ msgstr "Gecikme türü"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__description
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__name
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__description
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__name
 msgid "Description"
 msgstr "Açıklama"
@@ -1324,11 +1285,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__discount
 msgid "Discount (%)"
 msgstr "İndirim (%)"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__date_from
-msgid "Discount Date"
-msgstr "İndirim Tarihi"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__display_name
@@ -1356,14 +1312,10 @@ msgid "Domain used to change subscription's Kanban state with a 'Good' rating"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__draft_invoice
 #: model:sale.subscription.stage,name:sale_subscription.sale_subscription_stage_draft
 msgid "Draft"
 msgstr "Taslak"
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__draft_invoice
-msgid "Draft invoice"
-msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_date_deadline_range
@@ -1407,8 +1359,10 @@ msgid "Enter a name for this template.<br/><i>(e.g. eLearning Yearly)</i>"
 msgstr "Bu şablon için bir isim girin.<br/><i>(örn, yıllık e-öğrenme )</i>"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Every:"
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_stage__description
+msgid ""
+"Enter here the internal requirements for this stage. It will appear as a "
+"tooltip over the stage's name."
 msgstr ""
 
 #. module: sale_subscription
@@ -1463,6 +1417,16 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Future Activities"
 msgstr "Sonraki Aktiviteler"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
+msgid "Generate Invoice"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
+msgid "Give your team the requirements to move a subscription to this stage."
+msgstr ""
 
 #. module: sale_subscription
 #. openerp-web
@@ -1611,11 +1575,9 @@ msgstr "Varsa, kayıt güncelleştirilmeden önce bu koşula uyulmalıdır."
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__date
 msgid ""
-"If set in advance, the subscription will be set to pending 1 month before "
-"the date and will be closed on the date set in this field."
+"If set in advance, the subscription will be set to renew 1 month before the "
+"date and will be closed on the date set in this field."
 msgstr ""
-"Önceden ayarlanmış ise, abonelik, tarihten 1 ay önce askıya alınacak ve bu "
-"alanda ayarlanan tarihte kapanacaktır."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_product_product__recurring_invoice
@@ -1634,6 +1596,13 @@ msgid ""
 msgstr ""
 "Eğer ayarlanmış ise, abonelikler bu şablonla birlikte bu yevmiyede "
 "faturalanacak; yoksa en düşük sıra ile birlikte satış yevmiyesi kullanılır."
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__auto_close_limit
+msgid ""
+"If the chosen payment method has failed to renew the subscription after this"
+" time, the subscription is automatically closed."
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1678,26 +1647,14 @@ msgid "Industry"
 msgstr "Endüstri"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
-msgid ""
-"Insert the options directly, they will be invoiced on the next invoice date."
-msgstr ""
-"Seçenekleri doğrudan dahil edin, bir sonraki fatura tarihinizde faturalanır."
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send
-msgid "Invoice"
-msgstr "Fatura"
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send_payment
-msgid "Invoice & try to charge"
-msgstr ""
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__invoice_count
 msgid "Invoice Count"
 msgstr "Fatura Sayısı"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
+msgid "Invoice Email"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__invoice_mail_template_id
@@ -1717,16 +1674,6 @@ msgid "Invoice for subscription ${ctx.get('code')}"
 msgstr "Abonelik faturası ${ctx.get('code')}"
 
 #. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__success_payment
-msgid "Invoice only on successful payment"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
-msgid "Invoice period"
-msgstr ""
-
-#. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.mail_template_subscription_invoice
 msgid ""
 "Invoice_${(object.name or '').replace('/','_')}${object.state == 'draft' and"
@@ -1735,13 +1682,23 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.email_payment_success
-msgid "Invoice_${ctx.get('code')}_${ctx.get('previous_date')}"
-msgstr "Invoice_${ctx.get('code')}_${ctx.get('previous_date')}"
+msgid "Invoice_${ctx.get('code')}_${format_date(ctx.get('previous_date'))}"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Invoices"
 msgstr "Faturalar"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
+msgid "Invoicing"
+msgstr "Faturalama"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_interval
+msgid "Invoicing Period"
+msgstr ""
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
@@ -1932,8 +1889,8 @@ msgstr "Ana Ek"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__manual
-msgid "Manual"
-msgstr "Manuel"
+msgid "Manually"
+msgstr "Manuel Olarak"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_alert__action__set_to_renew
@@ -2048,8 +2005,8 @@ msgstr "Sonraki Aktivite Türü"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Next invoice:"
-msgstr "Sonraki Fatura:"
+msgid "Next Invoice:"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.product_template_action_subscription
@@ -2066,13 +2023,6 @@ msgstr "Not"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Eylemlerin Sayısı"
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__auto_close_limit
-msgid ""
-"Number of days before a subscription gets closed when the chosen payment "
-"mode trigger automatically the payment."
-msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error_counter
@@ -2102,11 +2052,9 @@ msgstr "Okunmamış mesaj sayısı"
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
 msgid ""
 "Odoo automatically sets subscriptions to be renewed in a pending\n"
-"            state. After the negociation, the salesman should close or renew\n"
+"            state. After the negotiation, the salesman should close or renew\n"
 "            pending subscriptions."
 msgstr ""
-"Odoo, bekleme durumundaki yenilenecek abonelikleri otomatik olarak ayarlar.\n"
-"Anlaşmadan sonra satış elemanı bekleyen abonelikleri kapatmalı veya yenilenmeli. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__on_change_fields
@@ -2139,14 +2087,19 @@ msgid "Other"
 msgstr "Diğer"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
+msgid "Other Info"
+msgstr "Diğer Bilgiler"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Over"
 msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Pay with"
-msgstr "Öde"
+msgid "Pay With"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__payment_mode
@@ -2183,7 +2136,7 @@ msgstr "Bekleyen Abonelikler"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Plan details"
+msgid "Plan Details"
 msgstr ""
 
 #. module: sale_subscription
@@ -2209,6 +2162,7 @@ msgstr "Fiyat Listesi"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__product_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__product_id
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Product"
 msgstr "Ürün"
 
@@ -2367,11 +2321,6 @@ msgid "Reference:"
 msgstr "Referans:"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Register a payment method with"
-msgstr "Bir ödeme şekli ile birlikte kaydettirin."
-
-#. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__renew
 msgid "Renewal"
 msgstr "Yenileme"
@@ -2382,8 +2331,12 @@ msgid "Renewal Allowed"
 msgstr ""
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
+msgid "Renewal Quotation"
+msgstr "Yenileme Teklifi"
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_interval
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_interval
 msgid "Repeat Every"
 msgstr "Tekrarlama Durumu"
 
@@ -2397,6 +2350,12 @@ msgstr "Tekrarlama Durumu (Gün/Hafta/Ay/Yıl)"
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
 msgid "Reporting"
 msgstr "Raporlama"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__description
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
+msgid "Requirements"
+msgstr "Gereksinimler"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_id
@@ -2507,6 +2466,7 @@ msgstr "Satış Siparişleri"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__team_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__team_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Sales Team"
 msgstr "Satış Ekibi"
@@ -2559,6 +2519,28 @@ msgstr ""
 "oluşturacak."
 
 #. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send
+msgid "Send"
+msgstr "Gönder"
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send_payment
+msgid "Send & try to charge"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
+msgid ""
+"Send a renewal quotation to the customer.\n"
+"            When it is confirmed, the subscription is running again."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__success_payment
+msgid "Send after successful payment"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_act_window_sms_composer_multi
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_act_window_sms_composer_single
 msgid "Send an SMS Text Message"
@@ -2572,6 +2554,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_alert__action__email
 msgid "Send an email to the customer"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_stage__rating_template_id
+msgid ""
+"Send an email to the customer when the subscription is moved to this stage."
 msgstr ""
 
 #. module: sale_subscription
@@ -2612,7 +2600,6 @@ msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Settings"
 msgstr "Ayarlar"
 
@@ -2675,6 +2662,7 @@ msgstr "Aşamalar"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__date_start
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__date_start
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__date_from
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Start Date"
@@ -2682,8 +2670,8 @@ msgstr "Başlangıç Tarihi"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Start date:"
-msgstr "Başlangıç Tarihi:"
+msgid "Start Date:"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -2716,6 +2704,7 @@ msgstr "Gönder"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_snapshot__subscription_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__subscription_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_view_cohort
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_cohort
@@ -2804,6 +2793,7 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_stage
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_list
 msgid "Subscription Stages"
 msgstr ""
 
@@ -2813,7 +2803,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__subscription_template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__template_id
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 msgid "Subscription Template"
 msgstr "Abonelik Şablonu"
 
@@ -2872,6 +2861,7 @@ msgid "Subscription: Payment reminder"
 msgstr ""
 
 #. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:0
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_filtered
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_res_partner
@@ -2897,6 +2887,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_pivot
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_subscription_order_line
+#, python-format
 msgid "Subscriptions"
 msgstr "Abonelikler"
 
@@ -3008,12 +2999,8 @@ msgstr "Aboneliğin sona ermesi ${object.code}"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__description
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid "Terms and Conditions"
-msgstr "Şartlar ve Koşullar"
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Terms and conditions"
+msgid "Terms and Conditions"
 msgstr "Şartlar ve Koşullar"
 
 #. module: sale_subscription
@@ -3040,14 +3027,6 @@ msgid ""
 msgstr ""
 "Bir satış siparişi oluştururken aboneliğin tüm faturalama dönemi ile bir "
 "sonraki abonelik faturalama tarihi arasında hesaplanan indirim uygulanır."
-
-#. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_order.py:0
-#, python-format
-msgid ""
-"The following Sale Order Line(s) are linked to a subscription belonging to a"
-" different company:"
-msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__website_url
@@ -3139,16 +3118,6 @@ msgid "To Upsell"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
-msgid ""
-"To add new products to this running subscription, you can either create a "
-"new quotation to ask a customer approval (discounted for the current "
-"invoicing period) or directly insert them in the subscription to invoice it "
-"on the next invoice date. If you use a quotation, the products will be added"
-" at the order confirmation."
-msgstr ""
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Today Activities"
 msgstr "Bugünkü Aktiviteler"
@@ -3177,6 +3146,13 @@ msgstr "Tetikleyici Tarihi"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trigger_condition
 msgid "Trigger On"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_alert_action
+msgid ""
+"Trigger alerts for salespersons or customers: churn, invoice not paid, "
+"upsell, etc."
 msgstr ""
 
 #. module: sale_subscription
@@ -3301,8 +3277,8 @@ msgstr "Kullanıcı alan adı"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Valid until:"
-msgstr "Geçerlilik Bitişi:"
+msgid "Valid Until:"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__fields_lines
@@ -3454,23 +3430,19 @@ msgstr "Bu abonelik şablonu ile ilgili tüm ürünleri burada bulabilirsiniz."
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
 msgid ""
-"You will find here the subscriptions to be renewed because the\n"
-"            end date is passed or the working effort is higher than the\n"
-"            maximum authorized one."
-msgstr ""
-"Burada yenilenecek abonelikleri bulacaksınız, çünkü bitiş tarihi geçen veya "
-"çalışma ehliyetinin izin verilen maksimum yetkiliden daha fazla iş eforu "
-"harcadığı için"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Your informations"
+"You will find here the subscriptions to be renewed (end date is close or "
+"passed)"
 msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Your plan"
-msgstr ""
+msgid "Your Details"
+msgstr "Detaylarınız"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+msgid "Your Plan"
+msgstr "Planınız"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3478,9 +3450,9 @@ msgid "Your subscription is closed."
 msgstr "Aboneliğinizi kapalıdır."
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "days"
-msgstr "gün"
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+msgid "e.g. Closed Subscription"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -3493,36 +3465,11 @@ msgid "e.g. Monthly Subscription"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
-msgid "e.g. Update order quantity"
-msgstr "örn. Sipariş miktarını güncelle"
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "missing payments (from"
 msgstr "Kaçan ödemeler"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "months"
-msgstr "ay"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "to this day) will be automatically processed."
 msgstr "bu güne) otomatik olarak işleşecek"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "weeks"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "years"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid "⇒ Generate Invoice"
-msgstr "⇒ Fatura Oluştur"

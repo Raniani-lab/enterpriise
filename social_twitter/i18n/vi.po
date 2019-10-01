@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:19+0000\n"
+"POT-Creation-Date: 2019-10-01 12:16+0000\n"
 "PO-Revision-Date: 2019-09-23 14:03+0000\n"
 "Last-Translator: Dung Nguyen Thi <dungnt@trobz.com>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
@@ -213,6 +213,14 @@ msgid "Social Twitter Account"
 msgstr ""
 
 #. module: social_twitter
+#: code:addons/social_twitter/models/social_media.py:0
+#, python-format
+msgid ""
+"The url that this service requested returned an error. Please contact the "
+"author of the app."
+msgstr ""
+
+#. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
 msgid "Tweets of"
 msgstr ""
@@ -338,6 +346,12 @@ msgstr ""
 msgid ""
 "Used to make comparisons when we need to restrict some features to a "
 "specific media ('facebook', 'twitter', ...)."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_media.py:0
+#, python-format
+msgid "You don't have an active subscription. Please buy one here: %s"
 msgstr ""
 
 #. module: social_twitter

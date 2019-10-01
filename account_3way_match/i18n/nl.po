@@ -3,9 +3,9 @@
 # 	* account_3way_match
 # 
 # Translators:
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,7 +50,7 @@ msgstr "Fout"
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_move__force_release_to_pay
 msgid "Force Status"
-msgstr ""
+msgstr "Forceer status"
 
 #. module: account_3way_match
 #: model:ir.model.fields,help:account_3way_match.field_account_move__force_release_to_pay
@@ -94,7 +94,7 @@ msgstr "Vrijgeven voor betaling"
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_move__release_to_pay_manual
 msgid "Should Be Paid"
-msgstr ""
+msgstr "Moet betaald worden"
 
 #. module: account_3way_match
 #: model:ir.model.fields,help:account_3way_match.field_account_move__release_to_pay

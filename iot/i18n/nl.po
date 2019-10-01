@@ -254,7 +254,7 @@ msgstr "Apparaat"
 #: model:ir.model.fields,field_description:iot.field_iot_box__device_count
 #: model_terms:ir.ui.view,arch_db:iot.iot_box_view_kanban
 msgid "Device Count"
-msgstr ""
+msgstr "Apparaat aantal"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
@@ -318,7 +318,7 @@ msgstr "Groepeer op"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__hdmi
 msgid "Hdmi"
-msgstr ""
+msgstr "HDMI"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__id

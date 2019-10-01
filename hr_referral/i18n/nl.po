@@ -1330,7 +1330,7 @@ msgstr "Uw referentie is aangenomen!"
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
 msgid "click(s)"
-msgstr ""
+msgstr "klik(ken)"
 
 #. module: hr_referral
 #. openerp-web

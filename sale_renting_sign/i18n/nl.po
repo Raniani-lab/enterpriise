@@ -162,4 +162,4 @@ msgstr ""
 #. module: sale_renting_sign
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.res_config_settings_view_form
 msgid "Upload Template"
-msgstr ""
+msgstr "Upload sjabloon"

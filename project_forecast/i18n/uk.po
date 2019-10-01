@@ -28,7 +28,7 @@ msgstr "<span class=\"o_label\">Планування</span>"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "<span>Planning</span>"
-msgstr ""
+msgstr "<span>Планування</span>"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
@@ -50,12 +50,14 @@ msgstr "За проектом"
 #: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
 msgid "Enable planning tasks on the project."
-msgstr ""
+msgstr "Дозволяє планувати завдання в проекті."
 
 #. module: project_forecast
 #: model:ir.model.constraint,message:project_forecast.constraint_planning_slot_project_required_if_task
 msgid "If the planning is linked to a task, the project must be set too."
 msgstr ""
+"Якщо планування пов'язане із завданням, проект також повинен бути "
+"встановлений."
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_project
@@ -70,12 +72,12 @@ msgstr "Планування"
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_graph
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_pivot
 msgid "Planning Analysis"
-msgstr ""
+msgstr "Аналіз планування"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.planning_action_schedule_by_project
 msgid "Planning Schedule"
-msgstr ""
+msgstr "Розклад планування"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_slot
@@ -90,7 +92,7 @@ msgstr "Планування за співробітником"
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_project
 msgid "Planning by project"
-msgstr ""
+msgstr "Планування за проектом"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_project
@@ -119,6 +121,9 @@ msgid ""
 "the project's forecasts and then delete the project or simply deactivate the"
 " project."
 msgstr ""
+"Ви не можете видалити проект, який містить планування. Натомість ви можете "
+"видалити усі прогнози проекту, а потім видалити проект чи просто "
+"деактивувати його."
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project.py:0
@@ -127,6 +132,9 @@ msgid ""
 "You cannot delete a task containing plannings. You can either delete all the"
 " task's plannings and then delete the task or simply deactivate the task."
 msgstr ""
+"Ви не можете видалити завдання, яке містить планування. Натомість ви можете "
+"видалити усі планування завдання, а потім видалити завдання чи просто "
+"деактивувати його."
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:0

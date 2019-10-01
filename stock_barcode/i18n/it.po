@@ -340,7 +340,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__barcode_nomenclature_id
 msgid "Nomenclature"
-msgstr ""
+msgstr "Nomenclatura"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.open_picking

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:19+0000\n"
+"POT-Creation-Date: 2019-09-30 09:48+0000\n"
 "PO-Revision-Date: 2019-09-23 14:02+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -186,6 +186,11 @@ msgid "Campaigns are the perfect tool to track your posts results."
 msgstr ""
 
 #. module: social
+#: model:ir.model.fields,field_description:social.field_social_media__can_link_accounts
+msgid "Can link accounts ?"
+msgstr ""
+
+#. module: social
 #. openerp-web
 #: code:addons/social/static/src/js/stream_post_comment_delete.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
@@ -227,6 +232,11 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__has_streams
 msgid "Controls if social streams are handled on this social media."
+msgstr ""
+
+#. module: social
+#: model:ir.model.fields,help:social.field_social_media__can_link_accounts
+msgid "Controls if we can link accounts or not."
 msgstr ""
 
 #. module: social

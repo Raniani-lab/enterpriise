@@ -1,19 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents_sign
+# 	* documents_sign
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Sanne Kristensen <sanne@vkdata.dk>, 2018
-# lhmflexerp <lhm@flexerp.dk>, 2018
+# Joe Hansen <joedalton2@yahoo.dk>, 2019
+# Sanne Kristensen <sanne@vkdata.dk>, 2019
+# lhmflexerp <lhm@flexerp.dk>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-08-24 11:37+0000\n"
-"Last-Translator: lhmflexerp <lhm@flexerp.dk>, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: lhmflexerp <lhm@flexerp.dk>, 2019\n"
 "Language-Team: Danish (https://www.transifex.com/odoo/teams/41243/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,16 +31,9 @@ msgstr ""
 "vedhæftninger, som matcher betingelserne"
 
 #. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_sign_request__folder_id
-#: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
-msgid "Attachment Folder"
-msgstr ""
-
-#. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_sign_request__documents_tag_ids
-#: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
-msgid "Attachment Tags"
-msgstr ""
+#: model:ir.model,name:documents_sign.model_ir_attachment
+msgid "Attachment"
+msgstr "Vedhæftning"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__create_model
@@ -48,24 +41,46 @@ msgid "Create"
 msgstr "Opret"
 
 #. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
-msgstr "Kreditnota"
+#: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_new
+msgid "Create signature request"
+msgstr ""
 
 #. module: documents_sign
-#: model:ir.model,name:documents_sign.model_ir_attachment
-msgid "Document"
-msgstr "Dokument"
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request_finance
+msgid "Create signature template(s)"
+msgstr ""
+
+#. module: documents_sign
+#: model:ir.model.fields,field_description:documents_sign.field_sign_request__documents_tag_ids
+msgid "Document Tags"
+msgstr ""
+
+#. module: documents_sign
+#: model:ir.model.fields,field_description:documents_sign.field_sign_request__folder_id
+msgid "Document Workspace"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
+msgstr "Har forretningsmulighed"
+
+#. module: documents_sign
+#: code:addons/documents_sign/models/workflow.py:0
+#, python-format
+msgid "New templates"
 msgstr ""
 
 #. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Product template"
-msgstr "Produktskabelon"
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_directly
+msgid "Request a signature and sign directly"
+msgstr ""
+
+#. module: documents_sign
+#: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_direct
+msgid "Sign directly"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
@@ -75,19 +90,14 @@ msgstr "Anmodning om underskrift"
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_template
 msgid "Signature Template"
-msgstr ""
-
-#. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
 msgstr "Underskriftsskabelon"
 
 #. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Task"
-msgstr "Opgave"
+#: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
+msgid "Signed Document Tags"
+msgstr ""
 
 #. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor bill"
-msgstr "Leverandørfaktura"
+#: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
+msgid "Signed Document Workspace"
+msgstr ""

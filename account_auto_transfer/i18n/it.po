@@ -3,13 +3,13 @@
 # 	* account_auto_transfer
 # 
 # Translators:
-# Sergio Zanchetta <primes2h@gmail.com>, 2019
 # Francesco Garganese <francesco.garganese@aeromnia.aero>, 2019
 # Martin Trigaux, 2019
 # Cesare Cugnasco <cesare.cugnasco@gmail.com>, 2019
 # Simone Bernini <simone@aperturelabs.it>, 2019
 # Paolo Valier, 2019
 # David Minneci <david@numeko.it>, 2019
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
 # mymage <stefano.consolaro@mymage.it>, 2019
 # 
 msgid ""
@@ -165,7 +165,7 @@ msgstr "Frequenza"
 #. module: account_auto_transfer
 #: model:ir.actions.act_window,name:account_auto_transfer.generated_transfers_action
 msgid "Generated Entries"
-msgstr ""
+msgstr "Registrazioni generate"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__move_ids
@@ -256,7 +256,7 @@ msgstr "Percentuale"
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
 msgid "Percent (%)"
-msgstr ""
+msgstr "Percentuale (%)"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__percent_is_readonly

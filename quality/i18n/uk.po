@@ -236,7 +236,7 @@ msgstr "Типові значення"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr "Визначає тип пункту контролю якості."
+msgstr "Визначає тип балу контролю якості."
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -530,6 +530,8 @@ msgid ""
 "No quality team found for this company.\n"
 "Please go to configuration and create one first."
 msgstr ""
+"Не знайдено жодної команди якості для цієї компанії.\n"
+"Спершу прейдіть до налаштувань та створіть команду."
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__0
@@ -708,7 +710,7 @@ msgstr "Сповіщення якості"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert_stage
 msgid "Quality Alert Stage"
-msgstr "Етап якісного сповіщення"
+msgstr "Етап сповіщення якості"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert_team

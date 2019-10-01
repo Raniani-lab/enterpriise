@@ -87,7 +87,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Company menu"
-msgstr ""
+msgstr "Menù azienda"
 
 #. module: web_enterprise
 #. openerp-web

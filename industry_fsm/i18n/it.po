@@ -402,7 +402,7 @@ msgstr "Numero di giorni lavorativi per la chiusura del lavoro"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__invoice_count
 msgid "Number of invoices"
-msgstr ""
+msgstr "Numero di fatture"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:0

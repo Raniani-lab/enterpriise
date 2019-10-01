@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:18+0000\n"
+"POT-Creation-Date: 2019-10-01 12:16+0000\n"
 "PO-Revision-Date: 2019-09-09 12:35+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -82,6 +82,48 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div>\n"
+"                    % if ctx.get('employee'):\n"
+"                        <p>Шановний(а) ${ctx['employee'].name},</p>\n"
+"                    % else:\n"
+"                        <p>Вітаємо,</p>\n"
+"                    % endif\n"
+"                    <p>\n"
+"                        Вам призначені нові зміни:\n"
+"                    </p>\n"
+"\n"
+"                    <table style=\"table-layout: fixed; width: 80%; margin: auto;\">\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left; width: 15%;\">З</th>\n"
+"                            <td style=\"padding: 5px;\">${format_datetime(object.start_datetime, tz=ctx.get('employee').tz or 'UTC', dt_format='short')}</td>\n"
+"                        </tr>\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left; width: 15%;\">До</th>\n"
+"                            <td style=\"padding: 5px;\">${format_datetime(object.end_datetime, tz=ctx.get('employee').tz or 'UTC', dt_format='short')}</td>\n"
+"                        </tr>\n"
+"                        % if object.project_id\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left; width: 15%;\">Проект</th>\n"
+"                            <td style=\"padding: 5px;\">${object.project_id.name or ''}</td>\n"
+"                        </tr>\n"
+"                        % endif\n"
+"                    </table>\n"
+"\n"
+"                    % if ctx.get('planning_url'):\n"
+"                        <div style=\"margin: 15px;\">\n"
+"                            <a href=\"${ctx.get('planning_url')}\" target=\"_blank\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">Перегляньте ваше планування</a>\n"
+"                        </div>\n"
+"                    % endif\n"
+"\n"
+"                    % if ctx.get('slot_unassigned_count'):\n"
+"                        <p>Доступні нові зміни. Призначте себе якщо ви доступні.</p>\n"
+"                    % endif\n"
+"\n"
+"                    % if ctx.get('message'):\n"
+"                        <p>${ctx['message']}</p>\n"
+"                    % endif\n"
+"                </div>\n"
+"            "
 
 #. module: planning
 #: model:mail.template,body_html:planning.email_template_slot_single
@@ -132,6 +174,51 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div>\n"
+"                    <p>Шоновний(а) ${object.employee_id.name or ''},</p><br/>\n"
+"                    <p>Вам призначено наступний розклад:</p><br/>\n"
+"                    <table style=\"table-layout: fixed; width: 80%; margin: auto;\">\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left; width: 15%;\">З</th>\n"
+"                            <td style=\"padding: 5px;\">${format_datetime(object.start_datetime, tz=object.employee_id.tz)}</td>\n"
+"                        </tr>\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left; width: 15%;\">До</th>\n"
+"                            <td style=\"padding: 5px;\">${format_datetime(object.end_datetime, tz=object.employee_id.tz)}</td>\n"
+"                        </tr>\n"
+"                        % if object.role_id\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left; width: 15%;\">Роль</th>\n"
+"                            <td style=\"padding: 5px;\">${object.role_id.name or ''}</td>\n"
+"                        </tr>\n"
+"                        % endif\n"
+"                        % if object.project_id\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left; width: 15%;\">Проект</th>\n"
+"                            <td style=\"padding: 5px;\">${object.project_id.name or ''}</td>\n"
+"                        </tr>\n"
+"                        % endif\n"
+"                        % if object.name\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left; width: 15%;\">Примітка</th>\n"
+"                            <td style=\"padding: 5px;\">${object.name or ''}</td>\n"
+"                        </tr>\n"
+"                        % endif\n"
+"                    </table>\n"
+"                    <div style=\"text-align: center\">\n"
+"                        % if ctx.get('render_link')\n"
+"                        <div style=\"display: inline-block; margin: 15px; text-align: center\">\n"
+"                            <a href=\"${ctx.unavailable_path}${object.employee_id.employee_token}\" target=\"_blank\" style=\"padding: 5px 10px; color: #875A7B; text-decoration: none; background-color: #FFFFFF; border: 1px solid #FFFFFF; border-radius: 3px\">Я недоступний(а)</a>\n"
+"                        </div>\n"
+"                        % endif\n"
+"                        % if ctx.get('render_link')\n"
+"                        <div style=\"display: inline-block; margin: 15px; text-align: center\">\n"
+"                            <a href=\"/web?#action=${ctx.get('action_id')}&amp;model=planning.slot&amp;menu_id=${ctx.get('menu_id')}&amp;db=${'dbname' in ctx and ctx['dbname'] or '' }\" target=\"_blank\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">Переглянути планування</a>\n"
+"                        </div>\n"
+"                        % endif\n"
+"                    </div>\n"
+"                </div>\n"
+"            "
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -172,7 +259,7 @@ msgstr "<strong>Дата зупинки: </strong>"
 #: model:ir.model.constraint,message:planning.constraint_planning_recurrency_check_until_limit
 msgid ""
 "A recurrence repeating itself until a certain date must have its limit set"
-msgstr ""
+msgstr "Повторення до певної дати має встановити межу"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -202,6 +289,8 @@ msgstr "Додаткове повідомлення"
 #: model:ir.model.fields,help:planning.field_planning_send__note
 msgid "Addionnal message displayed in the email sent to employees"
 msgstr ""
+"В електронному листі, надісланому співробітникам, відображається додаткове "
+"повідомлення"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_report_analysis__number_hours
@@ -221,7 +310,7 @@ msgstr "Розподілений час (%)"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_hours
 msgid "Allocated hours"
-msgstr ""
+msgstr "Розподілені години"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocation_type
@@ -231,18 +320,18 @@ msgstr "Тип розподілу"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_res_config_settings__planning_allow_self_unassign
 msgid "Allow Unassignment"
-msgstr ""
+msgstr "Дозволити скасування"
 
 #. module: planning
 #: code:addons/planning/models/planning_recurrency.py:0
 #, python-format
 msgid "An shift must be in the same company as its recurrency."
-msgstr ""
+msgstr "Зміна має бути у тій же компанії, що й її повторення."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "Are you sure you want to do delete this shift?"
-msgstr ""
+msgstr "Ви впевнені, що хочете видалити цю зміну?"
 
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_schedule_by_employee
@@ -252,7 +341,7 @@ msgstr "За співробітником"
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_schedule_by_role
 msgid "By Role"
-msgstr ""
+msgstr "За роллю"
 
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_calendar
@@ -262,7 +351,7 @@ msgstr "Календар"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_res_company__planning_allow_self_unassign
 msgid "Can employee un-assign themselves?"
-msgstr ""
+msgstr "Чи може співробітник скасувати призначення самому собі?"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
@@ -292,6 +381,8 @@ msgstr "Компанії"
 #: model:ir.model.fields,field_description:planning.field_planning_recurrency__company_id
 #: model:ir.model.fields,field_description:planning.field_planning_send__company_id
 #: model:ir.model.fields,field_description:planning.field_planning_slot__company_id
+#: model:ir.model.fields,field_description:planning.field_planning_slot_report_analysis__company_id
+#: model_terms:ir.ui.view,arch_db:planning.planning_slot_report_view_search
 msgid "Company"
 msgstr "Компанія"
 
@@ -310,7 +401,7 @@ msgstr "Налаштування"
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #, python-format
 msgid "Copy previous week"
-msgstr ""
+msgstr "Скопіювати попередній тиждень"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__create_uid
@@ -341,18 +432,19 @@ msgstr "Дата"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__planning_role_id
 msgid "Default Planning Role"
-msgstr ""
+msgstr "Роль планування за замовчуванням"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_res_company__planning_generation_interval
 msgid ""
 "Delay for the rate at which recurring shift should be generated in month"
 msgstr ""
+"Затримка для ставки, з якою періодична зміна повинна формуватися в місяць"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_res_config_settings__planning_generation_interval
 msgid "Delay for the rate at which recurring shifts should be generated"
-msgstr ""
+msgstr "Затримка для ставки, з якою періодична зміна повинна формуватися"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
@@ -403,13 +495,13 @@ msgstr "Кінцева дата"
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_hr_employee_employee_token_unique
 msgid "Error: each employee token must be unique"
-msgstr ""
+msgstr "Помилка: кожен токен співробітника повинен бути унікальним"
 
 #. module: planning
 #: code:addons/planning/models/planning_recurrency.py:0
 #, python-format
 msgid "Every %s week(s) until %s"
-msgstr ""
+msgstr "Кожен %s тиждень(і) до %s"
 
 #. module: planning
 #. openerp-web
@@ -421,7 +513,7 @@ msgstr "Розгорнути рядки"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_send__note
 msgid "Extra Message"
-msgstr ""
+msgstr "Додаткове повідомлення"
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__allocation_type__forecast
@@ -438,7 +530,7 @@ msgstr "Назавжди"
 #: code:addons/planning/models/planning_recurrency.py:0
 #, python-format
 msgid "Forever, every %s week(s)"
-msgstr ""
+msgstr "Завжди, кожен %s тиждень(і)"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -457,10 +549,15 @@ msgid "Group By"
 msgstr "Групувати за"
 
 #. module: planning
+#: model:ir.filters,name:planning.planning_filter_by_employee
+msgid "Hours per Employee"
+msgstr ""
+
+#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "I am unavailable"
-msgstr ""
+msgstr "Я недоступний"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
@@ -484,6 +581,8 @@ msgid ""
 "If checked, it means that the shift contains has changed since its last "
 "publish."
 msgstr ""
+"Якщо позначено, це означає, що зміст зміни було змінено з часу його "
+"останньої публікації."
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__is_published
@@ -491,6 +590,8 @@ msgid ""
 "If checked, this means the planning entry has been sent to the employee. "
 "Modifying the planning entry will mark it as not sent."
 msgstr ""
+"Якщо позначено, це означає, що запис планування було надіслано "
+"співробітнику. Зміна запису планування позначить його, як не надіслано."
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__repeat_until
@@ -498,22 +599,24 @@ msgid ""
 "If set, the recurrence stop at that date. Otherwise, the recurrence is "
 "applied indefinitely."
 msgstr ""
+"Якщо встановлено, повтор припиняється на ту ж дату. В іншому випадку "
+"повторність застосовується безстроково."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__include_unassigned
 #: model:ir.model.fields,field_description:planning.field_planning_send__include_unassigned
 msgid "Includes Open shifts"
-msgstr ""
+msgstr "Включає Відкриті зміни"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__is_published
 msgid "Is the shift sent"
-msgstr ""
+msgstr "Чи зміна надіслана"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__is_assigned_to_me
 msgid "Is this shift assigned to the current user"
-msgstr ""
+msgstr "Чи ця зміна призначена поточному користувачу"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_recurrency__last_generated_end_datetime
@@ -554,17 +657,17 @@ msgstr "Останнє оновлення"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__last_sent_date
 msgid "Last sent date"
-msgstr ""
+msgstr "Дата останньої відправки"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allow_self_unassign
 msgid "Let employee unassign themselves"
-msgstr ""
+msgstr "Дозвольте співробітнику скасовувати із себе призначення"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
 msgid "Let employees unassign themselves from shifts"
-msgstr ""
+msgstr "Дозвольте співробітника скасовувати самостійно призначення на зміни"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__allow_self_unassign
@@ -572,6 +675,8 @@ msgstr ""
 #: model:ir.model.fields,help:planning.field_res_config_settings__planning_allow_self_unassign
 msgid "Let your employees un-assign themselves from shifts when unavailable"
 msgstr ""
+"Дозвольте співробітникам скасовувати самостійно призначення на зміни, коли "
+"вони недоступні"
 
 #. module: planning
 #: model:res.groups,name:planning.group_planning_manager
@@ -581,22 +686,21 @@ msgstr "Керівник"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__publication_warning
 msgid "Modified since last publication"
-msgstr ""
+msgstr "Змінено з часу останньої публікації"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_my_calendar
 #: model:ir.actions.act_window,name:planning.planning_action_my_gantt
 #: model:ir.ui.menu,name:planning.planning_menu_my_planning
 msgid "My Planning"
-msgstr ""
+msgstr "Моє планування"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Shifts"
-msgstr ""
+msgstr "Мої зміни"
 
 #. module: planning
-#: model:ir.model.fields,field_description:planning.field_planning_planning__name
 #: model:ir.model.fields,field_description:planning.field_planning_role__name
 msgid "Name"
 msgstr "Назва"
@@ -624,7 +728,7 @@ msgstr "Примітка"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "Note:"
-msgstr ""
+msgstr "Примітка:"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__working_days_count
@@ -645,22 +749,22 @@ msgstr "Відкрито"
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 #, python-format
 msgid "Open Shifts"
-msgstr ""
+msgstr "Відкриті зміни"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "Open shifts available"
-msgstr ""
+msgstr "Доступні відкриті зміни"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__overlap_slot_count
 msgid "Overlapping slots"
-msgstr ""
+msgstr "Проміжки, що перекриваються"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_graph
 msgid "Panning Analysis"
-msgstr ""
+msgstr "Аналіз планування"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
@@ -670,7 +774,7 @@ msgstr "Минулі"
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__allocated_percentage
 msgid "Percentage of time the employee is supposed to work during the shift."
-msgstr ""
+msgstr "Відсоток часу, який повинен відпрацювати співробітник під час зміни."
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__allocation_type__planning
@@ -682,41 +786,40 @@ msgid "Planning"
 msgstr "Планування"
 
 #. module: planning
-#: model:ir.actions.act_window,name:planning.planning_slot_report_action
 #: model:ir.ui.menu,name:planning.planning_menu_planning_analysis
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_report_view_graph
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_pivot
 msgid "Planning Analysis"
-msgstr ""
+msgstr "Аналіз планування"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_recurrency
 msgid "Planning Recurrence"
-msgstr ""
+msgstr "Повторення планування"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_role
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_form
 msgid "Planning Role"
-msgstr ""
+msgstr "Роль планування"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_tree
 msgid "Planning Role List"
-msgstr ""
+msgstr "Список ролей планування"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_roles
 msgid "Planning Roles"
-msgstr ""
+msgstr "Ролі планування"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_employee
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_role
 msgid "Planning Schedule"
-msgstr ""
+msgstr "Розклад планування"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_slot
@@ -726,40 +829,46 @@ msgstr "Планування зміни"
 #. module: planning
 #: model:ir.model,name:planning.model_planning_slot_report_analysis
 msgid "Planning Statistics"
-msgstr ""
+msgstr "Статистика планування"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__template_id
 msgid "Planning Templates"
-msgstr ""
+msgstr "Шаблони планування"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_planning_check_start_date_lower_stop_date
 #: model:ir.model.constraint,message:planning.constraint_planning_send_check_start_date_lower_stop_date
 msgid "Planning end date should be greater than its start date"
+msgstr "Кінцева дата планування повинна бути більшою, ніж дата початку"
+
+#. module: planning
+#: code:addons/planning/models/planning.py:0
+#, python-format
+msgid "Planning of %s days"
 msgstr ""
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_planning
 msgid "Planning sent by email"
-msgstr ""
+msgstr "Планування надіслане електронною поштою"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "Planning:"
-msgstr ""
+msgstr "Планування:"
 
 #. module: planning
 #: model:ir.actions.server,name:planning.ir_cron_forecast_schedule_ir_actions_server
 #: model:ir.cron,cron_name:planning.ir_cron_forecast_schedule
 #: model:ir.cron,name:planning.ir_cron_forecast_schedule
 msgid "Planning: generate next recurring shifts"
-msgstr ""
+msgstr "Планування: створити наступні повторювані зміни"
 
 #. module: planning
 #: model:mail.template,subject:planning.email_template_slot_single
 msgid "Planning: new schedule (single shift)"
-msgstr ""
+msgstr "Планування: новий розклад (одна зміна)"
 
 #. module: planning
 #. openerp-web
@@ -778,14 +887,14 @@ msgstr "Опублікувати"
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "Publish & Send"
-msgstr ""
+msgstr "Опублікувати та Надіслати"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_res_company__planning_generation_interval
 #: model:ir.model.fields,field_description:planning.field_res_config_settings__planning_generation_interval
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
 msgid "Rate of shift generation"
-msgstr ""
+msgstr "Ставка створення зміни"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__recurrency_id
@@ -800,7 +909,7 @@ msgstr "Інтервал повторення повинен бути прина
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_recurrency__slot_ids
 msgid "Related planning entries"
-msgstr ""
+msgstr "Пов'язані записи планування"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__user_id
@@ -820,7 +929,7 @@ msgstr "Повторювати кожні"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__repeat_type
 msgid "Repeat Type"
-msgstr ""
+msgstr "Тип повтору"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__repeat_until
@@ -866,7 +975,7 @@ msgstr "Зберегти"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__template_creation
 msgid "Save as a Template"
-msgstr ""
+msgstr "Зберегти як шаблон"
 
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_schedule
@@ -876,7 +985,7 @@ msgstr "Запланувати"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
 msgid "Schedule your employee shifts"
-msgstr ""
+msgstr "Заплануйте ваші зміни співробітників"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__employee_token
@@ -887,19 +996,19 @@ msgstr "Токен безпеки"
 #. module: planning
 #: model:ir.model,name:planning.model_planning_send
 msgid "Send Planning"
-msgstr ""
+msgstr "Надіслати планування"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_send_action
 msgid "Send Planning Shifts"
-msgstr ""
+msgstr "Надіслати зміни планування"
 
 #. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #, python-format
 msgid "Send schedule"
-msgstr ""
+msgstr "Надіслати розклад"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_settings
@@ -910,59 +1019,59 @@ msgstr "Налаштування"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 msgid "Shift"
-msgstr ""
+msgstr "Зміна"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_tree
 msgid "Shift List"
-msgstr ""
+msgstr "Список зміни"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_slot_template
 msgid "Shift Template"
-msgstr ""
+msgstr "Шаблон зміни"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
 msgid "Shift Template Form"
-msgstr ""
+msgstr "Форма шаблону зміни"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_tree
 msgid "Shift Template List"
-msgstr ""
+msgstr "Список шаблонів змін"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_shift_template
 #: model:ir.ui.menu,name:planning.planning_menu_settings_shift_template
 msgid "Shift Templates"
-msgstr ""
+msgstr "Шаблони змін"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_check_start_date_lower_end_date
 msgid "Shift end date should be greater than its start date"
-msgstr ""
+msgstr "Кінцева дата зміни повинна бути більшою, ніж дата початку"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_analysis
 msgid "Shifts Analysis"
-msgstr ""
+msgstr "Аналіз змін"
 
 #. module: planning
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "Shifts in conflict"
-msgstr ""
+msgstr "Зміни у конфлікті"
 
 #. module: planning
 #: model:res.groups,name:planning.group_planning_show_percentage
 msgid "Show Allocated Percentage"
-msgstr ""
+msgstr "Показати відсоток розподілення"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__slot_ids
 msgid "Slot"
-msgstr ""
+msgstr "Інтервал"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__start_datetime
@@ -985,12 +1094,12 @@ msgstr "Початкова дата"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__start_time
 msgid "Start hour"
-msgstr ""
+msgstr "Година початку"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_template_check_start_time_positive
 msgid "Start hour must be a positive number"
-msgstr ""
+msgstr "Година початку має бути більше 0"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__end_datetime
@@ -1006,33 +1115,28 @@ msgstr "Дата зупинки:"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__template_autocomplete_ids
 msgid "Template Autocomplete"
-msgstr ""
+msgstr "Автозаповнення шаблону"
 
 #. module: planning
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "The company does not allow you to self unassign."
-msgstr ""
-
-#. module: planning
-#: model_terms:ir.actions.act_window,help:planning.planning_slot_report_action
-msgid "This report performs analysis on your planning."
-msgstr ""
+msgstr "Компанія не дозволяє вам скасовувати самих себе."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
 msgid "This shift is not assigned to you anymore."
-msgstr ""
+msgstr "Ця зміна більше вам не призначена."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
 msgid "This shift is now assigned to you."
-msgstr ""
+msgstr "Ця зміна тепер призначена вам."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__was_copied
 msgid "This shift was copied from previous week"
-msgstr ""
+msgstr "Ця зміна скопійована з попереднього тижня"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -1055,7 +1159,7 @@ msgstr "До"
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_recurrency__repeat_until
 msgid "Up to which date should the plannings be repeated"
-msgstr ""
+msgstr "До якої дати планування слід повторити"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__user_id
@@ -1067,40 +1171,41 @@ msgstr "Користувач"
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "You can not assign yourself to an already assigned shift."
-msgstr ""
+msgstr "Ви не можете призначити себе на зміну, яка вже призначена."
 
 #. module: planning
 #: code:addons/planning/controllers/main.py:0
 #, python-format
 msgid "You can not assign yourself to this shift."
-msgstr ""
+msgstr "Ви не можете призначити себе на цю зміну."
 
 #. module: planning
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "You can not unassign another employee than yourself."
 msgstr ""
+"Ви не можете скасувати призначення з іншого співробітника, лише із себе."
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_template_check_duration_positive
 msgid "You cannot have a negative duration"
-msgstr ""
+msgstr "У вас не може бути негативної тривалості"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_template_check_start_time_lower_than_24
 msgid "You cannot have a start hour greater than 24"
-msgstr ""
+msgstr "Ви не можете мати годину початку більшою, ніж 24"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_check_allocated_hours_positive
 msgid "You cannot have negative shift"
-msgstr ""
+msgstr "У вас не може бути негативної зміни"
 
 #. module: planning
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "You don't the right to self assign."
-msgstr ""
+msgstr "Ви не маєте права самопризначати."
 
 #. module: planning
 #: model:mail.template,subject:planning.email_template_planning_planning
@@ -1110,11 +1215,15 @@ msgid ""
 "${format_datetime(object.end_datetime, tz=employee.tz if employee else "
 "'UTC', dt_format='short')}"
 msgstr ""
+"Ваше планування з ${format_datetime(object.start_datetime, "
+"tz=ctx.get('employee').tz or 'UTC', dt_format='short')} до "
+"${format_datetime(object.end_datetime, tz=employee.tz if employee else "
+"'UTC', dt_format='short')}"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 msgid "other shift(s)"
-msgstr ""
+msgstr "інша зміна(и)"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_recurrency__repeat_type

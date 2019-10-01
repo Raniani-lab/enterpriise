@@ -3,22 +3,22 @@
 # 	* sale_subscription
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Cas Vissers <casvissers@brahoo.nl>, 2019
 # Thijs van Oers <thijsvanoers@yahoo.com>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # Maxim Vandenbroucke <mxv@odoo.com>, 2019
 # Charles Vervaecke <cvk@odoo.com>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Cas Vissers <casvissers@brahoo.nl>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:19+0000\n"
+"POT-Creation-Date: 2019-10-01 12:16+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -276,7 +276,6 @@ msgid ""
 "                <table style=\"width:600px;margin:auto;text-align:center;font-size:12px;\">\n"
 "                    <tbody>\n"
 "                        <tr><td style=\"padding-top:10px;color:#afafaf;\">\n"
-"                            <p>This customer survey has been sent because your subscription has been moved to the stage <b>${object.stage_id.name}</b></p>\n"
 "                            <p>Email automatically sent by <a target=\"_blank\" href=\"https://www.odoo.com/page/subscriptions\" style=\"color:#875A7B;text-decoration:none;\">Odoo Subscription</a> for <a href=\"${object.company_id.website}\" style=\"color:#875A7B;text-decoration:none;\">${object.company_id.name}</a></p>\n"
 "                        </td></tr>\n"
 "                    </tbody>\n"
@@ -284,71 +283,6 @@ msgid ""
 "            </div>\n"
 "        "
 msgstr ""
-"<?xml version=\"1.0\"?>\n"
-"<div style=\"background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;\">\n"
-"            % set access_token = object.rating_get_access_token()\n"
-"                <table style=\"width:600px;margin:5px auto;\">\n"
-"                    <tbody>\n"
-"                        <tr><td>\n"
-"                            <a href=\"/\"><img src=\"/web/binary/company_logo\" style=\"vertical-align:baseline;max-width:100px;\"/></a>\n"
-"                        </td><td style=\"text-align:right;vertical-align:middle;\">\n"
-"                                Tevredenheidsonderzoek\n"
-"                        </td></tr>\n"
-"                    </tbody>\n"
-"                </table>\n"
-"                <table style=\"width:600px;margin:0px auto;background:white;border:1px solid #e1e1e1;\">\n"
-"                    <tbody>\n"
-"                        <tr><td style=\"padding:15px 20px 10px 20px;\">\n"
-"                            <p>Hallo,</p>\n"
-"                            <p>Neem even de tijd om onze diensten met betrekking tot uw abonnement te beoordelen \"<strong>${object.name}</strong>\"\n"
-"                               toegewezen aan <strong>${object.rating_get_rated_partner_id().name}</strong>.</p>\n"
-"                            <p>Wij waarderen uw feedback. Het helpt ons om continu te verbeteren.</p>\n"
-"                        </td></tr>\n"
-"                        <tr><td style=\"padding:10px 20px\">\n"
-"                            <table summary=\"o_mail_notification\" style=\"width:100%;border-top:1px solid #e1e1e1;\">\n"
-"                                <tr>\n"
-"                                    <td style=\"text-align:center;\">\n"
-"                                        <h2 style=\"font-weight:300;font-size:18px;\">\n"
-"                                            Vertel ons hoe u over onze services denkt:\n"
-"                                        </h2>\n"
-"                                        <div style=\"text-color: #888888\">(klik op een van deze smileys)</div>\n"
-"                                    </td>\n"
-"                                </tr>\n"
-"                                <tr>\n"
-"                                    <td style=\"padding:10px 10px;\">\n"
-"                                        <table style=\"width:100%;text-align:center;\">\n"
-"                                            <tr>\n"
-"                                                <td>\n"
-"                                                    <a href=\"/rating/${access_token}/10\">\n"
-"                                                        <img alt=\"Satisfied\" src=\"/rating/static/src/img/rating_10.png\" title=\"Satisfied\"/>\n"
-"                                                    </a>\n"
-"                                                </td>\n"
-"                                                <td>\n"
-"                                                    <a href=\"/rating/${access_token}/5\">\n"
-"                                                        <img alt=\"Niet tevreden\" src=\"/rating/static/src/img/rating_5.png\" title=\"Niet tevreden\"/>\n"
-"                                                    </a>\n"
-"                                                </td>\n"
-"                                                <td>\n"
-"                                                    <a href=\"/rating/${access_token}/1\">\n"
-"                                            </a>\n"
-"                                        </td>\n"
-"                                    </td>\n"
-"                                </tr>\n"
-"                            </tr>\n"
-"                        </table></tr>\n"
-"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.user_id.signature or '')| safe}</td></tr>\n"
-"                    </tbody>\n"
-"                </table>\n"
-"                <table style=\"width:600px;margin:auto;text-align:center;font-size:12px;\">\n"
-"                    <tbody>\n"
-"                        <tr><td style=\"padding-top:10px;color:#afafaf;\">\n"
-"                            <p>Dit onderzoek is verzonden omdat je abonnement is verplaatst naar fase <b>${object.stage_id.name}</b></p>\n"
-"                            <p>E-mail automatisch verzonden door <a target=\"_blank\" href=\"https://www.odoo.com/page/subscriptions\" style=\"color:#875A7B;text-decoration:none;\">Odoo Abonnementen</a> voor <a href=\"${object.company_id.website}\" style=\"color:#875A7B;text-decoration:none;\">${object.company_id.name}</a></p>\n"
-"                        </td></tr>\n"
-"                    </tbody>\n"
-"                </table>\n"
-"            </div>\n"
-"        "
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -365,14 +299,14 @@ msgid "<i class=\"fa fa-check\"/> Closable by customer"
 msgstr "<i class=\"fa fa-check\"/> Afsluitbaar door klant"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+msgid "<i class=\"fa fa-comment\"/> Send message"
+msgstr "<i class=\"fa fa-comment\"/> Verstuur bericht"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
 msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Beheren\" title=\"Beheren\"/>"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<i class=\"fa fa-envelope\"/> Send email"
-msgstr "<i class=\"fa fa-envelope\"/>Verzend e-mail"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -444,9 +378,11 @@ msgstr "<span class=\"mr-1\">periode(s)</span>"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid ""
-"<span class=\"o_stat_text\">Preview</span>\n"
-"                                <span class=\"o_stat_text\">on Portal</span>"
+"<span class=\"o_stat_text\">Customer</span>\n"
+"                                <span class=\"o_stat_text\">Preview</span>"
 msgstr ""
+"<span class=\"o_stat_text\">Klant</span>\n"
+"                                <span class=\"o_stat_text\">Preview</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
@@ -510,7 +446,7 @@ msgid ""
 "                    <br/><br/>\n"
 "                    You will find your invoice attached.\n"
 "                    %if ctx.get('next_date'):\n"
-"                        Your next invoice will be on ${ctx.get('next_date')}.\n"
+"                        Your next invoice will be on ${format_date(ctx.get('next_date'))}.\n"
 "                    %endif\n"
 "                    <br/><br/>\n"
 "                    If you have any questions, do not hesitate to contact us.\n"
@@ -785,7 +721,7 @@ msgid ""
 "                    % endif\n"
 "                    <br/><br/>\n"
 "                    Your subscription ${ctx.get('code')} is still valid but will be <strong>suspended</strong>\n"
-"                    on ${ctx.get('date_close')} unless the payment succeeds in the mean time (we will retry once every day).\n"
+"                    on ${format_date(ctx.get('date_close'))} unless the payment succeeds in the mean time (we will retry once every day).\n"
 "                    Please double-check that you have sufficient funds.<br/><br/>\n"
 "                    If you have any questions, do not hesitate to contact us.<br/><br/>\n"
 "                    Thank you for choosing ${company.name}!\n"
@@ -942,21 +878,6 @@ msgid "Add Followers"
 msgstr "Volgers toevoegen"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
-msgid "Add a description..."
-msgstr "Voeg een omschrijving toe..."
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
-msgid "Add in Subscription"
-msgstr "Toevoegen aan abonnement"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid "Add options to the subscription directly or through a quotation"
-msgstr "Voeg direct opties aan het abonnement of via een offerte"
-
-#. module: sale_subscription
 #: model:res.groups,name:sale_subscription.group_sale_subscription_manager
 msgid "Administrator"
 msgstr "Beheerder"
@@ -974,17 +895,6 @@ msgid "Alerts"
 msgstr "Waarschuwingen"
 
 #. module: sale_subscription
-#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_alert_action
-msgid ""
-"Alerts are used to inform the salesman which subscriptions\n"
-"              need their attention. It can be positive (upsell) or\n"
-"              negative (churn, invoice not paid...)."
-msgstr ""
-"Waarschuwingen worden gebruikt om de verkoper te informeren welke abonnementen\n"
-"hun aandacht nodig hebben. Het kan positief zijn (upsell) of\n"
-"negatief (churn, factuur niet betaald ...)."
-
-#. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "All"
@@ -996,6 +906,11 @@ msgstr "Alle"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__analytic_account_id
 msgid "Analytic Account"
 msgstr "Kostenplaats"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+msgid "Apply On"
+msgstr "Toepassen op"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__filter_domain
@@ -1026,8 +941,8 @@ msgstr "Geautomatiseerde actie"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__auto_close_limit
-msgid "Automatic closing limit"
-msgstr "Automatisch: afsluitingslimiet"
+msgid "Automatic Closing"
+msgstr ""
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:0
@@ -1060,11 +975,6 @@ msgid "Available on the Website"
 msgstr "Beschikbaar op de website"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Back"
-msgstr "Terug"
-
-#. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription__health__bad
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__health__bad
 msgid "Bad"
@@ -1082,11 +992,6 @@ msgstr "Slechte gezondheid"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__filter_pre_domain
 msgid "Before Update Domain"
 msgstr "Voor domein update"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Billing:"
-msgstr "Facturatie:"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__binding_model_id
@@ -1113,6 +1018,7 @@ msgstr ""
 " het totale aantal beoordelingen"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid "Cancel"
@@ -1127,11 +1033,6 @@ msgstr "Categorie"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Change Payment Method"
-msgstr "Verander betalinsgmethode"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Change payment method"
 msgstr "Verander betalinsgmethode"
 
 #. module: sale_subscription
@@ -1152,6 +1053,11 @@ msgid ""
 msgstr ""
 "Onderliggende server acties welke worden uitgevoerd. Let op dat de laatste "
 "geretourneerde actie waarde wordt gebruikt als globale return waarde."
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+msgid "Choose Payment Method"
+msgstr ""
 
 #. module: sale_subscription
 #. openerp-web
@@ -1179,8 +1085,8 @@ msgstr "Klik hier <b>om uw eerste abonnement sjabloon te maken</b>"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__user_closable
-msgid "Closable by customer"
-msgstr "Afsluitbaar per klant"
+msgid "Closable by Customer"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
@@ -1206,13 +1112,8 @@ msgstr "Afsluitredenen"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Close subscription"
-msgstr "Abonnement afsluiten"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid "Close the subscription"
-msgstr "Abonnement afsluiten"
+msgid "Close Subscription"
+msgstr "Sluit abonnement"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:0
@@ -1305,11 +1206,7 @@ msgid "Create & View Quotation"
 msgstr "Maak & bekijk offerte"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid "Create A Renewal Quotation"
-msgstr "Maak een nieuwe vernieuw offerte"
-
-#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Create Invoice"
 msgstr "Maak factuur"
@@ -1341,13 +1238,12 @@ msgid "Create a new template of subscription"
 msgstr "Maak een nieuw sjabloon van abonnement"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
+#: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid ""
-"Create a sale order that will overwrite this subscription when confirmed "
-"(renewal quotation)"
+"Create a quotation with new products and send it to the customer for approval.\n"
+"                    When the quotation is confirmed, the products will be added to the subscription.\n"
+"                    Quotation prices will be prorated to the remaining time of the current invoicing period."
 msgstr ""
-"Maak een verkooporder dat dit abonnement overschrijft wanneer het bevestigd "
-"wordt (vernieuw offerte)"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_alert__action__next_activity
@@ -1429,8 +1325,8 @@ msgstr "Valuta"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Current plan:"
-msgstr "Huidig abonnement:"
+msgid "Current Plan:"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__partner_id
@@ -1444,11 +1340,6 @@ msgstr "Klant"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__commercial_partner_id
 msgid "Customer Company"
 msgstr "Bedrijf klant"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
-msgid "Customer Portal"
-msgstr "Klantenportaal"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__customer_ids
@@ -1477,6 +1368,11 @@ msgid "Define a new subscription"
 msgstr "Definieer een nieuw abonnement"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+msgid "Delay After Trigger"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__trg_date_range
 msgid ""
 "Delay after the trigger date.\n"
@@ -1499,7 +1395,6 @@ msgstr "Soort vertraging"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__description
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__name
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__description
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__name
 msgid "Description"
 msgstr "Omschrijving"
@@ -1513,11 +1408,6 @@ msgstr "Kort.%"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__discount
 msgid "Discount (%)"
 msgstr "Krt. (%)"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__date_from
-msgid "Discount Date"
-msgstr "Kortingsdatum"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__display_name
@@ -1549,14 +1439,10 @@ msgstr ""
 "'Goede' rating"
 
 #. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__draft_invoice
 #: model:sale.subscription.stage,name:sale_subscription.sale_subscription_stage_draft
 msgid "Draft"
 msgstr "Concept"
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__draft_invoice
-msgid "Draft invoice"
-msgstr "Concept factuur"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_date_deadline_range
@@ -1601,9 +1487,11 @@ msgstr ""
 "Geef een naam voor dit sjabloon.<br/><i>(bijv. e-Learning jaarlijks)</i>"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Every:"
-msgstr "Elke:"
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_stage__description
+msgid ""
+"Enter here the internal requirements for this stage. It will appear as a "
+"tooltip over the stage's name."
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1657,6 +1545,16 @@ msgstr "Voor altijd"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Future Activities"
 msgstr "Toekomstige activiteiten"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
+msgid "Generate Invoice"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
+msgid "Give your team the requirements to move a subscription to this stage."
+msgstr ""
 
 #. module: sale_subscription
 #. openerp-web
@@ -1807,12 +1705,9 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__date
 msgid ""
-"If set in advance, the subscription will be set to pending 1 month before "
-"the date and will be closed on the date set in this field."
+"If set in advance, the subscription will be set to renew 1 month before the "
+"date and will be closed on the date set in this field."
 msgstr ""
-"Wanneer vooraf ingesteld, zal het abonnement op te vernieuwen komen te staan"
-" 1 maand voor de datum en wordt het gesloten op de datum ingesteld in dit "
-"veld."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_product_product__recurring_invoice
@@ -1832,6 +1727,13 @@ msgstr ""
 "Wanneer ingesteld, zullen abonnement met dit sjabloon worden gefactureerd in"
 " dit dagboek; standaard wordt het verkoop dagboek met de laagste reeks "
 "gekozen."
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__auto_close_limit
+msgid ""
+"If the chosen payment method has failed to renew the subscription after this"
+" time, the subscription is automatically closed."
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1879,27 +1781,14 @@ msgid "Industry"
 msgstr "Industrie"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
-msgid ""
-"Insert the options directly, they will be invoiced on the next invoice date."
-msgstr ""
-"Voeg de opties direct toe, ze worden gefactureerd bij de volgende "
-"facturatiedatum."
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send
-msgid "Invoice"
-msgstr "Factuur"
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send_payment
-msgid "Invoice & try to charge"
-msgstr "Factureer & probeer te incasseren"
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__invoice_count
 msgid "Invoice Count"
 msgstr "Aantal facturen"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
+msgid "Invoice Email"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__invoice_mail_template_id
@@ -1919,16 +1808,6 @@ msgid "Invoice for subscription ${ctx.get('code')}"
 msgstr "Factuur voor inschrijving ${ctx.get('code')}"
 
 #. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__success_payment
-msgid "Invoice only on successful payment"
-msgstr "Factuur alleen bij succesvolle betaling"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
-msgid "Invoice period"
-msgstr "Factuurperiode"
-
-#. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.mail_template_subscription_invoice
 msgid ""
 "Invoice_${(object.name or '').replace('/','_')}${object.state == 'draft' and"
@@ -1939,13 +1818,23 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.email_payment_success
-msgid "Invoice_${ctx.get('code')}_${ctx.get('previous_date')}"
-msgstr "Factuur_${ctx.get('code')}_${ctx.get('previous_date')}"
+msgid "Invoice_${ctx.get('code')}_${format_date(ctx.get('previous_date'))}"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Invoices"
 msgstr "Facturen"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
+msgid "Invoicing"
+msgstr "Facturatie"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_interval
+msgid "Invoicing Period"
+msgstr ""
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
@@ -2137,8 +2026,8 @@ msgstr "Hoofdbijlage"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__manual
-msgid "Manual"
-msgstr "Manueel"
+msgid "Manually"
+msgstr "Handmatig"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_alert__action__set_to_renew
@@ -2253,8 +2142,8 @@ msgstr "Volgende activiteit type"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Next invoice:"
-msgstr "Volgende factuur:"
+msgid "Next Invoice:"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.product_template_action_subscription
@@ -2271,15 +2160,6 @@ msgstr "Notitie"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Aantal acties"
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__auto_close_limit
-msgid ""
-"Number of days before a subscription gets closed when the chosen payment "
-"mode trigger automatically the payment."
-msgstr ""
-"Aantal dagen voordat een abonnement wordt gesloten wanneer de gekozen "
-"betalingsmodus automatisch de betaling activeert."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error_counter
@@ -2309,12 +2189,9 @@ msgstr "Aantal ongelezen berichten"
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
 msgid ""
 "Odoo automatically sets subscriptions to be renewed in a pending\n"
-"            state. After the negociation, the salesman should close or renew\n"
+"            state. After the negotiation, the salesman should close or renew\n"
 "            pending subscriptions."
 msgstr ""
-"Odoo stelt automatisch abonnementen die vernieuwd moeten worden in \n"
-"een afwachting fase. Na de onderhandeling zal de verkoper kiezen om de wachtende abonnementen\n"
-"te sluiten of te vernieuwen."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__on_change_fields
@@ -2347,14 +2224,19 @@ msgid "Other"
 msgstr "Overige"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
+msgid "Other Info"
+msgstr "Overige info"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Over"
 msgstr "Over"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Pay with"
-msgstr "Betaal met"
+msgid "Pay With"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__payment_mode
@@ -2391,8 +2273,8 @@ msgstr "Wachtende abonnementen"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Plan details"
-msgstr "Abonnement details"
+msgid "Plan Details"
+msgstr ""
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:0
@@ -2417,6 +2299,7 @@ msgstr "Prijslijst"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__product_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__product_id
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Product"
 msgstr "Product"
 
@@ -2575,11 +2458,6 @@ msgid "Reference:"
 msgstr "Referentie:"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Register a payment method with"
-msgstr "Registreer een betaaalmethode met"
-
-#. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__renew
 msgid "Renewal"
 msgstr "Vernieuwen"
@@ -2590,8 +2468,12 @@ msgid "Renewal Allowed"
 msgstr "Vernieuwen toegestaan"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
+msgid "Renewal Quotation"
+msgstr "Vernieuw offerte"
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_interval
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_interval
 msgid "Repeat Every"
 msgstr "Herhaal iedere"
 
@@ -2605,6 +2487,12 @@ msgstr "Elke (Dag/Week/Maand/Jaar) herhalen"
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
 msgid "Reporting"
 msgstr "Rapportages"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__description
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
+msgid "Requirements"
+msgstr "Vereisten"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_id
@@ -2715,6 +2603,7 @@ msgstr "Verkooporders"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__team_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__team_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Sales Team"
 msgstr "Verkoopteam"
@@ -2767,6 +2656,28 @@ msgstr ""
 "generereerd een nieuw abonnement."
 
 #. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send
+msgid "Send"
+msgstr "Verzenden"
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send_payment
+msgid "Send & try to charge"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
+msgid ""
+"Send a renewal quotation to the customer.\n"
+"            When it is confirmed, the subscription is running again."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__success_payment
+msgid "Send after successful payment"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_act_window_sms_composer_multi
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_act_window_sms_composer_single
 msgid "Send an SMS Text Message"
@@ -2781,6 +2692,12 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_alert__action__email
 msgid "Send an email to the customer"
 msgstr "Verzend een e-mail naar de klant"
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_stage__rating_template_id
+msgid ""
+"Send an email to the customer when the subscription is moved to this stage."
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__sequence
@@ -2820,7 +2737,6 @@ msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Settings"
 msgstr "Instellingen"
 
@@ -2883,6 +2799,7 @@ msgstr "Fases"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__date_start
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__date_start
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__date_from
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Start Date"
@@ -2890,7 +2807,7 @@ msgstr "Startdatum"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Start date:"
+msgid "Start Date:"
 msgstr "Startdatum:"
 
 #. module: sale_subscription
@@ -2924,6 +2841,7 @@ msgstr "Verstuur"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_snapshot__subscription_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__subscription_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_view_cohort
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_cohort
@@ -3012,6 +2930,7 @@ msgstr "Abonnementsfase"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_stage
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_list
 msgid "Subscription Stages"
 msgstr "Abonnementsfases"
 
@@ -3021,7 +2940,6 @@ msgstr "Abonnementsfases"
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__subscription_template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__template_id
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 msgid "Subscription Template"
 msgstr "Abonnementssjabloon"
 
@@ -3080,6 +2998,7 @@ msgid "Subscription: Payment reminder"
 msgstr "Abonnement: betalingsherinnering"
 
 #. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:0
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_filtered
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_res_partner
@@ -3105,6 +3024,7 @@ msgstr "Abonnement: betalingsherinnering"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_pivot
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_subscription_order_line
+#, python-format
 msgid "Subscriptions"
 msgstr "Abonnementen"
 
@@ -3219,12 +3139,8 @@ msgstr "Beëindiging van abonnement ${object.code}"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__description
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid "Terms and Conditions"
-msgstr "Algemene voorwaarden"
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Terms and conditions"
+msgid "Terms and Conditions"
 msgstr "Algemene voorwaarden"
 
 #. module: sale_subscription
@@ -3254,14 +3170,6 @@ msgstr ""
 "De korting toegepast bij het maken van een verkoop order wordt berekend als "
 "de verhouding tussen de volledige facturatie periode van het abonnement en "
 "de periode tussen deze datum en de volgende factuurdatum."
-
-#. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_order.py:0
-#, python-format
-msgid ""
-"The following Sale Order Line(s) are linked to a subscription belonging to a"
-" different company:"
-msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__website_url
@@ -3357,21 +3265,6 @@ msgid "To Upsell"
 msgstr "Upsell mogelijkheid"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
-msgid ""
-"To add new products to this running subscription, you can either create a "
-"new quotation to ask a customer approval (discounted for the current "
-"invoicing period) or directly insert them in the subscription to invoice it "
-"on the next invoice date. If you use a quotation, the products will be added"
-" at the order confirmation."
-msgstr ""
-"Om nieuwe producten toe te voegen aan dit lopende abonnement, kunt u ofwel "
-"een nieuwe offerte maken om goedkeuring van de klant te vragen (met korting "
-"voor de huidige factureringsperiode) of deze direct invoegen in het "
-"abonnement om deze op de volgende factuurdatum te factureren. Als u een "
-"offerte gebruikt, worden de producten toegevoegd aan de orderbevestiging."
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Today Activities"
 msgstr "Activiteiten van vandaag"
@@ -3401,6 +3294,13 @@ msgstr "Activeringsdatum"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trigger_condition
 msgid "Trigger On"
 msgstr "Trigger op"
+
+#. module: sale_subscription
+#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_alert_action
+msgid ""
+"Trigger alerts for salespersons or customers: churn, invoice not paid, "
+"upsell, etc."
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__state
@@ -3525,8 +3425,8 @@ msgstr "Gebruiker veldnaam"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Valid until:"
-msgstr "Geldig t/m"
+msgid "Valid Until:"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__fields_lines
@@ -3684,22 +3584,18 @@ msgstr "U vindt hier alle producten gerelateerd aan dit abonnement sjabloon."
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
 msgid ""
-"You will find here the subscriptions to be renewed because the\n"
-"            end date is passed or the working effort is higher than the\n"
-"            maximum authorized one."
+"You will find here the subscriptions to be renewed (end date is close or "
+"passed)"
 msgstr ""
-"U vind hier alle abonnementen die vernieuwd moeten worden omdat de\n"
-"einddatum is gepasseerd of omdat de werk inspanning hoger is dan de\n"
-"maximaal toegelaten waarde."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Your informations"
-msgstr "Uw informatie"
+msgid "Your Details"
+msgstr "Uw gegevens"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Your plan"
+msgid "Your Plan"
 msgstr "Uw abonnement"
 
 #. module: sale_subscription
@@ -3708,9 +3604,9 @@ msgid "Your subscription is closed."
 msgstr "Uw abonnement is gesloten."
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "days"
-msgstr "dagen"
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+msgid "e.g. Closed Subscription"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -3723,36 +3619,11 @@ msgid "e.g. Monthly Subscription"
 msgstr "bijv. Maandelijks abonnement"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
-msgid "e.g. Update order quantity"
-msgstr "bijv. Bijwerken orderhoeveelheid"
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "missing payments (from"
 msgstr "ontbrekende betalingen (van"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "months"
-msgstr "maanden"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "to this day) will be automatically processed."
 msgstr "tot vandaag) wordt automatisch verwerkt."
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "weeks"
-msgstr "Weken"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "years"
-msgstr "jaren"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid "⇒ Generate Invoice"
-msgstr "⇒ Genereer factuur"

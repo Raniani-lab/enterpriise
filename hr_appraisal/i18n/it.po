@@ -133,6 +133,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "<span class=\"fa fa-lg\" title=\"Values set here are company-specific.\"/>"
 msgstr ""
+"<span class=\"fa fa-lg\" title=\"I valori impostati qui sono specifici per "
+"azienda.\"/>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -436,7 +438,7 @@ msgstr "Autore"
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__author_id
 msgid "Author of the message."
-msgstr "Autore del messaggio"
+msgstr "Autore del messaggio."
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -1175,7 +1177,7 @@ msgstr ""
 "Stato basato sulle attività\n"
 "In ritardo: data di scadenza già superata\n"
 "Oggi: attività in data odierna\n"
-"Pianificata: attività future."
+"Pianificato: attività future."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__subject

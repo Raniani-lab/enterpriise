@@ -3,10 +3,10 @@
 # 	* currency_rate_live
 # 
 # Translators:
-# Sergio Zanchetta <primes2h@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Paolo Valier, 2019
 # Francesco Arillotta <frarillotta@gmail.com>, 2019
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
 # Léonie Bouchat <lbo@odoo.com>, 2019
 # 
 msgid ""
@@ -85,7 +85,7 @@ msgstr "Unità di Intervallo"
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__last_currency_sync_date
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Last Sync Date"
-msgstr "Data di ultima sincronizzazione"
+msgstr "Data ultima sincronizzazione"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__manually

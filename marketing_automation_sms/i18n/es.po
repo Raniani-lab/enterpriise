@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:38+0000\n"
+"POT-Creation-Date: 2019-10-01 12:16+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -63,8 +63,8 @@ msgid "Marketing Activity"
 msgstr "Actividad de marketing"
 
 #. module: marketing_automation_sms
-#: model:ir.actions.act_window,name:marketing_automation_sms.mail_mass_mailing_action_marketing_automation
-msgid "Marketing Automation Mailings"
+#: model:ir.actions.act_window,name:marketing_automation_sms.mail_mass_mailing_action_marketing_automation_sms
+msgid "Marketing Automation SMS"
 msgstr ""
 
 #. module: marketing_automation_sms

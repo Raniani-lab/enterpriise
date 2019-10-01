@@ -5,7 +5,6 @@
 # Translators:
 # Minh Nguyen <ndminh210994@gmail.com>, 2019
 # Dung Nguyen Thi <dungnt@trobz.com>, 2019
-# fanha99 <fanha99@hotmail.com>, 2019
 # son dang <son.dang@doda100.com>, 2019
 # Tuan Tran <tmtuan.projects@gmail.com>, 2019
 # Duy BQ <duybq86@gmail.com>, 2019
@@ -13,14 +12,15 @@
 # Martin Trigaux, 2019
 # Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
 # Dao Nguyen <trucdao.uel@gmail.com>, 2019
+# fanha99 <fanha99@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:18+0000\n"
+"POT-Creation-Date: 2019-10-01 12:16+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
-"Last-Translator: Dao Nguyen <trucdao.uel@gmail.com>, 2019\n"
+"Last-Translator: fanha99 <fanha99@hotmail.com>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -713,6 +713,7 @@ msgstr "Kiểm soát đường dẫn"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_automation
 msgid "Mail Body"
 msgstr "Thân mail"
 
@@ -888,6 +889,11 @@ msgstr "Gửi mail hàng loạt"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__mass_mailing_id_mailing_type
 msgid "Mass Mailing Id Mailing Type"
 msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_form
+msgid "Mass Mailing Statistics"
+msgstr "Thống kê gửi email hàng loạt"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_mail_ids

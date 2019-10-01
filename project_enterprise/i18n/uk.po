@@ -89,7 +89,7 @@ msgstr "Планування"
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__project_color
 msgid "Project color"
-msgstr ""
+msgstr "Колір проекту"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_begin
@@ -126,6 +126,7 @@ msgstr "Завдання на цьому етапі вважаються зак�
 #: model:ir.model.constraint,message:project_enterprise.constraint_project_task_planned_dates_check
 msgid "The planned start date must be prior to the planned end date."
 msgstr ""
+"Запланована дата початку повинна передувати запланованій даті завершення."
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.res_config_settings_view_form
@@ -137,7 +138,7 @@ msgstr "Табелі"
 #: code:addons/project_enterprise/static/src/js/task_gantt_model.js:0
 #, python-format
 msgid "Unassigned Tasks"
-msgstr ""
+msgstr "Непризначені завдання"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_zip

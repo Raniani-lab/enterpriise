@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:19+0000\n"
+"POT-Creation-Date: 2019-09-30 09:48+0000\n"
 "PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: Dung Nguyen Thi <dungnt@trobz.com>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
@@ -967,6 +967,7 @@ msgstr "Bạn có muốn thêm trình đơn thả xuống có màu không?"
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Domain"
 msgstr "Miền"
@@ -1230,13 +1231,6 @@ msgstr ""
 #, python-format
 msgid "Filter"
 msgstr "Bộ lọc"
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
-#, python-format
-msgid "Filter Domain"
-msgstr "Lọc tên miền"
 
 #. module: web_studio
 #. openerp-web
@@ -1611,13 +1605,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Label"
 msgstr "Nhãn"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Label Text"
@@ -1867,6 +1861,13 @@ msgstr "Trường mới"
 #, python-format
 msgid "New Fields"
 msgstr "Trường mới"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/view_editors/search_editor.js:0
+#, python-format
+msgid "New Filter"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -3014,6 +3015,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "You can only display a user or a partner"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/action_editor_action.js:0
+#, python-format
+msgid "You cannot deactivate this view as it is the last one active."
 msgstr ""
 
 #. module: web_studio

@@ -8,7 +8,7 @@
             <group name="extra" position="inside">
                 <label for="preparation_time"/>
                 <div>
-                    <field name="preparation_time" widget="float_time" class="oe_inline"/>
+                    <field name="preparation_time" widget="float_time" class="oe_inline p-0 col-lg-2"/>
                         &amp;#032;
                     <label for="preparation_time" string="hours before orders" class="oe_inline"/>
                 </div>

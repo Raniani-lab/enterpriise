@@ -168,10 +168,26 @@
         </xpath>
         <field name="state" position="after">
           <field name="next_action_date"/>
+          <field name="has_late_lines"/>
         </field>
         <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="replace">
           <div class="oe_kanban_bottom_left text-muted">
-            <span><t t-esc="record.name.value"/> <t t-esc="record.next_action_date.value"/></span>
+            <span>
+              <t t-esc="record.name.value"/>
+              <t t-if="record.next_action_date.value">
+                <br/>
+                <t t-if="record.has_late_lines">
+                  Late
+                </t>
+                <t t-if="record.rental_status.raw_value=='pickup'">
+                  Pickup:
+                </t>
+                <t t-elif="record.rental_status.raw_value=='return'">
+                  Return:
+                </t>
+              </t>
+              <t t-esc="record.next_action_date.value"/>
+            </span>
           </div>
         </xpath>
         <xpath expr="//div[hasclass('oe_kanban_bottom_right')]/field[@name='state']" position="attributes">

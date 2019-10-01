@@ -18,7 +18,7 @@
                             <div class="row mt16 o_light_label">
                                 <label for="padding_time" class="col-lg-3"/>
                                 <field name="padding_time" class="col-lg-2" widget="float_time"/>
-                                <label for="padding_time" string="hours"/>
+                                <label for="padding_time" string="hours" class="col-lg-2 p-0"/>
                             </div>
                         </div>
                     </div>

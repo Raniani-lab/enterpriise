@@ -27,9 +27,8 @@
                 <field name="rental_pricing_ids" nolabel="1">
                   <tree editable="bottom">
                     <control>
-                        <create name="add_rental_pricing" string="Add a pricing"/>
+                        <create name="add_rental_pricing" string="Add a price"/>
                     </control>
-                    <field name="pricelist_id" groups="product.group_product_pricelist"/>
                     <field name="product_variant_ids" widget="many2many_tags"
                       groups="product.group_product_variant"
                       domain="[('product_tmpl_id', '=', parent.id)]"
@@ -37,6 +36,7 @@
                     <field name="duration"/>
                     <field name="unit"/>
                     <field name="price"/>
+                    <field name="pricelist_id" groups="product.group_product_pricelist"/>
                     <field name="currency_id" invisible="1"/>
                   </tree>
                 </field>

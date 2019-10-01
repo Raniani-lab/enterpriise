@@ -212,11 +212,6 @@ class Planning(models.Model):
             if not self.role_id and self.employee_id.sudo().planning_role_id:
                 self.role_id = self.employee_id.sudo().planning_role_id
 
-    @api.onchange('company_id')
-    def _onchange_company_id(self):
-        if self.company_id:
-            self.employee_id = False
-
     @api.onchange('start_datetime', 'end_datetime', 'employee_id')
     def _onchange_dates(self):
         if self.employee_id and self.is_published:

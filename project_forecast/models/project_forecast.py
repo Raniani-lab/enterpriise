@@ -22,13 +22,6 @@ class PlanningShift(models.Model):
         ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "If the planning is linked to a task, the project must be set too."),
     ]
 
-    @api.onchange('company_id')
-    def _onchange_company_id(self):
-        super(PlanningShift, self)._onchange_company_id()
-        if self.company_id:
-            self.project_id = False
-            self.task_id = False
-
     @api.onchange('task_id')
     def _onchange_task_id(self):
         if not self.project_id:
@@ -42,7 +35,8 @@ class PlanningShift(models.Model):
         result = {
             'domain': {'task_id': domain},
         }
-        if self.task_id:
+        if self.project_id != self.task_id.project_id:
+            # reset task when changing project
             self.task_id = False
         return result
 

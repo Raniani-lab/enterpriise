@@ -2837,6 +2837,7 @@ QUnit.module('DocumentsKanbanView', {
         mockedXHRs[0].response = JSON.stringify({
             error: "One or more file(s) failed to upload"
         });
+        mockedXHRs[0].status = 200;
         mockedXHRs[0].onload();
         await testUtils.nextTick();
 

@@ -293,7 +293,10 @@ var DocumentsKanbanController = KanbanController.extend({
             xhr.onload = async () => {
                 await progressPromise;
                 resolve();
-                const result = JSON.parse(xhr.response);
+                let result = {error: xhr.status};
+                if (xhr.status === 200) {
+                    result = JSON.parse(xhr.response);
+                }
                 if (result.error) {
                     this.do_notify(_t("Error"), result.error, true);
                 }

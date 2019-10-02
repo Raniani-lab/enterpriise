@@ -35,7 +35,7 @@ class SaleSubscription(models.Model):
     code = fields.Char(string="Reference", required=True, tracking=True, index=True, copy=False)
     stage_id = fields.Many2one(
         'sale.subscription.stage', string='Stage', index=True, default=lambda s: s._get_default_stage_id(),
-        copy=False, group_expand='_read_group_stage_ids', tracking=True, check_company=True)
+        copy=False, group_expand='_read_group_stage_ids', tracking=True)
     analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account',
                                           domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", check_company=True)
     company_id = fields.Many2one('res.company', string="Company", default=lambda s: s.env.company, required=True)

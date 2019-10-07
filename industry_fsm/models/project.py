@@ -166,6 +166,7 @@ class Task(models.Model):
         for task in self:
             task.quotation_count = mapped_data.get(task.id, 0)
 
+    @api.depends('sale_order_id.order_line.product_uom_qty', 'sale_order_id.order_line.price_total')
     def _compute_material_line_totals(self):
 
         def if_fsm_material_line(sale_line_id, task):

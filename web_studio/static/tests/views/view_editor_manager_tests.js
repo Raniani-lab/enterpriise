@@ -1988,12 +1988,13 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('kanban editor add priority', async function (assert) {
-        assert.expect(3);
+        assert.expect(5);
         var arch = "<kanban>" +
                     "<templates>" +
                         "<t t-name='kanban-box'>" +
                             "<div class='o_kanban_record'>" +
                                 "<field name='display_name'/>" +
+                                "<field name='priority' widget='priority'/>" +
                             "</div>" +
                         "</t>" +
                     "</templates>" +
@@ -2003,7 +2004,15 @@ QUnit.module('ViewEditorManager', {
         var vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
             model: 'coucou',
-            arch: arch,
+            arch: "<kanban>" +
+                   "<templates>" +
+                        "<t t-name='kanban-box'>" +
+                            "<div class='o_kanban_record'>" +
+                                "<field name='display_name'/>" +
+                            "</div>" +
+                        "</t>" +
+                   "</templates>" +
+                "</kanban>",
             mockRPC: function (route, args) {
                 if (route === '/web_studio/get_default_value') {
                     return Promise.resolve({});
@@ -2038,6 +2047,9 @@ QUnit.module('ViewEditorManager', {
         $('.modal .modal-body select > option[value="priority"]').prop('selected', true);
         // Click 'Confirm' Button
         await testUtils.dom.click($('.modal .modal-footer .btn-primary'));
+        assert.containsOnce(vem, '.o_priority', "there should be priority widget in kanban record");
+        assert.containsNone(vem, '.o_kanban_record .o_web_studio_add_priority',
+            "there should be no priority hook if priority widget exists on kanban");
 
         vem.destroy();
     });

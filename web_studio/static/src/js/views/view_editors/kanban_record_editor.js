@@ -206,7 +206,11 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
         }
 
         // add the priority hook
-        if (!this.$('.o_priority').length) {
+        var priorityWidget = this._findNodeWithWidget({
+            tag: 'field',
+            widget: 'priority',
+        });
+        if (_.isUndefined(priorityWidget)) {
             var $priority_hook = $('<div>')
                 .addClass('o_web_studio_add_priority oe_kanban_bottom_left')
                 .append($('<span>', {
@@ -317,6 +321,23 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                     foundNode = node;
                     return false;
                 }
+            }
+            return true;
+        });
+        return foundNode;
+    },
+    /**
+     * @private
+     * @param {string} [attrs.tag] - node tag
+     * @param {string} [attrs.widget] - node widget
+     * @returns {Object|undefined} found node in the arch
+     */
+    _findNodeWithWidget: function (attrs) {
+        var foundNode;
+        utils.traverse(this.viewArch, function(node) {
+            if (_.isObject(node) && node.tag === attrs.tag && node.attrs.widget === attrs.widget) {
+                    foundNode = node;
+                    return false;
             }
             return true;
         });

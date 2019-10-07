@@ -308,7 +308,7 @@ class ProjectWorksheetTemplate(models.Model):
 
     def _generate_qweb_report_template(self):
         for worksheet_template in self:
-            report_name = ('%s_%s') % (worksheet_template.model_id.model.replace('.', '_'), str(int(time.time())))
+            report_name = worksheet_template.model_id.model.replace('.', '_')
             new_arch = self._get_qweb_arch(worksheet_template.model_id, report_name)
             if worksheet_template.report_view_id:  # update existing one
                 worksheet_template.report_view_id.write({'arch': new_arch})

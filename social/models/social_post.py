@@ -182,13 +182,14 @@ class SocialPost(models.Model):
            any(vals.get('state', 'draft') != 'draft' for vals in vals_list):
             raise AccessError(_('You are not allowed to create/update posts in a state other than "Draft".'))
 
-        sources = self.env['utm.source'].create({
-            'name': "Post %s_%s" % (fields.datetime.now(), i)
-            for i in range(len(vals_list))
-        })
+        if vals_list:
+            sources = self.env['utm.source'].create({
+                'name': "Post %s_%s" % (fields.datetime.now(), i)
+                for i in range(len(vals_list))
+            })
 
-        for index, vals in enumerate(vals_list):
-            vals['utm_source_id'] = sources[index].id
+            for index, vals in enumerate(vals_list):
+                vals['utm_source_id'] = sources[index].id
 
         return super(SocialPost, self).create(vals_list)
 

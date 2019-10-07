@@ -47,7 +47,6 @@
                 <field name="referral_state"/>
                 <field name="user_id"/>
                 <field name="friend_id"/>
-                <field name="friend_image"/>
                 <templates>
                     <t t-name="kanban-box">
                         <t t-if="record.referral_state.raw_value == 'hired'" t-set="oe_kanban_color" t-value="10"/>
@@ -67,20 +66,20 @@
                                 </t>
                                 <div t-if="record.partner_name.value" class="o_kanban_card_header_title">
                                     <div class="o_primary"><t t-esc="record.partner_name.value"/></div>
-                                    <t t-if="record.friend_id.value">
+                                    <t t-if="record.friend_id.raw_value">
                                         <div style="clear:both"/>
                                         <div class="o_head_friend float-right">
-                                            <field name="friend_image" widget='image'/>
+                                            <img t-attf-src="/web/image?model=hr.referral.friend&amp;field=image_head&amp;id=#{record.friend_id.raw_value}" alt="Avatar"/>
                                         </div>
                                     </t>
                                     <t t-esc="record.name.value"/>
                                 </div>
                                 <div t-else="" class="o_kanban_card_header_title">
                                     <div class="o_primary"><t t-esc="record.name.value"/></div>
-                                    <t t-if="record.friend_id.value">
+                                    <t t-if="record.friend_id.raw_value">
                                         <div style="clear:both"/>
                                         <div class="o_head_friend float-right">
-                                            <field name="friend_image" widget='image'/>
+                                            <img t-attf-src="/web/image?model=hr.referral.friend&amp;field=image_head&amp;id=#{record.friend_id.raw_value}" alt="Avatar"/>
                                         </div>
                                     </t>
                                 </div>

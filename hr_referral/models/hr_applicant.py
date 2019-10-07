@@ -23,7 +23,6 @@ class Applicant(models.Model):
     shared_item_infos = fields.Text(compute="_compute_shared_item_infos")
     max_points = fields.Integer(related="job_id.max_points")
     friend_id = fields.Many2one('hr.referral.friend', copy=False)
-    friend_image = fields.Binary('medium-sized image for head', related='friend_id.image_head')
 
     @api.depends('source_id')
     def _compute_ref_user_id(self):
@@ -42,7 +41,7 @@ class Applicant(models.Model):
         if not self.check_access_rights('read', False):
             referral_fields = {
                 'name', 'partner_name', 'job_id', 'referral_points_ids', 'earned_points', 'max_points',
-                'shared_item_infos', 'referral_state', 'user_id', 'friend_id', 'friend_image', '__last_update'}
+                'shared_item_infos', 'referral_state', 'user_id', 'friend_id', '__last_update'}
             if not set(fields or []) - referral_fields and self.env.user:
                 domain = expression.AND([domain, [('ref_user_id', '=', self.env.user.id)]])
                 return super(Applicant, self.sudo()).search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
@@ -238,7 +237,7 @@ class Applicant(models.Model):
             step_level = next_level['points'] - current_level['points']
             result['level_percentage'] = round((min(result['point_received'], next_level['points']) - current_level['points']) * 100 / step_level)
 
-        applicant = self.search([('ref_user_id', '=', user_id.id)])
+        applicant = self.sudo().search([('ref_user_id', '=', user_id.id)])
         result['referral'] = {
             'all': len(applicant),
             'hired': len(applicant.filtered(lambda r: r.referral_state == 'hired')),

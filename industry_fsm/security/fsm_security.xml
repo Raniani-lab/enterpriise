@@ -24,5 +24,9 @@
             <field name="category_id" ref="base.module_category_hidden"/>
         </record>
 
+        <record id="base.default_user" model="res.users">
+            <field name="groups_id" eval="[(4, ref('industry_fsm.group_fsm_manager'))]"/>
+        </record>
+
     </data>
 </odoo>

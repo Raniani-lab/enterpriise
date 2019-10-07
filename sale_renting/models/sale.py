@@ -14,7 +14,7 @@ class RentalOrder(models.Model):
         ('draft', 'Quotation'),
         ('sent', 'Quotation Sent'),
         ('pickup', 'Reserved'),
-        ('return', 'Pickedup'),
+        ('return', 'Picked-up'),
         ('returned', 'Returned'),
         ('cancel', 'Cancelled'),
     ], string="Rental Status", compute='_compute_rental_status', store=True)

@@ -175,7 +175,7 @@
           <div class="oe_kanban_bottom_left text-muted">
             <span>
               <t t-esc="record.name.value"/>
-              <t t-if="record.next_action_date.value">
+              <span t-if="record.next_action_date.value" t-attf-class="#{record.has_late_lines and record.rental_status.raw_value=='return' ? 'text-danger' : 'text-muted' } ">
                 <br/>
                 <t t-if="record.has_late_lines">
                   Late
@@ -186,7 +186,7 @@
                 <t t-elif="record.rental_status.raw_value=='return'">
                   Return:
                 </t>
-              </t>
+              </span>
               <t t-esc="record.next_action_date.value"/>
             </span>
           </div>

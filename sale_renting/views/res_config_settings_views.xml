@@ -30,8 +30,8 @@
                       </div>
                       <div class="row mt2 o_light_label">
                         <label string="Apply after" for="min_extra_hour" class="col-lg-3"/>
-                        <field name="min_extra_hour" class="col-lg-2"/>
-                        <label string="hours" for="min_extra_hour" class="col-lg-2 p-0"/>
+                        <field name="min_extra_hour" class="col-lg-2 p-0"/>
+                        <label string="hours" for="min_extra_hour" class="col-lg-2"/>
                       </div>
                       <!-- Extra week/month support ? -->
                       <div class="row mt8">

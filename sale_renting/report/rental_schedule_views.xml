@@ -173,7 +173,7 @@
               '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'reserved'), ('late', '=', False)]}">Late Delivery</div>
           <div class="badge-pill badge-warning float-right"
             attrs="{'invisible': [
-              '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'pickedup'), ('late', '=', True)]}">Delivered</div>
+              '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'pickedup'), ('late', '=', True)]}">Picked-up</div>
           <div class="badge-pill badge-danger float-right"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'pickedup'), ('late', '=', False)]}">Late Return</div>

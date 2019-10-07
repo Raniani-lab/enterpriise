@@ -48,6 +48,7 @@ var DataImportStmt = BaseImport.DataImport.extend({
         var self = this;
         var superProm = self._super.apply(this, arguments);
         superProm.then(function (message) {
+            message = message.messages;
             if(message.ids){
                 self.statement_line_ids = message.ids
             }

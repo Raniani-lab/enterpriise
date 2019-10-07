@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 12:16+0000\n"
-"PO-Revision-Date: 2019-10-01 12:16+0000\n"
+"POT-Creation-Date: 2019-10-07 07:20+0000\n"
+"PO-Revision-Date: 2019-10-07 07:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -655,11 +655,6 @@ msgid "Overlapping slots"
 msgstr ""
 
 #. module: planning
-#: model_terms:ir.ui.view,arch_db:planning.planning_view_graph
-msgid "Planning Analysis"
-msgstr ""
-
-#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Past"
 msgstr ""
@@ -683,6 +678,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_report_view_graph
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_report_view_search
+#: model_terms:ir.ui.view,arch_db:planning.planning_view_graph
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_pivot
 msgid "Planning Analysis"
 msgstr ""

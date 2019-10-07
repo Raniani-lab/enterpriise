@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
+from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged, Form
 
 
@@ -206,7 +207,13 @@ class TestDeliveryEasypost(TransactionCase):
         picking_fedex.action_assign()
         picking_fedex.move_line_ids.write({'qty_done': 1})
         self.assertGreater(picking_fedex.weight, 0.0, "Picking weight should be positive.(ep-fedex)")
-        picking_fedex.action_done()
+        try:
+            picking_fedex.action_done()
+        except UserError as exc:
+            if "carrier is not responding to our request" in exc.args[0]:
+                _logger.warning('easypost test aborted, carrier is unresponsive.')
+                return
+            raise
         self.assertGreater(picking_fedex.carrier_price, 0.0, "Easypost carrying price is probably incorrect(fedex)")
         self.assertIsNot(picking_fedex.carrier_tracking_ref, False,
                          "Easypost did not return any tracking number (fedex)")

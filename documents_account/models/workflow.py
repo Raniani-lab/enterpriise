@@ -42,6 +42,7 @@ class WorkflowActionRuleAccount(models.Model):
                     # documents.document and a new document shouldn't be automatically generated.
                     document.attachment_id.with_context(no_document=True).write({
                         'res_model': 'mail.compose.message',
+                        'res_id': 0,
                     })
                     new_obj.with_context(no_document=True, default_journal_id=journal.id, default_type=invoice_type).message_post(body=body, attachment_ids=[document.attachment_id.id])
                     invoice_ids.append(new_obj.id)

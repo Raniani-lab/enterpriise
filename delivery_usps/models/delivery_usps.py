@@ -86,6 +86,7 @@ class ProviderUSPS(models.Model):
     usps_redirect_partner_id = fields.Many2one('res.partner', string="Redirect Partner")
     usps_machinable = fields.Boolean(string="Machinable", help="Please check on USPS website to ensure that your package is machinable.")
 
+    @api.depends('usps_delivery_nature')
     def _compute_can_generate_return(self):
         super(ProviderUSPS, self)._compute_can_generate_return()
         for carrier in self:

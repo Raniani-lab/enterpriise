@@ -36,6 +36,7 @@ class ProviderBpost(models.Model):
     bpost_saturday = fields.Boolean(string="Delivery on Saturday", help="Allow deliveries on Saturday (extra charges apply)")
     bpost_default_packaging_id = fields.Many2one('product.packaging', string='bpost Default Packaging Type')
 
+    @api.depends('bpost_delivery_nature')
     def _compute_can_generate_return(self):
         super(ProviderBpost, self)._compute_can_generate_return()
         for carrier in self:

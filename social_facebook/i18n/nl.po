@@ -206,7 +206,7 @@ msgstr "Sociale media"
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "Sociale post"
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_stream

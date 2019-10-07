@@ -24,7 +24,7 @@ msgstr ""
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_team__use_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_ticket__use_fsm
 msgid "Convert tickets into Field Service tasks"
-msgstr "Конвертувати заявки у завдання сфери послуг"
+msgstr "Конвертувати заявки у завдання виїзного обслуговування"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
@@ -41,7 +41,7 @@ msgstr "Створити завдання"
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_create_fsm_task
 #, python-format
 msgid "Create a Field Service task"
-msgstr "Створити завдання сфери послуг"
+msgstr "Створити завдання виїзного обслуговування"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__create_uid
@@ -71,7 +71,7 @@ msgstr "Назва для відображення"
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
 msgid "Field Service"
-msgstr "Сфера послуг"
+msgstr "Виїзне обслуговування"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__fsm_task_count
@@ -122,7 +122,7 @@ msgstr "Втручання на місці"
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
 msgid "Plan Field Service tasks from tickets"
-msgstr "Плануйте завдання сфери послуг із заявок"
+msgstr "Плануйте завдання виїзного обслуговування із заявок"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form

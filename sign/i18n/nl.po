@@ -1550,7 +1550,7 @@ msgstr "SMS token"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "SMS Validation"
-msgstr "SMS validati"
+msgstr "SMS validatie"
 
 #. module: sign
 #. openerp-web

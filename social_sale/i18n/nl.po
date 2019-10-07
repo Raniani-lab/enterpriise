@@ -24,12 +24,12 @@ msgstr ""
 #. module: social_sale
 #: model_terms:ir.ui.view,arch_db:social_sale.social_post_view_kanban
 msgid "<small>Quotations:</small>"
-msgstr ""
+msgstr "<small>Offertes:</small>"
 
 #. module: social_sale
 #: model_terms:ir.ui.view,arch_db:social_sale.social_post_view_kanban
 msgid "<small>Revenues:</small>"
-msgstr ""
+msgstr "<small>Omzet:</small>"
 
 #. module: social_sale
 #: model:ir.model.fields,field_description:social_sale.field_social_post__sale_invoiced_amount
@@ -54,4 +54,4 @@ msgstr "Omzet"
 #. module: social_sale
 #: model:ir.model,name:social_sale.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "Sociale post"

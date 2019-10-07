@@ -65,7 +65,7 @@ msgstr "Дія маркетингу"
 #. module: marketing_automation_sms
 #: model:ir.actions.act_window,name:marketing_automation_sms.mail_mass_mailing_action_marketing_automation_sms
 msgid "Marketing Automation SMS"
-msgstr ""
+msgstr "Автоматизація маркетингу SMS"
 
 #. module: marketing_automation_sms
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0

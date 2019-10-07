@@ -274,4 +274,4 @@ msgstr "dnů"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_graph
 msgid "leads"
-msgstr ""
+msgstr "zájemci"

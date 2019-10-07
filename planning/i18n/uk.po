@@ -551,7 +551,7 @@ msgstr "Групувати за"
 #. module: planning
 #: model:ir.filters,name:planning.planning_filter_by_employee
 msgid "Hours per Employee"
-msgstr ""
+msgstr "Години на співробітника"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -846,7 +846,7 @@ msgstr "Кінцева дата планування повинна бути б�
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "Planning of %s days"
-msgstr ""
+msgstr "Планування %s днів"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_planning

@@ -902,7 +902,7 @@ msgstr "Trvání"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Exception Activities"
-msgstr ""
+msgstr "Výjimečné činnosti"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0

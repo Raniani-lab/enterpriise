@@ -109,7 +109,9 @@ msgstr "Усі завдання виставлені у рахунках"
 #. module: industry_fsm
 #: model:ir.model.constraint,message:industry_fsm.constraint_project_project_fsm_imply_task_rate
 msgid "An FSM project must be billed at task rate."
-msgstr "Проект FSM повинен виставлятися в рахунках за ставкою завдань."
+msgstr ""
+"Проект управління виїзного обслуговування повинен виставлятися в рахунках за"
+" ставкою завдань."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -184,12 +186,12 @@ msgstr "Створити нове завдання"
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm.js:0
 #, python-format
 msgid "Create and plan your first Field Service Task"
-msgstr "Створіть та заплануйте ваше перше завдання Field Service"
+msgstr "Створіть та заплануйте ваше перше завдання виїзного обслуговування"
 
 #. module: industry_fsm
 #: model:ir.actions.server,name:industry_fsm.project_task_server_action_batch_invoice_fsm
 msgid "Create invoice"
-msgstr "Виписати інвойс"
+msgstr "Створити рахунок"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
@@ -234,8 +236,8 @@ msgid ""
 "Display tasks in the Field Service module and allow planning with start/end "
 "dates."
 msgstr ""
-"Відображайте завдання у модулі Сфери послуг та дозвольте планування з датами"
-" початку та кінця."
+"Відображайте завдання у модулі Виїзне обслуговування та дозвольте планування"
+" з датами початку та кінця."
 
 #. module: industry_fsm
 #: model:project.task.type,name:industry_fsm.planning_project_stage_1
@@ -263,7 +265,7 @@ msgstr "Додаткові пропозиції"
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_report_project_task_user_fsm
 msgid "FSM Tasks Analysis"
-msgstr "Аналіз завдань FSM"
+msgstr "Аналіз завдань управління виїзним обслуговуванням"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__is_fsm
@@ -273,7 +275,7 @@ msgstr "Аналіз завдань FSM"
 #: model:product.product,name:industry_fsm.field_service_product
 #: model:product.template,name:industry_fsm.field_service_product_product_template
 msgid "Field Service"
-msgstr "Сфера послуг"
+msgstr "Виїзне обслуговування"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -597,8 +599,8 @@ msgstr "Початкова дата"
 #, python-format
 msgid "Start to manage your Onsite Intervention with the Field Service app."
 msgstr ""
-"Почніть керувати своїми втручаннями на місці за допомогою програми Сфери "
-"послуг."
+"Почніть керувати своїми втручаннями на місці за допомогою модуля Виїзне "
+"обслуговування."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
@@ -654,7 +656,9 @@ msgstr "Аналіз завдань"
 #: code:addons/industry_fsm/models/project.py:0
 #, python-format
 msgid "The FSM task must have a customer set to be sold."
-msgstr "Завдання FSM повинно мати клієнта, встановленого для продажу."
+msgstr ""
+"Завдання управління виїзного обслуговування повинно мати клієнта, "
+"встановленого для продажу."
 
 #. module: industry_fsm
 #: model:ir.model.constraint,message:industry_fsm.constraint_project_project_material_imply_billable
@@ -681,7 +685,7 @@ msgstr "Наразі завдань немає, натисніть кнопку 
 #: code:addons/industry_fsm/models/project.py:0
 #, python-format
 msgid "This action is only allowed on FSM project."
-msgstr "Ця дія дозволена лише в проекті FSM."
+msgstr "Ця дія дозволена лише в проекті управління виїзним обслуговуванням."
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm

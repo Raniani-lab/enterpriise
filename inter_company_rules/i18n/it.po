@@ -205,7 +205,7 @@ msgstr "Ordine di vendita"
 #. module: inter_company_rules
 #: model:ir.model.fields.selection,name:inter_company_rules.selection__res_company__applicable_on__sale_purchase
 msgid "Sales and Purchase Order"
-msgstr ""
+msgstr "Ordine di vendita e acquisto"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__rules_company_id
@@ -300,7 +300,7 @@ msgstr ""
 #: code:addons/inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "purchase/sales order"
-msgstr ""
+msgstr "ordine di acquisto/vendita"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/res_company.py:0
@@ -313,7 +313,7 @@ msgstr ""
 #: code:addons/inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "sales/purchase order"
-msgstr ""
+msgstr "ordine di vendita/acquisto"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/res_company.py:0

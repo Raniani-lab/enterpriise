@@ -170,7 +170,7 @@ msgstr "<strong>T/m</strong>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Designation</strong>"
-msgstr "<strong>Ontwer</strong>"
+msgstr "<strong>Toewijzing</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -760,9 +760,9 @@ msgid ""
 msgstr ""
 "Definieert de regels die moeten worden toegepast op dit loonafschrift, op "
 "basis van het gekozen contract. Als u het contract veld  leeg laat, is dit "
-"veld veld niet meer verplicht en zijn dus de regels van toepassing zijn dan "
-"alle regels ingesteld op de structuur van alle contracten van de werknemer "
-"geldig in de gekozen periode"
+"veld veld niet meer verplicht en zijn dus de regels van toepassing alle "
+"regels ingesteld op de structuur van alle contracten van de werknemer geldig"
+" in de gekozen periode"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__department_id
@@ -2232,9 +2232,9 @@ msgid ""
 " but you can also use categories code fields in lowercase as a variable "
 "names (hra, ma, lta, etc.) and the variable basic."
 msgstr ""
-"Dit wordt gebruikt om de waardes van de %fields te berekenen. Normaliter is "
-"dit standaard, maar u kunt ook categorie veldcodes in kleine letters "
-"gebruiken als variabele naam (hra, ma, lta, etc.) en de variabele basic"
+"Dit wordt gebruikt om de veldwaardes van % te berekenen. Normaliter is dit "
+"standaard, maar u kunt ook categorie veldcodes in kleine letters gebruiken "
+"als variabele naam (hra, ma, lta, etc.) en de variabele basic."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit

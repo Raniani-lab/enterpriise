@@ -390,7 +390,7 @@ msgstr "IoT boxen"
 #: model:ir.model.fields,field_description:iot.field_ir_actions_report__device_id
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Device"
-msgstr "IoT Apparaat"
+msgstr "IoT apparaat"
 
 #. module: iot
 #. openerp-web
@@ -471,7 +471,7 @@ msgstr "Geen IoT box gevonden !"
 #: code:addons/iot/static/src/js/iot.js:0
 #, python-format
 msgid "No IoT Box(s) found"
-msgstr "Geen IoT boxen gevonden"
+msgstr "Geen IoT box(en) gevonden"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -677,7 +677,7 @@ msgstr "USB"
 #: model:ir.model.fields,help:iot.field_iot_box__screen_url
 msgid "Url of the page that will be displayed by hdmi port of the box."
 msgstr ""
-"Url van de pagina die wordt weergegeven door de hdmi poort van de box."
+"Url van de pagina die wordt weergegeven door de HDMI poort van de box."
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__variant

@@ -102,7 +102,7 @@ msgstr "Одиниця вимірювання компоненту"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_uom_id
 msgid "Component Uom"
-msgstr ""
+msgstr "Одиниця вимірювання компоненту"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_res_config_settings

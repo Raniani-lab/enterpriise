@@ -238,7 +238,7 @@ msgstr "Узгодження рядка запису журналу"
 #: code:addons/documents_account/models/account_move.py:0
 #, python-format
 msgid "Request Document for %s"
-msgstr ""
+msgstr "Запитати документ %s"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids

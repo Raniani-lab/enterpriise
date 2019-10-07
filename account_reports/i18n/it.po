@@ -54,7 +54,7 @@ msgstr "(copia)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "-> Refresh"
-msgstr ""
+msgstr "→ Aggiorna"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:0
@@ -1564,7 +1564,7 @@ msgstr "Mostrare altri... (%s rimanenti)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_line_form
 msgid "Main Info"
-msgstr "Info principale"
+msgstr "Informazioni principali"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_manager
@@ -2404,7 +2404,7 @@ msgstr "Includi scritture in bozza"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "XLSX"
-msgstr ""
+msgstr "XLSX"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:0

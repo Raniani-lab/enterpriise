@@ -140,6 +140,7 @@ msgstr "<span aria-label=\"Afsluiten\">&amp;times;</span>"
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 msgid "<span class=\"align-middle\">for this employee at the same time.</span>"
 msgstr ""
+"<span class=\"align-middle\">voor deze werknemer op hetzelfde moment.</span>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
@@ -459,7 +460,7 @@ msgstr "Groepeer op"
 #. module: planning
 #: model:ir.filters,name:planning.planning_filter_by_employee
 msgid "Hours per Employee"
-msgstr ""
+msgstr "Uren per werknemer"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -508,12 +509,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_planning__include_unassigned
 #: model:ir.model.fields,field_description:planning.field_planning_send__include_unassigned
 msgid "Includes Open shifts"
-msgstr ""
+msgstr "Inclusief open shiften"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__is_published
 msgid "Is the shift sent"
-msgstr ""
+msgstr "Is de shift verzonden"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__is_assigned_to_me
@@ -628,7 +629,7 @@ msgstr "Notitie"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "Note:"
-msgstr ""
+msgstr "Notitie:"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__working_days_count
@@ -659,7 +660,7 @@ msgstr "Open beschikbare shifts"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__overlap_slot_count
 msgid "Overlapping slots"
-msgstr ""
+msgstr "Overlappende sloten"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_graph
@@ -746,7 +747,7 @@ msgstr ""
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "Planning of %s days"
-msgstr ""
+msgstr "Planning van %s dagen"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_planning
@@ -763,12 +764,12 @@ msgstr "Planning:"
 #: model:ir.cron,cron_name:planning.ir_cron_forecast_schedule
 #: model:ir.cron,name:planning.ir_cron_forecast_schedule
 msgid "Planning: generate next recurring shifts"
-msgstr ""
+msgstr "Planning: genereer volgende recurrente shiften"
 
 #. module: planning
 #: model:mail.template,subject:planning.email_template_slot_single
 msgid "Planning: new schedule (single shift)"
-msgstr ""
+msgstr "Planning: nieuw schema (één shift)"
 
 #. module: planning
 #. openerp-web
@@ -787,7 +788,7 @@ msgstr "Publiceer"
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "Publish & Send"
-msgstr ""
+msgstr "Publiceer & verzend"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_res_company__planning_generation_interval
@@ -1037,7 +1038,7 @@ msgstr "Deze shift is nu aan u toegewezen."
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__was_copied
 msgid "This shift was copied from previous week"
-msgstr ""
+msgstr "Deze shift is gekopieerd van de vorige week"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -1089,12 +1090,12 @@ msgstr ""
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_template_check_duration_positive
 msgid "You cannot have a negative duration"
-msgstr ""
+msgstr "U kan geen negatieve duur hebben"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_template_check_start_time_lower_than_24
 msgid "You cannot have a start hour greater than 24"
-msgstr ""
+msgstr "U kan geen startuur hebben groter dan 24"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_check_allocated_hours_positive

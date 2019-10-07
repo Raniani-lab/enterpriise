@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-30 09:48+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/sale_renting/models/product.py:0
 #, python-format
 msgid "(Rental)"
-msgstr ""
+msgstr "(Verhuur)"
 
 #. module: sale_renting
 #: model:ir.actions.report,print_report_name:sale_renting.action_report_rental_saleorder
@@ -40,18 +40,18 @@ msgstr ""
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
 #, python-format
 msgid "/day"
-msgstr ""
+msgstr "/dag"
 
 #. module: sale_renting
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
 #, python-format
 msgid "/hour"
-msgstr ""
+msgstr "/uur"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Default Delay Costs</span>"
-msgstr "<span class=\"o_form_label\">Standaard Vertragingskosten</span>"
+msgstr "<span class=\"o_form_label\">Standaard vertragingskosten</span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_product_form_view_rental_gantt
@@ -92,7 +92,7 @@ msgstr "<strong>Verzendadres:</strong>"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Status : </strong>"
-msgstr ""
+msgstr "<strong>Status : </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
@@ -107,7 +107,7 @@ msgstr "Voeg een prijs toe"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Additional costs for late returns"
-msgstr ""
+msgstr "Aanvullende kosten voor late terugbrengsten"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_product_product__rent_ok
@@ -129,7 +129,7 @@ msgstr "Toepassen na"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Ask customer to sign documents on the spot."
-msgstr ""
+msgstr "Vraag klant om direct documenten te ondertekenen."
 
 #. module: sale_renting
 #. openerp-web
@@ -338,7 +338,7 @@ msgstr "Datum"
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__pickup_date
 msgid "Date of Pickup"
-msgstr "Datum Ophaling"
+msgstr "Datum ophaling"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__return_date
@@ -428,7 +428,7 @@ msgid ""
 " Then, click here to add the product."
 msgstr ""
 "Voer de gevraagde data in en controleer de prijs.\n"
-"  Klik dan hier om het product toe te voegen."
+" Klik dan hier om het product toe te voegen."
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/sale.py:0
@@ -462,7 +462,7 @@ msgstr "Extra uur"
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
 #, python-format
 msgid "Extras:"
-msgstr ""
+msgstr "Extras:"
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/product.py:0
@@ -511,12 +511,12 @@ msgstr "Heeft te late regels"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_pickable_lines
 msgid "Has Pickable Lines"
-msgstr "Heeft Picking Regels"
+msgstr "Heeft picking regels"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_returnable_lines
 msgid "Has Returnable Lines"
-msgstr "Heeft Retourregels"
+msgstr "Heeft retourregels"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__pricing_explanation
@@ -600,18 +600,18 @@ msgstr "Te laat"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
 msgid "Late Delivery"
-msgstr ""
+msgstr "Late levering"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 msgid "Late Pickup"
-msgstr "Late Ophaling"
+msgstr "Late ophaling"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
 msgid "Late Return"
-msgstr "Late Retour"
+msgstr "Late retour"
 
 #. module: sale_renting
 #. openerp-web
@@ -786,7 +786,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__reservation_begin
 msgid "Pickup date - padding time"
-msgstr "Ophaling datum - buffertijd"
+msgstr "Datum ophaling - buffertijd"
 
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_rental_wizard_rental_period_coherence
@@ -890,7 +890,7 @@ msgstr "Aantal geleverd"
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__quantity
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_uom_qty
 msgid "Qty Ordered"
-msgstr "Bestelde Hvh"
+msgstr "Bestelde hvh"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__qty_delivered
@@ -1035,17 +1035,17 @@ msgstr "Verhuur wizard lijn"
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__display_price
 #: model:ir.model.fields,field_description:sale_renting.field_product_template__display_price
 msgid "Rental price"
-msgstr ""
+msgstr "Verhuur prijs"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard_line
 msgid "RentalOrderLine transient representation"
-msgstr "RentalOrderLine tijdelijke weergave"
+msgstr "Verhuur orderregel tijdelijke weergave"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 msgid "Rentals"
-msgstr ""
+msgstr "Verhuur"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_reporting
@@ -1082,7 +1082,7 @@ msgstr "Retour"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Return Date"
-msgstr "Retour Datum"
+msgstr "Retour datum"
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/sale.py:0
@@ -1171,7 +1171,7 @@ msgid ""
 " Leave empty if this rule applies for any variant of this template."
 msgstr ""
 "Selecteer varianten van het product waarop deze regel van toepassing is.\n"
-"  Laat leeg als deze regel van toepassing is op elke variant van deze sjabloon."
+"Laat leeg als deze regel van toepassing is op elke variant van dit sjabloon."
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_pricing__product_template_id
@@ -1355,7 +1355,7 @@ msgid ""
 " Let's discover Odoo Rental App."
 msgstr ""
 "Wil u<b>verhuren</b>? \n"
-"Laten we de Odoo Rental App ontdekken."
+"Laten we de Odoo Verhuur app ontdekken."
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_pricing__unit__week
@@ -1369,8 +1369,8 @@ msgid ""
 "You can also create additional products or services to sell by checking *Can"
 " be Sold* in the product form (e.g. insurance)."
 msgstr ""
-"U kunt ook extra producten of services om te verkopen maken door * Kan "
-"worden verkocht * aan te vinken in het productformulier (bijv. Verzekering)."
+"U kunt ook extra producten of diensten om te verkopen maken door * Kan "
+"worden verkocht * aan te vinken in het productformulier (bijv. verzekering)."
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_today_pickup_action

@@ -258,7 +258,7 @@ msgstr ""
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_calendar
 msgid "Calendar"
-msgstr "calendario"
+msgstr "Calendario"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_res_company__planning_allow_self_unassign

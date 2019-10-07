@@ -74,7 +74,7 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
 msgid "<span title=\"Send by Mail\">Refer Friend</span>"
-msgstr "<span title=\"Send by Mail\">Verwijs Vriend</span>"
+msgstr "<span title=\"Send by Mail\">Verwijs vriend</span>"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_needaction
@@ -136,17 +136,17 @@ msgstr "Kandidaat"
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
 msgid "Applicant Referred"
-msgstr "Kandidaat Doorverwezen"
+msgstr "Kandidaat doorverwezen"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
 msgid "Applicant Referred Hired"
-msgstr "Doorverwezen Kandidaat Aangenomen"
+msgstr "Doorverwezen kandidaat aangenomen"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
 msgid "Applicant Referred Refused"
-msgstr "Doorverwezen Kandidaat Geweigerd"
+msgstr "Doorverwezen kandidaat geweigerd"
 
 #. module: hr_referral
 #: code:addons/hr_referral/models/hr_applicant.py:0
@@ -170,7 +170,7 @@ msgstr "Aantal bijlagen"
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_backend_kanban
 #, python-format
 msgid "Awarded Employees"
-msgstr "Beloonde Medewerkers"
+msgstr "Beloonde medewerkers"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_friend__position__back

@@ -636,7 +636,7 @@ msgstr "Gem. 7 dagen"
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #, python-format
 msgid "Avg Open Hours"
-msgstr "Gem. Open uren"
+msgstr "Gem. open uren"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data

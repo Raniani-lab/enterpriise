@@ -29,7 +29,7 @@ msgstr "Ga naar instellingen."
 #. module: sale_account_taxcloud
 #: model:ir.model.fields,field_description:sale_account_taxcloud.field_sale_order__is_taxcloud_configured
 msgid "Is Taxcloud Configured"
-msgstr "Is Taxcloud geconfigureer"
+msgstr "Is Taxcloud geconfigureerd"
 
 #. module: sale_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit

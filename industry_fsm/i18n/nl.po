@@ -70,12 +70,15 @@ msgid ""
 "<span attrs=\"{'invisible': [('timesheet_timer_last_stop', '=', False)]}\"> "
 "to </span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('timesheet_timer_last_stop', '=', False)]}\"> "
+"tot </span>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "<span class=\"align-middle\">for this employee at the same time.</span>"
 msgstr ""
+"<span class=\"align-middle\">voor deze werknemer op hetzelfde moment.</span>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
@@ -103,7 +106,7 @@ msgstr "Alle taken zijn gefactureerd"
 #. module: industry_fsm
 #: model:ir.model.constraint,message:industry_fsm.constraint_project_project_fsm_imply_task_rate
 msgid "An FSM project must be billed at task rate."
-msgstr ""
+msgstr "Een FSM project moet gefactureerd worden aan de ratio van de taak."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -139,12 +142,12 @@ msgstr "Per gebruiker"
 #: code:addons/industry_fsm/models/project.py:0
 #, python-format
 msgid "Choose Products"
-msgstr ""
+msgstr "Kies producten"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_schedule_fsm
 msgid "Click Create to start a new task"
-msgstr ""
+msgstr "Klik op Aanmaken om een nieuwe taak te starten"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__company_id
@@ -178,7 +181,7 @@ msgstr "Maak een nieuwe taak"
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm.js:0
 #, python-format
 msgid "Create and plan your first Field Service Task"
-msgstr ""
+msgstr "Maak een plan uw eerst Buitendienst taak"
 
 #. module: industry_fsm
 #: model:ir.actions.server,name:industry_fsm.project_task_server_action_batch_invoice_fsm
@@ -188,7 +191,7 @@ msgstr "Maak factuur"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
 msgid "Create new quotations directly from tasks"
-msgstr ""
+msgstr "Maak direct nieuwe offertes vanuit taken"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
@@ -250,12 +253,12 @@ msgstr "Einddatum"
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__allow_quotations
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__group_industry_fsm_quotations
 msgid "Extra Quotations"
-msgstr ""
+msgstr "Extra offerte"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_report_project_task_user_fsm
 msgid "FSM Tasks Analysis"
-msgstr ""
+msgstr "FSM taak analyse"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__is_fsm
@@ -305,7 +308,7 @@ msgstr "Facturen"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__state
 msgid "Kanban State"
-msgstr "Kanban Status"
+msgstr "Kanban status"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm____last_update
@@ -408,7 +411,7 @@ msgstr "Aantal facturen"
 #: code:addons/industry_fsm/models/project.py:0
 #, python-format
 msgid "Overlapping Tasks"
-msgstr ""
+msgstr "Overlappende taken"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
@@ -600,7 +603,7 @@ msgstr "Stoppen"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Stop the Timer"
-msgstr ""
+msgstr "Stop de timer"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task
@@ -741,7 +744,7 @@ msgstr "Te plannen"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
 msgid "Track the material used to complete tasks"
-msgstr ""
+msgstr "Traceer het materiaal gebruikt om deze taken te voltooien"
 
 #. module: industry_fsm
 #: model:product.product,uom_name:industry_fsm.field_service_product
@@ -764,10 +767,10 @@ msgstr "Werkbon sjablonen"
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm
 msgid "You can create one for yourself by clicking on Create."
-msgstr ""
+msgstr "U kan er zelf een aanmaken door te klikken op Aanmaken."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "other tasks"
-msgstr ""
+msgstr "andere taken"

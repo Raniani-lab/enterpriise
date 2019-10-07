@@ -304,7 +304,7 @@ msgstr "Dipendenti disponibili"
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.calendar_appointment_type_menu_action
 msgid "Calendar"
-msgstr "calendario"
+msgstr "Calendario"
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_event

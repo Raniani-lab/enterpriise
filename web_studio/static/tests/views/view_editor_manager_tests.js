@@ -287,6 +287,24 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('optional field in list editor', async function (assert) {
+        assert.expect(1);
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            arch: '<tree><field name="display_name"/></tree>',
+            data: this.data,
+            model: 'coucou',
+        });
+
+        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .ui-draggable'));
+        assert.containsOnce(
+            vem,
+            '.o_web_studio_sidebar_optional_select',
+            "there should be an optional field");
+
+        vem.destroy();
+    });
+
     QUnit.test('visible studio hooks in listview', async function (assert) {
         assert.expect(2);
 
@@ -999,6 +1017,28 @@ QUnit.module('ViewEditorManager', {
             "the column should have the clicked style");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
             "the widget in sidebar should be set by default");
+
+        vem.destroy();
+    });
+
+    QUnit.test('optional field not in form editor', async function (assert) {
+        assert.expect(1);
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            arch: `<form>
+                    <sheet>
+                        <field name="display_name"/>
+                    </sheet>
+                </form>`,
+            data: this.data,
+            model: 'coucou',
+        });
+
+        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_char'));
+        assert.containsNone(
+            vem,
+            '.o_web_studio_sidebar_optional_select',
+            "there shouldn't be an optional field");
 
         vem.destroy();
     });

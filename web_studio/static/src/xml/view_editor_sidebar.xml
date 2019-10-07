@@ -450,7 +450,7 @@
                     <a role="button" href="#" data-type="readonly" class="btn btn-link o_web_studio_attrs">Conditional</a>
                 </div>
             </div>
-            <div class="o_web_studio_sidebar_optional_select">
+            <div t-if="widget.view_type === 'list'" class="o_web_studio_sidebar_optional_select">
                 <label for="optional">Optional</label>
                 <select id="optional" name="optional" data-type="attributes">
                     <option></option>

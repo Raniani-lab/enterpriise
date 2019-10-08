@@ -5,7 +5,7 @@ import json
 from odoo import api, fields, models, _
 from odoo.tools.translate import _
 from odoo.exceptions import UserError
-from odoo.tools import float_is_zero
+from odoo.tools import float_is_zero, date_utils
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -421,7 +421,7 @@ class AccountBankStatement(models.Model):
                     line.partner_id.online_partner_bank_account = value_acc
 
     @api.model
-    def online_sync_bank_statement(self, transactions, journal):
+    def online_sync_bank_statement(self, transactions, journal, ending_balance):
         """
          build a bank statement from a list of transaction and post messages is also post in the online_account of the journal.
          :param transactions: A list of transactions that will be created in the new bank statement.
@@ -430,7 +430,6 @@ class AccountBankStatement(models.Model):
                  'date': transaction date,         (The date of the transaction)
                  'name': transaction description,  (The description)
                  'amount': transaction amount,     (The amount of the transaction. Negative for debit, positive for credit)
-                 'end_amount': total amount on the account
                  'partner_id': optional field used to define the partner
                  'online_partner_vendor_name': optional field used to store information on the statement line under the
                     online_partner_vendor_name field (typically information coming from plaid/yodlee). This is use to find partner
@@ -440,93 +439,134 @@ class AccountBankStatement(models.Model):
                     for next statements
              }, ...]
          :param journal: The journal (account.journal) of the new bank statement
+         :param ending_balance: ending balance on the account
 
          Return: The number of imported transaction for the journal
         """
         # Since the synchronization succeeded, set it as the bank_statements_source of the journal
         journal.sudo().write({'bank_statements_source': 'online_sync'})
+        if not len(transactions):
+            return 0
 
-        all_lines = self.env['account.bank.statement.line'].search([('journal_id', '=', journal.id),
-                                                                    ('date', '>=', journal.account_online_journal_id.last_sync)])
-        total = 0
-        lines = []
-        last_date = journal.account_online_journal_id.last_sync
-        end_amount = 0
-        for transaction in transactions:
-            if all_lines.search_count([('online_identifier', '=', transaction['online_identifier'])]) > 0 or transaction['amount'] == 0.0:
-                continue
-            line = transaction.copy()
-            total += line['amount']
-            end_amount = line['end_amount']
-            line.pop('end_amount')
-            # Get the last date
-            if not last_date or line['date'] > last_date:
-                last_date = line['date']
-            lines.append((0, 0, line))
+        transactions_identifiers = [line['online_identifier'] for line in transactions]
+        existing_transactions_ids = self.env['account.bank.statement.line'].search([('online_identifier', 'in', transactions_identifiers), ('journal_id', '=', journal.id)])
+        existing_transactions = [t.online_identifier for t in existing_transactions_ids]
 
-        # Search for previous transaction end amount
-        previous_statement = self.search([('journal_id', '=', journal.id)], order="date desc, id desc", limit=1)
-        # For first synchronization, an opening bank statement line is created to fill the missing bank statements
+        sorted_transactions = sorted(transactions, key=lambda l: l['date'])
+        min_date = date_utils.start_of(sorted_transactions[0]['date'], 'month')
+        max_date = sorted_transactions[-1]['date']
+        total = sum([t['amount'] for t in sorted_transactions])
+
+        statements_in_range = self.search([('date', '>=', min_date), ('journal_id', '=', journal.id)])
+
+        # For first synchronization, an opening bank statement is created to fill the missing bank statements
         all_statement = self.search_count([('journal_id', '=', journal.id)])
         digits_rounding_precision = journal.currency_id.rounding if journal.currency_id else journal.company_id.currency_id.rounding
-        if all_statement == 0 and not float_is_zero(end_amount - total, precision_rounding=digits_rounding_precision):
-            lines.append((0, 0, {
+        if all_statement == 0 and not float_is_zero(ending_balance - total, precision_rounding=digits_rounding_precision):
+            opening_transaction = [(0, 0, {
                 'date': transactions and (transactions[0]['date']) or datetime.now(),
                 'name': _("Opening statement: first synchronization"),
-                'amount': end_amount - total,
-            }))
-            total = end_amount
+                'amount': ending_balance - total,
+            })]
+            self.create({
+                'name': _('Opening statement'),
+                'date': date_utils.subtract(min_date, days=1),
+                'line_ids': opening_transaction,
+                'journal_id': journal.id,
+                'balance_end_real': ending_balance - total,
+            })
 
-        # If there is no new transaction, the bank statement is not created
-        if lines:
-            to_create = []
-            # Depending on the option selected on the journal, either create a new bank statement or add lines to existing bank statement.
-            previous_amount_to_report = 0
-            for line in lines:
-                create = False
-                if not previous_statement or previous_statement.state == 'confirm':
-                    to_create = lines
-                    break
-                line_date = line[2]['date']
-                p_stmt = previous_statement.date
-                if journal.bank_statement_creation == 'day' and previous_statement.date != line[2]['date']:
-                    create = True
-                elif journal.bank_statement_creation == 'week' and line_date.isocalendar()[1] != p_stmt.isocalendar()[1]:
-                    create = True
-                elif journal.bank_statement_creation == 'bimonthly':
-                    if (line_date.month != p_stmt.month or line_date.year != p_stmt.year):
-                        create = True
-                    elif line_date.day > 15 and p_stmt.day <= 15:
-                        create = True
-                elif journal.bank_statement_creation == 'month' and (line_date.month != p_stmt.month or line_date.year != p_stmt.year):
-                    create = True
-                elif not journal.bank_statement_creation or journal.bank_statement_creation == 'none':
-                    create = True
+        transactions_in_statements = []
+        statement_to_reset_to_draft = self.env['account.bank.statement']
+        transactions_to_create = {}
 
-                if create:
-                    to_create.append(line)
+        number_added = 0
+        for transaction in sorted_transactions:
+            if transaction['online_identifier'] in existing_transactions:
+                continue
+            line = transaction.copy()
+            number_added += 1
+            if journal.bank_statement_creation == 'day':
+                # key is full date
+                key = transaction['date']
+            elif journal.bank_statement_creation == 'week':
+                # key is first day of the week
+                weekday = transaction['date'].weekday()
+                key = date_utils.subtract(transaction['date'], days=weekday)
+            elif journal.bank_statement_creation == 'bimonthly':
+                if transaction['date'].day >= 15:
+                    # key is the 15 of that month
+                    key = transaction['date'].replace(day=15)
                 else:
-                    previous_amount_to_report += line[2]['amount']
-                    line[2].update({'statement_id': previous_statement.id})
-                    self.env['account.bank.statement.line'].create(line[2])
+                    # key if the first of the month
+                    key = date_utils.start_of(transaction['date'], 'month')
+                # key is year-month-0 or year-month-1
+            elif journal.bank_statement_creation == 'month':
+                # key is first of the month
+                key = date_utils.start_of(transaction['date'], 'month')
+            else:
+                # key is last date of transactions fetched
+                key = max_date
 
-            if not float_is_zero(previous_amount_to_report, precision_rounding=digits_rounding_precision):
-                previous_statement.write({'balance_end_real': previous_statement.balance_end_real + previous_amount_to_report})
+            # Decide if we have to update an existing statement or create a new one with this line
+            stmt = statements_in_range.search([('date', '=', key)], limit=1)
+            if stmt.id:
+                line['statement_id'] = stmt.id
+                transactions_in_statements.append(line)
+                statement_to_reset_to_draft += stmt
+            else:
+                if not transactions_to_create.get(key):
+                    transactions_to_create[key] = []
+                transactions_to_create[key].append((0, 0, line))
 
-            if to_create:
-                balance_start = None
-                if previous_statement:
-                    balance_start = previous_statement.balance_end_real
-                sum_lines = sum([l[2]['amount'] for l in to_create])
-                self.create({'name': _('online sync'),
-                            'journal_id': journal.id,
-                            'line_ids': to_create,
-                            'balance_end_real': end_amount if balance_start is None else balance_start + sum_lines,
-                            'balance_start': (end_amount - total) if balance_start is None else balance_start
-                            })
+        # Create the lines that should be inside an existing bank statement and reset those stmt in draft
+        if len(transactions_in_statements):
+            for st in statement_to_reset_to_draft:
+                if st.state == 'confirm':
+                    st.message_post(body=_('Statement has been reset to draft because some transactions from online synchronization were added to it.'))
+            statement_to_reset_to_draft.write({'state': 'open'})
+            self.env['account.bank.statement.line'].create(transactions_in_statements)
+            # Recompute the balance_end_real of the first statement where we added line
+            # because adding line don't trigger a recompute and balance_end_real is not updated.
+            # We only trigger the recompute on the first element of the list as it is the one
+            # the most in the past and this will trigger the recompute of all the statements
+            # that are next.
+            statement_to_reset_to_draft[0]._compute_ending_balance()
 
-        journal.account_online_journal_id.sudo().write({'last_sync': last_date})
-        return len(lines)
+        # Create lines inside new bank statements
+        for date, lines in transactions_to_create.items():
+            # balance_start and balance_end_real will be computed automatically
+            name = _('Online synchronization of %s') % (date,)
+            if journal.bank_statement_creation in ('bimonthly', 'week', 'month'):
+                name = _('Online synchronization from %s to %s')
+                end_date = date
+                if journal.bank_statement_creation == 'month':
+                    end_date = date_utils.end_of(date, 'month')
+                elif journal.bank_statement_creation == 'week':
+                    end_date = date_utils.add(date, days=6)
+                elif journal.bank_statement_creation == 'bimonthly':
+                    if end_date.day == 1:
+                        end_date = date.replace(day=14)
+                    else:
+                        end_date = date_utils.end_of(date, 'month')
+                name = name % (date, end_date)
+            self.env['account.bank.statement'].create({
+                'name': name,
+                'date': date,
+                'line_ids': lines,
+                'journal_id': journal.id
+            })
+            
+        # write account balance on the last statement of the journal
+        # That way if there are missing transactions, it will show in the last statement
+        # and the day missing transactions are fetched or manually written, everything will be corrected
+        last_bnk_stmt = self.search([('journal_id', '=', journal.id)], limit=1)
+        if last_bnk_stmt:
+            last_bnk_stmt.balance_end_real = ending_balance
+        # Set last sync date as the last transaction date
+        journal.account_online_journal_id.sudo().write({'last_sync': max_date})
+        return number_added
+
 
 class AccountBankStatementLine(models.Model):
     _inherit = 'account.bank.statement.line'

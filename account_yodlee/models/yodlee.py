@@ -416,7 +416,6 @@ class YodleeAccount(models.Model):
                         'date': date,
                         'name': tr.get('description',{}).get('original', 'No description'),
                         'amount': amount * -1 if tr.get('baseType') == 'DEBIT' else amount,
-                        'end_amount': self.balance,
                     }
                     if tr.get('accountId'):
                         vals['partner_id'] = self._find_partner([('online_partner_bank_account', '=', tr.get('accountId'))])
@@ -431,4 +430,4 @@ class YodleeAccount(models.Model):
                 break
             else:
                 offset += 500
-        return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids[0])
+        return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids[0], self.balance)

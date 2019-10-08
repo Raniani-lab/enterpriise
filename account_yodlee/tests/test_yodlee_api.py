@@ -327,7 +327,8 @@ class TestYodleeApi(AccountingTestCase):
         # Check that we've a bank statement with 3 lines (we assumed that the demo data have been loaded and a
         # bank statement has already been created, otherwise the statement should have 4 lines as a new one for
         # opening entry will be created)
-        bank_stmt = self.env['account.bank.statement'].search([('name', '=', 'online sync')], order="create_date desc")
+        bank_stmt_all = self.env['account.bank.statement'].search([], order="create_date desc")
+        bank_stmt = bank_stmt_all[0]
         self.assertEqual(len(bank_stmt), 1, 'There should be at least one bank statement created')
         self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
         self.assertEqual(bank_stmt.state, 'open')
@@ -341,9 +342,9 @@ class TestYodleeApi(AccountingTestCase):
         # Call again and check that we don't have any new transactions
         account_online_journal.last_sync = fields.Date.today() - relativedelta(days=15)
         acc_online_provider.callback_institution(informations, 'add', self.journal_id)
-        bank_stmt = self.env['account.bank.statement'].search([('name', '=', 'online sync')], order="create_date desc")
-        self.assertEqual(len(bank_stmt), 1, 'There should not be a new statement created')
-        self.assertEqual(len(bank_stmt.line_ids), 1, 'The existing statement should still have 1 lines')
+        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc")
+        self.assertEqual(len(bank_stmt), len(bank_stmt_all), 'There should not be a new statement created')
+        self.assertEqual(len(bank_stmt[0].line_ids), 1, 'The existing statement should still have 1 lines')
 
         patcher_post.stop()
         patcher_get.stop()
@@ -374,8 +375,7 @@ class TestYodleeApi(AccountingTestCase):
         # Check that we've a bank statement with 3 lines (we assumed that the demo data have been loaded and a
         # bank statement has already been created, otherwise the statement should have 4 lines as a new one for
         # opening entry will be created)
-        bank_stmt = self.env['account.bank.statement'].search([('name', '=', 'online sync')], order="create_date desc")
-        self.assertEqual(len(bank_stmt), 1, 'There should be at least one bank statement created')
+        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
         self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
         self.assertEqual(bank_stmt.state, 'open')
         self.assertEqual(bank_stmt.journal_id.id, bank_journal.id)
@@ -414,11 +414,7 @@ class TestYodleeApi(AccountingTestCase):
         informations = json.dumps([{"providerAccountId":123,"bankName":"Dag Site","status":"SUCCESS","providerId":16441}])
         ret = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
 
-        # Check that we've a bank statement with 3 lines (we assumed that the demo data have been loaded and a
-        # bank statement has already been created, otherwise the statement should have 4 lines as a new one for
-        # opening entry will be created)
-        bank_stmt = self.env['account.bank.statement'].search([('name', '=', 'online sync')], order="create_date desc")
-        self.assertEqual(len(bank_stmt), 1, 'There should be at least one bank statement created')
+        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
         self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
         self.assertEqual(bank_stmt.state, 'open')
         self.assertEqual(bank_stmt.journal_id.id, bank_journal.id)
@@ -435,7 +431,7 @@ class TestYodleeApi(AccountingTestCase):
         ASUSTeK.write({'online_partner_vendor_name': '123'})
         acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
         ret = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
-        bank_stmt = self.env['account.bank.statement'].search([('name', '=', 'online sync')], order="create_date desc", limit=1)
+        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
         self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
         self.assertTrue(bank_stmt.line_ids.online_identifier.startswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjf"))
         self.assertEqual(bank_stmt.line_ids.partner_id, ASUSTeK)
@@ -446,7 +442,7 @@ class TestYodleeApi(AccountingTestCase):
         agrolait.write({'online_partner_vendor_name': '123'})
         acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
         ret = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
-        bank_stmt = self.env['account.bank.statement'].search([('name', '=', 'online sync')], order="create_date desc", limit=1)
+        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
         self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
         self.assertTrue(bank_stmt.line_ids.online_identifier.startswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDja"))
         self.assertEqual(bank_stmt.line_ids.partner_id, self.env['res.partner'])
@@ -457,7 +453,7 @@ class TestYodleeApi(AccountingTestCase):
         self.online_identifier = 'lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjb'
         acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
         ret = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
-        bank_stmt = self.env['account.bank.statement'].search([('name', '=', 'online sync')], order="create_date desc", limit=1)
+        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
         self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
         self.assertTrue(bank_stmt.line_ids.online_identifier.startswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjb"))
         self.assertEqual(bank_stmt.line_ids.partner_id, agrolait)

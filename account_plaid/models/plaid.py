@@ -238,7 +238,6 @@ class PlaidAccount(models.Model):
                         'date': fields.Date.from_string(transaction.get('date')),
                         'name': transaction.get('name'),
                         'amount': -1 * transaction.get('amount'), #https://plaid.com/docs/api/#transactions amount positive if purchase
-                        'end_amount': end_amount,
                     }
                     if transaction.get('payment_meta') and transaction['payment_meta'].get('payee_name', False) and transaction.get('amount') > 0:
                         trans['online_partner_vendor_name'] = transaction['payment_meta']['payee_name']
@@ -251,4 +250,4 @@ class PlaidAccount(models.Model):
             else:
                 offset += 500
         # Create the bank statement with the transactions
-        return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids[0])
+        return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids[0], end_amount)

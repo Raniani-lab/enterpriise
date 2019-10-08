@@ -11,15 +11,6 @@ class TestSynchStatementCreation(AccountingTestCase):
     def setUp(self):
         super(TestSynchStatementCreation, self).setUp()
         self.bnk_stmt = self.env['account.bank.statement']
-        # some users
-        group_account_adviser = self.env.ref('account.group_account_manager')
-        self.adviser = self.env['res.users'].create({
-            'name': 'Alfred Glasses',
-            'login': 'adviser',
-            'email': 'a.g@example.com',
-            'signature': '--\nAlfred',
-            'groups_id': [(6, 0, [group_account_adviser.id])]
-        })
 
         # Create an account.online.provider and account.online.journal and associate to journal bank
         self.bank_journal = self.env['account.journal'].create({'name': 'Bank_Online', 'type': 'bank', 'code': 'BNKonl', 'currency_id': self.env.ref('base.EUR').id})
@@ -36,45 +27,27 @@ class TestSynchStatementCreation(AccountingTestCase):
             'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id
         })
 
-    def create_bank_statement_date(self, date):
-        bank_statement_line_vals = {'name': 'test_line', 'date': date, 'amount': 50}
-        bank_stmt = self.bnk_stmt.create({
-            'date': fields.Date.from_string(date),
-            'journal_id': self.bank_journal.id,
-            'line_ids': [(0, 0, bank_statement_line_vals)],
-            'balance_start': 0,
-            'balance_end_real': 50,
-        })
-        return bank_stmt
-
-    def delete_bank_statement(self, statement):
-        statement.unlink()
-
-    def create_transaction(self, date1, date2):
-        tr1 = {
+    # This method return a list of transactions with the given dates
+    # amount for each transactions is 10
+    def create_transactions(self, dates):
+        transactions = []
+        for date in dates:
+            transactions.append({
                 'online_identifier': self.transaction_id,
-                'date': fields.Date.from_string(date1),
-                'name': 'transaction',
-                'amount': 50,
-                'end_amount': 1900,
-            }
-        tr2 = {
-                'online_identifier': self.transaction_id + 1,
-                'date': fields.Date.from_string(date2),
-                'name': 'transaction2',
-                'amount': 50,
-                'end_amount': 1900,
-            }
-        self.transaction_id += 2
-        return [tr1, tr2]
+                'date': fields.Date.from_string(date),
+                'name': 'transaction_' + str(self.transaction_id),
+                'amount': 10,
+            })
+            self.transaction_id += 1
+        return transactions
 
-    def create_transaction_partner(self, partner_id=False, vendor_name=False, account_number=False):
+
+    def create_transaction_partner(self, date=False, partner_id=False, vendor_name=False, account_number=False):
         tr = {
             'online_identifier': self.transaction_id,
-            'date': fields.Date.from_string('2016-01-10'),
+            'date': fields.Date.from_string(date),
             'name': 'transaction_p',
             'amount': 50,
-            'end_amount': 50
         }
         if partner_id:
             tr['partner_id'] = partner_id
@@ -85,157 +58,289 @@ class TestSynchStatementCreation(AccountingTestCase):
         self.transaction_id += 1
         return [tr]
 
+    def assertDate(self, date1, date2):
+        if isinstance(date1, str):
+            date1 = fields.Date.from_string(date1)
+        if isinstance(date2, str):
+            date2 = fields.Date.from_string(date2)
+        self.assertEqual(date1, date2)
+
     def confirm_bank_statement(self, statement):
         
-        statement.line_ids[0].process_reconciliation(new_aml_dicts=[{
-            'credit': 50,
-            'debit': 0,
-            'name': 'toto',
-            'account_id': self.account.id,
-        }])
+        for line in statement.line_ids:
+            line.process_reconciliation(new_aml_dicts=[{
+                'credit': line.amount,
+                'debit': 0,
+                'name': 'toto',
+                'account_id': self.account.id,
+            }])
         statement.button_confirm_bank()
         return statement
 
+
+    def test_creation_initial_sync_statement(self):
+        transactions = self.create_transactions(['2016-01-01', '2016-01-03'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 1000)
+        # Since ending balance is 1000$ and we only have 20$ of transactions and that it is the first statement
+        # it should create a statement before this one with the initial statement line
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created an initial bank statement and one for the synchronization')
+        self.assertEqual(created_bnk_stmt[0].balance_start, 0)
+        self.assertEqual(created_bnk_stmt[0].balance_end_real, 980)
+        self.assertDate(created_bnk_stmt[0].date, '2015-12-31')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 1, 'Should only have one line')
+
+        self.assertEqual(created_bnk_stmt[1].balance_start, 980)
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 1000)
+        self.assertDate(created_bnk_stmt[1].date, '2016-01-03')
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 2, 'Should have two lines')
+        self.assertEqual(created_bnk_stmt[1].line_ids[0].amount, 10)
+        self.assertEqual(created_bnk_stmt[1].line_ids[1].amount, 10)
+
+        # Since a statement already exists, next transactions should not create an initial statement even if ending_balance
+        # is greater than the sum of transactions
+        transactions = self.create_transactions(['2016-01-05'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 2000)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 3, 'Should not have created an initial bank statement')
+        self.assertEqual(created_bnk_stmt[2].balance_start, 1000)
+        self.assertEqual(created_bnk_stmt[2].balance_end_real, 2000)
+        self.assertDate(created_bnk_stmt[2].date, '2016-01-05')
+        self.assertEqual(len(created_bnk_stmt[2].line_ids), 1, 'Should only have one line')
+        self.assertEqual(created_bnk_stmt[2].line_ids.amount, 10)
+
+    def test_creation_initial_sync_statement_bis(self):
+        transactions = self.create_transactions(['2016-01-01', '2016-01-03'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 20)
+        # Since ending balance is 20$ and we only have 20$ of transactions and that it is the first statement
+        # it should NOT create a initial statement before this one
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 1, 'Should NOT have created an initial bank statement')
+        self.assertEqual(created_bnk_stmt[0].balance_start, 0)
+        self.assertEqual(created_bnk_stmt[0].balance_end_real, 20)
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-03')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 2, 'Should have two lines')
+
     def test_creation_every_sync(self):
-        self.create_bank_statement_date('2016-01-01')
-        transactions = self.create_transaction('2016-01-01', '2016-01-01')
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        # Verify that we have 2 bank statements and one with the two newly created transactions
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created a new bank statement')
-        self.assertEqual(len(created_bnk_stmt[1].line_ids), 2, 'Newly created bank statement should have 2 lines')
-        self.delete_bank_statement(created_bnk_stmt)
+        # Create one statement with 2 lines
+        transactions = self.create_transactions(['2016-01-01', '2016-01-03'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 20)
+        # Create another statement with 2 lines
+        transactions = self.create_transactions(['2016-01-02', '2016-01-05'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 40)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created two different bank statements')
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-03')
+        self.assertEqual(created_bnk_stmt[0].name, 'Online synchronization of 2016-01-03')
+        self.assertDate(created_bnk_stmt[1].date, '2016-01-05')
+        self.assertEqual(created_bnk_stmt[1].name, 'Online synchronization of 2016-01-05')
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 40)
+
+        # If we create a statement with a transactions max date in the past, it will be created in the past
+        # Also the account balance will be set on the last statement
+        transactions = self.create_transactions(['2016-01-04'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 70)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 3, 'Should have created three different bank statements')
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-03')
+        self.assertDate(created_bnk_stmt[1].date, '2016-01-04')
+        self.assertDate(created_bnk_stmt[2].date, '2016-01-05')
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 30)
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 1, 'Should only have one line')
+        # Check that balance is correctly written on last statement
+        self.assertEqual(created_bnk_stmt[2].balance_end_real, 70)
+
+        # If we create a statement with a transactions max date in the past, and that a statement at that date
+        # already exists, it will be added to that statement
+        transactions = self.create_transactions(['2016-01-04', '2016-01-04'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 70)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 3, 'Should have not created any new bank statements')
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-03')
+        self.assertDate(created_bnk_stmt[1].date, '2016-01-04')
+        self.assertDate(created_bnk_stmt[2].date, '2016-01-05')
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 50)
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 3, 'Should have added two lines to it')
+        self.assertEqual(created_bnk_stmt[2].balance_end_real, 70)
+
 
     def test_creation_every_day(self):
         self.bank_journal.write({'bank_statement_creation': 'day'})
-        transactions = self.create_transaction('2016-01-01', '2016-01-01')
+        transactions = self.create_transactions(['2016-01-10', '2016-01-15'])
         # first synchronization, no previous bank statement
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 1, 'Should have created a single bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'bank statement should have 3 lines (2 added + opening entry)')
-        self.assertEqual(created_bnk_stmt[0].balance_end_real, 1900, 'Newly bank statement balance end should be fetched from transaction')
-        self.delete_bank_statement(created_bnk_stmt)
-        # already have bank statement
-        bank_stmt = self.create_bank_statement_date('2016-01-01')
-        self.assertEqual(len(bank_stmt.line_ids), 1, 'Previous bank statement should have 1 line to start')
-        # Add 2 transactions same day, both should be added to previous bank statement
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 1, 'Should not have created a new bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'Previous bank statement should now have 3 lines')
-        # Add 1 transaction same day and 1 next day, the first should be on previous bank statement and latest in new bank stmt
-        transactions = self.create_transaction('2016-01-01', '2016-01-02')
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created a new bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 4, 'Previous bank statement should now have 4 lines')
-        self.assertEqual(len(created_bnk_stmt[1].line_ids), 1, 'Newly bank statement should have 1 line')
-        self.assertEqual(created_bnk_stmt[1].balance_end_real, 250, 'Newly bank statement balance end should be 250')
-        self.assertEqual(created_bnk_stmt[1].balance_start, 200, 'Newly bank statement balance start should be 200')
-        #remove bank statement
-        self.delete_bank_statement(created_bnk_stmt)
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 20)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created two bank statements, one for each transaction')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 1, 'bank statement should have 1 line ')
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 1, 'bank statement should have 1 line ')
+        self.assertEqual(created_bnk_stmt[0].balance_end_real, 10)
+        self.assertEqual(created_bnk_stmt[1].balance_start, 10)
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 20)
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-10')
+        self.assertEqual(created_bnk_stmt[0].name, 'Online synchronization of 2016-01-10')
+        self.assertDate(created_bnk_stmt[1].date, '2016-01-15')
+        self.assertEqual(created_bnk_stmt[1].name, 'Online synchronization of 2016-01-15')
+
+        # Fetch new transactions, two will be added to already existing statement, two will create new statements in between
+        # and one will create new statements afterwards
+        transactions = self.create_transactions(['2016-01-10', '2016-01-10', '2016-01-12', '2016-01-13', '2016-01-16'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 70)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 5, 'Should have created a total of 5 bank statements')
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-10')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, '3 lines should have been added to first statement')
+        self.assertDate(created_bnk_stmt[1].date, '2016-01-12')
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 1, 'new statement should only have one line')
+        self.assertDate(created_bnk_stmt[2].date, '2016-01-13')
+        self.assertEqual(len(created_bnk_stmt[2].line_ids), 1, 'new statement should only have one line')
+        self.assertDate(created_bnk_stmt[3].date, '2016-01-15')
+        self.assertEqual(len(created_bnk_stmt[3].line_ids), 1, 'existing statement should still only have one line')
+        self.assertDate(created_bnk_stmt[4].date, '2016-01-16')
+        self.assertEqual(len(created_bnk_stmt[4].line_ids), 1, 'new statement should only have one line')
+        # Check balance of each statements
+        self.assertEqual(created_bnk_stmt[0].balance_start, 0)
+        self.assertEqual(created_bnk_stmt[0].balance_end_real, 30)
+        self.assertEqual(created_bnk_stmt[1].balance_start, 30)
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 40)
+        self.assertEqual(created_bnk_stmt[2].balance_start, 40)
+        self.assertEqual(created_bnk_stmt[2].balance_end_real, 50)
+        self.assertEqual(created_bnk_stmt[3].balance_start, 50)
+        self.assertEqual(created_bnk_stmt[3].balance_end_real, 60)
+        self.assertEqual(created_bnk_stmt[4].balance_start, 60)
+        self.assertEqual(created_bnk_stmt[4].balance_end_real, 70)
+
+        # Post first statement and then try adding new transaction to it, it should be reset to draft
+        self.confirm_bank_statement(created_bnk_stmt[0])
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc', limit=1)
+        self.assertEqual(created_bnk_stmt.state, 'confirm', 'Statement should be posted')
+        transactions = self.create_transactions(['2016-01-10'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 80)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 4, '4 lines should have been added to first statement')
+        self.assertEqual(created_bnk_stmt[0].state, 'open', 'Statement should be reset to draft')
+
 
     def test_creation_every_week(self):
         self.bank_journal.write({'bank_statement_creation': 'week'})
-        transactions = self.create_transaction('2016-01-01', '2016-01-01')
+        transactions = self.create_transactions(['2016-01-10', '2016-01-15'])
         # first synchronization, no previous bank statement
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 1, 'Should have created a single bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'bank statement should have 3 lines (2 added + opening entry)')
-        self.assertEqual(created_bnk_stmt[0].balance_end_real, 1900, 'Newly bank statement balance end should be fetched from transaction')
-        self.delete_bank_statement(created_bnk_stmt)
-        # already have bank statement
-        bank_stmt = self.create_bank_statement_date('2016-01-01')
-        self.assertEqual(len(bank_stmt.line_ids), 1, 'Previous bank statement should have 1 line to start')
-        # Add 2 transactions same day, both should be added to previous bank statement
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 1, 'Should not have created a new bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'Previous bank statement should now have 3 lines')
-        # Add 1 transaction in the week and 1 next week, the first should be on previous bank statement and latest in new bank stmt
-        transactions = self.create_transaction('2016-01-03', '2016-01-07')
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created a new bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 4, 'Previous bank statement should now have 4 lines')
-        self.assertEqual(len(created_bnk_stmt[1].line_ids), 1, 'Newly bank statement should have 1 line')
-        self.assertEqual(created_bnk_stmt[1].balance_end_real, 250, 'Newly bank statement balance end should be 250')
-        self.assertEqual(created_bnk_stmt[1].balance_start, 200, 'Newly bank statement balance start should be 200')
-        #remove bank statement
-        self.delete_bank_statement(created_bnk_stmt)
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 20)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created two bank statements, one for each transaction')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 1, 'bank statement should have 1 line')
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 1, 'bank statement should have 1 line')
+        self.assertEqual(created_bnk_stmt[0].balance_end_real, 10)
+        self.assertEqual(created_bnk_stmt[1].balance_start, 10)
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 20)
+        # The date of the statement if the first date of the week (starting monday)
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-04')
+        self.assertEqual(created_bnk_stmt[0].name, 'Online synchronization from 2016-01-04 to 2016-01-10')
+        self.assertDate(created_bnk_stmt[1].date, '2016-01-11')
+        self.assertEqual(created_bnk_stmt[1].name, 'Online synchronization from 2016-01-11 to 2016-01-17')
+
+        # Add new transactions, 2 should be in first statement, one in second statement and one newly created
+        transactions = self.create_transactions(['2016-01-08', '2016-01-04', '2016-01-13', '2016-01-18'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 60)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 3, 'Should have created one new bank statements')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'bank statement should have 3 lines')
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 2, 'bank statement should have 2 lines')
+        self.assertEqual(len(created_bnk_stmt[2].line_ids), 1, 'bank statement should have 1 line')
+        # The date of the statement if the first date of the week (starting monday)
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-04')
+        self.assertDate(created_bnk_stmt[1].date, '2016-01-11')
+        self.assertDate(created_bnk_stmt[2].date, '2016-01-18')
+        self.assertEqual(created_bnk_stmt[0].balance_end_real, 30)
+        self.assertEqual(created_bnk_stmt[1].balance_start, 30)
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 50)
+        self.assertEqual(created_bnk_stmt[2].balance_start, 50)
+        self.assertEqual(created_bnk_stmt[2].balance_end_real, 60)
+
 
     def test_creation_every_2weeks(self):
         self.bank_journal.write({'bank_statement_creation': 'bimonthly'})
-        transactions = self.create_transaction('2016-01-01', '2016-01-01')
+        
+        transactions = self.create_transactions(['2016-01-10', '2016-01-15'])
         # first synchronization, no previous bank statement
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 1, 'Should have created a single bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'bank statement should have 3 lines (2 added + opening entry)')
-        self.assertEqual(created_bnk_stmt[0].balance_end_real, 1900, 'Newly bank statement balance end should be fetched from transaction')
-        self.delete_bank_statement(created_bnk_stmt)
-        # already have bank statement
-        bank_stmt = self.create_bank_statement_date('2016-01-01')
-        self.assertEqual(len(bank_stmt.line_ids), 1, 'Previous bank statement should have 1 line to start')
-        # Add 2 transactions same half of month, both should be added to previous bank statement
-        transactions = self.create_transaction('2016-01-01', '2016-01-15')
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 1, 'Should not have created a new bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'Previous bank statement should now have 3 lines')
-        # Add 1 transaction in the same half month and 1 next half, the first should be on previous bank statement and latest in new bank stmt
-        transactions = self.create_transaction('2016-01-10', '2016-01-16')
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created a new bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 4, 'Previous bank statement should now have 4 lines')
-        self.assertEqual(len(created_bnk_stmt[1].line_ids), 1, 'Newly bank statement should have 1 line')
-        self.assertEqual(created_bnk_stmt[1].balance_end_real, 250, 'Newly bank statement balance end should be 250')
-        self.assertEqual(created_bnk_stmt[1].balance_start, 200, 'Newly bank statement balance start should be 200')
-        #remove bank statement
-        self.delete_bank_statement(created_bnk_stmt)
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 20)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created two bank statements, one for each transaction')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 1, 'bank statement should have 1 line')
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 1, 'bank statement should have 1 line')
+        self.assertEqual(created_bnk_stmt[0].balance_end_real, 10)
+        self.assertEqual(created_bnk_stmt[1].balance_start, 10)
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 20)
+        # The date of the statement if either first of 15 of the month
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-01')
+        self.assertEqual(created_bnk_stmt[0].name, 'Online synchronization from 2016-01-01 to 2016-01-14')
+        self.assertDate(created_bnk_stmt[1].date, '2016-01-15')
+        self.assertEqual(created_bnk_stmt[1].name, 'Online synchronization from 2016-01-15 to 2016-01-31')
+
+        # Add new transactions, 2 should be in first statement, one in second statement and one newly created
+        transactions = self.create_transactions(['2016-01-08', '2016-01-04', '2016-01-18', '2016-02-01'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 60)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 3, 'Should have created one new bank statements')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'bank statement should have 3 lines')
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 2, 'bank statement should have 2 lines')
+        self.assertEqual(len(created_bnk_stmt[2].line_ids), 1, 'bank statement should have 1 line')
+        # The date of the statement if the first date of the week (starting monday)
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-01')
+        self.assertDate(created_bnk_stmt[1].date, '2016-01-15')
+        self.assertDate(created_bnk_stmt[2].date, '2016-02-01')
+        self.assertEqual(created_bnk_stmt[0].balance_end_real, 30)
+        self.assertEqual(created_bnk_stmt[1].balance_start, 30)
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 50)
+        self.assertEqual(created_bnk_stmt[2].balance_start, 50)
+        self.assertEqual(created_bnk_stmt[2].balance_end_real, 60)
+
 
     def test_creation_every_month(self):
         self.bank_journal.write({'bank_statement_creation': 'month'})
-        transactions = self.create_transaction('2016-01-01', '2016-01-01')
+
+        transactions = self.create_transactions(['2016-01-10', '2016-02-15'])
         # first synchronization, no previous bank statement
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 1, 'Should have created a single bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'bank statement should have 3 lines (2 added + opening entry)')
-        self.assertEqual(created_bnk_stmt[0].balance_end_real, 1900, 'Newly bank statement balance end should be fetched from transaction')
-        self.delete_bank_statement(created_bnk_stmt)
-        # already have bank statement
-        bank_stmt = self.create_bank_statement_date('2016-01-01')
-        self.assertEqual(len(bank_stmt.line_ids), 1, 'Previous bank statement should have 1 line to start')
-        # Add 2 transactions same month, both should be added to previous bank statement
-        transactions = self.create_transaction('2016-01-15', '2016-01-31')
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 1, 'Should not have created a new bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'Previous bank statement should now have 3 lines')
-        # Add 1 transaction in the month and 1 next month, the first should be on previous bank statement and latest in new bank stmt
-        transactions = self.create_transaction('2016-01-21', '2016-02-01')
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id')
-        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created a new bank statement')
-        self.assertEqual(len(created_bnk_stmt[0].line_ids), 4, 'Previous bank statement should now have 4 lines')
-        self.assertEqual(len(created_bnk_stmt[1].line_ids), 1, 'Newly bank statement should have 1 line')
-        self.assertEqual(created_bnk_stmt[1].balance_end_real, 250, 'Newly bank statement balance end should be 250')
-        self.assertEqual(created_bnk_stmt[1].balance_start, 200, 'Newly bank statement balance start should be 200')
-        #remove bank statement
-        self.delete_bank_statement(created_bnk_stmt)
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 20)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 2, 'Should have created two bank statements, one for each transaction')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 1, 'bank statement should have 1 line')
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 1, 'bank statement should have 1 line')
+        self.assertEqual(created_bnk_stmt[0].balance_end_real, 10)
+        self.assertEqual(created_bnk_stmt[1].balance_start, 10)
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 20)
+        # The date of the statement is first of the month
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-01')
+        self.assertEqual(created_bnk_stmt[0].name, 'Online synchronization from 2016-01-01 to 2016-01-31')
+        self.assertDate(created_bnk_stmt[1].date, '2016-02-01')
+        self.assertEqual(created_bnk_stmt[1].name, 'Online synchronization from 2016-02-01 to 2016-02-29')
+
+        # Add new transactions, 2 should be in first statement, one in second statement and one newly created
+        transactions = self.create_transactions(['2016-01-08', '2016-01-04', '2016-02-01', '2016-03-18'])
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 60)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 3, 'Should have created one new bank statements')
+        self.assertEqual(len(created_bnk_stmt[0].line_ids), 3, 'bank statement should have 3 lines')
+        self.assertEqual(len(created_bnk_stmt[1].line_ids), 2, 'bank statement should have 2 lines')
+        self.assertEqual(len(created_bnk_stmt[2].line_ids), 1, 'bank statement should have 1 line')
+        # The date of the statement if the first date of the week (starting monday)
+        self.assertDate(created_bnk_stmt[0].date, '2016-01-01')
+        self.assertDate(created_bnk_stmt[1].date, '2016-02-01')
+        self.assertDate(created_bnk_stmt[2].date, '2016-03-01')
+        self.assertEqual(created_bnk_stmt[0].balance_end_real, 30)
+        self.assertEqual(created_bnk_stmt[1].balance_start, 30)
+        self.assertEqual(created_bnk_stmt[1].balance_end_real, 50)
+        self.assertEqual(created_bnk_stmt[2].balance_start, 50)
+        self.assertEqual(created_bnk_stmt[2].balance_end_real, 60)
+        
 
     def test_assign_partner_auto_bank_stmt(self):
         self.bank_journal.write({'bank_statement_creation': 'day'})
         agrolait = self.env.ref("base.res_partner_2")
         self.assertEqual(agrolait.online_partner_vendor_name, False)
         self.assertEqual(agrolait.online_partner_bank_account, False)
-        transactions = self.create_transaction_partner(vendor_name='test_vendor_name')
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id desc', limit=1)
+        transactions = self.create_transaction_partner(date='2016-01-01', vendor_name='test_vendor_name')
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 50)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='date desc', limit=1)
         # Ensure that bank statement has no partner set
         self.assertEqual(created_bnk_stmt.line_ids[0].partner_id, self.env['res.partner'])
         # Assign partner and Validate bank statement
@@ -247,9 +352,9 @@ class TestSynchStatementCreation(AccountingTestCase):
         self.assertEqual(agrolait.online_partner_bank_account, False)
         
         # Create another statement with a partner
-        transactions = self.create_transaction_partner(partner_id=agrolait.id, vendor_name='test_other_vendor_name', account_number='123')
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id desc', limit=1)
+        transactions = self.create_transaction_partner(date='2016-01-02', partner_id=agrolait.id, vendor_name='test_other_vendor_name', account_number='123')
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 100)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='date desc', limit=1)
         # Ensure that statement has a partner set
         self.assertEqual(created_bnk_stmt.line_ids[0].partner_id, agrolait)
         # Validate and check that partner has no vendor_name set and has an account_number set instead
@@ -258,9 +363,9 @@ class TestSynchStatementCreation(AccountingTestCase):
         self.assertEqual(agrolait.online_partner_bank_account, '123')
 
         # Create another statement with same information
-        transactions = self.create_transaction_partner(partner_id=agrolait.id, account_number='123')
-        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='id desc', limit=1)
+        transactions = self.create_transaction_partner(date='2016-01-03', partner_id=agrolait.id, account_number='123')
+        self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 150)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id','=',self.bank_journal.id)], order='date desc', limit=1)
         # Ensure that statement has a partner set
         self.assertEqual(created_bnk_stmt.line_ids[0].partner_id, agrolait)
         # Validate and check that partner has no vendor_name set and has same account_number as previous

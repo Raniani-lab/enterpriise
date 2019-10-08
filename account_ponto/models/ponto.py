@@ -270,7 +270,6 @@ class OnlineAccount(models.Model):
                     'name': name,
                     'amount': transaction.get('attributes', {}).get('amount'),
                     'account_number': transaction.get('attributes', {}).get('counterpartReference'),
-                    'end_amount': end_amount
                 }
                 if transaction.get('attributes', {}).get('counterpartName'):
                     trans['online_partner_vendor_name'] = transaction['attributes']['counterpartName']
@@ -279,7 +278,7 @@ class OnlineAccount(models.Model):
         if latest_transaction_identifier:
             self.ponto_last_synchronization_identifier = latest_transaction_identifier
         # Create the bank statement with the transactions
-        return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids[0])
+        return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids[0], end_amount)
 
 
 class OnlineAccountWizard(models.TransientModel):

@@ -103,8 +103,8 @@
                                     <field name="planned_date_end" widget="daterange" options='{"related_start_date": "planned_date_begin"}'/>
                                 </div>
                             </div>
-                            <label for="timesheet_timer_first_start" string="Effective Hours"/>
-                            <div class="w-100">
+                            <label for="timesheet_timer_first_start" string="Effective Hours" attrs="{'invisible': [('allow_timesheets', '=', False)]}"/>
+                            <div class="w-100" attrs="{'invisible': [('allow_timesheets', '=', False)]}">
                                 <div class="o_row">
                                     <field name="timesheet_timer_first_start" widget="daterange" options='{"related_end_date": "timesheet_timer_last_stop"}'/>
                                     <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>

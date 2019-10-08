@@ -104,7 +104,7 @@ class AccountPayment(models.Model):
             l10n_mx_edi_manual_reconciliation=False)).post()
         for record in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
             partner = record.journal_id.l10n_mx_address_issued_id or record.company_id.partner_id.commercial_partner_id
-            tz = self.env['account.invoice']._l10n_mx_edi_get_timezone(
+            tz = self.env['account.move']._l10n_mx_edi_get_timezone(
                 partner.state_id.code)
             date_mx = datetime.now(tz)
             record.write({
@@ -382,7 +382,7 @@ class AccountPayment(models.Model):
 
         # -Compute date and time of the invoice
         partner = self.journal_id.l10n_mx_address_issued_id or self.company_id.partner_id.commercial_partner_id
-        tz = self.env['account.invoice']._l10n_mx_edi_get_timezone(
+        tz = self.env['account.move']._l10n_mx_edi_get_timezone(
             partner.state_id.code)
         date_mx = datetime.now(tz)
         if not self.l10n_mx_edi_expedition_date:

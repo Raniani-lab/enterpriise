@@ -4,6 +4,7 @@
 
         <record id="fsm_worksheet_template" model="project.worksheet.template">
             <field name="name">Default Worksheet</field>
+            <field name="color">2</field>
         </record>
 
         <record id="industry_fsm.fsm_project" model="project.project">

@@ -113,6 +113,7 @@
                             </div>
                             <field name="user_id" options="{'no_open': True}"/>
                             <field name="project_id" domain="[('is_fsm', '=', True)]" required="True" options="{'no_create': True, 'no_edit': True, 'no_open': 'True'}" groups="industry_fsm.group_fsm_manager"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                         </group>
                         <field name="description" colspan="2"/>
                         <field name="timesheet_ids" invisible="1"/>

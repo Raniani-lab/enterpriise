@@ -36,7 +36,7 @@ const PhoneCallContactsTab = PhoneCallTab.extend({
             method: 'create_from_contact',
             args: [currentPhoneCall.partnerId],
         });
-        this._currentPhonecallId = this._createPhoneCall(phoneCallData);
+        this._currentPhoneCallId = this._createPhoneCall(phoneCallData);
         await this._selectPhoneCall(this._currentPhoneCallId);
         return _super();
     },

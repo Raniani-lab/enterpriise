@@ -143,7 +143,7 @@ const PhoneCallTab = Widget.extend({
         const phoneCallData = await this._rpc({
             model: 'voip.phonecall',
             method: 'create_from_incoming_call_accepted',
-            args: [[this._currentPhonecallId], number, partnerId],
+            args: [[this._currentPhoneCallId], number, partnerId],
         });
         const phoneCallId = await this._displayInQueue(phoneCallData);
         this._currentPhoneCallId = phoneCallId;
@@ -164,7 +164,7 @@ const PhoneCallTab = Widget.extend({
         const phoneCallData = await this._rpc({
             model: 'voip.phonecall',
             method: 'create_from_missed_call',
-            args: [[this._currentPhonecallId], number, partnerId],
+            args: [[this._currentPhoneCallId], number, partnerId],
         });
         const phoneCallId = await this._displayInQueue(phoneCallData);
         this._currentPhoneCallId = phoneCallId;
@@ -183,7 +183,7 @@ const PhoneCallTab = Widget.extend({
         const phoneCallData = await this._rpc({
             model: 'voip.phonecall',
             method: 'create_from_rejected_call',
-            args: [[this._currentPhonecallId], number, partnerId],
+            args: [[this._currentPhoneCallId], number, partnerId],
         });
         const phoneCallId = await this._displayInQueue(phoneCallData);
         this._currentPhoneCallId = phoneCallId;

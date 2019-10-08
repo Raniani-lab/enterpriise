@@ -81,11 +81,10 @@
                                         <cfdi:Retenciones>
                                             <t t-foreach="withholding" t-as="tax">
                                                 <t t-set="tax_dict" t-value="tax_line.get(tax.id, {})"/>
-                                                <t t-set="tag_name" t-value="tax.env['account.account.tag'].browse(tax_dict['tag_ids'][0][2]).filtered(lambda r: 'Factor:' not in r.name)"/>
                                                 <t t-set="tasa" t-value="'%.6f' % abs(tax.amount if tax.amount_type == 'fixed' else (tax.amount / 100.0))"/>
                                                 <cfdi:Retencion
                                                     t-att-Base="'%.*f' % (decimal_precision, tax_dict.get('base', line.price_subtotal))"
-                                                    t-att-Impuesto="tax_name(tag_name[0].name if tag_name else '')"
+                                                    t-att-Impuesto="tax_name(tax.mapped('invoice_repartition_line_ids.tag_ids')[0].name if tax.mapped('invoice_repartition_line_ids.tag_ids') else '')"
                                                     t-att-TipoFactor="tax.l10n_mx_cfdi_tax_type"
                                                     t-att-TasaOCuota="tasa"
                                                     t-att-Importe="'%.2f' % abs(tax_dict.get('amount', tax.amount / 100.0 * line.price_subtotal))"/>

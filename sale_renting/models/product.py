@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+from datetime import date
 from odoo import api, fields, models, _
 
 
@@ -116,23 +116,42 @@ class ProductProduct(models.Model):
         :rtype: rental.pricing
         """
         self.ensure_one()
+        best_pricing_rule = self.env['rental.pricing']
         if not self.rental_pricing_ids:
-            return self.env['rental.pricing']
+            return best_pricing_rule
         pickup_date, return_date = kwargs.get('pickup_date', False), kwargs.get('return_date', False)
         duration, unit = kwargs.get('duration', False), kwargs.get('unit', '')
-        pricelist = kwargs.get('pricelist', False)
+        pricelist = kwargs.get('pricelist', self.env['product.pricelist'])
+        currency = kwargs.get('currency', self.env.company.currency_id)
+        company = kwargs.get('company', self.env.company)
         if pickup_date and return_date:
             duration_dict = self.env['rental.pricing']._compute_duration_vals(pickup_date, return_date)
         elif not(duration and unit):
-            return self.env['rental.pricing']  # no valid input to compute duration.
+            return best_pricing_rule  # no valid input to compute duration.
         min_price = float("inf")  # positive infinity
-        best_pricing_rule = self.env['rental.pricing']
-        for pricing in self.rental_pricing_ids:
-            if pricing.applies_to(self) and (not pricelist or not pricing.pricelist_id or pricing.pricelist_id == pricelist):
+        available_pricings = self.rental_pricing_ids.filtered(
+            lambda p: p.pricelist_id == pricelist
+        )
+        if not available_pricings:
+            # If no pricing is defined for given pricelist:
+            # fallback on generic pricings
+            available_pricings = self.rental_pricing_ids.filtered(
+                lambda p: not p.pricelist_id
+            )
+        for pricing in available_pricings:
+            if pricing.applies_to(self):
                 if duration and unit:
                     price = pricing._compute_price(duration, unit)
                 else:
                     price = pricing._compute_price(duration_dict[pricing.unit], pricing.unit)
+
+                if pricing.currency_id != currency:
+                    price = pricing.currency_id._convert(
+                        from_amount=price,
+                        to_currency=currency,
+                        company=company,
+                        date=date.today(),
+                    )
 
                 if price < min_price:
                     min_price, best_pricing_rule = price, pricing

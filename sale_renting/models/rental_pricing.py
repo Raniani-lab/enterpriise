@@ -40,6 +40,12 @@ class RentalPricing(models.Model):
         help="Select Variants of the Product for which this rule applies."
         "\n Leave empty if this rule applies for any variant of this template.")
     pricelist_id = fields.Many2one('product.pricelist', string='Pricelist')
+    company_id = fields.Many2one('res.company', related='pricelist_id.company_id')
+
+    @api.onchange('pricelist_id')
+    def _onchange_pricelist_id(self):
+        for pricing in self.filtered('pricelist_id'):
+            pricing.currency_id = pricing.pricelist_id.currency_id
 
     def _compute_price(self, duration, unit):
         """Compute the price for a specified duration of the current pricing rule.

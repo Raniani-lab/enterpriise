@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
+from datetime import timedelta, date
 from odoo import api, fields, models, _
 from odoo.tools import float_compare, format_datetime
 
@@ -243,6 +243,13 @@ class RentalOrderLine(models.Model):
 
         if not delay_product.active:
             return
+
+        delay_price = self.product_id.currency_id._convert(
+            from_amount=delay_price,
+            to_currency=self.currency_id,
+            company=self.company_id,
+            date=date.today(),
+        )
 
         vals = self._prepare_delay_line_vals(delay_product, delay_price, qty)
 

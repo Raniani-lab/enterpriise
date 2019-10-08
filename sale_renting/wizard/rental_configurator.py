@@ -4,6 +4,7 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 import math
+from datetime import date
 
 class RentalWizard(models.TransientModel):
     _name = 'rental.wizard'
@@ -21,6 +22,7 @@ class RentalWizard(models.TransientModel):
         'product.product', "Product", required=True, ondelete='cascade',
         domain=[('rent_ok', '=', True)], help="Product to rent (has to be rentable)")
     uom_id = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True, default=_default_uom_id)
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company.id, store=False)
 
     pickup_date = fields.Datetime(
         string="Pickup", required=True, help="Date of Pickup",
@@ -34,7 +36,7 @@ class RentalWizard(models.TransientModel):
     pricing_id = fields.Many2one(
         'rental.pricing', compute="_compute_pricing",
         string="Pricing", help="Best Pricing Rule based on duration")
-    currency_id = fields.Many2one('res.currency', related='pricing_id.currency_id')
+    currency_id = fields.Many2one('res.currency', string="Currency", compute='_compute_displayed_currency')
 
     duration = fields.Integer(
         string="Duration", compute="_compute_duration",
@@ -54,7 +56,16 @@ class RentalWizard(models.TransientModel):
         self.pricing_id = False
         for wizard in self:
             if wizard.product_id:
-                wizard.pricing_id = wizard.product_id._get_best_pricing_rule(pickup_date=wizard.pickup_date, return_date=wizard.return_date, pricelist=wizard.pricelist_id)
+                wizard.pricing_id = wizard.product_id._get_best_pricing_rule(
+                    pickup_date=wizard.pickup_date,
+                    return_date=wizard.return_date,
+                    pricelist=wizard.pricelist_id,
+                    company=wizard.company_id)
+
+    @api.depends('pricelist_id', 'pricing_id')
+    def _compute_displayed_currency(self):
+        for wizard in self:
+            wizard.currency_id = wizard.pricelist_id.currency_id or wizard.pricing_id.currency_id
 
     @api.depends('pricing_id', 'pickup_date', 'return_date')
     def _compute_duration(self):
@@ -77,11 +88,19 @@ class RentalWizard(models.TransientModel):
                     }
             wizard.update(values)
 
-    @api.onchange('pricing_id', 'duration', 'duration_unit')
+    @api.onchange('pricing_id', 'currency_id', 'duration', 'duration_unit')
     def _compute_unit_price(self):
         for wizard in self:
             if wizard.pricing_id and wizard.duration > 0:
-                wizard.unit_price = wizard.pricing_id._compute_price(wizard.duration, wizard.duration_unit)
+                unit_price = wizard.pricing_id._compute_price(wizard.duration, wizard.duration_unit)
+                if wizard.currency_id != wizard.pricing_id.currency_id:
+                    wizard.unit_price = wizard.pricing_id.currency_id._convert(
+                        from_amount=unit_price,
+                        to_currency=wizard.currency_id,
+                        company=wizard.company_id,
+                        date=date.today())
+                else:
+                    wizard.unit_price = unit_price
             elif wizard.duration > 0:
                 wizard.unit_price = wizard.product_id.lst_price
 

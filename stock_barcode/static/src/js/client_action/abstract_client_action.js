@@ -58,6 +58,7 @@ var ClientAction = AbstractAction.extend({
 
         // State variables
         this.initialState = {};     // Will be filled by getState.
+        this.stepState = {};        // Will be filled at the start of each step.
         this.currentState = {};     // Will be filled by getState and updated when operations occur.
         this.pages = [];            // Groups separating the pages.
         this.currentPageIndex = 0;  // The displayed page index related to `this.pages`.
@@ -121,6 +122,11 @@ var ClientAction = AbstractAction.extend({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+
+    _discard: function () {
+        this.currentState = this.stepState;
+        return Promise.resolve();
+    },
 
     /**
      * Make an rpc to get the state and afterwards set `this.currentState` and `this.initialState`.
@@ -796,6 +802,7 @@ var ClientAction = AbstractAction.extend({
     _step_source: function (barcode, linesActions) {
         var self = this;
         this.currentStep = 'source';
+        this.stepState = $.extend(true, {}, this.currentState);
         var errorMessage;
 
         /* Bypass this step in the following cases:
@@ -858,6 +865,7 @@ var ClientAction = AbstractAction.extend({
     _step_product: function (barcode, linesActions) {
         var self = this;
         this.currentStep = 'product';
+        this.stepState = $.extend(true, {}, this.currentState);
         var errorMessage;
 
         var product = this._isProduct(barcode);
@@ -936,6 +944,7 @@ var ClientAction = AbstractAction.extend({
             return Promise.reject();
         }
         this.currentStep = 'product';
+        this.stepState = $.extend(true, {}, this.currentState);
         var destinationLocation = this.locationsByBarcode[barcode];
         if (destinationLocation) {
             return Promise.reject();
@@ -1049,6 +1058,7 @@ var ClientAction = AbstractAction.extend({
             return Promise.reject();
         }
         this.currentStep = 'lot';
+        this.stepState = $.extend(true, {}, this.currentState);
         var errorMessage;
         var self = this;
 
@@ -1255,6 +1265,7 @@ var ClientAction = AbstractAction.extend({
                 return Promise.reject(errorMessage);
             }
             var self = this;
+            this.stepState = $.extend(true, {}, this.currentState);
             // FIXME: remove .uniq() once the code is adapted.
             _.each(_.uniq(this.scannedLines), function (idOrVirtualId) {
                 var currentStateLine = _.find(self._getLines(self.currentState), function (line) {

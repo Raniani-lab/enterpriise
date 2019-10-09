@@ -197,6 +197,13 @@ msgid "Notifications"
 msgstr ""
 
 #. module: social_push_notifications
+#. openerp-web
+#: code:addons/social_push_notifications/static/src/js/push_preview.js:0
+#, python-format
+msgid "Notifications blocked"
+msgstr ""
+
+#. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_marketing_campaign__social_push_notifications_count
 #: model:ir.model.fields,field_description:social_push_notifications.field_utm_campaign__social_push_notifications_count
 msgid "Number Of Push Notifications"
@@ -423,6 +430,15 @@ msgstr ""
 #: code:addons/social_push_notifications/models/social_account.py:0
 #, python-format
 msgid "You can't delete a Push Notification account."
+msgstr ""
+
+#. module: social_push_notifications
+#. openerp-web
+#: code:addons/social_push_notifications/static/src/js/push_preview.js:0
+#, python-format
+msgid ""
+"Your browser notifications are blocked or you're not in an HTTPS "
+"environment."
 msgstr ""
 
 #. module: social_push_notifications

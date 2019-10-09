@@ -60,6 +60,14 @@ var PushPreviewButton = Widget.extend({
         ev.preventDefault();
         ev.stopPropagation();
 
+        if (Notification.permission === "denied") {
+            this.do_warn(
+                _t("Notifications blocked"),
+                _t("Your browser notifications are blocked or you're not in an HTTPS environment.")
+            );
+            return;
+        }
+
         var recordState = this.getParent().state.data;
         var message = recordState.message;
         var title = recordState.push_notification_title || _('New Message');

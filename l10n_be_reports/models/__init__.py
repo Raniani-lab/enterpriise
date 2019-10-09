@@ -5,3 +5,4 @@ from . import account_generic_tax_report
 from . import partner_vat_listing
 from . import partner_vat_intra
 from . import assets_report
+from . import res_partner

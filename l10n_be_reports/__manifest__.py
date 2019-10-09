@@ -12,10 +12,15 @@
         'l10n_be', 'account_reports'
     ],
     'data': [
+        'wizard/l10n_be_281_50_wizard.xml',
         'views/l10n_be_vat_statement_views.xml',
         'views/l10n_be_wizard_xml_export_options_views.xml',
+        'views/l10n_be_vendor_partner_views.xml',
         'data/account_financial_html_report_data.xml',
         'data/account_tag_data.xml',
+        'security/ir.model.access.csv',
+        'report/l10n_be_281_50_pdf_templates.xml',
+        'report/l10n_be_281_50_xml_templates.xml',
     ],
     'installable': True,
     'auto_install': True,

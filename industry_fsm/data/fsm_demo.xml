@@ -90,14 +90,6 @@
             <field name="planned_date_end" eval="(DateTime.today() + relativedelta(days=2)).strftime('%Y-%m-%d  16:30:00')"/>
         </record>
 
-        <function model="project.task" name="action_fsm_validate"
-            eval="[[ref('planning_task_0'), ref('planning_task_1')]]"/>
-
-        <!-- Set the demo user as a fsm user -->
-        <record id="group_fsm_user" model="res.groups">
-            <field name="users" eval="[(4,ref('base.user_demo'))]"/>
-        </record>
-
         <record id="planning_task_8" model="project.task">
             <field name="sequence">1</field>
             <field name="user_id" ref="base.user_admin"/>

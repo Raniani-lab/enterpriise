@@ -102,10 +102,12 @@ var CloseSession = AbstractAction.extend({
             var balance_promises = [];
             if (self.terminals) {
                 self.terminals.forEach(function (terminal) {
-                    terminal.add_listener(self._onValueChange.bind(self, terminal));
                     balance_promises.push(
-                        terminal.action({ messageType: 'Balance' })
-                            .then(self._onTerminalActionResult.bind(self, terminal))
+                        new Promise(function (resolve) {
+                            terminal.add_listener(self._onValueChange.bind(self, terminal, resolve));
+                            terminal.action({ messageType: 'Balance' })
+                                .then(self._onTerminalActionResult.bind(self, terminal));
+                        })
                     );
                 });
                 Promise.all(balance_promises).then(self._performAction.bind(self));
@@ -136,7 +138,7 @@ var CloseSession = AbstractAction.extend({
      * @param {String} data.Error
      * @param {String} data.TicketMerchant
      */
-    _onValueChange: function (terminal, data) {
+    _onValueChange: function (terminal, resolve, data) {
         if (data.Error) {
             this.do_warn(_t('Error performing balance'), data.Error);
             return;
@@ -144,6 +146,7 @@ var CloseSession = AbstractAction.extend({
             this.printer.print_receipt("<div class='pos-receipt'><div class='pos-payment-terminal-receipt'>" + data.TicketMerchant.replace(/\n/g, "<br />") + "</div></div>");
         }
         terminal.remove_listener();
+        resolve(true);
     },
 });
 

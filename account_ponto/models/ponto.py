@@ -101,7 +101,7 @@ class ProviderAccount(models.Model):
                 # Since we just create account, set last sync to 15 days in the past to retrieve transaction from latest 15 days
                 last_sync = self.last_refresh - datetime.timedelta(days=15)
                 vals.update({
-                    'name': account.get('attributes', {}).get('description', _('Account')),
+                    'name': account.get('attributes', {}).get('description', False) or _('Account'),
                     'online_identifier': account.get('id'),
                     'account_online_provider_id': self.id,
                     'account_number': account.get('attributes', {}).get('reference', {}),

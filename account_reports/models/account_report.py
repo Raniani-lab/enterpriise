@@ -541,26 +541,6 @@ class AccountReport(models.AbstractModel):
         return list(reversed(codes))
 
     @api.model
-    def _sort_lines(self, lines, options):
-        def merge_tree(line):
-            sorted_list.append(line)
-            for l in sorted(tree[line['id']], key=lambda k: selected_sign * k['columns'][selected_column - k.get('colspan', 1)]['no_format']):
-                merge_tree(l)
-
-        sorted_list = []
-        selected_column = abs(options['selected_column']) - 1
-        selected_sign = -copysign(1, options['selected_column'])
-        tree = defaultdict(list)
-        if 'sortable' not in self._get_columns_name(options)[selected_column].get('class', ''):
-            return lines  # Nothing to do here
-        for line in lines:
-            tree[line.get('parent_id')].append(line)
-        for line in sorted(tree[None], key=lambda k: ('total' in k.get('class', ''), selected_sign * k['columns'][selected_column - k.get('colspan', 1)]['no_format'])):
-            merge_tree(line)
-
-        return sorted_list
-
-    @api.model
     def _create_hierarchy(self, lines, options):
         """This method is called when the option 'hiearchy' is enabled on a report.
         It receives the lines (as computed by _get_lines()) in argument, and will add
@@ -1099,6 +1079,70 @@ class AccountReport(models.AbstractModel):
             inv_values = copy.deepcopy(values)
             inv_values.reverse()
         return inv_values
+
+    @api.model
+    def _sort_lines(self, lines, options):
+        ''' Sort report lines based on the 'selected_column' key inside the options.
+        The value of options['selected_column'] is an integer, positive or negative, indicating on which column
+        to sort and also if it must be an ascending sort (positive value) or a descending sort (negative value).
+        If this key is missing or falsy, lines is returned directly.
+
+        This method has some limitations:
+        - The selected_column must have 'sortable' in its classes.
+        - All lines are sorted expect those having the 'total' class.
+        - This only works when each line has an unique id.
+        - All lines inside the selected_column must have a 'no_format' value.
+
+        Example:
+
+        parent_line_1           no_format=11
+            child_line_1        no_format=1
+            child_line_2        no_format=3
+            child_line_3        no_format=2
+            child_line_4        no_format=7
+            child_line_5        no_format=4
+            child_line_6        (total line)
+        parent_line_2           no_format=10
+            child_line_7        no_format=5
+            child_line_8        no_format=6
+            child_line_9        (total line)
+
+
+        The resulting lines will be:
+
+        parent_line_2           no_format=10
+            child_line_7        no_format=5
+            child_line_8        no_format=6
+            child_line_9        (total line)
+        parent_line_1           no_format=11
+            child_line_1        no_format=1
+            child_line_3        no_format=2
+            child_line_2        no_format=3
+            child_line_5        no_format=4
+            child_line_4        no_format=7
+            child_line_6        (total line)
+
+        :param lines:   The report lines.
+        :param options: The report options.
+        :return:        Lines sorted by the selected column.
+        '''
+        def merge_tree(line):
+            sorted_list.append(line)
+            for l in sorted(tree[line['id']], key=lambda k: selected_sign * k['columns'][selected_column - k.get('colspan', 1)]['no_format']):
+                merge_tree(l)
+
+        sorted_list = []
+        selected_column = abs(options['selected_column']) - 1
+        selected_sign = -copysign(1, options['selected_column'])
+        tree = defaultdict(list)
+        if 'sortable' not in self._get_columns_name(options)[selected_column].get('class', ''):
+            return lines  # Nothing to do here
+        for line in lines:
+            tree[line.get('parent_id') or None].append(line)
+        for line in sorted(tree[None], key=lambda k: ('total' in k.get('class', ''), selected_sign * k['columns'][selected_column - k.get('colspan', 1)]['no_format'])):
+            merge_tree(line)
+
+        return sorted_list
 
     def _set_context(self, options):
         """This method will set information inside the context based on the options dict as some options need to be in context for the query_get method defined in account_move_line"""

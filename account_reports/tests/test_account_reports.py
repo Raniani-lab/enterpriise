@@ -508,7 +508,6 @@ class TestAccountReports(TestAccountReportsCommon):
         # Init options.
         report = self.env['account.aged.receivable']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -529,7 +528,6 @@ class TestAccountReports(TestAccountReportsCommon):
         # Mark the 'partner_d' line to be unfolded.
         line_id = lines[3]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -550,7 +548,6 @@ class TestAccountReports(TestAccountReportsCommon):
         company_ids = (self.company_parent + self.company_child_eur).ids
         report = self.env['account.aged.receivable'].with_context(allowed_company_ids=company_ids)
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -571,7 +568,6 @@ class TestAccountReports(TestAccountReportsCommon):
         # Mark the 'partner_d' line to be unfolded.
         line_id = lines[3]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -597,7 +593,6 @@ class TestAccountReports(TestAccountReportsCommon):
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['partner_ids'] = (self.partner_b + self.partner_c + self.partner_d).ids
         options['partner_categories'] = self.partner_category_a.ids
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options),
@@ -621,7 +616,6 @@ class TestAccountReports(TestAccountReportsCommon):
         # Init options.
         report = self.env['account.aged.payable']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -642,7 +636,6 @@ class TestAccountReports(TestAccountReportsCommon):
         # Mark the 'partner_d' line to be unfolded.
         line_id = lines[3]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -663,7 +656,6 @@ class TestAccountReports(TestAccountReportsCommon):
         company_ids = (self.company_parent + self.company_child_eur).ids
         report = self.env['account.aged.payable'].with_context(allowed_company_ids=company_ids)
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -684,7 +676,6 @@ class TestAccountReports(TestAccountReportsCommon):
         # Mark the 'partner_d' line to be unfolded.
         line_id = lines[3]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -710,7 +701,6 @@ class TestAccountReports(TestAccountReportsCommon):
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['partner_ids'] = (self.partner_b + self.partner_c + self.partner_d).ids
         options['partner_categories'] = self.partner_category_a.ids
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options),
@@ -730,7 +720,6 @@ class TestAccountReports(TestAccountReportsCommon):
         report = self.env['account.aged.payable']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['unfold_all'] = True
-        report = report.with_context(report._set_context(options))
         lines = report._get_lines(options)
         line_ids = [line['id'] for line in lines]
         options['unfolded_lines'] = line_ids

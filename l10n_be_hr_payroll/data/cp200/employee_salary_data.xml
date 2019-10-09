@@ -153,6 +153,13 @@ if contract.mobile and contract.internet:
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
+        <function model="hr.salary.rule" name="write">
+            <value model="hr.salary.rule" search="[
+                ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary')),
+                ('code', '=', 'GROSS')]"/>
+            <value eval="{'amount_python_compute': 'result = categories.BASIC + categories.ALW - categories.ONSS * contract.ip_wage_rate / 100.0'}"/>
+        </function>
+
         <record id="cp200_employees_salary_withholding_taxes" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_pp"/>
             <field name="name">Withholding Tax</field>

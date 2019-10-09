@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-23 11:39+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: VivianMontana23 <vivianpvm@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -215,15 +215,9 @@ msgstr ""
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "All selected timesheets are already validated"
-msgstr "Todos los horarios seleccionados están ya validados"
-
-#. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:0
-#, python-format
 msgid ""
-"All selected timesheets are already validated. You are not indicated as "
-"responsible for your timesheet so you can't validate your own timesheet."
+"All selected timesheets for which you are indicated as responsible are "
+"already validated."
 msgstr ""
 
 #. module: timesheet_grid
@@ -473,11 +467,6 @@ msgid ""
 "Set the number of hours done on this task, for every day of the week. (e.g. "
 "1.5 or 1:30)"
 msgstr ""
-
-#. module: timesheet_grid
-#: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__task_id
-msgid "Task"
-msgstr "Tarea"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0

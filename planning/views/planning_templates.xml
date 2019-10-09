@@ -14,12 +14,28 @@
                         var employee_token = "<t t-esc="employee.employee_token" />";
                         var planning_token = "<t t-esc="planning_planning_id.access_token" />";
 
+                        // Hide the unassign footer by default
+                        document.getElementById("dismiss_shift").style.display = "none";
+
                         var eventFunction = function(calEvent) {
                             $(".modal-title").text(calEvent.title);
                             $(".modal-header").css("background-color", calEvent.color);
                             $("#start").text(moment(calEvent.start).format("YYYY-MM-DD hh:mm A"));
                             $("#stop").text(moment(calEvent.end).format("YYYY-MM-DD hh:mm A"));
                             $("#alloc_hours").text(calEvent.alloc_hours);
+                            $("#allow_self_unassign").text(calEvent.allow_self_unassign);
+                            if (calEvent.note) {
+                                $("#note").text(calEvent.note);
+                            }
+                            else {
+                                $("#note").text("");
+                            }
+                            if (calEvent.allow_self_unassign) {
+                                document.getElementById("dismiss_shift").style.display = "block";
+                            }
+                            else {
+                                document.getElementById("dismiss_shift").style.display = "none";
+                            }
                             $("#modal_action_dismiss_shift").attr("action", "/planning/" + planning_token + "/" + employee_token + "/unassign/" + calEvent.slot_id);
                             $("#fc-slot-onclick-modal").modal("show");
                         }
@@ -120,10 +136,13 @@
                                         <dd class="col-sm-8" id="stop"/>
                                         <dt class="col-sm-4">Allocated Hours:</dt>
                                         <dd class="col-sm-8" id="alloc_hours"/>
+                                        <dt class="col-sm-4">Note:</dt>
+                                        <dd class="col-sm-8" id="note"/>
                                         <div class="d-none" t-esc="shift_id" id="shift_uid"/>
                                     </dl>
                                 </div>
-                                <div class="modal-footer">
+
+                                <div id="dismiss_shift" class="modal-footer">
                                     <form id="modal_action_dismiss_shift" t-attf-action="/planning" method="post">
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                         <button type="submit" class="btn btn-outline-danger">I am unavailable</button>

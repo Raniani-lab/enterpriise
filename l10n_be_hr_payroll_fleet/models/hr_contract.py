@@ -11,7 +11,10 @@ class HrContract(models.Model):
     @api.model
     def default_get(self, field_list):
         res = super(HrContract, self).default_get(field_list)
-        driver_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
+        driver_id = self.env['hr.employee'].search([
+            ('user_id', '=', self.env.uid),
+            ('company_id', '=', self.env.company.id),
+        ])
         domain = self._get_available_cars_domain(driver_id)
         res['car_id'] = res.get('car_id', self.env['fleet.vehicle'].sudo().search(domain, limit=1).id)
         return res

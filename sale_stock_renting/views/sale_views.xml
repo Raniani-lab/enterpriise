@@ -31,4 +31,15 @@
       </field>
   </record>
 
+  <record id="sale_renting.rental_product_template_action" model="ir.actions.act_window">
+    <field name="context">{
+      'default_sale_ok': False,
+      'default_rent_ok': True,
+      'default_type': 'product',
+      'default_purchase_ok': False,
+      'search_default_filter_to_rent': True,
+      }
+    </field>
+  </record>
+
 </odoo>

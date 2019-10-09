@@ -14,7 +14,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo.tools.misc import xlsxwriter
 from odoo import models, fields, api, _
-from odoo.tools import config, date_utils
+from odoo.tools import config, date_utils, get_lang
 from odoo.osv import expression
 from babel.dates import get_quarter_names, parse_date
 from odoo.tools.misc import formatLang, format_date
@@ -248,7 +248,7 @@ class AccountReport(models.AbstractModel):
             elif period_type == 'month':
                 string = format_date(self.env, fields.Date.to_string(date_to), date_format='MMM YYYY')
             elif period_type == 'quarter':
-                quarter_names = get_quarter_names('abbreviated', locale=self.env.context.get('lang') or 'en_US')
+                quarter_names = get_quarter_names('abbreviated', locale=get_lang(self.env).code)
                 string = u'%s\N{NO-BREAK SPACE}%s' % (
                     quarter_names[date_utils.get_quarter_number(date_to)], date_to.year)
             else:
@@ -568,7 +568,7 @@ class AccountReport(models.AbstractModel):
         it will fallback on creating a hierarchy based on the account's code first 3
         digits.
         """
-        is_number = ['number' in c.get('class') for c in self.get_header(options)[-1][1:]]
+        is_number = ['number' in c.get('class', []) for c in self.get_header(options)[-1][1:]]
         # Avoid redundant browsing.
         accounts_cache = {}
 
@@ -662,7 +662,7 @@ class AccountReport(models.AbstractModel):
         for line in lines + [None]:
             # Only deal with lines grouped by accounts.
             # And discriminating sections defined by account.financial.html.report.line
-            is_grouped_by_account = line and line.get('caret_options')
+            is_grouped_by_account = line and line.get('caret_options') == 'account.account'
             if not is_grouped_by_account or not line:
 
                 # No group code found in any lines, compute it automatically.
@@ -811,6 +811,10 @@ class AccountReport(models.AbstractModel):
 
     #TO BE OVERWRITTEN
     def _get_columns_name_hierarchy(self, options):
+        return []
+
+    # TO BE OVERWRITTEN
+    def _get_columns_name(self, options):
         return []
 
     #TO BE OVERWRITTEN
@@ -1037,6 +1041,7 @@ class AccountReport(models.AbstractModel):
         form = self.env.ref('account.action_manual_reconciliation', False)
         ctx = self.env.context.copy()
         ctx['partner_ids'] = ctx['active_id'] = [params.get('partner_id')]
+        ctx['all_entries'] = True
         return {
             'type': 'ir.actions.client',
             'view_id': form.id,
@@ -1591,7 +1596,7 @@ class AccountReport(models.AbstractModel):
             return ('date', cell['name'])
         try:
             # the date is parsable to a xlsx compatible date
-            return ('date', parse_date(cell['name'], locale=self._context.get('lang', 'en_US')))
+            return ('date', parse_date(cell['name'], locale=get_lang(self.env).code))
         except:
             # the date is not parsable thus is returned as text
             return ('text', cell['name'])

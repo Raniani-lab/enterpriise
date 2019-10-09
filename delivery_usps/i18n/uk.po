@@ -276,7 +276,7 @@ msgstr "Провайдер"
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Quantity for each move line should be less than 1000."
-msgstr ""
+msgstr "Кількість для кожного рядка проведення повинна бути меншою, ніж 1000."
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:0

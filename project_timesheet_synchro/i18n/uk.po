@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:170
 #, python-format
 msgid "&emsp;Start"
-msgstr "&emsp;Початок"
+msgstr "&emsp;Почати"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -33,7 +33,7 @@ msgstr "&emsp;Початок"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:180
 #, python-format
 msgid "&emsp;Stop"
-msgstr "&emsp;Кінець"
+msgstr "&emsp;Зупинити"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -551,7 +551,7 @@ msgid ""
 msgstr ""
 "Сервер, до якого ви підключилися, не підтримує синхронізацію табеля. Ви "
 "повинні звернутися до свого адміністратора, щоби встановити модуль "
-"''Синхронізація із зовнішнім додатком табеля' (доступна у версії Odoo "
+"''Синхронізація із зовнішнім додатком табеля\" (доступна у версії Odoo "
 "Enterprise)."
 
 #. module: project_timesheet_synchro

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-30 09:48+0000\n"
 "PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -981,6 +981,7 @@ msgstr "Wilt u een dropdown toevoegen met kleuren?"
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Domain"
 msgstr "Domein"
@@ -1248,13 +1249,6 @@ msgstr "Filter"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
-#, python-format
-msgid "Filter Domain"
-msgstr "Filter domein"
-
-#. module: web_studio
-#. openerp-web
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
@@ -1459,6 +1453,13 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Hide by default"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #, python-format
 msgid "Home"
@@ -1620,13 +1621,13 @@ msgstr "Kanban weergave"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Label"
 msgstr "Label"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Label Text"
@@ -1879,10 +1880,31 @@ msgstr "Nieuwe velden"
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/js/views/view_editors/search_editor.js:0
+#, python-format
+msgid "New Filter"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #, python-format
 msgid "New Menu"
 msgstr "Nieuw menu"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "New record at the bottom"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "New record on top"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -1990,6 +2012,13 @@ msgid ""
 msgstr ""
 "Alleen groepen met een externe ID kunnen hier worden gebruikt. Kies een "
 "andere groep of wijs handmatig een externe ID toe aan deze groep."
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Optional"
+msgstr "Optioneel"
 
 #. module: web_studio
 #. openerp-web
@@ -2286,18 +2315,17 @@ msgstr "Bewaar."
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:0
-#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:0
+#: code:addons/web_studio/static/src/js/submenu.js:0
 #, python-format
 msgid "Saved"
 msgstr "Opgeslagen"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:0
+#: code:addons/web_studio/static/src/js/submenu.js:0
 #, python-format
-msgid "Saving..."
-msgstr "Opslaan..."
+msgid "Saving"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -2398,6 +2426,13 @@ msgstr "Als standaard instellen"
 #, python-format
 msgid "Set expression"
 msgstr "Stel expressie in"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Show by default"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -3002,6 +3037,13 @@ msgid "You can only display a user or a partner"
 msgstr "U kan alleen een gebruiker of een relatie tonen"
 
 #. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/action_editor_action.js:0
+#, python-format
+msgid "You cannot deactivate this view as it is the last one active."
+msgstr ""
+
+#. module: web_studio
 #: code:addons/web_studio/controllers/report.py:0
 #, python-format
 msgid "You cannot modify this view, it is part of the generic layout"
@@ -3062,7 +3104,6 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:0
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "bottom"
 msgstr "onder"
@@ -3145,7 +3186,6 @@ msgstr "test e-mail"
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:0
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "top"
 msgstr "bovenaan"

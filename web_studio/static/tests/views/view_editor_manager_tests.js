@@ -265,38 +265,103 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('widget dropdown in list editor sidebar', async function(assert) {
-        assert.expect(6);
+    QUnit.test('visible studio hooks in listview', async function (assert) {
+        assert.expect(2);
 
-        odoo.debug = false;
-
-        var vem = await studioTestUtils.createViewEditorManager({
+        let fieldsView;
+        const vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
             model: 'coucou',
-            arch: "<tree>" +
-                    "<field name='display_name'/>" +
-                    "<field name='priority' widget='priority'/>" +
-                "</tree>",
+            arch: '<tree><field name="display_name"/></tree>',
+            async mockRPC(route) {
+                if (route === '/web_studio/edit_view') {
+                    fieldsView.arch = `
+                        <tree editable='bottom'>
+                            <field name='display_name'/>
+                        </tree>`;
+                    return {
+                        fields_views: {
+                            list: fieldsView,
+                        },
+                        fields: fieldsView.fields,
+                    };
+                }
+                return this._super(...arguments);
+            },
         });
+
+        fieldsView = JSON.parse(JSON.stringify(vem.fields_view));
+        assert.ok(
+            vem.$('th.o_web_studio_hook')[0].offsetWidth,
+            "studio hooks should be visible in non-editable listview");
+
+        // check the same with editable list 'bottom'
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_view'));
+        await testUtils.dom.triggerEvent(vem.$('option[value="bottom"]'), 'change');
+        assert.ok(
+            vem.$('th.o_web_studio_hook')[0].offsetWidth,
+            "studio hooks should be visible in editable 'bottom' listview");
+
+        vem.destroy();
+    });
+
+    QUnit.test('widget dropdown in list editor sidebar', async function (assert) {
+        assert.expect(7);
+
+        const originalOdooDebug = odoo.debug;
+        odoo.debug = false;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: `<tree>
+                    <field name='display_name'/>
+                    <field name='priority' widget='priority'/>
+                </tree>`,
+        });
+
         // select first column and check widget options
         await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
-        assert.strictEqual(vem.$('#widget option:selected').text().trim(), 'Text', 'Widget name should be Text');
+        assert.strictEqual(
+            vem.$('#widget option:selected').text().trim(),
+            "Text",
+            "Widget name should be Text");
 
         // select second column and check widget options
         await testUtils.dom.click(vem.$('thead th[data-node-id=2]'));
-        assert.strictEqual(vem.$('#widget option:selected').text().trim(), 'Priority', 'Widget name should be Priority');
-        assert.containsNone(vem, '#widget option[value="label_selection"]', "label_selection widget should not be there");
+        assert.strictEqual(
+            vem.$('#widget option:selected').text().trim(),
+            "Priority",
+            "Widget name should be Priority");
+        assert.containsNone(
+            vem,
+            '#widget option[value="label_selection"]',
+            "label_selection widget should not be there");
 
         // check the widgets in debug mode
         odoo.debug = true;
 
         await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
-        assert.strictEqual(vem.$('#widget option:selected').text().trim(), 'Text (char)', 'Widget name should be Text (char)');
+        assert.strictEqual(
+            vem.$('#widget option:selected').text().trim(),
+            "Text (char)",
+            "Widget name should be Text (char)");
 
         await testUtils.dom.click(vem.$('thead th[data-node-id=2]'));
-        assert.strictEqual(vem.$('#widget option:selected').text().trim(), 'Priority (priority)', 'Widget name should be Priority (priority)');
-        assert.containsOnce(vem, '#widget option[value="label_selection"]', "label_selection widget should be there");
+        assert.strictEqual(
+            vem.$('#widget option:selected').text().trim(),
+            "Priority (priority)",
+            "Widget name should be Priority (priority)");
+        assert.containsOnce(
+            vem,
+            '#widget option[value="label_selection"]',
+            "label_selection widget should be there");
+        assert.strictEqual(
+            vem.$('#widget option[value="label_selection"]').text().trim(),
+            "label_selection",
+            "Widget should have technical name i.e. label_selection as it does not have description");
 
+        odoo.debug = originalOdooDebug;
         vem.destroy();
     });
 
@@ -637,7 +702,7 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.deepEqual(args.operations[0], {
                         node: {
-                            attrs: {name: 'display_name', modifiers: {}},
+                            attrs: {name: 'display_name', modifiers: {}, relativeWidth: 1},
                             children: [],
                             tag: 'field',
                         },

@@ -1,5 +1,5 @@
 $gantt-border-color: $gray-400;
-$gantt-pill-height: 32px;
+$gantt-pill-height: 31px;
 $gantt-highlight-today-border: #dca665;
 $gantt-highlight-today-bg: #fffaeb;
 $gantt-highlight-hover-row: rgba($primary, .1);
@@ -8,43 +8,37 @@ $gantt-pill-consolidated-height: 24px;
 $gantt-unavailability-bg: $gray-200;
 
 
+// Define the necessary conditions to provide visual feedback on hover,
+// focus, drag, clone and resize.
+@mixin o-gantt-hover() {
+    &:hover, &:focus, &.ui-draggable-dragging, &.ui-resizable-resize {
+        // Avoid visual feedback if 'o_gantt_view' has class 'o_grabbing' or 'o_copying'.
+        @at-root #{selector-replace(&, ".o_gantt_view", ".o_gantt_view:not(.o_grabbing):not(.o_copying):not(.o_no_dragging)")} {
+            @content;
+        }
+    }
+}
+
+// Generate background and text for each color.
 @mixin o-gantt-hoverable-colors($color) {
     $color-subdle: mix($color, white, 60%);
-    @include o-hover-text-color(color-yiq($color-subdle), color-yiq($color));
+    color: color-yiq($color-subdle);
     background-color: $color-subdle;
     cursor: pointer;
 
-    &:hover {
+    @include o-gantt-hover() {
         background-color: $color;
+        color: color-yiq($color);
     }
 }
 
-// The progress feature is going to set background-size on the element to limit
-// the size of the decoration effects. Since decorations effects are done with
-// linear gradients, and that background-size do not apply to background color,
-// we use this monochrome gradient hack instead of border-color.
-@mixin resizable-background-color($color) {
-    $color-subdle: mix($color, white, 60%);
-    @include o-hover-text-color(color-yiq($color-subdle), color-yiq($color));
-    background-image: linear-gradient($color-subdle, $color-subdle);
-    background-color: $color-subdle;
-
-    &:hover {
-        background-image: linear-gradient($color, $color);
-        background-color: $color;
-    }
-}
-
-// Both colors and decorations use linear-gradients so that they can be resized
-// by background-size for the progress feature, so we need to generate the
-// decorations for each color if we want to be able to combine them.
+// Generate stripes decorations for each color.
 @mixin gantt-gradient-decorations($color) {
     $color-subdle: mix($color, white, 60%);
-    @include o-hover-text-color(color-yiq($color-subdle), color-yiq($color));
-    background-image: repeating-linear-gradient(-45deg, $color-subdle 0px 10px, lighten($color-subdle, 3%) 10px 20px);
+    background-image: repeating-linear-gradient(-45deg, $color-subdle 0 10px, lighten($color-subdle, 6%) 10px 20px);
 
-    &:hover {
-        background-image: repeating-linear-gradient(-45deg, $color 0px 10px, lighten($color, 3%) 10px 20px);
+    @include o-gantt-hover() {
+        background-image: repeating-linear-gradient(-45deg, $color 0 10px, lighten($color, 6%) 10px 20px);
     }
 }
 
@@ -75,6 +69,49 @@ $gantt-unavailability-bg: $gray-200;
 
 .o_gantt_view {
     box-shadow: 0 5px 20px -15px rgba(black, .3);
+    user-select: none;
+
+    #o_gantt_containment {
+        @include o-position-absolute(0, 0, 1px, percentage(2 / $grid-columns));
+    }
+
+    // ===============  Cursors while dragging  ==============
+    // =======================================================
+    &.o_grabbing, &.o_grabbing .o_gantt_pill {
+        cursor: grab!important;
+    }
+
+    &.o_copying, &.o_copying .o_gantt_pill {
+        cursor: copy!important;
+    }
+
+    &.o_no_dragging {
+        .o_gantt_cell_buttons, .ui-resizable-handle {
+            visibility: hidden;
+        }
+
+        &, .o_gantt_pill {
+            cursor: not-allowed!important;
+        }
+    }
+
+    &.o_grabbing, &.o_copying {
+        .o_gantt_cell_buttons,
+        .ui-draggable-dragging:before,
+        .ui-draggable-dragging .ui-resizable-handle {
+            visibility: hidden;
+        }
+    }
+
+    &.o_copying {
+        .o_dragged_pill {
+            outline: 1px solid theme-color('primary');
+        }
+
+        .ui-draggable-dragging {
+            opacity: .8;
+        }
+    }
 
     // ===============  Header  ==============
     // =======================================
@@ -161,16 +198,12 @@ $gantt-unavailability-bg: $gray-200;
             overflow: hidden;
             user-select: none;
 
-            &.ui-draggable-dragging {
-                cursor: grab!important;
-            }
-
             &.ui-resizable-resizing, &.ui-draggable-dragging {
                 z-index: 2;  // other pills show not hide these ones
             }
 
             &.o_gantt_progress {
-                @include resizable-background-color(nth($o-colors-complete, 1));
+                @include o-gantt-hoverable-colors(nth($o-colors-complete, 1));
                 background-repeat: no-repeat;
 
                 &.decoration-info {
@@ -203,7 +236,7 @@ $gantt-unavailability-bg: $gray-200;
                     @include o-gantt-hoverable-colors($gantt-color);
 
                     &.o_gantt_progress {
-                        @include resizable-background-color($gantt-color);
+                        @include o-gantt-hoverable-colors($gantt-color);
                     }
 
                     &.decoration-info {
@@ -211,7 +244,6 @@ $gantt-unavailability-bg: $gray-200;
                     }
                 }
             }
-
             @each $color, $value in $theme-colors {
                 &.decoration-#{$color}:before {
                     @include gantt-ribbon-decoration($value);

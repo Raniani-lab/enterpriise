@@ -10,7 +10,6 @@ from . import common
 class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
     def setUp(self):
         super(TestL10nMxEdiPayment, self).setUp()
-        self.fiscal_position.l10n_mx_edi_code = '601'
         self.config_parameter = self.env.ref(
             'l10n_mx_edi.l10n_mx_edi_version_cfdi')
         self.config_parameter.value = '3.3'
@@ -35,8 +34,7 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         self.account_payment.acc_number = '0123456789'
         self.transfer = self.browse_ref('l10n_mx_edi.payment_method_transferencia')
         self.xml_expected_str = misc.file_open(join(
-            'l10n_mx_edi_payment_bank', 'tests',
-            'expected_payment.xml')).read().encode('UTF-8')
+            'l10n_mx_edi', 'tests', 'expected_payment.xml')).read().encode('UTF-8')
         self.xml_expected = objectify.fromstring(self.xml_expected_str)
         self.set_currency_rates(mxn_rate=12.21, usd_rate=1)
 
@@ -48,7 +46,6 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         journal = self.env['account.journal'].search(
             [('type', '=', 'bank')], limit=1)
         journal.bank_account_id = self.company_bank
-        self.company.partner_id.property_account_position_id = self.fiscal_position.id # noqa
         invoice = self.create_invoice()
         invoice.move_name = 'INV/2017/999'
         invoice.post()

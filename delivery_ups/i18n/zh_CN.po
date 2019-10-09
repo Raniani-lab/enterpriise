@@ -8,6 +8,7 @@
 # liAnGjiA <liangjia@qq.com>, 2019
 # keecome <7017511@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# Felix Yuen <fyu@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:05+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
+"Last-Translator: Felix Yuen <fyu@odoo.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -109,7 +110,7 @@ msgstr "PDF"
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Packages %s do not have a positive shipping weight."
-msgstr ""
+msgstr "包裹%s没有正面的运输重量。"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -143,7 +144,7 @@ msgstr "收件人"
 msgid ""
 "Return label generated<br/><b>Tracking Numbers:</b> %s<br/><b>Packages:</b> "
 "%s"
-msgstr ""
+msgstr "返回标签生成的<br/><b>跟踪号码：</b>%s<br/><b>包裹</b>%s"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__spl
@@ -182,7 +183,7 @@ msgstr "UPS发货号<br/><b> 跟踪码：</b>%s<br/><b>包裹</b>%s"
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "送货方式"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -305,7 +306,7 @@ msgstr "UPS运单号"
 #: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
 msgid "UPS Shipping Methods"
-msgstr ""
+msgstr "UPS运输方式"
 
 #. module: delivery_ups
 #: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_us
@@ -335,7 +336,7 @@ msgstr "UPS包装尺寸单位"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment
 msgid "Ups Duty Payment"
-msgstr ""
+msgstr "Ups关税款项"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_weight_unit

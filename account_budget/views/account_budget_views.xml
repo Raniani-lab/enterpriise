@@ -127,6 +127,7 @@ Budgets
                                             <field name="general_budget_id"/>
                                             <field name="planned_amount"/>
                                             <field name="analytic_account_id"
+                                                   domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"
                                                    groups="analytic.group_analytic_accounting"/>
                                         </group>
                                         <group>
@@ -237,8 +238,6 @@ Budgets
                     domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
                 <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
                     domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
-                <filter string="Exception Activities" name="activities_exception"
-                    domain="[('activity_exception_decoration', '!=', False)]"/>
             </search>
         </field>
     </record>
@@ -310,7 +309,7 @@ Budgets
                         <field name="currency_id" invisible="1"/>
                         <field name="crossovered_budget_state" invisible="1"/>
                         <field name="crossovered_budget_id"  attrs="{'readonly':[('crossovered_budget_state','!=','draft')]}"/>
-                        <field name="analytic_account_id"  attrs="{'readonly':[('crossovered_budget_state','!=','draft')]}"/>
+                        <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" attrs="{'readonly':[('crossovered_budget_state','!=','draft')]}"/>
                         <field name="general_budget_id"  attrs="{'readonly':[('crossovered_budget_state','!=','draft')]}"/>
                         <field name="date_from"  attrs="{'readonly':[('crossovered_budget_state','!=','draft')]}"/>
                         <field name="date_to"  attrs="{'readonly':[('crossovered_budget_state','!=','draft')]}"/>

@@ -108,6 +108,9 @@ ProductConfiguratorWidget.include({
         }
 
         data.default_quantity = this.recordData.product_uom_qty;
+        if (this.recordData.product_uom) {
+            data.default_uom_id = this.recordData.product_uom.data.id;
+        }
         data.default_pricelist_id = this.record.evalContext.parent.pricelist_id;
 
         /** Default pickup/return dates are based on previous lines dates if some exists */
@@ -163,7 +166,7 @@ ProductConfiguratorWidget.include({
         this.do_action('sale_renting.rental_configurator_action', {
             additional_context: self._defaultRentalData(data),
             on_close: function (result) {
-                if (result && result !== 'special') {
+                if (result && !result.special) {
                     self.trigger_up('field_changed', {
                         dataPointID: dataPointId,
                         changes: result.rentalConfiguration,

@@ -14,10 +14,11 @@ class RentalOrder(models.Model):
         ('draft', 'Quotation'),
         ('sent', 'Quotation Sent'),
         ('pickup', 'Reserved'),
-        ('return', 'Delivered'),
+        ('return', 'Pickedup'),
         ('returned', 'Returned'),
         ('cancel', 'Cancelled'),
     ], string="Rental Status", compute='_compute_rental_status', store=True)
+    # rental_status = next action to do basically, but shown string is action done.
 
     has_pickable_lines = fields.Boolean(compute="_compute_rental_status", store=True)
     has_returnable_lines = fields.Boolean(compute="_compute_rental_status", store=True)
@@ -84,13 +85,20 @@ class RentalOrder(models.Model):
             'default_order_id': self.id,
         }
         return {
-            'name': _('Validate a delivery') if status == 'pickup' else _('Validate a return'),
+            'name': _('Validate a pickup') if status == 'pickup' else _('Validate a return'),
             'view_mode': 'form',
             'res_model': 'rental.order.wizard',
             'type': 'ir.actions.act_window',
             'target': 'new',
             'context': context
         }
+
+    def _get_portal_return_action(self):
+        """ Return the action used to display orders when returning from customer portal. """
+        if self.is_rental_order:
+            return self.env.ref('sale_renting.rental_order_action')
+        else:
+            return super(RentalOrder, self)._get_portal_return_action()
 
 
 class RentalOrderLine(models.Model):
@@ -131,11 +139,12 @@ class RentalOrderLine(models.Model):
         sale_lines = self - rental_lines
         for line in sale_lines:
             line.rental_updatable = line.product_updatable
-        for line in rental_lines:
-            if line.state == 'cancel' or (line.state in ['sale', 'done'] and (line.qty_invoiced > 0 or line.qty_delivered > 0)):
-                line.rental_updatable = False
-            else:
-                line.rental_updatable = True
+        rental_lines.write({'rental_updatable': True})
+        # for line in rental_lines:
+        #     if line.state == 'cancel' or (line.state in ['sale', 'done'] and (line.qty_invoiced > 0 or line.qty_delivered > 0)):
+        #         line.rental_updatable = False
+        #     else:
+        #         line.rental_updatable = True
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
@@ -173,11 +182,16 @@ class RentalOrderLine(models.Model):
 
     def get_rental_order_line_description(self):
         if (self.is_rental):
-            return "\n%s %s %s %s" % (
-                _("From"),
+            if self.pickup_date.date() == self.return_date.date():
+                # If return day is the same as pickup day, don't display return_date Y/M/D in description.
+                return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='HH:mm a')
+            else:
+                return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='short')
+
+            return "\n%s %s %s" % (
                 format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format='short'),
                 _("to"),
-                format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='short'),
+                return_date_part,
             )
         else:
             return ""

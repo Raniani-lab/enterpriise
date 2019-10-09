@@ -6,6 +6,7 @@
     'summary': 'Basic Cohort view for odoo',
     'description': """
     """,
+    'category': 'Hidden',
     'depends': ['web'],
     'data': ['views/assets.xml'],
     'qweb': ['static/src/xml/web_cohort.xml'],

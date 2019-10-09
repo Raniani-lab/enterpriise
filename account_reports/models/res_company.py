@@ -7,11 +7,6 @@ from odoo import api, fields, models, _
 class ResCompany(models.Model):
     _inherit = "res.company"
 
-    @api.model
-    def _get_default_misc_journal(self):
-        user_company_id = self.env.company.id
-        return self.env['account.journal'].search([('type', '=', 'general'), ('show_on_dashboard', '=', True), ('company_id', '=', self.id or user_company_id)], limit=1)
-
     totals_below_sections = fields.Boolean(
         string='Add totals below sections',
         help='When ticked, totals and subtotals appear below the sections of the report.')
@@ -20,8 +15,15 @@ class ResCompany(models.Model):
         ('monthly', 'monthly')], string="Delay units", help="Periodicity", default='monthly')
     account_tax_periodicity_reminder_day = fields.Integer(string='Start from', default=7)
     account_tax_original_periodicity_reminder_day = fields.Integer(string='Start from original', help='technical helper to prevent rewriting activity date when saving settings')
-    account_tax_periodicity_journal_id = fields.Many2one('account.journal', string='Journal', domain=[('type', '=', 'general')], default=_get_default_misc_journal)
+    account_tax_periodicity_journal_id = fields.Many2one('account.journal', string='Journal', domain=[('type', '=', 'general')])
     account_tax_next_activity_type = fields.Many2one('mail.activity.type')
+
+    def _get_default_misc_journal(self):
+        """ Returns a default 'miscellanous' journal to use for
+        account_tax_periodicity_journal_id field. This is useful in case a
+        CoA was already installed on the company at the time the module
+        is installed, so that the field is set automatically when added."""
+        return self.env['account.journal'].search([('type', '=', 'general'), ('show_on_dashboard', '=', True), ('company_id', '=', self.id)], limit=1)
 
     def write(self, values):
         # in case the user want to change the journal or the periodicity without changing the date, we should change the next_activity

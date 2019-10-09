@@ -18,22 +18,23 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="o_kanban_record">
-                            <div t-attf-class="o_kanban_card_header d-flex justify-content-between border-bottom pb-2 ">
-                                <div class="o_kanban_card_header_title o_text_title_left">
+                            <div t-attf-class="o_kanban_card_header justify-content-between border-bottom pb-2 ">
+                                <div class="o_kanban_card_header_title">
                                     <div class="o_primary">
                                         <field name="name"/>
-                                        <div class="mt-2 h6">
-                                            <t t-if="record.no_of_recruitment.raw_value > 1">
-                                                <t t-set="pos" t-value="'Positions'"/>
-                                            </t>
-                                            <t t-else="">
-                                                <t t-set="pos" t-value="'Position'"/>
-                                            </t>
-                                            <field name="no_of_recruitment"/> Open <t t-esc="pos"/></div>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-start">
-                                    <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-start flex-row">
+                                    <div class="mt-2 h6 flex-grow-1">
+                                        <t t-if="record.no_of_recruitment.raw_value > 1">
+                                            <t t-set="pos" t-value="'Positions'"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="pos" t-value="'Position'"/>
+                                        </t>
+                                        <field name="no_of_recruitment"/> Open <t t-esc="pos"/>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-grow-0 mt-1">
                                         <img src="/hr_referral/static/src/img/points.svg" class="mr-2" height="20px" alt=""/>
                                         <span class="text-nowrap"><field name="max_points"/> Points</span>
                                     </div>

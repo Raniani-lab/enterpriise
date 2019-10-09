@@ -3,20 +3,20 @@
 # 	* snailmail_account_followup
 # 
 # Translators:
-# Sergio Zanchetta <primes2h@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Giacomo Grasso <giacomo.grasso.82@gmail.com>, 2019
 # Paolo Valier, 2019
 # Léonie Bouchat <lbo@odoo.com>, 2019
 # Luigia Cimmino Caserta <lcc@odoo.com>, 2019
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-09-23 11:39+0000\n"
 "PO-Revision-Date: 2019-09-13 11:49+0000\n"
-"Last-Translator: Luigia Cimmino Caserta <lcc@odoo.com>, 2019\n"
+"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -93,11 +93,6 @@ msgid "Follow-up Report"
 msgstr "Resoconto controllo di pagamento"
 
 #. module: snailmail_account_followup
-#: model:ir.model,name:snailmail_account_followup.model_followup_send
-msgid "Followup Send"
-msgstr ""
-
-#. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_followup_send__id
 msgid "ID"
 msgstr "ID"
@@ -108,7 +103,7 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_followup_send__invalid_partner_ids
 #, python-format
 msgid "Invalid Addresses"
-msgstr ""
+msgstr "Indirizzi non validi"
 
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_followup_send__invalid_addresses
@@ -143,6 +138,11 @@ msgstr "Destinatari"
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.followup_send_wizard_form
 msgid "Send Follow-Ups"
+msgstr ""
+
+#. module: snailmail_account_followup
+#: model:ir.model,name:snailmail_account_followup.model_followup_send
+msgid "Send Follow-ups"
 msgstr ""
 
 #. module: snailmail_account_followup

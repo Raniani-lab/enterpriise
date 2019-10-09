@@ -11,6 +11,7 @@ from werkzeug.urls import url_encode
 from odoo import http, _, fields
 from odoo.http import request
 from odoo.tools import html2plaintext, DEFAULT_SERVER_DATETIME_FORMAT as dtf
+from odoo.tools.misc import get_lang
 
 
 class WebsiteCalendar(http.Controller):
@@ -78,8 +79,8 @@ class WebsiteCalendar(http.Controller):
         partner_data = {}
         if request.env.user.partner_id != request.env.ref('base.public_partner'):
             partner_data = request.env.user.partner_id.read(fields=['name', 'mobile', 'country_id', 'email'])[0]
-        day_name = format_datetime(datetime.strptime(date_time, dtf), 'EEE', locale=request.env.context.get('lang', 'en_US'))
-        date_formated = format_datetime(datetime.strptime(date_time, dtf), locale=request.env.context.get('lang', 'en_US'))
+        day_name = format_datetime(datetime.strptime(date_time, dtf), 'EEE', locale=get_lang(request.env).code)
+        date_formated = format_datetime(datetime.strptime(date_time, dtf), locale=get_lang(request.env).code)
         return request.render("website_calendar.appointment_form", {
             'partner_data': partner_data,
             'appointment_type': appointment_type,
@@ -186,7 +187,7 @@ class WebsiteCalendar(http.Controller):
             format_func = format_date
             date_start_suffix = _(', All Day')
 
-        locale = request.env.context.get('lang', 'en_US')
+        locale = get_lang(request.env).code
         day_name = format_func(date_start, 'EEE', locale=locale)
         date_start = day_name + ' ' + format_func(date_start, locale=locale) + date_start_suffix
         details = event.appointment_type_id and event.appointment_type_id.message_confirmation or event.description or ''

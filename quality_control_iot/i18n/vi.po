@@ -22,17 +22,17 @@ msgstr ""
 #. module: quality_control_iot
 #: model:ir.model.fields,field_description:quality_control_iot.field_quality_check__device_name
 msgid "Device Name: "
-msgstr ""
+msgstr "Tên thiết bị:"
 
 #. module: quality_control_iot
 #: model:ir.model.fields,field_description:quality_control_iot.field_quality_check__identifier
 msgid "Identifier"
-msgstr ""
+msgstr "Nhận dạng"
 
 #. module: quality_control_iot
 #: model:ir.model.fields,field_description:quality_control_iot.field_quality_check__ip
 msgid "IoT Box Home Page"
-msgstr ""
+msgstr "Trang chính Box IoT"
 
 #. module: quality_control_iot
 #: model:ir.model,name:quality_control_iot.model_quality_check

@@ -15,31 +15,26 @@ class PlanningReport(models.Model):
     entry_date = fields.Date('Date', readonly=True)
     employee_id = fields.Many2one('hr.employee', 'Employee', readonly=True)
     role_id = fields.Many2one('planning.role', string='Role', readonly=True)
+    company_id = fields.Many2one('res.company', string='Company', readonly=True)
     number_hours = fields.Float("Allocated Hours", readonly=True)
 
     def init(self):
         tools.drop_view_if_exists(self.env.cr, self._table)
+        # We dont take ressource into account as we would need to move
+        # the generate_series() in the FROM and use a condition on the
+        # join to exclude holidays like it's done in timesheet.
         self.env.cr.execute("""
             CREATE or REPLACE VIEW %s as (
                 (
                     SELECT
-                        P.id AS id,
-                        d::date AS entry_date,
-                        P.employee_id AS employee_id,
-                        P.role_id AS role_id,
-                        P.allocated_hours / NULLIF(P.working_days_count, 0) AS number_hours
-                    FROM generate_series(
-                        (SELECT min(start_datetime) FROM planning_slot)::date,
-                        (SELECT max(end_datetime) FROM planning_slot)::date,
-                        '1 day'::interval
-                    ) d
-                        LEFT JOIN planning_slot P ON d.date >= P.start_datetime::date AND d.date <= end_datetime::date
-                        LEFT JOIN hr_employee E ON P.employee_id = E.id
-                        LEFT JOIN resource_resource R ON E.resource_id = R.id
-                    WHERE
-                        EXTRACT(ISODOW FROM d.date) IN (
-                            SELECT A.dayofweek::integer+1 FROM resource_calendar_attendance A WHERE A.calendar_id = R.calendar_id
-                        )
+                        p.id,
+                        generate_series(start_datetime,end_datetime,'1 day'::interval) entry_date,
+                        p.role_id AS role_id,
+                        p.company_id AS company_id,
+                        p.employee_id AS employee_id,
+                        p.allocated_hours / ((p.end_datetime::date - p.start_datetime::date)+1) AS number_hours
+                    FROM
+                        planning_slot p
                 )
             )
         """ % (self._table,))

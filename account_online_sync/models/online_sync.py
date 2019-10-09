@@ -65,7 +65,8 @@ class ProviderAccount(models.Model):
     def _get_favorite_institutions(self, country):
         resp_json = {}
         try:
-            resp = requests.post(url='https://onlinesync.odoo.com/onlinesync/search/favorite', data={'country': country, 'provider': json.dumps(self._get_available_providers())}, timeout=60)
+            url = self.sudo().env['ir.config_parameter'].get_param('odoo.online_sync_proxy') or 'https://onlinesync.odoo.com'
+            resp = requests.post(url=url + '/onlinesync/search/favorite', data={'country': country, 'provider': json.dumps(self._get_available_providers())}, timeout=60)
             resp_json = resp.json()
         except requests.exceptions.Timeout:
             raise UserError(_('Timeout: the server did not reply within 60s'))
@@ -78,7 +79,14 @@ class ProviderAccount(models.Model):
             raise UserError(_('Please enter at least a character for the search'))
         resp_json = {}
         try:
-            resp = requests.post(url='https://onlinesync.odoo.com/onlinesync/search/', data={'query': searchString, 'country': country, 'provider': json.dumps(self._get_available_providers())}, timeout=60)
+            data = {
+                'include_environment': self.env["ir.config_parameter"].sudo().get_param("plaid.include.environment") or False,
+                'query': searchString,
+                'country': country,
+                'provider': json.dumps(self._get_available_providers())
+            }
+            url = self.sudo().env['ir.config_parameter'].get_param('odoo.online_sync_proxy') or 'https://onlinesync.odoo.com'
+            resp = requests.post(url=url + '/onlinesync/search/', data=data, timeout=60)
             resp_json = resp.json()
         except requests.exceptions.Timeout:
             raise UserError(_('Timeout: the server did not reply within 60s'))
@@ -104,7 +112,7 @@ class ProviderAccount(models.Model):
         else:
             transactions = '<br/><br/><p>%s</p>' % (_('No new transactions have been loaded in the system.'),)
         hide_table = False
-        if ((values.get('method') == 'add' and number_added == 1) or number_added == 0):
+        if number_added == 0:
             hide_table = True
         transient = self.env['account.online.wizard'].create({
             'number_added': number_added,
@@ -246,7 +254,16 @@ class OnlineAccountLinkWizard(models.TransientModel):
     balance = fields.Float(related='online_account_id.balance', readonly=True)
     account_online_wizard_id = fields.Many2one('account.online.wizard')
     account_number = fields.Char(related='online_account_id.account_number', readonly=True)
-    journal_statements_creation = fields.Selection(selection=lambda x: x.env['account.journal'].get_statement_creation_possible_values())
+    journal_statements_creation = fields.Selection(selection=lambda x: x.env['account.journal'].get_statement_creation_possible_values(), default='none', string="Synchronization frequency")
+
+    @api.onchange('journal_id')
+    def _onchange_account_ids(self):
+        if self.journal_id:
+            self.journal_statements_creation = self.journal_id.bank_statement_creation
+
+        if self.action == 'drop':
+            self.journal_id = None
+            self.journal_statements_creation = None
 
 
 class OnlineAccountWizard(models.TransientModel):
@@ -258,19 +275,20 @@ class OnlineAccountWizard(models.TransientModel):
     status = fields.Selection([('success', 'Success'), ('failed', 'Failed'), ('cancelled', 'Cancelled')], readonly=True)
     method = fields.Selection([('add', 'add'), ('edit', 'edit'), ('refresh', 'refresh')], readonly=True)
     message = fields.Char(readonly=True)
-    sync_date = fields.Date('Fetch transaction from', default=lambda a: fields.Date.context_today(a) - relativedelta(days=15))
+    sync_date = fields.Date('Fetch transactions from', default=lambda a: fields.Date.context_today(a) - relativedelta(days=15))
     account_ids = fields.One2many('account.online.link.wizard', 'account_online_wizard_id', 'Synchronized accounts')
     hide_table = fields.Boolean(help='Technical field to hide table in view')
 
-    @api.onchange('account_ids')
-    def _onchange_account_ids(self):
-        for account in self.account_ids:
-            if account.journal_id:
-                account.journal_statements_creation = account.journal_id.bank_statement_creation
-
-            if account.action == 'drop':
-                account.journal_id = None
-                account.journal_statements_creation = None
+    def _get_journal_values(self, account, create=False):
+        vals = {
+            'account_online_journal_id': account.online_account_id.id,
+            'bank_statements_source': 'online_sync',
+            'bank_statement_creation': account.journal_statements_creation,
+        }
+        if create:
+            vals['name'] = account.name
+            vals['type'] = 'bank'
+        return vals
 
     def sync_now(self):
         # Link account to journal
@@ -283,19 +301,9 @@ class OnlineAccountWizard(models.TransientModel):
                 if account.journal_id.id in journal_already_linked:
                     raise UserError(_('You can not link two accounts to the same journal'))
                 journal_already_linked.append(account.journal_id.id)
-                account.journal_id.write({
-                    'account_online_journal_id': account.online_account_id.id,
-                    'bank_statements_source': 'online_sync',
-                    'bank_statement_creation': account.journal_statements_creation,
-                })
+                account.journal_id.write(self._get_journal_values(account))
             elif account.action == 'create':
-                vals = {
-                    'name': account.name,
-                    'type': 'bank',
-                    'account_online_journal_id': account.online_account_id.id,
-                    'bank_statements_source': 'online_sync',
-                    'bank_statement_creation': account.journal_statements_creation,
-                }
+                vals = self._get_journal_values(account, create=True)
                 self.env['account.journal'].create(vals)
         # call to synchronize
         self.env['account.journal'].cron_fetch_online_transactions()
@@ -323,7 +331,7 @@ class AccountJournal(models.Model):
                 ('month', 'Create monthly statements')]
 
     next_synchronization = fields.Datetime("Next synchronization", compute='_compute_next_synchronization')
-    account_online_journal_id = fields.Many2one('account.online.journal', string='Online Account')
+    account_online_journal_id = fields.Many2one('account.online.journal')
     account_online_provider_id = fields.Many2one('account.online.provider', related='account_online_journal_id.account_online_provider_id', readonly=False)
     synchronization_status = fields.Char(related='account_online_provider_id.status', readonly=False)
     bank_statement_creation = fields.Selection(selection=get_statement_creation_possible_values,
@@ -385,6 +393,15 @@ class AccountJournal(models.Model):
                 account.account_online_provider_id.cron_fetch_online_transactions()
             except UserError:
                 continue
+
+    def unlink(self):
+        acc_online_provider = False
+        if self.account_online_journal_id:
+            acc_online_provider = self.account_online_journal_id.account_online_provider_id
+        super(AccountJournal, self).unlink()
+        if acc_online_provider and len(acc_online_provider.account_online_journal_ids.filtered(lambda j: len(j.journal_ids) > 0)) == 0:
+            # If we have no more linked journal to the account provider, delete it.
+            acc_online_provider.unlink()
 
 
 class AccountBankStatement(models.Model):

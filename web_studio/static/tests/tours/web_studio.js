@@ -182,7 +182,7 @@ tour.register('web_studio_tests_tour', {
     // verify Chatter can be added after changing view to form
     extra_trigger: '.o_web_studio_add_chatter',
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {
     // edit form view
     trigger: '.o_web_studio_view_category .o_web_studio_view_type[data-type="form"] .o_web_studio_thumbnail',
@@ -207,7 +207,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_navbar_item',
 }, {
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {
     // add a kanban
     trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="kanban"] .o_web_studio_thumbnail',
@@ -226,7 +226,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.modal-footer .btn.btn-primary',
 }, {
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {
     // check that the kanban view is now active
     extra_trigger: '.o_web_studio_view_category .o_web_studio_view_type:not(.o_web_studio_inactive)[data-type="kanban"]',
@@ -235,13 +235,13 @@ tour.register('web_studio_tests_tour', {
 }, {
     extra_trigger: '.o_activity_view',
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {
     // add a graph view
     trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="graph"] .o_web_studio_thumbnail',
 }, {
     extra_trigger: '.o_graph_renderer',
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {
     extra_trigger: '.o_web_studio_views',
     // edit the search view
@@ -276,6 +276,80 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_leave'
 }]);
 
+tour.register('web_studio_hide_fields_tour', {
+    url: "/web?studio=app_creator&debug=tests",
+}, [{
+    trigger: '.o_web_studio_new_app',
+}, {
+    trigger: '.o_web_studio_app_creator_next',
+}, {
+    trigger: `
+        .o_web_studio_app_creator_name
+        > input`,
+    run: `text ${utils.randomString(6)}`,
+}, {
+    // make another interaction to show "next" button
+    trigger: `
+        .o_web_studio_selectors
+        .o_web_studio_selector:eq(2)`,
+}, {
+    trigger: '.o_web_studio_app_creator_next',
+}, {
+    trigger: `
+        .o_web_studio_app_creator_menu
+        > input`,
+    run: `text ${utils.randomString(6)}`,
+}, {
+    trigger: '.o_web_studio_app_creator_next',
+}, {
+    // check that the Studio menu is still there
+    extra_trigger: '.o_web_studio_menu',
+    trigger: '.o_web_studio_leave',
+}, {
+    trigger: '.oe_title input',
+    run: 'text Test',
+}, {
+    trigger: '.o_form_button_save',
+}, {
+    trigger: '.o_web_studio_navbar_item',
+}, {
+    extra_trigger: '.o_web_studio_menu',
+    trigger: `
+        .o_web_studio_views_icons
+        > a[data-name="list"]`,
+}, {
+    // wait for the list editor to be rendered because the sidebar is the same
+    extra_trigger: '.o_web_studio_list_view_editor',
+    trigger: `
+        .o_web_studio_sidebar
+        .o_web_studio_existing_fields
+        .o_web_studio_component:has(.o_web_studio_component_description:contains(display_name))`,
+    run: 'drag_and_drop .o_web_studio_list_view_editor .o_web_studio_hook',
+}, {
+    trigger: `
+        .o_list_table
+        th[data-name="display_name"]`,
+}, {
+    trigger: `
+        .o_web_studio_sidebar
+        select[name="optional"]`,
+    run: "text Hide by default",
+}, {
+    extra_trigger: '.o_list_table:not(:has(th[data-name="display_name"]))',
+    trigger: `
+        .o_web_studio_sidebar_header
+        .o_web_studio_view`,
+}, {
+    trigger: `
+        .o_web_studio_sidebar_checkbox
+        input#show_invisible`,
+}, {
+    extra_trigger: `
+        .o_list_table
+        th[data-name="display_name"].o_web_studio_show_invisible`,
+    trigger: '.o_web_studio_leave',
+}]);
+
 tour.register('web_studio_new_report_tour', {
     url: "/web",
     test: true,
@@ -288,7 +362,7 @@ tour.register('web_studio_new_report_tour', {
     extra_trigger: 'body.o_in_studio',
 }, {
     // edit reports
-    trigger: '.o_web_studio_menu a[data-name="reports"]',
+    trigger: '.o_web_studio_menu li[data-name="reports"]',
 }, {
     // create a new report
     trigger: '.o_control_panel .o-kanban-button-new',
@@ -436,7 +510,7 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     extra_trigger: 'body.o_in_studio',
 }, {
     // edit reports
-    trigger: '.o_web_studio_menu a[data-name="reports"]',
+    trigger: '.o_web_studio_menu li[data-name="reports"]',
 }, {
     // create a new report
     trigger: '.o_control_panel .o-kanban-button-new',

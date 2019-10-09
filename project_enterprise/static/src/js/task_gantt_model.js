@@ -11,33 +11,35 @@ var TaskGanttModel = GanttModel.extend({
      * @returns {Object[]}
      */
     _generateRows: function (params) {
-        if(params.groupedBy.length && _.first(params.groupedBy) === 'user_id'){
-            var groupedByField = _.first(params.groupedBy);
-            // check there isn't already an empty user_id group
-            if(!_.some(params.groups, function(group){ return !group[groupedByField]; })){
-                var new_group = {
-                    id: _.uniqueId('group'),
-                    fake: true,
-                    __count: 0,
-                    __domain: this._getDomain(),
-                };
-
-                _.each(params.groupedBy, function(field){
-                    new_group[field] = false;
-                });
-
-                params.groups.push(new_group);
-                this.ganttData.groups.push(new_group);
+        // provide group for unassigned task
+        if(params.groupedBy.length) {
+            var groupedByField = params.groupedBy[0];
+            if (groupedByField === 'user_id') {
+                var empty_exists = _.some(params.groups, function(group) {return !group[groupedByField];});
+                if (!empty_exists) {
+                    var values = this._parsePath(params.parentPath);
+                    var new_group = _.clone(values);
+                    new_group = _.extend(new_group, {
+                        id: _.uniqueId('group'),
+                        fake: true,
+                        __count: 0,
+                        __domain: this._getDomain(), // TODO: add the domain part with the values
+                        user_id: false,
+                    });
+                    params.groups.push(new_group);
+                    this.ganttData.groups.push(new_group);
+                }
             }
         }
+
         var rows = this._super(params);
-        // rename undefined asigned to
+
+        // rename undefined assigned to
         _.each(rows, function(row){
             if(row.groupedByField === 'user_id' && !row.resId){
                 row.name = _t('Unassigned Tasks');
             }
         });
-
         // is the data grouped by?
         if(params.groupedBy && params.groupedBy.length){
             // in the last row is the grouped by field is null
@@ -47,6 +49,32 @@ var TaskGanttModel = GanttModel.extend({
             }
         }
         return rows;
+    },
+    /**
+     * Parse the path of a group, according to the groupedBy fields, in order to extract
+     * default value of a group.
+     *
+     * @private
+     */
+    _parsePath: function(path) {
+        var values = {};
+        if (path) {
+            var pathParts = path.split('/');
+            var state = this.get();
+            var groupby = state.groupedBy;
+            _.each(groupby, function(fname, index) {
+                var val = pathParts[index];
+                if (val) {
+                    val = JSON.parse(val);
+                    if (state.fields[fname].type == 'many2one') {
+                        values[fname] = val[0];
+                    } else {
+                        values[fname] = val;
+                    }
+                }
+            });
+        }
+        return values;
     },
 });
 

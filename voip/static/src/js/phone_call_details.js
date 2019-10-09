@@ -316,7 +316,7 @@ const PhoneCallDetails = Widget.extend({
      */
     async _onClickToPartner(ev) {
         ev.preventDefault();
-        let resId;
+        let resId = this.partnerId;
         if (!this.partnerId) {
             const domain = [
                 '|',

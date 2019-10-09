@@ -106,6 +106,11 @@
         .date {
             text-align: center;
         }
+        th{
+            .subtitle{
+                font-weight:normal;
+            }
+        }
         .o_account_reports_header_hierarchy {
             th {
                 border-bottom: none;
@@ -246,6 +251,12 @@
     }
     .o_foldable_total {
         color: #666666 !important;
+        &.color-red{
+            color: red !important;
+        }
+        &.color-green{
+            color: green !important;
+        }
     }
     .o_account_reports_totals_below_sections.o_js_account_report_parent_row_unfolded {
         .o_account_report_column_value {

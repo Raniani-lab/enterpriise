@@ -2,7 +2,7 @@
 <odoo>
     <!-- Recurrent payment emails -->
     <record id="email_payment_close" model="mail.template">
-        <field name="name">Subscription: Payment failure</field>
+        <field name="name">Subscription: Payment Failure</field>
         <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
         <field name="subject">Termination of subscription ${object.code}</field>
         <field name="email_from">${(object.user_id.email_formatted or object.company_id.email or user.email_formatted) | safe}</field>
@@ -101,7 +101,7 @@
 </record>
 
     <record id="email_payment_reminder" model="mail.template">
-        <field name="name">Subscription: Payment reminder</field>
+        <field name="name">Subscription: Payment Reminder</field>
         <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
         <field name="subject">Payment reminder for subscription ${object.code}</field>
         <field name="email_from">${(object.user_id.email_formatted or object.company_id.email or user.email_formatted) | safe}</field>
@@ -146,7 +146,7 @@
                     % endif
                     <br/><br/>
                     Your subscription ${ctx.get('code')} is still valid but will be <strong>suspended</strong>
-                    on ${ctx.get('date_close')} unless the payment succeeds in the mean time (we will retry once every day).
+                    on ${format_date(ctx.get('date_close'))} unless the payment succeeds in the mean time (we will retry once every day).
                     Please double-check that you have sufficient funds.<br/><br/>
                     If you have any questions, do not hesitate to contact us.<br/><br/>
                     Thank you for choosing ${company.name}!
@@ -202,7 +202,7 @@
 </record>
 
     <record id="email_payment_success" model="mail.template">
-        <field name="name">Subscription: Payment success</field>
+        <field name="name">Subscription: Payment Success</field>
         <field name="model_id" ref="account.model_account_move"/>
         <field name="subject">Invoice for subscription ${ctx.get('code')}</field>
         <field name="email_from">${(object.invoice_user_id.email_formatted or object.company_id.email or user.email_formatted) | safe}</field>
@@ -242,7 +242,7 @@
                     <br/><br/>
                     You will find your invoice attached.
                     %if ctx.get('next_date'):
-                        Your next invoice will be on ${ctx.get('next_date')}.
+                        Your next invoice will be on ${format_date(ctx.get('next_date'))}.
                     %endif
                     <br/><br/>
                     If you have any questions, do not hesitate to contact us.
@@ -295,7 +295,7 @@
 </table>
         </field>
         <field name="report_template" ref="account.account_invoices" />
-        <field name="report_name">Invoice_${ctx.get('code')}_${ctx.get('previous_date')}</field>
+        <field name="report_name">Invoice_${ctx.get('code')}_${format_date(ctx.get('previous_date'))}</field>
         <field name="lang">${object.partner_id.lang}</field>
         <field name="auto_delete" eval="True"/>
         <field name="user_signature" eval="False"/>
@@ -303,7 +303,7 @@
 
     <!-- Mail sent to request a rating for a subscription -->
     <record id="mail_template_subscription_rating" model="mail.template">
-        <field name="name">Sale Subscription: Rating Request</field>
+        <field name="name">Subscription: Rating Request</field>
         <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
         <field name="subject">${object.company_id.name}: Service Rating Request</field>
         <field name="email_from">${(object.rating_get_rated_partner_id().email_formatted or user.email_formatted) | safe}</field>
@@ -370,7 +370,6 @@
                 <table style="width:600px;margin:auto;text-align:center;font-size:12px;">
                     <tbody>
                         <tr><td style="padding-top:10px;color:#afafaf;">
-                            <p>This customer survey has been sent because your subscription has been moved to the stage <b>${object.stage_id.name}</b></p>
                             <p>Email automatically sent by <a target="_blank" href="https://www.odoo.com/page/subscriptions" style="color:#875A7B;text-decoration:none;">Odoo Subscription</a> for <a href="${object.company_id.website}" style="color:#875A7B;text-decoration:none;">${object.company_id.name}</a></p>
                         </td></tr>
                     </tbody>
@@ -381,7 +380,7 @@
 
     <!-- Mail sent to request a rating for a subscription -->
     <record id="mail_template_subscription_alert" model="mail.template">
-        <field name="name">Sale Subscription: Default Email Alert</field>
+        <field name="name">Subscription: Default Email Alert</field>
         <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
         <field name="subject">${object.company_id.name}: Please check the subscription ${object.name}</field>
         <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) | safe}</field>
@@ -401,7 +400,7 @@
                 <table style="width:600px;margin:0px auto;background:white;border:1px solid #e1e1e1;">
                     <tbody>
                         <tr><td style="padding:15px 20px 10px 20px;">
-                            <p>Dear %{object.partner_id.name}.</p>
+                            <p>Dear ${object.partner_id.name},</p>
                             <p>Your subscription <strong>${object.name}</strong> needs your attention.</p>
                             <p>If you have some concerns about it, please contact your contact person ${object.user_id.name} or reply to this email.</p>
                             <p>Kind regards.</p>
@@ -416,7 +415,7 @@
 
     <!--Email template -->
     <record id="mail_template_subscription_invoice" model="mail.template">
-        <field name="name">Subscription Invoice: Send by email</field>
+        <field name="name">Subscription Invoice: Send by Email</field>
         <field name="model_id" ref="account.model_account_move"/>
         <field name="email_from">${(object.invoice_user_id.email_formatted or user.email_formatted) |safe}</field>
         <field name="partner_to">${object.partner_id.id}</field>

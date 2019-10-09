@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:58+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Language-Team: Luxembourgish (https://www.transifex.com/odoo/teams/41243/lb/)\n"
 "MIME-Version: 1.0\n"
@@ -14,11 +14,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: lb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: account_online_sync
-#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
-msgid "\" bank accounts have been retrieved."
-msgstr ""
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -42,14 +37,7 @@ msgstr ""
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
-msgid ""
-"<strong>Well done!</strong> Your banking institution is now connected to "
-"Odoo."
-msgstr ""
-
-#. module: account_online_sync
-#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
-msgid "A total of \""
+msgid "<strong>Well done!</strong>"
 msgstr ""
 
 #. module: account_online_sync
@@ -59,6 +47,7 @@ msgid "Account Number"
 msgstr ""
 
 #. module: account_online_sync
+#: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_journal_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__account_online_journal_ids
 msgid "Account Online Journal"
 msgstr ""
@@ -176,11 +165,6 @@ msgid "Company"
 msgstr ""
 
 #. module: account_online_sync
-#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
-msgid "Configure"
-msgstr ""
-
-#. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_res_partner
 msgid "Contact"
 msgstr ""
@@ -250,7 +234,7 @@ msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__sync_date
-msgid "Fetch transaction from"
+msgid "Fetch transactions from"
 msgstr ""
 
 #. module: account_online_sync
@@ -332,11 +316,6 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__name
 msgid "Journal Name"
-msgstr ""
-
-#. module: account_online_sync
-#: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__journal_statements_creation
-msgid "Journal Statements Creation"
 msgstr ""
 
 #. module: account_online_sync
@@ -475,7 +454,6 @@ msgid "Number of unread messages"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_journal_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__online_account_id
 msgid "Online Account"
 msgstr ""
@@ -509,7 +487,6 @@ msgstr ""
 #: code:addons/account_online_sync/models/online_sync.py:0
 #: model:ir.ui.menu,name:account_online_sync.menu_action_online_provider_account
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
-#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 #, python-format
 msgid "Online Synchronization"
@@ -593,6 +570,16 @@ msgid "Success"
 msgstr ""
 
 #. module: account_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
+msgid "Synchronization Frequency"
+msgstr ""
+
+#. module: account_online_sync
+#: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__journal_statements_creation
+msgid "Synchronization frequency"
+msgstr ""
+
+#. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_account_online_wizard_form
 msgid "Synchronization result"
 msgstr ""
@@ -639,11 +626,6 @@ msgstr ""
 msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 " (used when a purchase is made)"
-msgstr ""
-
-#. module: account_online_sync
-#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
-msgid "The account has been linked to your bank journal."
 msgstr ""
 
 #. module: account_online_sync
@@ -729,13 +711,6 @@ msgid "Wizard to link synchronized accounts to journal"
 msgstr ""
 
 #. module: account_online_sync
-#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
-msgid ""
-"You can associate those bank accounts to a journal in order to automatically"
-" retrieve the latest statements from your bank."
-msgstr ""
-
-#. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:0
 #, python-format
 msgid "You can not link two accounts to the same journal"
@@ -750,6 +725,16 @@ msgstr ""
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__balance
 #: model:ir.model.fields,help:account_online_sync.field_account_online_link_wizard__balance
 msgid "balance of the account sent by the third party provider"
+msgstr ""
+
+#. module: account_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+msgid ""
+"bank accounts have been found.<br/>To finalize, please associate each bank "
+"account with an accounting journal and choose the synchronization frequency "
+"<span title=\"The first synchronization collects all transactions in a "
+"unique bank statement\"> <i class=\"fa fa-info-circle\" aria-"
+"label=\"0\"/></span>"
 msgstr ""
 
 #. module: account_online_sync

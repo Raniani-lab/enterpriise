@@ -148,10 +148,20 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 .filter(function (arr) {
                     var isSupported = _.contains(arr[1].prototype.supportedFieldTypes, field.type)
                         && arr[0].indexOf('.') < 0;
-                    return config.isDebug() ? isSupported : isSupported && arr[1].prototype.description;
+                    return config.isDebug() ? isSupported
+                        : (
+                            isSupported &&
+                            arr[1].prototype.description &&
+                            arr[1].prototype.hasOwnProperty('description')
+                        );
                 })
                 .sortBy(function (arr) {
-                    return arr[1].prototype.description || arr[0];
+                    return (
+                        (
+                            arr[1].prototype.description &&
+                            arr[1].prototype.hasOwnProperty('description')
+                        ) ? arr[1].prototype.description : arr[0]
+                    );
                 })
                 .value();
 

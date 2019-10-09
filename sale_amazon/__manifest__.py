@@ -16,7 +16,7 @@ Key Features
     * FBA: A stock location and stock moves allow to monitor your stock in Amazon Fulfilment Centers.
     * FBM: Delivery notifications are sent to Amazon for each confirmed picking (partial delivery friendly).
 """,
-    'category': 'Sales',
+    'category': 'Sales/Sales',
     'version': '1.0',
     'depends': ['sale_management', 'stock'],
     'data': [

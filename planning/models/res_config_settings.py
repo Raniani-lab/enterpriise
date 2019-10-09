@@ -10,7 +10,5 @@ class ResConfigSettings(models.TransientModel):
     planning_generation_interval = fields.Integer("Rate of shift generation", required=True,
         related="company_id.planning_generation_interval", readonly=False, help="Delay for the rate at which recurring shifts should be generated")
 
-    planning_allow_self_unassign = fields.Boolean("Allow unassignment", default=False, readonly=False,
+    planning_allow_self_unassign = fields.Boolean("Allow Unassignment", default=False, readonly=False,
         related="company_id.planning_allow_self_unassign", help="Let your employees un-assign themselves from shifts when unavailable")
-
-    module_project_forecast = fields.Boolean("Manage Project Structure")

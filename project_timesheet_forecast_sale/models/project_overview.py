@@ -6,6 +6,7 @@ import babel
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models, _
+from odoo.tools.misc import get_lang
 from odoo.addons.web.controllers.main import clean_action
 from ast import literal_eval
 
@@ -41,7 +42,7 @@ class ProjectOverview(models.Model):
 
         def _to_short_month_name(date):
             month_index = fields.Date.from_string(date).month
-            return babel.dates.get_month_names('abbreviated', locale=self.env.context.get('lang', 'en_US'))[month_index]
+            return babel.dates.get_month_names('abbreviated', locale=get_lang(self.env).code)[month_index]
 
         if any(self.mapped('allow_forecast')):
             initial_date = fields.Date.from_string(fields.Date.today())

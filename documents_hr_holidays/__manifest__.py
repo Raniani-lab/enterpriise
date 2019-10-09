@@ -4,13 +4,13 @@
 {
     'name': 'Documents - Time Off',
     'version': '1.0',
-    'category': 'Uncategorized',
+    'category': 'Operations/Documents',
     'summary': 'Store employee\'s time off documents  in the Document app',
     'description': """
 Time off documents will be automatically integrated to the Document app.
 """,
     'website': '',
-    'depends': ['documents', 'hr_holidays'],
+    'depends': ['documents_hr', 'hr_holidays'],
     'data': [],
     'installable': True,
     'auto_install': True,

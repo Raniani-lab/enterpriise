@@ -17,11 +17,23 @@ from odoo.tools import format_time
 _logger = logging.getLogger(__name__)
 
 
+def days_span(start_datetime, end_datetime):
+    if not isinstance(start_datetime, datetime):
+        raise ValueError
+    if not isinstance(end_datetime, datetime):
+        raise ValueError
+    end = datetime.combine(end_datetime, datetime.min.time())
+    start = datetime.combine(start_datetime, datetime.min.time())
+    duration = end - start
+    return duration.days + 1
+
+
 class Planning(models.Model):
     _name = 'planning.slot'
     _description = 'Planning Shift'
     _order = 'start_datetime,id desc'
     _rec_name = 'name'
+    _check_company_auto = True
 
     def _default_employee_id(self):
         return self.env.user.employee_id
@@ -33,7 +45,7 @@ class Planning(models.Model):
         return fields.Datetime.to_string(datetime.combine(fields.Datetime.now(), datetime.max.time()))
 
     name = fields.Text('Note')
-    employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, group_expand='_read_group_employee_id')
+    employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, group_expand='_read_group_employee_id', check_company=True)
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
     company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
     role_id = fields.Many2one('planning.role', string="Role")
@@ -62,7 +74,7 @@ class Planning(models.Model):
     publication_warning = fields.Boolean("Modified since last publication", default=False, readonly=True, help="If checked, it means that the shift contains has changed since its last publish.", copy=False)
 
     # template dummy fields (only for UI purpose)
-    template_creation = fields.Boolean("Save as a Template", default=False, store=False)
+    template_creation = fields.Boolean("Save as a Template", default=False, store=False, inverse='_inverse_template_creation')
     template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
     template_id = fields.Many2one('planning.slot.template', string='Planning Templates', store=False)
 
@@ -70,7 +82,7 @@ class Planning(models.Model):
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
     repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat')
     repeat_interval = fields.Integer("Repeat every", default=1, compute='_compute_repeat', inverse='_inverse_repeat')
-    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Repeat Type', default='forever')
+    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Repeat Type', default='forever', compute='_compute_repeat', inverse='_inverse_repeat')
     repeat_until = fields.Date("Repeat Until", compute='_compute_repeat', inverse='_inverse_repeat', help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
 
     _sql_constraints = [
@@ -86,7 +98,7 @@ class Planning(models.Model):
     @api.depends('start_datetime', 'end_datetime')
     def _compute_allocation_type(self):
         for slot in self:
-            if (slot.end_datetime - slot.start_datetime).total_seconds() / 3600.0 < 24:
+            if slot.start_datetime and slot.end_datetime and (slot.end_datetime - slot.start_datetime).total_seconds() / 3600.0 < 24:
                 slot.allocation_type = 'planning'
             else:
                 slot.allocation_type = 'forecast'
@@ -94,52 +106,36 @@ class Planning(models.Model):
     @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id', 'allocated_percentage')
     def _compute_allocated_hours(self):
         for slot in self:
-            percentage = slot.allocated_percentage / 100.0 or 1
-            if slot.allocation_type == 'planning':
-                slot.allocated_hours = (slot.end_datetime - slot.start_datetime).total_seconds() * percentage / 3600.0
-            else:
-                if slot.employee_id:
-                    slot.allocated_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours'] * percentage
+            if slot.start_datetime and slot.end_datetime:
+                percentage = slot.allocated_percentage / 100.0 or 1
+                if slot.allocation_type == 'planning' and slot.start_datetime and slot.end_datetime:
+                    slot.allocated_hours = (slot.end_datetime - slot.start_datetime).total_seconds() * percentage / 3600.0
                 else:
-                    slot.allocated_hours = 0.0
+                    if slot.employee_id:
+                        slot.allocated_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours'] * percentage
+                    else:
+                        slot.allocated_hours = 0.0
 
-    @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id')
+    @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_working_days_count(self):
         for slot in self:
-            if slot.allocation_type == 'planning':
-                slot.working_days_count = 1
+            if slot.employee_id:
+                slot.working_days_count = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['days']
             else:
-                if slot.employee_id:
-                    slot.working_days_count = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime)['days']
-                else:
-                    slot.working_days_count = 0
+                slot.working_days_count = 0
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_overlap_slot_count(self):
         if self.ids:
             query = """
-                SELECT
-                    S1.id, COUNT(S2.id)
-                FROM
-                    (
-                        SELECT
-                            S.id as id,
-                            S.employee_id as employee_id,
-                            S.start_datetime as start_datetime,
-                            S.end_datetime as end_datetime
-                        FROM planning_slot S
-                        WHERE employee_id IS NOT NULL
-                    ) S1
-                INNER JOIN planning_slot S2
-                    ON S1.id != S2.id
-                        AND S1.employee_id = S2.employee_id
-                        AND (S1.start_datetime::TIMESTAMP, S1.end_datetime::TIMESTAMP)
-                            OVERLAPS (S2.start_datetime::TIMESTAMP, S2.end_datetime::TIMESTAMP)
-                GROUP BY S1.id
+                SELECT S1.id,count(*) FROM
+                    planning_slot S1, planning_slot S2
+                WHERE
+                    S1.start_datetime < S2.end_datetime and S1.end_datetime > S2.start_datetime and S1.id <> S2.id and S1.employee_id = S2.employee_id
+                GROUP BY S1.id;
             """
             self.env.cr.execute(query, (tuple(self.ids),))
-            raw_data = self.env.cr.dictfetchall()
-            overlap_mapping = dict(map(lambda d: d.values(), raw_data))
+            overlap_mapping = dict(self.env.cr.fetchall())
             for slot in self:
                 slot.overlap_slot_count = overlap_mapping.get(slot.id, 0)
         else:
@@ -177,41 +173,54 @@ class Planning(models.Model):
                 }
                 recurrence = self.env['planning.recurrency'].create(recurrency_values)
                 slot.recurrency_id = recurrence
-                # DO NOT generate reccuring slots here, as the current slot is not created yet (and is used as template to copy)
-            elif not slot.repeat and slot.recurrency_id:
+                slot.recurrency_id._repeat_slot()
+            # user wants to delete the recurrence
+            # here we also check that we don't delete by mistake a slot of which the repeat parameters have been changed
+            elif not slot.repeat and slot.recurrency_id.id and (
+                slot.repeat_type == slot.recurrency_id.repeat_type and
+                slot.repeat_until == slot.recurrency_id.repeat_until and
+                slot.repeat_interval == slot.recurrency_id.repeat_interval
+            ):
                 slot.recurrency_id._delete_slot(slot.end_datetime)
                 slot.recurrency_id.unlink()  # will set recurrency_id to NULL
+
+    def _inverse_template_creation(self):
+        values_list = []
+        existing_values = []
+        for slot in self:
+            if slot.template_creation:
+                values_list.append(slot._prepare_template_values())
+        # Here we check if there's already a template w/ the same data
+        existing_templates = self.env['planning.slot.template'].read_group([], ['role_id', 'start_time', 'duration'], ['role_id', 'start_time', 'duration'], limit=None, lazy=False)
+        if len(existing_templates):
+            for element in existing_templates:
+                role_id = element['role_id'][0] if element.get('role_id') else False
+                existing_values.append({'role_id': role_id, 'start_time': element['start_time'], 'duration': element['duration']})
+        self.env['planning.slot.template'].create([x for x in values_list if x not in existing_values])
 
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         if self.employee_id:
             start = self.start_datetime or datetime.combine(fields.Datetime.now(), datetime.min.time())
             end = self.end_datetime or datetime.combine(fields.Datetime.now(), datetime.max.time())
-            work_interval = self.employee_id._get_work_interval(start, end)
-            start_datetime, end_datetime = work_interval[self.employee_id.id]
+            work_interval = self.employee_id.resource_id._get_work_interval(start, end)
+            start_datetime, end_datetime = work_interval[self.employee_id.resource_id.id]
             if start_datetime:
                 self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
             if end_datetime:
                 self.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-        if self.recurrency_id:
-            return {
-                'warning': {
-                    'title': _("Warning"),
-                    'message': _("This action will remove the current shift from the recurrency. Are you sure you want to continue?"),
-                }
-            }
+            # Set default role if the role field is empty
+            if not self.role_id and self.employee_id.sudo().planning_role_id:
+                self.role_id = self.employee_id.sudo().planning_role_id
 
     @api.onchange('start_datetime', 'end_datetime', 'employee_id')
     def _onchange_dates(self):
-        if self.employee_id:
+        if self.employee_id and self.is_published:
             self.publication_warning = True
 
-    @api.onchange('employee_id', 'role_id', 'template_creation')
+    @api.onchange('template_creation')
     def _onchange_template_autocomplete_ids(self):
-        domain = []
-        if self.role_id:
-            domain = [('role_id', '=', self.role_id.id)]
-        templates = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
+        templates = self.env['planning.slot.template'].search([], order='start_time', limit=10)
         if templates:
             if not self.template_creation:
                 self.template_autocomplete_ids = templates
@@ -238,20 +247,25 @@ class Planning(models.Model):
         """ When checking the `repeat` flag on an existing record, the values of recurring fields are `False`. This onchange
             restore the default value for usability purpose.
         """
-        if self.repeat:
-            recurrence_fields = ['repeat_interval', 'repeat_until', 'repeat_type']
-            default_values = self.default_get(recurrence_fields)
-            for fname in recurrence_fields:
-                self[fname] = default_values.get(fname)
-
-    @api.onchange('repeat_type')
-    def _onchange_repeat_type(self):
-        if self.repeat_type == 'forever':
-            self.repeat_until = False
+        recurrence_fields = ['repeat_interval', 'repeat_until', 'repeat_type']
+        default_values = self.default_get(recurrence_fields)
+        for fname in recurrence_fields:
+            self[fname] = default_values.get(fname)
 
     # ----------------------------------------------------
     # ORM overrides
     # ----------------------------------------------------
+
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        result = super(Planning, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        if 'employee_id' in groupby:
+            # Always prepend 'Undefined Employees' (will be printed 'Open Shifts' when called by the frontend)
+            d = {}
+            for field in fields:
+                d.update({field: False})
+            result.insert(0, d)
+        return result
 
     def name_get(self):
         group_by = self.env.context.get('group_by', [])
@@ -286,49 +300,43 @@ class Planning(models.Model):
             result.append([slot.id, name])
         return result
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        result = super(Planning, self).create(vals_list)
-
-        # create the templates
-        template_value_list = []
-        for index, values in enumerate(vals_list):
-            if values.get('template_creation', False):
-                template_value_list.append(result[index]._prepare_template_values())
-        self._save_as_template(template_value_list)
-
-        # recurring slots
-        result.mapped('recurrency_id')._repeat_slot()
-
-        return result
-
     def write(self, values):
         # detach planning entry from recurrency
-        breaking_fields = self._get_fields_breaking_recurrency()
-        for fieldname in breaking_fields:
-            if fieldname in values and not values.get('recurrency_id'):
-                values.update({'recurrency_id': False})
+        if any(fname in values.keys() for fname in self._get_fields_breaking_recurrency()) and not values.get('recurrency_id'):
+            values.update({'recurrency_id': False})
         # warning on published shifts
         if 'publication_warning' not in values and (set(values.keys()) & set(self._get_fields_breaking_publication())):
             values['publication_warning'] = True
-        # create the templates
-        if values.get('template_creation', False):
-            template_value_list = []
-            for slot in self:
-                template_value_list.append(slot._prepare_template_values())
-            self._save_as_template(template_value_list)
-
         result = super(Planning, self).write(values)
-
-        # recurring slots
-        if values.get('repeat'):
-            self.mapped('recurrency_id')._repeat_slot()
-
+        # recurrence
+        if any(key in ('repeat', 'repeat_type', 'repeat_until', 'repeat_interval') for key in values):
+            # User is trying to change this record's recurrence so we delete future slots belonging to recurrence A
+            # and we create recurrence B from now on w/ the new parameters
+            for slot in self:
+                if slot.recurrency_id and values.get('repeat') is None:
+                    recurrency_values = {
+                        'repeat_interval': values.get('repeat_interval') or slot.recurrency_id.repeat_interval,
+                        'repeat_until': values.get('repeat_until') if values.get('repeat_type') == 'until' else False,
+                        'repeat_type': values.get('repeat_type'),
+                        'company_id': slot.company_id.id,
+                    }
+                    # Kill recurrence A
+                    slot.recurrency_id.repeat_type = 'until'
+                    slot.recurrency_id.repeat_until = slot.start_datetime
+                    slot.recurrency_id._delete_slot(slot.end_datetime)
+                    # Create recurrence B
+                    recurrence = slot.env['planning.recurrency'].create(recurrency_values)
+                    slot.recurrency_id = recurrence
+                    slot.recurrency_id._repeat_slot()
         return result
 
     # ----------------------------------------------------
     # Actions
     # ----------------------------------------------------
+
+    def action_unlink(self):
+        self.unlink()
+        return {'type': 'ir.actions.act_window_close'}
 
     def action_see_overlaping_slots(self):
         domain_map = self._get_overlap_domain()
@@ -338,6 +346,9 @@ class Planning(models.Model):
             'name': _('Shifts in conflict'),
             'view_mode': 'gantt,list,form',
             'domain': domain_map[self.id],
+            'context': {
+                'initialDate': min([slot.start_datetime for slot in self.search(domain_map[self.id])])
+            }
         }
 
     def action_self_assign(self):
@@ -353,9 +364,8 @@ class Planning(models.Model):
     def action_self_unassign(self):
         """ Allow planning user to self unassign from a shift, if the feature is activated """
         self.ensure_one()
-        # user must at least 'read' the shift to self unassign. (Prevent any user in the system (portal, ...) to unassign any shift)
-        if not self.check_access_rights('read', raise_exception=False):
-            raise AccessError(_("You don't the right to self unassign."))
+        # The following condition will check the read access on planning.slot, and that user must at least 'read' the
+        # shift to self unassign. Prevent any user in the system (portal, ...) to unassign any shift.
         if not self.allow_self_unassign:
             raise UserError(_("The company does not allow you to self unassign."))
         if self.employee_id != self.env.user.employee_id:
@@ -371,18 +381,26 @@ class Planning(models.Model):
         start_datetime = fields.Datetime.from_string(start_date)
         end_datetime = fields.Datetime.from_string(end_date)
         employee_ids = set()
-        for toplevel_row in rows:
-            if toplevel_row.get('records') and 'employee_id' in toplevel_row.get('groupedBy', []):
-                for slot in toplevel_row.get('records'):
-                    if slot.get('employee_id'):
-                        employee_ids.add(slot.get('employee_id')[0])
-                        toplevel_row['employee_id'] = slot.get('employee_id')[0]
-            elif toplevel_row.get('groupedBy', []) == ['employee_id'] and toplevel_row.get('resId'):
-                employee_ids.add(toplevel_row.get('resId'))
-                toplevel_row['employee_id'] = toplevel_row.get('resId')
 
+        # function to "mark" top level rows concerning employees
+        # the propagation of that item to subrows is taken care of in the traverse function below
+        def tag_employee_rows(rows):
+            for row in rows:
+                group_bys = row.get('groupedBy')
+                res_id = row.get('resId')
+                if group_bys:
+                    # if employee_id is the first grouping attribute, we mark the row
+                    if group_bys[0] == 'employee_id' and res_id:
+                        employee_id = res_id
+                        employee_ids.add(employee_id)
+                        row['employee_id'] = employee_id
+                    # else we recursively traverse the rows where employee_id appears in the group_by
+                    elif 'employee_id' in group_bys:
+                        tag_employee_rows(row.get('rows'))
+
+        tag_employee_rows(rows)
         employees = self.env['hr.employee'].browse(employee_ids)
-        leaves_mapping = employees._get_unavailable_intervals(start_datetime, end_datetime)
+        leaves_mapping = employees.mapped('resource_id')._get_unavailable_intervals(start_datetime, end_datetime)
 
         # function to recursively replace subrows with the ones returned by func
         def traverse(func, row):
@@ -399,13 +417,13 @@ class Planning(models.Model):
         def inject_unavailability(row):
             new_row = dict(row)
 
-            if (not row.get('groupedBy') or row.get('groupedBy')[0] == 'employee_id'):
-                employee_id = row.get('employee_id')
+            if row.get('employee_id'):
+                employee_id = self.env['hr.employee'].browse(row.get('employee_id'))
                 if employee_id:
                     # remove intervals smaller than a cell, as they will cause half a cell to turn grey
                     # ie: when looking at a week, a employee start everyday at 8, so there is a unavailability
                     # like: 2019-05-22 20:00 -> 2019-05-23 08:00 which will make the first half of the 23's cell grey
-                    notable_intervals = filter(lambda interval: interval[1] - interval[0] >= cell_dt, leaves_mapping[employee_id])
+                    notable_intervals = filter(lambda interval: interval[1] - interval[0] >= cell_dt, leaves_mapping[employee_id.resource_id.id])
                     new_row['unavailabilities'] = [{'start': interval[0], 'stop': interval[1]} for interval in notable_intervals]
             return new_row
 
@@ -435,6 +453,7 @@ class Planning(models.Model):
                     values['start_datetime'] += relativedelta(days=7)
                 if values.get('end_datetime'):
                     values['end_datetime'] += relativedelta(days=7)
+                values['is_published'] = False
                 new_slot_values.append(values)
         slots_to_copy.write({'was_copied': True})
         return self.create(new_slot_values)
@@ -450,7 +469,7 @@ class Planning(models.Model):
         view_context = dict(self._context)
         view_context.update({
             'menu_id': str(self.env.ref('planning.planning_menu_root').id),
-            'action_id': str(self.env.ref('planning.planning_action_my').id),
+            'action_id': str(self.env.ref('planning.planning_action_open_shift').id),
             'dbname': self.env.cr.dbname,
             'render_link': self.employee_id.user_id and self.employee_id.user_id in group_planning_user.users,
             'unavailable_path': '/planning/myshifts/',
@@ -473,24 +492,29 @@ class Planning(models.Model):
         })
         return mails_to_send
 
+    def action_publish(self):
+        self.write({
+            'is_published': True,
+            'publication_warning': False,
+        })
+        return True
+
     # ----------------------------------------------------
     # Business Methods
     # ----------------------------------------------------
-    @api.model
     def _name_get_fields(self):
         """ List of fields that can be displayed in the name_get """
         return ['employee_id', 'role_id']
 
-    @api.model
     def _get_fields_breaking_publication(self):
         """ Fields list triggering the `publication_warning` to True when updating shifts """
         return [
             'employee_id',
             'start_datetime',
-            'end_datetime'
+            'end_datetime',
+            'role_id',
         ]
 
-    @api.model
     def _get_fields_breaking_recurrency(self):
         """Returns the list of field which when changed should break the relation of the forecast
             with it's recurrency
@@ -515,9 +539,6 @@ class Planning(models.Model):
                         ('start_datetime', '<', slot.end_datetime),
                         ('end_datetime', '>', slot.start_datetime)
             ]
-            current_id = slot.id
-            if current_id:
-                domain_mapping[slot.id] = expression.AND([domain_mapping[slot.id], [('id', '!=', current_id)]])
         return domain_mapping
 
     def _prepare_template_values(self):
@@ -537,17 +558,6 @@ class Planning(models.Model):
             'duration': h + (m / 60.0),
             'role_id': self.role_id.id
         }
-
-    @api.model
-    def _save_as_template(self, tmpl_vals_list):
-        to_create_list = []
-        for values in tmpl_vals_list:
-            domain = [('duration', '=', values['duration']), ('start_time', '=', values['start_time'])]
-            if values.get('role_id'):
-                domain = expression.AND([domain, [('role_id', '=', values['role_id'])]])
-            if not self.env['planning.template'].search_count(domain):
-                to_create_list.append(values)
-        return self.env['planning.slot.template'].create(to_create_list)
 
     def _read_group_employee_id(self, employees, domain, order):
         if self._context.get('planning_expand_employee'):
@@ -573,18 +583,24 @@ class PlanningPlanning(models.Model):
     def _default_access_token(self):
         return str(uuid.uuid4())
 
-    name = fields.Char("Name")
     start_datetime = fields.Datetime("Start Date", required=True)
     end_datetime = fields.Datetime("Stop Date", required=True)
     include_unassigned = fields.Boolean("Includes Open shifts", default=True)
     access_token = fields.Char("Security Token", default=_default_access_token, required=True, copy=False, readonly=True)
     last_sent_date = fields.Datetime("Last sent date")
     slot_ids = fields.Many2many('planning.slot', "Shifts", compute='_compute_slot_ids')
-    company_id = fields.Many2one('res.company', "Company", required=True, default=lambda self: self.env.user.company_id)
+    company_id = fields.Many2one('res.company', "Company", required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_start_date_lower_stop_date', 'CHECK(end_datetime > start_datetime)', 'Planning end date should be greater than its start date'),
     ]
+
+    @api.depends('start_datetime', 'end_datetime')
+    def _compute_display_name(self):
+        """ This override is need to have a human readable string in the email light layout header (`message.record_name`) """
+        for planning in self:
+            number_days = (planning.end_datetime - planning.start_datetime).days
+            planning.display_name = _('Planning of %s days') % (number_days,)
 
     @api.depends('start_datetime', 'end_datetime', 'include_unassigned')
     def _compute_slot_ids(self):

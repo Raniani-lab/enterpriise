@@ -1,19 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mail_github
-# 
-# Translators:
-# Martin Trigaux, 2018
-# Cozmin Candea <office@terrabit.ro>, 2018
-# Dorin Hongu <dhongu@gmail.com>, 2019
+# 	* mail_github
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2017-02-15 11:45+0000\n"
-"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2019\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
+"PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +18,7 @@ msgstr ""
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "(with"
-msgstr "(cu"
+msgstr ""
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
@@ -34,7 +28,7 @@ msgstr ""
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid ", by"
-msgstr ", de"
+msgstr ""
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
@@ -44,12 +38,12 @@ msgstr ""
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "<b>Title :</b>"
-msgstr "<b>Titlu :</b>"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_needaction
 msgid "Action Needed"
-msgstr "Intervenție necesară"
+msgstr ""
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
@@ -63,12 +57,12 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_attachment_count
 msgid "Attachment Count"
-msgstr "Număr atașamente"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__channel_ids
 msgid "Channels"
-msgstr "Canale"
+msgstr ""
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
@@ -89,22 +83,22 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__create_uid
 msgid "Created by"
-msgstr "Creat de"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__create_date
 msgid "Created on"
-msgstr "Creat în"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_mail_channel
-msgid "Discussion channel"
-msgstr "Canal discuții"
+msgid "Discussion Channel"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__display_name
 msgid "Display Name"
-msgstr "Nume afișat"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_mail_channel_github
@@ -119,17 +113,17 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_follower_ids
 msgid "Followers"
-msgstr "Persoane interesate"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_channel_ids
 msgid "Followers (Channels)"
-msgstr "Urmăritori (Canale)"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Urmăritori (Parteneri)"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_res_users__github_login
@@ -150,47 +144,43 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__id
 msgid "ID"
-msgstr "ID"
-
-#. module: mail_github
-#: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread
-msgid "If checked new messages require your attention."
-msgstr "Dacă este selectat, mesajele noi necesită atenția dumneavoastră."
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction
+#: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread
 msgid "If checked, new messages require your attention."
-msgstr "Dacă este selectat, mesajele noi necesită atenția dumneavoastră."
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Dacă este bifată, unele mesaje au o eroare de livrare."
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_is_follower
 msgid "Is Follower"
-msgstr "Este urmăritor"
+msgstr ""
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "Issue"
-msgstr "Problema"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github____last_update
 msgid "Last Modified on"
-msgstr "Ultima modificare la"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__write_uid
 msgid "Last Updated by"
-msgstr "Ultima actualizare făcută de"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__write_date
 msgid "Last Updated on"
-msgstr "Ultima actualizare pe"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_main_attachment_id
@@ -205,32 +195,32 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_ids
 msgid "Messages"
-msgstr "Mesaje"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Număr de acțiuni"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_has_error_counter
-msgid "Number of error"
+msgid "Number of errors"
 msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "Număr de mesaje ce necesită intervenție"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Numărul de mesaje cu eroare de livrare"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread_counter
 msgid "Number of unread messages"
-msgstr "Număr de mesaje necitite"
+msgstr ""
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
@@ -299,17 +289,17 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_unread
 msgid "Unread Messages"
-msgstr "Mesaje necitite"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr "Contor mesaje necitite"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_res_users
 msgid "Users"
-msgstr "Utilizatori"
+msgstr ""
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
@@ -317,7 +307,7 @@ msgid "commented"
 msgstr ""
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:174
+#: code:addons/mail_github/controllers/main.py:0
 #, python-format
 msgid "commit"
 msgstr ""
@@ -333,7 +323,8 @@ msgid "created a new"
 msgstr ""
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:197
+#: code:addons/mail_github/controllers/main.py:0
+#: code:addons/mail_github/controllers/main.py:0
 #, python-format
 msgid "issue"
 msgstr ""
@@ -354,8 +345,8 @@ msgid "on repository"
 msgstr ""
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:211
-#: code:addons/mail_github/controllers/main.py:218
+#: code:addons/mail_github/controllers/main.py:0
+#: code:addons/mail_github/controllers/main.py:0
 #, python-format
 msgid "pull request"
 msgstr ""

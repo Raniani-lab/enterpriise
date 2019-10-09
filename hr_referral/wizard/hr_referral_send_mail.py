@@ -39,7 +39,7 @@ class HrReferralSendMail(models.TransientModel):
             self.body_html = _('Hello,<br><br>There is an amazing job offer for %s in my company! It will be a fit for you<br><a href="%s">See Job Offer</a>') % (self.job_id.name, self.url)
 
     def send_mail_referral(self):
-        if not self.env.user.has_group('base.group_user'):
+        if not self.env.user.has_group('hr_referral.group_hr_recruitment_referral_user'):
             raise AccessError(_("Do not have access"))
 
         email = self.env.user.work_email or self.env.user.email

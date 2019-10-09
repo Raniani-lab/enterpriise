@@ -126,8 +126,8 @@
                         <button disabled="1" class="btn-secondary" string="Skip" icon="fa-chevron-right float-right o_workorder_btn_icon_small" attrs="{'invisible': [('is_last_step', '=', False)]}"/>
                     </div>
                     <div class="o_workorder_bar_content o_workorder_bar_content_right">
-                        <div attrs="{'invisible': [('working_state', '=', 'blocked')]}">
-                            <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="mr-3">
+                        <div class="o_actions" attrs="{'invisible': [('working_state', '=', 'blocked')]}">
+                            <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="mr-3 my-3 text-center">
                                 <field name="duration" widget="mrp_time_counter" class="mr-3"/>
                                 <i class="fa fa-clock-o" attrs="{'invisible': [('is_user_working', '=', False)]}"/>
                                 <i class="fa fa-clock-o text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}"/>
@@ -207,10 +207,12 @@
                             <div attrs="{'invisible': [('test_type', '=', 'register_consumed_materials')]}" class="o_form_label">By-product</div>
                             <field name="component_id" readonly="1"/>
                         </div>
-                        <div class="o_workorder_field text-center">
-                            <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'serial')]}">Serial Number</div>
-                            <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'lot')]}">Lot Number</div>
-                            <field name="lot_id" context="{'default_product_id': component_id, 'default_company_id': company_id, 'active_mo_id': test_type == 'register_consumed_materials' and production_id or False}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                        <div class="o_workorder_field">
+                            <div class="o_workorder_lot">
+                                <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'serial')]}">Serial Number</div>
+                                <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'lot')]}">Lot Number</div>
+                                <field name="lot_id" class="text-center o_lot_number" context="{'default_product_id': component_id, 'default_company_id': company_id, 'active_mo_id': test_type == 'register_consumed_materials' and production_id or False}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                            </div>
                         </div>
                         <div class="o_workorder_field text-right">
                             <label for="qty_done" string="Quantity"/>

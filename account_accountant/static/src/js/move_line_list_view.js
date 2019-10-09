@@ -187,7 +187,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
             });
         },
 
-        _onRowClicked: function(ev) {
+        _onRowClicked: function (ev) {
             ev.stopPropagation();
             var id = $(ev.currentTarget).data('id');
             if (id) {
@@ -197,20 +197,22 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
             }
         },
 
-        _renderGroupRow: function(group, groupLevel) {
+        _renderGroupRow: function (group, groupLevel) {
             var ret = this._super.apply(this, arguments);
             // Handle the markup of the name_get on account.move if name_groupby is in the context
             if (this.state.context.name_groupby) {
                 var $th = ret.find('th.o_group_name');
                 $th.addClass('o_group_name_custom');
-                var text_node = $th.contents().filter(function(){return this.nodeType == 3;})[0]; // we filter on text nodes (type 3) to get only the text and not the title tooltips we would have had with $.text()
+                var text_node = $th.contents().filter(function () {
+                    return this.nodeType == 3;
+                })[0]; // we filter on text nodes (type 3) to get only the text and not the title tooltips we would have had with $.text()
                 text_node.nodeValue = text_node.nodeValue.replace(/(\*\*)(.*)\1/g, '<strong>$2</strong>').replace(/\s+\([0-9]+\)/, ''); // we only change the value of the text and not eh html to keep the listeners on the buttons
                 $(text_node).replaceWith($('<span>' + text_node.nodeValue + '</span>')); // we need to create a new node (span) to replace, just inserting with the new html would mean that we replace by multiple nodes, which is impossible
             }
             return ret;
         },
 
-        _onToggleGroup: function(ev) {
+        _onToggleGroup: function (ev) {
             var group = $(ev.currentTarget).closest('tr').data('group');
             if (group.model === 'account.move.line' && group.groupData && group.groupData.model === 'account.move') {
                 this.trigger_up('row_selected', {
@@ -231,5 +233,10 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
 
     viewRegistry.add('account_move_line_list', AccountMoveListView);
 
-    return AccountMoveListView;
+    return {
+        AccountMoveListView: AccountMoveListView,
+        AccountMoveListController: AccountMoveListController,
+        AccountMoveListModel: AccountMoveListModel,
+        AccountMoveListRenderer: AccountMoveListRenderer
+    }
 });

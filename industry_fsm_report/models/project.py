@@ -79,7 +79,8 @@ class Task(models.Model):
         # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
         # time should be sold on SO)
         if self.allow_billable:
-            self._fsm_ensure_sale_order()
+            if self.allow_timesheets or self.allow_material:  # if material or time spent on task
+                self._fsm_ensure_sale_order()
 
         action = self.worksheet_template_id.action_id.read()[0]
         worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])
@@ -103,8 +104,9 @@ class Task(models.Model):
 
         # Note: as we want to see all time and material on worksheet, ensure the SO is created when (case: timesheet but no material, the time should be sold on SO)
         if self.allow_billable:
-            self.sudo()._reflect_timesheet_quantities()
-            self._fsm_ensure_sale_order()
+            if self.allow_timesheets or self.allow_material:
+                self.sudo()._reflect_timesheet_quantities()
+                self._fsm_ensure_sale_order()
 
         source = 'fsm' if self.env.context.get('fsm_mode', False) else 'project'
         return {

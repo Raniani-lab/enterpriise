@@ -59,24 +59,13 @@ QUnit.module('DialingPanel', {
         });
         testUtils.mock.patch(UserAgent, {
             /**
-             * Override to catch the "NotAllowedError" that may be triggered if
-             * no DOM manipulation is detected before playing the media (chrome
-             * policy to prevent from autoplaying)
+             * Do not play() on media, to prevent "NotAllowedError". This may
+             * be triggered if no DOM manipulation is detected before playing
+             * the media (chrome policy to prevent from autoplaying)
              *
              * @override
              */
-            makeCall() {
-                this._super(...arguments);
-                this._audioRingbackToneProm = this._audioRingbackToneProm.catch(e => {
-                    if (
-                        e instanceof window.DOMException &&
-                        e.name === 'NotAllowedError'
-                    ) {
-                        return;
-                    }
-                    throw e;
-                });
-            },
+            PLAY_MEDIA: false,
             /**
              * Register callback to avoid the timeout that will accept the call
              * after 3 seconds in demo mode
@@ -96,7 +85,7 @@ QUnit.module('DialingPanel', {
 }, function () {
 
 QUnit.test('autocall flow', async function (assert) {
-    assert.expect(35);
+    assert.expect(34);
 
     const self = this;
     let counterNextActivities = 0;
@@ -375,7 +364,7 @@ QUnit.test('autocall flow', async function (assert) {
         'hangup_call',
         'incoming_call',
         'incoming_call_accepted',
-        'hangup_call',
+        // 'hangup_call', // disabled due to prevent crash from phonecall with no Id
         'incoming_call',
         'rejected_call'
     ]);
@@ -384,7 +373,7 @@ QUnit.test('autocall flow', async function (assert) {
 });
 
 QUnit.test('Call from Recent tab + keypad', async function (assert) {
-    assert.expect(10);
+    assert.expect(9);
 
     const self = this;
 
@@ -510,7 +499,7 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
         'create_from_number',
         'hangup_call',
         'create_from_recent',
-        'hangup_call',
+        // 'hangup_call', // disabled due to prevent crash from phonecall with no Id
     ]);
 
     parent.destroy();

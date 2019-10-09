@@ -31,7 +31,7 @@
                             </div>
                             <div class="row">
                                 <label string="Journal" for="account_tax_periodicity_journal_id" class="col-lg-3 o_light_label"/>
-                                <field name="account_tax_periodicity_journal_id"/>
+                                <field name="account_tax_periodicity_journal_id" attrs="{'required': [('has_chart_of_accounts', '=', True)]}"/>
                             </div>
                             <div class="mt8">
                                 <button name="%(account.action_tax_group)d" icon="fa-arrow-right" type="action" string="Configure your tax accounts" class="btn-link"/>
@@ -54,6 +54,12 @@
                             <div class="text-muted">
                                 When ticked, totals and subtotals appear below the sections of the report
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <button name="%(account.action_check_hash_integrity)d" type="action" string="Download the Data Inalterability Check Report" class="oe_link" id="action_hash_integrity"/>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,6 @@
                         <group name="name_details">
                             <field name="name"/>
                             <field name="position" widget="radio"/>
-                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                         </group>
                         <group name="image_header">
                             <field name="image_head" widget='image' class="oe_avatar referral-rounded-circle" nolabel="1"/>

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import uuid
+
 from odoo import api, fields, models
 
 
@@ -26,10 +28,19 @@ class HrReferralLinkToShare(models.TransientModel):
     @api.depends('channel')
     def _compute_url(self):
         self.ensure_one()
+
+        if not self.env.user.utm_source_id:
+            utm_name = ('%s-%s') % (self.env.user.name, str(uuid.uuid4())[:6])
+            self.env.user.utm_source_id = self.env['utm.source'].sudo().create({'name': utm_name}).id
+
+        if self.job_id and not self.job_id.utm_campaign_id:
+            # Use sudo: a normal user can't write on job
+            self.sudo().job_id.utm_campaign_id = self.env['utm.campaign'].sudo().create({'name': self.job_id.name}).id
+
         link_tracker = self.env['link.tracker'].sudo().create({
             'url': self.job_id.website_url or '/jobs',
             'campaign_id': self.job_id.utm_campaign_id.id,
-            'source_id': self.env.user.employee_id.utm_source_id.id,
+            'source_id': self.env.user.utm_source_id.id,
             'medium_id': self.env.ref('utm.utm_medium_%s' % self.channel).id
         })
         if self.channel == 'direct':

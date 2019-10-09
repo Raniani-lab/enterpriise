@@ -5,7 +5,7 @@
 # Translators:
 # Jérôme Tanché <jerome.tanche@ouest-dsi.fr>, 2019
 # Olivier ANDRE <frsw194@gmail.com>, 2019
-# Doryan R, 2019
+# a270031086f2a0d3514bc0cb507b48f6, 2019
 # Martin Trigaux, 2019
 # Aurélien Pillevesse <aurelienpillevesse@hotmail.fr>, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:58+0000\n"
+"POT-Creation-Date: 2019-09-27 09:17+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -900,7 +900,7 @@ msgid "Group by..."
 msgstr "Regrouper par..."
 
 #. module: mrp_plm
-#: model:ir.module.category,description:mrp_plm.module_category_plm
+#: model:ir.module.category,description:mrp_plm.module_category_manufacturing_plm
 msgid "Helps you manage your product's lifecycles."
 msgstr "Vous aide à gérer le cycle de vie de vos produits."
 
@@ -975,9 +975,9 @@ msgstr ""
 "modification technique sans le supprimer."
 
 #. module: mrp_plm
-#: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__image_64
-msgid "Image 64"
-msgstr "Image 64"
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__image_128
+msgid "Image 128"
+msgstr "Image 128"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
@@ -1269,7 +1269,7 @@ msgid "Owner"
 msgstr "Propriétaire"
 
 #. module: mrp_plm
-#: model:ir.module.category,name:mrp_plm.module_category_plm
+#: model:ir.module.category,name:mrp_plm.module_category_manufacturing_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_root
 msgid "PLM"
 msgstr "Gestion Cycle Vie Produits"

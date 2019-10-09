@@ -31,8 +31,57 @@
       </field>
     </record>
 
-    <menuitem id="menu_rental_products" name="Products" parent="rental_menu_root" sequence="3" action="rental_product_template_action"/>
+    <menuitem id="menu_rental_products" name="Products" parent="rental_menu_root" sequence="4" action="rental_product_template_action"/>
 
+    <record id="product_template_rental_kanban_view" model="ir.ui.view">
+        <field name="name">product.template.product.kanban.inherit.rental</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="activity_state" position="after">
+                <field name="rental_pricing_ids"/>
+            </field>
+            <field name="lst_price" position="replace">
+                <t t-if="record.rental_pricing_ids.value">
+                  <field name="display_price"/>
+                </t>
+                <t t-else="">
+                    <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                </t>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_template_rental_tree_view" model="ir.ui.view">
+        <field name="name">product.template.product.tree.inherit.rental</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="list_price" position="after">
+                <field name="display_price"/>
+            </field>
+            <field name="list_price" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="standard_price" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="rental_product_template_kanban" model="ir.actions.act_window.view">
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="product_template_rental_kanban_view"/>
+        <field name="act_window_id" ref="rental_product_template_action"/>
+    </record>
+
+    <record id="rental_product_template_tree" model="ir.actions.act_window.view">
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="product_template_rental_tree_view"/>
+        <field name="act_window_id" ref="rental_product_template_action"/>
+    </record>
 
     <!-- Rental orders access -->
 
@@ -92,13 +141,14 @@
       <field name="name">rental.order.tree</field>
       <field name="model">sale.order</field>
       <field name="arch" type="xml">
-        <tree decoration-danger="rental_status in ['pickup', 'return'] and has_late_lines">
+        <tree decoration-danger="rental_status in ['pickup', 'return'] and has_late_lines" multi_edit="1">
           <field name="has_late_lines" invisible="1"/>
-          <field name="name"/>
+          <field name="name" readonly="1"/>
           <field name="date_order"/>
           <field name="next_action_date"/>
-          <field name="partner_id"/>
-          <field name="user_id"/>
+          <field name="partner_id" readonly="1"/>
+          <field name="user_id" optional="show"/>
+          <field name="team_id" optional="hide"/>
           <field name="amount_total" sum="Total Tax Included" widget="monetary"/>
           <field name="rental_status"/>
           <field name="state" invisible="1"/>
@@ -115,13 +165,30 @@
       <field name="arch" type="xml">
         <xpath expr="//kanban" position="attributes">
           <attribute name="quick_create">false</attribute>
+          <attribute name="class">o_kanban_mobile align-content-start</attribute>
         </xpath>
         <field name="state" position="after">
           <field name="next_action_date"/>
+          <field name="has_late_lines"/>
         </field>
         <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="replace">
           <div class="oe_kanban_bottom_left text-muted">
-            <span><t t-esc="record.name.value"/> <t t-esc="record.next_action_date.value"/></span>
+            <span>
+              <t t-esc="record.name.value"/>
+              <t t-if="record.next_action_date.value">
+                <br/>
+                <t t-if="record.has_late_lines">
+                  Late
+                </t>
+                <t t-if="record.rental_status.raw_value=='pickup'">
+                  Pickup:
+                </t>
+                <t t-elif="record.rental_status.raw_value=='return'">
+                  Return:
+                </t>
+              </t>
+              <t t-esc="record.next_action_date.value"/>
+            </span>
           </div>
         </xpath>
         <xpath expr="//div[hasclass('oe_kanban_bottom_right')]/field[@name='state']" position="attributes">
@@ -133,19 +200,6 @@
           <field name="rental_status" widget="label_selection"
             attrs="{'invisible': ['|', ('state', '!=', 'sale'), ('rental_status', '=', False)]}"
             options="{'classes': {'pickup': 'info', 'return': 'warning', 'returned': 'success'}}"/>
-        </xpath>
-      </field>
-    </record>
-
-    <record id="rental_order_view_kanban_with_searchpanel" model="ir.ui.view">
-      <field name="name">rental.order.kanban.bis</field>
-      <field name="model">sale.order</field>
-      <field name="inherit_id" ref="rental_order_view_kanban"/>
-      <field name="mode">primary</field>
-      <field name="priority">110</field>
-      <field name="arch" type="xml">
-        <xpath expr="//kanban" position="attributes">
-          <attribute name="quick_create">false</attribute>
         </xpath>
       </field>
     </record>
@@ -163,7 +217,8 @@
           <field name="order_line" string="Product" filter_domain="[('order_line.product_id', 'ilike', self)]"/>
           <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
           <filter string="My Orders" domain="[('user_id','=',uid)]" name="my_rental_orders"/>
-          <filter string="From Rental" domain="[('is_rental_order', '=', True)]" name="from_rental"/>
+          <separator/>
+          <filter string="Rentals" domain="[('is_rental_order', '=', True)]" name="from_rental"/>
           <separator/>
             <filter name="filter_today" string="To Do Today"
               domain="[('next_action_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))),
@@ -171,7 +226,7 @@
             <filter string="Late" name="rental_late_orders"
               domain="[('rental_status', 'in', ['pickup', 'return']), ('next_action_date', '&lt;', (datetime.datetime.now() + relativedelta(hours=1)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
           <separator/>
-            <filter string="Deliver Date" name="filter_pickup" date="next_action_date" domain="[('rental_status', '=', 'pickup')]"/>
+            <filter string="Pickup Date" name="filter_pickup" date="next_action_date" domain="[('rental_status', '=', 'pickup')]"/>
             <filter string="Return Date" name="filter_return" date="next_action_date" domain="[('rental_status', '=', 'return')]"/>
           <separator/>
           <group expand="0" string="Group By">
@@ -196,7 +251,7 @@
       <field name="arch" type="xml">
         <xpath expr="//filter[@name='rental_late_orders']" position="after">
             <separator/>
-            <filter string="To Deliver" name="filter_to_pickup" domain="[('rental_status', '=', 'pickup')]"/>
+            <filter string="To Pickup" name="filter_to_pickup" domain="[('rental_status', '=', 'pickup')]"/>
             <filter string="To Return" name="filter_to_return" domain="[('rental_status', '=', 'return')]"/>
         </xpath>
       </field>
@@ -220,7 +275,7 @@
     <record id="rental_order_kanban" model="ir.actions.act_window.view">
       <field name="sequence" eval="1"/>
       <field name="view_mode">kanban</field>
-      <field name="view_id" ref="rental_order_view_kanban_with_searchpanel"/>
+      <field name="view_id" ref="rental_order_view_kanban"/>
       <field name="act_window_id" ref="rental_order_action"/>
     </record>
     <record id="rental_order_tree" model="ir.actions.act_window.view">
@@ -246,7 +301,7 @@
         <field name="domain">[('is_rental_order', '=', True)]</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-              There isn't any scheduled delivery or return.
+              There isn't any scheduled pickup or return.
           </p><p>
               You can search on a larger period using the filters here above
               <br/>
@@ -283,7 +338,7 @@
         <field name="domain">[('is_rental_order', '=', True)]</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-              There isn't any scheduled delivery or return.
+              There isn't any scheduled pickup or return.
           </p><p>
               You can search on a larger period using the filters here above
               <br/>
@@ -313,10 +368,10 @@
     <menuitem id="rental_order_menu" name="Orders" parent="rental_menu_root" sequence="2"/>
     <menuitem id="rental_orders_all" name="Orders" parent="rental_order_menu" sequence="1" action="rental_order_action"/>
     <menuitem id="menu_orders_customers" name="Customers"
-        action="base.action_partner_customer_form"
+        action="account.res_partner_action_customer"
         parent="rental_order_menu" sequence="2"/>
     <menuitem id="rental_orders_today" name="To Do Today" parent="rental_order_menu" sequence="3"/>
-    <menuitem id="rental_orders_pickup" name="Deliver" parent="rental_orders_today" action="rental_order_today_pickup_action" sequence="1"/>
+    <menuitem id="rental_orders_pickup" name="Pickup" parent="rental_orders_today" action="rental_order_today_pickup_action" sequence="1"/>
     <menuitem id="rental_orders_return" name="Return" parent="rental_orders_today" action="rental_order_today_return_action" sequence="2"/>
 
 </odoo>

@@ -8,7 +8,7 @@
         This module is used for Online bank synchronization. It provides basic methods to synchronize bank statement.
     """,
 
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'version': '2.0',
     'depends': ['account'],
 

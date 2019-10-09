@@ -14,8 +14,8 @@ class SaleOrder(models.Model):
     is_taxcloud = fields.Boolean(related='fiscal_position_id.is_taxcloud', help='Technical field to determine whether to hide taxes in views or not.')
 
     def action_confirm(self):
-        if self.fiscal_position_id.is_taxcloud:
-            self.validate_taxes_on_sales_order()
+        for order in self.filtered('fiscal_position_id.is_taxcloud'):
+            order.validate_taxes_on_sales_order()
         return super(SaleOrder, self).action_confirm()
 
     def validate_taxes_on_sales_order(self):

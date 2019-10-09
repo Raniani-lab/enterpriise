@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:39+0000\n"
+"POT-Creation-Date: 2019-09-23 11:39+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -91,10 +91,24 @@ msgid "Gantt View"
 msgstr "Vista Gantt"
 
 #. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/js/gantt_model.js:0
+#, python-format
+msgid "Grouping by date is not supported, ignoring it"
+msgstr ""
+
+#. module: web_gantt
 #: code:addons/web_gantt/models/models.py:0
 #, python-format
 msgid "Insufficient fields for Gantt View!"
 msgstr "¡Campos insuficientes para la vista de Gantt!"
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/js/gantt_model.js:0
+#, python-format
+msgid "Invalid group by"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web

@@ -3,7 +3,7 @@
 {
     'name': 'Live Currency Exchange Rate',
     'version': '1.0',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'description': """Import exchange rates from the Internet.
 """,
     'depends': [

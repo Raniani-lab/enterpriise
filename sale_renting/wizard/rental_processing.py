@@ -13,7 +13,7 @@ class RentalProcessing(models.TransientModel):
     rental_wizard_line_ids = fields.One2many('rental.order.wizard.line', 'rental_order_wizard_id')
     status = fields.Selection(
         selection=[
-            ('pickup', 'Delivery'),
+            ('pickup', 'Pickup'),
             ('return', 'Return'),
         ],
     )
@@ -80,7 +80,7 @@ class RentalProcessingLine(models.TransientModel):
     order_line_id = fields.Many2one('sale.order.line', required=True, ondelete='cascade')
     product_id = fields.Many2one('product.product', string='Product', required=True, ondelete='cascade')
     qty_reserved = fields.Float("Reserved")
-    qty_delivered = fields.Float("Delivered")
+    qty_delivered = fields.Float("Picked-up")
     qty_returned = fields.Float("Returned")
 
     is_late = fields.Boolean(default=False)  # make related on sol is_late ?
@@ -89,7 +89,7 @@ class RentalProcessingLine(models.TransientModel):
     def _only_pickedup_can_be_returned(self):
         for wizard_line in self:
             if wizard_line.status == 'return' and wizard_line.qty_returned > wizard_line.qty_delivered:
-                raise ValidationError(_("You can't return more than what's been delivered."))
+                raise ValidationError(_("You can't return more than what's been picked-up."))
 
     def _apply(self):
         """Apply the wizard modifications to the SaleOrderLine.

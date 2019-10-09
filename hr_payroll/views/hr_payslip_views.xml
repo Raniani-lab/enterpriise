@@ -464,12 +464,17 @@
                 <h1>
                     <field name="name"/>
                 </h1>
-                <group col="4">
-                    <label for="date_start" string="Period"/>
-                     <div>
-                           <field name="date_start" class="oe_inline"/> - <field name="date_end" class="oe_inline"/>
-                     </div>
-                    <field name="credit_note"/>
+                <group>
+                    <group>
+                        <label for="date_start" string="Period"/>
+                         <div class="o_row">
+                               <field name="date_start" class="oe_inline"/> - <field name="date_end" class="oe_inline"/>
+                         </div>
+                     </group>
+                     <group>
+                        <field name="credit_note"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
                 </group>
             </sheet>
             </form>

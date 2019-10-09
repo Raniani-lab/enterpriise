@@ -141,7 +141,7 @@
                     <field name="rule_type"/>
                     <field name="value"/>
                     <field name="leads_count"/>
-                    <field name="domain"/>
+                    <field name="domain" readonly="1"/>
                     <field name="active"/>
                 </tree>
             </field>

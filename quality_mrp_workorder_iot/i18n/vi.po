@@ -33,7 +33,7 @@ msgstr "Hỏng"
 #. module: quality_mrp_workorder_iot
 #: model:ir.model,name:quality_mrp_workorder_iot.model_iot_trigger
 msgid "IOT Trigger"
-msgstr ""
+msgstr "Kích hoạt IoT"
 
 #. module: quality_mrp_workorder_iot
 #: model:ir.model.fields.selection,name:quality_mrp_workorder_iot.selection__iot_trigger__action__pass

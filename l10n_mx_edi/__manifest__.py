@@ -14,7 +14,6 @@ This module allows the creation of the EDI documents and the communication with 
     """,
     'depends': [
         'account',
-        'account_cancel',
         'base_vat',
         'base_address_extended',
         'attachment_indexation',
@@ -31,7 +30,6 @@ This module allows the creation of the EDI documents and the communication with 
         'data/3.3/external_trade.xml',
         'data/account_data.xml',
         'data/action_server_data.xml',
-        'data/ir_cron.xml',
         'data/payment_method_data.xml',
         'data/res_country_data.xml',
         'data/res_currency_data.xml',

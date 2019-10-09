@@ -33,7 +33,6 @@ class Project(models.Model):
         ('fsm_imply_task_rate', "CHECK((is_fsm = 't' AND sale_line_id IS NULL) OR (is_fsm = 'f'))", 'An FSM project must be billed at task rate.'),
     ]
 
-
     @api.onchange('allow_timesheets', 'allow_billable')
     def _onchange_allow_timesheets_and_billable(self):
         if self.allow_timesheets and self.allow_billable and not self.timesheet_product_id:
@@ -189,7 +188,10 @@ class Task(models.Model):
     @api.depends('sale_order_id.invoice_status', 'sale_order_id.order_line')
     def _compute_fsm_to_invoice(self):
         for task in self:
-            task.fsm_to_invoice = bool(task.sale_order_id.invoice_status not in ('no', 'invoiced'))
+            if task.sale_order_id:
+                task.fsm_to_invoice = bool(task.sale_order_id.invoice_status not in ('no', 'invoiced'))
+            else:
+                task.fsm_to_invoice = False
 
     @api.model
     def _search_fsm_to_invoice(self, operator, value):
@@ -305,6 +307,7 @@ class Task(models.Model):
                 'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
                 'partner': self.partner_id.id if self.partner_id else False,
                 'search_default_consumable': 1,
+                'hide_qty_buttons': self.fsm_done
             },
             'help': _("""<p class="o_view_nocontent_smiling_face">
                             Create a new product
@@ -340,9 +343,10 @@ class Task(models.Model):
                 values['stage_id'] = closed_stage.id
 
             if task.allow_billable:
-                task._fsm_ensure_sale_order()
-                if task.sudo().sale_order_id.state in ['draft', 'sent']:
-                    task.sudo().sale_order_id.action_confirm()
+                if task.allow_timesheets or task.allow_material:
+                    task._fsm_ensure_sale_order()
+                    if task.sudo().sale_order_id.state in ['draft', 'sent']:
+                        task.sudo().sale_order_id.action_confirm()
 
             task.write(values)
 

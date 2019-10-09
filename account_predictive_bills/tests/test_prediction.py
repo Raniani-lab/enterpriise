@@ -58,18 +58,18 @@ class TestBillsPrediction(AccountingTestCase):
         vendors = self._create_test_partners(7)
         accounts = self._create_test_accounts([('test1', 'Test Maintenance and Repair'),
                                                ('test2', 'Test Purchase of services, studies and preparatory work'),
-                                               ('test3', 'Test Various Rents'),
+                                               ('test3', 'Test Various Contributions'),
                                                ('test4', 'Test Rental Charges'),
                                                ('test5', 'Test Purchase of commodity')])
         default_account = self.env['account.journal'].search([('type', '=', 'purchase')], limit=1).default_debit_account_id
         self._create_one_line_bill(vendors[0], "Maintenance and repair", accounts[0])
         self._create_one_line_bill(vendors[5], "Subsidies obtained", default_account, account_to_set=accounts[1])
         self._create_one_line_bill(vendors[6], "Prepare subsidies file", accounts[1])
-        self._create_one_line_bill(vendors[1], "Rents January", accounts[2])
+        self._create_one_line_bill(vendors[1], "Contributions January", accounts[2])
         self._create_one_line_bill(vendors[2], "Coca-cola", default_account, account_to_set=accounts[4])
-        self._create_one_line_bill(vendors[1], "Rent February", accounts[2])
+        self._create_one_line_bill(vendors[1], "Contribution February", accounts[2])
         self._create_one_line_bill(vendors[3], "Electricity Bruxelles", default_account, account_to_set=accounts[3])
         self._create_one_line_bill(vendors[3], "Electricity Grand-Rosière", accounts[3])
         self._create_one_line_bill(vendors[2], "Purchase of coca-cola", accounts[4])
         self._create_one_line_bill(vendors[4], "Crate of coca-cola", accounts[4])
-        self._create_one_line_bill(vendors[1], "March: office", accounts[2])
+        self._create_one_line_bill(vendors[1], "March", accounts[2])

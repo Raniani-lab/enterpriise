@@ -11,12 +11,10 @@ _logger = logging.getLogger(__name__)
 class Employee(models.Model):
     _inherit = "hr.employee"
 
-    @api.model
     def _default_employee_token(self):
         return str(uuid.uuid4())
 
-    planning_role_id = fields.Many2one('planning.role', string="Default Planning Role", groups='hr.group_hr_user',
-        help="This is used to auto-fill the role field on the planning.planning_create_slot wizard")
+    planning_role_id = fields.Many2one('planning.role', string="Default Planning Role", groups='hr.group_hr_user')
     employee_token = fields.Char('Security Token', default=_default_employee_token, copy=False, groups='hr.group_hr_user', readonly=True)
 
     _sql_constraints = [
@@ -40,7 +38,7 @@ class Employee(models.Model):
         result = {}
         for employee in self:
             if employee.user_id and employee.user_id.has_group('planning.group_planning_user'):
-                result[employee.id] = '/web?#action=planning.planning_action_my'
+                result[employee.id] = '/web?#action=planning.planning_action_open_shift'
             else:
                 result[employee.id] = '/planning/%s/%s' % (planning.access_token, employee.employee_token)
         return result

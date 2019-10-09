@@ -381,7 +381,7 @@ msgstr "جاري"
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_sms_error
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "خطأ في تسليم الرسائل القصيرة"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__user_id
@@ -397,7 +397,7 @@ msgstr ""
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
 msgid "Sales Person"
-msgstr ""
+msgstr "مندوب مبيعات"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids

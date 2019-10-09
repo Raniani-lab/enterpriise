@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:39+0000\n"
+"POT-Creation-Date: 2019-09-23 11:39+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -90,10 +90,24 @@ msgid "Gantt View"
 msgstr "Gantt weergave"
 
 #. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/js/gantt_model.js:0
+#, python-format
+msgid "Grouping by date is not supported, ignoring it"
+msgstr ""
+
+#. module: web_gantt
 #: code:addons/web_gantt/models/models.py:0
 #, python-format
 msgid "Insufficient fields for Gantt View!"
 msgstr "Niet genoeg velden voor Gantt weergave!"
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/js/gantt_model.js:0
+#, python-format
+msgid "Invalid group by"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
@@ -149,14 +163,14 @@ msgstr "Vorige"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Start:"
-msgstr ""
+msgstr "Start:"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Stop:"
-msgstr ""
+msgstr "Stop:"
 
 #. module: web_gantt
 #. openerp-web

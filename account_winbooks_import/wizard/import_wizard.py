@@ -140,8 +140,8 @@ class WinbooksImportWizard(models.TransientModel):
                         _logger.info("Advancement: {}".format(len(partner_data_dict)))
 
         partner_ids = ResPartner.create(partner_data_dict.values())
-        for rec_number, partner in zip(partner_data_dict.keys(), partner_ids):
-            partner_data[rec_number] = partner.id
+        for partner in partner_ids:
+            partner_data[partner.ref] = partner.id
         return partner_data
 
     def import_account(self, file_dir, files, journal_data):

@@ -11,8 +11,11 @@ class F29ReportWizard(models.TransientModel):
     def _default_tasa_ppm(self):
         return self.env.company.l10n_cl_report_tasa_ppm
 
-    tasa_ppm = fields.Integer(string="Tasa PPM (%)",
-                              default=_default_tasa_ppm)
+    def _default_ppm_value(self):
+        return self.env.company.l10n_cl_report_fpp_value
+
+    l10n_cl_report_tasa_ppm = fields.Float(string="Tasa PPM (%)", default=_default_tasa_ppm)
+    l10n_cl_report_fpp_value = fields.Float(string="FPP (%)", default=_default_ppm_value)
 
     def show_report(self):
         report = self.env.ref('l10n_cl_reports.account_financial_report_f29')
@@ -23,6 +26,9 @@ class F29ReportWizard(models.TransientModel):
             'context': {
                 'model': 'account.financial.html.report',
                 'id': report.id,
-                'tasa_ppm': self.tasa_ppm,
+                'financial_report_line_values': {
+                    'CL_PPM_RATE': self.l10n_cl_report_tasa_ppm,
+                    'CL_FPP_RATE': self.l10n_cl_report_fpp_value,
+                }
             }
         }

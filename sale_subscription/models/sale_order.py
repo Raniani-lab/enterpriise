@@ -3,7 +3,6 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _name = "sale.order"
@@ -31,7 +30,11 @@ class SaleOrder(models.Model):
         if len(subscriptions) > 1:
             action['domain'] = [('id', 'in', subscriptions.ids)]
         elif len(subscriptions) == 1:
-            action['views'] = [(self.env.ref('sale_subscription.sale_subscription_view_form').id, 'form')]
+            form_view = [(self.env.ref('sale_subscription.sale_subscription_view_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state,view) for state,view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
             action['res_id'] = subscriptions.ids[0]
         else:
             action = {'type': 'ir.actions.act_window_close'}
@@ -106,7 +109,7 @@ class SaleOrder(models.Model):
             to_create = self._split_subscription_lines()
             # create a subscription for each template with all the necessary lines
             for template in to_create:
-                values = self._prepare_subscription_data(template)
+                values = order._prepare_subscription_data(template)
                 values['recurring_invoice_line_ids'] = to_create[template]._prepare_subscription_line_data()
                 subscription = self.env['sale.subscription'].sudo().create(values)
                 subscription.onchange_date_start()
@@ -145,16 +148,7 @@ class SaleOrder(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    subscription_id = fields.Many2one('sale.subscription', 'Subscription', copy=False)
-
-    @api.constrains('company_id', 'subscription_id')
-    def _company_coherence(self):
-        incoherent_lines = self.filtered(lambda l: l.subscription_id and l.company_id != l.subscription_id.company_id)
-        if incoherent_lines:
-            msg = _("The following Sale Order Line(s) are linked to a subscription belonging to a different company:")
-            for line in incoherent_lines:
-                msg += "\n - %s" % (line.name)
-            raise ValidationError(msg)
+    subscription_id = fields.Many2one('sale.subscription', 'Subscription', copy=False, check_company=True)
 
     def _prepare_invoice_line(self):
         """

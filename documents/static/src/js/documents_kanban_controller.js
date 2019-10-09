@@ -253,6 +253,7 @@ var DocumentsKanbanController = KanbanController.extend({
     async _processFiles(files, documentID) {
         const uploadID = _.uniqueId('uploadID');
         const folderID = this._searchPanel.getSelectedFolderId();
+        const context = this.model.get(this.handle, { raw: true }).getContext();
 
         if (!folderID && !documentID) { return; }
         if (!files.length) { return; }
@@ -267,6 +268,9 @@ var DocumentsKanbanController = KanbanController.extend({
                 return;
             }
             data.append('document_id', documentID);
+        }
+        if (context && context.default_partner_id) {
+            data.append('partner_id', context.default_partner_id);
         }
         for (const file of files) {
             data.append('ufile', file);
@@ -289,7 +293,10 @@ var DocumentsKanbanController = KanbanController.extend({
             xhr.onload = async () => {
                 await progressPromise;
                 resolve();
-                const result = JSON.parse(xhr.response);
+                let result = {error: xhr.status};
+                if (xhr.status === 200) {
+                    result = JSON.parse(xhr.response);
+                }
                 if (result.error) {
                     this.do_notify(_t("Error"), result.error, true);
                 }

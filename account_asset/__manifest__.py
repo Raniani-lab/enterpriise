@@ -10,7 +10,7 @@ Manage assets owned by a company or a person.
 Keeps track of depreciations, and creates corresponding journal entries.
 
     """,
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'sequence': 32,
     'depends': ['account_reports'],
     'data': [

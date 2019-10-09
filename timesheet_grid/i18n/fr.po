@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-23 11:39+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -378,19 +378,10 @@ msgstr "Ajouter une tâche"
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "All selected timesheets are already validated"
-msgstr "Toutes les feuilles de temps sélectionnées sont déjà validées"
-
-#. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:0
-#, python-format
 msgid ""
-"All selected timesheets are already validated. You are not indicated as "
-"responsible for your timesheet so you can't validate your own timesheet."
+"All selected timesheets for which you are indicated as responsible are "
+"already validated."
 msgstr ""
-"Toutes les feuilles de temps sélectionnées sont déjà validées. Vous n'êtes "
-"pas indiqué comme responsable de votre feuille de temps, vous ne pouvez donc"
-" pas valider cette dernière."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
@@ -648,11 +639,6 @@ msgid ""
 msgstr ""
 "Définissez le nombre d'heures prestées sur cette tâche, pour chaque jour de "
 "la semaine. (ex: 1,5 ou 1:30)"
-
-#. module: timesheet_grid
-#: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__task_id
-msgid "Task"
-msgstr "Tâche"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0

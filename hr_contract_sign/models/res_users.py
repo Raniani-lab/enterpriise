@@ -25,21 +25,22 @@ class ResUsers(models.Model):
 
     def _compute_sign_request_count(self):
         for user in self:
-            employee = user.employee_id
-            if not employee:
+            employees = user.employee_ids
+            if not employees:
+                user.sign_request_count = 0
                 continue
-            contracts = self.sudo().env['hr.contract'].search([('employee_id', '=', employee.id)])
+            contracts = self.sudo().env['hr.contract'].search([('employee_id', 'in', employees.ids)])
             sign_from_contract = contracts.mapped('sign_request_ids')
 
             sign_from_role = self.env['sign.request.item'].search([
-                ('partner_id', '=', employee.user_id.partner_id.id),
+                ('partner_id', '=', user.partner_id.id),
                 ('role_id', '=', self.env.ref('sign.sign_item_role_employee').id)]).mapped('sign_request_id')
 
             user.sign_request_count = len(set(sign_from_contract + sign_from_role))
 
     def open_employee_sign_requests(self):
         self.ensure_one()
-        contracts = self.sudo().env['hr.contract'].search([('employee_id', '=', self.env.user.employee_id.id)])
+        contracts = self.sudo().env['hr.contract'].search([('employee_id', 'in', self.env.user.employee_ids.ids)])
         sign_from_contract = contracts.mapped('sign_request_ids')
         sign_from_role = self.env['sign.request.item'].search([
             ('partner_id', '=', self.partner_id.id),

@@ -10,7 +10,10 @@ from odoo.tools import mute_logger
 
 from odoo.addons.test_marketing_automation.tests.common import MarketingCampaignTestBase
 
+from odoo.tests import tagged
 
+
+@tagged('marketing_automation')
 class MarketingCampaignTest(MarketingCampaignTestBase):
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.models')
@@ -242,7 +245,6 @@ for record in records:
             set((first_recordset | self.test_rec_new).mapped(name_field.name))
         )
 
-
     @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
     def test_campaign_duplicate(self):
         """
@@ -250,6 +252,7 @@ for record in records:
             - COPY activities, new activities related to the new campaign
             - DO NOT COPY the recipients AND the trace_ids AND the state (draft by default)
             - Normal Copy of other fields
+            - Copy child of activity and keep coherence in parent_id
         """
         Campaign = self.env['marketing.campaign'].with_user(self.user_market)
         Activity = self.env['marketing.activity'].with_user(self.user_market)
@@ -280,6 +283,17 @@ for record in records:
             'interval_number': '0',
         })
 
+        child_act_1 = Activity.create({
+            'name': 'child_activity',
+            'campaign_id': campaign.id,
+            'activity_type': 'email',
+            'mass_mailing_id': mass_mailing.id,
+            'parent_id': act_0.id,
+            'trigger_type': 'act',
+            'interval_number': '1',
+            'interval_type': 'hours',
+        })
+
         self.assertEqual(int(Activity.search_count([('name', '=', name_activity)])), 1)
 
         # User starts and syncs its campaign
@@ -296,11 +310,17 @@ for record in records:
         campaign2 = campaign.copy()
 
         # Check if campaign activities is unchanged
-        self.assertEqual(len(campaign.marketing_activity_ids), 1)
+        self.assertEqual(len(campaign.marketing_activity_ids), 2)
 
         # Two activities with the same name but not related to the same campaign
         self.assertEqual(int(Activity.search_count([('name', '=', name_activity)])), 2)
-        self.assertEqual(len(campaign2.marketing_activity_ids), 1)
+        self.assertEqual(len(campaign2.marketing_activity_ids), 2)
+
+        # The copied child activity has not the old activity as parent,
+        # but the new one
+        self.assertTrue(
+            campaign2.marketing_activity_ids[1].parent_id,
+            campaign2.marketing_activity_ids[0])
 
         # State = draft
         self.assertEqual(campaign2.state, 'draft')

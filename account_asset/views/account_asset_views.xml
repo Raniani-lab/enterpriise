@@ -11,7 +11,7 @@
                 <field name="display_model_choice" invisible="1"/>
                 <field name="state" invisible="1"/>
                 <field name="total_depreciation_entries_count" invisible="1"/>
-                <header invisible="context.get('active_model')=='account.move.line'">
+                <header>
                     <button name="validate" states="draft" string="Confirm" type="object" class="oe_highlight"/>
                     <button type="object" name="compute_depreciation_board" string="Compute Depreciation" states="draft"/>
                     <button name="action_set_to_close" string="Sell or Dispose" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', '!=', 'open'), ('asset_type', '!=', 'purchase')]}"/>
@@ -48,7 +48,7 @@
                     <group>
                         <field name="asset_type" invisible="1"/>
                         <field name="active" invisible="1"/>
-                        <group string="Original Values" attrs="{'invisible': [('state', '=', 'model')]}">
+                        <group string="Asset Values" attrs="{'invisible': [('state', '=', 'model')]}">
                             <span colspan="2" attrs="{'invisible': ['|', ('original_move_line_ids', '!=', []), ('original_value', '!=', 0)]}" class="oe_edit_only text-muted">Set manually the original values or <button class="btn btn-link oe_inline align-baseline p-0 add_original_move_line" string="selected related purchases"/></span>
                             <field name="original_value" attrs="{'invisible': [('state', '=', 'model')], 'readonly': ['|', ('state','!=','draft'), ('original_move_line_ids', '!=', [])]}"/>
                             <field name="gross_increase_value" widget="monetary" attrs="{'invisible': ['|', ('state', '=', 'model'), ('gross_increase_value', '=', 0)]}" options="{'currency_field': 'currency_id'}"/>
@@ -211,8 +211,6 @@
                     domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
                 <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
                     domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
-                <filter string="Exception Activities" name="activities_exception"
-                    domain="[('activity_exception_decoration', '!=', False)]"/>
                 <separator/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By...">

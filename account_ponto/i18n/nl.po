@@ -3,17 +3,17 @@
 # 	* account_ponto
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,6 +110,11 @@ msgstr "Timeout: de server heeft niet binnen 60s gereageerd"
 #: model_terms:ir.ui.view,arch_db:account_ponto.ponto_online_provider_account_form_view
 msgid "Update Accounts"
 msgstr "Update rekeningen"
+
+#. module: account_ponto
+#: model:ir.model,name:account_ponto.model_account_online_wizard
+msgid "Wizard to link synchronized accounts to journal"
+msgstr "Wizard om gesynchroniseerde rekeningen toe te voegen aan een dagboek"
 
 #. module: account_ponto
 #: model:ir.model.fields,help:account_ponto.field_account_online_journal__ponto_last_synchronization_identifier

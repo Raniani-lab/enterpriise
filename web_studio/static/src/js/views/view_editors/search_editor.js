@@ -2,20 +2,22 @@ odoo.define('web_studio.SearchEditor', function (require) {
 "use strict";
 
 var config = require('web.config');
+const core = require('web.core');
 var Domain = require('web.Domain');
 var DomainSelectorDialog = require("web.DomainSelectorDialog");
-var session = require('web.session');
 
 var EditorMixin = require('web_studio.EditorMixin');
 var FormEditorHook = require('web_studio.FormEditorHook');
 var SearchRenderer = require('web_studio.SearchRenderer');
 var utils = require('web_studio.utils');
 
+const _t = core._t;
+
 var SearchEditor = SearchRenderer.extend(EditorMixin, {
     nearest_hook_tolerance: 50,
     className: SearchRenderer.prototype.className + ' o_web_studio_search_view_editor',
     custom_events: _.extend({}, SearchRenderer.prototype.custom_events, {
-        'on_hook_selected': function() {
+        'on_hook_selected': function () {
             this.selected_node_id = false;
         },
     }),
@@ -208,17 +210,20 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
                         // in order to be able to get the value
                         // easily in the event trigger below
                         var $domain_div = $("<div><label>Label:</label></div>");
-                        self.$domain_label_input = $("<input type='text' id='domain_label'/>");
+                        self.$domain_label_input = $("<input type='text' id='domain_label' class='o_input mb8'/>");
                         $domain_div.append(self.$domain_label_input);
                         var domain_dialog = self._openDomainDialog(
                             self.model,
                             [["id","=",1]],
                             {
+                                title: _t("New Filter"),
+                                size: 'medium',
                                 readonly: false,
                                 debugMode: config.isDebug(),
                                 $content: $domain_div,
                             }
                         );
+                        domain_dialog.opened().then(() => self.$domain_label_input.focus());
                         // Add the node when clicking on the dialog 'save' button
                         domain_dialog.on('domain_selected', self, function (event) {
                             new_attrs = {

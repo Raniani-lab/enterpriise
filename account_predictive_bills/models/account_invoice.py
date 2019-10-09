@@ -18,16 +18,16 @@ class AccountMove(models.Model):
             # Predict product.
             if self.env.user.has_group('account.group_products_in_bills') and not line.product_id:
                 predicted_product_id = line._predict_product(line.name)
-                if predicted_product_id:
-                    line.product_id = predicted_product_id
+                if predicted_product_id and predicted_product_id != line.product_id.id:
+                    line['product_id'] = predicted_product_id
                     line._onchange_product_id()
                     line.recompute_tax_line = True
 
             # Predict account.
             if not line.account_id or line.predict_override_default_account:
                 predicted_account_id = line._predict_account(line.name, line.partner_id)
-                if predicted_account_id:
-                    line.update({'account_id': predicted_account_id})
+                if predicted_account_id and predicted_account_id != line.account_id.id:
+                    line['account_id'] = predicted_account_id
                     line._onchange_account_id()
                     line.recompute_tax_line = True
         return super(AccountMove, self)._onchange_recompute_dynamic_lines()

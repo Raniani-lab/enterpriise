@@ -13,7 +13,6 @@ var registry = require('web.field_registry');
 var _t = core._t;
 
 var HierarchyKanban = FieldOne2Many.extend({
-    description: "",
     custom_events: _.extend({}, FieldOne2Many.prototype.custom_events, {
         'add_child_act': '_onAddChild',
     }),

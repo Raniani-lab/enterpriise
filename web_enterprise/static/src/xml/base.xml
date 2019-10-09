@@ -110,6 +110,22 @@
             <span class="oe_instance_register oe_instance_error">
               Something went wrong while registering your database. You can try again or contact <a href="https://www.odoo.com/help" target="_blank">Odoo Help</a>.
             </span>
+            <span class="oe_instance_register oe_database_already_linked">
+              Your subscription is already linked to a database.<br/>
+              To unlink it you can either:<br/>
+              - Login to your Odoo.com dashboard then unlink your previous database: <a class="oe_contract_link"/><br/>
+            <span class="oe_contract_email_block">
+              - <a href="#" class="oe_contract_send_mail">Click here to send an email</a> to the subscription owner (email: <strong class="oe_contract_email" />) with the instructions to follow
+              <p class="oe_contract_sending_mail">Sending the instructions by email ...</p>
+              <p class="oe_contract_sending_mail_success">The instructions to unlink your subscription from the previous database(s) have been sent</p>
+              <p class="oe_contract_sending_mail_fail">Unable to send the instructions by email, please contact the <a href="www.odoo.com/help">Odoo Support</a><br/>
+                Error reason: <span class="oe_contract_sending_mail_fail_reason"/>
+              </p>
+            </span>
+            <span class="oe_contract_no_email_block">
+              - Contact your sales representative to help you to unlink your previous database
+            </span>
+            </span>
             <div class="oe_instance_register oe_instance_register_form">
                 <form class="form-inline justify-content-center mt-4">
                     <div class="form-group">

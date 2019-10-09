@@ -17,6 +17,11 @@ file_filter = account_asset/i18n/<lang>.po
 source_file = account_asset/i18n/account_asset.pot
 source_lang = en
 
+[odoo-master.account_auto_transfer]
+file_filter = account_auto_transfer/i18n/<lang>.po
+source_file = account_auto_transfer/i18n/account_auto_transfer.pot
+source_lang = en
+
 [odoo-master.account_bank_statement_import_camt]
 file_filter = account_bank_statement_import_camt/i18n/<lang>.po
 source_file = account_bank_statement_import_camt/i18n/account_bank_statement_import_camt.pot
@@ -45,6 +50,11 @@ source_lang = en
 [odoo-master.account_budget]
 file_filter = account_budget/i18n/<lang>.po
 source_file = account_budget/i18n/account_budget.pot
+source_lang = en
+
+[odoo-master.account_consolidation]
+file_filter = account_consolidation/i18n/<lang>.po
+source_file = account_consolidation/i18n/account_consolidation.pot
 source_lang = en
 
 [odoo-master.account_followup]
@@ -292,11 +302,6 @@ file_filter = hr_contract_sign/i18n/<lang>.po
 source_file = hr_contract_sign/i18n/hr_contract_sign.pot
 source_lang = en
 
-[odoo-master.hr_documents]
-file_filter = hr_documents/i18n/<lang>.po
-source_file = hr_documents/i18n/hr_documents.pot
-source_lang = en
-
 [odoo-master.hr_holidays_gantt]
 file_filter = hr_holidays_gantt/i18n/<lang>.po
 source_file = hr_holidays_gantt/i18n/hr_holidays_gantt.pot
@@ -360,11 +365,6 @@ source_lang = en
 [odoo-master.mail_github]
 file_filter = mail_github/i18n/<lang>.po
 source_file = mail_github/i18n/mail_github.pot
-source_lang = en
-
-[odoo-master.map_view_contact]
-file_filter = map_view_contact/i18n/<lang>.po
-source_file = map_view_contact/i18n/map_view_contact.pot
 source_lang = en
 
 [odoo-master.marketing_automation]
@@ -580,6 +580,36 @@ source_lang = en
 [odoo-master.snailmail_account_followup]
 file_filter = snailmail_account_followup/i18n/<lang>.po
 source_file = snailmail_account_followup/i18n/snailmail_account_followup.pot
+source_lang = en
+
+[odoo-master.social]
+file_filter = social/i18n/<lang>.po
+source_file = social/i18n/social.pot
+source_lang = en
+
+[odoo-master.social_crm]
+file_filter = social_crm/i18n/<lang>.po
+source_file = social_crm/i18n/social_crm.pot
+source_lang = en
+
+[odoo-master.social_facebook]
+file_filter = social_facebook/i18n/<lang>.po
+source_file = social_facebook/i18n/social_facebook.pot
+source_lang = en
+
+[odoo-master.social_push_notifications]
+file_filter = social_push_notifications/i18n/<lang>.po
+source_file = social_push_notifications/i18n/social_push_notifications.pot
+source_lang = en
+
+[odoo-master.social_sale]
+file_filter = social_sale/i18n/<lang>.po
+source_file = social_sale/i18n/social_sale.pot
+source_lang = en
+
+[odoo-master.social_twitter]
+file_filter = social_twitter/i18n/<lang>.po
+source_file = social_twitter/i18n/social_twitter.pot
 source_lang = en
 
 [odoo-master.stock_account_enterprise]

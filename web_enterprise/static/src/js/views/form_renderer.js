@@ -61,6 +61,16 @@ FormRenderer.include({
      */
     _toggleStatusbarButtons: function ($headerButtons) {
         var $visibleButtons = $headerButtons.find('.dropdown-menu button:not(.o_invisible_modifier)');
+
+        // We need to remove also the button that match these CSS selector:
+        // .o_form_view.o_form_editable .oe_read_only {
+        //     display: none !important;
+        // }
+        // At this time the widget is not appended and so the selector is not enable yet.
+        $visibleButtons = $visibleButtons.filter((index, element) => {
+            return !(this.mode === 'edit' && element.matches('.oe_read_only'));
+        });
+
         $headerButtons.toggleClass('o_invisible_modifier', !$visibleButtons.length);
     },
 

@@ -22,21 +22,21 @@
                     <div class="content-group">
                       <div class="row mt16">
                           <label for="extra_hour" class="col-lg-3 o_light_label"/>
-                          <field name="extra_hour" widget="monetary" class="col-lg-2"/>
+                          <field name="extra_hour" widget="monetary" class="col-lg-2 p-0"/>
                       </div>
-                      <div class="row mt16">
+                      <div class="row mt2">
                           <label for="extra_day" class="col-lg-3 o_light_label"/>
-                          <field name="extra_day" widget="monetary" class="col-lg-2"/>
+                          <field name="extra_day" widget="monetary" class="col-lg-2 p-0"/>
                       </div>
-                      <div class="row mt16 o_light_label">
+                      <div class="row mt2 o_light_label">
                         <label string="Apply after" for="min_extra_hour" class="col-lg-3"/>
                         <field name="min_extra_hour" class="col-lg-2"/>
-                        <label string="hours" for="min_extra_hour" class="col-lg-2"/>
+                        <label string="hours" for="min_extra_hour" class="col-lg-2 p-0"/>
                       </div>
                       <!-- Extra week/month support ? -->
-                      <div class="row mt16">
+                      <div class="row mt8">
                           <label string="Product" for="extra_product" class="col-lg-3 o_light_label"/>
-                          <field name="extra_product" placeholder="Rental Delay Product"/>
+                          <field name="extra_product" placeholder="Product to charge extra time"/>
                       </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                 <div class="o_setting_right_pane" name="rental_sign">
                     <label for="module_sale_renting_sign"/>
                     <div class="text-muted">
-                        Fill and sign digital documents.
+                        Ask customer to sign documents on the spot.
                     </div>
                 </div>
               </div>

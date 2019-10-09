@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -111,6 +111,11 @@ msgstr "超时：服务器在60秒内没有响应"
 #: model_terms:ir.ui.view,arch_db:account_ponto.ponto_online_provider_account_form_view
 msgid "Update Accounts"
 msgstr ""
+
+#. module: account_ponto
+#: model:ir.model,name:account_ponto.model_account_online_wizard
+msgid "Wizard to link synchronized accounts to journal"
+msgstr "关联同步账户到日记账向导"
 
 #. module: account_ponto
 #: model:ir.model.fields,help:account_ponto.field_account_online_journal__ponto_last_synchronization_identifier

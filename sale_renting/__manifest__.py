@@ -2,7 +2,7 @@
 {
     'name': "Rental",
 
-    'summary': "Manage rental contracts, deliveries, returns",
+    'summary': "Manage rental contracts, deliveries and returns",
 
     'description': """
         Specify rentals of products (products, quotations, invoices, ...)
@@ -13,7 +13,7 @@
     'author': "Odoo S.A.",
     'website': "https://www.odoo.com",
 
-    'category': 'Sales',
+    'category': 'Sales/Sales',
     'version': '1.0',
 
     'depends': ['sale'],

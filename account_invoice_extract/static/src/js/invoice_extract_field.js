@@ -71,7 +71,7 @@ var InvoiceExtractField = Class.extend(Mixins.EventDispatcherMixin, {
         var changes = {};
         switch (this._name) {
             case 'date':
-                changes = { date: field_utils.parse.date(fieldChangedInfo.split(' ')[0]) };
+                changes = { invoice_date: field_utils.parse.date(fieldChangedInfo.split(' ')[0]) };
                 break;
             case 'supplier':
                 if (_.isNumber(fieldChangedInfo)) {
@@ -82,7 +82,7 @@ var InvoiceExtractField = Class.extend(Mixins.EventDispatcherMixin, {
                 changes = { partner_id: { id: fieldChangedInfo } };
                 break;
             case 'due_date':
-                changes = { date_due: field_utils.parse.date(fieldChangedInfo.split(' ')[0]) };
+                changes = { invoice_date_due: field_utils.parse.date(fieldChangedInfo.split(' ')[0]) };
                 break;
             case 'invoice_id':
                 changes = { ref: fieldChangedInfo };

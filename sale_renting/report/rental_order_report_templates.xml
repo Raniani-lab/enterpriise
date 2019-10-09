@@ -26,7 +26,7 @@
                 <div class="oe_structure"/>
                 <h2 class="mt16">
                     <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
-                        <span t-if="doc.state not in ['draft','sent']">Delivery Receipt # </span>
+                        <span t-if="doc.state not in ['draft','sent']">Pickup Receipt # </span>
                     </t>
                     <span t-field="doc.name"/>
                 </h2>
@@ -41,9 +41,9 @@
                     <thead>
                         <tr>
                             <th class="text-left">Description</th>
-                            <th class="text-left">Delivery Date</th>
+                            <th class="text-left">Pickup Date</th>
                             <th class="text-left">Expected Return</th>
-                            <th class="text-right">Delivered</th>
+                            <th class="text-right">Pickedup</th>
                             <th class="text-right">Returned</th>
                         </tr>
                     </thead>

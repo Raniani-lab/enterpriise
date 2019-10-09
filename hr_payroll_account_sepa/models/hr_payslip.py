@@ -28,8 +28,12 @@ class HrPayslip(models.Model):
         }
 
     def _create_xml_file(self, journal_id, file_name=None):
-        if any(not slip.employee_id.address_home_id for slip in self):
-            raise UserError(_("An employee has not a bank account."))
+        employees = self.mapped('employee_id').filtered(lambda e: not e.address_home_id)
+        if employees:
+            raise UserError(_("Some employees (%s) don't have a private address.") % (','.join(employees.mapped('name'))))
+        employees = self.mapped('employee_id').filtered(lambda e: not e.bank_account_id)
+        if employees:
+            raise UserError(_("Some employees (%s) don't have a bank account.") % (','.join(employees.mapped('name'))))
 
         # Map the necessary data
         payments_data = [{

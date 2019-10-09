@@ -13,21 +13,21 @@
 # AppleMentalist <felix.schnatbaum@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Wolfgang Taferner, 2019
-# Gab_Odoo <gab@odoo.com>, 2019
 # Andreas Stauder <andreas.stauder@brain-tec.ch>, 2019
 # darenkster <inactive+darenkster@transifex.com>, 2019
 # Jan Meyer, 2019
 # Johannes Croe <jcr@odoo.com>, 2019
-# Chris Egal <sodaswed@web.de>, 2019
 # Leon Grill <leg@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
+# Bettina Pfeifer <betzilla@web.de>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
+"Last-Translator: Bettina Pfeifer <betzilla@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,14 +40,14 @@ msgstr ""
 #: code:addons/documents/static/src/js/documents_kanban_controller.js:0
 #, python-format
 msgid " (+%s locked)"
-msgstr ""
+msgstr " (+%s gesperrt)"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/documents_kanban_controller.js:0
 #, python-format
 msgid "%s Documents"
-msgstr ""
+msgstr "%s Dokumente"
 
 #. module: documents
 #. openerp-web
@@ -55,6 +55,8 @@ msgstr ""
 #, python-format
 msgid "%s file(s) not moved because they are locked by another user"
 msgstr ""
+"%s Datei (en) nicht verschoben, da sie von einem anderen Benutzer gesperrt "
+"sind"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -671,11 +673,6 @@ msgstr "Bitte um Validierung"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
-msgid "Attached Document Name"
-msgstr "Dateianhangbezeichnung"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Attached To"
 msgstr "Zuweisung an:"
 
@@ -785,7 +782,6 @@ msgstr "Klicken Sie auf eine Karte um <b>das Dokument zu sehen</b>"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__company_id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
-#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Company"
 msgstr "Unternehmen"
 
@@ -1013,7 +1009,7 @@ msgstr "Dokumente teilen"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "Arbeitsbereich \"Dokumente\""
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_mixin
@@ -1185,7 +1181,7 @@ msgstr "Dateigröße"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Files Centralization"
-msgstr ""
+msgstr "Dateizentralisierung"
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
@@ -1310,7 +1306,9 @@ msgstr "Falls markiert, benötigen neue Nachrichten Ihre Kenntnisnahme."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_has_error
+#: model:ir.model.fields,help:documents.field_documents_document__message_has_sms_error
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
+#: model:ir.model.fields,help:documents.field_documents_share__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Wenn gewählt, ist das Senden einiger Nachrichten fehlgeschlagen."
 
@@ -1873,6 +1871,12 @@ msgid "Rule name"
 msgstr "Regelname"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_has_sms_error
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "SMS Zustellungsfehler"
+
+#. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_sales
 msgid "Sales"
 msgstr "Verkäufe"
@@ -2179,7 +2183,7 @@ msgstr "Dieser Link ist abgelaufen"
 #: model:ir.model.fields,help:documents.field_documents_document__company_id
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This workspace will only be available to the selected company"
-msgstr ""
+msgstr "Dieser Arbeitsbereich steht nur der ausgewählten Firma zur Verfügung"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail

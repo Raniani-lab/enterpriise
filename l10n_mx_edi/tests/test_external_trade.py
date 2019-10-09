@@ -31,12 +31,11 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
 
     def test_l10n_mx_edi_invoice_external_trade(self):
         self.xml_expected_str = misc.file_open(os.path.join(
-            'l10n_mx_edi_external_trade', 'tests',
+            'l10n_mx_edi', 'tests',
             'expected_cfdi_external_trade_33.xml')).read().encode('UTF-8')
         self.xml_expected = objectify.fromstring(self.xml_expected_str)
 
         self.company.partner_id.write({
-            'property_account_position_id': self.fiscal_position.id,
             'l10n_mx_edi_locality_id': self.env.ref(
                 'l10n_mx_edi.res_locality_mx_son_04').id,
             'city_id': self.env.ref('l10n_mx_edi.res_city_mx_son_018').id,

@@ -277,7 +277,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.renderer.state.records.length, 0, 'There should be no records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum zoom level(1)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 2, 'The map should at its minimum zoom level(2)');
             map.destroy();
         });
         /**
@@ -311,7 +311,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.renderer.state.records.length, 1, 'There should be no records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum level of zoom(1)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 2, 'The map should at its minimum level of zoom(2)');
             assert.containsOnce(map,'.o_pin_list_container .o_pin_list_details li');
             assert.containsOnce(map,'.o_pin_list_container .o_pin_list_details li span');
             map.destroy();
@@ -537,7 +537,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum zoom level(1)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 2, 'The map should at its minimum zoom level(2)');
             map.destroy();
         });
 
@@ -574,7 +574,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum zoom level(1)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 2, 'The map should at its minimum zoom level(2)');
             map.destroy();
         });
 
@@ -611,7 +611,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum zoom level(1)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 2, 'The map should at its minimum zoom level(2)');
             map.destroy();
         });
 
@@ -648,7 +648,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum zoom level(1)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 2, 'The map should at its minimum zoom level(2)');
             map.destroy();
         });
 
@@ -925,7 +925,7 @@ odoo.define('web_map.view_view_tests', function (require) {
 
             assert.strictEqual(map.renderer.polylines.length, 0, 'Should have no polylines');
             assert.strictEqual(map.$('.leaflet-overlay-pane').children().length, 0, 'Should have no showing route');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The level of zoom should should be at it\'s minimum');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 2, 'The level of zoom should should be at it\'s minimum');
             map.destroy();
         });
 

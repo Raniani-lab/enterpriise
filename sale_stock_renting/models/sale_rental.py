@@ -202,6 +202,14 @@ class RentalOrderLine(models.Model):
             if line.is_rental:
                 line.qty_delivered_method = 'manual'
 
+    def _compute_qty_to_deliver(self):
+        """Don't show inventory widget for rental order lines."""
+        super(RentalOrderLine, self.filtered(lambda sol: not sol.is_rental))._compute_qty_to_deliver()
+        self.filtered('is_rental').write({
+            'qty_to_deliver': 0.0,
+            'display_qty_widget': False,
+        })
+
     @api.constrains('product_id')
     def _stock_consistency(self):
         for line in self.filtered('is_rental'):
@@ -236,7 +244,7 @@ class RentalOrderLine(models.Model):
         for line in self:
             line.unavailable_lot_ids = (line.reserved_lot_ids | line.pickedup_lot_ids) - line.returned_lot_ids
 
-    @api.depends('pickup_date', 'product_id.preparation_time')
+    @api.depends('pickup_date')
     def _compute_reservation_begin(self):
         lines = self.filtered(lambda line: line.is_rental)
         for line in lines:

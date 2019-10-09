@@ -3,19 +3,18 @@
 # 	* pos_iot
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Eloïse Stilmant <est@odoo.com>, 2019
 # Nils Goossens Bara <ngb@odoo.com>, 2019
 # thomas quertinmont <tqu@odoo.com>, 2019
 # Cécile Collart <cco@odoo.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:37+0000\n"
+"POT-Creation-Date: 2019-09-23 11:37+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,11 +40,21 @@ msgid "Access your"
 msgstr "Accéder à votre"
 
 #. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Barcode Scanners"
+msgstr ""
+
+#. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_print_via_proxy
 msgid "Bypass browser printing and prints via the hardware proxy."
 msgstr ""
 "Contourner l'impression via le navigateur pour imprimer via le proxy "
 "matériel."
+
+#. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Cashdrawer"
+msgstr "Tiroir-caisse"
 
 #. module: pos_iot
 #. openerp-web
@@ -109,6 +118,34 @@ msgid "Could not connect to IoT scale"
 msgstr "Impossible de se connecter à la balance IoT"
 
 #. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Customer Display"
+msgstr "Affichage client"
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_customer_facing_display
+msgid "Customer Facing Display"
+msgstr "Affichage côté client"
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_electronic_scale
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Electronic Scale"
+msgstr "Balance électronique"
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_pos_config__iface_scan_via_proxy
+msgid "Enable barcode scanning with a remotely connected barcode scanner."
+msgstr ""
+"Permet d'activer la lecture des code-barres depuis un lecteur connecté à "
+"distance."
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_pos_config__iface_electronic_scale
+msgid "Enables Electronic Scale integration."
+msgstr "Permet d'activer l'intégration d'une balance électronique."
+
+#. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/js/close_session.js:0
 #, python-format
@@ -123,11 +160,6 @@ msgid "Firefox only : Click on Confirm Security Exception"
 msgstr "Firefox uniquement : Cliquez sur Confirmer l'exception de sécurité"
 
 #. module: pos_iot
-#: model:ir.model.fields,field_description:pos_iot.field_pos_config__proxy_ip
-msgid "IP Address"
-msgstr "Adresse IP"
-
-#. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/xml/pos.xml:0
 #, python-format
@@ -138,9 +170,24 @@ msgstr ""
 "le certificat :"
 
 #. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_display_id
+msgid "Iface Display"
+msgstr ""
+
+#. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_printer_id
 msgid "Iface Printer"
 msgstr "Imprimante Iface"
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_scale_id
+msgid "Iface Scale"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_scanner_ids
+msgid "Iface Scanner"
+msgstr ""
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
@@ -153,11 +200,6 @@ msgid "Ingenico Payment Terminal"
 msgstr "Terminal de paiement Ingenico"
 
 #. module: pos_iot
-#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
-msgid "IoT Box"
-msgstr "IoT Box"
-
-#. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/xml/pos.xml:0
 #, python-format
@@ -166,8 +208,13 @@ msgstr "Page d'accueil de l'IoT Box"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
-msgid "IoT Boxes"
-msgstr "Boîtes IoT"
+msgid "IoT Devices"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iot_device_ids
+msgid "Iot Device"
+msgstr ""
 
 #. module: pos_iot
 #. openerp-web
@@ -195,10 +242,15 @@ msgid "Ok"
 msgstr "Ok"
 
 #. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_payment_method__payment_terminal_ids
+msgid "Payment Terminal"
+msgstr "Terminal de paiement"
+
+#. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__payment_terminal_device_ids
 #: model:ir.model.fields,field_description:pos_iot.field_pos_payment_method__iot_device_id
 msgid "Payment Terminal Device"
-msgstr ""
+msgstr "Terminal de paiement"
 
 #. module: pos_iot
 #. openerp-web
@@ -241,9 +293,9 @@ msgid "Print via Proxy"
 msgstr "Imprimer via un proxy"
 
 #. module: pos_iot
-#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iotbox_id
-msgid "Related Box"
-msgstr "Box liée"
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Receipt Printer"
+msgstr "Imprimante de reçu"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
@@ -256,11 +308,23 @@ msgid "SIX Payment Terminal"
 msgstr "Terminal de paiement Six"
 
 #. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_scan_via_proxy
+msgid "Scan via Proxy"
+msgstr "Scan via Proxy"
+
+#. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/js/chrome.js:0
 #, python-format
 msgid "Send Balance"
 msgstr "Envoyer le solde"
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_pos_config__iface_customer_facing_display
+msgid "Show checkout to customers with a remotely-connected screen."
+msgstr ""
+"Afficher l'étape de paiement aux clients munis d'un écran connecté à "
+"distance."
 
 #. module: pos_iot
 #. openerp-web
@@ -275,15 +339,6 @@ msgstr "Erreur terminal"
 #, python-format
 msgid "The IoT scale is not responding. You should check your connection."
 msgstr "La balance IoT ne répond pas. Vous devriez vérifier votre connexion."
-
-#. module: pos_iot
-#: model:ir.model.fields,help:pos_iot.field_pos_config__proxy_ip
-msgid ""
-"The hostname or ip address of the hardware proxy, Will be autodetected if "
-"left empty."
-msgstr ""
-"Nom d'hôte ou adresse IP du proxy matériel. Laisser vide pour utiliser "
-"l'autodétection."
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot

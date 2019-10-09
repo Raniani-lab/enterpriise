@@ -723,19 +723,21 @@ class MrpProductionSchedule(models.Model):
         location = type == 'incoming' and 'location_dest_id' or 'location_id'
         location_dest = type == 'incoming' and 'location_id' or 'location_dest_id'
         domain_confirmed = [
-            (location, 'child_of', self.mapped('warehouse_id.lot_stock_id').ids),
+            (location, 'child_of', self.mapped('warehouse_id.view_location_id').ids),
             ('product_id', 'in', self.mapped('product_id').ids),
             ('state', 'not in', ['done', 'cancel', 'draft']),
-            (location_dest + '.usage', '!=', 'internal'),
+            (location + '.usage', '!=', 'inventory'),
+            (location_dest + '.usage', 'not in', ('internal', 'inventory')),
             ('inventory_id', '=', False),
             ('date_expected', '>=', date_start),
             ('date_expected', '<=', date_stop)
         ]
         domain_done = [
-            (location, 'child_of', self.mapped('warehouse_id.lot_stock_id').ids),
+            (location, 'child_of', self.mapped('warehouse_id.view_location_id').ids),
             ('product_id', 'in', self.mapped('product_id').ids),
             ('state', '=', 'done'),
-            (location_dest + '.usage', '!=', 'internal'),
+            (location + '.usage', '!=', 'inventory'),
+            (location_dest + '.usage', 'not in', ('internal', 'inventory')),
             ('inventory_id', '=', False),
             ('date', '>=', date_start),
             ('date', '<=', date_stop)
@@ -789,7 +791,7 @@ class MrpProductionSchedule(models.Model):
         :param date_stop: end date of the forecast domain
         """
         return [
-            ('order_id.picking_type_id.default_location_dest_id', 'child_of', self.mapped('warehouse_id.lot_stock_id').ids),
+            ('order_id.picking_type_id.default_location_dest_id', 'child_of', self.mapped('warehouse_id.view_location_id').ids),
             ('product_id', 'in', self.mapped('product_id').ids),
             ('state', 'in', ('draft', 'sent', 'to approve')),
             ('date_planned', '>=', date_start),

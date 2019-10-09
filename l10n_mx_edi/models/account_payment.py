@@ -100,10 +100,13 @@ class AccountPayment(models.Model):
 
     def post(self):
         """Generate CFDI to payment after that invoice is paid"""
-        date_mx = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
         res = super(AccountPayment, self.with_context(
             l10n_mx_edi_manual_reconciliation=False)).post()
         for record in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
+            partner = record.journal_id.l10n_mx_address_issued_id or record.company_id.partner_id.commercial_partner_id
+            tz = self.env['account.invoice']._l10n_mx_edi_get_timezone(
+                partner.state_id.code)
+            date_mx = datetime.now(tz)
             record.write({
                 'l10n_mx_edi_expedition_date': date_mx,
                 'l10n_mx_edi_time_payment': date_mx.strftime(
@@ -378,7 +381,10 @@ class AccountPayment(models.Model):
             return {'error': _('Please check your configuration: ') + account_invoice.create_list_html(error_log)}
 
         # -Compute date and time of the invoice
-        date_mx = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
+        partner = self.journal_id.l10n_mx_address_issued_id or self.company_id.partner_id.commercial_partner_id
+        tz = self.env['account.invoice']._l10n_mx_edi_get_timezone(
+            partner.state_id.code)
+        date_mx = datetime.now(tz)
         if not self.l10n_mx_edi_expedition_date:
             self.l10n_mx_edi_expedition_date = date_mx
         if not self.l10n_mx_edi_time_payment:

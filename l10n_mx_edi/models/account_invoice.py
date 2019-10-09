@@ -1003,6 +1003,7 @@ class AccountMove(models.Model):
 
         # -Compute cfdi
         cfdi = qweb.render(CFDI_TEMPLATE_33, values=values)
+        cfdi = cfdi.replace(b'xmlns__', b'xmlns:')
         node_sello = 'Sello'
         attachment = self.env.ref('l10n_mx_edi.xsd_cached_cfdv33_xsd', False)
         xsd_datas = base64.b64decode(attachment.datas) if attachment else b''
@@ -1238,21 +1239,7 @@ class AccountMove(models.Model):
     def _l10n_mx_edi_update_hour_timezone(self):
         for inv in self:
             partner = inv.journal_id.l10n_mx_address_issued_id or inv.company_id.partner_id.commercial_partner_id
-            # northwest area
-            if partner.state_id.code == 'BCN':
-                tz = timezone('America/Tijuana')
-            # Southeast area
-            elif partner.state_id.code == 'ROO':
-                tz = timezone('America/Cancun')
-            # Pacific area
-            elif partner.state_id.code in ('BCS', 'CHH', 'SIN', 'NAY'):
-                tz = timezone('America/Chihuahua')
-            # Sonora
-            elif partner.state_id.code in ('SON',):
-                tz = timezone('America/Hermosillo')
-            # By default, takes the central area timezone
-            else:
-                tz = timezone('America/Mexico_City')
+            tz = self._l10n_mx_edi_get_timezone(partner.state_id.code)
 
             # Check the TZ should be forced for the current journal
             tz_force = self.env['ir.config_parameter'].sudo().get_param(
@@ -1268,7 +1255,7 @@ class AccountMove(models.Model):
             raise UserError(_(
                 'Invoice must be in draft or open state in order to be '
                 'cancelled.'))
-        if self.filtered(lambda inv: not inv.journal_id.update_posted):
+        if self.filtered(lambda inv: inv.journal_id.restrict_mode_hash_table):
             raise UserError(_(
                 'You cannot modify a posted entry of this journal.\nFirst you '
                 'should set the journal to allow cancelling entries.'))
@@ -1339,3 +1326,20 @@ class AccountMove(models.Model):
                 'This invoice already was cancelled in the SAT, now will try '
                 'to cancel in Odoo.'),
         }
+
+    @api.model
+    def _l10n_mx_edi_get_timezone(self, state):
+        # northwest area
+        if state == 'BCN':
+            return timezone('America/Tijuana')
+        # Southeast area
+        elif state == 'ROO':
+            return timezone('America/Cancun')
+        # Pacific area
+        elif state in ('BCS', 'CHH', 'SIN', 'NAY'):
+            return timezone('America/Chihuahua')
+        # Sonora
+        elif state == 'SON':
+            return timezone('America/Hermosillo')
+        # By default, takes the central area timezone
+        return timezone('America/Mexico_City')

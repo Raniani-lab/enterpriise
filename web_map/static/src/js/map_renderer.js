@@ -97,7 +97,7 @@ odoo.define('web_map.MapRenderer', function (require) {
             });
             L.tileLayer(this.apiTilesRoute, {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                minZoom: 0,
+                minZoom: 2,
                 maxZoom: 19,
                 id: 'mapbox.streets',
                 accessToken: this.mapBoxToken,

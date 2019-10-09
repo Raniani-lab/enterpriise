@@ -10,7 +10,7 @@ Design gorgeous mails
     'version': '1.0',
     'sequence': 110,
     'website': 'https://www.odoo.com/page/mailing',
-    'category': 'Marketing',
+    'category': 'Marketing/Email Marketing',
     'depends': [
         'mass_mailing',
     ],

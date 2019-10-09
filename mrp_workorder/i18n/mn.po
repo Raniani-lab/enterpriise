@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-30 09:47+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
@@ -70,6 +70,11 @@ msgid "CONTINUE CONSUMPTION"
 msgstr ""
 
 #. module: mrp_workorder
+#: model:ir.model,name:mrp_workorder.model_change_production_qty
+msgid "Change Production Qty"
+msgstr ""
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__check_ids
 msgid "Check"
 msgstr "Шалгах"
@@ -94,6 +99,11 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_uom_id
 msgid "Component UoM"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_uom_id
+msgid "Component Uom"
 msgstr ""
 
 #. module: mrp_workorder
@@ -585,7 +595,6 @@ msgid "Unblock"
 msgstr "Хориг чөлөөлөх"
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_uom_id
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Unit of Measure"
 msgstr "Хэмжих нэгж"
@@ -673,6 +682,14 @@ msgstr ""
 msgid ""
 "You are using components from another lot. \n"
 "Please validate the components from the first lot before using another lot."
+msgstr ""
+
+#. module: mrp_workorder
+#: code:addons/mrp_workorder/wizard/change_production_qty.py:0
+#, python-format
+msgid ""
+"You cannot update the quantity to do of an ongoing manufacturing order for "
+"which quality checks have been performed."
 msgstr ""
 
 #. module: mrp_workorder

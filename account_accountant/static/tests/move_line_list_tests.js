@@ -3,7 +3,7 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
 
     var config = require('web.config');
     var testUtils = require('web.test_utils');
-    var MoveLineListView = require('account_accountant.MoveLineListView');
+    var MoveLineListView = require('account_accountant.MoveLineListView').AccountMoveListView;
 
     var createView = testUtils.createView;
 

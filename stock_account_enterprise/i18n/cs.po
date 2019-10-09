@@ -3,7 +3,6 @@
 # 	* stock_account_enterprise
 # 
 # Translators:
-# Ladislav Tomm <tomm@helemik.cz>, 2019
 # trendspotter <j.podhorecky@volny.cz>, 2019
 # 
 msgid ""
@@ -32,17 +31,17 @@ msgstr ""
 #. module: stock_account_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Incoming Inventory Value"
-msgstr ""
+msgstr "Příchozí hodnota inventáře"
 
 #. module: stock_account_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Inventory Turnover"
-msgstr ""
+msgstr "Obrat Inventáře"
 
 #. module: stock_account_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Inventory Value"
-msgstr "Hodnota skladu"
+msgstr "Hodnota inventáře"
 
 #. module: stock_account_enterprise
 #: model:ir.model.fields,help:stock_account_enterprise.field_stock_report__valuation
@@ -50,6 +49,8 @@ msgid ""
 "Note that you can only access this value in the read_group, only the sum "
 "operator is supported"
 msgstr ""
+"Všimněte si, že k této hodnotě máte přístup pouze ve skupině read_group, je "
+"podporován pouze operátor sum"
 
 #. module: stock_account_enterprise
 #: model:ir.model.fields,help:stock_account_enterprise.field_stock_report__stock_value
@@ -57,6 +58,8 @@ msgid ""
 "Note that you can only access this value in the read_group, only the sum "
 "operator is supported and only date_done is used from the domain"
 msgstr ""
+"Všimněte si, že k této hodnotě máte přístup pouze v read_group, je "
+"podporován pouze operátor sum a z domény je použit pouze date_done."
 
 #. module: stock_account_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
@@ -66,7 +69,7 @@ msgstr "Hodnota odchozí zásoby"
 #. module: stock_account_enterprise
 #: model:ir.model,name:stock_account_enterprise.model_stock_report
 msgid "Stock Report"
-msgstr ""
+msgstr "Skladová zpráva"
 
 #. module: stock_account_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit

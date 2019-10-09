@@ -90,8 +90,8 @@ class AccountAsset(models.Model):
 
     @api.depends('original_move_line_ids', 'original_move_line_ids.account_id', 'asset_type')
     def _compute_value(self):
-        misc_journal_id = self.env['account.journal'].search([('type', '=', 'general')], limit=1)
         for record in self:
+            misc_journal_id = self.env['account.journal'].search([('type', '=', 'general'), ('company_id', '=', record.company_id.id)], limit=1)
             if not record.original_move_line_ids:
                 record.account_asset_id = record.account_asset_id or False
                 record.original_value = record.original_value or False
@@ -184,15 +184,15 @@ class AccountAsset(models.Model):
     @api.onchange('account_asset_id')
     def _onchange_account_asset_id(self):
         self._set_value()
-        self.display_model_choice = self.state == 'draft' and len(self.env['account.asset'].search([('state', '=', 'model'), ('account_asset_id.user_type_id', '=', self.user_type_id.id), ('asset_type', '=', self.asset_type)]))
-        if self.asset_type == 'purchase':
+        self.display_model_choice = self.state == 'draft' and len(self.env['account.asset'].search([('state', '=', 'model'), ('user_type_id', '=', self.user_type_id.id)]))
+        if self.asset_type in ('purchase', 'expense'):
             self.account_depreciation_id = self.account_depreciation_id or self.account_asset_id
         else:
             self.account_depreciation_expense_id = self.account_depreciation_expense_id or self.account_asset_id
 
     @api.onchange('account_depreciation_id', 'account_depreciation_expense_id')
     def _onchange_depreciation_account(self):
-        if not self.account_asset_id or self.asset_type != 'purchase':
+        if not self.original_move_line_ids and (self.state == 'model' or not self.account_asset_id or self.asset_type != 'purchase'):
             self.account_asset_id = self.account_depreciation_id if self.asset_type in ('purchase', 'expense') else self.account_depreciation_expense_id
 
     @api.onchange('model_id')

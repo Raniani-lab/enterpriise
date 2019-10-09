@@ -110,7 +110,7 @@ class AccountMove(models.Model):
                                      'Extract state', default='no_extract_requested', required=True, copy=False)
     extract_status_code = fields.Integer("Status code", copy=False)
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
-    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id", copy=False)
+    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id", copy=False, readonly=True)
     extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id", copy=False)
 
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
@@ -425,13 +425,15 @@ class AccountMove(models.Model):
         return False
 
     def find_partner_id_with_name(self, partner_name):
+        if not partner_name:
+            return 0
         partner_names = self.env["res.partner"].search([("name", "ilike", partner_name)])
         if partner_names.exists():
             partner = min(partner_names, key=len)
             return partner.id
         else:
             partners = {}
-            for single_word in re.findall(r"[\w]+", partner_name):
+            for single_word in [word for word in re.findall(r"[\w]+", partner_name) if len(word) >= 4]:
                 partner_names = self.env["res.partner"].search([("name", "ilike", single_word)], limit=30)
                 for partner in partner_names:
                     partners[partner.id] = partners[partner.id] + 1 if partner.id in partners else 1
@@ -455,7 +457,7 @@ class AccountMove(models.Model):
                 for tax in taxes_ids:
                     taxes_by_document.append((tax, lines.filtered(lambda line: tax in line.tax_ids)))
                 if len(taxes_by_document) != 0:
-                    taxes_found |= max(taxes_by_document, key=lambda tax: len(tax[1]))[1]
+                    taxes_found |= max(taxes_by_document, key=lambda tax: len(tax[1]))[0]
                 else:
                     taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')])
                     if taxes_records:
@@ -575,7 +577,6 @@ class AccountMove(models.Model):
             # Retry saving without the ref, then set the error status to show the user a warning
             except ValidationError as e:
                 self._save_form(ocr_results, no_ref=True)
-                self.extract_state = 'error_status'
                 self.extract_status_code = WARNING_DUPLICATE_VENDOR_REFERENCE
                 self.duplicated_vendor_ref = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
 

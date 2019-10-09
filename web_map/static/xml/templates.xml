@@ -55,16 +55,21 @@
     </t>
 
     <t t-name="MapView.pinListItem">
-        <li t-foreach="widget.state.records" t-as="record">
-            <a href=""
-                t-if="record.partner and record.partner.partner_latitude and record.partner.partner_longitude"
-                t-att-data-lat="record.partner.partner_latitude"
-                t-att-data-lng="record.partner.partner_longitude">
-                <t t-esc="record.display_name"></t>
-            </a>
-            <span t-else="" title="Could not locate" class="text-muted">
-                <t t-esc="record.display_name"></t>
-            </span>
-        </li>
+        <t t-foreach="widget.state.records" t-as="record">
+            <li
+                t-att-class="record.partner and record.partner.partner_latitude and record.partner.partner_longitude ? 'o_pin_located' : undefined"
+                t-att-title="record.partner and record.partner.partner_latitude and record.partner.partner_longitude ? undefined : 'Could not locate'"
+            >
+                <a href=""
+                    t-if="record.partner and record.partner.partner_latitude and record.partner.partner_longitude"
+                    t-att-data-lat="record.partner.partner_latitude"
+                    t-att-data-lng="record.partner.partner_longitude">
+                    <t t-esc="record.display_name"></t>
+                </a>
+                <span t-else="" class="text-muted">
+                    <t t-esc="record.display_name"></t>
+                </span>
+            </li>
+        </t>
     </t>
 </templates>

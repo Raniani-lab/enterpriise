@@ -12,8 +12,13 @@ class ValidationWizard(models.TransientModel):
     validation_line_ids = fields.One2many('timesheet.validation.line', 'validation_id')
 
     def action_validate(self):
+        domain = False
         if self.env.user.has_group('hr_timesheet.group_hr_timesheet_approver'):
-            self.validation_line_ids.filtered('validate').mapped('employee_id').sudo().write({'timesheet_validated': self.validation_date})
+            domain = [('timesheet_manager_id', '=', self.env.user.id)]
+        if self.env.user.has_group('hr_timesheet.group_timesheet_manager'):
+            domain = []
+
+        self.validation_line_ids.filtered('validate').mapped('employee_id').sudo().filtered_domain(domain).write({'timesheet_validated': self.validation_date}) # sudo needed because timesheet approver may not have access on hr.employee
         return {'type': 'ir.actions.act_window_close'}
 
 

@@ -96,9 +96,10 @@ class InvoiceTransactionCase(AccountingTestCase):
                 'product_id': self.product.id,
                 'quantity': 1,
                 'price_unit': 450.0,
+                'product_uom_id': self.product.uom_id.id,
+                'name': self.product.name,
             })],
         })
-        invoice.invoice_line_ids._onchange_product_id()
         return invoice
         # TODO: fix that...
         # self.env['account.move.line'].create({

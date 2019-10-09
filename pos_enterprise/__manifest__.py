@@ -3,7 +3,7 @@
 
 {
     'name': 'Point of Sale enterprise',
-    'category': 'Point of Sale',
+    'category': 'Sales/Point Of Sale',
     'summary': 'Advanced features for PoS',
     'description': """
 Advanced features for the PoS like better views 

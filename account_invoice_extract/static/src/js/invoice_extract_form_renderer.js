@@ -29,8 +29,13 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
     init: function () {
         this._super.apply(this, arguments);
 
+        this._res_id = -1;
+        this._invoiceExtractBoxData = [];
         this._invoiceExtractBoxLayers = [];
-        this._invoiceExtractFields = new InvoiceExtractFields(this);
+        var is_customer_invoice = false;
+        if (this.state.context.default_type == 'out_invoice' || this.state.context.default_type == 'out_refund')
+            is_customer_invoice = true;
+        this._invoiceExtractFields = new InvoiceExtractFields(this, is_customer_invoice);
         this._$invoiceExtractButtons = [];
     },
 
@@ -46,6 +51,8 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
      */
     _destroyInvoiceExtract: function () {
         _.invoke(this._invoiceExtractBoxLayers, 'destroy');
+        this._res_id = -1;
+        this._invoiceExtractBoxData = [];
         this._invoiceExtractBoxLayers = [];
         this._invoiceExtractFields.resetActive();
         if (this._$invoiceExtractButtons.length) {
@@ -96,37 +103,25 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
     },
     /**
      * Setup data for the invoice extract stuffs. In particular, get box data
-     * and render buttons and boxes. The buttons are displayed on top of the
-     * attachment page preview, and boxes are on the provided page.
+     * and render them. Boxes are displayed on the provided page.
      *
      * @private
      * @param {$.Element} $page jQuery element corresponding to the attachment
      *   page. This is useful for the rendering of the box layer, which is
      *   handled differently whether the attachment is an image or a pdf.
      */
-    _makeInvoiceExtract: function ($page) {
+    _initInvoiceExtract: function ($page) {
         var self = this;
-        if (this.$('.o_invoice_extract_buttons').length > 0) {
-            this._invoiceExtractFields.resetFieldsSelections();
-            this._renderExistingInvoiceExtractBoxLayers({
-                $page: $page,
-            });
-            return;
-        }
-        this._$invoiceExtractButtons = $('<div class="o_invoice_extract_buttons"/>');
-        $page.before(this._$invoiceExtractButtons);
+        this._res_id = this.state.res_id;
         this._rpc({
             model: 'account.move',
             method: 'get_boxes',
             args: [this.state.res_id],
         }).then(function (boxesData) {
-            Promise.all([
-                self._renderInvoiceExtractButtons(),
-                self._renderInvoiceExtractBoxLayers({
-                    boxesData: boxesData,
-                    $page: $page,
-                }),
-            ]).then(function () {
+            self._invoiceExtractBoxData = boxesData;
+            self._renderInvoiceExtractBoxLayers({
+                $page: $page,
+            }).then(function () {
                 self._displayInvoiceExtractBoxes();
             });
         });
@@ -158,8 +153,6 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
      *
      * @private
      * @param {Object} params
-     * @param {Object[]} params.boxesData list of box data that have been
-     *   fetched from the server
      * @param {$.Element} params.$page the attachment page preview container
      */
     _renderInvoiceExtractBoxLayers: function (params) {
@@ -169,7 +162,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         //in case of img
         if ($page.hasClass('img-fluid')) {
             boxLayer = new InvoiceExtractBoxLayer(this, {
-                boxesData: params.boxesData,
+                boxesData: this._invoiceExtractBoxData,
                 mode: 'img',
                 $page: $page,
             });
@@ -181,63 +174,34 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
             var $document = $page.contents();
             // dynamically add css on the pdf viewer
             $document.find('head').append('<link rel="stylesheet" type="text/css" href="/account_invoice_extract/static/src/css/account_invoice_extract_box_layer.css"></link>');
-            this._invoiceExtractBoxLayers = [];
             var $textLayers = $document.find('.textLayer');
             for (var index = 0; index < $textLayers.length; index++) {
                 var $textLayer = $textLayers.eq(index);
-                boxLayer = new InvoiceExtractBoxLayer(this, {
-                    boxesData: params.boxesData,
-                    mode: 'pdf',
-                    pageNum: index,
-                    $buttons: this._$invoiceExtractButtons,
-                    $page: $page,
-                    $textLayer: $textLayer,
+                var pageNum = $textLayer[0].parentElement.dataset['pageNumber'] - 1;
+                var existingBoxLayer = this._invoiceExtractBoxLayers.find(function(bl) {
+                    return bl._pageNum == pageNum;
                 });
-                proms.push(boxLayer.insertAfter($textLayer));
-                this._invoiceExtractBoxLayers.push(boxLayer);
-            }
-        }
-
-        return Promise.all(proms);
-    },
-    /**
-     * Render the box layers using fetched box data and the attachment page
-     * preview. Boxes data are used in order to make and render boxes, whereas
-     * the page is used in order to correctly size the box layers. Also, the
-     * setup of the box layers slightly differs with images and pdf, because
-     * the latter uses an iframe.
-     *
-     * Because the iframe is created with the pdf viewer, and there is no odoo
-     * bundle related to it, we cannot simply extend the bundle with SCSS
-     * styles. As a work-around, the style of the boxes and box layers must be
-     * defined in CSS, so that we can dynamically add this file in the header
-     * of the iframe (for the case of PDF viewer).
-     *
-     * @private
-     * @param {Object} params
-     * @param {$.Element} params.$page the attachment page preview container
-     */
-    _renderExistingInvoiceExtractBoxLayers: function (params) {
-        var $page = params.$page;
-        //in case of img
-        if ($page.hasClass('img-fluid')) {
-            if (this._invoiceExtractBoxLayers.length > 0) {
-                this._invoiceExtractBoxLayers[0].insertAfter($page);
-            }
-        }
-        //in case of pdf
-        if ($page.is('iframe')) {
-            var $document = $page.contents();
-            // dynamically add css on the pdf viewer
-            $document.find('head').append('<link rel="stylesheet" type="text/css" href="/account_invoice_extract/static/src/css/account_invoice_extract_box_layer.css"></link>');
-            if (this._invoiceExtractBoxLayers.length > 0) {
-                var $textLayers = $document.find('.textLayer');
-                for (var index = 0; index < $textLayers.length && index < this._invoiceExtractBoxLayers.length; index++) {
-                    var $textLayer = $textLayers.eq(index);
-                    this._invoiceExtractBoxLayers[index].insertAfter($textLayer)
+                if (existingBoxLayer) {
+                    existingBoxLayer.setTextLayer({
+                        $textLayer: $textLayer,
+                    });
+                    proms.push(existingBoxLayer.insertAfter($textLayer));
+                }
+                else {
+                    boxLayer = new InvoiceExtractBoxLayer(this, {
+                        boxesData: this._invoiceExtractBoxData,
+                        mode: 'pdf',
+                        pageNum: pageNum,
+                        $buttons: this._$invoiceExtractButtons,
+                        $page: $page,
+                        $textLayer: $textLayer,
+                    });
+                    proms.push(boxLayer.insertAfter($textLayer));
+                    this._invoiceExtractBoxLayers.push(boxLayer);
                 }
             }
         }
+        return Promise.all(proms);
     },
     /**
      * @private
@@ -251,7 +215,26 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
             !$ocrSuccess.hasClass('o_invisible_modifier') &&
             this.mode === 'edit'
         ) {
-            this._makeInvoiceExtract($attachment);
+            // fetch boxes data for this record
+            if (this._res_id != this.state.res_id) {
+                this._destroyInvoiceExtract();
+                this._initInvoiceExtract($attachment);
+            }
+            // render boxes if their data has already been fetched
+            else if (this._invoiceExtractBoxData.length > 0) {
+                var self = this;
+                this._renderInvoiceExtractBoxLayers({
+                    $page: $attachment,
+                }).then(function () {
+                    self._displayInvoiceExtractBoxes();
+                });
+            }
+            // render buttons if they're not already rendered
+            if (this._$invoiceExtractButtons.length == 0) {
+                this._$invoiceExtractButtons = $('<div class="o_invoice_extract_buttons"/>');
+                $attachment.before(this._$invoiceExtractButtons);
+                this._renderInvoiceExtractButtons();
+            }
         } else {
             this._destroyInvoiceExtract();
         }

@@ -78,7 +78,7 @@ var MyReferral = AbstractAction.extend({
         e.preventDefault();
         var completed = ($(e.currentTarget).attr('completed') === 'true');
         this._rpc({
-                model: 'hr.employee',
+                model: 'res.users',
                 method: 'action_complete_onboarding',
                 args: [completed],
             })

@@ -25,6 +25,10 @@ class ProductProduct(models.Model):
         if task_id:
             task = self.env['project.task'].browse(task_id)
 
+            # don't add material on confirmed SO to avoid inconsistence with the stock picking
+            if task.fsm_done:
+                return False
+
             # project user with no sale rights should be able to add materials
             SaleOrderLine = self.env['sale.order.line']
             if self.user_has_groups('project.group_project_user'):
@@ -46,8 +50,9 @@ class ProductProduct(models.Model):
                     'product_id': self.id,
                     'product_uom_qty': 1,
                     'product_uom': self.uom_id.id,
-                    'qty_delivered_manual': 1  # HACK
                 }
+                if self.service_type == 'manual':
+                    vals['qty_delivered'] = 1
 
                 # Note: force to False to avoid changing planned hours when modifying product_uom_qty on SOL
                 # for materials. Set the current task for service to avoid re-creating a task on SO cnofirmation.
@@ -64,6 +69,10 @@ class ProductProduct(models.Model):
         task_id = self.env.context.get('fsm_task_id')
         if task_id:
             task = self.env['project.task'].browse(task_id)
+
+            # don't remove material on confirmed SO to avoid inconsistence with the stock picking
+            if task.fsm_done:
+                return False
 
             # project user with no sale rights should be able to remove materials
             SaleOrderLine = self.env['sale.order.line']

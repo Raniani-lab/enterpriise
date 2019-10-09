@@ -4,19 +4,19 @@
 # 
 # Translators:
 # fanha99 <fanha99@hotmail.com>, 2019
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
 # Duy BQ <duybq86@gmail.com>, 2019
 # Chinh Chinh <trinhttp@trobz.com>, 2019
 # Dung Nguyen Thi <dungnt@trobz.com>, 2019
 # Dao Nguyen <trucdao.uel@gmail.com>, 2019
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-30 09:48+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Dao Nguyen <trucdao.uel@gmail.com>, 2019\n"
+"Last-Translator: Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +39,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_order_wizard_view_form
 msgid ""
 "<span>\n"
-"                    Some products don't have the requested qty available for deliver\n"
+"                    Some products don't have the requested qty available for pickup\n"
 "                  </span>"
 msgstr ""
 
@@ -59,12 +59,6 @@ msgstr "Khả dụng"
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_configurator_view_form
 msgid "Available )"
-msgstr ""
-
-#. module: sale_stock_renting
-#: model:ir.model.fields,field_description:sale_stock_renting.field_product_product__preparation_time
-#: model:ir.model.fields,field_description:sale_stock_renting.field_product_template__preparation_time
-msgid "Before Deliver"
 msgstr ""
 
 #. module: sale_stock_renting
@@ -123,11 +117,6 @@ msgid "Minimum amount of time between two rentals"
 msgstr ""
 
 #. module: sale_stock_renting
-#: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__name
-msgid "Name"
-msgstr "Tên"
-
-#. module: sale_stock_renting
 #: code:addons/sale_stock_renting/models/sale_rental.py:0
 #, python-format
 msgid "No valid quant has been found in location %s for serial number %s !"
@@ -145,7 +134,6 @@ msgstr ""
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_res_company__padding_time
-#: model_terms:ir.ui.view,arch_db:sale_stock_renting.product_template_inherit_view_form_stock_rental
 msgid "Padding Time"
 msgstr ""
 
@@ -186,6 +174,11 @@ msgstr "Sản phẩm"
 #: model:ir.model,name:sale_stock_renting.model_product_template
 msgid "Product Template"
 msgstr "Bản mẫu sản phẩm"
+
+#. module: sale_stock_renting
+#: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__product_uom_id
+msgid "Product UoM"
+msgstr "Đơn vị đo sản phẩm"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__qty_available_during_period
@@ -246,6 +239,12 @@ msgid "Sales Order Line"
 msgstr "Chi tiết đơn hàng"
 
 #. module: sale_stock_renting
+#: model:ir.model.fields,field_description:sale_stock_renting.field_product_product__preparation_time
+#: model:ir.model.fields,field_description:sale_stock_renting.field_product_template__preparation_time
+msgid "Security Time"
+msgstr ""
+
+#. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_configurator_view_form
 msgid "Select available serial numbers."
 msgstr ""
@@ -286,7 +285,7 @@ msgstr "Stock"
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_product_product__preparation_time
 #: model:ir.model.fields,help:sale_stock_renting.field_product_template__preparation_time
-msgid "Temporarily make this product unavailable before deliver."
+msgid "Temporarily make this product unavailable before pickup."
 msgstr ""
 
 #. module: sale_stock_renting
@@ -310,11 +309,6 @@ msgid "Unavailable Lot"
 msgstr ""
 
 #. module: sale_stock_renting
-#: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__uom_id
-msgid "Unit of Measure"
-msgstr "Đơn vị tính"
-
-#. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__warehouse_id
 #: model:ir.model.fields,field_description:sale_stock_renting.field_sale_rental_schedule__warehouse_id
 msgid "Warehouse"
@@ -323,11 +317,15 @@ msgstr "Kho"
 #. module: sale_stock_renting
 #: code:addons/sale_stock_renting/wizard/rental_configurator.py:0
 #, python-format
-msgid "You cannot change the product of a delivered line."
+msgid "You cannot change the product of a picked-up line."
 msgstr ""
 
 #. module: sale_stock_renting
-#: model_terms:ir.ui.view,arch_db:sale_stock_renting.product_template_inherit_view_form_stock_rental
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "hours"
 msgstr "giờ"
+
+#. module: sale_stock_renting
+#: model_terms:ir.ui.view,arch_db:sale_stock_renting.product_template_inherit_view_form_stock_rental
+msgid "hours before orders"
+msgstr ""

@@ -17,6 +17,8 @@ from random import randint
 
 from odoo import api, fields, models, http, _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, formataddr
+from odoo.exceptions import UserError
+
 
 def _fix_image_transparency(image):
     """ Modify image transparency to minimize issue of grey bar artefact.
@@ -292,6 +294,8 @@ class SignRequest(models.Model):
         for follower in followers:
             if not follower.email:
                 continue
+            if not self.create_uid.email:
+                raise UserError(_("Please configure the sender's email address"))
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
@@ -340,6 +344,11 @@ class SignRequest(models.Model):
                 'body': False,
             }, engine='ir.qweb', minimal_qcontext=True)
 
+            if not self.create_uid.email:
+                raise UserError(_("Please configure the sender's email address"))
+            if not signer.signer_email:
+                raise UserError(_("Please configure the signer's email address"))
+
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
@@ -363,6 +372,8 @@ class SignRequest(models.Model):
         for follower in self.mapped('message_follower_ids.partner_id') - self.request_item_ids.mapped('partner_id'):
             if not follower.email:
                 continue
+            if not self.create_uid.email:
+                raise UserError(_("Please configure the sender's email address"))
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
@@ -606,6 +617,8 @@ class SignRequestItem(models.Model):
                 'body': message if message != '<p><br></p>' else False,
             }, engine='ir.qweb', minimal_qcontext=True)
 
+            if not signer.signer_email:
+                raise UserError(_("Please configure the signer's email address"))
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': signer.sign_request_id.reference},

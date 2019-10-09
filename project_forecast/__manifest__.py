@@ -6,7 +6,7 @@
     'description': """
     Schedule your teams across projects and estimate deadlines more accurately.
     """,
-    'category': 'Project',
+    'category': 'Operations/Project',
     'version': '1.0',
     'depends': ['project', 'planning'],
     'data': [
@@ -15,9 +15,6 @@
         'views/project_views.xml',
         'data/project_forecast_data.xml',
     ],
-    'demo': [
-        'data/project_forecast_demo.xml',
-    ],
-    'application': True,
+    'application': False,
     'license': 'OEEL-1',
 }

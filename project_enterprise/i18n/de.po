@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
@@ -71,13 +71,24 @@ msgstr "Mobil"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_phone
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 msgid "Phone"
 msgstr "Telefon"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_project_user_search_with_planned_dates
+msgid "Planned Date"
+msgstr "Geplantes Datum"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "Planning"
 msgstr "Planung"
+
+#. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__project_color
+msgid "Project color"
+msgstr ""
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_begin
@@ -101,6 +112,11 @@ msgid "Task Stage"
 msgstr "Aufgabenstufe"
 
 #. module: project_enterprise
+#: model:ir.model,name:project_enterprise.model_report_project_task_user
+msgid "Tasks Analysis"
+msgstr "Statistik Aufgaben"
+
+#. module: project_enterprise
 #: model:ir.model.fields,help:project_enterprise.field_project_task_type__is_closed
 msgid "Tasks in this stage are considered as closed."
 msgstr "Aufgaben in dieser Stufe werden als beendet interpretiert."
@@ -119,20 +135,10 @@ msgstr "Zeiterfassung"
 #. openerp-web
 #: code:addons/project_enterprise/static/src/js/task_gantt_model.js:0
 #, python-format
-msgid "Unassigned tasks"
+msgid "Unassigned Tasks"
 msgstr ""
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_zip
 msgid "Zip"
 msgstr "PLZ"
-
-#. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_kanban
-msgid "oe_kanban_text_red"
-msgstr "oe_kanban_text_red"
-
-#. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_kanban
-msgid "text-warning font-weight-bold"
-msgstr ""

@@ -4,7 +4,7 @@
 {
     'name': 'Master Production Schedule',
     'version': '1.0',
-    'category': 'Manufacturing',
+    'category': 'Manufacturing/Manufacturing',
     'sequence': 50,
     'summary': 'Master Production Schedule',
     'depends': ['mrp', 'purchase_stock'],

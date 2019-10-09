@@ -19,14 +19,15 @@
 # Shaima Safar <shaima.safar@open-inside.com>, 2019
 # Mostafa Hanafy <mostafa.s.hanafy@gmail.com>, 2019
 # Nisrine Tagri <nta@odoo.com>, 2019
+# Akram Alfusayal <akram_ma@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-09-27 09:18+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Nisrine Tagri <nta@odoo.com>, 2019\n"
+"Last-Translator: Akram Alfusayal <akram_ma@hotmail.com>, 2019\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,27 +38,6 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
 msgid "<b>Responsible: </b>"
-msgstr ""
-
-#. module: hr_referral
-#: model:mail.template,body_html:hr_referral.mail_template_referral
-msgid ""
-"<div style=\"margin: 0px; padding: 0px;\">\n"
-"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                        Hello,<br/><br/>\n"
-"                        <span>\n"
-"                            New job offer of ${ctx['job_name']} in company. Share it from referral application and earn points!\n"
-"                        </span>\n"
-"                        <br/>\n"
-"\n"
-"                        <div style=\"margin:16px 0px 16px 0px;\">\n"
-"                            <a href=\"${ctx['url']}\" style=\"padding: 8px 16px 8px 16px; border-radius: 3px; background-color:#875A7B; text-align:center; text-decoration:none; color: #FFFFFF;\">\n"
-"                                Referral Application\n"
-"                            </a>\n"
-"                        </div>\n"
-"                    </p>\n"
-"                </div>\n"
-"            "
 msgstr ""
 
 #. module: hr_referral
@@ -169,6 +149,12 @@ msgid "Applicant Referred Refused"
 msgstr ""
 
 #. module: hr_referral
+#: code:addons/hr_referral/models/hr_applicant.py:0
+#, python-format
+msgid "Applicant must have a company."
+msgstr ""
+
+#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_alert_view_search
 msgid "Archived"
 msgstr "مؤرشف"
@@ -232,9 +218,8 @@ msgstr "إغلاق"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__company_id
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend__company_id
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_level__company_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__company_id
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__company_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__company_id
 msgid "Company"
 msgstr "الشركة"
@@ -382,10 +367,7 @@ msgid "Email a friend"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model,name:hr_referral.model_hr_employee
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__ref_employee_id
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
-#: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "Employee"
 msgstr "الموظف"
 
@@ -419,11 +401,6 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.employee_referral_report_action
 msgid "Employees Referral Analysis"
-msgstr ""
-
-#. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
-msgid "Employees Referrer"
 msgstr ""
 
 #. module: hr_referral
@@ -553,12 +530,12 @@ msgid "Hired"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__hr_referral_level_id
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__hr_referral_level_id
 msgid "Hr Referral Level"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__hr_referral_onboarding_page
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__hr_referral_onboarding_page
 msgid "Hr Referral Onboarding Page"
 msgstr ""
 
@@ -781,11 +758,6 @@ msgid "New gift awarded for %s"
 msgstr ""
 
 #. module: hr_referral
-#: model:mail.template,subject:hr_referral.mail_template_referral
-msgid "New job to share"
-msgstr ""
-
-#. module: hr_referral
 #. openerp-web
 #: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
 #, python-format
@@ -940,11 +912,6 @@ msgid "Recruitment Stages"
 msgstr "مراحل التعيين"
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__ref_employee_id
-msgid "Ref Employee"
-msgstr ""
-
-#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "Referral"
 msgstr ""
@@ -955,7 +922,7 @@ msgid "Referral Link To Share"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__referral_point_ids
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__referral_point_ids
 msgid "Referral Point"
 msgstr ""
 
@@ -973,6 +940,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__referral_state
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__referral_state
 msgid "Referral State"
+msgstr ""
+
+#. module: hr_referral
+#: model:res.groups,name:hr_referral.group_hr_recruitment_referral_user
+msgid "Referral User"
 msgstr ""
 
 #. module: hr_referral
@@ -1001,8 +973,8 @@ msgid "Referred By"
 msgstr "محالة من"
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__ref_employee_id
-msgid "Referred By Employee"
+#: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__ref_user_id
+msgid "Referred By User"
 msgstr ""
 
 #. module: hr_referral
@@ -1045,7 +1017,7 @@ msgstr "المكافآت"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "خطأ في تسليم الرسائل القصيرة"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
@@ -1125,7 +1097,7 @@ msgid "Skip and Start"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__utm_source_id
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__utm_source_id
 msgid "Source"
 msgstr "المصدر"
 
@@ -1258,8 +1230,25 @@ msgid "Url"
 msgstr "رابط ويب"
 
 #. module: hr_referral
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__ref_user_id
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__ref_user_id
+#: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
+msgid "User"
+msgstr "المستخدم"
+
+#. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__gift_manager_id
 msgid "User responsible of this gift."
+msgstr ""
+
+#. module: hr_referral
+#: model:ir.model,name:hr_referral.model_res_users
+msgid "Users"
+msgstr "المستخدمون"
+
+#. module: hr_referral
+#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
+msgid "Users Referrer"
 msgstr ""
 
 #. module: hr_referral
@@ -1293,15 +1282,9 @@ msgstr ""
 #. module: hr_referral
 #: code:addons/hr_referral/models/hr_referral_reward.py:0
 #, python-format
-msgid "You do not have enough points to buy this product."
-msgstr ""
-
-#. module: hr_referral
-#: code:addons/hr_referral/models/hr_applicant.py:0
-#, python-format
 msgid ""
-"You don't have access to this application as your user is not linked to an "
-"employee."
+"You do not have enough points in this company to buy this product. In this "
+"company, you have %s points."
 msgstr ""
 
 #. module: hr_referral

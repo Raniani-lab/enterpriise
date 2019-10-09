@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-10-01 12:16+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Andi, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
@@ -48,19 +48,12 @@ msgstr "Angeklickt"
 #. module: marketing_automation_sms
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0
 #, python-format
-msgid "Email failed"
-msgstr ""
-
-#. module: marketing_automation_sms
-#: code:addons/marketing_automation_sms/models/marketing_activity.py:0
-#, python-format
-msgid "Email ignored"
-msgstr ""
-
-#. module: marketing_automation_sms
-#: code:addons/marketing_automation_sms/models/marketing_activity.py:0
-#, python-format
 msgid "Exception in SMS Marketing: %s"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model:ir.model,name:marketing_automation_sms.model_mailing_trace
+msgid "Mailing Statistics"
 msgstr ""
 
 #. module: marketing_automation_sms
@@ -70,8 +63,8 @@ msgid "Marketing Activity"
 msgstr "Marketing-Aktivität"
 
 #. module: marketing_automation_sms
-#: model:ir.actions.act_window,name:marketing_automation_sms.mail_mass_mailing_action_marketing_automation
-msgid "Marketing Automation Mailings"
+#: model:ir.actions.act_window,name:marketing_automation_sms.mail_mass_mailing_action_marketing_automation_sms
+msgid "Marketing Automation SMS"
 msgstr ""
 
 #. module: marketing_automation_sms
@@ -93,18 +86,21 @@ msgid "Mass Mailing"
 msgstr "Massenmailing"
 
 #. module: marketing_automation_sms
+#: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_activity__mass_mailing_id_mailing_type
+msgid "Mass Mailing Id Mailing Type"
+msgstr ""
+
+#. module: marketing_automation_sms
 #: model:ir.model.fields.selection,name:marketing_automation_sms.selection__marketing_activity__activity_type__sms
+#: model:ir.model.fields.selection,name:marketing_automation_sms.selection__marketing_activity__mass_mailing_id_mailing_type__sms
+#: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_participant_view_form
 msgid "SMS"
 msgstr "SMS"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.mailing_mailing_view_form_marketing_activity
 msgid "SMS Content"
-msgstr ""
-
-#. module: marketing_automation_sms
-#: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_activity__sms_mailing_id
-msgid "SMS Mailing"
 msgstr ""
 
 #. module: marketing_automation_sms
@@ -115,6 +111,24 @@ msgstr ""
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
 msgid "SMS Sent"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_activity_view_form
+msgid "SMS Template"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: code:addons/marketing_automation_sms/models/mailing_trace.py:0
+#: code:addons/marketing_automation_sms/models/marketing_activity.py:0
+#, python-format
+msgid "SMS failed"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: code:addons/marketing_automation_sms/models/marketing_activity.py:0
+#, python-format
+msgid "SMS ignored"
 msgstr ""
 
 #. module: marketing_automation_sms
@@ -133,11 +147,4 @@ msgstr "Gesendet"
 msgid ""
 "To use this feature you should be an administrator or belong to the "
 "marketing automation group."
-msgstr ""
-
-#. module: marketing_automation_sms
-#: model:ir.model.fields,help:marketing_automation_sms.field_marketing_activity__sms_mailing_id
-msgid ""
-"UX Field to choose an SMS mailing. Separate field to ease options / default "
-"/ domain propagation."
 msgstr ""

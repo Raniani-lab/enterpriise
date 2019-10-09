@@ -5,6 +5,7 @@
     'name': 'MRP features for Quality Control with IoT',
     'summary': 'Quality Management with MRP and IoT',
     'depends': ['quality_mrp_workorder', 'iot'],
+    'category': 'Manufacturing/Quality',
     'description': """
     Adds Quality Control to workorders with IoT.
 """,

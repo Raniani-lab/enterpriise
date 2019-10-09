@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.tools import image_process
 from ast import literal_eval
@@ -106,7 +107,7 @@ class Document(models.Model):
         for record in self:
             try:
                 record.thumbnail = image_process(record.datas, size=(80, 80), crop='center')
-            except Exception:
+            except UserError:
                 record.thumbnail = False
 
     @api.depends('attachment_type', 'url')
@@ -219,10 +220,10 @@ class Document(models.Model):
         return super(Document, self).message_new(msg_dict, defaults)
 
     @api.returns('mail.message', lambda value: value.id)
-    def message_post(self, message_type='notification', *args, **kwargs):
+    def message_post(self, *, message_type='notification', **kwargs):
         if message_type == 'email' and self.create_share_id:
             self = self.with_context(no_document=True)
-        return super(Document, self).message_post(message_type=message_type, *args, **kwargs)
+        return super(Document, self).message_post(message_type=message_type, **kwargs)
 
     @api.model
     def _message_post_after_hook(self, message, msg_vals):
@@ -380,6 +381,9 @@ class Document(models.Model):
             if vals.get('datas') and not vals.get('attachment_id') and not record.attachment_id:
                 res_model = vals.get('res_model', record.res_model or 'documents.document')
                 res_id = vals.get('res_id') if vals.get('res_model') else record.res_id if record.res_model else record.id
+                if res_model and res_model != 'documents.document' and not self.env[res_model].browse(res_id).exists():
+                    record.res_model = res_model = 'documents.document'
+                    record.res_id = res_id = record.id
                 attachment = self.env['ir.attachment'].with_context(no_document=True).create({
                     'name': vals.get('name', record.name),
                     'res_model': res_model,

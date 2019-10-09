@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:37+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-09-13 11:47+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -33,6 +33,15 @@ msgid ""
 "Best Regards,\n"
 "            "
 msgstr ""
+"\n"
+"Шановний(а) %(partner_name)s,\n"
+"\n"
+"Виняток було зроблено, якщо була наша помилка, здається, що наступна сума залишається неоплаченою. Будь ласка, вживайте відповідних заходів, щоб здійснити цей платіж протягом наступних 8 днів.\n"
+"\n"
+"Якщо було здійснено ваш платіж після відправлення цього листа, проігноруйте це повідомлення. Не соромтеся звертатися до нашої бухгалтерії.\n"
+"\n"
+"З найкращими побажаннями,\n"
+"            "
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0
@@ -56,7 +65,7 @@ msgstr "'Нагадування'"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid ": Amount Due by the partner"
-msgstr ""
+msgstr ": Сума боргу за партнером"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
@@ -140,11 +149,16 @@ msgstr ""
 "<strong>Увага!</strong> Для цього партнера не потрібно вживати жодних дій."
 
 #. module: account_followup
+#: model:ir.model,name:account_followup.model_account_chart_template
+msgid "Account Chart Template"
+msgstr "Шаблон плану рахунків"
+
+#. module: account_followup
 #: model:ir.actions.server,name:account_followup.ir_cron_auto_post_draft_entry_ir_actions_server
 #: model:ir.cron,cron_name:account_followup.ir_cron_auto_post_draft_entry
 #: model:ir.cron,name:account_followup.ir_cron_auto_post_draft_entry
 msgid "Account Report Followup; Execute followup"
-msgstr ""
+msgstr "Нагадування про звіт рахунку; Нагадування виконання"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__manual_action_note
@@ -174,6 +188,9 @@ msgid ""
 "\n"
 "Full error description: %s"
 msgstr ""
+"Під час форматування вашого листа/електронної пошти нагадування сталася помилка. (Мова: %s, Рівень нагадування: #%s) \n"
+"\n"
+"Повний опис помилка: %s"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__manual_action_responsible_id
@@ -183,7 +200,7 @@ msgstr "Призначте відповідального"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__auto_execute
 msgid "Auto Execute"
-msgstr ""
+msgstr "Автоматичне виконання"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
@@ -271,7 +288,7 @@ msgstr "Дата:"
 #. module: account_followup
 #: model:ir.model.constraint,message:account_followup.constraint_account_followup_followup_line_days_uniq
 msgid "Days of the follow-up levels must be different per company"
-msgstr ""
+msgstr "Дні рівнів нагадувань повинні бути різними для кожної компанії"
 
 #. module: account_followup
 #: model:account_followup.followup.line,sms_description:account_followup.demo_followup_line1
@@ -319,6 +336,12 @@ msgstr "Виключений"
 #, python-format
 msgid "Expected Date"
 msgstr "Очікувана дата"
+
+#. module: account_followup
+#: code:addons/account_followup/models/chart_template.py:0
+#, python-format
+msgid "First Reminder"
+msgstr "Перше нагадування"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1
@@ -373,7 +396,7 @@ msgstr "Відповідальний за нагадування"
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__followup_status
 #: model:ir.model.fields,field_description:account_followup.field_res_users__followup_status
 msgid "Follow-up Status"
-msgstr ""
+msgstr "Статус нагадування"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
@@ -423,7 +446,7 @@ msgstr "Хороший боржник"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "How to customize your messages?"
-msgstr ""
+msgstr "Як налаштувати ваші повідомлення?"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__id
@@ -445,12 +468,12 @@ msgstr "Що потребують дії"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "In order to build customized messages:"
-msgstr ""
+msgstr "Для того, щоб створити налаштовувані повідомлення:"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__join_invoices
 msgid "Join open Invoices"
-msgstr ""
+msgstr "Вподобайте відкриті рахунки"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_move_line
@@ -518,7 +541,7 @@ msgstr "Дата наступної дії"
 #: code:addons/account_followup/models/res_partner.py:0
 #, python-format
 msgid "Next Reminder Date set to %s"
-msgstr ""
+msgstr "Наступна дата нагадування встановлена на %s"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__followup_status__no_action_needed
@@ -642,7 +665,7 @@ msgstr "Нагадати мені пізніше"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "SMS Message"
-msgstr ""
+msgstr "SMS-повідомлення"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__sms_description
@@ -673,7 +696,7 @@ msgstr "Відправити електронну пошту"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__send_sms
 msgid "Send an SMS Message"
-msgstr ""
+msgstr "Надіслати SMS-повідомлення"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
@@ -829,6 +852,11 @@ msgid ""
 "                                        forget to translate in all languages you installed\n"
 "                                        using to top right icon."
 msgstr ""
+"Напишіть тут вступ у листі та пошті чи смс,\n"
+" відповідно до рівня нагадування. Ви можете\n"
+" використовувати наступні ключові слова в тексті. Не забувайте\n"
+" перекладати всіма мовами, які ви встановили,\n"
+" використовуючи верхній правий значок."
 
 #. module: account_followup
 #. openerp-web
@@ -844,6 +872,8 @@ msgid ""
 "You are trying to send a followup report to a partner for which you didn't "
 "print all the invoices ({})"
 msgstr ""
+"Ви намагаєтеся надіслати звіт нагадування вашому партнеру, якому ви не "
+"надрукували усі рахунки ({})"
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0
@@ -851,6 +881,8 @@ msgstr ""
 msgid ""
 "You need a least one follow-up level in order to process your follow-up"
 msgstr ""
+"Для того, щоби виконати нагадування, вам необхідний принаймні один рівень "
+"нагадувань"
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup.py:0
@@ -869,6 +901,8 @@ msgid ""
 "Your sms description is invalid, use the right legend or %% if you want to "
 "use the percent character."
 msgstr ""
+"Опис вашого sms недійсний, використовуйте правильну легенду %%, якщо ви "
+"хочете значок відсотка."
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form

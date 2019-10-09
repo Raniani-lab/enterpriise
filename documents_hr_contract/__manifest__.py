@@ -4,13 +4,13 @@
 {
     'name': 'Documents - Contracts',
     'version': '1.0',
-    'category': 'Uncategorized',
+    'category': 'Operations/Documents',
     'summary': 'Store employee contracts in the Document app',
     'description': """
 Employee contracts files will be automatically integrated to the Document app.
 """,
     'website': ' ',
-    'depends': ['documents', 'hr_contract'],
+    'depends': ['documents_hr', 'hr_contract'],
     'data': ['data/data.xml', 'views/documents_views.xml'],
     'installable': True,
     'auto_install': True,

@@ -3,8 +3,6 @@
 
 import logging
 
-from datetime import timedelta
-
 from odoo import api, fields, models, _
 
 _logger = logging.getLogger(__name__)
@@ -13,10 +11,9 @@ _logger = logging.getLogger(__name__)
 class Job(models.Model):
     _inherit = "hr.job"
     _order = 'job_open_date'
-    _inherits = {'utm.campaign': 'utm_campaign_id'}
 
     job_open_date = fields.Date('Job Start Recruitment Date', default=fields.Date.today())
-    utm_campaign_id = fields.Many2one('utm.campaign', 'Campaign', ondelete='cascade', required=True)
+    utm_campaign_id = fields.Many2one('utm.campaign', 'Campaign', ondelete='cascade')
     max_points = fields.Integer(compute='_compute_max_points')
     direct_clicks = fields.Integer(compute='_compute_clicks')
     facebook_clicks = fields.Integer(compute='_compute_clicks')
@@ -24,10 +21,13 @@ class Job(models.Model):
     linkedin_clicks = fields.Integer(compute='_compute_clicks')
 
     def _compute_clicks(self):
-        grouped_data = self.env['link.tracker'].read_group([
-            ('source_id', '=', self.env.user.employee_id.utm_source_id.id),
-            ('campaign_id', 'in', self.mapped('utm_campaign_id').ids)
-            ], ['count', 'campaign_id', 'medium_id'], ['campaign_id', 'medium_id'], lazy=False)
+        if self.env.user.utm_source_id:
+            grouped_data = self.env['link.tracker'].read_group([
+                ('source_id', '=', self.env.user.utm_source_id.id),
+                ('campaign_id', 'in', self.mapped('utm_campaign_id').ids)
+                ], ['count', 'campaign_id', 'medium_id'], ['campaign_id', 'medium_id'], lazy=False)
+        else:
+            grouped_data = {}
         medium_direct = self.env.ref('utm.utm_medium_direct')
         medium_facebook = self.env.ref('utm.utm_medium_facebook')
         medium_twitter = self.env.ref('utm.utm_medium_twitter')
@@ -46,24 +46,6 @@ class Job(models.Model):
         for job in self:
             stages = self.env['hr.recruitment.stage'].search(['|', ('job_ids', '=', False), ('job_ids', '=', job.id)])
             job.max_points = sum(stages.mapped('points'))
-
-    def _init_column(self, column_name):
-        """ Create utm.campaign for already existing records """
-        if column_name == "utm_campaign_id":
-            _logger.debug("Table '%s': setting default value of new column %s to unique campaign for each row", self._table, column_name)
-            self.env.cr.execute("SELECT id,name FROM %s WHERE utm_campaign_id IS NULL" % self._table)
-            job_ids = self.env.cr.dictfetchall()
-            query_list = [{'id': j['id'], 'utm_campaign_id': self.env['utm.campaign'].create({'name': j['name']}).id} for j in job_ids]
-            query = 'UPDATE ' + self._table + ' SET utm_campaign_id = %(utm_campaign_id)s WHERE id = %(id)s;'
-            self.env.cr._obj.executemany(query, query_list)
-        else:
-            super()._init_column(column_name)
-
-    @api.model
-    def create(self, vals):
-        utm = self.env['utm.campaign'].sudo().create({'name': vals['name']})
-        vals['utm_campaign_id'] = utm.id
-        return super().create(vals)
 
     def set_recruit(self):
         self.write({'job_open_date': fields.Date.today()})

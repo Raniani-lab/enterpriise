@@ -406,6 +406,7 @@ WebClient.include({
         var self = this;
 
         var current_primary_menu = this.menu.current_primary_menu;
+        core.bus.trigger('clear_cache'); // invalidate cache
         this._redrawMenuWidgets().then(function () {
             // reload previous state
             self.menu.toggle_mode(self.home_menu_displayed);

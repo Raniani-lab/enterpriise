@@ -60,11 +60,17 @@ html {
                 }
             }
         }
+
+        .o_viewer_content .o_viewer_img_wrapper .o_viewer_zoomer {
+            overflow: scroll;
+        }
     }
 
     // FIXME: Fix scrolling in modal on focus input due to a bug between Chrome (Android) and Bootstrap
     body.modal-open {
         position: fixed;
+        // Allow vertical scrolling in modals on iOS
+        -webkit-overflow-scrolling: touch;
     }
 
     .o_loading {

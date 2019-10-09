@@ -5,7 +5,7 @@
 {
     'name': 'Loyalty Program',
     'version': '1.0',
-    'category': 'Point of Sale',
+    'category': 'Sales/Point Of Sale',
     'sequence': 6,
     'summary': 'Loyalty Program for the Point of Sale ',
     'description': """

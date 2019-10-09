@@ -140,7 +140,7 @@ class crm_team(models.Model):
                 # Erase fake/false email
                 spams = [
                     x.id for x in leads
-                    if x.email_from and not tools.email_validate(x.email_from)
+                    if x.email_from and not tools.email_normalize(x.email_from)
                 ]
 
                 if spams:

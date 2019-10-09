@@ -11,7 +11,6 @@
     'depends': ['hr_recruitment', 'link_tracker', 'website_hr_recruitment', 'web_dashboard'],
     'data': [
         'data/data.xml',
-        'data/mail_data.xml',
         'security/hr_referral_security.xml',
         'security/ir.model.access.csv',
         'views/hr_applicant_views.xml',

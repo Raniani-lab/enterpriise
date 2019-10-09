@@ -38,7 +38,7 @@
                   <tree string="Bank Accounts" create="false" editable="bottom">
                     <field name="name"/>
                     <field name="account_number"/>
-                    <field name="journal_ids" widget="many2many_tags" options="{'color_field': 'color'}" readonly="True"/>
+                    <field name="journal_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <field name="balance"/>
                     <field name="last_sync" groups="base.group_no_one"/>
                   </tree>
@@ -111,12 +111,10 @@
                 <!-- Action success message -->
                 <div attrs="{'invisible': [('status', '!=', 'success')]}">
                   <div class="alert alert-success" role="status">
-                    <p attrs="{'invisible': [('method', '!=', 'add')]}"><strong>Well done!</strong> Your banking institution is now connected to Odoo.</p>
+                    <p attrs="{'invisible': [('method', '!=', 'add')]}"><strong>Well done!</strong></p>
                     <p attrs="{'invisible': [('method', '!=', 'edit')]}"><strong>Success!</strong> Your account has been succesfully updated.</p>
                     <p attrs="{'invisible': [('method', '!=', 'refresh')]}"><strong>Success!</strong> Your account has been succesfully refreshed.</p>
-                    <p attrs="{'invisible': [('number_added', '=', 0)]}">A total of "<strong><field name="number_added"/></strong>" bank accounts have been retrieved.</p>
-                    <p attrs="{'invisible': [('hide_table', '=', True)]}">You can associate those bank accounts to a journal in order to automatically retrieve the latest statements from your bank.</p>
-                    <p attrs="{'invisible': ['|', ('number_added', '!=', 1), ('method', '!=', 'add')]}">The account has been linked to your bank journal.</p>
+                    <p attrs="{'invisible': ['|', ('number_added', '=', 0), ('hide_table', '=', True)]}"><strong><field name="number_added"/></strong> bank accounts have been found.<br/>To finalize, please associate each bank account with an accounting journal and choose the synchronization frequency <span title="The first synchronization collects all transactions in a unique bank statement"> <i class="fa fa-info-circle" aria-label="0"/></span></p>
                     <field name="transactions" attrs="{'invisible': [('method', '=', 'add')]}"/>
                   </div>
                   <!-- Show transactions that have been loaded -->
@@ -194,12 +192,9 @@
       <field name="model">account.journal</field>
       <field name="inherit_id" ref="account.view_account_journal_form"/>
       <field name="arch" type="xml">
-        <xpath expr="//page[@name='bank_account']/group" position="inside">
-          <group string="Online Synchronization" attrs="{'invisible': [('bank_statements_source', '!=', 'online_sync')]}">
-            <field name="bank_statement_creation"/>
-            <field name="account_online_journal_id" options="{'no_create': True}"/>
-            <button string="Configure" type="object" name="action_choose_institution" class="btn-primary"/>
-          </group>
+        <xpath expr="//field[@name='bank_statements_source']" position="after">
+          <field name="account_online_journal_id" invisible="1"/>
+          <field name="bank_statement_creation" attrs="{'invisible': [('account_online_journal_id', '=', False)]}" string="Synchronization Frequency"/>
         </xpath>
       </field>
     </record>

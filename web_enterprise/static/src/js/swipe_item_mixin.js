@@ -49,10 +49,10 @@ const SwipeItemMixin = {
     _addSwipeNode($target) {
         $('<div class="o_swipe_separator"/></div>').prependTo($target);
         if (this.rightAction) {
-            $('<button class="o_swipe_action right" data-key="read"><i class="fa fa-check-circle fa-2x text-white"/></button>').prependTo($target);
+            $('<div class="o_swipe_action right" data-key="read"><i class="fa fa-check-circle fa-2x text-white"/></div>').prependTo($target);
         }
         if (this.leftAction) {
-            $('<button class="o_swipe_action left" data-key="star"><i class="fa fa-star fa-2x text-white"/></button>').prependTo($target);
+            $('<div class="o_swipe_action left" data-key="star"><i class="fa fa-star fa-2x text-white"/></div>').prependTo($target);
         }
     },
 
@@ -208,7 +208,7 @@ const SwipeItemMixin = {
 
         // apply a style to add radius on current target (like gmail)
         $target.addClass('o_swipe_current');
-        $target.parent().addClass('o_swipe_hide_overflow');
+        $target.parent().addClass('overflow-hidden');
         this._addSwipeNode($target);
         $target.data('swipe_item', {
             touchStart: this._getTouchPosition(ev),
@@ -260,7 +260,7 @@ const SwipeItemMixin = {
 
         // remove the radius on current target (like gmail)
         $target.removeClass('o_swipe_current');
-        $target.parent().removeClass('o_swipe_hide_overflow');
+        $target.parent().removeClass('overflow-hidden');
 
         const data = $target.data('swipe_item');
         const touch = this._getTouchPosition(ev);
@@ -269,7 +269,7 @@ const SwipeItemMixin = {
 
         this._moveLeft($(ev.currentTarget).find('.o_swipe_action'), 0, true);
         this._moveLeft($(ev.currentTarget), 0, true);
-        $(ev.currentTarget).find('button.o_swipe_action, div.o_swipe_separator').remove();
+        $(ev.currentTarget).find('.o_swipe_action, .o_swipe_separator').remove();
 
         if(this.allowSwipe && !this._allowAction(ev, swipeDirection, touchDelta.xDelta)) {
             return;

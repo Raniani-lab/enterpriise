@@ -1,11 +1,19 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 
 class AccountMoveReversal(models.TransientModel):
     _inherit = 'account.move.reversal'
+
+    @api.model
+    def default_get(self, fields):
+        result = super(AccountMoveReversal, self).default_get(fields)
+        ticket_id = self._context.get('default_helpdesk_ticket_id')
+        if ticket_id and 'reason' in fields:
+            result['reason'] = _('Helpdesk Ticket #%s') % ticket_id
+        return result
 
     @api.model
     def _get_default_move(self):

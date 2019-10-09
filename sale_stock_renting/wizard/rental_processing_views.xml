@@ -25,13 +25,13 @@
         <field name="pickedup_lot_ids" string="Serial Numbers" attrs="{
           'column_invisible': ['|', ('parent.status', '=', 'return'), ('parent.has_tracked_lines', '=', False)],
           'invisible':[('tracking', '!=', 'serial')],
-          }" widget="many2many_tags"/>
+          }" widget="many2many_tags" options="{'no_create':1, 'no_edit':1}"/>
       </field>
       <field name="qty_delivered" position="after">
         <field name="returned_lot_ids" string="Serial Numbers" attrs="{
           'column_invisible':['|', ('parent.status', '=', 'pickup'), ('parent.has_tracked_lines', '=', False)],
           'invisible':[('tracking', '!=', 'serial')],
-          }" widget="many2many_tags"/>
+          }" widget="many2many_tags" options="{'no_create':1, 'no_edit':1}"/>
       </field>
       <field name="qty_delivered" position="attributes">
         <!-- Needed to apply the modification of the onchange when field is readonly-->
@@ -60,7 +60,7 @@
                 <div class="card-header bg-transparent">
                   <span class="fa fa-warning" t-translation="off">&amp;nbsp;</span>
                   <span>
-                    Some products don't have the requested qty available for deliver
+                    Some products don't have the requested qty available for pickup
                   </span>
                 </div>
               </div>

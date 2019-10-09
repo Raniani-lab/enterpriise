@@ -144,8 +144,8 @@ var AppCreator = AbstractAction.extend(StandaloneFieldManagerMixin, {
                 context: session.user_context,
             },
         }).then(function (result) {
-            self.trigger_up('new_app_created', result);
             core.bus.trigger('clear_cache');
+            self.trigger_up('new_app_created', result);
             framework.unblockUI();
         }).guardedCatch(framework.unblockUI.bind(framework));
     },

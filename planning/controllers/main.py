@@ -45,12 +45,14 @@ class ShiftController(http.Controller):
         for slot in planning_slots:
             if slot.employee_id:
                 employee_fullcalendar_data.append({
-                    'title': slot.role_id.name,
+                    'title': '%s%s' % (slot.role_id.name, u' \U0001F4AC' if slot.name else ''),
                     'start': str(pytz.utc.localize(slot.start_datetime).astimezone(employee_tz).replace(tzinfo=None)),
                     'end': str(pytz.utc.localize(slot.end_datetime).astimezone(employee_tz).replace(tzinfo=None)),
                     'color': self._format_planning_shifts(slot.role_id.color),
                     'alloc_hours': slot.allocated_hours,
-                    'slot_id': slot.id
+                    'slot_id': slot.id,
+                    'note': slot.name,
+                    'allow_self_unassign': slot.allow_self_unassign
                 })
             else:
                 open_slots.append(slot)

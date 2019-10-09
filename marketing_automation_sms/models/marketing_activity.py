@@ -19,7 +19,7 @@ class MarketingActivity(models.Model):
     @api.onchange('activity_type')
     def _onchange_activity_type(self):
         if self.activity_type == 'sms':
-            self.mass_mailing_id_mailing_type = 'mail'
+            self.mass_mailing_id_mailing_type = 'sms'
         super(MarketingActivity, self)._onchange_activity_type()
 
     def _execute_sms(self, traces):

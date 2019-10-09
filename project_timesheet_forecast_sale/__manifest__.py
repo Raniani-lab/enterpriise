@@ -4,7 +4,7 @@
 {
     'name': 'Compare timesheets and forecast for your projects',
     'version': '1.0',
-    'category': 'Project',
+    'category': 'Operations/Project',
     'description': """
 Compare timesheets and forecast for your projects.
 ==================================================
@@ -16,7 +16,6 @@ In your project plan, you can compare your timesheets and your forecast to bette
     'data': [
         'views/project_templates.xml'
     ],
-    'demo': ['data/project_timesheet_forecast_sale_demo.xml'],
     'auto_install': True,
     'license': 'OEEL-1',
 }

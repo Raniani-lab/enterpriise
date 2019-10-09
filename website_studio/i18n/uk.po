@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/website_studio/static/src/xml/form_manager.xml:9
 #, python-format
 msgid "App icon"
-msgstr "Іконка додатка"
+msgstr "Іконка додатку"
 
 #. module: website_studio
 #. openerp-web

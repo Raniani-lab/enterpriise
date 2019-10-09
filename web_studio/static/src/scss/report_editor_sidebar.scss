@@ -96,6 +96,8 @@
                         }
                         i.fa-angle-left {
                             transition: transform .3s;
+                            position: absolute;
+                            right: 1.5rem;
                         }
                     }
                 }

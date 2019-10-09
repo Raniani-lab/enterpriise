@@ -11,7 +11,7 @@ Accounting reports for France
 ================================
 
     """,
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'depends': ['l10n_fr', 'account_reports'],
     'data':[
         'data/account_financial_html_report_data.xml'

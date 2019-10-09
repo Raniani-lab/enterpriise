@@ -177,7 +177,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Způsoby přepravy"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0

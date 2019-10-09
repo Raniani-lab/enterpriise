@@ -650,7 +650,7 @@ msgstr "6920 - aan de wettelijke reserve"
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_6921
 msgid "6921 - aux autres réserves"
-msgstr "6921 - aan de overage reserves"
+msgstr "6921 - aan de overige reserves"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_694

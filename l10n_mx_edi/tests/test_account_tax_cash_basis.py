@@ -96,19 +96,15 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         delete all journal-related data, so a new currency can be set.
         """
 
-        # 1. Reset to draft invoices and moves, so some records may be deleted
+        # 1. Reset to draft invoices, so some records may be deleted
         company = self.company
-        moves = self.env['account.move'].search(
-            [('company_id', '=', company.id)])
-        moves.write({'state': 'draft'})
         invoices = self.env['account.move'].search(
             [('company_id', '=', company.id)])
-        invoices.write({'state': 'draft', 'move_name': False})
+        invoices.write({'state': 'draft'})
 
         # 2. Delete related records
         models_to_clear = [
-            'account.move.line', 'account.move', 'account.payment',
-            'account.bank.statement']
+            'account.move.line', 'account.payment', 'account.bank.statement']
         for model in models_to_clear:
             records = self.env[model].search([('company_id', '=', company.id)])
             records.unlink()
@@ -132,13 +128,13 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
 
         default_dict = self.payment_model.with_context(active_model='account.move', active_ids=invoice.id).default_get(self.payment_model.fields_get_keys())
         payments = self.payment_model.new({**default_dict, **{
-                'payment_date': date,
-                'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
-                'payment_method_id': payment_method_id,
-                'journal_id': journal.id,
-                'currency_id': currency_id.id,
-                'communication': invoice.name,
-                'amount': amount,
+            'payment_date': date,
+            'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
+            'payment_method_id': payment_method_id,
+            'journal_id': journal.id,
+            'currency_id': currency_id.id,
+            'communication': invoice.name,
+            'amount': amount,
         }})
 
         return payments.create_payments()

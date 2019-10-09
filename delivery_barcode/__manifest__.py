@@ -6,6 +6,7 @@
     'description': """
 This module enables the management of deliveries through the use of barcode scanning.
     """,
+    'category': 'Operations/Inventory/Delivery',
     'version': '1.0',
     'depends': ['stock_barcode', 'delivery'],
     'data': [

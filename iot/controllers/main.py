@@ -36,7 +36,8 @@ class IoTController(http.Controller):
 
     @http.route('/iot/keyboard_layouts', type='http', auth='public', csrf=False)
     def load_keyboard_layouts(self, available_layouts):
-        request.env['iot.keyboard.layout'].sudo().create(json.loads(available_layouts))
+        if not request.env['iot.keyboard.layout'].sudo().search_count([]):
+            request.env['iot.keyboard.layout'].sudo().create(json.loads(available_layouts))
         return ''
 
     # Return home screen
@@ -109,6 +110,7 @@ class IoTController(http.Controller):
                             'name': data_device['name'],
                             'identifier': device_identifier,
                             'type': data_device['type'],
+                            'manufacturer': data_device['manufacturer'],
                             'connection': data_device['connection'],
                         })
                     connected_iot_devices |= device

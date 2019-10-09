@@ -93,7 +93,7 @@
                                     <span class="progress-bar"/>
                                 </span>
                             </div>
-                            <img class="img img-fluid rounded-circle o_employee_image" t-attf-src="/web/image?model=hr.employee&amp;field=image_128&amp;id=#{widget.dashboardData.id}" t-att-title="widget.dashboardData.name" t-att-alt="widget.dashboardData.name"/>
+                            <img class="img img-fluid rounded-circle o_employee_image" t-attf-src="/web/image?model=res.users&amp;field=image_128&amp;id=#{widget.dashboardData.id}" t-att-title="widget.dashboardData.name" t-att-alt="widget.dashboardData.name"/>
                         </div>
                         <div class="user_info">
                             <p class="m-0 user_level">

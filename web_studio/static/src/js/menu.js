@@ -253,7 +253,6 @@ Menu.include({
             },
         }, {
             on_close: function () {
-                core.bus.trigger('clear_cache'); // invalidate cache
                 self.trigger_up('reload_menu_data'); // reload menus
             },
         });

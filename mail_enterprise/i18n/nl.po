@@ -32,7 +32,7 @@ msgstr "Gemarkeerd als gelezen"
 #: code:addons/mail_enterprise/static/src/js/thread_widget_mobile.js:0
 #, python-format
 msgid "Toggle star"
-msgstr ""
+msgstr "Schakelen ster"
 
 #. module: mail_enterprise
 #. openerp-web

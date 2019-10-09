@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -91,7 +91,7 @@ msgstr "Voeg reeks toe om te scannen."
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__drivers_auto_update
 msgid "Automatic drivers update"
-msgstr ""
+msgstr "Automatische drivers update"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_box__drivers_auto_update
@@ -254,7 +254,7 @@ msgstr "Apparaat"
 #: model:ir.model.fields,field_description:iot.field_iot_box__device_count
 #: model_terms:ir.ui.view,arch_db:iot.iot_box_view_kanban
 msgid "Device Count"
-msgstr ""
+msgstr "Apparaat aantal"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
@@ -318,7 +318,7 @@ msgstr "Groepeer op"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__hdmi
 msgid "Hdmi"
-msgstr ""
+msgstr "HDMI"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__id
@@ -361,7 +361,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__version
 msgid "Image Version"
-msgstr ""
+msgstr "Versie afbeelding"
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
@@ -390,7 +390,7 @@ msgstr "IoT boxen"
 #: model:ir.model.fields,field_description:iot.field_ir_actions_report__device_id
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Device"
-msgstr "IoT Apparaat"
+msgstr "IoT apparaat"
 
 #. module: iot
 #. openerp-web
@@ -445,6 +445,11 @@ msgid "Layout"
 msgstr "Layout"
 
 #. module: iot
+#: model:ir.model.fields,field_description:iot.field_iot_device__manufacturer
+msgid "Manufacturer"
+msgstr "Leverancier"
+
+#. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__name
 #: model:ir.model.fields,field_description:iot.field_iot_device__name
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__name
@@ -466,7 +471,7 @@ msgstr "Geen IoT box gevonden !"
 #: code:addons/iot/static/src/js/iot.js:0
 #, python-format
 msgid "No IoT Box(s) found"
-msgstr "Geen IoT boxen gevonden"
+msgstr "Geen IoT box(en) gevonden"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -622,7 +627,7 @@ msgstr "Deze reeks kan niet leeg zijn."
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action_search_iot_box
 msgid "There is no device connected to this IoT Box"
-msgstr ""
+msgstr "Er is geen apparaat verbonden met deze IoT box"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
@@ -634,7 +639,7 @@ msgstr "Er is geen apparaat verbonden aan uw IoT boxen"
 #: code:addons/iot/static/src/js/iot_scan.js:0
 #, python-format
 msgid "This IoTBox is already connected"
-msgstr ""
+msgstr "Deze IoTBox is al verbonden"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token
@@ -672,7 +677,7 @@ msgstr "USB"
 #: model:ir.model.fields,help:iot.field_iot_box__screen_url
 msgid "Url of the page that will be displayed by hdmi port of the box."
 msgstr ""
-"Url van de pagina die wordt weergegeven door de hdmi poort van de box."
+"Url van de pagina die wordt weergegeven door de HDMI poort van de box."
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__variant
@@ -692,7 +697,7 @@ msgstr ""
 #: code:addons/iot/drivers/SixDriver.py:0
 #, python-format
 msgid "You cannot reverse this payment anymore."
-msgstr ""
+msgstr "U kan deze betaling niet meer omdraaien."
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action

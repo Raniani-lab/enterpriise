@@ -4,17 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
 # Duy BQ <duybq86@gmail.com>, 2019
 # Chinh Chinh <trinhttp@trobz.com>, 2019
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:37+0000\n"
+"POT-Creation-Date: 2019-09-23 11:37+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
-"Last-Translator: Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019\n"
+"Last-Translator: Chinh Chinh <trinhttp@trobz.com>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,9 +40,19 @@ msgid "Access your"
 msgstr ""
 
 #. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Barcode Scanners"
+msgstr ""
+
+#. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_print_via_proxy
 msgid "Bypass browser printing and prints via the hardware proxy."
 msgstr "Bỏ qua việc in ra trình duyệt và in thông qua proxy phần cứng."
+
+#. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Cashdrawer"
+msgstr "Két tiền"
 
 #. module: pos_iot
 #. openerp-web
@@ -104,6 +114,32 @@ msgid "Could not connect to IoT scale"
 msgstr ""
 
 #. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Customer Display"
+msgstr "Hiển thị Khách hàng"
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_customer_facing_display
+msgid "Customer Facing Display"
+msgstr "Hiển thị khuôn mặt khách hàng"
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_electronic_scale
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Electronic Scale"
+msgstr "Cân điện tử"
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_pos_config__iface_scan_via_proxy
+msgid "Enable barcode scanning with a remotely connected barcode scanner."
+msgstr "Kích hoạt quét mã vạch với một máy quét mã vạch được kết nối từ xa."
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_pos_config__iface_electronic_scale
+msgid "Enables Electronic Scale integration."
+msgstr "Kích hoạt tích hợp cân điện tử."
+
+#. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/js/close_session.js:0
 #, python-format
@@ -118,11 +154,6 @@ msgid "Firefox only : Click on Confirm Security Exception"
 msgstr ""
 
 #. module: pos_iot
-#: model:ir.model.fields,field_description:pos_iot.field_pos_config__proxy_ip
-msgid "IP Address"
-msgstr "Địa chỉ IP"
-
-#. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/xml/pos.xml:0
 #, python-format
@@ -131,8 +162,23 @@ msgid ""
 msgstr ""
 
 #. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_display_id
+msgid "Iface Display"
+msgstr ""
+
+#. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_printer_id
 msgid "Iface Printer"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_scale_id
+msgid "Iface Scale"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_scanner_ids
+msgid "Iface Scanner"
 msgstr ""
 
 #. module: pos_iot
@@ -146,20 +192,20 @@ msgid "Ingenico Payment Terminal"
 msgstr ""
 
 #. module: pos_iot
-#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
-msgid "IoT Box"
-msgstr "IoT Box"
-
-#. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/xml/pos.xml:0
 #, python-format
 msgid "IoT Box Homepage"
-msgstr ""
+msgstr "Trang chủ IoT Box"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
-msgid "IoT Boxes"
+msgid "IoT Devices"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iot_device_ids
+msgid "Iot Device"
 msgstr ""
 
 #. module: pos_iot
@@ -184,6 +230,11 @@ msgstr ""
 #, python-format
 msgid "Ok"
 msgstr "Đồng ý"
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_payment_method__payment_terminal_ids
+msgid "Payment Terminal"
+msgstr "Thiêt bị Thanh toán"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__payment_terminal_device_ids
@@ -232,9 +283,9 @@ msgid "Print via Proxy"
 msgstr "In qua Proxy"
 
 #. module: pos_iot
-#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iotbox_id
-msgid "Related Box"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Receipt Printer"
+msgstr "Máy in biên lai"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
@@ -247,11 +298,21 @@ msgid "SIX Payment Terminal"
 msgstr ""
 
 #. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_scan_via_proxy
+msgid "Scan via Proxy"
+msgstr "Quét qua Proxy"
+
+#. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/js/chrome.js:0
 #, python-format
 msgid "Send Balance"
 msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_pos_config__iface_customer_facing_display
+msgid "Show checkout to customers with a remotely-connected screen."
+msgstr "Hiển thị thanh toán cho khách hàng bằng màn hình được kết nối từ xa."
 
 #. module: pos_iot
 #. openerp-web
@@ -266,15 +327,6 @@ msgstr ""
 #, python-format
 msgid "The IoT scale is not responding. You should check your connection."
 msgstr ""
-
-#. module: pos_iot
-#: model:ir.model.fields,help:pos_iot.field_pos_config__proxy_ip
-msgid ""
-"The hostname or ip address of the hardware proxy, Will be autodetected if "
-"left empty."
-msgstr ""
-"Tên máy chủ hoặc địa chỉ ip của proxy phần cứng, Sẽ được tự động phát hiện "
-"nếu để trống."
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot

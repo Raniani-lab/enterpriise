@@ -47,8 +47,8 @@
                     <label for="editable">Editable</label>
                     <select id="editable" name="editable">
                         <option></option>
-                        <option t-att-selected="widget.state.attrs.editable === 'top' ? 'selected' : undefined" value="top">top</option>
-                        <option t-att-selected="widget.state.attrs.editable === 'bottom' ? 'selected' : undefined" value="bottom">bottom</option>
+                        <option t-att-selected="widget.state.attrs.editable === 'top' ? 'selected' : undefined" value="top">New record on top</option>
+                        <option t-att-selected="widget.state.attrs.editable === 'bottom' ? 'selected' : undefined" value="bottom">New record at the bottom</option>
                     </select>
                 </div>
             </t>
@@ -401,6 +401,14 @@
                     <a role="button" href="#" data-type="readonly" class="btn btn-link o_web_studio_attrs">Conditional</a>
                 </div>
             </div>
+            <div class="o_web_studio_sidebar_optional_select">
+                <label for="optional">Optional</label>
+                <select id="optional" name="optional" data-type="attributes">
+                    <option></option>
+                    <option t-att-selected="widget.state.attrs.optional === 'show' ? 'selected' : undefined" value="show">Show by default</option>
+                    <option t-att-selected="widget.state.attrs.optional === 'hide' ? 'selected' : undefined" value="hide">Hide by default</option>
+                </select>
+            </div>
         </t>
         <div t-if="widget.view_type === 'kanban'" class="o_web_studio_sidebar_checkbox">
             <div class="custom-control custom-checkbox">
@@ -455,8 +463,17 @@
                 <label for="widget">Widget</label>
                 <select id="widget" name="widget" data-type="attributes">
                     <option t-foreach="widget.state.field.field_widgets" t-as="w" t-att-selected="widget.widgetKey ===  w[0] ? 'selected' : undefined" t-att-value="w[0]">
-                        <t t-set="desc" t-value="w[1].prototype.description"/>
-                        <t t-esc="desc || w[0]"/> <t t-if="widget.debug and desc">(<t t-esc="w[0]"/>)</t>
+                        <t
+                            t-set="desc"
+                            t-value="
+                                w[1].prototype.hasOwnProperty('description') and
+                                w[1].prototype.description"/>
+                        <t t-if="widget.debug">
+                            <t
+                                t-set="desc"
+                                t-value="desc and desc + ' ('+w[0]+')' or w[0]"/>
+                        </t>
+                        <t t-esc="desc"/>
                     </option>
                 </select>
             </div>
@@ -546,7 +563,9 @@
         <input id="string" name="string" type="text" data-type="attributes"
             t-att-value="widget.state.attrs.string"/>
     </div>
-    <t t-call="web_studio.Sidebar.Remove"/>
+    <t t-call="web_studio.Sidebar.Toolbox">
+        <t t-call="web_studio.Sidebar.Remove"/>
+    </t>
 </t>
 
 <!-- PageEditor -->
@@ -586,10 +605,12 @@
 <!-- FilterEditor -->
 <t t-name="web_studio.ViewEditorSidebar.filter">
     <div class="o_web_studio_sidebar_text">
-        <label for="string">Label Text</label>
+        <label for="string">Label</label>
         <input id="string" name="string" type="text"
             t-att-value="widget.state.attrs.string"/>
-        <label for="domain">Filter Domain</label>
+    </div>
+    <div class="o_web_studio_sidebar_text">
+        <label for="domain">Domain</label>
         <input id="domain" name="domain" type="text"
             t-att-value="widget.state.attrs.domain" readonly="readonly"/>
     </div>
@@ -713,7 +734,9 @@
         <input id="string" name="string" type="text" data-type="attributes"
             t-att-value="widget.state.attrs.string"/>
     </div>
-    <t t-call="web_studio.Sidebar.Remove"/>
+    <t t-call="web_studio.Sidebar.Toolbox">
+        <t t-call="web_studio.Sidebar.Remove"/>
+    </t>
 </t>
 
 <!-- ShowInvisibleElements -->

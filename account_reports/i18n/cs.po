@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-09-27 09:18+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
@@ -49,7 +49,7 @@ msgstr "(kopírovat)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "-> Refresh"
-msgstr ""
+msgstr "-> Obnovit"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:0
@@ -172,7 +172,7 @@ msgstr "<span class=\"fa fa-filter\"/> Volby:"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<span class=\"fa fa-folder-open\"/> Analytic"
-msgstr ""
+msgstr "<span class=\"fa fa-folder-open\"/> Analytický"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
@@ -201,6 +201,8 @@ msgid ""
 "<span class=\"o_account_reports_footnote_icons\"><i class=\"fa fa-fw fa-"
 "trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/></span>"
 msgstr ""
+"<span class=\"o_account_reports_footnote_icons\"><i class=\"fa fa-fw fa-"
+"trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/></span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -296,7 +298,7 @@ msgstr "Akce"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_mail_activity_type__category
 msgid "Action to Perform"
-msgstr ""
+msgstr "Akce k provedení"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_mail_activity_type__category
@@ -304,6 +306,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Akce mohou vyvolat určité chování, jako je otevření zobrazení kalendáře, "
+"nebo se automaticky označí jako provedené při nahrávání dokumentu"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_mail_activity
@@ -426,7 +430,7 @@ msgstr "Analytické položky"
 #: model:ir.ui.menu,name:account_reports.menu_action_report_account_analytic
 #, python-format
 msgid "Analytic Report"
-msgstr ""
+msgstr "Analytická zpráva"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -479,7 +483,7 @@ msgstr "Auditní Reporty"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_form
 msgid "Available Filters & Options"
-msgstr ""
+msgstr "Dostupné filtry a možnosti"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_avgcre0
@@ -489,7 +493,7 @@ msgstr "Průměrné dny věřitelů"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_avdebt0
 msgid "Average debtors days"
-msgstr ""
+msgstr "Průměrné dny dlužníků"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_analytic_report.py:0
@@ -516,7 +520,7 @@ msgstr "Rozvaha"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Balance tax advance payment account"
-msgstr ""
+msgstr "Účet zálohové platby zálohy na daň ze zůstatku"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
@@ -542,7 +546,7 @@ msgstr "Bankovní vyúčtování"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_bank_reconciliation_report
 msgid "Bank Reconciliation Report"
-msgstr ""
+msgstr "Zpráva o bankovním vyrovnání"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_bank_view0
@@ -558,7 +562,7 @@ msgstr "Základní částka"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__date_range
 msgid "Based on date ranges"
-msgstr ""
+msgstr "Na základě časových období"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_activity.py:0
@@ -610,7 +614,7 @@ msgstr "Peněžní prostředky a peněžní ekvivalenty, závěrečný zůstatek
 #: code:addons/account_reports/models/account_cash_flow_report.py:0
 #, python-format
 msgid "Cash flows from financing activities"
-msgstr ""
+msgstr "Peněžní toky z finančních činností"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_cash_flow_report.py:0
@@ -655,23 +659,23 @@ msgstr ""
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_cash_received0
 msgid "Cash received"
-msgstr ""
+msgstr "Hotovost přijata"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_cash_flow_report.py:0
 #, python-format
 msgid "Cash received from operating activities"
-msgstr ""
+msgstr "Peníze přijaté z provozních činností"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_cash_spent0
 msgid "Cash spent"
-msgstr ""
+msgstr "Vynaložené peníze"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_cash_surplus0
 msgid "Cash surplus"
-msgstr ""
+msgstr "Hotovostní přebytek"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_aged_partner_balance_line_report
@@ -697,7 +701,7 @@ msgstr "Podřízené řádky"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Closing Journal Entry"
-msgstr ""
+msgstr "Závěrečný zápis do deníku"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_closing_bank_balance0
@@ -751,7 +755,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
 msgid "Configure your tax accounts"
-msgstr ""
+msgstr "Nakonfigurovat své daňové účty"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_consolidated_journals.py:0
@@ -812,7 +816,7 @@ msgstr "Vytvořeno"
 #: code:addons/account_reports/models/account_financial_report.py:0
 #, python-format
 msgid "Crebit"
-msgstr ""
+msgstr "Crebit"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_consolidated_journals.py:0
@@ -998,6 +1002,11 @@ msgid "Domain"
 msgstr "Doména"
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
+msgid "Download the Data Inalterability Check Report"
+msgstr ""
+
+#. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:0
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #, python-format
@@ -1046,7 +1055,7 @@ msgstr "Shrnutí"
 #: code:addons/account_reports/models/account_aged_partner_balance.py:0
 #, python-format
 msgid "Exp. Date"
-msgstr ""
+msgstr "datum expirace"
 
 #. module: account_reports
 #. openerp-web
@@ -1102,7 +1111,7 @@ msgstr "Export (XLSX)"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_reports_export_wizard_format
 msgid "Export format for accounting's reports"
-msgstr ""
+msgstr "Formát exportu pro účetní výkazy"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__export_format_ids
@@ -1112,7 +1121,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr ""
+msgstr "Průvodce exportem pro účetní výkazy"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1125,6 +1134,8 @@ msgid ""
 "Filters that can be used to filter and group lines in this report. This uses"
 " saved filters on journal items."
 msgstr ""
+"Filtry, které lze v tomto přehledu použít k filtrování a seskupování řádků. "
+"To používá uložené filtry na položky deníku."
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__financial_report_id
@@ -1225,7 +1236,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report
 msgid "Generic Tax Report"
-msgstr ""
+msgstr "Obecná daňová zpráva"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_gross_profit0
@@ -1245,7 +1256,7 @@ msgstr "Hrubá zisková marže (hrubý zisk / provozní výnosy)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_generic_tax_report
 msgid "Group amounts by tax grid"
-msgstr ""
+msgstr "Seskupit částky podle daňové tabulky"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__groupby
@@ -1264,12 +1275,12 @@ msgstr ""
 #: code:addons/account_reports/models/account_financial_report.py:0
 #, python-format
 msgid "Groupby should be a journal item field"
-msgstr ""
+msgstr "Seskupit podle od koho by mělo být pole položky deníku"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__hide_if_empty
 msgid "Hide If Empty"
-msgstr ""
+msgstr "Skrýt, je-li prázdný"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__hide_if_zero
@@ -1284,7 +1295,7 @@ msgstr "Hierarchie"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Hierarchy and Subtotals"
-msgstr ""
+msgstr "Hierarchie a mezisoučty"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -1316,7 +1327,7 @@ msgstr "ID"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Include Unposted Entries"
-msgstr ""
+msgstr "Zahrnout neodeslané položky"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1367,6 +1378,8 @@ msgid ""
 "It seems that you have no entries to post, are you sure you correctly "
 "configured the accounts on your tax groups?"
 msgstr ""
+"Zdá se, že nemáte k dispozici žádné příspěvky, jste si jisti, že jste "
+"správně nakonfigurovali účty ve svých daňových skupinách?"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:0
@@ -1485,7 +1498,7 @@ msgstr "Poslední měsíc"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "Last Quarter"
-msgstr "Poslední čtvrtina"
+msgstr "Poslední čtvrtletí"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__write_uid
@@ -1578,7 +1591,7 @@ msgstr "Název"
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_reports_export_wizard__doc_name
 msgid "Name to give to the generated documents."
-msgstr ""
+msgstr "Název, který se má generovaným dokumentům dát."
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_net_assets0
@@ -1625,7 +1638,7 @@ msgstr "Žádné srovnání"
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__account_financial_html_report_line__figure_type__no_unit
 msgid "No Unit"
-msgstr ""
+msgstr "Žádná jednotka"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_move_line__internal_note
@@ -1640,7 +1653,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Nothing to process"
-msgstr ""
+msgstr "Nic ke zpracování"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -1772,7 +1785,7 @@ msgstr "Závazky"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Payable tax amount"
-msgstr ""
+msgstr "Splatná částka daně"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_current_liabilities_payable
@@ -1810,7 +1823,7 @@ msgstr "Periodicita"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_fixed_assets_view0
 msgid "Plus Fixed Assets"
-msgstr ""
+msgstr "Plus dlouhodobá aktiva"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_non_current_assets_view0
@@ -1820,7 +1833,7 @@ msgstr "Plus Dlouhodobá aktiva"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_non_current_liabilities0
 msgid "Plus Non-current Liabilities"
-msgstr ""
+msgstr "Plus Dlouhodobé závazky"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_position0
@@ -1878,7 +1891,7 @@ msgstr "Ziskovost"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "Proposition of tax closing journal entry."
-msgstr ""
+msgstr "Návrh na daňové uzavření deníkového záznamu."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:0
@@ -1890,7 +1903,7 @@ msgstr "Pohledávky"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Receivable tax amount"
-msgstr ""
+msgstr "Částka splatné daně"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_debtors0
@@ -1950,7 +1963,7 @@ msgstr "Řádky přehledů"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__report_model
 msgid "Report Model"
-msgstr ""
+msgstr "Model sestavy"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__report_name
@@ -1975,7 +1988,7 @@ msgstr "Návratnost investic (čistý zisk / aktiva)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
 msgid "Same Period Last Year"
-msgstr ""
+msgstr "Stejné období minulého roku"
 
 #. module: account_reports
 #. openerp-web
@@ -2048,7 +2061,7 @@ msgstr "Počáteční datum :"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_tax_periodicity_reminder_day
 msgid "Start from"
-msgstr ""
+msgstr "Začít od"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_tax_original_periodicity_reminder_day
@@ -2172,7 +2185,7 @@ msgstr "To vám umožní zvolit pozici součtů ve vašich finančních výkazec
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "This period is already closed"
-msgstr ""
+msgstr "Toto období je již uzavřeno"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -2276,12 +2289,12 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_generic_tax_report
 msgid "Use Tax Grid"
-msgstr ""
+msgstr "Použít daňovou mřížku"
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__account_financial_html_report_line__special_date_changer__normal
 msgid "Use given dates"
-msgstr ""
+msgstr "Použít daný termín"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -2303,7 +2316,7 @@ msgstr "Zobrazení bankovního výpisu"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_caret_options
 msgid "View Bill"
-msgstr ""
+msgstr "zobrazit účet"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_caret_options
@@ -2313,7 +2326,7 @@ msgstr "Zobrazit fakturu"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
 msgid "View Journal Entry"
-msgstr ""
+msgstr "Zobrazit zápis do deníku"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_caret_options
@@ -2371,7 +2384,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "XLSX"
-msgstr ""
+msgstr "XLSX"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
@@ -2390,7 +2403,7 @@ msgstr "jakýkoliv"
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
 msgid "days after period"
-msgstr ""
+msgstr "dny po období"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__analytic
@@ -2415,7 +2428,7 @@ msgstr "zobrazit rozbalené všechny možnosti v sestavě"
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__monthly
 msgid "monthly"
-msgstr ""
+msgstr "měsíčně"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_financial_report.py:0
@@ -2431,7 +2444,7 @@ msgstr "název vzoru zprávy"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "prior or included in this period"
-msgstr ""
+msgstr "předchozí nebo zahrnuté v tomto období"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__date_range
@@ -2441,7 +2454,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_move__tax_report_control_error
 msgid "technical field used to know if there was a failed control check"
-msgstr ""
+msgstr "technické pole používané k zjištění, zda došlo k selhání kontroly"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_move__is_tax_closing
@@ -2462,7 +2475,7 @@ msgstr "komu:"
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__trimester
 msgid "trimester"
-msgstr ""
+msgstr "trimestr"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

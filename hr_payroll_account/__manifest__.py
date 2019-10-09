@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Payroll Accounting',
-    'category': 'Human Resources',
+    'category': 'Human Resources/Payroll',
     'description': """
 Generic Payroll system Integrated with Accounting.
 ==================================================

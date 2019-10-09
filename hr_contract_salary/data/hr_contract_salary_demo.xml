@@ -17,6 +17,7 @@
         <field name="job_id" ref="job_developer_belgium"/>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="image_1920" type="base64" file="hr_contract_salary/static/img/hr_employee_max_durand.jpg"/>
     </record>
 
     <record id="res_partner_laurie_poiret" model="res.partner">
@@ -270,7 +271,7 @@
         <field name="contract_update_template_id" ref="sign_template_cdi_developer"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
-        <field name="resource_calendar_id" ref="resource.resource_calendar_std_38h"/>
+        <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
     </record>
 
     <record id="hr_employee_laurie_poiret" model="hr.employee">

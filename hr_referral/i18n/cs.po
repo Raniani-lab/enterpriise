@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"POT-Creation-Date: 2019-09-27 09:18+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
@@ -29,27 +29,6 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
 msgid "<b>Responsible: </b>"
-msgstr ""
-
-#. module: hr_referral
-#: model:mail.template,body_html:hr_referral.mail_template_referral
-msgid ""
-"<div style=\"margin: 0px; padding: 0px;\">\n"
-"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                        Hello,<br/><br/>\n"
-"                        <span>\n"
-"                            New job offer of ${ctx['job_name']} in company. Share it from referral application and earn points!\n"
-"                        </span>\n"
-"                        <br/>\n"
-"\n"
-"                        <div style=\"margin:16px 0px 16px 0px;\">\n"
-"                            <a href=\"${ctx['url']}\" style=\"padding: 8px 16px 8px 16px; border-radius: 3px; background-color:#875A7B; text-align:center; text-decoration:none; color: #FFFFFF;\">\n"
-"                                Referral Application\n"
-"                            </a>\n"
-"                        </div>\n"
-"                    </p>\n"
-"                </div>\n"
-"            "
 msgstr ""
 
 #. module: hr_referral
@@ -161,6 +140,12 @@ msgid "Applicant Referred Refused"
 msgstr ""
 
 #. module: hr_referral
+#: code:addons/hr_referral/models/hr_applicant.py:0
+#, python-format
+msgid "Applicant must have a company."
+msgstr ""
+
+#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_alert_view_search
 msgid "Archived"
 msgstr "Archivováno"
@@ -224,9 +209,8 @@ msgstr "Zavřít"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__company_id
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend__company_id
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_level__company_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__company_id
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__company_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__company_id
 msgid "Company"
 msgstr "Firma"
@@ -374,10 +358,7 @@ msgid "Email a friend"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model,name:hr_referral.model_hr_employee
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__ref_employee_id
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
-#: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "Employee"
 msgstr "Zaměstnanec"
 
@@ -411,11 +392,6 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.employee_referral_report_action
 msgid "Employees Referral Analysis"
-msgstr ""
-
-#. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
-msgid "Employees Referrer"
 msgstr ""
 
 #. module: hr_referral
@@ -545,12 +521,12 @@ msgid "Hired"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__hr_referral_level_id
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__hr_referral_level_id
 msgid "Hr Referral Level"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__hr_referral_onboarding_page
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__hr_referral_onboarding_page
 msgid "Hr Referral Onboarding Page"
 msgstr ""
 
@@ -580,7 +556,7 @@ msgstr "Ikona"
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Ikona označuje vyjímečnou aktivitu."
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction
@@ -773,11 +749,6 @@ msgid "New gift awarded for %s"
 msgstr ""
 
 #. module: hr_referral
-#: model:mail.template,subject:hr_referral.mail_template_referral
-msgid "New job to share"
-msgstr ""
-
-#. module: hr_referral
 #. openerp-web
 #: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
 #, python-format
@@ -824,7 +795,7 @@ msgstr "Počet akcí"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Počet chyb"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction_counter
@@ -932,11 +903,6 @@ msgid "Recruitment Stages"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__ref_employee_id
-msgid "Ref Employee"
-msgstr ""
-
-#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "Referral"
 msgstr ""
@@ -947,7 +913,7 @@ msgid "Referral Link To Share"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__referral_point_ids
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__referral_point_ids
 msgid "Referral Point"
 msgstr ""
 
@@ -968,6 +934,11 @@ msgid "Referral State"
 msgstr ""
 
 #. module: hr_referral
+#: model:res.groups,name:hr_referral.group_hr_recruitment_referral_user
+msgid "Referral User"
+msgstr ""
+
+#. module: hr_referral
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Referral: %s"
@@ -985,7 +956,7 @@ msgstr ""
 #: model:ir.ui.menu,name:hr_referral.menu_hr_referral_root
 #, python-format
 msgid "Referrals"
-msgstr ""
+msgstr "Doporučení"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_applicant_view_search_bis_inherit_referral
@@ -993,8 +964,8 @@ msgid "Referred By"
 msgstr "Odkazováno podle"
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__ref_employee_id
-msgid "Referred By Employee"
+#: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__ref_user_id
+msgid "Referred By User"
 msgstr ""
 
 #. module: hr_referral
@@ -1037,7 +1008,7 @@ msgstr "Odměny"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "Chyba doručení SMS"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
@@ -1117,7 +1088,7 @@ msgid "Skip and Start"
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_employee__utm_source_id
+#: model:ir.model.fields,field_description:hr_referral.field_res_users__utm_source_id
 msgid "Source"
 msgstr "Zdroj"
 
@@ -1252,8 +1223,25 @@ msgid "Url"
 msgstr "Url"
 
 #. module: hr_referral
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__ref_user_id
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__ref_user_id
+#: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
+msgid "User"
+msgstr "Uživatel"
+
+#. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__gift_manager_id
 msgid "User responsible of this gift."
+msgstr ""
+
+#. module: hr_referral
+#: model:ir.model,name:hr_referral.model_res_users
+msgid "Users"
+msgstr "Uživatelé"
+
+#. module: hr_referral
+#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
+msgid "Users Referrer"
 msgstr ""
 
 #. module: hr_referral
@@ -1287,15 +1275,9 @@ msgstr ""
 #. module: hr_referral
 #: code:addons/hr_referral/models/hr_referral_reward.py:0
 #, python-format
-msgid "You do not have enough points to buy this product."
-msgstr ""
-
-#. module: hr_referral
-#: code:addons/hr_referral/models/hr_applicant.py:0
-#, python-format
 msgid ""
-"You don't have access to this application as your user is not linked to an "
-"employee."
+"You do not have enough points in this company to buy this product. In this "
+"company, you have %s points."
 msgstr ""
 
 #. module: hr_referral

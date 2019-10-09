@@ -242,7 +242,7 @@ msgstr "Bron verkooporder"
 #. module: inter_company_rules
 #: model:ir.model.fields.selection,name:inter_company_rules.selection__res_company__rule_type__invoice_and_refund
 msgid "Synchronize invoices/bills"
-msgstr ""
+msgstr "Synchroniseer facturen/rekeningen"
 
 #. module: inter_company_rules
 #: model:ir.model.fields.selection,name:inter_company_rules.selection__res_company__rule_type__so_and_po
@@ -323,7 +323,7 @@ msgstr "verkooporder"
 #: code:addons/inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "sales/purchase order"
-msgstr ""
+msgstr "verkoop/inkooporder"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/res_company.py:0

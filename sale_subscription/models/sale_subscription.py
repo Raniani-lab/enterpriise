@@ -22,6 +22,7 @@ class SaleSubscription(models.Model):
     _name = "sale.subscription"
     _description = "Subscription"
     _inherit = ['mail.thread', 'mail.activity.mixin', 'rating.mixin']
+    _check_company_auto = True
 
     def _get_default_pricelist(self):
         return self.env['product.pricelist'].search([('currency_id', '=', self.env.company.currency_id.id)], limit=1).id
@@ -33,15 +34,18 @@ class SaleSubscription(models.Model):
     name = fields.Char(required=True, tracking=True, default="New")
     code = fields.Char(string="Reference", required=True, tracking=True, index=True, copy=False)
     stage_id = fields.Many2one(
-        'sale.subscription.stage', string='Stage', index=True,
-        default=lambda s: s._get_default_stage_id(), group_expand='_read_group_stage_ids', tracking=True)
-    analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        'sale.subscription.stage', string='Stage', index=True, default=lambda s: s._get_default_stage_id(),
+        copy=False, group_expand='_read_group_stage_ids', tracking=True)
+    analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account',
+                                          domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", check_company=True)
     company_id = fields.Many2one('res.company', string="Company", default=lambda s: s.env.company, required=True)
     partner_id = fields.Many2one('res.partner', string='Customer', required=True, auto_join=True, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    tag_ids = fields.Many2many('account.analytic.tag', string='Tags', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    tag_ids = fields.Many2many('account.analytic.tag', string='Tags',
+                               domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", check_company=True)
     date_start = fields.Date(string='Start Date', default=fields.Date.today)
-    date = fields.Date(string='End Date', tracking=True, help="If set in advance, the subscription will be set to pending 1 month before the date and will be closed on the date set in this field.")
-    pricelist_id = fields.Many2one('product.pricelist',  domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", string='Pricelist', default=_get_default_pricelist, required=True)
+    date = fields.Date(string='End Date', tracking=True, help="If set in advance, the subscription will be set to renew 1 month before the date and will be closed on the date set in this field.")
+    pricelist_id = fields.Many2one('product.pricelist',  domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+                                   string='Pricelist', default=_get_default_pricelist, required=True, check_company=True)
     currency_id = fields.Many2one('res.currency', related='pricelist_id.currency_id', string='Currency', readonly=True)
     recurring_invoice_line_ids = fields.One2many('sale.subscription.line', 'analytic_account_id', string='Subscription Lines', copy=True)
     recurring_rule_type = fields.Selection(string='Recurrence', help="Invoice automatically repeat at specified interval", related="template_id.recurring_rule_type", readonly=1)
@@ -50,15 +54,18 @@ class SaleSubscription(models.Model):
     recurring_invoice_day = fields.Integer('Recurring Invoice Day', copy=False, default=lambda e: fields.Date.today().day)
     recurring_total = fields.Float(compute='_compute_recurring_total', string="Recurring Price", store=True, tracking=True)
     recurring_monthly = fields.Float(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue", store=True)
-    close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", tracking=True)
+    close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", copy=False, tracking=True)
     template_id = fields.Many2one(
         'sale.subscription.template', string='Subscription Template',
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
-        required=True, tracking=True)
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", required=True,
+        default=lambda self: self.env['sale.subscription.template'].search([], limit=1), tracking=True, check_company=True)
     payment_mode = fields.Selection(related='template_id.payment_mode', readonly=False)
     description = fields.Text()
     user_id = fields.Many2one('res.users', string='Salesperson', tracking=True, default=lambda self: self.env.user)
-    team_id = fields.Many2one('crm.team', 'Sales Team', change_default=True, default=_get_default_team, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    team_id = fields.Many2one(
+        'crm.team', 'Sales Team', change_default=True, default=_get_default_team,
+        check_company=True,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     team_user_id = fields.Many2one('res.users', string="Team Leader", related="team_id.user_id", readonly=False)
     invoice_count = fields.Integer(compute='_compute_invoice_count')
     country_id = fields.Many2one('res.country', related='partner_id.country_id', store=True, readonly=False, compute_sudo=True)
@@ -67,7 +74,10 @@ class SaleSubscription(models.Model):
     # customer portal
     uuid = fields.Char('Account UUID', default=lambda self: str(uuid4()), copy=False, required=True)
     website_url = fields.Char('Website URL', compute='_website_url', help='The full URL to access the document through the website.')
-    payment_token_id = fields.Many2one('payment.token', 'Payment Token', help='If not set, the default payment token of the partner will be used.', domain="[('partner_id','=',partner_id)]")
+    payment_token_id = fields.Many2one(
+        'payment.token', 'Payment Token', check_company=True,
+        help='If not set, the default payment token of the partner will be used.',
+        domain="[('partner_id', '=', partner_id), ('company_id', '=', company_id)]")
     # add tax calculation
     recurring_amount_tax = fields.Float('Taxes', compute="_amount_all")
     recurring_amount_total = fields.Float('Total', compute="_amount_all")
@@ -161,19 +171,23 @@ class SaleSubscription(models.Model):
         """ Add an invoice line on the sales order for the specified option and add a discount
         to take the partial recurring period into account """
         order_line_obj = self.env['sale.order.line']
+        ratio, message = self._partial_recurring_invoice_ratio(date_from=date_from)
+        if message != "":
+            sale_order.message_post(body=message)
+        _discount = (1 - ratio) * 100
         values = {
             'order_id': sale_order.id,
             'product_id': option_line.product_id.id,
             'subscription_id': self.id,
             'product_uom_qty': option_line.quantity,
             'product_uom': option_line.uom_id.id,
-            'discount': (1 - self.partial_recurring_invoice_ratio(date_from=date_from)) * 100,
+            'discount': _discount,
             'price_unit': self.pricelist_id.with_context({'uom': option_line.uom_id.id}).get_product_price(option_line.product_id, 1, False),
             'name': option_line.name,
         }
         return order_line_obj.create(values)
 
-    def partial_recurring_invoice_ratio(self, date_from=False):
+    def _partial_recurring_invoice_ratio(self, date_from=False):
         """Computes the ratio of the amount of time remaining in the current invoicing period
         over the total length of said invoicing period"""
         if date_from:
@@ -186,7 +200,23 @@ class SaleSubscription(models.Model):
         recurring_last_invoice = recurring_next_invoice - invoicing_period
         time_to_invoice = recurring_next_invoice - date
         ratio = float(time_to_invoice.days) / float((recurring_next_invoice - recurring_last_invoice).days)
-        return ratio
+        if (ratio < 0 or ratio > 1):
+            message = _(
+                "Discount computation failed because the upsell date is not between the next " +
+                "invoice date and the computed last invoice date. Defaulting to NO Discount policy."
+            )
+            message += "<br/>{}{}<br/>{}{}<br/>{}{}".format(
+                _("Upsell date: "), format_date(self.env, date),
+                _("Next invoice date: "), format_date(self.env, recurring_next_invoice),
+                _("Last invoice date: "), format_date(self.env, recurring_last_invoice),
+            )
+            ratio = 1.00
+        else:
+            message = ""
+        return ratio, message
+
+    def partial_recurring_invoice_ratio(self, date_from=False):
+        return self._partial_recurring_invoice_ratio(date_from=False)[0]
 
     @api.model
     def default_get(self, fields):
@@ -265,11 +295,8 @@ class SaleSubscription(models.Model):
 
     @api.onchange('template_id')
     def on_change_template(self):
-        if self.template_id:
-            # Check if record is a new record or exists in db by checking its _origin
-            # note that this property is not always set, hence the getattr
-            if not getattr(self, '_origin', self.browse()) and not isinstance(self.id, int):
-                self.description = self.template_id.description
+        for subscription in self.filtered('template_id'):
+            subscription.description = subscription.template_id.description
 
     @api.model
     def create(self, vals):
@@ -331,9 +358,12 @@ class SaleSubscription(models.Model):
 
     def name_get(self):
         res = []
-        for sub in self:
-            name = '%s - %s' % (sub.code, sub.partner_id.sudo().display_name) if sub.code else sub.partner_id.sudo().display_name
-            res.append((sub.id, '%s/%s' % (sub.template_id.sudo().code, name) if sub.template_id.sudo().code else name))
+        for sub in self.filtered('id'):
+            partner_name = sub.partner_id.sudo().display_name
+            subscription_name = '%s - %s' % (sub.code, partner_name) if sub.code else partner_name
+            template_name = sub.template_id.sudo().code
+            display_name = '%s/%s' % (template_name, subscription_name) if template_name else subscription_name
+            res.append((sub.id, display_name))
         return res
 
     def action_subscription_invoice(self):
@@ -344,7 +374,11 @@ class SaleSubscription(models.Model):
         if len(invoices) > 1:
             action['domain'] = [('id', 'in', invoices.ids)]
         elif len(invoices) == 1:
-            action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
+            form_view = [(self.env.ref('account.view_move_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state,view) for state,view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
             action['res_id'] = invoices.ids[0]
         else:
             action = {'type': 'ir.actions.act_window_close'}
@@ -645,6 +679,7 @@ class SaleSubscription(models.Model):
         tx_obj = self.env['payment.transaction']
         results = []
 
+        off_session = self.env.context.get('off_session', True)
         for rec in self:
             reference = "SUB%s-%s" % (rec.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S'))
             values = {
@@ -659,7 +694,8 @@ class SaleSubscription(models.Model):
                 'invoice_ids': [(6, 0, [invoice.id])],
                 'callback_model_id': self.env['ir.model'].sudo().search([('model', '=', rec._name)], limit=1).id,
                 'callback_res_id': rec.id,
-                'callback_method': 'reconcile_pending_transaction',
+                'callback_method': 'reconcile_pending_transaction' if off_session else '_reconcile_and_send_mail',
+                'return_url': '/my/subscription/%s/%s' % (self.id, self.uuid),
             }
             tx = tx_obj.create(values)
 
@@ -670,7 +706,7 @@ class SaleSubscription(models.Model):
                 'decline_url': baseurl + '/my/subscription/%s/payment/%s/decline/' % (rec.uuid, tx.id),
                 'exception_url': baseurl + '/my/subscription/%s/payment/%s/exception/' % (rec.uuid, tx.id),
             }
-            tx.s2s_do_transaction(**payment_secure)
+            tx.with_context(off_session=off_session).s2s_do_transaction(**payment_secure)
             results.append(tx)
         return results
 
@@ -685,6 +721,15 @@ class SaleSubscription(models.Model):
         else:
             invoice.action_cancel()
             invoice.unlink()
+
+    def _reconcile_and_send_mail(self, tx, invoice=False):
+        if not invoice:
+            invoice = tx.invoice_ids and tx.invoice_ids[0]
+        self.reconcile_pending_transaction(tx, invoice=invoice)
+        self.send_success_mail(tx, invoice)
+        msg_body = 'Manual payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>.' % (tx.id, tx.reference, tx.amount, invoice.id)
+        self.message_post(body=msg_body)
+        return True
 
     def _recurring_create_invoice(self, automatic=False):
         auto_commit = self.env.context.get('auto_commit', True)
@@ -860,10 +905,13 @@ class SaleSubscription(models.Model):
 class SaleSubscriptionLine(models.Model):
     _name = "sale.subscription.line"
     _description = "Subscription Line"
+    _check_company_auto = True
 
-    product_id = fields.Many2one('product.product', string='Product', domain="[('recurring_invoice','=',True)]", required=True)
+    product_id = fields.Many2one(
+        'product.product', string='Product', check_company=True,
+        domain="[('recurring_invoice','=',True)]", required=True)
     analytic_account_id = fields.Many2one('sale.subscription', string='Subscription')
-    company_id = fields.Many2one('res.company', related='analytic_account_id.company_id', stored=True)
+    company_id = fields.Many2one('res.company', related='analytic_account_id.company_id', stored=True, index=True)
     name = fields.Text(string='Description', required=True)
     quantity = fields.Float(string='Quantity', help="Quantity that will be invoiced.", default=1.0)
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure', required=True, domain="[('category_id', '=', product_uom_category_id)]")
@@ -965,6 +1013,7 @@ class SaleSubscriptionTemplate(models.Model):
     _name = "sale.subscription.template"
     _description = "Subscription Template"
     _inherit = "mail.thread"
+    _check_company_auto = True
 
     active = fields.Boolean(default=True)
     name = fields.Char(required=True)
@@ -975,7 +1024,7 @@ class SaleSubscriptionTemplate(models.Model):
                                            string='Recurrence', required=True,
                                            help="Invoice automatically repeat at specified interval",
                                            default='monthly', tracking=True)
-    recurring_interval = fields.Integer(string="Repeat Every", help="Repeat every (Days/Week/Month/Year)", required=True, default=1, tracking=True)
+    recurring_interval = fields.Integer(string="Invoicing Period", help="Repeat every (Days/Week/Month/Year)", required=True, default=1, tracking=True)
     recurring_rule_boundary = fields.Selection([
         ('unlimited', 'Forever'),
         ('limited', 'Fixed')
@@ -987,30 +1036,39 @@ class SaleSubscriptionTemplate(models.Model):
         string="Recurrence Unit",
         related='recurring_rule_type', readonly=True, tracking=False)
 
-    user_closable = fields.Boolean(string="Closable by customer", help="If checked, the user will be able to close his account from the frontend")
+    user_closable = fields.Boolean(string="Closable by Customer", help="If checked, the user will be able to close his account from the frontend")
     payment_mode = fields.Selection([
-        ('manual', 'Manual'),
-        ('draft_invoice', 'Draft invoice'),
-        ('validate_send', 'Invoice'),
-        ('validate_send_payment', 'Invoice & try to charge'),
-        ('success_payment', 'Invoice only on successful payment'),
+        ('manual', 'Manually'),
+        ('draft_invoice', 'Draft'),
+        ('validate_send', 'Send'),
+        ('validate_send_payment', 'Send & try to charge'),
+        ('success_payment', 'Send after successful payment'),
     ], required=True, default='draft_invoice')
     product_ids = fields.One2many('product.template', 'subscription_template_id', copy=True)
-    journal_id = fields.Many2one('account.journal', string="Accounting Journal", domain="[('type', '=', 'sale')]", company_dependent=True,
-                                 help="If set, subscriptions with this template will invoice in this journal; "
-                                      "otherwise the sales journal with the lowest sequence is used.")
-    tag_ids = fields.Many2many('account.analytic.tag', 'sale_subscription_template_tag_rel', 'template_id', 'tag_id', string='Tags')
+    journal_id = fields.Many2one(
+        'account.journal', string="Accounting Journal",
+        domain="[('type', '=', 'sale')]", company_dependent=True, check_company=True,
+        help="If set, subscriptions with this template will invoice in this journal; "
+        "otherwise the sales journal with the lowest sequence is used.")
+    tag_ids = fields.Many2many(
+        'account.analytic.tag', 'sale_subscription_template_tag_rel',
+        'template_id', 'tag_id', string='Tags',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     product_count = fields.Integer(compute='_compute_product_count')
     subscription_count = fields.Integer(compute='_compute_subscription_count')
     color = fields.Integer()
-    auto_close_limit = fields.Integer(string="Automatic closing limit", default=15,
-                                      help="Number of days before a subscription gets closed when the chosen payment mode trigger automatically the payment.")
+    auto_close_limit = fields.Integer(
+        string="Automatic Closing", default=15,
+        help="If the chosen payment method has failed to renew the subscription after this time, "
+             "the subscription is automatically closed.")
     good_health_domain = fields.Char(string='Good Health', default='[]',
                                      help="Domain used to change subscription's Kanban state with a 'Good' rating")
     bad_health_domain = fields.Char(string='Bad Health', default='[]',
                                     help="Domain used to change subscription's Kanban state with a 'Bad' rating")
-    invoice_mail_template_id = fields.Many2one('mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.move')])
-    company_id = fields.Many2one('res.company')
+    invoice_mail_template_id = fields.Many2one(
+        'mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.move')],
+        default=lambda self: self.env.ref('sale_subscription.mail_template_subscription_invoice', raise_if_not_found=False))
+    company_id = fields.Many2one('res.company', index=True)
 
     @api.constrains('recurring_interval')
     def _check_recurring_interval(self):
@@ -1057,11 +1115,15 @@ class SaleSubscriptionStage(models.Model):
     _order = 'sequence, id'
 
     name = fields.Char(string='Stage Name', required=True, translate=True)
-    description = fields.Text(translate=True)
+    description = fields.Text(
+        "Requirements", help="Enter here the internal requirements for this stage. It will appear "
+                             "as a tooltip over the stage's name.", translate=True)
     sequence = fields.Integer(default=1)
     fold = fields.Boolean(string='Folded in Kanban',
                           help='This stage is folded in the kanban view when there are not records in that stage to display.')
-    rating_template_id = fields.Many2one('mail.template', string='Rating Email Template', domain=[('model', '=', 'sale.subscription')])
+    rating_template_id = fields.Many2one('mail.template', string='Rating Email Template',
+                                         help="Send an email to the customer when the subscription is moved to this stage.",
+                                         domain=[('model', '=', 'sale.subscription')])
     in_progress = fields.Boolean(string='In Progress', default=True)
 
 
@@ -1078,11 +1140,13 @@ class SaleSubscriptionAlert(models.Model):
     _name = 'sale.subscription.alert'
     _description = 'Subscription Alert'
     _inherits = {'base.automation': 'automation_id'}
+    _check_company_auto = True
 
     @api.model
     def default_get(self, default_fields):
         res = super(SaleSubscriptionAlert, self).default_get(default_fields)
         res['model_id'] = self.env['ir.model'].search([('model', '=', 'sale.subscription')]).id
+        res['model_name'] = 'sale.subscription'
         res['trigger'] = 'on_create_or_write'
         return res
 
@@ -1102,12 +1166,14 @@ class SaleSubscriptionAlert(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
     subscription_template_ids = fields.Many2many(
         'sale.subscription.template', string='Subscription Templates',
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        check_company=True)
     customer_ids = fields.Many2many('res.partner', string='Customers')
     company_id = fields.Many2one('res.company', string='Company')
     mrr_min = fields.Monetary('MRR Range Min', currency_field='currency_id')
     mrr_max = fields.Monetary('MRR Range Max', currency_field='currency_id')
-    product_ids = fields.Many2many('product.product', string='Specific Products', domain=[('product_tmpl_id.subscription_template_id', '!=', None)])
+    product_ids = fields.Many2many(
+        'product.product', string='Specific Products',
+        domain="[('product_tmpl_id.subscription_template_id', '!=', None), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
     mrr_change_amount = fields.Float('MRR Change Amount')
     mrr_change_unit = fields.Selection(selection='_get_selection_mrr_change_unit', string='MRR Change Unit', default='percentage')
@@ -1181,15 +1247,15 @@ class SaleSubscriptionAlert(models.Model):
         self.filtered(lambda alert: alert.action != 'next_activity' and alert.child_ids).unlink()
         for alert in self:
             if alert.action == 'set_tag' and alert.tag_id:
-                alert.set_field_action('tag_ids', alert.tag_id.id)
+                alert._set_field_action('tag_ids', alert.tag_id.id)
             elif alert.action == 'set_stage' and alert.stage_id:
-                alert.set_field_action('stage_id', alert.stage_id.id)
+                alert._set_field_action('stage_id', alert.stage_id.id)
             elif alert.action == 'set_to_renew':
-                alert.set_field_action('to_renew', True)
-            elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
-                alert.set_activity_action()
+                alert._set_field_action('to_renew', True)
             elif vals.get('action') in ('email', 'sms'):
                 super(SaleSubscriptionAlert, alert).write({'state': vals.get('action')})
+            elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
+                alert.set_activity_action()
 
     @api.model
     def create(self, vals):
@@ -1210,8 +1276,20 @@ class SaleSubscriptionAlert(models.Model):
         self._configure_alert_from_action(vals)
         return res
 
-    def set_field_action(self, field_name, value):
-        for alert in self:
+    def action_view_subscriptions(self):
+        self.ensure_one()
+        domain = safe_eval(self.filter_domain) if self.filter_domain else []
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Subscriptions'),
+            'res_model': 'sale.subscription',
+            'view_mode': 'kanban,tree,form,pivot,graph,cohort,activity',
+            'domain': domain,
+            'context': {'create': False},
+        }
+
+    def _set_field_action(self, field_name, value):
+        for alert in self.sudo():  # Require sudo to write on ir.actions.server fields
             tag_field = self.env['ir.model.fields'].search([('model', '=', alert.model_name), ('name', '=', field_name)])
             super(SaleSubscriptionAlert, alert).write({
                 'state': 'object_write',

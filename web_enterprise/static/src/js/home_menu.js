@@ -365,6 +365,7 @@ return HomeMenu;
 odoo.define('web_enterprise.ExpirationPanel', function (require) {
 "use strict";
 
+var ajax = require('web.ajax');
 var core = require('web.core');
 var session = require('web.session');
 var utils = require('web.utils');
@@ -381,6 +382,7 @@ HomeMenu.include({
         'click #confirm_enterprise_code': '_onEnterpriseCodeSubmit',
         'click .oe_instance_hide_panel': '_onEnterpriseHidePanel',
         'click .check_enterprise_status': '_onEnterpriseCheckStatus',
+        'click .oe_contract_send_mail': '_onEnterpriseSendUnlinkEmail',
     }),
     /**
      * @override
@@ -519,6 +521,29 @@ HomeMenu.include({
                 }
             });
     },
+    _onEnterpriseSendUnlinkEmail: function(ev) {
+        ev.preventDefault();
+        this._rpc({
+            model: 'ir.config_parameter',
+            method: 'get_param',
+            args: ['database.already_linked_send_mail_url']
+        })
+        .then(function(unlink_mail_send_url) {
+            $('.oe_contract_sending_mail').show();
+            $('.oe_contract_sending_mail_success, .oe_contract_sending_mail_fail').hide();
+            ajax.jsonRpc(unlink_mail_send_url, 'call', {}).then(function (result) {
+                if(result.result) {
+                    $('.oe_contract_sending_mail').hide();
+                    $('.oe_contract_sending_mail_success').show();
+                }
+                else {
+                    $('.oe_contract_sending_mail').hide();
+                    $('.oe_contract_sending_mail_fail_reason').text(result.reason);
+                    $('.oe_contract_sending_mail_fail').show();
+                }
+            });
+        });
+    },
     /**
      * Save the registration code then triggers a ping to submit it
      *
@@ -565,17 +590,45 @@ HomeMenu.include({
                                 model: 'ir.config_parameter',
                                 method: 'get_param',
                                 args: ['database.expiration_reason']
+                            }),
+                        self._rpc({
+                                model: 'ir.config_parameter',
+                                method: 'get_param',
+                                args: ['database.already_linked_subscription_url']
+                            }),
+                        self._rpc({
+                                model: 'ir.config_parameter',
+                                method: 'get_param',
+                                args: ['database.already_linked_email']
                             })]
                     ).then(function (results) {
                         var dbexpirationDate = results[0];
+                        var dbalready_linked_subscription_url = results[2];
+                        var dbalready_linked_email = results[3];
                         $('.oe_instance_register').hide();
+                        $('.oe_contract_email_block').hide();
+                        $('.oe_contract_no_email_block').hide();
                         $('.database_expiration_panel .alert')
                                 .removeClass('alert-info alert-warning alert-danger');
-                        if (dbexpirationDate !== oldDate) {
+                        if (dbexpirationDate !== oldDate && !dbalready_linked_subscription_url) {
                             $('.oe_instance_hide_panel').show();
                             $('.database_expiration_panel .alert').addClass('alert-success');
                             $('.valid_date').html(moment(dbexpirationDate).format('LL'));
                             $('.oe_instance_success').show();
+                        } else if (dbalready_linked_subscription_url) {
+                            $('.database_expiration_panel .alert').addClass('alert-danger');
+                            $('.oe_database_already_linked, .oe_instance_register_form').show();
+                            $('.oe_contract_sending_mail, .oe_contract_sending_mail_success, .oe_contract_sending_mail_fail').hide();
+                            $('.oe_contract_link')
+                                .attr('href', dbalready_linked_subscription_url)
+                                .text(dbalready_linked_subscription_url);
+                            if (dbalready_linked_email.length > 0) {
+                                $('.oe_contract_email_block').show();
+                                $('.oe_contract_email').text(dbalready_linked_email);
+                            } else {
+                                $('.oe_contract_no_email_block').show();
+                            }
+                            $('#confirm_enterprise_code').html('Retry');
                         } else {
                             $('.database_expiration_panel .alert').addClass('alert-danger');
                             $('.oe_instance_error, .oe_instance_register_form').show();

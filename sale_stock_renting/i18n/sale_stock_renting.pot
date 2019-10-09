@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-10-07 07:20+0000\n"
+"PO-Revision-Date: 2019-10-07 07:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_order_wizard_view_form
 msgid ""
 "<span>\n"
-"                    Some products don't have the requested qty available for deliver\n"
+"                    Some products don't have the requested qty available for pickup\n"
 "                  </span>"
 msgstr ""
 
@@ -50,12 +50,6 @@ msgstr ""
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_configurator_view_form
 msgid "Available )"
-msgstr ""
-
-#. module: sale_stock_renting
-#: model:ir.model.fields,field_description:sale_stock_renting.field_product_product__preparation_time
-#: model:ir.model.fields,field_description:sale_stock_renting.field_product_template__preparation_time
-msgid "Before Deliver"
 msgstr ""
 
 #. module: sale_stock_renting
@@ -112,11 +106,6 @@ msgid "Minimum amount of time between two rentals"
 msgstr ""
 
 #. module: sale_stock_renting
-#: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__name
-msgid "Name"
-msgstr ""
-
-#. module: sale_stock_renting
 #: code:addons/sale_stock_renting/models/sale_rental.py:0
 #, python-format
 msgid "No valid quant has been found in location %s for serial number %s !"
@@ -134,7 +123,6 @@ msgstr ""
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_res_company__padding_time
-#: model_terms:ir.ui.view,arch_db:sale_stock_renting.product_template_inherit_view_form_stock_rental
 msgid "Padding Time"
 msgstr ""
 
@@ -167,6 +155,12 @@ msgid "Please specify the serial numbers returned for the tracked products."
 msgstr ""
 
 #. module: sale_stock_renting
+#: model:product.product,name:sale_stock_renting.rental_stock_product_1
+#: model:product.template,name:sale_stock_renting.rental_stock_product_1_product_template
+msgid "Printer"
+msgstr ""
+
+#. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_product_product
 msgid "Product"
 msgstr ""
@@ -174,6 +168,11 @@ msgstr ""
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_product_template
 msgid "Product Template"
+msgstr ""
+
+#. module: sale_stock_renting
+#: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__product_uom_id
+msgid "Product UoM"
 msgstr ""
 
 #. module: sale_stock_renting
@@ -235,6 +234,12 @@ msgid "Sales Order Line"
 msgstr ""
 
 #. module: sale_stock_renting
+#: model:ir.model.fields,field_description:sale_stock_renting.field_product_product__preparation_time
+#: model:ir.model.fields,field_description:sale_stock_renting.field_product_template__preparation_time
+msgid "Security Time"
+msgstr ""
+
+#. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_configurator_view_form
 msgid "Select available serial numbers."
 msgstr ""
@@ -275,7 +280,7 @@ msgstr ""
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_product_product__preparation_time
 #: model:ir.model.fields,help:sale_stock_renting.field_product_template__preparation_time
-msgid "Temporarily make this product unavailable before deliver."
+msgid "Temporarily make this product unavailable before pickup."
 msgstr ""
 
 #. module: sale_stock_renting
@@ -299,8 +304,9 @@ msgid "Unavailable Lot"
 msgstr ""
 
 #. module: sale_stock_renting
-#: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__uom_id
-msgid "Unit of Measure"
+#: model:product.product,uom_name:sale_stock_renting.rental_stock_product_1
+#: model:product.template,uom_name:sale_stock_renting.rental_stock_product_1_product_template
+msgid "Units"
 msgstr ""
 
 #. module: sale_stock_renting
@@ -312,11 +318,15 @@ msgstr ""
 #. module: sale_stock_renting
 #: code:addons/sale_stock_renting/wizard/rental_configurator.py:0
 #, python-format
-msgid "You cannot change the product of a delivered line."
+msgid "You cannot change the product of a picked-up line."
+msgstr ""
+
+#. module: sale_stock_renting
+#: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
+msgid "hours"
 msgstr ""
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.product_template_inherit_view_form_stock_rental
-#: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
-msgid "hours"
+msgid "hours before orders"
 msgstr ""

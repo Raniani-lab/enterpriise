@@ -32,6 +32,7 @@
                     </a>
                 </xpath>
             </field>
+            <field name="groups_id" eval="[(4, ref('helpdesk.group_helpdesk_user'))]"/>
         </record>
 
    <record id="project_project_view_form_inherit_helpdesk_timesheet" model="ir.ui.view">
@@ -46,12 +47,12 @@
                     name="%(project_project_action_view_helpdesk_tickets)d"
                     context="{'search_default_project_id': [active_id], 'default_project_id': active_id}"
                     icon="fa-life-ring"
-                    attrs="{'invisible': [('ticket_count', '=', 0)]}"
-                    groups="helpdesk.group_helpdesk_user">
+                    attrs="{'invisible': [('ticket_count', '=', 0)]}">
                     <field name="ticket_count" string="Tickets" widget="statinfo"/>
                 </button>
             </div>
         </field>
+        <field name="groups_id" eval="[(4, ref('helpdesk.group_helpdesk_user'))]"/>
    </record>
 
 </odoo>

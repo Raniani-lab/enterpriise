@@ -5,11 +5,11 @@
 # Translators:
 # Cas Vissers <c.vissers@brahoo.nl>, 2019
 # Martin Trigaux, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # Maxim Vandenbroucke <mxv@odoo.com>, 2019
 # Charles Vervaecke <cvk@odoo.com>, 2019
 # Thijs van Oers <thijsvanoers@yahoo.com>, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
@@ -170,7 +170,7 @@ msgstr "<strong>T/m</strong>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Designation</strong>"
-msgstr "<strong>Ontwer</strong>"
+msgstr "<strong>Toewijzing</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -329,12 +329,12 @@ msgid ""
 "condition like basic > 1000."
 msgstr ""
 "Toegepaste regel voor de berekening als de conditie waar is. U kunt een "
-"conditie opgeven, zoals basic > 1000."
+"conditie opgeven, zoals basis > 1000."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit
 msgid "Approve Time Off"
-msgstr ""
+msgstr "Afwezigheid goedkeuren"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
@@ -760,9 +760,9 @@ msgid ""
 msgstr ""
 "Definieert de regels die moeten worden toegepast op dit loonafschrift, op "
 "basis van het gekozen contract. Als u het contract veld  leeg laat, is dit "
-"veld veld niet meer verplicht en zijn dus de regels van toepassing zijn dan "
-"alle regels ingesteld op de structuur van alle contracten van de werknemer "
-"geldig in de gekozen periode"
+"veld veld niet meer verplicht en zijn dus de regels van toepassing alle "
+"regels ingesteld op de structuur van alle contracten van de werknemer geldig"
+" in de gekozen periode"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__department_id
@@ -1530,7 +1530,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_rule_parameter_value__parameter_value
 msgid "Parameter Value"
-msgstr "Parameter waard"
+msgstr "Parameter waarde"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule_category__parent_id
@@ -1585,7 +1585,7 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "Payroll Entries"
-msgstr "Payroll boekingen"
+msgstr "Loonstrook boekingen"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
@@ -1600,7 +1600,7 @@ msgstr "Salarisstructuren"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "Payroll rules that apply to your country"
-msgstr "Payroll regel dat van toepassing zijn op uw land"
+msgstr "Loonstrook regels die van toepassing zijn op uw land"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_res_config_settings__module_hr_payroll_account
@@ -1765,7 +1765,7 @@ msgstr "Afdrukken"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__amount_python_compute
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_salary_rule__amount_select__code
 msgid "Python Code"
-msgstr "Python Code"
+msgstr "Python code"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__condition_python
@@ -1838,7 +1838,7 @@ msgstr "Credit: "
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit
 msgid "Refuse Time Off"
-msgstr ""
+msgstr "Weiger afwezigheid"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_employee__registration_number
@@ -1853,7 +1853,7 @@ msgstr "Normale betaling"
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_report__work_type__1
 msgid "Regular Working Day"
-msgstr "Reguliere werkdag"
+msgstr "Standaard werkdag"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payslip__state__cancel
@@ -2232,9 +2232,9 @@ msgid ""
 " but you can also use categories code fields in lowercase as a variable "
 "names (hra, ma, lta, etc.) and the variable basic."
 msgstr ""
-"Dit wordt gebruikt om de waardes van de %fields te berekenen. Normaliter is "
-"dit standaard, maar u kunt ook categorie veldcodes in kleine letters "
-"gebruiken als variabele naam (hra, ma, lta, etc.) en de variabele basic"
+"Dit wordt gebruikt om de veldwaardes van % te berekenen. Normaliter is dit "
+"standaard, maar u kunt ook categorie veldcodes in kleine letters gebruiken "
+"als variabele naam (hra, ma, lta, etc.) en de variabele basic."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit

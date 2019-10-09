@@ -208,7 +208,15 @@ var GridController = AbstractController.extend({
         // pass group by, section and col fields as default in context
         var cols_path = cell_path.slice(0, -3).concat(['cols'], cell_path.slice(-1));
         var col = utils.into(state, cols_path);
-        var column_value = col.values[state.colField][0] ? col.values[state.colField][0].split("/")[0] : false;
+        var column_value = col.values[state.colField][0];
+        if(!column_value)
+        {
+            column_value = false;
+        }
+        else if(!_.isNumber(column_value))
+        {
+            column_value = column_value.split("/")[0]
+        }
         var ctx = _.extend({}, this.context);
 
         var sectionField = _.find(this.renderer.fields ,function(res) {

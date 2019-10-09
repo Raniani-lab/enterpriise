@@ -34,6 +34,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Create Job Position",
             trigger: 'div.o_cp_buttons .o-kanban-button-new',
+            extra_trigger: '.o_control_panel .breadcrumb:contains("Job Positions")',
             run: 'click',
         },
         {

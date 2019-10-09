@@ -4,7 +4,7 @@
 {
     'name': 'Account Invoice Extract',
     'version': '1.0',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'summary': 'Extract data from invoice scans to fill them automatically',
     'depends': ['account', 'iap', 'mail_enterprise'],
     'data': [

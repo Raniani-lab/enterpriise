@@ -457,8 +457,25 @@ class TestMpsMps(common.TransactionCase):
 
     def test_impacted_schedule(self):
         impacted_schedules = self.mps_screw.get_impacted_schedule()
-        self.assertEqual(impacted_schedules, (self.mps - self.mps_screw).ids)
+        self.assertEqual(sorted(impacted_schedules), sorted((self.mps - self.mps_screw).ids))
 
         impacted_schedules = self.mps_drawer.get_impacted_schedule()
-        self.assertEqual(impacted_schedules, (self.mps_table |
-            self.mps_wardrobe | self.mps_table_leg | self.mps_screw).ids)
+        self.assertEqual(sorted(impacted_schedules), sorted((self.mps_table |
+            self.mps_wardrobe | self.mps_table_leg | self.mps_screw).ids))
+
+    def test_3_steps(self):
+        self.warehouse.manufacture_steps = 'pbm_sam'
+        self.table_leg.write({
+            'route_ids': [(6, 0, [self.ref('mrp.route_warehouse0_manufacture')])]
+        })
+
+        self.env['mrp.product.forecast'].create({
+            'production_schedule_id': self.mps_table_leg.id,
+            'date': date.today(),
+            'forecast_qty': 25
+        })
+
+        self.mps_table_leg.action_replenish()
+        mps_table_leg = self.mps_table_leg.get_production_schedule_view_state()[0]
+        self.assertEqual(mps_table_leg['forecast_ids'][0]['forecast_qty'], 25.0, "Wrong resulting value of to_supply")
+        self.assertEqual(mps_table_leg['forecast_ids'][0]['incoming_qty'], 25.0, "Wrong resulting value of incoming quantity")

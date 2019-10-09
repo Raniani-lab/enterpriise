@@ -1,19 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * web_cohort
-# 
-# Translators:
-# Dorin Hongu <dhongu@gmail.com>, 2018
-# Cozmin Candea <office@terrabit.ro>, 2018
-# Martin Trigaux, 2019
+# 	* web_cohort
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2018-08-02 11:37+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,15 +16,15 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 
 #. module: web_cohort
-#: code:addons/web_cohort/controllers/main.py:36
+#: code:addons/web_cohort/controllers/main.py:0
 #, python-format
 msgid "%s - By %s"
 msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:76
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:154
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:0
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:0
 #, python-format
 msgid "- By"
 msgstr ""
@@ -41,205 +35,122 @@ msgid "Action Window View"
 msgstr ""
 
 #. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Activity"
-msgstr "Activitate"
-
-#. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/controllers/main.py:61
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:112
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:184
+#: code:addons/web_cohort/controllers/main.py:0
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:0
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:0
 #, python-format
 msgid "Average"
-msgstr "Medie"
+msgstr ""
 
 #. module: web_cohort
 #: model:ir.model,name:web_cohort.model_base
 msgid "Base"
-msgstr "Baza"
-
-#. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Calendar"
-msgstr "Calendar"
+msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:22
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
+#: code:addons/web_cohort/static/src/js/cohort_view.js:0
+#: model:ir.model.fields.selection,name:web_cohort.selection__ir_actions_act_window_view__view_mode__cohort
+#: model:ir.model.fields.selection,name:web_cohort.selection__ir_ui_view__type__cohort
 #, python-format
 msgid "Cohort"
 msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:42
+#: code:addons/web_cohort/static/src/js/cohort_view.js:0
 #, python-format
 msgid "Cohort view has not defined \"date_start\" attribute."
 msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:45
+#: code:addons/web_cohort/static/src/js/cohort_view.js:0
 #, python-format
 msgid "Cohort view has not defined \"date_stop\" attribute."
 msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_controller.js:98
-#: code:addons/web_cohort/static/src/js/cohort_view.js:56
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:17
+#: code:addons/web_cohort/static/src/js/cohort_controller.js:0
+#: code:addons/web_cohort/static/src/js/cohort_view.js:0
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:0
 #, python-format
 msgid "Count"
-msgstr "Număr"
-
-#. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Dashboard"
-msgstr "Tablou de bord"
+msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:15
+#: code:addons/web_cohort/static/src/js/cohort_view.js:0
 #, python-format
 msgid "Day"
-msgstr "Zi"
-
-#. module: web_cohort
-#: selection:ir.ui.view,type:0
-msgid "Diagram"
-msgstr "Diagramă"
+msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:36
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:0
 #, python-format
 msgid "Download in Excel file"
 msgstr ""
 
 #. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Form"
-msgstr "Formular"
-
-#. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Gantt"
-msgstr "Gantt"
-
-#. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Graph"
-msgstr "Grafic"
-
-#. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Grid"
-msgstr "Grilă"
-
-#. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Kanban"
-msgstr "Kanban"
-
-#. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:6
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:0
 #, python-format
 msgid "Measures"
-msgstr "Indicatori"
-
-#. module: web_cohort
-#. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:17
-#, python-format
-msgid "Month"
-msgstr "Luna"
-
-#. module: web_cohort
-#. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:204
-#, python-format
-msgid "No data available for cohort."
 msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:128
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:201
+#: code:addons/web_cohort/static/src/js/cohort_view.js:0
+#, python-format
+msgid "Month"
+msgstr ""
+
+#. module: web_cohort
+#. openerp-web
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:0
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:0
 #, python-format
 msgid "No data available."
 msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:43
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:0
 #, python-format
 msgid "Period:"
-msgstr "Perioadă:"
-
-#. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Pivot"
-msgstr "Pivot"
-
-#. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "QWeb"
-msgstr "QWeb"
-
-#. module: web_cohort
-#: selection:ir.ui.view,type:0
-msgid "Search"
-msgstr "Caută"
-
-#. module: web_cohort
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Tree"
-msgstr "Arbore"
+msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:63
+#: code:addons/web_cohort/static/src/js/cohort_view.js:0
 #, python-format
 msgid "Untitled"
-msgstr "Fără titlu"
+msgstr ""
 
 #. module: web_cohort
 #: model:ir.model,name:web_cohort.model_ir_ui_view
 msgid "View"
-msgstr "Vizualizare"
+msgstr ""
 
 #. module: web_cohort
 #: model:ir.model.fields,field_description:web_cohort.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_cohort.field_ir_ui_view__type
 msgid "View Type"
-msgstr "Tip vizualizare"
+msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:16
+#: code:addons/web_cohort/static/src/js/cohort_view.js:0
 #, python-format
 msgid "Week"
-msgstr "Săptămână"
+msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:18
+#: code:addons/web_cohort/static/src/js/cohort_view.js:0
 #, python-format
 msgid "Year"
-msgstr "An"
+msgstr ""

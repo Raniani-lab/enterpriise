@@ -14,5 +14,8 @@ class TestUi(odoo.tests.HttpCase):
         self.start_tour("/web", 'web_studio_new_report_tour', login="admin")
         self.start_tour("/web", "web_studio_new_report_basic_layout_tour", login="admin")
 
+    def test_optional_fields(self):
+        self.start_tour("/web", 'web_studio_hide_fields_tour', login="admin")
+
     def test_rename(self):
         self.start_tour("/web?studio=app_creator", 'web_studio_tests_tour', login="admin", timeout=120)

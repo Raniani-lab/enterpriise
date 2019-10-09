@@ -3,7 +3,7 @@
 {
     'name': "Easypost Shipping",
     'description': "Send your parcels through Easypost and track them online",
-    'category': "Warehouse",
+    'category': 'Operations/Inventory/Delivery',
     'version': '1.0',
     'depends': ['delivery', 'mail'],
     'data': [

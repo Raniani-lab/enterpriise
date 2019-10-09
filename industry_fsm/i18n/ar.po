@@ -14,14 +14,15 @@
 # Osama Ahmaro <osamaahmaro@gmail.com>, 2019
 # Ali Alrehawi <alrehawi@hotmail.com>, 2019
 # Shaima Safar <shaima.safar@open-inside.com>, 2019
+# Mohamed Alansari <Mohammad.alansari@outlook.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-23 13:19+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2019\n"
+"Last-Translator: Mohamed Alansari <Mohammad.alansari@outlook.com>, 2019\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,6 +71,13 @@ msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
+msgid ""
+"<span attrs=\"{'invisible': [('timesheet_timer_last_stop', '=', False)]}\"> "
+"to </span>"
+msgstr ""
+
+#. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "<span class=\"align-middle\">for this employee at the same time.</span>"
 msgstr ""
@@ -86,15 +94,11 @@ msgid "Administrator"
 msgstr ""
 
 #. module: industry_fsm
+#: model:ir.actions.act_window,name:industry_fsm.project_task_action_all_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_all_tasks_root
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_all_tasks_todo
 msgid "All Tasks"
 msgstr "كافة المهام"
-
-#. module: industry_fsm
-#: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_schedule_fsm
-msgid "All tasks are scheduled"
-msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_invoice_fsm
@@ -105,6 +109,11 @@ msgstr ""
 #: model:ir.model.constraint,message:industry_fsm.constraint_project_project_fsm_imply_task_rate
 msgid "An FSM project must be billed at task rate."
 msgstr ""
+
+#. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
+msgid "Archived"
+msgstr "مؤرشف"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_assign
@@ -130,6 +139,17 @@ msgstr "حسب المشروع"
 #: model:ir.ui.menu,name:industry_fsm.project_task_menu_planning_by_user_fsm
 msgid "By User"
 msgstr "بالمستخدم"
+
+#. module: industry_fsm
+#: code:addons/industry_fsm/models/project.py:0
+#, python-format
+msgid "Choose Products"
+msgstr ""
+
+#. module: industry_fsm
+#: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_schedule_fsm
+msgid "Click Create to start a new task"
+msgstr ""
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__company_id
@@ -169,6 +189,11 @@ msgstr ""
 #: model:ir.actions.server,name:industry_fsm.project_task_server_action_batch_invoice_fsm
 msgid "Create invoice"
 msgstr "قم بإنشاء الفاتورة"
+
+#. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
+msgid "Create new quotations directly from tasks"
+msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
@@ -216,13 +241,9 @@ msgstr "المنتهية"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__hours_effective
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 msgid "Effective Hours"
 msgstr "ساعات العمل الفعلية"
-
-#. module: industry_fsm
-#: model:ir.model.fields,field_description:industry_fsm.field_project_task__planned_date_end
-msgid "End date"
-msgstr "تاريخ النهاية"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_end
@@ -232,7 +253,13 @@ msgstr "تاريخ الانتهاء"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_quotations
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__allow_quotations
-msgid "Extra quotation"
+#: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__group_industry_fsm_quotations
+msgid "Extra Quotations"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model,name:industry_fsm.model_report_project_task_user_fsm
+msgid "FSM Tasks Analysis"
 msgstr ""
 
 #. module: industry_fsm
@@ -240,6 +267,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__is_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_root
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
+#: model:product.product,name:industry_fsm.field_service_product
+#: model:product.template,name:industry_fsm.field_service_product_product_template
 msgid "Field Service"
 msgstr ""
 
@@ -334,14 +363,13 @@ msgid "My Tasks"
 msgstr "مهامي"
 
 #. module: industry_fsm
-#: model:ir.model.fields.selection,name:industry_fsm.selection__project_task__fsm_state__draft
 #: model:project.task.type,name:industry_fsm.planning_project_stage_0
 msgid "New"
 msgstr "جديد"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm_quotation
-#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_quotation
+#: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "New Quotation"
 msgstr "عرض سعر جديد"
 
@@ -384,7 +412,7 @@ msgstr ""
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:0
 #, python-format
-msgid "Overlapping tasks"
+msgid "Overlapping Tasks"
 msgstr ""
 
 #. module: industry_fsm
@@ -439,12 +467,10 @@ msgid "Product"
 msgstr "المنتج"
 
 #. module: industry_fsm
-#: code:addons/industry_fsm/models/project.py:0
 #: model:ir.actions.act_window,name:industry_fsm.product_action_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_settings_product
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
-#, python-format
 msgid "Products"
 msgstr "المنتجات"
 
@@ -478,22 +504,13 @@ msgid "Provide worksheet reports to be signed off by customers"
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm_quotation
-msgid "Quotation"
-msgstr "عرض سعر"
-
-#. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__quotation_count
 msgid "Quotation Count"
 msgstr "عدد عروض السعر"
 
 #. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm_quotation
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_quotation
-msgid "Quotation(s)"
-msgstr ""
-
-#. module: industry_fsm
-#: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__group_industry_fsm_quotations
 msgid "Quotations"
 msgstr "عروض الأسعار"
 
@@ -553,11 +570,6 @@ msgid "Settings"
 msgstr "الإعدادات"
 
 #. module: industry_fsm
-#: model:ir.model.fields.selection,name:industry_fsm.selection__project_task__fsm_state__sold
-msgid "Sold"
-msgstr "مبيعات"
-
-#. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__stage_id
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Stage"
@@ -575,11 +587,6 @@ msgid "Start Date"
 msgstr "تاريخ البداية"
 
 #. module: industry_fsm
-#: model:ir.model.fields,field_description:industry_fsm.field_project_task__planned_date_begin
-msgid "Start date"
-msgstr "تاريخ البدء"
-
-#. module: industry_fsm
 #. openerp-web
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm.js:0
 #, python-format
@@ -587,14 +594,16 @@ msgid "Start to manage your Onsite Intervention with the Field Service app."
 msgstr ""
 
 #. module: industry_fsm
-#: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_state
-msgid "Status"
-msgstr "الحالة"
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
+#: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
+msgid "Stop"
+msgstr "إيقاف"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
-msgid "Stop"
-msgstr "إيقاف"
+#: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
+msgid "Stop the Timer"
+msgstr ""
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task
@@ -603,14 +612,15 @@ msgid "Task"
 msgstr "المهمة"
 
 #. module: industry_fsm
-#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__name
-msgid "Task Title"
-msgstr "عنوان المهمة"
+#: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_done
+msgid "Task Done"
+msgstr ""
 
 #. module: industry_fsm
-#: model:ir.model.fields,field_description:industry_fsm.field_project_task__allow_billable
-msgid "Task billing"
-msgstr ""
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__name
+#: model_terms:ir.ui.view,arch_db:industry_fsm.quick_create_task_form_fsm
+msgid "Task Title"
+msgstr "عنوان المهمة"
 
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_sale_order__task_id
@@ -703,7 +713,6 @@ msgid "Timesheet Product"
 msgstr ""
 
 #. module: industry_fsm
-#: model:ir.actions.act_window,name:industry_fsm.project_task_action_all_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "To Do"
 msgstr "المهام المراد تنفيذها"
@@ -732,20 +741,22 @@ msgid "To schedule"
 msgstr ""
 
 #. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
+msgid "Track the material used to complete tasks"
+msgstr ""
+
+#. module: industry_fsm
+#: model:product.product,uom_name:industry_fsm.field_service_product
 #: model:product.product,uom_name:industry_fsm.fsm_time_product
+#: model:product.template,uom_name:industry_fsm.field_service_product_product_template
 #: model:product.template,uom_name:industry_fsm.fsm_time_product_product_template
 msgid "Units"
-msgstr ""
+msgstr "الوحدات"
 
 #. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_fsm_user
 msgid "User"
 msgstr "المستخدم"
-
-#. module: industry_fsm
-#: model:ir.model.fields.selection,name:industry_fsm.selection__project_task__fsm_state__validated
-msgid "Validated"
-msgstr "تم الاعتماد"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__module_industry_fsm_report
@@ -758,12 +769,7 @@ msgid "You can create one for yourself by clicking on Create."
 msgstr ""
 
 #. module: industry_fsm
-#: model:ir.model,name:industry_fsm.model_report_project_task_user_fsm
-msgid "report.project.task.user.fsm"
-msgstr ""
-
-#. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
-msgid "tasks"
-msgstr "المهام"
+msgid "other tasks"
+msgstr ""

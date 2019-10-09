@@ -16,11 +16,20 @@ class MarketingCampaign(models.Model):
             campaign.mailing_sms_count = len(campaign.mapped('marketing_activity_ids.mass_mailing_id').filtered(lambda mailing: mailing.mailing_type == 'sms'))
 
     def action_view_sms(self):
-        action = self.env.ref('marketing_automation.mail_mass_mailing_action_marketing_automation').read()[0]
+        self.ensure_one()
+        action = self.env.ref('marketing_automation_sms.mail_mass_mailing_action_marketing_automation_sms').read()[0]
         action['domain'] = [
             '&',
             ('use_in_marketing_automation', '=', True),
             ('id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids),
             ('mailing_type', '=', 'sms')
         ]
+        action['context'] = dict(self.env.context)
+        action['context'].update({
+            'default_mailing_model_id': self.model_id.id,
+            'default_campaign_id': self.utm_campaign_id.id,
+            'default_use_in_marketing_automation': True,
+            'default_mailing_type': 'sms',
+            'default_state': 'done'
+        })
         return action

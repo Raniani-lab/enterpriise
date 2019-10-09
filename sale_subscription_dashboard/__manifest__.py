@@ -13,7 +13,7 @@ It adds dashboards to :
 2) Analyse the subscriptions modifications by salesman and compute their value.
     """,
     'website': 'https://www.odoo.com/page/accounting',
-    'category': 'Accounting',
+    'category': 'Sales/Subscription',
     'data': [
         'views/sale_subscription_dashboard_views.xml',
         'views/assets.xml',

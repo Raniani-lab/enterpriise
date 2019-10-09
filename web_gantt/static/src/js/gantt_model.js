@@ -172,6 +172,21 @@ var GanttModel = AbstractModel.extend({
         return this._fetchData()
     },
     /**
+     * Create a copy of a task with defaults determined by schedule.
+     *
+     * @param {integer} id
+     * @param {Object} schedule
+     * @returns {Promise}
+     */
+    copy: function (id, schedule) {
+        const defaults = this.rescheduleData(schedule);
+        return this._rpc({
+            model: this.modelName,
+            method: 'copy',
+            args: [id, defaults],
+        });
+    },
+    /**
      * Reschedule a task to the given schedule.
      *
      * @param {integer} id
@@ -183,25 +198,34 @@ var GanttModel = AbstractModel.extend({
         if (!_.isArray(ids)) {
             ids = [ids];
         }
-        var allowedFields = [
-            this.ganttData.dateStartField,
-            this.ganttData.dateStopField
-        ].concat(this.ganttData.groupedBy);
-
-        var data = _.pick(schedule, allowedFields);
-
-        for (var k in data) {
-            var type = this.fields[k].type;
-            if (data[k] && (type === 'datetime' || type === 'date') && !isUTC) {
-                data[k] = this.convertToServerTime(data[k]);
-            }
-        }
-
+        const data = this.rescheduleData(schedule, isUTC);
         return this._rpc({
             model: this.modelName,
             method: 'write',
             args: [ids, data],
         });
+    },
+    /**
+     * @param {Object} schedule
+     * @param {boolean} isUTC
+     */
+    rescheduleData: function (schedule, isUTC) {
+        const allowedFields = [
+            this.ganttData.dateStartField,
+            this.ganttData.dateStopField,
+            ...this.ganttData.groupedBy
+        ];
+
+        const data = _.pick(schedule, allowedFields);
+
+        let type;
+        for (let k in data) {
+            type = this.fields[k].type;
+            if (data[k] && (type === 'datetime' || type === 'date') && !isUTC) {
+                data[k] = this.convertToServerTime(data[k]);
+            }
+        };
+        return data
     },
 
     //--------------------------------------------------------------------------

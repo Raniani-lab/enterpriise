@@ -30,7 +30,7 @@
         <button t-if="activeActions.create &amp;&amp; activateScale == 'week'" class="o_gantt_button_copy_previous_week btn btn-secondary mr-3" title="Copy previous week">
             Copy previous week
         </button>
-         <button t-if="activeActions.create" class="o_gantt_button_send_all btn btn-primary" title="Send schedule">
+         <button t-if="activeActions.edit" class="o_gantt_button_send_all btn btn-primary" title="Send schedule">
             Send schedule
         </button>
     </div>

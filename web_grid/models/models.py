@@ -12,7 +12,7 @@ import pytz
 from odoo import _, api, models
 from odoo.exceptions import UserError
 from odoo.osv import expression
-from odoo.tools.misc import format_date
+from odoo.tools.misc import format_date, get_lang
 
 _GRID_TUP = [('grid', "Grid")]
 
@@ -90,8 +90,7 @@ class Base(models.AbstractModel):
                     # generate de novo domain for the cell
                     # The domain of the cell is the combination of the domain of the row, the
                     # column and the view.
-                    d = expression.AND([r['domain'], c['domain'], domain])
-                    row.append(self._grid_make_empty_cell(d))
+                    row.append(self._grid_make_empty_cell(r['domain'], c['domain'], domain))
                 row[-1]['is_current'] = c.get('is_current', False)
 
         return {
@@ -103,7 +102,8 @@ class Base(models.AbstractModel):
             'grid': grid,
         }
 
-    def _grid_make_empty_cell(self, cell_domain):
+    def _grid_make_empty_cell(self, row_domain, column_domain, view_domain):
+        cell_domain = expression.AND([row_domain, column_domain, view_domain])
         return {'size': 0, 'domain': cell_domain, 'value': 0}
 
     def _grid_format_cell(self, group, cell_field, readonly_field):
@@ -297,7 +297,7 @@ class Base(models.AbstractModel):
             :param date: date of period beginning (datetime object)
             :param field: odoo.field object of the current model
         """
-        locale = self.env.context.get('lang', 'en_US')
+        locale = get_lang(self.env).code
         _labelize = self._get_date_formatter(step, field, locale=locale)
 
         if field.type == 'datetime':  # we want the column label to be the infos in user tz, while the date domain should still be in UTC

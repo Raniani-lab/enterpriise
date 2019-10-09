@@ -5,7 +5,7 @@
         <record id="group_sign_employee" model="res.groups">
             <field name="name">Employee</field>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-            <field name="category_id" ref="base.module_category_communication_sign"/>
+            <field name="category_id" ref="base.module_category_sales_sign"/>
         </record>
 
         <record id="sign.group_sign_user" model="res.groups">

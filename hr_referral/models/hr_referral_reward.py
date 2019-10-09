@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, tools, _
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
@@ -23,7 +23,7 @@ class HrReferralReward(models.Model):
     description = fields.Text(required=True)
     gift_manager_id = fields.Many2one('res.users', string='Gift Responsible',
         domain=_group_hr_referral_domain, help="User responsible of this gift.")
-    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
+    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company, required=True)
     image = fields.Binary("Image",
         help="This field holds the image used as image for the product, limited to 1024x1024px.")
 
@@ -37,29 +37,31 @@ class HrReferralReward(models.Model):
             item.awarded_employees = data.get(item.id, 0)
 
     def _compute_points_missing(self):
-        available_points = sum(self.env['hr.referral.points'].search([
-            ('ref_employee_id', '=', self.env.user.employee_id.id)]).mapped('points'))
+        available_points_company = dict()
+        for item in self.env['hr.referral.points'].read_group([('ref_user_id', '=', self.env.user.id)], ['company_id', 'points'], ['company_id']):
+            available_points_company[item['company_id'][0]] = item['points']
         for item in self:
-            item.points_missing = item.cost - available_points
+            item.points_missing = item.cost - (available_points_company[item.company_id.id] if item.company_id.id in available_points_company else 0)
 
     def buy(self):
-        current_employee = self.env.user.employee_id
-        points = sum(current_employee.referral_point_ids.mapped('points'))
+        current_user = self.env.user
+        available_points = sum(self.env['hr.referral.points'].search([('ref_user_id', '=', current_user.id), ('company_id', '=', self.company_id.id)]).mapped('points'))
 
-        if points < self.cost:
-            raise UserError(_("You do not have enough points to buy this product."))
+        if available_points < self.cost:
+            raise UserError(_("You do not have enough points in this company to buy this product. In this company, you have %s points." % available_points))
 
         # Use sudo, employee has normaly not the right to create or write on points
         self.env['hr.referral.points'].sudo().create({
-            'ref_employee_id': current_employee.id,
+            'ref_user_id': current_user.id,
             'points': - self.cost,
-            'hr_referral_reward_id': self.id
+            'hr_referral_reward_id': self.id,
+            'company_id': self.company_id.id
         })
         if self.gift_manager_id:
             # log a next activity for today
             self.sudo().activity_schedule(
                 activity_type_id=self.env.ref('mail.mail_activity_data_todo').id,
-                summary=_('New gift awarded for %s') % current_employee.name,
+                summary=_('New gift awarded for %s') % current_user.name,
                 user_id=self.gift_manager_id.id)
 
         return {

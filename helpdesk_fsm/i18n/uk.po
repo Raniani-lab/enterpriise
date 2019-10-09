@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -23,15 +23,25 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_team__use_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_ticket__use_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
 msgid "Convert tickets into Field Service tasks"
-msgstr "Конвертувати заявки у завдання сфери послуг"
+msgstr "Конвертувати заявки у завдання виїзного обслуговування"
+
+#. module: helpdesk_fsm
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
+msgid "Create & View Task"
+msgstr "Створити та переглянути завдання"
+
+#. module: helpdesk_fsm
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
+msgid "Create Task"
+msgstr "Створити завдання"
 
 #. module: helpdesk_fsm
 #: code:addons/helpdesk_fsm/models/helpdesk.py:0
+#: model:ir.model,name:helpdesk_fsm.model_helpdesk_create_fsm_task
 #, python-format
-msgid "Create task"
-msgstr "Створити завдання"
+msgid "Create a Field Service task"
+msgstr "Створити завдання виїзного обслуговування"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__create_uid
@@ -61,7 +71,7 @@ msgstr "Назва для відображення"
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
 msgid "Field Service"
-msgstr "Сфера послуг"
+msgstr "Виїзне обслуговування"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__fsm_task_count
@@ -69,14 +79,9 @@ msgid "Fsm Task Count"
 msgstr "Підрахунок завдань Fsm"
 
 #. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
-msgid "Generate Task"
-msgstr "Згенерувати завдання"
-
-#. module: helpdesk_fsm
-#: model:ir.model,name:helpdesk_fsm.model_helpdesk_create_fsm_task
-msgid "Generate an fsm task from a ticket"
-msgstr "Згенерувати завдання fsm із заявки"
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_task_view_form
+msgid "Helpdesk"
+msgstr "Служба підтримки"
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_team
@@ -115,6 +120,16 @@ msgid "Onsite Interventions"
 msgstr "Втручання на місці"
 
 #. module: helpdesk_fsm
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
+msgid "Plan Field Service tasks from tickets"
+msgstr "Плануйте завдання виїзного обслуговування із заявок"
+
+#. module: helpdesk_fsm
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
+msgid "Plan Intervention"
+msgstr "Запланувати втручання"
+
+#. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
 msgid "Project"
 msgstr "Проект"
@@ -128,11 +143,6 @@ msgstr "Проект, в якому створити завдання"
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__helpdesk_ticket_id
 msgid "Related ticket"
 msgstr "Пов'язана заявка"
-
-#. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
-msgid "Save"
-msgstr "Зберегти"
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_project_task
@@ -161,6 +171,11 @@ msgstr "Завдання згенеровані з цієї заявки"
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
 msgid "Ticket"
 msgstr "Заявка"
+
+#. module: helpdesk_fsm
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_task_view_form
+msgid "Ticket from this task"
+msgstr "Заявка з цього завдання"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_project_task__helpdesk_ticket_id

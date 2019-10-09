@@ -3,7 +3,7 @@
 
 {
     'name': 'Helpdesk Timesheet',
-    'category': 'Helpdesk',
+    'category': 'Operations/Helpdesk',
     'summary': 'Project, Tasks, Timesheet',
     'depends': ['helpdesk', 'hr_timesheet', 'project_enterprise'],
     'description': """

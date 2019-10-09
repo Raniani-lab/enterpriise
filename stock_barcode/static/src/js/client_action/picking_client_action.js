@@ -168,10 +168,13 @@ var PickingClientAction = ClientAction.extend({
                     'args': [[self.actionParams.pickingId]],
                 }).then(function (res) {
                     var def = Promise.resolve();
+                    var successCallback = function(){
+                        self.do_notify(_t("Success"), _t("The transfer has been validated"));
+                        self.trigger_up('exit');
+                    };
                     var exitCallback = function (infos) {
-                        if (infos !== 'special') {
-                            self.do_notify(_t("Success"), _t("The transfer has been validated"));
-                            self.trigger_up('exit');
+                        if (infos && !infos.special && this.dialog.$modal.is(':visible')) {
+                            successCallback();
                         }
                         core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);
                     };
@@ -184,9 +187,7 @@ var PickingClientAction = ClientAction.extend({
                             return self.do_action(res, options);
                         });
                     } else {
-                        return def.then(function () {
-                            return exitCallback();
-                        });
+                        return def.then(successCallback);
                     }
                 });
             });
@@ -342,7 +343,7 @@ var PickingClientAction = ClientAction.extend({
                     self._endBarcodeFlow();
                     if (res.type && res.type === 'ir.actions.act_window') {
                         var exitCallback = function (infos) {
-                            if (infos !== 'special') {
+                            if (infos && !infos.special) {
                                 self.trigger_up('reload');
                             }
                             core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);

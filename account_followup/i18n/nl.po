@@ -4,17 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Thomas Pot <thomas@open2bizz.nl>, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:37+0000\n"
+"POT-Creation-Date: 2019-09-23 11:38+0000\n"
 "PO-Revision-Date: 2019-09-13 11:47+0000\n"
-"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2019\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +40,7 @@ msgstr ""
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "%s Payment Reminder"
-msgstr "%s betalingsherinnering"
+msgstr "%s Betalingsherinnering"
 
 #. module: account_followup
 #. openerp-web
@@ -144,6 +144,11 @@ msgid ""
 msgstr ""
 "<strong>Opgelet!</strong> Voor deze relatie moet geen actie ondernomen "
 "worden."
+
+#. module: account_followup
+#: model:ir.model,name:account_followup.model_account_chart_template
+msgid "Account Chart Template"
+msgstr "Rekeningstelsel sjabloon"
 
 #. module: account_followup
 #: model:ir.actions.server,name:account_followup.ir_cron_auto_post_draft_entry_ir_actions_server
@@ -322,6 +327,12 @@ msgstr "Uitgesloten"
 #, python-format
 msgid "Expected Date"
 msgstr "Datum verwacht"
+
+#. module: account_followup
+#: code:addons/account_followup/models/chart_template.py:0
+#, python-format
+msgid "First Reminder"
+msgstr ""
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1
@@ -612,7 +623,7 @@ msgstr "Betalingsherinnering brief afdrukken"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__print_letter
 msgid "Print a Letter"
-msgstr "Druk een brief af"
+msgstr "Brief afdrukken"
 
 #. module: account_followup
 #. openerp-web
@@ -684,14 +695,14 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
 msgid "Send an email"
-msgstr "Verzend een e-mail"
+msgstr "Verstuur een e-mail"
 
 #. module: account_followup
 #. openerp-web
 #: code:addons/account_followup/static/src/xml/account_followup_template.xml:0
 #, python-format
 msgid "Send by email"
-msgstr "Verzenden via e-mail"
+msgstr "Versturen via e-mail"
 
 #. module: account_followup
 #. openerp-web

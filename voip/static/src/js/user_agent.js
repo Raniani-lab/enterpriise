@@ -27,6 +27,13 @@ const CALL_STATE = {
 
 const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     /**
+     * Determine whether audio media can be played or not. This is useful in
+     * test, to prevent "NotAllowedError". This may be triggered if no DOM
+     * manipulation is detected before playing the media (chrome policy to
+     * prevent from autoplaying)
+     */
+    PLAY_MEDIA: true,
+    /**
      * @constructor
      */
     init(parent) {
@@ -109,7 +116,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     makeCall(number) {
         this._progressCount = 0;
         if (this._mode === 'demo') {
-            this._audioRingbackToneProm = this._audioRingbackTone.play();
+            this._audioRingbackToneProm = this.PLAY_MEDIA
+                ? this._audioRingbackTone.play()
+                : Promise.resolve();
             this._timerAcceptedTimeout = this._demoTimeout(() =>
                 this._onAccepted());
             this._isOutgoing = true;
@@ -285,7 +294,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             remoteStream = peerConnection.getRemoteStream()[0];
         }
         this.$remoteAudio.srcObject = remoteStream;
-        this.$remoteAudio.play().catch(() => {});
+        if (this.PLAY_MEDIA) {
+            this.$remoteAudio.play().catch(() => {});
+        }
     },
     /**
      * Returns the ua after initialising it.
@@ -302,7 +313,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         if (!(params.login && params.password)) {
             this._triggerError(
-                _t("Your credentials are not correctly set. Please check your configuration."));
+                _t("Your credentials are not correctly set. Please contact your administrator."));
             return false;
         }
         if (params.debug) {
@@ -386,10 +397,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             if (!this._userAgent) {
                 return;
             }
-            this.alwaysTransfer = result.always_transfer;
-            this.ignoreIncoming = result.ignore_incoming;
+            this._alwaysTransfer = result.always_transfer;
+            this._ignoreIncoming = result.ignore_incoming;
             if (result.external_phone) {
-                this.externalPhone = cleanNumber(result.external_phone);
+                this._externalPhone = cleanNumber(result.external_phone);
             }
             // catch the error if the ws uri is wrong
             this._userAgent.transport.ws.onerror = () => this._triggerError(
@@ -412,9 +423,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         try {
             number = cleanNumber(number);
-            this._currentCallParams = {number: number};
-            if (this.alwaysTransfer && this.externalPhone) {
-                this._sipSession = this._userAgent.invite(this.externalPhone);
+            this._currentCallParams = { number };
+            if (this._alwaysTransfer && this._externalPhone) {
+                this._sipSession = this._userAgent.invite(this._externalPhone);
                 this._currentNumber = number;
             } else {
                 this._sipSession = this._userAgent.invite(number);
@@ -539,7 +550,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             call.sessionDescriptionHandler.on('addTrack', () =>
                 this._configureRemoteAudio());
             call.on('bye', () => this._onBye());
-            if (this.alwaysTransfer && this._currentNumber) {
+            if (this._alwaysTransfer && this._currentNumber) {
                 call.refer(this._currentNumber);
             }
         }
@@ -623,7 +634,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     async _onInvite(inviteSession) {
         if (
-            this.ignoreIncoming ||
+            this._ignoreIncoming ||
             this._callState !== CALL_STATE.NO_CALL
         ) {
             inviteSession.reject();
@@ -659,7 +670,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._isOutgoing = false;
         this._callState = CALL_STATE.RINGING_CALL;
         this._audioIncomingRingtone.currentTime = 0;
-        this._audioIncomingRingtone.play().catch(() => {});
+        if (this.PLAY_MEDIA) {
+            this._audioIncomingRingtone.play().catch(() => {});
+        }
         this._notification = this._sendNotification('Odoo', content);
         this._currentCallParams = incomingCallParams;
         this.trigger_up('incomingCall', incomingCallParams);
@@ -680,7 +693,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _onInviteSent() {
         this.trigger_up('sip_error_resolved');
-        this._audioDialRingtone.play();
+        if (this.PLAY_MEDIA) {
+            this._audioDialRingtone.play();
+        }
     },
     /**
      * This function is needed to ensure that the sessionDescriptionHandler exists
@@ -741,8 +756,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * Handles the sip session rejection.
      *
      * @private
-     * @param {Object}  response is emitted by sip.js lib.
-     *   the response.status_code that are used in this function respectively
+     * @param {Object} response is emitted by sip.js lib
+     * @param {string} response.reasonPhrase
+     * @param {integer} response.statusCode used in this function respectively
      *   stand for:
      * - 404 : Not Found
      * - 488 : Not Acceptable Here
@@ -755,18 +771,16 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._sipSession = false;
         this._callState = CALL_STATE.NO_CALL;
         if (
-            response.status_code === 404 ||
-            response.status_code === 488 ||
-            response.status_code === 603
+            response.statusCode === 404 ||
+            response.statusCode === 488 ||
+            response.statusCode === 603
         ) {
             this._triggerError(
                 _.str.sprintf(
                     "The number is incorrect, the user credentials could be wrong or the connection cannot be made. Please check your configuration.</br> (Reason received: %s)",
-                    response.reason_phrase),
+                    response.reasonPhrase),
                 { isTemporary: true });
             this.trigger_up('sip_cancel_outgoing');
-        } else if (this.incoming) {
-            this.trigger_up('sip_rejected', this._currentCallParams);
         }
     },
     /**
@@ -778,8 +792,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _onTry() {
         if (this._progressCount === 2) {
             this._progressCount = 0;
-            this._dialRingtone.pause();
-            this._audioRingbackToneProm = this._audioRingbackTone.play();
+            this._audioDialRingtone.pause();
+            this._audioRingbackToneProm = this.PLAY_MEDIA
+                ? this._audioRingbackTone.play()
+                : Promise.resolve();
             this.trigger_up('changeStatus');
         } else {
             this._progressCount++;

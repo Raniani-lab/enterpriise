@@ -11,7 +11,7 @@ This addon allows the user to display all the website forms linked to a certain
 model. Furthermore, you can create a new website form or edit an existing one.
 
 """,
-    'category': 'Technical Settings',
+    'category': 'Hidden',
     'version': '1.0',
     'depends': [
         'web_studio',

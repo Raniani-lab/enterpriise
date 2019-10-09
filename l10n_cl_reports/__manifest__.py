@@ -13,11 +13,10 @@
         'l10n_cl', 'account_reports',
     ],
     'data': [
-        'data/f29_report_data.xml',
         'views/eightcolumns_report_view.xml',
-        'views/res_company_view.xml',
         'views/res_config_settings_view.xml',
         'wizard/f29_report_wizard.xml',
+        'data/f29_report_data.xml',
     ],
     'installable': True,
     'auto_install': True,

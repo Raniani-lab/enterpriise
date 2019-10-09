@@ -19,18 +19,6 @@ class PlanningTemplate(models.Model):
         ('check_duration_positive', 'CHECK(duration >= 0)', 'You cannot have a negative duration')
     ]
 
-    @api.onchange('start_time')
-    def _onchange_start_time(self):
-        if self.start_time >= 24:
-            self.start_time = 23 + 1 / 60.0 * 59
-        elif self.start_time < 0:
-            self.start_time = 0
-
-    @api.onchange('duration')
-    def _onchange_duration(self):
-        if self.duration < 0:
-            self.duration = 0
-
     def name_get(self):
         result = []
         for shift_template in self:

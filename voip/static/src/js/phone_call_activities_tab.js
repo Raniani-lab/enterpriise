@@ -41,7 +41,7 @@ const PhoneCallActivitiesTab = PhoneCallTab.extend({
         const currentPhoneCall = this._getCurrentPhoneCall();
         this._currentPhoneCallId = currentPhoneCall && currentPhoneCall.id;
         if (this._currentPhoneCallId) {
-            return this._selectPhoneCall(this._currentPhonecallId);
+            return this._selectPhoneCall(this._currentPhoneCallId);
         }
         const phoneCallData = await this._rpc({
             model: 'voip.phonecall',
@@ -87,7 +87,7 @@ const PhoneCallActivitiesTab = PhoneCallTab.extend({
         await this._rpc({
             model: 'voip.phonecall',
             method: 'init_call',
-            args: [this._currentPhonecallId],
+            args: [this._currentPhoneCallId],
         });
         _super();
     },

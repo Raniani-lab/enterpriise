@@ -3,7 +3,7 @@
 
 import time
 from odoo import models, fields, api
-from odoo.tools.misc import formatLang, format_date
+from odoo.tools.misc import formatLang, format_date, get_lang
 from odoo.tools.translate import _
 from odoo.tools import append_content_to_html, DEFAULT_SERVER_DATE_FORMAT, html2plaintext
 from odoo.exceptions import UserError
@@ -59,7 +59,7 @@ class AccountFollowupReport(models.AbstractModel):
         if not partner:
             return []
 
-        lang_code = partner.lang if self._context.get('print_mode') else self.env.user.lang or 'en_US'
+        lang_code = partner.lang if self._context.get('print_mode') else self.env.user.lang or get_lang(self.env).code
         lines = []
         res = {}
         today = fields.Date.today()
@@ -174,7 +174,7 @@ class AccountFollowupReport(models.AbstractModel):
         followup_line = self.get_followup_line(options)
         if followup_line:
             partner = self.env['res.partner'].browse(options['partner_id'])
-            lang = partner.lang or self.env.user.lang or 'en_US'
+            lang = partner.lang or get_lang(self.env).code
             summary = followup_line.with_context(lang=lang)[field]
             try:
                 summary = summary % {'partner_name': partner.name,
@@ -185,7 +185,7 @@ class AccountFollowupReport(models.AbstractModel):
                                      }
             except ValueError as exception:
                 message = _("An error has occurred while formatting your followup letter/email. (Lang: %s, Followup Level: #%s) \n\nFull error description: %s") \
-                          % (partner.lang, followup_line.id, exception)
+                          % (lang, followup_line.id, exception)
                 raise ValueError(message)
             return summary
         raise UserError(_('You need a least one follow-up level in order to process your follow-up'))
@@ -217,7 +217,7 @@ class AccountFollowupReport(models.AbstractModel):
             additional_context['followup_line'] = self.get_followup_line(options)
         partner = self.env['res.partner'].browse(options['partner_id'])
         additional_context['partner'] = partner
-        additional_context['lang'] = partner.lang or self.env.user.lang or 'en_US'
+        additional_context['lang'] = partner.lang or get_lang(self.env).code
         additional_context['invoice_address_id'] = self.env['res.partner'].browse(partner.address_get(['invoice'])['invoice'])
         additional_context['today'] = fields.date.today().strftime(DEFAULT_SERVER_DATE_FORMAT)
         return super(AccountFollowupReport, self).get_html(options, line_id=line_id, additional_context=additional_context)

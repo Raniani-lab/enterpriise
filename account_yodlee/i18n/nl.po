@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:04+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +32,7 @@ msgstr "(Diagnose: %r voor URL %s)"
 #: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "Account"
-msgstr "Rekening"
+msgstr "Account"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:0
@@ -43,7 +43,7 @@ msgid ""
 "  Please log in to the site to confirm and then complete the site addition "
 "process with the correct login information."
 msgstr ""
-"Rekening reeds geregistreerd (436): Uw auto-registratie kan niet worden "
+"Account reeds geregistreerd (436): Uw auto-registratie kan niet worden "
 "voltooid omdat de site meldt dat uw account al is geregistreerd. U dient in "
 "te loggen op de site om te bevestigen en vervolgens het site toevoeging "
 "proces invullen met de juiste gegevens."
@@ -58,7 +58,7 @@ msgid ""
 " or contact its customer support to resolve this issue.  Once done, please "
 "update your account credentials in case they are changed."
 msgstr ""
-"Rekening geblokkeerd(407): Wij kunnen uw account niet bijwerken omdat het "
+"Account geblokkeerd(407): Wij kunnen uw account niet bijwerken omdat het "
 "lijkt dat u account is geblokkeerd. Dit ontstaat vaak door teveel mislukte "
 "aanmeldingspogingen in een korte tijd. Ga naar de site of neem contact op "
 "customer support om dit probleem op te lossen. Eenmaal gedaan, werk uw "
@@ -72,8 +72,8 @@ msgid ""
 "at the site. Please log in at the site and confirm that your account is set "
 "up, then try again."
 msgstr ""
-"Rekening niet gevonden (408): Het spijt ons, we konden we geen rekening voor"
-" u vinden op de site. U dient in te loggen op de site en bevestigen dat uw "
+"Account niet gevonden (408): Het spijt ons, we konden we geen account voor u"
+" vinden op de site. U dient in te loggen op de site en bevestigen dat uw "
 "account correct is ingesteld en probeer het opnieuw."
 
 #. module: account_yodlee
@@ -85,7 +85,7 @@ msgid ""
 "been closed.  Please deactivate or delete the relevant account and try "
 "again."
 msgstr ""
-"Rekening gerapporteerd als gesloten (422): We waren niet in staat om uw "
+"Account gerapporteerd als gesloten (422): We waren niet in staat om uw "
 "account bij te werken omdat het lijkt een of meer van uw gerelateerde "
 "accounts zijn afgesloten. U dient uit te schakelen of de betreffende account"
 " te verwijderen en probeer het opnieuw."
@@ -97,9 +97,8 @@ msgid ""
 "Account Type Not Supported(417):The type of account we found is not "
 "currently supported.  Please remove this site and add as a  manual account."
 msgstr ""
-"Rekening type niet ondersteund (417): Het gevonden rekening type is "
-"momenteel niet ondersteund. Verwijder deze site en voeg toe als handmatige "
-"rekening."
+"Account type niet ondersteund (417): Het gevonden accounttype is momenteel "
+"niet ondersteund. Verwijder deze site en voeg toe als handmatige rekening."
 
 #. module: account_yodlee
 #: model:ir.model.fields,help:account_yodlee.field_account_online_journal__yodlee_account_status
@@ -156,7 +155,7 @@ msgstr "Fout %s, bericht: %s"
 #: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "Error %s, message: %s, reference code: %s"
-msgstr "Fout %s, bericht: %s, referentie code: %s"
+msgstr "Fout %s, bericht: %s, referentiecode: %s"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:0

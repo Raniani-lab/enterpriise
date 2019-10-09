@@ -31,7 +31,7 @@ msgstr "Čárový kód"
 #: code:addons/stock_barcode_mobile/static/src/js/stock_mobile_barcode.js:26
 #, python-format
 msgid "Please, Scan again !!"
-msgstr ""
+msgstr "Prosím, skenujte znovu !!"
 
 #. module: stock_barcode_mobile
 #. openerp-web

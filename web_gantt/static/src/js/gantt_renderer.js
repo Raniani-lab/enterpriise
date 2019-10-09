@@ -13,6 +13,13 @@ var QWeb = core.qweb;
 
 
 var GanttRenderer = AbstractRenderer.extend({
+    custom_events: _.extend({}, AbstractRenderer.prototype.custom_events, {
+        'start_dragging': '_onStartDragging',
+        'start_no_dragging': '_onStartNoDragging',
+        'stop_dragging': '_onStopDragging',
+        'stop_no_dragging': '_onStopNoDragging',
+    }),
+
     DECORATIONS: [
         'decoration-secondary',
         'decoration-success',
@@ -38,6 +45,9 @@ var GanttRenderer = AbstractRenderer.extend({
     init: function (parent, state, params) {
         var self = this;
         this._super.apply(this, arguments);
+
+        this.$draggedPill = null;
+        this.$draggedPillClone = null;
 
         this.canCreate = params.canCreate;
         this.canEdit = params.canEdit;
@@ -72,6 +82,8 @@ var GanttRenderer = AbstractRenderer.extend({
      */
     on_attach_callback: function () {
         this._isInDom = true;
+        core.bus.on("keydown", this, this._onKeydown);
+        core.bus.on("keyup", this, this._onKeyup);
         this._setRowsDroppable();
     },
     /**
@@ -79,6 +91,8 @@ var GanttRenderer = AbstractRenderer.extend({
      */
     on_detach_callback: function () {
         this._isInDom = false;
+        core.bus.off("keydown", this, this._onKeydown);
+        core.bus.off("keyup", this, this._onKeyup);
         _.invoke(this.rowWidgets, 'on_detach_callback');
     },
 
@@ -121,6 +135,14 @@ var GanttRenderer = AbstractRenderer.extend({
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * Determines if a dragged pill aims to be copied or updated
+     * @private
+     * @param {jQueryEvent} event
+     */
+    _getAction: function (event) {
+        return event.ctrlKey || event.metaKey ? 'copy': 'reschedule';
+    },
     /**
      * Format focus date which is used to display in gantt header (see XML
      * template).
@@ -212,7 +234,13 @@ var GanttRenderer = AbstractRenderer.extend({
             self.$el.empty();
             _.invoke(oldRowWidgets, 'destroy');
 
-            self.$el.append(QWeb.render('GanttView', {widget: self}));
+            self._replaceElement(QWeb.render('GanttView', {widget: self}));
+            const $containment = $('<div id="o_gantt_containment"/>');
+            self.$('.o_gantt_row_container').append($containment);
+            if (!self.state.groupedBy.length) {
+                $containment.css({ left: 0});
+            }
+
             rows.forEach(function (row) {
                 row.$el.appendTo(self.$('.o_gantt_row_container'));
             });
@@ -271,7 +299,7 @@ var GanttRenderer = AbstractRenderer.extend({
                 scales: self.SCALES,
                 unavailabilities: row.unavailabilities,
             };
-            if (self.thumbnails && row.groupedByField && (!params.consolidate) && row.groupedByField in self.thumbnails){
+            if (self.thumbnails && row.groupedByField && row.groupedByField in self.thumbnails){
                 params.thumbnail = {model: self.fieldsInfo[row.groupedByField].relation, field: self.thumbnails[row.groupedByField],};
             }
             rowWidgets.push(self._renderRow(pillsInfo, params));
@@ -331,9 +359,74 @@ var GanttRenderer = AbstractRenderer.extend({
     _setRowsDroppable: function () {
         // jQuery (< 3.0) rounds the width value but we need the exact value
         // getBoundingClientRect is costly when there are lots of rows
-        var cellWidth = this.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
-        _.invoke(this.rowWidgets, 'setDroppable', cellWidth);
-    }
+        const firstCell = this.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0];
+        _.invoke(this.rowWidgets, 'setDroppable', firstCell);
+    },
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * @param {KeyboardEvent} ev
+     */
+    _onKeydown: function (ev) {
+        this.action = this._getAction(ev);
+        if (this.$draggedPill && this.action === 'copy') {
+            this.$draggedPill.addClass('o_dragged_pill');
+            this.$draggedPill.removeClass('o_hidden');
+            this.$el.addClass('o_copying');
+            this.$el.removeClass('o_grabbing');
+        }
+    },
+    /**
+     * @param {KeyboardEvent} ev
+     */
+    _onKeyup: function (ev) {
+        this.action = this._getAction(ev);
+        if (this.$draggedPill && this.action === 'reschedule') {
+            this.$draggedPill.removeClass( 'o_dragged_pill');
+            this.$draggedPill.addClass('o_hidden');
+            this.$el.addClass('o_grabbing');
+            this.$el.removeClass('o_copying');
+        }
+    },
+    /**
+     * @private
+     * @param {OdooEvent} event 
+     */
+    _onStartDragging: function (event) {
+        this.$draggedPill = event.data.$draggedPill;
+        if (this.action === 'copy') {
+            this.$el.addClass('o_copying');
+            this.$draggedPill.addClass('o_dragged_pill');
+        } else {
+            this.$el.addClass('o_grabbing')
+            this.$draggedPill.addClass('o_hidden');
+        }
+    },
+    /**
+     * Used to give a feedback on the impossibility of moving the pill
+     * @private
+     */
+    _onStartNoDragging: function () {
+        this.$el.addClass('o_no_dragging');
+    },
+    /**
+     * @private
+     */
+    _onStopDragging: function () {
+        this.$draggedPill = null;
+        this.$draggedPillClone = null;
+        this.$el.removeClass('o_grabbing');
+        this.$el.removeClass('o_copying');
+    },
+    /**
+     * @private
+     */
+    _onStopNoDragging: function () {
+        this.$el.removeClass('o_no_dragging');
+    },
 });
 
 return GanttRenderer;

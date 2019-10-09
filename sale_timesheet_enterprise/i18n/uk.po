@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-23 11:39+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -19,6 +19,16 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: uk\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_kanban
+msgid "<i class=\"fa fa-pause text-warning\" title=\"Timer is Paused\"/>"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_kanban
+msgid "<i class=\"fa fa-play text-success\" title=\"Timer is Running\"/>"
+msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
@@ -44,6 +54,12 @@ msgstr "Рядок аналітики"
 #: model:ir.model.fields.selection,name:sale_timesheet_enterprise.selection__res_config_settings__invoiced_timesheet__approved
 msgid "Approved timesheets only"
 msgstr "Лише схвалені табелі"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_project__allow_billable
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__allow_billable
+msgid "Bill from Tasks"
+msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_sale_order_view_form
@@ -134,6 +150,11 @@ msgstr "Відобразити час табеля"
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__id
 msgid "ID"
 msgstr "ID"
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_view_form_inherit
+msgid "Invoice your time and material from tasks"
+msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_account_move_line
@@ -235,11 +256,6 @@ msgid "Task"
 msgstr "Завдання"
 
 #. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_project__allow_billable
-msgid "Task billing"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task_create_sale_order__task_id
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task_create_timesheet__task_id
 msgid "Task for which we are creating a sales order"
@@ -274,6 +290,11 @@ msgid ""
 msgstr ""
 
 #. module: sale_timesheet_enterprise
+#: model:ir.model.constraint,message:sale_timesheet_enterprise.constraint_project_task_create_timesheet_time_positive
+msgid "The timesheet's time must be positive"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__time_spent
 msgid "Time"
 msgstr "Час"
@@ -284,9 +305,19 @@ msgid "Timesheet Timer"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_first_start
+msgid "Timesheet Timer First Use"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_pause
 msgid "Timesheet Timer Last Pause"
 msgstr "Остання пауза таймера табеля"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_last_stop
+msgid "Timesheet Timer Last Use"
+msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_start
@@ -297,6 +328,11 @@ msgstr "Початок таймеру табеля"
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__invoiced_timesheet
 msgid "Timesheets Invoicing"
 msgstr "Виставлення рахунків по табелям"
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_view_form_inherit
+msgid "Track your time using a timer"
+msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_sale_order__price_unit

@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-30 09:48+0000\n"
 "PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -996,6 +996,7 @@ msgstr "Voulez-vous ajouter un menu déroulant avec des couleurs ?"
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Domain"
 msgstr "Domaine"
@@ -1265,13 +1266,6 @@ msgstr "Filtrer"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
-#, python-format
-msgid "Filter Domain"
-msgstr "Domaine du Filtre"
-
-#. module: web_studio
-#. openerp-web
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
@@ -1475,6 +1469,13 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Hide by default"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #, python-format
 msgid "Home"
@@ -1640,13 +1641,13 @@ msgstr "Vue Kanban"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Label"
 msgstr "Libellé"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Label Text"
@@ -1899,10 +1900,31 @@ msgstr "Nouveaux champs"
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/js/views/view_editors/search_editor.js:0
+#, python-format
+msgid "New Filter"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #, python-format
 msgid "New Menu"
 msgstr "Nouveau menu"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "New record at the bottom"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "New record on top"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -2010,6 +2032,13 @@ msgid ""
 msgstr ""
 "Seuls les groupes avec un ID externe peuvent être utilisés ici. Veuillez "
 "choisir un autre groupe ou attribuer manuellement un ID externe à ce groupe."
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Optional"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -2306,18 +2335,17 @@ msgstr "Sauvegarder."
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:0
-#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:0
+#: code:addons/web_studio/static/src/js/submenu.js:0
 #, python-format
 msgid "Saved"
 msgstr "Sauvegardé"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:0
+#: code:addons/web_studio/static/src/js/submenu.js:0
 #, python-format
-msgid "Saving..."
-msgstr "Sauvegarde..."
+msgid "Saving"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -2420,6 +2448,13 @@ msgstr "Utiliser par défaut"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Set expression"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Show by default"
 msgstr ""
 
 #. module: web_studio
@@ -3032,6 +3067,13 @@ msgid "You can only display a user or a partner"
 msgstr "Vous pouvez uniquement affiché un utilisateur ou partenaire"
 
 #. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/action_editor_action.js:0
+#, python-format
+msgid "You cannot deactivate this view as it is the last one active."
+msgstr ""
+
+#. module: web_studio
 #: code:addons/web_studio/controllers/report.py:0
 #, python-format
 msgid "You cannot modify this view, it is part of the generic layout"
@@ -3091,7 +3133,6 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:0
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "bottom"
 msgstr "bottom"
@@ -3174,7 +3215,6 @@ msgstr "e-mail de test"
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:0
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "top"
 msgstr "top"

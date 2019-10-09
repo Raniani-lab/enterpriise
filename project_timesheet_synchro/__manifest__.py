@@ -4,7 +4,7 @@
 {
     'name': 'Synchronization with the external timesheet application',
     'version': '1.0',
-    'category': 'Project',
+    'category': 'Operations/Project',
     'description': """
 Synchronization of timesheet entries with the external timesheet application.
 =============================================================================

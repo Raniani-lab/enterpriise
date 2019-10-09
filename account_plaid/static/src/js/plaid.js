@@ -24,6 +24,7 @@ var PlaidAccountConfigurationWidget = AbstractAction.extend({
         this.account_online_provider_id = context.account_online_provider_id;
         this.public_key = context.public_key;
         this.public_token = context.public_token;
+        this.environment = context.environment || 'production';
         if (context.result) {
             this.result = context.result;
         }
@@ -36,7 +37,7 @@ var PlaidAccountConfigurationWidget = AbstractAction.extend({
                 .then(function() {
                     var plaid_options = {
                         clientName: 'Odoo',
-                        env: 'production',
+                        env: self.environment,
                         key: self.public_key,
                         product: ['transactions'],
                         onSuccess: function(public_token, metadata) {
@@ -81,6 +82,7 @@ var PlaidAccountConfigurationWidget = AbstractAction.extend({
 
     linkSuccess: function(public_token, metadata) {
         var self = this;
+        metadata.environment = self.environment;
         return this._rpc({
                  model: 'account.online.provider',
                  method: 'link_success',

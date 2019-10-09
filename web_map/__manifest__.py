@@ -3,6 +3,7 @@
     'name':"Map View",
     'summary':"Defines the map view for odoo enterprise",
     'description':"Allows the viewing of records on a map",
+    'category': 'Hidden',
     'version':'1.0',
     'depends':['web', 'base_setup'],
     'data':[

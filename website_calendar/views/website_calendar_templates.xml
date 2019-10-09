@@ -4,7 +4,6 @@
     <!-- Assets -->
     <template id="assets_frontend" inherit_id="website.assets_frontend" name="Online Appointment">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/website_calendar/static/lib/jstz.min.js"/>
             <link rel="stylesheet" type="text/scss" href="/website_calendar/static/src/scss/website_calendar.scss" t-ignore="true"/>
             <script type="text/javascript" src="/website_calendar/static/src/js/website_calendar.js"/>
         </xpath>

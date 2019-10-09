@@ -5,7 +5,7 @@
     'summary': "Bridge module between Amazon Connector and TaxCloud",
     'description': """
     """,
-    'category': 'Sales',
+    'category': 'Sales/Sales',
     'version': '1.0',
     'depends': ['sale_amazon', 'account_taxcloud'],
     'application': False,

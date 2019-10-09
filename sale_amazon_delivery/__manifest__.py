@@ -7,7 +7,7 @@
 Allows to use tracking numbers for products sold on Amazon
 ==========================================================
 """,
-    'category': 'Sales',
+    'category': 'Sales/Sales',
     'version': '1.0',
     'depends': ['sale_amazon', 'delivery'],
     'application': False,

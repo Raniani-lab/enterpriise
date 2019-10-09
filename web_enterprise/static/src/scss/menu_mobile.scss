@@ -17,7 +17,7 @@
     width: 100%;
     font-size: 15px;
     font-weight: 300;
-    z-index: 10;
+    z-index: $zindex-tooltip + 10;
 
     .o_burger_menu_topbar {
         flex: 0 0 $o-navbar-height;
@@ -123,4 +123,15 @@
         }
     }
 
+}
+
+// Hide the arrow on the home menu
+body.o_home_menu_background .o_burger_menu > .o_burger_menu_topbar .dropdown-toggle::after {
+    display: none;
+}
+
+@include media-breakpoint-down(sm) {
+    .o_debug_dropdown {
+        z-index: $zindex-tooltip + 10;
+    }
 }

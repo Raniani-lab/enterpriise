@@ -6,7 +6,6 @@
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
-# Thijs van Oers <thijsvanoers@yahoo.com>, 2019
 # Maxim Vandenbroucke <mxv@odoo.com>, 2019
 # Charles Vervaecke <cvk@odoo.com>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
@@ -370,7 +369,7 @@ msgstr "Volgers (Relaties)"
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_general_approval
 msgid "General Approval"
-msgstr "Generieke Goedkeuring"
+msgstr "Generieke goedkeuring"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_access_to_request
@@ -754,7 +753,7 @@ msgstr "Verantwoordelijke gebruiker"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "SMS Afleverfout"
+msgstr "SMS afleverfout"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence
@@ -873,7 +872,7 @@ msgstr "Opnemen"
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You have to add at least %s approvers to confirm your request."
-msgstr "Voeg minimaal %smedewerker(s) toe die u aanvraag moeten goedkeuren"
+msgstr "Voeg minimaal %smedewerker(s) toe die uw aanvraag moeten goedkeuren"
 
 #. module: approvals
 #: code:addons/approvals/models/approval_request.py:0

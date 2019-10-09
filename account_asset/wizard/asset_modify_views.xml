@@ -24,10 +24,10 @@
                         <field name="salvage_value"/>
                     </group>
                     <group string="Increase Accounts" attrs="{'invisible': [('gain_value', '=', False)]}">
-                        <field name="account_asset_id"/>
-                        <field name="account_asset_counterpart_id"/>
-                        <field name="account_depreciation_id"/>
-                        <field name="account_depreciation_expense_id"/>
+                        <field name="account_asset_id" attrs="{'required': [('gain_value', '!=', False)]}"/>
+                        <field name="account_asset_counterpart_id" attrs="{'required': [('gain_value', '!=', False)]}"/>
+                        <field name="account_depreciation_id" attrs="{'required': [('gain_value', '!=', False)]}"/>
+                        <field name="account_depreciation_expense_id" attrs="{'required': [('gain_value', '!=', False)]}"/>
                     </group>
                 </group>
                 <footer>

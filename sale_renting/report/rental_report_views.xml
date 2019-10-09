@@ -1,65 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-      <record id="view_rental_order_product_pivot" model="ir.ui.view">
+      <record id="rental_report_pivot_view" model="ir.ui.view">
            <field name="name">sale.rental.report.pivot</field>
            <field name="model">sale.rental.report</field>
            <field name="arch" type="xml">
                <pivot string="Rental Analysis" disable_linking="True">
                    <field name="categ_id" type="row"/>
-                   <field name="product_uom_qty" type="measure"/>
+                   <field name="quantity" type="measure"/>
                    <field name="qty_delivered" type="measure"/>
-                   <field name="price_subtotal" type="measure"/>
-                   <!-- what to display in pivot view ?? -->
+                   <field name="price" type="measure"/>
                </pivot>
            </field>
       </record>
 
-      <record id="view_rental_order_product_graph" model="ir.ui.view">
+      <record id="rental_report_graph_view" model="ir.ui.view">
            <field name="name">sale.rental.report.graph</field>
            <field name="model">sale.rental.report</field>
            <field name="arch" type="xml">
                <graph string="Rental Analysis" type="line">
-                   <field name="pickup_date" interval="day" type="row"/>
-                   <field name="qty_delivered" type="measure"/>
+                   <field name="date" interval="day" type="row"/>
+                   <field name="quantity" type="measure"/>
                </graph>
            </field>
       </record>
 
-      <record id="view_rental_order_product_search" model="ir.ui.view">
+      <record id="rental_report_search_view" model="ir.ui.view">
           <field name="name">sale.rental.report.search</field>
           <field name="model">sale.rental.report</field>
           <field name="arch" type="xml">
               <search string="Rental Analysis">
-                  <field name="order_date"/>
-                    <filter string="Date" name="year" invisible="1" date="order_date" default_period="this_year"/>
-                    <filter name="Quotations" string="Quotations" domain="[('rental_status','=', 'draft')]"/>
-                    <filter name="Rentals" string="Rental Orders" domain="[('rental_status','not in',('draft', 'cancel', 'sent'))]"/>
-                    <filter name="confirmed_orders" string="Confirmed Orders" domain="[('state', '=', 'sale')]"/>
+                  <field name="date"/>
+                  <filter string="Date" name="year" invisible="1" date="date" default_period="this_year"/>
+                  <filter name="Quotations" string="Quotations" domain="[('state','in', ['draft', 'sent'])]"/>
+                  <filter name="confirmed_orders" string="Confirmed Orders" domain="[('state', 'in', ['sale', 'done'])]"/>
                   <separator/>
-                  <field name="user_id"/>
-                  <field name="team_id"/>
                   <field name="product_id"/>
-                  <field name="categ_id"/>
+                  <field name="product_tmpl_id" groups="product.group_product_variant"/>
+                  <field name="categ_id" filter_domain="[('categ_id', 'child_of', self)]"/>
                   <field name="partner_id"/>
-                  <field name="country_id"/>
-                  <group expand="0" string="Extended Filters">
-                      <field name="categ_id" filter_domain="[('categ_id', 'child_of', self)]"/>
-                      <field name="company_id" groups="base.group_multi_company"/>
-                  </group>
+                  <field name="user_id"/>
+                  <field name="company_id" groups="base.group_multi_company"/>
                   <group expand="1" string="Group By" name="report_group_by">
                       <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
-                      <filter string="Sales Team" name="sales_channel" context="{'group_by':'team_id'}"/>
                       <filter string="Customer" name="Customer" context="{'group_by':'partner_id'}"/>
-                      <filter string="Customer Country" name="country_id" context="{'group_by':'country_id'}"/>
                       <filter string="Product" name="Product" context="{'group_by':'product_id'}"/>
                       <filter string="Product Category" name="Category" context="{'group_by':'categ_id'}"/>
-                      <filter name="status" string="Status" context="{'group_by':'rental_status'}"/>
+                      <filter string="State" name="status" context="{'group_by':'state'}"/>
                       <filter string="Company" name="company" groups="base.group_multi_company" context="{'group_by':'company_id'}"/>
-                      <separator/>
-                      <filter string="Order Date" name="date" context="{'group_by':'order_date'}"/>
-                      <filter string="Deliver Date" name="pickup_date" context="{'group_by':'pickup_date'}"/>
-                      <filter string="Return Date" name="return_date" context="{'group_by':'return_date'}"/>
                   </group>
               </search>
           </field>
@@ -69,15 +57,15 @@
           <field name="name">Rental Analysis</field>
           <field name="res_model">sale.rental.report</field>
           <field name="view_mode">graph,pivot</field>
-          <field name="search_view_id" ref="view_rental_order_product_search"/>
-          <field name="context">{'search_default_confirmed_orders':1, 'group_by_no_leaf':1,'group_by':[], 'time_ranges': {'field':'pickup_date', 'range':'this_year'}}}</field>
+          <field name="search_view_id" ref="rental_report_search_view"/>
+          <field name="context">{'search_default_confirmed_orders':1, 'group_by_no_leaf':1, 'group_by':[], 'time_ranges': {'field':'date', 'range':'this_year'}}}</field>
       </record>
 
-      <menuitem id="menu_rental_reporting" name="Reporting" parent="rental_menu_root" sequence="4" groups="sales_team.group_sale_manager" action="action_rental_report"/>
+      <menuitem id="menu_rental_reporting" name="Reporting" parent="rental_menu_root" sequence="5" groups="sales_team.group_sale_manager" action="action_rental_report"/>
 
       <report
             id="action_report_rental_saleorder"
-            string="Delivery and Return Receipt"
+            string="Pickup and Return Receipt"
             model="sale.order"
             report_type="qweb-pdf"
             file="sale_renting.report_rental_order"

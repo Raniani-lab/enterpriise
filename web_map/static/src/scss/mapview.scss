@@ -78,9 +78,12 @@ $map-number-font-size: 19px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                &:hover {
+                &.o_pin_located:hover {
                     text-decoration: none;
                     background-color: $o-gray-100;
+                }
+                &:not(.o_pin_located) {
+                    cursor: not-allowed;
                 }
             }
         }

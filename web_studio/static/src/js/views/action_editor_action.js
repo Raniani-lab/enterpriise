@@ -395,7 +395,11 @@ var ActionEditorAction = AbstractAction.extend({
         var view_type = event.data.view_type;
         var view_mode = _.without(this.action.view_mode.split(','), view_type);
 
-        this._writeViewMode(view_mode.toString());
+        if (!view_mode.length) {
+            Dialog.alert(this, _t("You cannot deactivate this view as it is the last one active."));
+        } else {
+            this._writeViewMode(view_mode.toString());
+        }
     },
     /**
      * @private

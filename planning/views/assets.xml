@@ -8,6 +8,7 @@
 
             <link rel="stylesheet" type="text/scss" href="/planning/static/src/scss/field_colorpicker.scss"/>
             <script type="text/javascript" src="planning/static/src/js/field_colorpicker.js" />
+            <script type="text/javascript" src="planning/static/src/js/tours/planning.js"></script>
         </xpath>
     </template>
 

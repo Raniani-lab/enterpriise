@@ -3,7 +3,7 @@
 
 {
     'name': 'Import CSV Bank Statement',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'version': '1.0',
     'description': '''
 Module to import CSV bank statements.

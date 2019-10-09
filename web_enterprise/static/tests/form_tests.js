@@ -133,6 +133,39 @@ QUnit.module('web_enterprise', {
 
         form.destroy();
     });
+
+    QUnit.test('statusbar "Action" button not displayed in edit mode with .oe_read_only button', async function (assert) {
+        assert.expect(2);
+
+        var form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form>
+                    <header>
+                        <button string="Share" type="action" class="oe_highlight oe_read_only"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="display_name"/>
+                        </group>
+                    </sheet>
+                </form>
+            `,
+            res_id: 1,
+            viewOptions: {
+                mode: 'edit',
+            },
+        });
+
+        assert.hasClass(form.$('.o_statusbar_buttons'), 'o_invisible_modifier',
+            "'Action' button should be visible");
+        await testUtils.form.clickSave(form);
+        assert.doesNotHaveClass(form.$('.o_statusbar_buttons'), 'o_invisible_modifier',
+            "'Action' button should be invisible");
+        form.destroy();
+    });
 });
 
 });

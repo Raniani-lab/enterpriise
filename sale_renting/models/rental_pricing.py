@@ -18,7 +18,7 @@ class RentalPricing(models.Model):
 
     _name = 'rental.pricing'
     _description = 'Pricing rule of rentals'
-    _order = 'unit, duration'
+    _order = 'price'
 
     duration = fields.Integer(
         string="Duration", required=True,
@@ -58,6 +58,21 @@ class RentalPricing(models.Model):
         else:
             converted_duration = math.ceil(duration / self.duration)
         return self.price * converted_duration
+
+    def name_get(self):
+        result = []
+        uom_translation = dict()
+        for key, value in self._fields['unit']._description_selection(self.env):
+            uom_translation[key] = value
+        for pricing in self:
+            label = ""
+            if pricing.currency_id.position == 'before':
+                label += pricing.currency_id.symbol + str(pricing.price)
+            else:
+                label += str(pricing.price) + pricing.currency_id.symbol
+            label += "/ %s" % uom_translation[pricing.unit]
+            result.append((pricing.id, label))
+        return result
 
     @api.model
     def _compute_duration_vals(self, pickup_date, return_date):

@@ -64,6 +64,12 @@ class SocialPost(models.Model):
         help="Number of people engagements with the post (Likes, comments...)")
     click_count = fields.Integer('Number of clicks', compute="_compute_click_count")
 
+    @api.constrains('image_ids')
+    def _check_image_ids_mimetype(self):
+        for social_post in self:
+            if any(not image.mimetype.startswith('image') for image in social_post.image_ids):
+                raise UserError(_('Uploaded file does not seem to be a valid image.'))
+
     @api.depends('live_post_ids.engagement')
     def _compute_post_engagement(self):
         results = self.env['social.live.post'].read_group(

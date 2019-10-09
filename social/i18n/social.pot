@@ -1326,6 +1326,12 @@ msgid "Unread Messages Counter"
 msgstr ""
 
 #. module: social
+#: code:addons/social/models/social_post.py:0
+#, python-format
+msgid "Uploaded file does not seem to be a valid image."
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,help:social.field_social_account__media_type
 #: model:ir.model.fields,help:social.field_social_media__media_type
 #: model:ir.model.fields,help:social.field_social_stream_post__media_type

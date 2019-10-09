@@ -290,7 +290,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Untake IP",
             trigger: 'input[name="ip_value_radio"]:eq(0)',
-            extra_trigger: 'input[name="Net"][value="2373.66"]',
+            extra_trigger: 'input[name="Net"][value="2412.18"]',
             run: 'click',
         },
         {

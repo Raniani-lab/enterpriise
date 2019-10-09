@@ -236,8 +236,8 @@ class TestExamples(common.SavepointCase):
             ('ATN.CAR', 0),
             ('GROSSIP', 3178.77),
             ('IP.PART', -914.18),
-            ('GROSS', 2384.08),
-            ('P.P', -534.38),
+            ('GROSS', 2264.6),
+            ('P.P', -476.6),
             ('ATN.CAR.2', 0),
             ('ATN.INT.2', 0),
             ('ATN.MOB.2', 0),
@@ -246,7 +246,7 @@ class TestExamples(common.SavepointCase):
             ('REP.FEES', 150.00),
             ('IP', 914.18),
             ('IP.DED', -59.6),
-            ('NET', 2677.17),
+            ('NET', 2734.95),
         ])
         employee = {
             'name': 'Roger2',
@@ -297,8 +297,8 @@ class TestExamples(common.SavepointCase):
             ('ATN.CAR', 109.92),
             ('GROSSIP', 2911.46),
             ('IP.PART', -804.44),
-            ('GROSS', 2212.33),
-            ('P.P', -401.09),
+            ('GROSS', 2107.02),
+            ('P.P', -350.53),
             ('ATN.CAR.2', -109.92),
             ('ATN.INT.2', -5.00),
             ('ATN.MOB.2', 0),
@@ -307,7 +307,7 @@ class TestExamples(common.SavepointCase):
             ('REP.FEES', 150.00),
             ('IP', 804.44),
             ('IP.DED', -52.44),
-            ('NET', 2442.4),
+            ('NET', 2492.96),
         ])
         address = self.env['res.partner'].create({
             'name': 'Roger',
@@ -502,7 +502,7 @@ class TestExamples(common.SavepointCase):
             ('ATN.MOB', 4.0),
             ('SALARY', 2715.14),
             ('ONSS', -354.87),
-            ('P.P', -26.19),
+            ('P.P', -2.11),
             ('IP.DED', -44.09),
             ('Tr.E', 200),
             ('M.ONSS', -24.28),
@@ -510,7 +510,7 @@ class TestExamples(common.SavepointCase):
             ('ATN.INT.2', -5.0),
             ('ATN.MOB.2', -4.0),
             ('IP', 676.54),
-            ('NET', 2587.1),
+            ('NET', 2611.18),
         ])
 
         employee = {

@@ -249,7 +249,7 @@ class TestCreditTime(common.SavepointCase):
             'ATN.CAR': 141.14,
             'GROSSIP': 566.23,
             'IP.PART': -102.27,
-            'GROSS': 477.62,
+            'GROSS': 463.96,
             'P.P': 0.0,
             'P.P.DED': 0.0,
             'ATN.CAR.2': -141.14,
@@ -298,8 +298,8 @@ class TestCreditTime(common.SavepointCase):
             'ATN.CAR': 141.14000000000001,
             'GROSSIP': 2062.85,
             'IP.PART': -518.1800000000001,
-            'GROSS': 1612.69,
-            'P.P': -137.22,
+            'GROSS': 1544.67,
+            'P.P': -105.12,
             'P.P.DED': 34.82,
             'ATN.CAR.2': -141.14000000000001,
             'ATN.INT.2': -5.0,
@@ -312,7 +312,7 @@ class TestCreditTime(common.SavepointCase):
             'REP.FEES': 150.0,
             'IP': 518.1800000000001,
             'IP.DED': -33.76,
-            'NET': 1971.42
+            'NET': 2003.52
         }
         for code, value in payslip_results.items():
             payslip_new_contract._get_salary_line_total(code)

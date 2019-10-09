@@ -86,6 +86,10 @@ return AbstractWebClient.extend({
         var self = this;
         this.set_title();
 
+        const insertMenu = () => {
+            this.menu.$el.prependTo(this.$el);
+        };
+
         return this.menu_dp.add(this.instanciate_menu_widgets()).then(function () {
             $(window).bind('hashchange', self.on_hashchange);
 
@@ -117,9 +121,7 @@ return AbstractWebClient.extend({
             } else {
                 return self.on_hashchange();
             }
-        }).then(function () {
-            self.menu.$el.prependTo(self.$el);
-        });
+        }).then(insertMenu).guardedCatch(insertMenu);
     },
 
     instanciate_menu_widgets: function() {

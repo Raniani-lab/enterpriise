@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- Manual reconciliation -->
+    <record id="action_manual_reconciliation" model="ir.actions.client">
+        <field name="name">Reconciliation</field>
+        <field name="tag">manual_reconciliation_view</field>
+    </record>
+
+    <menuitem id="menu_action_manual_reconciliation" parent="account.menu_finance_entries_actions" action="action_manual_reconciliation" sequence="25"/>
+</odoo>

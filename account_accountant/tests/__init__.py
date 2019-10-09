@@ -3,3 +3,5 @@
 
 # import tests
 from . import test_ui
+from . import test_reconciliation_widget
+from . import test_bank_reconciliation_widget

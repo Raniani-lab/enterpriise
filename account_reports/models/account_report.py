@@ -1038,7 +1038,7 @@ class AccountReport(models.AbstractModel):
         return [('vat_report.pdf', pdf)]
 
     def action_partner_reconcile(self, options, params):
-        form = self.env.ref('account.action_manual_reconciliation', False)
+        form = self.env.ref('account_accountant.action_manual_reconciliation', False)
         ctx = self.env.context.copy()
         ctx['partner_ids'] = ctx['active_id'] = [params.get('partner_id')]
         ctx['all_entries'] = True

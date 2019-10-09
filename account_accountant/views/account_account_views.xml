@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_account_form" model="ir.ui.view">
+        <field name="name">account.account.form</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <field name="internal_group" position="after">
+                <label for="reconcile" attrs="{'invisible': ['|', ('internal_type','=','liquidity'), ('internal_group', '=', 'off_balance')]}"/>
+                <div attrs="{'invisible': ['|', ('internal_type','=','liquidity'), ('internal_group', '=', 'off_balance')]}">
+                   <field name="reconcile"/>
+                   <button name="action_open_reconcile" class="oe_link" type="object" string=" -> Reconcile" attrs="{'invisible': [('reconcile', '=', False)]}"/>
+                </div>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_bank_statement_form" model="ir.ui.view">
+        <field name="name">account.bank.statement.form</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">
+            <field name="all_lines_reconciled" position="after">
+                <button name="action_bank_reconcile_bank_statements" string="Reconcile" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('all_lines_reconciled','=',True),('line_ids','=',[]),('state', '!=', 'open')]}"/>
+            </field>
+        </field>
+    </record>
+</odoo>

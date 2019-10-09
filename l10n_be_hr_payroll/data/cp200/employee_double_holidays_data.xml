@@ -55,6 +55,7 @@ if contract.mobile and contract.internet:
             <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
         </record>
 
+        <!-- 85% of monthly gross salary is used to compute social contributions -->
         <record id="cp200_employees_double_holiday_gross_salary" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_salary"/>
             <field name="name">Gross Salary</field>
@@ -70,20 +71,8 @@ if contract.mobile and not contract.internet:
     result += 4.0 + 5.0
 if contract.mobile and contract.internet:
     result += 4.0
+result = result * 0.85
             </field>
-            <field name="appears_on_payslip" eval="False"/>
-            <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-        </record>
-
-        <!-- 85% of monthly gross salary is used to compute social contributions -->
-        <record id="cp200_employees_double_holiday_pay_salary" model="hr.salary.rule">
-            <field name="category_id" ref="hr_payroll_head_salary"/>
-            <field name="name">Gross Salary</field>
-            <field name="code">SALARY</field>
-            <field name="sequence">21</field>
-            <field name="condition_select">none</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = SALARY * 0.85</field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
         </record>
@@ -153,7 +142,7 @@ if contract.mobile and contract.internet:
             <value model="hr.salary.rule" search="[
                 ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
                 ('code', '=', 'GROSS')]"/>
-            <value eval="{'amount_python_compute': 'result = categories.DP + categories.ALW', 'sequence': '101'}"/>
+            <value eval="{'amount_python_compute': 'result = categories.DP + categories.ALW - categories.ONSS * contract.ip_wage_rate / 100.0', 'sequence': '101'}"/>
         </function>
 
         <record id="cp200_employees_double_holiday_pay_p_p" model="hr.salary.rule">

@@ -530,6 +530,20 @@ var ViewEditorManager = AbstractEditorManager.extend({
         });
     },
     /**
+     * @private
+     * @param {string} type operation type
+     * @param {integer[]} fieldIDs
+     */
+    _changeMapPopupFields: function (type, fieldIDs) {
+        this._do({
+            type: 'map_popup_fields',
+            target: {
+                operation_type: type,
+                field_ids: fieldIDs,
+            }
+        });
+    },
+    /**
      * @override
      */
     _applyChangeHandling: function (result, opID) {
@@ -1518,6 +1532,10 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 break;
             case 'restore':
                 this._restoreDefaultView(this.view_id);
+                break;
+            case 'map_popup':
+                this._changeMapPopupFields(type, event.data.field_ids);
+                break;
         }
     },
 });

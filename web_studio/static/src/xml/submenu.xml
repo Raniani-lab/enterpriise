@@ -123,6 +123,12 @@
                     title="Kanban View"
                     t-if="_.contains(widget.active_view_types, 'kanban')"><i class="fa fa-th-large"/></a>
                 <a
+                    aria-label="Map View"
+                    data-name="map"
+                    href="#"
+                    title="Map View"
+                    t-if="_.contains(widget.active_view_types, 'map')"><i class="fa fa-map-marker"/></a>
+                <a
                     aria-label="Calendar View"
                     data-name="calendar"
                     href="#"

@@ -1208,6 +1208,36 @@ class WebStudioController(http.Controller):
         })
         xpath_node.append(etree.Element('header'))
 
+    def _operation_map_popup_fields(self, arch, operation, model):
+        fields = request.env['ir.model.fields'].browse(operation['target']['field_ids'])
+        for field in fields:
+            if operation['target']['operation_type'] == 'add':
+                op = {
+                    'node': {
+                        'tag': 'field',
+                        'attrs': {
+                            'name': field.name,
+                            'string': field.field_description,
+                        }
+                    },
+                    'target': {
+                        'tag': 'map',
+                    },
+                    'position': 'inside',
+                }
+                self._operation_add(arch, op, model)
+            else:
+                op = {
+                    'type': 'remove',
+                    'target': {
+                        'tag': 'field',
+                        'attrs': {
+                            'name': field.name,
+                        },
+                    }
+                }
+                self._operation_remove(arch, op)
+
     @http.route('/web_studio/get_email_alias', type='json', auth='user')
     def get_email_alias(self, model_name):
         """ Returns the email alias associated to the model @model_name if both exist

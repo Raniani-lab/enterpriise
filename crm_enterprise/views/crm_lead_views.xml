@@ -93,10 +93,7 @@
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
                 <map res_partner="partner_id">
-                    <marker-popup>
-                        <field name="name" string="Title "/>
-                        <field name="partner_id" string="Customer "/>
-                    </marker-popup>
+                    <field name="partner_id" string="Customer"/>
                 </map>
             </field>
         </record>

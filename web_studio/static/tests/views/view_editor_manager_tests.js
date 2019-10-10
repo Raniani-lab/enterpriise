@@ -106,6 +106,16 @@ QUnit.module('ViewEditorManager', {
                     },
                 ]
             },
+            tasks: {
+                fields: {
+                    name: {string: 'Name', type: 'char'},
+                    partner_id: {string: 'Partner', type: 'many2one', relation: 'res.partner'},
+                    description: {string: 'Description', type: 'char'},
+                },
+                records: [
+                    {id: 1, name: 'Chhagan', partner_id: 1, description: 'shaktiman'},
+                ],
+            },
             'res.groups': {
                 fields: {
                     display_name: {string: "Display Name", type: "char"},
@@ -123,7 +133,7 @@ QUnit.module('ViewEditorManager', {
                     ttype: {
                         string: "Field Type",
                         type: "selection",
-                        selection: [['many2one', "many2one"]],
+                        selection: [['many2one', 'many2one'], ['char', 'char']],
                     },
                 },
                 records: [{
@@ -137,6 +147,18 @@ QUnit.module('ViewEditorManager', {
                         name: "def",
                         ttype: "many2one",
                         relation: "coucou",
+                    },
+                    {
+                        id: 3,
+                        name: 'name',
+                        model: 'tasks',
+                        ttype: 'char',
+                    },
+                    {
+                        id: 4,
+                        name: 'description',
+                        model: 'tasks',
+                        ttype: 'char',
                     },
                 ]
             },
@@ -2656,6 +2678,95 @@ QUnit.module('ViewEditorManager', {
 
         vem.$('.o_web_studio_sidebar_content.o_display_view select[name="precision_day"] option[value="hour:quarter"]').prop('selected', true).trigger('change');
         await testUtils.nextTick();
+
+        vem.destroy();
+    });
+
+    QUnit.module('Map');
+
+    QUnit.test('marker popup fields in editor sidebar', async function (assert) {
+        assert.expect(12);
+
+        this.data['res.partner'] = {
+            fields: {
+                display_name: {string: 'Display Name', type: 'char'},
+                partner_latitude: {string: 'Latitude', type: 'float'},
+                partner_longitude: {string: 'Longitude', type: 'float'},
+                contact_address_complete: {string: 'Address', type: 'char'},
+            },
+            records: [{
+                id: 1,
+                display_name: 'Magan',
+                partner_latitude: 10.0,
+                partner_longitude: 10.5,
+            }],
+        };
+
+        let fieldsView;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'tasks',
+            arch: "<map res_partner='partner_id' routing='true' studio_map_field_ids='[3, 4]' hide_name='true' hide_address='true'>" +
+                    "<field name='name' string='Name'/>" +
+                    "<field name='description' string='Description'/>" +
+                "</map>",
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.deepEqual(args.operations[0], {
+                        type: 'map_popup_fields',
+                        target: {field_ids: [3], operation_type: 'remove'},
+                    });
+                    fieldsView.arch = "<map res_partner='partner_id' routing='true' studio_map_field_ids='[4]' hide_name='true' hide_address='true'>" +
+                        "<field name='description' string='Description'/>" +
+                    "</map>";
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            map: fieldsView,
+                        },
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // Used to generate the new fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        // Marker popup field in sidebar
+        assert.containsOnce(vem, '.o_web_studio_sidebar .o_map_popup_fields',
+            'Should have marker popup fields');
+        assert.containsN(vem, '.o_web_studio_sidebar .o_map_popup_fields .badge', 2,
+            'Should have two selected fields in marker popup fields');
+
+        // Map rendered correctly
+        assert.strictEqual(vem.view_type, 'map',
+            'view type should be map');
+        assert.strictEqual(vem.editor.state.records.length, 1,
+            'There should be one records');
+        assert.containsOnce(vem.editor, 'div.leaflet-marker-icon',
+            'There should be one marker on the map');
+
+        // Marker popup have correct field
+        await testUtils.dom.click(vem.editor.$('div.leaflet-marker-icon'));
+
+        assert.strictEqual(vem.editor.$('.o_map_popup_table tbody tr:first .contentName').text().trim(), 'Name',
+            'Marker popup have should have a name field');
+        assert.strictEqual(vem.editor.$('.o_map_popup_table tbody tr:first .contentString').text().trim(), 'Chhagan',
+            'Marker popup have should have a name Chhagan');
+        assert.strictEqual(vem.editor.$('.o_map_popup_table tbody tr:last .contentName').text().trim(), 'Description',
+            'Marker popup have should have a Description field');
+        assert.strictEqual(vem.editor.$('.o_map_popup_table tbody tr:last .contentString').text().trim(), 'shaktiman',
+            'Marker popup have should have a description shaktiman');
+
+        // Remove field and check marker popup fields
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_map_popup_fields .badge:first .o_delete'));
+        assert.containsOnce(vem, '.o_web_studio_sidebar .o_map_popup_fields .badge',
+            'Should have only one selected fields in marker popup fields');
+
+        await testUtils.dom.click(vem.editor.$('div.leaflet-marker-icon'));
+        assert.containsOnce(vem.editor, '.o_map_popup_table tbody tr',
+            'Marker popup have should have only Description field');
 
         vem.destroy();
     });

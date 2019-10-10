@@ -42,12 +42,16 @@ class View(models.Model):
 
         # apply_group only returns the view groups ids.
         # As we need also need their name and display in Studio to edit these groups
-        # (many2many widget), they have been added to node (only in Studio).
+        # (many2many widget), they have been added to node (only in Studio). Also,
+        # we need ids of the fields inside map view(that displays marker popup) to edit
+        # them with similar many2many widget. So we also add them to node (only in Studio).
         # This preprocess cannot be done at validation time because the
-        # attribute `studio_groups` is not RNG valid.
+        # attributes `studio_groups` and `studio_map_field_ids` are not RNG valid.
         if self._context.get('studio') and not self._context.get('check_field_names'):
             if node.get('groups'):
                 self.set_studio_groups(node)
+            if node.tag == 'map':
+                self.set_studio_map_popup_fields(model, node)
 
         return super(View, self)._apply_group(model, node, modifiers, fields)
 
@@ -63,6 +67,13 @@ class View(models.Model):
                     "display_name": group.display_name
                 })
         node.attrib['studio_groups'] = json.dumps(studio_groups)
+
+    @api.model
+    def set_studio_map_popup_fields(self, model, node):
+        field_names = [field.get('name') for field in node.findall('field')]
+        field_ids = self.env['ir.model.fields'].search([('model', '=', model), ('name', 'in', field_names)]).ids
+        if field_ids:
+            node.attrib['studio_map_field_ids'] = json.dumps(field_ids)
 
     def create_simplified_form_view(self, res_model):
         model = self.env[res_model]

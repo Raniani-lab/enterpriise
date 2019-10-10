@@ -28,8 +28,8 @@ class AssetSell(models.TransientModel):
 
     @api.onchange('action')
     def _onchange_action(self):
-        if self.action == 'sell' and self.asset_id.children_ids:
-            raise UserError("You cannot automate the journal entry for an asset that has had a gross increase. Please use 'Dispose' and modify the entries.")
+        if self.action == 'sell' and self.asset_id.children_ids.filtered(lambda a: a.state in ('draft', 'open') or a.value_residual > 0):
+            raise UserError("You cannot automate the journal entry for an asset that has a running gross increase. Please use 'Dispose' on the increase(s).")
 
     @api.depends('asset_id', 'invoice_id', 'invoice_line_id')
     def _compute_gain_or_loss(self):

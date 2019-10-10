@@ -101,7 +101,12 @@ class AccountMove(models.Model):
     def _depreciate(self):
         for move in self.filtered(lambda m: m.asset_id):
             asset = move.asset_id
-            asset.value_residual -= abs(sum(move.line_ids.filtered(lambda l: l.account_id == asset.account_depreciation_id).mapped('balance')))
+            if asset.state in ('open', 'pause'):
+                asset.value_residual -= abs(sum(move.line_ids.filtered(lambda l: l.account_id == asset.account_depreciation_id).mapped('balance')))
+            elif asset.state == 'close':
+                asset.value_residual -= abs(sum(move.line_ids.filtered(lambda l: l.account_id != asset.account_depreciation_id).mapped('balance')))
+            else:
+                raise UserError(_('You cannot post a depreciation on an asset in this state: %s') % dict(self.env['account.asset']._fields['state'].selection)[asset.state])
 
     def _auto_create_asset(self):
         create_list = []

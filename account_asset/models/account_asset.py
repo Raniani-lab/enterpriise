@@ -526,10 +526,6 @@ class AccountAsset(models.Model):
                     raise UserError('There are depreciation posted after the invoice date (%s).\nPlease revert them or change the date of the invoice.' % disposal_date)
                 else:
                     raise UserError('There are depreciation posted in the future, please revert them.')
-            # Also dispose of the children
-            # This is not implemented for selling with an invoice.
-            if not invoice_line_id and asset.children_ids:
-                move_ids += asset.children_ids._get_disposal_moves([self.env['account.move.line']] * len(asset.children_ids), disposal_date)
             account_analytic_id = asset.account_analytic_id
             analytic_tag_ids = asset.analytic_tag_ids
             company_currency = asset.company_id.currency_id
@@ -581,10 +577,11 @@ class AccountAsset(models.Model):
     def set_to_close(self, invoice_line_id, date=None):
         self.ensure_one()
         disposal_date = date or fields.Date.today()
-        if invoice_line_id and self.children_ids:
-            raise UserError("You cannot automate the journal entry for an asset that has had a gross increase. Please use 'Dispose' and modify the entries.")
-        move_ids = self._get_disposal_moves([invoice_line_id], disposal_date)
-        self.write({'state': 'close', 'disposal_date': disposal_date})
+        if invoice_line_id and self.children_ids.filtered(lambda a: a.state in ('draft', 'open') or a.value_residual > 0):
+            raise UserError("You cannot automate the journal entry for an asset that has a running gross increase. Please use 'Dispose' on the increase(s).")
+        full_asset = self + self.children_ids
+        move_ids = full_asset._get_disposal_moves([invoice_line_id] * len(full_asset), disposal_date)
+        full_asset.write({'state': 'close', 'disposal_date': disposal_date})
         if move_ids:
             return self._return_disposal_view(move_ids)
 

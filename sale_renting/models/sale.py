@@ -167,6 +167,11 @@ class RentalOrderLine(models.Model):
         """Trigger description recomputation"""
         self.product_id_change()
 
+    @api.onchange('is_rental')
+    def _onchange_is_rental(self):
+        if self.is_rental and not self.order_id.is_rental_order:
+            self.order_id.is_rental_order = True
+
     _sql_constraints = [
         ('rental_stock_coherence',
             "CHECK(NOT is_rental OR qty_returned <= qty_delivered)",

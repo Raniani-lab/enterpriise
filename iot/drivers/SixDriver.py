@@ -127,13 +127,16 @@ class SixDriver(Driver):
         """
 
         while True:
-            action = self.actions.get()
-            if action['type'] == 'balance':
-                self.close_shift()  # Shift must be closed
-                self.balance()
-            else:
-                self.process_transaction(action)
-            time.sleep(2)  # If the delay between transactions is too small, the second one will fail
+            try:
+                action = self.actions.get()
+                if action['type'] == 'balance':
+                    self.close_shift()  # Shift must be closed
+                    self.balance()
+                else:
+                    self.process_transaction(action)
+                time.sleep(2)  # If the delay between transactions is too small, the second one will fail
+            except Exception:
+                pass
 
     def process_transaction(self, transaction):
         """Processes a transaction on the terminal and triggers the required

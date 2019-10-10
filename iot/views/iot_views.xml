@@ -201,6 +201,7 @@
             <search string="IoT Device">
                 <field name="name"/>
                 <field name="type"/>
+                <field name="iot_id"/>
                 <group expand="0" string="Group By">
                     <filter name="group_by_type" string="Device type" context="{'group_by': 'type'}"/>
                     <filter name="group_by_iot_id" string="IoT Box" context="{'group_by':'iot_id'}"/>

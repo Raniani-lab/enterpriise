@@ -226,7 +226,7 @@ class HelpdeskTeam(models.Model):
             list_fields.insert(2, 'sla_reached_late')
 
         HelpdeskTicket = self.env['helpdesk.ticket']
-        tickets = HelpdeskTicket.read_group(domain + [('stage_id.is_close', '=', False)], list_fields, group_fields, lazy=False)
+        tickets = HelpdeskTicket._read_group_raw(domain + [('stage_id.is_close', '=', False)], list_fields, group_fields, lazy=False)
         result = {
             'helpdesk_target_closed': self.env.user.helpdesk_target_closed,
             'helpdesk_target_rating': self.env.user.helpdesk_target_rating,
@@ -245,8 +245,7 @@ class HelpdeskTeam(models.Model):
             deadline_hour = data.get('sla_deadline:hour')
             deadline = False
             if deadline_hour:
-                    deadline_year = datetime.datetime.strptime(data['sla_deadline:year'], '%Y')
-                    deadline = datetime.datetime.strptime(deadline_hour, '%I:%M %d %b').replace(year=deadline_year.year)
+                    deadline = datetime.datetime.strptime(deadline_hour[0].split('/')[1], '%Y-%m-%d %H:%M:%S')
             sla_deadline = fields.Datetime.now() > deadline if deadline else False
             return sla_deadline or data.get('sla_reached_late')
 

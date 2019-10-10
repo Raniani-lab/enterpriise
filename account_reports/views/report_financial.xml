@@ -77,13 +77,6 @@
                     </t>
                     <t t-esc="journal_value"/>
                 </t>
-            <t t-if="options.get('analytic_account_ids')">
-                <br/>
-                Analytic Accounts:
-                <t t-foreach="options['analytic_account_ids']" t-as="acc">
-                    <t t-esc="acc.get('name')"/>
-                </t>
-            </t>
             </div>
             <div class="col-12">
                 <t t-if="options.get('analytic_accounts') != None">

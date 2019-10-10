@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.http import request
+from odoo.modules import module as modules
 import odoo
 import json
-import os
 import zipfile
 import io
 import json
@@ -18,15 +18,12 @@ class IoTController(http.Controller):
             return ''
 
         zip_list = []
-        for addons_path in odoo.modules.module.ad_paths:
-            for module in sorted(os.listdir(str(addons_path))):
-                if os.path.isdir(os.path.join(addons_path, module)) and os.path.isdir(os.path.join(addons_path, module, 'drivers')):
-                    for file in os.listdir(os.path.join(addons_path, module, 'drivers')):
-                        if file.startswith('.') or file.startswith('_'):
-                            continue
-                        # zip it
-                        full_path_file = os.path.join(addons_path, module, 'drivers', file)
-                        zip_list.append((full_path_file, file))
+        for module in modules.get_modules():
+            for file in modules.get_module_filetree(module, 'drivers').keys():
+                if file.startswith('.') or file.startswith('_'):
+                    continue
+                # zip it
+                zip_list.append((modules.get_resource_path(module, 'drivers', file), file))
         file_like_object = io.BytesIO()
         zipfile_ob = zipfile.ZipFile(file_like_object, 'w')
         for zip in zip_list:

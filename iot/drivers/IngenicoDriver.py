@@ -7,6 +7,7 @@ from logging import getLogger
 from time import sleep
 from traceback import format_exc
 from zlib import crc32
+import socket
 
 _logger = getLogger(__name__)
 

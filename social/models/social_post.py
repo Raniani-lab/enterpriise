@@ -52,7 +52,7 @@ class SocialPost(models.Model):
     published_date = fields.Datetime('Published date', readonly=True,
         help="When the global post was published. The actual sub-posts published dates may be different depending on the media.")
     # stored for better calendar view performance
-    calendar_date = fields.Datetime('Calendar Date', compute='_compute_calendar_date', store=True,
+    calendar_date = fields.Datetime('Calendar Date', compute='_compute_calendar_date', store=True, readonly=False,
         help="Technical field for the calendar view.")
     #UTM
     utm_campaign_id = fields.Many2one('utm.campaign', domain="[('is_website', '=', False)]", string="UTM Campaign")
@@ -196,6 +196,12 @@ class SocialPost(models.Model):
         if not self.user_has_groups('social.group_social_manager') and \
            (vals.get('state', 'draft') != 'draft' or any(post.state != 'draft' for post in self)):
             raise AccessError(_('You are not allowed to create/update posts in a state other than "Draft".'))
+
+        if vals.get('calendar_date'):
+            if any(post.state != 'scheduled' for post in self):
+                raise UserError(_("You can only move posts that are scheduled."))
+
+            vals['scheduled_date'] = vals['calendar_date']
 
         return super(SocialPost, self).write(vals)
 

@@ -98,28 +98,28 @@ return {
         var MyPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
 
         if (MyPeerConnection) {
-            var peerConnection = new MyPeerConnection({
+            this.peerConnection = new MyPeerConnection({
                 iceServers: []
             });
             var noop = function () {};
             this.localIPs = {};
 
-            if (typeof peerConnection.createDataChannel !== "undefined") {
+            if (typeof this.peerConnection.createDataChannel !== "undefined") {
                 //create a bogus data channel
-                peerConnection.createDataChannel('');
+                this.peerConnection.createDataChannel('');
 
                 // create offer and set local description
-                peerConnection.createOffer().then(function (sdp) {
+                this.peerConnection.createOffer().then(function (sdp) {
                     sdp.sdp.split('\n').forEach(function (line) {
                         if (line.indexOf('candidate') < 0) return;
                         line.match(self.ipRegex).map(self._iterateIP.bind(self));
                     });
 
-                    peerConnection.setLocalDescription(sdp, noop, noop);
+                    self.peerConnection.setLocalDescription(sdp, noop, noop);
                 });
 
                 //listen for candidate events
-                peerConnection.onicecandidate = this._onIceCandidate.bind(this);
+                this.peerConnection.onicecandidate = this._onIceCandidate.bind(this);
             }
         }
     },
@@ -150,6 +150,11 @@ return {
     */
     _onIceCandidate: function (ice) {
         if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(this.ipRegex)) {
+            if(this.peerConnection.iceGatheringState === 'complete' && _.isEmpty(this.ranges)) {
+                this._addIPRange('192.168.0.');
+                this._addIPRange('192.168.1.');
+                this._addIPRange('10.0.0.');
+            }
             return;
         }
         var res = ice.candidate.candidate.match(this.ipRegex);

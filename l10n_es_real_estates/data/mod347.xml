@@ -35,7 +35,7 @@
         <record id="l10n_es_reports.mod_347_operations_title" model="account.financial.html.report.line">
             <field name="name">Relación de declarados</field>
             <field name="code">aeat_mod_347_operations_title</field>
-            <field name="formulas">balance = mod_347_operations_real_estates_sold.balance + aeat_mod_347_operations_real_estates_bought.balance + aeat_mod_347_operations_insurance_bought.balance + aeat_mod_347_operations_regular_sold.balance + aeat_mod_347_operations_regular_bought.balance</field>
+            <field name="formulas">balance = aeat_mod_347_operations_real_estates_sold.balance + aeat_mod_347_operations_real_estates_bought.balance + aeat_mod_347_operations_insurance_bought.balance + aeat_mod_347_operations_regular_sold.balance + aeat_mod_347_operations_regular_bought.balance</field>
             <field name="financial_report_id" ref="l10n_es_reports.mod_347"/>
             <field name="sequence" eval="5"/>
             <field name="level" eval="1"/>
@@ -49,10 +49,9 @@
             <field name="level" eval="2"/>
         </record>
 
-        <!-- TODO: rename in master -->
-        <record id="mod_347_operations_real_estates_sold" model="account.financial.html.report.line">
+        <record id="mod_347_operations_real_estates_bought" model="account.financial.html.report.line">
             <field name="name">A - Adquisiciones de bienes y servicios superiores a 3.005,06 €</field>
-            <field name="code">mod_347_temp</field>
+            <field name="code">aeat_mod_347_operations_real_estates_bought</field>
             <field name="parent_id" ref="mod_347_operations_real_estates_title"/>
             <field name="domain" eval="[('invoice_id.l10n_es_reports_mod347_invoice_type','=','real_estates'), ('invoice_id.type','in',['in_invoice','in_refund'])]"/>
             <field name="show_domain">always</field>
@@ -64,8 +63,7 @@
             <field name="level" eval="3"/>
         </record>
 
-        <!-- TODO: rename in master -->
-        <record id="mod_347_operations_real_estates_bought" model="account.financial.html.report.line">
+        <record id="mod_347_operations_real_estates_sold" model="account.financial.html.report.line">
             <field name="name">B - Entregas de bienes y prestaciones de servicios superiores a 3.005,06 €</field>
             <field name="code">aeat_mod_347_operations_real_estates_sold</field>
             <field name="parent_id" ref="mod_347_operations_real_estates_title"/>
@@ -77,11 +75,6 @@
             <field name="l10n_es_mod347_threshold">3005.06</field>
             <field name="sequence" eval="8"/>
             <field name="level" eval="3"/>
-        </record>
-
-        <!-- technical device to allow for upgrades TODO: remove in master -->
-        <record id="mod_347_operations_real_estates_bought" model="account.financial.html.report.line">
-            <field name="code">mod_347_operations_real_estates_bought</field>
         </record>
 
     </data>

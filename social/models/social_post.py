@@ -231,6 +231,11 @@ class SocialPost(models.Model):
         if any(not post.message or not post.account_ids for post in self):
             raise UserError(_('Please specify a message and at least one account to post into.'))
 
+        self.write({
+            'post_method': 'now',
+            'scheduled_date': False
+        })
+
         self._action_post()
 
     def action_redirect_to_clicks(self):

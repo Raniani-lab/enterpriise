@@ -1308,11 +1308,6 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__parent_user_id
-msgid "Zboub"
-msgstr ""
-
-#. module: hr_appraisal
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_reminder__event__arrival
 msgid "after the arrival date"
 msgstr ""

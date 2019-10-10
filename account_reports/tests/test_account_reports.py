@@ -2746,12 +2746,12 @@ class TestAccountReports(TestAccountReportsCommon):
     # -------------------------------------------------------------------------
 
 
-    def _create_tax_report_line(self, name, country, tag_name=None, parent_line=None, sequence=None, code=None, formula=None):
+    def _create_tax_report_line(self, name, report, tag_name=None, parent_line=None, sequence=None, code=None, formula=None):
         """ Creates a tax report line
         """
         create_vals = {
             'name': name,
-            'country_id': country.id,
+            'report_id': report.id,
         }
         if tag_name:
             create_vals['tag_name'] = tag_name
@@ -2787,17 +2787,22 @@ class TestAccountReports(TestAccountReportsCommon):
         #   - Tax 11%
         #/Tax difference (42% - 11%)
 
+        tax_report = self.env['account.tax.report'].create({
+            'name': 'Test',
+            'country_id': test_country.id,
+        })
+
         # We create the lines in a different order from the one they have in report,
         # so that we ensure sequence is taken into account properly when rendering the report
-        tax_section =  self._create_tax_report_line('Tax', test_country, sequence=2)
-        base_section =  self._create_tax_report_line('Base', test_country, sequence=1)
-        base_11_line = self._create_tax_report_line('Base 11%', test_country, sequence=2, parent_line=base_section, tag_name='base_11')
-        base_42_line = self._create_tax_report_line('Base 42%', test_country, sequence=1, parent_line=base_section, tag_name='base_42')
-        tax_42_section = self._create_tax_report_line('Tax 42%', test_country, sequence=1, parent_line=tax_section, code='tax_42')
-        tax_31_5_line = self._create_tax_report_line('Tax 31.5%', test_country, sequence=2, parent_line=tax_42_section, tag_name='tax_31_5')
-        tax_10_5_line = self._create_tax_report_line('Tax 10.5%', test_country, sequence=1, parent_line=tax_42_section, tag_name='tax_10_5')
-        tax_11_line = self._create_tax_report_line('Tax 10.5%', test_country, sequence=2, parent_line=tax_section, tag_name='tax_11', code='tax_11')
-        tax_difference_line = self._create_tax_report_line('Tax difference (42%-11%)', test_country, sequence=3, formula='tax_42 - tax_11')
+        tax_section =  self._create_tax_report_line('Tax', tax_report, sequence=2)
+        base_section =  self._create_tax_report_line('Base', tax_report, sequence=1)
+        base_11_line = self._create_tax_report_line('Base 11%', tax_report, sequence=2, parent_line=base_section, tag_name='base_11')
+        base_42_line = self._create_tax_report_line('Base 42%', tax_report, sequence=1, parent_line=base_section, tag_name='base_42')
+        tax_42_section = self._create_tax_report_line('Tax 42%', tax_report, sequence=1, parent_line=tax_section, code='tax_42')
+        tax_31_5_line = self._create_tax_report_line('Tax 31.5%', tax_report, sequence=2, parent_line=tax_42_section, tag_name='tax_31_5')
+        tax_10_5_line = self._create_tax_report_line('Tax 10.5%', tax_report, sequence=1, parent_line=tax_42_section, tag_name='tax_10_5')
+        tax_11_line = self._create_tax_report_line('Tax 10.5%', tax_report, sequence=2, parent_line=tax_section, tag_name='tax_11', code='tax_11')
+        tax_difference_line = self._create_tax_report_line('Tax difference (42%-11%)', tax_report, sequence=3, formula='tax_42 - tax_11')
 
         # Create two taxes linked to report lines
         tax_template_11 = self.env['account.tax.template'].create({
@@ -2913,7 +2918,11 @@ class TestAccountReports(TestAccountReportsCommon):
 
         # Generate the report and check the results
         report = self.env['account.generic.tax.report']
-        report_opt = report._get_options({'date': {'period_type': 'custom', 'filter': 'custom', 'date_to': invoice.date, 'mode': 'range', 'date_from': invoice.date}})
+        report_opt = report._get_options()
+        report_opt.update({
+            'date': {'period_type': 'custom', 'filter': 'custom', 'date_to': invoice.date, 'mode': 'range', 'date_from': invoice.date},
+            'tax_report': tax_report.id,
+        })
         new_context = report._set_context(report_opt)
 
         # We check the taxes on invoice have impacted the report properly

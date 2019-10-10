@@ -248,18 +248,35 @@
         </div>
     </template>
 
-    <template id="search_template_extra_options_generic_tax_report" inherit_id="account_reports.search_template_extra_options" primary="True">
-        <xpath expr="//div[@role='menu']" position="inside">
-            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('tax_grids') != None" title="Group amounts by tax grid" data-filter="tax_grids" groups="account.group_account_user">Use Tax Grid</a>
-        </xpath>
-    </template>
-
     <template id="search_template_generic_tax_report" inherit_id="account_reports.search_template" primary="True">
-        <xpath expr="//div[@id='extra_options_dropdown']/t" position="replace">
-            <t t-call="account_reports.search_template_extra_options_generic_tax_report"/>
+        <xpath expr="//div[@id='extra_options_dropdown']/t" position="after">
+            <t t-call="account_reports.search_template_tax_report_choser"/>
         </xpath>
     </template>
 
+    <template id="search_template_tax_report_choser">
+        <div id="tax_report_choice_option" class="btn-group o_dropdown o_account_reports_filter_tax_report">
+            <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="fa fa-book"/>
+                Tax Report:
+                <t t-if="options['tax_report']">
+                    <t t-set="selected_report" t-value="[opt for opt in options['available_tax_reports'] if opt['id'] == options['tax_report']][0]"/>
+                    <t t-esc="selected_report['name']"/>
+                </t>
+                <t t-else="">
+                    Global Summary
+                </t>
+            </a>
+            <div class="dropdown-menu o_filters_menu" role="menu">
+                <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" title="Global Summary" data-filter="tax_report" t-att-data-id="None" groups="account.group_account_user">Global Summary</a>
+                <t t-foreach="options['available_tax_reports']" t-as="report">
+                    <a tole="menuitem" class="dropdown-item js_account_reports_one_choice_filter" t-att-title="report['name']" t-att-data-id="report['id']" data-filter="tax_report">
+                        <t t-esc="report['name']"/>
+                    </a>
+                </t>
+            </div>
+        </div>
+    </template>
 
     </data>
 </odoo>

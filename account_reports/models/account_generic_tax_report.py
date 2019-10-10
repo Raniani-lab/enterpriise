@@ -10,7 +10,6 @@ from odoo.addons.web.controllers.main import clean_action
 from dateutil.relativedelta import relativedelta
 import json
 import base64
-from collections import defaultdict
 
 class generic_tax_report(models.AbstractModel):
     _inherit = 'account.report'
@@ -21,16 +20,22 @@ class generic_tax_report(models.AbstractModel):
     filter_date = {'mode': 'range', 'filter': 'last_month'}
     filter_all_entries = False
     filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
-    filter_tax_grids = True
+    filter_tax_report = None
 
-    @api.model
-    def _get_options(self, previous_options=None):
-        # We want the filter_tax_grids option to only be available if tax report line
-        # objects are available for the country of our company.
-        if not self.env['account.tax.report.line'].search_count([('country_id', '=', self.env.company.country_id.id)]):
-            self.filter_tax_grids = None
+    def _init_filter_tax_report(self, options, previous_options=None):
+        options['available_tax_reports'] = []
+        available_reports = self.env.company.get_available_tax_reports()
+        for report in available_reports:
+            options['available_tax_reports'].append({
+                'id': report.id,
+                'name': report.name,
+            })
 
-        return super(generic_tax_report, self)._get_options(previous_options)
+        options['tax_report'] = previous_options and previous_options.get('tax_report', None) or None
+
+        if not options['tax_report'] or options['tax_report'] not in available_reports.ids:
+            default_report = self.env.company.get_default_selected_tax_report()
+            options['tax_report'] = default_report and default_report.id or None
 
     def _get_reports_buttons(self):
         res = super(generic_tax_report, self)._get_reports_buttons()
@@ -209,7 +214,7 @@ class generic_tax_report(models.AbstractModel):
     def _get_columns_name(self, options):
         columns_header = [{}]
 
-        if options.get('tax_grids'):
+        if options.get('tax_report'):
             columns_header.append({'name': '%s \n %s' % (_('Balance'), self.format_date(options)), 'class': 'number', 'style': 'white-space: pre;'})
             if options.get('comparison') and options['comparison'].get('periods'):
                 for p in options['comparison']['periods']:
@@ -277,7 +282,7 @@ class generic_tax_report(models.AbstractModel):
     def _compute_from_amls(self, options, dict_to_fill, period_number):
         """ Fills dict_to_fill with the data needed to generate the report.
         """
-        if options.get('tax_grids'):
+        if options.get('tax_report'):
             self._compute_from_amls_grids(options, dict_to_fill, period_number)
         else:
             self._compute_from_amls_taxes(options, dict_to_fill, period_number)
@@ -292,7 +297,7 @@ class generic_tax_report(models.AbstractModel):
                                                  * CASE WHEN account_journal.type = 'sale' THEN -1 ELSE 1 END
                                                  * CASE WHEN account_move.type in ('in_refund', 'out_refund') THEN -1 ELSE 1 END)
                         AS balance
-                 FROM %s
+                 FROM """ + tables + """
                  JOIN account_move
                  ON account_move_line.move_id = account_move.id
                  JOIN account_account_tag_account_move_line_rel aml_tag
@@ -303,10 +308,18 @@ class generic_tax_report(models.AbstractModel):
                  ON aml_tag.account_account_tag_id = acc_tag.id
                  JOIN account_tax_report_line_tags_rel
                  ON acc_tag.id = account_tax_report_line_tags_rel.account_account_tag_id
-                 WHERE account_move_line.tax_exigible AND %s
+                 JOIN account_tax_report_line report_line
+                 ON account_tax_report_line_tags_rel.account_tax_report_line_id = report_line.id
+                 WHERE """ + where_clause + """
+                 AND report_line.report_id = %s
+                 AND account_move_line.tax_exigible
+                 AND account_journal.id = account_move_line.journal_id
                  GROUP BY account_tax_report_line_tags_rel.account_tax_report_line_id
-        """ %(tables, where_clause)
-        self.env.cr.execute(sql, where_params)
+        """
+
+        params = where_params + [options['tax_report']]
+        self.env.cr.execute(sql, params)
+
         results = self.env.cr.fetchall()
         for result in results:
             if result[0] in dict_to_fill:
@@ -350,22 +363,19 @@ class generic_tax_report(models.AbstractModel):
     @api.model
     def _get_lines(self, options, line_id=None):
         data = self._compute_tax_report_data(options)
-        if options.get('tax_grids'):
+        if options.get('tax_report'):
             return self._get_lines_by_grid(options, line_id, data)
         return self._get_lines_by_tax(options, line_id, data)
 
     def _get_lines_by_grid(self, options, line_id, grids):
         # Fetch the report layout to use
         country = self.env.company.country_id
-        report_lines = self.env['account.tax.report.line'].search([('country_id', '=', country.id), ('parent_id', '=', False)])
+        report = self.env['account.tax.report'].browse(options['tax_report'])
 
         # Build the report, line by line
         lines = []
-        lines_stack = list(report_lines) # first element of the list is the top of the stack
         deferred_total_lines = [] # list of tuples (index where to add the total in lines, tax report line object)
-        while lines_stack:
-            # Pop the first section off the stack
-            current_line = lines_stack.pop(0)
+        for current_line in report.get_lines_in_hierarchy():
 
             hierarchy_level = self._get_hierarchy_level(current_line)
 
@@ -382,10 +392,6 @@ class generic_tax_report(models.AbstractModel):
             else:
                 # Then it's a title line
                 lines.append(self._build_tax_section_line(current_line, hierarchy_level))
-
-            # Put current section's children on top the stack and update hierarchy if necessary
-            if current_line.children_line_ids:
-                lines_stack = list(current_line.children_line_ids) + lines_stack
 
         # Fill in in the total for each title line and get a mapping linking line codes to balances
         balances_by_code = self._postprocess_lines(lines, options)
@@ -457,9 +463,11 @@ class generic_tax_report(models.AbstractModel):
         return balances_by_code
 
     def compute_check(self, lines, options):
-        if not self.get_checks_to_perform(defaultdict(lambda: 0)):
-            return  # nothing to do here
-
+        """ Applies the check process defined for the currently displayed tax
+        report, if there is any. This function must only be called if the tax_report
+        option is used.
+        """
+        tax_report = self.env['account.tax.report'].browse(options['tax_report'])
 
         col_nber = len(options['comparison']['periods']) + 1
         mapping = {}
@@ -468,7 +476,7 @@ class generic_tax_report(models.AbstractModel):
         for line in lines:
             if line.get('line_code'):
                 mapping[line['line_code']] = line['columns'][0]['balance']
-        for i, calc in enumerate(self.get_checks_to_perform(mapping)):
+        for i, calc in enumerate(tax_report.get_checks_to_perform(mapping)):
             if calc[1]:
                 if isinstance(calc[1], float):
                     value = self.format_value(calc[1])
@@ -479,15 +487,6 @@ class generic_tax_report(models.AbstractModel):
         if controls:
             lines.extend([{'id': 'section_control', 'name': _('Controls failed'), 'unfoldable': False, 'columns': [{'name': '', 'style': 'white-space:nowrap;', 'balance': ''}] * col_nber, 'level': 0, 'line_code': False}] + controls)
             options['tax_report_control_error'] = "<table width='100%'><tr><th>Control</th><th>Difference</th></tr>{}</table>".format("".join(html_lines))
-
-    def get_checks_to_perform(self, d):
-        """ To override in localizations
-        If value is a float, it will be formatted with format_value
-        The line is not displayed if it is falsy (0, 0.0, False, ...)
-        :param d: the mapping dictionay between codes and values
-        :return: iterable of tuple (name, value)
-        """
-        return ()
 
     def _get_total_line_eval_dict(self, period_balances_by_code, period_date_from, period_date_to, options):
         """ By default, this function only returns period_balances_by_code; but it
@@ -615,12 +614,24 @@ class generic_tax_report(models.AbstractModel):
         return lines
 
     @api.model
+    def _get_tax_report_data_prefill_record(self, options):
+        """ Generator to prefill tax report data, depending on the selected options
+        (use of generic report or not). This function yields account.tax.repôrt.line
+        objects if the options required the use of a tax report template (account.tax.report) ;
+        else, it yields account.tax records.
+        """
+        if options.get('tax_report'):
+            for line in self.env['account.tax.report'].browse(options['tax_report']).line_ids:
+                yield line
+        else:
+            for tax in self.env['account.tax'].with_context(active_test=False).search([('company_id', '=', self.env.company.id)]):
+                yield tax
+
+    @api.model
     def _compute_tax_report_data(self, options):
         rslt = {}
-        grouping_key = options.get('tax_grids') and 'account.tax.report.line' or 'account.tax'
-        search_domain = options.get('tax_grids') and [('country_id', '=', self.env.company.country_id.id)] or [('company_id', '=', self.env.company.id)]
-        empty_data_dict = options.get('tax_grids') and {'balance': 0} or {'net': 0, 'tax': 0}
-        for record in self.env[grouping_key].with_context(active_test=False).search(search_domain):
+        empty_data_dict = options.get('tax_report') and {'balance': 0} or {'net': 0, 'tax': 0}
+        for record in self._get_tax_report_data_prefill_record(options):
             rslt[record.id] = {'obj': record, 'show': False, 'periods': [empty_data_dict.copy()]}
             for period in options['comparison'].get('periods'):
                 rslt[record.id]['periods'].append(empty_data_dict.copy())

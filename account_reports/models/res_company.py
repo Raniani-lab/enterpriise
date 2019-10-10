@@ -25,6 +25,25 @@ class ResCompany(models.Model):
         is installed, so that the field is set automatically when added."""
         return self.env['account.journal'].search([('type', '=', 'general'), ('show_on_dashboard', '=', True), ('company_id', '=', self.id)], limit=1)
 
+    def get_default_selected_tax_report(self):
+        """ Returns the tax report object to be selected by default the first
+        time the tax report is open for current company; or None if there isn't any.
+
+        This method just selects the first available one, but is intended to be
+        a hook for localization modules wanting to select a specific report
+        depending on some particular factors (type of business, installed CoA, ...)
+        """
+        self.ensure_one()
+        available_reports = self.get_available_tax_reports()
+        return available_reports and available_reports[0] or None
+
+    def get_available_tax_reports(self):
+        """ Returns all the tax reports available for the country of the current
+        company.
+        """
+        self.ensure_one()
+        return self.env['account.tax.report'].search([('country_id', '=', self.country_id.id)])
+
     def write(self, values):
         # in case the user want to change the journal or the periodicity without changing the date, we should change the next_activity
         # therefore we set the account_tax_original_periodicity_reminder_day to false so that it will be recomputed

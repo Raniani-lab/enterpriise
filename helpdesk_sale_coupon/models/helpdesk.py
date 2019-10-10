@@ -8,7 +8,7 @@ class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
     coupons_count = fields.Integer('Coupons Count', compute="_compute_coupons_count")
-    coupon_ids = fields.Many2many('sale.coupon', string="Generated Coupons")
+    coupon_ids = fields.Many2many('coupon.coupon', string="Generated Coupons")
 
     @api.depends('coupon_ids')
     def _compute_coupons_count(self):
@@ -20,7 +20,7 @@ class HelpdeskTicket(models.Model):
         action = {
             'type': 'ir.actions.act_window',
             'name': _('Coupons'),
-            'res_model': 'sale.coupon',
+            'res_model': 'coupon.coupon',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.coupon_ids.ids)],
             'context': dict(self._context, create=False, edit=False, default_company_id=self.company_id.id),

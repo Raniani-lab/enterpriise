@@ -143,6 +143,7 @@ var CloseSession = AbstractAction.extend({
             this.do_warn(_t('Error performing balance'), data.Error);
             return;
         } else if (data.TicketMerchant && this.printer) {
+            $('.pos-receipts').addClass('pos-receipt-print');
             this.printer.print_receipt("<div class='pos-receipt'><div class='pos-payment-terminal-receipt'>" + data.TicketMerchant.replace(/\n/g, "<br />") + "</div></div>");
         }
         terminal.remove_listener();

@@ -1073,6 +1073,8 @@ class AccountMove(models.Model):
             date_mx = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
             if not move.invoice_date:
                 move.invoice_date = date_mx.date()
+                move.with_context(
+                    check_move_validity=False)._onchange_invoice_date()
             if not move.l10n_mx_edi_time_invoice:
                 move.l10n_mx_edi_time_invoice = date_mx
             move._l10n_mx_edi_update_hour_timezone()

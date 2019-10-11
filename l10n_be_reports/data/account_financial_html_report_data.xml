@@ -1534,7 +1534,7 @@
             <field name="name">14 - Bénéfice (Perte) à reporter</field>
             <field name="code">BE_PL_14</field>
             <field name="financial_report_id" ref="account_financial_report_be_profitandloss0"/>
-            <field name="formulas">balance = BE_9906.balance + BE_791.balance + BE_691.balance; credit = BE_9906.credit + BE_791.credit + BE_691.credit; debit = BE_9906.debit + BE_791.debit + BE_691.debit</field>
+            <field name="formulas">balance = BE_9906.balance + BE_791.balance - BE_691_2.balance; credit = BE_9906.credit + BE_791.credit + BE_691.credit; debit = BE_9906.debit + BE_791.debit + BE_691.debit</field>
             <field name="sequence" eval="27"/>
             <field name="level" eval="1" />
         </record>

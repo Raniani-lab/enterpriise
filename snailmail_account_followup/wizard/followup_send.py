@@ -49,7 +49,7 @@ class FollowupSend(models.TransientModel):
                     'model': 'res.partner',
                     'res_id': partner.id,
                     'user_id': self.env.user.id,
-                    'report_template': self.env.ref('account_reports.action_report_followup').id,
+                    'report_template': self.env.ref('account_followup.action_report_followup').id,
                     # we will only process partners that are linked to the user current company
                     # TO BE CHECKED
                     'company_id': self.env.company.id,

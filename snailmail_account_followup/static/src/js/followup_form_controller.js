@@ -40,7 +40,7 @@ FollowupFormController.include({
             return;
         }
         this._super.apply(this, arguments);
-        var followupLevel = this.model.get(this.handle).data.followup_level;
+        var followupLevel = this.model.localData[this.handle].data.followup_level;
         if (followupLevel.send_letter) {
             this.$buttons.find('button.o_account_followup_send_letter_button')
             .removeClass('btn-secondary').addClass('btn-primary');

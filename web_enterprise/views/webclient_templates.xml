@@ -91,6 +91,7 @@
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_column.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_column_quick_create.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_renderer_mobile.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_tabs_mobile_mixin.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_view.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/relational_fields.js"></script>

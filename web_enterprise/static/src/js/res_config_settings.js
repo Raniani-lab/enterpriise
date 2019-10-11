@@ -8,14 +8,19 @@ if (!config.device.isMobile) {
 
 var core = require('web.core');
 var BaseSetting = require('base.settings');
+var KanbanTabsMobileMixin = require('web.KanbanTabsMobileMixin');
 
-BaseSetting.Renderer.include({
+BaseSetting.Renderer.include(Object.assign({}, KanbanTabsMobileMixin, {
     start: function () {
         var prom = this._super.apply(this, arguments);
         core.bus.on("DOM_updated", this, function () {
             this._moveToTab(this.currentIndex || this._currentAppIndex());
         });
         return prom;
+    },
+    on_attach_callback: function () {
+        this._super.apply(this, arguments);
+        this._computeTabPosition(this.modules, this.currentIndex, this.$('.settings_tab'));
     },
     /**
      * In mobile view behaviour is like swipe content left / right and apps tab will be shown on the top.
@@ -38,27 +43,22 @@ BaseSetting.Renderer.include({
 
             if (index === previous) {
                 tab.addClass("previous");
-                tab.css("margin-left", "0px");
                 view.addClass("previous");
             } else if (index === next) {
                 tab.addClass("next");
-                tab.css("margin-left", "-" + tab.outerWidth() + "px");
                 view.addClass("next");
             } else if (index < moveTo) {
                 tab.addClass("before");
-                tab.css("margin-left", "-" + tab.outerWidth() + "px");
                 view.addClass("before");
             } else if (index === moveTo) {
-                var marginLeft = tab.outerWidth() / 2;
-                tab.css("margin-left", "-" + marginLeft + "px");
                 tab.addClass("current");
                 view.addClass("current");
             } else if (index > moveTo) {
                 tab.addClass("after");
-                tab.css("margin-left", "0");
                 view.addClass("after");
             }
         });
+        this._computeTabPosition(this.modules, moveTo, this.$('.settings_tab'));
     },
     /**
      * Enables swipe navigation between settings pages
@@ -108,7 +108,7 @@ BaseSetting.Renderer.include({
             self._enableSwipe();
         });
     }
-});
+}));
 
 var view_registry = require('web.view_registry');
 var BaseSettingsView = view_registry.get('base_settings');

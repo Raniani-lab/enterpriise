@@ -8,17 +8,17 @@ odoo.define('web.KanbanRendererMobile', function (require) {
  */
 
 var config = require('web.config');
+if (!config.device.isMobile) {
+    return;
+}
 var core = require('web.core');
 var KanbanRenderer = require('web.KanbanRenderer');
+var KanbanTabsMobileMixin = require('web.KanbanTabsMobileMixin');
 
 var _t = core._t;
 var qweb = core.qweb;
 
-if (!config.device.isMobile) {
-    return;
-}
-
-KanbanRenderer.include({
+KanbanRenderer.include(Object.assign({}, KanbanTabsMobileMixin, {
     custom_events: _.extend({}, KanbanRenderer.prototype.custom_events || {}, {
         quick_create_column_created: '_onColumnAdded',
     }),
@@ -48,7 +48,7 @@ KanbanRenderer.include({
             $column.scrollLeft(this._scrollPosition.left);
             $column.scrollTop(this._scrollPosition.top);
         }
-        this._computeTabPosition();
+        this._computeTabPosition(this.widgets, this.activeColumnIndex, this.$('.o_kanban_mobile_tabs'));
         this._super.apply(this, arguments);
     },
     /**
@@ -172,60 +172,6 @@ KanbanRenderer.include({
     },
 
     /**
-     * Update the tabs positions
-     *
-     * @private
-     */
-    _computeTabPosition: function () {
-        this._computeTabJustification();
-        this._computeTabScrollPosition();
-    },
-
-    /**
-     * Update the tabs positions
-     *
-     * @private
-     */
-    _computeTabScrollPosition: function () {
-        if (this.widgets.length) {
-            var lastItemIndex = this.widgets.length - 1;
-            var moveToIndex = this.activeColumnIndex;
-            var scrollToLeft = 0;
-            for (var i = 0; i < moveToIndex; i++) {
-                var columnWidth = this._getTabWidth(this.widgets[i]);
-                // apply
-                if (moveToIndex !== lastItemIndex && i === moveToIndex - 1) {
-                    var partialWidth = 0.75;
-                    scrollToLeft += columnWidth * partialWidth;
-                } else {
-                    scrollToLeft += columnWidth;
-                }
-            }
-            // Apply the scroll x on the tabs
-            // XXX in case of RTL, should we use scrollRight?
-            this.$('.o_kanban_mobile_tabs').scrollLeft(scrollToLeft);
-        }
-    },
-
-    /**
-     * Compute the justify content of the kanban tab headers
-     *
-     * @private
-     */
-    _computeTabJustification: function () {
-        if (this.widgets.length) {
-            var self = this;
-            // Use to compute the sum of the width of all tab
-            var widthChilds = this.widgets.reduce(function (total, column) {
-                return total + self._getTabWidth(column);
-            }, 0);
-            // Apply a space around between child if the parent length is higher then the sum of the child width
-            var $tabs = this.$('.o_kanban_mobile_tabs');
-            $tabs.toggleClass('justify-content-between', $tabs.outerWidth() >= widthChilds);
-        }
-    },
-
-    /**
      * Enables swipe event on the current column
      *
      * @private
@@ -251,11 +197,7 @@ KanbanRenderer.include({
     },
 
     /**
-     * Retrieve the outerWidth of a given widget column
-     *
-     * @param {KanbanColumn} column
-     * @returns {integer} outerWidth of the found column
-     * @private
+     * @override
      */
     _getTabWidth : function (column) {
         var columnID = column.id || column.db_id;
@@ -270,7 +212,7 @@ KanbanRenderer.include({
      */
     _layoutUpdate : function (animate) {
         this._computeCurrentColumn();
-        this._computeTabPosition();
+        this._computeTabPosition(this.widgets, this.activeColumnIndex, this.$('.o_kanban_mobile_tabs'));
         this._computeColumnPosition(animate);
     },
 
@@ -395,7 +337,7 @@ KanbanRenderer.include({
      * @private
      */
     _onColumnAdded: function () {
-        this._computeTabPosition();
+        this._computeTabPosition(this.widgets, this.activeColumnIndex, this.$('.o_kanban_mobile_tabs'));
         if(this._canCreateColumn() && !this.quickCreate.folded) {
             this.quickCreate.toggleFold();
         }
@@ -418,6 +360,6 @@ KanbanRenderer.include({
         }
         this._moveToGroup($(event.currentTarget).index(), true);
     },
-});
+}));
 
 });

@@ -556,7 +556,7 @@ class HelpdeskTicket(models.Model):
                 tickets_map[key] |= ticket
                 # group the SLA to apply, by key
                 if key not in sla_domain_map:
-                    sla_domain_map[key] = [('team_id', '=', ticket.team_id.id), ('priority', '=', ticket.priority), ('stage_id.sequence', '>=', ticket.stage_id.sequence), '|', ('ticket_type_id', '=', ticket.ticket_type_id.id), ('ticket_type_id', '=', False)]
+                    sla_domain_map[key] = [('team_id', '=', ticket.team_id.id), ('priority', '<=', ticket.priority), ('stage_id.sequence', '>=', ticket.stage_id.sequence), '|', ('ticket_type_id', '=', ticket.ticket_type_id.id), ('ticket_type_id', '=', False)]
 
         result = {}
         for key, tickets in tickets_map.items():  # only one search per ticket group

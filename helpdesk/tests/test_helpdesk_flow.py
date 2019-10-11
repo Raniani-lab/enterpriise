@@ -285,3 +285,42 @@ Content-Transfer-Encoding: quoted-printable
 
         self.assertTrue(partner0 in helpdesk_ticket0.message_follower_ids.mapped('partner_id'))
         self.assertTrue(partner1 in helpdesk_ticket1.message_follower_ids.mapped('partner_id'))
+
+    def test_team_assignation_balanced(self):
+        #We create an sla policy with minimum priority set as '2'
+        self.test_team.use_sla = True
+        sla = self.env['helpdesk.sla'].create({
+            'name': 'test sla policy',
+            'team_id': self.test_team.id,
+            'stage_id': self.stage_progress.id,
+            'priority': '2',
+            'time_days': 0,
+            'time_hours': 1
+        })
+
+        #We create a ticket with priority less than what's on the sla policy
+        ticket_1 = self.env['helpdesk.ticket'].create({
+            'name': 'test ',
+            'team_id': self.test_team.id,
+            'priority': '1'
+        })
+
+        #We create a ticket with priority equal to what's on the sla policy
+        ticket_2 = self.env['helpdesk.ticket'].create({
+            'name': 'test sla ticket',
+            'team_id': self.test_team.id,
+            'priority': '2'
+        })
+
+        #We create a ticket with priority greater than what's on the sla policy
+        ticket_3 = self.env['helpdesk.ticket'].create({
+            'name': 'test sla ticket',
+            'team_id': self.test_team.id,
+            'priority': '3'
+        })
+        #We confirm that the sla policy has been applied successfully on the ticket.
+        #sla policy must not be applied
+        self.assertTrue(sla not in ticket_1.sla_status_ids.mapped('sla_id'))
+        #sla policy must be applied
+        self.assertTrue(sla in ticket_2.sla_status_ids.mapped('sla_id'))
+        self.assertTrue(sla in ticket_3.sla_status_ids.mapped('sla_id'))

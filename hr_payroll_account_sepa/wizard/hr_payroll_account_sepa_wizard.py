@@ -22,7 +22,7 @@ class HrPayslipRunSepaWizard(models.TransientModel):
     _description = 'HR Payslip Run SEPA Wizard'
 
     def _get_filename(self):
-        payslip_run_id = self.env['hr.payslip.run'].browse(self.env.context['active_id'])
+        payslip_run_id = self.env['hr.payslip.run'].browse(self.env.context.get('active_id'))
         return payslip_run_id.sepa_export_filename or payslip_run_id.name
 
     journal_id = fields.Many2one(

@@ -37,11 +37,10 @@ class RentalWizard(models.TransientModel):
     currency_id = fields.Many2one('res.currency', related='pricing_id.currency_id')
 
     duration = fields.Integer(
-        string="Duration", compute="_compute_duration", default=1.0,
+        string="Duration", compute="_compute_duration",
         help="Duration of the rental (in unit of the pricing)")
     duration_unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks"), ("month", "Months")],
-                                     string="Unit", required=True, default='day',
-                                     compute="_compute_duration")
+                                     string="Unit", required=True, compute="_compute_duration")
 
     unit_price = fields.Monetary(
         string="Unit Price", help="This price is based on the rental price rule that gives the cheapest price for requested duration.",
@@ -52,6 +51,7 @@ class RentalWizard(models.TransientModel):
 
     @api.depends('pickup_date', 'return_date')
     def _compute_pricing(self):
+        self.pricing_id = False
         for wizard in self:
             if wizard.product_id:
                 wizard.pricing_id = wizard.product_id._get_best_pricing_rule(pickup_date=wizard.pickup_date, return_date=wizard.return_date, pricelist=wizard.pricelist_id)
@@ -59,18 +59,23 @@ class RentalWizard(models.TransientModel):
     @api.depends('pricing_id', 'pickup_date', 'return_date')
     def _compute_duration(self):
         for wizard in self:
+            values = {
+                'duration_unit': 'day',
+                'duration': 1.0,
+            }
             if wizard.pickup_date and wizard.return_date:
                 duration_dict = self.env['rental.pricing']._compute_duration_vals(wizard.pickup_date, wizard.return_date)
                 if wizard.pricing_id:
-                    wizard.update({
+                    values = {
                         'duration_unit': wizard.pricing_id.unit,
                         'duration': duration_dict[wizard.pricing_id.unit]
-                    })
+                    }
                 else:
-                    wizard.update({
+                    values = {
                         'duration_unit': 'day',
                         'duration': duration_dict['day']
-                    })
+                    }
+            wizard.update(values)
 
     @api.onchange('pricing_id', 'duration', 'duration_unit')
     def _compute_unit_price(self):

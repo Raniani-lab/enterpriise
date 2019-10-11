@@ -22,6 +22,19 @@
                     </div>
                 </div>
             </div>
+            <xpath expr="//div[@name='integration']" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box" groups="base.group_no_one">
+                    <div class="o_setting_left_pane">
+                        <field name="disable_redirect_firebase_dynamic_link"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label string="Disable Firebase Dynamic Link" for="disable_redirect_firebase_dynamic_link"/>
+                        <div class="text-muted">
+                            Allows to open mail's links in the native mobile app Android and iOS if possible (e.g. "View Task")
+                        </div>
+                    </div>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

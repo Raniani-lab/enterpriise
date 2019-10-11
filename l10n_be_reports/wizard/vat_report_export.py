@@ -20,7 +20,7 @@ class AccountFinancialReportXMLReportExport(models.TransientModel):
     control_value = fields.Html(compute='_compute_control_value')
 
     def _compute_control_value(self):
-        options = self.env.context.get('l10n_be_reports_generation_options')
+        options = self.env.context.get('l10n_be_reports_generation_options', {})
         for record in self:
             record.control_value = options.get('tax_report_control_error')
 

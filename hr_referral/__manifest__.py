@@ -8,7 +8,7 @@
     'summary': 'Let your employees share job positions and refer their friends',
     'description': """Let your employees share job positions and refer their friends""",
     'website': ' ',
-    'depends': ['hr_recruitment', 'link_tracker', 'website_hr_recruitment', 'web_dashboard'],
+    'depends': ['hr_recruitment', 'link_tracker', 'website_hr_recruitment', 'web_dashboard', 'hr_recruitment_reports'],
     'data': [
         'data/data.xml',
         'security/hr_referral_security.xml',
@@ -26,6 +26,7 @@
         'views/hr_referral_templates.xml',
         'views/hr_referral_views.xml',
         'report/hr_referral_report_views.xml',
+        'report/hr_recruitment_report_views.xml',
     ],
     'qweb': [
         'static/src/xml/hr_referral_templates.xml',

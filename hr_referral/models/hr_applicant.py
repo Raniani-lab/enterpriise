@@ -80,8 +80,8 @@ class Applicant(models.Model):
         return res
 
     def archive_applicant(self):
-        super(Applicant, self).archive_applicant()
         self.write({'referral_state': 'closed'})
+        return super(Applicant, self).archive_applicant()
 
     def _send_notification(self, body):
         if self.partner_name:

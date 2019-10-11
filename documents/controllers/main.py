@@ -128,19 +128,22 @@ class ShareRoute(http.Controller):
                 logger.exception("Fail to upload document %s" % ufile.filename)
                 result = {'error': str(e)}
         else:
+            vals_list = []
             for ufile in files:
                 try:
                     mimetype = self._neuter_mimetype(ufile.content_type, http.request.env.user)
-                    request.env['documents.document'].create({
+                    datas = base64.encodebytes(ufile.read())
+                    vals_list.append({
                         'name': ufile.filename,
                         'mimetype': mimetype,
-                        'datas': base64.encodebytes(ufile.read()),
+                        'datas': datas,
                         'folder_id': int(folder_id),
                         'partner_id': int(partner_id)
                     })
                 except Exception as e:
                     logger.exception("Fail to upload document %s" % ufile.filename)
                     result = {'error': str(e)}
+            request.env['documents.document'].create(vals_list)
 
         return json.dumps(result)
 

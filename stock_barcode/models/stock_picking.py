@@ -29,25 +29,11 @@ class StockPicking(models.Model):
     def get_barcode_view_state(self):
         """ Return the initial state of the barcode view as a dict.
         """
-        fields_to_read = self._get_picking_fields_to_read()
-        pickings = self.read(fields_to_read)
+        picking_fields_to_read = self._get_picking_fields_to_read()
+        move_line_ids_fields_to_read = self._get_move_line_ids_fields_to_read()
+        pickings = self.read(picking_fields_to_read)
         for picking in pickings:
-            picking['move_line_ids'] = self.env['stock.move.line'].browse(picking.pop('move_line_ids')).read([
-                'product_id',
-                'location_id',
-                'location_dest_id',
-                'qty_done',
-                'display_name',
-                'product_uom_qty',
-                'product_uom_id',
-                'product_barcode',
-                'owner_id',
-                'lot_id',
-                'lot_name',
-                'package_id',
-                'result_package_id',
-                'dummy_id',
-            ])
+            picking['move_line_ids'] = self.env['stock.move.line'].browse(picking.pop('move_line_ids')).read(move_line_ids_fields_to_read)
             for move_line_id in picking['move_line_ids']:
                 move_line_id['product_id'] = self.env['product.product'].browse(move_line_id.pop('product_id')[0]).read([
                     'id',
@@ -86,20 +72,6 @@ class StockPicking(models.Model):
             if self.env.company.nomenclature_id:
                 picking['nomenclature_id'] = [self.env.company.nomenclature_id.id]
         return pickings
-
-    def _get_picking_fields_to_read(self):
-        """ Return the default fields to read from the picking.
-        """
-        return [
-            'move_line_ids',
-            'picking_type_id',
-            'location_id',
-            'location_dest_id',
-            'name',
-            'state',
-            'picking_type_code',
-            'company_id',
-        ]
 
     def get_po_to_split_from_barcode(self, barcode):
         """ Returns the lot wizard's action for the move line matching
@@ -246,6 +218,43 @@ class StockPicking(models.Model):
             })
         return True
 
+    def _get_picking_fields_to_read(self):
+        """ List of fields on the stock.picking object that are needed by the
+        client action. The purpose of this function is to be overriden in order
+        to inject new fields to the client action.
+        """
+        return [
+            'move_line_ids',
+            'picking_type_id',
+            'location_id',
+            'location_dest_id',
+            'name',
+            'state',
+            'picking_type_code',
+            'company_id',
+        ]
+
+    def _get_move_line_ids_fields_to_read(self):
+        """ read() on picking.move_line_ids only returns the id and the display
+        name however a lot more data from stock.move.line are used by the client
+        action.
+        """
+        return [
+            'product_id',
+            'location_id',
+            'location_dest_id',
+            'qty_done',
+            'display_name',
+            'product_uom_qty',
+            'product_uom_id',
+            'product_barcode',
+            'owner_id',
+            'lot_id',
+            'lot_name',
+            'package_id',
+            'result_package_id',
+            'dummy_id',
+        ]
     def on_barcode_scanned(self, barcode):
         if not self.env.company.nomenclature_id:
             # Logic for products

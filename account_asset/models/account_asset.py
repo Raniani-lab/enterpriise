@@ -183,7 +183,6 @@ class AccountAsset(models.Model):
 
     @api.onchange('account_asset_id')
     def _onchange_account_asset_id(self):
-        self._set_value()
         self.display_model_choice = self.state == 'draft' and len(self.env['account.asset'].search([('state', '=', 'model'), ('user_type_id', '=', self.user_type_id.id)]))
         if self.asset_type in ('purchase', 'expense'):
             self.account_depreciation_id = self.account_depreciation_id or self.account_asset_id

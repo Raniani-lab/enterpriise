@@ -132,9 +132,7 @@ class AccountBatchPayment(models.Model):
             record.payment_ids.write({'state':'sent', 'payment_reference': record.name})
         records.write({'state': 'sent'})
 
-        records = self.filtered(lambda x: x.file_generation_enabled)
-        if records:
-            return self.export_batch_payment()
+        return self.filtered('file_generation_enabled').export_batch_payment()
 
     def export_batch_payment(self):
         export_file_data = {}

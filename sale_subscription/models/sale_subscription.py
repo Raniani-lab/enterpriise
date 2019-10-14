@@ -275,7 +275,7 @@ class SaleSubscription(models.Model):
     @api.onchange('partner_id')
     def onchange_partner_id(self):
         if self.partner_id:
-            self.pricelist_id = self.partner_id.property_product_pricelist.id
+            self.pricelist_id = self.partner_id.with_context(force_company=self.company_id.id).property_product_pricelist.id
         if self.partner_id.user_id:
             self.user_id = self.partner_id.user_id
 

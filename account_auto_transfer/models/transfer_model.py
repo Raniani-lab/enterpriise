@@ -313,7 +313,7 @@ class TransferModelLine(models.Model):
 
     def write(self, vals):
         if 'analytic_account_ids' in vals and self.percent_is_readonly:
-            vals.update({{'percent': 100.0}})
+            vals.update({'percent': 100.0})
         super().write(vals)
 
     def _get_transfer_move_lines_values(self, start_date, end_date):

@@ -13,7 +13,7 @@
         <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="after">
-                <div class='pos-receipts'>
+                <div class='pos-receipt-print'>
                     <!-- here go the receipts that will be printed -->
                 </div>
             </xpath>

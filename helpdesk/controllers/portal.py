@@ -58,7 +58,7 @@ class CustomerPortal(CustomerPortal):
         if search and search_in:
             search_domain = []
             if search_in in ('id', 'all'):
-                search_domain = OR([search_domain, [('id', '=', search)]])
+                search_domain = OR([search_domain, [('id', 'ilike', search)]])
             if search_in in ('content', 'all'):
                 search_domain = OR([search_domain, ['|', ('name', 'ilike', search), ('description', 'ilike', search)]])
             if search_in in ('customer', 'all'):

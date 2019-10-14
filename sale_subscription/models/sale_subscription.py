@@ -601,7 +601,9 @@ class SaleSubscription(models.Model):
                     'discount': line.discount,
                 }))
             addr = subscription.partner_id.address_get(['delivery', 'invoice'])
-            sale_order = self.env['sale.order'].search([('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
+            sale_order = subscription.env['sale.order'].search(
+                [('order_line.subscription_id', '=', subscription.id)],
+                order="id desc", limit=1)
             res[subscription.id] = {
                 'pricelist_id': subscription.pricelist_id.id,
                 'partner_id': subscription.partner_id.id,

@@ -409,7 +409,7 @@ class AmazonAccount(models.Model):
             currency = self.env['res.currency'].search([('name', '=', currency_code)], limit=1)
             pricelist = self._get_pricelist(currency)
             contact_partner, delivery_partner = self._get_partners(order_data, amazon_order_ref)
-            fiscal_position_id = self.env['account.fiscal.position'].get_fiscal_position(
+            fiscal_position_id = self.env['account.fiscal.position'].with_context(force_company=self.company_id.id).get_fiscal_position(
                 contact_partner.id, delivery_partner.id)
             fiscal_position = self.env['account.fiscal.position'].browse(fiscal_position_id)
             

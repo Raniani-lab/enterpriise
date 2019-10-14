@@ -589,7 +589,7 @@ class SaleSubscription(models.Model):
         res = dict()
         for subscription in self:
             order_lines = []
-            fpos_id = self.env['account.fiscal.position'].get_fiscal_position(subscription.partner_id.id)
+            fpos_id = self.env['account.fiscal.position'].with_context(force_company=subscription.company_id.id).get_fiscal_position(subscription.partner_id.id)
             for line in subscription.recurring_invoice_line_ids:
                 order_lines.append((0, 0, {
                     'product_id': line.product_id.id,

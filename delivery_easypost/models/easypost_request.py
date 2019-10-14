@@ -139,10 +139,13 @@ class EasypostRequest():
             last_shipment_weight = float_round(total_weight % max_weight, precision_digits=1)
             for shp_id in range(0, total_shipment):
                 shipments.update(self._prepare_parcel(shp_id, carrier.easypost_default_packaging_id, max_weight, carrier.easypost_label_file_type))
+                shipments.update(self._options(shp_id, carrier))
             if not float_is_zero(last_shipment_weight, precision_digits=1):
                 shipments.update(self._prepare_parcel(total_shipment, carrier.easypost_default_packaging_id, last_shipment_weight, carrier.easypost_label_file_type))
+                shipments.update(self._options(total_shipment, carrier))
         else:
             shipments.update(self._prepare_parcel(0, carrier.easypost_default_packaging_id, total_weight, carrier.easypost_label_file_type))
+            shipments.update(self._options(0, carrier))
         return shipments
 
     def _prepare_picking_shipments(self, carrier, picking, is_return=False):
@@ -175,6 +178,7 @@ class EasypostRequest():
             }
             # Add customs info for this package.
             shipment.update(self._customs_info(0, move_lines_without_package.filtered(lambda ml: ml.product_id.type in ['product', 'consu'])))
+            shipment.update(self._options(0, carrier))
             shipment_id += 1
         if move_lines_with_package:
             # Generate an easypost shipment for each package in picking.
@@ -190,6 +194,7 @@ class EasypostRequest():
                 shipment.update(self._prepare_parcel(shipment_id, package.packaging_id, weight=weight, label_format=carrier.easypost_label_file_type))
                 # Add customs info for current shipment.
                 shipment.update(self._customs_info(shipment_id, move_lines))
+                shipment.update(self._options(shipment_id, carrier))
                 shipment_id += 1
         if is_return:
             shipment.update({'order[is_return]': True})
@@ -260,6 +265,14 @@ class EasypostRequest():
             customs_item_id += 1
         return customs_info
 
+    def _options(self, shipment_id, carrier):
+        options = {}
+        if carrier.easypost_default_service_id:
+            service_otpions = carrier.easypost_default_service_id._get_service_specific_options()
+            for option_name, option_value in service_otpions.items():
+                options['order[shipments][%d][options][%s]' % (shipment_id, option_name)] = option_value
+        return options
+
     def rate_request(self, carrier, recipient, shipper, order=False, picking=False, is_return=False):
         """ Create an easypost order in order to proccess
         all package at once.
@@ -296,6 +309,8 @@ class EasypostRequest():
         # Add addresses (recipient and shipper)
         order_payload.update(self._prepare_address('to_address', recipient))
         order_payload.update(self._prepare_address('from_address', shipper))
+        if carrier.easypost_default_service_id._require_residential_address():
+            order_payload['order[to_address][residential]'] = True
 
         # if picking then count total_weight of picking move lines, else count on order
         # easypost always takes weight in ounces(oz)

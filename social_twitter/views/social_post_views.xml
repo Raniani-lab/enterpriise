@@ -2,7 +2,7 @@
 <odoo>
 <data>
     <record id="social_post_view_form" model="ir.ui.view">
-        <field name="name">social.post.view.form.inherit.facebook</field>
+        <field name="name">social.post.view.form.inherit.twitter</field>
         <field name="model">social.post</field>
         <field name="inherit_id" ref="social.social_post_view_form"/>
         <field name="arch" type="xml">

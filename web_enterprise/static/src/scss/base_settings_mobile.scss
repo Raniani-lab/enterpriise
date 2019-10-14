@@ -58,4 +58,8 @@
             }
         }
     }
+
+    .o_action .o_control_panel {
+        @include o-webclient-padding($top: 10px, $bottom: 10px);
+    }
 }

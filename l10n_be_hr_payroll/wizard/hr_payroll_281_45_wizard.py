@@ -46,7 +46,7 @@ class HrPayroll28145Wizard(models.TransientModel):
         for employee in employees:
             filename = '281.45-%s.pdf' % employee.name
             data = dict(employees_data[employee], employee=employee)
-            pdf, _ = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_45').render_qweb_pdf(employee.ids, data)
+            pdf, ext = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_45').render_qweb_pdf(employee.ids, data)
             employee.message_post(body=_("The 281.45 sheet has been generated"), attachments=[(filename, pdf)])
 
     @api.model

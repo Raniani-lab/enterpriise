@@ -168,6 +168,7 @@ class TestDuplicateProducts(common.SavepointCase):
         production.action_confirm()
         production.button_plan()
 
+        production.workorder_ids[0].button_start()
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
         # Components
         wo_form.finished_lot_id = self.pb1

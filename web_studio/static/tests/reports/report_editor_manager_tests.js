@@ -121,8 +121,8 @@ QUnit.module('ReportEditorManager', {
                     res_id: 0,
                     res_model: "ir.ui.view",
                     type: "binary",
-                    url: "/some/relative/path/joes_garage.png",
-                    image_src: "/some/relative/path/joes_garage.png",
+                    url: "/web/static/joes_garage.png",
+                    image_src: "/web/static/joes_garage.png",
                 }],
             },
         };
@@ -1994,14 +1994,14 @@ QUnit.module('ReportEditorManager', {
                     if (editReportViewCalls === 0) {
                         assert.strictEqual(
                             args.operations[0].inheritance[0].content,
-                            '<img class="img-fluid" src="/some/relative/path/joes_garage.png?access_token=token"/>',
+                            '<img class="img-fluid" src="/web/static/joes_garage.png?access_token=token"/>',
                             'The image should be added to the view with a relative path as src'
                         );
                     }
                     editReportViewCalls++;
                     return Promise.reject();
                 }
-                if (route.indexOf('/some/relative/path/joes_garage.png') === 0) {
+                if (route.indexOf('/web/static/joes_garage.png') === 0) {
                     return Promise.resolve();
                 }
                 return this._super.apply(this, arguments);

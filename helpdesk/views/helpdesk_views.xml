@@ -196,6 +196,7 @@
                             <div class="o_row">
                                 <field name="time_days"/> days<br/>
                                 <field name="time_hours"/> hours<br/>
+                                <field name="time_minutes"/> minutes<br/>
                             </div>
                         </group>
                     </group>

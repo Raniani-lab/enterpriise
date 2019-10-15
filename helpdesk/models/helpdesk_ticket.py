@@ -4,7 +4,7 @@
 import datetime
 from email.utils import formataddr
 from datetime import time
-from dateutil import relativedelta
+from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, tools, _
 from odoo.osv import expression
@@ -78,10 +78,12 @@ class HelpdeskSLAStatus(models.Model):
                 create_dt = status.ticket_id.create_date
                 deadline = deadline.replace(hour=create_dt.hour, minute=create_dt.minute, second=create_dt.second, microsecond=create_dt.microsecond)
 
+            sla_hours = status.sla_id.time_hours + (status.sla_id.time_minutes / 60)
+
             # We should execute the function plan_hours in any case because, in a 1 day SLA environment,
             # if I create a ticket knowing that I'm not working the day after at the same time, ticket
             # deadline will be set at time I don't work (ticket creation time might not be in working calendar).
-            status.deadline = working_calendar.plan_hours(status.sla_id.time_hours, deadline, compute_leaves=True)
+            status.deadline = working_calendar.plan_hours(sla_hours, deadline, compute_leaves=True)
 
     @api.depends('deadline', 'reached_datetime')
     def _compute_status(self):

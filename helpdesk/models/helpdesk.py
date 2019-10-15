@@ -482,9 +482,17 @@ class HelpdeskSLA(models.Model):
     company_id = fields.Many2one('res.company', 'Company', related='team_id.company_id', readonly=True, store=True)
     time_days = fields.Integer('Days', default=0, required=True, help="Days to reach given stage based on ticket creation date")
     time_hours = fields.Integer('Hours', default=0, required=True, help="Hours to reach given stage based on ticket creation date")
+    time_minutes = fields.Integer('Minutes', default=0, required=True, help="Minutes to reach given stage based on ticket creation date")
 
-    @api.onchange('time_hours')
-    def _onchange_time_hours(self):
+    @api.onchange('time_minutes', 'time_hours')
+    def _onchange_time(self):
+        self.time_minutes = max(0, self.time_minutes)
+        self.time_hours = max(0, self.time_hours)
+
+        if self.time_minutes >= 60:
+            self.time_hours += self.time_minutes / 60
+            self.time_minutes = self.time_minutes % 60
+
         if self.time_hours >= 24:
             self.time_days += self.time_hours / 24
             self.time_hours = self.time_hours % 24

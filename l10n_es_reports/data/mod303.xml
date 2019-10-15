@@ -5,7 +5,6 @@
         <record id="mod_303" model="account.financial.html.report">
             <field name="name">Tax Report(Mod 303)</field>
             <field name="l10n_es_reports_modelo_number">303</field>
-            <field name="debit_credit" eval="False"/>
             <field name="analytic" eval="False"/>
             <field name="date_range" eval="True"/>
             <field name="comparison" eval="False"/>
@@ -35,7 +34,7 @@
             <field name="code">aeat_mod_303_01</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_01'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="4"/>
@@ -47,7 +46,7 @@
             <field name="code">aeat_mod_303_03</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_03'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="4"/>
@@ -59,7 +58,7 @@
             <field name="code">aeat_mod_303_04</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_04'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="4"/>
@@ -71,7 +70,7 @@
             <field name="code">aeat_mod_303_06</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_06'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="6"/>
             <field name="level" eval="4"/>
@@ -83,7 +82,7 @@
             <field name="code">aeat_mod_303_07</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_07'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="7"/>
             <field name="level" eval="4"/>
@@ -95,7 +94,7 @@
             <field name="code">aeat_mod_303_09</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_09'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="8"/>
             <field name="level" eval="4"/>
@@ -115,7 +114,7 @@
             <field name="code">aeat_mod_303_10</field>
             <field name="parent_id" ref="mod_303_title_3"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_10'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="10"/>
             <field name="level" eval="5"/>
@@ -127,7 +126,7 @@
             <field name="code">aeat_mod_303_11</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_11'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="11"/>
             <field name="level" eval="5"/>
@@ -147,7 +146,7 @@
             <field name="code">aeat_mod_303_12</field>
             <field name="parent_id" ref="mod_303_title_4"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_12'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="13"/>
             <field name="level" eval="5"/>
@@ -159,7 +158,7 @@
             <field name="code">aeat_mod_303_13</field>
             <field name="parent_id" ref="mod_303_title_4"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_13'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="14"/>
             <field name="level" eval="5"/>
@@ -179,7 +178,7 @@
             <field name="name">[14] Base imponible - SALE</field>
             <field name="code">aeat_mod_303_14_sale</field>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_14_sale'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="16"/>
             <field name="level" eval="5"/>
@@ -191,7 +190,7 @@
             <field name="name">[14] Base imponible - PURCHASE</field>
             <field name="code">aeat_mod_303_14_purchase</field>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_14_purchase'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="17"/>
             <field name="level" eval="5"/>
@@ -202,7 +201,7 @@
             <field name="name">[14] Base imponible</field>
             <field name="code">aeat_mod_303_14</field>
             <field name="parent_id" ref="mod_303_title_5"/>
-            <field name="formulas">balance = aeat_mod_303_14_sale.balance - aeat_mod_303_14_purchase.balance</field>
+            <field name="formulas">aeat_mod_303_14_sale - aeat_mod_303_14_purchase</field>
             <field name="sequence" eval="18"/>
             <field name="level" eval="5"/>
         </record>
@@ -212,7 +211,7 @@
             <field name="code">aeat_mod_303_15</field>
             <field name="parent_id" ref="mod_303_title_5"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_15'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="sequence" eval="20"/>
             <field name="level" eval="5"/>
         </record>
@@ -230,7 +229,7 @@
             <field name="code">aeat_mod_303_16</field>
             <field name="parent_id" ref="mod_303_title_6"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_16'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="22"/>
             <field name="level" eval="5"/>
@@ -242,7 +241,7 @@
             <field name="code">aeat_mod_303_18</field>
             <field name="parent_id" ref="mod_303_title_6"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_18'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="23"/>
             <field name="level" eval="5"/>
@@ -254,7 +253,7 @@
             <field name="code">aeat_mod_303_19</field>
             <field name="parent_id" ref="mod_303_title_6"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_19'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="24"/>
             <field name="level" eval="5"/>
@@ -266,7 +265,7 @@
             <field name="code">aeat_mod_303_21</field>
             <field name="parent_id" ref="mod_303_title_6"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_21'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="25"/>
             <field name="level" eval="5"/>
@@ -278,7 +277,7 @@
             <field name="code">aeat_mod_303_22</field>
             <field name="parent_id" ref="mod_303_title_6"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_22'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="26"/>
             <field name="level" eval="5"/>
@@ -290,7 +289,7 @@
             <field name="code">aeat_mod_303_24</field>
             <field name="parent_id" ref="mod_303_title_6"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_24'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="27"/>
             <field name="level" eval="5"/>
@@ -310,7 +309,7 @@
             <field name="code">aeat_mod_303_25</field>
             <field name="parent_id" ref="mod_303_title_7"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_25'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="29"/>
             <field name="level" eval="5"/>
@@ -322,7 +321,7 @@
             <field name="code">aeat_mod_303_26</field>
             <field name="parent_id" ref="mod_303_title_7"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_26'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="30"/>
             <field name="level" eval="5"/>
@@ -333,7 +332,7 @@
             <field name="name">[27] Total cuota devengada</field>
             <field name="code">aeat_mod_303_27</field>
             <field name="parent_id" ref="mod_303_title_2"/>
-            <field name="formulas">balance = aeat_mod_303_03.balance + aeat_mod_303_06.balance + aeat_mod_303_09.balance + aeat_mod_303_11.balance + aeat_mod_303_13.balance + aeat_mod_303_15.balance + aeat_mod_303_18.balance + aeat_mod_303_21.balance + aeat_mod_303_24.balance + aeat_mod_303_26.balance</field>
+            <field name="formulas">aeat_mod_303_03 + aeat_mod_303_06 + aeat_mod_303_09 + aeat_mod_303_11 + aeat_mod_303_13 + aeat_mod_303_15 + aeat_mod_303_18 + aeat_mod_303_21 + aeat_mod_303_24 + aeat_mod_303_26</field>
             <field name="sequence" eval="31"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
@@ -360,7 +359,7 @@
             <field name="code">aeat_mod_303_28</field>
             <field name="parent_id" ref="mod_303_title_9"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_28'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="34"/>
             <field name="level" eval="5"/>
@@ -372,7 +371,7 @@
             <field name="code">aeat_mod_303_29</field>
             <field name="parent_id" ref="mod_303_title_9"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_29'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="35"/>
             <field name="level" eval="5"/>
@@ -392,7 +391,7 @@
             <field name="code">aeat_mod_303_30</field>
             <field name="parent_id" ref="mod_303_title_10"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_30'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="37"/>
             <field name="level" eval="5"/>
@@ -404,7 +403,7 @@
             <field name="code">aeat_mod_303_31</field>
             <field name="parent_id" ref="mod_303_title_10"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_31'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="38"/>
             <field name="level" eval="5"/>
@@ -424,7 +423,7 @@
             <field name="code">aeat_mod_303_32</field>
             <field name="parent_id" ref="mod_303_title_11"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_32'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="40"/>
             <field name="level" eval="5"/>
@@ -435,8 +434,8 @@
             <field name="name">[33] Cuota</field>
             <field name="code">aeat_mod_303_33</field>
             <field name="parent_id" ref="mod_303_title_11"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_33'))]"/>
-            <field name="formulas">balance = sum.debit</field>
+            <field name="domain" eval="[('debit', '>', 0.0), ('tag_ids','=',ref('l10n_es.mod_303_33'))]"/>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="41"/>
             <field name="level" eval="5"/>
@@ -456,7 +455,7 @@
             <field name="code">aeat_mod_303_34</field>
             <field name="parent_id" ref="mod_303_title_12"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_34'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="43"/>
             <field name="level" eval="5"/>
@@ -468,7 +467,7 @@
             <field name="code">aeat_mod_303_35</field>
             <field name="parent_id" ref="mod_303_title_12"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_35'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="44"/>
             <field name="level" eval="5"/>
@@ -488,7 +487,7 @@
             <field name="code">aeat_mod_303_36</field>
             <field name="parent_id" ref="mod_303_title_13"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_36'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="46"/>
             <field name="level" eval="5"/>
@@ -500,7 +499,7 @@
             <field name="code">aeat_mod_303_37</field>
             <field name="parent_id" ref="mod_303_title_13"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_37'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="47"/>
             <field name="level" eval="5"/>
@@ -520,7 +519,7 @@
             <field name="code">aeat_mod_303_38</field>
             <field name="parent_id" ref="mod_303_title_14"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_38'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="49"/>
             <field name="level" eval="5"/>
@@ -532,7 +531,7 @@
             <field name="code">aeat_mod_303_39</field>
             <field name="parent_id" ref="mod_303_title_14"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_39'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="50"/>
             <field name="level" eval="5"/>
@@ -552,7 +551,7 @@
             <field name="code">aeat_mod_303_40</field>
             <field name="parent_id" ref="mod_303_title_15"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_40'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="52"/>
             <field name="level" eval="5"/>
@@ -564,7 +563,7 @@
             <field name="code">aeat_mod_303_41</field>
             <field name="parent_id" ref="mod_303_title_15"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_41'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="53"/>
             <field name="level" eval="5"/>
@@ -576,7 +575,7 @@
             <field name="code">aeat_mod_303_42</field>
             <field name="parent_id" ref="mod_303_title_8"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_42'))]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="54"/>
             <field name="level" eval="4"/>
@@ -587,7 +586,7 @@
             <field name="name">[43] Regularización bienes de inversión</field>
             <field name="code">aeat_mod_303_43</field>
             <field name="parent_id" ref="mod_303_title_8"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="sequence" eval="55"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
@@ -597,7 +596,7 @@
             <field name="name">[44] Regularización por aplicación del porcentaje definitivo de prorrata</field>
             <field name="code">aeat_mod_303_44</field>
             <field name="parent_id" ref="mod_303_title_8"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="sequence" eval="56"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
@@ -607,7 +606,7 @@
             <field name="name">[45] Total a deducir</field>
             <field name="code">aeat_mod_303_45</field>
             <field name="parent_id" ref="mod_303_title_1"/>
-            <field name="formulas">balance = aeat_mod_303_29.balance + aeat_mod_303_31.balance + aeat_mod_303_33.balance + aeat_mod_303_35.balance + aeat_mod_303_37.balance + aeat_mod_303_39.balance + aeat_mod_303_41.balance + aeat_mod_303_42.balance + aeat_mod_303_43.balance + aeat_mod_303_44.balance</field>
+            <field name="formulas">aeat_mod_303_29 + aeat_mod_303_31 + aeat_mod_303_33 + aeat_mod_303_35 + aeat_mod_303_37 + aeat_mod_303_39 + aeat_mod_303_41 + aeat_mod_303_42 + aeat_mod_303_43 + aeat_mod_303_44</field>
             <field name="sequence" eval="57"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
@@ -617,7 +616,7 @@
             <field name="name">[46] Resultado régimen general</field>
             <field name="code">aeat_mod_303_46</field>
             <field name="parent_id" ref="mod_303_title_1"/>
-            <field name="formulas">balance = aeat_mod_303_27.balance - aeat_mod_303_45.balance</field>
+            <field name="formulas">aeat_mod_303_27 - aeat_mod_303_45</field>
             <field name="sequence" eval="58"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
@@ -636,7 +635,7 @@
             <field name="code">aeat_mod_303_59</field>
             <field name="parent_id" ref="mod_303_title_16"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_59'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="60"/>
             <field name="level" eval="3"/>
@@ -648,7 +647,7 @@
             <field name="code">aeat_mod_303_60</field>
             <field name="parent_id" ref="mod_303_title_16"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_60'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="61"/>
             <field name="level" eval="3"/>
@@ -660,7 +659,7 @@
             <field name="code">aeat_mod_303_61</field>
             <field name="parent_id" ref="mod_303_title_16"/>
             <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_61'))]"/>
-            <field name="formulas">balance = -sum.balance</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="62"/>
             <field name="level" eval="3"/>
@@ -679,7 +678,7 @@
             <field name="name">[62] Base imponible</field>
             <field name="code">aeat_mod_303_62</field>
             <field name="parent_id" ref="mod_303_title_17"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="sequence" eval="64"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
@@ -689,7 +688,7 @@
             <field name="name">[63] Cuota</field>
             <field name="code">aeat_mod_303_63</field>
             <field name="parent_id" ref="mod_303_title_17"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="sequence" eval="65"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
@@ -707,7 +706,7 @@
             <field name="name">[65] % Atribuible a la Administración del Estado</field>
             <field name="code">aeat_mod_303_65</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="figure_type">percents</field>
             <field name="sequence" eval="67"/>
             <field name="level" eval="3"/>
@@ -718,7 +717,7 @@
             <field name="name">[66] Atribuible a la Administración del Estado</field>
             <field name="code">aeat_mod_303_66</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="formulas">balance = aeat_mod_303_65.balance * aeat_mod_303_46.balance / 100.0</field>
+            <field name="formulas">aeat_mod_303_65 * aeat_mod_303_46 / 100.0</field>
             <field name="sequence" eval="68"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
@@ -728,7 +727,7 @@
             <field name="name">[67] Cuotas a compensar de periodos anteriores</field>
             <field name="code">aeat_mod_303_67</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="sequence" eval="69"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
@@ -738,7 +737,7 @@
             <field name="name">[68] Resultado de la regularización anual</field>
             <field name="code">aeat_mod_303_68</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="sequence" eval="70"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
@@ -748,7 +747,7 @@
             <field name="name">[69] Resultado</field>
             <field name="code">aeat_mod_303_69</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="formulas">balance = aeat_mod_303_66.balance + aeat_mod_303_77.balance - aeat_mod_303_67.balance + aeat_mod_303_68.balance</field>
+            <field name="formulas">aeat_mod_303_66 + aeat_mod_303_77 - aeat_mod_303_67 + aeat_mod_303_68</field>
             <field name="sequence" eval="71"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>
@@ -758,7 +757,7 @@
             <field name="name">[70] A deducir</field>
             <field name="code">aeat_mod_303_70</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="sequence" eval="72"/>
             <field name="level" eval="3"/>
         </record>
@@ -767,7 +766,7 @@
             <field name="name">[71] Resultado de la liquidación</field>
             <field name="code">aeat_mod_303_71</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="formulas">balance = aeat_mod_303_69.balance - aeat_mod_303_70.balance</field>
+            <field name="formulas">aeat_mod_303_69 - aeat_mod_303_70</field>
             <field name="sequence" eval="73"/>
             <field name="level" eval="3"/>
         </record>
@@ -784,7 +783,7 @@
             <field name="name">[74] Base imponible</field>
             <field name="code">aeat_mod_303_74</field>
             <field name="parent_id" ref="mod_303_title_19"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="sequence" eval="75"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
@@ -794,7 +793,7 @@
             <field name="name">[75] Cuota</field>
             <field name="code">aeat_mod_303_75</field>
             <field name="parent_id" ref="mod_303_title_19"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="sequence" eval="76"/>
             <field name="level" eval="4"/>
             <field name="special_date_changer">strict_range</field>
@@ -804,7 +803,7 @@
             <field name="name">[77] IVA a la importación liquidado por la Aduana pendiente de ingreso</field>
             <field name="code">aeat_mod_303_77</field>
             <field name="parent_id" ref="mod_303_title_18"/>
-            <field name="formulas">balance = from_context</field>
+            <field name="formulas">from_context</field>
             <field name="sequence" eval="77"/>
             <field name="level" eval="3"/>
             <field name="special_date_changer">strict_range</field>

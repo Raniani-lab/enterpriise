@@ -134,6 +134,12 @@
                     <t t-esc="selected_filter_name"/>
                 </t>
             </div>
+            <div class="col-12">
+                <t t-if="options.get('groupby_fields') and any(opt['selected'] for opt in options['groupby_fields'])">
+                    Groupby:
+                    <t t-esc="' '.join(opt['name'] for opt in options['groupby_fields'] if opt['selected'])"/>
+                </t>
+            </div>
         </div>
     </div>
 </template>
@@ -221,35 +227,26 @@
 </template>
 
 <template id="main_table_header">
-    <t t-if="len(lines.get('columns_header', [])) > 1">
-        <thead class="o_account_reports_header_hierarchy">
-            <t t-foreach="lines.get('columns_header')" t-as="header_line">
-                <tr>
-                    <t t-foreach="header_line" t-as="header">
-                        <th t-att-colspan="header.get('colspan')" t-att-title="header.get('title')" t-att-data-toggle="header.get('data-toggle')">
+    <thead class="o_account_reports_header_hierarchy">
+        <t t-foreach="lines.get('columns_header')" t-as="header_line">
+            <tr>
+                <t t-foreach="header_line" t-as="header">
+                    <th t-att-class="'o_account_report_column_header ' + (header.get('class', ''))"
+                        t-att-colspan="header.get('colspan')"
+                        t-att-style="header.get('style', '')"
+                        t-att-title="header.get('title')"
+                        t-att-data-toggle="header.get('data-toggle')">
+                        <t t-if="header.get('show_bug')">
+                            <span class="fa fa-bug"/>
+                        </t>
+                        <t t-else="">
                             <t t-esc="header.get('name')"/>
-                        </th>
-                    </t>
-                </tr>
-            </t>
-            <!-- Empty <tr> to create a bottom border on the above
-                 <tr>. Necessary due to "border-collapse: collapse;" on the
-                 table. -->
-            <tr><th t-att-colspan="len(lines.get('columns_header')[-1])"></th></tr>
-        </thead>
-    </t>
-    <t t-else="">
-        <thead>
-            <tr class="o_account_report_column_header">
-                <t t-foreach="lines.get('columns_header')[0]" t-as="column_header">
-                    <th t-att-class="'o_account_report_column_header ' + (column_header.get('class', ''))" t-att-style="column_header.get('style', '')"
-                        t-att-title="column_header.get('title')">
-                        <t t-raw="column_header.get('name')"/>
+                        </t>
                     </th>
                 </t>
             </tr>
-        </thead>
-    </t>
+        </t>
+    </thead>
 </template>
 
 <template id="main_template">
@@ -346,26 +343,6 @@
     </xpath>
     <xpath expr="//div[hasclass('o_account_reports_domain_dropdown')]/*[last()]" position="before">
         <t t-if="line['caret_options'] != 'account.tax' and line['caret_options'] != 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_document" class="dropdown-item">View Journal Entry</a></t>
-    </xpath>
-</template>
-
-
-<!-- trial balance templates -->
-<template id="template_coa_table_header" inherit_id="account_reports.main_table_header" primary="True">
-    <xpath expr="//thead//tr[hasclass('o_account_report_column_header')]" position="before">
-        <tr>
-            <th t-att-class="'o_account_report_column_header'" colspan="1"/>
-            <th t-att-class="'o_account_report_column_header text-center'" colspan="2">Initial Balance</th>
-            <t t-foreach="model.reverse(options['comparison'].get('periods'))" t-as="column_header">
-                <th t-att-class="'o_account_report_column_header text-center'" colspan="2">
-                    <t t-esc="column_header.get('string')"/>
-                </th>
-            </t>
-            <th t-att-class="'o_account_report_column_header text-center'" colspan="2">
-                <t t-esc="options['date'].get('string')"/>
-            </th>
-            <th t-att-class="'o_account_report_column_header text-center'" colspan="2">Total</th>
-        </tr>
     </xpath>
 </template>
 

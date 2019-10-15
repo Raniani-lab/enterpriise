@@ -44,11 +44,32 @@ class MxReportAccountTrial(models.AbstractModel):
         buttons += [{'name': _('Export For SAT (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('SAT XML')}]
         return buttons
 
-    def _get_templates(self):
-        """Get this template for better fit of columns"""
-        templates = super(MxReportAccountTrial, self)._get_templates()
-        templates['main_table_header_template'] = 'l10n_mx_reports.template_coa_table_header'
-        return templates
+    @api.model
+    def _get_columns(self, options):
+        header1 = [
+            {'name': '', 'colspan': 2},
+        ] + [
+            {'name': period['string'], 'class': 'text-center', 'colspan': 2}
+            for period in options['comparison'].get('periods', [])
+        ] + [
+            {'name': options['date']['string'], 'class': 'text-center', 'colspan': 2},
+            {'name': ''},
+        ]
+        header2 = [
+            {'name': ''},
+            {'name': _('Initial Balance'), 'class': 'number'},
+        ]
+        if options.get('comparison') and options['comparison'].get('periods'):
+            header2 += [
+                {'name': _('Debit'), 'class': 'number'},
+                {'name': _('Credit'), 'class': 'number'},
+            ] * len(options['comparison']['periods'])
+        header2 += [
+            {'name': _('Debit'), 'class': 'number'},
+            {'name': _('Credit'), 'class': 'number'},
+            {'name': _('Total'), 'class': 'number'},
+        ]
+        return [header1, header2]
 
     def _get_columns_name(self, options):
         """Get more specific columns to use in SAT report"""

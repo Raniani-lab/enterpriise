@@ -694,18 +694,16 @@ class AccountReport(models.AbstractModel):
     ####################################################
 
     def get_header(self, options):
-        if not options.get('groups', {}).get('ids'):
-            columns = self._get_columns_name(options)
-            if 'selected_column' in options and self.order_selected_column:
-                selected_column = columns[abs(options['selected_column']) - 1]
-                if 'sortable' in selected_column.get('class', ''):
-                    selected_column['class'] = (options['selected_column'] > 0 and 'up ' or 'down ') + selected_column['class']
-            return [columns]
-        return self._get_columns_name_hierarchy(options)
+        columns = self._get_columns(options)
+        if 'selected_column' in options and self.order_selected_column:
+            selected_column = columns[0][abs(options['selected_column']) - 1]
+            if 'sortable' in selected_column.get('class', ''):
+                selected_column['class'] = (options['selected_column'] > 0 and 'up ' or 'down ') + selected_column['class']
+        return columns
 
-    #TO BE OVERWRITTEN
-    def _get_columns_name_hierarchy(self, options):
-        return []
+    # TO BE OVERWRITTEN
+    def _get_columns(self, options):
+        return [self._get_columns_name(options)]
 
     # TO BE OVERWRITTEN
     def _get_columns_name(self, options):
@@ -1411,28 +1409,6 @@ class AccountReport(models.AbstractModel):
                          }
                 }
 
-    def _get_super_columns(self, options):
-        """
-        Essentially used when getting the xlsx of a report
-        Some reports may need super title cells on top of regular
-        columns title, This methods retrieve the formers.
-        e.g. in Trial Balance, you can compare periods (super cells)
-            and each have debit/credit columns
-
-
-        @params {dict} options: options for computing the report
-        @return {dict}:
-            {list(dict)} columns: the dict of the super columns of the xlsx report,
-                the columns' string is contained into the 'string' key
-            {int} merge: optional parameter. Indicates to xlsxwriter
-                that it should put the contents of each column into the resulting
-                cell of the merge of this [merge] number of cells
-                -- only merging on one line is supported
-            {int} x_offset: tells xlsxwriter it should start writing the columns from
-                [x_offset] cells on the left
-        """
-        return {}
-
     def get_xlsx(self, options, response=None):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -1443,7 +1419,6 @@ class AccountReport(models.AbstractModel):
         default_col1_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
         default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666'})
         title_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'bottom': 2})
-        super_col_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'align': 'center'})
         level_0_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 13, 'bottom': 6, 'font_color': '#666666'})
         level_1_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 13, 'bottom': 1, 'font_color': '#666666'})
         level_2_col1_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
@@ -1456,44 +1431,23 @@ class AccountReport(models.AbstractModel):
         #Set the first column width to 50
         sheet.set_column(0, 0, 50)
 
-        super_columns = self._get_super_columns(options)
-        y_offset = bool(super_columns.get('columns')) and 1 or 0
+        y_offset = 0
+        headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
 
-        sheet.write(y_offset, 0, '', title_style)
-
-        # Todo in master: Try to put this logic elsewhere
-        x = super_columns.get('x_offset', 0)
-        for super_col in super_columns.get('columns', []):
-            cell_content = super_col.get('string', '').replace('<br/>', ' ').replace('&nbsp;', ' ')
-            x_merge = super_columns.get('merge')
-            if x_merge and x_merge > 1:
-                sheet.merge_range(0, x, 0, x + (x_merge - 1), cell_content, super_col_style)
-                x += x_merge
-            else:
-                sheet.write(0, x, cell_content, super_col_style)
-                x += 1
-        for row in self.get_header(options):
-            x = 0
-            for column in row:
+        # Add headers.
+        for header in headers:
+            x_offset = 0
+            for column in header:
+                column_name_formated = column.get('name', '').replace('<br/>', ' ').replace('&nbsp;', ' ')
                 colspan = column.get('colspan', 1)
-                header_label = column.get('name', '').replace('<br/>', ' ').replace('&nbsp;', ' ')
                 if colspan == 1:
-                    sheet.write(y_offset, x, header_label, title_style)
+                    sheet.write(y_offset, x_offset, column_name_formated, title_style)
                 else:
-                    sheet.merge_range(y_offset, x, y_offset, x + colspan - 1, header_label, title_style)
-                x += colspan
+                    sheet.merge_range(y_offset, x_offset, y_offset, x_offset + colspan - 1, column_name_formated, title_style)
+                x_offset += colspan
             y_offset += 1
-        ctx = self._set_context(options)
-        ctx.update({'no_format':True, 'print_mode':True, 'prefetch_fields': False})
-        # deactivating the prefetching saves ~35% on get_lines running time
-        lines = self.with_context(ctx)._get_lines(options)
 
-        if options.get('hierarchy'):
-            lines = self._create_hierarchy(lines, options)
-        if options.get('selected_column'):
-            lines = self._sort_lines(lines, options)
-
-        #write all data rows
+        # Add lines.
         for y in range(0, len(lines)):
             level = lines[y].get('level')
             if lines[y].get('caret_options'):

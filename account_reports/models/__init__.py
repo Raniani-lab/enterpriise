@@ -18,3 +18,4 @@ from . import account_partner_ledger
 from . import res_config_settings
 from . import chart_template
 from . import account_activity
+from . import ir_module_module

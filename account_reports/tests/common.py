@@ -253,11 +253,15 @@ class TestAccountReportsCommon(SavepointCase):
         cls.february_end_date = datetime.datetime.strptime('2018-02-28', DEFAULT_SERVER_DATE_FORMAT).date()
 
         # Create ir.filters to test the financial reports.
-        cls.groupby_partner_filter = cls.env['ir.filters'].create({
-            'name': 'report tests groupby filter',
+        cls.ir_filters_partner_a = cls.env['ir.filters'].create({
+            'name': 'ir_filters_partner_a',
             'model_id': 'account.move.line',
-            'domain': '[]',
-            'context': str({'group_by': ['partner_id']}),
+            'domain': str([('partner_id.name', '=', 'partner_a')]),
+        })
+        cls.ir_filters_groupby_partner_id_company_id = cls.env['ir.filters'].create({
+            'name': 'ir_filters_groupby_partner_id_company_id',
+            'model_id': 'account.move.line',
+            'context': str({'group_by': ['company_id', 'partner_id']}),
         })
 
     @staticmethod
@@ -375,6 +379,28 @@ class TestAccountReportsCommon(SavepointCase):
         for c in new_options[option_key]:
             c['selected'] = c['id'] in selected_ids
         return new_options
+
+    def assertHeadersValues(self, headers, expected_headers):
+        ''' Helper to compare the headers returned by the _get_table method
+        with some expected results.
+
+        An header is a row of columns. Then, headers is a list of list of dictionary.
+        :param headers:             The headers to compare.
+        :param expected_headers:    The expected headers.
+        :return:
+        '''
+        # Check number of header lines.
+        self.assertEqual(len(headers), len(expected_headers))
+
+        for header, expected_header in zip(headers, expected_headers):
+            # Check number of columns.
+            self.assertEqual(len(header), len(expected_header))
+
+            for i, column in enumerate(header):
+                # Check name.
+                self.assertEqual(column['name'], expected_header[i][0])
+                # Check colspan.
+                self.assertEqual(column.get('colspan', 1), expected_header[i][1])
 
     def assertLinesValues(self, lines, columns, expected_values, currency=None):
         ''' Helper to compare the lines returned by the _get_lines method

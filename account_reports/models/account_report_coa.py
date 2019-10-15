@@ -21,40 +21,34 @@ class AccountChartOfAccountReport(models.AbstractModel):
     MAX_LINES = None
 
     @api.model
-    def _get_templates(self):
-        templates = super(AccountChartOfAccountReport, self)._get_templates()
-        templates['main_table_header_template'] = 'account_reports.template_coa_table_header'
-        return templates
-
-    @api.model
-    def _get_columns_name(self, options):
-        columns = [
+    def _get_columns(self, options):
+        header1 = [
+            {'name': '', 'style': 'width:40%'},
+            {'name': _('Initial Balance'), 'class': 'number', 'colspan': 2},
+        ] + [
+            {'name': period['string'], 'class': 'number', 'colspan': 2}
+            for period in options['comparison'].get('periods', [])
+        ] + [
+            {'name': options['date']['string'], 'class': 'number', 'colspan': 2},
+            {'name': _('Total'), 'class': 'number', 'colspan': 2},
+        ]
+        header2 = [
             {'name': '', 'style': 'width:40%'},
             {'name': _('Debit'), 'class': 'number'},
             {'name': _('Credit'), 'class': 'number'},
         ]
         if options.get('comparison') and options['comparison'].get('periods'):
-            columns += [
-                {'name': _('Debit'), 'class': 'number '},
+            header2 += [
+                {'name': _('Debit'), 'class': 'number'},
                 {'name': _('Credit'), 'class': 'number'},
             ] * len(options['comparison']['periods'])
-        return columns + [
-            {'name': _('Debit'), 'class': 'number '},
+        header2 += [
+            {'name': _('Debit'), 'class': 'number'},
             {'name': _('Credit'), 'class': 'number'},
-            {'name': _('Debit'), 'class': 'number '},
+            {'name': _('Debit'), 'class': 'number'},
             {'name': _('Credit'), 'class': 'number'},
         ]
-
-    @api.model
-    def _get_super_columns(self, options):
-        date_cols = options.get('date') and [options['date']] or []
-        date_cols += (options.get('comparison') or {}).get('periods', [])
-
-        columns = [{'string': _('Initial Balance')}]
-        columns += reversed(date_cols)
-        columns += [{'string': _('Total')}]
-
-        return {'columns': columns, 'x_offset': 1, 'merge': 2}
+        return [header1, header2]
 
     @api.model
     def _get_lines(self, options, line_id=None):

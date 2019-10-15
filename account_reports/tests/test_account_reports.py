@@ -929,24 +929,84 @@ class TestAccountReports(TestAccountReportsCommon):
         )
 
     # -------------------------------------------------------------------------
-    # TESTS: Balance Sheet + All generic financial report features
+    # TESTS: All generic financial report features
     # -------------------------------------------------------------------------
 
-    def test_balance_sheet_initial_state(self):
-        ''' Test folded/unfolded lines plus totals_below_sections. '''
+    def test_financial_html_report_1(self):
         # Init options.
-        report = self.env.ref('account_reports.account_financial_report_balancesheet0')._with_correct_filters()
+        report = self.env.ref('account_reports.account_financial_report_balancesheet0')
+        report.applicable_filters_ids = [(6, 0, (self.ir_filters_partner_a + self.ir_filters_groupby_partner_id_company_id).ids)]
+        report = report._with_correct_filters()
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
 
-        lines = report._get_lines(options)
+        # ===================================================================================================
+        # Check initial report without the 'totals_below_sections'.
+        # ===================================================================================================
+
+        self.company_parent.totals_below_sections = False
+        lines = report._get_table(options)[1]
         self.assertLinesValues(
             lines,
             #   Name                                            Balance
             [   0,                                              1],
             [
-                ('ASSETS',                                      ''),
-                ('Current Assets',                              ''),
+                ('ASSETS',                                      1830.00),
+                ('Current Assets',                              1830.00),
+                ('Bank and Cash Accounts',                      -950.00),
+                ('Receivables',                                 2075.00),
+                ('Current Assets',                              705.00),
+                ('Prepayments',                                 0.00),
+                ('Plus Fixed Assets',                           0.00),
+                ('Plus Non-current Assets',                     0.00),
+
+                ('LIABILITIES',                                 4030.00),
+                ('Current Liabilities',                         4030.00),
+                ('Current Liabilities',                         375.00),
+                ('Payables',                                    3655.00),
+                ('Plus Non-current Liabilities',                0.00),
+
+                ('EQUITY',                                      -2200.00),
+                ('Unallocated Earnings',                        -2200.00),
+                ('Current Year Unallocated Earnings',           200.00),
+                ('Current Year Earnings',                       200.00),
+                ('Current Year Allocated Earnings',             0.00),
+                ('Previous Years Unallocated Earnings',         -2400.00),
+                ('Retained Earnings',                           0.00),
+
+                ('LIABILITIES + EQUITY',                        1830.00),
+            ],
+        )
+
+        # Mark the 'Receivables' line to be unfolded.
+        line_id = lines[3]['id']
+        options['unfolded_lines'] = [line_id]
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                                            Balance
+            [   0,                                              1],
+            [
+                ('Receivables',                                 2075.00),
+                ('121000 Account Receivable',                   2075.00),
+            ],
+        )
+
+        options['unfolded_lines'] = []
+
+        # ===================================================================================================
+        # Check initial report with the 'totals_below_sections'.
+        # ===================================================================================================
+
+        self.company_parent.totals_below_sections = True
+        lines = report._get_table(options)[1]
+
+        self.assertLinesValues(
+            lines,
+            #   Name                                            Balance
+            [   0,                                              1],
+            [
+                ('ASSETS',                                      1830.00),
+                ('Current Assets',                              1830.00),
                 ('Bank and Cash Accounts',                      -950.00),
                 ('Receivables',                                 2075.00),
                 ('Current Assets',                              705.00),
@@ -956,17 +1016,17 @@ class TestAccountReports(TestAccountReportsCommon):
                 ('Plus Non-current Assets',                     0.00),
                 ('Total ASSETS',                                1830.00),
 
-                ('LIABILITIES',                                 ''),
-                ('Current Liabilities',                         ''),
+                ('LIABILITIES',                                 4030.00),
+                ('Current Liabilities',                         4030.00),
                 ('Current Liabilities',                         375.00),
                 ('Payables',                                    3655.00),
                 ('Total Current Liabilities',                   4030.00),
                 ('Plus Non-current Liabilities',                0.00),
                 ('Total LIABILITIES',                           4030.00),
 
-                ('EQUITY',                                      ''),
-                ('Unallocated Earnings',                        ''),
-                ('Current Year Unallocated Earnings',           ''),
+                ('EQUITY',                                      -2200.00),
+                ('Unallocated Earnings',                        -2200.00),
+                ('Current Year Unallocated Earnings',           200.00),
                 ('Current Year Earnings',                       200.00),
                 ('Current Year Allocated Earnings',             0.00),
                 ('Total Current Year Unallocated Earnings',     200.00),
@@ -982,7 +1042,6 @@ class TestAccountReports(TestAccountReportsCommon):
         # Mark the 'Receivables' line to be unfolded.
         line_id = lines[3]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -995,36 +1054,25 @@ class TestAccountReports(TestAccountReportsCommon):
             ],
         )
 
-        # Uncheck the totals_below_sections boolean on the company.
-        self.company_parent.totals_below_sections = False
+        options['unfolded_lines'] = []
 
-        self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
-            #   Name                                            Balance
-            [   0,                                              1],
-            [
-                ('Receivables',                                 2075.00),
-                ('121000 Account Receivable',                   2075.00),
-            ],
-        )
+        # ===================================================================================================
+        # Add multi_company / multi_currency.
+        # ===================================================================================================
 
-    def test_balance_sheet_multi_company(self):
-        ''' Test folded/unfolded lines in a multi-company environment. '''
-        # Select both company_parent/company_child_eur companies.
         company_ids = (self.company_parent + self.company_child_eur).ids
         report = self.env.ref('account_reports.account_financial_report_balancesheet0')\
             .with_context(allowed_company_ids=company_ids)._with_correct_filters()
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
 
-        lines = report._get_lines(options)
+        lines = report._get_table(options)[1]
         self.assertLinesValues(
             lines,
             #   Name                                            Balance
             [   0,                                              1],
             [
-                ('ASSETS',                                      ''),
-                ('Current Assets',                              ''),
+                ('ASSETS',                                      3660.00),
+                ('Current Assets',                              3660.00),
                 ('Bank and Cash Accounts',                      -1900.00),
                 ('Receivables',                                 4150.00),
                 ('Current Assets',                              1410.00),
@@ -1034,17 +1082,17 @@ class TestAccountReports(TestAccountReportsCommon):
                 ('Plus Non-current Assets',                     0.00),
                 ('Total ASSETS',                                3660.00),
 
-                ('LIABILITIES',                                 ''),
-                ('Current Liabilities',                         ''),
+                ('LIABILITIES',                                 8060.00),
+                ('Current Liabilities',                         8060.00),
                 ('Current Liabilities',                         750.00),
                 ('Payables',                                    7310.00),
                 ('Total Current Liabilities',                   8060.00),
                 ('Plus Non-current Liabilities',                0.00),
                 ('Total LIABILITIES',                           8060.00),
 
-                ('EQUITY',                                      ''),
-                ('Unallocated Earnings',                        ''),
-                ('Current Year Unallocated Earnings',           ''),
+                ('EQUITY',                                      -4400.00),
+                ('Unallocated Earnings',                        -4400.00),
+                ('Current Year Unallocated Earnings',           400.00),
                 ('Current Year Earnings',                       400.00),
                 ('Current Year Allocated Earnings',             0.00),
                 ('Total Current Year Unallocated Earnings',     400.00),
@@ -1060,7 +1108,6 @@ class TestAccountReports(TestAccountReportsCommon):
         # Mark the 'Receivables' line to be unfolded.
         line_id = lines[3]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -1074,457 +1121,269 @@ class TestAccountReports(TestAccountReportsCommon):
             ],
         )
 
-    def test_balance_sheet_ir_filters(self):
-        ''' Test folded/unfolded lines with custom groupby/domain. '''
-        # Init options with the ir.filters.
-        report = self.env.ref('account_reports.account_financial_report_balancesheet0')
-        report.applicable_filters_ids = [(6, 0, self.groupby_partner_filter.ids)]
-        report = report._with_correct_filters()
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-
-        # Test the group by filter.
-        options = self._update_multi_selector_filter(options, 'ir_filters', self.groupby_partner_filter.ids)
-        report = report.with_context(report._set_context(options))
-
-        lines = report._get_lines(options)
-        self.assertLinesValues(
-            lines,
-            #   Name                                            partner_a   partner_b   partner_c   partner_d
-            [   0,                                              1,          2,          3,          4],
-            [
-                ('ASSETS',                                      '',         '',         '',         ''),
-                ('Current Assets',                              '',         '',         '',         ''),
-                ('Bank and Cash Accounts',                      300.00,     -1100.00,   50.00,      -200.00),
-                ('Receivables',                                 895.00,     245.00,     475.00,     460.00),
-                ('Current Assets',                              75.00,      225.00,     195.00,     210.00),
-                ('Prepayments',                                 0.00,       0.00,       0.00,       0.00),
-                ('Total Current Assets',                        1270.00,    -630.00,    720.00,     470.00),
-                ('Plus Fixed Assets',                           0.00,       0.00,       0.00,       0.00),
-                ('Plus Non-current Assets',                     0.00,       0.00,       0.00,       0.00),
-                ('Total ASSETS',                                1270.00,    -630.00,    720.00,     470.00),
-
-                ('LIABILITIES',                                 '',         '',         '',         ''),
-                ('Current Liabilities',                         '',         '',         '',         ''),
-                ('Current Liabilities',                         195.00,     45.00,      75.00,      60.00),
-                ('Payables',                                    275.00,     525.00,     1445.00,    1410.00),
-                ('Total Current Liabilities',                   470.00,     570.00,     1520.00,    1470.00),
-                ('Plus Non-current Liabilities',                0.00,       0.00,       0.00,       0.00),
-                ('Total LIABILITIES',                           470.00,     570.00,     1520.00,    1470.00),
-
-                ('EQUITY',                                      '',         '',         '',         ''),
-                ('Unallocated Earnings',                        '',         '',         '',         ''),
-                ('Current Year Unallocated Earnings',           '',         '',         '',         ''),
-                ('Current Year Earnings',                       -400.00,    0.00,       400.00,     200.00),
-                ('Current Year Allocated Earnings',             0.00,       0.00,       0.00,       0.00),
-                ('Total Current Year Unallocated Earnings',     -400.00,    0.00,       400.00,     200.00),
-                ('Previous Years Unallocated Earnings',         1200.00,    -1200.00,   -1200.00,   -1200.00),
-                ('Total Unallocated Earnings',                  800.00,     -1200.00,   -800.00,    -1000.00),
-                ('Retained Earnings',                           0.00,       0.00,       0.00,       0.00),
-                ('Total EQUITY',                                800.00,     -1200.00,   -800.00,    -1000.00),
-
-                ('LIABILITIES + EQUITY',                        1270.00,    -630.00,    720.00,     470.00),
-            ],
-        )
-
-        # Mark the 'Receivables' line to be unfolded.
-        line_id = lines[3]['id']
-        options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
-
-        self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
-            #   Name                                            partner_a   partner_b   partner_c   partner_d
-            [   0,                                              1,          2,          3,          4],
-            [
-                ('Receivables',                                 895.00,     245.00,     475.00,     460.00),
-                ('121000 Account Receivable',                   895.00,     245.00,     475.00,     460.00),
-                ('Total Receivables',                           895.00,     245.00,     475.00,     460.00),
-            ],
-        )
-
-        # Select group by ir.filters.
         options['unfolded_lines'] = []
-        options = self._update_multi_selector_filter(options, 'ir_filters', self.groupby_partner_filter.ids)
-        report = report.with_context(report._set_context(options))
 
-        lines = report._get_lines(options)
-        self.assertLinesValues(
-            lines,
-            #   Name                                            partner_a   partner_b
-            [   0,                                              1,          2],
-            [
-                ('ASSETS',                                      '',         ''),
-                ('Current Assets',                              '',         ''),
-                ('Bank and Cash Accounts',                      300.00,     -1100.00),
-                ('Receivables',                                 895.00,     245.00),
-                ('Current Assets',                              75.00,      225.00),
-                ('Prepayments',                                 0.00,       0.00),
-                ('Total Current Assets',                        1270.00,    -630.00),
-                ('Plus Fixed Assets',                           0.00,       0.00),
-                ('Plus Non-current Assets',                     0.00,       0.00),
-                ('Total ASSETS',                                1270.00,    -630.00),
+        # ===================================================================================================
+        # Add a comparison, check the growth column.
+        # ===================================================================================================
 
-                ('LIABILITIES',                                 '',         ''),
-                ('Current Liabilities',                         '',         ''),
-                ('Current Liabilities',                         195.00,     45.00),
-                ('Payables',                                    275.00,     525.00),
-                ('Total Current Liabilities',                   470.00,     570.00),
-                ('Plus Non-current Liabilities',                0.00,       0.00),
-                ('Total LIABILITIES',                           470.00,     570.00),
-
-                ('EQUITY',                                      '',         ''),
-                ('Unallocated Earnings',                        '',         ''),
-                ('Current Year Unallocated Earnings',           '',         ''),
-                ('Current Year Earnings',                       -400.00,    0.00),
-                ('Current Year Allocated Earnings',             0.00,       0.00),
-                ('Total Current Year Unallocated Earnings',     -400.00,    0.00),
-                ('Previous Years Unallocated Earnings',         1200.00,    -1200.00),
-                ('Total Unallocated Earnings',                  800.00,     -1200.00),
-                ('Retained Earnings',                           0.00,       0.00),
-                ('Total EQUITY',                                800.00,     -1200.00),
-
-                ('LIABILITIES + EQUITY',                        1270.00,    -630.00),
-            ],
-        )
-
-        # Mark the 'Receivables' line to be unfolded.
-        line_id = lines[3]['id']
-        options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
-
-        self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
-            #   Name                                            partner_a   partner_b
-            [   0,                                              1,          2],
-            [
-                ('Receivables',                                 895.00,     245.00),
-                ('121000 Account Receivable',                   895.00,     245.00),
-                ('Total Receivables',                           895.00,     245.00),
-            ],
-        )
-
-    def test_balance_sheet_debit_credit(self):
-        ''' Test folded/unfolded lines with debit_credit checked with/without ir.filters. '''
-        # Init options with debit_credit.
-        report = self.env.ref('account_reports.account_financial_report_balancesheet0')
-        report.debit_credit = True
-        report.applicable_filters_ids = [(6, 0, self.groupby_partner_filter.ids)]
-        report = report._with_correct_filters()
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
-
-        lines = report._get_lines(options)
-        self.assertLinesValues(
-            lines,
-            #   Name                                            Debit       Credit      Balance
-            [   0,                                              1,          2,          3],
-            [
-                ('ASSETS',                                      '',         '',         ''),
-                ('Current Assets',                              '',         '',         ''),
-                ('Bank and Cash Accounts',                      0.00,       0.00,       -950.00),
-                ('Receivables',                                 0.00,       0.00,       2075.00),
-                ('Current Assets',                              0.00,       0.00,       705.00),
-                ('Prepayments',                                 0.00,       0.00,       0.00),
-                ('Total Current Assets',                        0.00,       0.00,       1830.00),
-                ('Plus Fixed Assets',                           0.00,       0.00,       0.00),
-                ('Plus Non-current Assets',                     0.00,       0.00,       0.00),
-                ('Total ASSETS',                                0.00,       0.00,       1830.00),
-
-                ('LIABILITIES',                                 '',         '',         ''),
-                ('Current Liabilities',                         '',         '',         ''),
-                ('Current Liabilities',                         0.00,       0.00,       375.00),
-                ('Payables',                                    0.00,       0.00,       3655.00),
-                ('Total Current Liabilities',                   0.00,       0.00,       4030.00),
-                ('Plus Non-current Liabilities',                0.00,       0.00,       0.00),
-                ('Total LIABILITIES',                           0.00,       0.00,       4030.00),
-
-                ('EQUITY',                                      '',         '',         ''),
-                ('Unallocated Earnings',                        '',         '',         ''),
-                ('Current Year Unallocated Earnings',           '',         '',         ''),
-                ('Current Year Earnings',                       0.00,       0.00,       200.00),
-                ('Current Year Allocated Earnings',             0.00,       0.00,       0.00),
-                ('Total Current Year Unallocated Earnings',     0.00,       0.00,       200.00),
-                ('Previous Years Unallocated Earnings',         0.00,       0.00,       -2400.00),
-                ('Total Unallocated Earnings',                  0.00,       0.00,       -2200.00),
-                ('Retained Earnings',                           0.00,       0.00,       0.00),
-                ('Total EQUITY',                                0.00,       0.00,       -2200.00),
-
-                ('LIABILITIES + EQUITY',                        0.00,       0.00,       1830.00),
-            ],
-        )
-
-        # Mark the 'Receivables' line to be unfolded.
-        line_id = lines[3]['id']
-        options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
-
-        self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
-            #   Name                                            Debit       Credit      Balance
-            [   0,                                              1,          2,          3],
-            [
-                ('Receivables',                                 0.00,       0.00,       2075.00),
-                ('121000 Account Receivable',                   2875.00,    800.00,     2075.00),
-                ('Total Receivables',                           0.00,       0.00,       2075.00),
-            ],
-        )
-
-        # TODO: Make sure this commented test works after the refactoring of the financial reports.
-        # Combining debit_credit with a group by is buggy in stable version but very hard to debug.
-
-        # # Select group by ir.filters.
-        # options['unfolded_lines'] = []
-        # options = self._update_multi_selector_filter(options, 'ir_filters', self.groupby_partner_filter.ids)
-        # report = report.with_context(report._set_context(options))
-        #
-        # lines = report._get_lines(options)
-        # self.assertLinesValues(
-        #     lines,
-        #     #                                                   [       Debit       ]   [       Credit      ]   [       Balance     ]
-        #     #   Name                                            partner_a   partner_b   partner_a   partner_b   partner_a   partner_b
-        #     [   0,                                              1,          2,          3,          4,          5,          6],
-        #     [
-        #         ('ASSETS',                                      '',         '',         '',         '',         '',         ''),
-        #         ('Current Assets',                              '',         '',         '',         '',         '',         ''),
-        #         ('Bank and Cash Accounts',                      0.00,       0.00,       0.00,       0.00,       300.00,     -1100.00),
-        #         ('Receivables',                                 0.00,       0.00,       0.00,       0.00,       895.00,     245.00),
-        #         ('Current Assets',                              0.00,       0.00,       0.00,       0.00,       75.00,      225.00),
-        #         ('Prepayments',                                 0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-        #         ('Total Current Assets',                        0.00,       0.00,       0.00,       0.00,       1270.00,    -630.00),
-        #         ('Plus Fixed Assets',                           0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-        #         ('Plus Non-current Assets',                     0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-        #         ('Total ASSETS',                                0.00,       0.00,       0.00,       0.00,       1270.00,    -630.00),
-        #
-        #         ('LIABILITIES',                                 '',         '',         '',         '',         '',         ''),
-        #         ('Current Liabilities',                         '',         '',         '',         '',         '',         ''),
-        #         ('Current Liabilities',                         0.00,       0.00,       0.00,       0.00,       195.00,     45.00),
-        #         ('Payables',                                    0.00,       0.00,       0.00,       0.00,       275.00,     525.00),
-        #         ('Total Current Liabilities',                   0.00,       0.00,       0.00,       0.00,       470.00,     570.00),
-        #         ('Plus Non-current Liabilities',                0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-        #         ('Total LIABILITIES',                           0.00,       0.00,       0.00,       0.00,       470.00,     570.00),
-        #
-        #         ('EQUITY',                                      '',         '',         '',         '',         '',         ''),
-        #         ('Unallocated Earnings',                        '',         '',         '',         '',         '',         ''),
-        #         ('Current Year Unallocated Earnings',           '',         '',         '',         '',         '',         ''),
-        #         ('Current Year Earnings',                       0.00,       0.00,       0.00,       0.00,       -400.00,    0.00),
-        #         ('Current Year Allocated Earnings',             0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-        #         ('Total Current Year Unallocated Earnings',     0.00,       0.00,       0.00,       0.00,       -400.00,    0.00),
-        #         ('Previous Years Unallocated Earnings',         0.00,       0.00,       0.00,       0.00,       1200.00,    -1200.00),
-        #         ('Total Unallocated Earnings',                  0.00,       0.00,       0.00,       0.00,       800.00,     -1200.00),
-        #         ('Retained Earnings',                           0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-        #         ('Total EQUITY',                                0.00,       0.00,       0.00,       0.00,       800.00,     -1200.00),
-        #
-        #         ('LIABILITIES + EQUITY',                        0.00,       0.00,       0.00,       0.00,       1270.00,    -630.00),
-        #     ],
-        # )
-
-    def test_balance_sheet_filter_comparison(self):
-        ''' Test folded/unfolded lines with one comparison plus with/without the ir.filters. '''
-        # Init options with debit_credit.
-        report = self.env.ref('account_reports.account_financial_report_balancesheet0')
-        report.applicable_filters_ids = [(6, 0, self.groupby_partner_filter.ids)]
-        report = report._with_correct_filters()
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_comparison_filter(options, report, 'previous_period', 1)
-        report = report.with_context(report._set_context(options))
 
-        lines = report._get_lines(options)
+        lines = report._get_table(options)[1]
         self.assertLinesValues(
             lines,
             #   Name                                            Balance     Comparison  %
             [   0,                                              1,          2,          3],
             [
-                ('ASSETS',                                      '',         '',         ''),
-                ('Current Assets',                              '',         '',         ''),
-                ('Bank and Cash Accounts',                      -950.00,    -750.00,    '26.7%'),
-                ('Receivables',                                 2075.00,    1485.00,    '39.7%'),
-                ('Current Assets',                              705.00,     615.00,     '14.6%'),
+                ('ASSETS',                                      3660.00,    2700.00,    '35.6%'),
+                ('Current Assets',                              3660.00,    2700.00,    '35.6%'),
+                ('Bank and Cash Accounts',                      -1900.00,   -1500.00,   '26.7%'),
+                ('Receivables',                                 4150.00,    2970.00,    '39.7%'),
+                ('Current Assets',                              1410.00,    1230.00,    '14.6%'),
                 ('Prepayments',                                 0.00,       0.00,       'n/a'),
-                ('Total Current Assets',                        1830.00,    1350.00,    '35.6%'),
+                ('Total Current Assets',                        3660.00,    2700.00,    '35.6%'),
                 ('Plus Fixed Assets',                           0.00,       0.00,       'n/a'),
                 ('Plus Non-current Assets',                     0.00,       0.00,       'n/a'),
-                ('Total ASSETS',                                1830.00,    1350.00,    '35.6%'),
+                ('Total ASSETS',                                3660.00,    2700.00,    '35.6%'),
 
-                ('LIABILITIES',                                 '',         '',         ''),
-                ('Current Liabilities',                         '',         '',         ''),
-                ('Current Liabilities',                         375.00,     285.00,     '31.6%'),
-                ('Payables',                                    3655.00,    3265.00,    '11.9%'),
-                ('Total Current Liabilities',                   4030.00,    3550.00,    '13.5%'),
+                ('LIABILITIES',                                 8060.00,    7100.00,    '13.5%'),
+                ('Current Liabilities',                         8060.00,    7100.00,    '13.5%'),
+                ('Current Liabilities',                         750.00,     570.00,     '31.6%'),
+                ('Payables',                                    7310.00,    6530.00,    '11.9%'),
+                ('Total Current Liabilities',                   8060.00,    7100.00,    '13.5%'),
                 ('Plus Non-current Liabilities',                0.00,       0.00,       'n/a'),
-                ('Total LIABILITIES',                           4030.00,    3550.00,    '13.5%'),
+                ('Total LIABILITIES',                           8060.00,    7100.00,    '13.5%'),
 
-                ('EQUITY',                                      '',         '',         ''),
-                ('Unallocated Earnings',                        '',         '',         ''),
-                ('Current Year Unallocated Earnings',           '',         '',         ''),
-                ('Current Year Earnings',                       200.00,     200.00,     '0.0%'),
+                ('EQUITY',                                      -4400.00,   -4400.00,   '0.0%'),
+                ('Unallocated Earnings',                        -4400.00,   -4400.00,   '0.0%'),
+                ('Current Year Unallocated Earnings',           400.00,     400.00,     '0.0%'),
+                ('Current Year Earnings',                       400.00,     400.00,     '0.0%'),
                 ('Current Year Allocated Earnings',             0.00,       0.00,       'n/a'),
-                ('Total Current Year Unallocated Earnings',     200.00,     200.00,     '0.0%'),
-                ('Previous Years Unallocated Earnings',         -2400.00,   -2400.00,   '0.0%'),
-                ('Total Unallocated Earnings',                  -2200.00,   -2200.00,   '0.0%'),
+                ('Total Current Year Unallocated Earnings',     400.00,     400.00,     '0.0%'),
+                ('Previous Years Unallocated Earnings',         -4800.00,   -4800.00,   '0.0%'),
+                ('Total Unallocated Earnings',                  -4400.00,   -4400.00,   '0.0%'),
                 ('Retained Earnings',                           0.00,       0.00,       'n/a'),
-                ('Total EQUITY',                                -2200.00,   -2200.00,   '0.0%'),
+                ('Total EQUITY',                                -4400.00,   -4400.00,   '0.0%'),
 
-                ('LIABILITIES + EQUITY',                        1830.00,    1350.00,    '35.6%'),
+                ('LIABILITIES + EQUITY',                        3660.00,    2700.00,    '35.6%'),
             ],
         )
 
         # Mark the 'Receivables' line to be unfolded.
         line_id = lines[3]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
-            #   Name                                            Balance     Previous Period
-            [   0,                                              1,          2],
+            #   Name                                            Balance     Comparison  %
+            [   0,                                              1,          2,          3],
             [
-                ('Receivables',                                 2075.00,    1485.00),
-                ('121000 Account Receivable',                   2075.00,    1485.00),
-                ('Total Receivables',                           2075.00,    1485.00),
+                ('Receivables',                                 4150.00,    2970.00,    '39.7%'),
+                ('121000 Account Receivable',                   2075.00,    1485.00,    '39.7%'),
+                ('121000 Account Receivable',                   2075.00,    1485.00,    '39.7%'),
+                ('Total Receivables',                           4150.00,    2970.00,    '39.7%'),
             ],
         )
 
-        # Select both ir.filters.
         options['unfolded_lines'] = []
-        options = self._update_multi_selector_filter(options, 'ir_filters', self.groupby_partner_filter.ids)
-        report = report.with_context(report._set_context(options))
 
-        lines = report._get_lines(options)
+        # ===================================================================================================
+        # Add a filter to see only 'partner_a'.
+        # ===================================================================================================
+
+        options = self._update_multi_selector_filter(options, 'ir_filters', self.ir_filters_partner_a.ids)
+
+        lines = report._get_table(options)[1]
         self.assertLinesValues(
             lines,
-            #                                                   [                   Balance                 ]   [                  Comparison               ]
-            #   Name                                            partner_a   partner_b   partner_c   partner_d   partner_a   partner_b   partner_c   partner_d
-            [   0,                                              1,          2,          3,          4,          5,          6,          7,          8],
+            #   Name                                            Balance     Comparison  %
+            [   0,                                              1,          2,          3],
             [
-                ('ASSETS',                                      '',         '',         '',         '',         '',         '',         '',         ''),
-                ('Current Assets',                              '',         '',         '',         '',         '',         '',         '',         ''),
-                ('Bank and Cash Accounts',                      300.00,     -1100.00,   50.00,      -200.00,    600.00,     -1100.00,   -50.00,     -200.00),
-                ('Receivables',                                 895.00,     245.00,     475.00,     460.00,     895.00,     245.00,     230.00,     115.00),
-                ('Current Assets',                              75.00,      225.00,     195.00,     210.00,     30.00,      180.00,     195.00,     210.00),
-                ('Prepayments',                                 0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-                ('Total Current Assets',                        1270.00,    -630.00,    720.00,     470.00,     1525.00,    -675.00,    375.00,     125.00),
-                ('Plus Fixed Assets',                           0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-                ('Plus Non-current Assets',                     0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-                ('Total ASSETS',                                1270.00,    -630.00,    720.00,     470.00,     1525.00,    -675.00,    375.00,     125.00),
+                ('ASSETS',                                      2540.00,    3050.00,    '-16.7%'),
+                ('Current Assets',                              2540.00,    3050.00,    '-16.7%'),
+                ('Bank and Cash Accounts',                      600.00,     1200.00,    '-50.0%'),
+                ('Receivables',                                 1790.00,    1790.00,    '0.0%'),
+                ('Current Assets',                              150.00,     60.00,      '150.0%'),
+                ('Prepayments',                                 0.00,       0.00,       'n/a'),
+                ('Total Current Assets',                        2540.00,    3050.00,    '-16.7%'),
+                ('Plus Fixed Assets',                           0.00,       0.00,       'n/a'),
+                ('Plus Non-current Assets',                     0.00,       0.00,       'n/a'),
+                ('Total ASSETS',                                2540.00,    3050.00,    '-16.7%'),
 
-                ('LIABILITIES',                                 '',         '',         '',         '',         '',         '',         '',         ''),
-                ('Current Liabilities',                         '',         '',         '',         '',         '',         '',         '',         ''),
-                ('Current Liabilities',                         195.00,     45.00,      75.00,      60.00,      195.00,     45.00,      30.00,      15.00),
-                ('Payables',                                    275.00,     525.00,     1445.00,    1410.00,    230.00,     180.00,     1445.00,    1410.00),
-                ('Total Current Liabilities',                   470.00,     570.00,     1520.00,    1470.00,    425.00,     225.00,     1475.00,    1425.00),
-                ('Plus Non-current Liabilities',                0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-                ('Total LIABILITIES',                           470.00,     570.00,     1520.00,    1470.00,    425.00,     225.00,     1475.00,    1425.00),
+                ('LIABILITIES',                                 940.00,     850.00,     '10.6%'),
+                ('Current Liabilities',                         940.00,     850.00,     '10.6%'),
+                ('Current Liabilities',                         390.00,     390.00,     '0.0%'),
+                ('Payables',                                    550.00,     460.00,     '19.6%'),
+                ('Total Current Liabilities',                   940.00,     850.00,     '10.6%'),
+                ('Plus Non-current Liabilities',                0.00,       0.00,       'n/a'),
+                ('Total LIABILITIES',                           940.00,     850.00,     '10.6%'),
 
-                ('EQUITY',                                      '',         '',         '',         '',         '',         '',         '',         ''),
-                ('Unallocated Earnings',                        '',         '',         '',         '',         '',         '',         '',         ''),
-                ('Current Year Unallocated Earnings',           '',         '',         '',         '',         '',         '',         '',         ''),
-                ('Current Year Earnings',                       -400.00,    0.00,       400.00,     200.00,     -100.00,    300.00,     100.00,     -100.00),
-                ('Current Year Allocated Earnings',             0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-                ('Total Current Year Unallocated Earnings',     -400.00,    0.00,       400.00,     200.00,     -100.00,    300.00,     100.00,     -100.00),
-                ('Previous Years Unallocated Earnings',         1200.00,    -1200.00,   -1200.00,   -1200.00,   1200.00,    -1200.00,   -1200.00,   -1200.00),
-                ('Total Unallocated Earnings',                  800.00,     -1200.00,   -800.00,    -1000.00,   1100.00,    -900.00,    -1100.00,   -1300.00),
-                ('Retained Earnings',                           0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00,       0.00),
-                ('Total EQUITY',                                800.00,     -1200.00,   -800.00,    -1000.00,   1100.00,    -900.00,    -1100.00,   -1300.00),
+                ('EQUITY',                                      1600.00,    2200.00,    '-27.3%'),
+                ('Unallocated Earnings',                        1600.00,    2200.00,    '-27.3%'),
+                ('Current Year Unallocated Earnings',           -800.00,    -200.00,    '300.0%'),
+                ('Current Year Earnings',                       -800.00,    -200.00,    '300.0%'),
+                ('Current Year Allocated Earnings',             0.00,       0.00,       'n/a'),
+                ('Total Current Year Unallocated Earnings',     -800.00,    -200.00,    '300.0%'),
+                ('Previous Years Unallocated Earnings',         2400.00,    2400.00,    '0.0%'),
+                ('Total Unallocated Earnings',                  1600.00,    2200.00,    '-27.3%'),
+                ('Retained Earnings',                           0.00,       0.00,       'n/a'),
+                ('Total EQUITY',                                1600.00,    2200.00,    '-27.3%'),
 
-                ('LIABILITIES + EQUITY',                        1270.00,    -630.00,    720.00,     470.00,     1525.00,    -675.00,    375.00,     125.00),
+                ('LIABILITIES + EQUITY',                        2540.00,    3050.00,    '-16.7%'),
+            ],
+        )
+
+        # Mark the 'Receivables' line to be unfolded.
+        line_id = lines[3]['id']
+        options['unfolded_lines'] = [line_id]
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #                                                   [ Balance ]     [ Comparison ]
+            [   0,                                              1],
+            [
+                ('Receivables',                                 1790.00,    1790.00,    '0.0%'),
+                ('121000 Account Receivable',                   895.00,     895.00,     '0.0%'),
+                ('121000 Account Receivable',                   895.00,     895.00,     '0.0%'),
+                ('Total Receivables',                           1790.00,    1790.00,    '0.0%'),
+            ],
+        )
+
+        options['unfolded_lines'] = []
+
+        # ===================================================================================================
+        # Add a group by on ('company_id', 'partner_id').
+        # ===================================================================================================
+
+        options = self._update_multi_selector_filter(options, 'ir_filters', (self.ir_filters_partner_a + self.ir_filters_groupby_partner_id_company_id).ids)
+
+        headers, lines = report._get_table(options)
+        self.assertHeadersValues(headers, [
+            [   ('', 1),                                                    ('As of 03/31/2017',  2),                       ('As of 02/28/2017', 2)],
+            [   ('', 1),                                        ('company_child_eur', 1),   ('company_parent', 1),  ('company_child_eur', 1),   ('company_parent', 1)],
+            [   ('', 1),                                        ('partner_a', 1),           ('partner_a', 1),       ('partner_a', 1),           ('partner_a', 1)],
+        ])
+        self.assertLinesValues(
+            lines,
+            [   0,                                              1,                          2,                      3,                          4],
+            [
+                ('ASSETS',                                      1270.00,                    1270.00,                1525.00,                    1525.00),
+                ('Current Assets',                              1270.00,                    1270.00,                1525.00,                    1525.00),
+                ('Bank and Cash Accounts',                      300.00,                     300.00,                 600.00,                     600.00),
+                ('Receivables',                                 895.00,                     895.00,                 895.00,                     895.00),
+                ('Current Assets',                              75.00,                      75.00,                  30.00,                      30.00),
+                ('Prepayments',                                 0.00,                       0.00,                   0.00,                       0.00),
+                ('Total Current Assets',                        1270.00,                    1270.00,                1525.00,                    1525.00),
+                ('Plus Fixed Assets',                           0.00,                       0.00,                   0.00,                       0.00),
+                ('Plus Non-current Assets',                     0.00,                       0.00,                   0.00,                       0.00),
+                ('Total ASSETS',                                1270.00,                    1270.00,                1525.00,                    1525.00),
+
+                ('LIABILITIES',                                 470.00,                     470.00,                 425.00,                     425.00),
+                ('Current Liabilities',                         470.00,                     470.00,                 425.00,                     425.00),
+                ('Current Liabilities',                         195.00,                     195.00,                 195.00,                     195.00),
+                ('Payables',                                    275.00,                     275.00,                 230.00,                     230.00),
+                ('Total Current Liabilities',                   470.00,                     470.00,                 425.00,                     425.00),
+                ('Plus Non-current Liabilities',                0.00,                       0.00,                   0.00,                       0.00),
+                ('Total LIABILITIES',                           470.00,                     470.00,                 425.00,                     425.00),
+
+                ('EQUITY',                                      800.00,                     800.00,                 1100.00,                    1100.00),
+                ('Unallocated Earnings',                        800.00,                     800.00,                 1100.00,                    1100.00),
+                ('Current Year Unallocated Earnings',           -400.00,                    -400.00,                -100.00,                    -100.00),
+                ('Current Year Earnings',                       -400.00,                    -400.00,                -100.00,                    -100.00),
+                ('Current Year Allocated Earnings',             0.00,                       0.00,                   0.00,                       0.00),
+                ('Total Current Year Unallocated Earnings',     -400.00,                    -400.00,                -100.00,                    -100.00),
+                ('Previous Years Unallocated Earnings',         1200.00,                    1200.00,                1200.00,                    1200.00),
+                ('Total Unallocated Earnings',                  800.00,                     800.00,                 1100.00,                    1100.00),
+                ('Retained Earnings',                           0.00,                       0.00,                   0.00,                       0.00),
+                ('Total EQUITY',                                800.00,                     800.00,                 1100.00,                    1100.00),
+
+                ('LIABILITIES + EQUITY',                        1270.00,                    1270.00,                1525.00,                    1525.00),
             ]
         )
 
+        # Mark the 'Receivables' line to be unfolded.
+        line_id = lines[3]['id']
+        options['unfolded_lines'] = [line_id]
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            [   0,                                              1,                          2,                      3,                          4],
+            [
+                ('Receivables',                                 895.00,                     895.00,                 895.00,                     895.00),
+                ('121000 Account Receivable',                   895.00,                     0.00,                   895.00,                     0.00),
+                ('121000 Account Receivable',                   0.00,                       895.00,                 0.00,                       895.00),
+                ('Total Receivables',                           895.00,                     895.00,                 895.00,                     895.00),
+            ],
+        )
+
+        options['unfolded_lines'] = []
+
+        # ===================================================================================================
+        # Add a filter on the 'Bank' journal.
+        # ===================================================================================================
+
+        journal = self.env['account.journal'].search([('company_id', '=', self.company_parent.id), ('type', '=', 'bank')])
+        options = self._update_multi_selector_filter(options, 'journals', journal.ids)
+
+        headers, lines = report._get_table(options)
+        self.assertHeadersValues(headers, [
+            [   ('', 1),                                        ('As of 03/31/2017',  1),   ('As of 02/28/2017', 1)],
+            [   ('', 1),                                        ('company_parent', 1),      ('company_parent', 1)],
+            [   ('', 1),                                        ('partner_a', 1),           ('partner_a', 1)],
+        ])
+        self.assertLinesValues(
+            lines,
+            [   0,                                              1,                          2],
+            [
+                ('ASSETS',                                      -300.00,                    0.00),
+                ('Current Assets',                              -300.00,                    0.00),
+                ('Bank and Cash Accounts',                      300.00,                     600.00),
+                ('Receivables',                                 -600.00,                    -600.00),
+                ('Current Assets',                              0.00,                       0.00),
+                ('Prepayments',                                 0.00,                       0.00),
+                ('Total Current Assets',                        -300.00,                    0.00),
+                ('Plus Fixed Assets',                           0.00,                       0.00),
+                ('Plus Non-current Assets',                     0.00,                       0.00),
+                ('Total ASSETS',                                -300.00,                    0.00),
+
+                ('LIABILITIES',                                 -300.00,                    0.00),
+                ('Current Liabilities',                         -300.00,                    0.00),
+                ('Current Liabilities',                         0.00,                       0.00),
+                ('Payables',                                    -300.00,                    0.00),
+                ('Total Current Liabilities',                   -300.00,                    0.00),
+                ('Plus Non-current Liabilities',                0.00,                       0.00),
+                ('Total LIABILITIES',                           -300.00,                    0.00),
+
+                ('EQUITY',                                      0.00,                       0.00),
+                ('Unallocated Earnings',                        0.00,                       0.00),
+                ('Current Year Unallocated Earnings',           0.00,                       0.00),
+                ('Current Year Earnings',                       0.00,                       0.00),
+                ('Current Year Allocated Earnings',             0.00,                       0.00),
+                ('Total Current Year Unallocated Earnings',     0.00,                       0.00),
+                ('Previous Years Unallocated Earnings',         0.00,                       0.00),
+                ('Total Unallocated Earnings',                  0.00,                       0.00),
+                ('Retained Earnings',                           0.00,                       0.00),
+                ('Total EQUITY',                                0.00,                       0.00),
+
+                ('LIABILITIES + EQUITY',                        -300.00,                    0.00),
+            ]
+        )
 
         # Mark the 'Receivables' line to be unfolded.
         line_id = lines[3]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
-            #                                                   [                   Balance                 ]   [                  Comparison               ]
-            #   Name                                            partner_a   partner_b   partner_c   partner_d   partner_a   partner_b   partner_c   partner_d
-            [   0,                                              1,          2,          3,          4,          5,          6,          7,          8],
+            [   0,                                              1,                          2],
             [
-                ('Receivables',                                 895.00,     245.00,     475.00,     460.00,     895.00,     245.00,     230.00,     115.00),
-                ('121000 Account Receivable',                   895.00,     245.00,     475.00,     460.00,     895.00,     245.00,     230.00,     115.00),
-                ('Total Receivables',                           895.00,     245.00,     475.00,     460.00,     895.00,     245.00,     230.00,     115.00),
+                ('Receivables',                                 -600.00,                    -600.00),
+                ('121000 Account Receivable',                   -600.00,                    -600.00),
+                ('Total Receivables',                           -600.00,                    -600.00),
             ],
         )
 
-    # -------------------------------------------------------------------------
-    # TESTS: Profit And Loss
-    # -------------------------------------------------------------------------
-
-    def test_profit_and_loss_initial_state(self):
-        ''' Test folded/unfolded lines. '''
-        # Init options.
-        report = self.env.ref('account_reports.account_financial_report_profitandloss0')._with_correct_filters()
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
-
-        lines = report._get_lines(options)
-        self.assertLinesValues(
-            lines,
-            #   Name                                            Balance
-            [   0,                                              1],
-            [
-                ('Income',                                      ''),
-                ('Gross Profit',                                ''),
-                ('Operating Income',                            600.00),
-                ('Cost of Revenue',                             0.00),
-                ('Total Gross Profit',                          600.00),
-                ('Other Income',                                0.00),
-                ('Total Income',                                600.00),
-                 ('Expenses',                                    ''),
-                ('Expenses',                                    600.00),
-                ('Depreciation',                                0.00),
-                ('Total Expenses',                              600.00),
-                 ('Net Profit',                                 0.00),
-            ],
-        )
-
-        # Mark the 'Operating Income' line to be unfolded.
-        line_id = lines[2]['id']
-        options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
-
-        self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
-            #   Name                                            Balance
-            [   0,                                              1],
-            [
-                ('Operating Income',                            600.00),
-                ('400000 Product Sales',                        600.00),
-                ('Total Operating Income',                      600.00),
-            ],
-        )
-
-    def test_profit_and_loss_filter_journals(self):
-        ''' Test folded lines with a filter on journals. '''
-        journal = self.env['account.journal'].search([('company_id', '=', self.company_parent.id), ('type', '=', 'sale')])
-
-        # Init options with only the sale journal selected.
-        report = self.env.ref('account_reports.account_financial_report_profitandloss0')._with_correct_filters()
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options = self._update_multi_selector_filter(options, 'journals', journal.ids)
-        report = report.with_context(report._set_context(options))
-
-        self.assertLinesValues(
-            report._get_lines(options),
-            #   Name                                            Balance
-            [   0,                                              1],
-            [
-                ('Income',                                      ''),
-                ('Gross Profit',                                ''),
-                ('Operating Income',                            600.00),
-                ('Cost of Revenue',                             0.00),
-                ('Total Gross Profit',                          600.00),
-                ('Other Income',                                0.00),
-                ('Total Income',                                600.00),
-                 ('Expenses',                                    ''),
-                ('Expenses',                                    0.00),
-                ('Depreciation',                                0.00),
-                ('Total Expenses',                              0.00),
-                 ('Net Profit',                                 600.00),
-            ],
-        )
+        options['unfolded_lines'] = []
 
     # -------------------------------------------------------------------------
     # TESTS: Cash Flow Statement

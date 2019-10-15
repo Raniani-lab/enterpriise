@@ -19,7 +19,6 @@
                                 <field name="tax_report"/>
                             </group>
                             <group>
-                                <field name="debit_credit"/>
                                 <field name="generated_menu_id"/>
                             </group>
                         </group>

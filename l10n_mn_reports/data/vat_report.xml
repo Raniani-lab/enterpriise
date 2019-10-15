@@ -18,7 +18,7 @@
         <field name="name">Тухайн сарын нийт борлуулалтын орлого (1=2+3)</field>
         <field name="sequence" eval="1"/>
         <field name="level" eval="2"/>
-        <field name="formulas">balance = VAT_LINE2.balance + VAT_LINE3.balance</field>
+        <field name="formulas">VAT_LINE2 + VAT_LINE3</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="special_date_changer">normal</field>
     </record>
@@ -28,7 +28,7 @@
         <field name="sequence" eval="2"/>
         <field name="level" eval="2"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag2')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -39,7 +39,7 @@
         <field name="name">Нэмэгдсэн өртгийн албан татвар ногдох бараа, ажил, үйлчилгээний нийт борлуулалтын орлого (3=4+10+30)</field>
         <field name="sequence" eval="3"/>
         <field name="level" eval="2"/>
-        <field name="formulas">balance = VAT_LINE4.balance + VAT_LINE10.balance + VAT_LINE30.balance</field>
+        <field name="formulas">VAT_LINE4 + VAT_LINE10 + VAT_LINE30</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="special_date_changer">normal</field>
     </record>
@@ -48,7 +48,7 @@
         <field name="name">НӨАТ ногдох бараа борлуулсны орлого (4=5+...+9)</field>
         <field name="sequence" eval="4"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE5.balance + VAT_LINE6.balance + VAT_LINE7.balance + VAT_LINE8.balance + VAT_LINE9.balance</field>
+        <field name="formulas">VAT_LINE5 + VAT_LINE6 + VAT_LINE7 + VAT_LINE8 + VAT_LINE9</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -58,7 +58,7 @@
         <field name="sequence" eval="5"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag5')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -70,7 +70,7 @@
         <field name="sequence" eval="6"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag6')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -82,7 +82,7 @@
         <field name="sequence" eval="7"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag7')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -94,7 +94,7 @@
         <field name="sequence" eval="8"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag8')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -106,7 +106,7 @@
         <field name="sequence" eval="9"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag9')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -117,7 +117,7 @@
         <field name="name">НӨАТ ногдох ажил, үйлчилгээний  орлого (10=11+...+25)</field>
         <field name="sequence" eval="10"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE11.balance + VAT_LINE12.balance + VAT_LINE13.balance + VAT_LINE14.balance + VAT_LINE15.balance + VAT_LINE16.balance + VAT_LINE17.balance + VAT_LINE18.balance + VAT_LINE19.balance + VAT_LINE20.balance + VAT_LINE21.balance + VAT_LINE22.balance + VAT_LINE23.balance + VAT_LINE24.balance + VAT_LINE25.balance</field>
+        <field name="formulas">VAT_LINE11 + VAT_LINE12 + VAT_LINE13 + VAT_LINE14 + VAT_LINE15 + VAT_LINE16 + VAT_LINE17 + VAT_LINE18 + VAT_LINE19 + VAT_LINE20 + VAT_LINE21 + VAT_LINE22 + VAT_LINE23 + VAT_LINE24 + VAT_LINE25</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="special_date_changer">normal</field>
     </record>
@@ -127,7 +127,7 @@
         <field name="sequence" eval="11"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag11')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -139,7 +139,7 @@
         <field name="sequence" eval="12"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag12')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -151,7 +151,7 @@
         <field name="sequence" eval="13"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag13')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -163,7 +163,7 @@
         <field name="sequence" eval="14"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag14')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -175,7 +175,7 @@
         <field name="sequence" eval="15"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag15')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -187,7 +187,7 @@
         <field name="sequence" eval="16"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag16')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -199,7 +199,7 @@
         <field name="sequence" eval="17"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag17')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -211,7 +211,7 @@
         <field name="sequence" eval="18"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag18')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -223,7 +223,7 @@
         <field name="sequence" eval="19"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag19')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -235,7 +235,7 @@
         <field name="sequence" eval="20"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag20')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -247,7 +247,7 @@
         <field name="sequence" eval="21"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag21')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -259,7 +259,7 @@
         <field name="sequence" eval="22"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag22')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -271,7 +271,7 @@
         <field name="sequence" eval="23"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag23')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -283,7 +283,7 @@
         <field name="sequence" eval="24"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag24')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -295,7 +295,7 @@
         <field name="sequence" eval="25"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag25')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -306,7 +306,7 @@
         <field name="name">Тухайн сарын НӨАТ ногдох дотоодын бараа, ажил, үйлчилгээний орлого (26=4+10)</field>
         <field name="sequence" eval="26"/>
         <field name="level" eval="2"/>
-        <field name="formulas">balance = VAT_LINE4.balance + VAT_LINE10.balance</field>
+        <field name="formulas">VAT_LINE4 + VAT_LINE10</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -317,7 +317,7 @@
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tag_ids','in',[ref('l10n_mn.vat_report_tag5'),ref('l10n_mn.vat_report_tag6'),ref('l10n_mn.vat_report_tag7'),ref('l10n_mn.vat_report_tag8'),ref('l10n_mn.vat_report_tag9'),ref('l10n_mn.vat_report_tag11'),ref('l10n_mn.vat_report_tag12'),ref('l10n_mn.vat_report_tag13'),ref('l10n_mn.vat_report_tag14'),ref('l10n_mn.vat_report_tag15'),ref('l10n_mn.vat_report_tag16'),ref('l10n_mn.vat_report_tag17'),ref('l10n_mn.vat_report_tag18'),ref('l10n_mn.vat_report_tag19'),ref('l10n_mn.vat_report_tag20'),ref('l10n_mn.vat_report_tag21'),ref('l10n_mn.vat_report_tag22'),ref('l10n_mn.vat_report_tag23'),ref('l10n_mn.vat_report_tag24'),ref('l10n_mn.vat_report_tag25')]),('tax_line_id','!=',False)]"/>
         <field name="groupby">account_id</field>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -327,7 +327,7 @@
         <field name="sequence" eval="28"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag28')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -339,7 +339,7 @@
         <field name="sequence" eval="29"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag29')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="show_domain">never</field>
@@ -350,7 +350,7 @@
         <field name="name">Тухайн сарын НӨАТ ногдох экспортын бараа, ажил, үйлчилгээний орлого (30=28+29)</field>
         <field name="sequence" eval="30"/>
         <field name="level" eval="2"/>
-        <field name="formulas">balance = VAT_LINE28.balance + VAT_LINE29.balance</field>
+        <field name="formulas">VAT_LINE28 + VAT_LINE29</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -367,7 +367,7 @@
         <field name="name">Тухайн сард ногдуулсан НӨАТ-ын нийт татвар (32=27+31)</field>
         <field name="sequence" eval="32"/>
         <field name="level" eval="2"/>
-        <field name="formulas">balance = VAT_LINE27.balance + VAT_LINE31.balance</field>
+        <field name="formulas">VAT_LINE27 + VAT_LINE31</field>
         <field name="parent_id" ref="vat_report_lineA"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -385,7 +385,7 @@
         <field name="sequence" eval="1"/>
         <field name="level" eval="2"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag33')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -396,7 +396,7 @@
         <field name="name">Тухайн сард худалдан авсан БАҮ-нээс НӨАТ-тай худалдан авсан бараа, ажил, үйлчилгээний дүн (34=35+...+38)</field>
         <field name="sequence" eval="2"/>
         <field name="level" eval="2"/>
-        <field name="formulas">balance = VAT_LINE35.balance + VAT_LINE36.balance + VAT_LINE37.balance + VAT_LINE38.balance</field>
+        <field name="formulas">VAT_LINE35 + VAT_LINE36 + VAT_LINE37 + VAT_LINE38</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -406,7 +406,7 @@
         <field name="sequence" eval="3"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag35')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -418,7 +418,7 @@
         <field name="sequence" eval="4"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag36')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -430,7 +430,7 @@
         <field name="sequence" eval="5"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag37')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -442,7 +442,7 @@
         <field name="sequence" eval="6"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag38')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -454,7 +454,7 @@
         <field name="sequence" eval="7"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tag_ids','in',[ref('l10n_mn.vat_report_tag38'),ref('l10n_mn.vat_report_tag37'),ref('l10n_mn.vat_report_tag36'),ref('l10n_mn.vat_report_tag35')]),('tax_line_id','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="special_date_changer">strict_range</field>
@@ -464,7 +464,7 @@
         <field name="name">· Худалдан авсан бараа, ажил, үйлчилгээнд төлсөн хасагдахгүй  НӨАТ-ын  дүн (40=41+...+46)</field>
         <field name="sequence" eval="8"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE41.balance + VAT_LINE42.balance + VAT_LINE43.balance + VAT_LINE44.balance + VAT_LINE45.balance + VAT_LINE46.balance</field>
+        <field name="formulas">VAT_LINE41 + VAT_LINE42 + VAT_LINE43 + VAT_LINE44 + VAT_LINE45 + VAT_LINE46</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -474,7 +474,7 @@
         <field name="sequence" eval="9"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=', ref('l10n_mn.vat_report_tag41')),('tax_line_id','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -486,7 +486,7 @@
         <field name="sequence" eval="10"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=', ref('l10n_mn.vat_report_tag42')),('tax_line_id','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -498,7 +498,7 @@
         <field name="sequence" eval="11"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=', ref('l10n_mn.vat_report_tag43')),('tax_line_id','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -510,7 +510,7 @@
         <field name="sequence" eval="12"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=', ref('l10n_mn.vat_report_tag44')),('tax_line_id','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -522,7 +522,7 @@
         <field name="sequence" eval="13"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=', ref('l10n_mn.vat_report_tag45')),('tax_line_id','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -534,7 +534,7 @@
         <field name="sequence" eval="14"/>
         <field name="level" eval="4"/>
         <field name="domain" eval="[('tag_ids','=', ref('l10n_mn.vat_report_tag46')),('tax_line_id','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="show_domain">never</field>
@@ -545,7 +545,7 @@
         <field name="name">Тухайн сард хасагдах НӨАТ-ын дүн (47=39-40)</field>
         <field name="sequence" eval="15"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE39.balance - VAT_LINE40.balance</field>
+        <field name="formulas">VAT_LINE39 - VAT_LINE40</field>
         <field name="parent_id" ref="vat_report_lineB"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -563,7 +563,7 @@
         <field name="sequence" eval="1"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag48')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineC"/>
         <field name="show_domain">never</field>
@@ -576,7 +576,7 @@
         <field name="sequence" eval="2"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag49')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineC"/>
         <field name="show_domain">never</field>
@@ -588,7 +588,7 @@
         <field name="sequence" eval="3"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tag_ids','in',[ref('l10n_mn.vat_report_tag48'),ref('l10n_mn.vat_report_tag49')]),('tax_line_id','!=',False)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineC"/>
         <field name="special_date_changer">strict_range</field>
@@ -599,7 +599,7 @@
         <field name="sequence" eval="4"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag51')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineC"/>
         <field name="show_domain">never</field>
@@ -611,7 +611,7 @@
         <field name="sequence" eval="5"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tag_ids','=',ref('l10n_mn.vat_report_tag52')),('tax_ids','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineC"/>
         <field name="show_domain">never</field>
@@ -623,7 +623,7 @@
         <field name="sequence" eval="6"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tag_ids','in',[ref('l10n_mn.vat_report_tag51'),ref('l10n_mn.vat_report_tag52')]),('tax_line_id','!=',False)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineC"/>
         <field name="special_date_changer">strict_range</field>
@@ -641,7 +641,7 @@
         <field name="name">Тухайн сард төлбөл зохих НӨАТ (54=32+50)</field>
         <field name="sequence" eval="1"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE32.balance + VAT_LINE50.balance</field>
+        <field name="formulas">VAT_LINE32 + VAT_LINE50</field>
         <field name="parent_id" ref="vat_report_lineD"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -650,7 +650,7 @@
         <field name="name">Тухайн сард буцаан авах НӨАТ (50=47+53)</field>
         <field name="sequence" eval="2"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE47.balance + VAT_LINE53.balance</field>
+        <field name="formulas">VAT_LINE47 + VAT_LINE53</field>
         <field name="parent_id" ref="vat_report_lineD"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -668,7 +668,7 @@
         <field name="sequence" eval="1"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('account_id.code','=like','60%'),('account_id.user_type_id','=',ref('account.data_account_type_revenue')),('tax_ids.type_tax_use','=','sale'),('tax_ids.amount','>',0)]"/>
-        <field name="formulas">balance = sum.balance</field>
+        <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineE"/>
         <field name="show_domain">never</field>
@@ -679,7 +679,7 @@
         <field name="name">Төлсөн НӨАТ (57=56*10%)</field>
         <field name="sequence" eval="2"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE56.balance * 0.10</field>
+        <field name="formulas">VAT_LINE56 * 0.10</field>
         <field name="parent_id" ref="vat_report_lineE"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -689,7 +689,7 @@
         <field name="sequence" eval="3"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('credit','>',0),('account_id.code','=like','1407%'),('account_id.user_type_id','=',ref('account.data_account_type_current_assets')),('tax_ids.type_tax_use','=','purchase'),('tax_ids.amount','>',0)]"/>
-        <field name="formulas">balance = -sum.balance</field>
+        <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="parent_id" ref="vat_report_lineE"/>
         <field name="show_domain">never</field>
@@ -700,7 +700,7 @@
         <field name="name">Хасагдах НӨАТ (59=58*10%)</field>
         <field name="sequence" eval="4"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE58.balance * 0.10</field>
+        <field name="formulas">VAT_LINE58 * 0.10</field>
         <field name="parent_id" ref="vat_report_lineE"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -717,7 +717,7 @@
         <field name="name">НИЙТ ТӨЛБӨЛ ЗОХИХ  НӨАТ (60=54-57)</field>
         <field name="sequence" eval="1"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE54.balance - VAT_LINE57.balance</field>
+        <field name="formulas">VAT_LINE54 - VAT_LINE57</field>
         <field name="parent_id" ref="vat_report_lineF"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -726,7 +726,7 @@
         <field name="name">НИЙТ БУЦААН АВАХ НӨАТ (61=55-59)</field>
         <field name="sequence" eval="2"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE55.balance - VAT_LINE59.balance</field>
+        <field name="formulas">VAT_LINE55 - VAT_LINE59</field>
         <field name="parent_id" ref="vat_report_lineF"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -735,7 +735,7 @@
         <field name="name">ЭЦСИЙН ТООЦООГООР ТӨЛБӨЛ ЗОХИХ НӨАТ (62=60-61)</field>
         <field name="sequence" eval="3"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = VAT_LINE60.balance - VAT_LINE61.balance</field>
+        <field name="formulas">VAT_LINE60 - VAT_LINE61</field>
         <field name="parent_id" ref="vat_report_lineF"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -744,7 +744,7 @@
         <field name="name">ЭЦСИЙН ТООЦООГООР БУЦААН АВАХ НӨАТ (63=60-61)</field>
         <field name="sequence" eval="1"/>
         <field name="level" eval="3"/>
-        <field name="formulas">balance = (VAT_LINE60.balance - VAT_LINE61.balance) * -1</field>
+        <field name="formulas">(VAT_LINE60 - VAT_LINE61) * -1</field>
         <field name="parent_id" ref="vat_report_lineF"/>
         <field name="special_date_changer">strict_range</field>
     </record>

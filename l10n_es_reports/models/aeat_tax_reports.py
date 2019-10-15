@@ -2,13 +2,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api, _
-from odoo.addons.account_reports.models.account_financial_report import FormulaLine
 from odoo.exceptions import UserError
 import odoo.release
 from odoo.tools.float_utils import float_split_str
 from odoo.tools.safe_eval import safe_eval
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import json
 import re
@@ -104,9 +103,6 @@ class AEATAccountFinancialReport(models.Model):
 
         rslt = super(AEATAccountFinancialReport, self._with_correct_filters())._get_options(previous_options)
 
-        if self.l10n_es_reports_modelo_number == '347':
-            # We totally disable cash basis on mod 347, so that it does not conflict with groupby thresholds
-            rslt['cash_basis'] = None
         return rslt
 
     @api.model

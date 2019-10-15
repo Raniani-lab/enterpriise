@@ -212,6 +212,22 @@
         </div>
     </template>
 
+    <template id="search_template_groupby_fields">
+        <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-filter"/>
+            Group By:
+            <t t-esc="','.join(opt['name'] for opt in options['groupby_fields'] if opt['selected'])"/>
+        </a>
+        <div class="dropdown-menu o_filters_menu" role="menu">
+            <t t-foreach="options['groupby_fields']" t-as="opt">
+                <a role="menuitem" class="dropdown-item js_account_report_choice_filter"
+                   t-att-title="opt['name']"
+                   t-att-data-id="opt['id']"
+                   data-filter="groupby_fields"><t t-esc="opt['name']"/></a>
+            </t>
+        </div>
+    </template>
+
     <template id="search_template_partner">
         <a t-if="options.get('partner')" type="button" class="dropdown-toggle account_partner_filter" data-toggle="dropdown">
             <span class="fa fa-folder-open"/> Partners
@@ -239,6 +255,9 @@
         </div>
         <div class="btn-group o_dropdown o_account_reports_filter_ir_filters" t-if="options.get('ir_filters') != None">
             <t t-call="account_reports.search_template_ir_filters"/>
+        </div>
+        <div class="btn-group o_dropdown o_account_reports_filter_groupby_fields" t-if="options.get('groupby_fields')">
+            <t t-call="account_reports.search_template_groupby_fields"/>
         </div>
         <div class="btn-group o_dropdown o_account_reports_filter_partner" t-if="options.get('partner')">
             <t t-call="account_reports.search_template_partner"/>

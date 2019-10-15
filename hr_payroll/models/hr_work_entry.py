@@ -18,6 +18,7 @@ class HrWorkEntry(models.Model):
 
     contract_id = fields.Many2one('hr.contract', string="Contract", required=True)
     leave_id = fields.Many2one('hr.leave', string='Time Off')
+    leave_state = fields.Selection(related='leave_id.state')
     employee_id = fields.Many2one(domain=[('contract_ids.state', 'in', ('open', 'pending'))])
 
     def _get_duration(self, date_start, date_stop):

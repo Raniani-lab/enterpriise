@@ -500,7 +500,7 @@ class HelpdeskTicket(models.Model):
     @api.model
     def _sla_reset_trigger(self):
         """ Get the list of field for which we have to reset the SLAs (regenerate) """
-        return ['team_id', 'priority', 'ticket_type_id']
+        return ['team_id', 'priority', 'ticket_type_id', 'tag_ids']
 
     def _sla_apply(self, keep_reached=False):
         """ Apply SLA to current tickets: erase the current SLAs, then find and link the new SLAs to each ticket.
@@ -561,8 +561,8 @@ class HelpdeskTicket(models.Model):
         result = {}
         for key, tickets in tickets_map.items():  # only one search per ticket group
             domain = sla_domain_map[key]
-            result[tickets] = self.env['helpdesk.sla'].search(domain)  # SLA to apply on ticket subset
-
+            slas = self.env['helpdesk.sla'].search(domain)
+            result[tickets] = slas.filtered(lambda s: s.tag_ids <= tickets.tag_ids)  # SLA to apply on ticket subset
         return result
 
     def _sla_generate_status_values(self, slas, keep_reached=False):

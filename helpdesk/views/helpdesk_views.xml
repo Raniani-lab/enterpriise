@@ -189,6 +189,7 @@
                             <field name="team_id" domain="[('use_sla', '=', True)]"/>
                             <field name="priority" widget="priority"/>
                             <field name="ticket_type_id" widget="selection"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
 
                             <separator colspan="2" string="Target" class="mt32"/>
                             <field name="stage_id" string="Reach Stage" domain="[('team_ids', '=', team_id)]"/>

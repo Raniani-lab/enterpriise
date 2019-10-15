@@ -472,6 +472,9 @@ class HelpdeskSLA(models.Model):
     ticket_type_id = fields.Many2one(
         'helpdesk.ticket.type', "Ticket Type",
         help="Only apply the SLA to a specific ticket type. If left empty it will apply to all types.")
+    tag_ids = fields.Many2many(
+        'helpdesk.tag', string='Tags',
+        help="Only apply the SLA to tickets with specific tags. If left empty it will apply to all tags.")
     stage_id = fields.Many2one(
         'helpdesk.stage', 'Target Stage', required=True,
         help='Minimum stage a ticket needs to reach in order to satisfy this SLA.')

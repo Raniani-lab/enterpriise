@@ -51,6 +51,10 @@
                         <option t-att-selected="widget.state.attrs.editable === 'bottom' ? 'selected' : undefined" value="bottom">New record at the bottom</option>
                     </select>
                 </div>
+                <div class="custom-control custom-checkbox">
+                   <input type="checkbox" id="multi_edit" name="multi_edit" class="custom-control-input" t-att-checked="widget.isTrue(widget.state.attrs.multi_edit or 'false') ? 'checked' : undefined"/>
+                   <label for="multi_edit" class="custom-control-label">Enable Mass Edition</label>
+                </div>
             </t>
             <!-- Kanban view settings -->
             <t t-if="widget.view_type === 'kanban'">

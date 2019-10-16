@@ -931,6 +931,50 @@ class TestWorkOrder(common.TestMrpCommon):
         wo._next()
         wo.record_production()
 
+    def test_workorder_duplicate_sn(self):
+        """produce a finished product tracked by serial number 2 times with the
+        same SN. Check that an error is raised the second time"""
+
+        self.bom_submarine.bom_line_ids.write({'operation_id': False})
+        # Use 'Secondary assembly routing (3 operations)'
+        self.bom_submarine.routing_id = self.env.ref('mrp.mrp_routing_0')
+        self.submarine_pod.tracking = 'serial'
+        sn1 = self.env['stock.production.lot'].create({
+            'product_id': self.submarine_pod.id,
+            'name': 'sn1',
+            'company_id': self.env.company.id,
+        })
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = self.submarine_pod
+        mrp_order_form.product_qty = 1
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.button_plan()
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.finished_lot_id = sn1
+        wo_form.lot_id = self.elon1
+        wo = wo_form.save()
+        wo._next()
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.lot_id = self.mc1
+        wo = wo_form.save()
+        wo._next()
+        wo.do_finish()
+        production.button_mark_done()
+
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = self.submarine_pod
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.button_plan()
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.finished_lot_id = sn1
+        wo_form.lot_id = self.elon1
+        wo = wo_form.save()
+        with self.assertRaises(UserError):
+            wo._next()
+
     def test_post_inventory(self):
         """Test production of 2 finished products in one by one and posting intermediate inventory
         between the two production"""

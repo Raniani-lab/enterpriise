@@ -25,6 +25,7 @@
     > .o_group, .o_subview {
         // By default dashboard entries are full-width...
         flex: 1 1 100%;
+        overflow: auto;
         margin: 0 $padding ($spacer * 2);
 
         .o_graph_renderer {

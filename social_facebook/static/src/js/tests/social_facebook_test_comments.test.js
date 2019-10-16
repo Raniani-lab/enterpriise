@@ -1,6 +1,7 @@
 odoo.define('social_facebook.test_comments', function (require) {
 "use strict";
 
+var StreamPostFacebookComments = require('social.social_facebook_post_kanban_comments')
 var StreamPostKanbanView = require('social.social_stream_post_kanban_view');
 var StreamPostComments = require('social.social_post_kanban_comments');
 var testUtils = require('web.test_utils');
@@ -44,16 +45,10 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '                        <div class="o_social_stream_post_author col-md-8 m-0 p-0">' +
     '                            <t t-if="record.post_link.value">' +
     '                                <a t-att-href="record.post_link.value" target="_blank">' +
-    '                                    <div class="d-inline-block o_social_stream_post_author_image">' +
-    '                                        <img t-if="record.facebook_author_id.raw_value" t-attf-src="https://graph.facebook.com/v3.3/#{record.facebook_author_id.raw_value}/picture" alt="Author Image"/>' +
-    '                                    </div>' +
     '                                    <div class="d-inline-block"><t t-esc="record.author_name.value or \'Unknown\'"></t></div>' +
     '                                </a>' +
     '                            </t>' +
     '                            <t t-else="">' +
-    '                                <div class="d-inline-block o_social_stream_post_author_image">' +
-    '                                    <img t-if="record.facebook_author_id.raw_value" t-attf-src="https://graph.facebook.com/v3.3/#{record.facebook_author_id.raw_value}/picture" alt="Author Image"/>' +
-    '                                </div>' +
     '                                <div class="d-inline-block"><t t-esc="record.author_name.value or \'Unknown\'"></t></div>' +
     '                            </t>' +
     '                        </div>' +
@@ -90,7 +85,7 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '                            class="o_social_stream_post_link p-2"' +
     '                            t-att-href="record.link_url.raw_value"' +
     '                            target="_blank">' +
-    '                            <img t-att-src="record.link_image_url.raw_value" alt="Link Image" />' +
+    '                            <img t-if="record.link_image_url.raw_value" t-att-src="record.link_image_url.raw_value" alt="Link Image" />' +
     '                            <div class="o_social_stream_post_link_text">' +
     '                                <div class="o_social_stream_post_link_title" t-esc="record.link_title.value"></div>' +
     '                                <div class="o_social_stream_post_link_description" t-esc="record.link_description.value"></div>' +
@@ -110,7 +105,7 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '                        t-att-data-post-message="record.message.raw_value"' +
     '                        t-att-data-post-images="record.stream_post_image_urls.raw_value"' +
     '                        t-att-data-post-link="record.post_link.raw_value"' +
-    '                        t-att-data-facebook-author-id="record.facebook_author_id.raw_value"' +
+    '                        t-att-data-facebook-author-id="False"' +
     '                        t-att-data-author-name="record.author_name.raw_value"' +
     '                        t-att-data-author-link="record.author_link.raw_value"' +
     '                        t-att-data-published-date="record.published_date.value"' +
@@ -288,7 +283,6 @@ QUnit.module('Facebook Comments', {
                     message: 'Message 1 Youtube',
                     media_type: 'facebook',
                     link_url: 'blog.com/odoosocial',
-                    link_image_url: 'blog.com/odoosocial.png',
                     link_title: 'Odoo Social',
                     link_description: 'Odoo Social Description',
                     facebook_author_id: 1,
@@ -357,7 +351,13 @@ QUnit.module('Facebook Comments', {
                     return Promise.resolve({});
                 } else if (params.method === 'refresh_statistics') {
                     assert.ok(true);
-                    return Promise.resolve(self.data['social.account'].records);
+                    var records = self.data['social.account'].records.slice();
+                    for(var i = 0; i < records.length; i++){
+                        if (!Array.isArray(records[i].media_id)) {
+                            records[i].media_id = [records[i].media_id, 'Facebook'];
+                        }
+                    }
+                    return Promise.resolve(records);
                 } else if(route.startsWith('https://graph.facebook.com/')) {
                     return Promise.resolve('');
                 }
@@ -426,6 +426,13 @@ QUnit.module('Facebook Comments', {
     QUnit.test('Check comments behavior', async function (assert) {
         assert.expect(17);
 
+        // Patch getAuthorPictureSrc to avoid trying to fetch images from FB
+        testUtils.mock.patch(StreamPostFacebookComments, {
+            getAuthorPictureSrc: function () {
+                return '';
+            }
+        });
+
         var kanban = await createView({
             View: StreamPostKanbanView,
             model: 'social_stream_post',
@@ -444,7 +451,7 @@ QUnit.module('Facebook Comments', {
                                 id: 1,
                                 picture: {
                                     data: {
-                                        url: 'picture1.png'
+                                        url: 'socialtest/picture'
                                     }
                                 }
                             },
@@ -461,7 +468,7 @@ QUnit.module('Facebook Comments', {
                                         id: 2,
                                         picture: {
                                             data: {
-                                                url: 'picture2.png'
+                                                url: 'socialtest/picture'
                                             }
                                         }
                                     },
@@ -477,7 +484,7 @@ QUnit.module('Facebook Comments', {
                                         id: 3,
                                         picture: {
                                             data: {
-                                                url: 'picture3.png'
+                                                url: 'socialtest/picture'
                                             }
                                         }
                                     },
@@ -497,6 +504,8 @@ QUnit.module('Facebook Comments', {
                     assert.ok(true);
                     return Promise.resolve({});
                 } else if(route.startsWith('https://graph.facebook.com/')) {
+                    return Promise.resolve('');
+                } else if(route === 'socialtest/picture') {
                     return Promise.resolve('');
                 }
                 return this._super.apply(this, arguments);
@@ -583,7 +592,7 @@ QUnit.module('Facebook Comments', {
                         id: 1,
                         picture: {
                             data: {
-                                url: 'picture1.png'
+                                url: 'socialtest/picture'
                             }
                         }
                     },

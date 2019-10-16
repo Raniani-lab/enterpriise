@@ -9,6 +9,7 @@ O-BTN.print-op
 O-BTN.print-slip
 O-BTN.pack
 O-BTN.scrap
+O-BTN.record-components
 O-CMD.PREV
 O-CMD.NEXT
 O-CMD.PAGER-FIRST
@@ -25,10 +26,11 @@ cat > barcodes_actions_header.ps << HEADER
 (PRINT DELIVERY SLIP) 348 551 showTitle
 (PUT IN PACK) 89 444 showTitle
 (SCRAP) 348 444 showTitle
-(PREVIOUS PAGE) 89 337 showTitle
-(NEXT PAGE) 348 337 showTitle
-(FIRST PAGE) 89 230 showTitle
-(LAST PAGE) 348 230 showTitle
+(RECORD COMPONENTS) 89 337 showTitle
+(PREVIOUS PAGE) 348 337 showTitle
+(NEXT PAGE) 89 230 showTitle
+(FIRST PAGE) 348 230 showTitle
+(LAST PAGE) 89 123 showTitle
 
 HEADER
 

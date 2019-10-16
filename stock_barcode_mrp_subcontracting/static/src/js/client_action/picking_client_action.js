@@ -12,6 +12,11 @@ var MrpSubcontractingPickingClientAction = PickingClientAction.include({
         'action_record_components': '_onRecordComponents',
     }),
 
+    init: function (parent, action) {
+        this._super.apply(this, arguments);
+        this.commands['O-BTN.record-components'] = this._actionRecordComponents.bind(this);
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------

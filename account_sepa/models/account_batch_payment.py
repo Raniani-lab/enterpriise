@@ -34,17 +34,18 @@ class AccountBatchPayment(models.Model):
             warnings = record._get_genericity_info()
             record.sct_generic = bool(warnings)
             text_warning = None
-            if warnings and len(warnings) == 1:
-                text_warning = _('Please note that the following warning has been raised:')
-                text_warning += '\n%s\n\n' % warnings
-                text_warning += _('In result, the file might not be accepted by all bank as a valid SEPA Credit Transfer file')
-            elif warnings:
-                text_warning = _('Please note that the following warnings have been raised:')
-                text_warning += '<ul>'
-                for warning in warnings:
-                    text_warning += '<li>%s</li>' % warning
-                text_warning += '</ul>\n\n'
-                text_warning += _('In result, the file might not be accepted by all bank as a valid SEPA Credit Transfer file')
+            if record.journal_id.company_id.country_id.code != 'CH': #We need it as generic, but we should not give warnings
+                if warnings and len(warnings) == 1:
+                    text_warning = _('Please note that the following warning has been raised:')
+                    text_warning += '\n%s\n\n' % warnings
+                    text_warning += _('In result, the file might not be accepted by all bank as a valid SEPA Credit Transfer file')
+                elif warnings:
+                    text_warning = _('Please note that the following warnings have been raised:')
+                    text_warning += '<ul>'
+                    for warning in warnings:
+                        text_warning += '<li>%s</li>' % warning
+                    text_warning += '</ul>\n\n'
+                    text_warning += _('In result, the file might not be accepted by all bank as a valid SEPA Credit Transfer file')
             record.sct_warning = text_warning
 
     def _get_genericity_info(self):

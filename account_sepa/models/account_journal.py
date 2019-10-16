@@ -302,7 +302,11 @@ class AccountJournal(models.Model):
         if sct_generic and bank_account.acc_type != 'iban':
             Othr = etree.SubElement(Id, "Othr")
             _Id = etree.SubElement(Othr, "Id")
-            _Id.text = bank_account.acc_number
+            acc_number = bank_account.acc_number
+            # CH case when when we have non-unique account numbers
+            if " " in bank_account.sanitized_acc_number and " " in bank_account.acc_number:
+                acc_number = bank_account.acc_number.split(" ")[0]
+            _Id.text = acc_number
         else:
             IBAN = etree.SubElement(Id, "IBAN")
             IBAN.text = bank_account.sanitized_acc_number

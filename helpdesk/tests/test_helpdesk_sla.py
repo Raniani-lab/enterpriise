@@ -71,6 +71,37 @@ class HelpdeskCommon(SavepointCase):
             'time_hours': 24,
             'stage_id': cls.stage_progress.id,
         })
+        cls.sla_assigning_1 = cls.env['helpdesk.sla'].create({
+            'name': 'SLA assigning no stage',
+            'team_id': cls.test_team.id,
+            'time_hours': 1,
+            'target_type': 'assigning'
+        })
+
+        cls.sla_assigning_2 = cls.env['helpdesk.sla'].create({
+            'name': 'SLA assigning new stage',
+            'team_id': cls.test_team.id,
+            'time_hours': 1,
+            'stage_id': cls.stage_new.id,
+            'target_type': 'assigning'
+        })
+
+        cls.sla_assigning_3 = cls.env['helpdesk.sla'].create({
+            'name': 'SLA assigning progress stage',
+            'team_id': cls.test_team.id,
+            'time_hours': 1,
+            'stage_id': cls.stage_progress.id,
+            'target_type': 'assigning'
+        })
+
+        cls.sla_assigning_4 = cls.env['helpdesk.sla'].create({
+            'name': 'SLA assigning done stage',
+            'team_id': cls.test_team.id,
+            'time_hours': 1,
+            'stage_id': cls.stage_done.id,
+            'target_type': 'assigning'
+        })
+
         # He also creates a ticket types for Question and Issue
         cls.type_question = cls.env['helpdesk.ticket.type'].with_user(cls.helpdesk_manager).create({
             'name': 'Question_test',
@@ -132,31 +163,105 @@ class HelpdeskCommon(SavepointCase):
         """ SLA without tag should apply to all tickets """
         self.sla.tag_ids = [(5,)]
         ticket = self.create_ticket(tag_ids=self.tag_urgent)
-        self.assertEqual(ticket.sla_status_ids.sla_id, self.sla, "SLA should have been applied")
+        self.assertEqual(ticket.sla_status_ids.filtered(lambda sla: sla.target_type != 'assigning').sla_id, self.sla, "SLA should have been applied")
 
     def test_sla_single_tag(self):
         self.sla.tag_ids = [(4, self.tag_urgent.id)]
         ticket = self.create_ticket(tag_ids=self.tag_urgent)
-        self.assertEqual(ticket.sla_status_ids.sla_id, self.sla, "SLA should have been applied")
+        self.assertEqual(ticket.sla_status_ids.filtered(lambda sla: sla.target_type != 'assigning').sla_id, self.sla, "SLA should have been applied")
 
     def test_sla_multiple_tags(self):
         self.sla.tag_ids = [(6, False, (self.tag_urgent | self.tag_vip).ids)]
         ticket = self.create_ticket(tag_ids=self.tag_urgent)
-        self.assertFalse(ticket.sla_status_ids, "SLA should not have been applied yet")
+        self.assertFalse(ticket.sla_status_ids.filtered(lambda sla: sla.target_type != 'assigning'), "SLA should not have been applied yet")
         ticket.tag_ids = [(4, self.tag_vip.id)]
-        self.assertEqual(ticket.sla_status_ids.sla_id, self.sla, "SLA should have been applied")
+        self.assertEqual(ticket.sla_status_ids.filtered(lambda sla: sla.target_type != 'assigning').sla_id, self.sla, "SLA should have been applied")
 
     def test_sla_tag_and_ticket_type(self):
         self.sla.tag_ids = [(6, False, self.tag_urgent.ids)]
         self.sla.ticket_type_id = self.type_question
         ticket = self.create_ticket(tag_ids=self.tag_urgent)
-        self.assertFalse(ticket.sla_status_ids, "SLA should not have been applied yet")
+        self.assertFalse(ticket.sla_status_ids.filtered(lambda sla: sla.target_type != 'assigning'), "SLA should not have been applied yet")
         ticket.ticket_type_id = self.type_question
-        self.assertEqual(ticket.sla_status_ids.sla_id, self.sla, "SLA should have been applied")
+        self.assertEqual(ticket.sla_status_ids.filtered(lambda sla: sla.target_type != 'assigning').sla_id, self.sla, "SLA should have been applied")
 
     def test_sla_remove_tag(self):
         self.sla.tag_ids = [(6, False, (self.tag_urgent | self.tag_vip).ids)]
         ticket = self.create_ticket(tag_ids=self.tag_urgent | self.tag_vip)
-        self.assertEqual(ticket.sla_status_ids.sla_id, self.sla, "SLA should have been applied")
+        self.assertEqual(ticket.sla_status_ids.filtered(lambda sla: sla.target_type != 'assigning').sla_id, self.sla, "SLA should have been applied")
         ticket.tag_ids = [(5,)]  # Remove all tags
-        self.assertFalse(ticket.sla_status_ids, "SLA should no longer apply")
+        self.assertFalse(ticket.sla_status_ids.filtered(lambda sla: sla.target_type != 'assigning'), "SLA should no longer apply")
+
+    def test_sla_assigning(self):
+        ticket = self.create_ticket()
+
+        status_1 = ticket.sla_status_ids.filtered(lambda sla: sla.sla_id.id == self.sla_assigning_1.id)
+        status_2 = ticket.sla_status_ids.filtered(lambda sla: sla.sla_id.id == self.sla_assigning_2.id)
+        status_3 = ticket.sla_status_ids.filtered(lambda sla: sla.sla_id.id == self.sla_assigning_3.id)
+        status_4 = ticket.sla_status_ids.filtered(lambda sla: sla.sla_id.id == self.sla_assigning_4.id)
+
+        self.assertFalse(status_1.reached_datetime, "SLA status 1: reached not his target")
+        self.assertFalse(status_2.reached_datetime, "SLA status 2: reached not his target")
+        self.assertFalse(status_3.reached_datetime, "SLA status 3: reached not his target")
+        self.assertFalse(status_4.reached_datetime, "SLA status 4: reached not his target")
+        self.assertTrue(status_1.deadline, "SLA status 1: has deadline")
+        self.assertTrue(status_2.deadline, "SLA status 2: has deadline")
+        self.assertFalse(status_3.deadline, "SLA status 3: hasn't deadline")
+        self.assertFalse(status_4.deadline, "SLA status 4: hasn't deadline")
+
+        ticket.write({'user_id': self.helpdesk_user.id})
+
+        self.assertTrue(status_1.reached_datetime, "SLA status 1: reached his target")
+        self.assertTrue(status_2.reached_datetime, "SLA status 2: reached his target")
+        self.assertFalse(status_3.reached_datetime, "SLA status 3: reached not his target")
+        self.assertTrue(status_1.deadline, "SLA status 1: has deadline")
+        self.assertTrue(status_2.deadline, "SLA status 2: has deadline")
+        self.assertFalse(status_3.deadline, "SLA status 3: hasn't deadline")
+
+        ticket.write({'stage_id': self.stage_progress.id})
+
+        self.assertTrue(status_1.reached_datetime, "SLA status 1: reached his target")
+        self.assertTrue(status_2.reached_datetime, "SLA status 2: reached his target")
+        self.assertTrue(status_3.reached_datetime, "SLA status 3: reached his target")
+        self.assertTrue(status_1.deadline, "SLA status 1: has deadline")
+        self.assertTrue(status_2.deadline, "SLA status 2: has deadline")
+        self.assertTrue(status_3.deadline, "SLA status 3: has deadline")
+
+        ticket.write({'user_id': False})
+
+        self.assertTrue(status_1.reached_datetime, "SLA status 1: reached his target")
+        self.assertTrue(status_2.reached_datetime, "SLA status 2: reached his target")
+        self.assertTrue(status_3.reached_datetime, "SLA status 3: reached his target")
+        self.assertFalse(status_4.reached_datetime, "SLA status 4: reached not his target")
+        self.assertTrue(status_1.deadline, "SLA status 1: has deadline")
+        self.assertTrue(status_2.deadline, "SLA status 2: has deadline")
+        self.assertTrue(status_3.deadline, "SLA status 3: has deadline")
+        self.assertFalse(status_4.deadline, "SLA status 4: hasn't deadline")
+
+        ticket.write({'stage_id': self.stage_done.id})
+
+        self.assertTrue(status_3.reached_datetime, "SLA status 3: reached his target")
+        self.assertFalse(status_4.reached_datetime, "SLA status 4: reached not his target")
+        self.assertTrue(status_3.deadline, "SLA status 3: has deadline")
+        self.assertTrue(status_4.deadline, "SLA status 4: has deadline")
+
+        ticket.write({'user_id': self.helpdesk_user.id})
+
+        self.assertTrue(status_4.reached_datetime, "SLA status 4: reached his target")
+
+    def test_sla_assigning_skip_step(self):
+        ticket = self.create_ticket()
+
+        status_1 = ticket.sla_status_ids.filtered(lambda sla: sla.sla_id.id == self.sla_assigning_1.id)
+        status_2 = ticket.sla_status_ids.filtered(lambda sla: sla.sla_id.id == self.sla_assigning_2.id)
+
+        self.assertTrue(status_2.deadline, "SLA status 2: has deadline")
+
+        ticket.write({'stage_id': self.stage_progress.id})
+
+        self.assertFalse(status_2.deadline, "SLA status 2: has no more deadline")
+        self.assertFalse(status_2.reached_datetime, "SLA status 2: reached not his target")
+
+        ticket.write({'user_id': self.helpdesk_user.id})
+
+        self.assertTrue(status_1.reached_datetime, "SLA status 1: reached his target")

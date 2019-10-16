@@ -469,6 +469,7 @@ class HelpdeskSLA(models.Model):
     description = fields.Text('SLA Policy Description')
     active = fields.Boolean('Active', default=True)
     team_id = fields.Many2one('helpdesk.team', 'Team', required=True)
+    target_type = fields.Selection([('stage', 'Reaching Stage'), ('assigning', 'Assigning Ticket')], default='stage', required=True)
     ticket_type_id = fields.Many2one(
         'helpdesk.ticket.type', "Ticket Type",
         help="Only apply the SLA to a specific ticket type. If left empty it will apply to all types.")
@@ -476,7 +477,7 @@ class HelpdeskSLA(models.Model):
         'helpdesk.tag', string='Tags',
         help="Only apply the SLA to tickets with specific tags. If left empty it will apply to all tags.")
     stage_id = fields.Many2one(
-        'helpdesk.stage', 'Target Stage', required=True,
+        'helpdesk.stage', 'Target Stage',
         help='Minimum stage a ticket needs to reach in order to satisfy this SLA.')
     priority = fields.Selection(
         TICKET_PRIORITY, string='Minimum Priority',

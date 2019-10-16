@@ -60,7 +60,7 @@ class HrPayrollReport(models.Model):
                 c.job_id as job_id,
                 e.company_id as company_id,
                 wet.id as work_code,
-                CASE WHEN wet.is_leave = FALSE THEN '1' WHEN wd.amount = 0 THEN '3' ELSE '2' END as work_type,
+                CASE WHEN wet.is_leave IS NOT TRUE THEN '1' WHEN wd.amount = 0 THEN '3' ELSE '2' END as work_type,
                 wd.number_of_days as number_of_days,
                 wd.number_of_hours as number_of_hours,
                 CASE WHEN wd.id = min_id.min_line THEN pln.total ELSE 0 END as net_wage,

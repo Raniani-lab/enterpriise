@@ -178,13 +178,11 @@ return ListRenderer.extend(EditorMixin, {
      *
      * @override
      * @private
-     * @param {jQuery} $thead
      * @return {integer}
      */
-    _getColumnsTotalWidth($thead) {
-        let totalWidth = this._super(...arguments);
-        totalWidth += $thead.find('th').length + 1;
-        return totalWidth;
+    _getColumnsTotalWidth() {
+        const thElementsLength = this.el.querySelectorAll('thead th').length + 1;
+        return this._super(...arguments) + thElementsLength;
     },
     /**
      * @override

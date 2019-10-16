@@ -6,7 +6,7 @@
     'summary': '''
 Generate Electronic Invoice with custom numbers
     ''',
-    'version': '11.0.1.0.0',
+    'version': '1.0',
     'category': 'Hidden',
     'depends': [
         'stock_landed_costs',

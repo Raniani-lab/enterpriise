@@ -131,9 +131,9 @@ class WinbooksImportWizard(models.TransientModel):
                     # manage the default payable/receivable accounts for the partner
                     if rec.get('CENTRAL'):
                         if rec.get('TYPE') == '1':
-                            data['property_account_receivable_id'] = account_data[rec.get('CENTRAL')] - 1
+                            data['property_account_receivable_id'] = account_data[rec.get('CENTRAL')]
                         else:
-                            data['property_account_payable_id'] = account_data[rec.get('CENTRAL')] - 1
+                            data['property_account_payable_id'] = account_data[rec.get('CENTRAL')]
 
                     partner_data_dict[rec.get('IBANAUTO') or 'num' + rec.get('NUMBER')] = data
                     if len(partner_data_dict) % 100 == 0:

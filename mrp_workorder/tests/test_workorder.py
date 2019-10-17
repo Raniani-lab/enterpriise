@@ -966,6 +966,7 @@ class TestWorkOrder(common.TestMrpCommon):
         production = mrp_order_form.save()
         production.action_confirm()
         production.button_plan()
+        production.workorder_ids[0].button_start()
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
         wo_form.finished_lot_id = sn1
         wo_form.lot_id = self.elon1
@@ -984,6 +985,7 @@ class TestWorkOrder(common.TestMrpCommon):
         production.action_confirm()
         production.button_plan()
 
+        production.workorder_ids[0].button_start()
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
         wo_form.finished_lot_id = sn1
         wo_form.lot_id = self.elon1

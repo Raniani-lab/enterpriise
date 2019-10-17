@@ -76,7 +76,7 @@ class HelpdeskTeam(models.Model):
     def _compute_portal_rating_url(self):
         for team in self:
             if team.name and team.portal_show_rating and team.id:
-                team.portal_rating_url = '/helpdesk/rating/%s' % (team.id)
+                team.portal_rating_url = '/helpdesk/rating/%s' % (slug(team))
             else:
                 team.portal_rating_url = False
 

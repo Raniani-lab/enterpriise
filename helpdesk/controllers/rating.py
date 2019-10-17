@@ -10,13 +10,13 @@ from odoo.osv.expression import AND
 
 class WebsiteHelpdesk(http.Controller):
 
-    @http.route(['/helpdesk/rating/', '/helpdesk/rating/<int:team_id>'], type='http', auth="public", website=True)
-    def page(self, team_id=False, **kw):
+    @http.route(['/helpdesk/rating/', '/helpdesk/rating/<model("helpdesk.team"):team>'], type='http', auth="public", website=True)
+    def page(self, team=False, **kw):
 
         # to avoid giving any access rights on helpdesk team to the public user, let's use sudo
         # and check if the user should be able to view the team (team managers only if it's not published or has no rating)
         user = request.env.user
-        team_domain = [('id', '=', team_id)] if team_id else []
+        team_domain = [('id', '=', team.id)] if team else []
         if user.has_group('helpdesk.group_heldpesk_manager'):
             domain = AND([[('use_rating', '=', True)], team_domain])
         else:

@@ -680,8 +680,8 @@ class MrpEcoBomChange(models.Model):
     old_operation_id = fields.Many2one('mrp.routing.workcenter', 'Previous Consumed in Operation')
     new_operation_id = fields.Many2one('mrp.routing.workcenter', 'New Consumed in Operation')
     upd_product_qty = fields.Float('Quantity', compute='_compute_change', store=True)
-    uom_change = fields.Char('Unit of Measure', compute='_compute_change')
-    operation_change = fields.Char(compute='_compute_change', string='Consumed in Operation')
+    uom_change = fields.Char('Unit of Measure', compute='_compute_change', compute_sudo=True)
+    operation_change = fields.Char(compute='_compute_change', string='Consumed in Operation', compute_sudo=True)
     conflict = fields.Boolean()
 
     @api.depends('new_product_qty', 'old_product_qty', 'old_operation_id', 'new_operation_id', 'old_uom_id', 'new_uom_id')

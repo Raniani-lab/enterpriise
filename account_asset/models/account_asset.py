@@ -59,7 +59,7 @@ class AccountAsset(models.Model):
     value_residual = fields.Monetary(string='Depreciable Value', digits=0, readonly="1")
     salvage_value = fields.Monetary(string='Not Depreciable Value', digits=0, readonly=True, states={'draft': [('readonly', False)]},
                                     help="It is the amount you plan to have that you cannot depreciate.")
-    gross_increase_value = fields.Monetary(string="Gross Increase Value", compute="_compute_book_value")
+    gross_increase_value = fields.Monetary(string="Gross Increase Value", compute="_compute_book_value", compute_sudo=True)
 
     # Links with entries
     depreciation_move_ids = fields.One2many('account.move', 'asset_id', string='Depreciation Lines', readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)], 'paused': [('readonly', False)]})
@@ -81,8 +81,8 @@ class AccountAsset(models.Model):
     # model-related fields
     model_id = fields.Many2one('account.asset', string='Model', change_default=True, readonly=True, states={'draft': [('readonly', False)]}, domain="[('company_id', '=', company_id)]")
     user_type_id = fields.Many2one('account.account.type', related="account_asset_id.user_type_id", string="Type of the account")
-    display_model_choice = fields.Boolean(compute="_compute_value")
-    display_account_asset_id = fields.Boolean(compute="_compute_value")
+    display_model_choice = fields.Boolean(compute="_compute_value", compute_sudo=True)
+    display_account_asset_id = fields.Boolean(compute="_compute_value", compute_sudo=True)
 
     # Capital gain
     parent_id = fields.Many2one('account.asset', help="An asset has a parent when it is the result of gaining value")

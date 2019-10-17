@@ -8,7 +8,11 @@ class ResUsers(models.Model):
     _name = 'res.users'
     _inherit = 'res.users'
 
-    sign_request_count = fields.Integer(compute='_compute_sign_request_count', groups="hr_contract_sign.group_sign_employee")
+    sign_request_count = fields.Integer(
+        compute='_compute_sign_request_count',
+        compute_sudo=True,
+        groups="hr_contract_sign.group_sign_employee",
+    )
 
     def __init__(self, pool, cr):
         """ Override of __init__ to add access rights.

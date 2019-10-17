@@ -1044,13 +1044,13 @@ class FormulaContext(dict):
 class IrModuleModule(models.Model):
     _inherit = "ir.module.module"
 
-    def _update_translations(self, filter_lang=None):
+    def _update_translations(self, filter_lang=None, overwrite=False):
         """ Create missing translations after loading the one of account.financial.html.report
 
         Use the translations of the account.financial.html.report to translate the linked
         ir.actions.client and ir.ui.menu generated at the creation of the report
         """
-        res = super(IrModuleModule, self)._update_translations(filter_lang=filter_lang)
+        res = super(IrModuleModule, self)._update_translations(filter_lang=filter_lang, overwrite=overwrite)
 
         # generated missing action translations for translated reports
         self.env.cr.execute("""

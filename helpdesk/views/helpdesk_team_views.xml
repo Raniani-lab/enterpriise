@@ -163,23 +163,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 o_setting_box" id="api_doc">
-                            <div class="o_setting_left_pane">
-                                <field name="use_api"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_api"/>
-                                <div class="text-muted">
-                                    Connect third party application and create tickets using web services
-                                </div>
-                                <div attrs="{'invisible': [('use_api','=',False)]}" class="mt16">
-                                    <!-- TODO: write a dedicated doc on how to create helpdesk tickets -->
-                                    <a href="https://www.odoo.com/documentation/12.0/webservices/odoo.html" target="_blank">
-                                        <i class="fa fa-arrow-right"></i> View documentation
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <h2 class="mt32">Sell &amp; Track Hours</h2>
                     <div class="row mt16 o_settings_container">

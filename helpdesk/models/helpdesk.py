@@ -63,7 +63,6 @@ class HelpdeskTeam(models.Model):
     use_product_returns = fields.Boolean('Returns')
     use_product_repairs = fields.Boolean('Repairs')
     use_twitter = fields.Boolean('Twitter')
-    use_api = fields.Boolean('API')
     use_rating = fields.Boolean('Ratings on tickets')
     portal_show_rating = fields.Boolean('Display Rating on Customer Portal')
     portal_rating_url = fields.Char('URL to Submit an Issue', readonly=True, compute='_compute_portal_rating_url')

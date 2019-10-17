@@ -3,8 +3,6 @@
 
 import datetime
 
-from werkzeug.exceptions import NotFound
-
 from odoo import http
 from odoo.http import request
 from odoo.osv.expression import AND

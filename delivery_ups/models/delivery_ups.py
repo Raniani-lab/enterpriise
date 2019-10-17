@@ -32,12 +32,12 @@ class ProviderUPS(models.Model):
     ups_username = fields.Char(string='UPS Username', groups="base.group_system")
     ups_passwd = fields.Char(string='UPS Password', groups="base.group_system")
     ups_shipper_number = fields.Char(string='UPS Shipper Number', groups="base.group_system")
-    ups_access_number = fields.Char(string='UPS AccessLicenseNumber', groups="base.group_system")
-    ups_default_packaging_id = fields.Many2one('product.packaging', string='UPS Default Packaging Type')
+    ups_access_number = fields.Char(string='UPS Access Key', groups="base.group_system")
+    ups_default_packaging_id = fields.Many2one('product.packaging', string='UPS Package Type')
     ups_default_service_type = fields.Selection(_get_ups_service_types, string="UPS Service Type", default='03')
     ups_duty_payment = fields.Selection([('SENDER', 'Sender'), ('RECIPIENT', 'Recipient')], required=True, default="RECIPIENT")
     ups_package_weight_unit = fields.Selection([('LBS', 'Pounds'), ('KGS', 'Kilograms')], default='LBS')
-    ups_package_dimension_unit = fields.Selection([('IN', 'Inches'), ('CM', 'Centimeters')], string="Units for UPS Package Size", default='IN')
+    ups_package_dimension_unit = fields.Selection([('IN', 'Inches'), ('CM', 'Centimeters')], string="Package Size Unit", default='IN')
     ups_label_file_type = fields.Selection([('GIF', 'PDF'),
                                             ('ZPL', 'ZPL'),
                                             ('EPL', 'EPL'),

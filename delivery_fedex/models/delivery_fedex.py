@@ -66,9 +66,9 @@ class ProviderFedex(models.Model):
                                             ('REGULAR_PICKUP', 'REGULAR_PICKUP'),
                                             ('REQUEST_COURIER', 'REQUEST_COURIER'),
                                             ('STATION', 'STATION')],
-                                           string="Fedex drop-off type",
+                                           string="Fedex Drop-Off Type",
                                            default='REGULAR_PICKUP')
-    fedex_default_packaging_id = fields.Many2one('product.packaging', string="Default Package Type")
+    fedex_default_packaging_id = fields.Many2one('product.packaging', string="Fedex Package Type")
     fedex_service_type = fields.Selection([('INTERNATIONAL_ECONOMY', 'INTERNATIONAL_ECONOMY'),
                                            ('INTERNATIONAL_PRIORITY', 'INTERNATIONAL_PRIORITY'),
                                            ('FEDEX_GROUND', 'FEDEX_GROUND'),

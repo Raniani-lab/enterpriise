@@ -75,10 +75,10 @@ class ProviderUSPS(models.Model):
                                           ('RETURN', 'Return'),
                                           ('MERCHANDISE', 'Merchandise')],
                                          default='MERCHANDISE', string="Content Type")
-    usps_custom_container_width = fields.Float(string='Package width (in inches)')
-    usps_custom_container_length = fields.Float(string='Package length (in inches)')
-    usps_custom_container_height = fields.Float(string='Package height (in inches)')
-    usps_custom_container_girth = fields.Float(string='Package girth (in inches)')
+    usps_custom_container_width = fields.Float(string='Package Width')
+    usps_custom_container_length = fields.Float(string='Package Length')
+    usps_custom_container_height = fields.Float(string='Package Height')
+    usps_custom_container_girth = fields.Float(string='Package Girth')
     usps_intl_non_delivery_option = fields.Selection([('RETURN', 'Return'),
                                                       ('REDIRECT', 'Redirect'),
                                                       ('ABANDON', 'Abandon')],

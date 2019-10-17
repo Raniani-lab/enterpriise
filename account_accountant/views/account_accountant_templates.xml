@@ -10,6 +10,7 @@
 
     <template id="assets_tests" name="Account Accountant Assets Tests" inherit_id="web.assets_tests">
         <xpath expr="." position="inside">
+            <script type="text/javascript" src="/account_accountant/static/tests/tours/account_dashboard_setup_bar_tests.js"></script>
             <script type="text/javascript" src="/account_accountant/static/tests/tours/account_reports_widgets.js"></script>
         </xpath>
     </template>

@@ -51,7 +51,9 @@
                  date_start="pickup_date"
                  date_stop="return_date"
                  default_group_by="product_id"
-                 create="false"
+                 create="true"
+                 on_create="sale_renting.action_create_rental_order"
+                 cell_create="false"
                  edit="false"
                  decoration-info="state in ['draft', 'sent']"
                  decoration-danger="late"
@@ -110,6 +112,14 @@
       <field name="view_mode">gantt</field>
       <field name="context">{'search_default_Rentals':1, 'group_by_no_leaf':1}</field>
   </record>
+
+    <record id="action_create_rental_order" model="ir.actions.act_window">
+        <field name="name">Create Rental Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="sale_renting.rental_order_primary_form_view"/>
+        <field name="context">{'default_is_rental_order': 1, 'group_by_no_leaf': 0}</field>
+    </record>
 
   <menuitem id="menu_rental_schedule" name="Schedule" parent="rental_menu_root" sequence="3" groups="sales_team.group_sale_manager" action="action_rental_order_schedule"/>
 

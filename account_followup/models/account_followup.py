@@ -40,6 +40,16 @@ Best Regards,
 
     _sql_constraints = [('days_uniq', 'unique(company_id, delay)', 'Days of the follow-up levels must be different per company')]
 
+    def copy_data(self, default=None):
+        default = dict(default or {})
+        if not default or 'delay' not in default:
+            company_id = self.company_id.id
+            if default and 'company_id' in default:
+                company_id = default['company_id']
+            higher_delay = self.search([('company_id', '=', company_id)], order='delay desc', limit=1)[:1].delay or 0
+            default['delay'] = higher_delay + 15
+        return super(FollowupLine, self).copy_data(default=default)
+
     @api.constrains('description')
     def _check_description(self):
         for line in self:

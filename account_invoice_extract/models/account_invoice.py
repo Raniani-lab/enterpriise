@@ -122,44 +122,9 @@ class AccountMove(models.Model):
         the res_config is on "auto_send" and if this is the first attachment."""
         message = super(AccountMove, self).message_post(**kwargs)
         if self.env.company.extract_show_ocr_option_selection == 'auto_send':
-            account_token = self.env['iap.account'].get('invoice_ocr')
             for record in self:
-                if not record.is_invoice():
-                    return message
-                if record.extract_state == "no_extract_requested":
-                    attachments = message.attachment_ids  # should be in post_after_hook (or message_create) to have values without reading message?
-                    if attachments:
-                        endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                            'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/parse'
-                        user_infos = {
-                            'user_company_VAT': record.company_id.vat,
-                            'user_company_name': record.company_id.name,
-                            'user_company_country_code': record.company_id.country_id.code,
-                            'user_lang': self.env.user.lang,
-                            'user_email': self.env.user.email,
-                        }
-                        params = {
-                            'account_token': account_token.account_token,
-                            'version': CLIENT_OCR_VERSION,
-                            'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
-                            'documents': [x.datas.decode('utf-8') for x in attachments],
-                            'file_names': [x.name for x in attachments],
-                            'user_infos': user_infos,
-
-                        }
-                        try:
-                            result = jsonrpc(endpoint, params=params)
-                            record.extract_status_code = result['status_code']
-                            if result['status_code'] == SUCCESS:
-                                record.extract_state = 'waiting_extraction'
-                                record.extract_remote_id = result['document_id']
-                            elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
-                                record.extract_state = 'not_enough_credit'
-                            else:
-                                record.extract_state = 'error_status'
-                        except AccessError:
-                            record.extract_state = 'error_status'
-                            record.extract_status_code = ERROR_NO_CONNECTION
+                if record.is_invoice() and record.extract_state == "no_extract_requested":
+                    record.retry_ocr()
         return message
 
     def retry_ocr(self):

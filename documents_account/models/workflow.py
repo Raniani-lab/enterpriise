@@ -40,11 +40,13 @@ class WorkflowActionRuleAccount(models.Model):
                     body = "<p>created from Documents app</p>"
                     # the 'no_document' key in the context indicates that this ir_attachment has already a
                     # documents.document and a new document shouldn't be automatically generated.
+                    # message_post ignores attachment that are not on mail.compose message, so we link the attachment explicitly afterwards
+                    new_obj.with_context(default_journal_id=journal.id, default_type=invoice_type).message_post(body=body)
                     document.attachment_id.with_context(no_document=True).write({
-                        'res_model': 'mail.compose.message',
-                        'res_id': 0,
+                        'res_model': 'account.move',
+                        'res_id': new_obj.id,
                     })
-                    new_obj.with_context(no_document=True, default_journal_id=journal.id, default_type=invoice_type).message_post(body=body, attachment_ids=[document.attachment_id.id])
+                    document.attachment_id.register_as_main_attachment()  # needs to be called explicitly since we bypassed the standard attachment creation mechanism
                     invoice_ids.append(new_obj.id)
 
             context = dict(self._context, default_type=invoice_type, default_journal_id=journal.id)

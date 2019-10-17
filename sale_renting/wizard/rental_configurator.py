@@ -92,16 +92,19 @@ class RentalWizard(models.TransientModel):
             translated_pricing_duration_unit[key] = value
         for wizard in self:
             if wizard.pricing_id and wizard.duration > 0 and wizard.unit_price != 0.0:
-                pricing_explanation = "%i * %i %s (%s)" % (
-                    math.ceil(wizard.duration / wizard.pricing_id.duration),
-                    wizard.pricing_id.duration,
-                    translated_pricing_duration_unit[wizard.pricing_id.unit],
-                    self.env['ir.qweb.field.monetary'].value_to_html(
-                        wizard.pricing_id.price, {
-                            'from_currency': wizard.pricing_id.currency_id,
-                            'display_currency': wizard.pricing_id.currency_id,
-                            'company_id': self.env.company.id,
-                        }))
+                if wizard.pricing_id.duration > 0:
+                    pricing_explanation = "%i * %i %s (%s)" % (
+                        math.ceil(wizard.duration / wizard.pricing_id.duration),
+                        wizard.pricing_id.duration,
+                        translated_pricing_duration_unit[wizard.pricing_id.unit],
+                        self.env['ir.qweb.field.monetary'].value_to_html(
+                            wizard.pricing_id.price, {
+                                'from_currency': wizard.pricing_id.currency_id,
+                                'display_currency': wizard.pricing_id.currency_id,
+                                'company_id': self.env.company.id,
+                            }))
+                else:
+                    pricing_explanation = _("Fixed rental price")
                 if wizard.product_id.extra_hourly or wizard.product_id.extra_daily:
                     pricing_explanation += "<br/>%s" % (_("Extras:"))
                 if wizard.product_id.extra_hourly:

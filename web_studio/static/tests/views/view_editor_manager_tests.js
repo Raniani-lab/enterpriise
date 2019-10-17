@@ -3920,7 +3920,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('add a selection field in debug', async function (assert) {
-        assert.expect(16);
+        assert.expect(14);
 
         // Dialog to edit selection values is only available in debug mode
         var initialDebugMode = odoo.debug;
@@ -3985,9 +3985,7 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li').length, 3, "there should be 3 selection values");
 
         await testUtils.dom.click($('.modal .o_web_studio_selection_editor > li:eq(2) .o_web_studio_remove_selection_value'));
-        assert.strictEqual($('.modal').length, 2, "a new confirmation modal should be opened");
-        await testUtils.dom.click($('.modal:eq(1) button:contains(Ok)'));
-        assert.strictEqual($('.modal').length, 1, "the confirmation modal should be closed");
+
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li').length, 2, "there should be 2 selection values");
 
         // reorder values

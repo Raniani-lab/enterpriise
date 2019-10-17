@@ -3006,6 +3006,12 @@ msgid ""
 msgstr ""
 
 #. module: web_studio
+#: code:addons/web_studio/controllers/main.py:568
+#, python-format
+msgid "You have %s records that have a selection value different than the ones you are defining. Please modify those records first."
+msgstr ""
+
+#. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/common/new_field_dialog.js:0
 #: code:addons/web_studio/static/src/js/common/new_field_dialog.js:0

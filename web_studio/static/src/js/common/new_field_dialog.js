@@ -218,27 +218,21 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         }
     },
     /**
+     * Removes a selection value from the widget
+     * The python is in charge of determining whether some records
+     * have a deleted value, and raises if this is the case
+     *
      * @private
      * @param {Event} e
      */
     _onRemoveSelectionValue: function (e) {
-        var self = this;
-        var msg = _t(
-            "Do you really want to remove this value? " +
-            "All the records with this value will be updated accordingly."
-        );
-        Dialog.confirm(self, msg, {
-            title: _t("Warning"),
-            confirm_callback: function () {
-                var val = $(e.target).closest('li')[0].dataset.value;
-                var element = _.find(self.selection, function(el) {return el[0] === val; });
-                var index = self.selection.indexOf(element);
-                if (index >= 0) {
-                    self.selection.splice(index, 1);
-                }
-                self.renderElement();
-            },
-        });
+        var val = $(e.target).closest('li')[0].dataset.value;
+        var element = _.find(this.selection, function(el) {return el[0] === val; });
+        var index = this.selection.indexOf(element);
+        if (index >= 0) {
+            this.selection.splice(index, 1);
+        }
+        this.renderElement();
     },
     /**
      * @private

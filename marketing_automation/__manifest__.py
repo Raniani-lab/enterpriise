@@ -11,6 +11,7 @@
         'security/marketing_automation_security.xml',
         'security/ir.model.access.csv',
         'views/assets.xml',
+        'views/ir_actions_views.xml',
         'views/ir_model_views.xml',
         'views/marketing_automation_menus.xml',
         'wizard/marketing_campaign_test_views.xml',

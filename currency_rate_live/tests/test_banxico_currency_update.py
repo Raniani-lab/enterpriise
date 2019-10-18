@@ -3,121 +3,67 @@
 from odoo.tests.common import TransactionCase
 from odoo import fields
 
+from ..models.res_config_settings import BANXICO_DATE_FORMAT
+
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
-from zeep import Client
 
 
-class AlwaysCallable(object):
-    """
-    Represents a chainable-access object and proxies calls to ClientMock.
-    """
-    name = None
+def mocked_requests_get(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, json_data, status_code, special_value=None):
+            self.json_data = json_data
+            self.status_code = status_code
 
-    def __init__(self, client_cls):
-        self._client_cls = client_cls
+        def json(self):
+            return self.json_data
 
-    def __call__(self, *args, **kwargs):
-        try:
-            hook = object.__getattribute__(self._client_cls, self.name)
-        except AttributeError:
-            pass
-        else:
-            return hook(self._client_cls, *args, **kwargs)
+        def raise_for_status(self):
+            return True
 
-    def __getattr__(self, item):
-        new = object.__getattribute__(self, '__class__')(self._client_cls)
-        new.name = item
-        return new
-
-
-class ClientMock(Client):
-    """
-    Abstract mock zeep client.
-    """
-
-    def __init__(self, url, **kwargs):
-        pass
-
-    def __getattr__(self, item):
-        return AlwaysCallable(self.__class__)
-
-    def __unicode__(self):
-        return 'Client mock'
-
-    def __str__(self):
-        return 'Client mock'
-
-
-class serviceClientMock(ClientMock):
-    """
-    Mock object that implements remote side services.
-    """
-
-    return_str = """
-<CompactData xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message"
-    xmlns:bm="http://www.banxico.org.mx/structure/key_families/dgie/sie/series/compact"
-    xmlns:compact="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/compact"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message SDMXMessage.xsd http://www.banxico.org.mx/structure/key_families/dgie/sie/series/compact BANXICO_DGIE_SIE_Compact.xsd http://www.SDMX.org/resources/SDMXML/schemas/v1_0/compact SDMXCompactData.xsd">
-  <Header>
-    <ID>TIPOSDECAMBIO</ID>
-    <Test>false</Test>
-    <Truncated>false</Truncated>
-    <Name xml:lang="sp">Tipos de Cambio</Name>
-    <Prepared>%(date)s 16:37:11.381</Prepared>
-    <Sender id="BANXICO">
-      <Name xml:lang="sp">Banco de M&#195;&#169;xico</Name>
-      <Contact>
-        <Name xml:lang="sp">Subgerencia de Desarrollo de Sistemas</Name>
-        <Telephone>(01 55)52372678</Telephone>
-      </Contact>
-    </Sender>
-    <DataSetAction>Update</DataSetAction>
-    <Extracted>%(date)s 16:37:11.381</Extracted>
-  </Header>
-  <bm:DataSet>
-    <bm:SiblingGroup BANXICO_FREQ="Dia" TIME_FORMAT="P1D"/>
-    <bm:Series TITULO="Tipo de cambio pesos por d&#195;&#179;lar E.U.A. Tipo de cambio para solventar obligaciones denominadas en moneda extranjera Fecha de liquidaci&#195;&#179;n" IDSERIE="SF60653" BANXICO_FREQ="Dia" BANXICO_FIGURE_TYPE="TipoCambio" BANXICO_UNIT_TYPE="PesoxDoll">
-      <bm:Obs TIME_PERIOD="%(date)s" OBS_VALUE="21.7204"/>
-    </bm:Series>
-    <bm:Series TITULO="Tipo de cambio                                          Pesos por d&#195;&#179;lar E.U.A. Tipo de cambio para solventar obligaciones denominadas en moneda extranjera Fecha de determinaci&#195;&#179;n (FIX)" IDSERIE="SF43718" BANXICO_FREQ="Dia" BANXICO_FIGURE_TYPE="TipoCambio" BANXICO_UNIT_TYPE="PesoxDoll">
-      <bm:Obs TIME_PERIOD="%(date)s" OBS_VALUE="21.6643"/>
-    </bm:Series>
-    <bm:Series TITULO="Cotizaci&#195;&#179;n de las divisas que conforman la canasta del DEG Respecto al peso mexicano Euro" IDSERIE="SF46410" BANXICO_FREQ="Dia" BANXICO_FIGURE_TYPE="TipoCambio" BANXICO_UNIT_TYPE="Peso">
-      <bm:Obs TIME_PERIOD="%(date)s" OBS_VALUE="23.0649"/>
-    </bm:Series>
-    <bm:Series TITULO="Cotizaci&#195;&#179;n de la divisa Respecto al peso mexicano D&#195;&#179;lar Canadiense" IDSERIE="SF60632" BANXICO_FREQ="Dia" BANXICO_FIGURE_TYPE="TipoCambio" BANXICO_UNIT_TYPE="Peso">
-      <bm:Obs TIME_PERIOD="%(date)s" OBS_VALUE="%(value_special)s"/>
-    </bm:Series>
-    <bm:Series TITULO="Cotizaci&#195;&#179;n de las divisas que conforman la canasta del DEG Respecto al peso mexicano Yen japon&#195;&#169;s" IDSERIE="SF46406" BANXICO_FREQ="Dia" BANXICO_FIGURE_TYPE="TipoCambio" BANXICO_UNIT_TYPE="Peso">
-      <bm:Obs TIME_PERIOD="%(date)s" OBS_VALUE="0.1889"/>
-    </bm:Series>
-    <bm:Series TITULO="Cotizaci&#195;&#179;n de las divisas que conforman la canasta del DEG Respecto al peso mexicano Libra esterlina" IDSERIE="SF46407" BANXICO_FREQ="Dia" BANXICO_FIGURE_TYPE="TipoCambio" BANXICO_UNIT_TYPE="Peso">
-      <bm:Obs TIME_PERIOD="%(date)s" OBS_VALUE="26.3893"/>
-    </bm:Series>
-  </bm:DataSet>
-</CompactData>
-"""
-
-    def tiposDeCambioBanxico(cls):
-        """
-        Stub for remote service.
-        """
-        return cls.return_str % dict(
-            date=fields.Date.today(), value_special=16.4474)
+    url = args[0]
+    if url.startswith('https://www.banxico.org.mx/SieAPIRest/service/v1/series/'):
+        date = fields.Date.from_string(fields.Date.today()).strftime(BANXICO_DATE_FORMAT)
+        return MockResponse({'bmx': {'series': [
+            # USD
+            {'datos': [{'dato': '21.7204', 'fecha': date}],
+             'idSerie': 'SF60653',
+             'titulo': 'Tipos de Cambio para Revalorización de '
+                       'Balance del Banco de México USD E.U.A. '
+                       '(Dólar) Tipo en pesos'},
+            # EUR
+            {'datos': [{'dato': '23.0649', 'fecha': date}],
+             'idSerie': 'SF46410',
+             'titulo': 'Tipos de Cambio para Revalorización de '
+                       'Balance del Banco de México EUR U.Mon.Europea '
+                       '(Euro 3/) Tipo en pesos'},
+            # GBP
+            {'datos': [{'dato': '26.3893', 'fecha': date}],
+             'idSerie': 'SF46407',
+             'titulo': 'Tipos de Cambio para Revalorización de '
+                       'Balance del Banco de México STG Gran Bretaña '
+                       '(Libra Esterlina) Tipo en pesos'},
+            # CAD
+            {'datos': [{'dato': '16.4474', 'fecha': date}],
+             'idSerie': 'SF60632',
+             'titulo': 'Tipos de Cambio para Revalorización de '
+                       'Balance del Banco de México CAD Canadá '
+                       '(Dólar) Tipo en pesos'},
+            # JPY
+            {'datos': [{'dato': '0.1889', 'fecha': date}],
+             'idSerie': 'SF46406',
+             'titulo': 'Tipos de Cambio para Revalorización de '
+                       'Balance del Banco de México JPY Japón (Yen) '
+                       'Tipo en pesos'}]}}, 200)
+    return MockResponse(None, 404)
 
 
-class serviceClientMock2(serviceClientMock):
-
-    def tiposDeCambioBanxico(cls):
-        """
-        Stub for remote service.
-        """
-        return cls.return_str % dict(
-            date=fields.Date.today(), value_special='N/E')
+def mocked_requests_get_ne(*args, **kwargs):
+    mock_response = mocked_requests_get(*args, **kwargs)
+    mock_response.json_data['bmx']['series'][3]['datos'][0]['dato'] = 'N/E'
+    return mock_response
 
 
 class BanxicoTest(TransactionCase):
@@ -179,7 +125,7 @@ class BanxicoTest(TransactionCase):
         self.assertEqual(self.usd.rate, 1.0)
         self.set_rate(self.mxn, 10.0)
         self.assertEqual(self.mxn.rate, 10.0)
-        with patch('zeep.Client', new=serviceClientMock):
+        with patch('requests.get', side_effect=mocked_requests_get):
             self.company.update_currency_rates()
         self.assertNotEqual(self.usd.rate, 1.0)
         self.assertNotEqual(self.mxn.rate, 10.0)
@@ -191,7 +137,7 @@ class BanxicoTest(TransactionCase):
         self.assertEqual(self.mxn.rate, 1.0)
         self.set_rate(self.usd, 0.1)
         self.assertEqual(self.usd.compare_amounts(self.usd.rate, 0.1), 0)
-        with patch('zeep.Client', new=serviceClientMock):
+        with patch('requests.get', side_effect=mocked_requests_get):
             self.company.update_currency_rates()
         self.assertEqual(self.mxn.rate, 1.0)
         self.assertNotEqual(self.usd.rate, 1.0 / 10.0)
@@ -211,7 +157,7 @@ class BanxicoTest(TransactionCase):
         self.set_rate(self.mxn, 1)
         self.assertEqual(self.mxn.rate, 1)
         self.cad.rate_ids.unlink()
-        with patch('zeep.Client', new=serviceClientMock2):
+        with patch('requests.get', side_effect=mocked_requests_get_ne):
             self.company.update_currency_rates()
         self.assertFalse(self.cad.rate_ids)
 
@@ -236,7 +182,7 @@ class BanxicoTest(TransactionCase):
         self.assertFalse(self.usd.rate_ids.filtered(lambda r: r.company_id.id == self.company_1.id))
 
         # Let us fetch the newest USD rates for company_2 & company_1
-        with patch('zeep.Client', new=serviceClientMock):
+        with patch('requests.get', side_effect=mocked_requests_get):
             companies.update_currency_rates()
         self.assertEqual(len(self.usd.rate_ids.filtered(lambda r: r.company_id.id == self.company_2.id)), 1)
         self.assertEqual(len(self.usd.rate_ids.filtered(lambda r: r.company_id.id == self.company_1.id)), 1)
@@ -252,7 +198,7 @@ class BanxicoTest(TransactionCase):
 
         # Update the currency rates, as banxico is only set in company_2 then
         # company_1 is left without currency rates
-        with patch('zeep.Client', new=serviceClientMock):
+        with patch('requests.get', side_effect=mocked_requests_get):
             companies.update_currency_rates()
 
         self.assertEqual(len(self.usd.rate_ids.filtered(lambda r: r.company_id.id == self.company_2.id)), 1)

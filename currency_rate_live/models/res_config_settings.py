@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-from lxml import etree, objectify
+from lxml import etree
 from dateutil.relativedelta import relativedelta
 import re
 import logging
+from pytz import timezone
 
 import requests
-import zeep
 
 from odoo import api, fields, models
 from odoo.addons.web.controllers.main import xml2json_from_elementtree
@@ -15,7 +15,7 @@ from odoo.exceptions import UserError
 from odoo.tools.translate import _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
-BANXICO_DATE_FORMAT = '%Y-%m-%d'
+BANXICO_DATE_FORMAT = '%d/%m/%Y'
 
 _logger = logging.getLogger(__name__)
 
@@ -252,45 +252,55 @@ class ResCompany(models.Model):
             - SF60653 USD SAT - Officially used from SAT institution
         Source: http://www.banxico.org.mx/portal-mercado-cambiario/
         """
-        try:
-            client = zeep.Client('https://www.banxico.org.mx/DgieWSWeb/DgieWS?WSDL')
-            xml_str = client.service.tiposDeCambioBanxico().encode('utf-8')
-        except:
-            return False
-
-        xml = objectify.fromstring(xml_str)
-        ns = xml.nsmap
-        # nsmap don't support "None" key then deleting
-        ns.pop(None, None)
-        serie = xml.xpath("bm:DataSet/bm:Series[@IDSERIE='SF60653']/bm:Obs", namespaces=ns)[0]
-        available_currency_names = available_currencies.mapped('name')
-
-        rslt = {}
-
-        date = datetime.datetime.strptime(serie.get('TIME_PERIOD'), BANXICO_DATE_FORMAT).strftime(DEFAULT_SERVER_DATE_FORMAT)
-
-        if 'MXN' in available_currency_names:
-            rslt['MXN'] = (1, date)
-
-        if 'USD' in available_currency_names:
-            rslt['USD'] = (1.0/float(serie.get('OBS_VALUE')), date)
-
+        icp = self.env['ir.config_parameter'].sudo()
+        token = icp.get_param('banxico_token')
+        if not token:
+            # https://www.banxico.org.mx/SieAPIRest/service/v1/token
+            token = 'd03cdee20272f1edc5009a79375f1d942d94acac8348a33245c866831019fef4'  # noqa
+            icp.set_param('banxico_token', token)
         foreigns = {
-            # position order of the rates from webservicesconi
+            # position order of the rates from webservices
             'SF46410': 'EUR',
             'SF60632': 'CAD',
             'SF46406': 'JPY',
             'SF46407': 'GBP',
+            'SF60653': 'USD',
         }
+        url = 'https://www.banxico.org.mx/SieAPIRest/service/v1/series/%s/datos/%s/%s?token=%s' # noqa
+        try:
+            date_mx = (
+                datetime.datetime.now(timezone('America/Mexico_City')) - datetime.timedelta(days=1)
+            ).strftime(DEFAULT_SERVER_DATE_FORMAT)
+            res = requests.get(url % (','.join(foreigns), date_mx, date_mx, token))
+            res.raise_for_status()
+            series = res.json()['bmx']['series']
+            series = {serie['idSerie']: serie['datos'][0] for serie in series if 'datos' in serie}
+        except:
+            return False
+
+        available_currency_names = available_currencies.mapped('name')
+
+        rslt = {
+            'MXN': (1.0, fields.Date.today().strftime(DEFAULT_SERVER_DATE_FORMAT)),
+        }
+
         for index, currency in foreigns.items():
-            serie = xml.xpath("bm:DataSet/bm:Series[@IDSERIE='%s']/bm:Obs" % index, namespaces=ns)[0]
-            if serie.get('OBS_VALUE') != 'N/E': # If N/E is returned, we don't have to update the rate.
-                foreign_mxn_rate = float(serie.get('OBS_VALUE'))
-                foreign_rate_date = datetime.datetime.strptime(serie.get('TIME_PERIOD'), BANXICO_DATE_FORMAT).strftime(DEFAULT_SERVER_DATE_FORMAT)
+            if currency not in available_currency_names:
+                continue
+            if index not in series:
+                _logger.info('Rate for currency %s not updated for date %s', currency, date_mx)
+                continue
 
-                if currency in available_currency_names:
-                    rslt[currency] = (1.0/foreign_mxn_rate, foreign_rate_date)
+            serie = series[index]
+            try:
+                foreign_mxn_rate = float(serie['dato'])
+            except (ValueError, TypeError):
+                _logger.info('Could not get rate for currency %s.', currency)
+                continue
+            foreign_rate_date = datetime.datetime.strptime(
+                serie.get('fecha'), BANXICO_DATE_FORMAT).strftime(DEFAULT_SERVER_DATE_FORMAT)
 
+            rslt[currency] = (1.0/foreign_mxn_rate, foreign_rate_date)
         return rslt
 
     def _parse_xe_com_data(self, available_currencies):

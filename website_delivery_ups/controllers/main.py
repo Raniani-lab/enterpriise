@@ -6,11 +6,11 @@ from odoo.http import request
 
 class WebsiteSale(WebsiteSale):
 
-    @http.route("/shop/ups_check_service_type", type='json', auth="public", website=True)
+    @http.route("/shop/ups_check_service_type", type='json', auth="public", website=True, sitemap=False)
     def ups_check_service_type_is_available(self, **post):
         return request.env['sale.order'].sudo().check_ups_service_type(post)
 
-    @http.route("/shop/property_ups_carrier_account/set", type='http', auth="public", website=True)
+    @http.route("/shop/property_ups_carrier_account/set", type='http', auth="public", website=True, sitemap=False)
     def set_property_ups_carrier_account(self, **post):
         order = request.website.sale_get_order()
 
@@ -22,7 +22,7 @@ class WebsiteSale(WebsiteSale):
             })
         return request.redirect("/shop/payment")
 
-    @http.route("/shop/property_ups_carrier_account/unset", type='http', auth="public", website=True)
+    @http.route("/shop/property_ups_carrier_account/unset", type='http', auth="public", website=True, sitemap=False)
     def reset_property_ups_carrier_account(self, **post):
         order = request.website.sale_get_order()
         # remove ups bill my account data in sale order

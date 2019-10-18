@@ -553,6 +553,7 @@ class SignRequest(models.Model):
 class SignRequestItem(models.Model):
     _name = "sign.request.item"
     _description = "Signature Request Item"
+    _inherit = ['portal.mixin']
     _rec_name = 'partner_id'
 
     def _default_access_token(self):
@@ -561,8 +562,9 @@ class SignRequestItem(models.Model):
     partner_id = fields.Many2one('res.partner', string="Contact", ondelete='cascade')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)
     sign_item_value_ids = fields.One2many('sign.request.item.value', 'sign_request_item_id', string="Value")
+    reference = fields.Char(related='sign_request_id.reference', string="Document Name")
 
-    access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
+    access_token = fields.Char(required=True, default=_default_access_token, readonly=True)
     access_via_link = fields.Boolean('Accessed Through Token')
     role_id = fields.Many2one('sign.item.role', string="Role")
     sms_number = fields.Char(related='partner_id.mobile', readonly=False, depends=(['partner_id']), store=True)
@@ -572,7 +574,7 @@ class SignRequestItem(models.Model):
     signing_date = fields.Date('Signed on', readonly=True)
     state = fields.Selection([
         ("draft", "Draft"),
-        ("sent", "Waiting for completion"),
+        ("sent", "To Sign"),
         ("completed", "Completed")
     ], readonly=True, default="draft")
 
@@ -677,6 +679,11 @@ class SignRequestItem(models.Model):
         for rec in self:
             rec._reset_sms_token()
             self.env['sms.api']._send_sms([rec.sms_number], _('Your confirmation code is %s') % rec.sms_token)
+
+    def _compute_access_url(self):
+        super(SignRequestItem, self)._compute_access_url()
+        for signature_request in self:
+            signature_request.access_url = '/my/signature/%s' % signature_request.id
 
 
 class SignRequestItemValue(models.Model):

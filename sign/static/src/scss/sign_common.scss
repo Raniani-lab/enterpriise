@@ -16,6 +16,15 @@
 .o_sign_request_from {
     text-align: left;
 }
+.o_sign_breadcrumb {
+    font-size: 1.25rem !important;
+    a:hover{
+        text-decoration: none;
+    }
+}
+.o_sign_document_buttons {
+    margin-top: 5px;
+}
 
 .o_sign_request_follower_name {
     &:before {

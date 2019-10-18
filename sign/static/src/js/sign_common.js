@@ -902,7 +902,7 @@ odoo.define('sign.document_signing', function (require) {
                     });
                 }});
                 options.buttons.push({text: _t("Cancel"), close: true});
-                this.options = options
+                this.options = options;
             }
 
             this._super(parent, options);
@@ -977,7 +977,8 @@ odoo.define('sign.document_signing', function (require) {
                     $btn.removeAttr('disabled');
                 }
                 if (response === true) {
-                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText, self.requestID,  {'nextSign': self.name_list.length })).open();
+                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText,
+                        self.requestID, {'nextSign': self.name_list.length})).open();
                     self.do_hide();
                 }
                 if (typeof response === 'object') {
@@ -1093,8 +1094,15 @@ odoo.define('sign.document_signing', function (require) {
             }
             if (options['nextSign'] === 0 && session.uid) {
                 // After this signature, the document will be fully signed. We propose to download it.
-                options.buttons.push({text: _t('Downlad Document'), classes: 'btn-secondary', click: function (e) {
-                    window.location.replace("/sign/document/requestID/token".replace('requestID', requestID).replace('token', parent.accessToken));
+                options.buttons.push({
+                    text: _t('Downlad Document'),
+                    classes: 'btn-secondary',
+                    click: function (e) {
+                    window.location.replace(
+                        "/sign/document/requestID/token"
+                        .replace('requestID', requestID)
+                        .replace('token', parent.accessToken)
+                    );
                 }});
             }
             // If sign now: do_action to return to templates
@@ -1458,17 +1466,20 @@ odoo.define('sign.document_signing', function (require) {
                         $btn.removeAttr('disabled', true);
                         self.iframeWidget.disableItems();
                         if (self.name_list && self.name_list.length > 0) {
-                            (new (self.get_nextdirectsigndialog_class())(self, self.RedirectURL, self.requestID,  {'nextSign': self.name_list.length})).open();
+                            (new (self.get_nextdirectsigndialog_class())(self, self.RedirectURL, self.requestID,
+                                {'nextSign': self.name_list.length})).open();
                         }
                         else {
-                            (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText, self.requestID, {'nextSign': 0})).open();
+                            (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText, self.requestID,
+                                {'nextSign': 0})).open();
                         }
                     }
                     if (typeof response === 'object') {
                         $btn.removeAttr('disabled', true);
                         if (response.sms) {
-                            (new SMSSignerDialog(self, self.requestID, self.accessToken, signatureValues, self.signerPhone, self.RedirectURL,  {'nextSign': self.name_list.length }))
-                                .open();
+                            (new SMSSignerDialog(self, self.requestID, self.accessToken, signatureValues,
+                                self.signerPhone, self.RedirectURL,
+                                {'nextSign': self.name_list.length})).open();
                         }
                         if (response.credit_error) {
                             Dialog.alert(self, _t("Unable to send the SMS, please contact the sender of the document."), {
@@ -1504,8 +1515,8 @@ odoo.define('sign.document_signing', function (require) {
                 signDialog.close();
 
                 if (self.$('#o_sign_is_public_user').length > 0) {
-                    (new PublicSignerDialog(self, self.requestID, self.requestToken, this.RedirectURL,  {'nextSign': self.name_list.length}))
-                        .open(name, "").sent.then(_sign);
+                    (new PublicSignerDialog(self, self.requestID, self.requestToken, this.RedirectURL,
+                        {'nextSign': self.name_list.length})).open(name, "").sent.then(_sign);
                 } else {
                     _sign();
                 }
@@ -1525,7 +1536,8 @@ odoo.define('sign.document_signing', function (require) {
                             }, 500);
                         }
                     });
-                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText, self.requestID,  {'nextSign': self.name_list.length})).open();
+                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText,
+                        self.requestID, {'nextSign': self.name_list.length})).open();
                 }
             });
         },

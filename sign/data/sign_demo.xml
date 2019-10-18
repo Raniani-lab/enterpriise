@@ -251,4 +251,30 @@
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
     </record>
+
+    <record model="sign.request" id="sign_request_01">
+        <field name="template_id" ref="template_sign_4"/>
+        <field name="reference">Your Real Estate Listing Agreement</field>
+        <field name="state">sent</field>
+    </record>
+    <record model="sign.request" id="sign_request_02">
+        <field name="template_id" ref="template_sign_5"/>
+        <field name="reference">Your SAAS order</field>
+        <field name="state">signed</field>
+    </record>
+    <record model="sign.request.item" id="sign_request_item_01">
+        <field name="partner_id" ref="base.partner_demo_portal"/>
+        <field name="role_id" ref="sign_item_role_customer"/>
+        <field name="sign_request_id" ref="sign_request_01"/>
+        <field name="state">sent</field>
+        <field name="signer_email">portal@example.com</field>
+    </record>
+    <record model="sign.request.item" id="sign_request_item_02">
+        <field name="partner_id" ref="base.partner_demo_portal"/>
+        <field name="role_id" ref="sign_item_role_customer"/>
+        <field name="sign_request_id" ref="sign_request_02"/>
+        <field name="state">completed</field>
+        <field name="signer_email">portal@example.com</field>
+        <field name="signing_date" eval="(DateTime.now() - timedelta(days=15))"/>
+    </record>
 </odoo>

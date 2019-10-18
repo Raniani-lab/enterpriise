@@ -108,6 +108,7 @@ class Sign(http.Controller):
     @http.route(["/sign/document/<int:id>/<token>"], type='http', auth='public')
     def sign_document_public(self, id, token, **post):
         document_context = self.get_document_qweb_context(id, token)
+        document_context['portal'] = post.get('portal')
         if not isinstance(document_context, dict):
             return document_context
 

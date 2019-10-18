@@ -127,6 +127,7 @@ class Planning(models.Model):
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_overlap_slot_count(self):
         if self.ids:
+            self.flush(['start_datetime', 'end_datetime', 'employee_id'])
             query = """
                 SELECT S1.id,count(*) FROM
                     planning_slot S1, planning_slot S2

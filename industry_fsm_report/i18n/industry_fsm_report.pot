@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-07 07:20+0000\n"
-"PO-Revision-Date: 2019-10-07 07:20+0000\n"
+"POT-Creation-Date: 2019-10-18 10:09+0000\n"
+"PO-Revision-Date: 2019-10-18 10:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,6 +34,13 @@ msgstr ""
 #. module: industry_fsm_report
 #: model:ir.actions.report,print_report_name:industry_fsm_report.task_custom_report
 msgid "'Worksheet %s - %s' % (object.name, object.partner_id.name)"
+msgstr ""
+
+#. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "<b>Click the send button</b> to send the report."
 msgstr ""
 
 #. module: industry_fsm_report
@@ -179,7 +186,7 @@ msgid "Color"
 msgstr ""
 
 #. module: industry_fsm_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_1_1570432754
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_1
 msgid "Comments"
 msgstr ""
 
@@ -200,7 +207,7 @@ msgstr ""
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field7
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2_1570432756
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
 msgid "Date"
 msgstr ""
@@ -218,7 +225,7 @@ msgstr ""
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field2
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2_1570432756
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2
 msgid "Description of the Intervention"
 msgstr ""
 
@@ -250,8 +257,22 @@ msgid "Enables customizable worksheets on tasks."
 msgstr ""
 
 #. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "Fill in your worksheet with the details of your intervention."
+msgstr ""
+
+#. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "Get back to the task in backend."
+msgstr ""
+
+#. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field5
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2_1570432756
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2
 msgid ""
 "I hereby certify that this device meets the requirements of an acceptable "
 "device at the time of testing."
@@ -265,7 +286,7 @@ msgstr ""
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field1
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2_1570432756
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2
 msgid "Intervention Type"
 msgstr ""
 
@@ -303,15 +324,22 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "Make the client sign the worksheet."
+msgstr ""
+
+#. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field3
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2_1570432756
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2
 msgid "Manufacturer"
 msgstr ""
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_worksheet_template__model_id
 #: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field4
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2_1570432756
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2
 msgid "Model"
 msgstr ""
 
@@ -366,8 +394,22 @@ msgid "Report View"
 msgstr ""
 
 #. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "Review the worksheet report with your customer and ask him to sign it."
+msgstr ""
+
+#. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_sale_order_line
 msgid "Sales Order Line"
+msgstr ""
+
+#. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "Save the worksheet."
 msgstr ""
 
 #. module: industry_fsm_report
@@ -377,13 +419,20 @@ msgid "Send Report"
 msgstr ""
 
 #. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "Send the report to your customer by email."
+msgstr ""
+
+#. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_worksheet_template__sequence
 msgid "Sequence"
 msgstr ""
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field6
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2_1570432756
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2
 msgid "Serial Number"
 msgstr ""
 
@@ -447,6 +496,13 @@ msgid "Template name"
 msgstr ""
 
 #. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "The client may click Auto or draw it manually."
+msgstr ""
+
+#. module: industry_fsm_report
 #: code:addons/industry_fsm_report/models/project_worksheet_template.py:0
 #, python-format
 msgid ""
@@ -492,13 +548,27 @@ msgid "Unit Price"
 msgstr ""
 
 #. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "Use the breadcrumbs to <b>go back to your task</b>."
+msgstr ""
+
+#. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "Validate the signature."
+msgstr ""
+
+#. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_task
 msgid "View Worksheet"
 msgstr ""
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field8
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2_1570432756
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_2
 msgid "Worker Signature"
 msgstr ""
 

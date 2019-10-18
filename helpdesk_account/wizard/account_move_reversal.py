@@ -25,7 +25,7 @@ class AccountMoveReversal(models.TransientModel):
             domain += [('id', 'in', self.helpdesk_sale_order_id.invoice_ids.ids)]
         elif self.helpdesk_ticket_id.partner_id:
             domain += [('partner_id', 'child_of', self.helpdesk_ticket_id.partner_id.commercial_partner_id.id)]
-        return {'domain': {'move_id': domain}}
+        return {'domain': {'move_ids': domain}}
 
     def reverse_moves(self):
         # OVERRIDE

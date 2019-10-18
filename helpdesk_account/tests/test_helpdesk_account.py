@@ -44,7 +44,8 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
         credit_note_form = Form(self.env['account.move.reversal'].with_context({
             'default_helpdesk_ticket_id': ticket.id,
         }), view=self.env.ref('helpdesk_account.view_account_move_reversal_inherit_helpdesk_account'))
-        credit_note_form.move_id = so.invoice_ids
+        for inv in so.invoice_ids:
+            credit_note_form.move_ids.add(inv)
         credit_note_form.reason = 'test'
         credit_note = credit_note_form.save()
         res = credit_note.reverse_moves()

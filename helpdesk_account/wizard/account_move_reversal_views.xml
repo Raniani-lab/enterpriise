@@ -12,7 +12,7 @@
                         <group>
                             <field name="helpdesk_ticket_id" invisible="1"/>
                             <field name="helpdesk_sale_order_id" readonly="1" attrs="{'invisible': [('helpdesk_sale_order_id', '=', False)]}"/>
-                            <field name="move_id" string="Invoice to Refund" options="{'no_create_edit': True}"/>
+                            <field name="move_ids" string="Invoice to Refund" options="{'no_create_edit': True}" widget="many2many_tags"/>
                         </group>
                     </group>
                 </xpath>

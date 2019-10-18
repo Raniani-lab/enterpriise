@@ -450,8 +450,8 @@ class AccountMove(models.Model):
         for (taxes, taxes_type) in zip(taxes_ocr, taxes_type_ocr):
             if taxes != 0.0:
                 related_documents = self.env['account.move'].search([('state', '!=', 'draft'), ('type', '=', self.type), ('partner_id', '=', self.partner_id.id)])
-                lines = related_documents.invoice_line_ids
-                taxes_ids = related_documents.invoice_line_ids.tax_ids
+                lines = related_documents.mapped('invoice_line_ids')
+                taxes_ids = related_documents.mapped('invoice_line_ids.tax_ids')
                 taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == 'purchase')
                 taxes_by_document = []
                 for tax in taxes_ids:

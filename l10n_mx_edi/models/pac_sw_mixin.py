@@ -20,7 +20,7 @@ except ImportError:
 class PACSWMixin(models.AbstractModel):
     """PAC SW Mixin is a mixin Abstract class to add methods
     in order to call services of the PAC SW.
-    It defines standard name methods that are auto-called from account.invoice
+    It defines standard name methods that are auto-called from account.move
     or account.payment.
 
     Re-using code as soon as possible.

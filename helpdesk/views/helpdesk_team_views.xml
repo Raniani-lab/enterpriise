@@ -163,23 +163,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 o_setting_box" id="api_doc">
-                            <div class="o_setting_left_pane">
-                                <field name="use_api"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_api"/>
-                                <div class="text-muted">
-                                    Connect third party application and create tickets using web services
-                                </div>
-                                <div attrs="{'invisible': [('use_api','=',False)]}" class="mt16">
-                                    <!-- TODO: write a dedicated doc on how to create helpdesk tickets -->
-                                    <a href="https://www.odoo.com/documentation/12.0/webservices/odoo.html" target="_blank">
-                                        <i class="fa fa-arrow-right"></i> View documentation
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <h2 class="mt32">Sell &amp; Track Hours</h2>
                     <div class="row mt16 o_settings_container">
@@ -268,9 +251,8 @@
                                     Publish this team's ratings on your website
                                 </div>
                                 <div attrs="{'invisible': ['|', ('portal_show_rating', '=', False), ('portal_rating_url','=',False)]}" class="mt16">
-                                    View this teams ratings on this page:<br/>
-                                    <a type="button" class="btn-link" target="_blank" role="button"><i class="fa fa-fw fa-arrow-right" role="img" aria-label="Rating URL" title="Rating URL"/>
-                                        <label for="portal_rating_url" string="URL to Submit Issue"/>
+                                    View this team's ratings on  page:<br/>
+                                    <a type="button" role="button" class="btn-link" target="_blank"><i class="fa fa-fw fa-arrow-right" aria-label="Rating URL" title="Rating URL"/>
                                         <field name="portal_rating_url" readonly="1" class="oe_inline" widget="url"/>
                                     </a>
                                 </div>
@@ -348,7 +330,7 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_coupons"/>
                                 <div class="text-muted">
-                                    Grant coupons from Tickets
+                                    Grant coupons from tickets
                                 </div>
                                 <div id="use_coupons" attrs="{'invisible': [('use_coupons', '=', False)]}">
                                     <div class="text-warning mb4 mt16">

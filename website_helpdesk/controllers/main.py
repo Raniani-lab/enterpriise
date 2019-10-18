@@ -10,6 +10,15 @@ class WebsiteHelpdesk(http.Controller):
     def get_helpdesk_team_data(self, team, search=None):
         return {'team': team}
 
+    def _get_partner_data(self):
+        partner = request.env.user.partner_id
+        partner_values = {}
+        if partner != request.website.user_id.sudo().partner_id:
+            partner_values['name'] = partner.name
+            partner_values['email'] = partner.email
+        return partner_values
+
+
     @http.route(['/helpdesk/', '/helpdesk/<model("helpdesk.team"):team>'], type='http', auth="public", website=True)
     def website_helpdesk_teams(self, team=None, **kwargs):
         search = kwargs.get('search')
@@ -22,4 +31,5 @@ class WebsiteHelpdesk(http.Controller):
         result = self.get_helpdesk_team_data(team or teams[0], search=search)
         # For breadcrumb index: get all team
         result['teams'] = teams
+        result['default_partner_values'] = self._get_partner_data()
         return request.render("website_helpdesk.team", result)

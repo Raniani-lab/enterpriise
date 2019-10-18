@@ -17,6 +17,10 @@ class HelpdeskTeam(models.Model):
     _order = 'sequence,name'
     _rating_satisfaction_days = False  # takes all existing ratings
 
+    _sql_constraints = [('not_portal_show_rating_if_not_use_rating',
+                         'check (portal_show_rating = FALSE OR use_rating = TRUE)',
+                         'Cannot show ratings in portal if not using them'), ]
+
     def _default_stage_ids(self):
         return [(0, 0, {'name': 'New', 'sequence': 0, 'template_id': self.env.ref('helpdesk.new_ticket_request_email_template', raise_if_not_found=False) or None})]
 
@@ -59,7 +63,6 @@ class HelpdeskTeam(models.Model):
     use_product_returns = fields.Boolean('Returns')
     use_product_repairs = fields.Boolean('Repairs')
     use_twitter = fields.Boolean('Twitter')
-    use_api = fields.Boolean('API')
     use_rating = fields.Boolean('Ratings on tickets')
     portal_show_rating = fields.Boolean('Display Rating on Customer Portal')
     portal_rating_url = fields.Char('URL to Submit an Issue', readonly=True, compute='_compute_portal_rating_url')
@@ -73,7 +76,7 @@ class HelpdeskTeam(models.Model):
     def _compute_portal_rating_url(self):
         for team in self:
             if team.name and team.portal_show_rating and team.id:
-                team.portal_rating_url = '/helpdesk/rating/%s' % slug(team)
+                team.portal_rating_url = '/helpdesk/rating/%s' % (slug(team))
             else:
                 team.portal_rating_url = False
 
@@ -92,6 +95,11 @@ class HelpdeskTeam(models.Model):
         mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
         for team in self:
             team.unassigned_tickets = mapped_data.get(team.id, 0)
+
+    @api.onchange('use_rating')
+    def _onchange_use_rating(self):
+        if not self.use_rating:
+            self.portal_show_rating = False
 
     @api.onchange('member_ids')
     def _onchange_member_ids(self):

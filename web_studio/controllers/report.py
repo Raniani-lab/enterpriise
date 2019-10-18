@@ -7,7 +7,7 @@ from lxml import etree
 from odoo import http, _
 from odoo.http import request
 from odoo.addons.web_studio.controllers import main
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 
 class WebStudioReportController(main.WebStudioController):
@@ -130,7 +130,8 @@ class WebStudioReportController(main.WebStudioController):
                 ('type', '=', 'qweb'),
                 ('mode', '=', 'primary'),
             ], limit=1)
-            view.ensure_one()
+            if not view:
+                raise UserError(_("No view found for the given report!"))
             return view
 
         def process_template_groups(element):

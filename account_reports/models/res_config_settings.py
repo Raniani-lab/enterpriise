@@ -57,10 +57,12 @@ class ResConfigSettings(models.TransientModel):
             'delay_from': 'previous_activity',
             'res_model_id': move_res_model_id,
             'force_next': False,
-            'summary': _('Periodic Tax Return')
         }
         if not activity_type:
-            vals['name'] = _('Tax Report for company %s') % (company.name,)
+            vals.update({
+                'name': _('Tax Report for company %s') % (company.name,),
+                'summary': _('TAX Report'),
+            })
             activity_type = self.env['mail.activity.type'].create(vals)
             company.account_tax_next_activity_type = activity_type
         else:
@@ -70,7 +72,7 @@ class ResConfigSettings(models.TransientModel):
         account_tax_periodicity_journal_id = values.get('account_tax_periodicity_journal_id', company.account_tax_periodicity_journal_id)
         date = values.get('account_tax_periodicity_next_deadline', False)
         if not date:
-            date = date_utils.end_of(fields.Date.today(), "quarter") + relativedelta(days=company.account_tax_periodicity_reminder_day)
+            date = date_utils.end_of(fields.Date.today(), values.get('account_tax_periodicity', company.account_tax_periodicity) == 'monthly' and "month" or "quarter") + relativedelta(days=company.account_tax_periodicity_reminder_day)
         end_date_last_month = date_utils.end_of(date + relativedelta(months=-1), 'month')
         move_id = self.env['account.move'].search([
             ('state', '=', 'draft'),
@@ -105,7 +107,8 @@ class ResConfigSettings(models.TransientModel):
                 'res_id': move_id.id,
                 'res_model_id': move_res_model_id,
                 'activity_type_id': activity_type.id,
-                'summary': _('TAX Report'),
+                'summary': activity_type.summary,
+                'note': activity_type.default_description,
                 'date_deadline': date,
                 'automated': True,
                 'user_id':  advisor_user.id or self.env.user.id

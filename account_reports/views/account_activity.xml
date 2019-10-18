@@ -9,9 +9,6 @@
             <xpath expr="//button[@name='action_done']" position="attributes">
                   <attribute name="attrs">{'invisible': ['|', ('activity_category', '=', 'tax_report'), ('force_next', '=', True)]}</attribute>
             </xpath>
-            <xpath expr="//field[@name='note']" position="attributes">
-                  <attribute name="attrs">{'invisible': [('activity_category', '=', 'tax_report')]}</attribute>
-            </xpath>
         </field>
     </record>
 

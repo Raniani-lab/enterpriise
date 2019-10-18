@@ -156,6 +156,14 @@ def generate_module(module, data):
                 if rel_records._name == model:
                     # fill in inter-record dependencies
                     record_deps[record] |= rel_records
+            if record._name == 'ir.model.fields' and record.ttype == 'monetary':
+                # add a dependency on the currency field
+                rel_record = record._get(record.model, 'currency_id') or record._get(record.model, 'x_currency_id')
+                rel_xmlid = get_xmlid(rel_record, check=False)
+                if rel_xmlid and rel_xmlid.split('.')[0] != module.name:
+                    # data depends on a record from another module
+                    depends.add(rel_xmlid.split('.')[0])
+                record_deps[record] |= rel_record
 
         # sort records to satisfy inter-record dependencies
         records = topological_sort(record_deps)

@@ -259,10 +259,15 @@ class OnlineAccount(models.Model):
                     # and the following transactions are older than specified last_sync date.
                     url = False
                     break
+                attributes = transaction.get('attributes', {})
+                description = attributes.get('description') or ''
+                counterpart = attributes.get('counterpartName') or ''
+                remittanceinfo = attributes.get('remittanceInformation') or ''
+                name = ' '.join([description, counterpart, remittanceinfo]) or '/'
                 trans = {
                     'online_identifier': transaction.get('id'),
                     'date': fields.Date.from_string(transaction.get('attributes', {}).get('valueDate')),
-                    'name': transaction.get('attributes', {}).get('remittanceInformation') or '/',
+                    'name': name,
                     'amount': transaction.get('attributes', {}).get('amount'),
                     'account_number': transaction.get('attributes', {}).get('counterpartReference'),
                     'end_amount': end_amount

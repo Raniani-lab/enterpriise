@@ -43,7 +43,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
             'l10n_mx_edi_fiscal_regime': '601',
         })
         self.company.partner_id.write({
-            'vat': 'TCM970625MB1',
+            'vat': 'EKU9003173C9',
             'country_id': self.env.ref('base.mx').id,
             'zip': '37200',
         })

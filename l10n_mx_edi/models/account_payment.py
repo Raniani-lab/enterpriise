@@ -731,7 +731,8 @@ class AccountPayment(models.Model):
                 client = Client(url, transport=transport)
                 uuid_type = client.get_type("ns0:stringArray")
                 invoices_list = uuid_type([uuid])
-                response = client.service.cancel(invoices_list, username, password, company_id.vat, cer_pem, key_pem)
+                response = client.service.cancel(invoices_list, username, password, company_id.vat, cer_pem.replace(
+                    '\n', ''), key_pem)
             except Exception as e:
                 inv.l10n_mx_edi_log_error(str(e))
                 continue

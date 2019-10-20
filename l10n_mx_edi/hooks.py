@@ -97,8 +97,8 @@ def _load_xsd_files(cr, registry, url):
     attachment._inverse_datas()
     cr.execute(
         """INSERT INTO ir_model_data
-           (name, res_id, module, model)
-           VALUES (%s, %s, 'l10n_mx_edi', 'ir.attachment')""", (
+           (name, res_id, module, model, noupdate)
+           VALUES (%s, %s, 'l10n_mx_edi', 'ir.attachment', true)""", (
                xsd_fname, attachment.id))
     return join(filestore, attachment.store_fname)
 
@@ -223,19 +223,19 @@ def _load_locality_sat_catalog(cr, registry):
     # Create xml_id, to allow make reference to this data
     # Locality
     cr.execute("""
-               INSERT INTO ir_model_data (name, res_id, module, model)
+               INSERT INTO ir_model_data (name, res_id, module, model, noupdate)
                SELECT
                ('res_locality_mx_' || lower(state.code) || '_' || loc.code),
-                    loc.id, 'l10n_mx_edi', 'l10n_mx_edi.res.locality'
+                    loc.id, 'l10n_mx_edi', 'l10n_mx_edi.res.locality', true
                FROM l10n_mx_edi_res_locality AS loc, res_country_state AS state
                WHERE state.id = loc.state_id
                AND (('res_locality_mx_' || lower(state.code) || '_' || loc.code), 'l10n_mx_edi') not in (select name, module from ir_model_data)""")
     # City or Municipality
     cr.execute("""
-               INSERT INTO ir_model_data (name, res_id, module, model)
+               INSERT INTO ir_model_data (name, res_id, module, model, noupdate)
                SELECT ('res_city_mx_' || lower(state.code)
                || '_' || city.l10n_mx_edi_code),
-                city.id, 'l10n_mx_edi', 'res.city'
+                city.id, 'l10n_mx_edi', 'res.city', true
                FROM  res_city AS city, res_country_state AS state
                WHERE state.id = city.state_id AND city.country_id = (
                 SELECT id FROM res_country WHERE code = 'MX')

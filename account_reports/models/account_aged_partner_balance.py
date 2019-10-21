@@ -436,10 +436,6 @@ class ReportAccountAgedPartner(models.AbstractModel):
     def _get_report_move_line(self, options, row):
         if row['payment_id']:
             caret_type = 'account.payment'
-        elif row['move_type'] in ('in_refund', 'in_invoice', 'in_receipt'):
-            caret_type = 'account.invoice.in'
-        elif row['move_type'] in ('out_refund', 'out_invoice', 'out_receipt'):
-            caret_type = 'account.invoice.out'
         else:
             caret_type = 'account.move'
 

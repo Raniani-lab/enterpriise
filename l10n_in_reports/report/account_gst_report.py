@@ -171,7 +171,7 @@ class L10nInReportAccount(models.AbstractModel):
                 for fields_value in fields_values:
                     gst_section_lines.append({
                         'id': fields_value.get('id'),
-                        'caret_options': 'account.invoice.out',
+                        'caret_options': 'account.move',
                         'name': fields_value.get('account_move_id')[1],
                         'class': 'top-vertical-align o_account_reports_level2',
                         'level': 1,

@@ -291,11 +291,7 @@ class MxReportPartnerLedger(models.AbstractModel):
                     for ret in tax_ret
                     if ret.id in line.tax_ids.ids])
                 columns.append(self.format_value(withh))
-                if line.move_id.is_purchase_document():
-                    caret_type = 'account.invoice.in'
-                elif line.move_id.is_sale_document():
-                    caret_type = 'account.invoice.out'
-                elif line.payment_id:
+                if line.payment_id:
                     caret_type = 'account.payment'
                 else:
                     caret_type = 'account.move'

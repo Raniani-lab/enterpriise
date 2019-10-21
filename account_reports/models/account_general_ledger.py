@@ -718,10 +718,6 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     def _get_aml_line(self, options, account, aml, cumulated_balance):
         if aml['payment_id']:
             caret_type = 'account.payment'
-        elif aml['move_type'] in ('in_refund', 'in_invoice', 'in_receipt'):
-            caret_type = 'account.invoice.in'
-        elif aml['move_type'] in ('out_refund', 'out_invoice', 'out_receipt'):
-            caret_type = 'account.invoice.out'
         else:
             caret_type = 'account.move'
 

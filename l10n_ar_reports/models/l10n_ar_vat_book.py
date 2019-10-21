@@ -73,19 +73,13 @@ class L10nARVatBook(models.AbstractModel):
             totals['other_taxes'] += other_taxes
             totals['total'] += rec['total']
 
-            if rec['type'] in ['in_invoice', 'in_refund']:
-                caret_type = 'account.invoice.in'
-            elif rec['type'] in ['out_invoice', 'out_refund']:
-                caret_type = 'account.invoice.out'
-            else:
-                caret_type = 'account.move'
             lines.append({
                 'id': rec['id'],
                 'name': format_date(self.env, rec['invoice_date']),
                 'class': 'date',
                 'level': 2,
                 'model': 'account.ar.vat.line',
-                'caret_options': caret_type,
+                'caret_options': 'account.move',
                 'columns': [
                     {'name': rec['move_name']},
                     {'name': rec['partner_name']},

@@ -41,7 +41,7 @@
         <field name="name">marketing.campaign.view.form</field>
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
-            <form string="Campaign">
+            <form js_class="marketing_automation_campaign_form" string="Campaign">
                 <header>
                     <button name="action_start_campaign" type="object" states="draft,stopped" class="btn-primary" string="Start" />
                     <button name="action_stop_campaign" type="object" states="running" class="btn-primary" string="Stop" />
@@ -197,7 +197,7 @@
                                                     <div class="o_ma_child_activity_title text-muted">
                                                         <i class="fa fa-plus-circle" /> Add child activity
                                                     </div>
-                                                    <div t-if="record.id.raw_value" class="o_ma_child_activity_buttons">
+                                                    <div class="o_ma_child_activity_buttons">
                                                         <i data-trigger-type="activity" class="fa fa-code-fork fa-rotate-180 fa-flip-vertical o_ma_text_processed o_add_child_activity" title="Add Another Activity" role="img" aria-label="Add Another Activity" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
                                                             data-trigger-type="mail_open" class="fa fa-envelope-open-o o_ma_text_processed o_add_child_activity"
@@ -220,9 +220,6 @@
                                                         <i t-if="record.activity_type.raw_value == 'email'"
                                                             data-trigger-type="mail_bounce" class="fa fa-exclamation-circle o_ma_text_rejected o_add_child_activity"
                                                             title="Bounced" role="img" aria-label="Bounced" />
-                                                    </div>
-                                                    <div t-else="" class="o_ma_child_activity_buttons">
-                                                        <div class="mt4"> Please save the campaign to add child activity </div>
                                                     </div>
                                                 </div>
                                             </div>

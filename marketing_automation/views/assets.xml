@@ -10,6 +10,8 @@
         <xpath expr="." position="inside">
             <script src="/marketing_automation/static/src/js/marketing_automation_graph.js"/>
             <script src="/marketing_automation/static/src/js/marketing_automation_one2many.js"/>
+            <script src="/marketing_automation/static/src/js/marketing_campaign_view.js"/>
+            <script src="/marketing_automation/static/src/js/marketing_campaign_controller.js"/>
             <link rel="stylesheet" type="text/scss" href="/marketing_automation/static/src/scss/marketing_automation.scss"/>
         </xpath>
     </template>

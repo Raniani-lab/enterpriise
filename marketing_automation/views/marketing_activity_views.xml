@@ -57,10 +57,6 @@
                                     attrs="{'required': [('trigger_type', '!=', 'begin')], 'invisible': [('trigger_type', '=', 'begin')]}"
                                     options="{'no_create_edit': True, 'no_create': True}"/>
                             </div>
-                            <span class="o_form_label" invisible="1">Warning</span>
-                            <div>
-                                <small class="oe_edit_only text-muted" attrs="{'invisible': [('trigger_type', '=', 'begin')]}">(save the campaign to make its activities selectable)</small>
-                            </div>
                             <label for="validity_duration" string="Expiry Duration"/>
                             <div>
                                 <field name="validity_duration"/>

@@ -19,4 +19,5 @@ class WebsiteForm(WebsiteForm):
                     'name': request.params.get('partner_name', False)
                 })
             request.params['partner_id'] = partner.id
+
         return super(WebsiteForm, self).website_form(model_name, **kwargs)

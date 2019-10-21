@@ -18,7 +18,7 @@ class WebsiteCalendar(http.Controller):
     @http.route([
         '/website/calendar',
         '/website/calendar/<model("calendar.appointment.type"):appointment_type>',
-    ], type='http', auth="public", website=True)
+    ], type='http', auth="public", website=True, sitemap=True)
     def calendar_appointment_choice(self, appointment_type=None, employee_id=None, message=None, **kwargs):
         if not appointment_type:
             country_code = request.session.geoip and request.session.geoip.get('country_code')
@@ -62,7 +62,7 @@ class WebsiteCalendar(http.Controller):
             })
         return result
 
-    @http.route(['/website/calendar/<model("calendar.appointment.type"):appointment_type>/appointment'], type='http', auth="public", website=True)
+    @http.route(['/website/calendar/<model("calendar.appointment.type"):appointment_type>/appointment'], type='http', auth="public", website=True, sitemap=True)
     def calendar_appointment(self, appointment_type=None, employee_id=None, timezone=None, failed=False, **kwargs):
         request.session['timezone'] = timezone or appointment_type.appointment_tz
         Employee = request.env['hr.employee'].sudo().browse(int(employee_id)) if employee_id else None
@@ -74,7 +74,7 @@ class WebsiteCalendar(http.Controller):
             'slots': Slots,
         })
 
-    @http.route(['/website/calendar/<model("calendar.appointment.type"):appointment_type>/info'], type='http', auth="public", website=True)
+    @http.route(['/website/calendar/<model("calendar.appointment.type"):appointment_type>/info'], type='http', auth="public", website=True, sitemap=True)
     def calendar_appointment_form(self, appointment_type, employee_id, date_time, **kwargs):
         partner_data = {}
         if request.env.user.partner_id != request.env.ref('base.public_partner'):

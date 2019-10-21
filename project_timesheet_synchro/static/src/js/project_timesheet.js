@@ -2,6 +2,7 @@ odoo.define('project_timeshee.ui', function (require ) {
     "use strict";
 
     var ajax = require('web.ajax');
+    var config = require('web.config');
     var Context = require('web.Context');
     var core = require('web.core');
     var session = require('web.session');
@@ -26,13 +27,7 @@ odoo.define('project_timeshee.ui', function (require ) {
 
     // Mobile device detection
     // Awesome Timesheet is used in Android/iOS native app.
-    var isMobile = navigator.userAgent.match(/Android/i) ||
-                   navigator.userAgent.match(/webOS/i) ||
-                   navigator.userAgent.match(/iPhone/i) ||
-                   navigator.userAgent.match(/iPad/i) ||
-                   navigator.userAgent.match(/iPod/i) ||
-                   navigator.userAgent.match(/BlackBerry/i) ||
-                   navigator.userAgent.match(/Windows Phone/i);
+    var isMobile = config.device.isMobileDevice;
     // Desktop detection
     // In Odoo, Awesome Timesheet is embedded inside an iframe.
     var isDesktop = !isMobile && window.location.origin.indexOf("chrome-extension://") === -1;

@@ -176,7 +176,7 @@ class AccountMove(models.Model):
         """
         selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("user_selected", "=", True)])
         if not selected.exists():
-            selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("selected_status", "!=", 0)])
+            selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("selected_status", "=", 1)], limit=1)
         return_box = {}
         if selected.exists():
             return_box["box"] = [selected.word_text, selected.word_page, selected.word_box_midX,

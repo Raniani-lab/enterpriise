@@ -4,7 +4,7 @@ odoo.define('social.kanban_field_stream_post', function (require) {
 var FieldRegistry = require('web.field_registry');
 var FieldText = require('web.basic_fields').FieldText;
 var MailEmojisMixin = require('mail.emoji_mixin');
-var SocialStreamPostFormatterMixin = require('social.stream_post_formatter_mixin');
+var SocialStreamPostFormatterMixin = require('social.post_formatter_mixin');
 
 var SocialKanbanMessageWrapper = FieldText.extend(MailEmojisMixin, SocialStreamPostFormatterMixin, {
     /**
@@ -14,10 +14,7 @@ var SocialKanbanMessageWrapper = FieldText.extend(MailEmojisMixin, SocialStreamP
      */
     _render: function () {
         if (this.value) {
-            var formattedValue = this.value;
-            formattedValue = this._formatText(formattedValue);
-            formattedValue = this._formatStreamPost(formattedValue);
-            this.$el.html(formattedValue);
+            this.$el.html(this._formatPost(this.value));
         }
     },
 });

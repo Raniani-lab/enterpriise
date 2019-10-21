@@ -80,7 +80,7 @@
                                 <div t-attf-class="o_social_stream_post_message_body pb-2 #{has_attachments ? 'o_social_stream_post_with_attachments' : 'mb-2 border-bottom'}">
 
                                     <div class="o_social_stream_post_message_text overflow-hidden mb-2">
-                                        <field t-if="record.message.raw_value" name="message" widget="social_kanban_field_stream_post" />
+                                        <field t-if="record.message.raw_value" name="message" widget="social_kanban_field_stream_post" t-att-media_type="record.media_type.raw_value || ''" t-att-data-account-id="account_id"/>
                                     </div>
 
                                     <a t-if="record.link_url.value"

@@ -12,7 +12,7 @@ from werkzeug.urls import url_join
 class SocialStreamPostFacebook(models.Model):
     _inherit = 'social.stream.post'
 
-    FACEBOOK_COMMENT_FIELDS = 'id,from.fields(id,name,picture),message,created_time,attachment,comments.fields(id,from.fields(id,name,picture),message,created_time,attachment,user_likes,likes.limit(0).summary(true)),user_likes,likes.limit(0).summary(true)'
+    FACEBOOK_COMMENT_FIELDS = 'id,from.fields(id,name,picture),message,message_tags,created_time,attachment,comments.fields(id,from.fields(id,name,picture),message,created_time,attachment,user_likes,likes.limit(0).summary(true)),user_likes,likes.limit(0).summary(true)'
 
     facebook_post_id = fields.Char('Facebook Post ID', index=True)
     facebook_author_id = fields.Char('Facebook Author ID')
@@ -52,14 +52,15 @@ class SocialStreamPostFacebook(models.Model):
         if next_records_token:
             params['after'] = next_records_token
 
-        result = requests.get(comments_endpoint_url, params)
+        result_json = requests.get(comments_endpoint_url, params).json()
 
-        result_json = result.json()
         for comment in result_json.get('data'):
             comment['formatted_created_time'] = self._format_facebook_published_date(comment)
+            comment['message'] = self.stream_id._format_facebook_message(comment.get('message'), comment.get('message_tags'))
             inner_comments = comment.get('comments', {}).get('data', [])
             for inner_comment in inner_comments:
                 inner_comment['formatted_created_time'] = self._format_facebook_published_date(inner_comment)
+                inner_comment['message'] = self.stream_id._format_facebook_message(inner_comment.get('message'), inner_comment.get('message_tags'))
 
         return {
             'comments': result_json.get('data'),

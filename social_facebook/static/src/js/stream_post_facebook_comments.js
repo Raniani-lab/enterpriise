@@ -17,6 +17,7 @@ var StreamPostFacebookComments = StreamPostComments.extend({
         this.totalLoadedComments = options.comments.length;
         this.nextRecordsToken = options.nextRecordsToken;
         this.summary = options.summary;
+        this.mediaType = 'facebook';
 
         this._super.apply(this, arguments);
     },

@@ -13,6 +13,7 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
             this.page = 1;
             this.allComments = options.allComments;
             this.comments = this.allComments.slice(0, 20);
+            this.mediaType = 'twitter';
 
             this.options = _.defaults(options || {}, {
                 title: _t('Twitter Comments'),

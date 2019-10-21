@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="assets_backend" name="social_facebook_backend_assets" inherit_id="web.assets_backend">
+        <xpath expr="//script[contains(@src, '/social/static/src/js/social_post_formatter_mixin.js')]" position="after">
+            <script type="text/javascript" src="/social_facebook/static/src/js/social_post_formatter_mixin.js"/>
+        </xpath>
         <xpath expr="." position="inside">
             <link rel="stylesheet" type="text/scss" href="/social_facebook/static/src/scss/social_facebook.scss"/>
             <script type="text/javascript" src="/social_facebook/static/src/js/stream_post_facebook_comments.js"/>

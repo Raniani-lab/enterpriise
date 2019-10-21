@@ -7,7 +7,7 @@ var dom = require('web.dom');
 var emojis = require('mail.emojis');
 var PostKanbanImagesCarousel = require('social.social_post_kanban_images_carousel');
 var MailEmojisMixin = require('mail.emoji_mixin');
-var SocialStreamPostFormatterMixin = require('social.stream_post_formatter_mixin');
+var SocialStreamPostFormatterMixin = require('social.post_formatter_mixin');
 var time = require('web.time');
 
 
@@ -552,17 +552,14 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
     },
 
     /**
-     * We want both emojis capabilities of _formatText
-     * and various wrapping of _formatStreamPost
+     * We want both emojis capabilities
+     * and various wrapping (link, #hashtag, @tag)
      *
      * @param {String} message
      * @private
      */
     _formatCommentStreamPost: function (message) {
-        var formattedMessage = message;
-        formattedMessage = this._formatText(formattedMessage);
-        formattedMessage = this._formatStreamPost(formattedMessage);
-        return formattedMessage;
+        return this._formatPost(message);
     },
 
     _getTargetTextElement($emoji) {

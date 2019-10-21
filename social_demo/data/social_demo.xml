@@ -346,7 +346,7 @@ Better run to our website while it lasts 🏃</field>
         <field name="twitter_likes_count">188</field>
         <field name="author_name">Deco Addict</field>
         <field name="twitter_profile_image_url" eval="'/web/image/res.partner/%s/image_128' % ref('social_demo.res_partner_2')" />
-        <field name="message">Started using #mycompany software a few days ago. It's been a great experience so far 👍 Can't wait to see what comes up next!  </field>
+        <field name="message">Hello @MyCompany! Started using your software a few days ago. It's been a great experience so far 👍 Can't wait to see what comes up next! #mycompany</field>
         <field name="published_date" eval="time.strftime('%Y-05-08 11:39:00')"/>
     </record>
 

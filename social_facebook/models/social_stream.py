@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+import re
 import dateutil.parser
 import requests
 
@@ -34,7 +34,7 @@ class SocialStreamFacebook(models.Model):
         posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s/%s" % (self.account_id.facebook_account_id, endpoint_name))
         result = requests.get(posts_endpoint_url, {
             'access_token': self.account_id.facebook_access_token,
-            'fields': 'id,message,from,shares,insights.metric(post_impressions),likes.limit(1).summary(true),comments.limit(10).summary(true){message,from,likes.limit(0).summary(true)},attachments,created_time',
+            'fields': 'id,message,from,shares,insights.metric(post_impressions),message_tags,likes.limit(1).summary(true),comments.limit(10).summary(true){message,from,likes.limit(0).summary(true)},attachments,created_time',
         })
 
         result_posts = result.json().get('data')
@@ -55,7 +55,7 @@ class SocialStreamFacebook(models.Model):
         for post in result_posts:
             values = {
                 'stream_id': self.id,
-                'message': post.get('message'),
+                'message': self._format_facebook_message(post.get('message'), post.get('message_tags')),
                 'author_name': post.get('from').get('name'),
                 'facebook_author_id': post.get('from').get('id'),
                 'published_date': fields.Datetime.from_string(dateutil.parser.parse(post.get('created_time')).strftime('%Y-%m-%d %H:%M:%S')),
@@ -127,3 +127,54 @@ class SocialStreamFacebook(models.Model):
                     result.update({'stream_post_image_ids': [(0, 0, {'image_url': image_src})]})
 
         return result
+
+    @api.model
+    def _format_facebook_message(self, message, tags):
+        """
+        This allows to create links to the referenced Facebook pages
+
+        example:
+            "Hello Odoo :)" -> "Hello @[542132] Odoo :)"
+            "Hello Odoo Social :)" -> "Hello @[542132] Odoo-Social :)"
+            "Hello Odoo - Social :)" -> "Hello @[542132] Odoo-Social :)"
+
+        details:
+            "Hello @[42] faketag Odoo - Social :)" -> "Hello @ [42] faketag @[542132] Odoo-Social :)""
+            -> With associated tag: {name: "Odoo - Social", offset: 20, length: 13}
+
+            We take the message until the tag offset: "Hello @[42] faketag "
+            and remove the fake tag in the process "Hello @ [42] faketag "
+            Then we insert the forged tag "@[542132] Odoo-Social"
+            Then take the rest of the message, starting at index tag offset + length, since we inserted the forged tag instead
+
+        :param message: str message
+        :param tags: list of tags in the message as received through Facebook endpoint
+            - id: ID of the page/user/group tagged
+            - name: name of the page/user/group tagged
+            - offset: position of the tag in the text
+            - length: length of the tag in the text
+        """
+        if not message:
+            return message
+
+        def remove_forged_tags(message):
+            """
+            Remove False positive in the message
+                (e.g: if someone write "@[42] test" without tagging someone)
+            """
+            return re.sub(r'\B@\[', '@ [', message)
+
+        # Remove Facebook hashtags that have are considered as tags with ID but are not managed by this method
+        tags = [tag for tag in tags or [] if not tag.get('name', '').startswith('#')]
+
+        message_index = 0
+        message_with_tags = ''
+        for tag in tags or []:
+            no_space_name = re.sub(r'\s+', '-', re.sub(r'\s*-\s*', '-', tag['name']))
+            forged_tag = '@[%s] %s' % (tag['id'], no_space_name)
+            message_with_tags += remove_forged_tags(message[message_index:tag['offset']]) + forged_tag
+            message_index = tag['offset'] + tag['length']
+
+        message_with_tags += remove_forged_tags(message[message_index:])
+
+        return message_with_tags

@@ -2445,11 +2445,11 @@ QUnit.module('Views', {
                     var rows = args.args[4];
                     rows.forEach(function(r) {
                         r.unavailabilities = [{
-                            start: '2018-12-05 13:00:00',
-                            stop: '2018-12-07 23:00:00'
+                            start: '2018-12-05 11:30:00',
+                            stop: '2018-12-08 08:00:00'
                         }, {
                             start: '2018-12-16 09:00:00',
-                            stop: '2018-12-18 09:00:00'
+                            stop: '2018-12-18 13:00:00'
                         }]
                     });
                     return Promise.resolve(rows);

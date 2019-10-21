@@ -538,34 +538,57 @@ var GanttRow = Widget.extend({
      */
     _insertIntoSlot: function () {
         var self = this;
-        var intervalToken = this.SCALES[self.state.scale].interval;
-        var timeToken = this.SCALES[this.state.scale].time;
+        var scale = this.state.scale;
+        var intervalToken = this.SCALES[scale].interval;
         var precision = this.viewInfo.activeScaleInfo.precision;
-        var cellTime = this.SCALES[this.state.scale].cellPrecisions[precision];
+        var x, y;
         this.slots = _.map(this.viewInfo.slots, function (date, key) {
             var slotStart = date;
-            var slotHalf = slotStart.clone().add(cellTime, timeToken);
             var slotStop = date.clone().add(1, intervalToken);
+            var slotHalf = moment((slotStart + slotStop) / 2);
             var slotUnavailability;
+            var morningUnavailabilities = 0; //morning hours unavailabilities
+            var afternoonUnavailabilities = 0; //afternoon hours unavailabilities
             self.unavailabilities.forEach(function (unavailability) {
-                if (unavailability.startDate < slotStop && unavailability.stopDate > slotStart) {
-                    if (precision === 'half' && unavailability.stopDate <= slotHalf) {
-                        if (!slotUnavailability) {
-                            slotUnavailability = 'first_half'
-                        } else if (slotUnavailability === 'second_half') {
-                            slotUnavailability = 'full';
-                        }
-                    } else if (precision === 'half' && unavailability.startDate >= slotHalf) {
-                        if (!slotUnavailability) {
-                            slotUnavailability = 'second_half'
-                        } else if (slotUnavailability === 'first_half') {
-                            slotUnavailability = 'full';
+                if (unavailability.start < slotStop && unavailability.stop > slotStart) {
+                    if ((scale === 'month' || scale === 'week')) {
+                        // We can face to 3 different cases and we will compute the sum
+                        // of all unavailability periods for the morning and the afternoon:
+                        //
+                        // slotStart                slotHalf            slotStop
+                        //    |      ______________     :                   |
+                        // 1. |     |______________|    :                   |
+                        //    |                         :    ___________    |
+                        // 2. |                         :   |___________|   |
+                        //    |                 ________:_______            |
+                        // 3. |                |________:_______|           |
+                        //    |                         :                   |
+                        //    |                         :                   |
+                        x = unavailability.start.diff(slotHalf) / (3600 * 1000);
+                        y = unavailability.stop.diff(slotHalf) / (3600 * 1000);
+                        if (x < 0 && y < 0) { // Case 1.
+                            morningUnavailabilities += Math.min(-x, 12) - Math.min(-y, 12);
+                        } else if (x > 0 && y > 0) { // Case 2.
+                            afternoonUnavailabilities += Math.min(y, 12) - Math.min(x, 12);
+                        } else { // Case 3.
+                            morningUnavailabilities += Math.min(-x, 12);
+                            afternoonUnavailabilities += Math.min(y, 12);
                         }
                     } else {
                         slotUnavailability = 'full';
                     }
                 }
             });
+            if (scale === 'month' || scale === 'week') {
+                if ((morningUnavailabilities > 10 && afternoonUnavailabilities > 10) || (precision !== 'half' && morningUnavailabilities + afternoonUnavailabilities > 22)) {
+                    slotUnavailability = 'full';
+                } else if (morningUnavailabilities > 10 && precision === 'half') {
+                    slotUnavailability = 'first_half';
+
+                } else if (afternoonUnavailabilities > 10 && precision === 'half') {
+                    slotUnavailability = 'second_half';
+                }
+            }
             return {
                 isToday: date.isSame(new Date(), 'day') && self.state.scale !== 'day',
                 unavailability: slotUnavailability,

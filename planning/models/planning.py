@@ -413,7 +413,7 @@ class Planning(models.Model):
             new_row['rows'] = [traverse(func, row) for row in new_row.get('rows')]
             return func(new_row)
 
-        cell_dt = timedelta(hours=1) if scale == 'day' else timedelta(days=1)
+        cell_dt = timedelta(hours=1) if scale in ['day', 'week'] else timedelta(hours=12)
 
         # for a single row, inject unavailability data
         def inject_unavailability(row):

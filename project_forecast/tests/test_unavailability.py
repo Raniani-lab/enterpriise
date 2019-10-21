@@ -69,14 +69,16 @@ class TestUnavailabilityForForecasts(TestCommonForecast):
         gantt_processed_rows = self.env['planning.slot'].gantt_unavailability(
             datetime(2019, 1, 1),
             datetime(2019, 1, 7),
-            'week',
+            'month',
             'user_id, stage_id',
             rows
         )
 
         expected_unavailabilities = [
-            {'start': datetime(2019, 1, 4, 17, 0, tzinfo=pytz.utc),
-             'stop': datetime(2019, 1, 7, 0, 0, tzinfo=pytz.utc)}
+            {'start': datetime(2019, 1, 1, 17, 0, tzinfo=pytz.utc), 'stop': datetime(2019, 1, 2, 8, 0, tzinfo=pytz.utc)},
+            {'start': datetime(2019, 1, 2, 17, 0, tzinfo=pytz.utc), 'stop': datetime(2019, 1, 3, 8, 0, tzinfo=pytz.utc)},
+            {'start': datetime(2019, 1, 3, 17, 0, tzinfo=pytz.utc), 'stop': datetime(2019, 1, 4, 8, 0, tzinfo=pytz.utc)},
+            {'start': datetime(2019, 1, 4, 17, 0, tzinfo=pytz.utc), 'stop': datetime(2019, 1, 7, 0, 0, tzinfo=pytz.utc)},
         ]
 
         bert_unavailabilities = gantt_processed_rows[0]['unavailabilities']
@@ -124,14 +126,16 @@ class TestUnavailabilityForForecasts(TestCommonForecast):
         gantt_processed_rows = self.env['planning.slot'].gantt_unavailability(
             datetime(2019, 1, 1),
             datetime(2019, 1, 7),
-            'week',
+            'month',
             'user_id, stage_id',
             rows
         )
 
         expected_unavailabilities = [
-            {'start': datetime(2019, 1, 4, 17, 0, tzinfo=pytz.utc),
-             'stop': datetime(2019, 1, 7, 0, 0, tzinfo=pytz.utc)}
+            {'start': datetime(2019, 1, 1, 17, 0, tzinfo=pytz.utc), 'stop': datetime(2019, 1, 2, 8, 0, tzinfo=pytz.utc)},
+            {'start': datetime(2019, 1, 2, 17, 0, tzinfo=pytz.utc), 'stop': datetime(2019, 1, 3, 8, 0, tzinfo=pytz.utc)},
+            {'start': datetime(2019, 1, 3, 17, 0, tzinfo=pytz.utc), 'stop': datetime(2019, 1, 4, 8, 0, tzinfo=pytz.utc)},
+            {'start': datetime(2019, 1, 4, 17, 0, tzinfo=pytz.utc), 'stop': datetime(2019, 1, 7, 0, 0, tzinfo=pytz.utc)},
         ]
 
         bert_unavailabilities = gantt_processed_rows[0]['rows'][0]['unavailabilities']

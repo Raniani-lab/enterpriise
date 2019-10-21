@@ -38,6 +38,7 @@
                    decoration-warning="state == 'conflict'"
                    progress="name"
                    scales="day,week,month"
+                   precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:full'}"
                    create="0"
                    plan="0">
                 <field name="color" invisible="1"/>

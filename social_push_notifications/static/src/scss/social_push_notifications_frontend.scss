@@ -5,6 +5,8 @@
     @include media-breakpoint-up(sm) {
         top: 0;
         bottom: auto;
+        // Reach 91px position left compensating the container's padding
+        padding-left: 91px - ($grid-gutter-width * .5);
 
         &.o_social_push_notifications_permission_with_menubar {
             top: $o-navbar-height + 4px;
@@ -14,6 +16,7 @@
             max-width: $popover-max-width;
         }
     }
+
     .close {
         @include o-position-absolute(0, 0);
     }

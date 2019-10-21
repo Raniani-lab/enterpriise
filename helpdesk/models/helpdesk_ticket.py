@@ -306,11 +306,11 @@ class HelpdeskTicket(models.Model):
                 ticket.sla_fail = ticket.sla_reached_late
 
     @api.model
-    def _search_sla_fail(self, value, operator):
+    def _search_sla_fail(self, operator, value):
         datetime_now = fields.Datetime.now()
         if (value and operator in expression.NEGATIVE_TERM_OPERATORS) or (not value and operator not in expression.NEGATIVE_TERM_OPERATORS):  # is not failed
-            return ['&', ('sla_reached_late', '=', False), ('sla_deadline', '>=', fields.Datetime.to_string(datetime_now))]
-        return ['|', ('sla_reached_late', '=', True), ('sla_deadline', '<', fields.Datetime.to_string(datetime_now))]  # is failed
+            return ['&', ('sla_reached_late', '=', False), ('sla_deadline', '>=', datetime_now)]
+        return ['|', ('sla_reached_late', '=', True), ('sla_deadline', '<', datetime_now)]  # is failed
 
     @api.depends('user_id')
     def _compute_is_self_assigned(self):

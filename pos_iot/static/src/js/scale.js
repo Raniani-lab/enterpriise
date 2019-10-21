@@ -33,12 +33,18 @@ screens.ScaleScreenWidget.include({
                 }
             } else { self._error = false; }
         });
-        this.pos.proxy_queue.schedule(function () { self.scale.action({ action: 'start_reading' }); });
         this.iot_box = _.find(this.pos.proxy.iot_boxes, function (iot_box) {
             return iot_box.ip == self.scale._iot_ip;
         });
-        this._read_scale();
+        this.manual_reading = this.scale.manufacturer === 'Adam';
         this._super();
+        if (this.manual_reading) {
+            this.$('.read-weight').click(function(){
+                self.pos.proxy_queue.schedule(function () { self.scale.action({ action: 'read_once' }); });
+            });
+        } else {
+            this.pos.proxy_queue.schedule(function () { self.scale.action({ action: 'start_reading' }); });
+        }
     },
 
     /**

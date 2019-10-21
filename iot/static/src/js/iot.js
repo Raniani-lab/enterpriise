@@ -728,6 +728,7 @@ var DeviceProxy = core.Class.extend({
         this._iot_longpolling = _iot_longpolling;
         this._iot_ip = iot_device.iot_ip;
         this._identifier = iot_device.identifier;
+        this.manufacturer = iot_device.manufacturer;
     },
 
     /**

@@ -799,7 +799,7 @@
         <div class="custom-control custom-checkbox">
             <input type="checkbox" id="show_invisible" class="custom-control-input"
                 t-att-checked="widget.state.show_invisible ? 'checked' : undefined"/>
-            <label for="show_invisible" class="custom-control-label">Show invisible elements</label>
+            <label for="show_invisible" class="custom-control-label">Show Invisible Elements</label>
         </div>
     </div>
 </t>

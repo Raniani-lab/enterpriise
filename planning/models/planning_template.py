@@ -3,6 +3,7 @@ import math
 from datetime import datetime, timedelta, time, date
 from odoo import api, fields, models, _
 from odoo.tools import format_time
+from odoo.addons.resource.models.resource import float_to_time
 
 
 class PlanningTemplate(models.Model):
@@ -10,8 +11,8 @@ class PlanningTemplate(models.Model):
     _description = "Shift Template"
 
     role_id = fields.Many2one('planning.role', string="Role")
-    start_time = fields.Float('Start hour', default=0)
-    duration = fields.Float('Duration (hours)', default=0)
+    start_time = fields.Float('Start Hour', default=0, group_operator=None)
+    duration = fields.Float('Duration (Hours)', default=0, group_operator=None)
 
     _sql_constraints = [
         ('check_start_time_lower_than_24', 'CHECK(start_time <= 24)', 'You cannot have a start hour greater than 24'),
@@ -33,3 +34,13 @@ class PlanningTemplate(models.Model):
             )
             result.append([shift_template.id, name])
         return result
+
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        res = []
+        for data in super(PlanningTemplate, self).read_group(domain, fields, groupby, offset, limit, orderby, lazy):
+            if 'start_time' in data:
+                data['start_time'] = float_to_time(data['start_time']).strftime('%H:%M')
+            res.append(data)
+
+        return res

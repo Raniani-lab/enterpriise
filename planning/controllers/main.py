@@ -49,7 +49,8 @@ class ShiftController(http.Controller):
                     'start': str(pytz.utc.localize(slot.start_datetime).astimezone(employee_tz).replace(tzinfo=None)),
                     'end': str(pytz.utc.localize(slot.end_datetime).astimezone(employee_tz).replace(tzinfo=None)),
                     'color': self._format_planning_shifts(slot.role_id.color),
-                    'alloc_hours': slot.allocated_hours,
+                    'alloc_hours': '%d:%02d' % (int(slot.allocated_hours), round(slot.allocated_hours % 1 * 60)),
+                    'alloc_perc': slot.allocated_percentage,
                     'slot_id': slot.id,
                     'note': slot.name,
                     'allow_self_unassign': slot.allow_self_unassign

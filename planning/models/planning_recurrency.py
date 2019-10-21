@@ -11,10 +11,10 @@ class PlanningRecurrency(models.Model):
     _name = 'planning.recurrency'
     _description = "Planning Recurrence"
 
-    slot_ids = fields.One2many('planning.slot', 'recurrency_id', string="Related planning entries")
-    repeat_interval = fields.Integer("Repeat every", default=1, required=True)
+    slot_ids = fields.One2many('planning.slot', 'recurrency_id', string="Related Planning Entries")
+    repeat_interval = fields.Integer("Repeat Every", default=1, required=True)
     repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='weeks', default='forever')
-    repeat_until = fields.Datetime(string="Repeat until", help="Up to which date should the plannings be repeated")
+    repeat_until = fields.Datetime(string="Repeat Until", help="Up to which date should the plannings be repeated")
     last_generated_end_datetime = fields.Datetime("Last Generated End Date", readonly=True)
     company_id = fields.Many2one('res.company', string="Company", readonly=True, required=True, default=lambda self: self.env.company)
 

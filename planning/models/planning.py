@@ -15,6 +15,7 @@ from odoo.osv import expression
 from odoo.tools.safe_eval import safe_eval
 from odoo.tools import format_time
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.tools.misc import format_date
 
 _logger = logging.getLogger(__name__)
 
@@ -58,32 +59,32 @@ class Planning(models.Model):
     end_datetime = fields.Datetime("End Date", required=True, default=_default_end_datetime)
 
     # UI fields and warnings
-    allow_self_unassign = fields.Boolean('Let employee unassign themselves', related='company_id.planning_allow_self_unassign')
+    allow_self_unassign = fields.Boolean('Let Employee Unassign Themselves', related='company_id.planning_allow_self_unassign')
     is_assigned_to_me = fields.Boolean('Is this shift assigned to the current user', compute='_compute_is_assigned_to_me')
-    overlap_slot_count = fields.Integer('Overlapping slots', compute='_compute_overlap_slot_count')
+    overlap_slot_count = fields.Integer('Overlapping Slots', compute='_compute_overlap_slot_count')
 
     # time allocation
     allocation_type = fields.Selection([
         ('planning', 'Planning'),
         ('forecast', 'Forecast')
     ], compute='_compute_allocation_type')
-    allocated_hours = fields.Float("Allocated hours", default=0, compute='_compute_allocated_hours', store=True)
+    allocated_hours = fields.Float("Allocated Hours", default=0, compute='_compute_allocated_hours', store=True)
     allocated_percentage = fields.Float("Allocated Time (%)", default=100, help="Percentage of time the employee is supposed to work during the shift.")
-    working_days_count = fields.Integer("Number of working days", compute='_compute_working_days_count', store=True)
+    working_days_count = fields.Integer("Number Of Working Days", compute='_compute_working_days_count', store=True)
 
     # publication and sending
-    is_published = fields.Boolean("Is the shift sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.")
-    publication_warning = fields.Boolean("Modified since last publication", default=False, readonly=True, help="If checked, it means that the shift contains has changed since its last publish.", copy=False)
+    is_published = fields.Boolean("Is The Shift Sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.")
+    publication_warning = fields.Boolean("Modified Since Last Publication", default=False, readonly=True, help="If checked, it means that the shift contains has changed since its last publish.", copy=False)
 
     # template dummy fields (only for UI purpose)
-    template_creation = fields.Boolean("Save as a Template", default=False, store=False, inverse='_inverse_template_creation')
+    template_creation = fields.Boolean("Save As a Template", default=False, store=False, inverse='_inverse_template_creation')
     template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
-    template_id = fields.Many2one('planning.slot.template', string='Planning Templates', store=False)
+    template_id = fields.Many2one('planning.slot.template', string='Shift Templates', store=False)
 
     # Recurring (`repeat_` fields are none stored, only used for UI purpose)
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
     repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat')
-    repeat_interval = fields.Integer("Repeat every", default=1, compute='_compute_repeat', inverse='_inverse_repeat')
+    repeat_interval = fields.Integer("Repeat Every", default=1, compute='_compute_repeat', inverse='_inverse_repeat')
     repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Repeat Type', default='forever', compute='_compute_repeat', inverse='_inverse_repeat')
     repeat_until = fields.Date("Repeat Until", compute='_compute_repeat', inverse='_inverse_repeat', help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
 
@@ -273,29 +274,15 @@ class Planning(models.Model):
 
     def name_get(self):
         group_by = self.env.context.get('group_by', [])
-        field_list = [fname for fname in self._name_get_fields() if fname not in group_by][:2]  # limit to 2 labels
+        field_list = [fname for fname in self._name_get_fields() if fname not in group_by]
 
         result = []
         for slot in self:
             # label part, depending on context `groupby`
-            name = ' - '.join([self._fields[fname].convert_to_display_name(slot[fname], slot) for fname in field_list if slot[fname]])
+            name = ' - '.join([self._fields[fname].convert_to_display_name(slot[fname], slot) for fname in field_list if slot[fname]][:2])  # limit to 2 labels
 
-            # date / time part
-            destination_tz = pytz.timezone(self.env.user.tz or 'UTC')
-            start_datetime = pytz.utc.localize(slot.start_datetime).astimezone(destination_tz).replace(tzinfo=None)
-            end_datetime = pytz.utc.localize(slot.end_datetime).astimezone(destination_tz).replace(tzinfo=None)
-            if slot.end_datetime - slot.start_datetime <= timedelta(hours=24):  # shift on a single day
-                name = '%s - %s %s' % (
-                    format_time(self.env, start_datetime.time(), time_format='short'),
-                    format_time(self.env, end_datetime.time(), time_format='short'),
-                    name
-                )
-            else:
-                name = '%s - %s %s' % (
-                    start_datetime.date(),
-                    end_datetime.date(),
-                    name
-                )
+            start_datetime, end_datetime = slot._format_start_endtime(tz=self.env.user.tz or 'UTC')
+            name = '%s - %s %s' % (start_datetime, end_datetime, name)
 
             # add unicode bubble to tell there is a note
             if slot.name:
@@ -484,6 +471,7 @@ class Planning(models.Model):
     def action_send(self):
         group_planning_user = self.env.ref('planning.group_planning_user')
         template = self.env.ref('planning.email_template_slot_single')
+        start_datetime, end_datetime = self._format_start_endtime(self.employee_id.tz)
         # update context to build a link for view in the slot
         view_context = dict(self._context)
         view_context.update({
@@ -492,6 +480,8 @@ class Planning(models.Model):
             'dbname': self.env.cr.dbname,
             'render_link': self.employee_id.user_id and self.employee_id.user_id in group_planning_user.users,
             'unavailable_path': '/planning/myshifts/',
+            'start_datetime': start_datetime,
+            'end_datetime': end_datetime
         })
         slot_template = template.with_context(view_context)
 
@@ -583,6 +573,22 @@ class Planning(models.Model):
             return self.env['planning.slot'].search([('create_date', '>', datetime.now() - timedelta(days=30))]).mapped('employee_id')
         return employees
 
+    def _format_start_endtime(self, tz):
+        # date / time part
+        destination_tz = pytz.timezone(tz)
+        start_datetime = pytz.utc.localize(self.start_datetime).astimezone(destination_tz).replace(tzinfo=None)
+        end_datetime = pytz.utc.localize(self.end_datetime).astimezone(destination_tz).replace(tzinfo=None)
+
+        if (end_datetime.date() - start_datetime.date()).days:  # not on the same day
+            return (
+                format_date(self.env, start_datetime.date(), date_format='d/MM'),
+                format_date(self.env, end_datetime.date(), date_format='d/MM')
+            )
+        else:
+            return (
+                format_time(self.env, start_datetime.time(), time_format='h:mm a' if start_datetime.minute else 'h a'), format_time(self.env, end_datetime.time(), time_format='h:mm a' if end_datetime.minute else 'h a')
+            )
+
 
 class PlanningRole(models.Model):
     _name = 'planning.role'
@@ -596,7 +602,7 @@ class PlanningRole(models.Model):
 
 class PlanningPlanning(models.Model):
     _name = 'planning.planning'
-    _description = 'Planning sent by email'
+    _description = 'Schedule'
 
     @api.model
     def _default_access_token(self):
@@ -604,9 +610,9 @@ class PlanningPlanning(models.Model):
 
     start_datetime = fields.Datetime("Start Date", required=True)
     end_datetime = fields.Datetime("Stop Date", required=True)
-    include_unassigned = fields.Boolean("Includes Open shifts", default=True)
+    include_unassigned = fields.Boolean("Includes Open Shifts", default=True)
     access_token = fields.Char("Security Token", default=_default_access_token, required=True, copy=False, readonly=True)
-    last_sent_date = fields.Datetime("Last sent date")
+    last_sent_date = fields.Datetime("Last Sent Date")
     slot_ids = fields.Many2many('planning.slot', "Shifts", compute='_compute_slot_ids')
     company_id = fields.Many2one('res.company', "Company", required=True, default=lambda self: self.env.company)
 
@@ -618,8 +624,10 @@ class PlanningPlanning(models.Model):
     def _compute_display_name(self):
         """ This override is need to have a human readable string in the email light layout header (`message.record_name`) """
         for planning in self:
-            number_days = (planning.end_datetime - planning.start_datetime).days
-            planning.display_name = _('Planning of %s days') % (number_days,)
+            tz = pytz.timezone(self.env.user.tz or 'UTC')
+            start_datetime = pytz.utc.localize(planning.start_datetime).astimezone(tz).replace(tzinfo=None)
+            end_datetime = pytz.utc.localize(planning.end_datetime).astimezone(tz).replace(tzinfo=None)
+            planning.display_name = _('Planning from %s to %s') % (format_date(self.env, start_datetime), format_date(self.env, end_datetime))
 
     @api.depends('start_datetime', 'end_datetime', 'include_unassigned')
     def _compute_slot_ids(self):
@@ -665,6 +673,9 @@ class PlanningPlanning(models.Model):
                 for employee in self.env['hr.employee.public'].browse(employees.ids):
                     if employee.work_email:
                         template_context['employee'] = employee
+                        destination_tz = pytz.timezone(self.env.user.tz or 'UTC')
+                        template_context['start_datetime'] = pytz.utc.localize(planning.start_datetime).astimezone(destination_tz).replace(tzinfo=None)
+                        template_context['end_datetime'] = pytz.utc.localize(planning.end_datetime).astimezone(destination_tz).replace(tzinfo=None)
                         template_context['planning_url'] = employee_url_map[employee.id]
                         template.with_context(**template_context).send_mail(planning.id, email_values={'email_to': employee.work_email, 'email_from': email_from}, notif_layout='mail.mail_notification_light')
             sent_slots |= slots

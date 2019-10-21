@@ -34,7 +34,8 @@
                     <field name="is_assigned_to_me" invisible="1"/>
                     <field name="allow_self_unassign" invisible="1"/>
                     <group attrs="{'invisible': ['|', ('template_autocomplete_ids', '=', []), ('template_creation', '=', True)]}" groups="planning.group_planning_manager">
-                        <field name="template_id" class="text-break flex-wrap"
+                        <label for="template_id" class="oe_edit_only"/>
+                        <field name="template_id" nolabel="1" class="text-break flex-wrap"
                             domain="[['id', 'in', template_autocomplete_ids]]"
                             widget="radio" options="{'horizontal': true}"
                         />
@@ -48,20 +49,29 @@
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>
-                            <field name="start_datetime" string="Start date"/>
-                            <field name="end_datetime" string="End date"/>
+                            <label for="start_datetime" string="Date"/>
+                            <div class="o_row">
+                                <field name="start_datetime" widget="daterange" options='{"related_end_date": "end_datetime"}'/>
+                                <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                                <field name="end_datetime" widget="daterange" options='{"related_start_date": "start_datetime"}'/>
+                            </div>
                             <field name="allocated_hours" widget="float_time"/>
                             <field name="allocated_percentage" groups="planning.group_planning_show_percentage"/>
                         </group>
                     </group>
                     <group>
-                        <field name="repeat" groups="planning.group_planning_manager"/>
-                        <label for="repeat_interval" string="Repeat Every" attrs="{'invisible': [('repeat', '=', False)]}"/>
-                        <div class="o_row" attrs="{'invisible': [('repeat', '=', False)]}">
-                            <field name="repeat_interval" class="oe_inline" nolabel="1"/>
-                            <span>week(s)</span>
-                            <field name="repeat_type" class="oe_inline" nolabel="1" attrs="{'required': [('repeat', '=', True)]}"/>
-                            <field name="repeat_until" class="oe_inline" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until')]}" nolabel="1"/>
+                        <label for="repeat" groups="planning.group_planning_manager"/>
+                        <div class="o_row">
+                            <field name="repeat" groups="planning.group_planning_manager"/>
+                            <label for="repeat_interval" string="Every" attrs="{'invisible': [('repeat', '=', False)]}"/>
+                            <div class="o_row" attrs="{'invisible': [('repeat', '=', False)]}">
+                                <field name="repeat_interval" class="oe_inline col-lg-1" nolabel="1"/>
+                                <span>Weeks</span>
+                                <field name="repeat_type" class="oe_inline col-lg-2" nolabel="1" attrs="{'required': [('repeat', '=', True)]}"/>
+                                <span class="col-lg-2">
+                                    <field name="repeat_until" class="oe_inline" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until')]}" nolabel="1"/>
+                                </span>
+                            </div>
                         </div>
                     </group>
                     <group>
@@ -83,9 +93,11 @@
             <xpath expr="//sheet" position="after">
                 <footer>
                     <field name="publication_warning" invisible="1"/>
+                    <field name="is_published" invisible="1"/>
                     <button string="Save" special="save" class="btn btn-primary" close="1" groups="planning.group_planning_manager"/>
-                    <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1" attrs="{'invisible': [('employee_id', '=', False)]}" groups="planning.group_planning_manager"/>
-                    <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1" groups="planning.group_planning_manager"/>
+                    <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1" attrs="{'invisible': ['|', ('employee_id', '=', False), ('is_published', '=', True)]}" groups="planning.group_planning_manager"/>
+                    <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1" attrs="{'invisible': ['|', ('employee_id', '=', False), ('is_published', '=', False)]}" groups="planning.group_planning_manager"/>
+                    <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('is_published', '=', True)]}"/>
                     <button name="unlink" string="Delete" type="object" class="btn-secondary" close="1" attrs="{'invisible': [('id', '=', False)]}" confirm="Are you sure you want to do delete this shift?" groups="planning.group_planning_manager"/>
                     <button string="Discard" special="cancel" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
 
@@ -138,10 +150,10 @@
         <field name="name">planning.slot.calendar</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="role_id" form_view_id="%(planning_view_form_quickcreate)d" event_open_popup="true" quick_add="False">
-                <field name="name"/>
+            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="role_id" form_view_id="%(planning_view_form)d" event_open_popup="true" quick_add="False">
                 <field name="employee_id" avatar_field="image_128"/>
                 <field name="role_id"/>
+                <field name="name"/>
             </calendar>
         </field>
     </record>
@@ -172,7 +184,8 @@
                 default_scale="week"
                 color="color"
                 plan="false"
-                scales="day,week,month"
+                string="Schedule"
+                scales="day,week,month,year"
                 precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
                 decoration-info="not is_published"
                 decoration-warning="publication_warning and is_published"
@@ -187,6 +200,7 @@
                 <field name="employee_id"/>
                 <field name="overlap_slot_count"/>
                 <field name="allocated_percentage"/>
+                <field name="name"/>
                 <templates>
                     <div t-name="gantt-popover" class="container-fluid">
                         <div class="row no-gutters">
@@ -194,12 +208,15 @@
                                 <ul class="pl-1 mb-0">
                                     <li><strong>Start Date: </strong> <t t-esc="userTimezoneStartDate.format('YYYY-MM-DD hh:mm:ss A')"/></li>
                                     <li><strong>Stop Date: </strong> <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD hh:mm:ss A')"/></li>
-                                    <li id="allocated_hours"><strong>Allocated Hours: </strong> <t t-esc="'' + Math.floor(allocated_hours) + ':' + ((allocated_hours % 1) * 60 >= 10 ? (allocated_hours % 1) * 60 : '0'+(allocated_hours % 1) * 60)"/></li>
+                                    <li id="allocated_hours"><strong>Allocated Hours: </strong> <t t-esc="'' + Math.floor(allocated_hours) + ':' + ((allocated_hours % 1) * 60 >= 10 ? Math.round((allocated_hours % 1) * 60) : '0'+Math.round((allocated_hours % 1) * 60))"/></li>
                                 </ul>
-                                <t t-if="publication_warning">
-                                    <br/>
-                                    <span>Some changes were made since this shift was published</span>
-                                </t>
+                                <p class="mt-2 mb-0" t-if="name"><t t-esc="name" /></p>
+                                <p t-if="is_published and publication_warning and !overlap_slot_count" class="text-warning mt-2 mb-0">
+                                    Some changes were made since this shift was published.
+                                </p>
+                                <p t-if="overlap_slot_count" class="text-danger mt-2 mb-0">
+                                    <t t-esc="overlap_slot_count"/> other shift(s) in conflict.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -264,8 +281,12 @@
         <field name="model">planning.role</field>
         <field name="arch" type="xml">
             <form string="Planning Role">
-                <field name="name"/>
-                <field name="color" widget="color_picker"/>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
@@ -309,7 +330,7 @@
         </record>
 
     <record id="planning_action_schedule_by_employee" model="ir.actions.act_window">
-        <field name="name">Planning Schedule</field>
+        <field name="name">Schedule by Employee</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form</field>
         <field name="context">{'search_default_group_by_employee': 1, 'planning_expand_employee': 1}</field>
@@ -323,7 +344,7 @@
         </record>
 
     <record id="planning_action_schedule_by_role" model="ir.actions.act_window">
-        <field name="name">Planning Schedule</field>
+        <field name="name">Schedule by Role</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form</field>
         <field name="context">{'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_expand_employee': 1}</field>
@@ -345,7 +366,7 @@
     </record>
 
     <record id="planning_action_roles" model="ir.actions.act_window">
-        <field name="name">Planning Roles</field>
+        <field name="name">Roles</field>
         <field name="res_model">planning.role</field>
         <field name="view_mode">tree</field>
     </record>
@@ -354,6 +375,7 @@
         <field name="name">Shift Templates</field>
         <field name="res_model">planning.slot.template</field>
         <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="planning_slot_template_view_search"/>
     </record>
 
     <!--
@@ -369,14 +391,8 @@
         id="planning_menu_my_planning"
         name="My Planning"
         sequence="10"
-        parent="planning_menu_root"/>
-
-        <menuitem
-            id="planning_menu_calendar"
-            name="Calendar"
-            sequence="10"
-            parent="planning_menu_my_planning"
-            action="planning_action_my_calendar"/>
+        parent="planning_menu_root"
+        action="planning_action_my_calendar"/>
 
     <menuitem
         id="planning_menu_schedule"

@@ -34,5 +34,18 @@
             </field>
         </record>
 
+        <record id="planning_slot_template_view_search" model="ir.ui.view">
+            <field name="name">planning.slot.template.search</field>
+            <field name="model">planning.slot.template</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="role_id"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Start Time" name="group_by_start_time" context="{'group_by':'start_time'}"/>
+                        <filter string="Role" name="group_by_role" context="{'group_by':'role_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
     </data>
 </odoo>

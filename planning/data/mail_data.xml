@@ -3,24 +3,25 @@
     <data>
 
         <record id="email_template_slot_single" model="mail.template">
-            <field name="name">Planning: new schedule (single shift)</field>
+            <field name="name">Planning: new single shift</field>
             <field name="email_from">${(object.company_id.email or '')}</field>
-            <field name="subject">Planning: new schedule (single shift)</field>
+            <field name="subject">Planning: new shift</field>
             <field name="email_to">${object.employee_id.work_email}</field>
             <field name="model_id" ref="model_planning_slot"/>
             <field name="auto_delete" eval="False"/>
             <field name="body_html" type="html">
                 <div>
-                    <p>Dear ${object.employee_id.name or ''},</p><br/>
-                    <p>You have been assigned the following schedule:</p><br/>
+                    <p>Dear ${object.employee_id.name or ''},<br/><br/>
+                    You have been assigned the following schedule:</p>
+                    <br/>
                     <table style="table-layout: fixed; width: 80%; margin: auto;">
                         <tr>
                             <th style="padding: 5px;text-align: left; width: 15%;">From</th>
-                            <td style="padding: 5px;">${format_datetime(object.start_datetime, tz=object.employee_id.tz)}</td>
+                            <td style="padding: 5px;">${ctx.get('start_datetime')}</td>
                         </tr>
                         <tr>
                             <th style="padding: 5px;text-align: left; width: 15%;">To</th>
-                            <td style="padding: 5px;">${format_datetime(object.end_datetime, tz=object.employee_id.tz)}</td>
+                            <td style="padding: 5px;">${ctx.get('end_datetime')}</td>
                         </tr>
                         % if object.role_id
                         <tr>
@@ -32,6 +33,12 @@
                         <tr>
                             <th style="padding: 5px;text-align: left; width: 15%;">Project</th>
                             <td style="padding: 5px;">${object.project_id.name or ''}</td>
+                        </tr>
+                        % endif
+                        % if object.task_id
+                        <tr>
+                            <th style="padding: 5px;text-align: left; width: 15%;">Task</th>
+                            <td style="padding: 5px;">${object.task_id.name or ''}</td>
                         </tr>
                         % endif
                         % if object.name
@@ -64,36 +71,33 @@
         <record id="email_template_planning_planning" model="mail.template">
             <field name="name">Planning: new schedule (multiple shifts)</field>
             <field name="email_from">${(object.company_id.email or '')}</field>
-            <field name="subject">Your planning from ${format_datetime(object.start_datetime, tz=ctx.get('employee').tz or 'UTC', dt_format='short')} to ${format_datetime(object.end_datetime, tz=employee.tz if employee else 'UTC', dt_format='short')}</field>
+            <field name="subject">Your planning from ${format_date(ctx.get('start_datetime'))} to ${format_date(ctx.get('end_datetime'))}</field>
             <field name="email_to"></field><!-- Set in the code  -->
             <field name="model_id" ref="model_planning_planning"/>
             <field name="auto_delete" eval="False"/><!-- TODO JEM  change this as we are testing -->
             <field name="body_html" type="html">
                 <div>
-                    % if ctx.get('employee'):
-                        <p>Dear ${ctx['employee'].name},</p>
-                    % else:
-                        <p>Hello,</p>
-                    % endif
                     <p>
+                    % if ctx.get('employee'):
+                        Dear ${ctx['employee'].name},
+                    % else:
+                        Hello,
+                    % endif
+                        <br/><br/>
                         You have been assigned new shifts:
                     </p>
+                    
+                    <br/>
 
                     <table style="table-layout: fixed; width: 80%; margin: auto;">
                         <tr>
                             <th style="padding: 5px;text-align: left; width: 15%;">From</th>
-                            <td style="padding: 5px;">${format_datetime(object.start_datetime, tz=ctx.get('employee').tz or 'UTC', dt_format='short')}</td>
+                            <td style="padding: 5px;">${format_date(ctx.get('start_datetime'))}</td>
                         </tr>
                         <tr>
                             <th style="padding: 5px;text-align: left; width: 15%;">To</th>
-                            <td style="padding: 5px;">${format_datetime(object.end_datetime, tz=ctx.get('employee').tz or 'UTC', dt_format='short')}</td>
+                            <td style="padding: 5px;">${format_date(ctx.get('end_datetime'))}</td>
                         </tr>
-                        % if object.project_id
-                        <tr>
-                            <th style="padding: 5px;text-align: left; width: 15%;">Project</th>
-                            <td style="padding: 5px;">${object.project_id.name or ''}</td>
-                        </tr>
-                        % endif
                     </table>
 
                     % if ctx.get('planning_url'):
@@ -104,7 +108,7 @@
                     % endif
 
                     % if ctx.get('slot_unassigned_count'):
-                        <p>There are new open shifts available. Please assign yourself if you are available.</p>
+                        <p>There are new open shifts available. Please, assign yourself if you are available.</p>
                     % endif
 
                     % if ctx.get('message'):

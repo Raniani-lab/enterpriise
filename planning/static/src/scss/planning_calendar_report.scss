@@ -19,8 +19,38 @@
 
 .o_planning_calendar_open_shifts {
 
+    margin-top: 2rem;
+
     .close {
         outline: none !important;
     }
 
+}
+
+.fc-event:hover {
+    cursor: pointer;
+}
+
+@media print {
+    @page { size: A4 landscape; }
+
+    html,
+    body {
+        height: unset;
+    }
+
+    body.o_connected_user {
+        padding-top: 0 !important;
+    }
+
+    header,
+    .o_main_navbar,
+    .o_footer_copyright,
+    footer#bottom {
+        display: none;
+    }
+
+    .fc-today {
+        background-color: unset !important;
+    }
 }

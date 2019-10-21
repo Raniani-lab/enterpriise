@@ -59,7 +59,7 @@
     </record>
 
     <record id="project_forecast_action_by_project" model="ir.actions.act_window">
-        <field name="name">Planning by project</field>
+        <field name="name">Planning by Project</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,tree,form</field>
         <field name="context">{

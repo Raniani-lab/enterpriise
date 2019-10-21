@@ -56,3 +56,7 @@ class PlanningShift(models.Model):
         result = super(PlanningShift, self)._get_fields_breaking_publication()
         result.extend(['project_id', 'task_id'])
         return result
+
+    def _name_get_fields(self):
+        fields = super(PlanningShift, self)._name_get_fields()
+        return ['project_id', 'task_id'] + fields

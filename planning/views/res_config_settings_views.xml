@@ -24,13 +24,14 @@
                         </div>
                         <div class="col-12 col-lg-6 o_setting_box" groups="base.group_no_one">
                             <div class="o_setting_right_pane">
-                                <div class="text-muted" name="project_forecast_msg">
-                                    Schedule your employee shifts
-                                </div>
+                                <span class="o_form_label" name="project_forecast_msg">
+                                    Recurring Shifts
+                                </span>
                                  <div class="content-group">
-                                    <div class="row mt16">
-                                        <label for="planning_generation_interval" class="col-4 col-lg-4 o_light_label" string="Rate of shift generation"/>
+                                    <div class="mt16">
+                                        <label for="planning_generation_interval" class="o_light_label" string="Rate of shift generation"/>
                                         <field name="planning_generation_interval" class="oe_inline col-4 col-lg-2 mr-1"/>
+                                        <span>months</span>
                                     </div>
                                 </div>
                             </div>

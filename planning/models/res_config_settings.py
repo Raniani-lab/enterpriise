@@ -7,7 +7,7 @@ from odoo import api, fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    planning_generation_interval = fields.Integer("Rate of shift generation", required=True,
+    planning_generation_interval = fields.Integer("Rate Of Shift Generation", required=True,
         related="company_id.planning_generation_interval", readonly=False, help="Delay for the rate at which recurring shifts should be generated")
 
     planning_allow_self_unassign = fields.Boolean("Allow Unassignment", default=False, readonly=False,

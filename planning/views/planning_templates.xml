@@ -2,6 +2,7 @@
 <odoo>
     <template id="period_report_template">
         <t t-call="web.frontend_layout">
+            <t t-set="title">Your Planning</t>
             <t t-set="head">
                 <t t-call="planning.planning_shift_notification" />
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
@@ -24,11 +25,23 @@
                             $("#stop").text(moment(calEvent.end).format("YYYY-MM-DD hh:mm A"));
                             $("#alloc_hours").text(calEvent.alloc_hours);
                             $("#allow_self_unassign").text(calEvent.allow_self_unassign);
+
+                            if (calEvent.alloc_perc != 100) {
+                                $("#alloc_perc").text(calEvent.alloc_perc + "%");
+                                $("#alloc_perc").prev().css("display", "");
+                                $("#alloc_perc").css("display", "");
+                            } else {
+                                $("#alloc_perc").prev().css("display", "none");
+                                $("#alloc_perc").css("display", "none");
+                            }
+
                             if (calEvent.note) {
                                 $("#note").text(calEvent.note);
+                                $("#note").prev().css("display", "");
                             }
                             else {
                                 $("#note").text("");
+                                $("#note").prev().css("display", "none");
                             }
                             if (calEvent.allow_self_unassign) {
                                 document.getElementById("dismiss_shift").style.display = "block";
@@ -53,7 +66,7 @@
                             header: {
                                 left:   'title',
                                 center: false,
-                                right:  'today prev,next'
+                                right:  false
                             },
                             eventRender: function (event, element, view) {
                                 $(element).css('font-weight', 'bold');
@@ -78,11 +91,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="container o_planning_calendar_open_shifts d-print-none mt2">
+                <div class="container o_planning_calendar_open_shifts d-print-none">
                     <!-- open shift's container -->
                     <t t-if="open_slots_ids">
                         <div class="container">
-                            <h1 align="center" class="m-3">Open shifts available</h1>
+                            <h1 align="center" class="m-3">Open Shifts Available</h1>
                             <div>
                                 <table class="table table-borderless">
                                     <thead>
@@ -96,8 +109,8 @@
                                     <tbody>
                                         <t t-foreach="open_slots_ids" t-as="shift">
                                             <tr>
-                                                <td class="align-middle"><t t-esc="format_datetime(shift.start_datetime, 'medium')"/></td>
-                                                <td class="align-middle"><t t-esc="format_datetime(shift.end_datetime, 'medium')"/></td>
+                                                <td class="align-middle"><t t-esc="format_datetime(shift.start_datetime, dt_format='E MMM d, H a')"/></td>
+                                                <td class="align-middle"><t t-esc="format_datetime(shift.end_datetime, dt_format='E MMM d, H a')"/></td>
                                                 <td class="align-middle"><t t-esc="shift.role_id.name"/></td>
                                                 <td class="align-middle"><t t-esc="shift.name"/></td>
                                                 <td>
@@ -130,13 +143,15 @@
                                 </div>
                                 <div class="modal-body">
                                     <dl class="row mt-0 mb-0">
-                                        <dt class="col-sm-4">Start Date:</dt>
+                                        <dt class="col-sm-4">Start Date</dt>
                                         <dd class="col-sm-8" id="start"/>
-                                        <dt class="col-sm-4">Stop Date:</dt>
+                                        <dt class="col-sm-4">Stop Date</dt>
                                         <dd class="col-sm-8" id="stop"/>
-                                        <dt class="col-sm-4">Allocated Hours:</dt>
+                                        <dt class="col-sm-4">Allocated Hours</dt>
                                         <dd class="col-sm-8" id="alloc_hours"/>
-                                        <dt class="col-sm-4">Note:</dt>
+                                        <dt class="col-sm-4">Allocated Time</dt>
+                                        <dd class="col-sm-8" id="alloc_perc"/>
+                                        <dt class="col-sm-4">Note</dt>
                                         <dd class="col-sm-8" id="note"/>
                                         <div class="d-none" t-esc="shift_id" id="shift_uid"/>
                                     </dl>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
-    'name': "Planning",
+    'name': "Project Planning",
     'summary': """Plan your resources on project tasks""",
     'description': """
     Schedule your teams across projects and estimate deadlines more accurately.

@@ -23,6 +23,9 @@
 </data>
 
 <data noupdate="1">
+    <record id="base.default_user" model="res.users">
+        <field name="groups_id" eval="[(4,ref('group_planning_manager'))]"/>
+    </record>
 
     <record id="planning_rule_user_modify" model="ir.rule">
         <field name="name">Planning: user can modify their own shifts</field>

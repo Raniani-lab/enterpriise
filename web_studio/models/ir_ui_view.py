@@ -38,8 +38,7 @@ class View(models.Model):
         'web.external_layout_standard',
     ]
 
-    def _apply_group(self, model, node, modifiers, fields):
-
+    def _apply_groups(self, node, name_manager, node_info):
         # apply_group only returns the view groups ids.
         # As we need also need their name and display in Studio to edit these groups
         # (many2many widget), they have been added to node (only in Studio). Also,
@@ -47,13 +46,13 @@ class View(models.Model):
         # them with similar many2many widget. So we also add them to node (only in Studio).
         # This preprocess cannot be done at validation time because the
         # attributes `studio_groups` and `studio_map_field_ids` are not RNG valid.
-        if self._context.get('studio') and not self._context.get('check_field_names'):
+        if self._context.get('studio') and not name_manager.validate:
             if node.get('groups'):
                 self.set_studio_groups(node)
             if node.tag == 'map':
-                self.set_studio_map_popup_fields(model, node)
+                self.set_studio_map_popup_fields(name_manager.Model._name, node)
 
-        return super(View, self)._apply_group(model, node, modifiers, fields)
+        return super(View, self)._apply_groups(node, name_manager, node_info)
 
     @api.model
     def set_studio_groups(self, node):
@@ -105,8 +104,8 @@ class View(models.Model):
 
     # Based on inherit_branding of ir_ui_view
     # This will add recursively the groups ids on the spec node.
-    def _groups_branding(self, specs_tree, view_id):
-        groups_id = self.browse(view_id).groups_id
+    def _groups_branding(self, specs_tree):
+        groups_id = self.groups_id
         if groups_id:
             attr_value = ','.join(map(str, groups_id.ids))
             for node in specs_tree.iter(tag=etree.Element):
@@ -133,35 +132,35 @@ class View(models.Model):
 
     # Used for studio views only.
     # Apply spec by spec studio view.
-    def _apply_studio_specs(self, source, specs_tree, studio_view_id):
+    def _apply_studio_specs(self, source, specs_tree):
         for spec in specs_tree.iterchildren(tag=etree.Element):
             if self._context.get('studio'):
                 # Detect xpath base on a field added by a view with groups
                 self._check_parent_groups(source, spec)
                 # Here, we don't want to catch the exception.
                 # This mechanism doesn't save the view if something goes wrong.
-                source = super(View, self).apply_inheritance_specs(source, spec, studio_view_id)
+                source = super(View, self).apply_inheritance_specs(source, spec)
             else:
                 # Avoid traceback if studio view and skip xpath when studio mode is off
                 try:
-                    source = super(View, self).apply_inheritance_specs(source, spec, studio_view_id)
+                    source = super(View, self).apply_inheritance_specs(source, spec)
                 except ValueError:
                     # 'locate_node' already log this error.
                     pass
         return source
 
-    def apply_inheritance_specs(self, source, specs_tree, inherit_id):
+    def apply_inheritance_specs(self, source, specs_tree):
         # Add branding for groups if studio mode is on
         if self._context.get('studio'):
-            self._groups_branding(specs_tree, inherit_id)
+            self._groups_branding(specs_tree)
 
         # If this is studio view, we want to apply it spec by spec
-        if self.browse(inherit_id)._is_studio_view():
-            return self._apply_studio_specs(source, specs_tree, inherit_id)
+        if self._is_studio_view():
+            return self._apply_studio_specs(source, specs_tree)
         else:
             # Remove branding added by '_groups_branding' before locating a node
             pre_locate = lambda arch: arch.attrib.pop("studio-view-group-ids", None)
-            return super(View, self).apply_inheritance_specs(source, specs_tree, inherit_id,
+            return super(View, self).apply_inheritance_specs(source, specs_tree,
                                                                 pre_locate=pre_locate)
 
     def normalize(self):

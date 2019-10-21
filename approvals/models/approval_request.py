@@ -172,6 +172,7 @@ class ApprovalRequest(models.Model):
         # field request_status, as it is updated from the client side
         # We have to track the values modification by hand.
         if values.get('request_status'):
+            field_id = self.env['ir.model.fields'].search([('name', '=', 'request_status'), ('model', '=', 'approval.request')], limit=1).id
             # The compute method is already called and the new value is in cache.
             # We have to retrieve the correct old value from the database, as it is
             # stored computed field.
@@ -182,7 +183,7 @@ class ApprovalRequest(models.Model):
                 if old_value != values['request_status']:
                     selection_description_values = {elem[0]: elem[1] for elem in self._fields['request_status']._description_selection(self.env)}
                     request._message_log(body=_('State change.'), tracking_value_ids=[(0, 0, {
-                        'field': 'request_status',
+                        'field': field_id,
                         'field_desc': 'Request Status',
                         'field_type': 'selection',
                         'old_value_char': selection_description_values.get(old_value),

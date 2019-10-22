@@ -292,6 +292,14 @@ class QualityAlert(models.Model):
         return result
 
     @api.model
+    def name_create(self, name):
+        """ Create an alert with name_create should use prepend the sequence in the name """
+        values = {
+            'title': name,
+        }
+        return self.create(values).name_get()[0]
+
+    @api.model
     def message_new(self, msg_dict, custom_values=None):
         """ Override, used with creation by email alias. The purpose of the override is
         to use the subject for title and body for description instead of the name.

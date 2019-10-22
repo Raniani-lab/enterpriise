@@ -69,6 +69,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         :return:        A list of lines, each one represented by a dictionary.
         '''
         lines = []
+        aml_lines = []
         options_list = self._get_options_periods_list(options)
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
         date_from = fields.Date.from_string(options['date']['date_from'])
@@ -133,6 +134,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
                     load_more_remaining -= 1
                     load_more_counter -= 1
+                    aml_lines.append(aml['id'])
 
                 if load_more_remaining > 0:
                     # Load more line.
@@ -167,6 +169,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 lines += self._get_tax_declaration_lines(
                     options, journal_options[0]['type'], taxes_results
                 )
+        if self.env.context.get('aml_only'):
+            return aml_lines
         return lines
 
     @api.model

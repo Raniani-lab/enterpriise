@@ -44,12 +44,12 @@ var _t = core._t;
  *      reconciliation_proposition: {
  *          id: number|string
  *          partial_amount: number
- *          invalid: boolean - through the invalid line (without account, label...)
+ *          invalid: boolean - through the invalid line (without account, name...)
  *          is_tax: boolean
  *          account_code: string
  *          date: string
  *          date_maturity: string
- *          label: string
+ *          name: string
  *          amount: number - real amount
  *          amount_str: string - formated amount
  *          [already_paid]: boolean
@@ -85,7 +85,7 @@ var _t = core._t;
  *          }
  *          analytic_tag_ids: {
  *          }
- *          label: string
+ *          name: string
  *          amount: number,
  *          [journal_id]: {
  *              id: integer
@@ -96,7 +96,7 @@ var _t = core._t;
  */
 var StatementModel = BasicModel.extend({
     avoidCreate: false,
-    quickCreateFields: ['account_id', 'amount', 'analytic_account_id', 'label', 'tax_ids', 'force_tax_included', 'analytic_tag_ids', 'to_check'],
+    quickCreateFields: ['account_id', 'amount', 'analytic_account_id', 'name', 'tax_ids', 'force_tax_included', 'analytic_tag_ids', 'to_check'],
 
     // overridden in ManualModel
     modes: ['create', 'match_rp', 'match_other'],
@@ -534,40 +534,44 @@ var StatementModel = BasicModel.extend({
     },
     /**
      * Add lines into the propositions from the reconcile model
-     * Can add 2 lines, and each with its taxes. The second line become editable
-     * in the create mode.
+     * Can add multiple lines, and each with its taxes. The last line becomes
+     * editable in the create mode.
      *
      * @see 'updateProposition' method for more informations about the
      * 'amount_type'
      *
      * @param {string} handle
-     * @param {integer} reconcileModelId
+     * @param {integer} reconcile_model_id
      * @returns {Promise}
      */
-    quickCreateProposition: function (handle, reconcileModelId) {
+    quickCreateProposition: function (handle, reconcile_model_id) {
         var self = this;
         var line = this.getLine(handle);
-        var reconcileModel = _.find(this.reconcileModels, function (r) {return r.id === reconcileModelId;});
-        var fields = ['account_id', 'amount', 'amount_type', 'analytic_account_id', 'journal_id', 'label', 'force_tax_included', 'tax_ids', 'analytic_tag_ids', 'to_check', 'amount_from_label_regex', 'decimal_separator'];
-        this._blurProposition(handle);
-        var focus = this._formatQuickCreate(line, _.pick(reconcileModel, fields));
-        focus.reconcileModelId = reconcileModelId;
-        line.reconciliation_proposition.push(focus);
-        var defs = [];
-        if (reconcileModel.has_second_line) {
-            defs.push(self._computeLine(line).then(function() {
-                var second = {};
-                _.each(fields, function (key) {
-                    second[key] = ("second_"+key) in reconcileModel ? reconcileModel["second_"+key] : reconcileModel[key];
-                });
-                var second_focus = self._formatQuickCreate(line, second);
-                second_focus.reconcileModelId = reconcileModelId;
-                line.reconciliation_proposition.push(second_focus);
-                self._computeReconcileModels(handle, reconcileModelId);
-            }))
-        }
-        return Promise.all(defs).then(function() {
-            line.createForm = _.pick(focus, self.quickCreateFields);
+        return this._rpc({
+            model: 'account.reconcile.model',
+            method: 'get_reconciliation_dict_for_widget',
+            args: [reconcile_model_id, line.st_line.id, -line.balance.amount],
+        }).then(function(result) {
+            var lastBaseLineId = null;
+            _.each(result, function(r) {
+                r.id = _.uniqueId('createLine');
+                r.display = true;
+                r.invalid = false;
+                r.__tax_to_recompute = false;
+                r.amount = r.credit - r.debit;
+                r.base_amount = r.amount;
+                if (!r.tax_repartition_line_id) {
+                    lastBaseLineId = r.id;
+                    r.__focus = true;
+                } else {
+                    r.is_tax = true;
+                    r.link = lastBaseLineId;
+                }
+            })
+            line.reconciliation_proposition.push(...result);
+            line.reconcile_model_id = reconcile_model_id;
+            var prop = _.last(_.filter(line.reconciliation_proposition, '__focus'))
+            line.createForm = _.pick(prop, self.quickCreateFields);
             return self._computeLine(line);
         })
     },
@@ -590,7 +594,7 @@ var StatementModel = BasicModel.extend({
             line.reconciliation_proposition = _.filter(line.reconciliation_proposition, function (p) {
                 return p.id !== prop.id && p.id !== prop.link && p.link !== prop.id && (!p.link || p.link !== prop.link);
             });
-            if (prop['reconcileModelId'] === undefined) {
+            if (!isNaN(id)) {
                 if (['receivable', 'payable', 'liquidity'].includes(prop.account_type)) {
                     line.mv_lines_match_rp.unshift(prop);
                 } else {
@@ -663,12 +667,6 @@ var StatementModel = BasicModel.extend({
     /**
      * Change the value of the editable proposition line or create a new one.
      *
-     * If the editable line comes from a reconcile model with 2 lines
-     * and their 'amount_type' is "percent"
-     * and their total equals 100% (this doesn't take into account the taxes
-     * who can be included or not)
-     * Then the total is recomputed to have 100%.
-     *
      * @param {string} handle
      * @param {*} values
      * @returns {Promise}
@@ -730,9 +728,6 @@ var StatementModel = BasicModel.extend({
         }
         if ('amount' in values) {
             prop.base_amount = values.amount;
-            if (prop.reconcileModelId) {
-                this._computeReconcileModels(handle, prop.reconcileModelId);
-            }
         }
         if ('force_tax_included' in values || 'amount' in values || 'account_id' in values) {
             prop.__tax_to_recompute = true;
@@ -741,7 +736,7 @@ var StatementModel = BasicModel.extend({
         // If you check/uncheck the force_tax_included box, reset the createForm amount.
         if(prop.base_amount)
             line.createForm.amount = prop.base_amount;
-        if (prop.tax_ids.length !== 1 ) {
+        if (!prop.tax_ids || prop.tax_ids.length !== 1 ) {
             // When we have 0 or more than 1 taxes, reset the base_amount and force_tax_included, otherwise weird behavior can happen
             prop.amount = prop.base_amount;
             line.createForm.force_tax_included = false;
@@ -905,7 +900,7 @@ var StatementModel = BasicModel.extend({
     },
     /**
      * Calculates the balance; format each proposition amount_str and mark as
-     * invalid the line with empty account_id, amount or label
+     * invalid the line with empty account_id, amount or name
      * Check the taxes server side for each updated propositions with tax_ids
      * extended by ManualModel
      *
@@ -933,6 +928,7 @@ var StatementModel = BasicModel.extend({
                 if (!_.find(line.reconciliation_proposition, {'id': prop.link}).__tax_to_recompute) {
                     reconciliation_proposition.push(prop);
                 }
+                prop.amount_str = field_utils.format.monetary(Math.abs(prop.amount), {}, formatOptions);
                 return;
             }
             if (!prop.already_paid && parseInt(prop.id)) {
@@ -941,9 +937,6 @@ var StatementModel = BasicModel.extend({
             reconciliation_proposition.push(prop);
 
             if (prop.tax_ids && prop.tax_ids.length && prop.__tax_to_recompute && prop.base_amount) {
-                reconciliation_proposition = _.filter(reconciliation_proposition, function (p) {
-                    return !p.is_tax || p.link !== prop.id;
-                });
                 var args = [prop.tax_ids.map(function(el){return el.id;}), prop.base_amount, formatOptions.currency_id];
                 var add_context = {'round': true};
                 if(prop.tax_ids.length === 1 && line.createForm.force_tax_included)
@@ -960,7 +953,7 @@ var StatementModel = BasicModel.extend({
                                 'link': prop.id,
                                 'tax_ids': [tax.id],
                                 'amount': tax.amount,
-                                'label': prop.label ? prop.label + " " + tax.name : tax.name,
+                                'name': prop.name ? prop.name + " " + tax.name : tax.name,
                                 'date': prop.date,
                                 'account_id': tax.account_id ? [tax.account_id, null] : prop.account_id,
                                 'analytic': tax.analytic,
@@ -1028,24 +1021,6 @@ var StatementModel = BasicModel.extend({
         });
     },
     /**
-     *
-     *
-     * @private
-     * @param {string} handle
-     * @param {integer} reconcileModelId
-     */
-    _computeReconcileModels: function (handle, reconcileModelId) {
-        var line = this.getLine(handle);
-        // if quick create with 2 lines who use 100%, change the both values in same time
-        var props = _.filter(line.reconciliation_proposition, {'reconcileModelId': reconcileModelId, '__focus': true});
-        if (props.length === 2 && props[0].percent && props[1].percent) {
-            if (props[0].percent + props[1].percent === 100) {
-                props[0].base_amount = props[0].amount = line.st_line.amount - props[1].base_amount;
-                props[0].__tax_to_recompute = true;
-            }
-        }
-    },
-    /**
      * format a name_get into an object {id, display_name}, idempotent
      *
      * @private
@@ -1069,7 +1044,7 @@ var StatementModel = BasicModel.extend({
         return res;
     },
     /**
-     * Format each propositions (amount, label, account_id)
+     * Format each propositions (amount, name, account_id)
      * extended in ManualModel
      *
      * @private
@@ -1081,7 +1056,6 @@ var StatementModel = BasicModel.extend({
         if (props.length) {
             _.each(props, function (prop) {
                 prop.amount = prop.debit || -prop.credit;
-                prop.label = prop.name;
                 prop.account_id = self._formatNameGet(prop.account_id || line.account_id);
                 prop.is_partially_reconciled = prop.amount_str !== prop.total_amount_str;
                 prop.to_check = !!prop.to_check;
@@ -1233,32 +1207,11 @@ var StatementModel = BasicModel.extend({
         var formatOptions = {
             currency_id: line.st_line.currency_id,
         };
-        var amount;
-        switch(values.amount_type) {
-            case 'percentage':
-                amount = line.balance.amount * values.amount / 100;
-                break;
-            case 'regex':
-                var matching = line.st_line.name.match(new RegExp(values.amount_from_label_regex))
-                amount = 0;
-                if (matching && matching.length == 2) {
-                    matching = matching[1].replace(new RegExp('\\D' + values.decimal_separator, 'g'), '');
-                    matching = matching.replace(values.decimal_separator, '.');
-                    amount = parseFloat(matching) || 0;
-                    amount = line.balance.amount > 0 ? amount : -amount;
-                }
-                break;
-            case 'fixed':
-                amount = values.amount;
-                break;
-            default:
-                amount = values.amount !== undefined ? values.amount : line.balance.amount;
-        }
-
+        var amount = values.amount !== undefined ? values.amount : line.balance.amount;
 
         var prop = {
             'id': _.uniqueId('createLine'),
-            'label': values.label || line.st_line.name,
+            'name': values.name || line.st_line.name,
             'account_id': account,
             'account_code': account ? this.accounts[account.id] : '',
             'analytic_account_id': this._formatNameGet(values.analytic_account_id),
@@ -1270,7 +1223,6 @@ var StatementModel = BasicModel.extend({
             'date': values.date ? values.date : field_utils.parse.date(today, {}, {isUTC: true}),
             'force_tax_included': values.force_tax_included || false,
             'base_amount': amount,
-            'percent': values.amount_type === "percentage" ? values.amount : null,
             'link': values.link,
             'display': true,
             'invalid': true,
@@ -1329,7 +1281,7 @@ var StatementModel = BasicModel.extend({
      * @returns {Boolean}
      */
     _isValid: function (prop) {
-        return !isNaN(prop.id) || prop.account_id && prop.amount && prop.label && !!prop.label.length;
+        return !isNaN(prop.id) || prop.account_id && prop.amount && prop.name && !!prop.name.length;
     },
     /**
      * Fetch 'account.reconciliation.widget' propositions.
@@ -1381,7 +1333,7 @@ var StatementModel = BasicModel.extend({
         }
 
         var result = {
-            name : prop.label,
+            name : prop.name,
             debit : amount > 0 ? amount : 0,
             credit : amount < 0 ? -amount : 0,
             tax_exigible: prop.tax_exigible,
@@ -1399,7 +1351,7 @@ var StatementModel = BasicModel.extend({
         if (prop.analytic_account_id) result.analytic_account_id = prop.analytic_account_id.id;
         if (prop.tax_ids && prop.tax_ids.length && !prop.is_tax) result.tax_ids = [[6, null, _.pluck(prop.tax_ids, 'id')]];
         if (prop.tax_ids && prop.tax_ids.length && prop.is_tax) result.tax_line_id = prop.tax_ids[0].id;
-        if (prop.reconcileModelId) result.reconcile_model_id = prop.reconcileModelId
+        if (prop.reconcile_model_id) result.reconcile_model_id = prop.reconcile_model_id
         return result;
     },
     /**
@@ -1422,7 +1374,7 @@ var StatementModel = BasicModel.extend({
  * datas allowing manual reconciliation
  */
 var ManualModel = StatementModel.extend({
-    quickCreateFields: ['account_id', 'journal_id', 'amount', 'analytic_account_id', 'label', 'tax_ids', 'force_tax_included', 'analytic_tag_ids', 'date', 'to_check'],
+    quickCreateFields: ['account_id', 'journal_id', 'amount', 'analytic_account_id', 'name', 'tax_ids', 'force_tax_included', 'analytic_tag_ids', 'date', 'to_check'],
 
     modes: ['create', 'match'],
 

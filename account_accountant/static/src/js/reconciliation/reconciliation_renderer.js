@@ -436,7 +436,7 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
                                 field.reset(record);
                             }
                             if (fieldName === 'tax_ids') {
-                                if (!state.createForm[fieldName].length || state.createForm[fieldName].length > 1) {
+                                if (!state.createForm[fieldName] || !state.createForm[fieldName].length || state.createForm[fieldName].length > 1) {
                                     $('.create_force_tax_included').addClass('d-none');
                                 }
                                 else {
@@ -508,7 +508,7 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
     },
 
     /**
-     * create account_id, tax_ids, analytic_account_id, analytic_tag_ids, label and amount fields
+     * create account_id, tax_ids, analytic_account_id, analytic_tag_ids, name and amount fields
      *
      * @private
      * @param {object} state - statement line
@@ -544,7 +544,7 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             name: 'force_tax_included',
         }, {
             type: 'char',
-            name: 'label',
+            name: 'name',
         }, {
             type: 'float',
             name: 'amount',
@@ -558,7 +558,7 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             account_id: {
                 string: _t("Account"),
             },
-            label: {string: _t("Label")},
+            name: {string: _t("Label")},
             amount: {string: _t("Account")},
         }).then(function (recordID) {
             self.handleCreateRecord = recordID;
@@ -582,8 +582,8 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             self.fields.force_tax_included = new basic_fields.FieldBoolean(self,
                 'force_tax_included', record, {mode: 'edit'});
 
-            self.fields.label = new basic_fields.FieldChar(self,
-                'label', record, {mode: 'edit'});
+            self.fields.name = new basic_fields.FieldChar(self,
+                'name', record, {mode: 'edit'});
 
             self.fields.amount = new basic_fields.FieldFloat(self,
                 'amount', record, {mode: 'edit'});
@@ -602,8 +602,8 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             self.fields.analytic_account_id.appendTo($create.find('.create_analytic_account_id .o_td_field'));
             self.fields.analytic_tag_ids.appendTo($create.find('.create_analytic_tag_ids .o_td_field'));
             self.fields.force_tax_included.appendTo($create.find('.create_force_tax_included .o_td_field'));
-            self.fields.label.appendTo($create.find('.create_label .o_td_field'))
-                .then(addRequiredStyle.bind(self, self.fields.label));
+            self.fields.name.appendTo($create.find('.create_label .o_td_field'))
+                .then(addRequiredStyle.bind(self, self.fields.name));
             self.fields.amount.appendTo($create.find('.create_amount .o_td_field'))
                 .then(addRequiredStyle.bind(self, self.fields.amount));
             self.fields.date.appendTo($create.find('.create_date .o_td_field'));

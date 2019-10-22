@@ -200,6 +200,12 @@
                         t-att-data-reconcile-model-id="reconcileModel.id">
                     <t t-esc="reconcileModel.name"/>
                 </button>
+                <button class="btn btn-primary"
+                        t-if="reconcileModel.rule_type === 'writeoff_suggestion' &amp;&amp; state.reconcile_model_id === reconcileModel.id &amp;&amp; (reconcileModel.match_journal_ids.length == 0 || reconcileModel.match_journal_ids.includes(state.st_line.journal_id))"
+                        title="This was the model that generated the lines suggested"
+                        t-att-data-reconcile-model-id="reconcileModel.id">
+                    <span class="fa fa-cog"/> <t t-esc="reconcileModel.name"/>
+                </button>
             </t>
             <p t-if="!state.reconcileModels.length" style="color: #bbb;">To speed up reconciliation, define <a style="cursor: pointer;" class="reconcile_model_create">reconciliation models</a>.</p>
         </div>
@@ -307,7 +313,7 @@
                     <span class="font-weight-bold" t-esc="line.partner_name"/>:
                 </t>
             </t>
-            <t t-esc="line.label || line.name"/>
+            <t t-esc="line.name"/>
             <t t-if="line.ref &amp;&amp; line.ref.length"> : </t>
             <t t-esc="line.ref"/>
         </td>
@@ -333,7 +339,7 @@
         <tr><td>Due Date</td><td><t t-esc="line.date_maturity || line.date"/></td></tr>
         <tr><td>Journal</td><td><t t-esc="line.journal_id[1]"/></td></tr>
         <tr t-if="line.partner_id"><td>Partner</td><td><t t-esc="line.partner_name"/></td></tr>
-        <tr><td>Label</td><td><t t-esc="line.label"/></td></tr>
+        <tr><td>Label</td><td><t t-esc="line.name"/></td></tr>
         <tr t-if="line.ref"><td>Ref</td><td><t t-esc="line.ref"/></td></tr>
         <tr><td>Amount</td><td><t t-raw="line.total_amount_str"/><t t-if="line.total_amount_currency_str"> (<t t-esc="line.total_amount_currency_str"/>)</t></td></tr>
         <tr t-if="line.is_partially_reconciled"><td>Residual</td><td>

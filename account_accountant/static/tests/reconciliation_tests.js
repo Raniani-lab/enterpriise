@@ -169,32 +169,37 @@ var db = {
             id: {string: "ID", type: 'integer'},
             name: {string: "Button Label", type: 'char'},
             rule_type: {string: "Type", type: 'selection', selection: [['writeoff_button', 'Create a Button'], ['writeoff_suggestion', 'Write off Suggestion'], ['invoice_matching', 'Invoice matching']], default:'writeoff_button'},
-            has_second_line: {string: "Add a second line", type: 'boolean'},
-            account_id: {string: "Account", type: 'many2one', relation:'account.account'},
-            journal_id: {string: "Journal", type: 'many2one', relation:'account.journal'},
-            label: {string: "Journal Item Label", type: 'char'},
-            amount_type: {string: 'amount_type', type: 'selection', selection: [['fixed', 'Fixed'], ['percentage', 'Percentage of balance']], default:'percentage'},
-            amount: {string: "Amount", type: 'float', digits:0, help:"Fixed amount will count as a debit if it is negative, as a credit if it is positive.", default:100.0},
-            tax_ids: {string: "Tax", type: 'many2many', relation:'account.tax'},
-            analytic_account_id: {string: "Analytic Account", type: 'many2one', relation:'account.analytic.account'},
-            second_account_id: {string: "Second Account", type: 'many2one', relation:'account.account', domain:[('deprecated', '=', false)]},
-            second_journal_id: {string: "Second Journal", type: 'many2one', relation:'account.journal',  help:"This field is ignored in a bank statement reconciliation."},
-            second_label: {string: "Second Journal Item Label", type: 'char'},
-            second_amount_type: {string: "Second amount_type", type: 'selection', selection: [['fixed', 'Fixed'], ['percentage', 'Percentage of balance']], default:'percentage'},
-            second_amount: {string: "Second Amount", type: 'float', digits:0, help:"Fixed amount will count as a debit if it is negative, as a credit if it is positive.", default:100.0},
-            second_tax_ids: {string: "Second Tax", type: 'many2many', relation: 'account.tax'},
-            second_analytic_account_id: {string: "Second Analytic Account", type: 'many2one', relation:'account.analytic.account'},
             match_journal_ids: {string: "Journal Ids", type: 'many2many', relation: 'account.journal'},
             analytic_tag_ids: {string: 'Analytic tags', type: 'many2many', relation: 'account.analytic.tag'},
         },
         records: [
-            {'second_analytic_account_id': false, 'second_amount_type': "percentage", 'second_journal_id': false, 'id': 4, 'analytic_account_id': false, 'display_name': "Int\u00e9rrets", 'rule_type': 'writeoff_button', 'second_tax_ids': [], 'has_second_line': false, 'journal_id': false, 'label': false, 'second_label': false, 'second_account_id': false, 'account_id': 282, 'company_id': [1, "Demo SPRL"], 'tax_ids': [], 'amount_type': "fixed", 'name': "Int\u00e9rrets", 'amount': 0.0, 'second_amount': 100.0, 'match_journal_ids': []},
-            {'second_analytic_account_id': false, 'second_amount_type': "percentage", 'second_journal_id': false, 'id': 2, 'analytic_account_id': false, 'display_name': "Perte et Profit", 'rule_type': 'writeoff_button', 'second_tax_ids': [], 'has_second_line': false, 'journal_id': false, 'label': false, 'second_label': false, 'second_account_id': false, 'account_id': 283, 'company_id': [1, "Demo SPRL"], 'tax_ids': [], 'amount_type': "percentage", 'name': "Perte et Profit", 'amount': 100.0, 'second_amount': 100.0, 'match_journal_ids': []},
-            {'second_analytic_account_id': false, 'second_amount_type': "percentage", 'second_journal_id': false, 'id': 5, 'analytic_account_id': false, 'display_name': "Fs bank", 'rule_type': 'writeoff_button', 'second_tax_ids': [], 'has_second_line': false, 'journal_id': false, 'label': false, 'second_label': false, 'second_account_id': false, 'account_id': 284, 'company_id': [1, "Demo SPRL"], 'tax_ids': [], 'amount_type': "percentage", 'name': "Fs bank", 'amount': 100.0, 'second_amount': 100.0},
-            {'second_analytic_account_id': false, 'second_amount_type': "percentage", 'second_journal_id': false, 'id': 8, 'analytic_account_id': false, 'display_name': "Caisse Sand.", 'rule_type': 'writeoff_button', 'second_tax_ids': [], 'has_second_line': false, 'journal_id': false, 'label': "Caisse Sand.", 'second_label': false, 'second_account_id': false, 'account_id': 308, 'company_id': [1, "Demo SPRL"], 'tax_ids': [], 'amount_type': "percentage", 'name': "Caisse Sand.", 'amount': 100.0, 'second_amount': 100.0, 'match_journal_ids': []},
-            {'second_analytic_account_id': false, 'second_amount_type': "percentage", 'second_journal_id': false, 'id': 3, 'analytic_account_id': false, 'display_name': "ATOS", 'rule_type': 'writeoff_button', 'second_tax_ids': [7], 'has_second_line': true, 'journal_id': false, 'label': "ATOS Banque", 'second_label': "ATOS Frais", 'second_account_id': 286, 'account_id': 285, 'company_id': [1, "Demo SPRL"], 'tax_ids': [6], 'amount_type': "percentage", 'name': "ATOS", 'amount': 97.5, 'second_amount': -14.75},
-            {'second_analytic_account_id': false, 'second_amount_type': "percentage", 'second_journal_id': false, 'id': 10, 'analytic_account_id': false, 'display_name': "Double", 'rule_type': 'writeoff_button', 'second_tax_ids': [], 'has_second_line': true, 'journal_id': false, 'label': "Double Banque", 'second_label': "Double Frais", 'second_account_id': 286, 'account_id': 285, 'company_id': [1, "Demo SPRL"], 'tax_ids': [], 'amount_type': "percentage", 'name': "Double", 'amount': 97.5, 'second_amount': 100, 'match_journal_ids': [], 'analytic_tag_ids': [1,2]},
-        ]
+            {'id': 4, 'display_name': "Int\u00e9rrets", 'rule_type': 'writeoff_button', 'name': "Int\u00e9rrets", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
+            {'id': 2, 'display_name': "Perte et Profit", 'rule_type': 'writeoff_button', 'name': "Perte et Profit", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
+            {'id': 5, 'display_name': "Fs bank", 'rule_type': 'writeoff_button', 'name': "Fs bank", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
+            {'id': 8, 'display_name': "Caisse Sand.", 'rule_type': 'writeoff_button', 'name': "Caisse Sand.", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
+            {'id': 3, 'display_name': "ATOS", 'rule_type': 'writeoff_button', 'name': "ATOS", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
+            {'id': 10, 'display_name': "Double", 'rule_type': 'writeoff_button', 'name': "Double", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"], 'analytic_tag_ids': [1,2]},
+        ],
+        get_reconciliation_dict_for_widget: function(args) {
+            var model_id, st_line, residual_balance;
+            [model_id, st_line, residual_balance] = args;
+            var today = new moment().utc().format();
+            if (model_id === 3) {
+                return [
+                    {id: 'createLine100', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101120', account_id: {id: 285, display_name: "101120 Stock Interim Account (Received)"}, tax_ids: [{id: 6, display_name: "Tax 20.00%"}], __tax_to_recompute: false, date: today, name: 'ATOS Banque', credit: 1145.63, debit: 0, __focus: false},
+                    {id: 'createLine101', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: true, is_tax: true, account_code: '101300', account_id: {id: 288, display_name: "101300 Tax Paid"}, date: today, name: 'ATOS Banque Tax 20.00%', credit: 229.13, debit: 0, __focus: false, tax_repartition_line_id: true, is_tax: true, link: 'createLine100'},
+                    {id: 'createLine102', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101130', account_id: {id: 286, display_name: "101130 Stock Interim Account (Delivered)"}, tax_ids: [{id: 7, display_name: "Tax 10.00% include"}], force_tax_included: true, __tax_to_recompute: false, date: today, name: 'ATOS Frais', credit: 26.78, debit: 0, __focus: true},
+                    {id: 'createLine103', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: true, is_tax: true, account_code: '101300', account_id: {id: 288, display_name: "101300 Tax Paid"}, date: today, name: 'ATOS Frais Tax 10.00% include', credit: 2.68, debit: 0, __focus: false, tax_repartition_line_id: true, is_tax: true, link: 'createLine102'},
+                ];
+            };
+            if (model_id === 10) {
+                return [
+                    {id: 'createLine110', reconcile_model_id: 10, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101120', account_id: {id: 285, display_name: "101120 Stock Interim Account (Received)"}, tax_ids: [], date: today, name: 'Double Banque', credit: 1145.63, debit: 0, __focus: true, analytic_tag_ids: [{id: 1, display_name: "Come together"}, {id: 2, display_name: "Right now"}]},
+                    {id: 'createLine111', reconcile_model_id: 10, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101130', account_id: {id: 286, display_name: "101130 Stock Interim Account (Delivered)"}, tax_ids: [], date: today, name: 'Double Frais', credit: 29.37, debit: 0, __focus: true, analytic_tag_ids: [{id: 1, display_name: "Come together"}, {id: 2, display_name: "Right now"}]},
+                ];
+            };
+            return {};
+        },
     },
     'account.reconciliation.widget': {
         fields: {},
@@ -889,10 +894,8 @@ QUnit.module('account', {
         testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
             mockRPC: function (route, args) {
-                console.log(args.method);
                 if (args.method === 'process_bank_statement_line') {
                     var lines = args.args['1'];
-                    console.log(args.arsg);
                     assert.deepEqual(args.args, [
                         [6],
                         [{
@@ -1311,7 +1314,7 @@ QUnit.module('account', {
         await testUtils.fields.editAndTrigger(widget.$('.create .create_amount input'), '100',['input']);
 
         assert.strictEqual(widget.$('.accounting_view tbody').text().replace(/[\n\r\s$,]+/g, ' ').replace(/[\u200B]/g, ''),
-            " 101120 New ATOS Banque 1145.63 101120 New ATOS Banque Tax 20.00% 229.13 101130 New ATOS Frais 90.91 101300 New ATOS Frais Tax 10.00% include 9.09 ",
+            " 101120 New ATOS Banque 1145.63 101300 New ATOS Banque Tax 20.00% 229.13 101130 New ATOS Frais 90.91 101300 New ATOS Frais Tax 10.00% include 9.09 ",
             "should update the value of the 2 lines (because the line + its tax must have 100% of the value)");
         assert.strictEqual(widget.$('.accounting_view tfoot .cell_label, .accounting_view tfoot .cell_left').text().replace(/[\n\r\s$,]+/g, ''),
             "Openbalance299.76", "should change the 'Open balance' line because the 20.00% tax is not an include tax");
@@ -2077,7 +2080,7 @@ QUnit.module('account', {
         // The first reconciliation "line" is where it happens
         var widget = clientAction.widgets[0];
 
-        await testUtilsDom.click(widget.$('.nav-create:visible'));
+        await testUtils.dom.click(widget.$('.o_notebook .nav-link[href*="notebook_page_create"]'));
         await testUtilsDom.click(widget.$('.quick_add button:contains("Double")'));
         assert.containsN(widget, '.create_analytic_tag_ids .o_field_many2manytags .badge', 2,
             'Two tags are loaded');

@@ -10,7 +10,8 @@ import re
 
 _logger = logging.getLogger(__name__)
 
-PARTNER_REMOTE_URL = 'https://partner-autocomplete.odoo.com/iap/partner_autocomplete'
+PARTNER_AUTOCOMPLETE_ENDPOINT = 'https://partner-autocomplete.odoo.com'
+EXTRACT_ENDPOINT = 'https://iap-extract.odoo.com'
 CLIENT_OCR_VERSION = 120
 
 # list of result id that can be sent by iap-extract
@@ -116,6 +117,16 @@ class AccountMove(models.Model):
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
 
+    @api.model
+    def _contact_iap_extract(self, local_endpoint, params):
+        params['version'] = CLIENT_OCR_VERSION
+        endpoint = self.env['ir.config_parameter'].sudo().get_param('account_invoice_extract_endpoint', EXTRACT_ENDPOINT)
+        return jsonrpc(endpoint + local_endpoint, params=params)
+
+    @api.model
+    def _contact_iap_partner_autocomplete(self, local_endpoint, params):
+        return jsonrpc(PARTNER_AUTOCOMPLETE_ENDPOINT + local_endpoint, params=params)
+
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):
         """When a message is posted on an account.move, send the attachment to iap-ocr if
@@ -134,8 +145,6 @@ class AccountMove(models.Model):
         attachments = self.message_main_attachment_id
         if attachments and attachments.exists() and self.type in ['in_invoice', 'in_refund'] and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
             account_token = self.env['iap.account'].get('invoice_ocr')
-            endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/parse'
             user_infos = {
                 'user_company_VAT': self.company_id.vat,
                 'user_company_name': self.company_id.name,
@@ -145,14 +154,13 @@ class AccountMove(models.Model):
             }
             params = {
                 'account_token': account_token.account_token,
-                'version': CLIENT_OCR_VERSION,
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
                 'documents': [x.datas.decode('utf-8') for x in attachments],
                 'file_names': [x.name for x in attachments],
                 'user_infos': user_infos,
             }
             try:
-                result = jsonrpc(endpoint, params=params)
+                result = self._contact_iap_extract('/iap/invoice_extract/parse', params)
                 self.extract_status_code = result['status_code']
                 if result['status_code'] == SUCCESS:
                     self.env['ir.config_parameter'].sudo().set_param("account_invoice_extract.already_notified", False)
@@ -264,8 +272,6 @@ class AccountMove(models.Model):
         res = super(AccountMove, self).post()
         for record in self.filtered(lambda move: move.type in ['in_invoice', 'in_refund']):
             if record.extract_state == 'waiting_validation':
-                endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                    'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/validate'
                 values = {
                     'total': record.get_validation('total'),
                     'subtotal': record.get_validation('subtotal'),
@@ -282,11 +288,10 @@ class AccountMove(models.Model):
                 }
                 params = {
                     'document_id': record.extract_remote_id,
-                    'version': CLIENT_OCR_VERSION,
                     'values': values
                 }
                 try:
-                    jsonrpc(endpoint, params=params)
+                    self._contact_iap_extract('/iap/invoice_extract/validate', params=params)
                     record.extract_state = 'done'
                 except AccessError:
                     pass
@@ -396,13 +401,12 @@ class AccountMove(models.Model):
         return word.word_text
 
     def _create_supplier_from_vat(self, vat_number_ocr):
-        url = '%s/check_vat' % PARTNER_REMOTE_URL
         params = {
             'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
             'vat': vat_number_ocr,
         }
         try:
-            response = jsonrpc(url=url, params=params)
+            response = self._contact_iap_partner_autocomplete('/iap/partner_autocomplete/check_vat', params)
         except Exception as exception:
             _logger.error('Check VAT error: %s' % str(exception))
             return False
@@ -553,14 +557,10 @@ class AccountMove(models.Model):
     def _check_status(self):
         self.ensure_one()
         if self.state == 'draft':
-            endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/get_result'
-
             params = {
-                'version': CLIENT_OCR_VERSION,
                 'document_id': self.extract_remote_id
             }
-            result = jsonrpc(endpoint, params=params)
+            result = self._contact_iap_extract('/iap/invoice_extract/get_result', params=params)
             self.extract_status_code = result['status_code']
             if result['status_code'] == SUCCESS:
                 self.extract_state = "waiting_validation"

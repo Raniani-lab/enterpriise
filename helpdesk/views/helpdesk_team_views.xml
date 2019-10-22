@@ -251,9 +251,9 @@
                                     Publish this team's ratings on your website
                                 </div>
                                 <div attrs="{'invisible': ['|', ('portal_show_rating', '=', False), ('portal_rating_url','=',False)]}" class="mt16">
-                                    View this team's ratings on  page:<br/>
-                                    <a type="button" role="button" class="btn-link" target="_blank"><i class="fa fa-fw fa-arrow-right" aria-label="Rating URL" title="Rating URL"/>
-                                        <field name="portal_rating_url" readonly="1" class="oe_inline" widget="url"/>
+                                    View this team's ratings on the following page:<br/>
+                                    <a type="button" class="btn-link" target="_blank" role="button"><i class="fa fa-fw fa-arrow-right" role="img" aria-label="Rating URL" title="Rating URL"/>
+                                        <field name="portal_rating_url" nolabel="1" readonly="1" class="oe_inline" widget="url"/>
                                     </a>
                                 </div>
                             </div>

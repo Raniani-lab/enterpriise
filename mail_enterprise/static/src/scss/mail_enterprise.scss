@@ -1,3 +1,10 @@
+.modal {
+    @include media-breakpoint-up(xxl, $o-extra-grid-breakpoints) {
+        .o_attachment_preview {
+            width: 300px;
+        }
+    }
+}
 
     @include media-breakpoint-up(xxl, $o-extra-grid-breakpoints) {
         .o_attachment_preview {

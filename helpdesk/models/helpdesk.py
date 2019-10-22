@@ -234,7 +234,8 @@ class HelpdeskTeam(models.Model):
             list_fields.insert(2, 'sla_reached_late')
 
         HelpdeskTicket = self.env['helpdesk.ticket']
-        tickets = HelpdeskTicket._read_group_raw(domain + [('stage_id.is_close', '=', False)], list_fields, group_fields, lazy=False)
+        tickets = HelpdeskTicket.search_read(expression.AND([domain, [('stage_id.is_close', '=', False)]]), ['sla_deadline', 'close_hours', 'sla_reached_late', 'priority'])
+
         result = {
             'helpdesk_target_closed': self.env.user.helpdesk_target_closed,
             'helpdesk_target_rating': self.env.user.helpdesk_target_rating,
@@ -250,18 +251,15 @@ class HelpdeskTeam(models.Model):
         }
 
         def _is_sla_failed(data):
-            deadline_hour = data.get('sla_deadline:hour')
-            deadline = False
-            if deadline_hour:
-                    deadline = datetime.datetime.strptime(deadline_hour[0].split('/')[1], '%Y-%m-%d %H:%M:%S')
+            deadline = data.get('sla_deadline')
             sla_deadline = fields.Datetime.now() > deadline if deadline else False
             return sla_deadline or data.get('sla_reached_late')
 
         def add_to(ticket, key="my_all"):
-            result[key]['count'] += ticket['__count']
+            result[key]['count'] += 1
             result[key]['hours'] += ticket['close_hours']
             if _is_sla_failed(ticket):
-                result[key]['failed'] += ticket['__count']
+                result[key]['failed'] += 1
 
         for ticket in tickets:
             add_to(ticket, 'my_all')

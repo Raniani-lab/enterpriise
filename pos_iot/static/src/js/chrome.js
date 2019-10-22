@@ -25,7 +25,8 @@ chrome.Chrome.include({
      * @override
      */
     build_widgets: function () {
-        if (this.pos.useIoTPaymentTerminal()) {
+        if (this.pos.useIoTPaymentTerminal() && 
+                this.pos.payment_methods.some((payment_method) => payment_method.use_payment_terminal === "six")) {
             // Place it left to the Close button
             var close_button_index = _.findIndex(this.widgets, function (widget) {
                 return widget.name === "close_button";
@@ -47,7 +48,7 @@ chrome.Chrome.include({
     _sendBalance: function () {
         var self = this;
         this.pos.payment_methods.forEach(function(payment_method) {
-            if (payment_method.terminal_proxy) {
+            if (payment_method.use_payment_terminal == 'six' && payment_method.terminal_proxy) {
                 payment_method.terminal_proxy.add_listener(self._onValueChange.bind(self, payment_method.terminal_proxy));
                 payment_method.terminal_proxy.action({ messageType: 'Balance' })
                     .then(self._onTerminalActionResult.bind(self));

@@ -43,7 +43,7 @@ var CloseSession = AbstractAction.extend({
                     method: 'search_read',
                     args: [
                         [['id', 'in', device_ids]],
-                        ['id', 'type', 'identifier', 'iot_ip'],
+                        ['id', 'type', 'identifier', 'iot_ip', 'manufacturer'],
                     ],
                 }).then(function (devices) {
                     self.terminals = [];
@@ -53,7 +53,7 @@ var CloseSession = AbstractAction.extend({
                                 iot_ip: device.iot_ip,
                                 identifier: device.identifier,
                             });
-                        } else if (device.type === "payment") {
+                        } else if (device.type === "payment" && device.manufacturer == "Six") {
                             self.terminals.push(new DeviceProxy({
                                 iot_ip: device.iot_ip,
                                 identifier: device.identifier,

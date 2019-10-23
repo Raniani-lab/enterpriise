@@ -55,12 +55,6 @@
         <record id="hr_holidays.hr_leave_action_action_approve_department" model="ir.actions.act_window">
             <field name="view_mode">tree,kanban,gantt,form,calendar,activity</field>
         </record>
-        <record id="hr_holidays.hr_leave_allocation_action_approve_department" model="ir.actions.act_window">
-            <field name="view_mode">tree,gantt,form,kanban,activity</field>
-        </record>
-        <record id="hr_holidays.hr_leave_allocation_action_all" model="ir.actions.act_window">
-            <field name="view_mode">tree,gantt,form,kanban,activity</field>
-        </record>
         <record id="hr_holidays.hr_leave_action_payroll" model="ir.actions.act_window">
             <field name="view_mode">tree,kanban,gantt,form,calendar,activity</field>
         </record>

@@ -15,8 +15,8 @@ class AnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
 
     def _domain_employee_id(self):
-        if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
-            return ['|', ('timesheet_manager_id', '=', self.env.user.id), ('user_id', '=', self.env.user.id)]
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
+            return [('user_id', '=', self.env.user.id)]
         return []
 
     employee_id = fields.Many2one('hr.employee', "Employee", domain=_domain_employee_id)
@@ -50,6 +50,9 @@ class AnalyticLine(models.Model):
         return [('project_id', '=', False)]
 
     def action_validate_timesheet(self):
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
+            raise AccessError(_("Sorry, you don't have the access to validate the timesheets."))
+
         if self.env.context.get('grid_anchor'):
             anchor = fields.Date.from_string(self.env.context['grid_anchor'])
         else:
@@ -88,19 +91,21 @@ class AnalyticLine(models.Model):
             # when the name is not provide by the 'Add a line' form from grid view, we set a default one
             if vals.get('project_id') and not vals.get('name'):
                 vals['name'] = _('/')
-        lines = super(AnalyticLine, self).create(vals_list)
-        # A line created before validation limit will be automatically validated
-        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and any(line.is_timesheet and line.validated for line in lines):
-            raise AccessError(_('Only a Timesheets Approver or Manager is allowed to create an entry older than the validation limit.'))
-        return lines
+        analytic_lines = super(AnalyticLine, self).create(vals_list)
+
+        # Check if the user has the correct access to create timesheets
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and any(line.is_timesheet and line.user_id.id != self.env.user.id for line in analytic_lines):
+            raise AccessError(_("You cannot access timesheets that are not yours."))
+        return analytic_lines
 
     def write(self, vals):
-        res = super(AnalyticLine, self).write(vals)
-        # Write then check: otherwise, the use can create the timesheet in the future, then change
-        # its date.
-        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(lambda r: r.is_timesheet and r.validated):
-            raise AccessError(_('Only a Timesheets Approver or Manager is allowed to modify a validated entry.'))
-        return res
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
+            if 'validated' in vals:
+                raise AccessError(_('Only a Timesheets Approver or Manager is allowed to validate a timesheet'))
+            elif self.filtered(lambda r: r.is_timesheet and r.validated):
+                raise AccessError(_('Only a Timesheets Approver or Manager is allowed to modify a validated entry.'))
+
+        return super(AnalyticLine, self).write(vals)
 
     def unlink(self):
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(lambda r: r.is_timesheet and r.validated):

@@ -31,7 +31,9 @@
         <field name="arch" type="xml">
             <field name="stage_id" position="before">
                 <field name="use_product_returns" invisible="1"/>
-                <button type="action" name="%(stock.act_stock_return_picking)d" string="Return" attrs="{'invisible': [('use_product_returns', '=', False)]}"
+                <button type="action" name="%(stock.act_stock_return_picking)d"
+                    groups="stock.group_stock_user"
+                    string="Return" attrs="{'invisible': [('use_product_returns', '=', False)]}"
                     context="{'default_ticket_id': id, 'default_company_id': company_id}"/>
             </field>
         </field>

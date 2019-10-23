@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from ast import literal_eval
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
+from dateutil.rrule import rrule, DAILY
 import json
 import logging
 import pytz
@@ -374,7 +375,7 @@ class Planning(models.Model):
         return self.sudo().write({'employee_id': False})
 
     # ----------------------------------------------------
-    # Gantt view
+    # Gantt - Calendar view
     # ----------------------------------------------------
 
     @api.model
@@ -429,6 +430,21 @@ class Planning(models.Model):
             return new_row
 
         return [traverse(inject_unavailability, row) for row in rows]
+
+    @api.model
+    def get_unusual_days(self, date_from, date_to=None):
+        # Checking the calendar directly allows to not grey out the leaves taken
+        # by the employee
+        employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        calendar = employee.resource_calendar_id
+        if not calendar:
+            return {}
+        dfrom = datetime.combine(fields.Date.from_string(date_from), time.min).replace(tzinfo=pytz.utc)
+        dto = datetime.combine(fields.Date.from_string(date_to), time.max).replace(tzinfo=pytz.utc)
+
+        works = {d[0].date() for d in calendar._work_intervals(dfrom, dto, employee.resource_id)}
+        return {fields.Date.to_string(day.date()): (day.date() not in works) for day in rrule(DAILY, dfrom, until=dto)}
+
 
     # ----------------------------------------------------
     # Period Duplication

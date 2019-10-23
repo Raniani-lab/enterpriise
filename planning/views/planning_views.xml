@@ -146,6 +146,19 @@
         </field>
     </record>
 
+    <record id="planning_view_my_calendar" model="ir.ui.view">
+        <field name="name">planning.slot.my.calendar</field>
+        <field name="model">planning.slot</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="role_id" form_view_id="%(planning_view_form_quickcreate)d" event_open_popup="true" show_unusual_days="True" quick_add="False">
+                <field name="name"/>
+                <field name="employee_id" avatar_field="image_128"/>
+                <field name="role_id"/>
+            </calendar>
+        </field>
+    </record>
+
     <record id="planning_view_gantt" model="ir.ui.view">
         <field name="name">planning.slot.gantt</field>
         <field name="model">planning.slot</field>
@@ -266,6 +279,11 @@
         <field name="name">My Planning</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">calendar,gantt,tree,form</field>
+         <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'calendar', 'view_id': ref('planning_view_my_calendar')}),
+            (0, 0, {'view_mode': 'gantt'}),
+            (0, 0, {'view_mode': 'tree'}),
+            (0, 0, {'view_mode': 'form'})]"/>
         <field name="context">{'search_default_my_shifts': 1}</field>
     </record>
 

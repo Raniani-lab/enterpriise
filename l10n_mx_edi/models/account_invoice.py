@@ -631,7 +631,8 @@ class AccountMove(models.Model):
                            'it was signed at least once, please cancel properly with '
                            'the SAT.'))
             allow = self - not_allow
-            allow.write({'l10n_mx_edi_time_invoice': False})
+            allow.write({'l10n_mx_edi_time_invoice': False,
+                         'l10n_mx_edi_pac_status': False})
             for record in allow.filtered('l10n_mx_edi_cfdi_uuid'):
                 record.l10n_mx_edi_origin = record._set_cfdi_origin('04', [record.l10n_mx_edi_cfdi_uuid])
             return super(AccountMove, self - not_allow).button_draft()
@@ -1108,7 +1109,7 @@ class AccountMove(models.Model):
         inv_mx.l10n_mx_edi_update_sat_status()
         to_cancel = inv_mx.filtered(
             lambda inv: inv.l10n_mx_edi_pac_status in [
-                False, 'retry', 'to_sign'] or
+                False, 'retry', 'to_sign', 'cancelled'] or
             inv.l10n_mx_edi_sat_status == 'cancelled')
         is_from_cron = self._context.get('called_from_cron', False)
         if is_from_cron:
@@ -1284,7 +1285,8 @@ class AccountMove(models.Model):
         invoices = self.search([
             ('state', 'not in', ['cancel']), '|',
             ('l10n_mx_edi_pac_status', '=', 'to_cancel'),
-            ('l10n_mx_edi_sat_status', '=', 'cancelled')])
+            ('l10n_mx_edi_sat_status', '=', 'cancelled')]).filtered(
+                lambda inv: inv.l10n_mx_edi_is_required())
         message = invoices.l10n_mx_edi_cancellation_messages().get('to_cancel')
         for inv in invoices:
             inv.message_post(body=message)
@@ -1296,11 +1298,11 @@ class AccountMove(models.Model):
         invoices = self.search([
             ('state', '=', 'cancel'), '|',
             ('l10n_mx_edi_pac_status', '=', 'signed'),
-            ('l10n_mx_edi_sat_status', '=', 'valid')])
+            ('l10n_mx_edi_sat_status', '=', 'valid')]).filtered(
+                lambda inv: inv.l10n_mx_edi_is_required())
         invoices.l10n_mx_edi_update_sat_status()
         messages = invoices.l10n_mx_edi_cancellation_messages()
-        for inv in invoices.filtered(lambda i: i.l10n_mx_edi_is_required() and
-                                     i.l10n_mx_edi_sat_status == 'valid'):
+        for inv in invoices.filtered(lambda i: i.l10n_mx_edi_sat_status == 'valid'):
             inv.reversed_entry_id.button_cancel()
             inv.message_post(body=messages.get('revert'))
 

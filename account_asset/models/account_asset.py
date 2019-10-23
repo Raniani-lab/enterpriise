@@ -63,7 +63,7 @@ class AccountAsset(models.Model):
 
     # Links with entries
     depreciation_move_ids = fields.One2many('account.move', 'asset_id', string='Depreciation Lines', readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)], 'paused': [('readonly', False)]})
-    original_move_line_ids = fields.One2many('account.move.line', 'asset_id', string='Journal Items', readonly=True, states={'draft': [('readonly', False)]}, copy=False)
+    original_move_line_ids = fields.Many2many('account.move.line', 'asset_move_line_rel', 'asset_id', 'line_id', string='Journal Items', readonly=True, states={'draft': [('readonly', False)]}, copy=False)
 
     # Analytic
     account_analytic_id = fields.Many2one('account.analytic.account', string='Analytic Account', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
@@ -695,6 +695,11 @@ class AccountAsset(models.Model):
                 vals.update(changed_vals['value'])
         with self.env.norecompute():
             new_recs = super(AccountAsset, self.with_context(mail_create_nolog=True)).create(vals_list)
+            # if original_value is passed in vals, make sure the right value is set (as a different original_value may have been computed by _compute_value())
+            for i in range(len(vals_list)):
+                if 'original_value' in vals_list[i]:
+                    new_recs[i]._compute_value()
+                    new_recs[i].original_value = vals_list[i]['original_value']
             if self.env.context.get('original_asset'):
                 # When original_asset is set, only one asset is created since its from the form view
                 original_asset = self.env['account.asset'].browse(self.env.context.get('original_asset'))

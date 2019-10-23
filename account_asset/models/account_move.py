@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import math
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.tools import float_compare
+from odoo.tools import float_compare, float_round
 from odoo.tools.misc import formatLang
 from dateutil.relativedelta import relativedelta
 
@@ -80,9 +81,10 @@ class AccountMove(models.Model):
 
             # If an asset was created for this move, delete it when reversing the move
             for line in move.line_ids:
-                if line.asset_id.state == 'draft' or all(state == 'draft' for state in line.asset_id.depreciation_move_ids.mapped('state')):
-                    line.asset_id.state = 'draft'
-                    line.asset_id.unlink()
+                for asset in line.asset_ids:
+                    if asset.state == 'draft' or all(state == 'draft' for state in asset.depreciation_move_ids.mapped('state')):
+                        asset.state = 'draft'
+                        asset.unlink()
 
         return super(AccountMove, self)._reverse_moves(default_values_list, cancel)
 
@@ -120,21 +122,35 @@ class AccountMove(models.Model):
                 if move_line.account_id and (move_line.account_id.can_create_asset) and move_line.account_id.create_asset != 'no' and not move.reversed_entry_id:
                     if not move_line.name:
                         raise UserError(_('Journal Items of {account} should have a label in order to generate an asset').format(account=move_line.account_id.display_name))
-                    vals = {
-                        'name': move_line.name,
-                        'company_id': move_line.company_id.id,
-                        'currency_id': move_line.company_currency_id.id,
-                        'original_move_line_ids': [(6, False, move_line.ids)],
-                        'state': 'draft',
-                    }
-                    model_id = move_line.account_id.asset_model
-                    if model_id:
-                        vals.update({
-                            'model_id': model_id.id,
-                        })
-                    auto_validate.append(move_line.account_id.create_asset == 'validate')
-                    invoice_list.append(move)
-                    create_list.append(vals)
+                    ammount_total = ammount_left = move_line.debit + move_line.credit
+                    unit_uom = self.env.ref('uom.product_uom_unit')
+                    if move_line.account_id.multiple_assets_per_line and ((move_line.product_uom_id and move_line.product_uom_id.measure_type == unit_uom.measure_type) or not move_line.product_uom_id):
+                        units_quantity = move_line.product_uom_id._compute_quantity(move_line.quantity, unit_uom, False)
+                    else:
+                        units_quantity = 1
+                    while units_quantity > 0:
+                        if units_quantity > 1:
+                            original_value = float_round(ammount_left / units_quantity, precision_rounding=move_line.company_currency_id.rounding)
+                            ammount_left = float_round(ammount_left - original_value, precision_rounding=move_line.company_currency_id.rounding)
+                        else:
+                            original_value = ammount_left
+                        vals = {
+                            'name': move_line.name,
+                            'company_id': move_line.company_id.id,
+                            'currency_id': move_line.company_currency_id.id,
+                            'original_move_line_ids': [(6, False, move_line.ids)],
+                            'state': 'draft',
+                            'original_value': original_value,
+                        }
+                        model_id = move_line.account_id.asset_model
+                        if model_id:
+                            vals.update({
+                                'model_id': model_id.id,
+                            })
+                        auto_validate.append(move_line.account_id.create_asset == 'validate')
+                        invoice_list.append(move)
+                        create_list.append(vals)
+                        units_quantity -= 1
 
         assets = self.env['account.asset'].create(create_list)
         for asset, vals, invoice, validate in zip(assets, create_list, invoice_list, auto_validate):
@@ -203,10 +219,10 @@ class AccountMove(models.Model):
         }
         return move_vals
 
-    @api.depends('line_ids.asset_id')
+    @api.depends('line_ids.asset_ids')
     def _compute_asset_ids(self):
         for record in self:
-            record.asset_ids = record.mapped('line_ids.asset_id')
+            record.asset_ids = record.mapped('line_ids.asset_ids')
             record.number_asset_ids = len(record.asset_ids)
             if record.number_asset_ids:
                 asset_type = {
@@ -262,7 +278,7 @@ class AccountMove(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    asset_id = fields.Many2one('account.asset', string='Asset Linked', ondelete="set null", help="Asset created from this Journal Item", copy=False)
+    asset_ids = fields.Many2many('account.asset', 'asset_move_line_rel', 'line_id', 'asset_id', string='Asset Linked', help="Asset created from this Journal Item", copy=False)
 
     def _turn_as_asset(self, asset_type, view_name, view):
         ctx = self.env.context.copy()

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import math
 import time
 
 from dateutil.relativedelta import relativedelta
@@ -562,3 +563,125 @@ class TestAccountAsset(AccountTestCommon):
         move_id._reverse_moves()
         with self.assertRaises(MissingError, msg='The asset should have been deleted'):
             asset.name
+
+    def test_asset_multiple_assets_from_one_move_line_00(self):
+        """ Test the creation of a as many assets as the value of
+        the quantity property of a move line. """
+
+        account = self.env['account.account'].create({
+            "name": "test account",
+            "code": "TEST",
+            "user_type_id": self.env.ref('account.data_account_type_non_current_assets').id,
+            "create_asset": "draft",
+            "asset_type": "purchase",
+            "multiple_assets_per_line": True,
+        })
+        move = self.env['account.move'].create({
+            "partner_id": self.env['res.partner'].create({'name': 'Johny'}).id,
+            "ref": "line1",
+            "type": "in_invoice",
+            "line_ids": [
+                (0, 0, {
+                    "account_id": account.id,
+                    "debit": 1000.0,
+                    "name": "stuff",
+                    "quantity": 2.5,
+                    "product_uom_id": self.env.ref('uom.product_uom_categ_unit').id,
+                }),
+                (0, 0, {
+                    'account_id': self.xfa.id,
+                    'credit': 1000.0,
+                }),
+            ]
+        })
+        move.post()
+        assets = move.asset_ids
+        assets = sorted(assets, key=lambda i: i['original_value'], reverse=True)
+        self.assertEqual(len(assets), 3, '3 assets should have been created')
+        self.assertEqual(assets[0].original_value, 400.0)
+        self.assertEqual(assets[1].original_value, 400.0)
+        self.assertEqual(assets[2].original_value, 200.0)
+
+    def test_asset_multiple_assets_from_one_move_line_01(self):
+        """ Test the creation of a as many assets as the value of
+        the quantity property of a move line. """
+
+        account = self.env['account.account'].create({
+            "name": "test account",
+            "code": "TEST",
+            "user_type_id": self.env.ref('account.data_account_type_non_current_assets').id,
+            "create_asset": "draft",
+            "asset_type": "purchase",
+            "multiple_assets_per_line": True,
+        })
+        move = self.env['account.move'].create({
+            "partner_id": self.env['res.partner'].create({'name': 'Johny'}).id,
+            "ref": "line1",
+            "type": "in_invoice",
+            "line_ids": [
+                (0, 0, {
+                    "account_id": account.id,
+                    "debit": 1000.0,
+                    "name": "stuff",
+                    "quantity": 3.0,
+                    "product_uom_id": self.env.ref('uom.product_uom_categ_unit').id,
+                }),
+                (0, 0, {
+                    'account_id': self.xfa.id,
+                    'credit': 1000.0,
+                }),
+            ]
+        })
+        move.post()
+        self.assertEqual(sum(asset.original_value for asset in move.asset_ids), move.line_ids[0].debit)
+
+    def test_asset_multiple_assets_from_one_move_line_02(self):
+        """ Test the creation of a as many assets as the value of
+        the quantity property of a move line. """
+
+        account = self.env['account.account'].create({
+            "name": "test account",
+            "code": "TEST",
+            "user_type_id": self.env.ref('account.data_account_type_non_current_assets').id,
+            "create_asset": "draft",
+            "asset_type": "purchase",
+            "multiple_assets_per_line": True,
+        })
+
+        categ_unit_id = self.ref('uom.product_uom_categ_unit')
+
+        for ammount, uom_type, factor, quantity in [
+            (3000.0, 'bigger', 3, 3.0),
+            (3000.0, 'smaller', 2, 3.0),
+            (3000.0, 'bigger', 2, 0.5),
+            (3000.0, 'smaller', 2, 0.5),
+        ]:
+            uom = self.env['uom.uom'].create({
+                'name': 'custom uom',
+                'uom_type': uom_type,
+                'rounding': 0.001,
+                'category_id': categ_unit_id,
+                'factor_inv': factor if uom_type == 'bigger' else 1.0 / factor,
+                'factor': factor if uom_type != 'bigger' else 1.0 / factor,
+            })
+            move = self.env['account.move'].create({
+                "partner_id": self.env['res.partner'].create({'name': 'Johny'}).id,
+                "ref": "line1",
+                "type": "in_invoice",
+                "line_ids": [
+                    (0, 0, {
+                        "account_id": account.id,
+                        "debit": ammount,
+                        "name": "stuff",
+                        "quantity": quantity,
+                        "product_uom_id": uom.id,
+                    }),
+                    (0, 0, {
+                        'account_id': self.xfa.id,
+                        'credit': ammount,
+                    }),
+                ]
+            })
+            move.post()
+            self.assertEqual(len(move.asset_ids), (factor * quantity) if uom_type == 'bigger' else math.ceil(quantity / factor))
+            self.assertAlmostEqual(sum(asset.original_value for asset in move.asset_ids), move.line_ids[0].debit)

@@ -104,7 +104,7 @@
                             </field>
                         </page>
                         <page string="Related Purchase" name="related_items" attrs="{'invisible' : [('original_move_line_ids', '=', [])]}">
-                            <field name="original_move_line_ids" widget="many2many" attrs="{'readonly': [('state','=','posted')]}" domain="[('credit', '=', '0'), ('move_id.state', '=', 'posted')]" class="original_move_line_ids_field">
+                            <field name="original_move_line_ids" attrs="{'readonly': [('state','=','posted')]}" domain="[('credit', '=', '0'), ('move_id.state', '=', 'posted')]" class="original_move_line_ids_field">
                                 <tree>
                                     <field name="date" string="Depreciation Date"/>
                                     <field name="account_id"/>

@@ -80,16 +80,19 @@ class TaxCloudRequest(object):
         self.customer_id = invoice.partner_id.id
         self.cart_id = invoice.id
         self.cart_items = self.factory.ArrayOfCartItem()
+        self.cart_items.CartItem = self._process_lines(invoice.invoice_line_ids)
+
+    def _process_lines(self, lines):
         cart_items = []
-        for index, line in enumerate(invoice.invoice_line_ids):
-            if line.price_unit >= 0.0 and line.quantity >= 0.0:
+        for index, line in enumerate(lines):
+            qty = line._get_qty()
+            if line._get_taxcloud_price() >= 0.0 and qty >= 0.0:
                 product_id = line.product_id.id
                 tic_code = line.product_id.tic_category_id.code or \
                     line.product_id.categ_id.tic_category_id.code or \
                     line.company_id.tic_category_id.code or \
                     line.env.company.tic_category_id.code
-                qty = line.quantity
-                price_unit = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+                price_unit = line._get_taxcloud_price() * (1 - (line.discount or 0.0) / 100.0)
 
                 cart_item = self.factory.CartItem()
                 cart_item.Index = index
@@ -99,9 +102,7 @@ class TaxCloudRequest(object):
                 cart_item.Price = price_unit
                 cart_item.Qty = qty
                 cart_items.append(cart_item)
-        self.cart_items.CartItem = cart_items
-
-    # def authorize_transaction(self, invoice):
+        return cart_items
 
     def get_all_taxes_values(self):
         formatted_response = {}

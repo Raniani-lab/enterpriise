@@ -18,12 +18,16 @@ class SaleOrder(models.Model):
             order.validate_taxes_on_sales_order()
         return super(SaleOrder, self).action_confirm()
 
+    @api.model
+    def _get_TaxCloudRequest(self, api_id, api_key):
+        return TaxCloudRequest(api_id, api_key)
+
     def validate_taxes_on_sales_order(self):
         company = self.company_id
         shipper = company or self.env.company
         api_id = shipper.taxcloud_api_id
         api_key = shipper.taxcloud_api_key
-        request = TaxCloudRequest(api_id, api_key)
+        request = self._get_TaxCloudRequest(api_id, api_key)
 
         request.set_location_origin_detail(shipper)
         request.set_location_destination_detail(self.partner_shipping_id)
@@ -40,8 +44,10 @@ class SaleOrder(models.Model):
 
         tax_values = response['values']
 
-        for index, line in enumerate(self.order_line.filtered(lambda l: not l.display_type)):
-            if line.price_unit >= 0.0 and line.product_uom_qty >= 0.0:
+        # warning: this is tightly coupled to TaxCloudRequest's _process_lines method
+        # do not modify without syncing the other method
+        for index, line in enumerate(self.order_line):
+            if line._get_taxcloud_price() >= 0.0 and line.product_uom_qty >= 0.0:
                 price = line.price_unit * (1 - (line.discount or 0.0) / 100.0) * line.product_uom_qty
                 if not price:
                     tax_rate = 0.0
@@ -67,3 +73,16 @@ class SaleOrder(models.Model):
                         })
                     line.tax_id = tax
         return True
+
+
+class SaleOrderLine(models.Model):
+    """Defines getters to have a common facade for order and invoice lines in TaxCloud."""
+    _inherit = 'sale.order.line'
+
+    def _get_taxcloud_price(self):
+        self.ensure_one()
+        return self.price_unit
+
+    def _get_qty(self):
+        self.ensure_one()
+        return self.product_uom_qty

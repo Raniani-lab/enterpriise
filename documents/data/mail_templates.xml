@@ -63,11 +63,11 @@
                                                 </div>
                                             </center><br/>
                                             Please provide us with the missing document before the link expires (planned on ${object.date_deadline}).
-                                            <br/>
                                             % if user and user.signature:
+                                                <br/>
                                                 ${user.signature | safe}
+                                                <br/>
                                             % endif
-                                            <br/>
                                         </div>
                                     </td></tr>
                                     <tr><td style="text-align:center;">
@@ -114,7 +114,6 @@
                 </table>
             </field>
             <field name="lang">${object.owner_id.lang}</field>
-            <field name="user_signature" eval="False"/>
             <field name="auto_delete" eval="True"/>
         </record>
     </data>

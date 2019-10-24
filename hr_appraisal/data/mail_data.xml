@@ -76,7 +76,6 @@
             </field>
             <field name="report_name">${(object.name or '').replace('/','_')}</field>
             <field name="lang">${object.lang}</field>
-            <field name="user_signature" eval="False"/>
             <field name="auto_delete" eval="True"/>
         </record>
 
@@ -106,7 +105,6 @@
             </field>
             <field name="report_name">${(object.name or '').replace('/','_')}</field>
             <field name="lang">${object.lang}</field>
-            <field name="user_signature" eval="False"/>
             <field name="auto_delete" eval="True"/>
         </record>
     </data>

@@ -80,7 +80,7 @@ FIELDS_TO_EXPORT = {
         'auto_delete', 'body_html', 'copyvalue', 'email_cc', 'email_from', 'email_to', 'lang',
         'model_id', 'model_object_field', 'name', 'null_value', 'partner_to', 'ref_ir_act_window',
         'reply_to', 'report_name', 'report_template', 'scheduled_date', 'sub_model_object_field',
-        'sub_object', 'subject', 'use_default_to', 'user_signature'
+        'sub_object', 'subject', 'use_default_to'
     ],
     'res.groups': ['color', 'comment', 'implied_ids', 'name', 'share'],
 }

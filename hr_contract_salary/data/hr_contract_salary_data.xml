@@ -19,7 +19,6 @@
         </field>
         <field name="lang">${object.employee_id.address_home_id.lang}</field>
         <field name="auto_delete" eval="True"/>
-        <field name="user_signature" eval="False"/>
     </record>
 
     <record id="mail_template_send_offer_applicant" model="mail.template">
@@ -40,7 +39,6 @@
         </field>
         <field name="lang">${object.partner_id.lang}</field>
         <field name="auto_delete" eval="True"/>
-        <field name="user_signature" eval="False"/>
     </record>
 
     <template id="hr_contract_salary_email_template">

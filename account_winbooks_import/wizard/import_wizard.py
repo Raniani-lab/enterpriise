@@ -334,18 +334,19 @@ class WinbooksImportWizard(models.TransientModel):
                 if rec.get('BOOKYEAR') and rec.get('DOCNUMBER') != '99999999':
                     recs.append(rec)
         result = [dict(tupleized) for tupleized in set(tuple(item.items()) for item in recs)]
-        grouped = collections.defaultdict(dict)
+        grouped = collections.defaultdict(list)
         for item in result:
-            # Group by number/year/period and get unique data for same line_id/values, in cas of import of multiple *_act*.dfb files
-            grouped[item['DOCNUMBER'], item['DBKCODE'], item['DBKTYPE'], item['BOOKYEAR'], item['PERIOD']][item['DOCORDER'], item['VATCODE'], item['ACCOUNTGL'], item['ACCOUNTRP'], item['COMMENT'], item['AMOUNTEUR']] = item
+            # Group by number/year/period
+            grouped[item['DOCNUMBER'], item['DBKCODE'], item['DBKTYPE'], item['BOOKYEAR'], item['PERIOD']] += [item]
 
         move_data_list = []
         pdf_file_list = []
         reconcile_number_set = set()
         for key, val in grouped.items():
-            val = val.values()  # unpack the filtering of the lines
             journal_id = self.env['account.journal'].browse(journal_data.get(key[1]))
             bookyear = int(key[3], 36)
+            if not bookyear or (self.only_open and bookyear not in param_data['openyears']):
+                continue
             perdiod_number = len(param_data['period_date'][bookyear]) - 2
             period = min(int(key[4]), perdiod_number + 1)  # closing is 99 in winbooks, not 13
             start_period_date = param_data['period_date'][bookyear][period]
@@ -355,7 +356,7 @@ class WinbooksImportWizard(models.TransientModel):
                 end_period_date = param_data['period_date'][bookyear][period + 1]
             else:  # opening (0) or closing (99) are at a fixed date
                 end_period_date = start_period_date
-            move_date = next(iter(val)).get('DATEDOC')
+            move_date = val[0].get('DATEDOC')
             move_data_dict = {
                 'name': key[0],
                 'journal_id': journal_id.id,
@@ -365,8 +366,6 @@ class WinbooksImportWizard(models.TransientModel):
                 'date': min(max(start_period_date, move_date), end_period_date),
             }
             if not move_data_dict.get('journal_id') and key[1] == 'MATCHG':
-                continue
-            if self.only_open and bookyear not in param_data['openyears']:
                 continue
             move_line_data_list = []
             move_amount_total = 0
@@ -646,12 +645,12 @@ class WinbooksImportWizard(models.TransientModel):
                 with zipfile.ZipFile(join(file_dir, child_zip[0]), 'r') as child_zip_ref:
                     child_zip_ref.extractall(file_dir)
             onlyfiles = [f for f in listdir(file_dir) if isfile(join(file_dir, f))]
-            csffile = [s for s in onlyfiles if "_csf" in s.lower() and s.lower().endswith('.dbf')]
-            acffile = [s for s in onlyfiles if "_acf" in s.lower() and s.lower().endswith('.dbf')]
-            actfile = [s for s in onlyfiles if "_act" in s.lower() and s.lower().endswith('.dbf')]
-            antfile = [s for s in onlyfiles if "_ant" in s.lower() and s.lower().endswith('.dbf')]
-            anffile = [s for s in onlyfiles if "_anf" in s.lower() and s.lower().endswith('.dbf')]
-            tablefile = [s for s in onlyfiles if "_table" in s.lower() and s.lower().endswith('.dbf')]
+            csffile = [s for s in onlyfiles if "_csf.dbf" in s.lower()]
+            acffile = [s for s in onlyfiles if "_acf.dbf" in s.lower()]
+            actfile = [s for s in onlyfiles if "_act.dbf" in s.lower()]
+            antfile = [s for s in onlyfiles if "_ant.dbf" in s.lower()]
+            anffile = [s for s in onlyfiles if "_anf.dbf" in s.lower()]
+            tablefile = [s for s in onlyfiles if "_table.dbf" in s.lower()]
             vatfile = [s for s in onlyfiles if "_codevat.dbf" in s.lower()]
             dbkfile = [s for s in onlyfiles if "dbk" in s.lower() and s.lower().endswith('.dbf')]
             scanfile = [s for s in onlyfiles if "@scandbk" in s.lower() and s.lower().endswith('.zip')]

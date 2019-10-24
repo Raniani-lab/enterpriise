@@ -35,7 +35,7 @@ var fsmSaveTimesheetStepIndex = _.findIndex(tour.tours.industry_fsm_tour.steps, 
 
 tour.tours.industry_fsm_tour.steps.splice(fsmSaveTimesheetStepIndex + 1, 0, {
     trigger: 'button[name="action_preview_worksheet"]',
-    extra_trigger: '.o_fsm_task_form',
+    extra_trigger: '.o_form_project_tasks',
     content: _t('Review the worksheet report with your customer and ask him to sign it.'),
     position: 'bottom',
 }, {
@@ -60,12 +60,12 @@ tour.tours.industry_fsm_tour.steps.splice(fsmSaveTimesheetStepIndex + 1, 0, {
     position: 'right',
 }, {
     trigger: 'button[name="action_send_report"]',
-    extra_trigger: '.o_fsm_task_form ',
+    extra_trigger: '.o_form_project_tasks ',
     content: _t('Send the report to your customer by email.'),
     position: 'bottom',
 }, {
     trigger: 'button[name="action_send_mail"]',
-    extra_trigger: '.o_fsm_task_form ',
+    extra_trigger: '.o_form_project_tasks ',
     content: _t('<b>Click the send button</b> to send the report.'),
     position: 'bottom',
 });

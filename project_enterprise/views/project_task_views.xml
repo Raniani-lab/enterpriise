@@ -6,11 +6,9 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='extra_info']/group" position="inside">
-                <group string="Gantt">
-                    <field name="planned_date_begin" attrs="{'required': [('planned_date_end', '!=', False)]}"/>
-                    <field name="planned_date_end" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>
-                </group>
+            <xpath expr="//group[@name='dates']" position="inside">
+                <field name="planned_date_begin" attrs="{'required': [('planned_date_end', '!=', False)]}" groups="base.group_no_one"/>
+                <field name="planned_date_end" attrs="{'required': [('planned_date_begin', '!=', False)]}"  groups="base.group_no_one"/>
             </xpath>
         </field>
     </record>

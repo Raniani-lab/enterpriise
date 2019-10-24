@@ -37,7 +37,7 @@ class CreateTask(models.TransientModel):
             'res_model': 'project.task',
             'res_id': new_task.id,
             'view_mode': 'form',
-            'view_id': self.env.ref('industry_fsm.project_task_view_form').id,
+            'view_id': self.env.ref('project.view_task_form2').id,
             'context': {
                 'fsm_mode': True,
             }

@@ -94,6 +94,20 @@ class Task(models.Model):
     user_id = fields.Many2one(group_expand='_read_group_user_ids')
     invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
     fsm_to_invoice = fields.Boolean("To invoice", compute='_compute_fsm_to_invoice', search='_search_fsm_to_invoice')
+    display_fsm_dates = fields.Boolean(compute='_compute_display_fsm_dates')
+
+    # determines if planned_date_begin and planned_date_end used for the gantt
+    # view should be visible on the task form view
+    @api.depends('is_fsm')
+    def _compute_display_fsm_dates(self):
+        has_group_no_one = self.env.user.user_has_groups('base.group_no_one')
+        for task in self:
+            if task.is_fsm:
+                task.display_fsm_dates = True
+            elif has_group_no_one:
+                task.display_fsm_dates = True
+            else:
+                task.display_fsm_dates = False
 
     @api.model
     def _search_is_fsm(self, operator, value):
@@ -206,6 +220,11 @@ class Task(models.Model):
         if(bool(operator == '=') ^ bool(value)):
             operator_new = 'not inselect'
         return [('sale_order_id', operator_new, (query, ()))]
+
+    @api.onchange('project_id')
+    def _onchange_project_id_fsm(self):
+        if self.env.context.get('fsm_mode'):
+            return {'domain': {'project_id': [('is_fsm', '=', True)]}}
 
     # ---------------------------------------------------------
     # Actions
@@ -370,7 +389,7 @@ class Task(models.Model):
         return action
 
     def action_fsm_view_overlapping_tasks(self):
-        fsm_task_form_view = self.env.ref('industry_fsm.project_task_view_form')
+        fsm_task_form_view = self.env.ref('project.view_task_form2')
         fsm_task_list_view = self.env.ref('industry_fsm.project_task_view_list_fsm')
         fsm_task_kanban_view = self.env.ref('industry_fsm.project_task_view_kanban_fsm')
         domain = self._get_fsm_overlap_domain()[self.id]

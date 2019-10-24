@@ -1,157 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--
-         FSM Task views
-    -->
-
-    <record id="project_task_view_form" model="ir.ui.view">
-        <field name="name">project.task.form.fsm</field>
-        <field name="model">project.task</field>
-        <field name="arch" type="xml">
-            <form class="o_fsm_task_form">
-                <header attrs="{'invisible': [('id', '=', False)]}">
-                    <field name="display_timesheet_timer" invisible="1"/>
-                    <field name="is_fsm" invisible="1"/>
-                    <field name="allow_timesheets" invisible="1"/>
-                    <field name="fsm_done" invisible="1"/>
-                    <field name="timesheet_timer_pause" invisible="1"/>
-                    <field name="allow_material" invisible="1"/>
-                    <field name="allow_quotations" invisible="1"/>
-                    <field name="company_id" invisible="1"/>
-                    <field name="fsm_to_invoice" invisible="1"/>
-                    <field name="allow_billable" invisible="1"/>
-                    <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
-                        attrs="{'invisible': ['&amp;', '|',  ('allow_material', '=', True), '|', ('allow_timesheets', '=', True), ('allow_quotations', '=', False), '|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
-                    <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), '&amp;', ('display_timesheet_timer', '=', True), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
-                    <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
-                        attrs="{'invisible': ['|', '|', '|','|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True), '&amp;', ('allow_timesheets', '=', False), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', False), ('material_line_product_count', '=', 0), '&amp;', ('total_hours_spent', '!=', 0), ('material_line_product_count', '!=', 0),'&amp;', ('total_hours_spent', '=', 0), ('material_line_product_count', '=', 0)]}"/>
-                    <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '=', 0), ('allow_billable', '=', False), ('fsm_done', '=', False), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
-
-                    <button class="btn-secondary" name="action_timer_start" type="object" string="Start"
-                        attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}"/>
-                    <button class="btn-primary btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop"
-                        attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
-                    <button class="btn-primary" name="action_timer_pause" type="object" string="Pause"
-                        attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '!=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
-                    <button class="btn-primary btn-info" name="action_timer_resume" type="object" string="Resume"
-                        attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
-
-                    <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mr-4 font-weight-bold" attrs="{'invisible': ['|', ('display_timesheet_timer', '=', False), ('timesheet_timer_start', '=', False)]}"/>
-                </header>
-                <div role="alert" class="alert-warning p-3 text-center"
-                    attrs="{'invisible': ['|', ('is_fsm', '=', False), ('planning_overlap', '=', 0)]}">
-                    <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pr-1">
-                        <field name="planning_overlap"/> other tasks
-                    </button>
-                    <span class="align-middle">for this employee at the same time.</span>
-                </div>
-                <sheet>
-                    <field name="active" invisible="1" />
-                    <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="action_timer_start" type="object" icon="fa-play" help="Launch the Timer" attrs="{'invisible': ['|', '|', '|', ('display_timesheet_timer', '=', False), ('allow_timesheets', '=', False), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False)]}">
-                            <div class="o_stat_info">
-                                Start
-                            </div>
-                        </button>
-                        <button class="oe_stat_button" name="action_timer_stop" type="object" icon="fa-stop" help="Stop the Timer" attrs="{'invisible': ['|', '|', '|', '|', ('is_fsm', '=', False), ('display_timesheet_timer', '=', False), ('allow_timesheets', '=', False), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '=', False)]}">
-                            <div class="o_stat_info">
-                                Stop
-                            </div>
-                        </button>
-                        <button class="oe_stat_button" name="action_view_timesheets" type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': ['|', ('allow_timesheets', '=', False), '&amp;', ('display_timesheet_timer', '=', True), ('total_hours_spent', '=', 0)]}">
-                            <div class="o_stat_info">
-                                <div>Time</div>
-                                <span class="o_stat_value">
-                                    <field name="total_hours_spent" widget="float_time" nolabel="1" class="mr-1" />
-                                </span>
-                            </div>
-                        </button>
-                        <button class="oe_stat_button" name="action_fsm_view_material"
-                            type="object" icon="fa-cart-plus" attrs="{'invisible': ['|', ('partner_id', '=', False), ('allow_material', '=', False)]}">
-                            <div class="o_stat_info">
-                                <span class="o_stat_value">
-                                    <field name="material_line_product_count" widget="statinfo" string="Products" class="mr-1"/>
-                                </span>
-                                <field name="material_line_total_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                <field name="currency_id" invisible="True"/>
-                            </div>
-                        </button>
-                        <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('invoice_count', '=', 0)]}" groups="industry_fsm.group_fsm_manager">
-                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
-                        </button>
-                    </div>
-                    <group>
-                        <group>
-                            <field name="name" class="o_fsm_task_name"/>
-                            <field name="partner_id" required="1" class="o_fsm_task_customer_field"
-                                context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
-                                options='{"always_reload": True}'
-                                widget="res_partner_many2one"/>
-                            <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_phone', '=', False)]}"/>
-                            <field name="partner_mobile" widget="phone" attrs="{'invisible': [('partner_mobile', '=', False)]}"/>
-                            <field name="partner_email" widget="email"  attrs="{'invisible': [('partner_email', '=', False)]}"/>
-                            <field name="stage_id" invisible="1"/>
-                        </group>
-                        <group>
-                            <label for="planned_date_begin" string="Planned Date"/>
-                            <div class="w-100">
-                                <div class="o_row">
-                                    <field name="planned_date_begin" widget="daterange" options='{"related_end_date": "planned_date_end"}'/>
-                                    <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
-                                    <field name="planned_date_end" widget="daterange" options='{"related_start_date": "planned_date_begin"}'/>
-                                </div>
-                            </div>
-                            <label for="timesheet_timer_first_start" string="Effective Hours" attrs="{'invisible': [('timesheet_timer_first_start', '=', False)]}"/>
-                            <div class="w-100" attrs="{'invisible': [('timesheet_timer_first_start', '=', False)]}">
-                                <div class="o_row">
-                                    <field name="timesheet_timer_first_start" widget="daterange" options='{"related_end_date": "timesheet_timer_last_stop"}'/>
-                                    <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
-                                    <field name="timesheet_timer_last_stop" widget="daterange" options='{"related_start_date": "timesheet_timer_first_start"}'/>
-                                </div>
-                            </div>
-                            <field name="user_id" options="{'no_open': True}"/>
-                            <field name="project_id" domain="[('is_fsm', '=', True)]" required="True" options="{'no_create': True, 'no_edit': True, 'no_open': 'True'}" groups="industry_fsm.group_fsm_manager"/>
-                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
-                        </group>
-                        <field name="description" colspan="2"/>
-                        <field name="timesheet_ids" invisible="1"/>
-                    </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-
-    <!-- Extends FSM form view to add "New Quotation" button -->
-    <record id="project_task_view_form_fsm_quotation" model="ir.ui.view">
-        <field name="name">view.form.fsm.inherit.quotation</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="project_task_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='timesheet_timer_start']" position="after">
-                <field name="is_fsm" invisible="1"/>
-                <field name="allow_quotations" invisible="1"/>
-                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': [('allow_quotations', '=', False)]}"/>
-            </xpath>
-            <xpath expr="//button[@name='action_fsm_view_material']" position="after">
-                <button name="action_fsm_view_quotations"
-                    type="object"
-                    class="oe_stat_button"
-
-                    icon="fa-dollar"
-                    attrs="{'invisible': ['|', ('is_fsm', '=', False), ('quotation_count', '=', 0)]}">
-                    <field string="Quotations" name="quotation_count" widget="statinfo"/>
-                </button>
-            </xpath>
-        </field>
-        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman')), (4, ref('industry_fsm.group_fsm_quotation_from_task'))]"/>
-    </record>
 
     <record id="project_task_view_list_fsm" model="ir.ui.view">
         <field name="name">project.task.tree.fsm</field>
@@ -216,7 +64,7 @@
         <field name="name">project.task.calendar.fsm</field>
         <field name="model">project.task</field>
         <field name="arch" type="xml">
-            <calendar date_start="planned_date_begin" date_stop="planned_date_end" string="Tasks" mode="month" color="user_id" form_view_id="%(industry_fsm.project_task_view_form)d" event_open_popup="1" quick_add="0">
+            <calendar date_start="planned_date_begin" date_stop="planned_date_end" string="Tasks" mode="month" color="user_id" event_open_popup="1" form_view_id="%(project.view_task_form2)d" quick_add="0"> <!--    -->
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="partner_city"/>
@@ -248,7 +96,7 @@
         <field name="inherit_id" ref="project.view_task_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//kanban" position="inside">
-                <field name="planned_date_begin" />
+                <field name="planned_date_begin"/>
                 <field name="is_fsm" />
                 <field name="fsm_done" />
             </xpath>
@@ -266,8 +114,11 @@
                 <t t-if="record.fsm_done.raw_value" t-value="'font-weight-bold'">
                 </t>
                 <!-- field -->
-                <t t-if="record.is_fsm.raw_value and record.planned_date_begin.raw_value" t-set="date" t-value="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)" />
-                <t t-if="record.is_fsm.raw_value" t-set="tooltip">Start date</t>
+                <t t-if="record.is_fsm.raw_value and record.planned_date_begin.raw_value" t-set="date" t-value="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)" t-att-title="Start Date"/>
+            </xpath>
+            <xpath expr="//span[@name='date']" position="attributes">
+                <attribute name="title"></attribute>
+                <attribute name="t-att-title">record.is_fsm.raw_value ? 'Start Date' : 'Deadline'</attribute>
             </xpath>
         </field>
     </record>
@@ -300,8 +151,8 @@
                 <!-- force date formatting to hours in fsm, wether we show deadline or planned_date_begin -->
                 <t t-if="!context.fsm_task_kanban_whole_date" t-set="date_format" t-value="'HH:mm A'" />
             </xpath>
-            <xpath expr="//span[@name='date']" position="before">
-                <t t-if="!context.fsm_task_kanban_whole_date" t-set="tooltip">Start hour</t>
+            <xpath expr="//span[@name='date']" position="attributes">
+                <attribute name="title" t-if="!context.fsm_task_kanban_whole_date">Start Hour</attribute>
             </xpath>
         </field>
     </record>
@@ -360,7 +211,7 @@
     <record id="project_task_action_fsm_view_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="30"/>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="project_task_view_form"/>
+        <field name="view_id" ref="project.view_task_form2"/>
         <field name="act_window_id" ref="project_task_action_fsm"/>
     </record>
 
@@ -408,7 +259,7 @@
     <record id="project_task_action_fsm_map_view_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="30"/>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="project_task_view_form"/>
+        <field name="view_id" ref="project.view_task_form2"/>
         <field name="act_window_id" ref="project_task_action_fsm_map"/>
     </record>
 
@@ -458,7 +309,7 @@
     <record id="project_task_action_all_fsm_view_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="40"/>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="project_task_view_form"/>
+        <field name="view_id" ref="project.view_task_form2"/>
         <field name="act_window_id" ref="project_task_action_all_fsm"/>
     </record>
 
@@ -505,7 +356,7 @@
     <record id="project_task_action_to_schedule_fsm_view_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="45"/>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="project_task_view_form"/>
+        <field name="view_id" ref="project.view_task_form2"/>
         <field name="act_window_id" ref="project_task_action_to_schedule_fsm"/>
     </record>
 
@@ -552,7 +403,7 @@
     <record id="project_task_action_to_invoice_fsm_view_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="45"/>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="project_task_view_form"/>
+        <field name="view_id" ref="project.view_task_form2"/>
         <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
     </record>
 
@@ -597,7 +448,7 @@
     <record id="project_task_action_planning_groupby_user_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="35"/>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="project_task_view_form"/>
+        <field name="view_id" ref="project.view_task_form2"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
     </record>
 
@@ -642,7 +493,7 @@
     <record id="project_task_action_planning_groupby_project_fsm_view_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="35"/>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="project_task_view_form"/>
+        <field name="view_id" ref="project.view_task_form2"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
     </record>
 
@@ -809,9 +660,16 @@
 
         <menuitem id="fsm_menu_settings_product"
             name="Products"
-            sequence="20"
+            sequence="30"
             action="product_action_fsm"
             parent="fsm_menu_settings"
             groups="sales_team.group_sale_salesman"/>
+
+        <menuitem id="menu_project_tags_act" 
+            name="Tags"
+            sequence="40"
+            action="project.project_tags_action"
+            parent="fsm_menu_settings"
+            groups="industry_fsm.group_fsm_manager"/>
 
 </odoo>

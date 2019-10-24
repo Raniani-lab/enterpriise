@@ -25,7 +25,7 @@ class HelpdeskTicket(models.Model):
             ticket.fsm_task_count = ticket_count_mapping.get(ticket.id, 0)
 
     def action_view_fsm_tasks(self):
-        fsm_form_view = self.env.ref('industry_fsm.project_task_view_form')
+        fsm_form_view = self.env.ref('project.view_task_form2')
         fsm_list_view = self.env.ref('industry_fsm.project_task_view_list_fsm')
         action = {
             'type': 'ir.actions.act_window',

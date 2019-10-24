@@ -18,31 +18,31 @@ tour.register('industry_fsm_tour', {
     content: _t('Here is the view of the users who are on the field. Click CREATE to start your first task.'),
     position: 'bottom',
 }, {
-    trigger: 'input.o_fsm_task_name',
+    trigger: 'input.o_task_name',
     extra_trigger: '.o_form_editable',
     content: _t('Add a task title. <br/><i>(e.g. Boiler replacement)</i>'),
     position: 'right',
     width: 200,
 }, {
-    trigger: ".o_form_view .o_fsm_task_customer_field",
-    extra_trigger: '.o_fsm_task_form.o_form_editable',
+    trigger: ".o_form_view .o_task_customer_field",
+    extra_trigger: '.o_form_project_tasks.o_form_editable',
     content: _t('Select or create a customer.'),
     position: "bottom",
     run: function (actions) {
-        actions.text("Leroy Philippe", this.$anchor.find("input"));
+        actions.text("Brandon Freeman", this.$anchor.find("input"));
     },
 }, {
     trigger: ".ui-autocomplete > li > a",
     auto: true,
 }, {
     trigger: 'button[name="action_timer_start"]',
-    extra_trigger: '.o_fsm_task_form',
+    extra_trigger: '.o_form_project_tasks',
     content: _t('Start recording your time.'),
     position: "bottom",
     id: 'fsm_start',
 }, {
     trigger: 'button[name="action_fsm_view_material"]',
-    extra_trigger: '.o_fsm_task_form button[name="action_timer_stop"]', // needed to avoid concurrent access error
+    extra_trigger: '.o_form_project_tasks button[name="action_timer_stop"]', // needed to avoid concurrent access error
     content: _t('Record the material you used for the intervention.'),
     position: 'bottom',
 }, {
@@ -66,19 +66,9 @@ tour.register('industry_fsm_tour', {
     id: 'fsm_save_timesheet',
 }, {
     trigger: "button[name='action_fsm_validate']",
-    extra_trigger: '.o_fsm_task_form',
+    extra_trigger: '.o_form_project_tasks',
     content: _t('If everything looks good to you, mark the task as done. When doing so, your stock will automatically be updated and your task will move to te next stage.'),
     position: 'bottom',
-}, {
-    trigger: 'button[name="action_fsm_create_invoice"]',
-    extra_trigger: '.o_fsm_task_form',
-    content: _t('Invoice your Time and Material to your customer.'),
-    position: 'bottom',
-}, {
-    trigger: 'button[name="create_invoices"]:not(.btn-primary)',
-    content: _t('Click on create invoice.'),
-    position: 'bottom',
-
 }]);
 
 });

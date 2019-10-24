@@ -15,8 +15,6 @@ class Task(models.Model):
 
     planned_date_begin = fields.Datetime("Start date")
     planned_date_end = fields.Datetime("End date")
-    partner_email = fields.Char(related='partner_id.email', string='Customer Email', readonly=False)
-    partner_phone = fields.Char(related='partner_id.phone', readonly=False)
     partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
     partner_zip = fields.Char(related='partner_id.zip', readonly=False)
     partner_street = fields.Char(related='partner_id.street', readonly=False)

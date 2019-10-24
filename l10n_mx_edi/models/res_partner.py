@@ -52,7 +52,7 @@ class ResPartner(models.Model):
         if (self.country_id == self.env.ref('base.mx') or not self.country_id) and not self.vat:
             self.message_post(
                 body=_('Using General Public VAT because no vat found'),
-                subtype='account.mt_invoice_validated')
+                subtype_xmlid='account.mt_invoice_validated')
             # Following Question 4 in legal Document.
             return 'XAXX010101000'
         # otherwise it returns what customer says and if False xml validation will be solving other cases.

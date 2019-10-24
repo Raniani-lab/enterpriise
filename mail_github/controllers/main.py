@@ -115,7 +115,7 @@ class GithubController(http.Controller):
         channels = repository_target.channel_ids.filtered(lambda channel: channel.github_enabled)
         repository_target.message_post(
             body=rendered_template,
-            subtype="mail.mt_comment",  # correct?
+            subtype_xmlid="mail.mt_comment",  # correct?
             author_id=partner.id,
             email_from=partner_email,
             channel_ids=channels.ids

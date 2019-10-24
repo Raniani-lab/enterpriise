@@ -130,6 +130,6 @@ class CustomerPortal(CustomerPortal):
             else:
                 ticket_sudo.write({'closed_by_partner': True})
             body = _('Ticket closed by the customer')
-            ticket_sudo.with_context(mail_create_nosubscribe=True).message_post(body=body, message_type='comment', subtype='mt_note')
+            ticket_sudo.with_context(mail_create_nosubscribe=True).message_post(body=body, message_type='comment', subtype_xmlid='mail.mt_note')
 
         return request.redirect('/my/ticket/%s/%s' % (ticket_id, access_token or ''))

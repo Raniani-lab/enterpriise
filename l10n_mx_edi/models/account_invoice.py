@@ -326,7 +326,7 @@ class AccountMove(models.Model):
 
     def l10n_mx_edi_log_error(self, message):
         self.ensure_one()
-        self.message_post(body=_('Error during the process: %s') % message, subtype='account.mt_invoice_validated')
+        self.message_post(body=_('Error during the process: %s') % message, subtype_xmlid='account.mt_invoice_validated')
 
     # -------------------------------------------------------------------------
     # SAT/PAC service methods
@@ -549,7 +549,7 @@ class AccountMove(models.Model):
             post_msg.extend([_('Message: %s') % msg])
         self.message_post(
             body=body_msg + create_list_html(post_msg),
-            subtype='account.mt_invoice_validated')
+            subtype_xmlid='account.mt_invoice_validated')
 
     def _l10n_mx_edi_sign(self):
         '''Call the sign service with records that can be signed.
@@ -580,7 +580,7 @@ class AccountMove(models.Model):
             post_msg.extend([_('Message: %s') % msg])
         self.message_post(
             body=body_msg + create_list_html(post_msg),
-            subtype='account.mt_invoice_validated')
+            subtype_xmlid='account.mt_invoice_validated')
 
     def _l10n_mx_edi_cancel(self):
         '''Call the cancel service with records that can be signed.
@@ -592,7 +592,7 @@ class AccountMove(models.Model):
             if record.l10n_mx_edi_pac_status in ['to_sign', 'retry']:
                 record.l10n_mx_edi_pac_status = 'cancelled'
                 record.message_post(body=_('The cancel service has been called with success'),
-                    subtype='account.mt_invoice_validated')
+                    subtype_xmlid='account.mt_invoice_validated')
             else:
                 record.l10n_mx_edi_pac_status = 'to_cancel'
         records = self.search([
@@ -941,7 +941,7 @@ class AccountMove(models.Model):
         tree.append(addenda_node)
         self.message_post(
             body=_('Addenda has been added in the CFDI with success'),
-            subtype='account.mt_invoice_validated')
+            subtype_xmlid='account.mt_invoice_validated')
         xml_signed = base64.encodebytes(etree.tostring(
             tree, pretty_print=True, xml_declaration=True, encoding='UTF-8'))
         attachment_id = self.l10n_mx_edi_retrieve_last_attachment()
@@ -1039,7 +1039,7 @@ class AccountMove(models.Model):
             if error:
                 # cfdi failed to be generated
                 inv.l10n_mx_edi_pac_status = 'retry'
-                inv.message_post(body=error, subtype='account.mt_invoice_validated')
+                inv.message_post(body=error, subtype_xmlid='account.mt_invoice_validated')
                 continue
             # cfdi has been successfully generated
             inv.l10n_mx_edi_pac_status = 'to_sign'
@@ -1058,7 +1058,7 @@ class AccountMove(models.Model):
             inv.message_post(
                 body=_('CFDI document generated (may be not signed)'),
                 attachment_ids=[attachment_id.id],
-                subtype='account.mt_invoice_validated')
+                subtype_xmlid='account.mt_invoice_validated')
             inv._l10n_mx_edi_sign()
 
     def post(self):
@@ -1091,7 +1091,7 @@ class AccountMove(models.Model):
                     body='<p style="color:red">' + _(
                         'The invoice related has no valid fiscal folio. For this '
                         'reason, this refund didn\'t generate a fiscal document.') + '</p>',
-                    subtype='account.mt_invoice_validated')
+                    subtype_xmlid='account.mt_invoice_validated')
                 continue
 
             move.l10n_mx_edi_cfdi_name = ('%s-%s-MX-Invoice-%s.xml' % (move.journal_id.code, move.invoice_payment_ref, version)).replace('/', '')

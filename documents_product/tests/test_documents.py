@@ -36,7 +36,7 @@ class TestCaseDocumentsBridgeProduct(TransactionCase):
 
     def test_bridge_folder_product_settings_on_write(self):
         """
-        Makes sure the settings apply their values when an document is assigned a res_model, res_id
+        Makes sure the settings apply their values when a document is assigned a res_model, res_id.
         """
         self.company_test.write({'documents_product_settings': True})
         
@@ -52,8 +52,47 @@ class TestCaseDocumentsBridgeProduct(TransactionCase):
         txt_doc = self.env['documents.document'].search([('attachment_id', '=', self.attachment_txt_two.id)])
         gif_doc = self.env['documents.document'].search([('attachment_id', '=', self.attachment_gif_two.id)])
 
-        self.assertEqual(txt_doc.folder_id, self.folder_test, 'the text two document have a folder')
-        self.assertEqual(gif_doc.folder_id, self.folder_test, 'the gif two document have a folder')
+        self.assertEqual(txt_doc.folder_id, self.folder_test, 'the text two document should have a folder')
+        self.assertEqual(gif_doc.folder_id, self.folder_test, 'the gif two document should have a folder')
+
+    def test_bridge_folder_product_settings_default_company(self):
+        """
+        Makes sure the settings apply their values when a document is assigned a res_model, res_id but when
+        the product/template doesn't have a company_id.
+        """
+        company_test = self.env['res.company'].create({
+            'name': 'test bridge products two',
+            'product_folder': self.folder_test.id,
+            'documents_product_settings': True,
+        })
+        test_user = self.env['res.users'].create({
+            'name': "documents test documents user",
+            'login': "dtdu",
+            'email': "dtdu@yourcompany.com",
+            # group_system is used as it is required to write on product.product and product.template
+            'groups_id': [(6, 0, [self.ref('documents.group_documents_user'), self.ref('base.group_system')])],
+            'company_ids': [(6, 0, [company_test.id])],
+            'company_id': company_test.id,
+        })
+        template_test = self.env['product.template'].create({
+            'name': 'template_test',
+        })
+        self.attachment_txt_two.with_user(test_user).write({
+            'res_model': 'product.template',
+            'res_id': template_test.id,
+        })
+        txt_doc = self.env['documents.document'].search([('attachment_id', '=', self.attachment_txt_two.id)])
+        self.assertEqual(txt_doc.folder_id, self.folder_test, 'the text two document should have a folder')
+
+        product_test = self.env['product.product'].create({
+            'name': 'product_test',
+        })
+        self.attachment_gif_two.with_user(test_user).write({
+            'res_model': 'product.product',
+            'res_id': product_test.id,
+        })
+        gif_doc = self.env['documents.document'].search([('attachment_id', '=', self.attachment_gif_two.id)])
+        self.assertEqual(gif_doc.folder_id, self.folder_test, 'the gif two document should have a folder')
 
     def test_default_res_id_model(self):
         """

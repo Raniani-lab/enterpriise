@@ -9,10 +9,13 @@ class ProductTemplate(models.Model):
     _inherit = ['product.template', 'documents.mixin']
 
     def _get_document_tags(self):
-        return self.company_id.product_tags
+        company = self.company_id or self.env.company
+        return company.product_tags
 
     def _get_document_folder(self):
-        return self.company_id.product_folder
+        company = self.company_id or self.env.company
+        return company.product_folder
 
     def _check_create_documents(self):
-        return self.company_id.documents_product_settings and super()._check_create_documents()
+        company = self.company_id or self.env.company
+        return company.documents_product_settings and super()._check_create_documents()

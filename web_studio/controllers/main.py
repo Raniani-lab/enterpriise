@@ -821,7 +821,7 @@ class WebStudioController(http.Controller):
         button_count_field = request.env['ir.model.fields'].search([('name', '=', button_count_field_name), ('model_id', '=', model.id)])
         if not button_count_field:
             compute_function = """
-                    results = self.env['%(model)s'].read_group([('%(field)s', 'in', self.ids)], '%(field)s', '%(field)s')
+                    results = self.env['%(model)s'].read_group([('%(field)s', 'in', self.ids)], ['%(field)s'], ['%(field)s'])
                     dic = {}
                     for x in results: dic[x['%(field)s'][0]] = x['%(field)s_count']
                     for record in self: record['%(count_field)s'] = dic.get(record.id, 0)

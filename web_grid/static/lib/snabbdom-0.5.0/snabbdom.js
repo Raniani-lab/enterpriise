@@ -547,3 +547,48 @@ odoo.define('snabbdom.patch', function (require) {
         require('snabbdom.eventlistener')
     ]);
 });
+
+odoo.define('snabbdom.tovnode', function (require) {
+    const VNode = require('snabbdom.vnode');
+
+    function toVNode(node) {
+        let text;
+
+        if (node.nodeType === 1) { // check if node is an element
+            const id = node.id ? '#' + node.id : '';
+            const cn = node.getAttribute('class');
+            const c = cn ? '.' + cn.split(' ').join('.') : '';
+            const sel = node.tagName.toLowerCase() + id + c;
+            const attrs = {};
+            const children = [];
+            let name;
+            let i, n;
+            const elmAttrs = node.attributes;
+            const elmChildren = node.childNodes;
+
+            for (i = 0, n = elmAttrs.length; i < n; i++) {
+                name = elmAttrs[i].nodeName;
+
+                if (name !== 'id' && name !== 'class') {
+                    attrs[name] = elmAttrs[i].nodeValue;
+                }
+            }
+
+            for (i = 0, n = elmChildren.length; i < n; i++) {
+                children.push(toVNode(elmChildren[i]));
+            }
+
+            return VNode(sel, { attrs }, children, undefined, node);
+        } else if (node.nodeType === 3) { // if node is TextNode
+            text = node.textContent;
+            return VNode(undefined, undefined, undefined, text, node);
+        } else if (node.nodeType === 8) {
+            text = node.textContent;
+            return VNode('!', {}, [], text, node);
+        } else {
+            return VNode('', {}, [], undefined, node);
+        }
+    }
+
+    return toVNode;
+});

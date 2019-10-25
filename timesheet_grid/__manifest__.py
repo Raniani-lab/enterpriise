@@ -17,7 +17,6 @@
         'security/timesheet_security.xml',
         'views/hr_timesheet_views.xml',
         'views/res_config_settings_views.xml',
-        'views/timesheet_templates.xml',
         'views/project_task_views.xml',
         'views/assets.xml',
         'wizard/timesheet_validation_views.xml',

@@ -164,3 +164,69 @@ class AnalyticLine(models.Model):
         # span is always daily and value is an iso range
         day = column_value.split('/')[0]
         return [('date', '=', day)]
+
+    # ----------------------------------------------------
+    # Timer Methods
+    # ----------------------------------------------------
+    def action_timer_start(self):
+        """ Action start the timer of current timesheet
+
+            * Override method of hr_timesheet module.
+        """
+        if not self.validated:
+            super(AnalyticLine, self).action_timer_start()
+        else:
+            raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+
+    def action_timer_stop(self):
+        """ Action stop the timer of the current timesheet
+
+            * Override method of hr_timesheet module.
+        """
+        if not self.validated:
+            super(AnalyticLine, self).action_timer_stop()
+        else:
+            raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+
+    @api.model
+    def create_timesheet_with_timer(self, vals: dict) -> dict:
+        """ Create timesheet when user launch timer in grid view.
+
+            Before to create this timesheet, we must stop all timer
+            of others timesheets.
+
+            :param vals: dictionary contains task_id or project_id for the timesheet
+
+            Return:
+                a dictionary contains the information required
+                about the timesheet created for grid view.
+
+        """
+        record: dict = {
+            'name': _('Timesheet created with timer'),
+        }
+
+        if 'task_id' in vals:
+            task = self.env['project.task'].search([('id', '=', vals.get('task_id'))])
+
+            record['task_id'] = task.id
+            record['project_id'] = task.project_id.id
+        elif 'project_id' in vals:
+            record['project_id'] = vals.get('project_id')
+        else:
+            return
+
+        # Check if another timer is launched, if yes, stop it
+        self._stop_running_timers()
+
+        record['timer_start'] = fields.Datetime.now()
+
+        line = self.create(record)
+
+        return {
+            'id': line.id,
+            'timer_start': line.timer_start,
+            'task_id': line.task_id.id,
+            'project_id': line.project_id.id,
+            'unit_amount': line.unit_amount
+        }

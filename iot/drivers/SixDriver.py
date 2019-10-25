@@ -122,8 +122,7 @@ class SixDriver(Driver):
         return False
 
     def run(self):
-        """Transactions need to be async to be aborted. Therefore, they cannot
-        be executed directly in 'action' so we process them in a queue.
+        """Transactions need to be processed in a different thread to be aborted.
         """
 
         while True:
@@ -156,21 +155,12 @@ class SixDriver(Driver):
             self.processing = True
             self.cid = transaction['id']
 
-            self.call_eftapi('EFT_PutAsync', 1)
             self.call_eftapi('EFT_PutCurrency', transaction['currency'])
-            self.call_eftapi('EFT_Transaction', transaction['type'], transaction['amount'], 0)
 
             if transaction['type'] == b'debit':
                 self.send_status(stage='WaitingForCard', owner=transaction['owner'], cid=transaction['id'])
 
-            completed_command = ctypes.c_long()
-            while completed_command.value != 3:
-                # We check the last command that was completed, if it is the
-                # transaction (value=3), we continue the execution
-                self.call_eftapi('EFT_Complete', -1)
-                self.call_eftapi('EFT_GetCompletedCommand', ctypes.byref(completed_command))
-
-            self.call_eftapi('EFT_PutAsync', 0)
+            self.call_eftapi('EFT_Transaction', transaction['type'], transaction['amount'], 0)
             self.call_eftapi('EFT_Commit', 1)
 
             applicationName = ctypes.create_string_buffer(64)
@@ -192,9 +182,6 @@ class SixDriver(Driver):
 
         except:
             pass
-
-        finally:
-            eftapi.EFT_PutAsync(mpdm.mpd_session, 0)
 
     def get_customer_receipt(self):
         """Gets the transaction receipt destined to the cutomer."""

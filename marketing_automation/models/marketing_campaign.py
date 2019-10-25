@@ -31,7 +31,7 @@ class MarketingCampaign(models.Model):
         ], copy=False, default='draft',
         group_expand='_group_expand_states')
     model_id = fields.Many2one(
-        'ir.model', string='Model', index=True, required=True,
+        'ir.model', string='Model', index=True, required=True, ondelete='cascade',
         default=lambda self: self.env.ref('base.model_res_partner', raise_if_not_found=False),
         domain="['&', ('is_mail_thread', '=', True), ('model', '!=', 'mail.blacklist')]")
     model_name = fields.Char(string='Model Name', related='model_id.model', readonly=True, store=True)

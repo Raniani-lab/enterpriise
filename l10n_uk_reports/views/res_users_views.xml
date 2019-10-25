@@ -21,6 +21,10 @@
                 </page>
             </xpath>
         </field>
+<<<<<<< HEAD
         <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+=======
+        <field name="groups_id" eval="[(4, ref('base.group_system'))]"/>
+>>>>>>> 0f980a69d7... temp
     </record>
 </odoo>

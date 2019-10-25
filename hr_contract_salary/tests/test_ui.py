@@ -5,8 +5,7 @@ import odoo.tests
 from odoo.addons.test_mail.tests.common import mail_new_test_user
 
 
-@odoo.tests.common.at_install(False)
-@odoo.tests.common.post_install(True)
+@odoo.tests.tagged('-at_install', 'post_install')
 class TestUi(odoo.tests.HttpCase):
     def test_ui(self):
         # no user available for belgian company so to set hr responsible change company of demo

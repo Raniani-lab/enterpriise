@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo.tests.common import tagged, TransactionCase, post_install
+from odoo.tests.common import tagged, TransactionCase
 
 GIF = b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="
 

@@ -3,9 +3,10 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo.tests import common
+from odoo.tests import common, tagged
 
 
+@tagged('-at_install', 'post_install')
 class WebsiteCalendarTest(common.HttpCase):
 
     def setUp(self):

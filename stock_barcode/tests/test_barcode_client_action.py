@@ -20,6 +20,7 @@ def clean_access_rights(env):
     env.user.write({'groups_id': [(3, grp_pack.id)]})
 
 
+@tagged('-at_install', 'post_install')
 class TestBarcodeClientAction(HttpCase):
     def setUp(self):
         super(TestBarcodeClientAction, self).setUp()

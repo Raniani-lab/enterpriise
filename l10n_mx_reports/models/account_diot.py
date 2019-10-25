@@ -58,6 +58,7 @@ class MxReportPartnerLedger(models.AbstractModel):
             ('account_id', 'not in', account_tax_ids.ids),
             ('tax_ids', 'in', tax_ids.ids),
             ('date', '>=', context['date_from']),
+            ('move_id.state', '=', 'posted'),
         ]
         tables, where_clause, where_params = self.env[
             'account.move.line']._query_get(domain)

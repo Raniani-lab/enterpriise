@@ -345,6 +345,7 @@ STAT_TYPES = {
     'mrr': {
         'name': _lt('Monthly Recurring Revenue'),
         'code': 'mrr',
+        'tooltip': _lt('MRR for short; total subscription revenue per month (e.g. for an annual subscription of $ 1,200, the MRR is $ 100)'),
         'dir': 'up',
         'prior': 1,
         'type': 'last',
@@ -354,6 +355,7 @@ STAT_TYPES = {
     'net_revenue': {
         'name': _lt('Net Revenue'),
         'code': 'net_revenue',
+        'tooltip': _lt('Total net revenue (all invoices emitted during the period)'),
         'dir': 'up',
         'prior': 2,
         'type': 'sum',
@@ -363,6 +365,7 @@ STAT_TYPES = {
     'nrr': {
         'name': _lt('Non-Recurring Revenue'),
         'code': 'nrr',
+        'tooltip': _lt('One-shot revenue that is not part of a subscription'),
         'dir': 'up',  # 'down' if fees ?
         'prior': 3,
         'type': 'sum',
@@ -372,6 +375,7 @@ STAT_TYPES = {
     'arpu': {
         'name': _lt('Revenue per Subscription'),
         'code': 'arpu',
+        'tooltip': _lt('Average revenue of a subscription, obtained by dividing the MRR by the number of subscriptions'),
         'dir': 'up',
         'prior': 4,
         'type': 'last',
@@ -381,6 +385,7 @@ STAT_TYPES = {
     'arr': {
         'name': _lt('Annual Run-Rate'),
         'code': 'arr',
+        'tooltip': _lt('Yearly version of the MRR, obtained by multiplying the MRR by 12'),
         'dir': 'up',
         'prior': 5,
         'type': 'last',
@@ -390,6 +395,7 @@ STAT_TYPES = {
     'ltv': {
         'name': _lt('Lifetime Value'),
         'code': 'ltv',
+        'tooltip': _lt('Expected lifetime revenue of an average subscription; obtained by dividing the average MRR of a subscription by the churn rate (e.g. if your average MRR is $ 100 and your churn rate is 5%, the LTV will be $ 100/5% = $ 2,000)'),
         'dir': 'up',
         'prior': 6,
         'type': 'last',
@@ -399,6 +405,7 @@ STAT_TYPES = {
     'logo_churn': {
         'name': _lt('Customer Churn'),
         'code': 'logo_churn',
+        'tooltip': _lt('Number of subscriptions that gets closed during a period'),
         'dir': 'down',
         'prior': 7,
         'type': 'last',
@@ -408,6 +415,7 @@ STAT_TYPES = {
     'revenue_churn': {
         'name': _lt('Revenue Churn'),
         'code': 'revenue_churn',
+        'tooltip': _lt('Reduction in total MRR over the period'),
         'dir': 'down',
         'prior': 8,
         'type': 'last',
@@ -429,12 +437,14 @@ FORECAST_STAT_TYPES = {
     'mrr_forecast': {
         'name': _lt('Forecasted Annual MRR Growth'),
         'code': 'mrr_forecast',
+        'tooltip': _lt('Total subscription revenue per month (e.g. for an annual subscription of $ 1,200, the MRR is $ 100)'),
         'prior': 1,
         'add_symbol': 'currency',
     },
     'contracts_forecast': {
         'name': _lt('Forecasted Annual Subscriptions Growth'),
         'code': 'contracts_forecast',
+        'tooltip': _lt('Total subscription revenue per month (e.g. for an annual subscription of $ 1,200, the MRR is $ 100)'),
         'prior': 2,
         'add_symbol': '',
     },

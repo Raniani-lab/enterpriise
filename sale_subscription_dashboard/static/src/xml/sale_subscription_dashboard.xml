@@ -354,6 +354,7 @@
         <div class="o_graph" t-att-id="widget.chart_div_id"/>
         <div>
             <h4 class="text-center o_chart_title"><t t-esc="widget.box_name"/></h4>
+            <span t-if="widget.tooltip" class="o_kpi_definition" data-toggle="popover" t-att-data-content="widget.tooltip"><i class="fa fa-question-circle"/></span>
         </div>
         <div t-if="!widget.has_mrr">
             <span class="badge badge-warning o_demo_label">Sample data</span>
@@ -368,6 +369,7 @@
             </h2>
         </div>
         <div class="o_graph" t-att-id="widget.chart_div_id"/>
+         <span t-if="widget.tooltip" class="o_kpi_definition" data-toggle="popover" t-att-data-content="widget.tooltip"><i class="fa fa-question-circle"/></span>
         <div>
             <h4 class="text-center o_chart_title"><t t-esc="widget.box_name"/></h4>
         </div>

@@ -20,6 +20,7 @@ class RevenueKPIsDashboard(http.Controller):
                     'name': stat['name'],
                     'dir': stat['dir'],
                     'code': stat['code'],
+                    'tooltip': stat.get('tooltip'),
                     'prior': stat['prior'],
                     'add_symbol': stat['add_symbol'],
                 }
@@ -29,6 +30,7 @@ class RevenueKPIsDashboard(http.Controller):
                 key: {
                     'name': stat['name'],
                     'code': stat['code'],
+                    'tooltip': stat.get('tooltip'),
                     'prior': stat['prior'],
                     'add_symbol': stat['add_symbol'],
                 }

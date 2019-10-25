@@ -895,6 +895,7 @@ var SaleSubscriptionDashboardStatBox = Widget.extend({
         this.stat_types = stat_types;
         this.box_name = box_name;
         this.stat_type = stat_type;
+        this.tooltip = stat_types[stat_type].tooltip;
         this.has_mrr = has_mrr;
 
         this.chart_div_id = 'chart_div_' + this.stat_type;
@@ -926,6 +927,7 @@ var SaleSubscriptionDashboardStatBox = Widget.extend({
         var self = this;
         var display_tooltip = '<b>' + this.box_name + '</b><br/>' + _t('Current Value: ') + this.value;
         this.$el.tooltip({title: display_tooltip, trigger: 'hover'});
+        this.$('[data-toggle="popover"]').popover({trigger: 'hover'});
         return this._super().then(function() {
             load_chart('#'+self.chart_div_id, false, self.computed_graph, false, !self.has_mrr);
         });

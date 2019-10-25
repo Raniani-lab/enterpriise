@@ -93,6 +93,10 @@
             @include o-position-absolute($bottom: 42px, $right: 0);
         }
 
+        .o_kpi_definition {
+            @include o-position-absolute($bottom: 18px, $left: 10px);
+        }
+
         .o_graph {
             position: relative;
             opacity: 0.3;

@@ -6,6 +6,7 @@ import json
 
 import requests
 import werkzeug
+import urllib.parse
 from werkzeug.urls import url_encode, url_join
 
 from odoo import http, _
@@ -159,3 +160,30 @@ class SocialFacebookController(http.Controller):
 
         result['formatted_created_time'] = request.env['social.stream.post']._format_facebook_published_date(result)
         return json.dumps(result)
+
+    # ========================================================
+    # Redirection to Facebook
+    # ========================================================
+
+    @http.route(['/social_facebook/redirect_to_profile/<int:account_id>/<facebook_user_id>'], type='http', auth='user')
+    def facebook_redirect_to_profile(self, account_id, facebook_user_id, name=''):
+        """
+        All profiles are not available through a direct link so we need to
+        - Try to get a direct link to their profile
+        - If we can't, we perform a search on Facebook with their name
+        """
+        account = request.env['social.account'].browse(account_id)
+
+        endpoint_url = url_join(request.env['social.media']._FACEBOOK_ENDPOINT, '/v4.0/%s?fields=name,link' % facebook_user_id)
+
+        json_response = requests.get(endpoint_url, params={
+            'access_token': account.facebook_access_token
+        }).json()
+
+        profile_url = json_response.get('link')
+        if profile_url:
+            redirect_url = profile_url
+        else:
+            redirect_url = 'https://www.facebook.com/search/?q=%s' % urllib.parse.quote(name)
+
+        return werkzeug.utils.redirect(redirect_url)

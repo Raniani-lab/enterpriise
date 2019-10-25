@@ -3,6 +3,7 @@
 
 import dateutil.parser
 import requests
+import urllib.parse
 
 from odoo import api, models, fields
 from werkzeug.urls import url_join
@@ -26,7 +27,7 @@ class SocialStreamPostFacebook(models.Model):
         super(SocialStreamPostFacebook, (self - facebook_posts))._compute_author_link()
 
         for post in facebook_posts:
-            post.author_link = 'https://www.facebook.com/%s' % post.facebook_author_id
+            post.author_link = '/social_facebook/redirect_to_profile/%s/%s?name=%s' % (post.account_id.id, post.facebook_author_id, urllib.parse.quote(post.author_name))
 
     def _compute_post_link(self):
         facebook_posts = self.filtered(lambda post: post.stream_id.media_id.media_type == 'facebook')

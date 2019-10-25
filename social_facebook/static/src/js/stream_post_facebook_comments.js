@@ -60,7 +60,7 @@ var StreamPostFacebookComments = StreamPostComments.extend({
     },
 
     getAuthorLink: function (comment) {
-        return _.str.sprintf("https://www.facebook.com/%s", comment.from.id);
+        return _.str.sprintf("/social_facebook/redirect_to_profile/%s/%s?name=%s", this.accountId, comment.from.id, encodeURI(comment.from.name));
     },
 
     isCommentEditable: function (comment) {

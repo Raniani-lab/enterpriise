@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import datetime
-from email.utils import formataddr
-from datetime import time
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, tools, _
 from odoo.osv import expression
 from odoo.exceptions import AccessError
-from odoo.osv import expression
 
 TICKET_PRIORITY = [
     ('0', 'All'),
@@ -417,7 +413,7 @@ class HelpdeskTicket(models.Model):
             if 'partner_name' in vals and 'partner_email' in vals and 'partner_id' not in vals:
                 try:
                     vals['partner_id'] = self.env['res.partner'].find_or_create(
-                        formataddr((vals['partner_name'], vals['partner_email']))
+                        tools.formataddr((vals['partner_name'], vals['partner_email']))
                     )
                 except UnicodeEncodeError:
                     # 'formataddr' doesn't support non-ascii characters in email. Therefore, we fall

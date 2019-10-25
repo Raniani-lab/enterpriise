@@ -286,6 +286,7 @@ class SocialPost(models.Model):
 
         if posts_to_complete:
             posts_to_complete.sudo().write({'state': 'posted'})
+            posts_to_complete._message_log(body=_("Message posted"))
 
     @api.model
     def _cron_publish_scheduled(self):

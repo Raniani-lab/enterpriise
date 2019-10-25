@@ -326,7 +326,12 @@ class WebStudioController(http.Controller):
         # Optional default value at creation
         default_value = values.pop('default_value', False)
 
-        # Create new field
+        # Filter out invalid field names and create new field
+        values = {
+            k: v
+            for k, v in values.items()
+            if k in request.env['ir.model.fields']._fields
+        }
         new_field = request.env['ir.model.fields'].create(values)
 
         if default_value:

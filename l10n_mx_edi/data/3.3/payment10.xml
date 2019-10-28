@@ -83,8 +83,8 @@
                                 t-att-MetodoDePagoDR="invoice.l10n_mx_edi_get_payment_method_cfdi()"
                                 t-att-NumParcialidad="len(invoice._get_reconciled_payments().filtered(lambda p: p.state not in ('draft', 'cancelled') and not p.move_line_ids.mapped('move_id.reversed_entry_id')).ids)"
                                 t-att-ImpSaldoAnt="'%0.*f' % (decimal_precision, invoice.amount_residual + amount_payment)"
-                                t-att-ImpPagado="'%0.*f' % (decimal_precision, amount_payment - writeoff_vals.get(invoice.id, 0))"
-                                t-att-ImpSaldoInsoluto="'%0.*f' % (decimal_precision, amount_insoluto + writeoff_vals.get(invoice.id, 0))"/>
+                                t-att-ImpPagado="'%0.*f' % (decimal_precision, amount_payment - (writeoff_vals.get(invoice.id, 0) if invoice.currency_id == record.currency_id else 0))"
+                                t-att-ImpSaldoInsoluto="'%0.*f' % (decimal_precision, amount_insoluto + (writeoff_vals.get(invoice.id, 0) if invoice.currency_id == record.currency_id else 0))"/>
                         </t>
                         <t t-if="total_transferred or total_withhold">
                             <pago10:Impuestos

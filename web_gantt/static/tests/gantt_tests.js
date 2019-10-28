@@ -2779,6 +2779,28 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('dynamic_range attribute', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" default_group_by="user_id" dynamic_range="1" default_scale="month"/>',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        var $headerScale = gantt.$el.find('.o_gantt_header_scale');
+        var $headerCells = $headerScale.find('.o_gantt_header_cell');
+
+        assert.strictEqual($headerCells[0].innerText.trim(), String(initialDate.getDate()),
+            'should start at the first record, not at the beginning of the month');
+
+        gantt.destroy();
+    });
+
     QUnit.test('collapse_first_level attribute with single-level grouped', async function (assert) {
         assert.expect(13);
 

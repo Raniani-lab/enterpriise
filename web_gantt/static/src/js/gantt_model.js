@@ -99,6 +99,7 @@ var GanttModel = AbstractModel.extend({
      * @param {boolean} params.displayUnavailability
      * @param {Array[]} params.domain
      * @param {Object} params.fields
+     * @param {boolean} params.dynamicRange
      * @param {string[]} params.groupedBy
      * @param {Moment} params.initialDate
      * @param {string} params.modelName
@@ -116,6 +117,7 @@ var GanttModel = AbstractModel.extend({
         this.consolidationParams = params.consolidationParams;
         this.collapseFirstLevel = params.collapseFirstLevel;
         this.displayUnavailability = params.displayUnavailability;
+        this.SCALES = params.SCALES;
 
         this.defaultGroupBy = params.defaultGroupBy ? [params.defaultGroupBy] : [];
         if (!params.groupedBy || !params.groupedBy.length) {
@@ -128,6 +130,7 @@ var GanttModel = AbstractModel.extend({
             dateStopField: params.dateStopField,
             groupedBy: params.groupedBy,
             fields: params.fields,
+            dynamicRange: params.dynamicRange,
         };
         this._setRange(params.initialDate, params.scale);
         return this._fetchData().then(function () {
@@ -548,8 +551,13 @@ var GanttModel = AbstractModel.extend({
     _setRange: function (focusDate, scale) {
         this.ganttData.scale = scale;
         this.ganttData.focusDate = focusDate;
-        this.ganttData.startDate = focusDate.clone().startOf(scale);
-        this.ganttData.stopDate = focusDate.clone().endOf(scale);
+        if (this.ganttData.dynamicRange) {
+            this.ganttData.startDate = focusDate.clone().startOf(this.SCALES[scale].interval);
+            this.ganttData.stopDate = this.ganttData.startDate.clone().add(1, scale);
+        } else {
+            this.ganttData.startDate = focusDate.clone().startOf(scale);
+            this.ganttData.stopDate = focusDate.clone().endOf(scale);
+        }
     },
     /**
      * Remove date in groupedBy field

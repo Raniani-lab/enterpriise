@@ -393,7 +393,7 @@ var GanttRenderer = AbstractRenderer.extend({
     },
     /**
      * @private
-     * @param {OdooEvent} event 
+     * @param {OdooEvent} event
      */
     _onStartDragging: function (event) {
         this.$draggedPill = event.data.$draggedPill;

@@ -616,12 +616,12 @@
         <menuitem id="account_reports_partners_reports_menu" name="Partner Reports" parent="account.menu_finance_reports" sequence="2"/>
         <menuitem id="account_reports_audit_reports_menu" name="Audit Reports" parent="account.menu_finance_reports" sequence="3"/>
 
-        <menuitem id="menu_action_account_report_partner_ledger" name="Partner Ledger" action="action_account_report_partner_ledger" parent="account_reports_partners_reports_menu" groups="account.group_account_user"/>
+        <menuitem id="menu_action_account_report_partner_ledger" name="Partner Ledger" action="action_account_report_partner_ledger" parent="account_reports_partners_reports_menu" groups="account.group_account_readonly"/>
         <menuitem id="menu_action_account_report_aged_receivable" name="Aged Receivable" action="action_account_report_ar" parent="account_reports_partners_reports_menu"/>
         <menuitem id="menu_action_account_report_aged_payable" name="Aged Payable" action="action_account_report_ap" parent="account_reports_partners_reports_menu"/>
-        <menuitem id="menu_action_account_report_general_ledger" name="General Ledger" action="action_account_report_general_ledger" parent="account_reports_audit_reports_menu" groups="account.group_account_user"/>
-        <menuitem id="menu_action_account_report_coa" name="Trial Balance" action="action_account_report_coa" parent="account_reports_audit_reports_menu" groups="account.group_account_user"/>
-        <menuitem id="menu_action_account_report_cj" name="Consolidated Journals" action="action_account_report_cj" parent="account_reports_audit_reports_menu" groups="account.group_account_user"/>
+        <menuitem id="menu_action_account_report_general_ledger" name="General Ledger" action="action_account_report_general_ledger" parent="account_reports_audit_reports_menu" groups="account.group_account_readonly"/>
+        <menuitem id="menu_action_account_report_coa" name="Trial Balance" action="action_account_report_coa" parent="account_reports_audit_reports_menu" groups="account.group_account_readonly"/>
+        <menuitem id="menu_action_account_report_cj" name="Consolidated Journals" action="action_account_report_cj" parent="account_reports_audit_reports_menu" groups="account.group_account_readonly"/>
         <menuitem id="menu_action_account_report_gt" name="Tax Report" action="action_account_report_gt" parent="account_reports_audit_reports_menu"/>
         <menuitem id="menu_action_report_account_analytic" name="Analytic Report" action="action_account_report_analytic" parent="account.account_reports_management_menu" groups="analytic.group_analytic_accounting"/>
 
@@ -661,6 +661,6 @@
             <field name="action_id" ref='action_account_report_bs' />
         </record>
 
-        <menuitem id="menu_action_account_report_cash_flow" name="Cash Flow Statement" action="action_account_report_cs" parent="account.account_reports_legal_statements_menu" groups="account.group_account_user"/>
+        <menuitem id="menu_action_account_report_cash_flow" name="Cash Flow Statement" action="action_account_report_cs" parent="account.account_reports_legal_statements_menu" groups="account.group_account_readonly"/>
     </data>
 </odoo>

@@ -31,7 +31,7 @@
             </xpath>
             <xpath expr="//sheet" position="before">
                 <!-- Invoice suspense accounts -->
-                <div groups="account.group_account_invoice" class="alert alert-info" role="alert" style="margin-bottom:0px;"
+                <div groups="account.group_account_invoice,account.group_account_readonly" class="alert alert-info" role="alert" style="margin-bottom:0px;"
                      attrs="{'invisible': ['|', ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')), ('invoice_has_matching_suspense_amount','=',False)]}">
                     You have suspense account moves that match this invoice. <bold><button class="alert-link" type="object" name="action_open_matching_suspense_moves" role="button" string="Check them" style="padding: 0;vertical-align: baseline;"/></bold> to mark this invoice as paid.
                 </div>
@@ -44,6 +44,7 @@
             <field name="model_id" ref="account.model_account_move_line"/>
             <field name="binding_model_id" ref="account.model_account_move_line" />
             <field name="state">code</field>
+            <field name="groups_id" eval="[(4,ref('account.group_account_user'))]"/>
             <field name="code">
 if records:
     action = records.action_reconcile()

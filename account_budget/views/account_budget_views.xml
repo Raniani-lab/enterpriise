@@ -363,7 +363,7 @@ Budgets
     <menuitem parent="account.account_reports_management_menu"
               id="menu_act_crossovered_budget_lines_view"
               action="act_crossovered_budget_lines_view" sequence="20"
-              groups="account.group_account_user"/>
+              groups="account.group_account_readonly"/>
 
     <act_window name="Budget Items"
                 context="{'search_default_analytic_account_id': [active_id], 'default_analytic_account_id': active_id}"

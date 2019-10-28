@@ -12,7 +12,7 @@
 
         <menuitem id="spanish_reports_menu" name="Spain" parent="account.menu_finance_reports" sequence="0"/>
 
-        <menuitem id="spanish_balance_sheet_menu" groups="account.group_account_user" name="Balance Sheet" action="spanish_balance_sheet_action"  parent="spanish_reports_menu"/>
+        <menuitem id="spanish_balance_sheet_menu" groups="account.group_account_readonly" name="Balance Sheet" action="spanish_balance_sheet_action"  parent="spanish_reports_menu"/>
 
     </data>
 </odoo>

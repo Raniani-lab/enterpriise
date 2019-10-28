@@ -105,7 +105,7 @@
     <template id="search_template_extra_options">
         <a type="button" class="dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-filter"/> Options:
-            <t t-if="options.get('all_entries') != None" groups="account.group_account_user">
+            <t t-if="options.get('all_entries') != None" groups="account.group_account_readonly">
                 <t t-if="options['all_entries']">With Draft Entries</t>
                 <t t-if="not options['all_entries']">Posted Entries Only</t>
             </t>
@@ -115,7 +115,7 @@
             </t>
         </a>
         <div class="dropdown-menu o_filters_menu" role="menu">
-            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('all_entries') != None" title="Include unposted entries" data-filter="all_entries" groups="account.group_account_user">Include Unposted Entries</a>
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('all_entries') != None" title="Include unposted entries" data-filter="all_entries" groups="account.group_account_readonly">Include Unposted Entries</a>
             <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('hierarchy') != None" title="Hierarchy" data-filter="hierarchy">Hierarchy and Subtotals</a>
             <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('unreconciled') != None" title="Unreconciled" data-filter="unreconciled">Only Show Unreconciled Entries</a>
             <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('unfold_all') != None" title="Unfold" data-filter="unfold_all">Unfold All</a>
@@ -287,7 +287,7 @@
                 </t>
             </a>
             <div class="dropdown-menu o_filters_menu" role="menu">
-                <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" title="Global Summary" data-filter="tax_report" t-att-data-id="None" groups="account.group_account_user">Global Summary</a>
+                <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" title="Global Summary" data-filter="tax_report" t-att-data-id="None" groups="account.group_account_readonly">Global Summary</a>
                 <t t-foreach="options['available_tax_reports']" t-as="report">
                     <a tole="menuitem" class="dropdown-item js_account_reports_one_choice_filter" t-att-title="report['name']" t-att-data-id="report['id']" data-filter="tax_report">
                         <t t-esc="report['name']"/>

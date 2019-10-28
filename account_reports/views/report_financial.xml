@@ -310,7 +310,7 @@
         </t>
     </xpath>
     <xpath expr="//*[hasclass('dropdown-menu')]" position="inside">
-        <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-parent-id="line['parent_id']" class="o_change_expected_date dropdown-item">Change expected payment date</a>
+        <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-parent-id="line['parent_id']" class="o_change_expected_date dropdown-item" groups="account.group_account_user">Change expected payment date</a>
     </xpath>
 </template>
 
@@ -323,14 +323,14 @@
 <!-- Business Statements Aged receivable templates  -->
  <template id="line_template_aged_receivable_report" inherit_id="account_reports.template_aged_partner_balance_line_report" primary="True">
      <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
-        &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
+        &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports"  groups="account.group_account_user">Reconcile</a>
      </xpath>
  </template>
 
  <!-- Business Statements Aged Payable templates -->
  <template id="line_template_aged_payable_report" inherit_id="account_reports.template_aged_partner_balance_line_report" primary="True">
      <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
-        &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
+        &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports" groups="account.group_account_user">Reconcile</a>
      </xpath>
  </template>
 

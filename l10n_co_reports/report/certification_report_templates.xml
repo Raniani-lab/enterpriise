@@ -148,7 +148,7 @@
             report_type="qweb-pdf"
             name="l10n_co_reports.report_certification"
             file="l10n_co_reports.report_certification"
-            groups="account.group_account_user"
+            groups="account.group_account_readonly"
             menu="False"/>
     </data>
 </odoo>

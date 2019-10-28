@@ -167,7 +167,7 @@ if records:
             </field>
         </record>
 
-        <menuitem action="action_batch_payment_in" id="menu_batch_payment_sales" parent="account.menu_finance_receivables" sequence="18" groups="account.group_account_user"/>
-        <menuitem action="action_batch_payment_out" id="menu_batch_payment_purchases" parent="account.menu_finance_payables" sequence="21" groups="account.group_account_user"/>
+        <menuitem action="action_batch_payment_in" id="menu_batch_payment_sales" parent="account.menu_finance_receivables" sequence="18" groups="account.group_account_readonly"/>
+        <menuitem action="action_batch_payment_out" id="menu_batch_payment_purchases" parent="account.menu_finance_payables" sequence="21" groups="account.group_account_readonly"/>
 
 </odoo>

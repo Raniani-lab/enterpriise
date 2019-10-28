@@ -429,6 +429,12 @@ class TestAmazon(TransactionCase):
         self.assertFalse(product.sale_ok)
         self.assertFalse(product.purchase_ok)
 
+    def test_get_product_no_fallback(self):
+        """ Test the product search failure without regeneration of the fallback. """
+        self.assertFalse(self.account._get_product(
+            'INCORRECT_CODE', 'test_xmlid', 'Default Name', 'consu', fallback=False))
+        self.assertFalse(self.env.ref('sale_amazon.test_xmlid', raise_if_not_found=False))
+
     def test_get_pricelist_search(self):
         """ Test the pricelist search. """
         currency = self.env['res.currency'].create({

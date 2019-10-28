@@ -375,7 +375,7 @@ class AmazonAccount(models.Model):
                     if order.amazon_channel == 'fba':
                         self._generate_stock_moves(order)
                     elif order.amazon_channel == 'fbm':
-                        order.action_done()
+                        order.with_context(mail_notrack=True).action_done()
                     _logger.info("synchronized sale.order with amazon_order_ref %s for "
                                  "amazon.account with id %s" % (amazon_order_ref, self.id))
                 elif order_found:  # Order already sync
@@ -532,21 +532,22 @@ class AmazonAccount(models.Model):
         
         return new_order_lines_vals
 
-    def _get_product(self, product_code, default_xmlid, default_name, default_type):
+    def _get_product(self, product_code, default_xmlid, default_name, default_type, fallback=True):
         """
         Find a product by its internal reference with a fallback to a default product.
         :param product_code: the code of the item to match with the internal reference of a product
         :param default_xmlid: the xmlid of the default product to use as fallback
         :param default_name: the name of the default product to use as fallback
         :param default_type: the type of the default product to use as fallback
+        :param fallback: whether a fallback to the default product is needed
         """
         self.ensure_one()
         product = self.env['product.product'].search(
             [('default_code', '=', product_code), '|', ('product_tmpl_id.company_id', '=', False),
              ('product_tmpl_id.company_id', '=', self.company_id.id)], limit=1)
-        if not product:  # Fallback to the default product
+        if not product and fallback:  # Fallback to the default product
             product = self.env.ref('sale_amazon.%s' % default_xmlid, raise_if_not_found=False)
-        if not product:  # Restore the default product if it was deleted
+        if not product and fallback:  # Restore the default product if it was deleted
             product = self.env['product.product']._restore_data_product(
                 default_name, default_type, default_xmlid)
         return product
@@ -665,6 +666,15 @@ class AmazonAccount(models.Model):
                 'product_id': self._get_product(sku, 'default_product', 'Amazon Sales', 'consu').id,
                 'sku': sku,
             })
+        # If the offer has been linked with the default product, search if another product has now
+        # been assigned the current SKU as internal reference and update the offer if so.
+        # This trades off a bit of performance in exchange for a more expected behavior for the
+        # matching of products if one was assigned the right SKU after that the offer was created.
+        elif 'sale_amazon.default_product' in offer.product_id._get_external_ids().get(
+                offer.product_id.id, []):
+            product = self._get_product(sku, None, None, None, fallback=False)
+            if product:
+                offer.product_id = product.id
         return offer
 
     def _recompute_subtotal(self, subtotal, tax_amount, taxes, currency, _fiscal_pos=None):

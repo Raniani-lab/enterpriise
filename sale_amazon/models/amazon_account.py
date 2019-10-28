@@ -14,6 +14,7 @@ _logger = logging.getLogger(__name__)
 class AmazonAccount(models.Model):
     _name = 'amazon.account'
     _description = "Amazon Account"
+    _check_company_auto = True
     
     name = fields.Char("Name", help="A user-defined name for the account", required=True)
 
@@ -40,15 +41,17 @@ class AmazonAccount(models.Model):
         help="The marketplaces this account sells on",
         domain="[('id', 'in', available_marketplace_ids)]", copy=False)
     
-    user_id = fields.Many2one('res.users', "Salesperson", default=lambda self: self.env.user)
+    user_id = fields.Many2one(
+        'res.users', "Salesperson", default=lambda self: self.env.user, check_company=True)
     team_id = fields.Many2one(
-        'crm.team', "Sales Team", help="The Sales Team assigned to Amazon orders for reporting")
+        'crm.team', "Sales Team", help="The Sales Team assigned to Amazon orders for reporting",
+        check_company=True)
     company_id = fields.Many2one(
         'res.company', "Company", default=lambda self: self.env.company, required=True)
     location_id = fields.Many2one(
         'stock.location', "Stock Location",
         help="The location of the stock managed by Amazon under the Amazon Fulfillment program",
-        domain="[('usage', '=', 'internal')]")
+        domain="[('usage', '=', 'internal'), ('company_id', '=', company_id)]", check_company=True)
     active = fields.Boolean(
         "Active", help="If made inactive, this account will no longer be synchronized with Amazon",
         default=True, required=True)

@@ -5,6 +5,7 @@
         <field name="model">event.event</field>
         <field name="arch" type="xml">
             <gantt
+                plan="0"
                 color="color"
                 date_start="date_begin"
                 date_stop="date_end"

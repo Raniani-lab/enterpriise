@@ -11,7 +11,7 @@
                 string="Tracks"
                 color="color"
                 default_group_by="location_id"
-                default_scale="year">
+                dynamic_range="1">
                 <templates>
                     <div t-name="gantt-popover" class="container-fluid">
                         <div class="row no-gutters">
@@ -26,6 +26,26 @@
                 </templates>
                 <field name="partner_name"/>
             </gantt>
+        </field>
+    </record>
+
+    <record id="event_view_form" model="ir.ui.view">
+        <field name="name">event.event.view.form.inherit</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='track_count']/.." position='replace'>
+                <field name="track_gantt_initial_date" invisible="1"/>
+                <field name="track_gantt_scale" invisible="1"/>
+                <button
+                    name="%(website_event_track.action_event_track_from_event)d"
+                    type="action"
+                    class="oe_stat_button"
+                    icon="fa-inbox"
+                    context="{'default_date': date_begin, 'initialDate': track_gantt_initial_date, 'default_scale': track_gantt_scale}">
+                    <field name="track_count" string="Tracks" widget="statinfo"/>
+                </button>
+            </xpath>
         </field>
     </record>
 

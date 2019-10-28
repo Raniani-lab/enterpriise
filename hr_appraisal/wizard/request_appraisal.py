@@ -23,12 +23,12 @@ class RequestAppraisal(models.TransientModel):
             'email_from': formataddr((self.env.user.name, self.env.user.email)),
             'author_id': self.env.user.partner_id.id,
         })
-        if self.env.context.get('active_model') == 'hr.employee':
+        if self.env.context.get('active_model') in ('hr.employee', 'hr.employee.public'):
             employee = self.env['hr.employee'].browse(self.env.context['active_id'])
             template = self.env.ref('hr_appraisal.mail_template_appraisal_request', raise_if_not_found=False)
             result.update({
                 'template_id': template and template.id or False,
-                'recipient_id': employee.user_id.partner_id.id or employee.address_home_id.id,
+                'recipient_id': employee.user_id.partner_id.id,
                 'employee_id': employee.id,
             })
         if self.env.context.get('active_model') == 'res.users':

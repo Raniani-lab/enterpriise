@@ -50,6 +50,7 @@ class HrAppraisal(models.Model):
         appraisal_user = user.has_group('hr_appraisal.group_hr_appraisal_user')
         for appraisal in self:
             appraisal.is_autorized_to_send = appraisal_user or \
+                user.employee_id == appraisal.employee_id.parent_id or \
                 user.employee_id == appraisal.employee_id and user != appraisal.create_uid
 
     @api.onchange('employee_id')

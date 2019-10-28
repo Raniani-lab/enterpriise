@@ -190,7 +190,7 @@ class ReportPartnerLedger(models.AbstractModel):
                 account_move_line.name,
                 account_move_line.ref,
                 account_move_line.company_id,
-                account_move_line.account_id,             
+                account_move_line.account_id,
                 account_move_line.payment_id,
                 account_move_line.partner_id,
                 account_move_line.currency_id,
@@ -306,6 +306,7 @@ class ReportPartnerLedger(models.AbstractModel):
 
         return {
             'id': 'partner_%s' % partner.id,
+            'partner_id': partner.id,
             'name': partner.name[:128],
             'columns': columns,
             'level': 2,

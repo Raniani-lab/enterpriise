@@ -26,6 +26,8 @@ class HrPayslip(models.Model):
              'to the contract chosen. If you let empty the field contract, this field isn\'t '
              'mandatory anymore and thus the rules applied will be all the rules set on the '
              'structure of all contracts of the employee valid for the chosen period')
+    struct_type_id = fields.Many2one('hr.payroll.structure.type', related='struct_id.type_id')
+    wage_type = fields.Selection(related='struct_type_id.wage_type')
     name = fields.Char(string='Payslip Name', readonly=True, required=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     number = fields.Char(string='Reference', readonly=True, copy=False,
@@ -69,6 +71,8 @@ class HrPayslip(models.Model):
     payslip_run_id = fields.Many2one('hr.payslip.run', string='Batch Name', readonly=True,
         copy=False, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, ondelete='cascade',
         domain="[('company_id', '=', company_id)]")
+    sum_worked_hours = fields.Float(compute='_compute_worked_hours', store=True, help='Total hours of attendance and time off (paid or not)')
+    normal_wage = fields.Integer(compute='_compute_normal_wage', store=True)
     compute_date = fields.Date('Computed On')
     basic_wage = fields.Monetary(compute='_compute_basic_net')
     net_wage = fields.Monetary(compute='_compute_basic_net')
@@ -85,6 +89,16 @@ class HrPayslip(models.Model):
         for payslip in self:
             payslip.basic_wage = payslip._get_salary_line_total('BASIC')
             payslip.net_wage = payslip._get_salary_line_total('NET')
+
+    @api.depends('worked_days_line_ids.number_of_hours', 'worked_days_line_ids.is_paid')
+    def _compute_worked_hours(self):
+        for payslip in self:
+            payslip.sum_worked_hours = sum([line.number_of_hours for line in payslip.worked_days_line_ids])
+
+    @api.depends('contract_id')
+    def _compute_normal_wage(self):
+        for payslip in self:
+            payslip.normal_wage = payslip._get_contract_wage()
 
     @api.constrains('date_from', 'date_to')
     def _check_dates(self):
@@ -117,7 +131,6 @@ class HrPayslip(models.Model):
                     'res_model': payslip._name,
                     'res_id': payslip.id
                 })
-
 
     def action_payslip_cancel(self):
         if self.filtered(lambda slip: slip.state == 'done'):
@@ -182,17 +195,12 @@ class HrPayslip(models.Model):
         self.ensure_one()
         contract = self.contract_id
         if contract.resource_calendar_id:
-            paid_amount = self._get_contract_wage()
-            unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids.ids
-
             work_hours = contract._get_work_hours(self.date_from, self.date_to)
-            total_hours = sum(work_hours.values()) or 1
             work_hours_ordered = sorted(work_hours.items(), key=lambda x: x[1])
             biggest_work = work_hours_ordered[-1][0] if work_hours_ordered else 0
             add_days_rounding = 0
             for work_entry_type_id, hours in work_hours_ordered:
                 work_entry_type = self.env['hr.work.entry.type'].browse(work_entry_type_id)
-                is_paid = work_entry_type_id not in unpaid_work_entry_types
                 calendar = contract.resource_calendar_id
                 days = round(hours / calendar.hours_per_day, 5) if calendar.hours_per_day else 0
                 if work_entry_type_id == biggest_work:
@@ -204,7 +212,6 @@ class HrPayslip(models.Model):
                     'work_entry_type_id': work_entry_type_id,
                     'number_of_days': day_rounded,
                     'number_of_hours': hours,
-                    'amount': hours * paid_amount / total_hours if is_paid else 0,
                 }
                 res.append(attendance_line)
         return res
@@ -310,6 +317,7 @@ class HrPayslip(models.Model):
             worked_days_line_values = self._get_worked_day_lines()
             worked_days_lines = self.worked_days_line_ids.browse([])
             for r in worked_days_line_values:
+                r['payslip_id'] = self.id
                 worked_days_lines |= worked_days_lines.new(r)
             return worked_days_lines
         else:
@@ -405,10 +413,22 @@ class HrPayslipWorkedDays(models.Model):
     work_entry_type_id = fields.Many2one('hr.work.entry.type', string='Type', required=True, help="The code that can be used in the salary rules")
     number_of_days = fields.Float(string='Number of Days')
     number_of_hours = fields.Float(string='Number of Hours')
-    amount = fields.Monetary(string='Amount', digits='Payroll', default=0.0)
-    contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract', required=True,
+    is_paid = fields.Boolean(compute='_compute_is_paid', store=True)
+    amount = fields.Monetary(string='Amount', digits='Payroll', compute='_compute_amount', store=True)
+    contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract',
         help="The contract for which applied this worked days")
     currency_id = fields.Many2one('res.currency', related='payslip_id.currency_id')
+
+    @api.depends('work_entry_type_id', 'payslip_id', 'payslip_id.struct_id')
+    def _compute_is_paid(self):
+        unpaid = {struct.id: struct.unpaid_work_entry_type_ids.ids for struct in self.mapped('payslip_id.struct_id')}
+        for worked_days in self:
+            worked_days.is_paid = worked_days.work_entry_type_id.id not in unpaid[worked_days.payslip_id.struct_id.id] if worked_days.payslip_id.struct_id.id in unpaid else False
+
+    @api.depends('is_paid', 'number_of_hours', 'payslip_id', 'payslip_id.normal_wage', 'payslip_id.sum_worked_hours')
+    def _compute_amount(self):
+        for worked_days in self:
+            worked_days.amount = worked_days.payslip_id.normal_wage * worked_days.number_of_hours / (worked_days.payslip_id.sum_worked_hours or 1) if worked_days.is_paid else 0
 
 
 class HrPayslipInput(models.Model):

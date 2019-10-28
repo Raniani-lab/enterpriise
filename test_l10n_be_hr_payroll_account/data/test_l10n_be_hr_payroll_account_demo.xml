@@ -61,7 +61,7 @@
     </record>
     <record id="hr_line_admin2" model="hr.payslip.worked_days">
         <field name="name">Sick leave</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_long_leave"/>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_long_leave"/>
         <field name="number_of_days">2</field>
         <field name="number_of_hours">16</field>
         <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
@@ -90,7 +90,7 @@
     </record>
     <record id="hr_line_demo2" model="hr.payslip.worked_days">
         <field name="name">Extra work</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_home_working"/>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_home_working"/>
         <field name="number_of_days">1.5</field>
         <field name="number_of_hours">12</field>
         <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
@@ -98,7 +98,7 @@
     </record>
     <record id="hr_line_demo3" model="hr.payslip.worked_days">
         <field name="name">Paid Time Off</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_leave"/>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_leave"/>
         <field name="number_of_days">4</field>
         <field name="number_of_hours">32</field>
         <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
@@ -158,7 +158,7 @@
     </record>
     <record id="hr_line_demo2_may" model="hr.payslip.worked_days">
         <field name="name">Extra work</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_home_working"/>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_home_working"/>
         <field name="number_of_days">0.5</field>
         <field name="number_of_hours">4</field>
         <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
@@ -166,7 +166,7 @@
     </record>
     <record id="hr_line_demo3_may" model="hr.payslip.worked_days">
         <field name="name">Sick Time Off</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_long_leave"/>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_long_leave"/>
         <field name="number_of_days">1</field>
         <field name="number_of_hours">8</field>
         <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
@@ -210,7 +210,7 @@
 
     <record id="hr_line_lap_january_demo2" model="hr.payslip.worked_days">
         <field name="name">Legal leave</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_leave"/>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_leave"/>
         <field name="number_of_days">4</field>
         <field name="number_of_hours">32</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -380,7 +380,7 @@
 
     <record id="hr_line_lap_august_demo2" model="hr.payslip.worked_days">
         <field name="name">Legal leave</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_leave"/>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_leave"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -1751,7 +1751,7 @@
         <field name="validity_start" eval="time.strftime('%Y-%m-01')"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_legal_leave"></field>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"></field>
     </record>
 
     <!-- Sick leave -->
@@ -1763,7 +1763,7 @@
         <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave_sick')"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_sick_leave"></field>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_sick_leave"></field>
     </record>
 
     <!-- Compensatory Days -->
@@ -1777,7 +1777,7 @@
         <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_compensatory"></field>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_compensatory"></field>
     </record>
 
     <!--Unpaid Leave -->
@@ -1792,7 +1792,7 @@
         <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave_unpaid')"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_unpaid_leave"></field>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_unpaid_leave"></field>
     </record>
 
     <record id="hr_holiday_status_dv" model="hr.leave.type">
@@ -1803,7 +1803,7 @@
         <field name="validity_start" eval="False"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_sick_leave"></field>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_sick_leave"></field>
     </record>
 
     <record id="hr_holidays_allocation_cl" model="hr.leave.allocation">

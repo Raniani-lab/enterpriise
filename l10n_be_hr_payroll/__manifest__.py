@@ -4,7 +4,7 @@
 {
     'name': 'Belgium - Payroll',
     'category': 'Payroll Localization',
-    'depends': ['hr_payroll', 'hr_contract_reports'],
+    'depends': ['hr_payroll', 'hr_contract_reports', 'hr_work_entry_holidays'],
     'description': """
 Belgian Payroll Rules.
 ======================

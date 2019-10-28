@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import os
 import datetime
 
-from odoo.tools import config, test_reports
 from odoo.addons.hr_payroll.tests.common import TestPayslipBase
 
 

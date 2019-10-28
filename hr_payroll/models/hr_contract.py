@@ -1,12 +1,10 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import date, datetime, time
+from datetime import datetime
 from collections import defaultdict
 from odoo import api, fields, models
 from odoo.tools import date_utils
-
-import pytz
 
 
 class HrContract(models.Model):
@@ -23,16 +21,7 @@ class HrContract(models.Model):
     wage_type = fields.Selection([('monthly', 'Monthly Fixed Wage'), ('hourly', 'Hourly Wage')], related='structure_type_id.wage_type')
     hourly_wage = fields.Monetary('Hourly Wage', digits=(16, 2), default=0, required=True, tracking=True, help="Employee's hourly gross wage.")
 
-    date_generated_from = fields.Datetime(string='Generated From', readonly=True, required=True,
-        default=lambda self: datetime.now().replace(hour=0, minute=0, second=0))
-    date_generated_to = fields.Datetime(string='Generated To', readonly=True, required=True,
-        default=lambda self: datetime.now().replace(hour=0, minute=0, second=0))
-
     company_country_id = fields.Many2one('res.country', string="Company country", related='company_id.country_id', readonly=True)
-
-    @api.constrains('date_start', 'date_end', 'state')
-    def _check_contracts(self):
-        self._get_leaves()._check_contracts()
 
     @api.onchange('structure_type_id')
     def _onchange_structure_type_id(self):
@@ -50,116 +39,6 @@ class HrContract(models.Model):
                 self.structure_type_id = structure_types[0]
             elif self.structure_type_id not in structure_types:
                 self.structure_type_id = False
-
-    def _get_leaves(self):
-        return self.env['hr.leave'].search([
-            ('employee_id', 'in', self.mapped('employee_id.id')),
-            ('date_from', '<=', max([end or date.max for end in self.mapped('date_end')])),
-            ('date_to', '>=', min(self.mapped('date_start'))),
-        ])
-
-    def _get_work_entries_values(self, date_start, date_stop):
-        """
-        Generate a work_entries list between date_start and date_stop for one contract.
-        :return: list of dictionnary.
-        """
-        default_work_entry_type = self.structure_type_id.default_work_entry_type_id
-        vals_list = []
-
-        for contract in self:
-            contract_vals = []
-            employee = contract.employee_id
-            calendar = contract.resource_calendar_id
-            resource = employee.resource_id
-
-            attendances = calendar._work_intervals(
-                pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
-                pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-                resource=resource
-            )
-            # Attendances
-            for interval in attendances:
-                work_entry_type_id = interval[2].mapped('work_entry_type_id')[:1] or default_work_entry_type
-                # All benefits generated here are using datetimes converted from the employee's timezone
-                contract_vals += [{
-                    'name': "%s: %s" % (work_entry_type_id.name, employee.name),
-                    'date_start': interval[0].astimezone(pytz.utc).replace(tzinfo=None),
-                    'date_stop': interval[1].astimezone(pytz.utc).replace(tzinfo=None),
-                    'work_entry_type_id': work_entry_type_id.id,
-                    'employee_id': employee.id,
-                    'contract_id': contract.id,
-                    'company_id': contract.company_id.id,
-                    'state': 'draft',
-                }]
-
-            # Leaves
-            leaves = self.env['resource.calendar.leaves'].search([
-                ('resource_id', 'in', [False, resource.id]),
-                ('calendar_id', '=', calendar.id),
-                ('date_from', '<', date_stop),
-                ('date_to', '>', date_start)
-            ])
-
-            for leave in leaves:
-                start = max(leave.date_from, datetime.combine(contract.date_start, datetime.min.time()))
-                end = min(leave.date_to, datetime.combine(contract.date_end or date.max, datetime.max.time()))
-                if leave.holiday_id:
-                    work_entry_type = leave.holiday_id.holiday_status_id.work_entry_type_id
-                else:
-                    work_entry_type = leave.mapped('work_entry_type_id')
-                contract_vals += [{
-                    'name': "%s%s" % (work_entry_type.name + ": " if work_entry_type else "", employee.name),
-                    'date_start': start,
-                    'date_stop': end,
-                    'work_entry_type_id': work_entry_type.id,
-                    'employee_id': employee.id,
-                    'leave_id': leave.holiday_id and leave.holiday_id.id,
-                    'company_id': contract.company_id.id,
-                    'state': 'draft',
-                    'contract_id': contract.id,
-                }]
-
-            # If we generate work_entries which exceeds date_start or date_stop, we change boundaries on contract
-            if contract_vals:
-                date_stop_max = max([x['date_stop'] for x in contract_vals])
-                if date_stop_max > contract.date_generated_to:
-                    contract.date_generated_to = date_stop_max
-
-                date_start_min = min([x['date_start'] for x in contract_vals])
-                if date_start_min < contract.date_generated_from:
-                    contract.date_generated_from = date_start_min
-
-            vals_list += contract_vals
-
-        return vals_list
-
-    def _generate_work_entries(self, date_start, date_stop):
-        vals_list = []
-
-        date_start = fields.Datetime.to_datetime(date_start)
-        date_stop = datetime.combine(fields.Datetime.to_datetime(date_stop), datetime.max.time())
-
-        for contract in self:
-            # For each contract, we found each interval we must generate
-            contract_start = fields.Datetime.to_datetime(contract.date_start)
-            contract_stop = datetime.combine(fields.Datetime.to_datetime(contract.date_end or datetime.max.date()), datetime.max.time())
-            last_generated_from = min(contract.date_generated_from, contract_stop)
-            date_start_work_entries = max(date_start, contract_start)
-
-            if last_generated_from > date_start_work_entries:
-                contract.date_generated_from = date_start_work_entries
-                vals_list.extend(contract._get_work_entries_values(date_start_work_entries, last_generated_from))
-
-            last_generated_to = max(contract.date_generated_to, contract_start)
-            date_stop_work_entries = min(date_stop, contract_stop)
-            if last_generated_to < date_stop_work_entries:
-                contract.date_generated_to = date_stop_work_entries
-                vals_list.extend(contract._get_work_entries_values(last_generated_to, date_stop_work_entries))
-
-        if not vals_list:
-            return self.env['hr.work.entry']
-
-        return self.env['hr.work.entry'].create(vals_list)
 
     def _index_contracts(self):
         action = self.env.ref('hr_payroll.action_hr_payroll_index').read()[0]
@@ -228,3 +107,6 @@ class HrContract(models.Model):
                 dt = date_stop - date_start
                 work_data[work_entry.work_entry_type_id.id] += dt.days * 24 + dt.seconds / 3600  # Number of hours
         return work_data
+
+    def _get_default_work_entry_type(self):
+        return self.structure_type_id.default_work_entry_type_id or super(HrContract, self)._get_default_work_entry_type()

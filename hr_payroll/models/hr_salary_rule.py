@@ -124,6 +124,7 @@ class HrPayrollStructureType(models.Model):
             self._check_country(vals)
         return super().create(vals)
 
+
 class HrSalaryRuleCategory(models.Model):
     _name = 'hr.salary.rule.category'
     _description = 'Salary Rule Category'

@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 
 from odoo.fields import Date, Datetime
 from odoo.tests.common import SavepointCase
@@ -65,27 +64,12 @@ class TestPayslipBase(SavepointCase):
             'round_days': 'HALF',
             'round_days_type': 'DOWN',
         })
-        cls.leave_type_unpaid = cls.env['hr.leave.type'].create({
-            'name': 'Unpaid Leaves',
-            'time_type': 'leave',
-            'allocation_type': 'no',
-            'validity_start': False,
-            'work_entry_type_id': cls.work_entry_type_unpaid.id
-        })
 
         cls.work_entry_type_leave = cls.env['hr.work.entry.type'].create({
             'name': 'Leave',
             'is_leave': True,
             'code': 'LEAVETEST100'
         })
-        cls.leave_type = cls.env['hr.leave.type'].create({
-            'name': 'Legal Leaves',
-            'time_type': 'leave',
-            'allocation_type': 'no',
-            'validity_start': False,
-            'work_entry_type_id': cls.work_entry_type_leave.id
-        })
-
 
         # I create a salary structure for "Software Developer"
         cls.developer_pay_structure = cls.env['hr.payroll.structure'].create({
@@ -168,18 +152,6 @@ class TestPayslipBase(SavepointCase):
             'date_stop': stop,
             'employee_id': self.richard_emp.id,
             'work_entry_type_id': work_entry_type.id,
-        })
-
-    def create_leave(self, date_from=None, date_to=None):
-        date_from = date_from or Datetime.today()
-        date_to = date_to or Datetime.today() + relativedelta(days=1)
-        return self.env['hr.leave'].create({
-            'name': 'Holiday !!!',
-            'employee_id': self.richard_emp.id,
-            'holiday_status_id': self.leave_type.id,
-            'date_to': date_to,
-            'date_from': date_from,
-            'number_of_days': 1,
         })
 
 

@@ -104,7 +104,7 @@ class Test13thMonth(TestPayslipBase):
         contract = self.create_contract(date(2015, 1, 24))
         self.payslip.contract_id = contract
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
-        unpaid_work_entry_type = self.env.ref('hr_payroll.work_entry_type_unpaid_leave')
+        unpaid_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_unpaid_leave')
         work_entry = self.env['hr.work.entry'].create({
             'name': 'Unpaid work entry',
             'employee_id': self.employee.id,

@@ -37,7 +37,7 @@
         <record id="structure_002" model="hr.payroll.structure">
             <field name="name">Regular Pay</field>
             <field name="type_id" ref="structure_type_employee"/>
-            <field name="unpaid_work_entry_type_ids" eval="[(4, ref('hr_payroll.work_entry_type_unpaid_leave'))]"/>
+            <field name="unpaid_work_entry_type_ids" eval="[(4, ref('hr_work_entry_contract.work_entry_type_unpaid_leave'))]"/>
             <field name="country_id" eval="False"/>
         </record>
         <record id="structure_type_employee" model="hr.payroll.structure.type">
@@ -262,27 +262,9 @@
         </record>
 
         <!-- Work entries -->
-        <record id="work_entry_type_extra_hours" model="hr.work.entry.type">
-            <field name="name">Extra Hours</field>
-            <field name="code">WORK300</field>
-            <field name="color">8</field>
-        </record>
-
-        <record id="work_entry_type_long_leave" model="hr.work.entry.type">
-            <field name="name">Long Term Time Off</field>
-            <field name="code">LEAVE200</field>
-            <field name="is_leave">True</field>
-            <field name="color">4</field>
+        <record id="hr_work_entry_contract.work_entry_type_long_leave" model="hr.work.entry.type">
             <field name="round_days">FULL</field>
             <field name="round_days_type">DOWN</field>
         </record>
 
-        <!-- add work_entry type to leave type -->
-        <record id="hr_holidays.holiday_status_unpaid" model="hr.leave.type">
-            <field name="work_entry_type_id" ref="work_entry_type_unpaid_leave"></field>
-        </record>
-
-        <record id="hr_holidays.holiday_status_comp" model="hr.leave.type">
-            <field name="work_entry_type_id" ref="work_entry_type_leave"></field>
-        </record>
 </odoo>

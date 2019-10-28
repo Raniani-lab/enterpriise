@@ -1,13 +1,13 @@
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo.addons.hr_payroll.tests.common import TestPayslipBase
+from odoo.addons.hr_work_entry_holidays.tests.common import TestWorkEntryHolidaysBase
 
 
-class TestPayrollLeave(TestPayslipBase):
+class TestWorkEntryLeave(TestWorkEntryHolidaysBase):
 
     def test_resource_leave_has_work_entry_type(self):
         leave = self.create_leave()
@@ -108,7 +108,7 @@ class TestPayrollLeave(TestPayslipBase):
         self.assertNotEqual(adjacent_work_entry.state, 'conflict', "Non overlapping work entry should not conflict")
 
     def test_refuse_approved_leave(self):
-        start = datetime(2019, 10, 10, 9, 0)
+        start = datetime(2019, 10, 10, 6, 0)
         end = datetime(2019, 10, 10, 18, 0)
 
         # Setup contract generation state

@@ -1,4 +1,4 @@
-from odoo.addons.hr_payroll.models.hr_work_intervals import WorkIntervals
+from odoo.addons.hr_work_entry_contract.models.hr_work_intervals import WorkIntervals
 from odoo.tests.common import TransactionCase
 
 
@@ -68,4 +68,3 @@ class TestIntervals(TransactionCase):
             [(6, 7), (9, 12), (13, 17), (22, 23), (24, 40)],
             [(0, 5), (12, 13), (20, 22), (23, 24)],
         )
-

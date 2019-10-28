@@ -29,7 +29,7 @@ class TestExamples(common.SavepointCase):
             'allocation_type': 'no',
             'validity_start': datetime.date(2015, 1, 1),
             'company_id': cls.belgian_company.id,
-            'work_entry_type_id': cls.env.ref('hr_payroll.work_entry_type_leave').id,
+            'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_leave').id,
         })
         cls.leave_type_unpaid = cls.env['hr.leave.type'].create({
             'name': 'Unpaid',
@@ -37,7 +37,7 @@ class TestExamples(common.SavepointCase):
             'allocation_type': 'no',
             'validity_start': datetime.date(2015, 1, 1),
             'company_id': cls.belgian_company.id,
-            'work_entry_type_id': cls.env.ref('hr_payroll.work_entry_type_unpaid_leave').id,
+            'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_unpaid_leave').id,
         })
         cls.leave_type_small_unemployment = cls.env['hr.leave.type'].create({
             'name': 'Small Unemployment',

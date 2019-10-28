@@ -55,14 +55,15 @@ class SaleOrder(models.Model):
                         ('type_tax_use', '=', 'sale'),
                         ('company_id', '=', company.id),
                     ], limit=1)
-                    if not tax:
+                    if tax:
+                        tax.active = True  # Needs to be active to be included in order total computation
+                    else:
                         tax = self.env['account.tax'].sudo().with_context(default_company_id=company.id).create({
                             'name': 'Tax %.3f %%' % (tax_rate),
                             'amount': tax_rate,
                             'amount_type': 'percent',
                             'type_tax_use': 'sale',
                             'description': 'Sales Tax',
-                            'active': False,  # these taxes should never be used manually
                         })
                     line.tax_id = tax
         return True

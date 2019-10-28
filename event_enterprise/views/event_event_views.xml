@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="event_view_gantt" model="ir.ui.view">
+        <field name="name">event.event.gantt</field>
+        <field name="model">event.event</field>
+        <field name="arch" type="xml">
+            <gantt
+                color="color"
+                date_start="date_begin"
+                date_stop="date_end"
+                default_group_by="address_id"
+                default_scale="year">
+            </gantt>
+        </field>
+    </record>
+
+    <record id="event.action_event_view" model="ir.actions.act_window">
+        <field name="view_mode">kanban,calendar,tree,gantt,form,pivot</field>
+    </record>
+</odoo>

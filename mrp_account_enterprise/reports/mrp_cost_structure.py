@@ -40,7 +40,7 @@ class MrpCostStructure(models.AbstractModel):
             query_str = """SELECT sm.product_id, sm.bom_line_id, abs(SUM(svl.quantity)), abs(SUM(svl.value))
                              FROM stock_move AS sm
                        INNER JOIN stock_valuation_layer AS svl ON svl.stock_move_id = sm.id
-                            WHERE sm.raw_material_production_id in %s AND sm.state != 'cancel' AND sm.product_qty != 0
+                            WHERE sm.raw_material_production_id in %s AND sm.state != 'cancel' AND sm.product_qty != 0 AND scrapped != 't'
                          GROUP BY sm.bom_line_id, sm.product_id"""
             self.env.cr.execute(query_str, (tuple(mos.ids), ))
             for product_id, bom_line_id, qty, cost in self.env.cr.fetchall():

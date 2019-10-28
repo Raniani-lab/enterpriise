@@ -52,7 +52,7 @@ class RequestAppraisal(models.TransientModel):
     email_from = fields.Char('From', help="Email address of the sender", required=True)
     author_id = fields.Many2one('res.partner', 'Author', help="Author of the message.", required=True)
     employee_id = fields.Many2one('hr.employee', 'Appraisal Employee')
-    recipient_id = fields.Many2one('res.partner', 'Recipient')
+    recipient_id = fields.Many2one('res.partner', 'Recipient', required=True)
     deadline = fields.Date(string="Desired Deadline", required=True)
 
     @api.onchange('template_id', 'recipient_id')

@@ -43,7 +43,8 @@ class AccountMove(models.Model):
         request = TaxCloudRequest(api_id, api_key)
 
         request.set_location_origin_detail(shipper)
-        request.set_location_destination_detail(self._get_invoice_delivery_partner_id())
+        request.set_location_destination_detail(
+            self.env['res.partner'].browse(self._get_invoice_delivery_partner_id()))
 
         request.set_invoice_items_detail(self)
 
@@ -66,7 +67,7 @@ class AccountMove(models.Model):
                     tax_rate = 0.0
                 else:
                     tax_rate = tax_values[index] / price * 100
-                if len(line.tax_ids) != 1 or float_compare(line.tax_ids.price_unit, tax_rate, precision_digits=3):
+                if len(line.tax_ids) != 1 or float_compare(line.tax_ids.amount, tax_rate, precision_digits=3):
                     raise_warning = True
                     tax_rate = float_round(tax_rate, precision_digits=3)
                     tax = self.env['account.tax'].sudo().with_context(active_test=False).search([
@@ -89,7 +90,8 @@ class AccountMove(models.Model):
         with Form(self) as move_form:
             for index, tax in taxes_to_set:
                 with move_form.invoice_line_ids.edit(index) as line_form:
-                    line_form.tax_ids = tax
+                    line_form.tax_ids.clear()
+                    line_form.tax_ids.add(tax)
 
         if self.env.context.get('taxcloud_authorize_transaction'):
             current_date = fields.Datetime.context_timestamp(self, datetime.datetime.now())

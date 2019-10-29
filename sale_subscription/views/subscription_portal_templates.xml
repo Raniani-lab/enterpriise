@@ -34,7 +34,6 @@
                                     </t>
                                 </a>
                             </li>
-
                             <li t-if="account.user_id" class="list-group-item flex-grow-1">
                                 <div class="small mb-1"><strong class="text-muted">Subscription Manager:</strong></div>
                                 <div class="row flex-nowrap">
@@ -44,7 +43,6 @@
                                     </div>
                                     <div class="col pl-0" style="min-width: 150px">
                                         <span t-field="account.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
-                                        <div><a href="#discussion" class="small"><i class="fa fa-comment"></i> Send message</a></div>
                                         <div><a t-if="is_follower" href="#discussion" class="small"><i class="fa fa-comment"></i> Send message</a></div>
                                     </div>
                                 </div>
@@ -82,11 +80,21 @@
                                         <tbody style="white-space:nowrap">
                                             <tr>
                                                 <th class="text-right pb-0">Current Plan:</th>
-                                                <th class="w-100 pb-0"><span t-field="template.name"/></th>
+                                                <td class="w-100 pb-0"><span t-field="template.name"/></td>
                                             </tr>
                                             <tr>
-                                                <th class="text-right">Reference:</th>
-                                                <td class="w-100"><span t-field="account.code"/></td>
+                                                <th class="text-right pb-0">Reference:</th>
+                                                <td class="w-100 pb-0"><span t-field="account.code"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-right pb-0">Billing:</th>
+                                                <th class="w-100 pb-0">
+                                                    Every <t t-esc="account.recurring_interval"/>
+                                                    <t t-if="account.recurring_rule_type=='daily'"> days </t>
+                                                    <t t-if="account.recurring_rule_type=='weekly'"> weeks </t>
+                                                    <t t-if="account.recurring_rule_type=='monthly'"> months </t>
+                                                    <t t-if="account.recurring_rule_type=='yearly'"> years </t>
+                                                </th>
                                             </tr>
                                             <tr t-if="account.date">
                                                 <th class="text-right pb-0">Valid Until:</th>
@@ -114,25 +122,30 @@
                             </div>
 
                             <!-- ====== Plan details ====== -->
+                            <t t-set="display_discount" t-value="True in [line.discount > 0 for line in account.recurring_invoice_line_ids]"/>
                             <div class="row">
                                 <div class="col-12 mt-4">
-                                    <h5 class="mb-1">Plan Details</h5>
-                                    <table class="table table-sm table-responsive-lg" id="wc-account-table">
-                                        <thead>
+                                    <h3 class="mb-1">Plan Details</h3>
+                                    <table class="table table-sm">
+                                        <thead class="bg-100">
                                             <tr>
-                                                <th/>
+                                                <th>Product</th>
                                                 <th class="text-right">Quantity</th>
-                                                <th>Unit Price</th>
-                                                <th>Subtotal</th>
+                                                <th class="text-right d-none d-sm-table-cell">Unit Price</th>
+                                                <th t-if="display_discount" class="text-right d-none d-sm-table-cell">
+                                                    <span>Disc.%</span>
+                                                </th>
+                                                <th class="text-right d-none d-sm-table-cell">Taxes</th>
+                                                <th class="text-right">
+                                                    <span groups="account.group_show_line_subtotals_tax_excluded">Amount</span>
+                                                    <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr t-foreach="account.recurring_invoice_line_ids" t-as="line">
                                                 <td class="line-description"><span t-field="line.name"/></td>
-                                                <td class="text-right">
-                                                    <span t-field="line.quantity"/>
-                                                    <span t-field="line.uom_id" data-oe-readonly="1" groups="uom.group_uom"/>
-                                                </td>
+                                                <td class="text-right"><t t-esc="line.quantity"/> <span t-field="line.uom_id" data-oe-readonly="1"/></td>
                                                 <td class="text-right d-none d-sm-table-cell" t-if="not line.discount">
                                                     <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": pricelist.currency_id}'/>
                                                 </td>
@@ -153,30 +166,48 @@
                                                         <t t-esc="((line.discount % 1) and '%s' or '%d') % line.discount"/>%
                                                     </strong>
                                                 </td>
-                                                <td><span t-esc="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": pricelist.currency_id}'/></td>
+                                                <td class="text-right d-none d-sm-table-cell">
+                                                    <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_ids))"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded" t-options='{"widget": "monetary", "display_currency": pricelist.currency_id}'/>
+                                                    <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included" t-options='{"widget": "monetary", "display_currency": pricelist.currency_id}'/>
+                                                </td>
                                             </tr>
                                         </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="3" class="py-2">
-                                                    Subtotal:<br/>
-                                                    <t t-if="user.partner_id == account.partner_id">
-                                                        <a t-if="account.partner_id.country_id" class="small" t-attf-href="/my/account?redirect=/my/subscription/#{account.id}/#{account.uuid}">(Not in <span t-field="account.partner_id.country_id" data-oe-readonly="1"/>?)</a>
-                                                        Taxes:<br/>
-                                                    </t>
-                                                    <t t-else="">
-                                                        <abbr title="You need to be logged in as this subscription's customer to change country">Taxes</abbr>:<br/>
-                                                    </t>
-                                                    <strong>Next Billing Amount:</strong><br/>
-                                                </td>
-                                                <td class="py-2">
-                                                    <div t-field="account.recurring_total" t-options='{"widget": "monetary", "display_currency": pricelist.currency_id}'/>
-                                                    <div t-field="account.recurring_amount_tax" t-options='{"widget": "monetary", "display_currency": pricelist.currency_id}'/>
-                                                    <strong t-field="account.recurring_amount_total" t-options='{"widget": "monetary", "display_currency": pricelist.currency_id}'/>
-                                                </td>
-                                            </tr>
-                                        </tfoot>
                                     </table>
+                                    <div id="total" class="row" name="total" style="page-break-inside: avoid;">
+                                        <div class="col-sm-7 col-md-5 ml-auto">
+                                            <table class="table table-sm">
+                                                <tr class="border-black" style="border-bottom:1px solid #dddddd;">
+                                                    <td><strong>Subtotal</strong></td>
+                                                    <td class="text-right">
+                                                        <span
+                                                            data-id="recurring_total"
+                                                            t-field="account.recurring_total"
+                                                            t-options='{"widget": "monetary","display_currency": account.pricelist_id.currency_id}'
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-black" style="border-bottom:1px solid #dddddd;">
+                                                    <td>Taxes</td>
+                                                    <td class="text-right">
+                                                        <span
+                                                            data-id="recurring_tax"
+                                                            t-field="account.recurring_tax"
+                                                            t-options='{"widget": "monetary","display_currency": account.pricelist_id.currency_id}'
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-black">
+                                                    <td><strong>Next Billing Amount:</strong></td>
+                                                    <td class="text-right">
+                                                        <span data-id="recurring_total_incl" t-field="account.recurring_total_incl" t-options='{"widget": "monetary", "display_currency": account.pricelist_id.currency_id}'/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div> <!-- / Plan details ====== -->
 
@@ -342,7 +373,7 @@
                                 <span class="badge badge-pill badge-danger"><i class="fa fa-fw fa-remove"/> Closed</span>
                             </t>
                         </td>
-                        <td class="text-right"><span t-esc="account.recurring_total" t-options="{'widget': 'monetary', 'display_currency': account.currency_id}"/></td>
+                        <td class="text-right"><span t-esc="account.recurring_total_incl" t-options="{'widget': 'monetary', 'display_currency': account.currency_id}"/></td>
                     </tr>
                 </t>
             </t>

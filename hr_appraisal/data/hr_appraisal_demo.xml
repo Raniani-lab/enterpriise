@@ -24,6 +24,7 @@
         <record id="config_appraisal_reminder_employee" model="hr.appraisal.reminder">
             <field name="notify">employee</field>
             <field name="appraisal_reminder">7</field>
+            <field name="subject">Appraisal Reminder</field>
             <field name="event">last_appraisal</field>
             <field name="body_html">It has been a while since your last appraisal, go to your employee profile to request an appraisal to your manager.</field>
             <field name="company_id" ref="base.main_company"/>
@@ -31,6 +32,7 @@
         <record id="config_appraisal_reminder_manager_arrival" model="hr.appraisal.reminder">
             <field name="notify">manager</field>
             <field name="appraisal_reminder">6</field>
+            <field name="subject">Appraisal Reminder</field>
             <field name="event">arrival</field>
             <field name="body_html">One of your employee is there for 6 month. We suggest you to request an appraisal.</field>
             <field name="company_id" ref="base.main_company"/>
@@ -38,6 +40,7 @@
         <record id="config_appraisal_reminder_manager" model="hr.appraisal.reminder">
             <field name="notify">manager</field>
             <field name="appraisal_reminder">12</field>
+            <field name="subject">Appraisal Reminder</field>
             <field name="event">last_appraisal</field>
             <field name="body_html">The last appraisal of one of your employee has been done 12 months ago. We kindly remind you you can request an appraisal on its profile.</field>
             <field name="company_id" ref="base.main_company"/>

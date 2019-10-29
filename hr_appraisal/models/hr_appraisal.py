@@ -33,13 +33,10 @@ class HrAppraisal(models.Model):
     manager_appraisal = fields.Boolean(string='Appraisal by Manager', help="This employee will be appraised by his managers")
     manager_ids = fields.Many2many('hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     manager_body_html = fields.Html(string="Manager's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_manager_body_html)
-    collaborators_appraisal = fields.Boolean(string='Collaborator Appraisal', help="This employee will be appraised by his collaborators")
     collaborators_ids = fields.Many2many('hr.employee', 'appraisal_subordinates_rel', 'hr_appraisal_id', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     collaborators_body_html = fields.Html(string="Collaborator's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_collaborators_body_html)
-    colleagues_appraisal = fields.Boolean(string='Colleagues Appraisal', help="This employee will be appraised by his colleagues")
     colleagues_ids = fields.Many2many('hr.employee', 'appraisal_colleagues_rel', 'hr_appraisal_id', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", string="Colleagues")
     colleagues_body_html = fields.Html(string="Colleague's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_colleagues_body_html)
-    employee_appraisal = fields.Boolean(help="This employee will do a self-appraisal")
     employee_body_html = fields.Html(string="Employee's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_employee_body_html)
     meeting_id = fields.Many2one('calendar.event', string='Meeting')
     date_final_interview = fields.Date(string="Final Interview", index=True, tracking=True)
@@ -60,10 +57,7 @@ class HrAppraisal(models.Model):
             self.company_id = self.employee_id.company_id
             self.manager_appraisal = self.employee_id.appraisal_by_manager
             self.manager_ids = self.employee_id.appraisal_manager_ids
-            self.colleagues_appraisal = self.employee_id.appraisal_by_colleagues
             self.colleagues_ids = self.employee_id.appraisal_colleagues_ids
-            self.employee_appraisal = self.employee_id.appraisal_self
-            self.collaborators_appraisal = self.employee_id.appraisal_by_collaborators
             self.collaborators_ids = self.employee_id.appraisal_collaborators_ids
 
     @api.onchange('company_id')
@@ -72,15 +66,6 @@ class HrAppraisal(models.Model):
         self.colleagues_body_html = self.company_id.appraisal_by_colleagues_body_html
         self.employee_body_html = self.company_id.appraisal_by_employee_body_html
         self.collaborators_body_html = self.company_id.appraisal_by_collaborators_body_html
-
-    @api.onchange('manager_appraisal', 'colleagues_appraisal', 'collaborators_appraisal')
-    def _onchange_manager_appraisal(self):
-        if not self.manager_appraisal:
-            self.manager_ids = False
-        if not self.colleagues_appraisal:
-            self.colleagues_ids = False
-        if not self.collaborators_appraisal:
-            self.collaborators_ids = False
 
     def subscribe_employees(self):
         """
@@ -140,14 +125,13 @@ class HrAppraisal(models.Model):
         @return: returns a list of tuple (body in html for mail, list of employees).
         """
         appraisal_receiver = []
-        if self.manager_appraisal and self.manager_ids:
+        if self.manager_ids:
             appraisal_receiver.append((self.manager_body_html, self.manager_ids))
-        if self.colleagues_appraisal and self.colleagues_ids:
+        if self.colleagues_ids:
             appraisal_receiver.append((self.colleagues_body_html, self.colleagues_ids))
-        if self.collaborators_appraisal and self.collaborators_ids:
+        if self.collaborators_ids:
             appraisal_receiver.append((self.collaborators_body_html, self.collaborators_ids))
-        if self.employee_appraisal:
-            appraisal_receiver.append((self.employee_body_html, self.employee_id))
+        appraisal_receiver.append((self.employee_body_html, self.employee_id))
         return appraisal_receiver
 
     def _send_mail(self, recipient, company_id, header_text, subject, body):
@@ -232,19 +216,6 @@ class HrAppraisal(models.Model):
 appraisal on %s %s. If you think it's too late, feel free to have a chat with your manager.") %
                     (last_appraisal_date.strftime("%B"), last_appraisal_date.strftime("%Y"),
                     next_authorized_appraisal.strftime("%B"), next_authorized_appraisal.strftime("%Y")))
-
-        if vals.get('manager_ids') != [[6, 0, []]]:
-            vals.update({'manager_appraisal': True})
-        else:
-            vals.update({'manager_appraisal': False})
-        if vals.get('collaborators_ids') != [[6, 0, []]]:
-            vals.update({'collaborators_appraisal': True})
-        else:
-            vals.update({'collaborators_appraisal': False})
-        if vals.get('colleagues_ids') != [[6, 0, []]]:
-            vals.update({'colleagues_appraisal': True})
-        else:
-            vals.update({'colleagues_appraisal': False})
 
         result = super(HrAppraisal, self).create(vals)
         if vals.get('state') and vals['state'] == 'pending':

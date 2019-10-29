@@ -126,15 +126,11 @@ class HrEmployee(models.Model):
         appraisal_values = [{
             'employee_id': employee.id,
             'date_close': fields.Date.to_string(current_date + relativedelta(months=months)),
-            'manager_appraisal': employee.appraisal_by_manager,
             'manager_ids': [(4, manager.id) for manager in employee.appraisal_manager_ids],
             'manager_body_html': employee.company_id.appraisal_by_manager_body_html,
-            'colleagues_appraisal': employee.appraisal_by_colleagues,
             'colleagues_ids': [(4, colleagues.id) for colleagues in employee.appraisal_colleagues_ids],
             'colleagues_body_html': employee.company_id.appraisal_by_colleagues_body_html,
-            'employee_appraisal': employee.appraisal_self,
             'employee_body_html': employee.company_id.appraisal_by_employee_body_html,
-            'collaborators_appraisal': employee.appraisal_by_collaborators,
             'collaborators_ids': [(4, subordinates.id) for subordinates in employee.appraisal_collaborators_ids],
             'collaborators_body_html': employee.company_id.appraisal_by_collaborators_body_html,
         } for employee in employees_to_appraise]

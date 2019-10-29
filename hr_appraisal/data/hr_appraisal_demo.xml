@@ -9,10 +9,7 @@
             <field name="employee_id" ref="hr.employee_admin"/>
             <field name="state">new</field>
             <field name="date_close" eval="(DateTime.now() + timedelta(1)).strftime('%Y-%m-%d')"/>
-            <field name="colleagues_appraisal" eval="True"/>
             <field name="colleagues_ids" eval="[(6,0,[ref('hr.employee_al')])]"/>
-            <field name="employee_appraisal" eval="True"/>
-            <field name="collaborators_appraisal" eval="True"/>
             <field name="collaborators_ids" eval="[(6,0,[ref('hr.employee_qdp')])]"/>
         </record>
         <function model="hr.employee" name="write">

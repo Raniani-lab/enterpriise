@@ -31,11 +31,8 @@ class TestHrAppraisal(TransactionCase):
             work_location="Grand-Rosière",
             work_phone="+3281813700",
             work_email='michael@odoo.com',
-            appraisal_by_manager=True,
             appraisal_manager_ids=[self.manager.id],
-            appraisal_by_colleagues=True,
             appraisal_colleagues_ids=[self.colleague.id],
-            appraisal_self=True,
             appraisal_date=date.today() + relativedelta(months=-12, days=5)
         ))
         self.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_min_period", 6)

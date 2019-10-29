@@ -18,7 +18,10 @@ class RentalSchedule(models.Model):
     def _read_group_product_ids(self, products, domain, order):
         if self._context.get('restrict_renting_products'):
             return products
-        return products.search([('rent_ok', '=', True)], order=order)
+        all_rental_products = products.search([('rent_ok', '=', True)], order=order)
+        if len(all_rental_products) > 80:
+            return products
+        return all_rental_products
 
     name = fields.Char('Order Reference', readonly=True)
     product_name = fields.Char('Product Reference', readonly=True)

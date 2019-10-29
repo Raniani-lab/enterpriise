@@ -152,7 +152,7 @@ class FleetVehicleModel(models.Model):
     default_recurring_cost_amount_depreciated = fields.Float(string="Cost (Depreciated)",
         help="Default recurring cost amount that should be applied to a new car from this model")
     default_co2 = fields.Float(string="CO2 emissions")
-    default_fuel_type = fields.Selection([('gasoline', 'Gasoline'), ('diesel', 'Diesel'), ('lpg', 'LPG'), ('electric', 'Electric'), ('hybrid', 'Hybrid')], 'Fuel Type', help='Fuel Used by the vehicle')
+    default_fuel_type = fields.Selection([('gasoline', 'Gasoline'), ('diesel', 'Diesel'), ('lpg', 'LPG'), ('electric', 'Electric'), ('hybrid', 'Hybrid')], 'Default Fuel Type', default='diesel', help='Fuel Used by the vehicle')
     default_car_value = fields.Float(string="Catalog Value (VAT Incl.)")
     can_be_requested = fields.Boolean(string="Can be requested", help="Can be requested on a contract as a new car")
     default_atn = fields.Float(compute='_compute_atn', string="ATN")

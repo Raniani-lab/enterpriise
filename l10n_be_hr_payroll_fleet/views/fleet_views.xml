@@ -81,7 +81,7 @@
                                 <field name="default_co2" nolabel="1"/>
                                 <span> g / km</span>
                             </div>
-                            <field name="default_fuel_type" widget="selection"/>
+                            <field name="default_fuel_type" widget="selection" required="True"/>
                         </group>
                     </group>
                 </page>

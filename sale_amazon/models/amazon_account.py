@@ -450,6 +450,7 @@ class AmazonAccount(models.Model):
                 'tax_id': [(6, 0, kwargs.get('tax_ids', []))],
                 'product_uom_qty': _quantity,
                 'discount': (kwargs.get('discount', 0) / _subtotal) * 100 if _subtotal else 0,
+                'display_type': kwargs.get('display_type', False),
                 'amazon_item_ref': kwargs.get('amazon_item_ref'),
                 'amazon_offer_id': kwargs.get('amazon_offer_id'),
             }
@@ -463,7 +464,6 @@ class AmazonAccount(models.Model):
             quantity = mwsc.get_integer_value(item_data, 'QuantityOrdered')
             subtotal = mwsc.get_amount_value(item_data, 'ItemPrice')
             tax_amount = mwsc.get_amount_value(item_data, 'ItemTax')
-            gift_wrap_code = mwsc.get_string_value(item_data, 'GiftWrapLevel')
             
             offer = self._get_offer(order_data, sku)
             product_taxes = offer.product_id.taxes_id.filtered(
@@ -486,7 +486,32 @@ class AmazonAccount(models.Model):
                 discount=mwsc.get_amount_value(item_data, 'PromotionDiscount'),
                 amazon_item_ref=mwsc.get_string_value(item_data, 'OrderItemId'),
                 amazon_offer_id=offer.id))
-            
+
+            if mwsc.get_string_value(item_data, 'IsGift', 'false') == 'true':
+                gift_wrap_code = mwsc.get_string_value(item_data, 'GiftWrapLevel')
+                gift_wrap_price = mwsc.get_amount_value(item_data, 'GiftWrapPrice')
+                if gift_wrap_code and gift_wrap_price != 0:
+                    gift_wrap_product = self._get_product(
+                        gift_wrap_code, 'default_product', 'Amazon Sales', 'consu')
+                    gift_wrap_product_taxes = gift_wrap_product.taxes_id.filtered(
+                        lambda t: t.company_id.id == self.company_id.id)
+                    gift_wrap_taxes = fiscal_pos.map_tax(gift_wrap_product_taxes) \
+                        if fiscal_pos else gift_wrap_product_taxes
+                    gift_wrap_tax_amount = mwsc.get_amount_value(item_data, 'GiftWrapTax')
+                    gift_wrap_price = self._recompute_subtotal(
+                        gift_wrap_price, gift_wrap_tax_amount, gift_wrap_taxes, currency, fiscal_pos)
+                    new_order_lines_vals.append(_get_order_line_vals(
+                        product_id=gift_wrap_product.id,
+                        description=_("[%s] Gift Wrapping Charges for %s") % (
+                            gift_wrap_code, offer.product_id.name),
+                        subtotal=gift_wrap_price,
+                        tax_ids=gift_wrap_taxes.ids))
+                gift_message = mwsc.get_string_value(item_data, 'GiftMessageText')
+                if gift_message:
+                    new_order_lines_vals.append(_get_order_line_vals(
+                        description=_("Gift message:\n%s") % gift_message,
+                        display_type='line_note'))
+
             if shipping_code:
                 shipping_price = mwsc.get_amount_value(item_data, 'ShippingPrice')
 
@@ -505,31 +530,6 @@ class AmazonAccount(models.Model):
                     tax_ids=shipping_taxes.ids,
                     discount=mwsc.get_amount_value(item_data, 'ShippingDiscount')))
 
-            if gift_wrap_code:
-                gift_wrap_price = mwsc.get_amount_value(item_data, 'GiftWrapPrice')
-                gift_message = mwsc.get_string_value(item_data, 'GiftMessageText')
-                
-                gift_wrap_product = self._get_product(
-                    gift_wrap_code, 'default_product', 'Amazon Sales', 'consu')
-                gift_wrap_product_taxes = gift_wrap_product.taxes_id.filtered(
-                    lambda t: t.company_id.id == self.company_id.id)
-                gift_wrap_taxes = fiscal_pos.map_tax(gift_wrap_product_taxes) \
-                    if fiscal_pos else gift_wrap_product_taxes
-                gift_wrap_tax_amount = mwsc.get_amount_value(item_data, 'GiftWrapTax')
-                gift_wrap_price = self._recompute_subtotal(
-                    gift_wrap_price, gift_wrap_tax_amount, gift_wrap_taxes, currency, fiscal_pos)
-                description_template = _("[%s] Gift Wrapping Charges for %s") \
-                    if not gift_message \
-                    else _("[%s] Gift Wrapping Charges for %s\nGift message:\n%s")
-                description_fields = (gift_wrap_code, offer.product_id.name) \
-                    if not gift_message \
-                    else (gift_wrap_code, offer.product_id.name, gift_message)
-                new_order_lines_vals.append(_get_order_line_vals(
-                    product_id=gift_wrap_product.id,
-                    description=description_template % description_fields,
-                    subtotal=gift_wrap_price,
-                    tax_ids=gift_wrap_taxes.ids))
-        
         return new_order_lines_vals
 
     def _get_product(self, product_code, default_xmlid, default_name, default_type, fallback=True):
@@ -705,7 +705,8 @@ class AmazonAccount(models.Model):
     def _generate_stock_moves(self, order):
         """ Generate a stock move for each product of a sale order. """
         customers_location = self.env.ref('stock.stock_location_customers')
-        for order_line in order.order_line.filtered(lambda l: l.product_id.type != 'service'):
+        for order_line in order.order_line.filtered(
+                lambda l: l.product_id.type != 'service' and not l.display_type):
             stock_move = self.env['stock.move'].create({
                 'name': _('Amazon move : %s') % order.name,
                 'company_id': self.company_id.id,

@@ -172,8 +172,9 @@ class TestAmazon(TransactionCase):
 
             order_lines = self.env['sale.order.line'].search([('order_id', '=', order.id)])
             self.assertEqual(
-                len(order_lines), 3, "there should have been three order lines created: one for "
-                                     "the product, one for the shipping, one for the gift wrapping")
+                len(order_lines), 4, "there should have been four order lines created: one for "
+                                     "the product, one for the gift wrapping charges, one (note)"
+                                     "for the gift message and one for the shipping")
             product_line = order_lines.filtered(lambda l: l.product_id.default_code == 'SKU')
             self.assertEqual(
                 product_line.price_unit, 50., "the unitary price should be the quotient of the "

@@ -18,10 +18,7 @@
                                 </div>
                                 <div class="content-group">
                                     <div class="mt16">
-                                        <field name="appraisal_min_period"
-                                            class="o_light_label"
-                                            domain="[('company_id', '=', company_id)]"
-                                            context="{'default_company_id': company_id}"/> months
+                                        <field name="appraisal_min_period" class="o_light_label"/> months
                                     </div>
                                 </div>
                             </div>
@@ -36,10 +33,7 @@
                                 </div>
                                 <div class="content-group">
                                     <div class="mt16">
-                                        <field name="appraisal_max_period"
-                                            class="o_light_label"
-                                            domain="[('company_id', '=', company_id)]"
-                                            context="{'default_company_id': company_id}"/> months
+                                        <field name="appraisal_max_period" class="o_light_label"/> months
                                     </div>
                                 </div>
                             </div>

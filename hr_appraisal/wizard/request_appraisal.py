@@ -59,7 +59,7 @@ class RequestAppraisal(models.TransientModel):
         return partners
 
     subject = fields.Char('Subject')
-    body = fields.Html('Contents', default='', sanitize_style=True)
+    body = fields.Html('Contents', sanitize_style=True, compute='_compute_body', store=True, readonly=False)
     attachment_ids = fields.Many2many(
         'ir.attachment', 'hr_appraisal_mail_compose_message_ir_attachments_rel',
         'wizard_id', 'attachment_id', string='Attachments')
@@ -72,16 +72,19 @@ class RequestAppraisal(models.TransientModel):
     recipient_id = fields.Many2one('res.partner', 'Recipient', required=True)
     deadline = fields.Date(string="Desired Deadline", required=True)
 
-    @api.onchange('template_id', 'recipient_id')
-    def _onchange_template_id(self):
-        if self.template_id:
-            ctx = {
-                'partner_to_name': self.recipient_id.name,
-                'author_name': self.author_id.name,
-                'url': "${ctx['url']}",
-            }
-            self.subject = self.env['mail.template'].with_context(ctx)._render_template(self.template_id.subject, 'res.users', self.env.user.id, post_process=True)
-            self.body = self.env['mail.template'].with_context(ctx)._render_template(self.template_id.body_html, 'res.users', self.env.user.id, post_process=False)
+    @api.depends('template_id', 'recipient_id')
+    def _compute_body(self):
+        for wizard in self:
+            if wizard.template_id:
+                ctx = {
+                    'partner_to_name': wizard.recipient_id.name,
+                    'author_name': wizard.author_id.name,
+                    'url': "${ctx['url']}",
+                }
+                wizard.subject = self.env['mail.template'].with_context(ctx)._render_template(wizard.template_id.subject, 'res.users', self.env.user.id, post_process=True)
+                wizard.body = self.env['mail.template'].with_context(ctx)._render_template(wizard.template_id.body_html, 'res.users', self.env.user.id, post_process=False)
+            elif not wizard.body:
+                wizard.body = ''
 
     def action_invite(self):
         """ Process the wizard content and proceed with sending the related

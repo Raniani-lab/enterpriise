@@ -9,7 +9,13 @@
             <button name="action_send_appraisal_request"
                 string="Request Appraisal"
                 type="object"
+                groups="!hr_appraisal.group_hr_appraisal_user"
                 class="btn btn-primary" attrs="{'invisible': &quot;[('parent_user_id', '!=', uid)]&quot;}"/>
+            <button name="action_send_appraisal_request"
+                string="Request Appraisal"
+                type="object"
+                groups="hr_appraisal.group_hr_appraisal_user"
+                class="btn btn-primary"/>
         </xpath>
         <div name="button_box" position="inside">
             <button name="%(open_view_hr_appraisal_tree2)d"

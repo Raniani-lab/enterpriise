@@ -40,7 +40,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="line['raw_material_moves']" t-as="m" class="o_mrp_data">
+                            <tr t-foreach="line['raw_material_moves']" t-as="m" t-att-class="'text-danger' if m['extra_qty'] != 0 else 'text-muted'">
                                 <td>
                                     <span t-esc="m['product_id'].default_code or ''"/>
                                 </td>
@@ -48,7 +48,14 @@
                                     <span class="o_mrp_reports_web_action" t-att-res-id="m['bom_line_id']" res-model="mrp.bom.line" view-type="form" t-esc="m['product_id'].display_name"/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-esc="m['qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/> <span t-esc="m['product_id'].uom_id.name"/>
+                                    <span t-esc="m['qty'] if m['qty'] else m['extra_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                                    <t t-if="m['extra_qty'] &lt; 0 and m['qty']">
+                                        (-<t t-esc="m['extra_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>)
+                                    </t>
+                                    <t t-if="m['extra_qty'] &gt; 0 and m['qty']">
+                                        (+<t t-esc="m['extra_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>)
+                                    </t>
+                                    <span t-esc="m['product_id'].uom_id.name"/>
                                 </td>
                                 <td class="text-right">
                                     <span t-esc="m['cost'] / m['qty'] if m['qty'] else m['cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
@@ -82,7 +89,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr t-foreach="line['operations']" t-as="row" class="o_mrp_data">
+                                <tr t-foreach="line['operations']" t-as="row" class="text-muted">
                                     <td>
                                         <span t-esc="row[0]"/>
                                     </td>
@@ -127,7 +134,7 @@
                             </thead>
                             <tbody>
                                 <tr t-foreach="line['scraps']" t-as="scrap"
-                                class="o_mrp_data">
+                                class="text-success">
                                     <td>
                                         <span class="o_mrp_reports_web_action" t-att-res-id="scrap.id" res-model="stock.move" view-type="form" t-esc="scrap.product_id.display_name"/>
                                     </td>

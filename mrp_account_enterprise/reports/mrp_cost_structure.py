@@ -37,18 +37,26 @@ class MrpCostStructure(models.AbstractModel):
 
             #get the cost of raw material effectively used
             raw_material_moves = []
-            query_str = """SELECT sm.product_id, sm.bom_line_id, abs(SUM(svl.quantity)), abs(SUM(svl.value))
+            query_str = """SELECT
+                                sm.product_id,
+                                sm.bom_line_id,
+                                COALESCE(sum(boml.product_qty * mo.product_qty), 0) as bom_line_qty,
+                                abs(SUM(svl.quantity)),
+                                abs(SUM(svl.value))
                              FROM stock_move AS sm
                        INNER JOIN stock_valuation_layer AS svl ON svl.stock_move_id = sm.id
+                       LEFT JOIN mrp_bom_line AS boml ON boml.id = sm.bom_line_id
+                       LEFT JOIN mrp_production AS mo on sm.raw_material_production_id = mo.id
                             WHERE sm.raw_material_production_id in %s AND sm.state != 'cancel' AND sm.product_qty != 0 AND scrapped != 't'
-                         GROUP BY sm.bom_line_id, sm.product_id"""
+                         GROUP BY sm.bom_line_id, sm.product_id, boml.id"""
             self.env.cr.execute(query_str, (tuple(mos.ids), ))
-            for product_id, bom_line_id, qty, cost in self.env.cr.fetchall():
+            for product_id, bom_line_id, bom_line_qty, qty, cost in self.env.cr.fetchall():
                 raw_material_moves.append({
-                    'qty': qty,
+                    'qty': bom_line_qty,
                     'cost': cost,
                     'product_id': ProductProduct.browse(product_id),
-                    'bom_line_id': bom_line_id
+                    'bom_line_id': bom_line_id,
+                    'extra_qty': qty - bom_line_qty,
                 })
                 total_cost += cost
 

@@ -322,6 +322,7 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
 
     def button_send_appraisal(self):
         self.write({'state': 'pending'})
+        self.activity_feedback(['hr_appraisal.mail_act_appraisal_send'])
 
     def button_done_appraisal(self):
         self.write({'state': 'done'})

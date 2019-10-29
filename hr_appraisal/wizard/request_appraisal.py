@@ -101,5 +101,10 @@ class RequestAppraisal(models.TransientModel):
         body = template.render(template_ctx, engine='ir.qweb', minimal_qcontext=True)
         mail_values['body_html'] = self.env['mail.thread']._replace_local_links(body)
 
+        appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
+            'hr_appraisal.mail_act_appraisal_send', fields.Date.today(),
+            note=_('Confirm and send appraisal of %s') % appraisal.employee_id.name,
+            user_id=self.recipient_id.user_ids[:1].id or self.env.user.id)
+
         self.env['mail.mail'].sudo().create(mail_values)
 

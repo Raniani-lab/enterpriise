@@ -7,6 +7,12 @@
             <field name="res_model_id" ref="hr_appraisal.model_hr_appraisal"/>
         </record>
 
+        <record id="mail_act_appraisal_send" model="mail.activity.type">
+            <field name="name">Appraisal to Confirm and Send</field>
+            <field name="icon">fa-envelope</field>
+            <field name="res_model_id" ref="hr_appraisal.model_hr_appraisal"/>
+        </record>
+
         <template id="mail_template_appraisal_reminder">
             <table border="0" cellpadding="0" style="background-color: white; padding: 0px; border-collapse:separate;">
                 <tr><td valign="top">

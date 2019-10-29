@@ -26,7 +26,7 @@ class RentalWizard(models.TransientModel):
     lot_ids = fields.Many2many(
         'stock.production.lot',
         string="Serial Numbers", help="Only available serial numbers are suggested.",
-        domain="[('id', 'not in', rented_lot_ids), ('id', 'in', rentable_lot_ids)]")
+        domain="[(qty_available_during_period > 0, '=', 1), ('id', 'not in', rented_lot_ids), ('id', 'in', rentable_lot_ids)]")
     rentable_lot_ids = fields.Many2many(
         'stock.production.lot',
         string="Serials available in Stock", compute='_compute_rentable_lots')
@@ -121,24 +121,6 @@ class RentalWizard(models.TransientModel):
         """Remove last lots when qty is decreased."""
         if len(self.lot_ids) > self.quantity:
             self.lot_ids = self.lot_ids[:int(self.quantity)]
-
-    @api.onchange('qty_available_during_period')
-    def _onchange_qty_available_during_period(self):
-        """If no quantity is available for given period, don't show any choice for the serial numbers."""
-        if self.qty_available_during_period <= 0:
-            return {
-                'domain':
-                {
-                    'lot_ids': [(0, '=', 1)]
-                }
-            }
-        else:
-            return {
-                'domain':
-                {
-                    'lot_ids': "['&', ('id', 'not in', rented_lot_ids), ('id', 'in', rentable_lot_ids)]"
-                }
-            }
 
     @api.onchange('product_id')
     def _onchange_product_id(self):

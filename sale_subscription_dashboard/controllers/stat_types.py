@@ -425,6 +425,7 @@ STAT_TYPES = {
     'nb_contracts': {
         'name': _lt('# Subscriptions'),
         'code': 'nb_contracts',
+        'tooltip': _lt('Number of contracts'),
         'dir': 'up',
         'prior': 9,
         'type': 'last',

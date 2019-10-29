@@ -17,6 +17,7 @@ It adds dashboards to :
     'data': [
         'views/sale_subscription_dashboard_views.xml',
         'views/assets.xml',
+        'views/report_dashboard.xml',
     ],
     'demo': [
     ],

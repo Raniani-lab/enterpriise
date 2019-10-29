@@ -207,33 +207,50 @@
     </h3>
 
     <!-- 4. Salesman dashboard -->
-    <div t-name="sale_subscription_dashboard.salesman" class="container o_account_contract_dashboard o_salesman_dashboard">
-        <div class="box" t-if="!(salesman &amp;&amp; salesman['name'])">
+    <div t-name="sale_subscription_dashboard.salesmen" class="container o_account_contract_dashboard o_salesmen_dashboard">
+        <div class="alert alert-warning text-center o_subscription_dashboard_warning" role="alert" t-if="start_date &lt; migration_date">
+            <p class="d-inline">The following report relies on a previous calculation method. Results may differ from the new method.</p>
+        </div>
+        <div class="box" t-if="!(salesman[0] &amp;&amp; salesman[0]['id'])">
             <h2>Pick a salesman and a period</h2>
         </div>
+         <div class="o_salesman_loop"/>
+    </div>
+
+     <!-- 4. Salesmen dashboard -->
+
+    <div t-name="sale_subscription_dashboard.export" class="o_export_dashboard">
+        <button class="btn btn-primary" action="print_pdf">PRINT PREVIEW</button>
+    </div>
+
+    <div t-name="sale_subscription_dashboard.salesman" class="o_salesman_dashboard">
         <div t-if="salesman &amp;&amp; salesman['id']">
+            <div class="salesman_name" t-att-id="'salesman_name_' + salesman['id']">
+                <h1><t t-esc="salesman['name']"/></h1>
+            </div>
             <div class="box">
-                <div id="mrr_growth_salesman"/>
+                <div t-att-id="'mrr_growth_salesman_' + salesman['id']"/>
             </div>
             <div class="box">
                 <h2>Subscription Modifications</h2>
-                <div id="contract_modifications"/>
+                <p class="text-muted">Subscription modifications aggregate all modifications that happened in selected
+                    period. Note that modifications happening on the same day can be grouped together
+                    (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened on the
+                    same day).</p>
+                <div t-att-id="'contract_modifications_' + salesman['id']"/>
             </div>
             <div class="box">
                 <h2>Non Recurring invoices</h2>
-                <div id="NRR_invoices"/>
+                <p class="text-muted">List all invoices containing non-recurring sales and the amount of non-recurring
+                    revenues in these invoices for this particular salesperson.</p>
+                <div t-att-id="'NRR_invoices_' + salesman['id']"/>
             </div>
         </div>
     </div>
 
     <div t-name="sale_subscription_dashboard.salesman_searchview" class="o_datepickers_searchview">
         <span class="o_datepicker_separator"> to </span>
-        <select class="o_salesman_selection form-control" name="salesman">
-            <option></option>
-            <t t-foreach="salesman_ids" t-as="sman">
-                <option name="salesman" t-att-selected="salesman &amp;&amp; salesman['id'] === sman['id'] ? 'selected' : undefined" t-att-value="sman['id']"><t t-esc="sman['name']"/></option>
-            </t>
-        </select>
+        <span class="salesman_tags"></span>
         <button class="btn btn-primary o_update_options">Update</button>
     </div>
 
@@ -380,11 +397,11 @@
 
     <t t-name="sale_subscription_dashboard.salesman_summary">
         <div class="col-lg-6">
-            <h2>Monthly Recurring Revenue : <t t-esc="format_number(Math.round(mrr*100)/100)"/></h2>
+            <h2>Monthly Recurring Revenue : <t t-esc="format_number(Math.round(mrr*100)/100, company_currency_id)"/></h2>
         </div>
 
         <div class="col-lg-6">
-            <h2>Non-Recurring Revenue : <t t-esc="format_number(Math.round(nrr*100)/100)"/></h2>
+            <h2>Non-Recurring Revenue : <t t-esc="format_number(Math.round(nrr*100)/100, company_currency_id)"/></h2>
         </div>
     </t>
 
@@ -393,23 +410,29 @@
             <i>There is no subscription modification during this period.</i>
         </div>
 
-        <div t-if="modifications.length" class="table-responsive">
-            <table style="width: auto;" class="table table-hover">
+        <div t-if="modifications.length" class="table-responsive o_list_view">
+            <table class="o_list_table table table-hover table table-sm table-hover table-striped o_list_table_grouped o_table_dashboard">
                 <tr>
                     <th/>
+                    <th class=".o_subscription_nw">Date</th>
                     <th>Partner</th>
                     <th>Subscription</th>
                     <th>Template</th>
+                    <th t-if="nCompanies &gt; 1">Company</th>
                     <th>Previous MRR</th>
                     <th>Current MRR</th>
+                    <th>Delta</th>
                 </tr>
-                <tr t-foreach="modifications" t-as="modification">
+                <tr t-foreach="modifications" t-as="modification" class="o_subscription_row" t-att-data-model="modification['model']" t-att-data-id="modification['subscription_id']">
                     <td><i t-att-class="modification['class_type']"/></td>
-                    <td><t t-esc="modification['partner'] or ''"/></td>
-                    <td><t t-esc="modification['subscription'] or ''"/></td>
-                    <td><t t-esc="modification['subscription_template'] or ''"/></td>
-                    <td><t t-esc="format_number(modification['previous_mrr'])"/></td>
-                    <td><t t-esc="format_number(modification['current_mrr'])"/> (<span t-att-class="get_color_class(modification['diff'], 'up')"><t t-esc="format_number(modification['diff'])"/></span>)</td>
+                    <td><t t-esc="modification['date'] or ''"/></td>
+                    <td class="o_subscription_ellipsis"><t t-esc="modification['partner'] or ''"/></td>
+                    <td class="o_subscription_ellipsis"><t t-esc="modification['subscription'] or ''"/></td>
+                    <td class="o_subscription_ellipsis"><t t-esc="modification['subscription_template'] or ''"/></td>
+                    <td t-if="nCompanies &gt; 1"><t t-esc="modification['company_name'] or ''"/></td>
+                    <td><t t-esc="format_number(modification['previous_mrr'], company_currency_id)"/></td>
+                    <td><t t-esc="format_number(modification['current_mrr'], company_currency_id)"/></td>
+                    <td><span t-att-class="get_color_class(modification['diff'], 'up')"><t t-esc="format_number(modification['diff'], company_currency_id)"/></span></td>
                 </tr>
             </table>
         </div>
@@ -420,19 +443,21 @@
             <i>There is no invoice during this period.</i>
         </div>
 
-        <div t-if="invoices.length" class="table-responsive">
-            <table style="width: auto;" class="table table-hover">
+        <div t-if="invoices.length" class="table-responsive o_list_view">
+            <table class="o_list_table table table-hover table table-sm table-hover table-striped o_list_table_grouped o_table_dashboard">
                 <tr>
+                    <th>Date</th>
                     <th>Partner</th>
-                    <th>Subscription</th>
-                    <th>Template</th>
+                    <th>Document</th>
+                    <th t-if="nCompanies &gt; 1">Company</th>
                     <th>NRR</th>
                 </tr>
-                <tr t-foreach="invoices" t-as="invoice">
+                <tr t-foreach="invoices" class="o_subscription_row" t-as="invoice" t-att-data-id="invoice['move_id']" t-att-data-model="invoice['model']">
+                    <td><t t-esc="invoice['date'] or ''"/></td>
                     <td><t t-esc="invoice['partner'] or ''"/></td>
-                    <td><t t-esc="invoice['subscription'] or ''"/></td>
-                    <td><t t-esc="invoice['subscription_template'] or ''"/></td>
-                    <td><t t-esc="format_number(invoice['nrr'])"/></td>
+                    <td><t t-esc="invoice['code'] or ''"/></td>
+                    <td t-if="nCompanies &gt; 1" t-esc="invoice['company_name']"></td>
+                    <td><t t-esc="format_number(invoice['nrr'], company_currency_id)"/></td>
                 </tr>
             </table>
         </div>

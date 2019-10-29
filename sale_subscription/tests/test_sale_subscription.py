@@ -219,12 +219,11 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(new_line.subscription_id, self.subscription, 'sale_subscription: SO lines added to renewal orders manually should have the correct subscription set on them')
         self.assertEqual(renewal_so.origin, self.subscription.code, 'sale_subscription: renewal order must have the "source document" set to the subscription code')
         self.assertTrue(renewal_so.subscription_management == 'renew', 'sale_subscription: renewal quotation generation is wrong')
-        self.subscription.write({'recurring_invoice_line_ids': [(0, 0, {'product_id': self.product.id, 'name': 'TestRecurringLine', 'price_unit': 50, 'uom_id': self.product.uom_id.id})]})
-        renewal_so.write({'order_line': [(0, 0, {'product_id': self.product.id, 'subscription_id': self.subscription.id, 'name': 'TestRenewalLine', 'product_uom': self.product.uom_id.id})]})
+        self.subscription.write({'recurring_invoice_line_ids': [(0, 0, {'name': 'TestRecurringLine', 'product_id': self.product.id, 'quantity': 1, 'price_unit': 50, 'uom_id': self.product.uom_id.id})]})
+        renewal_so.write({'order_line': [(0, 0, {'product_id': self.product.id, 'product_uom_qty': 5, 'subscription_id': self.subscription.id, 'product_uom': self.product.uom_id.id})]})
         renewal_so.action_confirm()
-        lines = [line.name for line in self.subscription.mapped('recurring_invoice_line_ids')]
-        self.assertTrue('TestRecurringLine' not in lines, 'sale_subscription: old line still present after renewal quotation confirmation')
-        self.assertTrue('TestRenewalLine' in lines, 'sale_subscription: new line not present after renewal quotation confirmation')
+        lines = [line.quantity for line in self.subscription.mapped('recurring_invoice_line_ids')]
+        self.assertTrue(lines[0] == 5, 'sale_subscription: Renewal quantity is not equal to the SO quantity')
         self.assertEqual(renewal_so.subscription_management, 'renew', 'sale_subscription: so should be set to "renew" in the renewal process')
 
     def test_07_upsell_via_so(self):
@@ -282,45 +281,70 @@ class TestSubscription(TestSubscriptionCommon):
             inv = subscription._recurring_create_invoice()
             self.assertEqual(inv.invoice_line_ids[0].analytic_account_id, subscription.analytic_account_id)
 
-    def test_10_take_snapshot(self):
-        Snapshot = self.env['sale.subscription.snapshot']
-        before_count = Snapshot.search_count([('subscription_id', '=', self.subscription.id)])
-        self.subscription._take_snapshot(datetime.date.today() - relativedelta(weeks=1))
-        after_count = Snapshot.search_count([('subscription_id', '=', self.subscription.id)])
-        self.assertEqual(after_count, before_count + 1)
-
-    def test_11_compute_kpi(self):
+    def test_10_compute_kpi(self):
         self.subscription.template_id.write({
             'good_health_domain': "[('recurring_monthly', '>=', 120.0)]",
             'bad_health_domain': "[('recurring_monthly', '<=', 80.0)]",
         })
+
         self.subscription.recurring_monthly = 80.0
-        self.subscription._take_snapshot(datetime.date.today() - relativedelta(weeks=16))
-        self.subscription._compute_kpi()
-        sub = self.subscription.browse(self.subscription.id)
-        self.assertEqual(sub.health, 'bad')
-        self.subscription.recurring_monthly = 100.0
-        self.subscription._take_snapshot(datetime.date.today() - relativedelta(weeks=6))
-        self.subscription.recurring_monthly = 100.0
-        self.subscription._take_snapshot(datetime.date.today() - relativedelta(weeks=4))
+        self.subscription.start_subscription()
+        self.env['sale.subscription']._cron_update_kpi()
+        self.assertEqual(self.subscription.health, 'bad')
+
+        # 16 to 6 weeks: 80
+        # 6 to 2 weeks: 100
+        # 2weeks - today : 120
+        date_log = datetime.date.today() - relativedelta(weeks=16)
+        self.env['sale.subscription.log'].create({
+            'event_type': '1_change',
+            'event_date': date_log,
+            'create_date': date_log,
+            'subscription_id': self.subscription.id,
+            'recurring_monthly': 80,
+            'amount_signed': 80,
+            'currency_id': self.subscription.currency_id.id,
+            'category': self.subscription.stage_category,
+            'user_id': self.subscription.user_id.id,
+            'team_id': self.subscription.team_id.id,
+        })
+
+        date_log = datetime.date.today() - relativedelta(weeks=6)
+        self.env['sale.subscription.log'].create({
+            'event_type': '1_change',
+            'event_date': date_log,
+            'create_date': date_log,
+            'subscription_id': self.subscription.id,
+            'recurring_monthly': 100,
+            'amount_signed': 20,
+            'currency_id': self.subscription.currency_id.id,
+            'category': self.subscription.stage_category,
+            'user_id': self.subscription.user_id.id,
+            'team_id': self.subscription.team_id.id,
+         })
+
         self.subscription.recurring_monthly = 120.0
-        self.subscription._take_snapshot(datetime.date.today() - relativedelta(weeks=2))
-        self.subscription._compute_kpi()
+        date_log = datetime.date.today() - relativedelta(weeks=2)
+        self.env['sale.subscription.log'].create({
+            'event_type': '1_change',
+            'event_date': date_log,
+            'create_date': date_log,
+            'subscription_id': self.subscription.id,
+            'recurring_monthly': 120,
+            'amount_signed': 20,
+            'currency_id': self.subscription.currency_id.id,
+            'category': self.subscription.stage_category,
+            'user_id': self.subscription.user_id.id,
+            'team_id': self.subscription.team_id.id,
+        })
+        self.subscription._cron_update_kpi()
         self.assertEqual(self.subscription.kpi_1month_mrr_delta, 20.0)
         self.assertEqual(self.subscription.kpi_1month_mrr_percentage, 0.2)
         self.assertEqual(self.subscription.kpi_3months_mrr_delta, 40.0)
         self.assertEqual(self.subscription.kpi_3months_mrr_percentage, 0.5)
         self.assertEqual(self.subscription.health, 'done')
 
-    def test_12_cron_update_kpi(self):
-        Snapshot = self.env['sale.subscription.snapshot']
-        subscriptions_count = self.env['sale.subscription'].search_count([('stage_category', '=', 'progress')])
-        before_count = Snapshot.search_count([])
-        self.env['sale.subscription']._cron_update_kpi()
-        after_count = Snapshot.search_count([])
-        self.assertEqual(after_count, before_count + subscriptions_count)
-
-    def test_13_onchange_date_start(self):
+    def test_11_onchange_date_start(self):
         recurring_bound_tmpl = self.env['sale.subscription.template'].create({
             'name': 'Recurring Bound Template',
             'recurring_rule_boundary': 'limited',
@@ -333,7 +357,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertIsInstance(sub.date, datetime.date)
 
     @mute_logger('odoo.addons.mail.models.mail_mail', 'odoo.models.unlink')
-    def test_14_default_salesperson(self):
+    def test_12_default_salesperson(self):
         partner = self.env['res.partner'].create({'name': 'Tony Stark'})
         sub_form = Form(self.env['sale.subscription'])
         sub_form.template_id = self.subscription_tmpl
@@ -348,7 +372,7 @@ class TestSubscription(TestSubscriptionCommon):
         sub = sub_form.save()
         self.assertEqual(sub.user_id, self.user_portal)
 
-    def test_15_next_invoice_date_last_date_of_month(self):
+    def test_13_next_invoice_date_last_date_of_month(self):
         """ This testcase will check the next invoice dates for monthly subscription. """
         self.subscription_tmpl.recurring_interval = 1
         # Created subscription with `date_start` set to last day of December and `recurring_next_date` as last day of January.
@@ -363,7 +387,7 @@ class TestSubscription(TestSubscriptionCommon):
         sub.recurring_invoice()
         self.assertEqual(sub.recurring_next_date, datetime.date(2018, 4, 30), '`Date of Next Invoice` should be the last day of April 2018.')
 
-    def test_16_changed_next_invoice_date(self):
+    def test_14_changed_next_invoice_date(self):
         """This testcase will check next invoice dates if user change next invoice date manually"""
         self.subscription_tmpl.recurring_interval = 1
         # Created subscription with `date_start` and `recurring_next_date` to 5th of February and March respectively.
@@ -381,7 +405,7 @@ class TestSubscription(TestSubscriptionCommon):
         sub.recurring_invoice()
         self.assertEqual(sub.recurring_next_date, datetime.date(2018, 6, 30), '`Date of Next Invoice` should be 30th June 2018.')
 
-    def test_17_taxes(self):
+    def test_15_taxes(self):
         """Check tax behaviours for subscriptions."""
         # update tax & fpos on initial SO to use another tax
         self.sale_order_2.fiscal_position_id = self.fpos_partner
@@ -399,7 +423,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(sub.recurring_total_incl, inv.amount_total, 'Taxed totals should be equal between subscription and generated invoice')
         self.assertEqual(inv.fiscal_position_id, self.fpos_partner, 'Fiscal position must be forward from SO to subscription')
 
-    def test_18_product_change(self):
+    def test_16_product_change(self):
         """Check behaviour of the product onchange (taxes mostly)."""
         # check default tax
         sub_form = Form(self.subscription)

@@ -11,7 +11,11 @@ var time = require('web.time');
 var utils = require('web.utils');
 var web_client = require('web.web_client');
 var Widget = require('web.Widget');
+var relational_fields = require('web.relational_fields');
+var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
+var ajax = require('web.ajax');
 
+var FieldMany2ManyTags = relational_fields.FieldMany2ManyTags;
 var _t = core._t;
 var QWeb = core.qweb;
 
@@ -44,11 +48,19 @@ because of the calculation and is then rendered separately.
 */
 
 // Abstract widget with common methods
-var sale_subscription_dashboard_abstract = AbstractAction.extend({
+var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneFieldManagerMixin, {
     jsLibs: [
         '/web/static/lib/Chart/Chart.js',
     ],
     hasControlPanel: true,
+
+    /**
+     * @constructor
+     */
+    init: function (parent, action) {
+        this._super.apply(this, arguments);
+        StandaloneFieldManagerMixin.init.call(this);
+    },
 
     start: function() {
         var self = this;
@@ -78,7 +90,7 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend({
             // The following lines allows to refresh the page when a detailed dashboard is displayed.
             // The main dashboard is then showed without error message.
             // loadstate restores the main dashboard.
-            if (options.push_main_state && self.main_dashboard_action_id){
+            if (options.push_main_state && self.main_dashboard_action_id) {
                 web_client.do_push_state({action: self.main_dashboard_action_id});
             }
         });
@@ -340,7 +352,7 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
         }
 
         for (var j=0; j < forecast_boxes.length; j++) {
-            new SaleSubscriptionDashboardForecastBox(
+            this.defs.push(new SaleSubscriptionDashboardForecastBox(
                 this,
                 this.end_date,
                 this.filters,
@@ -349,10 +361,11 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
                 forecast_boxes[j].getAttribute("code"),
                 this.currency_id,
                 this.has_mrr
-            ).replace($(forecast_boxes[j]));
+            ).replace($(forecast_boxes[j])));
         }
 
-        this.update_cp();
+        this.defs.push(this.update_cp());
+        return Promise.all(this.defs);
     },
 
     store_unresolved_defs: function() {
@@ -462,9 +475,8 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
 
     render_dashboard: function() {
         var self = this;
-        Promise.resolve(
-            this.fetch_computed_stat()
-        ).then(function(){
+        return this.fetch_computed_stat()
+        .then(function(){
 
             self.$('.o_content').append(QWeb.render("sale_subscription_dashboard.detailed_dashboard", {
                 selected_stat_values: _.findWhere(self.stat_types, {code: self.selected_stat}),
@@ -478,18 +490,20 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                 format_number: self.format_number,
             }));
 
-            self.render_detailed_dashboard_stats_history();
-            self.render_detailed_dashboard_graph();
+            const defs = [];
+            defs.push(self.render_detailed_dashboard_stats_history());
+            defs.push(self.render_detailed_dashboard_graph());
 
             if (self.selected_stat === 'mrr') {
-                self.render_detailed_dashboard_mrr_growth();
+                defs.push(self.render_detailed_dashboard_mrr_growth());
             }
 
             if (self.display_stats_by_plan){
-                self.render_detailed_dashboard_stats_by_plan();
+                defs.push(self.render_detailed_dashboard_stats_by_plan());
             }
 
-            self.update_cp();
+            defs.push(self.update_cp());
+            return Promise.all(defs);
         });
     },
 
@@ -1042,8 +1056,11 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
 
     init: function() {
         this._super.apply(this, arguments);
-        this.start_date = moment().subtract(1, 'M').startOf('month');
-        this.end_date = moment().subtract(1, 'M').endOf('month');
+        this.start_date = moment().startOf('month');
+        this.end_date = moment().endOf('month');
+        this.barGraph = {};
+        this.migrationDate = false;
+        this.currentCompany = $.bbq.getState('cids') && parseInt($.bbq.getState('cids').split(',')[0]);
     },
 
     willStart: function() {
@@ -1060,21 +1077,21 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
                 params: {},
             }).then(function(result) {
                 self.salesman_ids = result.salesman_ids;
-                self.salesman = result.default_salesman || {};
+                self.salesman = result.default_salesman || [];
                 self.currency_id = result.currency_id;
+                self.migrationDate = moment(result['migration_date'], 'YYYY-MM-DD');
         });
     },
 
     render_dashboard: function() {
-        this.$('.o_content').empty().append(QWeb.render("sale_subscription_dashboard.salesman", {
+        this.update_cp();
+        this.$('.o_content').empty().append(QWeb.render("sale_subscription_dashboard.salesmen", {
             salesman_ids: this.salesman_ids,
             salesman: this.salesman,
             start_date: this.start_date,
             end_date: this.end_date,
+            migration_date: this.migrationDate,
         }));
-
-        this.update_cp();
-
         if (!jQuery.isEmptyObject(this.salesman)) {
             this.render_dashboard_additionnal();
         }
@@ -1085,56 +1102,87 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         addLoader(this.$('#mrr_growth_salesman'));
 
         self._rpc({
-            route: '/sale_subscription_dashboard/get_values_salesman',
+            route: '/sale_subscription_dashboard/get_values_salesmen',
             params: {
                 start_date: this.start_date.format('YYYY-MM-DD'),
                 end_date: this.end_date.format('YYYY-MM-DD'),
-                salesman_id: this.salesman.id,
+                salesman_ids: this.salesman,
             },
-        }).then(function(result){
-            load_chart_mrr_salesman('#mrr_growth_salesman', result);
-            self.$('#mrr_growth_salesman div.o_loader').hide();
-
-            // 1. Subscriptions modifcations
-            var ICON_BY_TYPE = {
-                'churn': 'o_red fa fa-remove',
-                'new': 'o_green fa fa-plus',
-                'down': 'o_red fa fa-arrow-down',
-                'up': 'o_green fa fa-arrow-up',
-            };
-
-            _.each(result.contract_modifications, function(v) {
-                v.class_type = ICON_BY_TYPE[v.type];
+        }).then(function(result) {
+            var salespersons_statistics = result['salespersons_statistics'];
+            Object.keys(salespersons_statistics).forEach(element => {
+                var cur_salesman = self.salesman_ids.find(val => val.id === Number(element));
+                self.$('.o_salesman_loop').append(QWeb.render("sale_subscription_dashboard.salesman", {
+                    salesman: cur_salesman,
+                }));
+                self.render_section(cur_salesman, salespersons_statistics[Number(element)]);
             });
-
-            var html_modifications = QWeb.render('sale_subscription_dashboard.contract_modifications', {
-                modifications: result.contract_modifications,
-                get_color_class: get_color_class,
-                currency_id: self.currency_id,
-                format_number: self.format_number,
+            $('.o_subscription_row').each(function (index, value) {
+                $(this).on('click', function () {
+                    var subscription_id = $(this).data()['id'];
+                    var model = $(this).data()['model'];
+                    var action = {
+                        type: 'ir.actions.act_window',
+                        res_model: model,
+                        res_id: subscription_id,
+                        views: [[false, 'form']],
+                    };
+                    self.do_action(action);
+                });
             });
-            self.$('#contract_modifications').append(html_modifications);
-
-            // 2. NRR invoices
-            var html_nrr_invoices = QWeb.render('sale_subscription_dashboard.nrr_invoices', {
-                invoices: result.nrr_invoices,
-                currency_id: self.currency_id,
-                format_number: self.format_number,
-            });
-            self.$('#NRR_invoices').append(html_nrr_invoices);
-
-            // 3. Summary
-            var html_summary = QWeb.render('sale_subscription_dashboard.salesman_summary', {
-                mrr: result.net_new,
-                nrr: result.nrr,
-                currency_id: self.currency_id,
-                format_number: self.format_number,
-            });
-            self.$('#mrr_growth_salesman').before(html_summary);
         });
+    },
 
-        function load_chart_mrr_salesman(div_to_display, result) {
+    render_section: function (cur_salesman, salesman_data) {
+        addLoader(this.$('#mrr_growth_salesman_' + cur_salesman['id']));
+        this.barGraph[cur_salesman['id']] = load_chart_mrr_salesman('#mrr_growth_salesman_' + cur_salesman['id'], salesman_data, self.currency_id);
+        this.$('#mrr_growth_salesman_' + cur_salesman['id'] + ' div.o_loader').hide();
 
+        // 1. Subscriptions modifcations
+        var ICON_BY_TYPE = {
+            'churn': 'o_red fa fa-remove',
+            'new': 'o_green fa fa-plus',
+            'down': 'o_red fa fa-arrow-down',
+            'up': 'o_green fa fa-arrow-up',
+        };
+
+        _.each(salesman_data.contract_modifications, function(v) {
+            v.class_type = ICON_BY_TYPE[v.type];
+        });
+        const nCompanies = new Set([this.currentCompany].
+            concat(salesman_data.contract_modifications.
+                map(value => value.company_id))
+                .concat(salesman_data.nrr_invoices
+                    .map(value => value.company_id))).size;
+
+        var html_modifications = QWeb.render('sale_subscription_dashboard.contract_modifications', {
+            modifications: salesman_data.contract_modifications,
+            get_color_class: get_color_class,
+            format_number: this.format_number,
+            company_currency_id: this.currency_id,
+            nCompanies: nCompanies,
+        });
+        this.$('#contract_modifications_' + cur_salesman['id']).append(html_modifications);
+
+        // 2. NRR invoices
+        var html_nrr_invoices = QWeb.render('sale_subscription_dashboard.nrr_invoices', {
+            invoices: salesman_data.nrr_invoices,
+            company_currency_id: this.currency_id,
+            format_number: this.format_number,
+            nCompanies: nCompanies,
+        });
+        this.$('#NRR_invoices_' + cur_salesman['id']).append(html_nrr_invoices);
+
+        // 3. Summary
+        var html_summary = QWeb.render('sale_subscription_dashboard.salesman_summary', {
+            mrr: salesman_data.net_new,
+            nrr: salesman_data.nrr,
+            company_currency_id: this.currency_id,
+            format_number: this.format_number,
+        });
+        this.$('#mrr_growth_salesman_' + cur_salesman['id']).before(html_summary);
+
+        function load_chart_mrr_salesman (div_to_display, result, currency_id) {
             var labels = [_t("New MRR"), _t("Churned MRR"), _t("Expansion MRR"),
                             _t("Down MRR"),  _t("Net New MRR"), _t("NRR")];
             var datasets = [{
@@ -1146,19 +1194,41 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
 
             var $div_to_display = $(div_to_display).css({position: 'relative', height: '16em'});
             $div_to_display.empty();
-            var $canvas = $('<canvas/>');
+            var $canvas = $('<canvas class="canvas_'+ cur_salesman['id'] + '"/>');
             $div_to_display.append($canvas);
 
             var ctx = $canvas.get(0).getContext('2d');
-            new Chart(ctx, {
+            ctx['currency_id'] = currency_id;
+            var ChartValuePlugin = {
+                updated: false,
+                afterDraw: function(chart) {
+                var self = this;
+                var ctx = chart.ctx;
+                ctx.font = chart.config.options.defaultFontFamily;
+                ctx.fillStyle = chart.config.options.defaultFontColor;
+                var chartdatasets = chart.data.datasets;
+                var height = chart.controller.boxes[0].bottom;
+                // Clear the area where values are drawn to avoid rendering multiple times and glitches
+                ctx.clearRect(50,-5,2000,20);
+                Chart.helpers.each(chartdatasets.forEach(function (dataset, i) {
+                    var meta = chart.controller.getDatasetMeta(i);
+                    Chart.helpers.each(meta.data.forEach(function (bar, index) {
+                        var value = utils.human_number(dataset.data[index]);
+                        ctx.fillText(render_monetary_field(value, ctx.currency_id), bar._model.x, 15);
+                    }), this);
+                  }), this);
+                }
+            };
+            var barGraph = new Chart(ctx, {
                 type: 'bar',
+                plugins : [ChartValuePlugin],
                 data: {
                     labels: labels,
                     datasets: datasets,
                 },
                 options: {
                     layout: {
-                        padding: {bottom: 15},
+                        padding: {bottom: 15, top: 17},
                     },
                     legend: {
                         display: false,
@@ -1167,14 +1237,18 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
                     tooltips: {
                         enabled: false,
                     },
-                }
+                },
             });
+            return barGraph;
         }
     },
 
-    format_number: function(value) {
+    format_number: function(value, currency_id) {
+        if (!currency_id) {
+            var currency_id = this.currency_id;
+        }
         value = utils.human_number(value);
-        return render_monetary_field(value, this.currency_id);
+        return render_monetary_field(value, currency_id);
     },
 
     on_update_options: function() {
@@ -1186,17 +1260,78 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
     },
 
     update_cp: function() {
-        this.$searchview = $(QWeb.render("sale_subscription_dashboard.salesman_searchview", {
-            salesman_ids: this.salesman_ids,
-            salesman: this.salesman,
-        }));
-        this.$searchview.on('click', '.o_update_options', this.on_update_options);
+        var self = this;
+        self.$searchview = $(QWeb.render("sale_subscription_dashboard.salesman_searchview"));
+        self.$exportButton = $(QWeb.render("sale_subscription_dashboard.export"));
+        var $WarningContent = $('.o_subscription_dashboard_warning');
+        self.$exportButton.on('click', function () {
+            ajax.rpc('/web/dataset/call_kw/sale.subscription/print_pdf', {
+            model: 'sale.subscription',
+            method: 'print_pdf',
+            args: [],
+            kwargs: {},
+            })
+            .then(function (result) {
+                for (var key in self.barGraph) {
+                    var base64Image = self.barGraph[key].toBase64Image();
+                    base64Image = '<img src="data:image/png;base64' + base64Image + '" alt="graphic" />';
+                    $(".o_salesmen_dashboard").find(".canvas_" + key).replaceWith(base64Image).html();
+                }
+                // Save banner text and table propertie before PDF rendering
+                var bannerContent = $(".o_subscription_dashboard_warning").text();
+                // We do not want the warning in the report.
+                $(".o_subscription_dashboard_warning").text('');
+                result.data.body_html = $(".o_salesmen_dashboard").html();
+                // get back the warning message if it exists
+                $(".o_subscription_dashboard_warning").text(bannerContent);
+                var doActionProm = self.do_action(result);
+                return doActionProm;
+            });
+        });
 
-        this.set_up_datetimepickers();
-        this.updateControlPanel({
-            cp_content: {
-                $searchview: this.$searchview,
-            },
+        self.$searchview.on('click', '.o_update_options', this.on_update_options);
+        self.set_up_datetimepickers();
+        self.updateControlPanel({
+           cp_content: {
+               $searchview: this.$searchview,
+               $buttons: this.$exportButton,
+           },
+        });
+        // We need the many2many widget to limit the available users to the ones returned by the `fetch_salesmen` RPC call.
+        var domainList = [];
+        // The available users in the dropdown are synched with the available salesman_ids. 
+        // Note: self.salesman may already contains the current user (default salesman) when the dashboard is launched.
+        if (self.many2manytags) {
+            var values = [];
+            for (let index = 0; index < self.many2manytags.value.res_ids.length; index++) {
+                values.push(self.salesman_ids.find(val => val.id === self.many2manytags.value.res_ids[index]));
+            }
+           self.salesman = values;
+        }
+        self.salesman_ids.forEach(saleman => {
+            domainList.push(saleman['id']);
+        });
+        // Make a dummy record to attach the salesman selector widget
+        let def = self.model.makeRecord('ir.actions.act_window', [{
+            name: 'model',
+            relation: 'res.users',
+            type: 'many2many',
+            domain: [['id', 'in', domainList]]
+        }]);
+        Promise.all([def]).then(function (recordID) {
+            var record = self.model.get(recordID);
+            var options = {
+                mode: 'edit',
+            };
+            self.many2manytags = new FieldMany2ManyTags(self, 'model', record, options);
+            // FIXME: by default the many2many widget in edit mode allows to create new records on the fly.
+            self.many2manytags.nodeOptions.no_create_edit = true;
+            self.many2manytags.nodeOptions.no_create = true;
+            if (Object.keys(self.salesman).length > 0) {
+                self.many2manytags._addTag(self.salesman);
+            }
+            self._registerWidget(recordID, 'model', self.many2manytags);
+            self.many2manytags.appendTo(self.$searchview.find('.salesman_tags'));
         });
     },
 });

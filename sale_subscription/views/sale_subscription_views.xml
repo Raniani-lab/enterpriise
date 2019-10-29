@@ -72,7 +72,6 @@
         </field>
     </record>
 
-
     <record id="sale_subscription_action" model="ir.actions.act_window">
         <field name="name">Subscriptions</field>
         <field name="res_model">sale.subscription</field>
@@ -302,6 +301,20 @@
                                 <div name="description">
                                     <field name="description" placeholder="Terms and Conditions"/>
                                 </div>
+                            </page>
+                            <page string="Changes" id="logs">
+                                <field name="subscription_log_ids">
+                                    <tree decoration-muted="event_type == '2_snapshot'" decoration-success="event_type == '1_change' and amount_signed &gt; 0" decoration-danger="event_type == '3_churn'" decoration-warning="event_type == '1_change' and amount_signed &lt; 0" editable="bottom">
+                                        <field name="create_date"/>
+                                        <field name="event_type"/>
+                                        <field name="amount_signed"/>
+                                        <field name="user_id"/>
+                                        <field name="team_id"/>
+                                        <field name="recurring_monthly"/>
+                                        <field name="category" groups="base.group_no_one"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="Other Info" id="other_info">
                                 <group>

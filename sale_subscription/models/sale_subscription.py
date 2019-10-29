@@ -13,10 +13,17 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
 from odoo.tools import format_date
+from odoo.tools.float_utils import float_is_zero
 
 
 _logger = logging.getLogger(__name__)
 
+INTERVAL_FACTOR = {
+    'daily': 30.0,
+    'weekly': 30.0 / 7.0,
+    'monthly': 1.0,
+    'yearly': 1.0 / 12.0,
+}
 
 class SaleSubscription(models.Model):
     _name = "sale.subscription"
@@ -62,6 +69,7 @@ class SaleSubscription(models.Model):
         'sale.subscription.template', string='Subscription Template',
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", required=True,
         default=lambda self: self.env['sale.subscription.template'].search([], limit=1), tracking=True, check_company=True)
+    subscription_log_ids = fields.One2many('sale.subscription.log', 'subscription_id', string='Subscription Logs', readonly=True)
     payment_mode = fields.Selection(related='template_id.payment_mode', readonly=False)
     description = fields.Text()
     user_id = fields.Many2one('res.users', string='Salesperson', tracking=True, default=lambda self: self.env.user)
@@ -240,15 +248,9 @@ class SaleSubscription(models.Model):
     @api.depends('recurring_total', 'template_id.recurring_interval', 'template_id.recurring_rule_type')
     def _compute_recurring_monthly(self):
         # Generally accepted ratios for monthly reporting
-        interval_factor = {
-            'daily': 30.0,
-            'weekly': 30.0 / 7.0,
-            'monthly': 1.0,
-            'yearly': 1.0 / 12.0,
-        }
         for sub in self:
             sub.recurring_monthly = (
-                sub.recurring_total * interval_factor[sub.recurring_rule_type] / sub.recurring_interval
+                sub.recurring_total * INTERVAL_FACTOR[sub.recurring_rule_type] / sub.recurring_interval
             ) if sub.template_id else 0
 
     @api.depends('uuid')
@@ -317,7 +319,7 @@ class SaleSubscription(models.Model):
         if vals.get('name', 'New') == 'New':
             vals['name'] = vals['code']
         if not vals.get('recurring_invoice_day'):
-            sub_date = vals.get('recurring_next_date') or vals.get('date_start') or fields.date.today()
+            sub_date = vals.get('recurring_next_date') or vals.get('date_start') or fields.Date.context_today(self)
             if isinstance(sub_date, datetime.date):
                 vals['recurring_invoice_day'] = sub_date.day
             else:
@@ -342,12 +344,6 @@ class SaleSubscription(models.Model):
         if vals.get('stage_id'):
             self._send_subscription_rating_mail(force_send=True)
         return result
-
-    def unlink(self):
-        self.wipe()
-        self.env['sale.subscription.snapshot'].sudo().search([
-            ('subscription_id', 'in', self.ids)]).unlink()
-        return super(SaleSubscription, self).unlink()
 
     def _init_column(self, column_name):
         # to avoid generating a single default uuid when installing the module,
@@ -416,26 +412,71 @@ class SaleSubscription(models.Model):
     @api.model
     def _cron_update_kpi(self):
         subscriptions = self.search([('stage_category', '=', 'progress')])
-        subscriptions._take_snapshot(datetime.date.today())
         subscriptions._compute_kpi()
 
-    def _take_snapshot(self, date):
-        for subscription in self:
-            self.env['sale.subscription.snapshot'].create({
-                'subscription_id': subscription.id,
-                'date': fields.Date.to_string(date),
-                'recurring_monthly': subscription.recurring_monthly,
-            })
+    def _message_track(self, tracked_fields, initial):
+        """ For a given record, fields to check (tuple column name, column info)
+                and initial values, return a structure that is a tuple containing :
+                 - a set of updated column names
+                 - a list of ORM (0, 0, values) commands to create 'mail.tracking.value' """
+        res = super()._message_track(tracked_fields, initial)
+        updated_fields = res[0]
+        commands = res[1]
+        for sub in self:
+            if 'recurring_total' or 'stage_id' in updated_fields:
+                for tracking_value in commands:
+                    if tracking_value:
+                        # tracking_value = [0, 0, {...}]
+                        tracking_value = tracking_value[2]
+                        field_name = self.env['ir.model.fields'].browse(tracking_value.get('field')).name
+                        if field_name == 'recurring_total':
+                            old_value_monthly = tracking_value.get('old_value_float') * INTERVAL_FACTOR[sub.recurring_rule_type] / sub.recurring_interval
+                            new_value_monthly = tracking_value.get('new_value_float') * INTERVAL_FACTOR[sub.recurring_rule_type] / sub.recurring_interval
+                            delta = new_value_monthly - old_value_monthly
+                            cur_round = sub.company_id.currency_id.rounding
+                            if not float_is_zero(delta, precision_rounding=cur_round):
+                                self.env['sale.subscription.log'].sudo().create({
+                                    'event_date': fields.Date.context_today(self),
+                                    'subscription_id': sub.id,
+                                    'currency_id': sub.currency_id.id,
+                                    'recurring_monthly': new_value_monthly,
+                                    'amount_signed': delta,
+                                    'event_type': '1_change',
+                                    'category': sub.stage_id.category,
+                                    'user_id': sub.user_id.id,
+                                    'team_id': sub.team_id.id,
+                                })
+                        if field_name == 'stage_id':
+                            new_stage_id = self.env['sale.subscription.stage'].browse(tracking_value['new_value_integer'])
+                            old_stage_id = self.env['sale.subscription.stage'].browse(tracking_value['old_value_integer'])
+                            if new_stage_id.category in ['progress', 'closed'] and old_stage_id.category != new_stage_id.category:
+                                # subscription started or churned
+                                start_churn = {'progress': {'type': '0_creation', 'amount_signed': sub.recurring_monthly,
+                                                            'recurring_monthly': sub.recurring_monthly},
+                                               'closed': {'type': '2_churn', 'amount_signed': -sub.recurring_monthly,
+                                                          'recurring_monthly': 0}}
+                                self.env['sale.subscription.log'].sudo().create({
+                                    'event_date': fields.Date.context_today(self),
+                                    'subscription_id': sub.id,
+                                    'currency_id': sub.currency_id.id,
+                                    'recurring_monthly': start_churn[new_stage_id.category]['recurring_monthly'],
+                                    'amount_signed': start_churn[new_stage_id.category]['amount_signed'],
+                                    'event_type': start_churn[new_stage_id.category]['type'],
+                                    'category': sub.stage_id.category,
+                                    'user_id': sub.user_id.id,
+                                    'team_id': sub.team_id.id,
+                                })
+        return res
 
     def _get_subscription_delta(self, date):
         self.ensure_one()
         delta, percentage = False, False
-        snapshot = self.env['sale.subscription.snapshot'].search([
-            ('subscription_id', '=', self.id),
-            ('date', '<=', date)], order='date desc', limit=1)
-        if snapshot:
-            delta = self.recurring_monthly - snapshot.recurring_monthly
-            percentage = delta / snapshot.recurring_monthly if snapshot.recurring_monthly != 0 else 100
+        subscription_log = self.env['sale.subscription.log'].search([
+            ('subscription_id', '=', self.id), ('event_type', 'in', ['1_change', '0_creation']),
+            ('event_date', '<=', date)], order='event_date desc', limit=1)
+        if subscription_log:
+            delta = self.recurring_monthly - subscription_log.recurring_monthly
+            percentage = delta / subscription_log.recurring_monthly if subscription_log.recurring_monthly != 0 else 100
         return {'delta': delta, 'percentage': percentage}
 
     def _get_subscription_health(self):
@@ -479,7 +520,7 @@ class SaleSubscription(models.Model):
         return self.write({'date': False})
 
     def set_close(self):
-        today = fields.Date.from_string(fields.Date.today())
+        today = fields.Date.from_string(fields.Date.context_today(self))
         search = self.env['sale.subscription.stage'].search
         for sub in self:
             stage = search([('category', '=', 'closed'), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
@@ -629,6 +670,7 @@ class SaleSubscription(models.Model):
         values = self._prepare_renewal_order_values()
         order = self.env['sale.order'].create(values[self.id])
         order.message_post(body=(_("This renewal order has been created from the subscription ") + " <a href=# data-oe-model=sale.subscription data-oe-id=%d>%s</a>" % (self.id, self.display_name)))
+        order.order_line._compute_tax_id()
         return {
             "type": "ir.actions.act_window",
             "res_model": "sale.order",
@@ -1162,14 +1204,50 @@ class SaleSubscriptionStage(models.Model):
         ('closed', 'Closed')], required=True, default='draft', help="Category of the stage")
 
 
-class SaleSubscriptionSnapshot(models.Model):
-    _name = 'sale.subscription.snapshot'
-    _description = 'Subscription Snapshot'
+class SaleSubscriptionLog(models.Model):
+    _name = 'sale.subscription.log'
+    _description = 'Subscription Log'
+    _order = 'event_date desc, id desc'
 
-    subscription_id = fields.Many2one('sale.subscription', string='Subscription', required=True)
-    date = fields.Date(string='Date', required=True, default=fields.Date.today)
-    recurring_monthly = fields.Float(string='Monthly Recurring Revenue', required=True)
+    subscription_id = fields.Many2one(
+        'sale.subscription', string='Subscription',
+        required=True, ondelete='cascade', readonly=True
+        )
+    create_date = fields.Datetime(string='Date', readonly=True)
+    event_type = fields.Selection(
+        string='Type of event',
+        selection=[('0_creation', 'Creation'), ('1_change', 'Change in MRR'), ('2_churn', 'Churn')],
+        required=True, readonly=True,)
+    recurring_monthly = fields.Monetary(string='MRR after Change', required=True,
+                                        help="MRR, after applying the changes of that particular event",
+                                        group_operator=None, readonly=True)
+    category = fields.Selection([
+        ('draft', 'Draft'),
+        ('progress', 'In Progress'),
+        ('closed', 'Closed')], required=True, default='draft', help="Subscription stage category when the change occured")
 
+    user_id = fields.Many2one('res.users', string='Salesperson')
+    team_id = fields.Many2one('crm.team', string='Sales Team')
+    amount_signed = fields.Monetary(string='Change in MRR', readonly=True)
+    currency_id = fields.Many2one('res.currency', string='Currency', required=True, readonly=True)
+    amount_company_currency = fields.Monetary(
+        string='Change in MRR (company currency)', currency_field='company_currency_id',
+        compute="_compute_amount_company_currency", store=True,
+        readonly=True
+    )
+    event_date = fields.Date(string='Event Date', required=True)
+    company_currency_id = fields.Many2one('res.currency', string='Company Currency', related='company_id.currency_id', store=True, readonly=True)
+    company_id = fields.Many2one('res.company', string='Company', related='subscription_id.company_id', store=True, readonly=True)
+
+    @api.depends('company_id', 'company_currency_id', 'amount_signed', 'event_date')
+    def _compute_amount_company_currency(self):
+        for log in self:
+            log.amount_company_currency = log.currency_id._convert(
+                from_amount=log.amount_signed,
+                to_currency=log.company_currency_id,
+                date=log.event_date,
+                company=log.company_id
+            )
 
 class SaleSubscriptionAlert(models.Model):
     _name = 'sale.subscription.alert'

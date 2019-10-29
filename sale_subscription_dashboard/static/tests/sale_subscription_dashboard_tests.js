@@ -32,7 +32,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                             name: "Forecasted Annual MRR Growth"
                         },
                     },
-                    currency_id: 3,
+                    currency_id: 2,
                     contract_templates: [{
                         id: 1,
                         name: "Odoo Monthly"
@@ -110,12 +110,13 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                     expon_growth: 15,
                     linear_growth: 0
                 },
-                fetch_salesman: {
-                    currency_id: 3,
-                    default_salesman: {
+                fetch_salesmen: {
+                    currency_id: 2,
+                    migration_date: '2020-01-01',
+                    default_salesman: [{
                         id: 1,
                         name: "Mitchell Admin"
-                    },
+                    }],
                     salesman_ids: [{
                         id: 1,
                         name: "Mitchell Admin"
@@ -125,37 +126,39 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                     }]
                 },
                 salesman_values: {
-                    new: 625,
-                    churn: 0,
-                    up: 50,
-                    down: 0,
-                    net_new: 600,
-                    contract_modifications: [{
-                        partner: "Agrolait",
-                        account_analytic: "Agrolait",
-                        account_analytic_template: "Odoo Monthly",
-                        previous_mrr: 500,
-                        current_mrr: 800,
-                        diff: 300,
-                        type: 'up',
-                    }],
-                    nrr: 1195,
-                    nrr_invoices: [{
-                        partner: "Joel Willis",
-                        account_analytic_template: "Odoo Monthly",
-                        nrr: "20.0",
-                        account_analytic: false
-                    }, {
-                        partner: "Agrolait",
-                        account_analytic_template: "Odoo Monthly",
-                        nrr: "525.0",
-                        account_analytic: false
-                    }, {
-                        partner: "Agrolait",
-                        account_analytic_template: "Odoo Monthly",
-                        nrr: "650.0",
-                        account_analytic: false
-                    }]
+                    salespersons_statistics: {1: {
+                        new: 625,
+                        churn: 0,
+                        up: 50,
+                        down: 0,
+                        net_new: 600,
+                        contract_modifications: [{
+                            partner: "Agrolait",
+                            account_analytic: "Agrolait",
+                            account_analytic_template: "Odoo Monthly",
+                            previous_mrr: 500,
+                            current_mrr: 800,
+                            diff: 300,
+                            type: 'up',
+                        }],
+                        nrr: 1195,
+                        nrr_invoices: [{
+                            partner: "Joel Willis",
+                            account_analytic_template: "Odoo Monthly",
+                            nrr: "20.0",
+                            account_analytic: false
+                        }, {
+                            partner: "Agrolait",
+                            account_analytic_template: "Odoo Monthly",
+                            nrr: "525.0",
+                            account_analytic: false
+                        }, {
+                            partner: "Agrolait",
+                            account_analytic_template: "Odoo Monthly",
+                            nrr: "650.0",
+                            account_analytic: false
+                        }]
+                    }}
                 },
                 get_stats_by_plan: [{
                     name: "Odoo Monthly",
@@ -197,7 +200,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                     return Promise.resolve();
                 },
             });
-            subscription_dashboard.appendTo($('#qunit-fixture'));
+            await subscription_dashboard.appendTo($('#qunit-fixture'));
             await testUtils.nextTick();
             assert.strictEqual(subscription_dashboard.$('.on_stat_box .o_stat_box_card_amount').text().trim(), "280", "Should contain net revenue amount '280'");
             assert.strictEqual(subscription_dashboard.$('.on_forecast_box .o_stat_box_card_amount').text().trim(), "1k", "Should contain forecasted annual amount '1k'");
@@ -235,7 +238,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                     }
                 },
             });
-            dashboard.appendTo($('#qunit-fixture'));
+            await dashboard.appendTo($('#qunit-fixture'));
             await testUtils.nextTick();
             assert.containsOnce(dashboard, '.o_account_contract_dashboard', "should have a dashboard");
             assert.containsN(dashboard, '.o_account_contract_dashboard .box', 2, "should have a dashboard with 2 forecasts");
@@ -291,7 +294,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                     }
                 },
             });
-            dashboard.appendTo($('#qunit-fixture'));
+            await dashboard.appendTo($('#qunit-fixture'));
             await testUtils.nextTick();
             assert.containsOnce(dashboard, '.o_account_contract_dashboard', "should have a dashboard");
             assert.containsN(dashboard, '.o_account_contract_dashboard .box', 3, "should have a dashboard with 3 boxes");
@@ -309,30 +312,34 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
 
         QUnit.test('sale_subscription_salesman', async function (assert) {
             var self = this;
-            assert.expect(9);
+            assert.expect(11);
             var salesman_dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_salesman(null, {});
+            salesman_dashboard.salesman =  self.data.fetch_salesmen.default_salesman;
             testUtils.mock.addMockEnvironment(salesman_dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/fetch_salesmen') {
-                        return Promise.resolve(self.data.fetch_salesman);
+                        return Promise.resolve(self.data.fetch_salesmen);
                     }
-                    if (route === '/sale_subscription_dashboard/get_values_salesman') {
+                    if (route === '/sale_subscription_dashboard/get_values_salesmen') {
                         return Promise.resolve(self.data.salesman_values);
                     }
                     return Promise.resolve();
                 },
             });
-            salesman_dashboard.appendTo($('#qunit-fixture'));
+            await salesman_dashboard.appendTo($('#qunit-fixture'));
             await testUtils.nextTick();
-            assert.containsOnce(salesman_dashboard, '#mrr_growth_salesman', "should display the salesman graph");
+            var id = self.data.fetch_salesmen.salesman_ids[0].id;
+            assert.containsOnce(salesman_dashboard, '#mrr_growth_salesman_' + id, " should display the salesman graph");
             assert.strictEqual(salesman_dashboard.$('h2').first().text(), "Monthly Recurring Revenue : 600", "should contain the Monthly Recurring Revenue Amount '600'");
             assert.strictEqual(salesman_dashboard.$('h2').eq(1).text(), "Non-Recurring Revenue : 1k", "should contain the Non-Recurring Revenue Amount '1k'");
-            assert.containsOnce(salesman_dashboard, '#contract_modifications .table-responsive', "should display the list of subscription");
-            assert.strictEqual(salesman_dashboard.$('#contract_modifications .table-responsive tr:odd td:eq(1)').text() , "Agrolait", "should contain subscription modifications partner 'Agrolait'");
-            assert.strictEqual(salesman_dashboard.$('#contract_modifications .table-responsive tr:odd td:last').text() , "800 (300)", "should contain current MRR Amount '800 (300)'");
-            assert.containsOnce(salesman_dashboard, '#NRR_invoices .table-responsive', "should display the list of NRR Invoices");
-            assert.strictEqual(salesman_dashboard.$('#NRR_invoices .table-responsive tr:eq(2) td:first').text(), "Agrolait", "should contain NRR Invoices partner 'Agrolait'");
-            assert.strictEqual(salesman_dashboard.$('#NRR_invoices .table-responsive tr:eq(2) td:last').text(), "525", "should contain NRR Invoices Amount '525'");
+            assert.containsOnce(salesman_dashboard, '#contract_modifications_' + id, "should display the list of subscription");
+            assert.strictEqual(salesman_dashboard.$('.o_subscription_row td:eq(2)').text() , "Agrolait", "should contain subscription modifications partner 'Agrolait'");
+            assert.strictEqual(salesman_dashboard.$('.o_subscription_row td:eq(5)').text() , "500", "should contain previous MRR Amount '500'");
+            assert.strictEqual(salesman_dashboard.$('.o_subscription_row td:eq(6)').text() , "800", "should contain current MRR Amount '800'");
+            assert.strictEqual(salesman_dashboard.$('.o_subscription_row td:eq(7)').text() , "300", "should contain delta '300'");
+            assert.containsOnce(salesman_dashboard, '#NRR_invoices_' + id, "should display the list of NRR Invoices");
+            assert.strictEqual(salesman_dashboard.$('#NRR_invoices_' + id + ' tr:eq(2) td:eq(1)').text(), "Agrolait", "should contain NRR Invoices partner 'Agrolait'");
+            assert.strictEqual(salesman_dashboard.$('#NRR_invoices_' + id + ' tr:eq(2) td:eq(3)').text(), "525", "should contain NRR Invoices Amount '525'");
             salesman_dashboard.destroy();
         });
     });

@@ -57,7 +57,7 @@ class SaleOrder(models.Model):
             'user_id': self.user_id.id,
             'team_id': self.team_id.id,
             'payment_term_id': self.payment_term_id.id,
-            'date_start': fields.Date.today(),
+            'date_start': fields.Date.context_today(self),
             'description': self.note or template.description,
             'pricelist_id': self.pricelist_id.id,
             'company_id': self.company_id.id,
@@ -86,13 +86,12 @@ class SaleOrder(models.Model):
                 order.subscription_management = 'upsell'
             res.append(subscriptions.ids)
             if order.subscription_management == 'renew':
-                subscriptions.wipe()
                 subscriptions.increment_period()
                 subscriptions.payment_term_id = order.payment_term_id
                 subscriptions.set_open()
             for subscription in subscriptions:
                 subscription_lines = order.order_line.filtered(lambda l: l.subscription_id == subscription and l.product_id.recurring_invoice)
-                line_values = subscription_lines._update_subscription_line_data(subscription)
+                line_values = subscription_lines._update_subscription_line_data(subscription, order.subscription_management)
                 subscription.write({'recurring_invoice_line_ids': line_values})
         return res
 
@@ -122,6 +121,17 @@ class SaleOrder(models.Model):
                     'mail.message_origin_link', values={'self': subscription, 'origin': order},
                     subtype_id=self.env.ref('mail.mt_note').id, author_id=self.env.user.partner_id.id
                 )
+                self.env['sale.subscription.log'].sudo().create({
+                    'subscription_id': subscription.id,
+                    'event_date': fields.Date.context_today(self),
+                    'event_type': '0_creation',
+                    'amount_signed': subscription.recurring_monthly,
+                    'recurring_monthly': subscription.recurring_monthly,
+                    'currency_id': subscription.currency_id.id,
+                    'category': subscription.stage_category,
+                    'user_id': order.user_id.id,
+                    'team_id': order.team_id.id,
+                })
         return res
 
     def _split_subscription_lines(self):
@@ -220,13 +230,14 @@ class SaleOrderLine(models.Model):
             }))
         return values
 
-    def _update_subscription_line_data(self, subscription):
+    def _update_subscription_line_data(self, subscription, subscription_management):
         """Prepare a dictionnary of values to add or update lines on a subscription."""
         values = list()
         dict_changes = dict()
         for line in self:
             sub_line = subscription.recurring_invoice_line_ids.filtered(lambda l: (l.product_id, l.uom_id) == (line.product_id, line.product_uom))
             if sub_line:
+                # We have already a subscription line, we need to modify the product quantity
                 if len(sub_line) > 1:
                     # we are in an ambiguous case
                     # to avoid adding information to a random line, in that case we create a new line
@@ -234,9 +245,14 @@ class SaleOrderLine(models.Model):
                     sub_line[0].copy({'name': line.display_name, 'quantity': line.product_uom_qty})
                 else:
                     dict_changes.setdefault(sub_line.id, sub_line.quantity)
-                    dict_changes[sub_line.id] += line.product_uom_qty
+                    if subscription_management == 'renew':
+                        dict_changes[sub_line.id] = line.product_uom_qty
+                    else:
+                        # upsell, we add the product to the existing quantity
+                        dict_changes[sub_line.id] += line.product_uom_qty
             else:
+                # we create a new line in the subscription: (0, 0, values)
                 values.append(line._prepare_subscription_line_data()[0])
 
-        values += [(1, sub_id, {'quantity': dict_changes[sub_id],}) for sub_id in dict_changes]
+        values += [(1, sub_id, {'quantity': dict_changes[sub_id]}) for sub_id in dict_changes]
         return values

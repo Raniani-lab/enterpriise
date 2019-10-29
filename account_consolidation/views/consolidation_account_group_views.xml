@@ -65,7 +65,7 @@
 
         <record id="consolidation_group_search" model="ir.ui.view">
             <field name="name">consolidation.group.search</field>
-            <field name="model">consolidation.account</field>
+            <field name="model">consolidation.group</field>
             <field name="arch" type="xml">
                 <search>
                     <field name="name"/>

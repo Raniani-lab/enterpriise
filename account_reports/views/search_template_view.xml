@@ -58,7 +58,7 @@
             <t t-if="options['comparison'].get('string') and options['comparison'].get('filter') != 'custom'"><t t-esc="options['comparison']['string']"/></t>
             <t t-if="options['comparison'].get('filter') == 'custom'">
                 <t t-if="options['date']['mode'] == 'range'"><span class="o_reports_date_to"><span class="js_format_date"><t t-esc="options['comparison']['date_from']"/></span></span> <span class="o_reports_date_to"> - <span class="js_format_date"><t t-esc="options['comparison']['date_to']"/></span></span></t>
-                <t t-if="options['date']['mode'] == 'single'">Date: <span class="js_format_date"><t t-esc="options['comparison']['date']"/></span></t>
+                <t t-if="options['date']['mode'] == 'single'">Date: <span class="js_format_date"><t t-esc="options['comparison']['date_to']"/></span></t>
             </t>
         </a>
         <div class="dropdown-menu o_filters_menu" role="menu">

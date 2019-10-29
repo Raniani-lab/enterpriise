@@ -103,10 +103,3 @@ class RequestAppraisal(models.TransientModel):
 
         self.env['mail.mail'].sudo().create(mail_values)
 
-        return {
-            'name': _('Appraisal Request'),
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_model': 'hr.appraisal',
-            'res_id': appraisal.id,
-        }

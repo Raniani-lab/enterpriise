@@ -28,18 +28,35 @@ class RequestAppraisal(models.TransientModel):
             template = self.env.ref('hr_appraisal.mail_template_appraisal_request', raise_if_not_found=False)
             result.update({
                 'template_id': template and template.id or False,
-                'recipient_id': employee.user_id.partner_id.id,
+                'recipient_id': self._get_recipients(employee).id,
                 'employee_id': employee.id,
             })
         if self.env.context.get('active_model') == 'res.users':
             user = self.env['res.users'].browse(self.env.context['active_id'])
+            employee = user.employee_id
+            manager = employee.parent_id
             template = self.env.ref('hr_appraisal.mail_template_appraisal_request_from_employee', raise_if_not_found=False)
             result.update({
                 'template_id': template and template.id or False,
-                'recipient_id': user.parent_id.user_id.partner_id.id,
-                'employee_id': user.employee_id.id,
+                'recipient_id': self._get_recipients(manager).id,
+                'employee_id': employee.id,
             })
         return result
+
+    @api.model
+    def _get_recipients(self, employees):
+        partners = self.env['res.partner']
+        employees_with_user = employees.filtered('user_id')
+
+        for employee in employees_with_user:
+            partners |= employee.user_id.partner_id
+
+        for employee in employees - employees_with_user:
+            if employee.work_email:
+                name_email = formataddr((employee.name, employee.work_email))
+                partner_id = self.env['res.partner'].sudo().find_or_create(name_email)
+                partners |= self.env['res.partner'].browse(partner_id)
+        return partners
 
     subject = fields.Char('Subject')
     body = fields.Html('Contents', default='', sanitize_style=True)
@@ -78,33 +95,19 @@ class RequestAppraisal(models.TransientModel):
         appraisal.sudo()._onchange_employee_id()
         appraisal._onchange_company_id()
 
+        involved_employees = appraisal.employee_id | appraisal.manager_ids | appraisal.collaborators_ids | appraisal.colleagues_ids
+        appraisal.colleagues_ids |= self.recipient_ids.user_ids.employee_ids - involved_employees
+
         ctx = {'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id)}
         body = self.env['mail.template'].with_context(ctx)._render_template(self.body, 'hr.appraisal', appraisal.id, post_process=True)
-        mail_values = {
-            'email_from': self.email_from,
-            'author_id': self.author_id.id,
-            'model': None,
-            'res_id': None,
-            'subject': self.subject,
-            'body_html': body,
-            'attachment_ids': [(4, att.id) for att in self.attachment_ids],
-            'auto_delete': True,
-            'recipient_ids': [(4, self.recipient_id.id)]
-        }
-
-        template = self.env.ref('mail.mail_notification_light', raise_if_not_found=False)
-        template_ctx = {
-            'message': self.env['mail.message'].sudo().new(dict(body=mail_values['body_html'], record_name=appraisal.display_name)),
-            'model_description': 'Employee Appraisal',
-            'company': self.env.user.company_id,
-        }
-        body = template.render(template_ctx, engine='ir.qweb', minimal_qcontext=True)
-        mail_values['body_html'] = self.env['mail.thread']._replace_local_links(body)
 
         appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
             'hr_appraisal.mail_act_appraisal_send', fields.Date.today(),
             note=_('Confirm and send appraisal of %s') % appraisal.employee_id.name,
             user_id=self.recipient_id.user_ids[:1].id or self.env.user.id)
 
-        self.env['mail.mail'].sudo().create(mail_values)
-
+        appraisal.message_notify(
+            subject=self.subject,
+            body=body,
+            email_layout_xmlid='mail.mail_notification_light',
+            partner_ids=self.recipient_id.ids)

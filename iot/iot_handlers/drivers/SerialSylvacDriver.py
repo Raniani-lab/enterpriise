@@ -7,7 +7,7 @@ import logging
 import serial
 
 from odoo.addons.hw_drivers.controllers.driver import event_manager
-from odoo.addons.hw_drivers.drivers.SerialBaseDriver import SerialDriver, SerialProtocol, serial_connection
+from odoo.addons.hw_drivers.iot_handlers.drivers.SerialBaseDriver import SerialDriver, SerialProtocol, serial_connection
 
 _logger = logging.getLogger(__name__)
 

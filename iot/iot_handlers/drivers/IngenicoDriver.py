@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.addons.hw_drivers.controllers.driver import event_manager, Driver, socket_devices, iot_devices
+from odoo.addons.hw_drivers.controllers.driver import event_manager, Driver, iot_devices
+from odoo.addons.hw_drivers.iot_handlers.interfaces.SocketInterface import socket_devices
 
 from binascii import unhexlify
 from logging import getLogger

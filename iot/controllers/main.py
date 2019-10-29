@@ -6,12 +6,12 @@ import odoo
 import json
 import zipfile
 import io
-import json
+import os
 
 class IoTController(http.Controller):
 
-    @http.route('/iot/get_drivers', type='http', auth='public', csrf=False)
-    def download_drivers(self, mac, auto):
+    @http.route('/iot/get_handlers', type='http', auth='public', csrf=False)
+    def download_iot_handlers(self, mac, auto):
         # Check mac is of one of the IoT Boxes
         box = request.env['iot.box'].sudo().search([('identifier', '=', mac)], limit=1)
         if not box or (auto == 'True' and not box.drivers_auto_update):
@@ -19,11 +19,13 @@ class IoTController(http.Controller):
 
         zip_list = []
         for module in modules.get_modules():
-            for file in modules.get_module_filetree(module, 'drivers').keys():
-                if file.startswith('.') or file.startswith('_'):
-                    continue
-                # zip it
-                zip_list.append((modules.get_resource_path(module, 'drivers', file), file))
+            for directory, files in modules.get_module_filetree(module, 'iot_handlers').items():
+                for file in files:
+                    if file.startswith('.') or file.startswith('_'):
+                        continue
+                    # zip it
+                    zip_list.append((modules.get_resource_path(module, 'iot_handlers', directory, file), os.path.join(directory, file)))
+
         file_like_object = io.BytesIO()
         zipfile_ob = zipfile.ZipFile(file_like_object, 'w')
         for zip in zip_list:

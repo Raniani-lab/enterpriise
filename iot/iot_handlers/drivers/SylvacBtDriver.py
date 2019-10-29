@@ -4,7 +4,8 @@
 from gatt import Device
 import logging
 
-from odoo.addons.hw_drivers.controllers.driver import event_manager, Driver,iot_devices, bt_devices
+from odoo.addons.hw_drivers.controllers.driver import event_manager, Driver, iot_devices
+from odoo.addons.hw_drivers.iot_handlers.interfaces.BTInterface import bt_devices
 
 _logger = logging.getLogger(__name__)
 

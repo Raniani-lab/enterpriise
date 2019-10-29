@@ -207,7 +207,7 @@ msgstr "20/28 - Vaste activa"
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_imm_incorporelles0
 msgid "21 - Immobilisations incorporelles"
-msgstr "21 - Ontvangen vooruitbetalingen op bestellingen"
+msgstr "21 - Immateriële vaste activa"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_terrains0

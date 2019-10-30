@@ -120,10 +120,10 @@ FieldMany2One.include({
                     var ids = _.map(results, function (x) {
                         return x[0];
                     });
-                    dynamicFilters = [{
+                    dynamicFilters = search_val ? [{
                         description: _.str.sprintf(_t('Quick search: %s'), search_val),
                         domain: [['id', 'in', ids]],
-                    }];
+                    }] : [];
                 }
                 self._searchCreatePopup("search", ids, {}, dynamicFilters);
             });

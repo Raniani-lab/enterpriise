@@ -17,11 +17,9 @@ var TabletImageIot = TabletImage.extend(iot_widgets.IotValueFieldMixin, {
      * @private
      */
     _getDeviceInfo: function() {
-        var record_data = this.record.data;
-        if (record_data.test_type === 'picture' && record_data.identifier) {
-            this.iot_device = new iot_widgets.DeviceProxy({ iot_ip: record_data.ip, identifier: record_data.identifier });
+        if (this.recordData.test_type === 'picture') {
+            return iot_widgets.IotValueFieldMixin._getDeviceInfo.apply(this);
         }
-        return Promise.resolve();
     },
 
     _onButtonClick: function (ev) {

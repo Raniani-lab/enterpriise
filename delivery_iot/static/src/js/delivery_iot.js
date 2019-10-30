@@ -10,14 +10,6 @@ var FieldMany2OneIotScale = FieldMany2One.extend(iot_widgets.IotValueFieldMixin,
     /**
      * @override
      */
-    destroy: function () {
-        this._stopListening();
-        this._super.apply(this, arguments);
-    },
-
-    /**
-     * @override
-     */
     reset: function () {
         this._super.apply(this, arguments);
         if (!this.iot_device || this.iot_device._identifier != this.recordData.iot_device_identifier) {
@@ -25,25 +17,6 @@ var FieldMany2OneIotScale = FieldMany2One.extend(iot_widgets.IotValueFieldMixin,
             this._getDeviceInfo();
             this._startListening();
         }
-    },
-
-    start: function() {
-        this._super.apply(this, arguments);
-        this._startListening();
-    },
-
-    /**
-     * Create a proxy for the selected device.
-     * @private
-     * @override
-     * @returns {Promise}
-     */
-    _getDeviceInfo: function () {
-        var record_data = this.record.data;
-        if (record_data.iot_device_identifier && record_data.iot_ip) {
-            this.iot_device = new iot_widgets.DeviceProxy({ identifier: record_data.iot_device_identifier, iot_ip: record_data.iot_ip });
-        }
-        return Promise.resolve();
     },
 
     /**
@@ -61,23 +34,23 @@ var FieldMany2OneIotScale = FieldMany2One.extend(iot_widgets.IotValueFieldMixin,
     },
 
     /**
-     * @private
+     * @override
      */
     _startListening: function () {
+        iot_widgets.IotValueFieldMixin._startListening.apply(this);
         if (this.iot_device) {
-            this.iot_device.add_listener(this._onValueChange.bind(this));
             this.iot_device.action({ action: 'start_reading' });
         }
     },
 
     /**
-     * @private
+     * @override
      */
     _stopListening: function () {
         if (this.iot_device) {
             this.iot_device.action({ action: 'stop_reading' });
-            this.iot_device.remove_listener();
         }
+        iot_widgets.IotValueFieldMixin._stopListening.apply(this);
     },
 });
 

@@ -10,7 +10,8 @@
                 <field name="identifier" invisible="1"/>
             </field>
             <field name="measure" position="attributes">
-              <attribute name="widget">iot_realtime_value</attribute>
+                <attribute name="widget">iot_measure</attribute>
+                <attribute name="options">{'ip_field': 'ip', 'identifier': 'identifier'}</attribute>
             </field>
             <field name="picture" position="replace">
                 <div class="quality_picture">

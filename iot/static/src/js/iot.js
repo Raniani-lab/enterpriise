@@ -607,9 +607,12 @@ var IotValueFieldMixin = {
 
     start: function() {
         this._super.apply(this, arguments);
-        if (this.iot_device) {
-            this.iot_device.add_listener(this._onValueChange.bind(this));
-        }
+        this._startListening();
+    },
+
+    destroy: function () {
+        this._stopListening();
+        this._super.apply(this, arguments);
     },
 
     /**
@@ -617,7 +620,14 @@ var IotValueFieldMixin = {
      * @abstract
      * @private
      */
-    _getDeviceInfo: function() {},
+    _getDeviceInfo: function() {
+        var identifier = this.recordData[this.attrs.options.identifier];
+        var iot_ip = this.recordData[this.attrs.options.ip_field];
+        if (identifier) {
+            this.iot_device = new DeviceProxy({ iot_ip: iot_ip, identifier: identifier });
+        }
+        return Promise.resolve();
+    },
 
     /**
      * To implement
@@ -625,6 +635,25 @@ var IotValueFieldMixin = {
      * @private
      */
     _onValueChange: function (data){},
+
+    /**
+     * @private 
+     */
+    _startListening: function () {
+        if (this.iot_device) {
+            this.iot_device.add_listener(this._onValueChange.bind(this));
+        }
+    },
+
+    /**
+     * @private
+     */
+    _stopListening: function () {
+        if (this.iot_device) {
+            this.iot_device.remove_listener();
+        }
+    },
+
      /**
      * After a request to make action on device and this call don't return true in the result
      * this means that the IoT Box can't connect to device
@@ -653,17 +682,6 @@ var IotValueFieldMixin = {
 };
 
 var IotRealTimeValue = basic_fields.InputField.extend(IotValueFieldMixin, {
-
-    /**
-     * @private
-     */
-    _getDeviceInfo: function() {
-        var record_data = this.record.data;
-        if (record_data.test_type === 'measure' && record_data.identifier) {
-            this.iot_device = new DeviceProxy({ iot_ip: record_data.ip, identifier: record_data.identifier });            
-        }
-        return Promise.resolve();
-    },
 
     /**
      * @private

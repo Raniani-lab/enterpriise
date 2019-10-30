@@ -13,7 +13,7 @@
                 <field name="iot_device_identifier" invisible="1"/>
                 <field name="iot_device_id" widget="field_many2one_iot_scale"
                     attrs="{'invisible': [('delivery_packaging_id', '=', False)]}"
-                    options="{'value_field': 'shipping_weight'}"
+                    options="{'value_field': 'shipping_weight', 'identifier': 'iot_device_identifier', 'ip_field': 'iot_ip'}"
                     domain="[('id', 'in', available_scale_ids)]"/>
             </xpath>
         </field>

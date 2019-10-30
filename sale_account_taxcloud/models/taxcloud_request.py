@@ -7,7 +7,7 @@ class TaxCloudRequest(TaxCloudRequest):
     def set_order_items_detail(self, order):
         self.cart_items = self.factory.ArrayOfCartItem()
         cart_items = []
-        for index, line in enumerate(order.order_line):
+        for index, line in enumerate(order.order_line.filtered(lambda l: not l.display_type)):
             if line.price_unit >= 0.0 and line.product_uom_qty >= 0.0:
                 product_id = line.product_id.id
                 tic_code = line.product_id.tic_category_id.code or \

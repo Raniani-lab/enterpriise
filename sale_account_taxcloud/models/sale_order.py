@@ -40,7 +40,7 @@ class SaleOrder(models.Model):
 
         tax_values = response['values']
 
-        for index, line in enumerate(self.order_line):
+        for index, line in enumerate(self.order_line.filtered(lambda l: not l.display_type)):
             if line.price_unit >= 0.0 and line.product_uom_qty >= 0.0:
                 price = line.price_unit * (1 - (line.discount or 0.0) / 100.0) * line.product_uom_qty
                 if not price:

@@ -4,7 +4,7 @@
 import unicodedata
 import uuid
 import re
-
+from odoo.osv import expression
 from odoo import api, fields, models
 from odoo.tools import ustr
 
@@ -127,6 +127,19 @@ class IrModelField(models.Model):
         if self.env.context.get('studio'):
             return [(field.id, "%s (%s)" % (field.field_description, field.model_id.name)) for field in self]
         return super(IrModelField, self).name_get()
+
+    @api.model
+    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = args or []
+        if operator == 'ilike' and not (name or '').strip():
+            domain = []
+        # To search records based on Field name, Field technical name, Model name and Model technical name
+        elif name and self._context.get('studio') :
+            domain = ['|', '|', '|', ('name', operator, name), ('field_description', operator, name), ('model', operator, name), ('model_id.name', operator, name)]
+        else:
+            domain = [('field_description', operator, name)]
+        field_ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
+        return models.lazy_name_get(self.browse(field_ids).with_user(name_get_uid))
 
 
 class IrModelAccess(models.Model):

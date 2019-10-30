@@ -108,5 +108,5 @@ class ResConfigSettings(models.TransientModel):
                 'automated': True,
                 'user_id':  advisor_user.id or self.env.user.id
             }
-            self.env['mail.activity'].create(activity_vals)
+            self.env['mail.activity'].with_context(mail_activity_quick_update=True).create(activity_vals)
         return move_id

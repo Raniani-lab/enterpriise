@@ -2,7 +2,7 @@
 <odoo>
     <t t-name="social_push_notifications.NotificationRequestPopup">
         <div class="o_social_push_notifications_permission_request position-fixed w-100">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle invisible" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
                     <div class="dropdown-menu px-3 pt-3 border shadow" t-name="">

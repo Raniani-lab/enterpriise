@@ -651,6 +651,12 @@ msgid "Message Delivery error"
 msgstr ""
 
 #. module: social
+#: code:addons/social/models/social_post.py:0
+#, python-format
+msgid "Message posted"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_ids
 #: model:ir.model.fields,field_description:social.field_social_post__message_ids
 msgid "Messages"
@@ -860,6 +866,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
 msgid "Post Message"
+msgstr ""
+
+#. module: social
+#: model_terms:ir.ui.view,arch_db:social.social_post_view_form
+msgid "Post Now"
 msgstr ""
 
 #. module: social
@@ -1323,6 +1334,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_unread_counter
 #: model:ir.model.fields,field_description:social.field_social_post__message_unread_counter
 msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: social
+#: code:addons/social/models/social_post.py:0
+#, python-format
+msgid "Uploaded file does not seem to be a valid image."
 msgstr ""
 
 #. module: social

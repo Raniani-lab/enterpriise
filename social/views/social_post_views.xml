@@ -165,6 +165,9 @@
                     <button name="action_post" string="Post" type="object" class="oe_highlight"
                         attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('post_method', '=', 'scheduled')]}"
                         groups="social.group_social_manager" />
+                    <button name="action_post" string="Post Now" type="object"
+                        attrs="{'invisible': [('state', '!=', 'scheduled')]}"
+                        groups="social.group_social_manager" />
                     <button name="action_schedule" string="Schedule" type="object" class="oe_highlight"
                         attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('post_method', '=', 'now')]}"
                         groups="social.group_social_manager" />
@@ -194,11 +197,12 @@
                             </div>
                             <field name="message" widget="social_text_emojis" class="o_social_post_message_wrapper"
                                      attrs="{'readonly': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}" />
-                            <field name="image_ids" widget="many2many_binary" class="o_social_post_form_attachments"/>
+                            <field name="image_ids" widget="many2many_binary" class="o_social_post_form_attachments"
+                                 attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}" />
                             <field string="Campaign" name="utm_campaign_id"
                                 attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>
-                            <field name="post_method" widget="radio" attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>
-                            <field name="scheduled_date" attrs="{'invisible': [('post_method', '=', 'now')], 'required': [('post_method', '!=', 'now')], 'readonly': [('state', 'in', ['posting', 'posted'])]}" />
+                            <field name="post_method" widget="radio" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                            <field name="scheduled_date" attrs="{'invisible': ['|', ('post_method', '=', 'now'), ('state', 'in', ['posting', 'posted'])], 'required': [('post_method', '!=', 'now')]}" />
                         </group>
                         <group name="previews_placeholder" class="o_social_post_preview_group m-0">
                             <div class="o_social_post_empty_preview o_view_nocontent bg-100"

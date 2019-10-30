@@ -52,7 +52,7 @@ class SocialPost(models.Model):
     published_date = fields.Datetime('Published date', readonly=True,
         help="When the global post was published. The actual sub-posts published dates may be different depending on the media.")
     # stored for better calendar view performance
-    calendar_date = fields.Datetime('Calendar Date', compute='_compute_calendar_date', store=True,
+    calendar_date = fields.Datetime('Calendar Date', compute='_compute_calendar_date', store=True, readonly=False,
         help="Technical field for the calendar view.")
     #UTM
     utm_campaign_id = fields.Many2one('utm.campaign', domain="[('is_website', '=', False)]", string="UTM Campaign")
@@ -63,6 +63,12 @@ class SocialPost(models.Model):
     engagement = fields.Integer("Engagement", compute='_compute_post_engagement',
         help="Number of people engagements with the post (Likes, comments...)")
     click_count = fields.Integer('Number of clicks', compute="_compute_click_count")
+
+    @api.constrains('image_ids')
+    def _check_image_ids_mimetype(self):
+        for social_post in self:
+            if any(not image.mimetype.startswith('image') for image in social_post.image_ids):
+                raise UserError(_('Uploaded file does not seem to be a valid image.'))
 
     @api.depends('live_post_ids.engagement')
     def _compute_post_engagement(self):
@@ -191,6 +197,12 @@ class SocialPost(models.Model):
            (vals.get('state', 'draft') != 'draft' or any(post.state != 'draft' for post in self)):
             raise AccessError(_('You are not allowed to create/update posts in a state other than "Draft".'))
 
+        if vals.get('calendar_date'):
+            if any(post.state != 'scheduled' for post in self):
+                raise UserError(_("You can only move posts that are scheduled."))
+
+            vals['scheduled_date'] = vals['calendar_date']
+
         return super(SocialPost, self).write(vals)
 
     def social_stream_post_action_my(self):
@@ -218,6 +230,11 @@ class SocialPost(models.Model):
 
         if any(not post.message or not post.account_ids for post in self):
             raise UserError(_('Please specify a message and at least one account to post into.'))
+
+        self.write({
+            'post_method': 'now',
+            'scheduled_date': False
+        })
 
         self._action_post()
 
@@ -269,6 +286,7 @@ class SocialPost(models.Model):
 
         if posts_to_complete:
             posts_to_complete.sudo().write({'state': 'posted'})
+            posts_to_complete._message_log(body=_("Message posted"))
 
     @api.model
     def _cron_publish_scheduled(self):

@@ -585,6 +585,7 @@ class AccountReport(models.AbstractModel):
             else:
                 level_dict['children'][code].setdefault('lines', [])
                 level_dict['children'][code]['lines'].append(line)
+                line['level'] = depth + 1
                 for l in level_dict['children'][code]['lines']:
                     l['parent_id'] = 'hierarchy_' + code[1]
 
@@ -607,7 +608,7 @@ class AccountReport(models.AbstractModel):
                 id = 'hierarchy_' + key[1]
                 header_line = {
                     'id': id,
-                    'name': key[1] if len(key[1]) < 30 else key[1][:30] + '...',  # second member of the tuple
+                    'name': key[1] if len(key[1]) < 60 else key[1][:60] + '...',  # second member of the tuple
                     'title_hover': key[1],
                     'unfoldable': True,
                     'unfolded': id in options.get('unfolded_lines') or unfold_all,

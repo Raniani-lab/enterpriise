@@ -30,19 +30,19 @@ class AccountChartOfAccountReport(models.AbstractModel):
     def _get_columns_name(self, options):
         columns = [
             {'name': '', 'style': 'width:40%'},
-            {'name': _('Debit'), 'class': 'text-center'},
-            {'name': _('Credit'), 'class': 'text-center'},
+            {'name': _('Debit'), 'class': 'number'},
+            {'name': _('Credit'), 'class': 'number'},
         ]
         if options.get('comparison') and options['comparison'].get('periods'):
             columns += [
-                {'name': _('Debit'), 'class': 'text-center'},
-                {'name': _('Credit'), 'class': 'text-center'},
+                {'name': _('Debit'), 'class': 'number '},
+                {'name': _('Credit'), 'class': 'number'},
             ] * len(options['comparison']['periods'])
         return columns + [
-            {'name': _('Debit'), 'class': 'text-center'},
-            {'name': _('Credit'), 'class': 'text-center'},
-            {'name': _('Debit'), 'class': 'text-center'},
-            {'name': _('Credit'), 'class': 'text-center'},
+            {'name': _('Debit'), 'class': 'number '},
+            {'name': _('Credit'), 'class': 'number'},
+            {'name': _('Debit'), 'class': 'number '},
+            {'name': _('Credit'), 'class': 'number'},
         ]
 
     @api.model

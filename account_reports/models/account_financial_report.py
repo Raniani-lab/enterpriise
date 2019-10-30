@@ -23,7 +23,6 @@ class ReportAccountFinancialReport(models.Model):
     date_range = fields.Boolean('Based on date ranges', default=True, help='specify if the report use date_range or single date')
     comparison = fields.Boolean('Allow comparison', default=True, help='display the comparison filter')
     analytic = fields.Boolean('Allow analytic filters', help='display the analytic filters')
-    hierarchy_option = fields.Boolean('Enable the hierarchy option', help='Display the hierarchy choice in the report options')
     show_journal_filter = fields.Boolean('Allow filtering by journals', help='display the journal filter in the report')
     unfold_all_filter = fields.Boolean('Show unfold all filter', help='display the unfold all options in report')
     company_id = fields.Many2one('res.company', string='Company')
@@ -202,7 +201,7 @@ class ReportAccountFinancialReport(models.Model):
             #don't display the analytic filtering options if no option would be shown
             if self.filter_analytic_accounts is None and self.filter_analytic_tags is None:
                 self.filter_analytic = None
-        self.filter_hierarchy = True if self.hierarchy_option else None
+        self.filter_hierarchy = True
         self.filter_ir_filters = self.applicable_filters_ids or None
         return self
 

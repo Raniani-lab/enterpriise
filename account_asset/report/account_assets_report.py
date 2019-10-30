@@ -61,7 +61,7 @@ class assets_report(models.AbstractModel):
         ]
 
     def get_account_codes(self, account):
-        return [(0, name) for name in self._get_account_group(account.code)[1:]]
+        return [(name, name) for name in self._get_account_group(account.code)[1:]]
 
     def _get_account_group(self, account_code, parent_group=None, group_dict=None):
         """ Get the list of parent groups for this account
@@ -75,15 +75,15 @@ class assets_report(models.AbstractModel):
         account_code_short = account_code[:2]
         group_dict = group_dict or self.env['account.report']._get_account_groups_for_asset_report()
         account_id = self.env['account.account'].search([('company_id', '=', self.env.company.id), ('code', '=', account_code)])
-        account_string = "{code} {name}".format(code=account_id.code, name=account_id.name) if account_id else _("No asset account")
+        account_string = account_id.display_name if account_id else _("No asset account")
         for k, v in group_dict.items():
             try:
                 if int(account_code_short) == int(k):
-                    return (parent_group or [k]) + [v['name']] + (account_id and [account_string] or [])
+                    return (parent_group or [k]) + [v['name']]
             except ValueError:
                 if k[:2] <= account_code_short <= k[-2:]:
-                    return self._get_account_group(account_code_short, (parent_group or [k]) + [v['name']], v['children']) + [account_string]
-        return (parent_group or [account_code[:2]]) + [account_string]
+                    return self._get_account_group(account_code, (parent_group or [k]) + [v['name']], v['children']) + [account_string]
+        return (parent_group or [account_code_short]) + [account_string]
 
     def _get_lines(self, options, line_id=None):
         options['self'] = self

@@ -228,7 +228,7 @@ class WinbooksImportWizard(models.TransientModel):
                         data = {
                             'code': rec.get('NUMBER'),
                             'name': rec.get('NAME11'),
-                            'group_id': AccountGroup.search([('code_prefix', '=', rec.get('CATEGORY'))], limit=1).id,
+                            'group_id': AccountGroup.search([('code_prefix_start', '=', rec.get('CATEGORY'))], limit=1).id,
                             'currency_id': ResCurrency.search([('name', '=', rec.get('CURRENCY'))], limit=1).id
                         }
                         if rec.get('VATCODE'):

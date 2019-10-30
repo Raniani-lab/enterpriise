@@ -17,7 +17,6 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
         report = self.env['account.consolidation.trial_balance_report']
         options = report._get_options(None)
         self.assertTrue(options['unfold_all'])
-        self.assertTrue(options['hierarchy'])
         self.assertTrue(options['show_zero_balance_accounts'])
         self.assertEqual(0, len(options['unfolded_lines']))
 

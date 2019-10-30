@@ -27,7 +27,6 @@
                             <group>
                                 <field name="comparison"/>
                                 <field name="unfold_all_filter"/>
-                                <field name="hierarchy_option"/>
                             </group>
                             <group>
                                 <field name="show_journal_filter"/>

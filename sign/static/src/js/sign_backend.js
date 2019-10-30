@@ -981,7 +981,8 @@ odoo.define('sign.DocumentBackend', function (require) {
 
             this.$downloadButton = $('<a/>', {html: _t("Download Document")}).addClass('btn btn-primary o_hidden');
             this.$downloadLogButton = $('<a/>', {html: _t("Activity Logs")}).addClass('btn btn-secondary o_hidden');
-            this.cp_content = {$buttons: this.$downloadButton.add(this.$downloadLogButton)};
+            this.$portalButton = $('<a/>', {html: _t("Portal")}).addClass('btn btn-secondary o_hidden');
+            this.cp_content = {$buttons: this.$downloadButton.add(this.$downloadLogButton).add(this.$portalButton)};
         },
 
         start: function () {
@@ -1003,6 +1004,8 @@ odoo.define('sign.DocumentBackend', function (require) {
                 self.$downloadButton.attr('href', url).toggleClass('o_hidden', !url);
                 var logUrl = $buttonsContainer.find('.o_sign_download_log_button').attr('href');
                 self.$downloadLogButton.attr('href', logUrl).toggleClass('o_hidden', !logUrl);
+                var portalUrl = $buttonsContainer.find('.o_sign_portal_button').attr('href');
+                self.$portalButton.attr('href', portalUrl).toggleClass('o_hidden', !portalUrl);
                 var init_page = function() {
                     if(self.$el.parents('html').length) {
                         self.refresh_cp();

@@ -671,6 +671,8 @@ class AccountAsset(models.Model):
     def copy_data(self, default=None):
         if default is None:
             default = {}
+        if self.state == 'model':
+            default.update(state='model')
         default['name'] = self.name + _(' (copy)')
         return super(AccountAsset, self).copy_data(default)
 

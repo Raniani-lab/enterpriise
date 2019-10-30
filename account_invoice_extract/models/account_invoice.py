@@ -354,8 +354,10 @@ class AccountMove(models.Model):
                 return currency.id
             return self.currency_id.id
         if word.field == "VAT_Number":
-            partner_vat = self.env["res.partner"].search([("vat", "=", word.word_text)], limit=1)
-            if partner_vat.exists():
+            partner_vat = False
+            if word.word_text != "":
+                partner_vat = self.env["res.partner"].search([("vat", "=", word.word_text)], limit=1)
+            if partner_vat:
                 return partner_vat.id
             else:
                 vat = word.word_text

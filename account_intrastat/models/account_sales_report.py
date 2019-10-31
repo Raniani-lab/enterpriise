@@ -36,8 +36,7 @@ class IntrastatReport(models.AbstractModel):
                 country.code AS country_code,
                 move.currency_id AS currency_id,
                 move.date AS date,
-                SUM(line.balance) AS total_balance,
-                SUM(line.amount_currency) AS total_amount_currency
+                SUM(line.balance) AS total_balance
             FROM account_move_line line
                 LEFT JOIN account_move move ON line.move_id = move.id
                 LEFT JOIN res_partner partner ON line.partner_id = partner.id
@@ -49,6 +48,7 @@ class IntrastatReport(models.AbstractModel):
                 AND country.intrastat = TRUE
                 AND company_partner.country_id != country.id
                 AND line.company_id = %s
+                AND line.account_internal_type IN ('receivable', 'payable')
                 AND COALESCE(move.date, move.invoice_date) BETWEEN %s AND %s
                 AND move.type IN ('out_invoice', 'out_refund')
                 AND partner.vat IS NOT NULL
@@ -88,32 +88,23 @@ class IntrastatReport(models.AbstractModel):
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
 
-        company_currency = self.env.company.currency_id
         partners_values = {}
         total_value = 0
 
         # Aggregate total amount for each partner.
         # Take care of the multi-currencies.
         for vals in query_res:
-            if vals['currency_id'] == company_currency.id:
-                total_amount = vals['total_amount_currency']
-            elif vals['currency_id'] != company_currency.id:
-                currency = self.env['res.currency'].browse(vals['currency_id'])
-                total_amount = currency._convert(vals['total_balance'], company_currency, self.env.user.company_id, vals['date'])
-            else:
-                total_amount = vals['total_balance']
-
             if vals['partner_name'] not in partners_values:
                 partners_values[vals['partner_name']] = {
-                    'value': total_amount,
+                    'value': vals['total_balance'],
                     'partner_id': vals['partner_id'],
                     'partner_name': vals['partner_name'],
                     'partner_vat': vals['partner_vat'],
                     'country_code': vals['country_code'],
                 }
             else:
-                partners_values[vals['partner_name']]['value'] += total_amount
-            total_value += total_amount
+                partners_values[vals['partner_name']]['value'] += vals['total_balance']
+            total_value += vals['total_balance']
 
         lines = [self._create_sales_report_line(options, partners_values[partner_name]) for partner_name in sorted(partners_values)]
 

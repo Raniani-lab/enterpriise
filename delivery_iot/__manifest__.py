@@ -12,6 +12,9 @@
         'views/stock_picking_views.xml',
         'views/assets.xml',
     ],
+    'qweb': [
+        'static/src/xml/delivery_iot.xml',
+    ],
     'license': 'OEEL-1',
     'auto_install': True,
 }

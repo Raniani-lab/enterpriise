@@ -36,9 +36,9 @@ screens.ScaleScreenWidget.include({
         this.iot_box = _.find(this.pos.proxy.iot_boxes, function (iot_box) {
             return iot_box.ip == self.scale._iot_ip;
         });
-        this.manual_reading = this.scale.manufacturer === 'Adam';
+        this.manual_measurement = this.scale.manual_measurement;
         this._super();
-        if (this.manual_reading) {
+        if (this.manual_measurement) {
             this.$('.read-weight').click(function(){
                 self.pos.proxy_queue.schedule(function () { self.scale.action({ action: 'read_once' }); });
             });

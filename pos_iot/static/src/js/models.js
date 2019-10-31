@@ -13,7 +13,7 @@ models.register_payment_method('ingenico', PaymentIOT);
 
 models.load_models([{
     model: 'iot.device',
-    fields: ['iot_ip', 'iot_id', 'identifier', 'type', 'manufacturer'],
+    fields: ['iot_ip', 'iot_id', 'identifier', 'type', 'manual_measurement'],
     domain: function(self) {
         var device_ids = self.config.iot_device_ids;
         _.each(self.payment_methods, function (payment_method) {
@@ -35,23 +35,25 @@ models.load_models([{
             }
             switch (iot_device.type) {
                 case 'scale':
+                    self.iot_device_proxies[iot_device.type] = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier, manual_measurement: iot_device.manual_measurement});
+                    break;
                 case 'display':
-                    self.iot_device_proxies[iot_device.type] = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier, manufacturer: iot_device.manufacturer });
+                    self.iot_device_proxies[iot_device.type] = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier});
                     break;
                 case 'printer':
-                    self.iot_device_proxies[iot_device.type] = new PrinterProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier, manufacturer: iot_device.manufacturer });
+                    self.iot_device_proxies[iot_device.type] = new PrinterProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier});
                     break;
                 case 'scanner':
                     if (!self.iot_device_proxies.scanners){
                         self.iot_device_proxies.scanners = {};
                     }
-                    self.iot_device_proxies.scanners[iot_device.identifier] = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier, manufacturer: iot_device.manufacturer });
+                    self.iot_device_proxies.scanners[iot_device.identifier] = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier});
                     break;
                 case 'payment':
                     var payment_method = _.find(self.payment_methods, function (payment_method) {
                         return payment_method.iot_device_id[0] == iot_device.id;
                     });
-                    payment_method.terminal_proxy = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier, manufacturer: iot_device.manufacturer });
+                    payment_method.terminal_proxy = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier});
                     break;
             }
         });

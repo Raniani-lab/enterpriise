@@ -21,3 +21,4 @@ class ChooseDeliveryPackage(models.TransientModel):
     iot_device_id = fields.Many2one('iot.device', "Scale")
     iot_device_identifier = fields.Char(related='iot_device_id.identifier')
     iot_ip = fields.Char(related='iot_device_id.iot_ip')
+    manual_measurement = fields.Boolean(related='iot_device_id.manual_measurement')

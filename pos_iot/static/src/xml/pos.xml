@@ -33,7 +33,7 @@
 
     <t t-extend="ScaleScreenWidget">
         <t t-jquery=".buy-product" t-operation="before">
-            <div class="read-weight" t-if="widget.manual_reading">
+            <div class="read-weight" t-if="widget.manual_measurement">
                 Get Weight
             </div>
         </t>

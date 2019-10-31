@@ -17,15 +17,19 @@ class AccountMoveReversal(models.TransientModel):
 
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket')
     helpdesk_sale_order_id = fields.Many2one('sale.order', related="helpdesk_ticket_id.sale_order_id", string='Sales Order')
+    move_ids = fields.Many2many(domain="[('id', 'in', suitable_move_ids)]")
+    suitable_move_ids = fields.Many2many('account.move', compute='_compute_suitable_moves')
 
-    @api.onchange('helpdesk_sale_order_id', 'helpdesk_ticket_id')
-    def _onchange_helpdesk_move_domain(self):
-        domain = [('state', '=', 'posted'), ('type', '=', 'out_invoice')]
-        if self.helpdesk_sale_order_id:
-            domain += [('id', 'in', self.helpdesk_sale_order_id.invoice_ids.ids)]
-        elif self.helpdesk_ticket_id.partner_id:
-            domain += [('partner_id', 'child_of', self.helpdesk_ticket_id.partner_id.commercial_partner_id.id)]
-        return {'domain': {'move_ids': domain}}
+    @api.depends('helpdesk_ticket_id.sale_order_id.invoice_ids', 'helpdesk_ticket_id.partner_id.commercial_partner_id')
+    def _compute_suitable_moves(self):
+        for r in self:
+            domain = [('state', '=', 'posted'), ('type', '=', 'out_invoice')]
+            if r.helpdesk_ticket_id.sale_order_id:
+                domain.append(('id', 'in', r.helpdesk_ticket_id.sale_order_id.invoice_ids.ids))
+            elif r.helpdesk_ticket_id.partner_id:
+                domain.append(('partner_id', 'child_of', r.helpdesk_ticket_id.partner_id.commercial_partner_id.id))
+
+            r.suitable_move_ids = self.env['account.move'].search(domain)._origin
 
     def reverse_moves(self):
         # OVERRIDE

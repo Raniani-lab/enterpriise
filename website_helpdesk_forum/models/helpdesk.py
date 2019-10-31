@@ -70,7 +70,6 @@ class HelpdeskTicket(models.Model):
                 'name': self.name,
                 'forum_id': self.team_id.forum_id.id,
                 'content': plaintext2html(self.description) or '',
-                'post_type': 'question',
             }).id
         self.message_post(body=_('Ticket has been shared on the %s forum.') % (self.forum_post_id.forum_id.name,))
         return self.forum_post_open()

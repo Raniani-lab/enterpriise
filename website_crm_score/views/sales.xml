@@ -29,9 +29,9 @@
                     <field name="score" />
                 </xpath>
                 <xpath expr="//page[@name='extra']/group" position="inside">
-                    <group string="Scoring" invisible="1">
+                    <group string="Scoring">
                         <field name="score_ids"
-                            widget="many2many_tags" options="{'color_field': 'color'}"
+                            widget="many2many_tags"
                             domain="[('object_id.model','=','crm.lead')]"
                             context="{'object_name': 'crm.lead'}"
                             readonly="1"
@@ -39,9 +39,9 @@
                     </group>
                 </xpath>
                 <xpath expr="//group[@name='Misc']" position="after">
-                    <group string="Scoring" invisible="1">
+                    <group string="Scoring">
                         <field name="score_ids"
-                            widget="many2many_tags" options="{'color_field': 'color'}"
+                            widget="many2many_tags"
                             domain="[('object_id.model','=','crm.lead')]"
                             context="{'object_name': 'crm.lead'}"
                             readonly="1"

@@ -12,6 +12,17 @@ class HelpdeskTicket(models.Model):
         help="Indicates more support time has been delivered thant the ordered quantity")
     use_helpdesk_sale_timesheet = fields.Boolean('Reinvoicing Timesheet activated on Team', related='team_id.use_helpdesk_sale_timesheet', readonly=True)
 
+    @api.depends('project_id', 'use_helpdesk_sale_timesheet', 'partner_id.commercial_partner_id')
+    def _compute_related_task_ids(self):
+        reinvoiced = self.filtered(lambda t: t.project_id and t.use_helpdesk_sale_timesheet and t.partner_id)
+        for t in reinvoiced:
+            t._related_task_ids = self.env['project.task'].search([
+                ('project_id', '=', t.project_id.id),
+                '|', ('partner_id', '=', False),
+                     ('partner_id', 'child_of', t.partner_id.commercial_partner_id.id)
+            ])._origin
+        super(HelpdeskTicket, self - reinvoiced)._compute_related_task_ids()
+
     @api.depends('task_id.sale_line_id')
     def _compute_is_overdue(self):
         for ticket in self:
@@ -20,22 +31,6 @@ class HelpdeskTicket(models.Model):
                 ticket.is_overdue = sale_line_id.qty_delivered >= sale_line_id.product_uom_qty
             else:
                 ticket.is_overdue = False
-
-    @api.onchange('partner_id', 'project_id')
-    def _onchange_partner_project(self):
-        result = {}
-        if self.project_id and self.use_helpdesk_sale_timesheet:
-            domain = [('project_id', '=', self.project_id.id)]
-            if self.partner_id:
-                domain = expression.AND([domain, [
-                    '|',
-                    ('partner_id', 'child_of', self.partner_id.commercial_partner_id.id),
-                    ('partner_id', '=', False),
-                ]])
-            result = {'domain': {'task_id': domain}}
-        else:
-            self.task_id = False
-        return result
 
 
 class AccountAnalyticLine(models.Model):

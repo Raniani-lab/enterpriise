@@ -58,26 +58,26 @@ class HelpdeskTicket(models.Model):
         return result
 
     project_id = fields.Many2one("project.project", string="Project", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]")
-    task_id = fields.Many2one("project.task", string="Task", domain="[('project_id', '=', project_id), ('company_id', '=', company_id)]", tracking=True, help="The task must have the same customer as this ticket.")
+    task_id = fields.Many2one("project.task", string="Task", domain="[('id', 'in', _related_task_ids)]", tracking=True, help="The task must have the same customer as this ticket.")
+    _related_task_ids = fields.Many2many('project.task', compute='_compute_related_task_ids')
     timesheet_ids = fields.One2many('account.analytic.line', 'helpdesk_ticket_id', 'Timesheets')
     is_closed = fields.Boolean(related="task_id.stage_id.is_closed", string="Is Closed", readonly=True)
     is_task_active = fields.Boolean(related="task_id.active", string='Is Task Active', readonly=True)
     use_helpdesk_timesheet = fields.Boolean('Timesheet activated on Team', related='team_id.use_helpdesk_timesheet', readonly=True)
 
+    @api.depends('project_id', 'company_id')
+    def _compute_related_task_ids(self):
+        for t in self:
+            domain = [('project_id.allow_timesheets', '=', True), ('company_id', '=', t.company_id.id)]
+            if t.project_id:
+                domain = [('project_id', '=', t.project_id.id)]
+            t._related_task_ids = self.env['project.task'].search(domain)._origin
+
     @api.onchange('project_id')
     def _onchange_project_id(self):
-        # force domain on task when project is set
-        if self.project_id:
-            if self.project_id != self.task_id.project_id:
-                # reset task when changing project
-                self.task_id = False
-            return {'domain': {
-                'task_id': [('project_id', '=', self.project_id.id)]
-            }}
-        return {'domain': {
-            'task_id': [('project_id.allow_timesheets', '=', True), ('company_id', '=', self.company_id.id)]
-        }}
-
+        if self.project_id != self.task_id.project_id:
+            # reset task when changing project
+            self.task_id = False
     @api.onchange('task_id')
     def _onchange_task_id(self):
         if self.timesheet_ids:

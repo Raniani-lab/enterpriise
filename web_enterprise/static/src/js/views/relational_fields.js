@@ -103,29 +103,34 @@ FieldMany2One.include({
                 domain.push(['id', 'not in', blacklisted_ids]);
             }
 
-            var prom = self._rpc({
-                model: self.field.relation,
-                method: 'name_search',
-                kwargs: {
-                    name: search_val || "",
-                    args: domain,
-                    operator: "ilike",
-                    limit: self.SEARCH_MORE_LIMIT,
-                    context: context,
-                },
-            });
+            var prom;
+
+            if (search_val) {
+                prom = self._rpc({
+                    model: self.field.relation,
+                    method: 'name_search',
+                    kwargs: {
+                        name: search_val,
+                        args: domain,
+                        operator: "ilike",
+                        limit: self.SEARCH_MORE_LIMIT,
+                        context: context,
+                    },
+                });
+            }
+
             Promise.resolve(prom).then(function (results) {
                 var dynamicFilters;
                 if (results) {
                     var ids = _.map(results, function (x) {
                         return x[0];
                     });
-                    dynamicFilters = search_val ? [{
+                    dynamicFilters = [{
                         description: _.str.sprintf(_t('Quick search: %s'), search_val),
                         domain: [['id', 'in', ids]],
-                    }] : [];
+                    }];
                 }
-                self._searchCreatePopup("search", ids, {}, dynamicFilters);
+                self._searchCreatePopup("search", false, {}, dynamicFilters);
             });
         });
         this.orderer.add(def);

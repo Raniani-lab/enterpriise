@@ -60,12 +60,15 @@
                         Dear ${ctx['partner_to_name']},
                         <br /><br />
                         I would like to start an Appraisal for you.
+
+                        % if ctx.get('recipient_users'):
                         <p style="margin: 16px 0px 16px 0px;">
                             <a href="${ctx['url']}"
                                 style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
                                 View Appraisal
                             </a>
                         </p>
+                        % endif
                         <br /><br />
                         <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
                     </p>
@@ -87,6 +90,7 @@
                         Dear ${ctx['partner_to_name']},
                         <br /><br />
                         I wish to request an appraisal.<br />
+                        % if ctx.get('recipient_users'):
                         Here is the link of my appraisal:
                         <p style="margin: 16px 0px 16px 0px;">
                             <a href="${ctx['url']}"
@@ -94,6 +98,7 @@
                                 View Appraisal
                             </a>
                         </p>
+                        % endif
                         <br /><br />
                         <tr><td style="padding:15px 20px 10px 20px;">${(object.employee_id.user_id.signature or '')| safe}</td></tr>
                     </p>

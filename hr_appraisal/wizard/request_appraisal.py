@@ -88,6 +88,7 @@ class RequestAppraisal(models.TransientModel):
             if wizard.template_id:
                 ctx = {
                     'partner_to_name': ', '.join(wizard.recipient_ids.sorted('name').mapped('name')),
+                    'recipient_users': wizard.recipient_ids.user_ids,
                     'author_name': wizard.author_id.name,
                     'url': "${ctx['url']}",
                 }

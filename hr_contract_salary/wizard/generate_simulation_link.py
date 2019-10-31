@@ -37,23 +37,18 @@ class GenerateSimulationLink(models.TransientModel):
             result['contract_id'] = applicant.job_id.default_contract_id.id
         return result
 
-    def get_contract_domain(self):
-        return [
-            '|',
-            ('employee_id', '=', False),
-            ('employee_id', '=', self.employee_contract_id.employee_id.id)]
-
     vehicle_id = fields.Many2one('fleet.vehicle', store=True)
     new_car = fields.Boolean('Can request a new car')
     new_car_model_id = fields.Many2one('fleet.vehicle.model', string="Model",
         domain=lambda self: self.env['hr.contract']._get_possible_model_domain())
     contract_id = fields.Many2one('hr.contract', string="Contract Template", required=True, store=True,
-        domain=[('employee_id', '=', False)])
+        domain="['|', ('employee_id', '=', False), ('employee_id', '=', employee_contract_employee_id)]")
     contract_type = fields.Selection([
         ('PFI', 'PFI'),
         ('CDI', 'CDI'),
         ('CDD', 'CDD')], string="Contract Type", default="PFI")
     employee_contract_id = fields.Many2one('hr.contract')
+    employee_contract_employee_id = fields.Many2one(related='employee_contract_id.employee_id', string="contract employee")
     employee_id = fields.Many2one('hr.employee')
     final_yearly_costs = fields.Float(string="Employee Budget", store=True, required=True)
     applicant_id = fields.Many2one('hr.applicant')
@@ -109,7 +104,6 @@ class GenerateSimulationLink(models.TransientModel):
         self.contract_type = self.contract_id.contract_type
         if self.contract_id.car_id:
             self.vehicle_id = self.contract_id.car_id
-        return {'domain': {'contract_id': self.get_contract_domain()}}
 
     def send_offer(self):
         try:

@@ -10,6 +10,7 @@
                     <field name="job_title"/>
                     <field name="contract_type"/>
                     <field name="employee_contract_id" invisible="1"/>
+                    <field name="employee_contract_employee_id" invisible="1"/>
                     <field name="employee_id" invisible="1"/>
                     <field name="customer_relation"/>
                     <field name="applicant_id" invisible="1"/>

@@ -429,6 +429,7 @@ class AccountPayment(models.Model):
         values = {
             'record': self,
             'supplier': self.company_id.partner_id.commercial_partner_id,
+            'issued': self.journal_id.l10n_mx_address_issued_id,
             'customer': self.partner_id.commercial_partner_id,
             'fiscal_regime': self.company_id.l10n_mx_edi_fiscal_regime,
             'invoice': invoice_obj,

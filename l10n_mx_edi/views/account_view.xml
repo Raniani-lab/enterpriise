@@ -12,7 +12,7 @@
                     <attribute name="attrs">{'invisible': [('type', 'not in', ['bank', 'cash', 'sale'])]}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='loss_account_id']" position="after">
-                    <field name="l10n_mx_address_issued_id" attrs="{'invisible':  [('type', '!=', 'sale')]}" context="{'default_type': 'invoice'}"/>
+                    <field name="l10n_mx_address_issued_id" attrs="{'invisible':  [('type', 'not in', ['sale', 'cash', 'bank'])]}" context="{'default_type': 'invoice'}"/>
                     <field name="l10n_mx_edi_payment_method_id" attrs="{'invisible':  [('type', '!=', 'bank')]}"/>
                 </xpath>
             </data>

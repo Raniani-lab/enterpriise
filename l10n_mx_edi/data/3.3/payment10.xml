@@ -17,7 +17,7 @@
             Moneda="XXX"
             Total="0"
             TipoDeComprobante="P"
-            t-att-LugarExpedicion="supplier.zip"
+            t-att-LugarExpedicion="issued.zip or supplier.zip"
             t-att-Confirmacion="confirmation">
             <t t-set="related" t-value="record.get_cfdi_related()"/>
             <t t-if="related">

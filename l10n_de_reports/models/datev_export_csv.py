@@ -45,7 +45,7 @@ class AccountMoveL10NDe(models.Model):
     @api.depends('journal_id', 'line_ids', 'journal_id.default_debit_account_id', 'journal_id.default_credit_account_id')
     def _get_datev_account(self):
         for move in self:
-            value = False
+            move.l10n_de_datev_main_account_id = value = False
             # If move has an invoice, return invoice's account_id
             if move.is_invoice(include_receipts=True):
                 payment_term_lines = move.line_ids.filtered(

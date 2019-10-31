@@ -53,7 +53,7 @@
         <field name="inherit_id" ref="iot.iot_device_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="IoT Triggers" attrs="{'invisible': [('type', '!=', 'device')]}">
+                <page string="IoT Triggers" attrs="{'invisible': [('type', '!=', 'keyboard')]}">
                     <field name="trigger_ids">
                         <tree>
                             <field name="workcenter_id"/>

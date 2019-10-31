@@ -10,7 +10,8 @@ class PosConfig(models.Model):
     iface_customer_facing_display = fields.Boolean(compute="_compute_customer_facing_display")
     iface_display_id = fields.Many2one('iot.device', domain="[('type', '=', 'display'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     iface_scan_via_proxy = fields.Boolean(compute="_compute_scan_via_proxy")
-    iface_scanner_ids = fields.Many2many('iot.device', domain="[('type', '=', 'scanner'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    iface_scanner_ids = fields.Many2many('iot.device', domain="[('type', '=', 'scanner'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+                                         help="Enable barcode scanning with a remotely connected barcode scanner and card swiping with a Vantiv card reader.")
     iface_electronic_scale = fields.Boolean(compute="_compute_electronic_scale")
     iface_scale_id = fields.Many2one('iot.device', domain="[('type', '=', 'scale'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     iot_device_ids = fields.Many2many('iot.device', compute="_compute_iot_device_ids")

@@ -5,7 +5,7 @@
             <link rel="stylesheet" type="text/scss" href="/l10n_mx_edi/static/src/scss/report.scss"/>
         </xpath>
     </template>
-    <template id="assets_common_l10n_mx_edi_portal" inherit_id="web.assets_common">
+    <template id="assets_common_l10n_mx_edi_portal" inherit_id="web.report_assets_common">
         <xpath expr="." position="inside">
             <link rel="stylesheet" type="text/scss" href="/l10n_mx_edi/static/src/scss/report.scss"/>
         </xpath>

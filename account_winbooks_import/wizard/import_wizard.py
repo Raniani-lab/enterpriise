@@ -10,6 +10,7 @@ import os
 import zipfile
 import re
 from datetime import datetime, timedelta
+from tempfile import TemporaryDirectory
 
 from os import listdir
 from os.path import isfile, join
@@ -637,7 +638,7 @@ class WinbooksImportWizard(models.TransientModel):
         if not DBF:
             raise UserError(_('dbfread library not found, Winbooks Import features disabled. If you plan to use it, please install the dbfread library from https://pypi.org/project/dbfread/'))
         self = self.with_context(active_test=False)
-        with tools.osutil.tempdir() as file_dir:
+        with TemporaryDirectory() as file_dir:
             zip_ref = zipfile.ZipFile(io.BytesIO(base64.decodebytes(self.zip_file)))
             zip_ref.extractall(file_dir)
             child_zip = [s for s in listdir(file_dir) if "@cie@" in s.lower() and '.zip' in s.lower()]

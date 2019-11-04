@@ -63,7 +63,7 @@ FIELDS_TO_EXPORT = {
     'ir.model.fields': [
         'complete_name', 'compute', 'copied', 'depends', 'domain', 'field_description', 'groups',
         'help', 'index', 'model', 'model_id', 'name', 'on_delete', 'readonly', 'related',
-        'relation', 'relation_field', 'required', 'selectable', 'selection',
+        'relation', 'relation_field', 'relation_table', 'required', 'selectable', 'selection',
         'size', 'state', 'store', 'tracking', 'translate',
         'ttype'
     ],

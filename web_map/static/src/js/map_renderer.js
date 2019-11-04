@@ -95,7 +95,7 @@ const MapRenderer = AbstractRenderer.extend({
             $banner = $(qweb.render('MapView.no_map_token'));
         }
         if ($banner) {
-            $banner.appendTo(this.$('.o_map_container'));
+            $banner.insertBefore(this.$('.o_map_container'));
         }
     },
     /**

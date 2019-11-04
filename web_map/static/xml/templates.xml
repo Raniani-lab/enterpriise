@@ -74,7 +74,7 @@
         </t>
     </t>
 
-    <div t-name="MapView.no_map_token" class="alert alert-warning alert-dismissible mb-0 text-center o-map-alert" role="status">
+    <div t-name="MapView.no_map_token" class="alert alert-info alert-dismissible col-md-12 col-lg-10 pr-5 pl-5 mb-0 text-center o-map-alert" role="status">
         To get routing on your map, you first need to setup your Mapbox token.
         <a href="/web#action=base_setup.action_general_configuration" class="ml8">
             <i class="fa fa-arrow-right"></i>
@@ -85,7 +85,7 @@
         </button>
     </div>
 
-    <div t-name="MapView.routing_unavailable" class="alert alert-warning alert-dismissible mb-0 text-center o-map-alert" role="status">
+    <div t-name="MapView.routing_unavailable" class="alert alert-warning alert-dismissible col-md-12 col-lg-10 pr-5 pl-5 mb-0 text-center o-map-alert" role="status">
         <strong>Unsuccessful routing request:</strong>
         <t t-raw="message"/>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">

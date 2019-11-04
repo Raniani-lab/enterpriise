@@ -1162,6 +1162,41 @@ QUnit.module('mapView', {
         map.destroy();
     });
 
+    QUnit.test('Create a view with routingError', async function (assert) {
+        assert.expect(1);
+
+        testUtils.mock.unpatch(MapModel);
+        testUtils.mock.patch(MapModel, {
+            _maxBoxAPI() {
+                this.data.routingError = "this is test warning";
+                this.data.route = { routes: [] };
+                return Promise.resolve();
+            }
+        });
+
+        const map = await createView({
+            View: MapView,
+            model: 'project.task',
+            data: this.data,
+            arch: '<map res_partner="partner_id" routing="true"></map>',
+            mockRPC: function (route) {
+                switch (route) {
+                    case '/web/dataset/search_read':
+                        return Promise.resolve(this.data['project.task'].twoRecords);
+                }
+                return Promise.resolve();
+            },
+            session: {
+                map_box_token: 'token'
+            },
+        });
+
+        assert.containsOnce(map, '.o_map_view > .o-map-alert',
+            'should have alert');
+
+        map.destroy();
+    });
+
     /**
      * routing with token and one located record
      * No route

@@ -19,16 +19,17 @@ class Employee(models.Model):
         help="Date until which the employee's timesheets have been validated")
     timesheet_manager_id = fields.Many2one(
         'res.users', string='Timesheet',
+        compute='_compute_timesheet_manager', store=True, readonly=False,
         domain=_get_timesheet_manager_id_domain,
         help="User responsible of timesheet validation. Should be Timesheet Manager.")
 
-    @api.onchange('parent_id')
-    def _onchange_parent_id(self):
-        super(Employee, self)._onchange_parent_id()
-        previous_manager = self._origin.parent_id.user_id
-        manager = self.parent_id.user_id
-        if manager and manager.has_group('hr_timesheet.group_timesheet_manager') and (self.timesheet_manager_id == previous_manager or not self.timesheet_manager_id):
-            self.timesheet_manager_id = manager
+    @api.depends('parent_id')
+    def _compute_timesheet_manager(self):
+        for employee in self:
+            previous_manager = employee._origin.parent_id.user_id
+            manager = employee.parent_id.user_id
+            if manager and manager.has_group('hr_timesheet.group_hr_timesheet_approver') and (employee.timesheet_manager_id == previous_manager or not employee.timesheet_manager_id):
+                employee.timesheet_manager_id = manager
 
     def get_timesheet_and_working_hours(self, date_start, date_stop):
         """ Get the difference between the supposed working hour (based on resource calendar) and

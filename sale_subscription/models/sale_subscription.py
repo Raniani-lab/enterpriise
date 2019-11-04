@@ -218,13 +218,6 @@ class SaleSubscription(models.Model):
     def partial_recurring_invoice_ratio(self, date_from=False):
         return self._partial_recurring_invoice_ratio(date_from=False)[0]
 
-    @api.model
-    def default_get(self, fields):
-        defaults = super(SaleSubscription, self).default_get(fields)
-        if 'code' in fields:
-            defaults.update(code=self.env['ir.sequence'].next_by_code('sale.subscription') or 'New')
-        return defaults
-
     def _track_subtype(self, init_values):
         self.ensure_one()
         if 'stage_id' in init_values:

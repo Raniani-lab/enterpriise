@@ -286,7 +286,7 @@
                             </page>
                             <page string="Other Info" id="other_info">
                                 <group>
-                                    <field name="code"/>
+                                    <field name="code" attrs="{'required': [('id', '!=', False)]}"/>
                                     <field name="to_renew"/>
                                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                     <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>

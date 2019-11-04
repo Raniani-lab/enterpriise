@@ -389,13 +389,9 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _toggleKeypadInputDiv() {
-        if (this._isInCall) {
-            this._$keypadInputDiv.hide();
-        } else {
-            this._$keypadInputDiv.show();
-            if (this._isWebRTCSupport) {
-                this._$keypadInput.focus();
-            }
+        this._$keypadInputDiv.show();
+        if (this._isWebRTCSupport) {
+            this._$keypadInput.focus();
         }
     },
     /**
@@ -502,9 +498,6 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _onClickKeypadBackspace() {
-        if (this._isInCall) {
-            return;
-        }
         this._$keypadInput.val(this._$keypadInput.val().slice(0, -1));
     },
     /**
@@ -581,9 +574,8 @@ const DialingPanel = Widget.extend({
     _onKeypadButtonClick(number) {
         if (this._isInCall) {
             this._userAgent.sendDtmf(number);
-        } else {
-            this._$keypadInput.val(this._$keypadInput.val() + number);
         }
+        this._$keypadInput.val(this._$keypadInput.val() + number);
     },
     /**
      * @private

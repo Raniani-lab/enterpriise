@@ -18,18 +18,23 @@ class TestHrAppraisal(TransactionCase):
         self.HrAppraisal = self.env['hr.appraisal']
         self.main_company = self.env.ref('base.main_company')
 
+        self.dep_rd = self.env['hr.department'].create({'name': 'RD Test'})
+        self.manager = self.env['hr.employee'].create({'name': 'Manager Test', 'department_id': self.dep_rd.id})
+        self.job = self.env['hr.job'].create({'name': 'Developer Test', 'department_id': self.dep_rd.id})
+        self.colleague = self.env['hr.employee'].create({'name': 'Colleague Test', 'department_id': self.dep_rd.id})
+
         self.hr_employee = self.HrEmployee.create(dict(
             name="Michael Hawkins",
-            department_id=self.env.ref('hr.dep_rd').id,
-            parent_id=self.env.ref('hr.employee_al').id,
-            job_id=self.env.ref('hr.job_developer').id,
+            department_id=self.dep_rd.id,
+            parent_id=self.manager.id,
+            job_id=self.job.id,
             work_location="Grand-Rosière",
             work_phone="+3281813700",
             work_email='michael@odoo.com',
             appraisal_by_manager=True,
-            appraisal_manager_ids=[self.env.ref('hr.employee_al').id],
+            appraisal_manager_ids=[self.manager.id],
             appraisal_by_colleagues=True,
-            appraisal_colleagues_ids=[self.env.ref('hr.employee_stw').id],
+            appraisal_colleagues_ids=[self.colleague.id],
             appraisal_self=True,
             appraisal_date=date.today() + relativedelta(months=-12, days=5)
         ))

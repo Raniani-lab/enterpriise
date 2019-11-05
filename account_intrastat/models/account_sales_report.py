@@ -29,32 +29,27 @@ class IntrastatReport(models.AbstractModel):
     def _prepare_query(self, options):
         query = """
             SELECT
-                line.move_id AS move_id,
-                line.partner_id AS partner_id,
+                move.id AS move_id,
+                move.partner_id,
                 partner.name AS partner_name,
                 partner.vat AS partner_vat,
                 country.code AS country_code,
                 move.currency_id AS currency_id,
                 move.date AS date,
-                SUM(line.balance) AS total_balance
-            FROM account_move_line line
-                LEFT JOIN account_move move ON line.move_id = move.id
-                LEFT JOIN res_partner partner ON line.partner_id = partner.id
-                LEFT JOIN res_company company ON line.company_id = company.id
+                move.amount_total_signed AS total_balance
+            FROM account_move move
+                LEFT JOIN res_partner partner ON move.partner_id = partner.id
+                LEFT JOIN res_company company ON move.company_id = company.id
                 LEFT JOIN res_partner company_partner ON company_partner.id = company.partner_id
                 LEFT JOIN res_country country ON partner.country_id = country.id
             WHERE move.state = 'posted'
-                AND line.display_type IS NULL
                 AND country.intrastat = TRUE
                 AND company_partner.country_id != country.id
-                AND line.company_id = %s
-                AND line.account_internal_type IN ('receivable', 'payable')
+                AND move.company_id = %s
                 AND COALESCE(move.date, move.invoice_date) BETWEEN %s AND %s
                 AND move.type IN ('out_invoice', 'out_refund')
                 AND partner.vat IS NOT NULL
-                AND line.journal_id IN %s
-            GROUP BY
-                line.move_id, line.partner_id, partner.name, partner.vat, country.code, move.currency_id, move.date
+                AND move.journal_id IN %s
         """
         # Date range
         params = [self.env.company.id, options['date']['date_from'], options['date']['date_to']]

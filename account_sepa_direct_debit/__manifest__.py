@@ -39,7 +39,7 @@
 
     'category': 'Accounting/Accounting',
 
-    'depends': ['base_iban','account_batch_payment'],
+    'depends': ['base_iban','account_batch_payment', 'account_accountant'],
 
     'data': [
         'security/ir.model.access.csv',

@@ -22,13 +22,13 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Log into Belgian Company",
-            trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item span:contains('Belgian')",
+            trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item span:contains('My Belgian Company - TEST')",
             run: 'click',
         },
         {
             content: "Recruitment",
             trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
-            extra_trigger: ".o_menu_systray .o_switch_company_menu > a > span:contains('Belgian')",
+            extra_trigger: ".o_menu_systray .o_switch_company_menu > a > span:contains('My Belgian Company - TEST')",
             run: 'click',
         },
         {
@@ -144,11 +144,11 @@ Tour.register('hr_contract_salary_tour', {
             content: "Contract Update Template",
             trigger: '.o_field_widget.o_field_many2one[name=contract_update_template_id]',
             run: function (actions) {
-                actions.text("employee_contract", this.$anchor.find("input"));
+                actions.text("test_employee_contract", this.$anchor.find("input"));
             },
         },
         {
-            trigger: ".ui-autocomplete > li > a:contains('employee_contract')",
+            trigger: ".ui-autocomplete > li > a:contains('test_employee_contract')",
             auto: true,
         },
         {
@@ -216,6 +216,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Send Offer",
             trigger: "button[name='action_send_mail']",
+            extra_trigger: ".modal-dialog .btn-primary span:contains('Send')",
             run: 'click',
         },
         {

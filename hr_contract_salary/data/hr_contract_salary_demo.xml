@@ -52,7 +52,7 @@
     </record>
 
     <record id="res_partner_bank_account_laurie_poiret" model="res.partner.bank">
-        <field name="acc_number">BE68539007547034</field>
+        <field name="acc_number">BE10561132778404</field>
         <field name="bank_id" ref="base.bank_ing"/>
         <field name="partner_id" ref="hr_contract_salary.res_partner_laurie_poiret"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>

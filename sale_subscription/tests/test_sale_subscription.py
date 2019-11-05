@@ -89,6 +89,7 @@ class TestSubscription(TestSubscriptionCommon):
         from mock import patch
 
         self.company = self.env.company
+        self.company.country_id = self.env.ref('base.us')
 
         self.account_type_receivable = self.env['account.account.type'].create({
             'name': 'receivable',

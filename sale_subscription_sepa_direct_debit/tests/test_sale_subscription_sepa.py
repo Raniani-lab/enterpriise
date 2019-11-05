@@ -7,47 +7,55 @@ from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSub
 
 class TestSubscriptionSEPA(TestSubscriptionCommon):
 
-    def setUp(self):
-        super(TestSubscriptionSEPA, self).setUp()
+    @classmethod
+    def setUpClass(cls):
+        super(TestSubscriptionSEPA, cls).setUpClass()
 
-        self.sepa = self.env.ref('payment.payment_acquirer_sepa_direct_debit')
-        bank_account = self.env['res.partner.bank'].create({
-            'acc_number': 'NL91 ABNA 0417 1643 00',
-            'partner_id': self.env.company.partner_id.id,
-            'bank_id': self.env.ref('base.bank_ing').id,
+        cls.env.user.company_id.country_id = cls.env.ref('base.us')
+
+        cls.sepa = cls.env.ref('payment.payment_acquirer_sepa_direct_debit')
+        bank_ing = cls.env['res.bank'].create({
+            'name': 'ING',
+            'bic': 'BBRUBEBB',
         })
-        journal = self.env['account.journal'].create({
+
+        bank_account = cls.env['res.partner.bank'].create({
+            'acc_number': 'NL91 ABNA 0417 1643 00',
+            'partner_id': cls.env.company.partner_id.id,
+            'bank_id': bank_ing.id,
+        })
+        journal = cls.env['account.journal'].create({
             'name': 'Bank SEPA',
             'type': 'bank',
             'code': 'BNKSEPA',
             'post_at': 'bank_rec',
-            'inbound_payment_method_ids': [(4, self.env.ref('account_sepa_direct_debit.payment_method_sdd').id)],
+            'inbound_payment_method_ids': [(4, cls.env.ref('account_sepa_direct_debit.payment_method_sdd').id)],
             'bank_account_id': bank_account.id,
         })
-        self.sepa.write({'journal_id': journal.id})
+        cls.sepa.write({'journal_id': journal.id})
 
-        self.partner_bank = self.env['res.partner.bank'].create({
+        cls.partner_bank = cls.env['res.partner.bank'].create({
             'acc_number': 'BE17412614919710',
-            'partner_id': self.user_portal.partner_id.id,
-            'company_id': self.env.company.id,
+            'partner_id': cls.user_portal.partner_id.id,
+            'company_id': cls.env.company.id,
         })
 
-        self.mandate = self.env['sdd.mandate'].create({
-            'partner_id': self.user_portal.partner_id.id,
-            'company_id': self.env.company.id,
-            'partner_bank_id': self.partner_bank.id,
+        cls.mandate = cls.env['sdd.mandate'].create({
+            'partner_id': cls.user_portal.partner_id.id,
+            'company_id': cls.env.company.id,
+            'partner_bank_id': cls.partner_bank.id,
             'start_date': fields.date.today(),
-            'payment_journal_id': self.sepa.journal_id.id,
+            'payment_journal_id': cls.sepa.journal_id.id,
             'verified': True,
             'state': 'active',
         })
 
-        self.payment_token = self.env['payment.token'].create({
+        cls.payment_token = cls.env['payment.token'].create({
             'name': 'BE17412614919710',
-            'partner_id': self.user_portal.partner_id.id,
-            'acquirer_id': self.sepa.id,
-            'acquirer_ref': self.mandate.name,
-            'sdd_mandate_id': self.mandate.id,
+            'partner_id': cls.user_portal.partner_id.id,
+            'acquirer_id': cls.sepa.id,
+            'acquirer_ref': cls.mandate.name,
+            'sdd_mandate_id': cls.mandate.id,
         })
 
     def test_01_recurring_invoice(self):

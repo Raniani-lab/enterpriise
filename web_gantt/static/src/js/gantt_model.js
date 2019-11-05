@@ -18,6 +18,7 @@ var GanttModel = AbstractModel.extend({
         this._super.apply(this, arguments);
 
         this.dp = new concurrency.DropPrevious();
+        this.mutex = new concurrency.Mutex();
     },
 
     //--------------------------------------------------------------------------
@@ -179,11 +180,14 @@ var GanttModel = AbstractModel.extend({
      * @returns {Promise}
      */
     copy: function (id, schedule) {
+        var self = this;
         const defaults = this.rescheduleData(schedule);
-        return this._rpc({
-            model: this.modelName,
-            method: 'copy',
-            args: [id, defaults],
+        return this.mutex.exec(function () {
+            return self._rpc({
+                model: self.modelName,
+                method: 'copy',
+                args: [id, defaults],
+            });
         });
     },
     /**
@@ -195,14 +199,17 @@ var GanttModel = AbstractModel.extend({
      * @returns {Promise}
      */
     reschedule: function (ids, schedule, isUTC) {
+        var self = this;
         if (!_.isArray(ids)) {
             ids = [ids];
         }
         const data = this.rescheduleData(schedule, isUTC);
-        return this._rpc({
-            model: this.modelName,
-            method: 'write',
-            args: [ids, data],
+        return this.mutex.exec(function () {
+            return self._rpc({
+                model: self.modelName,
+                method: 'write',
+                args: [ids, data],
+            });
         });
     },
     /**

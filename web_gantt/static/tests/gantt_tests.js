@@ -2702,6 +2702,8 @@ QUnit.module('Views', {
 
         firstWriteProm.resolve();
 
+        await testUtils.nextTick();
+
         assert.verifySteps([
             '/web/dataset/search_read',
             'render',
@@ -2713,6 +2715,56 @@ QUnit.module('Views', {
 
         gantt.destroy();
         testUtils.unpatch(GanttRenderer);
+    });
+
+    QUnit.test('concurrent pill resizes and open, dialog show updated number', async function (assert) {
+        assert.expect(1);
+
+        var def = testUtils.makeTestPromise();
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form>' +
+                        '<field name="name"/>' +
+                        '<field name="start"/>' +
+                        '<field name="stop"/>' +
+                    '</form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            domain: [['id', '=', 2]],
+            mockRPC: function (route, args) {
+                var self = this;
+                if (args.method === 'write') {
+                    var super_self = this._super
+                    return def.then(() => {
+                        return super_self.apply(self, arguments);
+                    });
+                }
+                return this._super.apply(this, arguments);;
+            },
+        });
+
+        var cellWidth = gantt.$('.o_gantt_cell:first').width();
+
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+
+        await testUtils.dom.dragAndDrop(
+            gantt.$('.ui-resizable-e'),
+            gantt.$('.ui-resizable-e'),
+            { position: { left: 2 * cellWidth, top: 0 } }
+        );
+
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "click");
+        def.resolve();
+        await testUtils.nextTick();
+        assert.strictEqual($('.modal').find('input[name=stop]').val(), '12/24/2018 06:29:59');
+
+        gantt.destroy();
     });
 
     QUnit.test('dst spring forward', async function (assert) {

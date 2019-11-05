@@ -43,6 +43,7 @@ var GanttController = AbstractController.extend({
      */
     init: function (parent, model, renderer, params) {
         this._super.apply(this, arguments);
+        this.model = model;
         this.context = params.context;
         this.dialogViews = params.dialogViews;
         this.SCALES = params.SCALES;
@@ -367,9 +368,13 @@ var GanttController = AbstractController.extend({
      * @param {OdooEvent} ev
      * @param {jQuery} ev.data.target
      */
-    _onPillClicked: function (ev) {
+    _onPillClicked: async function (ev) {
         if (!this._updating) {
             ev.data.target.addClass('o_gantt_pill_editing');
+
+            // Sync with the mutex to wait for potential changes on the view
+            await this.model.mutex.getUnlockedDef();
+
             var dialog = this._openDialog(ev.data.target.data('id'));
             dialog.on('closed', this, function () {
                 ev.data.target.removeClass('o_gantt_pill_editing');

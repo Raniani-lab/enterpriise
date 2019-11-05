@@ -19,42 +19,44 @@ _logger = logging.getLogger(__name__)
 # ---------------------------------------------------------
 @tagged('post_install', '-at_install')
 class TestTheoreticalAmount(TestAccountBudgetCommon):
-    def setUp(self):
-        super(TestTheoreticalAmount, self).setUp()
+    
+    @classmethod
+    def setUpClass(cls):
+        super(TestTheoreticalAmount, cls).setUpClass()
         #create the budgetary position
-        user_type_id = self.ref('account.data_account_type_revenue')
-        tag_id = self.ref('account.account_tag_operating')
-        account_rev = self.env['account.account'].create({
+        user_type_id = cls.env.ref('account.data_account_type_revenue').id
+        tag_id = cls.env.ref('account.account_tag_operating').id
+        account_rev = cls.env['account.account'].create({
             'code': 'Y2020',
             'name': 'Budget - Test Revenue Account',
             'user_type_id': user_type_id,
             'tag_ids': [(4, tag_id, 0)]
         })
-        buget_post = self.env['account.budget.post'].create({
+        buget_post = cls.env['account.budget.post'].create({
             'name': 'Sales',
             'account_ids': [(4, account_rev.id, 0)],
         })
         #create the budget and budget lines
         first_january = Datetime.now().replace(day=1, month=1)
-        self.last_day_of_budget = first_january + timedelta(days=364)  # will be 30th of December or 31th in case of leap year
+        cls.last_day_of_budget = first_january + timedelta(days=364)  # will be 30th of December or 31th in case of leap year
 
         date_from = first_january.date()
-        date_to = self.last_day_of_budget.date()
+        date_to = cls.last_day_of_budget.date()
 
-        crossovered_budget = self.env['crossovered.budget'].create({
+        crossovered_budget = cls.env['crossovered.budget'].create({
             'name': 'test budget name',
             'date_from': date_from,
             'date_to': date_to,
         })
-        crossovered_budget_line_obj = self.env['crossovered.budget.lines']
-        self.line = crossovered_budget_line_obj.create({
+        crossovered_budget_line_obj = cls.env['crossovered.budget.lines']
+        cls.line = crossovered_budget_line_obj.create({
             'crossovered_budget_id': crossovered_budget.id,
             'general_budget_id': buget_post.id,
             'date_from': date_from,
             'date_to': date_to,
             'planned_amount': -364,
         })
-        self.paid_date_line = crossovered_budget_line_obj.create({
+        cls.paid_date_line = crossovered_budget_line_obj.create({
             'crossovered_budget_id': crossovered_budget.id,
             'general_budget_id': buget_post.id,
             'date_from': date_from,
@@ -62,6 +64,9 @@ class TestTheoreticalAmount(TestAccountBudgetCommon):
             'planned_amount': -364,
             'paid_date':  Date.today().replace(day=9, month=9),
         })
+
+    def setUp(self):
+        super(TestTheoreticalAmount, self).setUp()
 
         self.patcher = patch('odoo.addons.account_budget.models.account_budget.fields.Date', wraps=Date)
         self.mock_date = self.patcher.start()

@@ -9,11 +9,11 @@ from odoo.tests import tagged, Form
 @tagged('post_install', '-at_install')
 class TestReleaseToPayInvoice(AccountingTestCase):
 
-    def check_release_to_pay_scenario(self, ordered_qty, scenario, invoicing_policy='receive', order_price=500.0):
-        """ Generic test function to check that each use scenario behaves properly.
-        """
-        partner = self.env.ref('base.res_partner_1')
-        product = self.env['product.product'].create({
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.partner = cls.env['res.partner'].create({'name': 'Zizizapartner'})
+        cls.product = cls.env['product.product'].create({
             'name': 'VR Computer',
             'standard_price': 2500.0,
             'list_price': 2899.0,
@@ -23,16 +23,20 @@ class TestReleaseToPayInvoice(AccountingTestCase):
             'purchase_method': 'receive',
         })
 
-        product.purchase_method = invoicing_policy
+    def check_release_to_pay_scenario(self, ordered_qty, scenario, invoicing_policy='receive', order_price=500.0):
+        """ Generic test function to check that each use scenario behaves properly.
+        """
+
+        self.product.purchase_method = invoicing_policy
 
         purchase_order = self.env['purchase.order'].create({
-            'partner_id': partner.id,
+            'partner_id': self.partner.id,
             'order_line': [
                 (0, 0, {
-                    'name': product.name,
-                    'product_id': product.id,
+                    'name': self.product.name,
+                    'product_id': self.product.id,
                     'product_qty': ordered_qty,
-                    'product_uom': product.uom_po_id.id,
+                    'product_uom': self.product.uom_po_id.id,
                     'price_unit': order_price,
                     'date_planned': fields.Datetime.now(),
                 })]

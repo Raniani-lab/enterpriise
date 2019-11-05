@@ -24,7 +24,6 @@ class TestAccountFollowup(TestAccountReportsCommon2):
             ],
         })
 
-
         # Company 1
         company1 = self.env['res.company'].create({'name': 'company1'})
         self.env.user.write({

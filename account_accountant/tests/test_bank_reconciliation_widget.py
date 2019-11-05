@@ -5,11 +5,12 @@ from odoo.tests import tagged
 @tagged('post_install', '-at_install')
 class TestBankStatementReconciliation(AccountingTestCase):
 
-    def setUp(self):
-        super(TestBankStatementReconciliation, self).setUp()
-        self.reconciliation_widget = self.env['account.reconciliation.widget']
-        self.bs_model = self.env['account.bank.statement']
-        self.partner = self.env['res.partner'].create({'name': 'test'})
+    @classmethod
+    def setUpClass(cls):
+        super(TestBankStatementReconciliation, cls).setUpClass()
+        cls.reconciliation_widget = cls.env['account.reconciliation.widget']
+        cls.bs_model = cls.env['account.bank.statement']
+        cls.partner = cls.env['res.partner'].create({'name': 'test'})
 
     def test_reconciliation_proposition(self):
         move = self.env['account.move'].create({

@@ -236,8 +236,9 @@ class Planning(models.Model):
         user_tz = pytz.timezone(self.env.user.tz or 'UTC')
         if self.template_id and self.start_datetime:
             h, m = divmod(self.template_id.start_time, 1)
-            self.start_datetime = fields.Datetime.to_string(user_tz.localize(self.start_datetime.replace(hour=int(h), minute=int(m * 60))).astimezone(pytz.utc))
-
+            start = pytz.utc.localize(self.start_datetime).astimezone(user_tz)
+            start = start.replace(hour=int(h), minute=int(m * 60))
+            self.start_datetime = start.astimezone(pytz.utc).replace(tzinfo=None)
             h, m = divmod(self.template_id.duration, 1)
             delta = timedelta(hours=int(h), minutes=int(m * 60))
             self.end_datetime = fields.Datetime.to_string(self.start_datetime + delta)

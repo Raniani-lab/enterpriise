@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import time
 import datetime
 from collections import OrderedDict
 
@@ -17,12 +18,17 @@ class TestExamples(common.SavepointCase):
         cls.Payslip = cls.env['hr.payslip']
         cls.journal_id = cls.env['account.journal'].search([], limit=1).id
 
+        cls.belgian_company = cls.env['res.company'].create({
+            'name': 'My Belgian Company - TEST',
+            'country_id': cls.env.ref('base.be').id,
+        })
+
         cls.leave_type_bank_holidays = cls.env['hr.leave.type'].create({
             'name': 'Bank Holiday',
             'request_unit': 'hour',
             'allocation_type': 'no',
             'validity_start': datetime.date(2015, 1, 1),
-            'company_id': cls.env.ref('l10n_be_hr_payroll.res_company_be').id,
+            'company_id': cls.belgian_company.id,
             'work_entry_type_id': cls.env.ref('hr_payroll.work_entry_type_leave').id,
         })
         cls.leave_type_unpaid = cls.env['hr.leave.type'].create({
@@ -30,7 +36,7 @@ class TestExamples(common.SavepointCase):
             'request_unit': 'hour',
             'allocation_type': 'no',
             'validity_start': datetime.date(2015, 1, 1),
-            'company_id': cls.env.ref('l10n_be_hr_payroll.res_company_be').id,
+            'company_id': cls.belgian_company.id,
             'work_entry_type_id': cls.env.ref('hr_payroll.work_entry_type_unpaid_leave').id,
         })
         cls.leave_type_small_unemployment = cls.env['hr.leave.type'].create({
@@ -38,7 +44,7 @@ class TestExamples(common.SavepointCase):
             'request_unit': 'hour',
             'allocation_type': 'no',
             'validity_start': datetime.date(2015, 1, 1),
-            'company_id': cls.env.ref('l10n_be_hr_payroll.res_company_be').id,
+            'company_id': cls.belgian_company.id,
             'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_small_unemployment').id,
         })
 
@@ -156,10 +162,47 @@ class TestExamples(common.SavepointCase):
             'date_to': datetime.date(2019, 2, 28),
             'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
         }
-        contract = self.env.ref('hr_contract_salary.hr_contract_cdi_laurie_poiret')
+        lap_address = self.env['res.partner'].create({
+            'name': 'Laurie Poiret',
+            'street': '58 rue des Wallons',
+            'city': 'Louvain-la-Neuve',
+            'zip': '1348',
+            'country_id': self.env.ref("base.be").id,
+            'phone': '+0032476543210',
+            'email': 'laurie.poiret@example.com',
+            'company_id': self.belgian_company.id,
+        })
+        employee_vals = {
+            'name': 'Laurie Poiret',
+            'marital': 'single',
+            'resource_calendar_id': self.env.ref("resource.resource_calendar_std_38h").id,
+            'company_id': self.belgian_company.id,
+        }
+        car_vals = {
+            'model_id': self.env.ref("fleet.model_a3").id,
+            'license_plate': '1-JFC-095',
+            'acquisition_date': time.strftime('%Y-01-01'),
+            'co2': 88,
+            'driver_id': lap_address.id,
+            'car_value': 38000,
+            'company_id': self.belgian_company.id,
+        }
+        contract_vals = {
+            'name': 'CDI - Laurie Poiret - Experienced Developer',
+            'structure_type_id': self.env.ref('l10n_be_hr_payroll.structure_type_employee_cp200').id,
+            'wage': 2650,
+            'commission_on_target': 0.0,
+            'transport_mode_car': True,
+            'new_car': False,
+            'state': 'open',
+            'ip_wage_rate': 25,
+            'date_start': datetime.date(2019, 1, 1),
+            'company_id': self.belgian_company.id,
+            'resource_calendar_id': self.belgian_company.resource_calendar_id.id,
+        }
+
         # Set the start date to January 2019 to take into account on payslip
-        contract.date_start = datetime.date(2019, 1, 1)
-        self.case_test(values, 'hr_contract_salary.hr_employee_laurie_poiret', payslip_values=payslip)
+        self.case_test(values, employee_vals, payslip_values=payslip, contract_values=contract_vals, car_values=car_vals)
 
     def test_example(self):
         values = OrderedDict([
@@ -289,7 +332,7 @@ class TestExamples(common.SavepointCase):
             'car_value': 29235.15,
             'fuel_type': 'diesel',
             'co2': 89,
-            'company_id': self.env.ref('l10n_be_hr_payroll.res_company_be').id,
+            'company_id': self.belgian_company.id,
         }
         car_contract = {
             'recurring_cost_amount_depreciated': 562.52,
@@ -391,7 +434,7 @@ class TestExamples(common.SavepointCase):
             'car_value': 28138.86,
             'fuel_type': 'diesel',
             'co2': 88.00,
-            'company_id': self.env.ref('l10n_be_hr_payroll.res_company_be').id,
+            'company_id': self.belgian_company.id,
         }
         car_contract = {
             'recurring_cost_amount_depreciated': 503.12,
@@ -462,7 +505,7 @@ class TestExamples(common.SavepointCase):
             ('ATN.MOB', 4.0),
             ('SALARY', 2715.14),
             ('ONSS', -354.87),
-            ('P.P', 0.0),
+            ('P.P', -26.19),
             ('IP.DED', -44.09),
             ('Tr.E', 200),
             ('M.ONSS', -24.28),
@@ -470,7 +513,7 @@ class TestExamples(common.SavepointCase):
             ('ATN.INT.2', -5.0),
             ('ATN.MOB.2', -4.0),
             ('IP', 676.54),
-            ('NET', 2613.29),
+            ('NET', 2587.1),
         ])
 
         employee = {
@@ -480,13 +523,20 @@ class TestExamples(common.SavepointCase):
             'children': 1,
             'spouse_fiscal_status': 'without income',
         }
-
+        car_vals = {
+            'model_id': self.env.ref("fleet.model_a3").id,
+            'license_plate': '1-JFC-095',
+            'acquisition_date': time.strftime('%Y-01-01'),
+            'co2': 88,
+            'driver_id': self.env['res.partner'].create({'name': 'Roger'}).id,
+            'car_value': 38000,
+            'company_id': self.belgian_company.id,
+        }
         contract = {
             'name': 'Contract For Roger',
             'date_start': datetime.date(2015, 1, 1),
             'wage': 2706.14,
             'representation_fees': 150,
-            'car_id': self.env.ref('hr_contract_salary.fleet_vehicle_audi_a3_laurie_poiret').id,
             'others_reimbursed_amount': 200,
             'internet': True,
             'mobile': True,
@@ -517,7 +567,7 @@ class TestExamples(common.SavepointCase):
             'date_to': datetime.date(2019, 2, 28)
         }
 
-        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holidays_values=holidays_values)
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holidays_values=holidays_values, car_values=car_vals)
 
     # PFI with public transportation reimbursed
     def test_pfi_public_transportation_pay(self):
@@ -568,6 +618,15 @@ class TestExamples(common.SavepointCase):
             'name': 'Roger'
         }
 
+        car_vals = {
+            'model_id': self.env.ref("fleet.model_a3").id,
+            'license_plate': '1-JFC-095',
+            'acquisition_date': time.strftime('%Y-01-01'),
+            'co2': 88,
+            'car_value': 38000,
+            'company_id': self.belgian_company.id,
+        }
+
         contract = {
             'name': 'PFI Contract for Roger',
             'date_start': datetime.date(2015, 1, 1),
@@ -576,7 +635,6 @@ class TestExamples(common.SavepointCase):
             'internet': False,
             'mobile': False,
             'transport_mode_car': True,
-            'car_id': self.env.ref('hr_contract_salary.fleet_vehicle_audi_a3_laurie_poiret').id,
         }
 
         holidays_values = [{
@@ -594,7 +652,7 @@ class TestExamples(common.SavepointCase):
             'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_pfi'),
         }
 
-        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holidays_values=holidays_values)
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holidays_values=holidays_values, car_values=car_vals)
 
     # PFI with company car, mobile and internet
     def test_pfi_with_benefits_pay(self):
@@ -615,7 +673,14 @@ class TestExamples(common.SavepointCase):
         employee = {
             'name': 'Roger'
         }
-
+        car_vals = {
+            'model_id': self.env.ref("fleet.model_a3").id,
+            'license_plate': '1-JFC-095',
+            'acquisition_date': time.strftime('%Y-01-01'),
+            'co2': 88,
+            'car_value': 38000,
+            'company_id': self.belgian_company.id,
+        }
         contract = {
             'name': 'PFI Contract for Roger',
             'date_start': datetime.date(2015, 1, 1),
@@ -624,7 +689,6 @@ class TestExamples(common.SavepointCase):
             'internet': True,
             'mobile': True,
             'transport_mode_car': True,
-            'car_id': self.env.ref('hr_contract_salary.fleet_vehicle_audi_a3_laurie_poiret').id,
         }
 
         payslip = {
@@ -633,4 +697,4 @@ class TestExamples(common.SavepointCase):
             'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_pfi'),
         }
 
-        self.case_test(values, employee, payslip_values=payslip, contract_values=contract)
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, car_values=car_vals)

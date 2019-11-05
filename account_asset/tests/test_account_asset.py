@@ -1,30 +1,29 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import tools, fields
-from odoo.tests import common
-from odoo.modules.module import get_resource_path
-from odoo.exceptions import UserError, ValidationError, MissingError
-from odoo.tools import float_compare, date_utils
+import time
+
+from dateutil.relativedelta import relativedelta
+from odoo import fields
+from odoo.exceptions import UserError, MissingError
 from odoo.tests.common import Form
 from odoo.addons.account_reports.tests.common import _init_options
+from odoo.addons.account.tests.account_minimal_test import AccountMinimalTest
 
 
-import datetime
-from dateutil.relativedelta import relativedelta
+class TestAccountAsset(AccountMinimalTest):
 
-
-class TestAccountAsset(common.TransactionCase):
-
+    # YTI TODO: Convert this to a classmethod setUpClass
+    # But the test test_asset_reverse_depreciation depends on
+    # data created in a previous test
     def setUp(self):
         super(TestAccountAsset, self).setUp()
-        self._load('account', 'test', 'account_minimal_test.xml')
         today = fields.Date.today()
         self.truck = self.env['account.asset'].create({
-            'account_asset_id': self.env.ref('account_asset.a_expense').id,
-            'account_depreciation_id': self.env.ref('account_asset.a_expense').id,
-            'account_depreciation_expense_id': self.env.ref('account_asset.cas').id,
-            'journal_id': self.env.ref('account_asset.miscellaneous_journal').id,
+            'account_asset_id': self.a_expense.id,
+            'account_depreciation_id': self.a_expense.id,
+            'account_depreciation_expense_id': self.cas.id,
+            'journal_id': self.miscellaneous_journal.id,
             'asset_type': 'purchase',
             'name': 'truck',
             'acquisition_date': today + relativedelta(years=-6, month=1, day=1),
@@ -36,12 +35,7 @@ class TestAccountAsset(common.TransactionCase):
         })
         self.truck.validate()
         self.env['account.move']._autopost_draft_entries()
-        self.assert_counterpart_account_id = self.env.ref('account_asset.a_sale').id
-
-    def _load(self, module, *args):
-        tools.convert_file(self.cr, 'account_asset',
-                           get_resource_path(module, *args),
-                           {}, 'init', False, 'test', self.registry._assertion_report)
+        self.assert_counterpart_account_id = self.a_sale.id
 
     def update_form_values(self, asset_form):
         for i in range(len(asset_form.depreciation_move_ids)):
@@ -51,10 +45,53 @@ class TestAccountAsset(common.TransactionCase):
     def test_00_account_asset(self):
         """Test the lifecycle of an asset"""
         self.env.context = {**self.env.context, **{'asset_type': 'purchase'}}
-        self._load('account', 'test', 'account_minimal_test.xml')
-        self._load('account_asset', 'test', 'account_asset_demo_test.xml')
 
-        CEO_car = self.browse_ref("account_asset.account_asset_vehicles_test0")
+        account_asset_model_fixedassets_test0 = self.env['account.asset'].create({
+            'account_depreciation_id': self.xfa.id,
+            'account_depreciation_expense_id': self.a_expense.id,
+            'account_asset_id': self.xfa.id,
+            'journal_id': self.expenses_journal.id,
+            'name': 'Hardware - 3 Years',
+            'method_number': 3,
+            'method_period': '12',
+            'state': 'model',
+        })
+        account_asset_model_fixedassets_test1 = self.env['account.asset'].create({
+            'account_depreciation_id': self.xfa.id,
+            'account_depreciation_expense_id': self.a_expense.id,
+            'account_asset_id': self.xfa.id,
+            'journal_id': self.expenses_journal.id,
+            'name': 'Cars - 5 Years',
+            'method_number': 5,
+            'method_period': '12',
+            'state': 'model',
+        })
+
+        account_asset_vehicles_test0 = self.env['account.asset'].create({
+            'salvage_value': 2000.0,
+            'state': 'open',
+            'method_period': '12',
+            'method_number': 5,
+            'name': "CEO's Car",
+            'original_value': 12000.0,
+            'model_id': account_asset_model_fixedassets_test0.id,
+        })
+
+        account_asset_office_test0 = self.env['account.asset'].create({
+            'prorata': 1,
+            'salvage_value': 100000.0,
+            'state': 'open',
+            'method_period': '12',
+            'method_number': 3,
+            'first_depreciation_date': time.strftime('%Y-01-01'),
+            'name': "Office",
+            'original_value': 500000.0,
+            'model_id': account_asset_model_fixedassets_test0.id,
+        })
+
+        # self._load('account_asset', 'test', 'account_asset_demo_test.xml')
+
+        CEO_car = account_asset_vehicles_test0
         # In order to get the fields from the model, I need to trigger the onchange method.
         CEO_car._onchange_model_id()
 
@@ -62,7 +99,7 @@ class TestAccountAsset(common.TransactionCase):
         CEO_car.validate()
 
         # I check Asset is now in Open state.
-        self.assertEqual(self.browse_ref("account_asset.account_asset_vehicles_test0").state, 'open',
+        self.assertEqual(account_asset_vehicles_test0.state, 'open',
                          'Asset should be in Open state')
 
         # I compute depreciation lines for asset of CEOs Car.
@@ -76,7 +113,7 @@ class TestAccountAsset(common.TransactionCase):
         # I Check that After creating all the moves of depreciation lines the state "Running".
         CEO_car.depreciation_move_ids.write({'auto_post': False})
         CEO_car.depreciation_move_ids.post()
-        self.assertEqual(self.browse_ref("account_asset.account_asset_vehicles_test0").state, 'open',
+        self.assertEqual(account_asset_vehicles_test0.state, 'open',
                          'State of asset should be runing')
 
         closing_invoice = self.env['account.move'].create({
@@ -94,19 +131,72 @@ class TestAccountAsset(common.TransactionCase):
         item on an account for generating entries.
         """
         self.env.context = {**self.env.context, **{'asset_type': 'purchase'}}
-        self._load('account', 'test', 'account_minimal_test.xml')
-        self._load('account_asset', 'test', 'account_deferred_revenue_demo_test.xml')
+        account_asset_model_sale_test0 = self.env['account.asset'].create({
+            'account_depreciation_id': self.xfa.id,
+            'account_depreciation_expense_id': self.a_sale.id,
+            'journal_id': self.sales_journal.id,
+            'name': 'Maintenance Contract - 3 Years',
+            'method_number': 3,
+            'method_period': '12',
+            'prorata': True,
+            'prorata_date': time.strftime('%Y-01-01'),
+            'asset_type': 'sale',
+            'state': 'model',
+        })
+
+        account_asset_model_sale1 = self.env['account.asset'].create({
+            'account_depreciation_id': self.xfa.id,
+            'account_depreciation_expense_id': self.a_sale.id,
+            'journal_id': self.sales_journal.id,
+            'name': 'Maintenance Contract - 1 Year',
+            'method_period': '12',
+            'prorata': True,
+            'prorata_date': time.strftime('%Y-01-01'),
+            'asset_type': 'sale',
+            'state': 'model',
+        })
+
+        account_asset_pc = self.env['account.asset'].create({
+            'account_depreciation_id': self.xfa.id,
+            'account_depreciation_expense_id': self.a_sale.id,
+            'journal_id': self.sales_journal.id,
+            'name': 'Car Maintenance',
+            'method_period': '12',
+            'method_number': 3,
+            'prorata': True,
+            'prorata_date': time.strftime('%Y-01-01'),
+            'first_depreciation_date': time.strftime('%Y-01-01'), 
+            'state': 'draft',
+            'original_value': 30000.0,
+            'model_id': account_asset_model_sale_test0.id,
+        })
+
+        account_asset_ac = self.env['account.asset'].create({
+            'account_depreciation_id': self.xfa.id,
+            'account_depreciation_expense_id': self.a_sale.id,
+            'journal_id': self.sales_journal.id,
+            'name': 'Air Conditioner Maintenance Contract',
+            'method_period': '12',
+            'prorata': True,
+            'prorata_date': time.strftime('%Y-01-01'),
+            'first_depreciation_date': time.strftime('%Y-01-01'), 
+            'state': 'open',
+            'original_value': 1000.0,
+            'model_id': account_asset_model_sale1.id,
+        })
+
+        # self._load('account_asset', 'test', 'account_deferred_revenue_demo_test.xml')
 
         # The account needs a default model for the invoice to validate the revenue
-        self.browse_ref("account_asset.xfa").create_asset = 'validate'
-        self.browse_ref("account_asset.xfa").asset_model = self.ref("account_asset.account_asset_model_sale_test0")
+        self.xfa.create_asset = 'validate'
+        self.xfa.asset_model = account_asset_model_sale_test0
 
         invoice = self.env['account.move'].with_context(asset_type='purchase').create({
             'type': 'in_invoice',
-            'partner_id': self.ref("base.res_partner_12"),
+            'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
             'invoice_line_ids': [(0, 0, {
                 'name': 'Insurance claim',
-                'account_id': self.ref("account_asset.xfa"),
+                'account_id': self.xfa.id,
                 'price_unit': 450,
                 'quantity': 1,
             })],
@@ -142,13 +232,12 @@ class TestAccountAsset(common.TransactionCase):
 
     def test_asset_form(self):
         """Test the form view of assets"""
-        self._load('account', 'test', 'account_minimal_test.xml')
         asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))
         asset_form.name = "Test Asset"
         asset_form.original_value = 10000
-        asset_form.account_depreciation_id = self.env.ref('account_asset.xfa')
-        asset_form.account_depreciation_expense_id = self.env.ref('account_asset.a_expense')
-        asset_form.journal_id = self.env.ref('account_asset.miscellaneous_journal')
+        asset_form.account_depreciation_id = self.xfa
+        asset_form.account_depreciation_expense_id = self.a_expense
+        asset_form.journal_id = self.miscellaneous_journal
         asset = asset_form.save()
         asset.validate()
 
@@ -177,18 +266,16 @@ class TestAccountAsset(common.TransactionCase):
     def test_asset_from_move_line_form(self):
         """Test that the asset is correcly created from a move line"""
 
-        self._load('account', 'test', 'account_minimal_test.xml')
-
         move_ids = self.env['account.move'].create([{
             'ref': 'line1',
             'line_ids': [
                 (0, 0, {
-                    'account_id': self.env.ref('account_asset.a_expense').id,
+                    'account_id': self.a_expense.id,
                     'debit': 300,
                     'name': 'Furniture',
                 }),
                 (0, 0, {
-                    'account_id': self.env.ref('account_asset.xfa').id,
+                    'account_id': self.xfa.id,
                     'credit': 300,
                 }),
             ]
@@ -196,12 +283,12 @@ class TestAccountAsset(common.TransactionCase):
             'ref': 'line2',
             'line_ids': [
                 (0, 0, {
-                    'account_id': self.env.ref('account_asset.a_expense').id,
+                    'account_id': self.a_expense.id,
                     'debit': 600,
                     'name': 'Furniture too',
                 }),
                 (0, 0, {
-                    'account_id': self.env.ref('account_asset.xfa').id,
+                    'account_id': self.xfa.id,
                     'credit': 600,
                 }),
             ]
@@ -214,16 +301,16 @@ class TestAccountAsset(common.TransactionCase):
         asset_form = Form(self.env['account.asset'].with_context(default_original_move_line_ids=move_line_ids.ids, asset_type='purchase'))
         asset_form._values['original_move_line_ids'] = [(6, 0, move_line_ids.ids)]
         asset_form._perform_onchange(['original_move_line_ids'])
-        asset_form.account_depreciation_expense_id = self.env.ref('account_asset.cas')
+        asset_form.account_depreciation_expense_id = self.cas
 
         asset = asset_form.save()
         self.assertEqual(asset.value_residual, 900.0)
         self.assertIn(asset.name, ['Furniture', 'Furniture too'])
         self.assertEqual(asset.journal_id.type, 'general')
         self.assertEqual(asset.asset_type, 'purchase')
-        self.assertEqual(asset.account_asset_id, self.env.ref('account_asset.a_expense'))
-        self.assertEqual(asset.account_depreciation_id, self.env.ref('account_asset.a_expense'))
-        self.assertEqual(asset.account_depreciation_expense_id, self.env.ref('account_asset.cas'))
+        self.assertEqual(asset.account_asset_id, self.a_expense)
+        self.assertEqual(asset.account_depreciation_id, self.a_expense)
+        self.assertEqual(asset.account_depreciation_expense_id, self.cas)
 
     def test_asset_modify_depreciation(self):
         """Test the modification of depreciation parameters"""
@@ -417,7 +504,6 @@ class TestAccountAsset(common.TransactionCase):
 
     def test_asset_reverse_depreciation(self):
         """Test the reversal of a depreciation move"""
-        self._load('account', 'test', 'account_minimal_test.xml')
         today = fields.Date.today()
 
         report = self.env['account.assets.report']
@@ -449,18 +535,17 @@ class TestAccountAsset(common.TransactionCase):
 
     def test_asset_reverse_original_move(self):
         """Test the reversal of a move that generated an asset"""
-        self._load('account', 'test', 'account_minimal_test.xml')
 
         move_id = self.env['account.move'].create({
             'ref': 'line1',
             'line_ids': [
                 (0, 0, {
-                    'account_id': self.env.ref('account_asset.a_expense').id,
+                    'account_id': self.a_expense.id,
                     'debit': 300,
                     'name': 'Furniture',
                 }),
                 (0, 0, {
-                    'account_id': self.env.ref('account_asset.xfa').id,
+                    'account_id': self.xfa.id,
                     'credit': 300,
                 }),
             ]
@@ -471,7 +556,7 @@ class TestAccountAsset(common.TransactionCase):
         asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))
         asset_form._values['original_move_line_ids'] = [(6, 0, move_line_id.ids)]
         asset_form._perform_onchange(['original_move_line_ids'])
-        asset_form.account_depreciation_expense_id = self.env.ref('account_asset.cas')
+        asset_form.account_depreciation_expense_id = self.cas
 
         asset = asset_form.save()
 

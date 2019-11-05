@@ -88,6 +88,47 @@ class TestWorkOrder(common.TestMrpCommon):
             'routing_id': cls.routing_2.id,
             'time_cycle': 13,
             'sequence': 2})
+        cls.mrp_routing_0 = cls.env['mrp.routing'].create({
+            'name': 'Primary Assembly',
+        })
+        cls.mrp_routing_1 = cls.env['mrp.routing'].create({
+            'name': 'Secondary Assembly',
+        })
+        cls.mrp_workcenter_1 = cls.env['mrp.workcenter'].create({
+            'name': 'Drill Station 1',
+            'resource_calendar_id': cls.env.ref('resource.resource_calendar_std').id,
+        })
+        cls.mrp_workcenter_3 = cls.env['mrp.workcenter'].create({
+            'name': 'Assembly Line 1',
+            'resource_calendar_id': cls.env.ref('resource.resource_calendar_std').id,
+        })
+        cls.mrp_routing_workcenter_0 = cls.env['mrp.routing.workcenter'].create({
+            'routing_id': cls.mrp_routing_0.id,
+            'workcenter_id': cls.mrp_workcenter_3.id,
+            'name': 'Manual Assembly',
+            'time_cycle': 60,
+        })
+        cls.mrp_routing_workcenter_1 = cls.env['mrp.routing.workcenter'].create({
+            'routing_id': cls.mrp_routing_1.id,
+            'workcenter_id': cls.mrp_workcenter_3.id,
+            'name': 'Long time assembly',
+            'time_cycle': 180,
+            'sequence': 15,
+        })
+        cls.mrp_routing_workcenter_3 = cls.env['mrp.routing.workcenter'].create({
+            'routing_id': cls.mrp_routing_1.id,
+            'workcenter_id': cls.mrp_workcenter_3.id,
+            'name': 'Testing',
+            'time_cycle': 60,
+            'sequence': 10,
+        })
+        cls.mrp_routing_workcenter_4 = cls.env['mrp.routing.workcenter'].create({
+            'routing_id': cls.mrp_routing_1.id,
+            'workcenter_id': cls.mrp_workcenter_1.id,
+            'name': 'Packing',
+            'time_cycle': 30,
+            'sequence': 5,
+        })
 
         # Update quantities
         cls.location_1 = cls.env.ref('stock.stock_location_stock')
@@ -101,7 +142,12 @@ class TestWorkOrder(common.TestMrpCommon):
     def test_assign_1(self):
         unit = self.ref("uom.product_uom_unit")
         self.stock_location = self.env.ref('stock.stock_location_stock')
-        custom_laptop = self.env.ref("product.product_product_27")
+        custom_laptop = self.env['product.product'].create({
+            'name': 'Drawer',
+            'type': 'product',
+            'uom_id': unit,
+            'uom_po_id': unit,
+        })
         custom_laptop.tracking = 'none'
         product_charger = self.env['product.product'].create({
             'name': 'Charger',
@@ -118,7 +164,7 @@ class TestWorkOrder(common.TestMrpCommon):
             'product_tmpl_id': custom_laptop.product_tmpl_id.id,
             'product_qty': 1,
             'product_uom_id': unit,
-            'routing_id': self.env.ref('mrp.mrp_routing_0').id,
+            'routing_id': self.mrp_routing_0.id,
             'bom_line_ids': [(0, 0, {
                 'product_id': product_charger.id,
                 'product_qty': 1,
@@ -415,7 +461,7 @@ class TestWorkOrder(common.TestMrpCommon):
         # Also test assignment after workorder planning
 
         self.bom_submarine.bom_line_ids.write({'operation_id': False})
-        self.bom_submarine.routing_id = self.env.ref('mrp.mrp_routing_0')
+        self.bom_submarine.routing_id = self.mrp_routing_0
 
         mrp_order_form = Form(self.env['mrp.production'])
         mrp_order_form.product_id = self.submarine_pod
@@ -545,8 +591,8 @@ class TestWorkOrder(common.TestMrpCommon):
 
     def test_workorder_1(self):
         # get the computer sc234 demo data
-        prod = self.env.ref('product.product_product_3')
-        bom = self.env.ref('mrp.mrp_bom_manufacture')
+        prod = self.submarine_pod
+        bom = self.bom_submarine
 
         # create a manufacturing order for it
         mo = self.env['mrp.production'].create({
@@ -807,7 +853,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
         self.bom_submarine.bom_line_ids.write({'operation_id': False})
         # Use 'Secondary assembly routing (3 operations)'
-        self.bom_submarine.routing_id = self.env.ref('mrp.mrp_routing_1')
+        self.bom_submarine.routing_id = self.mrp_routing_1
         self.submarine_pod.tracking = 'lot'
         lot1 = self.env['stock.production.lot'].create({
             'product_id': self.submarine_pod.id,
@@ -861,7 +907,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
         self.bom_submarine.bom_line_ids.write({'operation_id': False})
         # Use 'Secondary assembly routing (3 operations)'
-        self.bom_submarine.routing_id = self.env.ref('mrp.mrp_routing_1')
+        self.bom_submarine.routing_id = self.mrp_routing_1
         self.submarine_pod.tracking = 'lot'
         lot1 = self.env['stock.production.lot'].create({
             'product_id': self.submarine_pod.id,
@@ -953,7 +999,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
         self.bom_submarine.bom_line_ids.write({'operation_id': False})
         # Use 'Secondary assembly routing (3 operations)'
-        self.bom_submarine.routing_id = self.env.ref('mrp.mrp_routing_0')
+        self.bom_submarine.routing_id = self.mrp_routing_0
         self.submarine_pod.tracking = 'serial'
         sn1 = self.env['stock.production.lot'].create({
             'product_id': self.submarine_pod.id,

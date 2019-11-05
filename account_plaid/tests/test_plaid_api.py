@@ -10,7 +10,7 @@ from odoo.addons.account.tests.account_test_classes import AccountingTestCase
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.tests import tagged
-from odoo import fields
+from odoo import fields, tools
 import requests
 import json
 
@@ -35,13 +35,15 @@ class MockResponse:
 @tagged('post_install', '-at_install')
 class TestPlaidApi(AccountingTestCase):
 
-    def setUp(self):
-        super(TestPlaidApi, self).setUp()
-        self.db_name = self.env.cr.dbname
-        self.db_uid = self.env['ir.config_parameter'].get_param('database.uuid')
-        self.url = 'https://onlinesync.odoo.com/plaid/api/2'
-        self.payment_meta = False
-        self.online_identifier = "lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDje"
+    @classmethod
+    def setUpClass(cls):
+        super(TestPlaidApi, cls).setUpClass()
+        cls.db_name = cls.env.cr.dbname
+        cls.db_uid = cls.env['ir.config_parameter'].get_param('database.uuid')
+        cls.url = 'https://onlinesync.odoo.com/plaid/api/2'
+        cls.payment_meta = False
+        cls.online_identifier = "lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDje"
+        cls.statement_count = 3
 
     def create_account_provider(self):
         return self.env['account.online.provider'].create({
@@ -183,8 +185,10 @@ class TestPlaidApi(AccountingTestCase):
         # the account.online.provider with the linked accounts in Odoo
         
         # Patch request.post with defined method
-        patcher = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post)
-        patcher.start()
+        self.patcher_post = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post)
+        self.patcher_post.start()
+        self.addCleanup(self.patcher_post.stop)
+
         metadata = {
             'link_session_id': '378547f9-7a1a-4edd-a566-3a9bf99284c8', 
             'account': {'name': 'Plaid Checking', 'id': 'QKKzevvp33HxPWpoqn6rI13BxW4awNSjnw4xv', 'type': 'depository'}, 
@@ -210,11 +214,15 @@ class TestPlaidApi(AccountingTestCase):
         self.assertEqual(acc_online_provider.account_online_journal_ids.online_identifier, 'QKKzevvp33HxPWpoqn6rI13BxW4awNSjnw4xv')
         self.assertEqual(acc_online_provider.account_online_journal_ids.balance, 100.0)
 
-        patcher.stop()
-        return True
-
     def test_plaid_fetch_transactions(self):
         """ Test receiving some transactions with plaid """
+        if tools.config["without_demo"]:
+          self.skipTest("Adapt me without demo data")
+
+        self.patcher_post = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post)
+        self.patcher_post.start()
+        self.addCleanup(self.patcher_post.stop)
+
         # Create fake account.online.provider
         bank_journal = self.env['account.journal'].search([('type', '=', 'bank')], limit=1) or False
         acc_online_provider = self.create_account_provider()
@@ -223,18 +231,14 @@ class TestPlaidApi(AccountingTestCase):
             bank_journal.write({'account_online_journal_id': account_online_journal.id})
         else:
             # No localization installed, so skip test
-            return True
-
-        # Patch request.post with defined method
-        patcher = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post)
-        patcher.start()
+            self.skipTest("No localization installed")
 
         ret = acc_online_provider.manual_sync()
         # Check that we've a bank statement with 3 lines (we assumed that the demo data have been loaded and a
         # bank statement has already been created, otherwise the statement should have 4 lines as a new one for
         # opening entry will be created)
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
-        self.assertEqual(len(bank_stmt.line_ids), 3, 'The statement should have 3 lines')
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 4 lines')
         self.assertEqual(bank_stmt.state, 'open')
         self.assertEqual(bank_stmt.journal_id.id, bank_journal.id)
         for i in range(0,3):
@@ -248,15 +252,15 @@ class TestPlaidApi(AccountingTestCase):
         account_online_journal.last_sync = fields.Date.today() - relativedelta(days=15)
         acc_online_provider.manual_sync()
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
-        self.assertEqual(len(bank_stmt.line_ids), 3, 'The existing statement should still have 3 lines')
-        patcher.stop()
-        return True
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The existing statement should still have 4 lines')
 
     def test_plaid_fetch_errors(self):
         """ Test some plaid error that might happen """
         # Patch request.post with defined method
-        patcher = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post_error)
-        patcher.start()
+        self.patcher_post = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post_error)
+        self.patcher_post.start()
+        self.addCleanup(self.patcher_post.stop)
+        # self.addCleanup(self.patcher_post.stop)
 
         with self.assertRaises(UserError) as e:
             self.env['account.online.provider'].plaid_fetch('/error_plaid', {})
@@ -308,11 +312,15 @@ class TestPlaidApi(AccountingTestCase):
             acc_online_provider.plaid_fetch('/pokemon', {})
         self.assertEqual(acc_online_provider.status, 'SUCCESS', 'state of account_online_provider should still be SUCCESS')
 
-        patcher.stop()
-        return True
-
     def test_assign_partner_automatically(self):
         """ Test receiving some transactions with plaid and assigning partner"""
+        if tools.config["without_demo"]:
+          self.skipTest("Adapt me without demo data")
+
+        self.patcher_post = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post)
+        self.patcher_post.start()
+        self.addCleanup(self.patcher_post.stop)
+
         # Create fake account.online.provider
         bank_journal = self.env['account.journal'].search([('type', '=', 'bank')], limit=1) or False
         acc_online_provider = self.create_account_provider()
@@ -321,22 +329,18 @@ class TestPlaidApi(AccountingTestCase):
             bank_journal.write({'account_online_journal_id': account_online_journal.id})
         else:
             # No localization installed, so skip test
-            return True
+            self.skipTest("No localization installed")
 
         self.payment_meta = {'payee_name': '123'}
 
-        agrolait = self.env.ref("base.res_partner_2")
+        agrolait = self.env['res.partner'].create({'name': 'Deco Addict'})
 
         # set online data on partner to simulate previous synchronization linked to agrolait
         agrolait.write({'online_partner_vendor_name': '123'})
 
-        # Patch request.post with defined method
-        patcher = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post)
-        patcher.start()
-
         ret = acc_online_provider.manual_sync()
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
-        self.assertEqual(len(bank_stmt.line_ids), 3, 'The statement should have 3 lines')
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 3 lines')
         self.assertEqual(bank_stmt.state, 'open')
         self.assertEqual(bank_stmt.journal_id.id, bank_journal.id)
         for i in range(0,3):
@@ -347,12 +351,12 @@ class TestPlaidApi(AccountingTestCase):
         # Check that partner assignation also work with location
         self.payment_meta = False
         self.online_identifier = 'lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjf'
-        ASUSTeK = self.env.ref("base.res_partner_1")
+        ASUSTeK = self.env['res.partner'].create({'name': 'ASUSTek'})
         ASUSTeK.write({'street': '300 Post St', 'city': 'San Francisco', 'zip': '94108'})
         acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
         ret = acc_online_provider.manual_sync()
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
-        self.assertEqual(len(bank_stmt.line_ids), 3, 'The statement should have 3 lines')
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 4 lines')
         for i in range(0,3):
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjf"))
             self.assertEqual(bank_stmt.line_ids[i].partner_id, ASUSTeK)
@@ -365,7 +369,7 @@ class TestPlaidApi(AccountingTestCase):
         acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
         ret = acc_online_provider.manual_sync()
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
-        self.assertEqual(len(bank_stmt.line_ids), 3, 'The statement should have 3 lines')
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 4 lines')
         for i in range(0,3):
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDja"))
             self.assertEqual(bank_stmt.line_ids[i].partner_id, self.env['res.partner'])
@@ -377,10 +381,7 @@ class TestPlaidApi(AccountingTestCase):
         acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
         ret = acc_online_provider.manual_sync()
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
-        self.assertEqual(len(bank_stmt.line_ids), 3, 'The statement should have 3 lines')
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 4 lines')
         for i in range(0,3):
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjb"))
             self.assertEqual(bank_stmt.line_ids[i].partner_id, agrolait)
-
-        patcher.stop()
-        return True

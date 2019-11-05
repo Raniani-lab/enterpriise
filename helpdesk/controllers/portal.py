@@ -14,7 +14,8 @@ class CustomerPortal(CustomerPortal):
 
     def _prepare_portal_layout_values(self):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
-        values['ticket_count'] = request.env['helpdesk.ticket'].search_count([])
+        # an internal user could not have access to tickets
+        values['ticket_count'] = request.env['helpdesk.ticket'].sudo().search_count([])
         if values.get('sales_user', False):
             values['title'] = _("Salesperson")
         return values

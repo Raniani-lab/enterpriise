@@ -12,6 +12,8 @@ class HelpdeskCommon(SavepointCase):
     @classmethod
     def setUpClass(cls):
         super(HelpdeskCommon, cls).setUpClass()
+        cls.env.user.tz = 'Europe/Brussels'
+        cls.env['resource.calendar'].search([]).write({'tz': 'Europe/Brussels'})
 
         # we create a helpdesk user and a manager
         Users = cls.env['res.users'].with_context(tracking_disable=True)
@@ -21,14 +23,16 @@ class HelpdeskCommon(SavepointCase):
             'name': 'Helpdesk Manager',
             'login': 'hm',
             'email': 'hm@example.com',
-            'groups_id': [(6, 0, [cls.env.ref('helpdesk.group_helpdesk_manager').id])]
+            'groups_id': [(6, 0, [cls.env.ref('helpdesk.group_helpdesk_manager').id])],
+            'tz': 'Europe/Brussels',
         })
         cls.helpdesk_user = Users.create({
             'company_id': cls.main_company_id,
             'name': 'Helpdesk User',
             'login': 'hu',
             'email': 'hu@example.com',
-            'groups_id': [(6, 0, [cls.env.ref('helpdesk.group_helpdesk_user').id])]
+            'groups_id': [(6, 0, [cls.env.ref('helpdesk.group_helpdesk_user').id])],
+            'tz': 'Europe/Brussels',
         })
         # the manager defines a team for our tests (the .sudo() at the end is to avoid potential uid problems)
         cls.test_team = cls.env['helpdesk.team'].with_user(cls.helpdesk_manager).create({'name': 'Test Team'}).sudo()

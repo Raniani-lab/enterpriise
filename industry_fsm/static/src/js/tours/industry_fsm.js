@@ -29,7 +29,7 @@ tour.register('industry_fsm_tour', {
     content: _t('Select or create a customer.'),
     position: "bottom",
     run: function (actions) {
-        actions.text("Deco Addict", this.$anchor.find("input"));
+        actions.text("Leroy Philippe", this.$anchor.find("input"));
     },
 }, {
     trigger: ".ui-autocomplete > li > a",

@@ -5,30 +5,44 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from odoo.exceptions import UserError, AccessError
 from odoo.tests import common
+from odoo.addons.account.tests.account_minimal_test import AccountMinimalTest
 
-class TestFsmFlow(common.TransactionCase):
 
-    def setUp(self):
-        super(TestFsmFlow, self).setUp()
+class TestFsmFlow(AccountMinimalTest):
 
-        self.partner_1 = self.env.ref('base.res_partner_1')
+    @classmethod
+    def setUpClass(cls):
+        super(TestFsmFlow, cls).setUpClass()
 
-        self.project_user = self.env['res.users'].create({
+        cls.partner_1 = cls.env['res.partner'].create({'name': 'A Test Partner 1'})
+
+        cls.project_user = cls.env['res.users'].create({
             'name': 'Armande Project_user',
             'login': 'Armande',
             'email': 'armande.project_user@example.com',
-            'groups_id': [(6, 0, [self.env.ref('project.group_project_user').id])]
+            'groups_id': [(6, 0, [cls.env.ref('project.group_project_user').id])]
         })
 
-        self.fsm_project = self.env.ref('industry_fsm.fsm_project')
+        cls.fsm_project = cls.env.ref('industry_fsm.fsm_project')
 
-        self.product_ordered = self.env.ref('product.product_product_24')
-        self.product_delivered = self.env.ref('product.product_product_25')
-
-        self.task = self.env['project.task'].with_context({'mail_create_nolog': True}).create({
+        cls.product_ordered = cls.env['product.product'].create({
+            'name': 'Individual Workplace',
+            'list_price': 885.0,
+            'type': 'service',
+            'invoice_policy': 'order',
+            'taxes_id': False,
+        })
+        cls.product_delivered = cls.env['product.product'].create({
+            'name': 'Acoustic Bloc Screens',
+            'list_price': 2950.0,
+            'type': 'service',
+            'invoice_policy': 'delivery',
+            'taxes_id': False,
+        })
+        cls.task = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
             'name': 'Fsm task',
-            'user_id': self.project_user.id,
-            'project_id': self.fsm_project.id})
+            'user_id': cls.project_user.id,
+            'project_id': cls.fsm_project.id})
 
 
 

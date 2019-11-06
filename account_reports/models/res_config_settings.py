@@ -43,6 +43,8 @@ class ResConfigSettings(models.TransientModel):
 
     def _create_edit_tax_reminder(self, values=None):
         # Create/Edit activity type if needed
+        if self._context.get('no_create_move', False):
+            return self.env['account.move']
         if not values:
             values = {}
         company = values.get('company_id', False) or self.company_id or self.env.company

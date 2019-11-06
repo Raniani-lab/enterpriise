@@ -55,7 +55,7 @@ class AccountMove(models.Model):
                 document = self.env['documents.document'].sudo().search([('attachment_id', '=', previous_attachment_id)], limit=1)
             if document:
                 document.attachment_id = main_attachment_id
-            elif self.type == 'in_invoice' and self.company_id.documents_account_settings:
+            elif self.is_invoice() and self.company_id.documents_account_settings:
                 setting = self.env['documents.account.folder.setting'].sudo().search(
                     [('journal_id', '=', self.journal_id.id),
                      ('company_id', '=', self.company_id.id)], limit=1)

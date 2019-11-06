@@ -655,7 +655,10 @@ class AccountPayment(models.Model):
             msg = getattr(response.resultados[0], 'mensaje', None)
             code = getattr(response.resultados[0], 'status', None)
             xml_signed = getattr(response.resultados[0], 'cfdiTimbrado', None)
-            rec._l10n_mx_edi_post_sign_process(base64.b64encode(xml_signed), code, msg)
+            if xml_signed:
+                xml_signed = base64.b64encode(xml_signed)
+            rec._l10n_mx_edi_post_sign_process(
+                xml_signed if xml_signed else None, code, msg)
 
     def _l10n_mx_edi_solfact_cancel(self, pac_info):
         '''CANCEL for Solucion Factible.

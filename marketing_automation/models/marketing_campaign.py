@@ -354,6 +354,7 @@ class MarketingActivity(models.Model):
     parent_id = fields.Many2one(
         'marketing.activity', string='Activity',
         index=True, ondelete='cascade')
+    allowed_parent_ids = fields.Many2many('marketing.activity', string='Allowed parents', help='All activities which can be the parent of this one', compute='_compute_allowed_parent_ids')
     child_ids = fields.One2many('marketing.activity', 'parent_id', string='Child Activities')
     trigger_type = fields.Selection([
         ('begin', 'beginning of campaign'),
@@ -365,6 +366,7 @@ class MarketingActivity(models.Model):
         ('mail_click', 'Mail: clicked'),
         ('mail_not_click', 'Mail: not clicked'),
         ('mail_bounce', 'Mail: bounced')], default='begin', required=True)
+    trigger_category = fields.Selection([('email', 'Mail')], compute='_compute_trigger_category')
     # cron / updates
     require_sync = fields.Boolean('Require trace sync', copy=False)
     # For trace
@@ -377,6 +379,16 @@ class MarketingActivity(models.Model):
     total_reply = fields.Integer(compute='_compute_statistics')
     total_bounce = fields.Integer(compute='_compute_statistics')
     statistics_graph_data = fields.Char(compute='_compute_statistics_graph_data')
+
+    @api.constrains('trigger_type', 'parent_id')
+    def _check_consistency_in_activities(self):
+        """Check the consistency in the activity chaining."""
+        for activity in self:
+            if (activity.parent_id or activity.allowed_parent_ids) and activity.parent_id not in activity.allowed_parent_ids:
+                trigger_string = dict(activity._fields['trigger_type']._description_selection(self.env))[activity.trigger_type]
+                raise ValidationError(
+                    _('You are trying to set the activity "%s" as "%s" while its child "%s" has the trigger type "%s"\nPlease modify one of those activities before saving.')
+                    % (activity.parent_id.name, activity.parent_id.activity_type, activity.name, trigger_string))
 
     @api.depends('activity_type')
     def _compute_mass_mailing_id_mailing_type(self):
@@ -418,6 +430,27 @@ class MarketingActivity(models.Model):
         for activity in self:
             activity.interval_standardized = activity.interval_number * factors[activity.interval_type]
 
+    @api.depends('trigger_type', 'campaign_id.marketing_activity_ids')
+    def _compute_allowed_parent_ids(self):
+        for activity in self:
+            if activity.trigger_type == 'activity':
+                activity.allowed_parent_ids = activity.campaign_id.marketing_activity_ids.filtered(
+                    lambda parent_id: parent_id.id != activity.id)
+            elif activity.trigger_category:
+                activity.allowed_parent_ids = activity.campaign_id.marketing_activity_ids.filtered(
+                    lambda parent_id: parent_id.id != activity.id and parent_id.activity_type == activity.trigger_category)
+            else:
+                activity.allowed_parent_ids = False
+
+    @api.depends('trigger_type')
+    def _compute_trigger_category(self):
+        for activity in self:
+            if activity.trigger_type in ['mail_open', 'mail_not_open', 'mail_reply', 'mail_not_reply',
+                                         'mail_click', 'mail_not_click', 'mail_bounce']:
+                activity.trigger_category = 'email'
+            else:
+                activity.trigger_category = False
+
     @api.depends('activity_type', 'trace_ids')
     def _compute_statistics(self):
         # Fix after ORM-pocalyspe : Update in any case, otherwise, None to some values (crash)
@@ -452,12 +485,6 @@ class MarketingActivity(models.Model):
     def _check_parent_id(self):
         if any(not activity._check_recursion() for activity in self):
             raise ValidationError(_("Error! You can't create recursive hierarchy of Activity."))
-
-    @api.constrains('trigger_type', 'parent_id')
-    def _check_trigger_begin(self):
-        if any(activity.trigger_type == 'begin' and activity.parent_id for activity in self):
-            raise ValidationError(
-                _('Error! You can\'t define a child activity with a trigger of type "beginning of campaign".'))
 
     @api.model
     def create(self, values):

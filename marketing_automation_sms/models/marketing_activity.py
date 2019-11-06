@@ -19,6 +19,7 @@ class MarketingActivity(models.Model):
         ('sms_click', 'SMS: clicked'),
         ('sms_not_click', 'SMS: not clicked'),
         ('sms_bounce', 'SMS: bounced')])
+    trigger_category = fields.Selection(selection_add=[('sms', 'SMS')], compute='_compute_trigger_category')
 
     @api.depends('activity_type')
     def _compute_mass_mailing_id_mailing_type(self):
@@ -26,6 +27,17 @@ class MarketingActivity(models.Model):
             if activity.activity_type == 'sms':
                 activity.mass_mailing_id_mailing_type = 'sms'
         super(MarketingActivity, self)._compute_mass_mailing_id_mailing_type()
+
+    @api.depends('trigger_type')
+    def _compute_trigger_category(self):
+        non_sms_trigger_category = self.env['marketing.activity']
+        for activity in self:
+            if activity.trigger_type in ['sms_click', 'sms_not_click', 'sms_bounce']:
+                activity.trigger_category = 'sms'
+            else:
+                non_sms_trigger_category |= activity
+
+        super(MarketingActivity, non_sms_trigger_category)._compute_trigger_category()
 
     def _execute_sms(self, traces):
         res_ids = [r for r in set(traces.mapped('res_id'))]

@@ -97,11 +97,12 @@ class MrpProductionWorkcenterLine(models.Model):
         self.component_remaining_qty = False
         self.component_uom_id = False
         for wo in self.filtered(lambda w: w.state not in ('done', 'cancel')):
-            if wo.test_type in ('register_byproducts', 'register_consumed_materials') and wo.quality_state == 'none':
+            if wo.test_type in ('register_byproducts', 'register_consumed_materials'):
                 move = wo.current_quality_check_id.workorder_line_id.move_id
                 lines = wo._workorder_line_ids().filtered(lambda l: l.move_id == move)
-                completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else lines
-                wo.component_remaining_qty = self._prepare_component_quantity(move, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
+                if wo.quality_state == 'none':
+                    completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else lines
+                    wo.component_remaining_qty = self._prepare_component_quantity(move, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
                 wo.component_uom_id = lines[:1].product_uom_id
 
     def action_back(self):

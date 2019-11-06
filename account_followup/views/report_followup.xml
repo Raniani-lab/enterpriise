@@ -101,6 +101,9 @@
                         <button t-att-data-id="partner.id" class="btn btn-primary js_account_report_save_summary">Save</button>
                 </div>
             </xpath>
+            <xpath expr="//table[hasclass('o_account_reports_table')]" position="attributes">
+              <attribute name="width">100%</attribute>
+            </xpath>
             <xpath expr="//t[@t-call='account_reports.filter_info_template']" position="replace"><t t-call="account_followup.followup_filter_info_template"/></xpath>
             <xpath expr="//div[hasclass('o_account_reports_header')]" position="inside">
                 <div class="row">

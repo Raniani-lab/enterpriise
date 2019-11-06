@@ -17,7 +17,8 @@ class ResPartner(models.Model):
     unreconciled_aml_ids = fields.One2many('account.move.line', 'partner_id',
                                            domain=[('reconciled', '=', False),
                                                    ('account_id.deprecated', '=', False),
-                                                   ('account_id.internal_type', '=', 'receivable')])
+                                                   ('account_id.internal_type', '=', 'receivable'),
+                                                   ('move_id.state', '=', 'posted')])
     unpaid_invoices = fields.One2many('account.move', compute='_compute_unpaid_invoices')
     total_due = fields.Monetary(compute='_compute_for_followup')
     total_overdue = fields.Monetary(compute='_compute_for_followup')
@@ -175,6 +176,8 @@ class ResPartner(models.Model):
                 JOIN account_account account ON account.id = aml.account_id
                                             AND account.deprecated = False
                                             AND account.internal_type = 'receivable'
+                JOIN account_move move ON move.id = aml.move_id
+                                       AND move.state = 'posted'
                 WHERE aml.reconciled = False
                 AND aml.company_id = %(company_id)s
                 {where}

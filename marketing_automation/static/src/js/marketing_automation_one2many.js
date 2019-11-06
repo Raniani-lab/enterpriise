@@ -83,14 +83,34 @@ var HierarchyKanban = FieldOne2Many.extend({
      * so we need to make sure that we generated the right command by checking
      * if the record id is in all_data (which is what this.value.data should be)
      *
+     * if we delete a record, we also need to delete every child of this record
      * @override
      * @private
      */
     _setValue: function (value, options) {
         if (value.operation === 'ADD' && _.some(this.allData, {id: value.id})) {
             value.operation = 'UPDATE';
+        } else if(value.operation === 'DELETE') {
+            var removedRecords = this.allData.filter(function (record) {return value.ids.includes(record.id);});
+
+            // we want to delete these records and also each children which derive from the records
+            value.ids = this._getAllSubChildren(removedRecords)
+                .map(function (record) {return record.id;});
         }
         return this._super(value, options);
+    },
+
+    /**
+     * Return the elements and all children which derive from the ``parentRecords``
+     *
+     * @private
+     */
+    _getAllSubChildren: function (parentRecords) {
+        var childrenRecords = [];
+        parentRecords.forEach(function (record) {
+            childrenRecords = childrenRecords.concat(record.children || []);
+        });
+        return childrenRecords.length ? parentRecords.concat(this._getAllSubChildren(childrenRecords)) : parentRecords;
     },
 
     //--------------------------------------------------------------------------

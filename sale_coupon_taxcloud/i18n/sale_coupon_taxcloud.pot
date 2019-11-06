@@ -16,6 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_coupon_taxcloud
+#: code:addons/sale_coupon_taxcloud/models/sale_order.py:59
+#, python-format
+msgid "Any order that has discounts and uses TaxCloud must be invoiced all at once to prevent faulty tax computation with Taxcloud.\n"
+"The following orders must be completely invoiced:\n"
+"%s"
+msgstr ""
+
+#. module: sale_coupon_taxcloud
 #: model:ir.model.fields,field_description:sale_coupon_taxcloud.field_account_invoice_line_coupon_program_id
 #: model:ir.model.fields,field_description:sale_coupon_taxcloud.field_sale_order_line_coupon_program_id
 msgid "Discount Program"

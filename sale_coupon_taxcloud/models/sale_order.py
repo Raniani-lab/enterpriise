@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from .taxcloud_request import TaxCloudRequest
-from odoo import api, models, fields
+from odoo import api, models, fields, _
+from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
@@ -29,6 +30,31 @@ class SaleOrder(models.Model):
         taxcloud_orders = self.filtered('fiscal_position_id.is_taxcloud')
         taxcloud_orders.mapped('order_line').write({'tax_id': [(5,)]})
         return super(SaleOrder, self).recompute_coupon_lines()
+
+    def _create_invoices(self, grouped=False, final=False):
+        """Ensure that any TaxCloud order that has discounts is invoiced in one go.
+           Indeed, since the tax computation of discount lines with Taxcloud
+           requires that any negative amount of a coupon line be deduced from the
+           lines it originated from, these cannot be invoiced separately as it be
+           incoherent with what was computed on the order.
+        """
+        def not_totally_invoiceable(order):
+            totally_invoiceable_lines = order.order_line.filtered(
+                lambda l: l.qty_to_invoice == l.product_uom_qty)
+            return totally_invoiceable_lines < order.order_line
+
+        taxcloud_orders = self.filtered('fiscal_position_id.is_taxcloud')
+        taxcloud_coupon_orders = taxcloud_orders.filtered('order_line.coupon_program_id')
+        partial_taxcloud_coupon_orders = taxcloud_coupon_orders.filtered(not_totally_invoiceable)
+        if partial_taxcloud_coupon_orders:
+            bad_orders = str(partial_taxcloud_coupon_orders.mapped('display_name'))[1:-1]
+            bad_orders = bad_orders if len(bad_orders) < 80 else bad_orders[:80] + ', ...'
+            raise UserError(_('Any order that has discounts and uses TaxCloud must be invoiced '
+                              'all at once to prevent faulty tax computation with Taxcloud.\n'
+                              'The following orders must be completely invoiced:\n%s') % bad_orders)
+
+        return super(SaleOrder, self)._create_invoices(grouped=grouped, final=final)
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'

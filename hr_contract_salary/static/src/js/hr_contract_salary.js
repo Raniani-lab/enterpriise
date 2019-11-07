@@ -237,9 +237,11 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $("input[name='ATN.CAR.1']").val(- data['ATN.CAR.2']);
         $("input[name='ATN.INT.1']").val(- data['ATN.INT.2']);
         $("input[name='ATN.MOB.1']").val(- data['ATN.MOB.2']);
+        $("input[name='ATN.LAP.1']").val(- data['ATN.LAP.2']);
         $("input[name='ATN.CAR.2']").val(- data['ATN.CAR.2']);
         $("input[name='ATN.INT.2']").val(- data['ATN.INT.2']);
         $("input[name='ATN.MOB.2']").val(- data['ATN.MOB.2']);
+        $("input[name='ATN.LAP.2']").val(- data['ATN.LAP.2']);
         $("input[name='NET']").val(data['NET']);
         $("input[name='monthly_nature']").val(data['monthly_nature']);
         $("input[name='monthly_cash']").val(data['monthly_cash']);
@@ -249,6 +251,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $("input[name='car_employee_deduction']").val(data['company_car_total_depreciated_cost']);
         var mobile_atn_div = $("div[name='mobile_atn']");
         var internet_atn_div = $("div[name='internet_atn']");
+        var laptop_atn_div = $("div[name='laptop_atn']");
         var company_car_atn_div = $("div[name='company_car_atn']");
         var employment_bonus_div = $("div[name='employment_bonus']");
         var withholding_tax_reduction_div = $("div[name='withholding_tax_reduction']");
@@ -257,6 +260,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         var private_car_amount_div = $("div[name='private_car_amount_div']");
         data['ATN.MOB.2'] ? mobile_atn_div.removeClass('d-none') : mobile_atn_div.addClass('d-none');
         data['ATN.INT.2'] ? internet_atn_div.removeClass('d-none') : internet_atn_div.addClass('d-none');
+        data['ATN.LAP.2'] ? laptop_atn_div.removeClass('d-none') : laptop_atn_div.addClass('d-none');
         data['ATN.CAR.2'] ? company_car_atn_div.removeClass('d-none') : company_car_atn_div.addClass('d-none');
         data['EMP.BONUS'] ? employment_bonus_div.removeClass('d-none') : employment_bonus_div.addClass('d-none');
         data['M.ONSS'] ? miscellaneous_onss_div.removeClass('d-none') : miscellaneous_onss_div.addClass('d-none');

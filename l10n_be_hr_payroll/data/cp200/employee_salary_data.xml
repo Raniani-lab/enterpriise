@@ -48,6 +48,18 @@ if contract.mobile and contract.internet:
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
+        <record id="cp200_employees_salary_atn_laptop" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll_head_div_impos"/>
+            <field name="name">ATN Laptop</field>
+            <field name="code">ATN.LAP</field>
+            <field name="sequence">18</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract.has_laptop)</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 7.0</field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        </record>
+
         <record id="cp200_employees_salary_gross_salary" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_salary"/>
             <field name="name">Gross Salary</field>
@@ -194,6 +206,18 @@ if contract.mobile and contract.internet:
             <field name="condition_python">result = contract.internet</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = -5.0</field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        </record>
+
+        <record id="cp200_employees_salary_atn_laptop_2" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll_head_div_net"/>
+            <field name="name">ATN Laptop</field>
+            <field name="code">ATN.LAP.2</field>
+            <field name="sequence">163</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.has_laptop</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -7.0</field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 

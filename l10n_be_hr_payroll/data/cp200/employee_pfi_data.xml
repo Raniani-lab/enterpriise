@@ -47,6 +47,18 @@ if contract.mobile and contract.internet:
             <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
         </record>
 
+        <record id="cp200_pfi_atn_laptop" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll_head_div_impos"/>
+            <field name="name">ATN Laptop</field>
+            <field name="code">ATN.LAP</field>
+            <field name="sequence">18</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract.has_laptop)</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 7.0</field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
+        </record>
+
         <record id="cp200_pfi_company_car" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_impos"/>
             <field name="name">ATN Company Car</field>
@@ -149,6 +161,18 @@ if contract.mobile and not contract.internet:
 if contract.mobile and contract.internet:
     result = -4.0
             </field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
+        </record>
+
+        <record id="cp200_pfi_atn_laptop_2" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll_head_div_net"/>
+            <field name="name">ATN Laptop</field>
+            <field name="code">ATN.LAP.2</field>
+            <field name="sequence">163</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.has_laptop</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -7.0</field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
         </record>
 

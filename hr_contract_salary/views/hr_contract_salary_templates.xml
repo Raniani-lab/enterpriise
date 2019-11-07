@@ -1163,10 +1163,24 @@
                                     <!--  -->
                                     <div name="mobile_atn" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-9 col-form-label" for="ATN.MOB.1"><i class="fa fa-1x fa-plus fa-fw"/> Benefit in Kind Phone (Subscription)</label>
+                                            <label class="col-md-9 col-form-label" for="ATN.MOB.1"><i class="fa fa-1x fa-plus fa-fw"/> Benefit in Kind (Phone Subscription)</label>
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="12.50" disabled="disabled" name="ATN.MOB.1"/>
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-text">€</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div name="laptop_atn" class="form-group">
+                                        <div class="row">
+                                            <label class="col-md-9 col-form-label" for="ATN.LAP.1"><i class="fa fa-1x fa-plus fa-fw"/> Benefit in Kind (Laptop)</label>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <input class="form-control" type="text" value="7" disabled="disabled" name="ATN.LAP.1"/>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">€</div>
                                                     </div>
@@ -1323,14 +1337,13 @@
                                         </div>
                                     </div>
 
-
                                     <!--  -->
-                                    <div name="internet_atn" class="form-group">
+                                    <div name="laptop_atn" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-9 col-form-label" for="ATN.INT.2"><i class="fa fa-1x fa-minus fa-fw"/> Benefit in Kind (Internet)</label>
+                                            <label class="col-md-9 col-form-label" for="ATN.LAP.2"><i class="fa fa-1x fa-minus fa-fw"/> Benefit in Kind (Laptop)</label>
                                             <div class="col-md-3">
                                                 <div class="input-group">
-                                                    <input class="form-control" type="text" value="5" disabled="disabled" name="ATN.INT.2"/>
+                                                    <input class="form-control" type="text" value="7" disabled="disabled" name="ATN.LAP.2"/>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">€</div>
                                                     </div>
@@ -1346,6 +1359,21 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="12.50" disabled="disabled" name="ATN.MOB.2"/>
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-text">€</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--  -->
+                                    <div name="internet_atn" class="form-group">
+                                        <div class="row">
+                                            <label class="col-md-9 col-form-label" for="ATN.INT.2"><i class="fa fa-1x fa-minus fa-fw"/> Benefit in Kind (Internet)</label>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <input class="form-control" type="text" value="5" disabled="disabled" name="ATN.INT.2"/>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">€</div>
                                                     </div>

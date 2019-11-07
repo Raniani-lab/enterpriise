@@ -57,6 +57,9 @@ class HrContract(models.Model):
     mobile = fields.Monetary(string="Mobile",
         tracking=True,
         help="The employee's mobile subscription will be paid up to this amount.")
+    has_laptop = fields.Boolean(string="Laptop",
+        tracking=True,
+        help="A benefit in kind is paid when the employee uses its laptop at home.")
     meal_voucher_amount = fields.Monetary(string="Meal Vouchers",
         tracking=True,
         help="Amount the employee receives in the form of meal vouchers per worked day.")

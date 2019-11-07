@@ -299,6 +299,7 @@ class website_hr_contract_salary(http.Controller):
             'ip_wage_rate': advantages['ip_wage_rate'],
             'contract_type': advantages['contract_type'],
             'internet': advantages['internet'],
+            'has_laptop': contract.has_laptop,
             'date_start': fields.Date.today().replace(day=1),
         }
 
@@ -441,6 +442,7 @@ class website_hr_contract_salary(http.Controller):
             'CAR.PRIV': round(payslip._get_salary_line_total('CAR.PRIV'), 2),
             'ATN.INT.2': round(payslip._get_salary_line_total('ATN.INT.2'), 2),
             'ATN.MOB.2': round(payslip._get_salary_line_total('ATN.MOB.2'), 2),
+            'ATN.LAP.2': round(payslip._get_salary_line_total('ATN.LAP.2'), 2),
             'NET': round(payslip._get_salary_line_total('NET'), 2),
             'wage_with_holidays': round(new_contract.wage_with_holidays, 2),
             'wage': round(new_contract.wage, 2),

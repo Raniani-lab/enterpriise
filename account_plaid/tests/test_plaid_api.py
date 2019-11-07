@@ -260,7 +260,6 @@ class TestPlaidApi(AccountingTestCase):
         self.patcher_post = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post_error)
         self.patcher_post.start()
         self.addCleanup(self.patcher_post.stop)
-        # self.addCleanup(self.patcher_post.stop)
 
         with self.assertRaises(UserError) as e:
             self.env['account.online.provider'].plaid_fetch('/error_plaid', {})

@@ -32,40 +32,13 @@ class TestPayrollSEPACreditTransfer(TestHrPayrollAccount):
             'bank_id': cls.bank.id,
         })
 
-        # cls.ir_sequence = cls.env['ir.sequence'].create({
-        #     'name' : 'SEQ',
-        #     'padding' : 4,
-        #     'number_increment' : 1,
-        # })
-
         cls.bank_partner = cls.env['res.partner.bank'].create({
             'acc_number' : 'BE84567968814145',
             'acc_type': 'iban',
             'partner_id': cls.env.ref('base.main_company').partner_id.id,
         })
 
-
         cls.hr_employee_john.bank_account_id = cls.res_partner_bank
-
-        # cls.hr_employee_john = cls.env['hr.employee'].create({
-        #     'address_home_id': cls.ref('base.res_partner_address_2'),
-        #     'address_id': cls.ref('base.res_partner_address_27'),
-        #     'birthday': '1984-05-01',
-        #     'children': 0.0,
-        #     'country_id': cls.ref('base.in'),
-        #     'department_id': cls.ref('hr.dep_rd'),
-        #     'gender': 'male',
-        #     'marital': 'single',
-        #     'name': 'John',
-        #     'bank_account_id': cls.res_partner_bank.bank_id.id,
-        # })
-
-        # cls.account_journal = cls.env['account.journal'].create({
-        #     'name' : 'MISC',
-        #     'code' : 'MSC',
-        #     'type' : 'general',
-        #     'sequence_id' : cls.ir_sequence.id,
-        # })
 
         cls.bank_journal = cls.env['account.journal'].create({
             'name' : 'Bank',
@@ -75,24 +48,6 @@ class TestPayrollSEPACreditTransfer(TestHrPayrollAccount):
             'bank_id' : cls.bank.id,
             'bank_account_id': cls.bank_partner.id,
         })
-
-        # cls.hr_structure_softwaredeveloper = cls.env['hr.payroll.structure'].create({
-        #     'name': 'Salary Structure for Software Developer',
-        #     'rule_ids': [(6, 0, [
-        #         cls.ref('hr_payroll.hr_salary_rule_houserentallowance1'),
-        #         cls.ref('hr_payroll.hr_salary_rule_convanceallowance1'),
-        #         cls.ref('hr_payroll.hr_salary_rule_professionaltax1'),
-        #         cls.ref('hr_payroll.hr_salary_rule_providentfund1'),
-        #         cls.ref('hr_payroll.hr_salary_rule_meal_voucher'),
-        #     ])],
-        #     'journal_id' : cls.account_journal.id,
-        #     'type_id': cls.env.ref('hr_payroll.structure_type_employee').id,
-        # })
-
-        # cls.hr_structure_type = cls.env['hr.payroll.structure.type'].create({
-        #     'name': 'Salary Structure Type',
-        #     'struct_ids': [(4, cls.hr_structure_softwaredeveloper.id)],
-        # })
 
         # Get a pain.001.001.03 schema validator
         schema_file_path = get_module_resource('account_sepa', 'schemas', 'pain.001.001.03.xsd')

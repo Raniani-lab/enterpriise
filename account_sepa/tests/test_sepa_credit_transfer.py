@@ -65,11 +65,6 @@ class TestSEPACreditTransfer(AccountingTestCase):
         schema_file_path = get_module_resource('account_sepa', 'schemas', 'pain.001.001.03.xsd')
         cls.xmlschema = etree.XMLSchema(etree.parse(open(schema_file_path)))
 
-        # <record model="res.bank" id="bank_bnp">
-        #     <field name="name">BNP Paribas</field>
-        #     <field name="bic">GEBABEBB</field>
-        # </record>
-
     @classmethod
     def setSingleBankAccountToPartner(cls, partner_id, bank_account_vals):
         """ Make sure a partner has exactly one bank account """

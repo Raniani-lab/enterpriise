@@ -35,7 +35,6 @@ class TestTags(TransactionCase):
             'id': tag_assets_ads.id,
             'name': tag_assets_ads.name,
             'sequence': tag_assets_ads.sequence,
-            # 'count': 1, # Not relevant, and depending on the db data
         }
         first_tag = tags[0]
         first_tag.pop('count')
@@ -74,7 +73,6 @@ class TestTags(TransactionCase):
             'id': tag_assets_images.id,
             'name': tag_assets_images.name,
             'sequence': tag_assets_images.sequence,
-            # 'count': 1, # Not relevant, and depending on the db data
         }
         first_tag = tags[0]
         first_tag.pop('count')
@@ -88,7 +86,6 @@ class TestTags(TransactionCase):
             'id': tag_assets_videos.id,
             'name': tag_assets_videos.name,
             'sequence': tag_assets_videos.sequence,
-            # 'count': 0, # Not relevant, and depending on the db data
         }
         second_tag = tags[-1]
         second_tag.pop('count')

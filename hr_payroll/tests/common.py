@@ -103,7 +103,6 @@ class TestPayslipBase(SavepointCase):
             'amount_percentage_base': 'contract.wage',
             'code': 'HRA',
             'category_id': cls.env.ref('hr_payroll.ALW').id,
-            # 'partner_id'hr_houserent_register
             'struct_id': cls.developer_pay_structure.id,
         })
 
@@ -125,7 +124,6 @@ class TestPayslipBase(SavepointCase):
             'quantity': 'worked_days.WORK100 and worked_days.WORK100.number_of_days',
             'code': 'MA',
             'category_id': cls.env.ref('hr_payroll.ALW').id,
-            # 'partner_id': hr_meal_voucher_register
             'struct_id': cls.developer_pay_structure.id,
         })
 
@@ -137,7 +135,6 @@ class TestPayslipBase(SavepointCase):
             'quantity': 'worked_days.WORK100 and worked_days.WORK100.number_of_days',
             'code': 'SUMALW',
             'category_id': cls.env.ref('hr_payroll.ALW').id,
-            # 'partner_id': hr_meal_voucher_register
             'struct_id': cls.developer_pay_structure.id,
         })
 
@@ -149,7 +146,6 @@ class TestPayslipBase(SavepointCase):
             'amount_percentage_base': 'contract.wage',
             'code': 'PF',
             'category_id': cls.env.ref('hr_payroll.DED').id,
-            # 'partner_id': hr_provident_fund_register
             'struct_id': cls.developer_pay_structure.id,
         })
 
@@ -160,7 +156,6 @@ class TestPayslipBase(SavepointCase):
             'amount_fix': -200.0,
             'code': 'PT',
             'category_id': cls.env.ref('hr_payroll.DED').id,
-            # 'partner_id': hr_professional_tax_register
             'struct_id': cls.developer_pay_structure.id,
         })
 

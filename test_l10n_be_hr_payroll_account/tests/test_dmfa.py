@@ -29,28 +29,10 @@ class TestDMFA(common.TransactionCase):
 
         lap = self.env['hr.employee'].create({
             'name': 'Laurie Poiret',
-            # 'gender': 'female',
             'marital': 'single',
             'address_home_id': lap_address.id,
-            # 'address_id': ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>,
-            # 'emergency_contact': 'Marc Poiret',
-            # 'emergency_phone': '+0032498765432',
-            # 'birthday': '1991-07-28',
-            # 'km_home_work': 75,
-            # 'place_of_birth': 'Brussels',
-            # 'country_of_birth': ref="base.be"/>,
-            # 'certificate': 'master',
-            # 'study_field': 'Civil Engineering',
-            # 'study_school': 'Université Catholique de Louvain-la-Neuve',
-            # 'parent_id': ref="hr_contract_salary.employee_max"/>,
-            # 'country_id': ref="base.be",
             'resource_calendar_id': self.env.ref("resource.resource_calendar_std_38h").id,
-            # 'identification_id': 91-07-28-458-83,
-            # 'bank_account_id': ref="hr_contract_salary.res_partner_bank_account_laurie_poiret"/>,
-            # 'image_1920': type="base64" file="hr_contract_salary/static/img/hr_employe_laurie_poiret.jpg"/>,
             'company_id': belgian_company.id,
-            # 'user_id': ref="hr_contract_salary.user_laurie_poiret"/>,
-            # ''
         })
         company = lap.company_id
         user.company_ids = [(4, company.id)]

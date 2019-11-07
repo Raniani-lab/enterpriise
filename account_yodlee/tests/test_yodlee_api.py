@@ -379,7 +379,6 @@ class TestYodleeApi(AccountingTestCase):
             self.skipTest("No localization installed")
 
         agrolait = self.env['res.partner'].create({'name': 'Res Partner 2'})
-        # agrolait = self.env.ref("base.res_partner_2")
 
         # set online data on previous statement line to simulate previous synchronization linked to agrolait
         agrolait.write({'online_partner_bank_account': '836726'})

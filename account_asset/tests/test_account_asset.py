@@ -185,8 +185,6 @@ class TestAccountAsset(AccountMinimalTest):
             'model_id': account_asset_model_sale1.id,
         })
 
-        # self._load('account_asset', 'test', 'account_deferred_revenue_demo_test.xml')
-
         # The account needs a default model for the invoice to validate the revenue
         self.xfa.create_asset = 'validate'
         self.xfa.asset_model = account_asset_model_sale_test0

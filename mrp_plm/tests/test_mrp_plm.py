@@ -16,10 +16,6 @@ class TestMrpPlm(common.TransactionCase):
     def setUp(self):
         super(TestMrpPlm, self).setUp()
         self.Bom = self.env['mrp.bom']
-        # self.table = self.env.ref("mrp.product_product_computer_desk")
-        # self.table_sheet = self.env.ref('mrp.product_product_computer_desk_head')
-        # self.table_leg = self.env.ref('mrp.product_product_computer_desk_leg')
-        # self.table_bolt = self.env.ref('mrp.product_product_computer_desk_bolt')
         self.table = self.env['product.product'].create({
             'name': 'Table (MTO)',
             'type': 'product',

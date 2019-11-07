@@ -171,7 +171,6 @@ class TestUi(odoo.tests.HttpCase):
 
         self.env.ref('base.user_admin').write({'company_ids': [(4, company_id.id)], 'name': 'Mitchell Admin'})
         self.env.ref('base.user_admin').partner_id.write({'email': 'mitchell.stephen@example.com', 'name': 'Mitchell Admin'})
-        # self.env.ref('base.user_admin').write({'company_ids': [(4, company_id.id)], 'email': 'test@example.com'})
         demo.write({'partner_id': partner_id, 'company_id': company_id.id, 'company_ids': [(4, company_id.id)]})
         demo.flush()
         self.start_tour("/", 'hr_contract_salary_tour', login='admin', timeout=100)

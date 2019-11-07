@@ -2,7 +2,7 @@
 import datetime
 from odoo.tests import tagged
 from odoo import fields
-from odoo.addons.account.tests.account_test_classes import AccountingTestCase
+from odoo.addons.account.tests.common import AccountTestCommon
 from odoo.tools import date_utils
 from odoo.tools.misc import formatLang, format_date
 
@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 
 @tagged('post_install', '-at_install')
-class TestAccountReportsFilters(AccountingTestCase):
+class TestAccountReportsFilters(AccountTestCommon):
     def _assert_filter_date(self, filter_date, expected_date_values):
         ''' Initialize the 'date' key in the report options and then, assert the result matches the expectations.
 

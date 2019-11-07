@@ -2,7 +2,7 @@ import logging
 import odoo.tests
 import time
 import requests
-from odoo.addons.account.tests.test_reconciliation import TestReconciliation
+from odoo.addons.account.tests.common import TestAccountReconciliationCommon
 
 _logger = logging.getLogger(__name__)
 
@@ -32,7 +32,7 @@ class TestUi(odoo.tests.HttpCase):
 
 
 @odoo.tests.tagged('post_install', '-at_install')
-class TestReconciliationWidget(TestReconciliation):
+class TestReconciliationWidget(TestAccountReconciliationCommon):
 
     def test_statement_suggestion_other_currency(self):
         # company currency is EUR

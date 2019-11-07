@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.account.tests.account_test_classes import AccountingTestCase
+from odoo.addons.account.tests.common import AccountTestCommon
 from datetime import datetime
 
 
-class TestAccountBudgetCommon(AccountingTestCase):
+class TestAccountBudgetCommon(AccountTestCommon):
 
     @classmethod
     def setUpClass(cls):

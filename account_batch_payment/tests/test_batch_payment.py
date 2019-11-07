@@ -3,13 +3,13 @@
 
 import time
 
-from odoo.addons.account.tests.account_test_classes import AccountingTestCase
+from odoo.addons.account.tests.common import AccountTestCommon
 from odoo.tests import tagged
 from odoo.exceptions import ValidationError
 
 
 @tagged('post_install', '-at_install')
-class TestBatchPayment(AccountingTestCase):
+class TestBatchPayment(AccountTestCommon):
 
     @classmethod
     def setUpClass(cls):

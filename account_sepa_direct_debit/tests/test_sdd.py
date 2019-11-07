@@ -7,14 +7,14 @@ import time
 
 from odoo import fields
 
-from odoo.addons.account.tests.account_test_classes import AccountingTestCase
+from odoo.addons.account.tests.common import AccountTestCommon
 
 from odoo.modules.module import get_module_resource
 from odoo.tests import tagged
 
 
 @tagged('post_install', '-at_install')
-class SDDTest(AccountingTestCase):
+class SDDTest(AccountTestCommon):
 
     def create_user(self):
         return self.env['res.users'].create({

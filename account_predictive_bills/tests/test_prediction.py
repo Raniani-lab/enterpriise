@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 
-from odoo.addons.account.tests.account_test_classes import AccountingTestCase
+from odoo.addons.account.tests.common import AccountTestCommon
 from odoo.tests import tagged
 from odoo.tests.common import Form
 
 
 @tagged('post_install', '-at_install')
-class TestBillsPrediction(AccountingTestCase):
+class TestBillsPrediction(AccountTestCommon):
 
     def _create_one_line_bill(self, vendor, description, expected_account, account_to_set=None):
         default_journal = self.env['account.move'].with_context(default_type='in_invoice')._get_default_journal()

@@ -4,14 +4,14 @@
 # Copyright (c) 2012 Noviat nv/sa (www.noviat.be). All rights reserved.
 import base64
 
-from odoo.addons.account.tests.account_minimal_test import AccountMinimalTest
+from odoo.addons.account.tests.common import AccountTestCommon
 from odoo.modules.module import get_module_resource
 from odoo.tests import tagged
 from odoo.tools import float_compare
 
 
 @tagged('post_install', '-at_install')
-class TestCodaFile(AccountMinimalTest):
+class TestCodaFile(AccountTestCommon):
     """Tests for import bank statement coda file format (account.bank.statement.import)
     """
 

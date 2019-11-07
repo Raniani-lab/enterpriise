@@ -5,10 +5,10 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from odoo.exceptions import UserError, AccessError
 from odoo.tests import common
-from odoo.addons.account.tests.account_minimal_test import AccountMinimalTest
+from odoo.addons.account.tests.common import AccountTestCommon
 
 
-class TestFsmFlow(AccountMinimalTest):
+class TestFsmFlow(AccountTestCommon):
 
     @classmethod
     def setUpClass(cls):

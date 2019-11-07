@@ -6,7 +6,7 @@ try:
 except ImportError:
     from mock import patch
 from odoo.exceptions import UserError
-from odoo.addons.account.tests.account_test_classes import AccountingTestCase
+from odoo.addons.account.tests.common import AccountTestCommon
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.tests import tagged
@@ -33,7 +33,7 @@ class MockResponse:
 
 
 @tagged('post_install', '-at_install')
-class TestPlaidApi(AccountingTestCase):
+class TestPlaidApi(AccountTestCommon):
 
     @classmethod
     def setUpClass(cls):

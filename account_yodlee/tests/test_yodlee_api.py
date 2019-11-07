@@ -6,7 +6,7 @@ try:
 except ImportError:
     from mock import patch
 from odoo.exceptions import UserError
-from odoo.addons.account.tests.account_test_classes import AccountingTestCase
+from odoo.addons.account.tests.common import AccountTestCommon
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.tests import tagged
@@ -32,7 +32,7 @@ class MockResponse:
             raise requests.HTTPError(self)
 
 @tagged('post_install', '-at_install')
-class TestYodleeApi(AccountingTestCase):
+class TestYodleeApi(AccountTestCommon):
 
     @classmethod
     def setUpClass(cls):

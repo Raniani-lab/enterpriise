@@ -3,14 +3,14 @@
 import base64
 from lxml import etree
 
-from odoo.addons.account.tests.account_test_classes import AccountingTestCase
+from odoo.addons.account.tests.common import AccountTestCommon
 from odoo.modules.module import get_module_resource
 from odoo.tests import tagged
 from odoo.tests.common import Form
 
 
 @tagged('post_install', '-at_install')
-class TestSEPACreditTransfer(AccountingTestCase):
+class TestSEPACreditTransfer(AccountTestCommon):
 
     @classmethod
     def setUpClass(cls):

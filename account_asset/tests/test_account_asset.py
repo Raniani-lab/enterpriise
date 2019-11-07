@@ -8,10 +8,10 @@ from odoo import fields
 from odoo.exceptions import UserError, MissingError
 from odoo.tests.common import Form
 from odoo.addons.account_reports.tests.common import _init_options
-from odoo.addons.account.tests.account_minimal_test import AccountMinimalTest
+from odoo.addons.account.tests.common import AccountTestCommon
 
 
-class TestAccountAsset(AccountMinimalTest):
+class TestAccountAsset(AccountTestCommon):
 
     # YTI TODO: Convert this to a classmethod setUpClass
     # But the test test_asset_reverse_depreciation depends on

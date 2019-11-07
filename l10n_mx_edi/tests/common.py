@@ -1,11 +1,11 @@
 # coding: utf-8
 
-from odoo.addons.account.tests.account_test_classes import AccountingTestCase
+from odoo.addons.account.tests.common import AccountTestCommon
 from odoo.tests import tagged
 
 
 @tagged('post_install', '-at_install')
-class InvoiceTransactionCase(AccountingTestCase):
+class InvoiceTransactionCase(AccountTestCommon):
     def setUp(self):
         super(InvoiceTransactionCase, self).setUp()
         self.manager_billing = self.env['res.users'].with_context(no_reset_password=True).create({  # noqa

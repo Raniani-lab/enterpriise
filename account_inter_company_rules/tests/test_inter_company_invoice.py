@@ -26,7 +26,7 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
         # Create customer invoice for company A. (No need to call onchange as all the needed values are specified)
         self.res_users_company_a.company_ids = [(4, self.company_b.id)]
         customer_invoice = self.env['account.move'].with_user(self.res_users_company_a).create({
-            'type': 'out_invoice',
+            'move_type': 'out_invoice',
             'partner_id': self.company_b.partner_id.id,
             'currency_id': self.env.ref('base.EUR').id,
             'invoice_line_ids': [(0, 0, {
@@ -47,7 +47,7 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
         self.assertEqual(customer_invoice.state, 'posted', 'Invoice should be in Open state.')
 
         # I check that the vendor bill is created with proper data.
-        supplier_invoice = self.env['account.move'].with_user(self.res_users_company_b).search([('type', '=', 'in_invoice')], limit=1)
+        supplier_invoice = self.env['account.move'].with_user(self.res_users_company_b).search([('move_type', '=', 'in_invoice')], limit=1)
 
         self.assertTrue(supplier_invoice.invoice_line_ids[0].quantity == 1, "Quantity in invoice line is incorrect.")
         self.assertTrue(supplier_invoice.invoice_line_ids[0].product_id.id == self.product_consultant.id, "Product in line is incorrect.")

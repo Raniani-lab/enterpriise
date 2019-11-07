@@ -72,7 +72,7 @@ class IrasAuditFile(models.AbstractModel):
 
         invoice_ids = self.env['account.move'].search([
             ('company_id', '=', self.env.company.id),
-            ('type', 'in', ['in_invoice', 'in_refund']),
+            ('move_type', 'in', ['in_invoice', 'in_refund']),
             ('state', '=', 'posted'),
             ('date', '>=', date_from),
             ('date', '<=', date_to)
@@ -82,7 +82,7 @@ class IrasAuditFile(models.AbstractModel):
             lines_number = 0
             for lines in invoice.invoice_line_ids:
                 lines_number += 1
-                sign = -1 if invoice.type == 'in_refund' else 1
+                sign = -1 if invoice.move_type == 'in_refund' else 1
                 tax_amount = lines.price_total - lines.price_subtotal
                 tax_amount_company = invoice.currency_id._convert(tax_amount, invoice.company_id.currency_id, invoice.company_id, invoice.invoice_date or invoice.date)
                 transaction_count_total += 1
@@ -125,7 +125,7 @@ class IrasAuditFile(models.AbstractModel):
 
         invoice_ids = self.env['account.move'].search([
             ('company_id', '=', self.env.company.id),
-            ('type', 'in', ['out_invoice', 'out_refund']),
+            ('move_type', 'in', ['out_invoice', 'out_refund']),
             ('state', '=', 'posted'),
             ('date', '>=', date_from),
             ('date', '<=', date_to)
@@ -135,7 +135,7 @@ class IrasAuditFile(models.AbstractModel):
             lines_number = 0
             for lines in invoice.invoice_line_ids:
                 lines_number += 1
-                sign = -1 if invoice.type == 'out_refund' else 1
+                sign = -1 if invoice.move_type == 'out_refund' else 1
                 tax_amount = lines.price_total - lines.price_subtotal
                 tax_amount_company = invoice.currency_id._convert(tax_amount, invoice.company_id.currency_id, invoice.company_id, invoice.invoice_date or invoice.date)
                 transaction_count_total += 1

@@ -36,7 +36,7 @@ class AccountMove(models.Model):
             'currency_id': self.currency_id.id,
             'payment_type': 'inbound',
             'communication': self.ref or self.name,
-            'partner_type': 'customer' if self.type == 'out_invoice' else 'supplier',
+            'partner_type': 'customer' if self.move_type == 'out_invoice' else 'supplier',
             'partner_id': mandate.partner_id.commercial_partner_id.id,
             'payment_date': self.invoice_date_due or self.invoice_date
         })
@@ -53,6 +53,6 @@ class AccountMove(models.Model):
     def _track_subtype(self, init_values):
         # OVERRIDE to log a different message when an invoice is paid using SDD.
         self.ensure_one()
-        if 'state' in init_values and self.state in ('in_payment', 'paid') and self.type == 'out_invoice' and self.sdd_paying_mandate_id:
+        if 'state' in init_values and self.state in ('in_payment', 'paid') and self.move_type == 'out_invoice' and self.sdd_paying_mandate_id:
             return self.env.ref('account_sepa_direct_debit.sdd_mt_invoice_paid_with_mandate')
         return super(AccountMove, self)._track_subtype(init_values)

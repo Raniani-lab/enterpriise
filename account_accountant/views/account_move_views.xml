@@ -32,7 +32,7 @@
             <xpath expr="//sheet" position="before">
                 <!-- Invoice suspense accounts -->
                 <div groups="account.group_account_invoice,account.group_account_readonly" class="alert alert-info" role="alert" style="margin-bottom:0px;"
-                     attrs="{'invisible': ['|', ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')), ('invoice_has_matching_suspense_amount','=',False)]}">
+                     attrs="{'invisible': ['|', ('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')), ('invoice_has_matching_suspense_amount','=',False)]}">
                     You have suspense account moves that match this invoice. <bold><button class="alert-link" type="object" name="action_open_matching_suspense_moves" role="button" string="Check them" style="padding: 0;vertical-align: baseline;"/></bold> to mark this invoice as paid.
                 </div>
             </xpath>

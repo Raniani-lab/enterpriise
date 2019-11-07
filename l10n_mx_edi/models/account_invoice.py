@@ -684,7 +684,7 @@ class AccountMove(models.Model):
     @api.depends('partner_id')
     def _compute_need_external_trade(self):
         """Assign the "Need external trade?" value how in the partner"""
-        out_invoice = self.filtered(lambda i: i.type == 'out_invoice')
+        out_invoice = self.filtered(lambda i: i.move_type == 'out_invoice')
         for record in out_invoice:
             record.l10n_mx_edi_external_trade = record.partner_id.l10n_mx_edi_external_trade
         for record in self - out_invoice:
@@ -707,7 +707,7 @@ class AccountMove(models.Model):
         for line in self.invoice_line_ids.filtered('price_subtotal'):
             price = line.price_unit * (1.0 - (line.discount or 0.0) / 100.0)
             tax_line = {tax['id']: tax for tax in line.tax_ids.compute_all(
-                price, line.currency_id, line.quantity, line.product_id, line.partner_id, self.type in ('in_refund', 'out_refund'))['taxes']}
+                price, line.currency_id, line.quantity, line.product_id, line.partner_id, self.move_type in ('in_refund', 'out_refund'))['taxes']}
             for tax in line.tax_ids.filtered(lambda r: r.l10n_mx_cfdi_tax_type != 'Exento'):
                 tax_dict = tax_line.get(tax.id, {})
                 amount = round(abs(tax_dict.get(
@@ -783,7 +783,7 @@ class AccountMove(models.Model):
             else:
                 return 'Pago en una sola exhibición'
         elif version == '3.3' and self.invoice_date_due and self.invoice_date:
-            if self.type == 'out_refund':
+            if self.move_type == 'out_refund':
                 return 'PUE'
             # In CFDI 3.3 - SAT 2018 rule 2.7.1.44, the payment policy is PUE
             # if the invoice will be paid before 17th of the following month,
@@ -829,7 +829,7 @@ class AccountMove(models.Model):
         values['rate'] = ('%.6f' % (
             invoice_currency._convert(1, mxn, self.company_id, self.invoice_date or fields.Date.today(), round=False))) if self.currency_id.name != 'MXN' else False
 
-        values['document_type'] = 'ingreso' if self.type == 'out_invoice' else 'egreso'
+        values['document_type'] = 'ingreso' if self.move_type == 'out_invoice' else 'egreso'
         values['payment_policy'] = self._l10n_mx_edi_get_payment_policy()
         domicile = self.journal_id.l10n_mx_address_issued_id or self.company_id
         values['domicile'] = '%s %s, %s' % (
@@ -1046,10 +1046,8 @@ class AccountMove(models.Model):
             inv.l10n_mx_edi_pac_status = 'to_sign'
             filename = ('%s-%s-MX-Invoice-%s.xml' % (
                 inv.journal_id.code, inv.name, version.replace('.', '-'))).replace('/', '')
-            ctx = self.env.context.copy()
-            ctx.pop('default_type', False)
             inv.l10n_mx_edi_cfdi_name = filename
-            attachment_id = self.env['ir.attachment'].with_context(ctx).create({
+            attachment_id = self.env['ir.attachment'].create({
                 'name': filename,
                 'res_id': inv.id,
                 'res_model': inv._name,
@@ -1087,7 +1085,7 @@ class AccountMove(models.Model):
         version = self.l10n_mx_edi_get_pac_version().replace('.', '-')
         trans_field = 'transaction_ids' in self._fields
         for move in self.filtered(lambda move: move.l10n_mx_edi_is_required()):
-            if move.type == 'out_refund' and move.reversed_entry_id and not move.reversed_entry_id.l10n_mx_edi_cfdi_uuid:
+            if move.move_type == 'out_refund' and move.reversed_entry_id and not move.reversed_entry_id.l10n_mx_edi_cfdi_uuid:
                 move.message_post(
                     body='<p style="color:red">' + _(
                         'The invoice related has no valid fiscal folio. For this '

@@ -364,7 +364,7 @@ class WinbooksImportWizard(models.TransientModel):
             move_date = val[0].get('DATEDOC')
             move_data_dict = {
                 'journal_id': journal_id.id,
-                'type': 'out_invoice' if journal_id.type == 'sale' else 'in_invoice' if journal_id.type == 'purchase' else 'entry',
+                'move_type': 'out_invoice' if journal_id.type == 'sale' else 'in_invoice' if journal_id.type == 'purchase' else 'entry',
                 'ref': key[0],
                 'company_id': self.env.company.id,
                 'date': min(max(start_period_date, move_date), end_period_date),
@@ -426,12 +426,12 @@ class WinbooksImportWizard(models.TransientModel):
             move_line_data_list = [i for i in move_line_data_list if i[2]['account_id'] or i[2]['debit'] or i[2]['credit']]  # Remove empty lines
 
             # Adapt invoice specific informations
-            if move_data_dict['type'] != 'entry':
+            if move_data_dict['move_type'] != 'entry':
                 move_data_dict['partner_id'] = move_line_data_list[0][2]['partner_id']
                 move_data_dict['invoice_date_due'] = move_line_data_list[0][2]['date_maturity']
                 move_data_dict['invoice_date'] = move_line_data_list[0][2]['date']
                 if is_refund:
-                    move_data_dict['type'] = move_data_dict['type'].replace('invoice', 'refund')
+                    move_data_dict['move_type'] = move_data_dict['move_type'].replace('invoice', 'refund')
 
             # Balance move, should not happen in an import from a complete db
             if move_amount_total:

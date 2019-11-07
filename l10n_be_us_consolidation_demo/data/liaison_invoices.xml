@@ -6,7 +6,7 @@
             <field name="partner_id" ref="base.main_partner"/>
             <field name="invoice_user_id" ref="base.user_demo"/>
             <field name="invoice_payment_term_id" ref="account.account_payment_term_end_following_month"/>
-            <field name="type">out_invoice</field>
+            <field name="move_type">out_invoice</field>
             <field name="company_id" ref="be_company"/>
             <field name="invoice_date" eval="time.strftime('%Y-%m')+'-01'"/>
             <field name="journal_id" model="account.journal"
@@ -35,7 +35,7 @@
             <field name="journal_id" model="account.journal"
                    search="[('type', '=', 'purchase'), ('company_id', '=', ref('base.main_company'))]"/>
             <field name="invoice_payment_term_id" ref="account.account_payment_term_end_following_month"/>
-            <field name="type">in_invoice</field>
+            <field name="move_type">in_invoice</field>
             <field name="invoice_date" eval="time.strftime('%Y-%m')+'-01'"/>
             <field name="invoice_line_ids" eval="[
                 (0,0,{

@@ -15,12 +15,12 @@ class WorkflowActionRuleAccount(models.Model):
         rv = super(WorkflowActionRuleAccount, self).create_record(documents=documents)
         if self.create_model.startswith('account.move'):
             invoice_type = self.create_model.split('.')[2]
-            journal = self.env['account.move'].with_context(default_type=invoice_type)._get_default_journal()
+            journal = self.env['account.move'].with_context(default_move_type=invoice_type)._get_default_journal()
             new_obj = None
             invoice_ids = []
             for document in documents:
                 create_values = {
-                    'type': invoice_type,
+                    'move_type': invoice_type,
                     'journal_id': journal.id,
                 }
                 if invoice_type not in ['out_refund', 'out_invoice']:
@@ -41,7 +41,7 @@ class WorkflowActionRuleAccount(models.Model):
                     # the 'no_document' key in the context indicates that this ir_attachment has already a
                     # documents.document and a new document shouldn't be automatically generated.
                     # message_post ignores attachment that are not on mail.compose message, so we link the attachment explicitly afterwards
-                    new_obj.with_context(default_journal_id=journal.id, default_type=invoice_type).message_post(body=body)
+                    new_obj.with_context(default_journal_id=journal.id, default_move_type=invoice_type).message_post(body=body)
                     document.attachment_id.with_context(no_document=True).write({
                         'res_model': 'account.move',
                         'res_id': new_obj.id,
@@ -49,7 +49,7 @@ class WorkflowActionRuleAccount(models.Model):
                     document.attachment_id.register_as_main_attachment()  # needs to be called explicitly since we bypassed the standard attachment creation mechanism
                     invoice_ids.append(new_obj.id)
 
-            context = dict(self._context, default_type=invoice_type, default_journal_id=journal.id)
+            context = dict(self._context, default_move_type=invoice_type, default_journal_id=journal.id)
             action = {
                 'type': 'ir.actions.act_window',
                 'res_model': 'account.move',

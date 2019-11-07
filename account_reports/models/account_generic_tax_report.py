@@ -320,7 +320,7 @@ class generic_tax_report(models.AbstractModel):
         sql = """SELECT account_tax_report_line_tags_rel.account_tax_report_line_id,
                         SUM(coalesce(account_move_line.balance, 0) * CASE WHEN acc_tag.tax_negate THEN -1 ELSE 1 END
                                                  * CASE WHEN account_journal.type = 'sale' THEN -1 ELSE 1 END
-                                                 * CASE WHEN account_move.type in ('in_refund', 'out_refund') THEN -1 ELSE 1 END)
+                                                 * CASE WHEN account_move.move_type in ('in_refund', 'out_refund') THEN -1 ELSE 1 END)
                         AS balance
                  FROM """ + tables + """
                  JOIN account_move

@@ -86,7 +86,7 @@ class InvoiceTransactionCase(AccountTestCommon):
         if currency_id is None:
             currency_id = self.usd.id
         self.partner_agrolait.lang = None
-        invoice = self.env['account.move'].with_env(self.env(user=self.user_billing)).with_context(default_type=inv_type).create({
+        invoice = self.env['account.move'].with_env(self.env(user=self.user_billing)).with_context(default_move_type=inv_type).create({
             'partner_id': self.partner_agrolait.id,
             'type': inv_type,
             'currency_id': currency_id,

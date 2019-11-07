@@ -25,7 +25,7 @@ class SocialPost(models.Model):
                     INNER JOIN account_move move ON line.move_id = move.id
                     WHERE move.state not in ('draft', 'cancel')
                         AND move.source_id IN %s
-                        AND move.type IN ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')
+                        AND move.move_type IN ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')
                         AND line.account_id IS NOT NULL
                         AND NOT line.exclude_from_invoice_tab
                     GROUP BY move.source_id
@@ -52,7 +52,7 @@ class SocialPost(models.Model):
         }
         action['domain'] = [
             ('source_id', '=', self.utm_source_id.id),
-            ('type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')),
+            ('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')),
             ('state', 'not in', ['draft', 'cancel'])
         ]
         return action

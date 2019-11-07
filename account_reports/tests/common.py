@@ -287,7 +287,7 @@ class TestAccountReportsCommon(SavepointCase):
         :param date:            The invoice date as a datetime object.
         :return:                An account.move record.
         '''
-        invoice_form = Form(env['account.move'].with_context(default_type=invoice_type, default_date=date, default_invoice_date=date))
+        invoice_form = Form(env['account.move'].with_context(default_move_type=invoice_type, default_date=date, default_invoice_date=date))
         invoice_form.partner_id = partner
         with invoice_form.invoice_line_ids.new() as invoice_line_form:
             invoice_line_form.name = 'test'

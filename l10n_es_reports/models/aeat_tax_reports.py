@@ -939,7 +939,7 @@ class AEATAccountFinancialReport(models.Model):
         report_period, report_year = self._get_mod_period_and_year(options)
 
         rslt = self._boe_format_string('')
-        for refund_invoice in self.env['account.move'].search([('date', '<=', report_date_to), ('date', '>=', report_date_from), ('type', 'in', ['in_refund', 'out_refund']), ('l10n_es_reports_mod349_invoice_type', '=', mod_349_type), ('partner_id', '=', line_partner.id)]):
+        for refund_invoice in self.env['account.move'].search([('date', '<=', report_date_to), ('date', '>=', report_date_from), ('move_type', 'in', ['in_refund', 'out_refund']), ('l10n_es_reports_mod349_invoice_type', '=', mod_349_type), ('partner_id', '=', line_partner.id)]):
             original_invoice = refund_invoice.reversed_entry_id
             original_date = datetime.strptime(original_invoice.date, '%Y-%m-%d')
             invoice_period, invoice_year = self._retrieve_period_and_year(original_date, trimester=report_period[-1] == 'T')

@@ -9,8 +9,8 @@ from odoo.tests.common import Form
 class TestBillsPrediction(AccountTestCommon):
 
     def _create_one_line_bill(self, vendor, description, expected_account, account_to_set=None):
-        default_journal = self.env['account.move'].with_context(default_type='in_invoice')._get_default_journal()
-        invoice_form = Form(self.env['account.move'].with_context(default_type='in_invoice', default_journal_id=default_journal.id))
+        default_journal = self.env['account.move'].with_context(default_move_type='in_invoice')._get_default_journal()
+        invoice_form = Form(self.env['account.move'].with_context(default_move_type='in_invoice', default_journal_id=default_journal.id))
         invoice_form.partner_id = vendor
         with invoice_form.invoice_line_ids.new() as invoice_line_form:
             invoice_line_form.quantity = 1

@@ -560,7 +560,7 @@ class SaleSubscription(models.Model):
         addr = self.partner_id.address_get(['delivery', 'invoice'])
 
         return {
-            'type': 'out_invoice',
+            'move_type': 'out_invoice',
             'partner_id': addr['invoice'],
             'partner_shipping_id': addr['delivery'],
             'currency_id': self.pricelist_id.currency_id.id,

@@ -129,7 +129,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
                 account_move_line.date,
                 account_move_line.date_maturity,
                 account_move_line.expected_pay_date,
-                account_move_line__move_id.type AS move_type,
+                account_move_line__move_id.move_type AS move_type,
                 account_move_line__move_id.name AS move_name,
                 journal.code AS journal_code,
                 account.name AS account_name,

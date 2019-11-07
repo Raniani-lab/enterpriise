@@ -35,19 +35,19 @@ class AccountMove(models.Model):
             'out_refund': 'in_refund',
         }
         for inv in self:
-            invoice_vals = inv._inter_company_prepare_invoice_data(inverse_types[inv.type])
+            invoice_vals = inv._inter_company_prepare_invoice_data(inverse_types[inv.move_type])
             invoice_vals['invoice_line_ids'] = []
             for line in inv.invoice_line_ids:
                 invoice_vals['invoice_line_ids'].append((0, 0, line._inter_company_prepare_invoice_line_data()))
 
-            inv_new = inv.with_context(default_type=invoice_vals['type']).new(invoice_vals)
+            inv_new = inv.with_context(default_move_type=invoice_vals['move_type']).new(invoice_vals)
             for line in inv_new.invoice_line_ids:
                 line.tax_ids = line._get_computed_taxes()
             invoice_vals = inv_new._convert_to_write(inv_new._cache)
             invoice_vals.pop('line_ids', None)
 
-            invoices_vals_per_type.setdefault(invoice_vals['type'], [])
-            invoices_vals_per_type[invoice_vals['type']].append(invoice_vals)
+            invoices_vals_per_type.setdefault(invoice_vals['move_type'], [])
+            invoices_vals_per_type[invoice_vals['move_type']].append(invoice_vals)
 
         # Create invoices.
         moves = self.env['account.move']
@@ -62,7 +62,7 @@ class AccountMove(models.Model):
         '''
         self.ensure_one()
         return {
-            'type': invoice_type,
+            'move_type': invoice_type,
             'ref': self.ref,
             'partner_id': self.company_id.partner_id.id,
             'currency_id': self.currency_id.id,

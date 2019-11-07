@@ -114,7 +114,7 @@ class AccountMove(models.Model):
         if self.env.context.get('taxcloud_authorize_transaction'):
             current_date = fields.Datetime.context_timestamp(self, datetime.datetime.now())
 
-            if self.type == 'out_invoice':
+            if self.move_type == 'out_invoice':
                 request.client.service.AuthorizedWithCapture(
                     request.api_login_id,
                     request.api_key,
@@ -124,7 +124,7 @@ class AccountMove(models.Model):
                     current_date,  # DateAuthorized
                     current_date,  # DateCaptured
                 )
-            elif self.type == 'out_refund':
+            elif self.move_type == 'out_refund':
                 request.set_invoice_items_detail(self)
                 origin_invoice = self.reversed_entry_id
                 if origin_invoice:
@@ -150,7 +150,7 @@ class AccountMove(models.Model):
                 api_id = company.taxcloud_api_id
                 api_key = company.taxcloud_api_key
                 request = TaxCloudRequest(api_id, api_key)
-                if invoice.type == 'out_invoice':
+                if invoice.move_type == 'out_invoice':
                     request.client.service.Captured(
                         request.api_login_id,
                         request.api_key,

@@ -128,7 +128,7 @@ class TestAccountAsset(AccountTestCommon):
                          'State of asset should be runing')
 
         closing_invoice = self.env['account.move'].create({
-            'type': 'out_invoice',
+            'move_type': 'out_invoice',
             'invoice_line_ids': [(0, 0, {
                 'debit': 100,
             })]
@@ -201,7 +201,7 @@ class TestAccountAsset(AccountTestCommon):
         self.xfa.asset_model = account_asset_model_sale_test0
 
         invoice = self.env['account.move'].with_context(asset_type='purchase').create({
-            'type': 'in_invoice',
+            'move_type': 'in_invoice',
             'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
             'invoice_line_ids': [(0, 0, {
                 'name': 'Insurance claim',
@@ -591,7 +591,7 @@ class TestAccountAsset(AccountTestCommon):
         move = self.env['account.move'].create({
             "partner_id": self.env['res.partner'].create({'name': 'Johny'}).id,
             "ref": "line1",
-            "type": "in_invoice",
+            "move_type": "in_invoice",
             "line_ids": [
                 (0, 0, {
                     "account_id": account.id,
@@ -629,7 +629,7 @@ class TestAccountAsset(AccountTestCommon):
         move = self.env['account.move'].create({
             "partner_id": self.env['res.partner'].create({'name': 'Johny'}).id,
             "ref": "line1",
-            "type": "in_invoice",
+            "move_type": "in_invoice",
             "line_ids": [
                 (0, 0, {
                     "account_id": account.id,
@@ -679,7 +679,7 @@ class TestAccountAsset(AccountTestCommon):
             move = self.env['account.move'].create({
                 "partner_id": self.env['res.partner'].create({'name': 'Johny'}).id,
                 "ref": "line1",
-                "type": "in_invoice",
+                "move_type": "in_invoice",
                 "line_ids": [
                     (0, 0, {
                         "account_id": account.id,

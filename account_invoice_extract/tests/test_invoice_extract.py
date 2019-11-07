@@ -14,7 +14,7 @@ from odoo.tests.common import Form, TransactionCase
 @tagged('post_install', '-at_install')
 class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP):
     def init_invoice(self, default_type="in_invoice", extract_state='waiting_extraction'):
-        move_form = Form(self.env['account.move'].with_context(default_type=default_type))
+        move_form = Form(self.env['account.move'].with_context(default_move_type=default_type))
         move_form.extract_state = extract_state
         return move_form.save()
 

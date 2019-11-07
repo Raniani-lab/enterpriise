@@ -227,7 +227,7 @@ class AccountPayment(models.Model):
         required = (
             self.payment_type == 'inbound' and
             self.company_id.country_id == self.env.ref('base.mx') and
-            not self.invoice_ids.filtered(lambda i: i.type != 'out_invoice'))
+            not self.invoice_ids.filtered(lambda i: i.move_type != 'out_invoice'))
         if not required:
             return required
         if self.l10n_mx_edi_pac_status != 'none':
@@ -331,10 +331,8 @@ class AccountPayment(models.Model):
             rec.l10n_mx_edi_pac_status = 'to_sign'
             filename = ('%s-%s-MX-Payment-10.xml' % (
                 rec.journal_id.code, rec.name))
-            ctx = self.env.context.copy()
-            ctx.pop('default_type', False)
             rec.l10n_mx_edi_cfdi_name = filename
-            attachment_id = self.env['ir.attachment'].with_context(ctx).create({
+            attachment_id = self.env['ir.attachment'].create({
                 'name': filename,
                 'res_id': rec.id,
                 'res_model': rec._name,

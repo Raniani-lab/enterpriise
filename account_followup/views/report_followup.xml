@@ -24,7 +24,7 @@
                         </div>
                         <t t-if="partner.followup_level.join_invoices" t-foreach="partner.unpaid_invoices" t-as="o">
                             <div class="page">
-                                <t t-set="lang" t-value="o.user_id.lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                                <t t-set="lang" t-value="o.user_id.lang if o.move_type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
                                 <t t-call="account.report_invoice_document" t-lang="lang"/>
                             </div>
                         </t>

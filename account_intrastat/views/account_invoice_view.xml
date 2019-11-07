@@ -8,13 +8,13 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='fiscal_position_id']" position="after">
                     <field name="intrastat_country_id"
-                           attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}"
+                           attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}"
                            help="Arrival country"
                            options="{'no_create': True}"/>
                     <field name="intrastat_transport_mode_id"
                            attrs="{'invisible': ['|',
                                 ('intrastat_country_id', '=', False),
-                                ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}"
+                                ('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}"
                            context="{'search_view_ref': 'account_intrastat.view_intrastat_code_restricted_type_search',
                            'form_view_ref': 'account_intrastat.view_intrastat_code_restricted_type_form',
                            'default_type': 'transport'}"/>

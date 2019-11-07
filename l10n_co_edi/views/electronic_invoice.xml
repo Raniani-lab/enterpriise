@@ -27,7 +27,7 @@
                 <ENC_6 t-esc="invoice.name"/>
                 <ENC_7 t-esc="invoice.invoice_date"/>
                 <ENC_8 t-esc="invoice._l10n_co_edi_get_validation_time()"/>
-                <ENC_9 t-esc="invoice.l10n_co_edi_type if invoice.type not in ('out_refund', 'in_refund') else '9'"/>
+                <ENC_9 t-esc="invoice.l10n_co_edi_type if invoice.move_type not in ('out_refund', 'in_refund') else '9'"/>
                 <ENC_10 t-esc="invoice.currency_id.name"/>
                 <ENC_16 t-esc="invoice.invoice_date_due"/>
                 <ENC_17 t-esc="invoice.l10n_co_edi_attachment_url"/>
@@ -125,7 +125,7 @@
             </ORC>
 
             <REF>
-                <REF_1 t-esc="invoice_type_to_ref_1[invoice.type]"/>
+                <REF_1 t-esc="invoice_type_to_ref_1[invoice.move_type]"/>
                 <REF_2 t-esc="invoice.invoice_origin or 'N/A'"/>
             </REF>
 
@@ -182,7 +182,7 @@
                     <ITE_22 t-esc="invoice.currency_id.name"/>
 
                     <IRF>
-                        <IRF_1 t-esc="invoice_type_to_ref_1[invoice.type]"/>
+                        <IRF_1 t-esc="invoice_type_to_ref_1[invoice.move_type]"/>
                         <IRF_2 t-esc="invoice.name"/>
                         <IRF_3 t-esc="ite_counter"/>
                     </IRF>
@@ -204,7 +204,7 @@
             </ITE>
         </template>
         <template id="electronic_invoice_xml">
-            <FACTURA t-if="'_invoice' in invoice.type">
+            <FACTURA t-if="'_invoice' in invoice.move_type">
                 <t t-call="l10n_co_edi.electronic_invoice_body"/>
             </FACTURA>
             <NOTA t-else="">

@@ -62,7 +62,7 @@ class InvoiceTransactionCase(AccountTestCommon):
     def test_dont_handle_non_colombian(self):
         self.company.country_id = self.env.ref('base.us')
         product = self.env.ref('product.product_product_4')
-        invoice = self.env['account.move'].with_context(default_type='out_invoice').create({
+        invoice = self.env['account.move'].with_context(default_move_type='out_invoice').create({
             'partner_id': self.partner.id,
             'account_id': self.account_receivable.id,
             'invoice_line_ids': [
@@ -107,7 +107,7 @@ class InvoiceTransactionCase(AccountTestCommon):
         invoice = self.env['account.move'].create({
             'partner_id': self.partner.id,
             'account_id': self.account_receivable.id,
-            'type': 'out_invoice',
+            'move_type': 'out_invoice',
             'invoice_user_id': self.salesperson.id,
             'name': 'OC 123',
             'invoice_line_ids': [

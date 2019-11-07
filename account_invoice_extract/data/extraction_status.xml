@@ -19,14 +19,14 @@
                 <field name="extract_can_show_send_button" attrs="{'invisible':True}"/>
                 <div role="status" class="o_success_ocr"
                      attrs="{'invisible':['|', '|',
-                            ('type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['waiting_validation', 'validation_to_send'])]}" >
                     <!-- Extraction processed with success. Don't forget to validate the different fields. -->
                 </div>
                 <div role="status" class="alert alert-danger mb8"
                      attrs="{'invisible':['|', '|',
-                            ('type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary pull-right mb0"/>
@@ -35,7 +35,7 @@
                 </div>
                 <div role="status" class="alert alert-info mb8"
                      attrs="{'invisible':['|', '|',
-                            ('type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['waiting_extraction'])]}">
                     <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
@@ -45,7 +45,7 @@
                 <field name="extract_status_code" invisible="1"/>
                 <div role="status" class="alert alert-info mb8"
                      attrs="{'invisible':['|', '|',
-                            ('type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['extract_not_ready'])]}">
                     <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
@@ -54,7 +54,7 @@
                 </div>
                 <div role="status" class="alert alert-danger mb8"
                      attrs="{'invisible':['|', '|', '|',
-                            ('type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['error_status']),
                             '&amp;',
@@ -64,7 +64,7 @@
                 </div>
                 <div role="status" class="alert alert-warning mb8"
                      attrs="{'invisible':['|', '|', '|', '|',
-                            ('type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['error_status', 'waiting_validation']),
                             ('extract_status_code', '&lt;', 100),
@@ -85,7 +85,7 @@
             <xpath expr="//page[@id='other_tab']//group[@name='payments_info_group']" position="after">
                 <group string="Extraction Information"
                        name="extraction_info_group"
-                       attrs="{'invisible': ['|', ('type', 'not in', ('in_invoice', 'in_refund')), ('extract_state', 'in', ('no_extract_requested', 'not_enough_credit'))]}">
+                       attrs="{'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund')), ('extract_state', 'in', ('no_extract_requested', 'not_enough_credit'))]}">
                     <field name="extract_remote_id"/>
                 </group>
             </xpath>

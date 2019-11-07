@@ -8,7 +8,7 @@
              <xpath expr="//field[@name='invoice_line_ids']//field[@name='quantity']" position="before">
                 <field name="intrastat_product_origin_country_id"
                        optional="hide"
-                       attrs="{'invisible': [('parent.type', 'not in', ('out_invoice', 'out_refund'))]}"
+                       attrs="{'invisible': [('parent.move_type', 'not in', ('out_invoice', 'out_refund'))]}"
                        options="{'no_create_edit': True}"/>
             </xpath>
             <xpath expr="//field[@name='line_ids']//field[@name='quantity']" position="before">

@@ -22,7 +22,7 @@ class AccountMoveReversal(models.TransientModel):
     @api.depends('helpdesk_ticket_id.sale_order_id.invoice_ids', 'helpdesk_ticket_id.partner_id.commercial_partner_id')
     def _compute_suitable_moves(self):
         for r in self:
-            domain = [('state', '=', 'posted'), ('type', '=', 'out_invoice')]
+            domain = [('state', '=', 'posted'), ('move_type', '=', 'out_invoice')]
             if r.helpdesk_ticket_id.sale_order_id:
                 domain.append(('id', 'in', r.helpdesk_ticket_id.sale_order_id.invoice_ids.ids))
             elif r.helpdesk_ticket_id.partner_id:

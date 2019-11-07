@@ -207,7 +207,7 @@ class AccountMove(models.Model):
             'amount_total': amount,
             'name': '/',
             'asset_value_change': vals.get('asset_value_change', False),
-            'type': 'entry',
+            'move_type': 'entry',
         }
         return move_vals
 

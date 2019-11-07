@@ -101,7 +101,7 @@ class AccountMoveLine(models.Model):
                         ON aml.move_id = move.id
                     LEFT JOIN account_move_line_account_tax_rel tax_rel
                         ON tax_rel.account_move_line_id = aml.id
-                    WHERE move.type = 'in_invoice'
+                    WHERE move.move_type = 'in_invoice'
                         AND move.state = 'posted'
                         AND aml.display_type IS NULL
                         AND NOT aml.exclude_from_invoice_tab
@@ -140,7 +140,7 @@ class AccountMoveLine(models.Model):
                     JOIN account_move inv
                         ON ail.move_id = inv.id
 
-                    WHERE inv.type = 'in_invoice'
+                    WHERE inv.move_type = 'in_invoice'
                         AND inv.state = 'posted'
                         AND ail.display_type IS NULL
                         AND NOT ail.exclude_from_invoice_tab
@@ -188,7 +188,7 @@ class AccountMoveLine(models.Model):
                     FROM account_move_line ail
                     JOIN account_move inv
                         ON ail.move_id = inv.id
-                    WHERE inv.type = 'in_invoice'
+                    WHERE inv.move_type = 'in_invoice'
                         AND inv.state = 'posted'
                         AND ail.display_type IS NULL
                         AND NOT ail.exclude_from_invoice_tab
@@ -218,5 +218,5 @@ class AccountMoveLine(models.Model):
 
     @api.onchange('name')
     def _onchange_enable_predictive(self):
-        if self.move_id.type == 'in_invoice' and self.name and not self.display_type:
+        if self.move_id.move_type == 'in_invoice' and self.name and not self.display_type:
             self.predict_from_name = True

@@ -103,9 +103,9 @@ class AccountMove(models.Model):
         been successfully validated by Carvajal and the government.
         '''
         carvajal_type = False
-        if self.type == 'out_refund':
+        if self.move_type == 'out_refund':
             carvajal_type = 'NC'
-        elif self.type == 'in_refund':
+        elif self.move_type == 'in_refund':
             carvajal_type = 'ND'
         else:
             odoo_type_to_carvajal_type = {
@@ -263,7 +263,7 @@ class AccountMove(models.Model):
             'in_refund': 'ND',
         }
 
-        return INVOICE_TYPE_TO_ENC_1[self.type]
+        return INVOICE_TYPE_TO_ENC_1[self.move_type]
 
     def _l10n_co_edi_get_carvajal_code_for_document_type(self, partner):
         DOCUMENT_TYPE_TO_CARVAJAL_CODE = {
@@ -321,7 +321,7 @@ class AccountMove(models.Model):
 
     def _l10n_co_edi_is_l10n_co_edi_required(self):
         self.ensure_one()
-        return self.type in ('out_invoice', 'out_refund', 'in_refund') and self.company_id.country_id == self.env.ref('base.co')
+        return self.move_type in ('out_invoice', 'out_refund', 'in_refund') and self.company_id.country_id == self.env.ref('base.co')
 
     def post(self):
         # OVERRIDE to generate the e-invoice for the Colombian Localization.

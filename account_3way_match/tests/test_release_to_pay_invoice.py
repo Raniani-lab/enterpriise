@@ -45,7 +45,7 @@ class TestReleaseToPayInvoice(AccountTestCommon):
 
         invoices_list = []
         purchase_line = purchase_order.order_line[-1]
-        AccountMove = self.env['account.move'].with_context(default_type='in_invoice')
+        AccountMove = self.env['account.move'].with_context(default_move_type='in_invoice')
         for (action, params) in scenario:
             if action == 'invoice':
                 move_form = Form(AccountMove)

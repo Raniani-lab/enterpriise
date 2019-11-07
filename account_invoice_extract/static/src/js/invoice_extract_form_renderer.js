@@ -33,7 +33,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         this._invoiceExtractBoxData = [];
         this._invoiceExtractBoxLayers = [];
         var is_customer_invoice = false;
-        if (this.state.context.default_type == 'out_invoice' || this.state.context.default_type == 'out_refund')
+        if (this.state.context.default_move_type == 'out_invoice' || this.state.context.default_move_type == 'out_refund')
             is_customer_invoice = true;
         this._invoiceExtractFields = new InvoiceExtractFields(this, is_customer_invoice);
         this._$invoiceExtractButtons = [];

@@ -39,7 +39,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
                   AND l.date <= %(date_to)s
                   AND l.company_id IN %(company_ids)s
                   AND ((l.move_id IS NULL AND l.credit > 0)
-                    OR (inv.type IN ('out_refund', 'out_invoice') AND inv.state = 'posted'))
+                    OR (inv.move_type IN ('out_refund', 'out_invoice') AND inv.state = 'posted'))
                   GROUP BY l.partner_id, p.name, p.vat) AS turnover_sub
                     FULL JOIN (SELECT l.partner_id, SUM(l.debit-l.credit) AS refund_base
                         FROM account_move_line l
@@ -54,7 +54,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
                         AND l.date <= %(date_to)s
                         AND l.company_id IN %(company_ids)s
                         AND ((l.move_id IS NULL AND l.credit > 0)
-                          OR (inv.type = 'out_refund' AND inv.state = 'posted'))
+                          OR (inv.move_type = 'out_refund' AND inv.state = 'posted'))
                         GROUP BY l.partner_id, p.name, p.vat) AS refund_vat_sub
                     ON turnover_sub.partner_id = refund_vat_sub.partner_id
             LEFT JOIN (SELECT l2.partner_id, SUM(l2.credit - l2.debit) as vat_amount, SUM(l2.debit) AS refund_vat_amount
@@ -68,7 +68,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
                   AND l2.date <= %(date_to)s
                   AND l2.company_id IN %(company_ids)s
                   AND ((l2.move_id IS NULL AND l2.credit > 0)
-                   OR (inv.type IN ('out_refund', 'out_invoice') AND inv.state = 'posted'))
+                   OR (inv.move_type IN ('out_refund', 'out_invoice') AND inv.state = 'posted'))
                 GROUP BY l2.partner_id) AS refund_base_sub
               ON turnover_sub.partner_id = refund_base_sub.partner_id
            WHERE turnover > 250 OR refund_base > 0 OR refund_vat_amount > 0

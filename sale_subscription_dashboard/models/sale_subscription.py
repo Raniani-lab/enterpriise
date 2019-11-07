@@ -245,7 +245,7 @@ class SaleSubscription(models.Model):
         searched_fields = ('company_id', 'currency_id', 'company_currency_id',
                            'id', 'move_id', 'name', 'price_subtotal')
         invoice_line_ids = self.env['account.move.line'].search_read([
-            ('move_id.type', 'in', ('out_invoice', 'out_refund')),
+            ('move_id.move_type', 'in', ('out_invoice', 'out_refund')),
             ('parent_state', 'not in', ('draft', 'cancel')),
             ('move_id.invoice_user_id', '=', user_id),
             ('move_id.invoice_date', '>=', start_date),

@@ -47,7 +47,7 @@ class IntrastatReport(models.AbstractModel):
                 AND company_partner.country_id != country.id
                 AND move.company_id = %s
                 AND COALESCE(move.date, move.invoice_date) BETWEEN %s AND %s
-                AND move.type IN ('out_invoice', 'out_refund')
+                AND move.move_type IN ('out_invoice', 'out_refund')
                 AND partner.vat IS NOT NULL
                 AND move.journal_id IN %s
         """

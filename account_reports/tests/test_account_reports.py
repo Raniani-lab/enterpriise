@@ -2762,7 +2762,7 @@ class TestAccountReports(TestAccountReportsCommon):
         tax_42 = self.env['account.tax'].browse(tax_42_id)
 
         # Create an invoice using the tax we just made
-        with Form(self.env['account.move'].with_context(default_type='out_invoice')) as invoice_form:
+        with Form(self.env['account.move'].with_context(default_move_type='out_invoice')) as invoice_form:
             invoice_form.partner_id = partner
             with invoice_form.invoice_line_ids.new() as invoice_line_form:
                 invoice_line_form.name = 'Turlututu'

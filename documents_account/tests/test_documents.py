@@ -55,7 +55,7 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         vendor_bill_txt = self.env['account.move'].search([('id', '=', self.document_txt.res_id)])
         self.assertTrue(vendor_bill_txt.exists(), 'failed at workflow_bridge_dms_account vendor_bill')
         self.assertEqual(self.document_txt.res_id, vendor_bill_txt.id, "failed at workflow_bridge_dms_account res_id")
-        self.assertEqual(vendor_bill_txt.type, 'in_invoice', "failed at workflow_bridge_dms_account vendor_bill type")
+        self.assertEqual(vendor_bill_txt.move_type, 'in_invoice', "failed at workflow_bridge_dms_account vendor_bill type")
         vendor_bill_gif = self.env['account.move'].search([('id', '=', self.document_gif.res_id)])
         self.assertEqual(self.document_gif.res_id, vendor_bill_gif.id, "failed at workflow_bridge_dms_account res_id")
 
@@ -75,9 +75,9 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         self.env.user.company_id.documents_account_settings = True
 
         for invoice_type in ['in_invoice', 'out_invoice', 'in_refund', 'out_refund']:
-            invoice_test = self.env['account.move'].with_context(default_type=invoice_type).create({
+            invoice_test = self.env['account.move'].with_context(default_move_type=invoice_type).create({
                 'name': 'invoice_test',
-                'type': invoice_type,
+                'move_type': invoice_type,
             })
             setting = self.env['documents.account.folder.setting'].create({
                 'folder_id': folder_test.id,

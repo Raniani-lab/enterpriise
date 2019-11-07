@@ -109,7 +109,7 @@ class TestResPartner(AccountTestInvoicingCommon):
     def test_res_partner_get_paid_amount(self):
         '''Checking of the paid total value for a specific partner.'''
         move = self.env['account.move'].create({
-            'type': 'in_invoice',
+            'move_type': 'in_invoice',
             'partner_id': self.partner_a.id,
             'date': fields.Date.from_string('2000-05-12'),
             'currency_id': self.currency_data['currency'].id,
@@ -160,7 +160,7 @@ class TestResPartner(AccountTestInvoicingCommon):
     def test_res_partner_get_partner_information(self):
         '''Checking of all information about a specific partner.'''
         move = self.env['account.move'].create({
-            'type': 'in_invoice',
+            'move_type': 'in_invoice',
             'partner_id': self.partner_a.id,
             'date': fields.Date.from_string('2000-05-12'),
             'currency_id': self.currency_data['currency'].id,

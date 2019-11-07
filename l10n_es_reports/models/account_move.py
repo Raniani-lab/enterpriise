@@ -9,7 +9,7 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     def _default_mod_349_invoice_type(self):
-        invoice_type = self.env.context.get('type', False)
+        invoice_type = self.env.context.get('move_type', False)
 
         if invoice_type == 'in_invoice':
             return 'A'
@@ -18,9 +18,9 @@ class AccountMove(models.Model):
 
     def _mod_349_selection_values(self):
         context = self.env.context
-        if context.get('type') in self.get_sale_types():
+        if context.get('move_type') in self.get_sale_types():
             return[('E', _("E - Supply")), ('T', _("T - Triangular Operation")), ('S', _("S - Services sale")), ('M', _("M - Supply without taxes")), ('H', _("H - Supply without taxes delivered by a legal representative"))]
-        if context.get('type') in self.get_purchase_types():
+        if context.get('move_type') in self.get_purchase_types():
             return [('A', _("A - Acquisition")), ('T', _("T - Triangular Operation")), ('I', _("I - Services acquisition"))]
         # If no type is given in context, we give access to every possible value for the field
         return [('A', _("A - Acquisition")), ('E', _("E - Supply")), ('T', _("T - Triangular Operation")), ('S', _("S - Services sale")), ('I', _("I - Services acquisition")), ('M', _("M - Supply without taxes")), ('H', _("H - Supply without taxes delivered by a legal representative"))]

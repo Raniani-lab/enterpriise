@@ -18,7 +18,7 @@ class AccountMove(models.Model):
             partner_id = partner_id.id
         else:
             partner_id = self.find_partner_id_with_name(supplier_ocr)
-        if self.type == 'in_invoice' and partner_id and total_ocr:
+        if self.move_type == 'in_invoice' and partner_id and total_ocr:
             purchase_id_domain = [('company_id', '=', self.company_id.id), ('partner_id', 'child_of', [partner_id]), ('amount_total', '=', total_ocr)]
             matching_po = self.env['purchase.order'].search(purchase_id_domain)
             if len(matching_po) == 1:

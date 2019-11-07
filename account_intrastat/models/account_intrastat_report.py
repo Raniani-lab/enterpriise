@@ -103,7 +103,7 @@ class IntrastatReport(models.AbstractModel):
         # accordingly to specs (https://www.nbb.be/doc/dq/f_pdf_ex/intra2017fr.pdf (§ 4.x))
         select = '''
                 row_number() over () AS sequence,
-                CASE WHEN inv.type IN ('in_invoice', 'out_refund') THEN 19 ELSE 29 END AS system,
+                CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN 19 ELSE 29 END AS system,
                 country.code AS country_code,
                 company_country.code AS comp_country_code,
                 CASE WHEN inv_line.intrastat_transaction_id IS NULL THEN '1' ELSE transaction.code END AS transaction_code,
@@ -115,13 +115,13 @@ class IntrastatReport(models.AbstractModel):
                 inv.currency_id AS invoice_currency_id,
                 inv.name AS invoice_number,
                 coalesce(inv.date, inv.invoice_date) AS invoice_date,
-                inv.type AS invoice_type,
+                inv.move_type AS invoice_type,
                 inv_incoterm.code AS invoice_incoterm,
                 comp_incoterm.code AS company_incoterm,
                 inv_transport.code AS invoice_transport,
                 comp_transport.code AS company_transport,
                 CASE WHEN inv_line.intrastat_transaction_id IS NULL THEN '1' ELSE transaction.code END AS trans_code,
-                CASE WHEN inv.type IN ('in_invoice', 'out_refund') THEN 'Arrival' ELSE 'Dispatch' END AS type,
+                CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN 'Arrival' ELSE 'Dispatch' END AS type,
                 prodt.weight * inv_line.quantity * (
                     CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
                     THEN 1 ELSE inv_line_uom.factor END
@@ -162,7 +162,7 @@ class IntrastatReport(models.AbstractModel):
                 AND coalesce(inv.date, inv.invoice_date) <= %(date_to)s
                 AND prodt.type != 'service'
                 AND inv.journal_id IN %(journal_ids)s
-                AND inv.type IN %(invoice_types)s
+                AND inv.move_type IN %(invoice_types)s
                 '''
         order = 'inv.invoice_date DESC'
         params = {

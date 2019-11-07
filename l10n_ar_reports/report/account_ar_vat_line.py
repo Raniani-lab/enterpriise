@@ -21,7 +21,7 @@ class AccountArVatLine(models.Model):
     afip_responsibility_type_name = fields.Char(readonly=True)
     partner_name = fields.Char(readonly=True)
     move_name = fields.Char(readonly=True)
-    type = fields.Selection(selection=[
+    move_type = fields.Selection(selection=[
             ('entry', 'Journal Entry'),
             ('out_invoice', 'Customer Invoice'),
             ('out_refund', 'Customer Credit Note'),
@@ -76,7 +76,7 @@ SELECT
     am.name as move_name,
     rp.name as partner_name,
     am.id as move_id,
-    am.type,
+    am.move_type,
     am.date,
     am.invoice_date,
     am.partner_id,
@@ -133,7 +133,7 @@ LEFT JOIN
     ON am.l10n_ar_afip_responsibility_type_id = art.id
 WHERE
     (aml.tax_line_id is not null or btg.l10n_ar_vat_afip_code is not null)
-    and am.type in ('out_invoice', 'in_invoice', 'out_refund', 'in_refund')
+    and am.move_type in ('out_invoice', 'in_invoice', 'out_refund', 'in_refund')
 GROUP BY
     am.id, art.name, rp.id, lit.id
 ORDER BY

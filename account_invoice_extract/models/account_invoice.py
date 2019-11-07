@@ -83,7 +83,7 @@ class AccountMove(models.Model):
             can_show = False
         if record.state != 'draft':
             can_show = False
-        if record.type in ('out_invoice', 'out_refund'):
+        if record.move_type in ('out_invoice', 'out_refund'):
             can_show = False
         if record.message_main_attachment_id is None or len(record.message_main_attachment_id) == 0:
             can_show = False
@@ -136,7 +136,7 @@ class AccountMove(models.Model):
         message = super(AccountMove, self).message_post(**kwargs)
         if self.env.company.extract_show_ocr_option_selection == 'auto_send':
             for record in self:
-                if record.type in ['in_invoice', 'in_refund'] and record.extract_state == "no_extract_requested":
+                if record.move_type in ['in_invoice', 'in_refund'] and record.extract_state == "no_extract_requested":
                     record.retry_ocr()
         return message
 
@@ -145,7 +145,7 @@ class AccountMove(models.Model):
         if self.env.company.extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
-        if attachments and attachments.exists() and self.type in ['in_invoice', 'in_refund'] and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
+        if attachments and attachments.exists() and self.move_type in ['in_invoice', 'in_refund'] and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
             account_token = self.env['iap.account'].get('invoice_ocr')
             user_infos = {
                 'user_company_VAT': self.company_id.vat,
@@ -274,7 +274,7 @@ class AccountMove(models.Model):
         # OVERRIDE
         # On the validation of an invoice, send the different corrected fields to iap to improve the ocr algorithm.
         res = super(AccountMove, self).post()
-        for record in self.filtered(lambda move: move.type in ['in_invoice', 'in_refund']):
+        for record in self.filtered(lambda move: move.move_type in ['in_invoice', 'in_refund']):
             if record.extract_state == 'waiting_validation':
                 values = {
                     'total': record.get_validation('total'),
@@ -469,7 +469,7 @@ class AccountMove(models.Model):
         taxes_found = self.env['account.tax']
         for (taxes, taxes_type) in zip(taxes_ocr, taxes_type_ocr):
             if taxes != 0.0:
-                related_documents = self.env['account.move'].search([('state', '!=', 'draft'), ('type', '=', self.type), ('partner_id', '=', self.partner_id.id)])
+                related_documents = self.env['account.move'].search([('state', '!=', 'draft'), ('move_type', '=', self.move_type), ('partner_id', '=', self.partner_id.id)])
                 lines = related_documents.mapped('invoice_line_ids')
                 taxes_ids = related_documents.mapped('invoice_line_ids.tax_ids')
                 taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == 'purchase')

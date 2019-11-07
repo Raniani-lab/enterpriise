@@ -15,7 +15,7 @@ class TestAccountFollowup(TestAccountReportsCommon2):
         date_sale = fields.Date.today()
 
         # Company 0
-        invoice_move = self.env['account.move'].with_context(default_type='out_invoice').create({
+        invoice_move = self.env['account.move'].with_context(default_move_type='out_invoice').create({
             'partner_id': self.partner_timmy_thomas.id,
             'date': date_sale,
             'journal_id': self.sale_journal.id,
@@ -39,7 +39,7 @@ class TestAccountFollowup(TestAccountReportsCommon2):
         })
         self.partner_timmy_thomas.with_company(company1.id).property_account_receivable_id = account_rec1
 
-        invoice_move1 = self.env['account.move'].with_context(default_type='out_invoice').create({
+        invoice_move1 = self.env['account.move'].with_context(default_move_type='out_invoice').create({
             'partner_id': self.partner_timmy_thomas.id,
             'date': date_sale,
             'journal_id': sale_journal1.id,
@@ -109,13 +109,13 @@ class TestAccountFollowup(TestAccountReportsCommon2):
             {
                 'partner_id': test_partner.id,
                 'invoice_date': today + relativedelta(days=-10),
-                'type': 'out_invoice',
+                'move_type': 'out_invoice',
                 'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 40})],
             },
             {
                 'partner_id': test_partner.id,
                 'invoice_date': today + relativedelta(days=-11),
-                'type': 'out_invoice',
+                'move_type': 'out_invoice',
                 'invoice_line_ids': [(0, 0, {'quantity': 2, 'price_unit': 40})],
             },
         ])
@@ -182,7 +182,7 @@ class TestAccountReportsCommon2(TestAccountReportsCommon2):
         today_invoice = self.env['account.move'].create({
             'partner_id': test_partner.id,
             'invoice_date': tomorrow,
-            'type': 'out_invoice',
+            'move_type': 'out_invoice',
             'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 40})]
         })
         today_invoice.post()
@@ -194,7 +194,7 @@ class TestAccountReportsCommon2(TestAccountReportsCommon2):
         ten_days_ago_invoice = self.env['account.move'].create({
             'partner_id': test_partner.id,
             'invoice_date': ten_days_ago,
-            'type': 'out_invoice',
+            'move_type': 'out_invoice',
             'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 30})]
         })
         ten_days_ago_invoice.post()
@@ -206,7 +206,7 @@ class TestAccountReportsCommon2(TestAccountReportsCommon2):
         forty_days_ago_invoice = self.env['account.move'].create({
             'partner_id': test_partner.id,
             'invoice_date': forty_days_ago,
-            'type': 'out_invoice',
+            'move_type': 'out_invoice',
             'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 20})]
         })
         forty_days_ago_invoice.post()

@@ -542,7 +542,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 account_move_line__move_id.name         AS move_name,
                 company.currency_id                     AS company_currency_id,
                 partner.name                            AS partner_name,
-                account_move_line__move_id.type         AS move_type,
+                account_move_line__move_id.move_type         AS move_type,
                 account.code                            AS account_code,
                 account.name                            AS account_name,
                 journal.code                            AS journal_code,

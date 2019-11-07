@@ -123,7 +123,7 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
 
     def create_payment(self, invoice, date, amount, journal, currency_id):
         payment_method_id = self.payment_method_manual_out.id
-        if invoice.type == 'in_invoice':
+        if invoice.move_type == 'in_invoice':
             payment_method_id = self.payment_method_manual_in.id
 
         default_dict = self.payment_model.with_context(active_model='account.move', active_ids=invoice.id).default_get(self.payment_model.fields_get_keys())

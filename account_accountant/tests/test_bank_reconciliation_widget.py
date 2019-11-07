@@ -14,7 +14,7 @@ class TestBankStatementReconciliation(AccountTestCommon):
 
     def test_reconciliation_proposition(self):
         move = self.env['account.move'].create({
-            'type': 'out_invoice',
+            'move_type': 'out_invoice',
             'partner_id': self.partner.id,
             'invoice_line_ids': [(0, 0, {
                 'quantity': 1,

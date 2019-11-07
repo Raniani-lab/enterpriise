@@ -69,7 +69,7 @@ def compute_net_revenue(start_date, end_date, filters):
     conditions = [
         "account_move.invoice_date BETWEEN %(start_date)s AND %(end_date)s",
         "account_move_line.move_id = account_move.id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
     ]
 
@@ -99,7 +99,7 @@ def compute_ltv(start_date, end_date, filters):
     conditions = [
         "date %(date)s BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')"
     ]
 
@@ -119,7 +119,7 @@ def compute_nrr(start_date, end_date, filters):
     conditions = [
         "(account_move.invoice_date BETWEEN %(start_date)s AND %(end_date)s)",
         "account_move_line.move_id = account_move.id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         "account_move_line.subscription_start_date IS NULL",
     ]
@@ -138,7 +138,7 @@ def compute_nb_contracts(start_date, end_date, filters):
     conditions = [
         "date %(date)s BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         #"account_move_line.subscription_id IS NOT NULL"
     ]
@@ -156,7 +156,7 @@ def compute_mrr(start_date, end_date, filters):
     conditions = [
         "date %(date)s BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')"
     ]
 
@@ -174,7 +174,7 @@ def compute_logo_churn(start_date, end_date, filters):
     conditions = [
         "date %(date)s - interval '1 months' BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         "account_move_line.subscription_id IS NOT NULL"
     ]
@@ -190,7 +190,7 @@ def compute_logo_churn(start_date, end_date, filters):
     conditions = [
         "date %(date)s - interval '1 months' BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         "account_move_line.subscription_id IS NOT NULL",
         """NOT exists (
@@ -217,7 +217,7 @@ def compute_revenue_churn(start_date, end_date, filters):
     conditions = [
         "date %(date)s - interval '1 months' BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         "account_move_line.subscription_id IS NOT NULL",
         """NOT exists (
@@ -250,7 +250,7 @@ def compute_mrr_growth_values(start_date, end_date, filters):
     conditions = [
         "date %(date)s BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         "account_move_line.subscription_id IS NOT NULL",
         """NOT exists (
@@ -272,21 +272,21 @@ def compute_mrr_growth_values(start_date, end_date, filters):
     tables = ['account_move_line', 'account_move']
     conditions = [
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
     ]
     groupby = "account_move_line.subscription_id"
 
     subquery_1 = _build_sql_query(fields, tables, [
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         "account_move_line.subscription_start_date BETWEEN date %(date)s - interval '1 months' + interval '1 days' and date %(date)s"
     ], {'date': end_date}, filters, groupby=groupby)
 
     subquery_2 = _build_sql_query(fields, tables, [
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         "account_move_line.subscription_end_date BETWEEN date %(date)s - interval '1 months' + interval '1 days' and date %(date)s"
     ], {'date': end_date}, filters, groupby=groupby)
@@ -313,7 +313,7 @@ def compute_mrr_growth_values(start_date, end_date, filters):
     conditions = [
         "date %(date)s - interval '1 months' BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
         "account_move.id = account_move_line.move_id",
-        "account_move.type IN ('out_invoice', 'out_refund')",
+        "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         "account_move_line.subscription_id IS NOT NULL",
         """NOT exists (

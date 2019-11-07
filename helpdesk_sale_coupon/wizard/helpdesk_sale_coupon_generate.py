@@ -15,12 +15,15 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
         """Generates a coupon for the selected program and the partner linked
         to the ticket
         """
+        if not self.env.user.has_group('sales_team.group_sale_salesman') or not self.env.user.has_group('helpdesk.group_helpdesk_user'):
+            return []
         vals = {
             'partner_id': self.ticket_id.partner_id.id,
             'state': 'new',
             'program_id': self.program.id,
         }
-        coupon = self.env['sale.coupon'].create(vals)
+        # Sudo because normally, only sale manager can generate coupons, but here in case of helpdesk, it's usefull
+        coupon = self.env['sale.coupon'].sudo().create(vals)
         self.ticket_id.coupon_ids |= coupon
         return {
             'type': 'ir.actions.act_window',

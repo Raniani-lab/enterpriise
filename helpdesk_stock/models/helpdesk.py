@@ -21,7 +21,7 @@ class HelpdeskTicket(models.Model):
 
     def action_view_pickings(self):
         self.ensure_one()
-        return {
+        action = {
             'type': 'ir.actions.act_window',
             'name': _('Return Orders'),
             'res_model': 'stock.picking',
@@ -29,3 +29,9 @@ class HelpdeskTicket(models.Model):
             'domain': [('id', 'in', self.picking_ids.ids)],
             'context': dict(self._context, create=False, default_company_id=self.company_id.id)
         }
+        if self.pickings_count == 1:
+            action.update({
+                'view_mode': 'form',
+                'res_id': self.picking_ids.id
+            })
+        return action

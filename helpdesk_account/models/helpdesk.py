@@ -17,11 +17,17 @@ class HelpdeskTicket(models.Model):
 
     def action_view_invoices(self):
         self.ensure_one()
-        return {
+        action = {
             'type': 'ir.actions.act_window',
             'name': _('Credit Notes'),
             'res_model': 'account.move',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.invoice_ids.ids)],
-            'context': dict(self._context, default_partner_id=self.partner_id.id, default_type='out_refund', create=False, edit=False)
+            'context': dict(self._context, default_partner_id=self.partner_id.id, default_type='out_refund', create=False)
         }
+        if self.invoices_count == 1:
+            action.update({
+                'view_mode': 'form',
+                'res_id': self.invoice_ids.id
+            })
+        return action

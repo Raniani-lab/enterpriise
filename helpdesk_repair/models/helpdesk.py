@@ -19,11 +19,17 @@ class HelpdeskTicket(models.Model):
 
     def action_view_repairs(self):
         self.ensure_one()
-        return {
+        action = {
             'type': 'ir.actions.act_window',
             'name': _('Repairs'),
             'res_model': 'repair.order',
             'view_mode': 'tree,form',
-            'domain': [('ticket_id', '=', self.id)],
+            'domain': [('id', 'in', self.repair_ids.ids)],
             'context': dict(self._context, create=False, default_company_id=self.company_id.id, default_ticket_id=self.id),
         }
+        if self.repairs_count == 1:
+            action.update({
+                'view_mode': 'form',
+                'res_id': self.repair_ids.id
+            })
+        return action

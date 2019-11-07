@@ -182,6 +182,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         }
         return {
             'wage': $("input[name='wage']")[0].value,
+            'wage_with_holidays': $("input[name='wage_with_holidays']")[0].value,
             'internet': $("input[name='internet']")[0].value,
             'has_mobile': $("input[name='mobile']")[1].checked,
             'fuel_card': parseFloat($("input[name='fuel_card_input']")[0].value) || 0.0,

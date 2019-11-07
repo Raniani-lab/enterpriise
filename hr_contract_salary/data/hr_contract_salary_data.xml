@@ -59,7 +59,7 @@
 
             <h3>Monthly Advantages in Cash</h3>
             <ul>
-                <li>Wage: <t t-esc="advantages['wage']"/>  €/month</li>
+                <li>Wage: <t t-esc="advantages['wage_with_holidays']"/>  €/month</li>
                 <li>Fuel Card: <t t-esc="advantages['fuel_card']"/> €/month</li>
                 <li>Meal Vouchers: <t t-esc="advantages['meal_voucher_amount'] / 20.0"/> €/Worked Day</li>
                 <li>Representation Fees: <t t-esc="advantages['representation_fees']"/> €/month</li>

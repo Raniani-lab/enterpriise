@@ -30,7 +30,7 @@
 
         <menuitem
             name="Yearly Salary by Employee"
-            parent="hr.menu_hr_reporting_timesheet"
+            parent="hr.hr_menu_hr_reports"
             action="action_yearly_salary_detail"
             sequence="250"
             id="menu_yearly_salary_detail"

@@ -31,7 +31,7 @@
 
         <menuitem
             name="Yearly Salary by Head"
-            parent="hr.menu_hr_reporting_timesheet"
+            parent="hr.hr_menu_hr_reports"
             sequence="200"
             action="action_salary_employee_month"
             id="menu_salary_employee_month"

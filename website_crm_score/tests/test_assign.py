@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from odoo.addons.website_crm_score.tests.common import TestScoring
+from odoo.addons.website_crm_score.tests.common import TestScoringCommon
 from odoo.tools import mute_logger
 
 
-class test_assign(TestScoring):
+class test_assign(TestScoringCommon):
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.models')
     def test_00_assign(self):

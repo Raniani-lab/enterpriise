@@ -4,10 +4,10 @@ from odoo.tests import common
 from mock import Mock
 
 
-class TestScoring(common.TransactionCase):
+class TestScoringCommon(common.TransactionCase):
 
     def setUp(self):
-        super(TestScoring, self).setUp()
+        super(TestScoringCommon, self).setUp()
 
         self.env.cr.commit = Mock(return_value=None)
 
@@ -148,6 +148,3 @@ class TestScoring(common.TransactionCase):
             'domain': "[('name', '=like', '% to delete')]",
             'rule_type': 'unlink',
         }).id
-
-    def tearDown(self):
-        super(TestScoring, self).tearDown()

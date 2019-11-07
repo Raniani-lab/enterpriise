@@ -32,7 +32,6 @@ class AccountMoveReversal(models.TransientModel):
         res = super(AccountMoveReversal, self).reverse_moves()
 
         if self.helpdesk_ticket_id:
-            reverse_move = self.env['account.move'].browse(res['res_id'])
-            self.helpdesk_ticket_id.invoice_ids |= reverse_move
+            self.helpdesk_ticket_id.invoice_ids |= self.new_move_ids
 
         return res

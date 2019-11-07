@@ -15,11 +15,12 @@ class SepaDirectDebitCommon(PaymentAcquirerCommon):
         self.company = self.env.ref('base.main_company')
         self.company.sdd_creditor_identifier = 'BE30ZZZ300D000000042'
         self.EUR = self.env.ref('base.EUR').id
-
+        bank_ing = self.env['res.bank'].create({'name': 'ING', 'bic': 'BBRUBEBB'})
+        
         self.sepa_bank_account = self.env['res.partner.bank'].create({
             'acc_number': 'NL91 ABNA 0417 1643 00',
             'partner_id': self.company.partner_id.id,
-            'bank_id': self.env.ref('base.bank_ing').id,
+            'bank_id': bank_ing.id,
         })
 
         assert self.sepa_bank_account.acc_type == 'iban'

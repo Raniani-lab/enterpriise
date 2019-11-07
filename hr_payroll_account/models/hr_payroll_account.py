@@ -215,5 +215,5 @@ class HrPayrollStructure(models.Model):
 
     journal_id = fields.Many2one('account.journal', 'Salary Journal', readonly=False, required=False,
         company_dependent=True,
-        default=lambda self: self.env['account.journal'].search([
+        default=lambda self: self.env['account.journal'].sudo().search([
             ('type', '=', 'general'), ('company_id', '=', self.env.company.id)], limit=1))

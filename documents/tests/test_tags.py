@@ -35,8 +35,10 @@ class TestTags(TransactionCase):
             'id': tag_assets_ads.id,
             'name': tag_assets_ads.name,
             'sequence': tag_assets_ads.sequence,
-            'count': 1,
+            # 'count': 1, # Not relevant, and depending on the db data
         }
+        first_tag = tags[0]
+        first_tag.pop('count')
         self.assertEqual(tags[0], first_record, 'first record should match')
 
         last_record = {
@@ -72,9 +74,11 @@ class TestTags(TransactionCase):
             'id': tag_assets_images.id,
             'name': tag_assets_images.name,
             'sequence': tag_assets_images.sequence,
-            'count': 1,
+            # 'count': 1, # Not relevant, and depending on the db data
         }
-        self.assertEqual(tags[0], first_record, 'first record should match')
+        first_tag = tags[0]
+        first_tag.pop('count')
+        self.assertEqual(first_tag, first_record, 'first record should match')
 
         last_record = {
             'group_id': facet_assets.id,
@@ -84,12 +88,17 @@ class TestTags(TransactionCase):
             'id': tag_assets_videos.id,
             'name': tag_assets_videos.name,
             'sequence': tag_assets_videos.sequence,
-            'count': 0,
+            # 'count': 0, # Not relevant, and depending on the db data
         }
-        self.assertEqual(tags[-1], last_record, 'last record should match')
+        second_tag = tags[-1]
+        second_tag.pop('count')
+        self.assertEqual(second_tag, last_record, 'last record should match')
 
     def test_get_tags_empty_folder(self):
-        empty_folder_id = self.ref('documents.documents_marketing_brand1_folder')
+        empty_folder_id = self.env['documents.folder'].create({
+            'name': 'Empty Folder',
+            'parent_folder_id': self.env.ref('documents.documents_marketing_folder').id,
+        }).id
         facet_assets = self.env['documents.facet'].browse(self.ref('documents.documents_marketing_assets'))
         tag_assets_ads = self.env['documents.tag'].browse(self.ref('documents.documents_marketing_assets_ads'))
         tag_assets_videos = self.env['documents.tag'].browse(self.ref('documents.documents_marketing_assets_Videos'))

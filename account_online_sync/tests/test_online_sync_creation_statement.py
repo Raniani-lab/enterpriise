@@ -335,7 +335,7 @@ class TestSynchStatementCreation(AccountingTestCase):
 
     def test_assign_partner_auto_bank_stmt(self):
         self.bank_journal.write({'bank_statement_creation': 'day'})
-        agrolait = self.env.ref("base.res_partner_2")
+        agrolait = self.env['res.partner'].create({'name': 'A partner'})
         self.assertEqual(agrolait.online_partner_vendor_name, False)
         self.assertEqual(agrolait.online_partner_bank_account, False)
         transactions = self.create_transaction_partner(date='2016-01-01', vendor_name='test_vendor_name')

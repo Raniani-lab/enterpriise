@@ -15,6 +15,17 @@ class TestCamtFile(TransactionCase):
         self.env['res.users'].browse([1]).lang = False
 
     def test_camt_file_import(self):
+        partner_norbert = self.env['res.partner'].create({
+            'name': 'Norbert Brant',
+            'is_company': True,
+        })
+        partner_bank_norbert = self.env['res.partner.bank'].create({
+            'acc_number': 'BE93999574162167',
+            'partner_id': partner_norbert.id,
+            'bank_id': self.env.ref('base.res_bank_1').id,
+        })
+
+
         # Get CAMT file content
         camt_file_path = get_module_resource('account_bank_statement_import_camt', 'test_camt_file', 'test_camt.xml')
         camt_file = base64.b64encode(open(camt_file_path, 'rb').read())
@@ -39,9 +50,9 @@ class TestCamtFile(TransactionCase):
 
         # Check an imported bank statement line
         line = bank_st_record.line_ids.filtered(lambda r: r.ref == 'INNDNL2U20150105000217200000708')
-        self.assertEqual(line.partner_name, 'Deco Addict')
+        self.assertEqual(line.partner_name, 'Norbert Brant')
         self.assertEqual(line.amount, 1636.88)
-        self.assertEqual(line.partner_id.id, self.ref('base.res_partner_2'))
+        self.assertEqual(line.partner_id.id, partner_norbert.id)
 
     def test_minimal_camt_file_import(self):
         # Create a bank account and journal corresponding to the CAMT

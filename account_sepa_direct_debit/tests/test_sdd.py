@@ -51,7 +51,7 @@ class SDDTest(AccountingTestCase):
             'invoice_payment_ref': 'invoice to client',
             'type': 'out_invoice',
             'invoice_line_ids': [(0, 0, {
-                'product_id': self.env.ref("product.product_product_4").id,
+                'product_id': self.env['product.product'].create({'name': 'A Test Product'}),
                 'quantity': 1,
                 'price_unit': 42,
                 'name': 'something',
@@ -69,16 +69,18 @@ class SDDTest(AccountingTestCase):
         company.sdd_creditor_identifier = 'BE30ZZZ300D000000042'
         company_bank_journal = self.env['account.journal'].search([('company_id', '=', company.id), ('type', '=', 'bank')], limit=1)
         company_bank_journal.bank_acc_number = 'CH9300762011623852957'
-        company_bank_journal.bank_account_id.bank_id = self.env.ref('base.bank_ing')
+        bank_ing = self.env['res.bank'].create({'name': 'ING', 'bic': 'BBRUBEBB'})
+        bank_bnp = self.env['res.bank'].create({'name': 'BNP Paribas', 'bic': 'GEBABEBB'})
+        company_bank_journal.bank_account_id.bank_id = bank_ing
 
         # Then we setup the banking data and mandates of two customers (one with a one-off mandate, the other with a recurrent one)
-        partner_agrolait = self.env.ref("base.res_partner_2")
-        partner_bank_agrolait = self.create_account('DE44500105175407324931', partner_agrolait, self.env.ref('base.bank_ing'))
+        partner_agrolait = self.env['res.partner'].create({'name': 'Agrolait'})
+        partner_bank_agrolait = self.create_account('DE44500105175407324931', partner_agrolait, bank_ing)
         mandate_agrolait = self.create_mandate(partner_agrolait, partner_bank_agrolait, False, company, user.id, company_bank_journal)
         mandate_agrolait.action_validate_mandate()
 
-        partner_china_export = self.env.ref("base.res_partner_3")
-        partner_bank_china_export = self.create_account('SA0380000000608010167519', partner_china_export, self.env.ref('base.bank_bnp'))
+        partner_china_export = self.env['res.partner'].create({'name': 'China Export'})
+        partner_bank_china_export = self.create_account('SA0380000000608010167519', partner_china_export, bank_bnp)
         mandate_china_export = self.create_mandate(partner_china_export, partner_bank_china_export, True, company, user.id, company_bank_journal)
         mandate_china_export.action_validate_mandate()
 

@@ -11,10 +11,9 @@ class TestRentalCommon(common.SingleTransactionCase):
     def setUpClass(cls):
         super(TestRentalCommon, cls).setUpClass()
 
-        cls.product_id = cls.env.ref('sale_renting.rental_product_1')
         cls.product_id = cls.env['product.product'].create({
             'name': 'Test1',
-            'categ_id': cls.env.ref('sale_renting.cat_renting').id,  # remove category if possible?
+            'categ_id': cls.env.ref('product.product_category_all').id,  # remove category if possible?
             'uom_id': cls.env.ref('uom.product_uom_unit').id,
             'uom_po_id': cls.env.ref('uom.product_uom_unit').id,
             'rent_ok': True,
@@ -22,7 +21,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         })
         cls.tracked_product_id = cls.env['product.product'].create({
             'name': 'Test2',
-            'categ_id': cls.env.ref('sale_renting.cat_renting').id,  # remove category if possible?
+            'categ_id': cls.env.ref('product.product_category_all').id,  # remove category if possible?
             'uom_id': cls.env.ref('uom.product_uom_unit').id,
             'uom_po_id': cls.env.ref('uom.product_uom_unit').id,
             'rent_ok': True,

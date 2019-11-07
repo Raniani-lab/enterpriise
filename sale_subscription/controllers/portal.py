@@ -22,7 +22,8 @@ class CustomerPortal(CustomerPortal):
         """ Add subscription details to main account page """
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
         partner = request.env.user.partner_id
-        values['subscription_count'] = request.env['sale.subscription'].search_count(self._get_subscription_domain(partner))
+        # an internal user could not have access to subscriptions, and still have a subscription
+        values['subscription_count'] = request.env['sale.subscription'].sudo().search_count(self._get_subscription_domain(partner))
         return values
 
     @http.route(['/my/subscription', '/my/subscription/page/<int:page>'], type='http', auth="user", website=True)

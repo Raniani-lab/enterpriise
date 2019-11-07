@@ -29,13 +29,13 @@ class TestStockReport(common.TransactionCase):
         # without domain
         value = self.env['stock.report'].with_context(debug=True).read_group([], ['valuation:sum(valuation)'], '')
 
-        self.assertEqual(value[0]['valuation'], self.total_move_valuation,
+        self.assertEqual(value[0]['valuation'] or 0.0, self.total_move_valuation,
                          "Calling read group with valuation and without domain should give the total move valuation of the inventory")
 
         # with domain
         value = self.env['stock.report'].read_group([('picking_type_code', '=', 'incoming')], ['valuation:sum(valuation)'], '')
 
-        self.assertEqual(value[0]['valuation'], self.incoming_move_valuation,
+        self.assertEqual(value[0]['valuation'] or 0.0, self.incoming_move_valuation,
                          "Calling read group with valuation and with domain should give the move valuation for this domain")
 
         # Doesn't support group by

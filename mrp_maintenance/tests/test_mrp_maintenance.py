@@ -21,7 +21,12 @@ class TestMrpMaintenance(common.TransactionCase):
         self.maintenance_team_id = self.env.ref('maintenance.equipment_team_maintenance')
         self.stage_repaired_id = self.ref('maintenance.stage_3')
         self.stage_id = self.ref('maintenance.stage_0')
-        self.category_id = self.env.ref('maintenance.equipment_monitor')
+        self.category_id = self.env['maintenance.equipment.category'].create({
+            'name': 'Monitors - Test',
+            'technician_user_id': self.env.ref('base.user_admin').id,
+            'color': 3,
+            'alias_id': self.env.ref('maintenance.mail_alias_equipment').id,
+        })
 
         # Create user
         self.user = self.ResUsers.create({

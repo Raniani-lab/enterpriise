@@ -10,6 +10,16 @@ class TestOfxFile(TransactionCase):
     """ Tests for import bank statement ofx file format (account.bank.statement.import) """
 
     def test_ofx_file_import(self):
+        partner_norbert = self.env['res.partner'].create({
+            'name': 'Norbert Brant',
+            'is_company': True,
+        })
+        partner_bank_norbert = self.env['res.partner.bank'].create({
+            'acc_number': 'BE93999574162167',
+            'partner_id': partner_norbert.id,
+            'bank_id': self.env.ref('base.res_bank_1').id,
+        })
+
         # Get OFX file content
         ofx_file_path = get_module_resource('account_bank_statement_import_ofx', 'static/ofx', 'test_ofx.ofx')
         ofx_file = base64.b64encode(open(ofx_file_path, 'rb').read())
@@ -36,7 +46,7 @@ class TestOfxFile(TransactionCase):
 
         # Check an imported bank statement line
         line = bank_st_record.line_ids.filtered(lambda r: r.unique_import_id == '123456-'+str(bank_journal.id)+'-219378')
-        self.assertEqual(line.name, 'Deco Addict')
+        self.assertEqual(line.name, 'Norbert Brant')
         self.assertEqual(line.amount, -80)
-        self.assertEqual(line.partner_id.id, self.ref('base.res_partner_2'))
-        self.assertEqual(line.bank_account_id.id, self.ref('account_bank_statement_import.ofx_partner_bank_1'))
+        self.assertEqual(line.partner_id.id, partner_norbert.id)
+        self.assertEqual(line.bank_account_id.id, partner_bank_norbert.id)

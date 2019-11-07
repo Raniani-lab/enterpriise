@@ -14,7 +14,11 @@ class TestUi(odoo.tests.HttpCase):
         bank_stmt_name = 'BNK/%s/0001' % time.strftime('%Y')
         bank_stmt_line = self.env['account.bank.statement'].search([('name', '=', bank_stmt_name)]).mapped('line_ids')
         if not bank_stmt_line:
-             _logger.exception('Could not find bank statement %s' % bank_stmt_name)
+            _logger.info('Could not find bank statement %s' % bank_stmt_name)
+            # The test relies on several demo data, like
+            # Several invoices, a bank statement and a configured CoA on the company.
+            # This data should be created inside this test
+            self.skipTest("The test test_01_admin_bank_statement_reconciliation should be adapted to work without demo data")
 
         # To be able to test reconciliation, admin user must have access to accounting features, so we give him the right group for that
         self.env.ref('base.user_admin').write({'groups_id': [(4, self.env.ref('account.group_account_user').id)]})
@@ -61,7 +65,7 @@ class TestReconciliationWidget(TestReconciliation):
         receivable2 = inv2.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
 
         bank_stmt = self.acc_bank_stmt_model.create({
-            'company_id': self.env.ref('base.main_company').id,
+            'company_id': self.company.id,
             'journal_id': self.bank_journal_euro.id,
             'date': time.strftime('%Y-07-15'),
             'name': 'test',
@@ -138,7 +142,7 @@ class TestReconciliationWidget(TestReconciliation):
         self.create_invoice_partner(currency_id=self.currency_euro_id, partner_id=child_partner.id)
 
         bank_stmt = self.acc_bank_stmt_model.create({
-            'company_id': self.env.ref('base.main_company').id,
+            'company_id': self.company.id,
             'journal_id': self.bank_journal_euro.id,
             'date': time.strftime('%Y-07-15'),
             'name': 'test',
@@ -176,7 +180,10 @@ class TestReconciliationWidget(TestReconciliation):
             {
                 'name': 'line product',
                 'move_id': move_product.id,
-                'account_id': self.env['account.account'].search([('user_type_id', '=', self.env.ref('account.data_account_type_revenue').id)], limit=1).id,
+                'account_id': self.env['account.account'].search([
+                    ('user_type_id', '=', self.env.ref('account.data_account_type_revenue').id),
+                    ('company_id', '=', self.company.id)
+                ], limit=1).id,
                 'debit': 20,
                 'credit': 0,
             },
@@ -193,7 +200,9 @@ class TestReconciliationWidget(TestReconciliation):
         move_payment = self.env['account.move'].create({
             'ref': 'move payment',
         })
-        liquidity_account = self.env['account.account'].search([('user_type_id', '=', self.env.ref('account.data_account_type_liquidity').id)], limit=1)
+        liquidity_account = self.env['account.account'].search([
+            ('user_type_id', '=', self.env.ref('account.data_account_type_liquidity').id),
+            ('company_id', '=', self.company.id)], limit=1)
         move_payment_lines = self.env['account.move.line'].create([
             {
                 'name': 'line product',
@@ -229,16 +238,16 @@ class TestReconciliationWidget(TestReconciliation):
                 'credit': 0,
                 'date': time.strftime('%Y') + '-01-01',
                 'debit': 15.0,
-                'journal_id': self.env['account.journal'].search([('type', '=', 'sale')], limit=1).id,
+                'journal_id': self.env['account.journal'].search([('type', '=', 'sale'), ('company_id', '=', self.company.id)], limit=1).id,
                 'name': 'writeoff',
             }],
         }])
 
-        writeoff_line = self.env['account.move.line'].search([('name', '=', 'writeoff')])
+        writeoff_line = self.env['account.move.line'].search([('name', '=', 'writeoff'), ('company_id', '=', self.company.id)])
         self.assertEqual(writeoff_line.credit, 15.0)
 
     def test_inv_refund_foreign_payment_writeoff_domestic(self):
-        company = self.env.ref('base.main_company')
+        company = self.company
         self.env['res.currency.rate'].search([]).unlink()
         self.env['res.currency.rate'].create({
             'name': time.strftime('%Y') + '-07-01',
@@ -250,7 +259,7 @@ class TestReconciliationWidget(TestReconciliation):
             'name': time.strftime('%Y') + '-07-01',
             'rate': 1.113900,  # Don't change this !
             'currency_id': self.currency_usd_id,
-            'company_id': self.env.ref('base.main_company').id
+            'company_id': self.company.id
         })
         inv1 = self.create_invoice(invoice_amount=480, currency_id=self.currency_usd_id)
         inv2 = self.create_invoice(type="out_refund", invoice_amount=140, currency_id=self.currency_usd_id)

@@ -9,24 +9,25 @@ from odoo.addons.hr_payroll.tests.common import TestPayslipContractBase
 
 class TestPayslipComputation(TestPayslipContractBase):
 
-    def setUp(self):
-        super(TestPayslipComputation, self).setUp()
+    @classmethod
+    def setUpClass(cls):
+        super(TestPayslipComputation, cls).setUpClass()
 
-        self.richard_payslip = self.env['hr.payslip'].create({
+        cls.richard_payslip = cls.env['hr.payslip'].create({
             'name': 'Payslip of Richard',
-            'employee_id': self.richard_emp.id,
-            'contract_id': self.contract_cdi.id,  # wage = 5000 => average/day (over 3months/13weeks): 230.77
-            'struct_id': self.developer_pay_structure.id,
+            'employee_id': cls.richard_emp.id,
+            'contract_id': cls.contract_cdi.id,  # wage = 5000 => average/day (over 3months/13weeks): 230.77
+            'struct_id': cls.developer_pay_structure.id,
             'date_from': date(2016, 1, 1),
             'date_to': date(2016, 1, 31)
         })
-        self.richard_emp.resource_calendar_id = self.contract_cdi.resource_calendar_id
+        cls.richard_emp.resource_calendar_id = cls.contract_cdi.resource_calendar_id
 
-        self.richard_payslip_quarter = self.env['hr.payslip'].create({
+        cls.richard_payslip_quarter = cls.env['hr.payslip'].create({
             'name': 'Payslip of Richard Quarter',
-            'employee_id': self.richard_emp.id,
-            'contract_id': self.contract_cdi.id,
-            'struct_id': self.developer_pay_structure.id,
+            'employee_id': cls.richard_emp.id,
+            'contract_id': cls.contract_cdi.id,
+            'struct_id': cls.developer_pay_structure.id,
             'date_from': date(2016, 1, 1),
             'date_to': date(2016, 3, 31)
         })

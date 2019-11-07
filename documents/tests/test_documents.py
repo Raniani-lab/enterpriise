@@ -278,6 +278,7 @@ class TestCaseDocuments(TransactionCase):
         """
         Makes sure the document request activities are working properly
         """
+        partner = self.env['res.partner'].create({'name': 'Pepper Street'})
         activity_type = self.env['mail.activity.type'].create({
             'name': 'test_activity_type',
             'category': 'upload_file',
@@ -286,7 +287,7 @@ class TestCaseDocuments(TransactionCase):
         activity = self.env['mail.activity'].create({
             'activity_type_id': activity_type.id,
             'user_id': self.doc_user.id,
-            'res_id': self.env['res.partner'].search([('name', 'ilike', 'Deco Addict')], limit=1).id,
+            'res_id': partner.id,
             'res_model_id': self.env['ir.model'].search([('model', '=', 'res.partner')], limit=1).id,
             'summary': 'test_summary',
         })
@@ -294,7 +295,7 @@ class TestCaseDocuments(TransactionCase):
         activity_2 = self.env['mail.activity'].create({
             'activity_type_id': activity_type.id,
             'user_id': self.doc_user.id,
-            'res_id': self.env['res.partner'].search([('name', 'ilike', 'Deco Addict')], limit=1).id,
+            'res_id': partner.id,
             'res_model_id': self.env['ir.model'].search([('model', '=', 'res.partner')], limit=1).id,
             'summary': 'test_summary_2',
         })

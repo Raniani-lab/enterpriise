@@ -10,7 +10,7 @@ from odoo.addons.account.tests.account_test_classes import AccountingTestCase
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.tests import tagged
-from odoo import fields
+from odoo import fields, tools
 import requests
 import json
 
@@ -34,16 +34,28 @@ class MockResponse:
 @tagged('post_install', '-at_install')
 class TestYodleeApi(AccountingTestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        super(TestYodleeApi, cls).setUpClass()
+        cls.db_name = cls.env.cr.dbname
+        cls.db_uid = cls.env['ir.config_parameter'].get_param('database.uuid')
+        cls.url = 'https://onlinesync.odoo.com/yodlee/api/2'
+        cls.no_account = False
+        cls.journal_id = cls.env['account.journal'].search([('type', '=', 'bank')], limit=1).id or False
+        cls.online_identifier = '2829798'
+        cls.online_bank_number = '836726'
+        cls.online_vendor_name = False
+        cls.statement_count = 1
+
+
     def setUp(self):
-        super(TestYodleeApi, self).setUp()
-        self.db_name = self.env.cr.dbname
-        self.db_uid = self.env['ir.config_parameter'].get_param('database.uuid')
-        self.url = 'https://onlinesync.odoo.com/yodlee/api/2'
-        self.no_account = False
-        self.journal_id = self.env['account.journal'].search([('type', '=', 'bank')], limit=1).id or False
-        self.online_identifier = '2829798'
-        self.online_bank_number = '836726'
-        self.online_vendor_name = False
+        super().setUp()
+        patcher_post = patch('odoo.addons.account_yodlee.models.yodlee.requests.post', side_effect=self.yodlee_post)
+        patcher_get = patch('odoo.addons.account_yodlee.models.yodlee.requests.get', side_effect=self.yodlee_get)
+        patcher_post.start()
+        self.addCleanup(patcher_post.stop)
+        patcher_get.start()
+        self.addCleanup(patcher_get.stop)
 
     def create_account_provider(self):
         return self.env['account.online.provider'].create({
@@ -222,10 +234,6 @@ class TestYodleeApi(AccountingTestCase):
         # response with several information that will help us create the record
         
         # Patch request.post with defined method
-        patcher_post = patch('odoo.addons.account_yodlee.models.yodlee.requests.post', side_effect=self.yodlee_post)
-        patcher_get = patch('odoo.addons.account_yodlee.models.yodlee.requests.get', side_effect=self.yodlee_get)
-        patcher_post.start()
-        patcher_get.start()
         informations = json.dumps([{"providerAccountId":123,"bankName":"Dag Site","status":"SUCCESS","providerId":16441}])
         res = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
         acc_online_provider = self.env['account.online.provider'].search([])
@@ -247,20 +255,12 @@ class TestYodleeApi(AccountingTestCase):
         self.assertEqual(len(acc_online_provider), 1, 'No new account_online_provider should have been created')
         self.assertEqual(len(acc_online_provider.account_online_journal_ids), 1, 'No new account_online_journal should have been created')
 
-        patcher_post.stop()
-        patcher_get.stop()
-        return True
-
     def test_yodlee_create_institution_fail(self):
         """ Test adding a new institution with yodlee that failed"""
         # Simulate a user that just complete the authentication process with yodlee, meaning we have received a
         # response with several information that will help us create the record
         
         # Patch request.post with defined method
-        patcher_post = patch('odoo.addons.account_yodlee.models.yodlee.requests.post', side_effect=self.yodlee_post)
-        patcher_get = patch('odoo.addons.account_yodlee.models.yodlee.requests.get', side_effect=self.yodlee_get)
-        patcher_post.start()
-        patcher_get.start()
         self.no_account = True
         informations = json.dumps([{"providerAccountId":123,"bankName":"Dag Site","status":"FAILED",
             "reason":"crashMsg","providerId":16441}])
@@ -274,20 +274,12 @@ class TestYodleeApi(AccountingTestCase):
         self.assertEqual(acc_online_provider.provider_identifier, '16441')
         self.assertEqual(acc_online_provider.status, 'FAILED')
 
-        patcher_post.stop()
-        patcher_get.stop()
-        return True
-
     def test_yodlee_create_institution_between(self):
         """ Test adding a new institution with yodlee where user left during process"""
         # Simulate a user that just complete the authentication process with yodlee, meaning we have received a
         # response with several information that will help us create the record
         
         # Patch request.post with defined method
-        patcher_post = patch('odoo.addons.account_yodlee.models.yodlee.requests.post', side_effect=self.yodlee_post)
-        patcher_get = patch('odoo.addons.account_yodlee.models.yodlee.requests.get', side_effect=self.yodlee_get)
-        patcher_post.start()
-        patcher_get.start()
         self.no_account = True
         informations = json.dumps([{"providerAccountId":123,"bankName":"Dag Site","status":"ACTION_ABANDONED","providerId":16441}])
         res = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
@@ -300,12 +292,10 @@ class TestYodleeApi(AccountingTestCase):
         self.assertEqual(acc_online_provider.provider_identifier, '16441')
         self.assertEqual(acc_online_provider.status, 'ACTION_ABANDONED')
 
-        patcher_post.stop()
-        patcher_get.stop()
-        return True
-
     def test_yodlee_fetch_transactions(self):
         """ Test receiving some transactions with yodlee """
+        if tools.config["without_demo"]:
+          self.skipTest("Adapt me without demo data")
 
         # Create fake account.online.provider
         bank_journal = self.env['account.journal'].search([('type', '=', 'bank')], limit=1) or False
@@ -315,11 +305,7 @@ class TestYodleeApi(AccountingTestCase):
             bank_journal.write({'account_online_journal_id': account_online_journal.id})
         else:
             # No localization installed, so skip test
-            return True
-        patcher_post = patch('odoo.addons.account_yodlee.models.yodlee.requests.post', side_effect=self.yodlee_post)
-        patcher_get = patch('odoo.addons.account_yodlee.models.yodlee.requests.get', side_effect=self.yodlee_get)
-        patcher_post.start()
-        patcher_get.start()
+            self.skipTest("No localization installed")
 
         informations = json.dumps([{"providerAccountId":123,"bankName":"Dag Site","status":"SUCCESS","providerId":16441}])
         ret = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
@@ -330,7 +316,7 @@ class TestYodleeApi(AccountingTestCase):
         bank_stmt_all = self.env['account.bank.statement'].search([], order="create_date desc")
         bank_stmt = bank_stmt_all[0]
         self.assertEqual(len(bank_stmt), 1, 'There should be at least one bank statement created')
-        self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 1 lines')
         self.assertEqual(bank_stmt.state, 'open')
         self.assertEqual(bank_stmt.journal_id.id, bank_journal.id)
         self.assertEqual(bank_stmt.line_ids.name, '0150 Amazon  Santa Ana CA 55.73USD')
@@ -344,15 +330,13 @@ class TestYodleeApi(AccountingTestCase):
         acc_online_provider.callback_institution(informations, 'add', self.journal_id)
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc")
         self.assertEqual(len(bank_stmt), len(bank_stmt_all), 'There should not be a new statement created')
-        self.assertEqual(len(bank_stmt[0].line_ids), 1, 'The existing statement should still have 1 lines')
-
-        patcher_post.stop()
-        patcher_get.stop()
-        return True
+        self.assertEqual(len(bank_stmt[0].line_ids), self.statement_count, 'The existing statement should still have 1 lines')
 
     def test_yodlee_cron_fetch_transactions(self):
         """ Test receiving some transactions with yodlee using the cron"""
 
+        if tools.config["without_demo"]:
+          self.skipTest("Adapt me without demo data")
         # Create fake account.online.provider
         bank_journal = self.env['account.journal'].search([('type', '=', 'bank')], limit=1) or False
         acc_online_provider = self.create_account_provider()
@@ -360,12 +344,7 @@ class TestYodleeApi(AccountingTestCase):
             account_online_journal = self.env['account.online.journal'].search([], limit=1)
             bank_journal.write({'account_online_journal_id': account_online_journal.id})
         else:
-            # No localization installed, so skip test
-            return True
-        patcher_post = patch('odoo.addons.account_yodlee.models.yodlee.requests.post', side_effect=self.yodlee_post)
-        patcher_get = patch('odoo.addons.account_yodlee.models.yodlee.requests.get', side_effect=self.yodlee_get)
-        patcher_post.start()
-        patcher_get.start()
+            self.skipTest("No localization installed")
 
         acc_online_provider.cron_fetch_online_transactions()
 
@@ -384,12 +363,10 @@ class TestYodleeApi(AccountingTestCase):
         self.assertEqual(bank_stmt.line_ids.online_identifier, "2829798:bank")
         self.assertEqual(account_online_journal.last_sync, fields.Date.today())
 
-        patcher_post.stop()
-        patcher_get.stop()
-        return True
-
     def test_assign_partner_automatically(self):
         """ Test receiving some transactions with yodlee and assigning automatically to correct partner """
+        if tools.config["without_demo"]:
+          self.skipTest("Adapt me without demo data")
 
         # Create fake account.online.provider
         bank_journal = self.env['account.journal'].search([('type', '=', 'bank')], limit=1) or False
@@ -399,23 +376,19 @@ class TestYodleeApi(AccountingTestCase):
             bank_journal.write({'account_online_journal_id': account_online_journal.id})
         else:
             # No localization installed, so skip test
-            return True
+            self.skipTest("No localization installed")
 
-        agrolait = self.env.ref("base.res_partner_2")
+        agrolait = self.env['res.partner'].create({'name': 'Res Partner 2'})
+        # agrolait = self.env.ref("base.res_partner_2")
 
         # set online data on previous statement line to simulate previous synchronization linked to agrolait
         agrolait.write({'online_partner_bank_account': '836726'})
-
-        patcher_post = patch('odoo.addons.account_yodlee.models.yodlee.requests.post', side_effect=self.yodlee_post)
-        patcher_get = patch('odoo.addons.account_yodlee.models.yodlee.requests.get', side_effect=self.yodlee_get)
-        patcher_post.start()
-        patcher_get.start()
 
         informations = json.dumps([{"providerAccountId":123,"bankName":"Dag Site","status":"SUCCESS","providerId":16441}])
         ret = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
 
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
-        self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 1 lines')
         self.assertEqual(bank_stmt.state, 'open')
         self.assertEqual(bank_stmt.journal_id.id, bank_journal.id)
         self.assertEqual(bank_stmt.line_ids.amount, -12345.12)
@@ -432,7 +405,7 @@ class TestYodleeApi(AccountingTestCase):
         acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
         ret = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
-        self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 1 lines')
         self.assertTrue(bank_stmt.line_ids.online_identifier.startswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjf"))
         self.assertEqual(bank_stmt.line_ids.partner_id, ASUSTeK)
         bank_stmt.unlink()
@@ -443,7 +416,7 @@ class TestYodleeApi(AccountingTestCase):
         acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
         ret = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
-        self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 1 lines')
         self.assertTrue(bank_stmt.line_ids.online_identifier.startswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDja"))
         self.assertEqual(bank_stmt.line_ids.partner_id, self.env['res.partner'])
         bank_stmt.unlink()
@@ -454,10 +427,6 @@ class TestYodleeApi(AccountingTestCase):
         acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
         ret = self.env['account.online.provider'].callback_institution(informations, 'add', self.journal_id)
         bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
-        self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
+        self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 1 lines')
         self.assertTrue(bank_stmt.line_ids.online_identifier.startswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjb"))
         self.assertEqual(bank_stmt.line_ids.partner_id, agrolait)
-
-        patcher_post.stop()
-        patcher_get.stop()
-        return True

@@ -2,10 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import odoo.tests
+from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
 
 
 @odoo.tests.tagged('post_install', '-at_install')
-class TestUi(odoo.tests.HttpCase):
+class TestUi(TestPointOfSaleHttpCommon):
 
     def test_01_pos_iot_payment_terminal(self):
         env = self.env(user=self.env.ref('base.user_admin'))
@@ -29,8 +30,7 @@ class TestUi(odoo.tests.HttpCase):
         })
 
         # Select IoT Box, tick Payment terminal and set payment method in pos config
-        main_pos_config = env.ref('point_of_sale.pos_config_main')
-        main_pos_config.write({
+        self.main_pos_config.write({
             'payment_method_ids': [(0, 0, {
                 'name': 'Terminal',
                 'is_cash_count': False,

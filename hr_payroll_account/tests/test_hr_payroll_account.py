@@ -13,11 +13,11 @@ from odoo.addons.account.tests.common import AccountTestCommon
 
 
 @odoo.tests.tagged('post_install', '-at_install')
-class TestHrPayrollAccount(TestPayslipContractBase):
+class TestHrPayrollAccountCommon(TestPayslipContractBase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestHrPayrollAccount, cls).setUpClass()
+        super(TestHrPayrollAccountCommon, cls).setUpClass()
 
         cls.private_address = cls.env['res.partner'].create({'name': 'A private address'})
         cls.work_address = cls.env['res.partner'].create({'name': 'A work address'})
@@ -151,6 +151,10 @@ class TestHrPayrollAccount(TestPayslipContractBase):
             'date_end': str(datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10],
             'name': 'Payslip for Employee'
         })
+
+
+@odoo.tests.tagged('post_install', '-at_install')
+class TestHrPayrollAccount(TestHrPayrollAccountCommon):
 
     def test_00_hr_payslip_run(self):
         """ Checking the process of payslip run when you create payslip(s) in a payslip run and you validate the payslip run. """

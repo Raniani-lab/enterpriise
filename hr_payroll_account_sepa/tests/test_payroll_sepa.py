@@ -8,14 +8,13 @@ from lxml import etree
 
 from odoo.fields import Date
 from odoo.modules.module import get_module_resource
-from odoo.addons.hr_payroll_account.tests.test_hr_payroll_account import TestHrPayrollAccount
+from odoo.addons.hr_payroll_account.tests.test_hr_payroll_account import TestHrPayrollAccountCommon
 from odoo.tests import common, tagged
 
 
 @tagged('post_install', '-at_install')
-class TestPayrollSEPACreditTransfer(TestHrPayrollAccount):
+class TestPayrollSEPACreditTransfer(TestHrPayrollAccountCommon):
 
-    # YTI TODO: test executed multiple times, to put into a isolated common class
     @classmethod
     def setUpClass(cls):
         super(TestPayrollSEPACreditTransfer, cls).setUpClass()

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import date
+from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from lxml import etree
 
@@ -19,25 +19,91 @@ class AnalyticLine(models.Model):
             return [('user_id', '=', self.env.user.id)]
         return []
 
-    employee_id = fields.Many2one('hr.employee', "Employee", domain=_domain_employee_id)
+    employee_id = fields.Many2one('hr.employee', "Employee", domain=_domain_employee_id, group_expand="_group_expand_employee_ids")
 
     # reset amount on copy
     amount = fields.Monetary(copy=False)
-    validated = fields.Boolean("Validated line", group_operator="bool_and", compute='_compute_timesheet_validated', store=True, compute_sudo=True)
+    validated = fields.Boolean("Validated line", group_operator="bool_and", store=True)
     is_timesheet = fields.Boolean(
         string="Timesheet Line", compute_sudo=True,
         compute='_compute_is_timesheet', search='_search_is_timesheet',
         help="Set if this analytic line represents a line of timesheet.")
 
-    @api.depends('date', 'employee_id.timesheet_validated')
-    def _compute_timesheet_validated(self):
-        for line in self:
-            if line.is_timesheet:
-                # get most recent validation date on any of the line user's employees
-                validated_to = line.sudo().employee_id.timesheet_validated
-                line.validated = line.date <= validated_to if validated_to else False
-            else:
-                line.validated = True
+    project_id = fields.Many2one(group_expand="_group_expand_project_ids")
+
+    @api.model
+    def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None, orderby=None):
+        """
+            Override method to manage the group_expand in project_id and employee_id fields
+        """
+        result = super(AnalyticLine, self).read_grid(row_fields, col_field, cell_field, domain, range, readonly_field, orderby)
+
+        if len(result['grid']) == 0 and len(result['rows']) == 0:
+            # Then it's a record given by group_expand in project_id field
+            # We need to have some information :
+            #   1) search in domain one rule with one of next conditions :
+            #       -   project_id = value
+            #       -   user_id = value
+            #       -   employee_id = value
+            #   2) search in account.analytic.line if the user timesheeted
+            #       in the past 30 days
+            #   3) retrieve data and create correctly the grid and rows in result
+            today = fields.Date.to_string(fields.Date.today())
+            grid_anchor = self.env.context.get('grid_anchor', today)
+
+            last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
+            domain_search = [
+                ('project_id', '!=', False),
+                ('date', '>=', last_month),
+                ('date', '<=', grid_anchor)
+            ]
+
+            # check if project_id or employee_id is in domain
+            # if not then group_expand return None
+            field = None
+            for rule in domain:
+                # if in domain, we have project_id = value and user_id = value
+                # then we are in 'My Timesheet' page.
+                if len(rule) == 3:
+                    name, operator, value = rule
+                    if operator == '=':
+                        if name in ['project_id', 'employee_id']:
+                            field = name
+                            domain_search.append((name, operator, value))
+                        elif name == 'user_id':
+                            domain_search.append((name, operator, value))
+                    elif operator == 'ilike':  # When the user want to filter the results
+                        domain_search.append((name, operator, value))
+
+            if not field:
+                return result
+
+            # step 2: search timesheets
+            timesheets = self.search(domain_search)
+
+            # step 3: retrieve data and create correctly the grid and rows in result
+            seen = []  # use to not have duplicated rows
+            rows = []
+            for timesheet in timesheets:
+                # check uniq project or task, or employee
+                k = tuple(timesheet[f].id for f in row_fields)
+                if k not in seen:  # check if it's not a duplicated row
+                    record = {f: (timesheet[f].id, timesheet[f].name) if timesheet[f].id else False for f in row_fields}
+                    seen.append(k)
+                    rows.append({'values': record, 'domain': [('id', '=', timesheet.id)]})
+
+            # _grid_make_empty_cell return a dict, in this dictionary,
+            # we need to check if the cell is in the current date,
+            # then, we add a key 'is_current' into this dictionary
+            # to get the result of this checking.
+            grid = [
+                [{**self._grid_make_empty_cell(r['domain'], c['domain'], domain), 'is_current': c.get('is_current', False)} for c in result['cols']]
+                for r in rows]
+
+            # update grid and rows in result
+            result.update(grid=grid, rows=rows)
+
+        return result
 
     @api.depends('project_id')
     def _compute_is_timesheet(self):
@@ -50,30 +116,89 @@ class AnalyticLine(models.Model):
         return [('project_id', '=', False)]
 
     def action_validate_timesheet(self):
+        """ Action validate timesheet
+
+            When the user want to validate the list of timesheets that he see
+            in grid view.
+            First, we need to check if this user has the correct access to do
+            this action.
+            Then, we need to add timesheets to validate into
+            timesheet.validation model for the wizard.
+
+            Explanation for record in timesheet.validation model :
+
+            For validation, we need to group by employee > project > task
+            (if task exists).
+
+            The first idea is created a dict contains records filtered
+            with this groupby, for example, the dict looks like this:
+
+            records = {
+                employee_id: {
+                    project_id: {
+                        task_id: [timesheet_ids]
+                    }
+                }
+            }
+
+            Then we create a list named "valid_data" that contains the list of
+            line for timesheet.validation.line model.
+            For example, this list will look like this :
+
+            valid_data = [{
+                employee_id: employee_id.id,
+                project_id: project_id.id,
+                task_id: task_id.id,
+                timesheet_ids: [list of timesheets]
+            }]
+        """
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
             raise AccessError(_("Sorry, you don't have the access to validate the timesheets."))
-
-        if self.env.context.get('grid_anchor'):
-            anchor = fields.Date.from_string(self.env.context['grid_anchor'])
-        else:
-            anchor = date.today() + relativedelta(weeks=-1, days=1, weekday=0)
-        span = self.env.context.get('grid_range', 'week')
-        validate_to = anchor + END_OF[span]
 
         if not self:
             raise UserError(_("There aren't any timesheet to validate"))
 
-        domain = self.env['ir.rule']._compute_domain(self._name, 'write')  # can write on the timesheet of team employee or all
-
-        employees = self.filtered_domain(domain or []).mapped('employee_id')
-        employees = employees.sudo().filtered(lambda e: not e.timesheet_validated or e.timesheet_validated < validate_to)
-        if not employees:
+        analytic_lines = self.filtered_domain(self._get_domain_for_validation_timesheets())
+        if not analytic_lines:
             raise UserError(_('All selected timesheets for which you are indicated as responsible are already validated.'))
+
+        # Prepare record for timesheet.validation model
+        valid_data = []  # will contains the list of line for timesheet.validation.line
+        # records will be the dict containing the timesheets filtered with the group by
+        # employee > project > task.
+        # First, group by employee
+        for employee in analytic_lines.employee_id:
+            timesheets = analytic_lines.filtered(lambda t: t.employee_id == employee)
+            # group by (employee > project)
+            for project in timesheets.project_id:
+                record = {}  # structure -> {task_id.id: timesheet.id}
+
+                # group by (employee > project > task)
+                for timesheet in timesheets.filtered(lambda t: t.project_id == project):
+                    # the task is not required in timesheet, we need to check it.
+                    if timesheet.task_id:
+                        if timesheet.task_id.id not in record:
+                            record[timesheet.task_id.id] = [timesheet.id]
+                        else:
+                            record[timesheet.task_id.id].append(timesheet.id)
+                    else:
+                        if False not in record:
+                            record[False] = [timesheet.id]
+                        else:
+                            record[False].append(timesheet.id)
+                for (k, v) in record.items():
+                    # create records for timesheet.validation.line
+                    # each record contains a dict with
+                    # employee_id, project_id, task_id, timesheet_ids keys
+                    valid_data.append({
+                        'employee_id': employee.id,
+                        'project_id': project.id,
+                        'task_id': k,
+                        'timesheet_ids': v
+                    })
+
         validation = self.env['timesheet.validation'].create({
-            'validation_date': validate_to,
-            'validation_line_ids': [
-                (0, 0, {'employee_id': employee.id}) for employee in employees
-            ]
+            'validation_line_ids': [(0, 0, data) for data in valid_data]
         })
 
         return {
@@ -82,7 +207,7 @@ class AnalyticLine(models.Model):
             'target': 'new',
             'res_model': 'timesheet.validation',
             'res_id': validation.id,
-            'views': [(False, 'form')],
+            'views': [(False, 'form')]
         }
 
     @api.model_create_multi
@@ -165,6 +290,43 @@ class AnalyticLine(models.Model):
         day = column_value.split('/')[0]
         return [('date', '=', day)]
 
+    def _group_expand_project_ids(self, projects, domain, order):
+        """ Group expand by project_ids in grid view
+
+            This group expand allow to add some record grouped by project,
+            where the current user (= the current employee) has been
+            timesheeted in the past 30 days.
+        """
+        today = fields.Date.to_string(fields.Date.today())
+        grid_anchor = self.env.context.get('grid_anchor', today)
+
+        last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
+
+        # We keep the rules other than date
+        rules = [rule for rule in domain if len(rule) == 3 and rule[0] != 'date']
+
+        domain_rule = expression.AND([[('date', '>=', last_month), ('date', '<=', grid_anchor)], rules])
+
+        return self.search(domain_rule).project_id
+
+    def _group_expand_employee_ids(self, employees, domain, order):
+        """ Group expand by employee_ids in grid view
+
+            This group expand allow to add some record by employee, where
+            the employee has been timesheeted in a task of a project in the
+            past 30 days.
+        """
+        today = fields.Date.to_string(fields.Date.today())
+        grid_anchor = self.env.context.get('grid_anchor', today)
+
+        last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
+
+        rules = [rule for rule in domain if len(rule) == 3 and rule[0] != 'date']
+
+        domain_rule = expression.AND([[('project_id', '!=', False), ('date', '>=', last_month), ('date', '<=', grid_anchor)], rules])
+
+        return self.search(domain_rule).employee_id
+
     # ----------------------------------------------------
     # Timer Methods
     # ----------------------------------------------------
@@ -203,16 +365,15 @@ class AnalyticLine(models.Model):
 
         """
         record: dict = {
-            'name': _('Timesheet created with timer'),
+            'name': _('Timesheet Adjustment'),
         }
 
         if 'task_id' in vals:
-            task = self.env['project.task'].search([('id', '=', vals.get('task_id'))])
+            task = self.env['project.task'].browse(vals.get('task_id'))
 
-            record['task_id'] = task.id
-            record['project_id'] = task.project_id.id
+            record.update(task_id=task.id, project_id=task.project_id.id)
         elif 'project_id' in vals:
-            record['project_id'] = vals.get('project_id')
+            record.update(project_id=vals.get('project_id'))
         else:
             return
 
@@ -230,3 +391,63 @@ class AnalyticLine(models.Model):
             'project_id': line.project_id.id,
             'unit_amount': line.unit_amount
         }
+
+    def _action_open_to_validate_timesheet_view(self, type_view='week'):
+        """ search the oldest non-validated timesheet to display in grid view
+
+            When the user want to validate the timesheet, we want to be sure
+            that before the range date of grid view, all timesheets have
+            already been validated.
+            Thus, we display to the user, the grid view contains the oldest
+            timesheet that isn't validated yet.
+        """
+        oldest_timesheet = self.search(self._get_domain_for_validation_timesheets(), order="date asc", limit=1)
+        name = ''
+        context = {
+            'search_default_nonvalidated': True,
+            'search_default_my_team_timesheet': True,
+        }
+
+        if oldest_timesheet:  # check if exists a timesheet to validate
+            context.update(grid_anchor=oldest_timesheet.date)
+
+        if (type_view == 'week'):
+            name = 'Timesheets from Last Week to Validate'
+        elif type_view == 'month':
+            name = 'Timesheets from Last Month to Validate'
+            context['grid_range'] = 'month'
+
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "account.analytic.line",
+            "views": [
+                [self.env.ref('timesheet_grid.timesheet_view_grid_by_employee_validation').id, 'grid'],
+                [self.env.ref('hr_timesheet.timesheet_view_tree_user').id, 'tree'],
+                [self.env.ref('timesheet_grid.timesheet_view_form').id, 'form']
+            ],
+            "view_mode": 'grid,tree',
+            "domain": [('is_timesheet', '=', True)],
+            "search_view_id": [self.env.ref('timesheet_grid.timesheet_view_search').id, 'search'],
+            "name": name,
+            "context": context
+        }
+
+    def _get_domain_for_validation_timesheets(self) -> []:
+        """ Get the domain to check if the user can validate which timesheets
+
+            2 access rights give access to validate timesheets:
+
+            1. See all timesheets: in this access right, the user can't validate all timesheets,
+            he can validate the timesheets where he is the manager or timesheet responsible of the
+            employee who is assigned to this timesheets or the user is the owner of the project.
+            Furthermore, the user can validate his own timesheets.
+
+            2. Manager (Administrator): with this access right, the user can validate all timesheets.
+        """
+        domain = [('validated', '=', False)]
+
+        if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
+            return expression.AND([domain, ['|', ('employee_id.timesheet_manager_id', '=', self.env.user.id),
+                      '|', ('employee_id.parent_id.user_id', '=', self.env.user.id),
+                      '|', ('project_id.user_id', '=', self.env.user.id), ('user_id', '=', self.env.user.id)]])
+        return domain

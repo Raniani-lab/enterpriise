@@ -39,9 +39,9 @@ class TestTimesheetValidation(TestCommonTimesheet):
         wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
         wizard.action_validate()
 
-        # Check validated date
-        end_of_week = (datetime.now() + END_OF['week']).date()
-        self.assertEqual(self.empl_employee.timesheet_validated, end_of_week, 'validate timesheet date should be the end of the week')
+        # Check timesheets 1 and 2 are validated
+        self.assertTrue(self.timesheet1.validated)
+        self.assertTrue(self.timesheet2.validated)
 
         # Employee can not modify validated timesheet
         with self.assertRaises(AccessError):
@@ -49,19 +49,19 @@ class TestTimesheetValidation(TestCommonTimesheet):
         # Employee can not delete validated timesheet
         with self.assertRaises(AccessError):
             self.timesheet2.with_user(self.user_employee).unlink()
-        # Employee can not create new timesheet in the validated period
-        with self.assertRaises(AccessError):
-            last_month = fields.Date.to_string(datetime.now() - relativedelta(months=1))
-            self.env['account.analytic.line'].with_user(self.user_employee).create({
-                'name': "my timesheet 3",
-                'project_id': self.project_customer.id,
-                'task_id': self.task2.id,
-                'date': last_month,
-                'unit_amount': 2.5,
-            })
+
+        # Employee can still create new timesheet before the validated date
+        last_month = datetime.now() - relativedelta(months=1)
+        self.env['account.analytic.line'].with_user(self.user_employee).create({
+            'name': "my timesheet 3",
+            'project_id': self.project_customer.id,
+            'task_id': self.task2.id,
+            'date': last_month,
+            'unit_amount': 2.5,
+        })
 
         # Employee can still create timesheet after validated date
-        next_month = fields.Date.to_string(datetime.now() + relativedelta(months=1))
+        next_month = datetime.now() + relativedelta(months=1)
         timesheet4 = self.env['account.analytic.line'].with_user(self.user_employee).create({
             'name': "my timesheet 4",
             'project_id': self.project_customer.id,

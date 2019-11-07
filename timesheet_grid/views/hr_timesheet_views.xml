@@ -184,7 +184,7 @@
         <record id="timesheet_view_grid_by_employee_validation" model="ir.ui.view">
             <field name="name">account.analytic.line.grid.employee.validation</field>
             <field name="model">account.analytic.line</field>
-            <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid_by_employee"/>
+            <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid_by_employee_editable_manager"/>
             <field name="mode">primary</field>
             <field name="priority">10</field>
             <field name="arch" type="xml">
@@ -352,9 +352,6 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr_timesheet.hr_employee_view_form_inherit_timesheet"/>
             <field name="arch" type="xml">
-                <!-- <xpath expr="//group[@name='timesheet']" position="inside">
-                    <field name="timesheet_validated" groups="base.group_no_one"/>
-                </xpath> -->
                 <xpath expr="//group[@name='timesheet']" position="attributes">
                     <attribute name="invisible">0</attribute>
                 </xpath>
@@ -386,16 +383,34 @@
             </field>
         </record>
 
+        <record id="timesheet_grid_week_action_server" model="ir.actions.server">
+            <field name="name">Validation Timesheet Week_view Server Action</field>
+            <field name="model_id" ref="hr_timesheet.model_account_analytic_line"/>
+            <field name="state">code</field>
+            <field name="code">
+action = model._action_open_to_validate_timesheet_view()
+            </field>
+        </record>
+
+        <record id="timesheet_grid_month_action_server" model="ir.actions.server">
+            <field name="name">Validation Timesheet month_view Server Action</field>
+            <field name="model_id" ref="hr_timesheet.model_account_analytic_line"/>
+            <field name="state">code</field>
+            <field name="code">
+action = model._action_open_to_validate_timesheet_view('month')
+            </field>
+        </record>
+
         <menuitem name="To Validate" id="menu_timesheet_grid_validate"
                   parent="hr_timesheet.timesheet_menu_root"
                   groups="hr_timesheet.group_hr_timesheet_approver"
                   sequence="10"/>
         <menuitem name="Last Week" id="menu_timesheet_grid_validate_previous_week"
                   parent="menu_timesheet_grid_validate"
-                  action="action_timesheet_previous_week"/>
+                  action="timesheet_grid_week_action_server"/>
         <menuitem name="Last Month" id="menu_timesheet_grid_validate_previous_month"
                   parent="menu_timesheet_grid_validate"
-                  action="action_timesheet_previous_month"/>
+                  action="timesheet_grid_month_action_server"/>
 
         <!-- Reporting : detailled activities -->
         <record id="timesheet_action_view_report_by_employee_grid" model="ir.actions.act_window.view">

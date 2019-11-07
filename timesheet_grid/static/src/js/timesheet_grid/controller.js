@@ -38,13 +38,12 @@ odoo.define('timesheet_grid.GridController', function (require) {
                 // create the timesheet and render
                 // The task can be false.
                 if (data.task_id) {
-                    await this.model._createTimesheet(data.task_id);
+                    await this.model._createTimesheet({task_id: data.task_id[0]});
                 } else {
                     // if task is false then retrieve the project_id
                     // in the domain to create timesheet
                     // with the project_id
-                    const projectId = this._retrieveProjectIdInDomain(domain);
-                    await this.model._createTimesheet(projectId);
+                    await this.model._createTimesheet({project_id: data.project_id[0]});
                 }
             }
             ev.stopPropagation();

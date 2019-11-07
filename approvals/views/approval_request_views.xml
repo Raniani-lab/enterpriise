@@ -87,7 +87,7 @@
                     <field name="requirer_document" invisible="1"/>
                     <field name="approval_minimum" invisible="1"/>
                     <field name="is_manager_approver" invisible="1"/>
-                    <div class="oe_button_box">
+                    <div class="o_not_full oe_button_box">
                         <button name="action_get_attachment_view"
                             class="oe_stat_button"
                             icon="fa-book"

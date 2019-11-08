@@ -29,8 +29,10 @@
         <field name="model">mrp.workorder</field>
         <field name="inherit_id" ref="mrp_workorder.mrp_workorder_view_form_tablet_menu"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='workorder_quality_button']" position="inside">
-                <button name="button_quality_alert" type="object" class="btn btn-primary btn-block" string="Quality alert"/>
+            <xpath expr="//div[hasclass('workorder_menu')]" position="inside">
+                <div class="col-6">
+                    <button name="button_quality_alert" type="object" class="btn btn-primary btn-block" string="Quality alert"/>
+                </div>
             </xpath>
         </field>
     </record>

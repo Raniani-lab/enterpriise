@@ -252,12 +252,6 @@
                         <button name="button_scrap" type="object" class="btn-primary btn-block btn btn-lg" string="Scrap"/>
                     </div>
                 </div>
-                <div class="row workorder_menu">
-                    <div class="col-6" id="workorder_maintenance_button">
-                    </div>
-                    <div class="col-6" id="workorder_quality_button">
-                    </div>
-                </div>
                 <footer></footer>
             </form>
         </field>

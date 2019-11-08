@@ -15,10 +15,12 @@ class HrContract(models.Model):
 
     transport_mode_car = fields.Boolean('Uses company car')
     transport_mode_private_car = fields.Boolean('Uses private car')
-    transport_mode_public = fields.Boolean('Uses public transportation')
+    transport_mode_train = fields.Boolean('Uses train transportation')
+    transport_mode_public = fields.Boolean('Uses another public transportation')
     transport_mode_others = fields.Boolean('Uses another transport mode')
     car_atn = fields.Monetary(string='ATN Company Car')
-    public_transport_employee_amount = fields.Monetary('Paid by the employee (Monthly)')
+    train_transport_employee_amount = fields.Monetary('Train transport paid by the employee (Monthly)')
+    public_transport_employee_amount = fields.Monetary('Public transport paid by the employee (Monthly)')
     warrant_value_employee = fields.Monetary(compute='_compute_commission_cost', string="Warrant monthly value for the employee")
 
     # Employer costs fields
@@ -34,7 +36,9 @@ class HrContract(models.Model):
     company_car_total_depreciated_cost = fields.Monetary()
     private_car_reimbursed_amount = fields.Monetary(compute='_compute_private_car_reimbursed_amount')
     km_home_work = fields.Integer(related="employee_id.km_home_work", related_sudo=True, readonly=False)
-    public_transport_reimbursed_amount = fields.Monetary(string='Reimbursed amount',
+    train_transport_reimbursed_amount = fields.Monetary(string='Train Transport Reimbursed amount',
+        compute='_compute_train_transport_reimbursed_amount', readonly=False, store=True)
+    public_transport_reimbursed_amount = fields.Monetary(string='Public Transport Reimbursed amount',
         compute='_compute_public_transport_reimbursed_amount', readonly=False, store=True)
     others_reimbursed_amount = fields.Monetary(string='Other Reimbursed amount')
     transport_employer_cost = fields.Monetary(compute='_compute_transport_employer_cost', string="Employer cost from employee transports")
@@ -103,13 +107,15 @@ class HrContract(models.Model):
             else:
                 contract.wage = contract.wage_with_holidays
 
-    @api.depends('transport_mode_car', 'transport_mode_public', 'transport_mode_private_car', 'transport_mode_others',
-        'company_car_total_depreciated_cost', 'public_transport_reimbursed_amount', 'others_reimbursed_amount', 'km_home_work')
+    @api.depends('transport_mode_car', 'transport_mode_train', 'transport_mode_public', 'transport_mode_private_car', 'transport_mode_others',
+        'company_car_total_depreciated_cost', 'train_transport_reimbursed_amount', 'public_transport_reimbursed_amount', 'others_reimbursed_amount', 'km_home_work')
     def _compute_transport_employer_cost(self):
         for contract in self:
             transport_employer_cost = 0.0
             if contract.transport_mode_car:
                 transport_employer_cost += contract.company_car_total_depreciated_cost
+            if contract.transport_mode_train:
+                transport_employer_cost += contract.train_transport_reimbursed_amount
             if contract.transport_mode_public:
                 transport_employer_cost += contract.public_transport_reimbursed_amount
             if contract.transport_mode_others:
@@ -147,13 +153,21 @@ class HrContract(models.Model):
         for contract in self:
             contract.ucm_insurance = (contract.wage * 12.0) * 0.05
 
+    @api.depends('train_transport_employee_amount')
+    def _compute_train_transport_reimbursed_amount(self):
+        for contract in self:
+            contract.train_transport_reimbursed_amount = contract._get_train_transport_reimbursed_amount(contract.train_transport_employee_amount)
+
+    def _get_train_transport_reimbursed_amount(self, amount):
+        return min(amount * 0.8, 311)
+
     @api.depends('public_transport_employee_amount')
     def _compute_public_transport_reimbursed_amount(self):
         for contract in self:
             contract.public_transport_reimbursed_amount = contract._get_public_transport_reimbursed_amount(contract.public_transport_employee_amount)
 
     def _get_public_transport_reimbursed_amount(self, amount):
-        return amount * 0.68
+        return min(amount * 0.718, 48)
 
     @api.depends('final_yearly_costs')
     def _compute_monthly_yearly_costs(self):
@@ -169,13 +183,15 @@ class HrContract(models.Model):
                 amount = 0.0
             contract.private_car_reimbursed_amount = amount
 
-    @api.onchange('transport_mode_car', 'transport_mode_public', 'transport_mode_others')
+    @api.onchange('transport_mode_car', 'transport_mode_train', 'transport_mode_public', 'transport_mode_others')
     def _onchange_transport_mode(self):
         if not self.transport_mode_car:
             self.fuel_card = 0
             self.company_car_total_depreciated_cost = 0
         if not self.transport_mode_others:
             self.others_reimbursed_amount = 0
+        if not self.transport_mode_train:
+            self.train_transport_reimbursed_amount = 0
         if not self.transport_mode_public:
             self.public_transport_reimbursed_amount = 0
 
@@ -205,7 +221,8 @@ class HrContract(models.Model):
     def _get_private_car_reimbursed_amount(self, distance):
         # monthly train subscription amount => half is reimbursed
         amounts_train = [
-            (3, 0.0), (4, 39.5), (5, 42.5), (6, 45.0),
+            (0, 0.0),
+            (3, 36.0), (4, 39.5), (5, 42.5), (6, 45.0),
             (7, 48.0), (8, 51.0), (9, 53.0), (10, 56.0),
             (11, 59.0), (12, 62.0), (13, 64.0), (14, 67.0),
             (15, 70.0), (16, 72.0), (17, 75.0), (18, 78.0),

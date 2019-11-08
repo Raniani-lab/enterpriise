@@ -113,10 +113,34 @@
                                                 </div>
                                             </div>
 
+                                            <!-- Train transport -->
+                                            <div class="col-md-7 offset-md-3 mt8">
+                                                <label class="hr_cs_control hr_cs_control_checkbox">
+                                                    Train Transportation
+                                                    <input type="checkbox" name="transport_mode_train" t-att-checked="contract.transport_mode_train" class="advantage_input"/>
+                                                    <div class="hr_cs_control_indicator"/>
+                                                </label>
+                                            </div>
+
+                                            <div class="mobility-options row" id="train_transport">
+                                                <div class="col-md-7 offset-md-3">
+                                                    <input class="form-control form-control-primary mt16 mb8 advantage_input" type="number" t-att-value="contract.train_transport_employee_amount or '0'" name="train_transport_employee_amount"/>
+                                                    <span class="form-text mt8">Enter the monthly amount you spend on train transportation to go to work. The approximative amount reimbursed by the employer is calculated accordingly.</span>
+                                                </div>
+                                                <div class="col-md-2 mt24">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control advantage_input" t-att-value="contract.train_transport_reimbursed_amount or '0'" disabled="disabled" name="train_transport_reimbursed_amount"/>
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">€</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <!-- Public transport -->
                                             <div class="col-md-7 offset-md-3 mt8">
                                                 <label class="hr_cs_control hr_cs_control_checkbox">
-                                                    Public Transportation
+                                                    Other Public Transportation
                                                     <input type="checkbox" name="transport_mode_public" t-att-checked="contract.transport_mode_public" class="advantage_input"/>
                                                     <div class="hr_cs_control_indicator"/>
                                                 </label>
@@ -149,7 +173,7 @@
                                             <div class="mobility-options row" id="private_car">
                                                 <div class="col-md-7 offset-md-3">
                                                     <input class="form-control form-control-primary mt16 mb8 advantage_input km_home_work" type="number" t-att-value="contract.km_home_work or '0'" name="private_car_km_home_work"/>
-                                                    <span class="form-text mt8">Enter the number of kilometers between your home and your work place. The approximative amount reimbursed by the employer is calculated accordingly.</span>
+                                                    <span class="form-text mt8">Enter the number of kilometers (outward and return) between your home and your work place. The approximative amount reimbursed by the employer is calculated accordingly.</span>
                                                 </div>
                                                 <div class="col-md-2 mt24">
                                                     <div class="input-group">
@@ -1425,6 +1449,19 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group" name="public_amount_div">
+                                        <div class="row">
+                                            <label class="col-md-9 col-form-label" for="public_transport_reimbursed_amount"><i class="fa fa-1x fa-plus fa-fw"/> Public Transport</label>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <input class="form-control" type="text" t-att-value="contract.public_transport_reimbursed_amount + contract.train_transport_reimbursed_amount" disabled="disabled" name="public_transport_reimbursed_amount"/>
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-text">€</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="form-group" name="ip_div">
                                         <div class="row">

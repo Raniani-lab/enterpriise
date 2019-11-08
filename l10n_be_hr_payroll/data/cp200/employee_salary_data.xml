@@ -268,6 +268,18 @@ if contract.mobile and contract.internet:
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
+        <record id="cp200_employees_salary_public_transport" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll_head_div_net"/>
+            <field name="name">Public Transportation (Tram - Bus - Metro)</field>
+            <field name="code">PUB.TRANS</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">169</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.transport_mode_public or contract.transport_mode_train</field>
+            <field name="amount_python_compute">result = contract.public_transport_reimbursed_amount + contract.train_transport_reimbursed_amount</field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        </record>
+
         <record id="cp200_employees_salary_private_car" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_net"/>
             <field name="name">Private car</field>

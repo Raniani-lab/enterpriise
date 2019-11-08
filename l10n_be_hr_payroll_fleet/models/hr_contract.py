@@ -103,7 +103,7 @@ class HrContract(models.Model):
         for contract in self:
             contract.max_unused_cars = int(max_unused_cars)
 
-    @api.onchange('transport_mode_car', 'transport_mode_public', 'transport_mode_others')
+    @api.onchange('transport_mode_car', 'transport_mode_train', 'transport_mode_public', 'transport_mode_others')
     def _onchange_transport_mode(self):
         super(HrContract, self)._onchange_transport_mode()
         if not self.transport_mode_car:

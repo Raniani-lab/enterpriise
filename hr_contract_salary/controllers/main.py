@@ -282,8 +282,10 @@ class website_hr_contract_salary(http.Controller):
             'wage': advantages['wage'],
             'resource_calendar_id': contract.resource_calendar_id.id,
             'transport_mode_car': advantages['transport_mode_car'],
+            'transport_mode_train': advantages['transport_mode_train'],
             'transport_mode_public': advantages['transport_mode_public'],
             'transport_mode_private_car': advantages['transport_mode_private_car'],
+            'train_transport_employee_amount': advantages['train_transport_employee_amount'],
             'public_transport_employee_amount': advantages['public_transport_employee_amount'],
             'eco_checks': advantages['eco_checks'],
             'fuel_card': advantages['fuel_card'],
@@ -337,6 +339,9 @@ class website_hr_contract_salary(http.Controller):
             new_contract.new_car = False
             new_contract.new_car_model_id = False
             new_contract.car_id = False
+
+        if not advantages['transport_mode_train']:
+            new_contract.train_transport_reimbursed_amount = 0.0
 
         if not advantages['transport_mode_public']:
             new_contract.public_transport_reimbursed_amount = 0.0
@@ -439,6 +444,7 @@ class website_hr_contract_salary(http.Controller):
             'MEAL_V_EMP': round(payslip._get_salary_line_total('MEAL_V_EMP'), 2),
             'ATN.CAR.2': round(payslip._get_salary_line_total('ATN.CAR.2'), 2),
             'CAR.PRIV': round(payslip._get_salary_line_total('CAR.PRIV'), 2),
+            'PUB.TRANS': round(payslip._get_salary_line_total('PUB.TRANS'), 2),
             'ATN.INT.2': round(payslip._get_salary_line_total('ATN.INT.2'), 2),
             'ATN.MOB.2': round(payslip._get_salary_line_total('ATN.MOB.2'), 2),
             'ATN.LAP.2': round(payslip._get_salary_line_total('ATN.LAP.2'), 2),
@@ -460,11 +466,13 @@ class website_hr_contract_salary(http.Controller):
         })
 
         transport_advantage = 0.0
+        if new_contract.transport_mode_train:
+            transport_advantage += new_contract.train_transport_reimbursed_amount        
         if new_contract.transport_mode_public:
             transport_advantage += new_contract.public_transport_reimbursed_amount
-        elif new_contract.transport_mode_private_car:
+        if new_contract.transport_mode_private_car:
             transport_advantage += new_contract.private_car_reimbursed_amount
-        elif new_contract.transport_mode_car:
+        if new_contract.transport_mode_car:
             transport_advantage += new_contract.company_car_total_depreciated_cost
 
         thirteen_month_net = payslip._get_salary_line_total('NET')
@@ -504,6 +512,10 @@ class website_hr_contract_salary(http.Controller):
             odometer = vehicle.odometer
             immatriculation = vehicle.acquisition_date
         return {'co2': co2, 'fuel_type': fuel_type, 'door_number': door_number, 'odometer': odometer, 'immatriculation': immatriculation}
+
+    @http.route(['/salary_package/onchange_train_transport/'], type='json', auth='public')
+    def onchange_train_transport(self, train_transport_employee_amount):
+        return round(request.env['hr.contract'].sudo()._get_train_transport_reimbursed_amount(train_transport_employee_amount), 2)
 
     @http.route(['/salary_package/onchange_public_transport/'], type='json', auth='public')
     def onchange_public_transport(self, public_transport_employee_amount):

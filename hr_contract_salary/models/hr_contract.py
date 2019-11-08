@@ -42,6 +42,7 @@ class HrContract(models.Model):
     mobile_invoice = fields.Binary(related='employee_id.mobile_invoice', groups="hr_contract.group_hr_contract_manager")
     sim_card = fields.Binary(related='employee_id.sim_card', groups="hr_contract.group_hr_contract_manager")
     internet_invoice = fields.Binary(related="employee_id.internet_invoice", groups="hr_contract.group_hr_contract_manager")
+    country_code = fields.Char(related='company_id.country_id.code')
 
     @api.depends('sign_request_ids.nb_closed')
     def _compute_signatures_count(self):

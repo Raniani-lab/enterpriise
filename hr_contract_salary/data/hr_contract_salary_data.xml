@@ -83,10 +83,12 @@
                 <t t-if="model_name">
                     <li>Model: <t t-esc="model_name"/></li>
                 </t>
+                <t t-if="advantages['transport_mode_train']">
+                    <li>Has Train Transportation: Yes</li>
+                    <li>Paid by the employee (Monthly): <t t-esc="advantages['train_transport_employee_amount']"/> €/month</li>
+                </t>               
                 <t t-if="advantages['transport_mode_public']">
-                    <li>Has Public Transportation: Yes</li>
-                </t>
-                <t t-if="advantages['transport_mode_public']">
+                    <li>Has Another Public Transportation: Yes</li>
                     <li>Paid by the employee (Monthly): <t t-esc="advantages['public_transport_employee_amount']"/> €/month</li>
                 </t>
                 <t t-if="advantages['transport_mode_private_car']">

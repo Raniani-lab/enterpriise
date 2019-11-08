@@ -70,8 +70,20 @@
                     <field name="transport_mode_car"/>
                     <field name="car_atn" attrs="{'invisible': [('transport_mode_car', '=', False)]}"/>
                     <field name="transport_employer_cost" invisible="1"/>
+                    <field name="transport_mode_train"/>
+                    <span class="o_form_label" attrs="{'invisible': [('transport_mode_train', '=', False)]}" name="train_transport_label">Train Transport</span>
+                    <div attrs="{'invisible': [('transport_mode_train', '=', False)]}" name="train_transport_div">
+                        <div>
+                            <label for="train_transport_employee_amount" class="oe_inline"/>
+                            <field name="train_transport_employee_amount" class="oe_inline"/>
+                        </div>
+                        <div>
+                            <label for="train_transport_reimbursed_amount" class="oe_inline"/>
+                            <field name="train_transport_reimbursed_amount" class="oe_inline"/>
+                        </div>
+                    </div>
                     <field name="transport_mode_public"/>
-                    <span class="o_form_label" attrs="{'invisible': [('transport_mode_public', '=', False)]}" name="public_transport_label">Public Transport</span>
+                    <span class="o_form_label" attrs="{'invisible': [('transport_mode_public', '=', False)]}" name="public_transport_label">Other Public Transport</span>
                     <div attrs="{'invisible': [('transport_mode_public', '=', False)]}" name="public_transport_div">
                         <div>
                             <label for="public_transport_employee_amount" class="oe_inline"/>

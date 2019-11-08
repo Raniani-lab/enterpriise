@@ -12,6 +12,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "change .advantage_input": "onchange_advantage",
         "change input[name='mobility']": "onchange_mobility",
         "change input[name='transport_mode_car']": "onchange_mobility",
+        "change input[name='transport_mode_train']": "onchange_mobility",
         "change input[name='transport_mode_public']": "onchange_mobility",
         "change input[name='transport_mode_private_car']": "onchange_mobility",
         "change input[name='representation_fees_radio']": "onchange_representation_fees",
@@ -20,6 +21,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "change input[name='mobile']": "onchange_mobile",
         "change input[name='internet']": "onchange_internet",
         "change select[name='select_car']": "onchange_car_id",
+        "change input[name='train_transport_employee_amount']": "onchange_train_transport",
         "change input[name='public_transport_employee_amount']": "onchange_public_transport",
         "change select[name='marital']": "onchange_marital",
         "change select[name='spouse_fiscal_status']": "onchange_spouse_fiscal_status",
@@ -187,6 +189,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             'has_mobile': $("input[name='mobile']")[1].checked,
             'fuel_card': parseFloat($("input[name='fuel_card_input']")[0].value) || 0.0,
             'transport_mode_car': $("input[name='transport_mode_car']")[0].checked,
+            'transport_mode_train': $("input[name='transport_mode_train']")[0].checked,
             'transport_mode_public': $("input[name='transport_mode_public']")[0].checked,
             'transport_mode_private_car': $("input[name='transport_mode_private_car']")[0].checked,
             'car_employee_deduction': parseFloat($("input[name='car_employee_deduction']")[0].value) || 0.0,
@@ -196,6 +199,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             'representation_fees': parseFloat($("input[name='representation_fees']")[0].value) || 0.0,
             'car_id': car_id,
             'new_car': new_car,
+            'train_transport_employee_amount': parseFloat($("input[name='train_transport_employee_amount']")[0].value) || 0.0,
             'public_transport_employee_amount': parseFloat($("input[name='public_transport_employee_amount']")[0].value) || 0.0,
             'personal_info': this.get_personal_info(),
             'meal_voucher_amount': has_meal_voucher ? parseFloat($("input[name='meal_voucher_amount']")[0].value) || 0.0 : 0.0,
@@ -258,6 +262,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         var miscellaneous_onss_div = $("div[name='m_onss_div']");
         var representation_fees_div = $("div[name='representation_fees_div']");
         var private_car_amount_div = $("div[name='private_car_amount_div']");
+        var public_amount_div = $("div[name='public_amount_div']");
         data['ATN.MOB.2'] ? mobile_atn_div.removeClass('d-none') : mobile_atn_div.addClass('d-none');
         data['ATN.INT.2'] ? internet_atn_div.removeClass('d-none') : internet_atn_div.addClass('d-none');
         data['ATN.LAP.2'] ? laptop_atn_div.removeClass('d-none') : laptop_atn_div.addClass('d-none');
@@ -265,7 +270,9 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         data['EMP.BONUS'] ? employment_bonus_div.removeClass('d-none') : employment_bonus_div.addClass('d-none');
         data['M.ONSS'] ? miscellaneous_onss_div.removeClass('d-none') : miscellaneous_onss_div.addClass('d-none');
         data['REP.FEES'] ? representation_fees_div.removeClass('d-none') : representation_fees_div.addClass('d-none');
+        data['PUB.TRANS'] ? public_amount_div.removeClass('d-none') : public_amount_div.addClass('d-none');
         data['CAR.PRIV'] ? private_car_amount_div.removeClass('d-none') : private_car_amount_div.addClass('d-none');
+        $("input[name='public_transport_reimbursed_amount']").val(data['PUB.TRANS']);
         $("div[name='compute_loading']").addClass('d-none');
         $("div[name='net']").removeClass('d-none').hide().slideDown( "slow" );
         $("input[name='NET']").removeClass('o_outdated');
@@ -348,6 +355,9 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             fuel_card_div.addClass('d-none');
             driving_license_div.addClass('d-none');
 
+        }
+        if ($("input[name='transport_mode_train']")[0].checked){
+            $(".mobility-options#train_transport").removeClass('d-none');
         }
         if ($("input[name='transport_mode_public']")[0].checked){
             $(".mobility-options#public_transport").removeClass('d-none');
@@ -435,6 +445,17 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             $("span[name='new_car_message']").addClass('d-none');
             this.onchange_advantage();
         }
+    },
+
+    onchange_train_transport: function(event) {
+        this._rpc({
+            route: '/salary_package/onchange_train_transport/',
+            params: {
+                'train_transport_employee_amount': parseFloat($("input[name='train_transport_employee_amount']")[0].value) || 0.0,
+            },
+        }).then(function(amount) {
+            $("input[name='train_transport_reimbursed_amount']").val(amount);
+        });
     },
 
     onchange_public_transport: function(event) {

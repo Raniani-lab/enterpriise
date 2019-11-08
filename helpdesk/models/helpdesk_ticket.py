@@ -403,7 +403,7 @@ class HelpdeskTicket(models.Model):
     def create(self, list_value):
         now = fields.Datetime.now()
         # determine user_id and stage_id if not given. Done in batch.
-        teams = self.env['helpdesk.team'].browse([vals['team_id'] for vals in list_value if 'team_id' in vals])
+        teams = self.env['helpdesk.team'].browse([vals['team_id'] for vals in list_value if vals.get('team_id')])
         team_default_map = dict.fromkeys(teams.ids, dict())
         for team in teams:
             team_default_map[team.id] = {

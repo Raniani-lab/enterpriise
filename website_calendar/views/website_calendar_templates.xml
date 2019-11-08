@@ -149,7 +149,7 @@
         </p>
     </template>
 
-    <template id="appointment" name="Website Appointment: Schedule Appointment">
+    <template id="appointment" name="Website Appointment: Schedule Appointment" track="1">
         <t t-call="website.layout">
             <div id="wrap" class="o_website_calendar">
                 <div class="oe_structure container mb128">

@@ -268,13 +268,13 @@ class ResCompany(models.Model):
         }
         url = 'https://www.banxico.org.mx/SieAPIRest/service/v1/series/%s/datos/%s/%s?token=%s' # noqa
         try:
-            date_mx = (
-                datetime.datetime.now(timezone('America/Mexico_City')) - datetime.timedelta(days=1)
-            ).strftime(DEFAULT_SERVER_DATE_FORMAT)
-            res = requests.get(url % (','.join(foreigns), date_mx, date_mx, token))
+            date_mx = datetime.datetime.now(timezone('America/Mexico_City'))
+            today = date_mx.strftime(DEFAULT_SERVER_DATE_FORMAT)
+            yesterday = (date_mx - datetime.timedelta(days=1)).strftime(DEFAULT_SERVER_DATE_FORMAT)
+            res = requests.get(url % (','.join(foreigns), yesterday, today, token))
             res.raise_for_status()
             series = res.json()['bmx']['series']
-            series = {serie['idSerie']: serie['datos'][0] for serie in series if 'datos' in serie}
+            series = {serie['idSerie']: {dato['fecha']: dato['dato'] for dato in serie['datos']} for serie in series if 'datos' in serie}
         except:
             return False
 
@@ -284,6 +284,8 @@ class ResCompany(models.Model):
             'MXN': (1.0, fields.Date.today().strftime(DEFAULT_SERVER_DATE_FORMAT)),
         }
 
+        today = date_mx.strftime(BANXICO_DATE_FORMAT)
+        yesterday = (date_mx - datetime.timedelta(days=1)).strftime(BANXICO_DATE_FORMAT)
         for index, currency in foreigns.items():
             if currency not in available_currency_names:
                 continue
@@ -292,15 +294,15 @@ class ResCompany(models.Model):
                 continue
 
             serie = series[index]
-            try:
-                foreign_mxn_rate = float(serie['dato'])
-            except (ValueError, TypeError):
-                _logger.info('Could not get rate for currency %s.', currency)
-                continue
-            foreign_rate_date = datetime.datetime.strptime(
-                serie.get('fecha'), BANXICO_DATE_FORMAT).strftime(DEFAULT_SERVER_DATE_FORMAT)
-
-            rslt[currency] = (1.0/foreign_mxn_rate, foreign_rate_date)
+            for rate in serie:
+                try:
+                    foreign_mxn_rate = float(serie[rate])
+                except (ValueError, TypeError):
+                    _logger.info('Could not get rate for currency %s.', currency)
+                    continue
+                foreign_rate_date = datetime.datetime.strptime(
+                    rate, BANXICO_DATE_FORMAT).strftime(DEFAULT_SERVER_DATE_FORMAT)
+                rslt[currency] = (1.0/foreign_mxn_rate, foreign_rate_date)
         return rslt
 
     def _parse_xe_com_data(self, available_currencies):

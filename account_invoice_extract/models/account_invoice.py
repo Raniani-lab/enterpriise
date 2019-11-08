@@ -593,7 +593,9 @@ class AccountMove(models.Model):
                     if partner_vat.exists():
                         move_form.partner_id = partner_vat
                     elif vat_number_ocr:
-                        move_form.partner_id = self._create_supplier_from_vat(vat_number_ocr)
+                        created_supplier = self._create_supplier_from_vat(vat_number_ocr)
+                        if created_supplier:
+                            move_form.partner_id = created_supplier
 
             if date_ocr:
                 move_form.invoice_date = date_ocr

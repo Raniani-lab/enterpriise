@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="documents.component.PdfManager" owl="1">
+        <div class='o_documents_pdf_manager' t-on-click="_onClickManager">
+            <div class="o_documents_pdf_manager_top_bar">
+                <span class="o_pdf_global_buttons">
+                    <div>
+                        <button class="btn btn-primary o_pdf_manager_button"
+                            t-att-disabled="state.uploadingLock"
+                            t-on-click="_onClickSplit">
+                            Split
+                            <span t-if="state.uploadingLock" class="fa fa-spinner fa-spin"/>
+                        </button>
+                        <span class="ml-3">
+                            <t t-foreach="props.rules" t-as="rule" t-key="rule.id">
+                                <button class="btn btn-primary o_pdf_rule_buttons"
+                                    t-on-click="_onClickRule(rule.id)"
+                                    aria-label="Split and apply the action"
+                                    title="Split and apply the action"
+                                    t-esc="rule.display_name"
+                                    t-att-disabled="state.uploadingLock"
+                                />
+                            </t>
+                        </span>
+                    </div>
+                </span>
+                <span class="pdf_manager_topbar_buttons_right">
+                    <span class="o_pdf_archive_menu mr-2" t-on-click="_onClickArchive">
+                        <span>Archive original file(s) </span>
+                        <input class="ml-2" id="pdf_archive" type="checkbox" name="archive" t-att-checked="state.archive"/>
+                    </span>
+                    <button class="btn btn-primary o_pdf_manager_button mr-2"
+                        aria-label="Add new file"
+                        title="Add new file"
+                        t-att-disabled="state.uploadingLock"
+                        t-on-click="_onClickGlobalAdd">
+                        <span>Add File</span>
+                    </button>
+                    <button class="btn btn-danger o_pdf_manager_button mr-2"
+                        aria-label="Discard"
+                        title="Discard"
+                        t-att-disabled="state.uploadingLock"
+                        t-on-click="_onClickGlobalClose">
+                        <span>Discard</span>
+                    </button>
+                </span>
+            </div>
+            <div class="o_documents_pdf_page_preview" t-if="previewCanvas">
+                <PdfPage pageId="state.viewedPage"
+                    canvas="previewCanvas"
+                    isPreview="true"
+                    t-on-page-clicked="_onClickPreview"
+                />
+            </div>
+            <div class='o_documents_pdf_page_viewer'>
+                <t t-foreach="state.groupIds" t-as="groupId" t-key="groupId">
+                    <t t-foreach="state.groupData[groupId].pageIds" t-as="pageId" t-key="pageId">
+                        <div class="o_documents_pdf_page_frame" t-key="'div_' + pageId">
+                            <PdfPage t-ref="PdfPage_{{pageId}}"
+                                canvas="_pageCanvas[pageId].canvas"
+                                isPreview="false"
+                                isIgnored="state.pages[pageId].isIgnored"
+                                pageId="pageId"
+                                t-on-ignore-clicked="_onClickIgnore"
+                                t-on-page-clicked="_onClickPage"
+                                t-on-page-dragged="_onPageDragStart"
+                                t-on-page-dropped="_onPageDrop"
+                            />
+                            <div t-if="pageId_first" class="o_pdf_group_name_wrapper">
+                                <PdfGroupName groupId="groupId"
+                                    name="state.groupData[groupId].name"
+                                    t-on-edit-name="_onEditName"
+                                />
+                            </div>
+                        </div>
+                        <t t-if="!(groupId_last and pageId_last)">
+                            <div class="o_page_splitter_wrapper" t-att-class="{ o_pdf_separator_activated: pageId_last }" t-on-click="_onClickPageSeparator(pageId, groupId)">
+                                <div class="o_page_splitter"/>
+                                <i class="o_pdf_scissors fa fa-scissors fa-lg fa-rotate-270"/>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

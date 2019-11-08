@@ -179,6 +179,9 @@
                     <button t-if="widget.records[0].data.type !== 'url'" class="btn fa fa-retweet o_inspector_button o_inspector_replace" title="Replace"/>
                     <button t-att-class="'btn fa o_inspector_button o_inspector_lock' + (widget.records[0].data.lock_uid ? ' o_locked fa-lock' : ' fa-unlock-alt')" title="Lock"/>
                 </t>
+                <t t-if="widget.isPdfOnly">
+                    <button class="btn fa fa-scissors o_inspector_button o_inspector_split" aria-label="Split" title="Split"/>
+                </t>
             </t>
         </div>
 

@@ -421,13 +421,14 @@ class Document(models.Model):
             feedback = _("Document Request: %s Uploaded by: %s") % (self.name, self.env.user.name)
             self.request_activity_id.action_feedback(feedback=feedback, attachment_ids=[attachment_id])
 
-    def split_pdf(self, indices=None, remainder=False):
-        self.ensure_one()
-        if self.attachment_id:
-            attachment_ids = self.attachment_id.split_pdf(indices=indices, remainder=remainder)
-            for attachment in attachment_ids:
-                document = self.copy()
-                document.write({'attachment_id': attachment.id})
+    @api.model
+    def _pdf_split(self, new_files=None, open_files=None, vals=None):
+        vals = vals or {}
+        new_attachments = self.env['ir.attachment']._pdf_split(new_files=new_files, open_files=open_files)
+
+        return self.create([
+            dict(vals, attachment_id=attachment.id) for attachment in new_attachments
+        ])
 
     @api.model
     def search_panel_select_range(self, field_name):

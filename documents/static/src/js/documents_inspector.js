@@ -26,6 +26,7 @@ const DocumentsInspector = Widget.extend({
         'click .o_inspector_delete': '_onDelete',
         'click .o_inspector_download': '_onDownload',
         'click .o_inspector_replace': '_onReplace',
+        'click .o_inspector_split': '_onClickSplit',
         'click .o_inspector_history_item_delete': '_onClickHistoryItemDelete',
         'click .o_inspector_history_item_download': '_onClickHistoryItemDownload',
         'click .o_inspector_history_item_restore': '_onClickHistoryItemRestore',
@@ -102,6 +103,7 @@ const DocumentsInspector = Widget.extend({
         this._isLocked = this.records.some(record =>
              record.data.lock_uid && record.data.lock_uid.res_id !== session.uid
         );
+        this.isPdfOnly = this.records.every(record => record.data.mimetype === 'application/pdf');
     },
     /**
      * @override
@@ -526,6 +528,24 @@ const DocumentsInspector = Widget.extend({
         const documentId = $(ev.currentTarget).data('id');
         this.trigger_up('set_file', {
             id: documentId,
+        });
+    },
+    /**
+     * Opens the pdfManager with the currently selected records.
+     *
+     * @private
+     */
+    _onClickSplit(ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        if (this.pendingSavingRequests > 0) {
+            return;
+        }
+        const records = this.records.map(record => record.data);
+        this.trigger_up('kanban_image_clicked', {
+            recordId: records[0].id,
+            recordList: records,
+            openPdfManager: true,
         });
     },
     /**

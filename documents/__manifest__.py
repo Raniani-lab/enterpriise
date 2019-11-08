@@ -34,6 +34,9 @@
 
     'qweb': [
         "static/src/xml/*.xml",
+        "static/src/owl/components/pdf_manager/pdf_manager.xml",
+        "static/src/owl/components/pdf_page/pdf_page.xml",
+        "static/src/owl/components/pdf_group_name/pdf_group_name.xml",
     ],
 
     'demo': [

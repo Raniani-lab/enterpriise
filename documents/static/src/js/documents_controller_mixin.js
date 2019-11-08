@@ -23,7 +23,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         'dragstart .o_document_draggable': '_onDragstartDocumentDraggable',
         'drop .o_documents_view': '_onDropDocumentsView',
     },
-    custom_events: Object.assign({},  fileUploadMixin.custom_events, {
+    custom_events: Object.assign({}, fileUploadMixin.custom_events, {
         archive_records: '_onArchiveRecords',
         delete_records: '_onDeleteRecords',
         document_viewer_attachment_changed: '_onDocumentViewerAttachmentChanged',
@@ -165,6 +165,21 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      */
     _getFileUploadRoute() {
         return '/documents/upload_attachment';
+    },
+    /**
+     * @private
+     * @param {Object[]} documents
+     * @return {Object[]} rules that are common to the given documents.
+     */
+    _getRules(documents) {
+        const ruleIdsByRecord = documents.map(record => record.available_rule_ids.res_ids);
+        const commonRuleIds = _.intersection.apply(_, ruleIdsByRecord);
+        const record = documents[0];
+        const rules = commonRuleIds.map(ruleId => {
+            const rule = record.available_rule_ids.data.find(record => record.res_id === ruleId);
+            return rule.data;
+        });
+        return rules.filter(rule => !rule.limited_to_single_record);
     },
     /**
      * Generates an drag icon near the cursor containing information on the dragged records.
@@ -310,14 +325,19 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @private
      * @param {string} ruleId
      * @param {string[]} recordIds
+     * @param {Object} param2
+     * @param {boolean} param2.preventReload
      * @return {Promise}
      */
-    async _triggerRule(ruleId, recordIds) {
+    async _triggerRule(ruleId, recordIds, { preventReload } = {}) {
         const result = await this._rpc({
             model: 'documents.workflow.rule',
             method: 'apply_actions',
             args: [[ruleId], recordIds],
         });
+        if (preventReload) {
+            return;
+        }
         if (_.isObject(result)) {
             await this.do_action(result);
         } else {
@@ -519,7 +539,14 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      */
     async _onDocumentViewerAttachmentChanged(ev) {
         ev.stopPropagation();
-        await this.update({});
+        if (ev.data.documentIds) {
+            // If document ids are given, the view is reloaded with the new
+            // documents being pre-selected.
+            this._selectedRecordIds = ev.data.documentIds;
+            await this.reload();
+        } else {
+            await this.update({});
+        }
     },
     /**
      * @private
@@ -670,13 +697,18 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @private
      * @param {OdooEvent} ev
      * @param {integer} ev.data.recordId
+     * @param {boolean} ev.data.openPdfManager
      * @param {Array<Object>} ev.data.recordList
      */
     async _onKanbanImageClicked(ev) {
         ev.stopPropagation();
         const documents = ev.data.recordList;
         const recordId = ev.data.recordId;
-        const documentViewer = new DocumentViewer(this, documents, recordId);
+        const rules = this._getRules(documents);
+        const documentViewer = new DocumentViewer(this, documents, recordId, {
+            openPdfManager: ev.data.openPdfManager,
+            rules,
+        });
         await documentViewer.appendTo(this.$('.o_documents_view'));
     },
     /**
@@ -868,8 +900,15 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      */
     async _onTriggerRule(ev) {
         ev.stopPropagation();
-        const recordIds = ev.data.records.map(record => record.res_id);
-        await this._triggerRule(ev.data.ruleId, recordIds);
+        if (ev.data.recordIds) {
+            this._selectedRecordIds = ev.data.recordIds;
+        }
+        const recordIds = ev.data.recordIds
+            ? ev.data.recordIds
+            : ev.data.records.map(record => record.res_id);
+        await this._triggerRule(ev.data.ruleId, recordIds, {
+            preventReload: ev.data.preventReload
+        });
     },
     /**
      * @override

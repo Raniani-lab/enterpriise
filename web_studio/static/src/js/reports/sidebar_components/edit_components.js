@@ -765,6 +765,16 @@ var TIf = AbstractEditComponent.extend({
             self.$('input').val(condition === 'True' ? '' : condition).trigger('change');
         });
     },
+
+    /**
+    * @override
+    */
+    _onDirectiveChange: function (e) {
+        if (e.target.name === "t-if") {
+            return this._super.apply(this, arguments);
+        }
+        e.stopPropagation();
+    }
 });
 
 var TElse = AbstractEditComponent.extend({

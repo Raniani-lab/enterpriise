@@ -372,6 +372,10 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 
     .o_social_comment_controls {
         @include o-position-absolute(0, 0);
+        height: 75%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .o_social_comment_published_date, .o_social_post_published_date {

@@ -48,7 +48,7 @@ var StreamPostComments = Dialog.extend(SocialEmojisMixin, SocialStreamPostFormat
         'click .o_social_comment_add_image': '_onAddImage',
         'change .o_input_file': '_onImageChange',
         'click .o_social_write_reply .fa-times': '_onImageRemove',
-        'click .o_mail_emoji': '_onEmojiClick',
+        'click .o_social_write_reply .o_mail_emoji': '_onEmojiClick',
         'click .o_social_comment_like': '_onLikeComment',
         'click .o_social_edit_comment': '_onEditComment',
         'click .o_social_edit_comment_cancel': '_onEditCommentCancel',

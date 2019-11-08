@@ -3,13 +3,13 @@ odoo.define('social.form_field_post_preview', function (require) {
 
 var FieldHtml = require('web_editor.field.html');
 var fieldRegistry = require('web.field_registry');
-var SocialEmojisMixin = require('social.emoji_mixin');
+var MailEmojisMixin = require('mail.emoji_mixin');
 
 /**
  * Simple FieldHtml extension that will just wrap the emojis correctly.
- * See 'SocialEmojisMixin' documentation for more information.
+ * See 'MailEmojisMixin' documentation for more information.
  */
-var FieldPostPreview = FieldHtml.extend(SocialEmojisMixin, {
+var FieldPostPreview = FieldHtml.extend(MailEmojisMixin, {
     _textToHtml: function (text) {
         var html = this._super.apply(this, arguments);
         var $html = $(html);

@@ -6,7 +6,7 @@ var Dialog = require('web.Dialog');
 var dom = require('web.dom');
 var emojis = require('mail.emojis');
 var PostKanbanImagesCarousel = require('social.social_post_kanban_images_carousel');
-var SocialEmojisMixin = require('social.emoji_mixin');
+var MailEmojisMixin = require('mail.emoji_mixin');
 var SocialStreamPostFormatterMixin = require('social.stream_post_formatter_mixin');
 var time = require('web.time');
 
@@ -32,7 +32,7 @@ var StreamPostCommentDelete = require('social.social_post_kanban_comments_delete
  * - Replies to comments (added / edited / deleted)
  * - Like / Dislike comments
  * - Updating the likes count
- * - Emojis support to the comment textarea (through the SocialEmojisMixin)
+ * - Emojis support to the comment textarea (through the MailEmojisMixin)
  * - Loading comment replies
  * - Formatting dates properly
  *
@@ -41,7 +41,7 @@ var StreamPostCommentDelete = require('social.social_post_kanban_comments_delete
  * - The comment link (getCommentLink)
  * - ...
  */
-var StreamPostComments = Dialog.extend(SocialEmojisMixin, SocialStreamPostFormatterMixin, {
+var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatterMixin, {
     template: 'social.StreamPostComments',
     events: {
         'keydown .o_social_add_comment': '_onAddComment',

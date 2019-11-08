@@ -3,10 +3,10 @@ odoo.define('social.kanban_field_stream_post', function (require) {
 
 var FieldRegistry = require('web.field_registry');
 var FieldText = require('web.basic_fields').FieldText;
-var SocialEmojisMixin = require('social.emoji_mixin');
+var MailEmojisMixin = require('mail.emoji_mixin');
 var SocialStreamPostFormatterMixin = require('social.stream_post_formatter_mixin');
 
-var SocialKanbanMessageWrapper = FieldText.extend(SocialEmojisMixin, SocialStreamPostFormatterMixin, {
+var SocialKanbanMessageWrapper = FieldText.extend(MailEmojisMixin, SocialStreamPostFormatterMixin, {
     /**
      * Overridden to wrap emojis and apply special stream post formatting
      *

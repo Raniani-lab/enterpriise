@@ -160,7 +160,7 @@
                         <div class="o_social_comment_add_image o_social_subtle_btn px-3 py-1">
                             <i class="fa fa-image" title="Add an image"/>
                         </div>
-                        <t t-call="social.EmojisDropdown">
+                        <t t-call="mail.EmojisDropdown">
                             <t t-set="emojisDropdownId"
                                 t-attf-value="emoji_comment_#{isCommentEdit ? 'edit_' : ''}#{isCommentReply || isCommentEdit ? comment.id : 0}"></t>
                         </t>
@@ -250,22 +250,6 @@
         </div>
     </div>
     </t>
-
-    <div t-name="social.EmojisDropdown" t-attf-class="o_social_icon_dropdown o_social_add_emoji dropdown">
-        <button class="btn btn-block o_social_subtle_btn dropdown-toggle px-3 py-1"
-            type="button" t-att-id="emojisDropdownId"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            title="Add an emoji">
-            <i class="fa fa-smile-o"></i>
-        </button>
-        <div class="dropdown-menu dropdown-menu-right border-0 p-2" t-att-aria-labelledby="emojisDropdownId" style="width: 406px">
-            <t t-call="mail.Composer.emojis">
-                <t t-set="emojis" t-value="widget.emojis"></t>
-            </t>
-        </div>
-    </div>
 
     <t t-name="social.KanbanView.Group" t-extend="KanbanView.Group">
         <t t-jquery="span.o_column_title" t-operation="before">

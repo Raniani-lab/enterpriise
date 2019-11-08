@@ -5,9 +5,9 @@ from odoo import api, fields, models, _
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-    
-    offer_count = fields.Integer(compute='_compute_offer_count')
-    
+
+    offer_count = fields.Integer(compute='_compute_offer_count', groups="sales_team.group_sale_manager")
+
     def _compute_offer_count(self):
         offers_data = self.env['amazon.offer'].read_group(
             [('product_template_id', 'in', self.ids)], ['product_template_id'],
@@ -34,7 +34,7 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    offer_count = fields.Integer(compute='_compute_offer_count')
+    offer_count = fields.Integer(compute='_compute_offer_count', groups="sales_team.group_sale_manager")
 
     def _compute_offer_count(self):
         offers_data = self.env['amazon.offer'].read_group(

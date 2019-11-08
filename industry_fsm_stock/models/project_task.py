@@ -27,9 +27,9 @@ class Task(models.Model):
         # need to re-run _action_launch_stock_rule, since the sale order can already be confirmed
         self.sale_order_id.order_line._action_launch_stock_rule()
         for picking in self.sale_order_id.picking_ids:
-            for move in picking.move_lines:
+            for move in picking.move_lines.filtered(lambda ml: ml.state != 'done'):
                 for move_line in move.move_line_ids:
                     move_line.qty_done = move_line.product_uom_qty
 
         # context key used to not create backorders
-        self.sale_order_id.picking_ids.with_context({'cancel_backorder': True})._action_done()
+        self.sale_order_id.picking_ids.filtered(lambda p: p.state not in ['done', 'cancel']).with_context({'cancel_backorder': True})._action_done()

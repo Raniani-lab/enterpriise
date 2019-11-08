@@ -122,18 +122,18 @@ class AccountMove(models.Model):
                 if move_line.account_id and (move_line.account_id.can_create_asset) and move_line.account_id.create_asset != 'no' and not move.reversed_entry_id:
                     if not move_line.name:
                         raise UserError(_('Journal Items of {account} should have a label in order to generate an asset').format(account=move_line.account_id.display_name))
-                    ammount_total = ammount_left = move_line.debit + move_line.credit
+                    amount_total = amount_left = move_line.debit + move_line.credit
                     unit_uom = self.env.ref('uom.product_uom_unit')
-                    if move_line.account_id.multiple_assets_per_line and ((move_line.product_uom_id and move_line.product_uom_id.measure_type == unit_uom.measure_type) or not move_line.product_uom_id):
+                    if move_line.account_id.multiple_assets_per_line and ((move_line.product_uom_id and move_line.product_uom_id.category_id.id == unit_uom.category_id.id) or not move_line.product_uom_id):
                         units_quantity = move_line.product_uom_id._compute_quantity(move_line.quantity, unit_uom, False)
                     else:
                         units_quantity = 1
                     while units_quantity > 0:
                         if units_quantity > 1:
-                            original_value = float_round(ammount_left / units_quantity, precision_rounding=move_line.company_currency_id.rounding)
-                            ammount_left = float_round(ammount_left - original_value, precision_rounding=move_line.company_currency_id.rounding)
+                            original_value = float_round(amount_left / units_quantity, precision_rounding=move_line.company_currency_id.rounding)
+                            amount_left = float_round(amount_left - original_value, precision_rounding=move_line.company_currency_id.rounding)
                         else:
-                            original_value = ammount_left
+                            original_value = amount_left
                         vals = {
                             'name': move_line.name,
                             'company_id': move_line.company_id.id,

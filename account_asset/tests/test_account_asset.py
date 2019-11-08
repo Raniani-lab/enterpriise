@@ -586,7 +586,7 @@ class TestAccountAsset(AccountTestCommon):
                     "debit": 1000.0,
                     "name": "stuff",
                     "quantity": 2.5,
-                    "product_uom_id": self.env.ref('uom.product_uom_categ_unit').id,
+                    "product_uom_id": self.env.ref('uom.product_uom_unit').id,
                 }),
                 (0, 0, {
                     'account_id': self.xfa.id,

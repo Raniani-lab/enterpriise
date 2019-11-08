@@ -125,7 +125,7 @@ class MrpProductionWorkcenterLine(models.Model):
         })
 
     def action_print(self):
-        if self.product_id.uom_id.category_id.measure_type == 'unit':
+        if self.product_id.uom_id.category_id == self.env.ref('uom.product_uom_categ_unit'):
             qty = int(self.qty_producing)
         else:
             qty = 1

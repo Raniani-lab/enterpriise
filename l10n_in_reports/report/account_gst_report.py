@@ -282,20 +282,21 @@ class L10nInReportAccount(models.AbstractModel):
         if gst_return_type == 'gstr1':
             domain += [('journal_id.type', '=', 'sale')]
             if gst_section == 'b2b':
-                domain += [
+                domain = [
+                    '|', ('journal_id.type', '=', 'sale'), ('is_reverse_charge', '=', 'Y'),
                     ('partner_vat', '!=', False),
-                    ('l10n_in_export_type', 'in', ['regular', 'deemed', 'sale_from_bonded_wh', 'sez_with_igst', 'sez_without_igst']),
-                    ('move_type', 'not in', ('out_refund', 'in_refund'))]
+                    ('move_type', 'not in', ('out_refund', 'in_refund')),
+                    ('l10n_in_gst_treatment', 'not in', ['overseas'])]
             elif gst_section == 'b2cl':
                 domain += [
                     ('partner_vat', '=', False),
                     ('total', '>', '250000'),
                     ('supply_type', '=', 'Inter State'),
-                    ('journal_id.l10n_in_import_export', '!=', True),
+                    ('l10n_in_gst_treatment', 'not in', ['overseas']),
                     ('move_type', 'not in', ('out_refund', 'in_refund'))]
             elif gst_section == 'b2cs':
                 domain += [
-                    '&', '&', '&', ('partner_vat', '=', False), ('journal_id.l10n_in_import_export', '!=', True), ('move_type', 'not in', ('out_refund', 'in_refund')),
+                    '&', '&', '&', ('partner_vat', '=', False), ('l10n_in_gst_treatment', 'not in', ['overseas']), ('move_type', 'not in', ('out_refund', 'in_refund')),
                     '|', ('supply_type', '=', 'Intra State'),
                     '&', ('total', '<=', '250000'), ('supply_type', '=', 'Inter State')]
             elif gst_section == 'cdnr':
@@ -308,7 +309,7 @@ class L10nInReportAccount(models.AbstractModel):
                     ('move_type', 'in', ['out_refund', 'in_refund'])]
             elif gst_section == 'exp':
                 domain += [
-                    ('journal_id.l10n_in_import_export', '=', True),
+                    ('l10n_in_gst_treatment', 'in', ['overseas','special_economic_zone']),
                     ('move_type', 'not in', ('out_refund', 'in_refund'))]
             elif gst_section == 'at':
                 model = 'l10n_in.advances.payment.report'

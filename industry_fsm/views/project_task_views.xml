@@ -61,7 +61,7 @@
                     </div>
                 </button>
                 <button class="oe_stat_button" name="action_fsm_view_material"
-                    type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': ['|', ('partner_id', '=', False), ('allow_material', '=', False)]}">
+                    type="object" icon="fa-cart-plus" attrs="{'invisible': ['|', ('partner_id', '=', False), ('allow_material', '=', False)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
                             <field name="material_line_product_count" widget="statinfo" string="Products" class="mr-1"/>
@@ -142,6 +142,18 @@
     	Project Views (in project app)
 	-->
 
+    <record id="quick_create_task_form_fsm" model="ir.ui.view">
+        <field name="name">project.task.form.quick_create</field>
+        <field name="model">project.task</field>
+        <field name="priority">1000</field>
+        <field name="inherit_id" ref="project.quick_create_task_form"/>
+        <field name="arch" type="xml">
+            <field name="project_id" position="after">
+                <field name="is_fsm" invisible="1"/>
+                <field name="partner_id" attrs="{'required': [('is_fsm', '=', True)], 'invisible': [('is_fsm', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
 
     <record id="project_view_form_inherit" model="ir.ui.view">
         <field name="name">project.view.form.inherit</field>
@@ -174,6 +186,21 @@
                         <label for="allow_quotations"/>
                         <div class="text-muted" id="allow_billable_setting">
                             Create new quotations directly from tasks
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+            <xpath  expr="//div[@id='rating_settings']/.." position="before">
+                <div class="row mt16 o_settings_container">
+                    <div class="col-lg-6 o_setting_box" groups="base.group_no_one">
+                        <div class="o_setting_left_pane">
+                            <field name="is_fsm"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="is_fsm"/>
+                            <div class="text-muted" id="allow_billable_setting">
+                                Manage tasks in the Field Service module
+                            </div>
                         </div>
                     </div>
                 </div>

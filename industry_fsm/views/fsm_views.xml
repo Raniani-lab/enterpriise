@@ -69,7 +69,7 @@
                             </div>
                         </button>
                         <button class="oe_stat_button" name="action_fsm_view_material"
-                            type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': ['|', ('partner_id', '=', False), ('allow_material', '=', False)]}">
+                            type="object" icon="fa-cart-plus" attrs="{'invisible': ['|', ('partner_id', '=', False), ('allow_material', '=', False)]}">
                             <div class="o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="material_line_product_count" widget="statinfo" string="Products" class="mr-1"/>
@@ -95,7 +95,7 @@
                             <field name="stage_id" invisible="1"/>
                         </group>
                         <group>
-                            <label for="planned_date_begin" string="Date"/>
+                            <label for="planned_date_begin" string="Planned Date"/>
                             <div class="w-100">
                                 <div class="o_row">
                                     <field name="planned_date_begin" widget="daterange" options='{"related_end_date": "planned_date_end"}'/>
@@ -103,8 +103,8 @@
                                     <field name="planned_date_end" widget="daterange" options='{"related_start_date": "planned_date_begin"}'/>
                                 </div>
                             </div>
-                            <label for="timesheet_timer_first_start" string="Effective Hours" attrs="{'invisible': [('allow_timesheets', '=', False)]}"/>
-                            <div class="w-100" attrs="{'invisible': [('allow_timesheets', '=', False)]}">
+                            <label for="timesheet_timer_first_start" string="Effective Hours" attrs="{'invisible': [('timesheet_timer_first_start', '=', False)]}"/>
+                            <div class="w-100" attrs="{'invisible': [('timesheet_timer_first_start', '=', False)]}">
                                 <div class="o_row">
                                     <field name="timesheet_timer_first_start" widget="daterange" options='{"related_end_date": "timesheet_timer_last_stop"}'/>
                                     <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
@@ -159,6 +159,7 @@
         <field name="arch" type="xml">
             <tree string="Tasks">
                 <field name="name"/>
+                <field name="partner_id"/>
                 <field name="project_id" invisible="context.get('user_invisible', False)"/>
                 <field name="user_id" invisible="context.get('user_invisible', False)"/>
                 <field name="company_id" groups="base.group_multi_company"/>
@@ -195,11 +196,11 @@
                     ('planned_date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
                 <filter name="planned_future" string="Future" domain="[('planned_date_begin', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
                 <group expand="0" string="Group By">
-                    <filter string="Start Date" name="groupby_planned_date_begin" context="{'group_by': 'planned_date_begin:day'}"/>
                     <filter string="Responsible" name="groupby_user" context="{'group_by':'user_id'}"/>
                     <filter string="Stage" name="groupby_stage" context="{'group_by':'stage_id'}"/>
                     <filter string="Project" name="groupby_project" context="{'group_by':'project_id'}"/>
                     <filter string="Company" name="groupby_company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+                    <filter string="Start Date" name="groupby_planned_date_begin" context="{'group_by': 'planned_date_begin:day'}"/>
                 </group>
             </search>
         </field>
@@ -209,12 +210,12 @@
         <field name="name">project.task.calendar.fsm</field>
         <field name="model">project.task</field>
         <field name="arch" type="xml">
-            <calendar date_start="planned_date_begin" date_stop="planned_date_end" string="Tasks" mode="month" color="user_id" form_view_id="%(industry_fsm.project_task_view_form)d" event_open_popup="1">
+            <calendar date_start="planned_date_begin" date_stop="planned_date_end" string="Tasks" mode="month" color="user_id" form_view_id="%(industry_fsm.project_task_view_form)d" event_open_popup="1" quick_add="0">
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="partner_city"/>
-                <field name="partner_zip"/>
-                <field name="partner_phone"/>
+                <field name="partner_zip" />
+                <field name="partner_phone"  widget="phone"/>
             </calendar>
         </field>
     </record>
@@ -256,26 +257,12 @@
                     t-set="deadline_class" t-value="'oe_kanban_text_red'" />
                 <t t-elif="record.is_fsm.raw_value and !record.fsm_done.raw_value and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().endOf('day')"
                     t-set="deadline_class" t-value="'text-warning font-weight-bold'" />
+                <t t-if="record.fsm_done.raw_value" t-value="'font-weight-bold'">
+                </t>
                 <!-- field -->
                 <t t-if="record.is_fsm.raw_value and record.planned_date_begin.raw_value" t-set="date" t-value="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)" />
+                <t t-if="record.is_fsm.raw_value" t-set="tooltip">Start date</t>
             </xpath>
-        </field>
-    </record>
-
-    <!-- Quick create view for fsm's kanban -->
-    <record id="quick_create_task_form_fsm" model="ir.ui.view">
-        <field name="name">project.task.form.quick_create</field>
-        <field name="model">project.task</field>
-        <field name="priority">1000</field>
-        <field name="arch" type="xml">
-            <form>
-                <field name="company_id" invisible="1" />
-                <group>
-                    <field name="name" string = "Task Title"/>
-                    <field name="partner_id" required="1" options="{'no_open': True}, 'no_create': True}" />
-                    <field name="user_id" options="{'no_open': True, 'no_create': True}"/>
-                </group>
-            </form>
         </field>
     </record>
 
@@ -300,12 +287,15 @@
                 <!-- in fsm, use only red color when displaying date as hours -->
                 <!-- also take into account the time instead of the day if we display hours -->
                 <t t-if="!context.fsm_task_kanban_whole_date" t-set="deadline_class"></t>
-                <t t-if="!context.fsm_task_kanban_whole_date and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()) lt moment()"
+                <t t-if="!context.fsm_task_kanban_whole_date and !record.fsm_done.raw_value and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()) lt moment()"
                     t-set="deadline_class" t-value="'oe_kanban_text_red'" />
             </xpath>
             <xpath expr="//t[@t-set='date_format']" position="after">
                 <!-- force date formatting to hours in fsm, wether we show deadline or planned_date_begin -->
                 <t t-if="!context.fsm_task_kanban_whole_date" t-set="date_format" t-value="'HH:mm A'" />
+            </xpath>
+            <xpath expr="//span[@name='date']" position="before">
+                <t t-if="!context.fsm_task_kanban_whole_date" t-set="tooltip">Start hour</t>
             </xpath>
         </field>
     </record>
@@ -325,7 +315,7 @@
             'fsm_mode': True,
             'search_default_my_tasks': True,
             'search_default_planned_future': True,
-            'search_default_planned_today': True,
+            'search_default_planned_today': True, 
         }</field>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>No future Tasks planned</p>
@@ -378,7 +368,6 @@
         <field name="context">{
             'search_default_my_tasks': True,
             'search_default_planned_today': True,
-            'search_default_todo': True,
         }</field>
     </record>
 

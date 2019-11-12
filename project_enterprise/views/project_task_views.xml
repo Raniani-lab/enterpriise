@@ -63,6 +63,7 @@
         <field name="priority">12</field>
         <field name="arch" type="xml">
             <map res_partner="partner_id"  default_order="planned_date_begin" routing="true" hide_address="true">
+                <field name="planned_date_begin" string="Date"/>
                 <field name="partner_id" string="Customer" />
                 <field name="partner_street" string="Address" />
                 <field name="partner_zip" string=""/>
@@ -79,6 +80,4 @@
         <field name="res_model">project.task</field>
         <field name="view_mode">kanban,tree,form,calendar,pivot,graph,gantt,activity,map</field>
     </record>
-
-
 </odoo>

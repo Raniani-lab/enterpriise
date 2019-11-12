@@ -27,13 +27,16 @@ class HelpdeskTicket(models.Model):
     def action_view_fsm_tasks(self):
         fsm_form_view = self.env.ref('industry_fsm.project_task_view_form')
         fsm_list_view = self.env.ref('industry_fsm.project_task_view_list_fsm')
-        return {
+        action = {
             'type': 'ir.actions.act_window',
-            'name': _('Tasks from Tickets'),
             'res_model': 'project.task',
-            'domain': [('id', 'in', self.fsm_task_ids.ids)],
-            'views': [(fsm_list_view.id, 'tree'), (fsm_form_view.id, 'form')],
         }
+
+        if len(self.fsm_task_ids) == 1:
+            action.update(res_id=self.fsm_task_ids[0].id, views=[(fsm_form_view.id, 'form')])
+        else:
+            action.update(domain=[('id', 'in', self.fsm_task_ids.ids)], views=[(fsm_list_view.id, 'tree'), (fsm_form_view.id, 'form')], name=_('Tasks from Tickets'))
+        return action
 
     def action_generate_fsm_task(self):
         self.ensure_one()

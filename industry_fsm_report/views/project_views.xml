@@ -35,7 +35,7 @@
                         <group>
                             <field name="name"/>
                             <field name="active" invisible="1"/>
-                            <field name="color"/>
+                            <field name="color" widget="color_picker"/>
                         </group>
                         <group>
                             <field name="model_id" invisible="True"/>
@@ -62,6 +62,29 @@
                     </span>
                 </t>
             </xpath>
+        </field>
+    </record>
+
+    <record id="project_task_view_form_fsm_quick_create" model="ir.ui.view">
+        <field name="name">project.task.form.quick_create.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.quick_create_task_form_fsm"/>
+        <field name="arch" type="xml">
+            <field name="project_id" position="after">
+                <field name="allow_worksheets" invisible="1"/>
+                <field name="worksheet_template_id" attrs="{'invisible':[('allow_worksheets', '=', False)]}" options="{'no_open': True}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="project_task_view_list_fsm_inherit" model="ir.ui.view">
+        <field name="name">project.task.tree.fsm.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_list_fsm"/>
+        <field name="arch" type="xml">
+            <field name="project_id" position="after">
+                <field name="worksheet_template_id" optional="show"/>
+            </field>
         </field>
     </record>
 
@@ -176,17 +199,15 @@
                     name="action_fsm_worksheet"
                     icon="fa-pencil" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}"
-                    help="Worksheet from this task">
+                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}">
                 </button>
                 <button
-                    string="Worksheet"
+                    string="Worksheet Completed"
                     class="oe_stat_button text-success"
                     name="action_fsm_worksheet"
                     icon="fa-check" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}"
-                    help="Worksheet from this task">
+                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}">
                 </button>
             </xpath>
         </field>
@@ -231,8 +252,7 @@
                     name="action_fsm_worksheet"
                     icon="fa-pencil" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', '|', ('allow_worksheets', '=', False), ('is_fsm', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}"
-                    help="Worksheet from this task">
+                    attrs="{'invisible': ['|', '|', '|', ('allow_worksheets', '=', False), ('is_fsm', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}">
                 </button>
                 <button
                     string="Worksheet Completed"
@@ -240,8 +260,7 @@
                     name="action_fsm_worksheet"
                     icon="fa-check" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', '|', ('allow_worksheets', '=', False), ('is_fsm', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}"
-                    help="Worksheet from this task">
+                    attrs="{'invisible': ['|', '|', '|', ('allow_worksheets', '=', False), ('is_fsm', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}">
                 </button>
             </xpath>
             <field name="project_id" position="after">

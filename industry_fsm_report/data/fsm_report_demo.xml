@@ -99,6 +99,103 @@
             </field>
         </record>
 
+        <record id="fsm_worksheet_template3" model="project.worksheet.template">
+            <field name="name">Reparations</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="fsm_template_field9" model="ir.model.fields">
+            <field name="name">x_intervention_type2</field>
+            <field name="ttype">selection</field>
+            <field name="field_description">Intervention Type</field>
+            <field name="selection">[('broken','Broken'),('worn_down','Worn Down')]</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template3').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_field10" model="ir.model.fields">
+            <field name="name">x_description2</field>
+            <field name="ttype">text</field>
+            <field name="field_description">Description of the Intervention</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template3').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_field11" model="ir.model.fields">
+            <field name="name">x_manufacturer2</field>
+            <field name="ttype">many2one</field>
+            <field name="relation">res.partner</field>
+            <field name="field_description">Manufacturer</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template3').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_field12" model="ir.model.fields">
+            <field name="name">x_model2</field>
+            <field name="ttype">many2one</field>
+            <field name="relation">product.product</field>
+            <field name="field_description">Model</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template3').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_field13" model="ir.model.fields">
+            <field name="name">x_checkbox2</field>
+            <field name="ttype">boolean</field>
+            <field name="field_description">I hereby certify that this device meets the requirements of an acceptable device at the time of testing.</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template3').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_field14" model="ir.model.fields">
+            <field name="name">x_serial_number2</field>
+            <field name="ttype">char</field>
+            <field name="field_description">Serial Number</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template3').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_field15" model="ir.model.fields">
+            <field name="name">x_date2</field>
+            <field name="ttype">date</field>
+            <field name="field_description">Date</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template3').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_field16" model="ir.model.fields">
+            <field name="name">x_worker_signature2</field>
+            <field name="ttype">binary</field>
+            <field name="field_description">Worker Signature</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template3').model_id.id"/>
+        </record>
+
+        <record id="fsm_worksheet_template3_form_inherit" model="ir.ui.view">
+            <field name="name">fsm.worksheet.template2.form.inherit</field>
+            <field name="type">form</field>
+            <field name="model" model="ir.model" eval="obj().env.ref('industry_fsm_report.fsm_worksheet_template3').model_id.model"/>
+            <field name="inherit_id" model="ir.ui.view" search="[('name','ilike', obj().env.ref('industry_fsm_report.fsm_worksheet_template3').model_id.model),('type', '=', 'form')]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet" position="replace">
+                    <sheet>
+                        <group invisible="context.get('studio') or context.get('default_x_task_id')">
+                            <group>
+                                <field name="x_task_id" domain="[('is_fsm', '=', True)]"/>
+                            </group>
+                        </group>
+                        <group class="o_fsm_worksheet_form">
+                            <group>
+                                <field name="x_name"/>
+                                <field name="x_manufacturer2" options="{'no_create':true,'no_open':true}"/>
+                                <field name="x_model2" options="{'no_create':true,'no_open':true}"/>
+                                <field name="x_serial_number2"/>
+                                <field name="x_intervention_type2" widget="radio"/>
+                                <field name="x_description2"/>
+                            </group>
+                            <group>
+                                <field name="x_checkbox2"/>
+                                <field name="x_date2"/>
+                                <field name="x_worker_signature2" widget="signature"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </xpath>
+            </field>
+        </record>
+
         <function model="project.worksheet.template" name="_generate_qweb_report_template" eval="[[ref('fsm_worksheet_template2')]]"/>
 
         <record id="industry_fsm.fsm_project" model="project.project">
@@ -122,11 +219,11 @@
         </record>
 
         <record id="industry_fsm.planning_task_4" model="project.task">
-            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template2"/>
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template3"/>
         </record>
 
         <record id="industry_fsm.planning_task_5" model="project.task">
-            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template2"/>
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template3"/>
         </record>
 
         <record id="industry_fsm.planning_task_6" model="project.task">
@@ -142,7 +239,7 @@
         </record>
 
         <record id="industry_fsm.planning_task_9" model="project.task">
-            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template"/>
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template3"/>
         </record>
 
         <record id="industry_fsm.planning_task_10" model="project.task">
@@ -150,6 +247,42 @@
         </record>
 
         <record id="industry_fsm.planning_task_11" model="project.task">
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template2"/>
+        </record>
+
+        <record id="industry_fsm.planning_task_12" model="project.task">
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template"/>
+        </record>
+
+        <record id="industry_fsm.planning_task_13" model="project.task">
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template2"/>
+        </record>
+
+        <record id="industry_fsm.planning_task_14" model="project.task">
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template3"/>
+        </record>
+
+        <record id="industry_fsm.planning_task_15" model="project.task">
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template2"/>
+        </record>
+
+        <record id="industry_fsm.planning_task_16" model="project.task">
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template"/>
+        </record>
+
+        <record id="industry_fsm.planning_task_17" model="project.task">
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template2"/>
+        </record>
+
+        <record id="industry_fsm.planning_task_18" model="project.task">
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template"/>
+        </record>
+
+        <record id="industry_fsm.planning_task_19" model="project.task">
+            <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template3"/>
+        </record>
+
+        <record id="industry_fsm.planning_task_20" model="project.task">
             <field name="worksheet_template_id" ref="industry_fsm_report.fsm_worksheet_template2"/>
         </record>
 

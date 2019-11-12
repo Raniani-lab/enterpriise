@@ -40,10 +40,6 @@ class HelpdeskTicket(models.Model):
 
     def action_generate_fsm_task(self):
         self.ensure_one()
-        default_project_id = False
-        fsm_projects = self.env['project.project'].search([('is_fsm', '=', True)], limit=2)
-        if(len(fsm_projects) == 1):
-            default_project_id = fsm_projects.id
         return {
             'type': 'ir.actions.act_window',
             'name': _('Create a Field Service task'),
@@ -51,9 +47,10 @@ class HelpdeskTicket(models.Model):
             'view_mode': 'form',
             'target': 'new',
             'context': {
+                'use_fsm': True,
                 'default_helpdesk_ticket_id': self.id,
+                'default_user_id': False,
                 'default_partner_id': self.partner_id.id if self.partner_id else False,
                 'default_name': self.name,
-                'default_project_id': default_project_id,
             }
         }

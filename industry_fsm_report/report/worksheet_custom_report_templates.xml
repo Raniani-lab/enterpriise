@@ -4,21 +4,31 @@
 
         <template id="worksheet_custom_page">
                 <div class="page">
-                    <div class="d-flex flex-wrap justify-content-md-around">
-                        <div class="d-flex flex-wrap p-2 flex-column align-items-start">
+                    <div class="d-flex flex-wrap">
+                        <div class="d-flex flex-wrap p-2 flex-column align-items-start col-md-6">
                             <div class="pr-2 align-top"><strong>Contact: </strong></div>
                             <div class="align-top" t-esc="doc.user_id" t-options='{
                                 "widget": "contact",
                                 "fields": ["name", "address", "phone", "email"]
                                 }'/>
                         </div>
-                        <div class="d-flex flex-wrap p-2 flex-column align-items-start">
+                        <div class="d-flex flex-wrap p-2 flex-column align-items-start col-md-6">
                             <t t-if="doc.partner_id">
                                 <div class="pr-2 align-top"><strong>Customer: </strong></div>
-                                <div class="align-top"><t t-esc="doc.partner_id" t-options='{
-                                                            "widget": "contact",
-                                                            "fields": ["name", "address", "phone", "email"]
-                                                            }'/>
+                                <div class="align-top">
+                                    <t t-esc="doc.partner_id" t-options='{
+                                        "widget": "contact",
+                                        "fields": ["name"],
+                                        "no_marker": true
+                                        }'/>
+                                    <t t-esc="doc.partner_id" t-options='{
+                                        "widget": "contact",
+                                        "fields": ["address"]
+                                        }'/>
+                                    <t t-esc="doc.partner_id" t-options='{
+                                        "widget": "contact",
+                                        "fields": ["phone", "email"]
+                                        }'/>
                                 </div>
                             </t>
                         </div>

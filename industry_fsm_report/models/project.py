@@ -41,7 +41,7 @@ class Task(models.Model):
     _inherit = "project.task"
 
     def _default_worksheet_template_id(self):
-        default_project_id = self.env.context.get('default_project_id')
+        default_project_id = self.env['project.task'].default_get(['project_id']).get('project_id')
         if default_project_id:
             project = self.env['project.project'].browse(default_project_id)
             return project.worksheet_template_id

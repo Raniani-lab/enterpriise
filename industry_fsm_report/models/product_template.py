@@ -19,3 +19,5 @@ class ProductTemplate(models.Model):
     def _onchange_project_id(self):
         if self.project_id.is_fsm:
             self.worksheet_template_id = self.project_id.worksheet_template_id
+        else:
+            self.worksheet_template_id = False

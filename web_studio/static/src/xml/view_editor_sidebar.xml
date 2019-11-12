@@ -600,8 +600,10 @@
         <a href="#" role="button" class="btn btn-link o_web_studio_edit_selection_values"><i class="fa fa-pencil"/> Edit Values</a>
     </div>
     <t t-call="web_studio.Sidebar.Toolbox">
-        <t t-call="web_studio.Sidebar.Parameters"/>
-        <t t-call="web_studio.Sidebar.Remove"/>
+        <div>
+            <t t-call="web_studio.Sidebar.Parameters"/>
+            <t t-call="web_studio.Sidebar.Remove"/>
+        </div>
     <t t-if="widget.state.attrs['studio-view-group-names']">
         <hr/>
         <t t-call="web_studio.Sidebar.Warning.Groups"/>

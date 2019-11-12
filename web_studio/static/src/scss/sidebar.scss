@@ -259,9 +259,11 @@
                 margin-top: inherit;
                 width: 100%;
             }
-        }
-        .o_web_studio_remove_warning_groups {
-            color: orange;
+
+            .o_web_studio_remove_warning_groups {
+                color: orange;
+                display: block;
+            }
         }
         .o_field_selector_chain_part {
             background: none;

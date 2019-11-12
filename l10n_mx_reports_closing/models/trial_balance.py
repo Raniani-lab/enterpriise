@@ -8,6 +8,7 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 class MxClosingReportAccountTrial(models.AbstractModel):
     _name = "l10n_mx.trial.closing.report"
     _inherit = "l10n_mx.trial.report"
+    _description = "Complete values to get the closing entry report"
 
     def _get_lines_fourth_level(self, accounts, grouped_accounts, initial_balances, options, comparison_table):
         date_to = fields.Date.from_string(options['date']['date_to'])

@@ -77,10 +77,11 @@ class SaleSubscription(models.Model):
     # customer portal
     uuid = fields.Char('Account UUID', default=lambda self: str(uuid4()), copy=False, required=True)
     website_url = fields.Char('Website URL', compute='_website_url', help='The full URL to access the document through the website.')
+    commercial_partner_id = fields.Many2one('res.partner', related='partner_id.commercial_partner_id', store=False)
     payment_token_id = fields.Many2one(
         'payment.token', 'Payment Token', check_company=True,
         help='If not set, the default payment token of the partner will be used.',
-        domain="[('partner_id', '=', partner_id), ('company_id', '=', company_id)]")
+        domain="[('partner_id', 'child_of', commercial_partner_id), ('company_id', '=', company_id)]")
     recurring_rule_boundary = fields.Selection(related="template_id.recurring_rule_boundary", readonly=False)
     starred_user_ids = fields.Many2many(
         'res.users', 'subscription_starred_user_rel', 'subscription_id', 'user_id',

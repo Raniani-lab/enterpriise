@@ -310,6 +310,7 @@
                                     <field name="fiscal_position_id" options="{'no_create': True}"/>
                                     <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                                     <field name="payment_mode" invisible="1"/>
+                                    <field name="commercial_partner_id" invisible="1"/>
                                     <field name="payment_token_id" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}" options="{'no_create_edit': True}"/>
                                 </group>
                             </page>

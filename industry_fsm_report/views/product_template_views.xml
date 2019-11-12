@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sale_timesheet.view_product_timesheet_form"/>
         <field name="arch" type="xml">
             <field name="project_template_id" position="after">
-                <field name="worksheet_template_id" attrs="{'invisible': [('service_tracking', 'not in', ['task_global_project', 'task_new_project'])]}" />
+                <field name="worksheet_template_id" attrs="{'invisible': ['|', ('worksheet_template_id', '=', False), ('service_tracking', 'not in', ['task_global_project', 'task_new_project'])]}" />
             </field>
         </field>
     </record>

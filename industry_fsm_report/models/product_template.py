@@ -7,6 +7,7 @@ from odoo import fields, models, api
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
+    # YTI TO CHECK: SHould be a related right ? 
     worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template")
 
     @api.onchange('service_tracking')

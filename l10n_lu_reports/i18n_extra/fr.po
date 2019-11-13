@@ -2135,31 +2135,33 @@ msgstr ""
 
 #. module: l10n_lu_reports
 #: model:account.financial.html.report,name:l10n_lu_reports.account_financial_report_l10n_lu_bs
-#: model:ir.actions.client,name:l10n_lu_reports.account_financial_html_report_action_6
-#: model:ir.ui.menu,name:l10n_lu_reports.account_financial_html_report_menu_6
-msgid "Luxembourg Balance Sheet"
-msgstr "Luxembourg Bilan"
+#: model:ir.actions.client,name:l10n_lu_reports.account_financial_html_report_action_4
+#: model:ir.ui.menu,name:l10n_lu_reports.account_financial_html_report_menu_4
+msgid "Balance Sheet"
+msgstr "Bilan"
 
 #. module: l10n_lu_reports
 #: model:account.financial.html.report,name:l10n_lu_reports.account_financial_report_l10n_lu_bs_abr
-#: model:ir.actions.client,name:l10n_lu_reports.account_financial_html_report_action_7
-#: model:ir.ui.menu,name:l10n_lu_reports.account_financial_html_report_menu_7
-msgid "Luxembourg Balance Sheet (abridged)"
-msgstr "Luxembourg Bilan (abrégé)"
+#: model:ir.actions.client,name:l10n_lu_reports.account_financial_html_report_action_5
+#: model:ir.ui.menu,name:l10n_lu_reports.account_financial_html_report_menu_5
+msgid "Balance Sheet (abridged)"
+msgstr "Bilan (abrégé)"
 
 #. module: l10n_lu_reports
 #: model:account.financial.html.report,name:l10n_lu_reports.account_financial_report_l10n_lu_pl
-#: model:ir.actions.client,name:l10n_lu_reports.account_financial_html_report_action_8
-#: model:ir.ui.menu,name:l10n_lu_reports.account_financial_html_report_menu_8
-msgid "Luxembourg Profit & Loss"
-msgstr "Luxembourg Profits et Pertes"
+#: model:ir.actions.client,name:l10n_lu_reports.account_financial_html_report_action_6
+#: model:ir.actions.client,name:l10n_lu_reports.account_financial_report_l10n_lu_pl_action
+#: model:ir.ui.menu,name:l10n_lu_reports.account_financial_html_report_menu_6
+msgid "Profit & Loss"
+msgstr "Profits et Pertes"
 
 #. module: l10n_lu_reports
 #: model:account.financial.html.report,name:l10n_lu_reports.account_financial_report_l10n_lu_pl_abr
-#: model:ir.actions.client,name:l10n_lu_reports.account_financial_html_report_action_9
-#: model:ir.ui.menu,name:l10n_lu_reports.account_financial_html_report_menu_9
-msgid "Luxembourg Profit & Loss (abridged)"
-msgstr "Luxembourg Profits et Pertes (abrégé)"
+#: model:ir.actions.client,name:l10n_lu_reports.account_financial_html_report_action_7
+#: model:ir.actions.client,name:l10n_lu_reports.account_financial_report_l10n_lu_pl_abr_action
+#: model:ir.ui.menu,name:l10n_lu_reports.account_financial_html_report_menu_7
+msgid "Profit & Loss (abridged)"
+msgstr "Profits et Pertes (abrégé)"
 
 #. module: l10n_lu_reports
 #: model:account.financial.html.report.line,name:l10n_lu_reports.account_financial_report_l10n_lu_bs_abr_line_1_6

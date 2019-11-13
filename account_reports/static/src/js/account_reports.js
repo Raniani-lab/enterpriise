@@ -348,7 +348,7 @@ var accountReportsWidget = AbstractAction.extend({
         var self = this;
         var query = e.target.value.trim().toLowerCase();
         this.filterOn = false;
-        this.$('.o_account_reports_level2').each(function(index, el) {
+        this.$('.o_account_searchable_line').each(function(index, el) {
             var $accountReportLineFoldable = $(el);
             var line_id = $accountReportLineFoldable.find('.o_account_report_line').data('id');
             var $childs = self.$('tr[data-parent-id="'+line_id+'"]');
@@ -803,7 +803,7 @@ var accountReportsWidget = AbstractAction.extend({
         e.preventDefault();
         var line = $(e.target).parents('td');
         if (line.length === 0) {line = $(e.target);}
-        var method = line.data('unfolded') === 'True' ? this.fold(line) : this.unfold(line);
+        var method = line[0].dataset.unfolded === 'True' ? this.fold(line) : this.unfold(line);
         Promise.resolve(method).then(function() {
             self.render_footnotes();
             self.persist_options();
@@ -821,7 +821,7 @@ var accountReportsWidget = AbstractAction.extend({
             self.report_options.unfolded_lines.splice(index, 1);
         }
         if ($lines_to_hide.length > 0) {
-            line.data('unfolded', 'False');
+            line[0].dataset.unfolded = 'False';
             $lines_to_hide.find('.js_account_report_line_footnote').addClass('folded');
             $lines_to_hide.hide();
             _.each($lines_to_hide, function(el){
@@ -843,7 +843,7 @@ var accountReportsWidget = AbstractAction.extend({
             $lines_in_dom.find('.js_account_report_line_footnote').removeClass('folded');
             $lines_in_dom.show();
             line.find('.fa-caret-right').toggleClass('fa-caret-right fa-caret-down');
-            line.data('unfolded', 'True');
+            line[0].dataset.unfolded = 'True';
             this._add_line_classes();
             return true;
         }

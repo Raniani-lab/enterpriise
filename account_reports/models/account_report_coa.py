@@ -21,6 +21,12 @@ class AccountChartOfAccountReport(models.AbstractModel):
     MAX_LINES = None
 
     @api.model
+    def _get_templates(self):
+        templates = super(AccountChartOfAccountReport, self)._get_templates()
+        templates['main_template'] = 'account_reports.main_template_with_filter_input_accounts'
+        return templates
+
+    @api.model
     def _get_columns(self, options):
         header1 = [
             {'name': '', 'style': 'width:40%'},
@@ -34,19 +40,19 @@ class AccountChartOfAccountReport(models.AbstractModel):
         ]
         header2 = [
             {'name': '', 'style': 'width:40%'},
-            {'name': _('Debit'), 'class': 'number'},
-            {'name': _('Credit'), 'class': 'number'},
+            {'name': _('Debit'), 'class': 'number o_account_coa_column_contrast'},
+            {'name': _('Credit'), 'class': 'number o_account_coa_column_contrast'},
         ]
         if options.get('comparison') and options['comparison'].get('periods'):
             header2 += [
-                {'name': _('Debit'), 'class': 'number'},
-                {'name': _('Credit'), 'class': 'number'},
+                {'name': _('Debit'), 'class': 'number o_account_coa_column_contrast'},
+                {'name': _('Credit'), 'class': 'number o_account_coa_column_contrast'},
             ] * len(options['comparison']['periods'])
         header2 += [
-            {'name': _('Debit'), 'class': 'number'},
-            {'name': _('Credit'), 'class': 'number'},
-            {'name': _('Debit'), 'class': 'number'},
-            {'name': _('Credit'), 'class': 'number'},
+            {'name': _('Debit'), 'class': 'number o_account_coa_column_contrast'},
+            {'name': _('Credit'), 'class': 'number o_account_coa_column_contrast'},
+            {'name': _('Debit'), 'class': 'number o_account_coa_column_contrast'},
+            {'name': _('Credit'), 'class': 'number o_account_coa_column_contrast'},
         ]
         return [header1, header2]
 
@@ -113,13 +119,14 @@ class AccountChartOfAccountReport(models.AbstractModel):
                 'columns': columns,
                 'unfoldable': False,
                 'caret_options': 'account.account',
+                'class': 'o_account_searchable_line o_account_coa_column_contrast',
             })
 
         # Total report line.
         lines.append({
              'id': 'grouped_accounts_total',
              'name': _('Total'),
-             'class': 'total',
+             'class': 'total o_account_coa_column_contrast',
              'columns': [{'name': self.format_value(total), 'class': 'number'} for total in totals],
              'level': 1,
         })

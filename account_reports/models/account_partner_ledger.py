@@ -25,6 +25,7 @@ class ReportPartnerLedger(models.AbstractModel):
     def _get_templates(self):
         templates = super(ReportPartnerLedger, self)._get_templates()
         templates['line_template'] = 'account_reports.line_template_partner_ledger_report'
+        templates['main_template'] = 'account_reports.main_template_with_filter_input_partner'
         return templates
 
     ####################################################
@@ -345,10 +346,10 @@ class ReportPartnerLedger(models.AbstractModel):
             'id': aml['id'],
             'parent_id': 'partner_%s' % partner.id,
             'name': format_date(self.env, aml['date']),
-            'class': 'date',
+            'class': 'text',  # do not format as date to prevent text centering
             'columns': columns,
             'caret_options': caret_type,
-            'level': 4,
+            'level': 2,
         }
 
     @api.model

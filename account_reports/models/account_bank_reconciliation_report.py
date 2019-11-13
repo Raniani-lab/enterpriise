@@ -25,7 +25,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
     def _get_columns_name(self, options):
         return [
             {'name': ''},
-            {'name': _("Date")},
+            {'name': _("Date"), 'class': 'date'},
             {'name': _("Reference")},
             {'name': _("Amount"), 'class': 'number'},
         ]
@@ -56,7 +56,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
                 {'name': line.ref},
                 {'name': self.format_value(amount, currency)},
             ],
-            'class': 'o_account_reports_level3',
+            'name_class': 'o_account_reports_domain_line2',
         }
 
     def print_pdf(self, options):
@@ -214,11 +214,11 @@ The Virtual GL Balance represents the cash you'll have once all operations to pr
                         'id': aml_values['id'],
                         'name': aml_values['name'],
                         'columns': [
-                            {'name': format_date(self.env, aml_values['date'])},
+                            {'name': format_date(self.env, aml_values['date']), 'class': 'date'},
                             {'name': line_description, 'title': line_title, 'style': 'display:block;'},
                             {'name': self.format_value(-aml_values['balance'], self.report_currency)},
                         ],
-                        'class': 'o_account_reports_level3',
+                        'name_class': 'o_account_reports_domain_line2',
                         'caret_options': 'account.payment',
                     })
 

@@ -1301,9 +1301,6 @@ class AccountReport(models.AbstractModel):
         if line_name and line_name != '/':
             names.append(line_name)
         name = '-'.join(names)
-        # TODO: check if no_format is still needed
-        if len(name) > 35 and not self.env.context.get('no_format'):
-            name = name[:32] + "..."
         return name
 
     def format_date(self, options, dt_filter='date'):

@@ -31,7 +31,7 @@ class TestAccountReports(TestAccountReportsCommon):
         self.assertLinesValues(
             lines,
             #   Name                                    Debit           Credit          Balance
-            [   0,                                      5,              6,              7],
+            [   0,                                      4,              5,              6],
             [
                 # Accounts.
                 ('101401 Bank',                         800.00,         1750.00,        -950.00),
@@ -53,19 +53,19 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
-            #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
-            [   0,                                      1,              3,              4,          5,              6,              7],
+            #   Name                                    Date            Partner         Debit           Credit          Balance
+            [   0,                                      1,              3,              4,              5,              6],
             [
                 # Account.
-                ('121000 Account Receivable',           '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('121000 Account Receivable',           '',             '',             2875.00,        800.00,         2075.00),
                 # Initial Balance.
-                ('Initial Balance',                     '',             '',             '',         2185.00,        700.00,         1485.00),
+                ('Initial Balance',                     '',             '',             2185.00,        700.00,         1485.00),
                 # Account Move Lines.
-                ('BNK1/2017/0004',                      '03/01/2017',   'partner_c',    '',         '',             100.00,         1385.00),
-                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    '',         345.00,         '',             1730.00),
-                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    '',         345.00,         '',             2075.00),
+                ('BNK1/2017/0004',                      '03/01/2017',   'partner_c',    '',             100.00,         1385.00),
+                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    345.00,         '',             1730.00),
+                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    345.00,         '',             2075.00),
                 # Account Total.
-                ('Total',                               '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('Total 121000 Account Receivable',     '',             '',             2875.00,        800.00,         2075.00),
             ],
         )
 
@@ -76,18 +76,18 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
-            #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
-            [   0,                                      1,              3,              4,          5,              6,              7],
+            #   Name                                    Date            Partner         Debit           Credit          Balance
+            [   0,                                      1,              3,              4,              5,              6],
             [
                 # Account.
-                ('400000 Product Sales',                '',             '',             '',         0.00,           1300.00,        -1300.00),
+                ('400000 Product Sales',                '',             '',             0.00,           1300.00,        -1300.00),
                 # Initial Balance.
-                ('Initial Balance',                     '',             '',             '',         0.00,           700.00,         -700.00),
+                ('Initial Balance',                     '',             '',             0.00,           700.00,         -700.00),
                 # Account Move Lines.
-                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    '',         '',             300.00,         -1000.00),
-                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    '',         '',             300.00,         -1300.00),
+                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    '',             300.00,         -1000.00),
+                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    '',             300.00,         -1300.00),
                 # Account Total.
-                ('Total',                               '',             '',             '',         0.00,           1300.00,        -1300.00),
+                ('Total 400000 Product Sales',          '',             '',             0.00,           1300.00,        -1300.00),
             ],
         )
 
@@ -102,7 +102,7 @@ class TestAccountReports(TestAccountReportsCommon):
         self.assertLinesValues(
             lines,
             #   Name                                    Debit           Credit          Balance
-            [   0,                                      5,              6,              7],
+            [   0,                                      4,              5,              6],
             [
                 # Accounts.
                 ('101401 Bank',                         800.00,         1750.00,        -950.00),
@@ -132,19 +132,19 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
-            #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
-            [   0,                                      1,              3,              4,          5,              6,              7],
+            #   Name                                    Date            Partner         Debit           Credit          Balance
+            [   0,                                      1,              3,              4,              5,              6],
             [
                 # Account.
-                ('121000 Account Receivable',           '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('121000 Account Receivable',           '',             '',             2875.00,        800.00,         2075.00),
                 # Initial Balance.
-                ('Initial Balance',                     '',             '',             '',         2185.00,        700.00,         1485.00),
+                ('Initial Balance',                     '',             '',             2185.00,        700.00,         1485.00),
                 # Account Move Lines.
-                ('BNK1/2017/0004',                      '03/01/2017',   'partner_c',    '',         '',             100.00,         1385.00),
-                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    '',         345.00,         '',             1730.00),
-                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    '',         345.00,         '',             2075.00),
+                ('BNK1/2017/0004',                      '03/01/2017',   'partner_c',    '',             100.00,         1385.00),
+                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    345.00,         '',             1730.00),
+                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    345.00,         '',             2075.00),
                 # Account Total.
-                ('Total',                               '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('Total 121000 Account Receivable',     '',             '',             2875.00,        800.00,         2075.00),
             ],
         )
 
@@ -166,19 +166,19 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             lines,
-            #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
-            [   0,                                      1,              3,              4,          5,              6,              7],
+            #   Name                                    Date            Partner         Debit           Credit          Balance
+            [   0,                                      1,              3,              4,              5,              6],
             [
                 # Account.
-                ('121000 Account Receivable',           '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('121000 Account Receivable',           '',             '',             2875.00,        800.00,         2075.00),
                 # Initial Balance.
-                ('Initial Balance',                     '',             '',             '',         2185.00,        700.00,         1485.00),
+                ('Initial Balance',                     '',             '',             2185.00,        700.00,         1485.00),
                 # Account Move Lines.
-                ('BNK1/2017/0004',                      '03/01/2017',   'partner_c',    '',         '',             100.00,         1385.00),
+                ('BNK1/2017/0004',                      '03/01/2017',   'partner_c',    '',             100.00,         1385.00),
                 # Load more.
-                ('Load more... (2 remaining)',          '',             '',             '',         '',             '',             ''),
+                ('Load more... (2 remaining)',          '',             '',             '',             '',             ''),
                 # Account Total.
-                ('Total',                               '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('Total 121000 Account Receivable',     '',             '',             2875.00,        800.00,         2075.00),
             ],
         )
 
@@ -194,13 +194,13 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             lines,
-            #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
-            [   0,                                      1,              3,              4,          5,              6,              7],
+            #   Name                                    Date            Partner         Debit           Credit          Balance
+            [   0,                                      1,              3,              4,              5,              6],
             [
                 # Account Move Lines.
-                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    '',         345.00,         '',             1730.00),
+                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    345.00,         '',             1730.00),
                 # Load more.
-                ('Load more... (1 remaining)',          '',             '',             '',         '',             '',             ''),
+                ('Load more... (1 remaining)',          '',             '',             '',             '',             ''),
             ],
         )
 
@@ -213,11 +213,11 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
-            #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
-            [   0,                                      1,              3,              4,          5,              6,              7],
+            #   Name                                    Date            Partner         Debit           Credit          Balance
+            [   0,                                      1,              3,              4,              5,              6],
             [
                 # Account Move Lines.
-                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    '',         345.00,         '',             2075.00),
+                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    345.00,         '',             2075.00),
             ],
         )
 
@@ -230,11 +230,10 @@ class TestAccountReports(TestAccountReportsCommon):
         report = self.env['account.general.ledger']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'journals', journal.ids)
-
         self.assertLinesValues(
             report._get_lines(options),
             #   Name                                    Debit           Credit          Balance
-            [   0,                                      5,              6,              7],
+            [   0,                                      4,              5,              6],
             [
                 # Accounts.
                 ('121000 Account Receivable',           2875.00,        0.00,           2875.00),

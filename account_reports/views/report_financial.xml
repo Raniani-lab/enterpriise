@@ -48,23 +48,12 @@
                 <t t-set="company_value" t-value="'All'"/>
                 <t t-foreach="options['multi_company']" t-as="c">
                     <t t-set="company_value" t-value="''"/>
-                    "<t t-esc="c.get('name')"/>"
+                    <t t-esc="c.get('name')"/>
                 </t>
                 <t t-esc="company_value"/>
             </t>
         </div>
         <div class="col-4">
-            <div class="col-12">
-                <t t-if="options.get('multi_company')">
-                    Companies:
-                    <t t-set="company_value" t-value="'All'"/>
-                    <t t-foreach="options['multi_company']" t-as="c">
-                        <t t-set="company_value" t-value="''"/>
-                        <t t-esc="c.get('name')"/>
-                    </t>
-                    <t t-esc="company_value"/>
-                </t>
-            </div>
             <div class="col-12">
                 <t t-if="options.get('journals')">
                     Journals:
@@ -150,12 +139,11 @@
 
 <template id="line_template">
     <t t-foreach="lines['lines']" t-as="line">
-        <t t-set="trclass" t-value="''"/>
-        <t t-set="domainClass" t-value="'o_account_reports_domain_line_2'"/>
+        <t t-set="trclass" t-value="'o_account_reports_default_style'"/>
+        <t t-set="domainClass" t-value="'o_account_reports_domain_line_2 account_report_line_name'"/>
         <t t-if="not line.get('caret_options')">
-            <t t-set="trclass" t-value="'o_account_reports_default_style'"/>
             <t t-if="line.get('level') != None">
-                <t t-set="trclass" t-value="'o_account_reports_level'+str(line['level'])"/>
+                <t t-set="trclass" t-value="'o_account_searchable_line o_account_reports_level'+str(line['level'])"/>
             </t>
         </t>
         <t t-if="line.get('caret_options')">
@@ -168,7 +156,7 @@
             t-att-data-pagebreak="'before' if (line.get('page_break') and context.get('print_mode')) else None"
             t-att-data-parent-id="line.get('parent_id', False)"
             t-att-style="line.get('style', '')">
-            <td t-att-data-id="line['id']" t-att-class="'o_account_report_line o_account_report_line_indent ' + (line.get('unfoldable') and 'js_account_report_foldable o_foldable_total' or '')" t-att-data-unfolded="line.get('unfolded', False)" t-att-colspan="line.get('colspan', '1')"
+            <td t-att-data-id="line['id']" t-att-class="'o_account_report_line o_account_report_line_indent ' + (line.get('unfoldable') and 'js_account_report_foldable o_foldable_total' or '') + ' ' + line.get('name_class', '')" t-att-data-unfolded="line.get('unfolded', False)" 
             t-att-data-offset="line.get('offset', False)" t-att-data-progress="line.get('progress', False)" t-att-data-remaining="line.get('remaining', False)"
             >
                     <t t-if="line.get('unfoldable')">
@@ -216,6 +204,9 @@
                         </t>
                     </t>
             </td>
+            <t t-foreach="range(int(line.get('colspan', '1')) - 1)" t-as="l">
+                <td></td>
+            </t>
             <t t-set="column_index" t-value="0"/>
             <t t-foreach="line.get('columns')" t-as="cell">
                 <t t-set="hierarchies_enabled" t-value="len(lines.get('columns_header', [])) > 1"/>
@@ -257,12 +248,6 @@
 
             <div class="o_account_reports_header">
                 <div class="print_only"><h2><t t-esc="report.get('name')"></t></h2></div>
-                <t t-if="model._name == 'account.general.ledger'">
-                    <div class="o_account_reports_filter_input_wrapper no_print">
-                        <span class="searchIcon"><i class="fa fa-search" role="img" aria-label="Search" title="Search"></i></span>
-                        <input class="o_account_reports_filter_input" type="text" placeholder="Search account" />
-                    </div>
-                </t>
                 <t t-call="account_reports.filter_info_template"/>
             </div>
             <div class="o_account_reports_summary"/>
@@ -294,6 +279,21 @@
         t-att="cell['popup_attributes']"
         t-att-data="cell['popup_data']"
        role="button"/>
+</template>
+
+<template id="main_template_with_filter_input_accounts" inherit_id="account_reports.main_template"  primary="True">
+    <xpath expr="//div[hasclass('print_only')]" position="after">
+        <div class="o_reports_filter_input_wrapper no_print">
+            <span class="searchIcon"><i class="fa fa-search" role="img" aria-label="Search" title="Search"></i></span>
+            <input class="o_account_reports_filter_input" type="text" placeholder="Search account" />
+        </div>
+    </xpath>
+</template>
+
+<template id="main_template_with_filter_input_partner" inherit_id="account_reports.main_template_with_filter_input_accounts"  primary="True">
+    <xpath expr="//input[hasclass('o_account_reports_filter_input')]" position="attributes">
+        <attribute name="placeholder">Search partner</attribute>
+    </xpath>
 </template>
 
 <!-- Aged partner balance templates -->

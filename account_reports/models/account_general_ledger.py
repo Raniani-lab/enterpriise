@@ -21,20 +21,23 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     def _get_templates(self):
         templates = super(AccountGeneralLedgerReport, self)._get_templates()
         templates['line_template'] = 'account_reports.line_template_general_ledger_report'
+        templates['main_template'] = 'account_reports.main_template_with_filter_input_accounts'
         return templates
 
     @api.model
     def _get_columns_name(self, options):
-        return [
+        columns_names = [
             {'name': ''},
             {'name': _('Date'), 'class': 'date'},
             {'name': _('Communication')},
             {'name': _('Partner')},
-            {'name': _('Currency'), 'class': 'number'},
             {'name': _('Debit'), 'class': 'number'},
             {'name': _('Credit'), 'class': 'number'},
             {'name': _('Balance'), 'class': 'number'}
         ]
+        if self.user_has_groups('base.group_multi_currency'):
+            columns_names.insert(4, {'name': _('Currency'), 'class': 'number'})
+        return columns_names
 
     @api.model
     def _get_report_name(self):
@@ -145,14 +148,15 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                         cumulated_balance,
                     ))
 
-                # Account total line.
-                lines.append(self._get_account_total_line(
-                    options, account,
-                    account_sum.get('amount_currency', 0.0),
-                    account_sum.get('debit', 0.0),
-                    account_sum.get('credit', 0.0),
-                    account_sum.get('balance', 0.0),
-                ))
+                if self.env.company.totals_below_sections:
+                    # Account total line.
+                    lines.append(self._get_account_total_line(
+                        options, account,
+                        account_sum.get('amount_currency', 0.0),
+                        account_sum.get('debit', 0.0),
+                        account_sum.get('credit', 0.0),
+                        account_sum.get('balance', 0.0),
+                    ))
 
         if not line_id:
             # Report total line.
@@ -674,43 +678,47 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
     @api.model
     def _get_account_title_line(self, options, account, amount_currency, debit, credit, balance, has_lines):
-        has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
 
         unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
 
         name = '%s %s' % (account.code, account.name)
-        if len(name) > 40 and not self._context.get('print_mode'):
-            name = name[:40] + '...'
+        max_length = self._context.get('print_mode') and 100 or 60
+        if len(name) > max_length and not self._context.get('no_format'):
+            name = name[:max_length] + '...'
+        columns = [
+            {'name': self.format_value(debit), 'class': 'number'},
+            {'name': self.format_value(credit), 'class': 'number'},
+            {'name': self.format_value(balance), 'class': 'number'},
+        ]
+        if self.user_has_groups('base.group_multi_currency'):
+            columns.insert(0, {'name': self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True), 'class': 'number'})
         return {
             'id': 'account_%d' % account.id,
             'name': name,
             'title_hover': name,
-            'columns': [
-                {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True) or '', 'class': 'number'},
-                {'name': self.format_value(debit), 'class': 'number'},
-                {'name': self.format_value(credit), 'class': 'number'},
-                {'name': self.format_value(balance), 'class': 'number'},
-            ],
+            'columns': columns,
             'level': 2,
             'unfoldable': has_lines,
             'unfolded': has_lines and 'account_%d' % account.id in options.get('unfolded_lines') or unfold_all,
             'colspan': 4,
+            'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
         }
 
     @api.model
     def _get_initial_balance_line(self, options, account, amount_currency, debit, credit, balance):
-        has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
+        columns = [
+            {'name': self.format_value(debit), 'class': 'number'},
+            {'name': self.format_value(credit), 'class': 'number'},
+            {'name': self.format_value(balance), 'class': 'number'},
+        ]
+        if self.user_has_groups('base.group_multi_currency'):
+            columns.insert(0, {'name': self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True), 'class': 'number'})
         return {
             'id': 'initial_%d' % account.id,
             'class': 'o_account_reports_initial_balance',
             'name': _('Initial Balance'),
             'parent_id': 'account_%d' % account.id,
-            'columns': [
-                {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True) or '', 'class': 'number'},
-                {'name': self.format_value(debit), 'class': 'number'},
-                {'name': self.format_value(credit), 'class': 'number'},
-                {'name': self.format_value(balance), 'class': 'number'},
-            ],
+            'columns': columns,
             'colspan': 4,
         }
 
@@ -735,22 +743,24 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         else:
             currency = False
 
+        columns = [
+            {'name': format_date(self.env, aml['date']), 'class': 'date'},
+            {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'title': title, 'class': 'whitespace_print o_account_report_line_ellipsis'},
+            {'name': aml['partner_name'], 'title': aml['partner_name'], 'class': 'whitespace_print'},
+            {'name': self.format_value(aml['debit'], blank_if_zero=True), 'class': 'number'},
+            {'name': self.format_value(aml['credit'], blank_if_zero=True), 'class': 'number'},
+            {'name': self.format_value(cumulated_balance), 'class': 'number'},
+        ]
+        if self.user_has_groups('base.group_multi_currency'):
+            columns.insert(3, {'name': self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True), 'class': 'number'})
         return {
             'id': aml['id'],
             'caret_options': caret_type,
             'class': 'top-vertical-align',
             'parent_id': 'account_%d' % aml['account_id'],
             'name': aml['move_name'],
-            'columns': [
-                {'name': format_date(self.env, aml['date']), 'class': 'date'},
-                {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'title': title, 'class': 'whitespace_print'},
-                {'name': aml['partner_name'], 'title': aml['partner_name'], 'class': 'whitespace_print'},
-                {'name': currency and self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True) or '', 'class': 'number'},
-                {'name': self.format_value(aml['debit'], blank_if_zero=True), 'class': 'number'},
-                {'name': self.format_value(aml['credit'], blank_if_zero=True), 'class': 'number'},
-                {'name': self.format_value(cumulated_balance), 'class': 'number'},
-            ],
-            'level': 4,
+            'columns': columns,
+            'level': 2,
         }
 
     @api.model
@@ -763,23 +773,25 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             'class': 'o_account_reports_load_more text-center',
             'parent_id': 'account_%s' % account.id,
             'name': _('Load more... (%s remaining)') % remaining,
-            'colspan': 7,
+            'colspan': self.user_has_groups('base.group_multi_currency') and 7 or 6,
             'columns': [{}],
         }
 
     @api.model
     def _get_account_total_line(self, options, account, amount_currency, debit, credit, balance):
+        columns = [
+            {'name': self.format_value(debit), 'class': 'number'},
+            {'name': self.format_value(credit), 'class': 'number'},
+            {'name': self.format_value(balance), 'class': 'number'},
+        ]
+        if self.user_has_groups('base.group_multi_currency'):
+            columns.insert(0, {'name': self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True), 'class': 'number'})
         return {
             'id': 'total_%s' % account.id,
             'class': 'o_account_reports_domain_total',
             'parent_id': 'account_%s' % account.id,
-            'name': _('Total'),
-            'columns': [
-                {'name': self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True), 'class': 'number'},
-                {'name': self.format_value(debit), 'class': 'number'},
-                {'name': self.format_value(credit), 'class': 'number'},
-                {'name': self.format_value(balance), 'class': 'number'},
-            ],
+            'name': _('Total %s') % account["display_name"],
+            'columns': columns,
             'colspan': 4,
         }
 
@@ -795,7 +807,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 {'name': self.format_value(credit), 'class': 'number'},
                 {'name': self.format_value(balance), 'class': 'number'},
             ],
-            'colspan': 5,
+            'colspan': self.user_has_groups('base.group_multi_currency') and 5 or 4,
         }
 
     @api.model
@@ -803,14 +815,16 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         lines = [{
             'id': 0,
             'name': _('Tax Declaration'),
-            'columns': [{'name': v} for v in ['', '', '', '', '', '', '']],
+            'columns': [{'name': ''}],
+            'colspan': self.user_has_groups('base.group_multi_currency') and 7 or 6,
             'level': 1,
             'unfoldable': False,
             'unfolded': False,
         }, {
             'id': 0,
             'name': _('Name'),
-            'columns': [{'name': v} for v in ['', '', '', '', _('Base Amount'), _('Tax Amount'), '']],
+            'columns': [{'name': v} for v in ['', _('Base Amount'), _('Tax Amount'), '']],
+            'colspan': self.user_has_groups('base.group_multi_currency') and 4 or 3,
             'level': 2,
             'unfoldable': False,
             'unfolded': False,
@@ -831,7 +845,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         for tax_line in tax_report_lines:
             if tax_line['id'] not in ('sale', 'purchase'): # We want to exclude title lines here
                 tax_line['columns'].append({'name': ''})
-                tax_line['colspan'] = 5
+                tax_line['colspan'] = self.user_has_groups('base.group_multi_currency') and 5 or 4
                 lines.append(tax_line)
 
         return lines

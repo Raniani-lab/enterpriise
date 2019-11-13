@@ -304,6 +304,7 @@ class ReportAccountFinancialReport(models.Model):
 
             if self.env.company.totals_below_sections and (financial_line.children_ids or (is_leaf and financial_report_line['unfolded'] and aml_lines)):
                 lines.append(self._get_financial_total_section_report_line(options_list[0], financial_report_line))
+                financial_report_line["unfolded"] = True  # enables adding "o_js_account_report_parent_row_unfolded" -> hides total amount in head line as it is displayed later in total line
 
         return lines
 
@@ -413,6 +414,7 @@ class ReportAccountFinancialReport(models.Model):
                 'colspan': len(sub_keys) or 1,
                 'children': _create_headers_hierarchy(sub_keys, level=level+1) if sub_keys else None,
                 'key': key,
+                'class': 'number'
             } for key, sub_keys in current_node.items()]
             headers = sorted(headers, key=lambda header: sorting_map[level][header['key']][0])
             return headers

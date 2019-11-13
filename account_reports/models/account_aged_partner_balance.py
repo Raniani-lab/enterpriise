@@ -468,7 +468,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
             {'name': format_date(self.env, row['date_maturity'] or row['date']), 'class': 'date'},
             {'name': row['journal_code']},
             {'name': '%s %s' % (row['account_code'], row['account_name'])},
-            {'name': format_date(self.env, row['expected_pay_date']), 'class': 'date'},
+            {'name': format_date(self.env, row['expected_pay_date']) or '-', 'class': 'date'},
         ]
         columns += [{'name': self.format_value(amount, blank_if_zero=True), 'no_format': amount, 'class': 'number'} for amount in row['period_amounts']]
         columns.append({'name': '', 'no_format': 0.0})

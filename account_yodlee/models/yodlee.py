@@ -280,7 +280,7 @@ class YodleeProviderAccount(models.Model):
                 'status': info.get('status'),
                 'status_code': info.get('statusCode'),
                 'message': info.get('statusMessage'),
-                'last_refresh': info.get('lastRefreshed'),
+                'last_refresh': info.get('lastRefreshed', '').replace('T', ' ').replace('Z', ''),
                 'action_required': False if info.get('status') == 'SUCCESS' else True,
                 })
             if info.get('status') == 'FAILED':

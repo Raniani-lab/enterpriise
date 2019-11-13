@@ -674,6 +674,7 @@ class AccountAsset(models.Model):
         if self.state == 'model':
             default.update(state='model')
         default['name'] = self.name + _(' (copy)')
+        default['account_asset_id'] = self.account_asset_id.id
         return super(AccountAsset, self).copy_data(default)
 
     @api.model_create_multi

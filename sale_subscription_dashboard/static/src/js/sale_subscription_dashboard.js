@@ -65,10 +65,19 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend({
     load_action: function(view_xmlid, options) {
         var self = this;
         options.on_reverse_breadcrumb = this.on_reverse_breadcrumb;
+        if (options.push_main_state && self.main_dashboard_action_id) {
+            // Reset the pushState prevents a traceback when the back button is used from a detailed dashboard.
+            // The forward button does nothing.
+            options.pushState = false;
+        }
         return this.do_action(view_xmlid, options).then(function() {
-            // This detailed dashboard can only be loaded from the main dashboard.
-            // If the user refreshs the page or uses an URL and is direclty redirected to this page,
-            // we redirect him to the main dashboard to avoid any error.
+            // ARJ: When the subscriptions dashboard will be rewritten in OWL, the current behavior have to be improved:
+            // * keep the current graph when user refresh the page.
+            // * Allows to use back and forward buttons.
+
+            // The following lines allows to refresh the page when a detailed dashboard is displayed.
+            // The main dashboard is then showed without error message.
+            // loadstate restores the main dashboard.
             if (options.push_main_state && self.main_dashboard_action_id){
                 web_client.do_push_state({action: self.main_dashboard_action_id});
             }

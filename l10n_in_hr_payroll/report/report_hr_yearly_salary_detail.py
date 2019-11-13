@@ -71,7 +71,7 @@ class EmployeesYearlySalaryReport(models.AbstractModel):
         res = []
         salaries = {}
         self.env.cr.execute('''SELECT rc.code, pl.name, sum(pl.total), \
-                to_char(date_to,'mm-yyyy') as to_date  FROM hr_payslip_line as pl \
+                to_char(p.date_to,'mm-yyyy') as to_date  FROM hr_payslip_line as pl \
                 LEFT JOIN hr_salary_rule_category AS rc on (pl.category_id = rc.id) \
                 LEFT JOIN hr_payslip as p on pl.slip_id = p.id \
                 LEFT JOIN hr_employee as emp on emp.id = p.employee_id \

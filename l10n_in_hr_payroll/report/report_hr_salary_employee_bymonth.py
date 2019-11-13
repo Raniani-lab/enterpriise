@@ -42,7 +42,7 @@ class ReportHrSalaryEmployeeBymonth(models.AbstractModel):
         category_id = category_id and category_id[0] or False
         self.mnths = mnths
         self.env.cr.execute("""
-                            select to_char(date_to,'mm-yyyy') as to_date ,sum(pl.total)
+                            select to_char(p.date_to,'mm-yyyy') as to_date ,sum(pl.total)
                             from hr_payslip_line as pl
                             left join hr_payslip as p on pl.slip_id = p.id
                             left join hr_employee as emp on emp.id = p.employee_id

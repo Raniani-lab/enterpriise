@@ -33,7 +33,7 @@
                                     </td>
                                 </t>
                                 <td class="text-right">
-                                    <span t-esc="e[month_len]" t-options="{'widget': 'monetary', 'display_currency': o.category_id.company_id.currency_id}"/>
+                                    <span t-esc="e[month_len]" t-options="{'widget': 'monetary', 'display_currency': o.env.user.company_id.currency_id}"/>
                                 </td>
                             </tr>
                         </t>
@@ -44,10 +44,10 @@
                                 <td><strong>Total</strong></td>
                                 <t t-foreach="t" t-as="tdata">
                                     <td class="text-right">
-                                        <strong><span t-esc="tdata" t-options="{'widget': 'monetary', 'display_currency': o.category_id.company_id.currency_id}"/></strong>
+                                        <strong><span t-esc="tdata" t-options="{'widget': 'monetary', 'display_currency': o.env.user.company_id.currency_id}"/></strong>
                                     </td>
                                 </t>
-                                <td class="text-right"><strong><span t-esc="get_total" t-options="{'widget': 'monetary', 'display_currency': o.category_id.company_id.currency_id}"/></strong></td>
+                                <td class="text-right"><strong><span t-esc="get_total" t-options="{'widget': 'monetary', 'display_currency': o.env.user.company_id.currency_id}"/></strong></td>
                             </t>
                         </tr>
                     </tfoot>

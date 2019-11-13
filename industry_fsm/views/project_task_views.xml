@@ -19,18 +19,18 @@
                 <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
                         attrs="{'invisible': [
                                 '|', '|', '|', '|', '|',
-                                    ('display_timesheet_timer', '=', True), 
-                                    ('is_fsm', '=', False), 
-                                    ('timesheet_timer_start', '!=', False), 
-                                    ('fsm_done', '=', True), 
-                                    '&amp;', 
-                                        ('allow_timesheets', '=', True), 
+                                    ('display_timesheet_timer', '=', True),
+                                    ('is_fsm', '=', False),
+                                    ('timer_start', '!=', False),
+                                    ('fsm_done', '=', True),
+                                    '&amp;',
+                                        ('allow_timesheets', '=', True),
                                         ('total_hours_spent', '=', 0)]}"/>
                 <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                         attrs="{'invisible': [
                                 '|', '|', '|',
                                     ('id', '=', False),
-                                    ('is_fsm', '=', False), 
+                                    ('is_fsm', '=', False),
                                     ('fsm_done', '=', True)]}"/>
             </xpath>
             <xpath expr="//header" position="after">

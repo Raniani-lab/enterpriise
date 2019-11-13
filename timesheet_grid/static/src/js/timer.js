@@ -46,12 +46,12 @@ var TimerFieldWidget = AbstractField.extend({
     _startTimeCounter: function () {
         var self = this;
         clearTimeout(this.timer);
-        if (self.record.data.timesheet_timer_start) {
+        if (self.record.data.timer_start) {
             this.timer = setTimeout(function () {
                 self._startTimeCounter();
             }, 1000);
-            this.$el.text(moment.utc(self._getDuration(self.record.data.timesheet_timer_start, self.record.data.timesheet_timer_pause)).format("HH:mm:ss"));
-        } else if (!self.record.data.timesheet_timer_pause){
+            this.$el.text(moment.utc(self._getDuration(self.record.data.timer_start, self.record.data.timer_pause)).format("HH:mm:ss"));
+        } else if (!self.record.data.timer_pause){
             clearTimeout(this.timer);
         }
     },

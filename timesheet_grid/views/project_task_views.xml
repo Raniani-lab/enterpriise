@@ -42,23 +42,23 @@
             <xpath expr="//header" position='inside'>
                 <field name="company_id" invisible="1"/>
                 <field name="display_timesheet_timer" invisible="1"/>
-                <field name="timesheet_timer_pause" invisible="1" />
+                <field name="timer_pause" invisible="1" />
                 <button class="btn-primary" name="action_timer_start" type="object" string="Start"
-                    attrs="{'invisible': ['|', '|', ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                    attrs="{'invisible': ['|', '|', ('total_hours_spent', '!=', 0), ('timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
                 <button class="btn-secondary" name="action_timer_start" type="object" string="Start"
-                    attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                    attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
                 <button class="btn-primary btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop"
-                    attrs="{'invisible': ['|', ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                    attrs="{'invisible': ['|', ('timer_start', '=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
                 <button class="btn-primary" name="action_timer_pause" type="object" string="Pause"
-                    attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '!=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                    attrs="{'invisible': ['|', '|', ('timer_pause', '!=', False), ('timer_start', '=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
                 <button class="btn-primary btn-info" name="action_timer_resume" type="object" string="Resume"
-                    attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                    attrs="{'invisible': ['|', '|', ('timer_pause', '=', False), ('timer_start', '=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
             </xpath>
             <xpath expr="//field[@name='stage_id']" position="attributes">
                 <attribute name="class">ml-2</attribute>
             </xpath>
             <xpath expr="//field[@name='stage_id']" position="before">
-                <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger ml-auto h2 ml-4 font-weight-bold" groups="hr_timesheet.group_hr_timesheet_user"/>
+                <field name="timer_start" widget="timesheet_timer" class="text-danger ml-auto h2 ml-4 font-weight-bold" groups="hr_timesheet.group_hr_timesheet_user"/>
             </xpath>
         </field>
     </record>
@@ -71,12 +71,12 @@
         <field name="arch" type="xml">
             <xpath expr="//span[@name='date']" position="before">
                 <field name="display_timesheet_timer" invisible="1"/>
-                <field name="timesheet_timer_start" invisible="1"/>
-                <field name="timesheet_timer_pause" invisible="1"/>
-                <t t-if="record.display_timesheet_timer &amp;&amp; record.timesheet_timer_pause.raw_value">
+                <field name="timer_start" invisible="1"/>
+                <field name="timer_pause" invisible="1"/>
+                <t t-if="record.display_timesheet_timer &amp;&amp; record.timer_pause.raw_value">
                     <i class="fa fa-pause text-warning" title="Timer is Paused"></i>
                 </t>
-                <t t-elif="record.display_timesheet_timer &amp;&amp; record.timesheet_timer_start.raw_value">
+                <t t-elif="record.display_timesheet_timer &amp;&amp; record.timer_start.raw_value">
                     <i class="fa fa-play text-success" title="Timer is Running"></i>
                 </t>
             </xpath>

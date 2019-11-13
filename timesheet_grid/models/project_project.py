@@ -17,8 +17,8 @@ class Project(models.Model):
     def write(self, values):
         result = super(Project, self).write(values)
         if 'allow_timesheet_timer' in values and not values.get('allow_timesheet_timer'):
-            self.env['project.task'].with_context(ative_test=False).search([('project_id', 'in', self.ids)]).write({
-                'timesheet_timer_start': False,
-                'timesheet_timer_pause': False,
+            self.env['project.task'].with_context(active_test=False).search([('project_id', 'in', self.ids)]).write({
+                'timer_start': False,
+                'timer_pause': False,
             })
         return result

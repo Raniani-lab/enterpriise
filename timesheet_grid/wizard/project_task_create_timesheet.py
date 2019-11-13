@@ -40,8 +40,8 @@ class ProjectTaskCreateTimesheet(models.TransientModel):
             'unit_amount': self.time_spent,
         }
         self.task_id.write({
-            'timesheet_timer_start': False,
-            'timesheet_timer_pause': False,
+            'timer_start': False,
+            'timer_pause': False,
             'timesheet_timer_last_stop': fields.datetime.now(),
         })
         return self.env['account.analytic.line'].create(values)

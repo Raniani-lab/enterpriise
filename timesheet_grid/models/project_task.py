@@ -6,10 +6,11 @@ from odoo import api, fields, models, _
 
 
 class ProjectTask(models.Model):
-    _inherit = 'project.task'
+    _name = 'project.task'
+    _inherit = ['project.task', 'timer.mixin']
 
-    timesheet_timer_start = fields.Datetime("Timesheet Timer Start", default=None)
-    timesheet_timer_pause = fields.Datetime("Timesheet Timer Last Pause")
+    timer_start = fields.Datetime("Timesheet Timer Start", default=None)
+    timer_pause = fields.Datetime("Timesheet Timer Last Pause")
     timesheet_timer_first_start = fields.Datetime("Timesheet Timer First Use", readonly=True)
     timesheet_timer_last_stop = fields.Datetime("Timesheet Timer Last Use", readonly=True)
     display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')
@@ -27,26 +28,12 @@ class ProjectTask(models.Model):
         self.ensure_one()
         if not self.timesheet_timer_first_start:
             self.write({'timesheet_timer_first_start': fields.Datetime.now()})
-        return self.write({'timesheet_timer_start': fields.Datetime.now()})
-
-    def action_timer_pause(self):
-        self.write({'timesheet_timer_pause': fields.Datetime.now()})
-
-    def action_timer_resume(self):
-        new_start = self.timesheet_timer_start + (fields.Datetime.now() - self.timesheet_timer_pause)
-        self.write({
-            'timesheet_timer_start': new_start,
-            'timesheet_timer_pause': False
-        })
+        super(ProjectTask, self).action_timer_start()
 
     def action_timer_stop(self):
         self.ensure_one()
-        start_time = self.timesheet_timer_start
-        if start_time:  # timer was either running or paused
-            pause_time = self.timesheet_timer_pause
-            if pause_time:
-                start_time = start_time + (fields.Datetime.now() - pause_time)
-            minutes_spent = (fields.Datetime.now() - start_time).total_seconds() / 60
+        if self.timer_start:  # timer was either running or paused
+            minutes_spent = self._get_minutes_spent()
             minutes_spent = self._timer_rounding(minutes_spent)
             return self._action_create_timesheet(minutes_spent * 60 / 3600)
         return False

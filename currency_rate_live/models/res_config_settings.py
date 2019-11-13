@@ -289,19 +289,14 @@ class ResCompany(models.Model):
         for index, currency in foreigns.items():
             if currency not in available_currency_names:
                 continue
-            if index not in series:
-                _logger.info('Rate for currency %s not updated for date %s', currency, date_mx)
-                continue
 
             serie = series[index]
             for rate in serie:
                 try:
                     foreign_mxn_rate = float(serie[rate])
                 except (ValueError, TypeError):
-                    _logger.info('Could not get rate for currency %s.', currency)
-                    continue
-                foreign_rate_date = datetime.datetime.strptime(
-                    rate, BANXICO_DATE_FORMAT).strftime(DEFAULT_SERVER_DATE_FORMAT)
+                    return False
+                foreign_rate_date = datetime.datetime.strptime(rate, BANXICO_DATE_FORMAT).strftime(DEFAULT_SERVER_DATE_FORMAT)
                 rslt[currency] = (1.0/foreign_mxn_rate, foreign_rate_date)
         return rslt
 

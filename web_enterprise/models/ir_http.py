@@ -28,7 +28,8 @@ class Http(models.AbstractModel):
             warn_enterprise = False
 
         result = super(Http, self).session_info()
-        result['warning'] = warn_enterprise
-        result['expiration_date'] = ICP.get_param('database.expiration_date')
-        result['expiration_reason'] = ICP.get_param('database.expiration_reason')
+        if warn_enterprise:
+            result['warning'] = warn_enterprise
+            result['expiration_date'] = ICP.get_param('database.expiration_date')
+            result['expiration_reason'] = ICP.get_param('database.expiration_reason')
         return result

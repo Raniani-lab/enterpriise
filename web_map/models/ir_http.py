@@ -9,7 +9,8 @@ class IrHttp(models.AbstractModel):
 
     def session_info(self):
         result = super(IrHttp, self).session_info()
-        result.update(
-            map_box_token = self.env['ir.config_parameter'].sudo().get_param('web_map.token_map_box',False)
-        )
+        if self.env.user.has_group('base.group_user'):
+            result.update(
+                map_box_token = self.env['ir.config_parameter'].sudo().get_param('web_map.token_map_box',False)
+            )
         return result

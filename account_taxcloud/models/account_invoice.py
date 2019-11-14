@@ -4,7 +4,7 @@ import datetime
 import logging
 
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools import float_compare, float_round
 from odoo.tests.common import Form
 
@@ -33,6 +33,17 @@ class AccountMove(models.Model):
             for invoice in invoices_to_validate.with_context(taxcloud_authorize_transaction=True):
                 invoice.validate_taxes_on_invoice()
         return super(AccountMove, self).post()
+
+    def button_draft(self):
+        """At confirmation below, the AuthorizedWithCapture encodes the invoice
+           in TaxCloud. Returned cancels it for a refund.
+           See https://dev.taxcloud.com/taxcloud/guides/5%20Returned%20Orders
+        """
+        if self.filtered('fiscal_position_id.is_taxcloud'):
+            raise UserError(_("You cannot cancel an invoice sent to TaxCloud.\n"
+                              "You need to issue a refund (credit note) for it instead.\n"
+                              "This way the tax entries will be cancelled in TaxCloud."))
+        return super(AccountMove, self).button_draft()
 
     @api.model
     def _get_TaxCloudRequest(self, api_id, api_key):

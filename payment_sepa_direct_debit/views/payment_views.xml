@@ -68,7 +68,7 @@
                     <field name="signed_on"/>
                     <field name="signed_by" attrs="{'invisible': [('signed_by', '=', False)]}"/>
                     <field name="signature" widget="signature" attrs="{'invisible': [('signature', '=', False)]}"/>
-                    <field name="phone_number" widget="phone" attrs="{'invisible': [('phone_number', '=', False)]}"/>
+                    <field name="phone_number" widget="phone" attrs="{'invisible': [('phone_number', '=', False)]}" options="{'enable_sms': false}"/>
                 </group>
             </xpath>
         </field>

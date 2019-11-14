@@ -50,8 +50,6 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
 
         self.assertEqual(self.task.material_line_product_count, 2, "2 product should be linked to the task")
 
-        self.assertFalse(self.task.sale_order_id.mapped('order_line').filtered(lambda l: l.product_id.id == self.product_delivered.id), "There should not be any order line left for removed product on task")
-
         self.product_delivered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
 
         self.assertEqual(self.task.material_line_product_count, 3, "3 product should be linked to the task")
@@ -82,11 +80,7 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
         invoice_wizard.create_invoices()
         self.assertFalse(self.task.fsm_to_invoice, "Task should not be invoiceable")
 
-
         # quotation
-        self.assertFalse(self.task.quotation_count, "No quotation should be linked to a new task")
-        quotation_ctx = self.task.action_fsm_create_quotation()['context']
-        quotation = self.env['sale.order'].with_context(quotation_ctx).create({'partner_id': self.task.partner_id.id})
-        self.task._compute_quotation_count() # forced to compute manually because no 'depends' set on that method (no direct link to the task)
         self.assertEqual(self.task.quotation_count, 1, "1 quotation should be linked to the task")
+        quotation = self.env['sale.order'].search([('state', '!=', 'cancel'), ('task_id', '=', self.task.id)])
         self.assertEqual(self.task.action_fsm_view_quotations()['res_id'], quotation.id, "Created quotation id should be in the action")

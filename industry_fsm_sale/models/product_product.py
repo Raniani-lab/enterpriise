@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from collections import defaultdict
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class ProductProduct(models.Model):
@@ -9,16 +10,23 @@ class ProductProduct(models.Model):
 
     fsm_quantity = fields.Integer('Material Quantity', compute="_compute_fsm_quantity")
 
+    @api.depends_context('fsm_task_id')
     def _compute_fsm_quantity(self):
         task_id = self.env.context.get('fsm_task_id')
         if task_id:
             task = self.env['project.task'].browse(task_id)
-            product_map = {sol.product_id.id: sol.product_uom_qty for sol in task.sudo().sale_order_id.order_line}
-
+            products_qties = self.env['sale.order.line'].read_group(
+                [('id', 'in', task.sale_order_id.order_line.ids)],
+                ['product_id', 'product_uom_qty'], ['product_id'])
+            qty_dict = dict([(x['product_id'][0], x['product_uom_qty']) for x in products_qties])
             for product in self:
-                product.fsm_quantity = product_map.get(product.id, 0)
+                product.fsm_quantity = qty_dict.get(product.id, 0)
         else:
             self.fsm_quantity = False
+
+    # Is override by fsm_stock to manage lot
+    def action_assign_serial(self):
+        return False
 
     def fsm_add_quantity(self):
         task_id = self.env.context.get('fsm_task_id')
@@ -32,13 +40,17 @@ class ProductProduct(models.Model):
             # create a sale order
             task._fsm_ensure_sale_order()
 
+            wizard_product_lot = self.action_assign_serial()
+            if wizard_product_lot:
+                return wizard_product_lot
+
             # project user with no sale rights should be able to add materials
             SaleOrderLine = self.env['sale.order.line']
             if self.user_has_groups('project.group_project_user'):
                 task = task.sudo()
                 SaleOrderLine = SaleOrderLine.sudo()
 
-            sale_line = SaleOrderLine.search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id)], limit=1)
+            sale_line = SaleOrderLine.search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id), '|', ('qty_delivered', '=', 0), ('qty_delivered_method', '=', 'manual')], limit=1)
 
             if sale_line:  # existing line: increment ordered qty (and delivered, if delivered method)
                 vals = {
@@ -77,13 +89,17 @@ class ProductProduct(models.Model):
             if task.fsm_done:
                 return False
 
-            # project user with no sale rights should be able to remove materials
+            wizard_product_lot = self.action_assign_serial()
+            if wizard_product_lot:
+                return wizard_product_lot
+
             SaleOrderLine = self.env['sale.order.line']
+            # project user with no sale rights should be able to remove materials
             if self.user_has_groups('project.group_project_user'):
                 task = task.sudo()
                 SaleOrderLine = SaleOrderLine.sudo()
 
-            sale_line = SaleOrderLine.search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id)], limit=1)
+            sale_line = SaleOrderLine.search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id), ('product_uom_qty', '>=', 1)], limit=1)
             if sale_line:
                 vals = {
                     'product_uom_qty': sale_line.product_uom_qty - 1

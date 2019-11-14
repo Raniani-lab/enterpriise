@@ -2,18 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models
-from odoo.osv import expression
+from odoo.tools import float_compare, float_round
 
 
 class Task(models.Model):
     _inherit = "project.task"
-
-    def action_fsm_view_material(self):
-        """Override to remove tracked products from the domain.
-        """
-        action = super(Task, self).action_fsm_view_material()
-        action['domain'] = expression.AND([action.get('domain', []), [('tracking', '=', 'none')]])
-        return action
 
     def action_fsm_validate(self):
         result = super(Task, self).action_fsm_validate()
@@ -24,13 +17,38 @@ class Task(models.Model):
         return result
 
     def _validate_stock(self):
-        # need to re-run _action_launch_stock_rule, since the sale order can already be confirmed
-        previous_product_uom_qty = {line.id: line.product_uom_qty for line in self.sale_order_id.order_line}
-        self.sale_order_id.order_line._action_launch_stock_rule(previous_product_uom_qty=previous_product_uom_qty)
-        for picking in self.sale_order_id.picking_ids:
-            for move in picking.move_lines.filtered(lambda ml: ml.state != 'done'):
-                for move_line in move.move_line_ids:
-                    move_line.qty_done = move_line.product_uom_qty
+        self.ensure_one()
+        all_fsm_sn_moves = self.env['stock.move']
+        ml_to_create = []
+        for so_line in self.sale_order_id.order_line:
+            qty = so_line.product_uom_qty - so_line.qty_delivered
+            fsm_sn_moves = self.env['stock.move']
+            if not qty:
+                continue
+            for last_move in so_line.move_ids:
+                move = last_move
+                fsm_sn_moves |= last_move
+                while move.move_orig_ids:
+                    move = move.move_orig_ids
+                    fsm_sn_moves |= move
+            for fsm_sn_move in fsm_sn_moves:
+                ml_vals = fsm_sn_move._prepare_move_line_vals(quantity=0)
+                ml_vals['qty_done'] = qty
+                ml_vals['lot_id'] = so_line.fsm_lot_id.id
+                ml_to_create.append(ml_vals)
+            all_fsm_sn_moves |= fsm_sn_moves
+        self.env['stock.move.line'].create(ml_to_create)
 
-        # context key used to not create backorders
-        self.sale_order_id.picking_ids.filtered(lambda p: p.state not in ['done', 'cancel']).with_context({'cancel_backorder': True})._action_done()
+        pickings_to_do = self.sale_order_id.picking_ids.filtered(lambda p: p.state not in ['done', 'cancel'])
+        # set the quantity done as the initial demand before validating the pickings
+        for move in pickings_to_do.move_lines:
+            if move.state in ('done', 'cancel') or move in all_fsm_sn_moves:
+                continue
+            rounding = move.product_uom.rounding
+            if float_compare(move.quantity_done, move.product_uom_qty, precision_rounding=rounding) < 0:
+                qty_to_do = float_round(
+                    move.product_uom_qty - move.quantity_done,
+                    precision_rounding=rounding,
+                    rounding_method='HALF-UP')
+                move._set_quantity_done(qty_to_do)
+        pickings_to_do.with_context(skip_sms=True, cancel_backorder=True).button_validate()

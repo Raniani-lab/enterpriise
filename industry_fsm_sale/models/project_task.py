@@ -174,7 +174,6 @@ class Task(models.Model):
                 'create': self.env['product.template'].check_access_rights('create', raise_exception=False),
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
-                'partner': self.partner_id.id if self.partner_id else False,
                 'search_default_consumable': 1,
                 'hide_qty_buttons': self.fsm_done
             },
@@ -247,6 +246,7 @@ class Task(models.Model):
         sale_order = SaleOrder.create({
             'partner_id': self.partner_id.id,
             'company_id': self.company_id.id,
+            'task_id': self.id,
             'analytic_account_id': self.project_id.analytic_account_id.id,
         })
         sale_order.onchange_partner_id()

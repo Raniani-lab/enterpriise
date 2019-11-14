@@ -4844,6 +4844,41 @@ QUnit.module('ViewEditorManager', {
 
         vem.destroy();
     });
+
+    QUnit.test('Phone field in form with SMS', async function (assert) {
+        assert.expect(3);
+
+        var arch = "<form><sheet>" +
+                "<group>" +
+                    "<field name='display_name' widget='phone' />" +
+                "</group>" +
+            "</sheet></form>";
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            intercepts: {
+                view_change(ev) {
+                    assert.equal(ev.data.new_attrs.options, '{"enable_sms":false}',
+                        'Writing the enable_sms option workds');
+                }
+            },
+            mockRPC(route, args) {
+                if (route === '/web_studio/edit_view') {
+                    return Promise.resolve();
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        await testUtils.dom.click(vem.$('.o_form_label:contains(Display Name)'));
+        assert.containsOnce(vem, 'input[name="enable_sms"]');
+        assert.ok(vem.$('input[name="enable_sms"]').is(':checked'),
+            'By default the boolean should be true');
+
+        await testUtils.dom.click(vem.$('input[name="enable_sms"]'));
+        vem.destroy();
+    });
 });
 
 });

@@ -58,6 +58,9 @@ var OPTIONS_BY_WIDGET = {
         {name: 'related_start_date', type: 'selection', string: _lt("Related Start Date"), selection: [[]]},
         {name: 'related_end_date', type: 'selection', string: _lt("Related End Date"), selection: [[]]},
     ],
+    phone: [
+        {name: 'enable_sms', type: 'boolean', string: _lt("Enable SMS")},
+    ],
 };
 
 return Widget.extend(StandaloneFieldManagerMixin, {

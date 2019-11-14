@@ -84,7 +84,6 @@
                 border-bottom: none
             }
             tbody > tr > td:nth-child(2) {
-                width: calc(80% - 150px) !important;
                 border-right-style: none;
                 &:not([style]) {
                     border: 1px solid #666666;

@@ -1062,8 +1062,11 @@ class AccountReport(models.AbstractModel):
                     domain = expression.AND([domain, [('date', '<=', opt_date['date'])]])
             # In case the line has been generated for a "group by" financial line, append the parent line's domain to the one we created
             if params.get('financial_group_line_id'):
-                parent_financial_report_line = self.env['account.financial.html.report.line'].browse(params['financial_group_line_id'])
-                domain = expression.AND([domain, safe_eval(parent_financial_report_line.domain)])
+                # In case the hierarchy is enabled, 'financial_group_line_id' might be a string such
+                # as 'hierarchy_xxx'. This will obviously cause a crash at domain evaluation.
+                if not (isinstance(params['financial_group_line_id'], str) and 'hierarchy_' in params['financial_group_line_id']):
+                    parent_financial_report_line = self.env['account.financial.html.report.line'].browse(params['financial_group_line_id'])
+                    domain = expression.AND([domain, safe_eval(parent_financial_report_line.domain)])
 
             if not options.get('all_entries'):
                 ctx['search_default_posted'] = True

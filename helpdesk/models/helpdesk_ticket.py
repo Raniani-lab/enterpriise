@@ -415,9 +415,17 @@ class HelpdeskTicket(models.Model):
         # to avoid intrusive changes in the 'mail' module
         for vals in list_value:
             if 'partner_name' in vals and 'partner_email' in vals and 'partner_id' not in vals:
-                vals['partner_id'] = self.env['res.partner'].find_or_create(
-                    formataddr((vals['partner_name'], vals['partner_email']))
-                )
+                try:
+                    vals['partner_id'] = self.env['res.partner'].find_or_create(
+                        formataddr((vals['partner_name'], vals['partner_email']))
+                    )
+                except UnicodeEncodeError:
+                    # 'formataddr' doesn't support non-ascii characters in email. Therefore, we fall
+                    # back on a simple partner creation.
+                    vals['partner_id'] = self.env['res.partner'].create({
+                        'name': vals['partner_name'],
+                        'email': vals['partner_email'],
+                    }).id
 
         # determine partner email for ticket with partner but no email given
         partners = self.env['res.partner'].browse([vals['partner_id'] for vals in list_value if 'partner_id' in vals and vals.get('partner_id') and 'partner_email' not in vals])

@@ -173,7 +173,7 @@ var PickingClientAction = ClientAction.extend({
                         self.trigger_up('exit');
                     };
                     var exitCallback = function (infos) {
-                        if (infos && !infos.special && this.dialog.$modal.is(':visible')) {
+                        if ((infos === undefined || !infos.special) && this.dialog.$modal.is(':visible')) {
                             successCallback();
                         }
                         core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);
@@ -343,7 +343,7 @@ var PickingClientAction = ClientAction.extend({
                     self._endBarcodeFlow();
                     if (res.type && res.type === 'ir.actions.act_window') {
                         var exitCallback = function (infos) {
-                            if (infos && !infos.special) {
+                            if (infos === undefined || !infos.special) {
                                 self.trigger_up('reload');
                             }
                             core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);

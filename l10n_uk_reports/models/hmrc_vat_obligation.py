@@ -57,7 +57,7 @@ class HmrcVatObligation(models.Model):
         :param status:
         :return: list of obligations of the status type for the requested period
         """
-        if not match(r'^[0-9]{9}$', vat):
+        if not match(r'^[0-9]{9}$', vat or ''):
             raise UserError(_("VAT numbers of UK companies should have exactly 9 figures. Please check the settings of the current company."))
 
         user = self.env.user

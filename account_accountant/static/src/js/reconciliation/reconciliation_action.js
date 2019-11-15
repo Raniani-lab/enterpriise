@@ -20,7 +20,7 @@ var StatementAction = AbstractAction.extend({
     custom_events: {
         change_mode: '_onAction',
         change_filter: '_onAction',
-        change_offset: '_onAction',
+        load_more: '_onAction',
         change_partner: '_onAction',
         add_proposition: '_onAction',
         remove_proposition: '_onAction',
@@ -31,7 +31,6 @@ var StatementAction = AbstractAction.extend({
         partial_reconcile: '_onAction',
         validate: '_onValidate',
         close_statement: '_onCloseStatement',
-        load_more: '_onLoadMore',
         reload: 'reload',
         navigation_move:'_onNavigationMove',
     },
@@ -227,16 +226,6 @@ var StatementAction = AbstractAction.extend({
      */
     _getWidget: function (handle) {
         return _.find(this.widgets, function (widget) {return widget.handle===handle;});
-    },
-
-    /**
-     *
-     */
-    _loadMore: function(qty) {
-        var self = this;
-        return this.model.loadMore(qty).then(function () {
-            return self._renderLines();
-        });
     },
     /**
      * sitch to 'match' the first available line

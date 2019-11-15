@@ -176,11 +176,9 @@ class MrpProductionWorkcenterLine(models.Model):
         than one lot.
         """
         # Create another quality check if necessary
-        parent_id = self.current_quality_check_id
-        if parent_id.parent_id:
-            parent_id = parent_id.parent_id
-        subsequent_substeps = self.env['quality.check'].search([('parent_id', '=', parent_id.id), ('id', '>', self.current_quality_check_id.id)])
-        if not subsequent_substeps:
+        next_check = self.current_quality_check_id.next_check_id
+        if next_check.component_id != self.current_quality_check_id.product_id or\
+                next_check.point_id != self.current_quality_check_id.point_id:
             # Split current workorder line.
             rounding = self.workorder_line_id.product_uom_id.rounding
             if float_compare(self.workorder_line_id.qty_done, self.workorder_line_id.qty_to_consume, precision_rounding=rounding) < 0:
@@ -209,7 +207,6 @@ class MrpProductionWorkcenterLine(models.Model):
                 'workorder_id': self.id,
                 'product_id': self.product_id.id,
                 'company_id': self.company_id.id,
-                'parent_id': parent_id.id,
                 'finished_product_sequence': self.qty_produced,
             }
             if self.current_quality_check_id.point_id:
@@ -223,9 +220,10 @@ class MrpProductionWorkcenterLine(models.Model):
                     'test_type_id': self.current_quality_check_id.test_type_id.id,
                     'team_id': self.current_quality_check_id.team_id.id,
                 })
-            move = parent_id.workorder_line_id.move_id
+            move = self.current_quality_check_id.workorder_line_id.move_id
             quality_check_data.update(self._defaults_from_workorder_lines(move, self.current_quality_check_id.test_type))
-            self.env['quality.check'].create(quality_check_data)
+            new_check = self.env['quality.check'].create(quality_check_data)
+            new_check._insert_in_chain('after', self.current_quality_check_id)
 
     def _generate_lines_values(self, move, qty_to_consume):
         """ In case of non tracked component without 'register component' step,
@@ -294,10 +292,7 @@ class MrpProductionWorkcenterLine(models.Model):
         if self.test_type not in ('measure', 'passfail'):
             self.current_quality_check_id.do_pass()
 
-        if self.skip_completed_checks:
-            self._change_quality_check(increment=1, children=1, checks=self.skipped_check_ids)
-        else:
-            self._change_quality_check(increment=1, children=1)
+        self._change_quality_check(position='next', skipped=self.skip_completed_checks)
 
     def action_skip(self):
         self.ensure_one()
@@ -305,92 +300,58 @@ class MrpProductionWorkcenterLine(models.Model):
         if float_compare(self.qty_producing, 0, precision_rounding=rounding) <= 0 or\
                 float_compare(self.qty_producing, self.qty_remaining, precision_rounding=rounding) > 0:
             raise UserError(_('Please ensure the quantity to produce is nonnegative and does not exceed the remaining quantity.'))
-        if self.skip_completed_checks:
-            self._change_quality_check(increment=1, children=1, checks=self.skipped_check_ids)
-        else:
-            self._change_quality_check(increment=1, children=1)
+        self._change_quality_check(position='next', skipped=self.skip_completed_checks)
 
     def action_first_skipped_step(self):
         self.ensure_one()
         self.skip_completed_checks = True
-        self._change_quality_check(position=0, children=1, checks=self.skipped_check_ids)
+        self._change_quality_check(position='first', skipped=True)
 
     def action_previous(self):
         self.ensure_one()
-        self._change_quality_check(increment=-1, children=1)
+        # If we are on the summary page, we are out of the checks chain
+        if self.current_quality_check_id:
+            self._change_quality_check(position='previous')
+        else:
+            self._change_quality_check(position='last')
 
-    # Technical function to change the current quality check.
-    #
-    # params:
-    #     children - boolean - Whether to account for 'children' quality checks, which are generated on-the-fly
-    #     position - integer - Goes to step <position>, after reordering
-    #     checks - list - If provided, consider only checks in <checks>
-    #     goto - integer - Goes to quality_check with id=<goto>
-    #     increment - integer - Change quality check relatively to the current one, after reordering
-    def _change_quality_check(self, **params):
+    def _change_quality_check(self, position, skipped=False):
+        """Change the quality check currently set on the workorder `self`.
+
+        The workorder points to a check. A check belongs to a chain.
+        This method allows to change the selected check by moving on the checks
+        chain according to `position`.
+
+        :param position: Where we need to change the cursor on the check chain
+        :type position: string
+        :param skipped: Only navigate throughout skipped checks
+        :type skipped: boolean
+        """
         self.ensure_one()
-        check_id = None
-        # Determine the list of checks to consider
-        checks = params['checks'] if 'checks' in params else self.check_ids
-        if not params.get('children'):
-            checks = checks.filtered(lambda c: not c.parent_id)
-        # We need to make sure the current quality check is in our list
-        # when we compute position relatively to the current quality check.
-        if 'increment' in params or 'checks' in params and self.current_quality_check_id not in checks:
-            checks |= self.current_quality_check_id
-        # Restrict to checks associated with the current production
-        checks = checks.filtered(lambda c: c.finished_product_sequence == self.qty_produced)
-        # As some checks are generated on the fly,
-        # we need to ensure that all 'children' steps are grouped together.
-        # Missing steps are added at the end.
-        def sort_quality_checks(check):
-            # Useful tuples to compute the order
-            parent_point_sequence = (check.parent_id.point_id.sequence, check.parent_id.point_id.id)
-            point_sequence = (check.point_id.sequence, check.point_id.id)
-            # Parent quality checks are sorted according to the sequence number of their associated quality point,
-            # with chronological order being the tie-breaker.
-            if check.point_id and not check.parent_id:
-                score = (0, 0) + point_sequence + (0, 0)
-            # Children steps follow their parents, honouring their quality point sequence number,
-            # with chronological order being the tie-breaker.
-            elif check.point_id:
-                score = (0, 0) + parent_point_sequence + point_sequence
-            # Checks without points go at the end and are ordered chronologically
-            elif not check.parent_id:
-                score = (check.id, 0, 0, 0, 0, 0)
-            # Children without points follow their respective parents, in chronological order
+        assert position in ['first', 'next', 'previous', 'last']
+        checks_to_consider = self.check_ids.filtered(lambda c: c.finished_product_sequence == self.qty_produced)
+        if position == 'first':
+            check = checks_to_consider.filtered(lambda check: not check.previous_check_id)
+        elif position == 'next':
+            check = self.current_quality_check_id.next_check_id
+        elif position == 'previous':
+            check = self.current_quality_check_id.previous_check_id
+        else:
+            check = checks_to_consider.filtered(lambda check: not check.next_check_id)
+        # Get nearest skipped check in case of skipped == True
+        while skipped and check and check.quality_state != 'none':
+            if position in ('first', 'next'):
+                check = check.next_check_id
             else:
-                score = (check.parent_id.id, check.id, 0, 0, 0, 0)
-            return score
-        ordered_check_ids = checks.sorted(key=sort_quality_checks).ids
-        # We manually add a final 'Summary' step
-        # which is not associated with a specific quality_check (hence the 'False' id).
-        ordered_check_ids.append(False)
-        # Determine the quality check we are switching to
-        if 'increment' in params:
-            current_id = self.current_quality_check_id.id
-            position = ordered_check_ids.index(current_id)
-            check_id = self.current_quality_check_id.id
-            if position + params['increment'] in range(0, len(ordered_check_ids)):
-                position += params['increment']
-                check_id = ordered_check_ids[position]
-        elif params.get('position') in range(0, len(ordered_check_ids)):
-            position = params['position']
-            check_id = ordered_check_ids[position]
-        elif params.get('goto') in ordered_check_ids:
-            check_id = params['goto']
-            position = ordered_check_ids.index(check_id)
-        # Change the quality check and the worksheet page if necessary
-        if check_id is not None:
-            next_check = self.env['quality.check'].browse(check_id)
-            change_worksheet_page = position != len(ordered_check_ids) - 1 and next_check.point_id.worksheet == 'scroll'
-            self.write({
-                'allow_producing_quantity_change': True if params.get('position') == 0 and all(c.quality_state == 'none' for c in self.check_ids) else False,
-                'current_quality_check_id': check_id,
-                'is_first_step': position == 0,
-                'is_last_step': check_id == False,
-                'worksheet_page': next_check.point_id.worksheet_page if change_worksheet_page else self.worksheet_page,
-            })
+                check = check.previous_check_id
+        change_worksheet_page = not check.next_check_id and check.point_id.worksheet == 'scroll'
+        self.write({
+            'allow_producing_quantity_change': not check.previous_check_id and all(c.quality_state == 'none' for c in checks_to_consider),
+            'current_quality_check_id': check.id,
+            'is_first_step': check.id and not check.previous_check_id,
+            'is_last_step': not check,
+            'worksheet_page': check.point_id.worksheet_page if change_worksheet_page else self.worksheet_page,
+        })
 
     def _defaults_from_workorder_lines(self, move, test_type):
         # Check if a workorder line is not filled for this workorder. If it
@@ -452,7 +413,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
             move_raw_ids = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel'))
             move_finished_ids = wo.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel'))
-            values_to_create = []
+            previous_check = self.env['quality.check']
             for point in points:
                 # Check if we need a quality control for this point
                 if point.check_execute_now():
@@ -466,18 +427,25 @@ class MrpProductionWorkcenterLine(models.Model):
                         # Two steps are from the same production
                         # if and only if the produced quantities at the time they were created are equal.
                         'finished_product_sequence': wo.qty_produced,
+                        'previous_check_id': previous_check.id,
                     }
                     if point.test_type == 'register_byproducts':
                         moves = move_finished_ids.filtered(lambda m: m.product_id == point.component_id)
                     elif point.test_type == 'register_consumed_materials':
                         moves = move_raw_ids.filtered(lambda m: m.product_id == point.component_id)
                     else:
-                        values_to_create.append(values)
+                        check = self.env['quality.check'].create(values)
+                        previous_check.next_check_id = check
+                        previous_check = check
                     # Create 'register ...' checks
                     for move in moves:
                         check_vals = values.copy()
                         check_vals.update(wo._defaults_from_workorder_lines(move, point.test_type))
-                        values_to_create.append(check_vals)
+                        # Create quality check and link it to the chain
+                        check_vals.update({'previous_check_id': previous_check.id})
+                        check = self.env['quality.check'].create(check_vals)
+                        previous_check.next_check_id = check
+                        previous_check = check
                     processed_move |= moves
 
             # Generate quality checks associated with unreferenced components
@@ -493,6 +461,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     # Two steps are from the same production
                     # if and only if the produced quantities at the time they were created are equal.
                     'finished_product_sequence': wo.qty_produced,
+                    'previous_check_id': previous_check.id,
                 }
                 if move in move_raw_ids:
                     test_type = self.env.ref('mrp_workorder.test_type_register_consumed_materials')
@@ -500,12 +469,13 @@ class MrpProductionWorkcenterLine(models.Model):
                     test_type = self.env.ref('mrp_workorder.test_type_register_byproducts')
                 values.update({'test_type_id': test_type.id})
                 values.update(wo._defaults_from_workorder_lines(move, test_type.technical_name))
-                values_to_create.append(values)
+                check = self.env['quality.check'].create(values)
+                previous_check.next_check_id = check
+                previous_check = check
 
-            self.env['quality.check'].create(values_to_create)
             # Set default quality_check
             wo.skip_completed_checks = False
-            wo._change_quality_check(position=0)
+            wo._change_quality_check(position='first')
 
     def _get_byproduct_move_to_update(self):
         moves = super(MrpProductionWorkcenterLine, self)._get_byproduct_move_to_update()

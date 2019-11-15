@@ -86,9 +86,11 @@ class QualityCheck(models.Model):
     production_id = fields.Many2one(
         'mrp.production', 'Production Order', check_company=True)
 
+    # doubly linked chain for tablet view navigation
+    next_check_id = fields.Many2one('quality.check')
+    previous_check_id = fields.Many2one('quality.check')
+
     # For components registration
-    parent_id = fields.Many2one(
-        'quality.check', 'Parent Quality Check', check_company=True)
     component_id = fields.Many2one(
         'product.product', 'Component', check_company=True)
     component_uom_id = fields.Many2one('uom.uom', compute='_compute_component_uom', readonly=True)
@@ -151,3 +153,29 @@ class QualityCheck(models.Model):
             return '{}, {} {}'.format(self.component_id.name, self.qty_done, self.component_uom_id.name)
         else:
             return ''
+
+    def _insert_in_chain(self, position, relative):
+        """Insert the quality check `self` in a chain of quality checks.
+
+        The chain of quality checks is implicitly given by the `relative` argument,
+        i.e. by following its `previous_check_id` and `next_check_id` fields.
+
+        :param position: Where we need to insert `self` according to `relative`
+        :type position: string
+        :param relative: Where we need to insert `self` in the chain
+        :type relative: A `quality.check` record.
+        """
+        self.ensure_one()
+        assert position in ['before', 'after']
+        if position == 'before':
+            new_previous = relative.previous_check_id
+            self.next_check_id = relative
+            self.previous_check_id = new_previous
+            new_previous.next_check_id = self
+            relative.previous_check_id = self
+        else:
+            new_next = relative.next_check_id
+            self.next_check_id = new_next
+            self.previous_check_id = relative
+            new_next.previous_check_id = self
+            relative.next_check_id = self

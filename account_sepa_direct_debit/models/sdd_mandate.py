@@ -136,10 +136,6 @@ class SDDMandate(models.Model):
         for record in self:
             if record.payment_journal_id.bank_account_id.acc_type != 'iban':
                 raise UserError(_("Only IBAN account numbers can receive SEPA Direct Debit payments. Please select a journal associated to one."))
-            if not record.payment_journal_id.bank_id:
-                raise UserError(_("The destination bank account must be related to a bank with a valid BIC."))
-            if not record.payment_journal_id.bank_id.bic:
-                raise UserError(_("The bank your payment account is related to must have a BIC number. Please define one."))
 
     @api.constrains('debtor_id_code')
     def _validate_debtor_id_code(self):

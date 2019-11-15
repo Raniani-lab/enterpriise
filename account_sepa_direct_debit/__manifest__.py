@@ -17,10 +17,9 @@
         You also need to meet the following requirements in order to properly
         generate a SDD file:
         - Your company account must be set to a valid IBAN number
-        - Your company account must be associated to a bank having a valid BIC
         - Your company must have been given a creditor identifier (this can be done in the 'settings' menu of the accounting module)
         - Your company must have defined a journal to receive SDD payments (again, in 'settings' of accounting module)
-        - Every customer for which you generate a payment must have a valid IBAN account number in a bank associated with a correct BIC.
+        - Every customer for which you generate a payment must have a valid IBAN account number.
 
         Odoo will let you know if any of these requirements are not satisfied.
 

@@ -15,8 +15,8 @@ class AccountPayment(models.Model):
         for record in self:
             record.display_qr_code = (record.partner_type == 'supplier' and
                                       record.payment_method_code == 'manual' and
-                                      self.env.company.country_id in self.env.ref('base.europe').country_ids and
-                                      bool(record.partner_bank_account_id))
+                                      bool(record.partner_bank_account_id) and
+                                      record.partner_bank_account_id.qr_code_valid)
 
     @api.depends('partner_bank_account_id', 'amount', 'communication')
     def _compute_qr_code_url(self):
@@ -64,17 +64,6 @@ class AccountPayment(models.Model):
             if rec.payment_method_id == self.env.ref('account_sepa.account_payment_method_sepa_ct'):
                 if not rec.journal_id.bank_account_id or not rec.journal_id.bank_account_id.acc_type == 'iban':
                     raise ValidationError(_("The journal '%s' requires a proper IBAN account to pay via SEPA. Please configure it first.") % rec.journal_id.name)
-                if not rec.journal_id.bank_account_id.bank_bic:
-                    raise ValidationError(_("The account '%s' (journal %s) requires a Bank Identification Code (BIC) to pay via SEPA. Please configure it first.")
-                        % (rec.journal_id.bank_account_id.acc_number, rec.journal_id.name))
-
-    @api.constrains('payment_method_id', 'partner_bank_account_id')
-    def _check_partner_bank_account(self):
-        for rec in self:
-            if rec.payment_method_id == self.env.ref('account_sepa.account_payment_method_sepa_ct'):
-                # Note, the condition allows to use non-IBAN account. SEPA actually supports this under certain conditions
-                if rec.partner_bank_account_id.acc_type == 'iban' and not rec.partner_bank_account_id.bank_bic:
-                    raise ValidationError(_("The partner account '%s' requires a Bank Identification Code (BIC) to pay via SEPA. Please configure it first.") % rec.partner_bank_account_id.acc_number)
 
     @api.onchange('destination_journal_id')
     def _onchange_destination_journal_id(self):

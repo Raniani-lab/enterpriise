@@ -24,7 +24,7 @@ class AccountBatchPayment(models.Model):
     sct_generic = fields.Boolean(compute='_compute_sct_generic',
         help=u"Technical feature used during the file creation. A SEPA message is said to be 'generic' if it cannot be considered as "
              u"a standard european credit transfer. That is if the bank journal is not in €, a transaction is not in € or a payee is "
-             u"not identified by an IBAN account number and a bank BIC.")
+             u"not identified by an IBAN account number.")
 
     sct_warning = fields.Text(compute='_compute_sct_generic')
 
@@ -63,8 +63,6 @@ class AccountBatchPayment(models.Model):
             bank_account = payment.partner_bank_account_id
             if payment.currency_id.name != 'EUR' and (self.journal_id.currency_id or self.journal_id.company_id.currency_id).name == 'EUR':
                 error_list.append(_('The transaction %s is instructed in another currency than EUR') % payment.name)
-            if not bank_account.bank_bic:
-                error_list.append(_('The creditor bank account %s used in payment %s is not identified by a BIC') % (payment.partner_bank_account_id.acc_number, payment.name))
             if not bank_account.acc_type == 'iban':
                 error_list.append(_('The creditor bank account %s used in payment %s is not identified by an IBAN') % (payment.partner_bank_account_id.acc_number, payment.name))
         return error_list

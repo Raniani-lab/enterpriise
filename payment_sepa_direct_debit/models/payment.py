@@ -12,52 +12,6 @@ from odoo.addons.base_iban.models.res_partner_bank import validate_iban
 
 _logger = logging.getLogger(__name__)
 
-SEPA_ZONE = [
-    'AT',
-    'BE',
-    'CY',
-    'EE',
-    'FI',
-    'DE',
-    'GR',
-    'IE',
-    'IT',
-    'LV',
-    'LT',
-    'LU',
-    'MT',
-    'NL',
-    'PT',
-    'SK',
-    'SI',
-    'ES',
-    'FR',
-    'GF',
-    'GP',
-    'MQ',
-    'YT',
-    'BL',
-    'MF',
-    'RE',
-    'PM',
-    'MC',
-    'SM',
-    'BG',
-    'HR',
-    'CZ',
-    'DK',
-    'HU',
-    'IS',
-    'LI',
-    'NO',
-    'PL',
-    'RO',
-    'SE',
-    'CH',
-    'GB',
-    'GI',
-]
-
 
 class PaymentAcquirerSepaDirectDebit(models.Model):
     _inherit = 'payment.acquirer'
@@ -70,11 +24,12 @@ class PaymentAcquirerSepaDirectDebit(models.Model):
 
     @api.constrains('country_ids')
     def _check_sepa_zone(self):
+        sepa_zone = self.env.ref('base.sepa_zone').mapped('country_ids.code')
         for record in self:
             if record.provider != 'sepa_direct_debit':
                 continue
 
-            non_sepa_countries = [c.name for c in record.country_ids if c.code not in SEPA_ZONE]
+            non_sepa_countries = [c.name for c in record.country_ids if c.code not in sepa_zone]
             if non_sepa_countries:
                 raise ValidationError(_("Restricted to countries of the SEPA Zone. %s not allowed.") % ', '.join(non_sepa_countries))
 
@@ -110,9 +65,6 @@ class PaymentAcquirerSepaDirectDebit(models.Model):
         for record in self.filtered(lambda acq: acq.provider == 'sepa_direct_debit' and acq.state == 'enabled'):
             if record.journal_id.bank_account_id.acc_type != 'iban':
                 raise ValidationError(_('The bank account of the payment journal must be a valid IBAN.'))
-
-            if not record.journal_id.bank_account_id.bank_id.bic:
-                raise ValidationError(_('The bank account of the payment journal must be related to a bank with a valid BIC.'))
 
             if not record.company_id.sdd_creditor_identifier:
                 raise ValidationError(_("Your company must have a creditor identifier in order to issue SEPA Direct Debit payments requests. It can be defined in accounting module's settings."))

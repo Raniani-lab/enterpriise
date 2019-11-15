@@ -72,8 +72,6 @@ class AccountJournal(models.Model):
         val_NbOfTxs = str(len(payments))
         if len(val_NbOfTxs) > 15:
             raise ValidationError(_("Too many transactions for a single file."))
-        if not self.bank_account_id.bank_bic:
-            raise UserError(_("There is no Bank Identifier Code recorded for bank account '%s' of journal '%s'") % (self.bank_account_id.acc_number, self.name))
         NbOfTxs.text = val_NbOfTxs
         CtrlSum = etree.SubElement(GrpHdr, "CtrlSum")
         CtrlSum.text = self._get_CtrlSum(payments)
@@ -106,8 +104,13 @@ class AccountJournal(models.Model):
             PmtInf.append(self._get_DbtrAcct())
             DbtrAgt = etree.SubElement(PmtInf, "DbtrAgt")
             FinInstnId = etree.SubElement(DbtrAgt, "FinInstnId")
-            BIC = etree.SubElement(FinInstnId, "BIC")
-            BIC.text = self.bank_account_id.bank_bic.replace(' ', '')
+            if self.bank_account_id.bank_bic:
+                BIC = etree.SubElement(FinInstnId, "BIC")
+                BIC.text = self.bank_account_id.bank_bic.replace(' ', '').upper()
+            else:
+                Othr = etree.SubElement(FinInstnId, "Othr")
+                Id = etree.SubElement(Othr, "Id")
+                Id.text = "NOTPROVIDED"
 
             # One CdtTrfTxInf per transaction
             for payment in payments_list:
@@ -284,12 +287,13 @@ class AccountJournal(models.Model):
     def _get_CdtrAgt(self, bank_account, sct_generic):
         CdtrAgt = etree.Element("CdtrAgt")
         FinInstnId = etree.SubElement(CdtrAgt, "FinInstnId")
-        val_BIC = bank_account.bank_bic
-        if val_BIC:
+        if bank_account.bank_bic:
             BIC = etree.SubElement(FinInstnId, "BIC")
-            BIC.text = val_BIC.replace(' ', '')
-        elif not sct_generic:
-            raise UserError(_("There is no Bank Identifier Code recorded for bank account '%s'") % bank_account.acc_number)
+            BIC.text = bank_account.bank_bic.replace(' ', '').upper()
+        else:
+            Othr = etree.SubElement(FinInstnId, "Othr")
+            Id = etree.SubElement(Othr, "Id")
+            Id.text = "NOTPROVIDED"
 
         return CdtrAgt
 

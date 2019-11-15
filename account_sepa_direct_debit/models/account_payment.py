@@ -128,7 +128,10 @@ class AccountPayment(models.Model):
         create_xml_node(PmtInf, 'ReqdColltnDt', fields.Date.from_string(required_collection_date).strftime("%Y-%m-%d"))
         create_xml_node_chain(PmtInf, ['Cdtr','Nm'], company_id.name[:70])  # SEPA regulation gives a maximum size of 70 characters for this field
         create_xml_node_chain(PmtInf, ['CdtrAcct','Id','IBAN'], journal.bank_account_id.sanitized_acc_number)
-        create_xml_node_chain(PmtInf, ['CdtrAgt', 'FinInstnId', 'BIC'], (journal.bank_id.bic or '').replace(' ', '').upper())
+        if journal.bank_id and journal.bank_id.bic:
+            create_xml_node_chain(PmtInf, ['CdtrAgt', 'FinInstnId', 'BIC'], journal.bank_id.bic.replace(' ', '').upper())
+        else:
+            create_xml_node_chain(PmtInf, ['CdtrAgt', 'FinInstnId', 'Othr', 'Id'], "NOTPROVIDED")
 
         CdtrSchmeId_Othr = create_xml_node_chain(PmtInf, ['CdtrSchmeId','Id','PrvtId','Othr','Id'], company_id.sdd_creditor_identifier)[-2]
         create_xml_node_chain(CdtrSchmeId_Othr, ['SchmeNm','Prtry'], 'SEPA')
@@ -155,7 +158,10 @@ class AccountPayment(models.Model):
 
         MndtRltdInf = create_xml_node_chain(DrctDbtTxInf, ['DrctDbtTx','MndtRltdInf','MndtId'], self.sdd_mandate_id.name)[-2]
         create_xml_node(MndtRltdInf, 'DtOfSgntr', fields.Date.to_string(self.sdd_mandate_id.start_date))
-        create_xml_node_chain(DrctDbtTxInf, ['DbtrAgt', 'FinInstnId', 'BIC'], (self.sdd_mandate_id.partner_bank_id.bank_id.bic or '').replace(' ', '').upper())
+        if self.sdd_mandate_id.partner_bank_id.bank_id.bic:
+            create_xml_node_chain(DrctDbtTxInf, ['DbtrAgt', 'FinInstnId', 'BIC'], self.sdd_mandate_id.partner_bank_id.bank_id.bic.replace(' ', '').upper())
+        else:
+            create_xml_node_chain(DrctDbtTxInf, ['DbtrAgt', 'FinInstnId', 'Othr', 'Id'], "NOTPROVIDED")
         Dbtr = create_xml_node_chain(DrctDbtTxInf, ['Dbtr','Nm'], self.sdd_mandate_id.partner_bank_id.acc_holder_name or partner.name)[0]
 
         if partner.contact_address:

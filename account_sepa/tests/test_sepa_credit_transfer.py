@@ -87,38 +87,42 @@ class TestSEPACreditTransfer(AccountTestCommon):
         })
 
     def testStandardSEPA(self):
-        batch = self.env['account.batch.payment'].create({
-            'journal_id': self.bank_journal.id,
-            'payment_ids': [(4, payment.id, None) for payment in (self.payment_1 | self.payment_2)],
-            'payment_method_id': self.sepa_ct.id,
-            'batch_type': 'outbound',
-        })
+        for bic in ["BBRUBEBB", False]:
+            self.bank_journal.bank_id.bic = bic
+            batch = self.env['account.batch.payment'].create({
+                'journal_id': self.bank_journal.id,
+                'payment_ids': [(4, payment.id, None) for payment in (self.payment_1 | self.payment_2)],
+                'payment_method_id': self.sepa_ct.id,
+                'batch_type': 'outbound',
+            })
 
-        batch.validate_batch()
-        download_wizard = self.env['account.batch.download.wizard'].browse(batch.export_batch_payment()['res_id'])
+            batch.validate_batch()
+            download_wizard = self.env['account.batch.download.wizard'].browse(batch.export_batch_payment()['res_id'])
 
-        self.assertFalse(batch.sct_generic)
-        sct_doc = etree.fromstring(base64.b64decode(download_wizard.export_file))
-        self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
-        self.assertEqual(self.payment_1.state, 'sent')
-        self.assertEqual(self.payment_2.state, 'sent')
+            self.assertFalse(batch.sct_generic)
+            sct_doc = etree.fromstring(base64.b64decode(download_wizard.export_file))
+            self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
+            self.assertEqual(self.payment_1.state, 'sent')
+            self.assertEqual(self.payment_2.state, 'sent')
 
     def testGenericSEPA(self):
-        batch = self.env['account.batch.payment'].create({
-            'journal_id': self.bank_journal.id,
-            'payment_ids': [(4, payment.id, None) for payment in (self.payment_1 | self.payment_3)],
-            'payment_method_id': self.sepa_ct.id,
-            'batch_type': 'outbound',
-        })
+        for bic in ["BBRUBEBB", False]:
+            self.bank_journal.bank_id.bic = bic
+            batch = self.env['account.batch.payment'].create({
+                'journal_id': self.bank_journal.id,
+                'payment_ids': [(4, payment.id, None) for payment in (self.payment_1 | self.payment_3)],
+                'payment_method_id': self.sepa_ct.id,
+                'batch_type': 'outbound',
+            })
 
-        batch.validate_batch()
-        download_wizard = self.env['account.batch.download.wizard'].browse(batch.export_batch_payment()['res_id'])
+            batch.validate_batch()
+            download_wizard = self.env['account.batch.download.wizard'].browse(batch.export_batch_payment()['res_id'])
 
-        self.assertTrue(batch.sct_generic)
-        sct_doc = etree.fromstring(base64.b64decode(download_wizard.export_file))
-        self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
-        self.assertEqual(self.payment_1.state, 'sent')
-        self.assertEqual(self.payment_3.state, 'sent')
+            self.assertTrue(batch.sct_generic)
+            sct_doc = etree.fromstring(base64.b64decode(download_wizard.export_file))
+            self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
+            self.assertEqual(self.payment_1.state, 'sent')
+            self.assertEqual(self.payment_3.state, 'sent')
 
     def testQRCode(self):
         """Test thats the QR-Code is displayed iff the mandatory fields are
@@ -132,7 +136,6 @@ class TestSEPACreditTransfer(AccountTestCommon):
         form.payment_method_code == 'manual'
         self.assertEqual(form.display_qr_code, False)
         form.partner_id = self.supplier
-        self.assertEqual(form.display_qr_code, True)
         self.assertIn('The SEPA QR Code information is not set correctly', form.qr_code_url, 'A warning should be displayed')
         form.partner_id = self.asustek_sup
         self.assertEqual(form.display_qr_code, True)

@@ -67,7 +67,7 @@ class HrPayrollReport(models.Model):
                 CASE WHEN wd.id = min_id.min_line THEN plb.total ELSE 0 END as basic_wage,
                 CASE WHEN wd.id = min_id.min_line THEN plg.total ELSE 0 END as gross_wage
             FROM
-                (SELECT * FROM hr_payslip WHERE state = 'done') p
+                (SELECT * FROM hr_payslip WHERE state IN ('done', 'paid')) p
                     left join hr_employee e on (p.employee_id = e.id)
                     left join hr_payslip_worked_days wd on (wd.payslip_id = p.id)
                     left join hr_work_entry_type wet on (wet.id = wd.work_entry_type_id)

@@ -324,6 +324,7 @@ class EasypostRequest():
         error_message = False
         warning_message = False
         rate = False
+
         # explicitly check response for any messages
         # error message are catch during _make_api_request method
         if response.get('messages'):
@@ -394,6 +395,7 @@ class EasypostRequest():
         buy_order_payload['service'] = result['rate']['service']
         endpoint = "orders/%s/buy" % result['id']
         response = self._make_api_request(endpoint, 'post', data=buy_order_payload)
+        response = self._post_process_ship_response(response, carrier=carrier, picking=picking)
         # explicitly check response for any messages
         if response.get('messages'):
             raise UserError('\n'.join([x['carrier'] + ': ' + x['type'] + ' -- ' + x['message'] for x in response['messages']]))
@@ -421,3 +423,23 @@ class EasypostRequest():
         rate behavior.
         """
         return sorted(rates, key=lambda rate: rate.get('rate'))
+
+    def _post_process_ship_response(self, response, carrier=False, picking=False):
+        """ Easypost manage different carriers however they don't follow a
+        standard flow and some carriers could act a specific way compare to
+        other. The purpose of this method is to catch problematic behavior and
+        modify the returned response in order to make it standard compare to
+        other carrier.
+        """
+        # An order for UPS will generate a rate for first shipment with the
+        # rate for all shipments but compare to other carriers, it will return
+        # messages for following shipments explaining that their rates is in the
+        # first shipment (other carrier just return an empty list).
+        if response.get('messages') and\
+                carrier.easypost_delivery_type == 'UPS' and\
+                len(response.get('shipments', [])) > 1:
+            if len(response.get('shipments')[0].get('rates', [])) > 0 and all(s.get('messages') for s in response['shipments'][1:]):
+                if picking:
+                    picking.message_post(body=response.get('messages'))
+                response['messages'] = False
+        return response

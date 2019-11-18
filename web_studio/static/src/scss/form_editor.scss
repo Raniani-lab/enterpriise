@@ -156,7 +156,7 @@
             background-color: lightgray;
             opacity: 0.5;
             font-weight: bold;
-            transition: all 0.2s ease 0s;
+            transition: all ease 0.1s;
             > .o_chatter_topbar {
                 padding: 16px;
                 max-width: 90%;
@@ -172,7 +172,7 @@
                 > span {
                     @include o-position-absolute($left:0);
                     @include size(100%, 52px);
-                    padding-top: 20px;
+                    padding-top: 25px;
                     text-align: center;
                 }
             }

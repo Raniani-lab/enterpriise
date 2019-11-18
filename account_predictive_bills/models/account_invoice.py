@@ -4,6 +4,9 @@
 from odoo import api, fields, models, _
 import re
 
+import logging
+_logger = logging.getLogger(__name__)
+
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -11,25 +14,34 @@ class AccountMove(models.Model):
     @api.onchange('line_ids', 'invoice_payment_term_id', 'invoice_date_due', 'invoice_cash_rounding_id', 'invoice_vendor_bill_id')
     def _onchange_recompute_dynamic_lines(self):
         # OVERRIDE
-        to_predict_lines = self.line_ids.filtered(lambda line: line.predict_from_name)
+        to_predict_lines = self.invoice_line_ids.filtered(lambda line: line.predict_from_name)
+        to_predict_lines.predict_from_name = False
         for line in to_predict_lines:
-            line.predict_from_name = False
-
             # Predict product.
-            if self.env.user.has_group('account.group_products_in_bills') and not line.product_id:
+            if not line.product_id:
                 predicted_product_id = line._predict_product(line.name)
                 if predicted_product_id and predicted_product_id != line.product_id.id:
-                    line['product_id'] = predicted_product_id
+                    line.product_id = predicted_product_id
                     line._onchange_product_id()
                     line.recompute_tax_line = True
 
-            # Predict account.
-            if not line.account_id or line.predict_override_default_account:
+            # Product may or may not have been set above, if it has been set, account and taxes are set too
+            if not line.product_id:
+                # Predict account.
                 predicted_account_id = line._predict_account(line.name, line.partner_id)
                 if predicted_account_id and predicted_account_id != line.account_id.id:
-                    line['account_id'] = predicted_account_id
+                    line.account_id = predicted_account_id
                     line._onchange_account_id()
                     line.recompute_tax_line = True
+
+                # Predict taxes
+                predicted_tax_ids = line._predict_taxes(line.name)
+                if predicted_tax_ids == [None]:
+                    predicted_tax_ids = []
+                if predicted_tax_ids is not False and set(predicted_tax_ids) != set(line.tax_ids.ids):
+                    line.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)
+                    line.recompute_tax_line = True
+
         return super(AccountMove, self)._onchange_recompute_dynamic_lines()
 
 
@@ -38,7 +50,6 @@ class AccountMoveLine(models.Model):
 
     predict_from_name = fields.Boolean(store=False,
         help="Technical field used to know on which lines the prediction must be done.")
-    predict_override_default_account = fields.Boolean(store=False)
 
     def _get_predict_postgres_dictionary(self):
         lang = self._context.get('lang') and self._context.get('lang')[:2]
@@ -62,9 +73,50 @@ class AccountMoveLine(models.Model):
                 return result[1]
         except Exception as e:
             # In case there is an error while parsing the to_tsquery (wrong character for example)
-            # We don't want to have a traceback, instead return False
+            # We don't want to have a blocking traceback, instead return False
+            _logger.exception('Error while predicting invoice line fields')
             return False
         return False
+
+    def _predict_taxes(self, description):
+        if not description:
+            return False
+
+        sql_query = """
+            SELECT
+                max(f.rel) AS ranking,
+                f.tax_ids,
+                count(coalesce(f.tax_ids)) AS count
+            FROM (
+                SELECT
+                    p_search.tax_ids,
+                    ts_rank(p_search.document, query_plain) AS rel
+                FROM (
+                    SELECT
+                        array_agg(tax_rel.account_tax_id ORDER BY tax_rel.account_tax_id) AS tax_ids,
+                        (setweight(to_tsvector(%(lang)s, aml.name), 'B'))
+                        AS document
+                    FROM account_move_line aml
+                    JOIN account_move move
+                        ON aml.move_id = move.id
+                    LEFT JOIN account_move_line_account_tax_rel tax_rel
+                        ON tax_rel.account_move_line_id = aml.id
+                    WHERE move.type = 'in_invoice'
+                        AND move.state = 'posted'
+                        AND aml.display_type IS NULL
+                        AND NOT aml.exclude_from_invoice_tab
+                        AND aml.company_id = %(company_id)s
+                    GROUP BY aml.id, aml.name, move.invoice_date
+                    ORDER BY move.invoice_date DESC
+                    LIMIT %(limit_parameter)s
+                ) p_search,
+                to_tsquery(%(lang)s, %(description)s) query_plain
+                WHERE (p_search.document @@ query_plain)
+            ) AS f
+            GROUP BY f.tax_ids
+            ORDER BY ranking DESC, count DESC
+        """
+        return self._predict_field(sql_query, description)
 
     def _predict_product(self, description):
         if not description:
@@ -168,13 +220,3 @@ class AccountMoveLine(models.Model):
     def _onchange_enable_predictive(self):
         if self.move_id.type == 'in_invoice' and self.name and not self.display_type:
             self.predict_from_name = True
-
-    @api.model
-    def default_get(self, default_fields):
-        # OVERRIDE
-        # Add a flag meant to predict the account when the move.line change.
-        # Don't set a default account. Let the prediction do this job.
-        values = super(AccountMoveLine, self).default_get(default_fields)
-        if 'account_id' in default_fields and values.get('account_id'):
-            values['predict_override_default_account'] = True
-        return values

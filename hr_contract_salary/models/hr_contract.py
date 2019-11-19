@@ -115,6 +115,12 @@ class HrContract(models.Model):
             "name": "Contracts Reviews",
         }
 
+    def action_view_origin_contract(self):
+        action = self.env.ref("hr_contract.action_hr_contract").read()[0]
+        action['views'] = [(self.env.ref('hr_contract.hr_contract_view_form').id, 'form')]
+        action['res_id'] = self.origin_contract_id.id
+        return action
+
     def send_offer(self):
         self.ensure_one()
         if self.employee_id.address_home_id:

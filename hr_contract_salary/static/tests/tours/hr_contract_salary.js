@@ -199,7 +199,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Generate Simulation Link",
-            trigger: ".o_statusbar_buttons > button.btn-primary span:contains('Simulation')",
+            trigger: ".o_statusbar_buttons > button span:contains('Simulation')",
             extra_trigger: ".o_statusbar_buttons",
             run: 'click',
         },

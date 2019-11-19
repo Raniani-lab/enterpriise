@@ -6,10 +6,14 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='job_id']" position="before">
-                <field name="currency_id" invisible="1"/>
-                <field name="company_country_id" invisible="1"/>
-                <field name="structure_type_id" required="1" domain="['|', ('country_id', '=', False), ('country_id', '=', company_country_id)]"/>
+            <xpath expr="//page[@name='other']/group" position="before">
+                <group>
+                    <group name="duration_group">
+                        <field name="currency_id" invisible="1"/>
+                        <field name="company_country_id" invisible="1"/>
+                        <field name="structure_type_id" required="1" domain="['|', ('country_id', '=', False), ('country_id', '=', company_country_id)]"/>
+                    </group>
+                </group>
             </xpath>
             <xpath expr="//page[@name='information']" position="attributes">
                 <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
@@ -38,7 +42,7 @@
     <record id="action_hr_contract_repository" model="ir.actions.act_window">
         <field name="name">Contracts</field>
         <field name="res_model">hr.contract</field>
-        <field name="view_mode">tree,kanban,form,activity</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
         <field name="domain">[('employee_id', '!=', False)]</field>
         <field name="context">{'search_default_running': 1, 'search_default_to_renew': 1}</field>
         <field name="search_view_id" ref="hr_contract.hr_contract_view_search"/>

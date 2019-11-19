@@ -583,7 +583,11 @@ class AccountMove(models.Model):
 
         vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
 
-        with Form(self) as move_form:
+        if 'default_journal_id' in self._context:
+            self_ctx = self
+        else:
+            self_ctx = self.with_context(default_journal_id=self._get_default_journal().id)
+        with Form(self_ctx) as move_form:
             if not move_form.partner_id:
                 partner_id = self.find_partner_id_with_name(supplier_ocr)
                 if partner_id != 0:
@@ -616,8 +620,6 @@ class AccountMove(models.Model):
                     line.tax_ids.clear()
                     for taxes_record in line_val['tax_ids']:
                         line.tax_ids.add(taxes_record)
-                    if not line.account_id:
-                        line.account_id = move_form.journal_id.default_debit_account_id
 
             # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
             for i in range(len(move_form.line_ids)):

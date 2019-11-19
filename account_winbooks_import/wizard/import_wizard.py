@@ -243,7 +243,7 @@ class WinbooksImportWizard(models.TransientModel):
                                 break
                         # fallback for accounts not in range(100000,860000)
                         if not data.get('user_type_id'):
-                            data['user_type_id'] = self.env.ref('account.account_type_other').id
+                            data['user_type_id'] = self.env.ref('account.data_account_type_other_income').id
                         account_data_list.append(data)
                         rec_number_list.append(rec.get('NUMBER'))
                         journal_centered_list.append(rec.get('CENTRALID'))
@@ -358,7 +358,6 @@ class WinbooksImportWizard(models.TransientModel):
                 end_period_date = start_period_date
             move_date = val[0].get('DATEDOC')
             move_data_dict = {
-                'name': key[0],
                 'journal_id': journal_id.id,
                 'type': 'out_invoice' if journal_id.type == 'sale' else 'in_invoice' if journal_id.type == 'purchase' else 'entry',
                 'ref': key[0],
@@ -378,6 +377,7 @@ class WinbooksImportWizard(models.TransientModel):
                     currency = self.env['res.currency']
                 partner_id = self.env['res.partner'].browse(partner_data.get(rec.get('ACCOUNTRP'), False))
                 account_id = self.env['account.account'].browse(account_data.get(rec.get('ACCOUNTGL')))
+                matching_number = rec.get('MATCHNO') and '%s-%s' % (rec.get('ACCOUNTGL'), rec.get('MATCHNO')) or False
                 line_data = {
                     'date': rec.get('DATE', False),
                     'account_id': account_id.id,
@@ -389,11 +389,11 @@ class WinbooksImportWizard(models.TransientModel):
                     'credit': abs(rec.get('AMOUNTEUR')) if rec.get('AMOUNTEUR') and rec.get('AMOUNTEUR') < 0 else 0.0,
                     'amount_currency': rec.get('CURRAMOUNT') if currency and rec.get('CURRAMOUNT') else 0.0,
                     'amount_residual_currency': rec.get('CURRAMOUNT') if currency and rec.get('CURRAMOUNT') else 0.0,
-                    'winbooks_matching_number': rec.get('MATCHNO') or '',
+                    'winbooks_matching_number': matching_number,
                     'exclude_from_invoice_tab': rec.get('DOCORDER') == 'VAT' or (account_id.user_type_id.type in ('receivable', 'payable') and journal_id.type in ('sale', 'purchase')),
                 }
-                if rec.get('MATCHNO') and rec.get('MATCHNO') not in reconcile_number_set:
-                    reconcile_number_set.add(rec.get('MATCHNO'))
+                if matching_number:
+                    reconcile_number_set.add(matching_number)
                 if rec.get('AMOUNTEUR'):
                     move_amount_total = round(move_amount_total, 2) + round(rec.get('AMOUNTEUR'), 2)
                 move_line_data_list.append((0, 0, line_data))
@@ -478,7 +478,9 @@ class WinbooksImportWizard(models.TransientModel):
             try:
                 lines.with_context(no_exchange_difference=sum(lines.mapped('amount_currency')) == 0).reconcile()
             except UserError as ue:
-                if not lines.account_id.reconcile:
+                if len(lines.account_id) > 1:
+                    _logger.warning('Winbooks matching number {} uses multiple accounts: {}. Lines with that number have not been reconciled in Odoo.'.format(matching_number, ', '.join(lines.mapped('account_id.display_name'))))
+                elif not lines.account_id.reconcile:
                     _logger.info("{} {} has reconciled lines, changing the config".format(lines.account_id.code, lines.account_id.name))
                     lines.account_id.reconcile = True
                     lines.reconcile()

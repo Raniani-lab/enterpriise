@@ -49,9 +49,9 @@
                         % endif
                     </table>
                     <div style="text-align: center">
-                        % if ctx.get('render_link')
+                        % if ctx.get('unassign_url')
                         <div style="display: inline-block; margin: 15px; text-align: center">
-                            <a href="${ctx.unavailable_path}${object.employee_id.employee_token}" target="_blank"
+                            <a href="${ctx.unassign_url}" target="_blank"
                                 style="padding: 5px 10px; color: #875A7B; text-decoration: none; background-color: #FFFFFF; border: 1px solid #FFFFFF; border-radius: 3px"
                             >I am unavailable</a>
                         </div>

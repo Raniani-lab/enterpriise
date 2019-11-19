@@ -14,6 +14,7 @@
         'views/project_forecast_views.xml',
         'views/project_views.xml',
         'data/project_forecast_data.xml',
+        'views/assets.xml',
     ],
     'application': False,
     'license': 'OEEL-1',

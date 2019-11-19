@@ -14,7 +14,7 @@ class Employee(models.Model):
     def _default_employee_token(self):
         return str(uuid.uuid4())
 
-    planning_role_id = fields.Many2one('planning.role', string="Default Planning Role", groups='hr.group_hr_user')
+    planning_role_ids = fields.Many2many('planning.role', string="Default Planning Roles", groups='hr.group_hr_user')
     employee_token = fields.Char('Security Token', default=_default_employee_token, copy=False, groups='hr.group_hr_user', readonly=True)
 
     _sql_constraints = [

@@ -23,14 +23,17 @@
         </record>
 
         <!-- Default Planning Role -->
+        <record id="hr.employee_admin" model="hr.employee">
+            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_waiter'))]"/>
+        </record>
         <record id="hr.employee_jth" model="hr.employee">
-            <field name="planning_role_id" ref="planning_role_chef"/>
+            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_chef'))]"/>
         </record>
         <record id="hr.employee_qdp" model="hr.employee">
-            <field name="planning_role_id" ref="planning_role_bartender"/>
+            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_bartender'))]"/>
         </record>
         <record id="hr.employee_mit" model="hr.employee">
-            <field name="planning_role_id" ref="planning_role_waiter"/>
+            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_waiter'))]"/>
         </record>
 
         <!-- Shift templates (morning shifts) -->
@@ -65,20 +68,6 @@
             <field name="role_id" ref="planning_role_waiter"/>
             <field name="start_time" eval="16"/>
             <field name="duration" eval="8"/>
-        </record>
-
-        <!-- Recurrencies -->
-        <record id="planning_recurrency_1" model="planning.recurrency">
-            <field name="repeat_interval" eval="1"/>
-            <field name="repeat_type">forever</field>
-        </record>
-        <record id="planning_recurrency_2" model="planning.recurrency">
-            <field name="repeat_interval" eval="1"/>
-            <field name="repeat_type">forever</field>
-        </record>
-        <record id="planning_recurrency_3" model="planning.recurrency">
-            <field name="repeat_interval" eval="1"/>
-            <field name="repeat_type">forever</field>
         </record>
 
         <!--                                        Week 1                                        -->
@@ -544,7 +533,9 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d  14:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="role_id" ref="planning_role_bartender"/>
-            <field name="recurrency_id" ref="planning_recurrency_1"/>
+            <field name="repeat" eval="True"/>
+            <field name="repeat_interval" eval="1"/>
+            <field name="repeat_type">forever</field>
             <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_252" model="planning.slot">
@@ -552,7 +543,9 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_stw"/>
             <field name="role_id" ref="planning_role_chef"/>
-            <field name="recurrency_id" ref="planning_recurrency_2"/>
+            <field name="repeat" eval="True"/>
+            <field name="repeat_interval" eval="1"/>
+            <field name="repeat_type">forever</field>
             <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_253" model="planning.slot">
@@ -576,7 +569,9 @@
             <field name="end_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 7 - 4)).strftime('%Y-%m-%d  21:59:00')"/>
             <field name="employee_id" ref="hr.employee_chs"/>
             <field name="role_id" ref="planning_role_waiter"/>
-            <field name="recurrency_id" ref="planning_recurrency_3"/>
+            <field name="repeat" eval="True"/>
+            <field name="repeat_interval" eval="1"/>
+            <field name="repeat_type">forever</field>
             <field name="publication_warning" eval="False"/>
         </record>
         <record id="planning_slot_256" model="planning.slot">
@@ -586,9 +581,5 @@
             <field name="role_id" ref="planning_role_bartender"/>
             <field name="publication_warning" eval="False"/>
         </record>
-
-        <!-- Duplicate shifts that have a recurrence set -->
-        <function model="planning.recurrency" name="_repeat_slot" eval="[[ref('planning_recurrency_1'), ref('planning_recurrency_2'), ref('planning_recurrency_3')]]"/>
-
     </data>
 </odoo>

@@ -109,8 +109,14 @@
                                     <tbody>
                                         <t t-foreach="open_slots_ids" t-as="shift">
                                             <tr>
-                                                <td class="align-middle"><t t-esc="format_datetime(shift.start_datetime, dt_format='E MMM d, H a')"/></td>
-                                                <td class="align-middle"><t t-esc="format_datetime(shift.end_datetime, dt_format='E MMM d, H a')"/></td>
+                                                <td class="align-middle">
+                                                    <t t-esc="format_datetime(shift.start_datetime, dt_format='E. MMM d')"/> <br/>
+                                                    <t t-esc="format_datetime(shift.start_datetime, dt_format='h a')"/>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <t t-esc="format_datetime(shift.end_datetime, dt_format='E. MMM d')"/> <br/>
+                                                    <t t-esc="format_datetime(shift.end_datetime, dt_format='h a')"/><br/>
+                                                </td>
                                                 <td class="align-middle"><t t-esc="shift.role_id.name"/></td>
                                                 <td class="align-middle"><t t-esc="shift.name"/></td>
                                                 <td>
@@ -188,4 +194,17 @@
         </t>
     </template>
 
+    <template id="slot_unassign">
+        <t t-call="web.frontend_layout">
+            <t t-set="title">Your Planning</t>
+            <body>
+                <div class="container">
+                    <div class="alert alert-success text-center" role="alert">
+                        <p class="d-inline">You have been successfully unassigned from this shift</p>
+                        <i class="fa fa-2x fa-check-circle pull-right" style="margin-top:-3px"/>
+                    </div>
+                </div>
+            </body>
+        </t>
+    </template>
 </odoo>

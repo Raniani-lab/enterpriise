@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 class PlanningShift(models.Model):
     _inherit = 'planning.slot'
 
-    project_id = fields.Many2one('project.project', string="Project", domain="[('company_id', '=', company_id), ('allow_forecast', '=', True)]", check_company=True)
+    project_id = fields.Many2one('project.project', string="Project", domain="[('company_id', '=', company_id), ('allow_forecast', '=', True)]", check_company=True, group_expand='_read_group_project_id')
     task_id = fields.Many2one('project.task', string="Task", domain="[('company_id', '=', company_id), ('project_id', '=?', project_id)]", check_company=True)
 
     _sql_constraints = [
@@ -40,7 +40,10 @@ class PlanningShift(models.Model):
 
     def _read_group_project_id(self, projects, domain, order):
         if self._context.get('planning_expand_project'):
-            return self.env['planning.slot'].search([('create_date', '>', datetime.now() - timedelta(days=30))]).mapped('project_id')
+            start_date = datetime.strptime([dom[2] for dom in domain if dom[0] == 'start_datetime'][0], '%Y-%m-%d %H:%M:%S') or datetime.now()
+            min_date = start_date - timedelta(days=30)
+            max_date = start_date + timedelta(days=30)
+            return self.env['planning.slot'].search([('start_datetime', '>=', min_date), ('start_datetime', '<=', max_date)]).mapped('project_id')
         return projects
 
     def _get_fields_breaking_publication(self):

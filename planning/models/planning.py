@@ -49,19 +49,22 @@ class Planning(models.Model):
 
     name = fields.Text('Note')
     employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, group_expand='_read_group_employee_id', check_company=True)
+    work_email = fields.Char("Work Email", related='employee_id.work_email')
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
     company_id = fields.Many2one('res.company', string="Company", required=True, compute="_compute_planning_slot_company_id", store=True, readonly=False)
     role_id = fields.Many2one('planning.role', string="Role")
     color = fields.Integer("Color", related='role_id.color')
-    was_copied = fields.Boolean("This shift was copied from previous week", default=False, readonly=True)
+    was_copied = fields.Boolean("This Shift Was Copied From Previous Week", default=False, readonly=True)
+    access_token = fields.Char("Security Token", default=lambda self: str(uuid.uuid4()), required=True, copy=False, readonly=True)
 
     start_datetime = fields.Datetime("Start Date", required=True, default=_default_start_datetime)
     end_datetime = fields.Datetime("End Date", required=True, default=_default_end_datetime)
 
     # UI fields and warnings
     allow_self_unassign = fields.Boolean('Let Employee Unassign Themselves', related='company_id.planning_allow_self_unassign')
-    is_assigned_to_me = fields.Boolean('Is this shift assigned to the current user', compute='_compute_is_assigned_to_me')
+    is_assigned_to_me = fields.Boolean('Is This Shift Assigned To The Current User', compute='_compute_is_assigned_to_me')
     overlap_slot_count = fields.Integer('Overlapping Slots', compute='_compute_overlap_slot_count')
+    is_past = fields.Boolean('Is This Shift In The Past?', compute='_compute_past_shift')
 
     # time allocation
     allocation_type = fields.Selection([
@@ -73,7 +76,7 @@ class Planning(models.Model):
     working_days_count = fields.Integer("Number Of Working Days", compute='_compute_working_days_count', store=True)
 
     # publication and sending
-    is_published = fields.Boolean("Is The Shift Sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.")
+    is_published = fields.Boolean("Is The Shift Sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.", copy=False)
     publication_warning = fields.Boolean("Modified Since Last Publication", default=False, readonly=True, help="If checked, it means that the shift contains has changed since its last publish.", copy=False)
 
     # template dummy fields (only for UI purpose)
@@ -99,6 +102,12 @@ class Planning(models.Model):
             self.company_id = self.employee_id.company_id.id
         if not self.company_id.id:
             self.company_id = self.env.company
+
+    @api.depends('start_datetime')
+    def _compute_past_shift(self):
+        now = fields.Datetime.now()
+        for slot in self:
+            slot.is_past = slot.end_datetime < now
 
     @api.depends('user_id')
     def _compute_is_assigned_to_me(self):
@@ -152,12 +161,17 @@ class Planning(models.Model):
         else:
             self.overlap_slot_count = 0
 
-    @api.depends('role_id')
-    def _compute_template_autocomplete_ids(self):
+    def _get_template_autocomplete_ids(self):
+        self.ensure_one()
         domain = []
         if self.role_id:
             domain = [('role_id', '=', self.role_id.id)]
-        self.template_autocomplete_ids = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
+        return self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
+
+    @api.depends('role_id')
+    def _compute_template_autocomplete_ids(self):
+        for slot in self:
+            slot.template_autocomplete_ids = slot._get_template_autocomplete_ids()
 
     @api.depends('recurrency_id')
     def _compute_repeat(self):
@@ -211,18 +225,23 @@ class Planning(models.Model):
 
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
+        employee = self.env.user.employee_id
         if self.employee_id:
-            start = self.start_datetime or datetime.combine(fields.Datetime.now(), datetime.min.time())
-            end = self.end_datetime or datetime.combine(fields.Datetime.now(), datetime.max.time())
-            work_interval = self.employee_id.resource_id._get_work_interval(start, end)
-            start_datetime, end_datetime = work_interval[self.employee_id.resource_id.id]
-            if start_datetime:
-                self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-            if end_datetime:
-                self.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-            # Set default role if the role field is empty
-            if not self.role_id and self.employee_id.sudo().planning_role_id:
-                self.role_id = self.employee_id.sudo().planning_role_id
+            employee = self.employee_id
+        if 'default_role_id' not in self.env.context:
+            self.role_id = False
+
+        start = self.start_datetime or datetime.combine(fields.Datetime.now(), datetime.min.time())
+        end = self.end_datetime or datetime.combine(fields.Datetime.now(), datetime.max.time())
+        work_interval = employee.resource_id._get_work_interval(start, end)
+        start_datetime, end_datetime = work_interval[employee.resource_id.id]
+        if start_datetime:
+            self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
+        if end_datetime:
+            self.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
+        # Set default role if the role field is empty
+        if self.employee_id and not self.role_id and self.employee_id.sudo().planning_role_ids:
+            self.role_id = self.employee_id.sudo().planning_role_ids[0]
 
     @api.onchange('start_datetime', 'end_datetime', 'employee_id')
     def _onchange_dates(self):
@@ -231,14 +250,10 @@ class Planning(models.Model):
 
     @api.onchange('template_creation')
     def _onchange_template_autocomplete_ids(self):
-        templates = self.env['planning.slot.template'].search([], order='start_time', limit=10)
-        if templates:
-            if not self.template_creation:
-                self.template_autocomplete_ids = templates
-            else:
-                self.template_autocomplete_ids = False
-        else:
+        if self.template_creation:
             self.template_autocomplete_ids = False
+        else:
+            self.template_autocomplete_ids = self._get_template_autocomplete_ids()
 
     @api.onchange('template_id')
     def _onchange_template_id(self):
@@ -269,6 +284,22 @@ class Planning(models.Model):
     # ORM overrides
     # ----------------------------------------------------
 
+    def _init_column(self, column_name):
+        """ Initialize the value of the given column for existing rows.
+            Overridden here because we need to generate different access tokens
+            and by default _init_column calls the default method once and applies
+            it for every record.
+        """
+        if column_name != 'access_token':
+            super(Planning, self)._init_column(column_name)
+        else:
+            query = """
+                UPDATE %(table_name)s
+                SET %(column_name)s = md5(md5(random()::varchar || id::varchar) || clock_timestamp()::varchar)::uuid::varchar
+                WHERE %(column_name)s IS NULL
+            """ % {'table_name': self._table, 'column_name': column_name}
+            self.env.cr.execute(query)
+
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
         result = super(Planning, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
@@ -278,11 +309,30 @@ class Planning(models.Model):
             for field in fields:
                 d.update({field: False})
             result.insert(0, d)
+
+        # Ensures there's an 'Open Shifts' line for each Role
+        if 'role_id' in groupby:
+            roles = set()
+            all_roles = set()
+
+            for g in result:
+                all_roles.add(g['role_id'])
+                if not g.get('employee_id', False):
+                    roles.add(g['role_id'])
+
+            for role in all_roles - roles:
+                openshift = {k:False for k in fields}
+                openshift.update({'role_id': role})
+                result.append(openshift)
+
         return result
 
     def name_get(self):
         group_by = self.env.context.get('group_by', [])
         field_list = [fname for fname in self._name_get_fields() if fname not in group_by]
+        is_calendar = self.env.context.get('planning_calendar_view', False)
+        if is_calendar and self.env.context.get('planning_hide_employee', False):
+            field_list.remove('employee_id')
 
         result = []
         for slot in self:
@@ -290,7 +340,10 @@ class Planning(models.Model):
             name = ' - '.join([self._fields[fname].convert_to_display_name(slot[fname], slot) for fname in field_list if slot[fname]][:2])  # limit to 2 labels
 
             start_datetime, end_datetime = slot._format_start_endtime(tz=self.env.user.tz or 'UTC')
-            name = '%s - %s %s' % (start_datetime, end_datetime, name)
+
+            # hide the start/end time on the calendar view if spanning multiple days
+            if not is_calendar or not (slot.end_datetime.date() - slot.start_datetime.date()).days: 
+                name = '%s - %s %s' % (start_datetime, end_datetime, name)
 
             # add unicode bubble to tell there is a note
             if slot.name:
@@ -356,6 +409,15 @@ class Planning(models.Model):
             'context': {
                 'initialDate': min([slot.start_datetime for slot in self.search(domain_map[self.id])])
             }
+        }
+
+    def action_open_employee_form(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr.employee',
+            'res_id': self.employee_id.id,
+            'target': 'new',
+            'view_mode': 'form'
         }
 
     def action_self_assign(self):
@@ -495,7 +557,7 @@ class Planning(models.Model):
             'action_id': str(self.env.ref('planning.planning_action_open_shift').id),
             'dbname': self.env.cr.dbname,
             'render_link': self.employee_id.user_id and self.employee_id.user_id in group_planning_user.users,
-            'unavailable_path': '/planning/myshifts/',
+            'unassign_url': '/planning/%s/%s/unassign' % (self.access_token, self.employee_id.employee_token) if self.allow_self_unassign else None,
             'start_datetime': start_datetime,
             'end_datetime': end_datetime
         })
@@ -586,7 +648,10 @@ class Planning(models.Model):
 
     def _read_group_employee_id(self, employees, domain, order):
         if self._context.get('planning_expand_employee'):
-            return self.env['planning.slot'].search([('create_date', '>', datetime.now() - timedelta(days=30))]).mapped('employee_id')
+            start_date = datetime.strptime([dom[2] for dom in domain if dom[0] == 'start_datetime'][0], '%Y-%m-%d %H:%M:%S') or datetime.now()
+            min_date = start_date - timedelta(days=30)
+            max_date = start_date + timedelta(days=30)
+            return self.env['planning.slot'].search([('start_datetime', '>=', min_date), ('start_datetime', '<=', max_date)]).mapped('employee_id')
         return employees
 
     def _format_start_endtime(self, tz):
@@ -614,6 +679,7 @@ class PlanningRole(models.Model):
 
     name = fields.Char('Name', required=True)
     color = fields.Integer("Color", default=0)
+    employee_ids = fields.Many2many('hr.employee', string='Employees')
 
 
 class PlanningPlanning(models.Model):

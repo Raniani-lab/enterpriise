@@ -55,7 +55,7 @@ class ShiftController(http.Controller):
                     'note': slot.name,
                     'allow_self_unassign': slot.allow_self_unassign
                 })
-            else:
+            elif not slot.is_past:
                 open_slots.append(slot)
 
         return request.render('planning.period_report_template', {
@@ -105,6 +105,20 @@ class ShiftController(http.Controller):
         slot_sudo.write({'employee_id': False})
 
         return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'unassign'))
+
+    @http.route('/planning/<string:token_slot>/<string:token_employee>/unassign', type="http", auth="public", methods=['get'], website=True)
+    def slot_self_unassign(self, token_slot, token_employee, **kwargs):
+        slot_sudo = request.env['planning.slot'].sudo().search([('access_token', '=', token_slot)], limit=1)
+        if not slot_sudo or not slot_sudo.allow_self_unassign:
+            return request.not_found()
+
+        employee_sudo = request.env['hr.employee'].sudo().search([('employee_token', '=', token_employee)], limit=1)
+        if not employee_sudo or employee_sudo != slot_sudo.employee_id:
+            return request.not_found()
+
+        slot_sudo.write({'employee_id': False})
+
+        return request.env['ir.ui.view'].render_template('planning.slot_unassign')
 
     @staticmethod
     def _format_planning_shifts(color_code):

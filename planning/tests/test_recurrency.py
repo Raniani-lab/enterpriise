@@ -404,6 +404,6 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
                 'last_generated_end_datetime': datetime(2019, 6, 27, 8, 0, 0)
             })
 
-            self.assertEqual(len(self.env['planning.recurrency'].search([])), 1)
+            self.assertEqual(len(self.env['planning.recurrency'].search([('slot_ids', '=', False)])), 1)
             self.env['planning.recurrency']._cron_schedule_next()
-            self.assertFalse(len(self.env['planning.recurrency'].search([])), 'cron with no slot gets deleted (there is no original slot to copy from)')
+            self.assertFalse(len(self.env['planning.recurrency'].search([('slot_ids', '=', False)])), 'cron with no slot gets deleted (there is no original slot to copy from)')

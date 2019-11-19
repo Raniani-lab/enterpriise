@@ -148,8 +148,13 @@ class UPSRequest():
         user_token = {'Username': self.username, 'Password': self.password}
         access_token = {'AccessLicenseNumber': self.access_number}
         security = client.get_element('ns0:UPSSecurity')(UsernameToken=user_token, ServiceAccessToken=access_token)
-        security['location'] = '%s%s' % (self.endurl, api)
         client.set_default_soapheaders([security])
+
+    def _set_service(self, client, api):
+        service = client.create_service(
+            next(iter(client.wsdl.bindings)),
+            '%s%s' % (self.endurl, api))
+        return service
 
     def _set_client(self, wsdl, api, root):
         wsdl_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), wsdl)
@@ -283,6 +288,7 @@ class UPSRequest():
 
     def get_shipping_price(self, shipment_info, packages, shipper, ship_from, ship_to, packaging_type, service_type, saturday_delivery, cod_info):
         client = self._set_client(self.rate_wsdl, 'Rate', 'RateRequest')
+        service = self._set_service(client, 'Rate')
         request = self.factory_ns3.RequestType()
         request.RequestOption = 'Rate'
 
@@ -349,7 +355,7 @@ class UPSRequest():
 
         try:
             # Get rate using for provided detail
-            response = client.service.ProcessRate(Request=request, CustomerClassification=classification, Shipment=shipment)
+            response = service.ProcessRate(Request=request, CustomerClassification=classification, Shipment=shipment)
 
             # Check if ProcessRate is not success then return reason for that
             if response.Response.ResponseStatus.Code != "1":
@@ -494,8 +500,9 @@ class UPSRequest():
 
     def process_shipment(self):
         client = self._set_client(self.ship_wsdl, 'Ship', 'ShipmentRequest')
+        service = self._set_service(client, 'Ship')
         try:
-            response = client.service.ProcessShipment(
+            response = service.ProcessShipment(
                 Request=self.request, Shipment=self.shipment,
                 LabelSpecification=self.label)
 
@@ -525,6 +532,7 @@ class UPSRequest():
 
     def cancel_shipment(self, tracking_number):
         client = self._set_client(self.void_wsdl, 'Void', 'VoidShipmentRequest')
+        service = self._set_service(client, 'Void')
 
         request = self.factory_ns3.RequestType()
         request.TransactionReference = self.factory_ns3.TransactionReferenceType()
@@ -533,7 +541,7 @@ class UPSRequest():
 
         result = {}
         try:
-            response = client.service.ProcessVoid(
+            response = service.ProcessVoid(
                 Request=request, VoidShipment=voidshipment
             )
             if response.Response.ResponseStatus.Code == "1":

@@ -469,9 +469,9 @@
         <div t-if="widget.view_type === 'kanban' and widget.showDisplay" class="o_web_studio_sidebar_select">
             <label for="display">Display</label>
             <select id="display" name="display" data-type="attributes">
-                <option t-att-selected="!widget.state.attrs.display ? 'selected' : undefined" value="false">Default</option>
+                <option t-att-selected="!widget.state.attrs.display ? 'selected' : undefined" value="false">Inline</option>
                 <option t-att-selected="widget.state.attrs.display === 'right' ? 'selected' : undefined" value="right">Pull Right</option>
-                <option t-att-selected="widget.state.attrs.display === 'full' ? 'selected' : undefined" value="full">Full Width</option>
+                <option t-att-selected="widget.state.attrs.display === 'full' ? 'selected' : undefined" value="full">Default</option>
             </select>
         </div>
         <div class="o_web_studio_sidebar_text">

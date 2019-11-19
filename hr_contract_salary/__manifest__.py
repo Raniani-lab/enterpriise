@@ -6,7 +6,7 @@
     'category': 'Human Resources',
     'summary': 'Salary Package Configurator',
     'depends': [
-        'hr',
+        'hr_contract_sign',
         'website',
         'hr_recruitment',
         'l10n_be_hr_payroll_fleet',

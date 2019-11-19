@@ -58,6 +58,7 @@ class ApprovalRequest(models.Model):
     requirer_document = fields.Selection(related="category_id.requirer_document")
     approval_minimum = fields.Integer(related="category_id.approval_minimum")
     is_manager_approver = fields.Boolean(related="category_id.is_manager_approver")
+    automated_sequence = fields.Boolean(related="category_id.automated_sequence")
 
     def _compute_has_access_to_request(self):
         is_approval_user = self.env.user.has_group('approvals.group_approval_user')

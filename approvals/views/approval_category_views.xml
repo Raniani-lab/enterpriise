@@ -47,6 +47,11 @@
                     </div>
                     <group>
                         <field name="description"/>
+                        <field name="automated_sequence"/>
+                        <field name="sequence_code" attrs="{
+                            'invisible': [('automated_sequence', '=', False)],
+                            'required': [('automated_sequence', '=', True)],
+                        }"/>
                     </group>
                     <notebook>
                         <page string="Options" name="options">

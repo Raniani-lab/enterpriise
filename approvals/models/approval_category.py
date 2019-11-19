@@ -3,7 +3,7 @@
 
 import base64
 
-from odoo import fields, models, tools
+from odoo import api, fields, models, tools, _
 from odoo.modules.module import get_module_resource
 
 
@@ -47,6 +47,10 @@ class ApprovalCategory(models.Model):
         help="Automatically add the manager as approver on the request.")
     user_ids = fields.Many2many('res.users', string="Approvers")
     request_to_validate_count = fields.Integer("Number of requests to validate", compute="_compute_request_to_validate_count")
+    automated_sequence = fields.Boolean('Automated Sequence?',
+        help="If checked, the Approval Requests will have an automated generated name based on the given code.")
+    sequence_code = fields.Char(string="Code")
+    sequence_id = fields.Many2one('ir.sequence', 'Reference Sequence', copy=False)
 
     def _compute_request_to_validate_count(self):
         domain = [('request_status', '=', 'pending'), ('approver_ids.user_id', '=', self.env.user.id)]
@@ -55,15 +59,49 @@ class ApprovalCategory(models.Model):
         for category in self:
             category.request_to_validate_count = requests_mapped_data.get(category.id, 0)
 
+    @api.model
+    def create(self, vals):
+        if vals.get('automated_sequence'):
+            sequence = self.env['ir.sequence'].create({
+                'name': _('Sequence') + ' ' + vals['sequence_code'],
+                'padding': 5,
+                'prefix': vals['sequence_code'],
+            })
+            vals['sequence_id'] = sequence.id
+
+        approval_category = super().create(vals)
+        return approval_category
+
+    def write(self, vals):
+        if 'sequence_code' in vals:
+            for approval_category in self:
+                sequence_vals = {
+                    'name': _('Sequence') + ' ' + vals['sequence_code'],
+                    'padding': 5,
+                    'prefix': vals['sequence_code'],
+                }
+                if approval_category.sequence_id:
+                    approval_category.sequence_id.write(sequence_vals)
+                else:
+                    sequence = self.env['ir.sequence'].create(sequence_vals)
+                    approval_category.sequence_id = sequence
+        return super().write(vals)
+
     def create_request(self):
         self.ensure_one()
+        # If category uses sequence, set next sequence as name
+        # (if not, set category name as default name).
+        if self.automated_sequence:
+            name = self.sequence_id.next_by_id()
+        else:
+            name = self.name
         return {
             "type": "ir.actions.act_window",
             "res_model": "approval.request",
             "views": [[False, "form"]],
             "context": {
                 'form_view_initial_mode': 'edit',
-                'default_name': self.name,
+                'default_name': name,
                 'default_category_id': self.id,
                 'default_request_owner_id': self.env.user.id,
                 'default_request_status': 'new'

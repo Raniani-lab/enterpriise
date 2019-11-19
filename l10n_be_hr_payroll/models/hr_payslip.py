@@ -57,13 +57,17 @@ class Payslip(models.Model):
         return sum(line.total for line in lines)
 
     def _compute_meal_voucher_count(self):
-        vouchers = self.env['l10n_be.meal.voucher.report'].search([
-            ('employee_id', 'in', self.mapped('employee_id').ids),
-            ('day', '<=', max(self.mapped('date_to'))),
-            ('day', '>=', min(self.mapped('date_from')))])
-        for payslip in self:
-            payslip.meal_voucher_count = len(vouchers.filtered(
-                lambda v: payslip.date_from <= v.day <= payslip.date_to and payslip.employee_id == v.employee_id))
+        if self.env.context.get('salary_simulation'):
+            for payslip in self:
+                payslip.meal_voucher_count = 20
+        else:
+            vouchers = self.env['l10n_be.meal.voucher.report'].search([
+                ('employee_id', 'in', self.mapped('employee_id').ids),
+                ('day', '<=', max(self.mapped('date_to'))),
+                ('day', '>=', min(self.mapped('date_from')))])
+            for payslip in self:
+                payslip.meal_voucher_count = len(vouchers.filtered(
+                    lambda v: payslip.date_from <= v.day <= payslip.date_to and payslip.employee_id == v.employee_id))
 
     def _get_base_local_dict(self):
         res = super()._get_base_local_dict()

@@ -418,10 +418,9 @@ class website_hr_contract_salary(http.Controller):
         for worked_days_line_vals in payslip._get_worked_day_lines():
             payslip.worked_days_line_ids += request.env['hr.payslip.worked_days'].sudo().new(worked_days_line_vals)
 
-        payslip.compute_sheet()
+        payslip.with_context(salary_simulation=True).compute_sheet()
 
         result = self.get_compute_results(new_contract, payslip)
-
         request.env.cr.rollback()
 
         return result

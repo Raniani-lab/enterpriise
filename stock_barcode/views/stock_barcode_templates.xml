@@ -20,6 +20,11 @@
                 <script type="text/javascript" src="/stock_barcode/static/src/js/client_action/inventory_client_action.js"></script>
                 <link rel="stylesheet" type="text/scss" href="/stock_barcode/static/src/scss/stock_barcode.scss"/>
                 <link rel="stylesheet" type="text/scss" href="/stock_barcode/static/src/scss/client_action.scss"/>
+             </xpath>
+            <xpath expr="//script[last()]" position="after">
+                <script type="text/javascript" src="/stock_barcode/static/src/js/stock_barcode_kanban_record.js"></script>
+                <script type="text/javascript" src="/stock_barcode/static/src/js/stock_barcode_kanban_renderer.js"></script>
+                 <script type="text/javascript" src="/stock_barcode/static/src/js/stock_barcode_kanban_view.js"></script>
             </xpath>
         </template>
 

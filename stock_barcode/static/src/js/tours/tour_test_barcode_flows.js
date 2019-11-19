@@ -1968,6 +1968,9 @@ tour.register('test_inventory_adjustment', {test: true}, [
         trigger: '.button_inventory',
     },
 
+    {
+        trigger: '.o-kanban-button-new',
+    },
     //Check show information.
     {
         trigger: '.o_show_information',
@@ -2039,22 +2042,33 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_stock_barcode_kanban',
     },
 
     {
-        trigger: '.o_stock_barcode_main_menu',
+        trigger: '.o_notification_title:contains("Success")',
         run: function () {
             assertErrorMessage('The inventory adjustment has been validated');
         },
     },
 
+    {
+        trigger: '.breadcrumb-item:contains("Barcode")',
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+    },
 ]);
 
 tour.register('test_inventory_adjustment_mutli_location', {test: true}, [
 
     {
         trigger: '.button_inventory',
+    },
+
+    {
+        trigger: '.o-kanban-button-new',
     },
 
     {
@@ -2126,6 +2140,10 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
+        trigger: '.o-kanban-button-new',
+    },
+
+    {
         trigger: '.o_barcode_client_action',
         run: 'scan productlot1',
     },
@@ -2194,6 +2212,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     {
         trigger: '.o_add_line',
     },
+
     {
         trigger: '.o_form_label:contains("Product")',
     },
@@ -2203,6 +2222,10 @@ tour.register('test_inventory_nomenclature', {test: true}, [
 
     {
         trigger: '.button_inventory',
+    },
+
+    {
+        trigger: '.o-kanban-button-new',
     },
 
     {
@@ -2229,7 +2252,9 @@ tour.register('test_inventory_nomenclature', {test: true}, [
     {
         trigger: '.o_notification_title:contains("Success")'
     },
-
+    {
+        trigger: '.breadcrumb-item:contains("Barcode")',
+    },
     {
         trigger: '.o_stock_barcode_main_menu',
         run: function () {
@@ -2242,6 +2267,9 @@ tour.register('test_inventory_package', {test: true}, [
 
     {
         trigger: '.button_inventory',
+    },
+    {
+        trigger: '.o-kanban-button-new',
     },
 
     {
@@ -2267,14 +2295,22 @@ tour.register('test_inventory_package', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_stock_barcode_kanban',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")',
+        run: function () {
+            assertErrorMessage('The inventory adjustment has been validated');
+        },
+    },
+
+    {
+        trigger: '.breadcrumb-item:contains("Barcode")',
     },
 
     {
         trigger: '.o_stock_barcode_main_menu',
-        run: function () {
-            assertErrorMessage('The inventory adjustment has been validated');
-        },
     },
 ]);
 

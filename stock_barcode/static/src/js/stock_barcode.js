@@ -16,7 +16,7 @@ var MainMenu = AbstractAction.extend({
             this.do_action('stock_barcode.stock_picking_type_action_kanban');
         },
         "click .button_inventory": function(){
-            this.open_inventory();
+            this.do_action('stock_barcode.stock_barcode_inventory_type_action_kanban');
         },
         "click .o_stock_barcode_menu": function(){
             this.trigger_up('toggle_fullscreen');
@@ -87,17 +87,6 @@ var MainMenu = AbstractAction.extend({
                 self.do_warn(result.warning);
             }
         });
-    },
-
-    open_inventory: function() {
-        var self = this;
-        return this._rpc({
-                model: 'stock.inventory',
-                method: 'open_new_inventory',
-            })
-            .then(function(result) {
-                self.do_action(result);
-            });
     },
 });
 

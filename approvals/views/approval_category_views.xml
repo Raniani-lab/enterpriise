@@ -48,6 +48,7 @@
                     </div>
                     <group>
                         <field name="description"/>
+                        <field name="approval_type" invisible="1"/>
                         <field name="automated_sequence"/>
                         <field name="sequence_code" attrs="{
                             'invisible': [('automated_sequence', '=', False)],
@@ -64,7 +65,8 @@
                                     <field name="has_partner" string="Contact" widget="radio" options="{'horizontal': true}"/>
                                     <field name="has_date" string="Date" widget="radio" options="{'horizontal': true}"/>
                                     <field name="has_period" string="Period" widget="radio" options="{'horizontal': true}"/>
-                                    <field name="has_item" string="Items" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="has_product" string="Product" force_save="1"
+                                        widget="radio" options="{'horizontal': true}"/>
                                     <field name="has_quantity" string="Quantity" widget="radio" options="{'horizontal': true}"/>
                                     <field name="has_amount" string="Amount" widget="radio" options="{'horizontal': true}"/>
                                     <field name="has_reference" string="Reference" widget="radio" options="{'horizontal': true}"/>

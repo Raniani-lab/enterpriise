@@ -33,8 +33,7 @@
             <field name="request_owner_id" ref="base.user_demo"/>
             <field name="date_start" eval="time.strftime('%Y-05-01')"/>
             <field name="date_end" eval="time.strftime('%Y-05-01')"/>
-            <field name="items">Screwdriver X15</field>
-            <field name="quantity">1</field>
+            <field name="product_line_ids" eval="[(0, 0, {'description': 'Screwdriver X15'})]"/>
             <field name="reason">Need a screwdriver to fix the main door.</field>
         </record>
 

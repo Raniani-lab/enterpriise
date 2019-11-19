@@ -34,9 +34,6 @@ class ApprovalCategory(models.Model):
     image = fields.Binary(string='Image', default=_get_default_image)
     has_date = fields.Selection(CATEGORY_SELECTION, string="Has Date", default="no", required=True)
     has_period = fields.Selection(CATEGORY_SELECTION, string="Has Period", default="no", required=True)
-    has_item = fields.Selection(
-        CATEGORY_SELECTION, string="Has Item", default="no", required=True,
-        help="Additional items that should be specified on the request.")
     has_quantity = fields.Selection(CATEGORY_SELECTION, string="Has Quantity", default="no", required=True)
     has_amount = fields.Selection(CATEGORY_SELECTION, string="Has Amount", default="no", required=True)
     has_reference = fields.Selection(
@@ -45,8 +42,13 @@ class ApprovalCategory(models.Model):
     has_partner = fields.Selection(CATEGORY_SELECTION, string="Has Contact", default="no", required=True)
     has_payment_method = fields.Selection(CATEGORY_SELECTION, string="Has Payment", default="no", required=True)
     has_location = fields.Selection(CATEGORY_SELECTION, string="Has Location", default="no", required=True)
+    has_product = fields.Selection(
+        CATEGORY_SELECTION, string="Has Product", default="no", required=True,
+        help="Additional products that should be specified on the request.")
     requirer_document = fields.Selection([('required', 'Required'), ('optional', 'Optional')], string="Documents", default="optional", required=True)
     approval_minimum = fields.Integer(string="Minimum Approval", default="1", required=True)
+    approval_type = fields.Selection(string="Approval Type", selection=[],
+        help="Allows you to define which documents you would like to create once the request has been approved")
     is_manager_approver = fields.Boolean(
         string="Employee's Manager",
         help="Automatically add the manager as approver on the request.")

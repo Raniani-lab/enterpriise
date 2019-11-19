@@ -16,7 +16,7 @@ procurements, contract approval, etc.
 According to the approval type configuration, a request
 creates next activities for the related approvers.
     """,
-    'depends': ['mail', 'hr'],
+    'depends': ['mail', 'hr', 'product'],
     'data': [
         'security/approval_security.xml',
         'security/ir.model.access.csv',
@@ -26,6 +26,7 @@ creates next activities for the related approvers.
 
         'views/approval_template.xml',
         'views/approval_category_views.xml',
+        'views/approval_product_line_views.xml',
         'views/approval_request_views.xml',
         'views/res_users_views.xml',
     ],

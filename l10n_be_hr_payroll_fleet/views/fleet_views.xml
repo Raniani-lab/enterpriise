@@ -19,6 +19,7 @@
                     <span>/ month</span>
                 </div>
                 <field name="atn" widget="monetary"/>
+                <field name="tax_deduction" widget="percentage"/>
             </xpath>
         </field>
     </record>

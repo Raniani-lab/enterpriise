@@ -20,6 +20,7 @@ class FleetVehicle(models.Model):
     fuel_type = fields.Selection(required=True, default='diesel')
     atn = fields.Float(compute='_compute_car_atn', string="ATN")
     acquisition_date = fields.Date(required=True)
+    tax_deduction = fields.Float(compute='_compute_tax_deduction')
 
     @api.depends('co2_fee', 'log_contracts', 'log_contracts.state', 'log_contracts.recurring_cost_amount_depreciated')
     def _compute_total_depreciated_cost(self):
@@ -45,6 +46,26 @@ class FleetVehicle(models.Model):
                     car.total_cost += contract.cost_generated
                 elif contract.cost_frequency == "yearly":
                     car.total_cost += contract.cost_generated / 12.0
+
+    @api.depends('fuel_type', 'co2')
+    def _compute_tax_deduction(self):
+        be = self.env.ref('base.be')
+        be_vehicles = self.filtered(lambda vehicle: vehicle.company_id.country_id == be)
+        (self - be_vehicles).tax_deduction = 0
+        coefficients = self.env['hr.rule.parameter']._get_parameter_from_code('tax_deduction_fuel_coefficients', raise_if_not_found=False)
+        for vehicle in be_vehicles:
+            fuel = vehicle.fuel_type
+            co2 = vehicle.co2
+            if fuel == 'electric':
+                deduction = 1
+            elif co2 >= 200:
+                deduction = 0.4
+            elif coefficients and fuel in coefficients:
+                deduction = 1.2 - (0.005 * coefficients.get(fuel) * co2)
+                deduction = min(max(deduction, 0.5), 1)
+            else:
+                deduction = 0
+            vehicle.tax_deduction = deduction
 
     def _get_co2_fee(self, co2, fuel_type):
         if self.company_id.country_id != self.env.ref('base.be'):

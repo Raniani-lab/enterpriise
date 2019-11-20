@@ -9,6 +9,6 @@
 Validate stock moves for Field Service
 ======================================
 """,
-    'depends': ['industry_fsm', 'sale_stock'],
+    'depends': ['industry_fsm_sale', 'sale_stock'],
     'auto_install': True,
 }

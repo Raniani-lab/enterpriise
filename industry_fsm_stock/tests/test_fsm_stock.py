@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
-from odoo.addons.industry_fsm.tests.test_fsm_flow import TestFsmFlow
+from odoo.addons.industry_fsm_sale.tests.test_industry_fsm_sale_flow import TestFsmFlow
 
 class TestFsmStock(TestFsmFlow):
 

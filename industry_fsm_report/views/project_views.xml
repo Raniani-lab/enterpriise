@@ -167,7 +167,7 @@
     <record id="project_project_view_form_simplified_inherit" model="ir.ui.view">
         <field name="name">project.project.view.form.simplified.inherit</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="industry_fsm.project_project_view_form_simplified_inherit"/>
+        <field name="inherit_id" ref="industry_fsm_sale.project_project_view_form_simplified_inherit"/>
         <field name="arch" type="xml">
             <field name="allow_material" position="after">
                 <field name="allow_worksheets"/>

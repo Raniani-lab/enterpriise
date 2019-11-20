@@ -1,113 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
+from odoo.addons.industry_fsm.tests.common import TestFsmFlowCommon
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
-from odoo.exceptions import UserError, AccessError
-from odoo.tests import common
-from odoo.addons.account.tests.common import AccountTestCommon
 
 
-class TestFsmFlow(AccountTestCommon):
-
-    @classmethod
-    def setUpClass(cls):
-        super(TestFsmFlow, cls).setUpClass()
-
-        cls.partner_1 = cls.env['res.partner'].create({'name': 'A Test Partner 1'})
-
-        cls.project_user = cls.env['res.users'].create({
-            'name': 'Armande Project_user',
-            'login': 'Armande',
-            'email': 'armande.project_user@example.com',
-            'groups_id': [(6, 0, [cls.env.ref('project.group_project_user').id])]
-        })
-
-        cls.fsm_project = cls.env.ref('industry_fsm.fsm_project')
-
-        cls.product_ordered = cls.env['product.product'].create({
-            'name': 'Individual Workplace',
-            'list_price': 885.0,
-            'type': 'service',
-            'invoice_policy': 'order',
-            'taxes_id': False,
-        })
-        cls.product_delivered = cls.env['product.product'].create({
-            'name': 'Acoustic Bloc Screens',
-            'list_price': 2950.0,
-            'type': 'service',
-            'invoice_policy': 'delivery',
-            'taxes_id': False,
-        })
-        cls.task = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
-            'name': 'Fsm task',
-            'user_id': cls.project_user.id,
-            'project_id': cls.fsm_project.id})
-
-
-
-    def test_fsm_flow(self):
-
-        # material
-        self.assertFalse(self.task.material_line_product_count, "No product should be linked to a new task")
-        with self.assertRaises(UserError, msg='Should not be able to get to material without customer set'):
-            self.task.action_fsm_view_material()
-        self.task.write({'partner_id': self.partner_1.id})
-        self.assertFalse(self.task.fsm_to_invoice, "Nothing should be invoiceable on task")
-        self.task.with_user(self.project_user).action_fsm_view_material()
-        self.product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
-        self.assertEqual(self.task.material_line_product_count, 1, "1 product should be linked to the task")
-        self.assertEqual(self.task.material_line_total_price, self.product_ordered.list_price)
-        self.product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
-        self.assertEqual(self.task.material_line_product_count, 2, "2 product should be linked to the task")
-        self.assertEqual(self.task.material_line_total_price, 2 * self.product_ordered.list_price)
-        self.product_delivered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
-        self.assertEqual(self.task.material_line_product_count, 3, "3 products should be linked to the task")
-        self.assertEqual(self.task.material_line_total_price, 2 * self.product_ordered.list_price + self.product_delivered.list_price)
-        self.product_delivered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_remove_quantity()
-
-        self.assertEqual(self.task.material_line_product_count, 2, "2 product should be linked to the task")
-
-        self.assertFalse(self.task.sale_order_id.mapped('order_line').filtered(lambda l: l.product_id.id == self.product_delivered.id), "There should not be any order line left for removed product on task")
-
-        self.product_delivered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
-
-        self.assertEqual(self.task.material_line_product_count, 3, "3 product should be linked to the task")
-
-        # timesheet
-        values = {
-            'task_id': self.task.id,
-            'project_id': self.task.project_id.id,
-            'date': datetime.now(),
-            'name': 'test timesheet',
-            'user_id': self.env.uid,
-            'unit_amount': 0.25,
-        }
-        self.env['account.analytic.line'].create(values)
-        self.assertEqual(self.task.material_line_product_count, 3, "Timesheet should not appear in material")
-
-        # validation and SO
-        self.assertFalse(self.task.fsm_done, "Task should not be validated")
-        self.assertEqual(self.task.sale_order_id.state, 'draft', "Sale order should not be confirmed")
-        self.task.with_user(self.project_user).action_fsm_validate()
-        self.assertTrue(self.task.fsm_done, "Task should be validated")
-        self.assertEqual(self.task.sale_order_id.state, 'sale', "Sale order should be confirmed")
-
-        # invoice
-        self.assertTrue(self.task.fsm_to_invoice, "Task should be invoiceable")
-        invoice_ctx = self.task.action_fsm_create_invoice()['context']
-        invoice_wizard = self.env['sale.advance.payment.inv'].with_context(invoice_ctx).create({})
-        invoice_wizard.create_invoices()
-        self.assertFalse(self.task.fsm_to_invoice, "Task should not be invoiceable")
-
-
-        # quotation
-        self.assertFalse(self.task.quotation_count, "No quotation should be linked to a new task")
-        quotation_ctx = self.task.action_fsm_create_quotation()['context']
-        quotation = self.env['sale.order'].with_context(quotation_ctx).create({'partner_id': self.task.partner_id.id})
-        self.task._compute_quotation_count() # forced to compute manually because no 'depends' set on that method (no direct link to the task)
-        self.assertEqual(self.task.quotation_count, 1, "1 quotation should be linked to the task")
-        self.assertEqual(self.task.action_fsm_view_quotations()['res_id'], quotation.id, "Created quotation id should be in the action")
+class TestFsmFlow(TestFsmFlowCommon):
 
     def test_planning_overlap(self):
         task_A = self.env['project.task'].create({

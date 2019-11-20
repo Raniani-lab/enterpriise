@@ -743,7 +743,7 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('if a on_create is specified, execute the action rather than opening a dialog. And reloads after the action', async function(assert){
+    QUnit.test('if a on_create is specified, execute the action rather than opening a dialog. And reloads after the action', async function (assert) {
         assert.expect(3);
         var reloadCount = 0;
 
@@ -776,7 +776,28 @@ QUnit.module('Views', {
         assert.strictEqual(reloadCount, 2);
 
         gantt.destroy();
-    })
+    });
+
+    QUnit.test('if a cell_create is specified to false then do not show + icon', async function (assert) {
+        assert.expect(2);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" cell_create="false"/>',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.containsOnce(gantt.$buttons, '.o_gantt_button_add',
+            "there should be 'Add' button");
+        assert.containsNone(gantt, '.o_gantt_cell_add',
+            'should not have + icon on cell');
+
+        gantt.destroy();
+    });
 
     QUnit.test('open a dialog to add a new task', async function (assert) {
         assert.expect(3);

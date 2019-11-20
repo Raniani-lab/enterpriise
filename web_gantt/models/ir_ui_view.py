@@ -18,6 +18,7 @@ GANTT_VALID_ATTRIBUTES = set([
     'string',
     'create',
     'on_create',
+    'cell_create',
     'edit',
     'delete',
     'plan',

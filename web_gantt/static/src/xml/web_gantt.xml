@@ -92,7 +92,7 @@
                     <!-- plan and add buttons -->
                     <div t-if="slot.hasButtons" class="o_gantt_cell_buttons justify-content-center">
                         <div class="position-absolute d-flex">
-                            <i t-if="widget.options.canCreate" title="Create" t-attf-class="o_gantt_cell_add fa fa-plus d-flex flex-grow-0 flex-shrink-1 justify-content-center #{widget.options.canPlan ? 'pr-1' : ''}"/>
+                            <i t-if="widget.options.canCreate and widget.options.canCellCreate" title="Create" t-attf-class="o_gantt_cell_add fa fa-plus d-flex flex-grow-0 flex-shrink-1 justify-content-center #{widget.options.canPlan ? 'pr-1' : ''}"/>
                             <i t-if="widget.options.canPlan" title="Plan existing" class="o_gantt_cell_plan fa fa-search-plus d-flex flex-grow-0 flex-shrink-1 justify-content-center"/>
                         </div>
                     </div>

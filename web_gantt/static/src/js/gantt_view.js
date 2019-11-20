@@ -118,6 +118,8 @@ var GanttView = AbstractView.extend({
         var thumbnails = this.arch.attrs.thumbnails ? pyUtils.py_eval(this.arch.attrs.thumbnails) : {};
         // plan option
         var canPlan = this.arch.attrs.plan ? !!JSON.parse(this.arch.attrs.plan) : true;
+        // cell create option
+        const canCellCreate = this.arch.attrs.cell_create ? !!JSON.parse(this.arch.attrs.cell_create) : true;
 
         this.controllerParams.context = params.context || {};
         this.controllerParams.dialogViews = dialogViews;
@@ -142,6 +144,7 @@ var GanttView = AbstractView.extend({
         this.loadParams.consolidationParams = consolidationParams;
 
         this.rendererParams.canCreate = this.controllerParams.activeActions.create;
+        this.rendererParams.canCellCreate = canCellCreate;
         this.rendererParams.canEdit = this.controllerParams.activeActions.edit;
         this.rendererParams.canPlan = canPlan && this.rendererParams.canEdit;
         this.rendererParams.fieldsInfo = viewInfo.fields;

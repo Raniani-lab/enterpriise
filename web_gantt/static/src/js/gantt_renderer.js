@@ -34,6 +34,7 @@ var GanttRenderer = AbstractRenderer.extend({
      * @param {Object} params
      * @param {boolean} params.canCreate
      * @param {boolean} params.canEdit
+     * @param {boolean} params.canCellCreate
      * @param {Object} params.cellPrecisions
      * @param {string} params.colorField
      * @param {Object} params.fieldsInfo
@@ -50,6 +51,7 @@ var GanttRenderer = AbstractRenderer.extend({
         this.$draggedPillClone = null;
 
         this.canCreate = params.canCreate;
+        this.canCellCreate = params.canCellCreate;
         this.canEdit = params.canEdit;
         this.canPlan = params.canPlan;
         this.cellPrecisions = params.cellPrecisions;
@@ -288,6 +290,7 @@ var GanttRenderer = AbstractRenderer.extend({
             }
             var params = {
                 canCreate: self.canCreate,
+                canCellCreate: self.canCellCreate,
                 canEdit: self.canEdit,
                 canPlan: self.canPlan,
                 isGroup: row.isGroup,
@@ -344,6 +347,7 @@ var GanttRenderer = AbstractRenderer.extend({
         };
         var params = {
             canCreate: this.canCreate,
+            canCellCreate: this.canCellCreate,
             canEdit: this.canEdit,
             canPlan: this.canPlan,
             hideSidebar: this.state.groupedBy.length === 0,

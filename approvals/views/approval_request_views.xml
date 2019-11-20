@@ -133,6 +133,7 @@
                             <field name="quantity" attrs="{'invisible':[('has_quantity','==','no')], 'required': [('has_quantity','==','required')]}"/>
                             <field name="amount" attrs="{'invisible':[('has_amount','==','no')], 'required': [('has_amount','==','required')]}"/>
                             <field name="reference" attrs="{'invisible':[('has_reference','==','no')], 'required': [('has_reference','==','required')]}"/>
+                            <field name="company_id" invisible="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -144,8 +145,10 @@
                                 <tree editable="bottom" decoration-success="status=='approved'" decoration-warning="status=='pending'" decoration-danger="status=='refused'">
                                     <field name="user_id" string="Approver" attrs="{'readonly':[('status','!=','new')]}"/>
                                     <field name="status"/>
+                                    <field name="company_id" invisible="1"/>
                                 </tree>
                                 <kanban class="o_kanban_mobile">
+                                    <field name="company_id" invisible="1"/>
                                     <field name="user_id"/>
                                     <field name="status"/>
                                     <templates>
@@ -164,6 +167,7 @@
                                 </kanban>
                                 <form>
                                     <group>
+                                        <field name="company_id" invisible="1"/>
                                         <field name="user_id"/>
                                     </group>
                                 </form>

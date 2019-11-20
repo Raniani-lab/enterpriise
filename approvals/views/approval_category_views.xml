@@ -26,6 +26,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
             </tree>
         </field>
     </record>
@@ -52,6 +53,7 @@
                             'invisible': [('automated_sequence', '=', False)],
                             'required': [('automated_sequence', '=', True)],
                         }"/>
+                        <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                     </group>
                     <notebook>
                         <page string="Options" name="options">

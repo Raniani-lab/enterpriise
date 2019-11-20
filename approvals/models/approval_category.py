@@ -18,11 +18,16 @@ class ApprovalCategory(models.Model):
     _description = 'Approval Category'
     _order = 'sequence'
 
+    _check_company_auto = True
+
     def _get_default_image(self):
         default_image_path = get_module_resource('approvals', 'static/src/img', 'clipboard-check-solid.svg')
         return base64.b64encode(open(default_image_path, 'rb').read())
 
     name = fields.Char(string="Name", translate=True, required=True)
+    company_id = fields.Many2one(
+        'res.company', 'Company', copy=False,
+        required=True, index=True, default=lambda s: s.env.company)
     active = fields.Boolean(default=True)
     sequence = fields.Integer(string="Sequence")
     description = fields.Char(string="Description", translate=True)
@@ -45,12 +50,14 @@ class ApprovalCategory(models.Model):
     is_manager_approver = fields.Boolean(
         string="Employee's Manager",
         help="Automatically add the manager as approver on the request.")
-    user_ids = fields.Many2many('res.users', string="Approvers")
+    user_ids = fields.Many2many('res.users', string="Approvers",
+        check_company=True, domain="[('company_ids', 'in', company_id)]")
     request_to_validate_count = fields.Integer("Number of requests to validate", compute="_compute_request_to_validate_count")
     automated_sequence = fields.Boolean('Automated Sequence?',
         help="If checked, the Approval Requests will have an automated generated name based on the given code.")
     sequence_code = fields.Char(string="Code")
-    sequence_id = fields.Many2one('ir.sequence', 'Reference Sequence', copy=False)
+    sequence_id = fields.Many2one('ir.sequence', 'Reference Sequence',
+        copy=False, check_company=True)
 
     def _compute_request_to_validate_count(self):
         domain = [('request_status', '=', 'pending'), ('approver_ids.user_id', '=', self.env.user.id)]
@@ -66,6 +73,7 @@ class ApprovalCategory(models.Model):
                 'name': _('Sequence') + ' ' + vals['sequence_code'],
                 'padding': 5,
                 'prefix': vals['sequence_code'],
+                'company_id': vals.get('company_id'),
             })
             vals['sequence_id'] = sequence.id
 
@@ -83,8 +91,13 @@ class ApprovalCategory(models.Model):
                 if approval_category.sequence_id:
                     approval_category.sequence_id.write(sequence_vals)
                 else:
+                    sequence_vals['company_id'] = vals.get('company_id', approval_category.company_id.id)
                     sequence = self.env['ir.sequence'].create(sequence_vals)
                     approval_category.sequence_id = sequence
+        if 'company_id' in vals:
+            for approval_category in self:
+                if approval_category.sequence_id:
+                    approval_category.sequence_id.company_id = vals.get('company_id')
         return super().write(vals)
 
     def create_request(self):

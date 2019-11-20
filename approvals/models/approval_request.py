@@ -11,6 +11,8 @@ class ApprovalRequest(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name'
 
+    _check_company_auto = True
+
     @api.model
     def _read_group_request_status(self, stages, domain, order):
         request_status_list = dict(self._fields['request_status'].selection).keys()
@@ -18,7 +20,10 @@ class ApprovalRequest(models.Model):
 
     name = fields.Char(string="Approval Subject", tracking=True)
     category_id = fields.Many2one('approval.category', string="Category", required=True)
-    approver_ids = fields.One2many('approval.approver', 'request_id', string="Approvers")
+    approver_ids = fields.One2many('approval.approver', 'request_id', string="Approvers", check_company=True)
+    company_id = fields.Many2one(
+        string='Company', related='category_id.company_id',
+        required=True, stored=True, readonly=True, index=True)
     date = fields.Datetime(string="Date")
     date_start = fields.Datetime(string="Date start")
     date_end = fields.Datetime(string="Date end")
@@ -26,7 +31,7 @@ class ApprovalRequest(models.Model):
     quantity = fields.Float(string="Quantity")
     location = fields.Char(string="Location")
     date_confirmed = fields.Datetime(string="Date Confirmed")
-    partner_id = fields.Many2one('res.partner', string="Contact")
+    partner_id = fields.Many2one('res.partner', string="Contact", check_company=True)
     reference = fields.Char(string="Reference")
     amount = fields.Float(string="Amount")
     reason = fields.Text(string="Description")
@@ -36,7 +41,8 @@ class ApprovalRequest(models.Model):
         ('approved', 'Approved'),
         ('refused', 'Refused'),
         ('cancel', 'Cancel')], default="new", compute="_compute_request_status", store=True, compute_sudo=True, group_expand='_read_group_request_status')
-    request_owner_id = fields.Many2one('res.users', string="Request Owner")
+    request_owner_id = fields.Many2one('res.users', string="Request Owner",
+        check_company=True, domain="[('company_ids', 'in', company_id)]")
     user_status = fields.Selection([
         ('new', 'New'),
         ('pending', 'To Approve'),
@@ -201,14 +207,20 @@ class ApprovalApprover(models.Model):
     _name = 'approval.approver'
     _description = 'Approver'
 
-    user_id = fields.Many2one('res.users', string="User", required=True)
+    _check_company_auto = True
+
+    user_id = fields.Many2one('res.users', string="User", required=True, check_company=True)
     status = fields.Selection([
         ('new', 'New'),
         ('pending', 'To Approve'),
         ('approved', 'Approved'),
         ('refused', 'Refused'),
         ('cancel', 'Cancel')], string="Status", default="new", readonly=True)
-    request_id = fields.Many2one('approval.request', string="Request", ondelete='cascade')
+    request_id = fields.Many2one('approval.request', string="Request",
+        ondelete='cascade', check_company=True)
+    company_id = fields.Many2one(
+        string='Company', related='request_id.company_id',
+        required=True, stored=True, readonly=True, index=True)
 
     def action_approve(self):
         self.request_id.action_approve(self)

@@ -1117,3 +1117,122 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(len(done_finished_move), 2, "wrong number of done finished moves")
         self.assertEqual(done_finished_move[0].quantity_done, 1, "finished product are not produced")
         self.assertEqual(done_finished_move[1].quantity_done, 1, "finished product are not produced")
+
+    def test_add_component(self):
+        """ add an extra component during productions. Check that :
+            The new quality check, workorder line and move raw are well created """
+        self.bom_submarine.bom_line_ids.write({'operation_id': False})
+        self.bom_submarine.routing_id = self.mrp_routing_0
+        self.bom_submarine.consumption = 'flexible'
+        lot1 = self.env['stock.production.lot'].create({
+            'product_id': self.product_1.id,
+            'name': 'lot1',
+            'company_id': self.env.company.id,
+        })
+        lot2 = self.env['stock.production.lot'].create({
+            'product_id': self.product_2.id,
+            'name': 'lot2',
+            'company_id': self.env.company.id,
+        })
+        sn1 = self.env['stock.production.lot'].create({
+            'product_id': self.submarine_pod.id,
+            'name': 'sn1',
+            'company_id': self.env.company.id,
+        })
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = self.submarine_pod
+        # Use 'Primary assembly' routing (1 workorder)'
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.action_assign()
+        production.button_plan()
+        production.workorder_ids[0].button_start()
+        self.assertEqual(len(production.workorder_ids.check_ids), 2)
+        self.assertEqual(len(production.workorder_ids.raw_workorder_line_ids), 3)
+        # Open tablet view
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.component_id, self.elon_musk)
+        self.assertEqual(wo_form.qty_done, 1)
+        wo = wo_form.save()
+        # Add a first additional product
+        additional_form = Form(self.env['mrp_workorder.additional.product'].with_context({
+            'default_workorder_id': wo.id,
+            'default_type': 'component',
+        }))
+        additional_form.product_id = self.product_1
+        additional_form.product_qty = 3
+        additional_wizard = additional_form.save()
+        additional_wizard.add_product()
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.lot_id = lot1
+        wo = wo_form.save()
+        self.assertEqual(wo.component_id, self.product_1)
+        self.assertEqual(wo.qty_done, 3)
+        self.assertEqual(wo.component_uom_id, self.product_1.uom_id)
+        self.assertEqual(len(production.workorder_ids.check_ids), 3)
+        self.assertEqual(len(production.workorder_ids.raw_workorder_line_ids), 4)
+
+        wo.action_skip()
+        # Elon musk
+        self.assertEqual(wo.component_id, self.elon_musk)
+        self.assertEqual(wo.qty_done, 1)
+        self.assertEqual(len(wo.check_ids), 3)
+        wo._next()
+        self.assertEqual(wo.component_id, self.metal_cylinder)
+        self.assertEqual(wo.qty_done, 2)
+        self.assertEqual(len(wo.check_ids), 3)
+        wo._next()
+        # summary page
+        self.assertFalse(wo.current_quality_check_id)
+        additional_form = Form(self.env['mrp_workorder.additional.product'].with_context({
+            'default_workorder_id': wo.id,
+            'default_type': 'byproduct',
+        }))
+        additional_form.product_id = self.product_2
+        additional_form.product_qty = 1
+        additional_wizard = additional_form.save()
+        additional_wizard.add_product()
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.lot_id = lot2
+        wo = wo_form.save()
+        wo._next()
+
+        # Some checks are not passed yet
+        self.assertTrue(wo.skipped_check_ids)
+        wo.action_first_skipped_step()
+        self.assertEqual(wo.component_id, self.product_1)
+        self.assertEqual(wo.qty_done, 3)
+        self.assertEqual(wo.component_uom_id, self.product_1.uom_id)
+        wo._next()
+        # Chain order
+        self.assertFalse(wo.current_quality_check_id)
+        wo.action_previous()
+        self.assertEqual(wo.component_id, self.product_2)
+        wo.action_previous()
+        self.assertEqual(wo.component_id, self.metal_cylinder)
+        wo.action_previous()
+        self.assertEqual(wo.component_id, self.elon_musk)
+        wo.action_previous()
+        self.assertEqual(wo.component_id, self.product_1)
+        wo.action_skip()
+        wo.action_skip()
+        wo.action_skip()
+        wo.action_skip()
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.finished_lot_id = sn1
+        wo = wo_form.save()
+        wo.do_finish()
+        production.button_mark_done()
+
+        # Check stock moves
+        mr = production.move_raw_ids.filtered(lambda m: m.state == 'done')
+        self.assertEqual(len(mr), 4)
+        add_move = mr.filtered(lambda m: m.product_id == self.product_1)
+        self.assertTrue(add_move)
+        self.assertTrue(add_move.quantity_done, 3)
+        mf = production.move_finished_ids.filtered(lambda m: m.state == 'done')
+        self.assertEqual(len(mf), 2)
+        add_move_finished = mf.filtered(lambda m: m.product_id == self.product_2)
+        self.assertTrue(add_move_finished)
+        self.assertTrue(add_move_finished.quantity_done, 1)

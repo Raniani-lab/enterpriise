@@ -91,6 +91,7 @@
                 <field name="worksheet_page" invisible="1"/>
                 <field name="consumption" invisible="1"/>
                 <field name="component_qty_to_do" invisible="1"/>
+                <field name="additional" invisible="1"/>
                 <div class="workorder_bar">
                     <div class="workorder_bar_left o_workorder_bar_content">
                         <field name="id" class="o_workorder_icon_btn" widget="back_arrow" readonly="1"/>
@@ -217,8 +218,10 @@
                         <div class="o_workorder_field text-right">
                             <label for="qty_done" string="Quantity"/>
                             <div>
-                                <field name="qty_done" attrs="{'readonly': [('component_tracking', '=', 'serial')]}" string="Quantity" class="oe_inline"/> /
-                                <field name="component_remaining_qty" readonly="1" class="oe_inline"/>
+                                <field name="qty_done" attrs="{'readonly': [('component_tracking', '=', 'serial')]}" string="Quantity" class="oe_inline"/>
+                                <div attrs="{'invisible': [('additional', '=', True)]}"> /
+                                    <field name="component_remaining_qty" readonly="1" class="oe_inline"/>
+                                </div>
                                 <label for="qty_done" string=" "/>
                                 <field name="component_uom_id" readonly="1" class="oe_inline"/>
                             </div>
@@ -243,6 +246,7 @@
                 <field name="company_id" invisible="1"/>
                 <field name="working_state" invisible="1"/>
                 <field name="workcenter_id" invisible="1"/>
+                <field name="consumption" invisible="1"/>
                 <div class="row workorder_menu">
                     <div class="col-6">
                         <button name="%(mrp.act_mrp_block_workcenter_wo)d" type="action" context="{'default_workcenter_id': workcenter_id}" attrs="{'invisible': [('working_state', '=', 'blocked')]}" string="Block" class="btn-danger btn-block btn-lg"/>
@@ -250,6 +254,12 @@
                     </div>
                     <div class="col-6">
                         <button name="button_scrap" type="object" class="btn-primary btn-block btn btn-lg" string="Scrap"/>
+                    </div>
+                    <div class="col-6" attrs="{'invisible': [('consumption', '=', 'strict')]}">
+                        <button name="action_add_component" type="object" string="Add Component" class="btn-primary btn-block btn-lg"/>
+                    </div>
+                    <div class="col-6" groups="mrp.group_mrp_byproducts">
+                        <button name="action_add_byproduct" type="object" string="Add By-product" class="btn-primary btn-block btn-lg"/>
                     </div>
                 </div>
                 <footer></footer>

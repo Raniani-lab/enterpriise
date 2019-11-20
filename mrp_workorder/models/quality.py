@@ -100,6 +100,7 @@ class QualityCheck(models.Model):
     finished_lot_id = fields.Many2one(
         'stock.production.lot', 'Finished Product Lot',
         domain="[('product_id', '=', product_id), ('company_id', '=', company_id)]")
+    additional = fields.Boolean('Register additionnal product', compute='_compute_additional')
 
     # Computed fields
     title = fields.Char('Title', compute='_compute_title')
@@ -127,7 +128,7 @@ class QualityCheck(models.Model):
     def _compute_component_uom(self):
         for check in self:
             move = check.workorder_id.move_raw_ids.filtered(lambda move: move.product_id == check.component_id)
-            check.component_uom_id = move.product_uom
+            check.component_uom_id = move.product_uom or check.workorder_line_id.product_uom_id
 
     def _compute_title(self):
         for check in self:
@@ -145,6 +146,14 @@ class QualityCheck(models.Model):
                 check.result = ''
             else:
                 check.result = check._get_check_result()
+
+    @api.depends('workorder_line_id.move_id')
+    def _compute_additional(self):
+        """ The stock_move is linked to additional workorder line only at
+        record_production. So line without move during production are additionnal
+        ones. """
+        for check in self:
+            check.additional = not check.workorder_line_id.move_id
 
     def _get_check_result(self):
         if self.test_type in ('register_consumed_materials', 'register_byproducts') and self.lot_id:

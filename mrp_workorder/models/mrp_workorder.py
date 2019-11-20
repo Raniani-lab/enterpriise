@@ -56,6 +56,7 @@ class MrpProductionWorkcenterLine(models.Model):
     user_id = fields.Many2one(related='current_quality_check_id.user_id', readonly=False)
     worksheet_page = fields.Integer('Worksheet page')
     picture = fields.Binary(related='current_quality_check_id.picture', readonly=False)
+    additional = fields.Boolean(related='current_quality_check_id.additional')
     component_qty_to_do = fields.Float(compute='_compute_component_qty_to_do')
 
     @api.onchange('qty_producing')
@@ -99,7 +100,9 @@ class MrpProductionWorkcenterLine(models.Model):
         for wo in self.filtered(lambda w: w.state not in ('done', 'cancel')):
             if wo.test_type in ('register_byproducts', 'register_consumed_materials'):
                 move = wo.current_quality_check_id.workorder_line_id.move_id
-                lines = wo._workorder_line_ids().filtered(lambda l: l.move_id == move)
+                lines = wo._workorder_line_ids().filtered(
+                    lambda l: move and l.move_id == move or
+                    l.id == wo.current_quality_check_id.workorder_line_id.id)
                 if wo.quality_state == 'none':
                     completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else lines
                     wo.component_remaining_qty = self._prepare_component_quantity(move, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
@@ -198,7 +201,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 workorder_line_values.update({
                     'move_id': moves[:1].id,
                     'product_id': self.component_id.id,
-                    'product_uom_id': moves[:1].product_uom.id,
+                    'product_uom_id': moves[:1].product_uom.id or self.component_id.uom_id.id,
                     'qty_done': 0.0,
                 })
                 self.env['mrp.workorder.line'].create(workorder_line_values)
@@ -281,8 +284,9 @@ class MrpProductionWorkcenterLine(models.Model):
             if continue_production:
                 self._create_subsequent_checks()
             elif float_compare(self.component_remaining_qty, 0, precision_rounding=rounding) < 0 and\
-                    self.consumption == 'strict':
+                    self.consumption == 'strict' and self.test_type != 'register_byproducts':
                 # '< 0' as it's not possible to click on validate if qty_done < component_remaining_qty
+                # We exclude byproduct as strict consumption doesn't impact production
                 raise UserError(_('You should consume the quantity of %s defined in the BoM. If you want to consume more or less components, change the consumption setting on the BoM.') % self.component_id[0].name)
             self.workorder_line_id._check_line_sn_uniqueness()
 
@@ -379,6 +383,32 @@ class MrpProductionWorkcenterLine(models.Model):
             'name': _('Menu'),
             'target': 'new',
             'res_id': self.id,
+        }
+
+    def action_add_component(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'mrp_workorder.additional.product',
+            'views': [[self.env.ref('mrp_workorder.view_mrp_workorder_additional_product_wizard').id, 'form']],
+            'name': _('Add Component'),
+            'target': 'new',
+            'context': {
+                'default_workorder_id': self.id,
+                'default_type': 'component',
+            }
+        }
+
+    def action_add_byproduct(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'mrp_workorder.additional.product',
+            'views': [[self.env.ref('mrp_workorder.view_mrp_workorder_additional_product_wizard').id, 'form']],
+            'name': _('Add By-Product'),
+            'target': 'new',
+            'context': {
+                'default_workorder_id': self.id,
+                'default_type': 'byproduct',
+            }
         }
 
     def _compute_check(self):

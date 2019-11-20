@@ -17,7 +17,7 @@
                     <Dim prop="EXTGO"
                          t-esc="item['commodity_code']"/>
                     <Dim prop="EXTXVAL"
-                         t-esc="item['value']"/>
+                         t-esc="'%.2f' % item['value']"/>
                     <Dim prop="EXWEIGHT"
                          t-esc="item['weight']"/>
                     <Dim prop="EXUNITS"

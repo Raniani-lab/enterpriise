@@ -112,6 +112,8 @@ class EasypostRequest():
         if addr_obj.state_id:
             address['order[%s][state]' % addr_type] = addr_obj.state_id.name
         address['order[%s][country]' % addr_type] = addr_obj.country_id.code
+        if addr_obj.commercial_company_name:
+            address['order[%s][company]' % addr_type] = addr_obj.commercial_company_name
         return address
 
     def _prepare_order_shipments(self, carrier, order):

@@ -69,19 +69,7 @@ class Task(models.Model):
     def has_to_be_signed(self):
         return self.allow_worksheets and not self.worksheet_signature
 
-    def _reflect_timesheet_quantities(self):
-        """ Needed to ensure a correct display of the timesheet quantities and pricing on the report
-        """
-        if self.sale_line_id.product_uom_qty != self.sale_line_id.qty_delivered:
-            self.sale_line_id.write({'product_uom_qty': self.sale_line_id.qty_delivered})
-
     def action_fsm_worksheet(self):
-        # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
-        # time should be sold on SO)
-        if self.allow_billable:
-            if self.allow_timesheets or self.allow_material:  # if material or time spent on task
-                self._fsm_ensure_sale_order()
-
         action = self.worksheet_template_id.action_id.read()[0]
         worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])
         context = literal_eval(action.get('context', '{}'))
@@ -102,12 +90,6 @@ class Task(models.Model):
         if not self.worksheet_template_id:
             raise UserError(_("To send the report, you need to select a worksheet template."))
 
-        # Note: as we want to see all time and material on worksheet, ensure the SO is created when (case: timesheet but no material, the time should be sold on SO)
-        if self.allow_billable:
-            if self.allow_timesheets or self.allow_material:
-                self.sudo()._reflect_timesheet_quantities()
-                self._fsm_ensure_sale_order()
-
         source = 'fsm' if self.env.context.get('fsm_mode', False) else 'project'
         return {
             'type': 'ir.actions.act_url',
@@ -123,11 +105,6 @@ class Task(models.Model):
         self.ensure_one()
         if not self.worksheet_template_id:
             raise UserError(_("To send the report, you need to select a worksheet template."))
-
-        # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
-        # time should be sold on SO)
-        if self.allow_billable:
-            self._fsm_ensure_sale_order()
 
         template_id = self.env.ref('industry_fsm_report.mail_template_data_send_report').id
         return {

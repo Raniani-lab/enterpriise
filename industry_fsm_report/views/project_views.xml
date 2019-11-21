@@ -167,9 +167,9 @@
     <record id="project_project_view_form_simplified_inherit" model="ir.ui.view">
         <field name="name">project.project.view.form.simplified.inherit</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="industry_fsm_sale.project_project_view_form_simplified_inherit"/>
+        <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
         <field name="arch" type="xml">
-            <field name="allow_material" position="after">
+            <field name="user_id" position="after">
                 <field name="allow_worksheets"/>
                 <field name="worksheet_template_id" invisible="1"/>
             </field>
@@ -186,8 +186,7 @@
                 <field name="allow_worksheets" invisible="1"/>
                 <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
             </field>
-
-            <xpath expr="//button[@name='action_fsm_create_invoice'][hasclass('btn-primary')]" position="before">
+            <field name="display_fsm_dates" position="after">
                 <field name="fsm_is_sent" invisible="1"/>
                 <field name="worksheet_signature" invisible="1"/>
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
@@ -200,11 +199,8 @@
                     '&amp;','&amp;',
                         ('worksheet_count', '=', 0),
                         ('total_hours_spent', '=', 0),
-                        ('material_line_product_count', '=', 0), 
                     ('fsm_is_sent', '=', True),
                     ('worksheet_signature', '=', False)]}"/>
-            </xpath>
-            <xpath expr="//button[@name='action_fsm_create_invoice'][hasclass('btn-secondary')]" position="before">
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
                     attrs="{'invisible': ['|', '|', '|', '|', '|', ('allow_worksheets', '=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0), ('worksheet_signature', '=', False)]}"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
@@ -215,13 +211,11 @@
                     '&amp;','&amp;',
                         ('worksheet_count', '=', 0),
                         ('total_hours_spent', '=', 0),
-                        ('material_line_product_count', '=', 0),
                     '&amp;', 
                         ('fsm_is_sent', '=', False),
                         ('worksheet_signature', '!=', False)]}"/>
-            </xpath>
-
-            <xpath expr="//button[@name='action_fsm_view_material']" position="before">
+            </field>
+            <xpath expr="//div[@name='button_box']" position="inside">
                 <field name="worksheet_count" invisible="1"/>
                 <button
                     string="Worksheet"
@@ -256,8 +250,6 @@
             'default_is_fsm': True,
             'default_allow_timesheets': True,
             'default_allow_timesheet_timer': True,
-            'default_allow_material': True,
-            'default_allow_billable': True,
             'default_allow_worksheets': True
             }
         </field>

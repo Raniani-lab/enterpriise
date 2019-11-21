@@ -42,15 +42,6 @@ def _generate_feed_base(seller_key, message_type):
     return root, message
 
 
-def generate_order_cancellation_feed(seller_key, amazon_order_ref):
-    """ Build the XML message to be sent as an order cancellation feed. """
-    root, message = _generate_feed_base(seller_key, 'OrderAcknowledgement')
-    order_acknowledgement = ElementTree.SubElement(message, 'OrderAcknowledgement')
-    ElementTree.SubElement(order_acknowledgement, 'AmazonOrderID').text = amazon_order_ref
-    ElementTree.SubElement(order_acknowledgement, 'StatusCode').text = 'Failure'
-    return ElementTree.tostring(root, encoding=FEED_ENCODING, method='xml')
-
-
 def generate_order_fulfillment_feed(
         seller_key, amazon_order_ref, items_data, carrier_name=None, tracking_number=None):
     """ Build the XML message to be sent as an order fulfillment feed. """

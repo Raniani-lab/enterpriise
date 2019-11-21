@@ -11,7 +11,7 @@ Key Features
 ------------
 * Import orders from multiple accounts and marketplaces.
 * Orders are matched with Odoo products based on their internal reference (SKU in Amazon).
-* Deliveries and cancellations made in Odoo are synchronized in Amazon.
+* Deliveries confirmed in Odoo are synchronized in Amazon.
 * Support for both Fulfilment by Amazon (FBA) and Fulfilment by Merchant (FBM):
     * FBA: A stock location and stock moves allow to monitor your stock in Amazon Fulfilment Centers.
     * FBM: Delivery notifications are sent to Amazon for each confirmed picking (partial delivery friendly).

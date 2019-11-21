@@ -240,9 +240,6 @@ class AmazonAccount(models.Model):
     def action_sync_pickings(self):
         self.env['stock.picking']._sync_pickings(tuple(self.ids))
 
-    def action_sync_cancellations(self):
-        self.env['sale.order']._sync_cancellations(tuple(self.ids))
-
     def _sync_orders(self, auto_commit=True):
         """
         Sync the orders of the accounts and create missing ones. Called by cron.
@@ -371,7 +368,7 @@ class AmazonAccount(models.Model):
                 _logger.exception(error)
             else:
                 if amazon_status == 'Canceled' and order_found and order.state != 'cancel':
-                    order.with_context(canceled_by_amazon=True).action_cancel()
+                    order.action_cancel()
                     _logger.info("canceled sale.order with amazon_order_ref %s for "
                                  "amazon.account with id %s" % (amazon_order_ref, self.id))
                 elif not order_found and order:  # New order created

@@ -327,35 +327,6 @@ class TestAmazon(TransactionCase):
                 order.state, 'cancel', "cancellation of orders should be synchronized from Amazon")
 
     @mute_logger('odoo.addons.sale_amazon.models.amazon_account')
-    @mute_logger('odoo.addons.sale_amazon.models.sale')
-    def test_sync_cancellations(self):
-        """ Test the orders cancellation synchronization. """
-        def _get_orders_data_mock(*_args, **_kwargs):
-            """ Return a one-order batch of test order data without calling MWS API. """
-            return [BASE_ORDER_DATA], datetime(2020, 1, 1), None, False
-
-        def _get_items_data_mock(*_args, **_kwargs):
-            """ Return a one-item batch of test order line data without calling MWS API. """
-            return [BASE_ITEM_DATA], None, False
-
-        with patch('odoo.addons.sale_amazon.models.mws_connector.get_api_connector',
-                   new=lambda *args, **kwargs: None), \
-             patch('odoo.addons.sale_amazon.models.mws_connector.get_orders_data',
-                   new=_get_orders_data_mock), \
-             patch('odoo.addons.sale_amazon.models.mws_connector.get_items_data',
-                   new=_get_items_data_mock), \
-             patch('odoo.addons.sale_amazon.models.mws_connector.submit_feed',
-                   new=Mock(return_value=(0, False))) as mock:
-            self.account._sync_orders(auto_commit=False)
-            order = self.env['sale.order'].search([('amazon_order_ref', '=', '123456789')])
-            order.action_cancel()
-            self.assertTrue(order.amazon_cancellation_pending)
-            order._sync_cancellations(account_ids=(self.account.id,))
-            self.assertEqual(mock.call_count, 1, "an order acknowledgement feed should be sent to "
-                                                 "Amazon for each canceled order")
-            self.assertFalse(order.amazon_cancellation_pending)
-
-    @mute_logger('odoo.addons.sale_amazon.models.amazon_account')
     @mute_logger('odoo.addons.sale_amazon.models.stock_picking')
     def test_sync_pickings(self):
         """ Test the pickings confirmation synchronization. """

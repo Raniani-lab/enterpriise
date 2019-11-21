@@ -31,11 +31,6 @@
                             type="object"
                             class="btn-secondary"
                             groups="base.group_no_one"/>
-                    <button name="action_sync_cancellations"
-                            string="Sync Cancellations"
-                            type="object"
-                            class="btn-secondary"
-                            groups="base.group_no_one"/>
                 </header>
                 <sheet>
                     <field name="available_marketplace_ids" invisible="1"/>

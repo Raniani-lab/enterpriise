@@ -811,12 +811,30 @@ var ClientAction = AbstractAction.extend({
         */
         var sourceLocation = this.locationsByBarcode[barcode];
         if (sourceLocation  && ! (this.mode === 'receipt' || this.mode === 'no_multi_locations')) {
-            const locationId = this._getLocationId();
-            if (locationId && !isChildOf(locationId, sourceLocation)) {
-                errorMessage = _t('This location is not a child of the main location.');
-                return Promise.reject(errorMessage);
+            // Sanity check: is the scanned location allowed in this document?
+            if (! this.mode === 'inventory') {
+                const locationId = this._getLocationId();
+                if (locationId && !isChildOf(locationId, sourceLocation)) {
+                    errorMessage = _t('This location is not a child of the main location.');
+                    return Promise.reject(errorMessage);
+                }
             } else {
-                // There's nothing to do on the state here, just mark `this.scanned_location`.
+                let isLocationAllowed = false;
+                if (this.currentState.location_ids) {
+                    for (const locationId of this.currentState.location_ids) {
+                        if (isChildOf(locationId, sourceLocation)) {
+                            isLocationAllowed = true;
+                            break;
+                        }
+                    }
+                } else {
+                    isLocationAllowed = true;
+                }
+                if (! isLocationAllowed) {
+                    errorMessage = _t('This location is not a child of the selected locations on the inventory adjustment.');
+                    return Promise.reject(errorMessage);
+                }
+
                 linesActions.push([this.linesWidget.highlightLocation, [true]]);
                 if (this.actionParams.model === 'stock.picking') {
                     linesActions.push([this.linesWidget.highlightDestinationLocation, [false]]);
@@ -837,6 +855,7 @@ var ClientAction = AbstractAction.extend({
             id: this.pages ? this.pages[this.currentPageIndex].location_id : this.currentState.location_id.id,
             display_name: this.pages ? this.pages[this.currentPageIndex].location_name : this.currentState.location_id.display_name,
         };
+
         linesActions.push([this.linesWidget.highlightLocation, [true]]);
         if (this.actionParams.model === 'stock.picking') {
             linesActions.push([this.linesWidget.highlightDestinationLocation, [false]]);

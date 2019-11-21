@@ -6,6 +6,7 @@ var ajax = require('web.ajax');
 
 //Send info only if client is mobile
 if (mobile.methods.getFCMKey) {
+    var sessionInfo = odoo.session_info;
     var registerDevice = function (fcm_project_id) {
         mobile.methods.getFCMKey({
             project_id: fcm_project_id,
@@ -25,7 +26,6 @@ if (mobile.methods.getFCMKey) {
             }
         });
     };
-    var sessionInfo = odoo.session_info;
     if (sessionInfo.fcm_project_id) {
         registerDevice(sessionInfo.fcm_project_id);
     } else {
@@ -35,7 +35,9 @@ if (mobile.methods.getFCMKey) {
             args: [],
             kwargs: {},
         }).then(function (response) {
-            registerDevice(response);
+            if (response) {
+                registerDevice(response);
+            }
         });
     }
 }

@@ -71,7 +71,10 @@ class MailThread(models.AbstractModel):
                 endpoint = self.env['res.config.settings']._get_endpoint()
                 chunks = self._ocn_prepare_payload(receiver_ids, message, msg_vals)
                 for chunk in chunks:
-                    jsonrpc(endpoint + '/iap/ocn/send', params=chunk)
+                    try:
+                        jsonrpc(endpoint + '/iap/ocn/send', params=chunk)
+                    except Exception as e:
+                        _logger.error('An error occured while contacting the ocn server: %s', e)
 
     @api.model
     def _ocn_prepare_payload(self, receiver_ids, message, msg_vals):

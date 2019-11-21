@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import base64
 import requests
 import json
 import logging
@@ -23,27 +24,49 @@ class ProviderAccount(models.Model):
         return ret
 
     def _build_ponto_headers(self):
-        authorization = "Bearer " + self.ponto_token
-        return {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": authorization
-        }
+        try:
+            credentials = json.loads(self.ponto_token)
+            if credentials.get('access_token'):
+                access_token = credentials.get('access_token')
+            else:
+                self._generate_access_token()
+                return self._build_ponto_headers()
+            authorization = "Bearer " + access_token
+            return {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": authorization
+            }
+        except ValueError:
+            self.log_ponto_message(_('Access to ponto using token is being deprecated. Please follow migration process on https://docs.google.com/document/d/1apzAtCgZl5mfEz5-Z8iETqd6WXGbV0R2KuAvEL87rBI'))
 
     def _ponto_fetch(self, method, url, params, data):
         base_url = 'https://api.myponto.com'
+        parsed_data = ""
         if not url.startswith(base_url):
             url = base_url + url
         try:
+            if self._context.get('get_token'):
+                headers = {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "application/json",
+                    "Authorization": "Basic " + data.pop('encoded_credentials'),
+                }
+            else:
+                headers = self._build_ponto_headers()
+
             if data:
-                data = json.dumps(data)
-            headers = self._build_ponto_headers()
-            resp = requests.request(method=method, url=url, params=params, data=data, headers=headers, timeout=60)
+                parsed_data = json.dumps(data)
+
+            resp = requests.request(method=method, url=url, params=params, data=parsed_data, headers=headers, timeout=60)
             resp_json = resp.json()
             if resp_json.get('errors') or resp.status_code >= 400:
+                if resp_json.get('errors', [{}])[0].get('code', '') == 'credentialsInvalid':
+                    self._generate_access_token()
+                    return self._ponto_fetch(method, url, params, data)
                 message = ('%s for route %s') % (json.dumps(resp_json.get('errors')), url)
-                if resp_json.get('errors', [{}])[0].get('code', '') == 'authorizationCodeInvalid':
-                    message = _('Invalid access token')
+                if resp_json.get('errors', [{}])[0].get('code', '') in ('authorizationCodeInvalid', 'clientIdInvalid'):
+                    message = _('Invalid access keys')
                 self.log_ponto_message(message)
             return resp_json
         except requests.exceptions.Timeout as e:
@@ -55,6 +78,18 @@ class ProviderAccount(models.Model):
         except ValueError as e:
             _logger.exception(e)
             self.log_ponto_message('%s for route %s' % (resp.text, url))
+
+    def _generate_access_token(self):
+        credentials = json.loads(self.ponto_token)
+        if credentials.get('encoded_credentials'):
+            params = {'grant_type':'client_credentials'}
+            url = "/oauth2/token"
+            resp_json = self.with_context(get_token=True)._ponto_fetch(method='POST', url=url, params=params, data={'encoded_credentials': credentials.get('encoded_credentials')})
+            if resp_json.get('access_token'):
+                credentials.update({'access_token': resp_json.get('access_token')})
+                self.ponto_token = json.dumps(credentials)
+        else:
+            self.log_ponto_message('Credentials missing! Please, be sure to set your client id and secret id.')
 
     def get_login_form(self, site_id, provider, beta=False):
         if provider != 'ponto':
@@ -119,22 +154,40 @@ class ProviderAccount(models.Model):
 
     def success_callback(self, token):
         # Create account.provider and fetch account
-        # Search for already existing ponto provider and if found update that one, otherwise create a new one
-        provider_account = self.search([('ponto_token', '=', token)])
-        if not provider_account:
-            vals = {
-                'name': _('Ponto'),
-                'ponto_token': token,
-                'provider_identifier': 'ponto',
-                'status': 'SUCCESS',
-                'status_code': 0,
-                'message': '',
-                'last_refresh': fields.Datetime.now(),
-                'action_required': False,
-                'provider_type': 'ponto',
-            }
-            provider_account = self.create(vals)
-        return provider_account.with_context(no_post_message=True)._update_ponto_accounts()
+        encoded_token = str(base64.b64encode(bytes(token, 'utf-8')), 'utf-8')
+        ponto_token = '{"encoded_credentials": "%s"}' % encoded_token
+        method = self._context.get('method', 'add')
+
+        if self.id:
+            self.write({'ponto_token': ponto_token})
+            provider_account = self
+        else:
+            # Search for already existing ponto provider and if found update that one, otherwise create a new one
+            provider_accounts = self.search([('provider_identifier', '=', 'ponto')])
+            provider_account = False
+            for provider in provider_accounts:
+                try:
+                    credentials = json.loads(provider.ponto_token)
+                    if credentials.get('encoded_credentials') == encoded_token:
+                        provider_account = provider
+                        break
+                except ValueError as e:
+                    # ignore error as it is possible that it is due to an old encoding of ponto_token
+                    continue
+            if not provider_account:
+                vals = {
+                    'name': _('Ponto'),
+                    'ponto_token': ponto_token,
+                    'provider_identifier': 'ponto',
+                    'status': 'SUCCESS',
+                    'status_code': 0,
+                    'message': '',
+                    'last_refresh': fields.Datetime.now(),
+                    'action_required': False,
+                    'provider_type': 'ponto',
+                }
+                provider_account = self.create(vals)
+        return provider_account.with_context(no_post_message=True)._update_ponto_accounts(method)
 
     def manual_sync(self):
         if self.provider_type != 'ponto':
@@ -152,7 +205,9 @@ class ProviderAccount(models.Model):
         if self.provider_type != 'ponto':
             return super(ProviderAccount, self).update_credentials()
         # Fetch new accounts if needed
-        return self._update_ponto_accounts(method='edit')
+        action = self.with_context(method='edit').get_login_form(self.provider_identifier, 'ponto')
+        action.update({'record_id': self.id})
+        return action
 
     @api.model
     def cron_fetch_online_transactions(self):

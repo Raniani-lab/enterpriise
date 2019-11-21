@@ -22,6 +22,12 @@ msgid "A bank account is not defined."
 msgstr ""
 
 #. module: account_sepa
+#: code:addons/account_sepa/models/account_payment.py:0
+#, python-format
+msgid "A bank account must be set on the following documents: "
+msgstr ""
+
+#. module: account_sepa
 #: code:addons/account_sepa/models/account_journal.py:0
 #, python-format
 msgid "A partner has not a bank id."

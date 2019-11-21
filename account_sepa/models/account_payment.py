@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class AccountPayment(models.Model):
@@ -84,3 +84,17 @@ class AccountPayment(models.Model):
             bank_account = self.destination_journal_id.bank_account_id
             self.partner_id = bank_account.company_id.partner_id
             self.partner_bank_account_id = bank_account
+
+
+class AccountPaymentRegister(models.TransientModel):
+    _inherit = "account.payment.register"
+
+    def get_payments_vals(self):
+        if self.payment_method_id.code == 'sepa_ct' and self.invoice_ids.filtered(lambda inv: not inv.invoice_partner_bank_id):
+            raise UserError(
+                '{} {}'.format(
+                    _('A bank account must be set on the following documents: '),
+                    ', '.join(self.invoice_ids.filtered(lambda inv: not inv.invoice_partner_bank_id).mapped('name'))
+                )
+            )
+        return super().get_payments_vals()

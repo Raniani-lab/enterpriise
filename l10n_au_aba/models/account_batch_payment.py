@@ -59,13 +59,14 @@ class AccountBatchPayment(models.Model):
             if detail_summary['credit_total'] > 99999999.99 or detail_summary['debit_total'] > 99999999.99:
                 raise UserError(_('The value of transactions is too high for one ABA file - Please split in to multiple transfers'))
 
+        aba_date = max(fields.Date.context_today(self), self.date)
         header_record = '0' + (' ' * 17) + '01' \
                 + to_fixed_width(self.journal_id.aba_fic, 3) \
                 + (' ' * 7) \
                 + to_fixed_width(self.journal_id.aba_user_spec, 26) \
                 + to_fixed_width(self.journal_id.aba_user_number, 6, fill='0', right=True) \
                 + to_fixed_width('PAYMENTS',12) \
-                + fields.Date.from_string(fields.Date.context_today(self)).strftime('%d%m%y') \
+                + aba_date.strftime('%d%m%y') \
                 + (' ' * 40)
 
         detail_summary = {
@@ -98,13 +99,14 @@ class AccountBatchPayment(models.Model):
             # self balancing line use payment bank on both sides.
             credit = 0
             debit = detail_summary['credit_total']
+            aba_date = max(fields.Date.context_today(self), self.date)
             detail_record = '1' \
                     + _normalise_bsb(bank_account.aba_bsb) \
                     + to_fixed_width(bank_account.acc_number, 9, right=True) \
                     + ' ' + '13' \
                     + to_fixed_width(str(round(aud_currency.round(debit) * 100)), 10, fill='0', right=True) \
                     + to_fixed_width(bank_account.acc_holder_name or self.journal_id.company_id.name, 32) \
-                    + to_fixed_width('PAYMENTS %s' % fields.Date.from_string(fields.Date.context_today(self)).strftime('%d%m%y'), 18) \
+                    + to_fixed_width('PAYMENTS %s' % aba_date.strftime('%d%m%y'), 18) \
                     + _normalise_bsb(bank_account.aba_bsb) \
                     + to_fixed_width(bank_account.acc_number, 9, right=True) \
                     + to_fixed_width(bank_account.acc_holder_name or self.journal_id.company_id.name, 16) \

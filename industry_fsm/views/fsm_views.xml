@@ -96,6 +96,7 @@
         <field name="arch" type="xml">
             <xpath expr="//kanban" position="inside">
                 <field name="planned_date_begin"/>
+                <field name="planned_date_begin_formatted" />
                 <field name="is_fsm" />
                 <field name="fsm_done" />
             </xpath>
@@ -113,7 +114,10 @@
                 <t t-if="record.fsm_done.raw_value" t-value="'font-weight-bold'">
                 </t>
                 <!-- field -->
-                <t t-if="record.is_fsm.raw_value and record.planned_date_begin.raw_value" t-set="date" t-value="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)" t-att-title="Start Date"/>
+                <t t-if="record.is_fsm.raw_value and record.planned_date_begin.raw_value"
+                   t-set="date"
+                   t-value="record.planned_date_begin_formatted.raw_value"
+                   t-att-title="Start Date" />
             </xpath>
             <xpath expr="//span[@name='date']" position="attributes">
                 <attribute name="title"></attribute>
@@ -146,9 +150,14 @@
                 <t t-if="!context.fsm_task_kanban_whole_date and !record.fsm_done.raw_value and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()) lt moment()"
                     t-set="deadline_class" t-value="'oe_kanban_text_red'" />
             </xpath>
-            <xpath expr="//t[@t-set='date_format']" position="after">
+            <xpath expr="//t[@t-set='date']" position="after">
                 <!-- force date formatting to hours in fsm, wether we show deadline or planned_date_begin -->
                 <t t-if="!context.fsm_task_kanban_whole_date" t-set="date_format" t-value="'HH:mm A'" />
+            </xpath>
+            <xpath expr="//span[@name='date']" position="before">
+                <t t-if="record.is_fsm.raw_value and record.planned_date_begin.raw_value and !context.fsm_task_kanban_whole_date"
+                   t-set="date"
+                   t-value="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)" />
             </xpath>
             <xpath expr="//span[@name='date']" position="attributes">
                 <attribute name="title" t-if="!context.fsm_task_kanban_whole_date">Start Hour</attribute>

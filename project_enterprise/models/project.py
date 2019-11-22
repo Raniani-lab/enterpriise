@@ -14,6 +14,7 @@ class Task(models.Model):
     _inherit = "project.task"
 
     planned_date_begin = fields.Datetime("Start date")
+    planned_date_begin_formatted = fields.Char(compute='_compute_planned_date_begin')
     planned_date_end = fields.Datetime("End date")
     partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
     partner_zip = fields.Char(related='partner_id.zip', readonly=False)
@@ -23,6 +24,13 @@ class Task(models.Model):
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be prior to the planned end date."),
     ]
+
+    @api.depends('planned_date_begin')
+    def _compute_planned_date_begin(self):
+        date_format = self.env['res.lang']._lang_get(self.env.user.lang).date_format
+
+        for task in self:
+            task.planned_date_begin_formatted = task.planned_date_begin.strftime(date_format) if task.planned_date_begin else None
 
     # ----------------------------------------------------
     # Gantt view

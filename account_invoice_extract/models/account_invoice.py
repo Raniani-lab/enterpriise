@@ -552,53 +552,54 @@ class AccountMove(models.Model):
 
     def _check_status(self):
         self.ensure_one()
-        endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/get_result'
+        if self.state == 'draft':
+            endpoint = self.env['ir.config_parameter'].sudo().get_param(
+                'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/get_result'
 
-        params = {
-            'version': CLIENT_OCR_VERSION,
-            'document_id': self.extract_remote_id
-        }
-        result = jsonrpc(endpoint, params=params)
-        self.extract_status_code = result['status_code']
-        if result['status_code'] == SUCCESS:
-            self.extract_state = "waiting_validation"
-            ocr_results = result['results'][0]
-            self.extract_word_ids.unlink()
+            params = {
+                'version': CLIENT_OCR_VERSION,
+                'document_id': self.extract_remote_id
+            }
+            result = jsonrpc(endpoint, params=params)
+            self.extract_status_code = result['status_code']
+            if result['status_code'] == SUCCESS:
+                self.extract_state = "waiting_validation"
+                ocr_results = result['results'][0]
+                self.extract_word_ids.unlink()
 
-            # We still want to save all other fields when there is a duplicate vendor reference
-            try:
-                # Savepoint so the transactions don't go through if the save raises an exception
-                with self.env.cr.savepoint():
-                    self._save_form(ocr_results)
-            # Retry saving without the ref, then set the error status to show the user a warning
-            except ValidationError as e:
-                self._save_form(ocr_results, no_ref=True)
-                self.extract_status_code = WARNING_DUPLICATE_VENDOR_REFERENCE
-                self.duplicated_vendor_ref = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
+                # We still want to save all other fields when there is a duplicate vendor reference
+                try:
+                    # Savepoint so the transactions don't go through if the save raises an exception
+                    with self.env.cr.savepoint():
+                        self._save_form(ocr_results)
+                # Retry saving without the ref, then set the error status to show the user a warning
+                except ValidationError as e:
+                    self._save_form(ocr_results, no_ref=True)
+                    self.extract_status_code = WARNING_DUPLICATE_VENDOR_REFERENCE
+                    self.duplicated_vendor_ref = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
 
-            fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
-            for field in fields_with_boxes:
-                if field in ocr_results:
-                    value = ocr_results[field]
-                    data = []
-                    for word in value["words"]:
-                        data.append((0, 0, {
-                            "field": field,
-                            "selected_status": 1 if value["selected_value"] == word else 0,
-                            "word_text": word['content'],
-                            "word_page": word['page'],
-                            "word_box_midX": word['coords'][0],
-                            "word_box_midY": word['coords'][1],
-                            "word_box_width": word['coords'][2],
-                            "word_box_height": word['coords'][3],
-                            "word_box_angle": word['coords'][4],
-                        }))
-                    self.write({'extract_word_ids': data})
-        elif result['status_code'] == NOT_READY:
-            self.extract_state = 'extract_not_ready'
-        else:
-            self.extract_state = 'error_status'
+                fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
+                for field in fields_with_boxes:
+                    if field in ocr_results:
+                        value = ocr_results[field]
+                        data = []
+                        for word in value["words"]:
+                            data.append((0, 0, {
+                                "field": field,
+                                "selected_status": 1 if value["selected_value"] == word else 0,
+                                "word_text": word['content'],
+                                "word_page": word['page'],
+                                "word_box_midX": word['coords'][0],
+                                "word_box_midY": word['coords'][1],
+                                "word_box_width": word['coords'][2],
+                                "word_box_height": word['coords'][3],
+                                "word_box_angle": word['coords'][4],
+                            }))
+                        self.write({'extract_word_ids': data})
+            elif result['status_code'] == NOT_READY:
+                self.extract_state = 'extract_not_ready'
+            else:
+                self.extract_state = 'error_status'
 
     def _save_form(self, ocr_results, no_ref=False):
         supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""

@@ -467,7 +467,7 @@ class AmazonAccount(models.Model):
             offer = self._get_offer(order_data, sku)
             product_taxes = offer.product_id.taxes_id.filtered(
                 lambda t: t.company_id.id == self.company_id.id)
-            taxes = fiscal_pos.map_tax(product_taxes) if fiscal_pos else product_taxes
+            taxes = fiscal_pos.map_tax(product_taxes)
             subtotal = self._recompute_subtotal(subtotal, tax_amount, taxes, currency, fiscal_pos)
             
             description_template = "[%s] %s" \
@@ -494,8 +494,7 @@ class AmazonAccount(models.Model):
                         gift_wrap_code, 'default_product', 'Amazon Sales', 'consu')
                     gift_wrap_product_taxes = gift_wrap_product.taxes_id.filtered(
                         lambda t: t.company_id.id == self.company_id.id)
-                    gift_wrap_taxes = fiscal_pos.map_tax(gift_wrap_product_taxes) \
-                        if fiscal_pos else gift_wrap_product_taxes
+                    gift_wrap_taxes = fiscal_pos.map_tax(gift_wrap_product_taxes)
                     gift_wrap_tax_amount = mwsc.get_amount_value(item_data, 'GiftWrapTax')
                     gift_wrap_price = self._recompute_subtotal(
                         gift_wrap_price, gift_wrap_tax_amount, gift_wrap_taxes, currency, fiscal_pos)
@@ -516,8 +515,7 @@ class AmazonAccount(models.Model):
 
                 shipping_product_taxes = shipping_product.taxes_id.filtered(
                     lambda t: t.company_id.id == self.company_id.id)
-                shipping_taxes = fiscal_pos.map_tax(shipping_product_taxes) if fiscal_pos \
-                    else shipping_product_taxes
+                shipping_taxes = fiscal_pos.map_tax(shipping_product_taxes)
                 shipping_tax_amount = mwsc.get_amount_value(item_data, 'ShippingTax')
                 shipping_price = self._recompute_subtotal(
                     shipping_price, shipping_tax_amount, shipping_taxes, currency, fiscal_pos)

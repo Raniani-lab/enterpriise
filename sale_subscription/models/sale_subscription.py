@@ -972,8 +972,7 @@ class SaleSubscriptionLine(models.Model):
             fpos_obj = self.env['account.fiscal.position']
             partner = self.analytic_account_id.partner_id
             fpos = fpos_obj.with_company(self.analytic_account_id.company_id).get_fiscal_position(partner.id)
-            if fpos:
-                tax = fpos.map_tax(tax, product, partner)
+            tax = fpos.map_tax(tax, product, partner)
             compute_vals = tax.compute_all(self.price_unit * (1 - (self.discount or 0.0) / 100.0), self.analytic_account_id.currency_id, self.quantity, product, partner)['taxes']
             if compute_vals:
                 val += compute_vals[0].get('amount', 0)

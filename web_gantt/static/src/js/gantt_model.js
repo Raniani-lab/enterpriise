@@ -52,7 +52,7 @@ var GanttModel = AbstractModel.extend({
         if (!result.isUTC()) {
             result.subtract(session.getTZOffset(date), 'minutes');
         }
-        return result.format('YYYY-MM-DD HH:mm:ss');
+        return result.locale('en').format('YYYY-MM-DD HH:mm:ss');
     },
     /**
      * @override

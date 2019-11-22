@@ -156,7 +156,7 @@ var GanttController = AbstractController.extend({
             view_id: this.dialogViews[0][0],
             res_id: resID,
             readonly: !this.is_action_enabled('edit'),
-            deletable: this.is_action_enabled('edit') && resID,
+            deletable: this.is_action_enabled('delete') && resID,
             context: _.extend({}, this.context, context),
             on_saved: this.reload.bind(this, {}),
             on_remove: this._onDialogRemove.bind(this, resID),

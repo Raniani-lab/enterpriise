@@ -3289,5 +3289,39 @@ QUnit.module('Views', {
             groupBy: ['user_id', 'stage'],
         });
     });
+
+    QUnit.test('delete attribute on dialog', async function (assert) {
+        assert.expect(2);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" delete="0"/>',
+            archs: {
+                'tasks,false,form': '<form>' +
+                        '<field name="name"/>' +
+                        '<field name="start"/>' +
+                        '<field name="stop"/>' +
+                        '<field name="stage"/>' +
+                        '<field name="project_id"/>' +
+                        '<field name="user_id"/>' +
+                    '</form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row .o_gantt_cell[data-date="2018-12-17 00:00:00"] .o_gantt_pill'), "click");
+        await testUtils.nextTick();
+
+        assert.containsOnce(document.body, '.modal-dialog',
+            'Should have opened a new dialog');
+        assert.containsNone($('.modal-dialog'), '.o_btn_remove',
+            'should not have the "Remove" Button form dialog');
+
+        gantt.destroy();
+    });
 });
 });

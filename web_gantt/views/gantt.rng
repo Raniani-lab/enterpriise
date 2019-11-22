@@ -22,6 +22,7 @@
             <rng:optional><rng:attribute name="create"/></rng:optional>
             <rng:optional><rng:attribute name="on_create"/></rng:optional>
             <rng:optional><rng:attribute name="edit"/></rng:optional>
+            <rng:optional><rng:attribute name="delete"/></rng:optional>
             <rng:optional><rng:attribute name="plan"/></rng:optional>
             <rng:optional><rng:attribute name="default_group_by"/></rng:optional>
             <rng:optional><rng:attribute name="dynamic_range"/></rng:optional>

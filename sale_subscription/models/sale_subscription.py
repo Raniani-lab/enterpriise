@@ -491,7 +491,7 @@ class SaleSubscription(models.Model):
         self = self.with_company(self.company_id).with_context(company_id=self.company_id.id)
         company = self.company_id
 
-        fpos_id = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
+        fpos = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
         journal = self.template_id.journal_id or self.env['account.journal'].search([('type', '=', 'sale'), ('company_id', '=', company.id)], limit=1)
         if not journal:
             raise UserError(_('Please define a sale journal for the company "%s".') % (company.name or '', ))
@@ -511,7 +511,7 @@ class SaleSubscription(models.Model):
             'currency_id': self.pricelist_id.currency_id.id,
             'journal_id': journal.id,
             'invoice_origin': self.code,
-            'fiscal_position_id': fpos_id,
+            'fiscal_position_id': fpos.id,
             'invoice_payment_term_id': sale_order.payment_term_id.id if sale_order else self.partner_id.property_payment_term_id.id,
             'narration': _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date)),
             'invoice_user_id': self.user_id.id,
@@ -578,7 +578,7 @@ class SaleSubscription(models.Model):
         for subscription in self:
             subscription = subscription.with_company(subscription.company_id)
             order_lines = []
-            fpos_id = subscription.env['account.fiscal.position'].get_fiscal_position(subscription.partner_id.id)
+            fpos = subscription.env['account.fiscal.position'].get_fiscal_position(subscription.partner_id.id)
             for line in subscription.recurring_invoice_line_ids:
                 order_lines.append((0, 0, {
                     'product_id': line.product_id.id,
@@ -604,7 +604,7 @@ class SaleSubscription(models.Model):
                 'subscription_management': 'renew',
                 'origin': subscription.code,
                 'note': subscription.description,
-                'fiscal_position_id': fpos_id,
+                'fiscal_position_id': fpos.id,
                 'user_id': subscription.user_id.id,
                 'payment_term_id': sale_order.payment_term_id.id if sale_order else subscription.partner_id.property_payment_term_id.id,
                 'company_id': subscription.company_id.id,
@@ -971,8 +971,7 @@ class SaleSubscriptionLine(models.Model):
         for tax in product_tmp.taxes_id.filtered(lambda t: t.company_id == self.analytic_account_id.company_id):
             fpos_obj = self.env['account.fiscal.position']
             partner = self.analytic_account_id.partner_id
-            fpos_id = fpos_obj.with_company(self.analytic_account_id.company_id).get_fiscal_position(partner.id)
-            fpos = fpos_obj.browse(fpos_id)
+            fpos = fpos_obj.with_company(self.analytic_account_id.company_id).get_fiscal_position(partner.id)
             if fpos:
                 tax = fpos.map_tax(tax, product, partner)
             compute_vals = tax.compute_all(self.price_unit * (1 - (self.discount or 0.0) / 100.0), self.analytic_account_id.currency_id, self.quantity, product, partner)['taxes']

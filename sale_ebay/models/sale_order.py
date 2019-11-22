@@ -31,16 +31,16 @@ class SaleOrder(models.Model):
     @api.model
     def _process_order_new(self, order):
         (partner, shipping_partner) = self._process_order_new_find_partners(order)
-        fp_id = self.env['account.fiscal.position'].get_fiscal_position(partner.id, delivery_id=shipping_partner.id)
-        if fp_id:
-            partner.property_account_position_id = fp_id
+        fp = self.env['account.fiscal.position'].get_fiscal_position(partner.id, delivery_id=shipping_partner.id)
+        if fp:
+            partner.property_account_position_id = fp
         create_values = {
             'partner_id': partner.id,
             'partner_shipping_id': shipping_partner.id,
             'state': 'draft',
             'client_order_ref': order['OrderID'],
             'origin': 'eBay' + order['OrderID'],
-            'fiscal_position_id': fp_id if fp_id else False,
+            'fiscal_position_id': fp.id,
             'date_order': order['PaidTime'],
         }
         if self.env['ir.config_parameter'].sudo().get_param('ebay_sales_team'):

@@ -409,10 +409,9 @@ class AmazonAccount(models.Model):
             currency = self.env['res.currency'].search([('name', '=', currency_code)], limit=1)
             pricelist = self._get_pricelist(currency)
             contact_partner, delivery_partner = self._get_partners(order_data, amazon_order_ref)
-            fiscal_position_id = self.env['account.fiscal.position'].with_company(self.company_id).get_fiscal_position(
+            fiscal_position = self.env['account.fiscal.position'].with_company(self.company_id).get_fiscal_position(
                 contact_partner.id, delivery_partner.id)
-            fiscal_position = self.env['account.fiscal.position'].browse(fiscal_position_id)
-            
+
             order_lines_vals = self._process_order_lines(
                 order_data, items_data, shipping_code, shipping_product, currency, fiscal_position)
             order = self.env['sale.order'].with_context(mail_create_nosubscribe=True).create({
@@ -426,7 +425,7 @@ class AmazonAccount(models.Model):
                 'partner_shipping_id': delivery_partner.id,
                 'require_signature': False,
                 'require_payment': False,
-                'fiscal_position_id': fiscal_position_id,
+                'fiscal_position_id': fiscal_position.id,
                 'company_id': self.company_id.id,
                 'user_id': self.user_id.id,
                 'team_id': self.team_id.id,

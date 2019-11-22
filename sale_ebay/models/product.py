@@ -245,7 +245,7 @@ class ProductTemplate(models.Model):
     # returns true if the barcode string is encoded with the provided encoding.
     def check_encoding(self, barcode, encoding):
         if encoding == 'ean13':
-            return len(barcode) == 13 and re.match("^\d+$", barcode) and self.ean_checksum(barcode) == int(barcode[-1]) 
+            return len(barcode) == 13 and re.match("^\d+$", barcode) and self.ean_checksum(barcode) == int(barcode[-1])
         elif encoding == 'upc':
             return len(barcode) == 12 and re.match("^\d+$", barcode) and self.ean_checksum("0"+barcode) == int(barcode[-1])
         elif encoding == 'any':
@@ -799,9 +799,9 @@ class ProductTemplate(models.Model):
                     shipping_partner = partner
 
             partner.write(partner_data)
-            fp_id = self.env['account.fiscal.position'].get_fiscal_position(partner.id)
-            if fp_id:
-                partner.property_account_position_id = fp_id
+            fp = self.env['account.fiscal.position'].get_fiscal_position(partner.id)
+            if fp:
+                partner.property_account_position_id = fp
             if self.product_variant_count > 1:
                 if 'Variation' in transaction:
                     variant = self.product_variant_ids.filtered(
@@ -840,7 +840,7 @@ class ProductTemplate(models.Model):
                 'state': 'draft',
                 'client_order_ref': transaction['OrderLineItemID'],
                 'origin': 'eBay' + transaction['TransactionID'],
-                'fiscal_position_id': fp_id if fp_id else False,
+                'fiscal_position_id': fp.id,
             })
             if self.env['ir.config_parameter'].sudo().get_param('ebay_sales_team'):
                 sale_order.team_id = int(self.env['ir.config_parameter'].sudo().get_param('ebay_sales_team'))

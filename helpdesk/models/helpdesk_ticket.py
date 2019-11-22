@@ -208,8 +208,8 @@ class HelpdeskTicket(models.Model):
     is_self_assigned = fields.Boolean("Am I assigned", compute='_compute_is_self_assigned')
 
     # Used to submit tickets from a contact form
-    partner_name = fields.Char(string='Customer Name')
-    partner_email = fields.Char(string='Customer Email')
+    partner_name = fields.Char(string='Customer Name', compute='_compute_partner_info', store=True, readonly=False)
+    partner_email = fields.Char(string='Customer Email', compute='_compute_partner_info', store=True, readonly=False)
 
     closed_by_partner = fields.Boolean('Closed by Partner', readonly=True, help="If checked, this means the ticket was closed through the customer portal by the customer.")
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
@@ -321,11 +321,12 @@ class HelpdeskTicket(models.Model):
             if not self.stage_id or self.stage_id not in self.team_id.stage_ids:
                 self.stage_id = self.team_id._determine_stage()[self.team_id.id]
 
-    @api.onchange('partner_id')
-    def _onchange_partner_id(self):
-        if self.partner_id:
-            self.partner_name = self.partner_id.name
-            self.partner_email = self.partner_id.email
+    @api.depends('partner_id')
+    def _compute_partner_info(self):
+        for ticket in self:
+            if ticket.partner_id:
+                ticket.partner_name = ticket.partner_id.name
+                ticket.partner_email = ticket.partner_id.email
 
     @api.depends('partner_id')
     def _compute_partner_ticket_count(self):

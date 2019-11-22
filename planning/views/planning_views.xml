@@ -5,14 +5,14 @@
         <field name="name">planning.slot.tree</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <tree string="Shift List">
+            <tree string="Shift List" multi_edit="1">
                 <field name="employee_id"/>
                 <field name="role_id"/>
-                <field name="start_datetime"/>
-                <field name="end_datetime"/>
-                <field name="allocated_hours" widget="float_time"/>
-                <field name="allocated_percentage" groups="planning.group_planning_show_percentage"/>
-                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                <field name="start_datetime" readonly="1"/>
+                <field name="end_datetime" readonly="1"/>
+                <field name="allocated_hours" widget="float_time" readonly="1"/>
+                <field name="allocated_percentage" groups="planning.group_planning_show_percentage" readonly="1"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
             </tree>
         </field>
     </record>

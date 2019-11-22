@@ -95,7 +95,7 @@ class report_account_consolidated_journal(models.AbstractModel):
                 sum_balance = self.format_value(sum([r['balance'] for r in results if (r['month'] == month and r['yyyy'] == year) and r['company_id'] == current_company]))
                 vals = {
                         'id': 'Total_month_%s_%s' % (date, current_company),
-                        'name': convert_date('%s-01' % (date), {'format': 'MMM YYYY'}),
+                        'name': convert_date('%s-01' % (date), {'format': 'MMM yyyy'}),
                         'level': 2,
                         'columns': [{'name': v} for v in [sum_debit, sum_credit, sum_balance]]
                 }

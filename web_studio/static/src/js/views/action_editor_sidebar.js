@@ -97,12 +97,14 @@ var ActionEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
      * @override
      */
     _onFieldChanged: function () {
-        StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
-        var record = this.model.get(this.groupsHandle);
-        var args = {
-            groups_id: record.data.groups_id.res_ids,
-        };
-        this.trigger_up('studio_edit_action', {args: args});
+        var self = this;
+        return StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments).then(function () {
+            var record = self.model.get(self.groupsHandle);
+            var args = {
+                groups_id: record.data.groups_id.res_ids,
+            };
+            self.trigger_up('studio_edit_action', {args: args});
+        });
     },
 });
 

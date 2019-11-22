@@ -14,6 +14,15 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
                         start: { type: 'datetime', store: 'true' },
                     },
                 },
+                'res.groups': {
+                    fields: {
+                        display_name: { string: "Display Name", type: "char" },
+                    },
+                    records: [{
+                        id: 4,
+                        display_name: "Admin",
+                    }],
+                },
             };
         }
     }, function () {
@@ -132,6 +141,36 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
                 $('.o_technical_modal .modal-body').text().trim(),
                 "You cannot deactivate this view as it is the last one active.",
                 "modal should tell that last view cannot be disabled");
+
+            actionManager.destroy();
+        });
+
+        QUnit.test('add groups on action', async function (assert) {
+            assert.expect(1);
+
+            var actionManager = await createActionManager({
+                actions: this.actions,
+                data: this.data,
+                mockRPC: function (route, args) {
+                    if (route === '/web_studio/edit_action') {
+                        assert.strictEqual(args.args.groups_id[0], 4,
+                            "group admin should be applied on action");
+                        return Promise.resolve();
+                    }
+                    return this._super.apply(this, arguments);
+                },
+            });
+            await actionManager.doAction('action_web_studio_action_editor', {
+                action: {
+                    res_model: 'kikou',
+                    view_mode: 'list',
+                    views: [[1, 'list'], [2, 'form']],
+                },
+                noEdit: true,
+            });
+
+            await testUtils.fields.many2one.clickOpenDropdown('groups_id');
+            await testUtils.fields.many2one.clickHighlightedItem('groups_id');
 
             actionManager.destroy();
         });

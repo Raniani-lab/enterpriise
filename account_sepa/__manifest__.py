@@ -18,5 +18,6 @@
         'views/res_config_settings_views.xml',
         'views/account_payment.xml',
     ],
+    'post_init_hook': 'init_initiating_party_names',
     'license': 'OEEL-1',
 }

@@ -88,6 +88,7 @@
                             <field name="timesheet_timer_last_stop" widget="daterange" options='{"related_start_date": "timesheet_timer_first_start"}'/>
                         </div>
                     </div>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                 </group>
             </xpath>
             <xpath expr="//page[@name='extra_info']" position="attributes">

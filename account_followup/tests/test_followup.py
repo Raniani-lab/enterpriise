@@ -83,6 +83,67 @@ class TestAccountFollowup(TestAccountReportsCommon2):
         self.assertEqual(lines[1]['columns'][5]['name'], 'Total Due')
         self.assertEqual(lines[1]['columns'][6]['name'], formatLang(self.env, 60.00, currency_obj=currency))
 
+    def test_followup_mail_attachments(self):
+        '''Test that join_invoices options is working: sending attachment from multiple invoices'''
+        test_followup_level = self.env['account_followup.followup.line'].create({
+            'name': 'test_followup_level',
+            'delay': 4,
+            'description': 'Test Followup Level',
+            'send_email': True,
+            'print_letter': False,
+            'join_invoices': True,
+        })
+
+        test_partner = self.env['res.partner'].create({
+            'name': 'Pinco Pallino',
+            'email': 'test@example.com',
+        })
+
+        today = fields.Date.today()
+
+        # generating invoices
+        invoices = self.env['account.move'].create([
+            {
+                'partner_id': test_partner.id,
+                'invoice_date': today + relativedelta(days=-10),
+                'type': 'out_invoice',
+                'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 40})],
+            },
+            {
+                'partner_id': test_partner.id,
+                'invoice_date': today + relativedelta(days=-11),
+                'type': 'out_invoice',
+                'invoice_line_ids': [(0, 0, {'quantity': 2, 'price_unit': 40})],
+            },
+        ])
+        invoices.post()
+
+        some_attachments = self.env['ir.attachment']
+
+        # creating and linking attachment with invoices
+        for inv in invoices:
+            att_id = self.env['ir.attachment'].create({
+                'name': 'some_attachment.pdf',
+                'res_id': inv.id,
+                'res_model': 'account.move',
+                'datas': 'test',
+                'type': 'binary',
+            })
+            some_attachments += att_id
+            inv._message_set_main_attachment_id([(4, att_id.id)])
+
+        # triggering followup report notice
+        test_partner._compute_unpaid_invoices()
+        options = dict(self.minimal_options)
+        options['partner_id'] = test_partner.id
+
+        # sending email with attachments
+        self.env['account.followup.report'].send_email(options)
+
+        # retrieving attachments from the last sent mail
+        sent_attachments = self.env['mail.message'].search([('partner_ids', '=', test_partner.id)]).attachment_ids
+
+        self.assertEqual(some_attachments, sent_attachments)
 
 class TestAccountReportsCommon2(common.TransactionCase):
     def test_followup_level_and_status(self):

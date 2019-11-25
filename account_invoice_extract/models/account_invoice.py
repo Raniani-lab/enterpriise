@@ -632,37 +632,40 @@ class AccountMove(models.Model):
                         if created_supplier:
                             move_form.partner_id = created_supplier
 
-            if date_ocr:
+            due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
+            if date_ocr and move_form.invoice_date == str(self._get_default_invoice_date()):
                 move_form.invoice_date = date_ocr
-            if due_date_ocr:
+            if due_date_ocr and due_date_move_form == str(self._get_default_invoice_date()):
                 move_form.invoice_date_due = due_date_ocr
-            move_form.ref = '' if no_ref else invoice_id_ocr
+            if not move_form.ref and not no_ref:
+                move_form.ref = invoice_id_ocr
 
-            if self.user_has_groups('base.group_multi_currency'):
+            if self.user_has_groups('base.group_multi_currency') and move_form.currency_id == self._get_default_currency():
                 move_form.currency_id = self.env["res.currency"].search([
                         '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
                         ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
 
-            for line_val in vals_invoice_lines:
-                with move_form.invoice_line_ids.new() as line:
-                    line.name = line_val['name']
-                    line.price_unit = line_val['price_unit']
-                    line.quantity = line_val['quantity']
-                    line.tax_ids.clear()
-                    for taxes_record in line_val['tax_ids']:
-                        line.tax_ids.add(taxes_record)
-                    if not line.account_id:
-                        raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.") % move_form.journal_id.name_get()[0][1])
+            if not move_form.invoice_line_ids:
+                for line_val in vals_invoice_lines:
+                    with move_form.invoice_line_ids.new() as line:
+                        line.name = line_val['name']
+                        line.price_unit = line_val['price_unit']
+                        line.quantity = line_val['quantity']
+                        line.tax_ids.clear()
+                        for taxes_record in line_val['tax_ids']:
+                            line.tax_ids.add(taxes_record)
+                        if not line.account_id:
+                            raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.") % move_form.journal_id.name_get()[0][1])
 
-            # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
-            for i in range(len(move_form.line_ids)):
-                with move_form.line_ids.edit(i) as line:
-                    if line.tax_repartition_line_id and total_ocr:
-                        rounding_error = move_form.amount_total - total_ocr
-                        threshold = len(vals_invoice_lines) * 0.01
-                        if rounding_error != 0.0 and abs(rounding_error) < threshold:
-                            line.debit -= rounding_error
-                        break
+                # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
+                for i in range(len(move_form.line_ids)):
+                    with move_form.line_ids.edit(i) as line:
+                        if line.tax_repartition_line_id and total_ocr:
+                            rounding_error = move_form.amount_total - total_ocr
+                            threshold = len(vals_invoice_lines) * 0.01
+                            if rounding_error != 0.0 and abs(rounding_error) < threshold:
+                                line.debit -= rounding_error
+                            break
 
     def buy_credits(self):
         url = self.env['iap.account'].get_credits_url(base_url='', service_name='invoice_ocr')

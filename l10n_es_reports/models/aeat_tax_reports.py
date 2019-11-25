@@ -314,11 +314,11 @@ class AEATAccountFinancialReport(models.Model):
         return line_data['columns'][0]['no_format_name']
 
     def get_bic_and_iban(self, res_partner_bank):
-        """ Convenience method returning (iban, bic) of the given account if
+        """ Convenience method returning (bic,iban) of the given account if
         this account exists, or a tuple of empty strings otherwize.
         """
         if res_partner_bank:
-            return res_partner_bank.bank_bic, res_partner_bank.sanitized_acc_number
+            return res_partner_bank.bank_bic or "", res_partner_bank.sanitized_acc_number
 
         return '', ''
 

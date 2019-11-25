@@ -32,6 +32,7 @@ Allows use of stock application to manage rentals inventory
     'demo': [
         'data/rental_stock_demo.xml',
     ],
+    'qweb': ['static/src/xml/qty_at_date_rental.xml'],
     'auto_install': True,
     'post_init_hook': '_ensure_rental_stock_moves_consistency'
 }

@@ -17,6 +17,33 @@ class RentalOrderLine(models.Model):
 
     unavailable_lot_ids = fields.Many2many('stock.production.lot', 'unreturned_reserved_serial', compute='_compute_unavailable_lots', store=False)
 
+    @api.depends('pickup_date', 'return_date', 'product_id', 'order_id.warehouse_id')
+    def _compute_qty_at_date(self):
+        non_rental = self.filtered(lambda sol: not sol.is_rental)
+        super(RentalOrderLine, non_rental)._compute_qty_at_date()
+        for line in (self - non_rental):
+            virtual_available_at_date = 0.0
+            if line.product_id and line.product_id.type == "product" and line.pickup_date and line.return_date:
+                reservation_begin, reservation_end = line.product_id._unavailability_period(line.pickup_date, line.return_date)
+                rentable_qty = line.product_id.with_context(
+                    from_date=max(reservation_begin, fields.Datetime.now()),
+                    to_date=reservation_end,
+                    warehouse=line.order_id.warehouse_id.id).qty_available
+                if reservation_begin > fields.Datetime.now():
+                    rentable_qty += line.product_id.with_context(warehouse_id=line.order_id.warehouse_id.id).qty_in_rent
+
+                rented_qty_during_period = line.product_id._get_unavailable_qty(
+                    reservation_begin, reservation_end,
+                    ignored_soline_id=line and line.id,
+                    warehouse_id=line.order_id.warehouse_id.id,
+                )
+                virtual_available_at_date = max(rentable_qty - rented_qty_during_period, 0)
+            line.virtual_available_at_date = virtual_available_at_date
+            line.scheduled_date = False
+            line.free_qty_today = False
+            line.qty_available_today = False
+            line.warehouse_id = False
+
     @api.model
     def write(self, vals):
         """Move product quantities on pickup/return in case of rental orders.

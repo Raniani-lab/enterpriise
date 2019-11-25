@@ -1352,6 +1352,7 @@ QUnit.module('ViewEditorManager', {
 
         fieldsView = $.extend(true, {}, vem.fields_view);
         await testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_integer'), $('.o_web_studio_hook'));
+        await testUtils.nextTick();
         vem.destroy();
     });
 
@@ -2625,7 +2626,7 @@ QUnit.module('ViewEditorManager', {
 
         // try to add seperator in groupby
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_components > .o_web_studio_filter_separator'), $('.o_web_studio_search_group_by .o_web_studio_hook:first'), {disableDrop: true});
-
+        await testUtils.nextTick();
         assert.hasClass(vem.$('.o_web_studio_search_group_by'), 'text-muted',
             "groupby section should be muted");
         assert.hasClass(vem.$('.o_web_studio_search_autocompletion_fields'),'text-muted',
@@ -4234,7 +4235,8 @@ QUnit.module('ViewEditorManager', {
             "there should be 1 nodes in the x2m editor.");
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
-        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields .o_web_studio_field_many2one'), $('.o_web_studio_hook'));
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields .o_web_studio_field_many2one')[0], $('.o_web_studio_hook'));
+        await testUtils.nextTick();
         assert.containsN(vem, '.o_web_studio_view_renderer thead tr [data-node-id]', 2,
             "there should be 2 nodes after the drag and drop.");
 
@@ -4398,7 +4400,7 @@ QUnit.module('ViewEditorManager', {
         // open the domain editor
         assert.strictEqual($('.modal .o_domain_selector').length, 0,
             "the domain selector should not be opened");
-        vem.$('.o_web_studio_sidebar_content input[name="domain"]').trigger('focusin');
+        vem.$('.o_web_studio_sidebar_content input[name="domain"]').trigger('focus');
         await testUtils.nextTick();
         assert.strictEqual($('.modal .o_domain_selector').length, 1,
             "the domain selector should be correctly opened");

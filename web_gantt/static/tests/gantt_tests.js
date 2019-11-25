@@ -841,7 +841,7 @@ QUnit.module('Views', {
         // open dialog to create a task
         // note that these 3 events need to be triggered for jQuery draggable
         // to be activated
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "mouseenter");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "mouseover");
         await testUtils.nextTick();
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "click");
         await testUtils.nextTick();
@@ -1472,7 +1472,7 @@ QUnit.module('Views', {
         assert.containsNone(gantt, '.o_gantt_pill.ui-resizable',
             "the pill should not be resizable after initial rendering");
 
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
         assert.containsOnce(gantt, '.o_gantt_pill.ui-resizable',
             "the pill should be resizable after mouse enter");
@@ -1492,7 +1492,7 @@ QUnit.module('Views', {
 
         // go to previous month (november)
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
         assert.containsOnce(gantt, '.o_gantt_pill',
             "there should still be one pill (Task 1)");
@@ -1567,7 +1567,7 @@ QUnit.module('Views', {
         });
 
         var pillWidth = gantt.$('.o_gantt_pill').width();
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
         // resize to one cell larger (1 day)
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
@@ -1614,7 +1614,7 @@ QUnit.module('Views', {
         assert.doesNotHaveClass(gantt.$('.o_gantt_pill'), 'ui-draggable',
             "the pill should not be draggable after initial rendering");
 
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
         assert.hasClass(gantt.$('.o_gantt_pill'), 'ui-draggable',
             "the pill should be draggable after mouse enter");
@@ -1717,7 +1717,7 @@ QUnit.module('Views', {
 
     QUnit.test('copy a pill in another row', async function (assert) {
             assert.expect(4);
-    
+
             var gantt = await createView({
                 View: GanttView,
                 model: 'tasks',
@@ -1742,23 +1742,23 @@ QUnit.module('Views', {
                 },
                 domain: [['id', 'in', [1, 7]]],
             });
-    
+
             assert.containsN(gantt, '.o_gantt_pill', 2,
                 "there should be two pills (task 1 and task 7)");
             assert.containsN(gantt, '.o_gantt_row', 2,
                 "there should be two rows (project 1 and project 2");
-    
+
             // move a pill (task 7) in the other row and in the the next cell (+1 day)
             var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
             var cellHeight = gantt.$('.o_gantt_cell:first').height() / 2;
-            await testUtils.dom.triggerEvent(gantt.$el, 'keydown',{ctrlKey: true});
+            await testUtils.dom.triggerEvent(gantt.$el, 'keydown',{ctrlKey: true}, true);
 
             await testUtils.dom.dragAndDrop(
                 gantt.$('.o_gantt_pill[data-id=7]'),
                 gantt.$('.o_gantt_pill[data-id=7]'),
                 { position: { left: cellWidth, top: -cellHeight }, ctrlKey: true },
             );
-
+            await testUtils.nextTick();
             gantt.destroy();
         });
 
@@ -1788,7 +1788,7 @@ QUnit.module('Views', {
         });
 
         gantt.$('.o_gantt_pill').each(function () {
-            testUtils.dom.triggerMouseEvent($(this), 'mouseenter');
+            testUtils.dom.triggerMouseEvent($(this), 'mouseover');
         });
         await testUtils.nextTick();
 
@@ -1825,7 +1825,7 @@ QUnit.module('Views', {
 
 
         gantt.$('.o_gantt_pill').each(function () {
-            testUtils.dom.triggerMouseEvent($(this), 'mouseenter');
+            testUtils.dom.triggerMouseEvent($(this), 'mouseover');
         });
         await testUtils.nextTick();
 
@@ -2137,7 +2137,7 @@ QUnit.module('Views', {
         });
 
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
         // resize of a quarter
         await testUtils.dom.dragAndDrop(
@@ -2683,7 +2683,7 @@ QUnit.module('Views', {
 
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
 
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
         // resize to 1 cell smaller (-1 day) ; this RPC will be delayed
         await testUtils.dom.dragAndDrop(
@@ -2751,7 +2751,7 @@ QUnit.module('Views', {
 
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
 
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
         await testUtils.dom.dragAndDrop(
             gantt.$('.ui-resizable-e'),

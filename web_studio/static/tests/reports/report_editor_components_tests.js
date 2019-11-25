@@ -256,6 +256,7 @@ QUnit.module('ReportComponents', {
         });
         await parent.appendTo($('#qunit-fixture'));
         var InlineField = reportNewComponentsRegistry.get('Inline')[1];
+
         var tOptions = new InlineField(parent, {
             models: {
                 'model.test': 'Toto',
@@ -287,7 +288,7 @@ QUnit.module('ReportComponents', {
         });
         await testUtils.nextTick();
 
-        await testUtils.dom.triggerEvents($('.o_web_studio_field_modal .o_field_selector'), ['focusin']);
+        await testUtils.dom.triggerEvents($('.o_web_studio_field_modal .o_field_selector'), ['focus']);
         await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="toto"]'));
         await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_close'));
         await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
@@ -296,7 +297,7 @@ QUnit.module('ReportComponents', {
             "Should display an alert because the field name of the record is wrong");
         await testUtils.dom.click($('.modal:has(main[role="alert"]) .btn-primary'));
 
-        await testUtils.dom.triggerEvents($('.o_web_studio_field_modal .o_field_selector'), ['focusin']);
+        await testUtils.dom.triggerEvents($('.o_web_studio_field_modal .o_field_selector'), ['focus']);
         await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]'));
         await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
@@ -342,7 +343,7 @@ QUnit.module('ReportComponents', {
         });
         await testUtils.nextTick();
 
-        await testUtils.dom.triggerEvents($('.o_web_studio_field_modal .o_field_selector'), ['focusin']);
+        await testUtils.dom.triggerEvents($('.o_web_studio_field_modal .o_field_selector'), ['focus']);
         await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="toto"]'));
         await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="image"]'));
         await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));

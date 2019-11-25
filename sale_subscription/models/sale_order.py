@@ -56,6 +56,7 @@ class SaleOrder(models.Model):
             'partner_id': self.partner_invoice_id.id,
             'user_id': self.user_id.id,
             'team_id': self.team_id.id,
+            'payment_term_id': self.payment_term_id.id,
             'date_start': fields.Date.today(),
             'description': self.note or template.description,
             'pricelist_id': self.pricelist_id.id,
@@ -87,6 +88,7 @@ class SaleOrder(models.Model):
             if order.subscription_management == 'renew':
                 subscriptions.wipe()
                 subscriptions.increment_period()
+                subscriptions.payment_term_id = order.payment_term_id
                 subscriptions.set_open()
             for subscription in subscriptions:
                 subscription_lines = order.order_line.filtered(lambda l: l.subscription_id == subscription and l.product_id.recurring_invoice)

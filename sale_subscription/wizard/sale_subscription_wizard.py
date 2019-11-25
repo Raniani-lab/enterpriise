@@ -26,6 +26,7 @@ class SaleSubscriptionWizard(models.TransientModel):
             'analytic_account_id': self.subscription_id.analytic_account_id.id,
             'team_id': team and team.id,
             'pricelist_id': self.subscription_id.pricelist_id.id,
+            'payment_term_id': self.subscription_id.payment_term_id.id,
             'fiscal_position_id': fpos.id,
             'subscription_management': 'upsell',
             'origin': self.subscription_id.code,

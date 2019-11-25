@@ -102,6 +102,7 @@ class SaleSubscription(models.Model):
         ('bad', 'Bad')], string="Health", copy=False, default='normal', translate=True, help="Set a health status")
     in_progress = fields.Boolean(related='stage_id.in_progress')
     to_renew = fields.Boolean(string='To Renew', default=False, copy=False)
+    payment_term_id = fields.Many2one('account.payment.term', string='Default Payment Terms', check_company=True, tracking=True, help="These payment terms will be used when generating new invoices and renewal/upsell orders. Note that invoices paid using online payment will use 'Already paid' regardless of this setting.")
 
     _sql_constraints = [
         ('uuid_uniq', 'unique (uuid)', """UUIDs (Universally Unique IDentifier) for Sale Subscriptions should be unique!"""),
@@ -274,6 +275,7 @@ class SaleSubscription(models.Model):
         if self.partner_id:
             self.pricelist_id = self.partner_id.with_company(self.company_id).property_product_pricelist.id
             self.fiscal_position_id = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
+            self.payment_term_id = self.partner_id.with_company(self.company_id).property_payment_term_id.id
         if self.partner_id.user_id:
             self.user_id = self.partner_id.user_id
 
@@ -516,7 +518,6 @@ class SaleSubscription(models.Model):
         end_date = fields.Date.from_string(recurring_next_date) - relativedelta(days=1)     # remove 1 day as normal people thinks in term of inclusive ranges.
         addr = self.partner_id.address_get(['delivery', 'invoice'])
 
-        sale_order = self.env['sale.order'].search([('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
         return {
             'type': 'out_invoice',
             'partner_id': addr['invoice'],
@@ -525,7 +526,7 @@ class SaleSubscription(models.Model):
             'journal_id': journal.id,
             'invoice_origin': self.code,
             'fiscal_position_id': fpos.id,
-            'invoice_payment_term_id': sale_order.payment_term_id.id if sale_order else self.partner_id.property_payment_term_id.id,
+            'invoice_payment_term_id': self.payment_term_id.id,
             'narration': _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date)),
             'invoice_user_id': self.user_id.id,
         }
@@ -604,9 +605,6 @@ class SaleSubscription(models.Model):
                     'tax_id': [(6, 0, line.tax_ids.ids)]
                 }))
             addr = subscription.partner_id.address_get(['delivery', 'invoice'])
-            sale_order = subscription.env['sale.order'].search(
-                [('order_line.subscription_id', '=', subscription.id)],
-                order="id desc", limit=1)
             res[subscription.id] = {
                 'pricelist_id': subscription.pricelist_id.id,
                 'partner_id': subscription.partner_id.id,
@@ -620,7 +618,7 @@ class SaleSubscription(models.Model):
                 'note': subscription.description,
                 'fiscal_position_id': fpos.id,
                 'user_id': subscription.user_id.id,
-                'payment_term_id': sale_order.payment_term_id.id if sale_order else subscription.partner_id.property_payment_term_id.id,
+                'payment_term_id': subscription.payment_term_id.id,
                 'company_id': subscription.company_id.id,
             }
         return res

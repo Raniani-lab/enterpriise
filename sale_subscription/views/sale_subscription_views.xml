@@ -305,6 +305,7 @@
                             <page string="Other Info" id="other_info">
                                 <group>
                                     <field name="code" attrs="{'required': [('id', '!=', False)]}"/>
+                                    <field name="payment_term_id"/>
                                     <field name="to_renew"/>
                                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                     <field name="fiscal_position_id" options="{'no_create': True}"/>

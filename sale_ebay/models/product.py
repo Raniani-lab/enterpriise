@@ -6,6 +6,7 @@ import io
 import re
 import math
 import logging
+from PIL import Image
 
 from datetime import datetime, timedelta
 from ebaysdk.exception import ConnectionError
@@ -385,16 +386,36 @@ class ProductTemplate(models.Model):
                                   " Setting the quantity to 0 is the safest method to make a variation unavailable.")
             raise UserError(_("Error Encountered.\n'%s'") % (error_message,))
 
-    def _create_picture_url(self):
+    def get_ebay_images_attachments(self):
+        """Images need to follow some guidelines to be accepted on ebay, otherwise they may generate errors
+           https://developer.ebay.com/DevZone/guides/features-guide/default.html#development/Pictures-Intro.html
+           https://developer.ebay.com/devzone/xml/docs/Reference/eBay/types/PictureDetailsType.html
+
+        :return: all attachments that are images satisfying ebay requirements
+        """
+        self.ensure_one()
         attachments = self.env['ir.attachment'].search([
             ('res_model', '=', 'product.template'),
             ('res_id', '=', self.id),
             ('mimetype', 'ilike', 'image'),
-            # images need to be at least 500 on their longest side
-            # https://developer.ebay.com/devzone/xml/docs/reference/ebay/additem.html > PictureDetails.PictureURL
-            # https://www.ebay.com/help/selling/listings/adding-pictures-listings?id=4148
-            ('res_field', '=', 'image'),
         ], order="create_date")
+
+        def is_good_image(att):
+            try:
+                data = io.BytesIO(base64.standard_b64decode(att["datas"]))
+                img = Image.open(data)
+                good_image = (max(img.size) >= 500 and
+                              sum(img.size) <= 12000 and
+                              img.size[0] * img.size[1] <= 12000 and
+                              (not img.format == 'JPEG' or img.mode == 'RGB'))
+                return good_image
+            except Exception as e:
+                return False
+
+        return attachments.filtered(lambda a: is_good_image(a))[:12]
+
+    def _create_picture_url(self):
+        attachments = self.get_ebay_images_attachments()
 
         urls = []
         for att in attachments:

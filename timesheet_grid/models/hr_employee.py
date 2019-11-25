@@ -30,6 +30,8 @@ class Employee(models.Model):
             manager = employee.parent_id.user_id
             if manager and manager.has_group('hr_timesheet.group_hr_timesheet_approver') and (employee.timesheet_manager_id == previous_manager or not employee.timesheet_manager_id):
                 employee.timesheet_manager_id = manager
+            elif not employee.timesheet_manager_id:
+                employee.timesheet_manager_id = False
 
     def get_timesheet_and_working_hours(self, date_start, date_stop):
         """ Get the difference between the supposed working hour (based on resource calendar) and

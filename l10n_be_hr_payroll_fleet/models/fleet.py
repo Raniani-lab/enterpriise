@@ -98,6 +98,14 @@ class FleetVehicle(models.Model):
             acquisition_date = vehicle._get_acquisition_date()
             vehicle.name += u" \u2022 " + acquisition_date
 
+    def _get_analytic_name(self):
+        # This function is used in fleet_account
+        name = super(FleetVehicle, self)._get_analytic_name()
+        if self.tax_deduction:
+            return '%s, %s%s' % (name, round(self.tax_deduction * 100, 2), "%")
+        else:
+            return name
+
     @api.model
     def create(self, vals):
         res = super(FleetVehicle, self).create(vals)

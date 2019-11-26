@@ -9,6 +9,7 @@ from odoo.http import request
 from odoo.tools import consteq
 from odoo.tools.image import image_data_uri
 
+from werkzeug.exceptions import NotFound
 from werkzeug.wsgi import get_current_url
 
 
@@ -109,7 +110,7 @@ class website_hr_contract_salary(http.Controller):
 
         contract = request.env['hr.contract'].sudo().browse(contract_id)
         if not contract.exists():
-            return request.render('website.http_error', {'status_code': 'Oops',
+            return request.render('http_routing.http_error', {'status_code': 'Oops',
                                                          'status_message': 'This contract has been updated, please request an updated link..'})
 
         if not request.env.user.has_group('hr_contract.group_hr_contract_manager'):
@@ -120,22 +121,22 @@ class website_hr_contract_salary(http.Controller):
                         not consteq(applicant.access_token, kw.get('token')) or \
                         applicant.access_token_end_date < fields.Date.today():
                     return request.render(
-                        'website.http_error',
+                        'http_routing.http_error',
                         {'status_code': 'Oops',
                          'status_message': 'This link is invalid. Please contact the HR Responsible to get a new one...'})
             if contract.employee_id and not contract.employee_id.user_id and not kw.get('applicant_id'):
                 return request.render(
-                    'website.http_error',
+                    'http_routing.http_error',
                     {'status_code': 'Oops',
                      'status_message': 'The employee is not linked to an existing user, please contact the administrator..'})
             if contract.employee_id and contract.employee_id.user_id != request.env.user:
-                return request.render('website.404')
+                raise NotFound()
 
         if kw.get('employee_contract_id'):
             employee_contract = request.env['hr.contract'].sudo().browse(int(kw.get('employee_contract_id')))
             if not request.env.user.has_group('hr_contract.group_hr_contract_manager') and employee_contract.employee_id \
                     and employee_contract.employee_id.user_id != request.env.user:
-                return request.render('website.404')
+                raise NotFound()
 
         contract.sudo().configure_access_token()
         if not contract.employee_id:

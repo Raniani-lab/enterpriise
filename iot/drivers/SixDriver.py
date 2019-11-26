@@ -73,7 +73,7 @@ class SixDriver(Driver):
             elif data['messageType'] == 'QueryStatus':
                 # Resends the last status if case one update got lost
                 event_manager.device_changed(self)
-        except:
+        except Exception:
             pass
 
     def open_shift(self, language):
@@ -104,7 +104,6 @@ class SixDriver(Driver):
         """
 
         self.call_eftapi('EFT_QueryStatus')
-        self.call_eftapi('EFT_Complete', 1)  # Needed to read messages from driver
         reader_status = ctypes.c_long()
         self.call_eftapi('EFT_GetDeviceEventCode', ctypes.byref(reader_status))
         if reader_status.value != 0:
@@ -139,43 +138,37 @@ class SixDriver(Driver):
         :type transaction: dict
         """
 
-        try:
-            '''Since the status is queried regularly, we don't want to re-send
-            an update for the previous transaction'''
-            self.data = {
-                'value': False,
-            }
+        self.data = {
+            'value': False,
+        }
 
-            self.processing = True
-            self.cid = transaction['id']
+        self.processing = True
+        self.cid = transaction['id']
 
-            self.call_eftapi('EFT_PutCurrency', transaction['currency'])
+        self.call_eftapi('EFT_PutCurrency', transaction['currency'])
 
-            if transaction['type'] == b'debit':
-                self.send_status(stage='WaitingForCard', owner=transaction['owner'], cid=transaction['id'])
+        if transaction['type'] == b'debit':
+            self.send_status(stage='WaitingForCard', owner=transaction['owner'], cid=transaction['id'])
 
-            self.call_eftapi('EFT_Transaction', transaction['type'], transaction['amount'], 0)
-            self.call_eftapi('EFT_Commit', 1)
+        self.call_eftapi('EFT_Transaction', transaction['type'], transaction['amount'], 0)
+        self.call_eftapi('EFT_Commit', 1)
 
-            applicationName = ctypes.create_string_buffer(64)
-            self.call_eftapi('EFT_GetApplicationName', ctypes.byref(applicationName), ctypes.sizeof(applicationName))
-            refNumber = ctypes.create_string_buffer(11)
-            self.call_eftapi('EFT_GetRefNumber', ctypes.byref(refNumber), ctypes.sizeof(refNumber))
+        applicationName = ctypes.create_string_buffer(64)
+        self.call_eftapi('EFT_GetApplicationName', ctypes.byref(applicationName), ctypes.sizeof(applicationName))
+        refNumber = ctypes.create_string_buffer(11)
+        self.call_eftapi('EFT_GetRefNumber', ctypes.byref(refNumber), ctypes.sizeof(refNumber))
 
-            self.last_transaction = transaction
-            self.processing = False
-            
-            self.send_status(
-                response="Approved" if transaction['type'] == b'debit' else "Reversed",
-                ticket=self.get_customer_receipt(),
-                ticket_merchant=self.get_merchant_receipt(),
-                owner=transaction['owner'],
-                card=applicationName.value,
-                payment_transaction_id=refNumber.value,
-            )
+        self.last_transaction = transaction
+        self.processing = False
 
-        except:
-            pass
+        self.send_status(
+            response="Approved" if transaction['type'] == b'debit' else "Reversed",
+            ticket=self.get_customer_receipt(),
+            ticket_merchant=self.get_merchant_receipt(),
+            owner=transaction['owner'],
+            card=applicationName.value,
+            payment_transaction_id=refNumber.value,
+        )
 
     def get_customer_receipt(self):
         """Gets the transaction receipt destined to the cutomer."""

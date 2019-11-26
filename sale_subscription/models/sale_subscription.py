@@ -1233,8 +1233,7 @@ class SaleSubscriptionAlert(models.Model):
             if alert.mrr_max:
                 domain += [('recurring_monthly', '<=', alert.mrr_max)]
             if alert.product_ids:
-                template_ids = alert.product_ids.mapped('product_tmpl_id.subscription_template_id').ids
-                domain += [('template_id', 'in', template_ids)]
+                domain += [('recurring_invoice_line_ids.product_id', 'in', alert.product_ids.ids)]
             if alert.mrr_change_amount:
                 if alert.mrr_change_unit == 'percentage':
                     domain += [('kpi_%s_mrr_percentage' % (alert.mrr_change_period), '>', alert.mrr_change_amount / 100)]

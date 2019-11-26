@@ -420,7 +420,7 @@ class WinbooksImportWizard(models.TransientModel):
                 repartition_type = rec.get('DOCORDER') == 'VAT' and 'tax' or 'base'
                 line_data[2].update({
                     'tax_ids': tax_line and rec.get('DOCORDER') != 'VAT' and[(4, tax_line.id)] or [],
-                    'tag_ids': [(6, 0, tax_line.get_tax_tags(is_refund, repartition_type).ids)],
+                    'tax_tag_ids': [(6, 0, tax_line.get_tax_tags(is_refund, repartition_type).ids)],
                     'tax_repartition_line_id': rec.get('DOCORDER') == 'VAT' and repartition_line.filtered(lambda x: x.repartition_type == repartition_type).id or False,
                 })
             move_line_data_list = [i for i in move_line_data_list if i[2]['account_id'] or i[2]['debit'] or i[2]['credit']]  # Remove empty lines

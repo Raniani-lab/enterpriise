@@ -74,7 +74,7 @@
         <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]//td[1]" position="before">
             <td t-if="o.l10n_mx_edi_cfdi_uuid and xml.get('Version')"><span t-field="line.product_id.l10n_mx_edi_code_sat_id.code"/></td>
         </xpath>
-        <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]//td[4]" position="after">
+        <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]//td[3]" position="after">
             <td class="text-right" t-if="o.l10n_mx_edi_cfdi_uuid and xml.get('Version')"><span t-field="line.product_uom_id.l10n_mx_edi_code_sat_id.code"/></td>
         </xpath>
         <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]//td[1]" position="inside">

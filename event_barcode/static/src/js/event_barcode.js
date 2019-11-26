@@ -13,7 +13,8 @@ var QWeb = core.qweb;
 var EventScanView = AbstractAction.extend({
     contentTemplate: 'event_barcode_template',
     events: {
-        'click .o_event_select_attendee': '_onClickSelectAttendee'
+        'click .o_event_select_attendee': '_onClickSelectAttendee',
+        'click .o_event_previous_menu': '_onClickPrevious',
     },
 
     /**
@@ -44,6 +45,7 @@ var EventScanView = AbstractAction.extend({
      */
     start: function() {
         core.bus.on('barcode_scanned', this, this._onBarcodeScanned);
+        this._onBarcodeScanned('15840799540571210623');
     },
     /**
      * @override
@@ -70,40 +72,86 @@ var EventScanView = AbstractAction.extend({
                 event_id: self.action.context.active_id
             }
         }).then(function(result) {
-            if (result.registration && (result.registration.alert || !_.isEmpty(result.registration.information))) {
-                new Dialog(self, {
-                    title: _t('Registration Summary'),
-                    size: 'medium',
-                    $content: QWeb.render('event_registration_summary', {
-                        'success': result.success,
-                        'warning': result.warning,
-                        'registration': result.registration
-                    }),
-                    buttons: [
-                        {text: _t('Close'), close: true, classes: 'btn-primary'},
-                        {text: _t('Print'), click: function () {
-                          self.do_action({
-                              type: 'ir.actions.report',
-                              report_type: 'qweb-pdf',
-                              report_name: 'event.event_registration_report_template_badge/' + result.registration.id,
-                          });
-                        }
-                    },
-                    {text: _t('View'), close: true, click: function() {
-                        self.do_action({
-                            type: 'ir.actions.act_window',
-                            res_model: 'event.registration',
-                            res_id: result.registration.id,
-                            views: [[false, 'form']],
-                            target: 'current'
-                        });
-                    }},
-                ]}).open();
-            } else if (result.success) {
-                self.do_notify(result.success, false, false, 'o_event_success');
-            } else if (result.warning) {
-                self.do_warn(_t("Warning"), result.warning);
+            if (result.error && result.error === 'invalid_ticket') {
+                self.do_warn(_t("Warning"), 'This ticket is not valid');
+            } else {
+                self.registrationId = result.id;
+                new Dialog(self, self._createSummaryModal(result)).open();
             }
+        });
+    },
+
+    _createSummaryModal: function(result) {
+        return {
+            title: _t('Registration Summary'),
+            size: 'medium',
+            $content: QWeb.render('event_registration_summary', {
+                'registration': result
+            }),
+            buttons: this._buildButtons(result.status === 'need_manual_confirmation')
+        }
+    },
+
+    _buildButtons: function(need_manual_confirmation) {
+        var self = this;
+        var buttons = [];
+        if (need_manual_confirmation) {
+            buttons.push({
+                text: _t('Confirm'),
+                close: true,
+                classes: 'btn-primary',
+                click: function() {
+                    self._onManualConfirm();
+                }
+            }, {
+                text: _t('Close'),
+                close: true,
+                classes: 'btn-secondary'
+            });
+        } else {
+            buttons.push({text: _t('Close'), close: true, classes: 'btn-primary'});
+        }
+        buttons.push({
+            text: _t('Print'),
+            click: function () {
+                self._onPrintPdf();
+            }
+        }, {
+            text: _t('View'),
+            close: true,
+            click: function() {
+                self._onViewRegistration();
+            }
+        });
+        return buttons;
+    },
+
+    _onManualConfirm: function() {
+        var self = this;
+        this._rpc({
+            model: 'event.registration',
+            method: 'action_set_done',
+            args: [this.registrationId]
+        }).then(function () {
+            self.do_notify(_t("Success"), _t("Registration confirmed"))
+        })
+    },
+
+    _onPrintPdf: function() {
+        this.do_action({
+            type: 'ir.actions.report',
+            report_type: 'qweb-pdf',
+            report_name: `event.event_registration_report_template_badge/${this.registrationId}`,
+        });
+    },
+
+    _onViewRegistration: function() {
+        this.do_action({
+            type: 'ir.actions.act_window',
+            res_model: 'event.registration',
+            res_id: this.registrationId,
+            views: [[false, 'form']],
+            target: 'current'
         });
     },
 
@@ -115,13 +163,25 @@ var EventScanView = AbstractAction.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    _onClickSelectAttendee(ev) {
+    _onClickSelectAttendee: function() {
         this.do_action('event_barcode.act_event_registration_from_barcode', {
             additional_context: {
                 active_id: this.action.context.active_id,
             },
         });
-    }
+    },
+
+    _onClickPrevious: function(ev) {
+        ev.preventDefault();
+        return this.do_action({
+            type: 'ir.actions.act_window',
+            res_model: 'event.event',
+            res_id: this.action.context.active_id,
+            views: [[false, 'form']],
+            view_mode: 'form',
+            target: 'current',
+        });
+    },
 });
 
 core.action_registry.add('even_barcode.scan_view', EventScanView);

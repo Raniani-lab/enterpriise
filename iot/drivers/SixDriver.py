@@ -77,24 +77,18 @@ class SixDriver(Driver):
             pass
 
     def open_shift(self, language):
-        """Opens the shift if it was closed (activation_state.value == 0)"""
+        """Opens the shift and configures the language and receipt options"""
 
-        activation_state = ctypes.c_long()
-        self.call_eftapi('EFT_GetActivationState', ctypes.byref(activation_state))
         self.call_eftapi('EFT_PutPrinterWidth', 45)
         self.call_eftapi('EFT_PutReceiptOptions', 1089)
-        if activation_state.value == 0:
-            self.call_eftapi('EFT_PutLanguage', language)
-            self.call_eftapi('EFT_Open')
+        self.call_eftapi('EFT_PutLanguage', language)
+        self.call_eftapi('EFT_Open')
 
     def close_shift(self):
-        """Closes the shift if it was open (activation_state.value == 1)"""
+        """Closes the shift"""
 
-        activation_state = ctypes.c_long()
-        self.call_eftapi('EFT_GetActivationState', ctypes.byref(activation_state))
-        if activation_state.value == 1:
-            self.last_transaction = {}
-            self.call_eftapi('EFT_Close')
+        self.last_transaction = {}
+        self.call_eftapi('EFT_Close')
 
     def balance(self):
         """Sends a "Balance" operation then triggers an update with a the ticket

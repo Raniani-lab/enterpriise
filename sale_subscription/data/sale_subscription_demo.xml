@@ -79,7 +79,56 @@
         </record>
 
         <!-- Demo Subscriptions -->
-        <record id="subscription_portal_21" model="sale.subscription">
+
+        <record id="subscription_portal_23" model="sale.subscription">
+            <field name="name">Office Cleaning Service</field>
+            <field name="partner_id" ref="base.partner_demo_portal"/>
+            <field name="template_id" ref="sale_subscription.monthly_subscription"/>
+            <field name="pricelist_id" ref="product.list0"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="date_start" eval="(DateTime.now() - timedelta(days=36))"/>
+            <field name="recurring_next_date" eval="(DateTime.now() - timedelta(days=36) + timedelta(days=30))"/>
+            <field name="stage_id" ref="sale_subscription.sale_subscription_stage_closed"/>
+        </record>
+
+        <record id="rec_inv_line_36" model="sale.subscription.line">
+            <field name="name">Office Cleaning Service</field>
+            <field name="analytic_account_id" ref="subscription_portal_23"/>
+            <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
+            <field name="quantity">3</field>
+            <field name="price_unit">20.0</field>
+            <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
+        </record>
+
+        <function model="sale.subscription"
+                  name="on_change_template"
+                  eval="[ref('sale_subscription.subscription_portal_23')]"/>,
+
+        <record id="subscription_portal_22" model="sale.subscription">
+            <field name="name">Office Cleaning Service</field>
+            <field name="partner_id" ref="base.partner_demo_portal"/>
+            <field name="template_id" ref="sale_subscription.yearly_subscription"/>
+            <field name="pricelist_id" ref="product.list0"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="date_start" eval="(DateTime.now() - timedelta(days=1))"/>
+            <field name="recurring_next_date" eval="(DateTime.now() - timedelta(days=1) + timedelta(days=365))"/>
+            <field name="stage_id" ref="sale_subscription.sale_subscription_stage_in_progress"/>
+        </record>
+
+        <record id="rec_inv_line_32" model="sale.subscription.line">
+            <field name="name">Office Cleaning Service (yearly subscription)</field>
+            <field name="analytic_account_id" ref="subscription_portal_22"/>
+            <field name="product_id" ref="sale_subscription.product_office_cleaning_yearly"/>
+            <field name="quantity">2</field>
+            <field name="price_unit">20.0</field>
+            <field name="uom_id" ref="sale_subscription.subscription_uom_year"/>
+        </record>
+    
+        <function model="sale.subscription"
+                  name="on_change_template"
+                  eval="[ref('sale_subscription.subscription_portal_22')]"/>,
+
+         <record id="subscription_portal_21" model="sale.subscription">
             <field name="name">Office Cleaning Service</field>
             <field name="partner_id" ref="base.partner_demo_portal"/>
             <field name="template_id" ref="sale_subscription.monthly_subscription"/>
@@ -98,203 +147,10 @@
             <field name="price_unit">20.0</field>
             <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
         </record>
-    
+
         <function model="sale.subscription"
                   name="on_change_template"
                   eval="[ref('sale_subscription.subscription_portal_21')]"/>,
-
-        <record id="subscription_portal_22" model="sale.subscription">
-            <field name="name">Office Cleaning Service</field>
-            <field name="partner_id" ref="base.partner_demo_portal"/>
-            <field name="template_id" ref="sale_subscription.monthly_subscription"/>
-            <field name="pricelist_id" ref="product.list0"/>
-            <field name="user_id" ref="base.user_admin"/>
-            <field name="date_start" eval="(DateTime.now() - timedelta(days=67))"/>
-            <field name="recurring_next_date" eval="(DateTime.now() - timedelta(days=67) + timedelta(days=30))"/>
-            <field name="stage_id" ref="sale_subscription.sale_subscription_stage_in_progress"/>
-        </record>
-
-        <record id="rec_inv_line_32" model="sale.subscription.line">
-            <field name="name">Office Cleaning Service</field>
-            <field name="analytic_account_id" ref="subscription_portal_22"/>
-            <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
-            <field name="quantity">1</field>
-            <field name="price_unit">20.0</field>
-            <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
-        </record>
-    
-        <function model="sale.subscription"
-                  name="on_change_template"
-                  eval="[ref('sale_subscription.subscription_portal_22')]"/>,
-
-        <record id="subscription_portal_23" model="sale.subscription">
-            <field name="name">Office Cleaning Service</field>
-            <field name="partner_id" ref="base.partner_demo_portal"/>
-            <field name="template_id" ref="sale_subscription.monthly_subscription"/>
-            <field name="pricelist_id" ref="product.list0"/>
-            <field name="user_id" ref="base.user_admin"/>
-            <field name="date_start" eval="(DateTime.now() - timedelta(days=54))"/>
-            <field name="recurring_next_date" eval="(DateTime.now() - timedelta(days=54) + timedelta(days=30))"/>
-            <field name="stage_id" ref="sale_subscription.sale_subscription_stage_in_progress"/>
-        </record>
-
-        <record id="rec_inv_line_33" model="sale.subscription.line">
-            <field name="name">Office Cleaning Service</field>
-            <field name="analytic_account_id" ref="subscription_portal_23"/>
-            <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
-            <field name="quantity">1</field>
-            <field name="price_unit">20.0</field>
-            <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
-        </record>
-    
-        <function model="sale.subscription"
-                  name="on_change_template"
-                  eval="[ref('sale_subscription.subscription_portal_23')]"/>,
-
-        <record id="subscription_portal_24" model="sale.subscription">
-            <field name="name">Office Cleaning Service</field>
-            <field name="partner_id" ref="base.partner_demo_portal"/>
-            <field name="template_id" ref="sale_subscription.monthly_subscription"/>
-            <field name="pricelist_id" ref="product.list0"/>
-            <field name="user_id" ref="base.user_admin"/>
-            <field name="date_start" eval="(DateTime.now() - timedelta(days=53))"/>
-            <field name="recurring_next_date" eval="(DateTime.now() - timedelta(days=53) + timedelta(days=30))"/>
-            <field name="stage_id" ref="sale_subscription.sale_subscription_stage_in_progress"/>
-        </record>
-
-        <record id="rec_inv_line_34" model="sale.subscription.line">
-            <field name="name">Office Cleaning Service</field>
-            <field name="analytic_account_id" ref="subscription_portal_24"/>
-            <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
-            <field name="quantity">1</field>
-            <field name="price_unit">20.0</field>
-            <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
-        </record>
-    
-        <function model="sale.subscription"
-                  name="on_change_template"
-                  eval="[ref('sale_subscription.subscription_portal_24')]"/>,
-
-        <record id="subscription_portal_25" model="sale.subscription">
-            <field name="name">Office Cleaning Service</field>
-            <field name="partner_id" ref="base.partner_demo_portal"/>
-            <field name="template_id" ref="sale_subscription.monthly_subscription"/>
-            <field name="pricelist_id" ref="product.list0"/>
-            <field name="user_id" ref="base.user_admin"/>
-            <field name="date_start" eval="(DateTime.now() - timedelta(days=47))"/>
-            <field name="recurring_next_date" eval="(DateTime.now() - timedelta(days=47) + timedelta(days=30))"/>
-            <field name="stage_id" ref="sale_subscription.sale_subscription_stage_in_progress"/>
-        </record>
-
-        <record id="rec_inv_line_35" model="sale.subscription.line">
-            <field name="name">Office Cleaning Service</field>
-            <field name="analytic_account_id" ref="subscription_portal_25"/>
-            <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
-            <field name="quantity">1</field>
-            <field name="price_unit">20.0</field>
-            <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
-        </record>
-    
-        <function model="sale.subscription"
-                  name="on_change_template"
-                  eval="[ref('sale_subscription.subscription_portal_25')]"/>,
-
-        <record id="subscription_portal_26" model="sale.subscription">
-            <field name="name">Office Cleaning Service</field>
-            <field name="partner_id" ref="base.partner_demo_portal"/>
-            <field name="template_id" ref="sale_subscription.monthly_subscription"/>
-            <field name="pricelist_id" ref="product.list0"/>
-            <field name="user_id" ref="base.user_admin"/>
-            <field name="date_start" eval="(DateTime.now() - timedelta(days=36))"/>
-            <field name="recurring_next_date" eval="(DateTime.now() - timedelta(days=36) + timedelta(days=30))"/>
-            <field name="stage_id" ref="sale_subscription.sale_subscription_stage_upsell"/>
-        </record>
-
-        <record id="rec_inv_line_36" model="sale.subscription.line">
-            <field name="name">Office Cleaning Service</field>
-            <field name="analytic_account_id" ref="subscription_portal_26"/>
-            <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
-            <field name="quantity">1</field>
-            <field name="price_unit">20.0</field>
-            <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
-        </record>
-    
-        <function model="sale.subscription"
-                  name="on_change_template"
-                  eval="[ref('sale_subscription.subscription_portal_26')]"/>,
-
-        <record id="subscription_portal_27" model="sale.subscription">
-            <field name="name">Office Cleaning Service</field>
-            <field name="partner_id" ref="base.partner_demo_portal"/>
-            <field name="template_id" ref="sale_subscription.monthly_subscription"/>
-            <field name="pricelist_id" ref="product.list0"/>
-            <field name="user_id" ref="base.user_admin"/>
-            <field name="date_start" eval="(DateTime.now() - timedelta(days=27))"/>
-            <field name="recurring_next_date" eval="(DateTime.now() - timedelta(days=27) + timedelta(days=30))"/>
-            <field name="stage_id" ref="sale_subscription.sale_subscription_stage_upsell"/>
-        </record>
-
-        <record id="rec_inv_line_37" model="sale.subscription.line">
-            <field name="name">Office Cleaning Service</field>
-            <field name="analytic_account_id" ref="subscription_portal_27"/>
-            <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
-            <field name="quantity">1</field>
-            <field name="price_unit">15.0</field>
-            <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
-        </record>
-    
-        <function model="sale.subscription"
-                  name="on_change_template"
-                  eval="[ref('sale_subscription.subscription_portal_27')]"/>,
-
-        <record id="subscription_portal_28" model="sale.subscription">
-            <field name="name">Office Cleaning Service</field>
-            <field name="partner_id" ref="base.partner_demo_portal"/>
-            <field name="template_id" ref="sale_subscription.monthly_subscription"/>
-            <field name="pricelist_id" ref="product.list0"/>
-            <field name="user_id" ref="base.user_admin"/>
-            <field name="date_start" eval="(DateTime.now() - timedelta(days=26))"/>
-            <field name="recurring_next_date" eval="(DateTime.now() - timedelta(days=26) + timedelta(days=30))"/>
-            <field name="stage_id" ref="sale_subscription.sale_subscription_stage_in_progress"/>
-        </record>
-
-        <record id="rec_inv_line_38" model="sale.subscription.line">
-            <field name="name">Office Cleaning Service</field>
-            <field name="analytic_account_id" ref="subscription_portal_28"/>
-            <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
-            <field name="quantity">1</field>
-            <field name="price_unit">20.0</field>
-            <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
-        </record>
-    
-        <function model="sale.subscription"
-                  name="on_change_template"
-                  eval="[ref('sale_subscription.subscription_portal_28')]"/>,
-
-        <record id="subscription_portal_29" model="sale.subscription">
-            <field name="name">Office Cleaning Service</field>
-            <field name="partner_id" ref="base.partner_demo_portal"/>
-            <field name="template_id" ref="sale_subscription.monthly_subscription"/>
-            <field name="pricelist_id" ref="product.list0"/>
-            <field name="user_id" ref="base.user_admin"/>
-            <field name="date_start" eval="(DateTime.now() - timedelta(days=13))"/>
-            <field name="recurring_next_date" eval="(DateTime.now() - timedelta(days=13) + timedelta(days=30))"/>
-            <field name="stage_id" ref="sale_subscription.sale_subscription_stage_in_progress"/>
-        </record>
-
-        <record id="rec_inv_line_39" model="sale.subscription.line">
-            <field name="name">Office Cleaning Service</field>
-            <field name="analytic_account_id" ref="subscription_portal_29"/>
-            <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
-            <field name="quantity">1</field>
-            <field name="price_unit">20.0</field>
-            <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
-        </record>
-    
-        <function model="sale.subscription"
-                  name="on_change_template"
-                  eval="[ref('sale_subscription.subscription_portal_29')]"/>,
-        
         <!-- Demo Alerts -->
 
         <record id="subscription_alert_percent_revenue" model="sale.subscription.alert">

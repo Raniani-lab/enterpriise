@@ -337,7 +337,9 @@ var PickingClientAction = ClientAction.extend({
                     'model': 'stock.picking',
                     'method': 'put_in_pack',
                     'args': [[self.actionParams.pickingId]],
-                    kwargs: {context: self.context},
+                    kwargs: {
+                        context: _.extend({}, self.context || {}, {barcode_view: true})
+                    },
                 }).then(function (res) {
                     var def = Promise.resolve();
                     self._endBarcodeFlow();

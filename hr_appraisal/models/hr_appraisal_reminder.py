@@ -11,15 +11,15 @@ class HrAppraisalReminder(models.Model):
     _description = "Employee Appraisal Reminder Setting"
 
     notify = fields.Selection([
-        ('manager', 'manager'),
-        ('employee', 'employee')
-        ], string='Notify', required=True, default='manager')
+        ('manager', 'Manager'),
+        ('employee', 'Employee')
+        ], string='Person to Notify', required=True, default='manager')
     appraisal_reminder = fields.Integer(string="Send Reminder (in months)", default=6, required=True)
     event = fields.Selection([
-        ('arrival', 'after the arrival date'),
-        ('last_appraisal', 'after the last appraisal')
+        ('arrival', 'month after the arrival date'),
+        ('last_appraisal', 'month after the last appraisal')
         ], string='After event', required=True, default='last_appraisal')
-    subject = fields.Char('Subject')
+    subject = fields.Char('Email Subject', default="Appraisal Reminder")
     body_html = fields.Html('Body')
     company_id = fields.Many2one('res.company', required=True, ondelete='cascade', default=lambda self: self.env.company)
 

@@ -26,7 +26,6 @@ class HrEmployee(models.Model):
     periodic_appraisal_created = fields.Boolean(string='Periodic Appraisal has been created', groups="hr.group_hr_user", default=False)  # Flag for the cron
     appraisal_count = fields.Integer(compute='_compute_appraisal_count', string='Appraisals', groups="hr.group_hr_user")
     related_partner_id = fields.Many2one('res.partner', compute='_compute_related_partner', groups="hr.group_hr_user")
-    parent_user_id = fields.Many2one(related='parent_id.user_id', string="Parent User", groups="hr.group_hr_user")
     last_duration_reminder_send = fields.Integer(string='Duration after last appraisal when we send last reminder mail',
         groups="hr.group_hr_user", default=0)
 
@@ -127,15 +126,11 @@ class HrEmployee(models.Model):
         appraisal_values = [{
             'employee_id': employee.id,
             'date_close': fields.Date.to_string(current_date + relativedelta(months=months)),
-            'manager_appraisal': employee.appraisal_by_manager,
             'manager_ids': [(4, manager.id) for manager in employee.appraisal_manager_ids],
             'manager_body_html': employee.company_id.appraisal_by_manager_body_html,
-            'colleagues_appraisal': employee.appraisal_by_colleagues,
             'colleagues_ids': [(4, colleagues.id) for colleagues in employee.appraisal_colleagues_ids],
             'colleagues_body_html': employee.company_id.appraisal_by_colleagues_body_html,
-            'employee_appraisal': employee.appraisal_self,
             'employee_body_html': employee.company_id.appraisal_by_employee_body_html,
-            'collaborators_appraisal': employee.appraisal_by_collaborators,
             'collaborators_ids': [(4, subordinates.id) for subordinates in employee.appraisal_collaborators_ids],
             'collaborators_body_html': employee.company_id.appraisal_by_collaborators_body_html,
         } for employee in employees_to_appraise]
@@ -143,13 +138,3 @@ class HrEmployee(models.Model):
         employees_to_appraise.write({'periodic_appraisal_created': True})
 
         self.env['hr.appraisal.reminder']._run_employee_appraisal_reminder()
-
-    def action_send_appraisal_request(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_model': 'request.appraisal',
-            'target': 'new',
-            'name': 'Appraisal Request',
-            'context': self.env.context,
-        }

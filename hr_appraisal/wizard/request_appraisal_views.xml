@@ -8,7 +8,8 @@
                 <form string="Compose Email">
                     <group col="1">
                         <group col="2">
-                            <field name="recipient_id"
+                            <field name="recipient_ids"
+                                widget="many2many_tags"
                                 placeholder="Add existing contacts..."
                                 context="{'force_email':True, 'show_email':True, 'no_create_edit': True}"/>
                         </group>

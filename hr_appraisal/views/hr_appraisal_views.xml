@@ -38,12 +38,6 @@
                         <field name="date_close" attrs="{'readonly':[('state','in', ('pending','done'))]}"/>
                         <field name="company_id" groups="base.group_multi_company" required="1"/>
                     </group>
-                    <group>
-                        <field name="employee_appraisal" string="Mail To Employee"/>
-                        <field name="manager_appraisal" string="Mail To Manager"/>
-                        <field name="collaborators_appraisal" string="Mail To Subordinates"/>
-                        <field name="colleagues_appraisal" string="Mail To Colleagues"/>
-                    </group>
                 </group>
                 <field name="is_autorized_to_send" invisible="1"/>
                 <field name="active" invisible="1"/>
@@ -54,10 +48,10 @@
                     </page>
                     <page string="Mail To Send">
                         <group>
-                            <field name="manager_body_html" string="Mail To Manager" attrs="{'invisible':[('manager_appraisal','=',False)]}"/>
-                            <field name="employee_body_html" string="Mail To Employee" attrs="{'invisible':[('employee_appraisal','=',False)]}"/>
-                            <field name="collaborators_body_html" string="Mail To Collaborators" attrs="{'invisible':[('collaborators_appraisal','=',False)]}"/>
-                            <field name="colleagues_body_html" string="Mail To Colleagues" attrs="{'invisible':[('colleagues_appraisal','=',False)]}"/>
+                            <field name="manager_body_html" string="Mail To Manager" attrs="{'invisible':[('manager_ids', '=', [])]}"/>
+                            <field name="employee_body_html" string="Mail To Employee"/>
+                            <field name="collaborators_body_html" string="Mail To Subordinates" attrs="{'invisible':[('collaborators_ids', '=', [])]}"/>
+                            <field name="colleagues_body_html" string="Mail To Colleagues" attrs="{'invisible':[('colleagues_ids', '=', [])]}"/>
                         </group>
                     </page>
                 </notebook>

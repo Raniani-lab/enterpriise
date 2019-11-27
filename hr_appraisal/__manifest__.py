@@ -38,6 +38,7 @@ Key Features
         'views/res_config_settings_view.xml',
         'views/res_users_views.xml',
         'views/hr_employee_views.xml',
+        'views/hr_employee_public_views.xml',
         'data/hr_appraisal_data.xml',
         'data/mail_data.xml',
     ],

@@ -12,7 +12,6 @@
                     <label for="appraisal_reminder" string="When"/>
                     <div class="o_row" name="appraisal_reminder">
                         <field name="appraisal_reminder" nolabel="1"/>
-                        <span> months</span>
                         <field name="event" class="o_inline" nolabel="1"/>
                     </div>
                 </group>

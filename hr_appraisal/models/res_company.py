@@ -13,7 +13,7 @@ class ResCompany(models.Model):
         <p>An appraisal was requested.</p>
         <p>Please schedule an appraisal date together.</p>
         <p>Hereunder, you will find the link towards the Performance appraisal form:<br/>
-        [link]<br/>
+        https://docs.google.com/document/d/15xewrZLDQYBNoWObUEfO3RXelaOQf7AoCsBuoxQs06U/edit<br/>
         The employee copy the document and complete his part, then share the document with the manager with edition right in order for him to complete his part.
         </p>
         <br/>

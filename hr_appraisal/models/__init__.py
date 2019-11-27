@@ -6,6 +6,7 @@ from . import calendar_event
 from . import hr_appraisal
 from . import hr_appraisal_reminder
 from . import hr_employee
+from . import hr_employee_base
 from . import hr_department
 from . import res_config_settings
 from . import res_users

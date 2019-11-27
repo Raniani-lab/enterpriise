@@ -87,7 +87,7 @@
                     </header>
                     <sheet>
                         <group>
-                            <label for="Name" class="oe_edit_only" string="Name"/>
+                            <label for="name" class="oe_edit_only" string="Name"/>
                             <h2><field name="name"/></h2>
                             <label for="date" class="oe_edit_only"/>
                             <div><field name="date"/></div>

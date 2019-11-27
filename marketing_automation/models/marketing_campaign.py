@@ -151,7 +151,7 @@ class MarketingCampaign(models.Model):
                 trigger_type = trace.activity_id.trigger_type
                 if trigger_type == 'begin':
                     trace.schedule_date = Datetime.from_string(trace.participant_id.create_date) + trace_offset
-                elif trigger_type in ['act', 'mail_not_open', 'mail_not_click', 'mail_not_reply'] and trace.parent_id:
+                elif trigger_type in ['activity', 'mail_not_open', 'mail_not_click', 'mail_not_reply'] and trace.parent_id:
                     trace.schedule_date = Datetime.from_string(trace.parent_id.schedule_date) + trace_offset
                 elif trace.parent_id:
                     process_dt = trace.parent_id.mailing_trace_ids.state_update
@@ -357,7 +357,7 @@ class MarketingActivity(models.Model):
     child_ids = fields.One2many('marketing.activity', 'parent_id', string='Child Activities')
     trigger_type = fields.Selection([
         ('begin', 'beginning of campaign'),
-        ('act', 'another activity'),
+        ('activity', 'another activity'),
         ('mail_open', 'Mail: opened'),
         ('mail_not_open', 'Mail: not opened'),
         ('mail_reply', 'Mail: replied'),
@@ -716,7 +716,7 @@ class MarketingActivity(models.Model):
                     'participant_id': trace.participant_id.id,
                     'activity_id': activity.id
                 }
-                if activity.trigger_type in ['act', 'mail_not_open', 'mail_not_click', 'mail_not_reply']:
+                if activity.trigger_type in ['activity', 'mail_not_open', 'mail_not_click', 'mail_not_reply']:
                     vals['schedule_date'] = Datetime.from_string(trace.schedule_date) + activity_offset
                 child_traces |= child_traces.create(vals)
 

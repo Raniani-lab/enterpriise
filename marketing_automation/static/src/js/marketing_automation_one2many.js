@@ -229,7 +229,7 @@ var HierarchyKanbanRecord = KanbanRecord.extend({
                     html: _t("This Activity has a dependant child activity. 'DELETE ALL' will delete all child activities."),
                 }),
             }).open();
-        } else if (_.indexOf(['act', 'mail_open', 'mail_not_open', 'mail_reply', 'mail_not_reply', 'mail_click', 'mail_not_click', 'mail_bounce'], type) !== -1) {
+        } else if (_.indexOf(['activity', 'mail_open', 'mail_not_open', 'mail_reply', 'mail_not_reply', 'mail_click', 'mail_not_click', 'mail_bounce'], type) !== -1) {
             // If we are in edit mode and we create a new kanban record,
             // we cannot add a child activity for this record before saving.
             if (this.id) {

@@ -14,7 +14,7 @@
               </h1>
               <group name="rental_configurator">
                 <group name="rental_specs">
-                    <label for="pickup_date" string="Date"/>
+                    <label for="pickup_date" string="Dates"/>
                     <div class="o_row">
                         <field name="pickup_date" widget="daterange" options="{'related_end_date': 'return_date'}"/>
                         <span> to </span>

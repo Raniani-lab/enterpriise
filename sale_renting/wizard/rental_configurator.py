@@ -25,13 +25,13 @@ class RentalWizard(models.TransientModel):
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company.id, store=False)
 
     pickup_date = fields.Datetime(
-        string="Pickup", required=True, help="Date of Pickup",
+        string="Pickup", required=True,
         default=lambda s: fields.Datetime.now() + relativedelta(minute=0, second=0, hours=1))
     return_date = fields.Datetime(
-        string="Return", required=True, help="Date of Return",
+        string="Return", required=True,
         default=lambda s: fields.Datetime.now() + relativedelta(minute=0, second=0, hours=1, days=1))
 
-    quantity = fields.Float("Quantity", default=1, required=True)  # Can be changed on SO line later if needed
+    quantity = fields.Float("Quantity", default=1, required=True, digits='Product Unit of Measure')  # Can be changed on SO line later if needed
 
     pricing_id = fields.Many2one(
         'rental.pricing', compute="_compute_pricing",
@@ -40,7 +40,7 @@ class RentalWizard(models.TransientModel):
 
     duration = fields.Integer(
         string="Duration", compute="_compute_duration",
-        help="Duration of the rental (in unit of the pricing)")
+        help="The duration unit is the one of the rental pricing rule applying here.")
     duration_unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks"), ("month", "Months")],
                                      string="Unit", required=True, compute="_compute_duration")
 

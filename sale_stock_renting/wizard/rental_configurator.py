@@ -25,7 +25,7 @@ class RentalWizard(models.TransientModel):
     tracking = fields.Selection(related='product_id.tracking')
     lot_ids = fields.Many2many(
         'stock.production.lot',
-        string="Serial Numbers", help="Only available serial numbers are suggested",
+        string="Serial Numbers", help="Only available serial numbers are suggested.",
         domain="[('id', 'not in', rented_lot_ids), ('id', 'in', rentable_lot_ids)]")
     rentable_lot_ids = fields.Many2many(
         'stock.production.lot',
@@ -37,7 +37,7 @@ class RentalWizard(models.TransientModel):
     # Rental Availability
     qty_available_during_period = fields.Float(
         string="Quantity available for given period (Stock - In Rent)",
-        compute='_compute_rental_availability')
+        compute='_compute_rental_availability', digits='Product Unit of Measure')
 
     is_product_storable = fields.Boolean(compute="_compute_is_product_storable")
 

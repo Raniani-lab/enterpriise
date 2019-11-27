@@ -332,6 +332,11 @@ class HelpdeskTeam(models.Model):
         action['domain'] = [('res_id', 'in', ticket_ids), ('rating', '!=', -1), ('res_model', '=', 'helpdesk.ticket'), ('consumed', '=', True)]
         return action
 
+    def action_view_ticket(self):
+        action = self.env.ref('helpdesk.helpdesk_ticket_action_team').read()[0]
+        action['display_name'] = self.name
+        return action
+
     @api.model
     def action_view_rating_today(self):
         #  call this method of on click "Customer Rating" button on dashbord for today rating of teams tickets

@@ -428,7 +428,7 @@
                             <div class="container o_kanban_card_content" t-if="!selection_mode">
                                 <div class="row">
                                     <div class="col-6 o_kanban_primary_left">
-                                        <button class="btn btn-primary" name="%(helpdesk.helpdesk_ticket_action_team)d" type="action">Tickets</button>
+                                        <button class="btn btn-primary" name="action_view_ticket" type="object">Tickets</button>
                                     </div>
                                     <div class="col-6 o_kanban_primary_right">
                                         <div class="mb4" groups="helpdesk.group_use_sla" attrs="{'invisible': [('use_sla', '=', False)]}">

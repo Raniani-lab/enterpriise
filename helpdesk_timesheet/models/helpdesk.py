@@ -11,39 +11,36 @@ class HelpdeskTeam(models.Model):
     project_id = fields.Many2one("project.project", string="Project", ondelete="restrict", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]",
         help="Project to which the tickets (and the timesheets) will be linked by default.")
 
+    def _create_project(self, name, allow_billable, other):
+        return self.env['project.project'].create({
+            'name': name,
+            'type_ids': [
+                (0, 0, {'name': _('In Progress')}),
+                (0, 0, {'name': _('Closed'), 'is_closed': True})
+            ],
+            **other,
+        })
+
     @api.model
     def create(self, vals):
         if vals.get('use_helpdesk_timesheet') and not vals.get('project_id'):
-            vals['project_id'] = self.env['project.project'].create({
-                'name': vals['name'],
-                'type_ids': [
-                    (0, 0, {'name': _('In Progress')}),
-                    (0, 0, {'name': _('Closed'), 'is_closed': True})
-                ]
-            }).id
+            allow_billable = vals.get('use_helpdesk_sale_timesheet')
+            vals['project_id'] = self._create_project(vals['name'], allow_billable, {}).id
         return super(HelpdeskTeam, self).create(vals)
 
     def write(self, vals):
         if 'use_helpdesk_timesheet' in vals and not vals['use_helpdesk_timesheet']:
             vals['project_id'] = False
         result = super(HelpdeskTeam, self).write(vals)
-        self.filtered(lambda team: team.use_helpdesk_timesheet and not team.project_id)._create_project()
+        for team in self.filtered(lambda team: team.use_helpdesk_timesheet and not team.project_id):
+            team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {'allow_timesheets': True, })
+            self.env['helpdesk.ticket'].search([('team_id', '=', team.id), ('project_id', '=', False)]).write({'project_id': team.project_id.id})
         return result
 
     @api.model
     def _init_data_create_project(self):
-        self.search([('use_helpdesk_timesheet', '=', True), ('project_id', '=', False)])._create_project()
-
-    def _create_project(self):
-        for team in self:
-            team.project_id = self.env['project.project'].create({
-                'name': team.name,
-                'type_ids': [
-                    (0, 0, {'name': _('In Progress')}),
-                    (0, 0, {'name': _('Closed'), 'is_closed': True})
-                ],
-                'allow_timesheets': True,
-            })
+        for team in self.search([('use_helpdesk_timesheet', '=', True), ('project_id', '=', False)]):
+            team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {'allow_timesheets': True, })
             self.env['helpdesk.ticket'].search([('team_id', '=', team.id), ('project_id', '=', False)]).write({'project_id': team.project_id.id})
 
 

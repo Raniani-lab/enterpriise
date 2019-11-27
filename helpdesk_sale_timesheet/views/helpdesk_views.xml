@@ -37,6 +37,7 @@
             <xpath expr="//field[@name='project_id']" position="attributes">
                 <attribute name="invisible">0</attribute>
                 <attribute name="attrs">{'invisible': [('use_helpdesk_sale_timesheet', '=', False)], 'required': [('use_helpdesk_sale_timesheet', '=', True)]}</attribute>
+                <attribute name="context">{'default_allow_billable': 1}</attribute>
             </xpath>
             <xpath expr="//field[@name='task_id']" position="attributes">
                 <attribute name="invisible">0</attribute>

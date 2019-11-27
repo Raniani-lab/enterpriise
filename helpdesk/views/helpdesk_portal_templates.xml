@@ -34,23 +34,31 @@
             <t t-call="portal.portal_searchbar">
                 <t t-set="title">Tickets</t>
             </t>
-            <div t-if="not tickets" class="alert alert-info">
+            <div t-if="not grouped_tickets" class="alert alert-info">
                 There are currently no Ticket for your account.
             </div>
-            <t t-if="tickets" t-call="portal.portal_table">
-                <thead>
-                    <tr>
-                        <th class="text-right">Ref</th>
-                        <th class="w-100">Description</th><th/>
-                        <th class="text-center">Status</th>
-                    </tr>
-                </thead>
-                <t t-foreach="tickets" t-as="ticket">
-                    <tr>
-                        <td class="text-right"><a t-attf-href="/helpdesk/ticket/#{ticket.id}"><small>#</small><t t-esc="ticket.id"/></a></td>
-                        <td><a t-attf-href="/helpdesk/ticket/#{ticket.id}"><span t-field="ticket.name"/></a></td><td/>
-                        <td class="text-center"><span class="badge badge-pill badge-info" t-field="ticket.stage_id.name"/></td>
-                    </tr>
+            <t t-else="">
+                <t t-call="portal.portal_table">
+                    <t t-foreach="grouped_tickets" t-as="tickets">
+                        <thead>
+                            <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                                <th class="text-left">Ref</th>
+                                <th t-if="groupby == 'none'" class="w-100">Description</th>
+                                <th t-else="">
+                                    <em class="font-weight-normal text-muted">Tickets in stage:</em>
+                                    <span t-field="tickets[0].stage_id.name"/></th>
+                                <th/>
+                                <th t-if="groupby != 'stage'" class="text-center">Stage</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="tickets" t-as="ticket">
+                            <tr>
+                                <td class="text-left"><a t-attf-href="/helpdesk/ticket/#{ticket.id}"><small>#</small><t t-esc="ticket.id"/></a></td>
+                                <td><a t-attf-href="/helpdesk/ticket/#{ticket.id}"><span t-field="ticket.name"/></a></td><td/>
+                                <td t-if="groupby != 'stage'" class="text-center"><span class="badge badge-pill badge-info" t-field="ticket.stage_id.name"/></td>
+                            </tr>
+                        </t>
+                    </t>
                 </t>
             </t>
         </t>
@@ -122,7 +130,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-4">
+                    <div class="row mb-4" name="description">
                         <strong class="col-lg-2">Description</strong>
                         <div t-if="ticket.description" class="col-lg-10" t-field="ticket.description"/>
                         <div t-else="" class="col-lg-10">

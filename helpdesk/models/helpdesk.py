@@ -22,7 +22,10 @@ class HelpdeskTeam(models.Model):
                          'Cannot show ratings in portal if not using them'), ]
 
     def _default_stage_ids(self):
-        return [(0, 0, {'name': 'New', 'sequence': 0, 'template_id': self.env.ref('helpdesk.new_ticket_request_email_template', raise_if_not_found=False) or None})]
+        default_stage = self.env['helpdesk.stage'].search([('name', '=', _('New'))], limit=1)
+        if default_stage:
+            return [(4, default_stage.id)]
+        return [(0, 0, {'name': _('New'), 'sequence': 0, 'template_id': self.env.ref('helpdesk.new_ticket_request_email_template', raise_if_not_found=False) or None})]
 
     def _default_domain_member_ids(self):
         return [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)]
@@ -50,6 +53,7 @@ class HelpdeskTeam(models.Model):
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
     use_alias = fields.Boolean('Email alias', default=True)
+    has_external_mail_server = fields.Boolean(compute='_compute_has_external_mail_server')
     allow_portal_ticket_closing = fields.Boolean('Ticket closing', help="Allow customers to close their tickets")
     use_website_helpdesk_form = fields.Boolean('Website Form')
     use_website_helpdesk_livechat = fields.Boolean('Live chat',
@@ -79,6 +83,9 @@ class HelpdeskTeam(models.Model):
                 team.portal_rating_url = '/helpdesk/rating/%s' % (slug(team))
             else:
                 team.portal_rating_url = False
+
+    def _compute_has_external_mail_server(self):
+        self.has_external_mail_server = self.env['ir.config_parameter'].sudo().get_param('base_setup.default_external_email_server')
 
     def _compute_upcoming_sla_fail_tickets(self):
         ticket_data = self.env['helpdesk.ticket'].read_group([

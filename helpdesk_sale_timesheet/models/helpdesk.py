@@ -4,6 +4,8 @@
 from odoo import api, fields, models
 from odoo.osv import expression
 
+from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_TIMESHEET
+
 
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
@@ -45,3 +47,9 @@ class AccountAnalyticLine(models.Model):
             if task.billable_type == 'task_rate':
                 values['so_line'] = task.sale_line_id.id
         return values
+
+    def _get_portal_helpdesk_timesheet(self):
+        param_invoiced_timesheet = self.env['ir.config_parameter'].sudo().get_param('sale.invoiced_timesheet', DEFAULT_INVOICED_TIMESHEET)
+        if param_invoiced_timesheet == 'approved':
+            return self.filtered(lambda line: line.validated)
+        return self

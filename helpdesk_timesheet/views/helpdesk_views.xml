@@ -9,7 +9,7 @@
             <xpath expr="//div[@id='helpdesk_timesheet']" position='replace'>
                 <div attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}" class="pt-4">
                     <label for="project_id"/>
-                    <field name="project_id" class="oe_inline" context="{'default_allow_timesheets': 1}"/>
+                    <field name="project_id" class="oe_inline" context="{'default_allow_timesheets': 1, 'default_allow_billable': use_helpdesk_sale_timesheet}"/>
                 </div>
             </xpath>
         </field>

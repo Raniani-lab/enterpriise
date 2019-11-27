@@ -290,6 +290,14 @@
         </field>
     </record>
 
+    <record id="helpdesk_ticket_view_cohort" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.cohort</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <cohort string="Tickets" date_start="create_date" date_stop="close_date" interval="week"/>
+        </field>
+    </record>
+
     <record id="helpdesk_ticket_view_pivot_analysis" model="ir.ui.view">
         <field name="name">helpdesk.ticket.pivot.analysis</field>
         <field name="model">helpdesk.ticket</field>
@@ -845,7 +853,8 @@
         <field name="view_ids"
                eval="[(5, 0, 0),
                       (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk_ticket_view_graph_analysis')}),
-                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_ticket_view_pivot_analysis')})]"/>
+                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_ticket_view_pivot_analysis')}),
+                      (0, 0, {'view_mode': 'cohort', 'view_id': ref('helpdesk_ticket_view_cohort')})]"/>
         <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
         <field name="context">{'search_default_group_by_create_date': 1}</field>
     </record>

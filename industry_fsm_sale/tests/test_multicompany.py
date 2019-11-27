@@ -36,7 +36,7 @@ class TestMultiCompanyCommon(TestCommonSaleTimesheetMultiCompanyNoChart):
             'is_fsm': True,
             'allow_timesheets': True,
             'allow_billable': True,
-            'timesheet_product_id': cls.env.ref('industry_fsm_sale.fsm_time_product').id,
+            'timesheet_product_id': cls.env.ref('sale_timesheet_enterprise.fsm_time_product').id,
             'allow_material': True,
             'allow_quotations': True,
             'type_ids': [

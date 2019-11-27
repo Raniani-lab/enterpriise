@@ -113,7 +113,7 @@
                                 </div>
                                 <div attrs="{'invisible': [('use_alias','=',False)]}" class="mt16">
                                     <div class="oe_edit_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
-                                        <label for="alias_id" string="Choose an Email:"/>
+                                        <label for="alias_id" string="Send emails to:"/>
                                         <field name="alias_name"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>
                                             to create tickets
                                     </div>
@@ -123,8 +123,12 @@
                                         </strong>
                                         to create tickets
                                     </p>
+                                    <field name="has_external_mail_server" invisible="1"/>
+                                    <p class="text-muted" attrs="{'invisible': ['|', ('alias_domain', '!=', False), ('has_external_mail_server', '!=', False)]}">
+                                        <i class="fa fa-lightbulb-o" role='img'/> Enable the External Email Servers feature in the General Settings and indicate an alias domain
+                                    </p>
                                     <p attrs="{'invisible': [('alias_domain', '!=', False)]}">
-                                        <a type="action" name="%(base_setup.action_general_configuration)d"><i class="fa fa-arrow-right"/> Configure domain name</a>
+                                        <button name="%(base_setup.action_general_configuration)d" type="action" string="Configure domain name" icon="fa-arrow-right" class="btn-link"/>
                                     </p>
                                 </div>
                             </div>

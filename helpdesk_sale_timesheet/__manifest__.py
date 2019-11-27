@@ -12,6 +12,7 @@
     'auto_install': True,
     'data': [
         'views/helpdesk_views.xml',
+        'views/helpdesk_portal_templates.xml',
     ],
     'license': 'OEEL-1',
 }

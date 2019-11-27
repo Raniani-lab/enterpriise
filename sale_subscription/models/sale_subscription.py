@@ -902,7 +902,7 @@ class SaleSubscriptionLine(models.Model):
         'product.product', string='Product', check_company=True,
         domain="[('recurring_invoice','=',True)]", required=True)
     analytic_account_id = fields.Many2one('sale.subscription', string='Subscription')
-    company_id = fields.Many2one('res.company', related='analytic_account_id.company_id', stored=True, index=True)
+    company_id = fields.Many2one('res.company', related='analytic_account_id.company_id', store=True, index=True)
     name = fields.Text(string='Description', required=True)
     quantity = fields.Float(string='Quantity', help="Quantity that will be invoiced.", default=1.0)
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure', required=True, domain="[('category_id', '=', product_uom_category_id)]")

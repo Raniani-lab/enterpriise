@@ -169,10 +169,15 @@ class CalendarAppointmentType(models.Model):
         def is_calendar_available(slot, events, employee):
             """ Returns True if the given slot doesn't collide with given events for the employee
             """
-            start_dt_string = slot['UTC'][0]
-            end_dt_string = slot['UTC'][1]
+            start_dt = slot['UTC'][0]
+            end_dt = slot['UTC'][1]
 
-            for ev in events.filtered(lambda ev: ev.start < end_dt_string and ev.stop > start_dt_string):
+            event_in_scope = lambda ev: (
+                fields.Date.to_date(ev.start) <= fields.Date.to_date(end_dt)
+                and fields.Date.to_date(ev.stop) >= fields.Date.to_date(start_dt)
+            )
+
+            for ev in events.filtered(event_in_scope):
                 if ev.allday:
                     # allday events are considered to take the whole day in the related employee's timezone
                     event_tz = pytz.timezone(ev.event_tz or employee.user_id.tz or self.env.user.tz or slot['slot'].appointment_type_id.appointment_tz or 'UTC')
@@ -180,9 +185,9 @@ class CalendarAppointmentType(models.Model):
                     ev_stop_dt = datetime.combine(fields.Date.from_string(ev.stop_date), time.max)
                     ev_start_dt = event_tz.localize(ev_start_dt).astimezone(pytz.UTC).replace(tzinfo=None)
                     ev_stop_dt = event_tz.localize(ev_stop_dt).astimezone(pytz.UTC).replace(tzinfo=None)
-                    if ev_start_dt < slot['UTC'][1] and ev_stop_dt > slot['UTC'][0]:
+                    if ev_start_dt < end_dt and ev_stop_dt > start_dt:
                         return False
-                elif ev.start_datetime < end_dt_string and ev.stop_datetime > start_dt_string:
+                elif ev.start_datetime < end_dt and ev.stop_datetime > start_dt:
                     return False
             return True
 

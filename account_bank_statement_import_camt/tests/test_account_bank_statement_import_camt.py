@@ -181,8 +181,8 @@ class TestCamtFile(TransactionCase):
         self.assertIn("The following statements will not be imported", log_catcher.output[0],
             "The logged warning warns about non-imported statements")
 
-        self.assertEqual(error_catcher.exception.args[0],
-            "This file doesn't contain any statement.")
+        self.assertIn("This file doesn't contain any statement",
+            error_catcher.exception.args[0])
 
 
     def test_several_ibans_missing_journal_id_camt_file_import(self):

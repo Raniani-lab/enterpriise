@@ -169,9 +169,9 @@ odoo.define('sign.PDFIframe', function (require) {
         },
 
         refreshSignItems: function() {
-            for(var page in this.configuration) {
-                var $pageContainer = this.$('body #pageContainer' + page);
-                for(var i = 0 ; i < this.configuration[page].length ; i++) {
+            for (var page in this.configuration) {
+                const $pageContainer = this.$('.page[data-page-number="' + page + '"]');
+                for (var i = 0 ; i < this.configuration[page].length ; i++) {
                     if(!this.configuration[page][i].parent().hasClass('page')) {
                         $pageContainer.append(this.configuration[page][i]);
                     }
@@ -255,7 +255,7 @@ odoo.define('sign.PDFIframe', function (require) {
         },
 
         deleteSignItem: function($item) {
-            var pageNo = parseInt($item.parent().prop('id').substr('pageContainer'.length));
+            const pageNo = parseInt($item.parent().data('page-number'));
             $item.remove();
             for(var i = 0 ; i < this.configuration[pageNo].length ; i++) {
                 if(this.configuration[pageNo][i].data('posx') === $item.data('posx') && this.configuration[pageNo][i].data('posy') === $item.data('posy')) {

@@ -429,7 +429,7 @@ odoo.define('sign.template', function(require) {
                                 }
 
                                 var $parent = $(e.target);
-                                var pageNo = parseInt($parent.prop('id').substr('pageContainer'.length));
+                                const pageNo = parseInt($parent.data('page-number'));
 
                                 ui.helper.removeClass('o_sign_sign_item_to_add');
                                 var $signatureItem = ui.helper.clone(true).removeClass().addClass('o_sign_sign_item o_sign_sign_item_required');

@@ -17,7 +17,7 @@ class View(models.Model):
         is_base_model = self.env.context.get('base_model_name', model) == model
 
         if node.tag in ('gantt'):
-            for action, operation in (('create', 'create'), ('delete', 'unlink'), ('edit', 'write')):
+            for action, operation in (('create', 'create'), ('edit', 'write')):
                 if (not node.get(action) and
                         not Model.check_access_rights(operation, raise_exception=False) or
                         not self._context.get(action, True) and is_base_model):

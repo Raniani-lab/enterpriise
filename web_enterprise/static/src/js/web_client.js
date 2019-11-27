@@ -89,7 +89,6 @@ return AbstractWebClient.extend({
     show_application: function () {
         this.set_title();
 
-        const insertMenu = () => this.menu.$el.prependTo(this.$el);
         return this.menu_dp.add(this.instanciate_menu_widgets()).then(async () => {
             $(window).bind('hashchange', this.on_hashchange);
             // If the url's state is empty, we execute the user's home action if there is one (we
@@ -114,7 +113,7 @@ return AbstractWebClient.extend({
             } else {
                 return this.on_hashchange();
             }
-        }).then(insertMenu).guardedCatch(insertMenu);
+        });
     },
     /**
      * @param {Object} params
@@ -345,6 +344,7 @@ return AbstractWebClient.extend({
         const menu = new Menu(this, menuData);
         await menu.appendTo(document.createDocumentFragment());
         menu.toggle_mode(this.homeMenuManagerDisplayed, false);
+        menu.$el.prependTo(this.$el);
         return menu;
     },
     /**

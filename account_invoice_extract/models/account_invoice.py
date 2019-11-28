@@ -155,9 +155,11 @@ class AccountMove(models.Model):
                 result = jsonrpc(endpoint, params=params)
                 self.extract_status_code = result['status_code']
                 if result['status_code'] == SUCCESS:
+                    self.env['ir.config_parameter'].sudo().set_param("account_invoice_extract.already_notified", False)
                     self.extract_state = 'waiting_extraction'
                     self.extract_remote_id = result['document_id']
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
+                    self.send_no_credit_notification()
                     self.extract_state = 'not_enough_credit'
                 else:
                     self.extract_state = 'error_status'
@@ -166,6 +168,31 @@ class AccountMove(models.Model):
             except AccessError:
                 self.extract_state = 'error_status'
                 self.extract_status_code = ERROR_NO_CONNECTION
+
+    def send_no_credit_notification(self):
+        """
+        Notify about the number of credit.
+        In order to avoid to spam people each hour, an ir.config_parameter is set
+        """
+        #If we don't find the config parameter, we consider it True, because we don't want to notify if no credits has been bought earlier.
+        already_notified = self.env['ir.config_parameter'].sudo().get_param("account_invoice_extract.already_notified", True)
+        if already_notified:
+            return
+        try:
+            mail_template = self.env.ref('account_invoice_extract.account_invoice_extract_no_credit')
+        except ValueError:
+            #if the mail template has not been created by an upgrade of the module
+            return
+        iap_account = self.env['iap.account'].search([('service_name', '=', "invoice_ocr")], limit=1)
+        if iap_account:
+            # Get the email address of the creators of the records
+            res = self.env['res.users'].search_read([('id', '=', 2)], ['email'])
+            if res:
+                email_values = {
+                    'email_to': res[0]['email']
+                }
+                mail_template.send_mail(iap_account.id, force_send=True, email_values=email_values)
+                self.env['ir.config_parameter'].sudo().set_param("account_invoice_extract.already_notified", True)
 
     def get_validation(self, field):
         """

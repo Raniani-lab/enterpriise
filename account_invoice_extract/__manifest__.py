@@ -9,6 +9,7 @@
     'depends': ['account', 'iap', 'mail_enterprise'],
     'data': [
         'security/ir.model.access.csv',
+        'data/account_invoice_extract_data.xml',
         'data/config_parameter_endpoint.xml',
         'data/extraction_status.xml',
         'data/res_config_settings_views.xml',

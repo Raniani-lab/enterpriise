@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
 import datetime
+
 from dateutil import relativedelta
 from odoo import api, fields, models, _
 from odoo.addons.helpdesk.models.helpdesk_ticket import TICKET_PRIORITY
@@ -212,12 +214,12 @@ class HelpdeskTeam(models.Model):
     # Mail Alias Mixin
     # ------------------------------------------------------------
 
-    def get_alias_model_name(self, vals):
-        return vals.get('alias_model', 'helpdesk.ticket')
-
-    def get_alias_values(self):
-        values = super(HelpdeskTeam, self).get_alias_values()
-        values['alias_defaults'] = {'team_id': self.id}
+    def _alias_get_creation_values(self):
+        values = super(HelpdeskTeam, self)._alias_get_creation_values()
+        values['alias_model_id'] = self.env['ir.model']._get('helpdesk.ticket').id
+        if self.id:
+            values['alias_defaults'] = defaults = ast.literal_eval(self.alias_defaults or "{}")
+            defaults['team_id'] = self.id
         return values
 
     # ------------------------------------------------------------

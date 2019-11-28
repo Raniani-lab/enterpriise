@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
 
 from odoo import api, fields, models, tools, SUPERUSER_ID, _
 from odoo.exceptions import UserError
@@ -43,12 +44,12 @@ class MrpEcoType(models.Model):
                 ('approval_ids.required_user_ids', '=', self.env.user.id)
             ])
 
-    def get_alias_model_name(self, vals):
-        return vals.get('alias_model', 'mrp.eco')
-
-    def get_alias_values(self):
-        values = super(MrpEcoType, self).get_alias_values()
-        values['alias_defaults'] = {'type_id': self.id}
+    def _alias_get_creation_values(self):
+        values = super(MrpEcoType, self)._alias_get_creation_values()
+        values['alias_model_id'] = self.env['ir.model']._get('mrp.eco').id
+        if self.id:
+            values['alias_defaults'] = defaults = ast.literal_eval(self.alias_defaults or "{}")
+            defaults['type_id'] = self.id
         return values
 
 

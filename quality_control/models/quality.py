@@ -3,6 +3,8 @@
 from math import sqrt
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+
+import ast
 import random
 
 from odoo import api, models, fields, _
@@ -113,12 +115,12 @@ class QualityPoint(models.Model):
 class QualityAlertTeam(models.Model):
     _inherit = "quality.alert.team"
 
-    def get_alias_model_name(self, vals):
-        return vals.get('alias_model', 'quality.alert')
-
-    def get_alias_values(self):
-        values = super(QualityAlertTeam, self).get_alias_values()
-        values['alias_defaults'] = {'team_id': self.id}
+    def _alias_get_creation_values(self):
+        values = super(QualityAlertTeam, self)._alias_get_creation_values()
+        values['alias_model_id'] = self.env['ir.model']._get('quality.alert').id
+        if self.id:
+            values['alias_defaults'] = defaults = ast.literal_eval(self.alias_defaults or "{}")
+            defaults['team_id'] = self.id
         return values
 
 

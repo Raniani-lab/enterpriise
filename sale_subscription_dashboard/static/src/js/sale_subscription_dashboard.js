@@ -1335,7 +1335,7 @@ function load_chart(div_to_display, key_name, result, show_legend, show_demo) {
         },
         options: {
             layout: {
-                padding: {bottom: 30},
+                padding: {bottom: 10},
             },
             legend: {
                 display: show_legend,

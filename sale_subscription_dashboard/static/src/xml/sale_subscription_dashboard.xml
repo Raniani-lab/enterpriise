@@ -206,20 +206,19 @@
 
     <!-- 4. Salesman dashboard -->
     <div t-name="sale_subscription_dashboard.salesman" class="container o_account_contract_dashboard o_salesman_dashboard">
-        <div class="box">
-            <h1 t-if="!(salesman &amp;&amp; salesman['name'])">Pick a salesman and a period</h1>
-            <h1 t-if="salesman &amp;&amp; salesman['name']">Recurring Revenue Dashboard for <t t-esc="salesman['name']"/></h1>
+        <div class="box" t-if="!(salesman &amp;&amp; salesman['name'])">
+            <h2>Pick a salesman and a period</h2>
         </div>
         <div t-if="salesman &amp;&amp; salesman['id']">
             <div class="box">
                 <div id="mrr_growth_salesman"/>
             </div>
             <div class="box">
-                <h2>List of subscription modifications</h2>
+                <h2>Subscription Modifications</h2>
                 <div id="contract_modifications"/>
             </div>
             <div class="box">
-                <h2>List of NRR invoices</h2>
+                <h2>Non Recurring invoices</h2>
                 <div id="NRR_invoices"/>
             </div>
         </div>
@@ -244,7 +243,7 @@
     <t t-name="sale_subscription_dashboard.dashboard_option_filters">
         <!-- Subscriptions -->
         <div t-if="widget.contract_templates &amp;&amp; widget.contract_templates.length > 1" class="o_dropdown dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">Filter on subscriptions</a>
+            <a class="dropdown-toggle" data-toggle="dropdown">Filter on Subscriptions</a>
             <div class="dropdown-menu o_filters_menu" role="menu">
                 <t t-foreach="widget.contract_templates" t-as="template">
                     <a role="menuitem" href="#" class="dropdown-item o_contract_template_filter js_tag" t-att-data-id="template.id"><t t-esc="template.name"/></a>
@@ -254,7 +253,7 @@
 
         <!-- Tags -->
         <div t-if="widget.tags &amp;&amp; widget.tags.length > 1" class="o_dropdown dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">Filter on categories</a>
+            <a class="dropdown-toggle" data-toggle="dropdown">Filter on Categories</a>
             <div class="dropdown-menu o_filters_menu" role="menu">
                 <t t-foreach="widget.tags" t-as="tag">
                     <a role="menuitem" href="#" class="dropdown-item o_tags_filter js_tag" t-att-data-id="tag.id"><t t-esc="tag.name"/></a>
@@ -264,7 +263,7 @@
 
         <!-- Companies -->
         <div t-if="widget.companies &amp;&amp; widget.companies.length > 1" class="o_dropdown dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">Filter on companies</a>
+            <a class="dropdown-toggle" data-toggle="dropdown">Filter on Companies</a>
             <div class="dropdown-menu o_filters_menu" role="menu">
                 <t t-foreach="widget.companies" t-as="company">
                     <a role="menuitem" href="#" class="dropdown-item o_companies_filter js_tag" t-att-data-id="company.id"><t t-esc="company.name"/></a>
@@ -274,7 +273,7 @@
 
         <!-- Sales Team -->
         <div t-if="widget.sales_team &amp;&amp; widget.sales_team.length > 1" class="o_dropdown dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">Filter on sales team<span class="caret"/></a>
+            <a class="dropdown-toggle" data-toggle="dropdown">Filter on Sales Team<span class="caret"/></a>
             <div class="dropdown-menu o_filters_menu" role="menu">
                 <t t-foreach="widget.sales_team" t-as="sale_team">
                     <a role="menuitem" href="#" class="dropdown-item o_sales_team_filter js_tag" t-att-data-id="sale_team.id"><t t-esc="sale_team.name"/></a>
@@ -352,7 +351,7 @@
         </div>
         <div class="o_graph" t-att-id="widget.chart_div_id"/>
         <div>
-            <h4 class="text-center"><t t-esc="widget.box_name"/></h4>
+            <h4 class="text-center o_chart_title"><t t-esc="widget.box_name"/></h4>
         </div>
         <div t-if="!widget.has_mrr">
             <span class="badge badge-warning o_demo_label">Sample data</span>
@@ -368,7 +367,7 @@
         </div>
         <div class="o_graph" t-att-id="widget.chart_div_id"/>
         <div>
-            <h4 class="text-center"><t t-esc="widget.box_name"/></h4>
+            <h4 class="text-center o_chart_title"><t t-esc="widget.box_name"/></h4>
         </div>
         <div t-if="!widget.has_mrr">
             <span class="badge badge-warning o_demo_label">Sample data</span>
@@ -376,12 +375,12 @@
     </div>
 
     <t t-name="sale_subscription_dashboard.salesman_summary">
-        <div class="col-lg-6" style="font-weight: 800;">
-            <h3>MRR : <t t-esc="format_number(Math.round(mrr*100)/100)"/></h3>
+        <div class="col-lg-6">
+            <h2>Monthly Recurring Revenue : <t t-esc="format_number(Math.round(mrr*100)/100)"/></h2>
         </div>
 
-        <div class="col-lg-6" style="font-weight: 800;">
-            <h3 class="float-right">NRR : <t t-esc="format_number(Math.round(nrr*100)/100)"/></h3>
+        <div class="col-lg-6">
+            <h2>Non-Recurring Revenue : <t t-esc="format_number(Math.round(nrr*100)/100)"/></h2>
         </div>
     </t>
 
@@ -414,7 +413,7 @@
 
     <t t-name="sale_subscription_dashboard.nrr_invoices">
         <div t-if="!invoices.length">
-            <i>There is no NRR invoice during this period.</i>
+            <i>There is no invoice during this period.</i>
         </div>
 
         <div t-if="invoices.length" class="table-responsive">

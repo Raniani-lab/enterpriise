@@ -31,8 +31,6 @@
         padding: 10px;
         color: $o-main-text-color;
         background-color: $o-view-background-color;
-        -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
-        box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
         background-size: cover;
         margin-top: $o-horizontal-padding;
         margin-bottom: $o-horizontal-padding;
@@ -60,7 +58,6 @@
     }
 
     div.o_stat_box, div.o_forecast_box {
-        height: 140px;
         margin: 5px;
 
         .o_stat_box_header {
@@ -86,8 +83,14 @@
             }
         }
 
+        .o_chart_title {
+            border-top: 2px solid rgb(186, 186, 186);
+            margin-top: -10px;
+            padding-top: 5px;
+        }
+
         .o_demo_label {
-            @include o-position-absolute($bottom: 0, $right: 0);
+            @include o-position-absolute($bottom: 42px, $right: 0);
         }
 
         .o_graph {

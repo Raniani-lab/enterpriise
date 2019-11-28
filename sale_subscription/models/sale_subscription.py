@@ -99,8 +99,8 @@ class SaleSubscription(models.Model):
     health = fields.Selection([
         ('normal', 'Neutral'),
         ('done', 'Good'),
-        ('bad', 'Bad')], string="Health", copy=False, default='normal', translate=True, help="Set a health status")
-    in_progress = fields.Boolean(related='stage_id.in_progress')
+        ('bad', 'Bad')], string="Health", copy=False, default='normal', translate=True, help="Show the health status")
+    stage_category = fields.Selection(related='stage_id.category', store=True)
     to_renew = fields.Boolean(string='To Renew', default=False, copy=False)
     payment_term_id = fields.Many2one('account.payment.term', string='Default Payment Terms', check_company=True, tracking=True, help="These payment terms will be used when generating new invoices and renewal/upsell orders. Note that invoices paid using online payment will use 'Already paid' regardless of this setting.")
 
@@ -398,12 +398,12 @@ class SaleSubscription(models.Model):
         next_month = fields.Date.to_string(fields.Date.from_string(today) + relativedelta(months=1))
 
         # set to pending if date is in less than a month
-        domain_pending = [('date', '<', next_month), ('in_progress', '=', True)]
+        domain_pending = [('date', '<', next_month), ('stage_category', '=', 'progress')]
         subscriptions_pending = self.search(domain_pending)
         subscriptions_pending.set_to_renew()
 
         # set to close if date is passed
-        domain_close = [('date', '<', today), '|', ('in_progress', '=', True), ('to_renew', '=', True)]
+        domain_close = [('date', '<', today), '|', ('stage_category', '=', 'progress'), ('to_renew', '=', True)]
         subscriptions_close = self.search(domain_close)
         subscriptions_close.set_close()
 
@@ -415,7 +415,7 @@ class SaleSubscription(models.Model):
 
     @api.model
     def _cron_update_kpi(self):
-        subscriptions = self.search([('in_progress', '=', True)])
+        subscriptions = self.search([('stage_category', '=', 'progress')])
         subscriptions._take_snapshot(datetime.date.today())
         subscriptions._compute_kpi()
 
@@ -482,18 +482,18 @@ class SaleSubscription(models.Model):
         today = fields.Date.from_string(fields.Date.today())
         search = self.env['sale.subscription.stage'].search
         for sub in self:
-            stage = search([('in_progress', '=', False), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
+            stage = search([('category', '=', 'closed'), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
             if not stage:
-                stage = search([('in_progress', '=', False)], limit=1)
+                stage = search([('category', '=', 'closed')], limit=1)
             sub.write({'stage_id': stage.id, 'to_renew': False, 'date': today})
         return True
 
     def set_open(self):
         search = self.env['sale.subscription.stage'].search
         for sub in self:
-            stage = search([('in_progress', '=', True), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
+            stage = search([('category', '=', 'progress'), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
             if not stage:
-                stage = search([('in_progress', '=', True)], limit=1)
+                stage = search([('category', '=', 'progress')], limit=1)
             date = sub.date if sub.date_start and sub.template_id.recurring_rule_boundary == 'limited' else False
             sub.write({'stage_id': stage.id, 'to_renew': False, 'date': date})
 
@@ -635,11 +635,22 @@ class SaleSubscription(models.Model):
             "res_id": order.id,
         }
 
+    def start_subscription(self):
+        self.ensure_one()
+        next_stage_in_progress = self.env['sale.subscription.stage'].search([('category', '=', 'progress'), ('sequence', '>=', self.stage_id.sequence)], limit=1)
+        if not next_stage_in_progress:
+            next_stage_in_progress = self.env['sale.subscription.stage'].search([('category', '=', 'progress')], limit=1)
+        self.stage_id = next_stage_in_progress
+        return True
+
     def increment_period(self):
         for subscription in self:
             current_date = subscription.recurring_next_date or self.default_get(['recurring_next_date'])['recurring_next_date']
             new_date = subscription._get_recurring_next_date(subscription.recurring_rule_type, subscription.recurring_interval, current_date, subscription.recurring_invoice_day)
-            subscription.write({'recurring_next_date': new_date})
+            data = {'recurring_next_date': new_date}
+            if subscription.date:
+                data['date'] = new_date
+            subscription.write(data)
 
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
@@ -744,7 +755,7 @@ class SaleSubscription(models.Model):
             subscriptions = self
         else:
             domain = [('recurring_next_date', '<=', current_date),
-                      '|', ('in_progress', '=', True), ('to_renew', '=', True)]
+                      '|', ('stage_category', '=', 'progress'), ('to_renew', '=', True)]
             subscriptions = self.search(domain)
         if subscriptions:
             sub_data = subscriptions.read(fields=['id', 'company_id'])
@@ -844,12 +855,9 @@ class SaleSubscription(models.Model):
                                 values={'self': new_invoice, 'origin': subscription},
                                 subtype_id=self.env.ref('mail.mt_note').id)
                             invoices += new_invoice
-                            next_date = subscription.recurring_next_date or current_date
-                            rule, interval = subscription.recurring_rule_type, subscription.recurring_interval
-                            new_date = subscription._get_recurring_next_date(rule, interval, next_date, subscription.recurring_invoice_day)
                             # When `recurring_next_date` is updated by cron or by `Generate Invoice` action button,
                             # write() will skip resetting `recurring_invoice_day` value based on this context value
-                            subscription.with_context(skip_update_recurring_invoice_day=True).write({'recurring_next_date': new_date})
+                            subscription.with_context(skip_update_recurring_invoice_day=True).increment_period()
                             if subscription.template_id.payment_mode == 'validate_send':
                                 subscription.validate_and_send_invoice(new_invoice)
                             if automatic and auto_commit:
@@ -1069,7 +1077,7 @@ class SaleSubscriptionTemplate(models.Model):
         "otherwise the sales journal with the lowest sequence is used.")
     tag_ids = fields.Many2many(
         'account.analytic.tag', 'sale_subscription_template_tag_rel',
-        'template_id', 'tag_id', string='Tags',
+        'template_id', 'tag_id', string='Tags', help="Use these tags to filter your subscription reporting",
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     product_count = fields.Integer(compute='_compute_product_count')
     subscription_count = fields.Integer(compute='_compute_subscription_count')
@@ -1141,7 +1149,10 @@ class SaleSubscriptionStage(models.Model):
     rating_template_id = fields.Many2one('mail.template', string='Rating Email Template',
                                          help="Send an email to the customer when the subscription is moved to this stage.",
                                          domain=[('model', '=', 'sale.subscription')])
-    in_progress = fields.Boolean(string='In Progress', default=True)
+    category = fields.Selection([
+        ('draft', 'Draft'),
+        ('progress', 'In Progress'),
+        ('closed', 'Closed')], required=True, default='draft', help="Category of the stage")
 
 
 class SaleSubscriptionSnapshot(models.Model):
@@ -1186,7 +1197,7 @@ class SaleSubscriptionAlert(models.Model):
         check_company=True)
     customer_ids = fields.Many2many('res.partner', string='Customers')
     company_id = fields.Many2one('res.company', string='Company')
-    mrr_min = fields.Monetary('MRR Range Min', currency_field='currency_id')
+    mrr_min = fields.Monetary('MRR Range Min', currency_field='currency_id', help="Monthly Recurring Revenue")
     mrr_max = fields.Monetary('MRR Range Max', currency_field='currency_id')
     product_ids = fields.Many2many(
         'product.product', string='Specific Products',
@@ -1194,22 +1205,24 @@ class SaleSubscriptionAlert(models.Model):
 
     mrr_change_amount = fields.Float('MRR Change Amount')
     mrr_change_unit = fields.Selection(selection='_get_selection_mrr_change_unit', string='MRR Change Unit', default='percentage')
-    mrr_change_period = fields.Selection([('1month', '1 Month'), ('3months', '3 Months')], string='MRR Change Period', default='1month')
-    rating_percentage = fields.Integer('Rating Percentage')
-    rating_operator = fields.Selection([('>', '>'), ('<', '<')], string='Rating Operator', default='>')
-    stage_from_id = fields.Many2one('sale.subscription.stage')
+    mrr_change_period = fields.Selection([('1month', '1 Month'), ('3months', '3 Months')], string='MRR Change Period',
+                                         default='1month', help="Period over which the KPI is calculated")
+    rating_percentage = fields.Integer('Rating Percentage', help="Rating Satisfaction is the ratio of positive rating to total number of rating.")
+    rating_operator = fields.Selection([('>', 'greater than'), ('<', 'less than')], string='Rating Operator', default='>')
+    stage_from_id = fields.Many2one('sale.subscription.stage', help="Trigger on changes of stage. Trigger over all stages if not set")
     stage_to_id = fields.Many2one('sale.subscription.stage')
 
     tag_id = fields.Many2one('account.analytic.tag', string='Tag')
     stage_id = fields.Many2one('sale.subscription.stage', string='Stage')
     activity_user = fields.Selection([
-        ('contract', 'Responsible of Contract'),
+        ('contract', 'Subscription Salesperson'),
         ('channel_leader', 'Sales Team Leader'),
         ('users', 'Specific Users'),
     ], string='Assign To')
     activity_user_ids = fields.Many2many('res.users', string='Specific Users')
 
     subscription_count = fields.Integer(compute='_compute_subscription_count')
+    cron_nextcall = fields.Datetime(compute='_compute_nextcall', store=False)
 
     def _get_selection_mrr_change_unit(self):
         return [('percentage', '%'), ('currency', self.env.company.currency_id.symbol)]
@@ -1304,6 +1317,17 @@ class SaleSubscriptionAlert(models.Model):
             'context': {'create': False},
         }
 
+    def run_cron_manually(self):
+        self.ensure_one()
+        domain = safe_eval(self.filter_domain)
+        subs = self.env['sale.subscription'].search(domain)
+        ctx = {
+            'active_model': 'sale.subscription',
+            'active_ids': subs.ids,
+            'domain_post': domain,
+        }
+        self.action_server_id.with_context(**ctx).run()
+
     def _set_field_action(self, field_name, value):
         for alert in self.sudo():  # Require sudo to write on ir.actions.server fields
             tag_field = self.env['ir.model.fields'].search([('model', '=', alert.model_name), ('name', '=', field_name)])
@@ -1353,3 +1377,11 @@ class SaleSubscriptionAlert(models.Model):
                     'activity_user_type': 'generic',
                     'activity_user_field_name': 'team_user_id',
                 })
+
+    def _compute_nextcall(self):
+        cron = self.env.ref('sale_subscription.ir_cron_sale_subscription_update_kpi', raise_if_not_found=False)
+        if not cron:
+            self.update({'cron_nextcall': False})
+        else:
+            nextcall = cron.read(fields=['nextcall'])[0]
+            self.update({'cron_nextcall': fields.Datetime.to_string(nextcall['nextcall'])})

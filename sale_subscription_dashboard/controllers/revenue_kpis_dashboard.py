@@ -14,8 +14,6 @@ class RevenueKPIsDashboard(http.Controller):
 
     @http.route('/sale_subscription_dashboard/fetch_data', type='json', auth='user')
     def fetch_data(self):
-        # context is necessary so _(...) can translate in the appropriate language
-        context = request.env.context
         return {
             'stat_types': {
                 key: {

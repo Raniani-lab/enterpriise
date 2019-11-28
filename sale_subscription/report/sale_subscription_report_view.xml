@@ -56,9 +56,9 @@
                 <field name="partner_id" operator="child_of"/>
                 <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid)]"/>
                 <separator/>
-                <filter name="open" string="Running" domain="[('in_progress', '=', True)]" help="Running Subscriptions"/>
+                <filter name="open" string="Running" domain="[('stage_category', '=', 'progress')]" help="Running Subscriptions"/>
                 <filter name="pending" string="To Renew" domain="[('to_renew', '=', True)]" help="Pending subscriptions"/>
-                <filter name="Expired" string="Expired" domain="[('in_progress', '=', False)]" help="Closed subscriptions"/>
+                <filter name="Expired" string="Expired" domain="[('stage_category', '=', 'closed')]" help="Closed subscriptions"/>
                 <separator/>
                 <filter name="good" string="Good Health" domain="[('health', '=', 'done')]"/>
                 <filter name="bad" string="Bad Health" domain="[('health', '=', 'bad')]"/>

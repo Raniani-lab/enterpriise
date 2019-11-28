@@ -397,7 +397,7 @@ STAT_TYPES = {
         'compute': compute_ltv
     },
     'logo_churn': {
-        'name': _lt('Logo Churn'),
+        'name': _lt('Customer Churn'),
         'code': 'logo_churn',
         'dir': 'down',
         'prior': 7,
@@ -415,7 +415,7 @@ STAT_TYPES = {
         'compute': compute_revenue_churn
     },
     'nb_contracts': {
-        'name': _lt('Subscriptions'),
+        'name': _lt('# Subscriptions'),
         'code': 'nb_contracts',
         'dir': 'up',
         'prior': 9,

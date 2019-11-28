@@ -43,9 +43,9 @@ class CustomerPortal(CustomerPortal):
         }
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
-            'open': {'label': _('In Progress'), 'domain': [('in_progress', '=', True)]},
+            'open': {'label': _('In Progress'), 'domain': [('stage_category', '=', 'progress')]},
             'pending': {'label': _('To Renew'), 'domain': [('to_renew', '=', True)]},
-            'close': {'label': _('Closed'), 'domain': [('in_progress', '=', False)]},
+            'close': {'label': _('Closed'), 'domain': [('stage_category', '=', 'closed')]},
         }
 
         # default sort by value
@@ -106,7 +106,7 @@ class sale_subscription(http.Controller):
             ('company_id', '=', account.company_id.id)])
         acc_pm = account.payment_token_id
         part_pms = request.env['payment.token'].search([('acquirer_id.company_id', '=', account.company_id.id)])
-        display_close = account.template_id.sudo().user_closable and account.in_progress
+        display_close = account.template_id.sudo().user_closable and account.stage_category == 'progress'
         is_follower = request.env.user.partner_id.id in [follower.partner_id.id for follower in account.message_follower_ids]
         active_plan = account.template_id.sudo()
         periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}

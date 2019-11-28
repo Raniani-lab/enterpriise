@@ -34,9 +34,9 @@
                 <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid)]"/>
                 <filter string="Unassigned" name="contracts_not_assigned" help="Subscriptions that are not assigned to an account manager." domain="[('user_id', '=', False)]"/>
                 <separator/>
-                <filter name="open" string="Running" domain="[('in_progress','=',True)]" help="Running Subscriptions"/>
+                <filter name="open" string="Running" domain="[('stage_category','=','progress')]" help="Running Subscriptions"/>
                 <filter name="pending" string="To Renew" domain="[('to_renew','=',True)]" help="Pending subscriptions"/>
-                <filter name="closed" string="Closed" domain="[('in_progress','=',False)]" help="Closed subscriptions"/>
+                <filter name="closed" string="Closed" domain="[('stage_category','=','closed')]" help="Closed subscriptions"/>
                 <separator/>
                 <filter name="good" string="Good Health" domain="[('health', '=', 'done')]"/>
                 <filter name="bad" string="Bad Health" domain="[('health', '=', 'bad')]"/>
@@ -173,11 +173,13 @@
         <field name="arch" type="xml">
             <form string="Subscription" class="o_subscription_form">
                 <header>
+                    <button string="Start" name="start_subscription" type="object" attrs="{'invisible': [('stage_category','=', 'progress')]}" class="btn-primary"/>
                     <button string="Create Invoice" name="recurring_invoice" type="object" attrs="{'invisible': [('payment_mode', '!=', 'manual')]}" class="btn-primary"/>
                     <button string="Renewal Quotation" name="prepare_renewal_order" type="object" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited'), ('to_renew', '=', False)]}"/>
-                    <button string="Upsell" name="%(sale_subscription.wizard_action)d" type="action" attrs="{'invisible': [('in_progress', '=', False)]}"/>
-                    <button string="Close" name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action" attrs="{'invisible': [('in_progress', '=', False)]}"/>
+                    <button string="Upsell" name="%(sale_subscription.wizard_action)d" type="action" attrs="{'invisible': [('stage_category', '!=', 'progress')]}"/>
+                    <button string="Close" name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action" attrs="{'invisible': [('stage_category', 'in', ['draft', 'closed'])]}"/>
                     <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"/>
+                    <field name="stage_category" invisible="1"/>
                 </header>
                 <sheet string="Subscription">
                     <div class="oe_button_box" name="button_box">
@@ -208,7 +210,7 @@
                         <h1 class="flex-fill d-flex flex-row" attrs="{'invisible': [('id', '=', False)]}">
                             <field name="starred" widget="boolean_favorite" class="mr-3" nolabel="1"/>
                             <field name="display_name" class="text-truncate"/>
-                            <field name="health" widget="state_selection" class="ml-3" readonly="1"/>
+                            <field name="health" widget="state_selection" class="ml-3" readonly="1" attrs="{'invisible': [('health', '!=', 'bad')]}"/>
                         </h1>
                         <h1 attrs="{'invisible': [('id', '!=', False)]}">
                             <field name="name" readonly="1"/>
@@ -218,10 +220,10 @@
                         <group>
                             <field name="partner_id" required="1"/>
                             <field name="pricelist_id" groups="product.group_product_pricelist"/>
-                            <field name="date_start"/>
+                            <field name="date_start" attrs="{'invisible': [('stage_category', '=', 'draft')]}"/>
                             <field name="date" attrs="{'invisible':[('recurring_rule_boundary','=','unlimited')]}"/>
-                            <label for="recurring_next_date" string="Date of Next Invoice" attrs="{'invisible': [('in_progress', '=', False)]}"/>
-                            <div attrs="{'invisible': [('in_progress', '=', False)]}">
+                            <label for="recurring_next_date" string="Date of Next Invoice" attrs="{'invisible': [('stage_category', '!=', 'progress')]}"/>
+                            <div attrs="{'invisible': [('stage_category', '!=', 'progress')]}">
                                 <field name="recurring_next_date"/>
                                 <button name="recurring_invoice"
                                         string="Generate Invoice"
@@ -231,8 +233,7 @@
                                         groups="base.group_no_one"
                                         attrs="{'invisible': [('payment_mode', '=', 'manual')]}"/>
                             </div>
-                            <field name="close_reason_id" attrs="{'invisible': [('in_progress', '=', True)]}"/>
-                            <field name="in_progress" invisible="1"/>
+                            <field name="close_reason_id" attrs="{'invisible': [('stage_category', '!=', 'closed')]}"/>
                         </group>
                         <group>
                             <field name="template_id"/>
@@ -332,7 +333,7 @@
         <field name="model">sale.subscription</field>
         <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
         <field name="arch" type="xml">
-            <tree string="Sale Subscriptions" decoration-warning="to_renew" decoration-muted="not in_progress" multi_edit="1">
+            <tree string="Sale Subscriptions" decoration-warning="to_renew" decoration-muted="stage_category != 'progress'" multi_edit="1">
                 <field name="code" readonly="1"/>
                 <field name="partner_id" readonly="1"/>
                 <field name="recurring_next_date"/>
@@ -344,7 +345,7 @@
                 <field name="percentage_satisfaction"/>
                 <field name="stage_id"/>
                 <field name="to_renew" invisible="1"/>
-                <field name="in_progress" invisible="1"/>
+                <field name="stage_category" invisible="1"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>
         </field>
@@ -372,6 +373,7 @@
         <field name="model">sale.subscription.template</field>
         <field name="arch" type="xml">
             <kanban class="oe_background_grey o_kanban_dashboard o_subscription_kanban">
+                <field name="active"/>
                 <field name="name"/>
                 <field name="code"/>
                 <field name="recurring_rule_type"/>
@@ -382,33 +384,39 @@
                 <field name="user_closable"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_global_click">
-                            <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
+                        <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
+                            <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img"  t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
                             <div class="o_subscription_kanban_main">
                                 <div class="o_kanban_card_content">
-                                    <div class="o_kanban_primary_left">
-                                        <h3 class="mt0">
-                                            <strong><t t-if="record.code.value"><t t-esc="record.code.value"/> - </t><t t-esc="record.name.value"/></strong>
-                                        </h3>
-                                        <div>Recurrence: <t t-esc="record.recurring_interval.value"/>&amp;nbsp;<t t-esc="record.recurring_rule_type.value"/></div>
-                                        <div><i class="fa fa-check" /> <t t-esc="record.payment_mode.value"/></div>
-                                        <div t-if="record.user_closable.raw_value"><i class="fa fa-check" /> Closable by customer</div>
+                                    <strong>
+                                        <t t-if="record.code.value"><t t-esc="record.code.value"/> - </t>
+                                        <t t-esc="record.name.value"/>
+                                    </strong>
+                                    <div>Recurrence:<t t-esc="record.recurring_interval.value"/>&amp;nbsp;
+                                        <t t-esc="record.recurring_rule_type.value"/>
                                     </div>
-                                </div><div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
-                                    <div class="o_kanban_card_manage_section o_kanban_manage_reports">
-                                        <div role="menuitem">
-                                            <a type="edit">Settings</a>
-                                        </div>
-                                        <div role="menuitem">
-                                            <a name="%(sale_subscription_action_filtered)d" type="action">Subscriptions</a>
-                                        </div>
-                                    </div>
-                                    <div role="menuitem" aria-haspopup="true" t-if="widget.editable" class="o_subscription_kanban_colorpicker">
-                                        <ul role="menu" class="oe_kanban_colorpicker" data-field="color"/>
-                                    </div>
+                                    <div><i class="fa fa-check"/><t t-esc="record.payment_mode.value"/></div>
+                                    <div t-if="record.user_closable.raw_value"><i class="fa fa-check"/> Closable by customer</div>
                                 </div>
-                                <div class="o_subscription_kanban_manage" t-if="!selection_mode">
-                                    <a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown"
+                                       href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <div class="o_kanban_card_manage_section o_kanban_manage_reports">
+                                            <a role="menuitem" type="object" name="toggle_active" class="dropdown-item">
+                                                <t t-if="!record.active.raw_value">Restore</t>
+                                                <t t-if="record.active.raw_value">Archive</t>
+                                            </a>
+                                            <ul role="menu" class="oe_kanban_colorpicker" data-field="color"/>
+                                        </div>
+                                        <div class="o_subscription_kanban_manage" t-if="!selection_mode">
+                                            <a class="o_kanban_manage_toggle_button" href="#">
+                                                <i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="ml16" t-if="!selection_mode">
@@ -502,33 +510,29 @@
                                            attrs="{'invisible': [('payment_mode', 'not in', ['validate_send', 'validate_send_payment', 'success_payment'])],
                                                    'required': [('payment_mode', 'in', ['validate_send', 'validate_send_payment', 'success_payment'])]}"/>
                                 </group>
+                                <group name="online">
+                                    <group>
+                                        <field name="user_closable"/>
+                                        <label for="auto_close_limit" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}"/>
+                                        <div class="o_row" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}">
+                                            <field name="auto_close_limit"/>
+                                            <span class="ml-1">days</span>
+                                        </div>
+                                        <field name="tag_ids" string="Group of Subscription" widget="many2many_tags" options="{'color_field': 'color'}" />
+                                        <field name="journal_id" string="Journal" options="{'no_create': True}" groups="account.group_account_manager"/>
+                                        <field name="company_id" groups="base.group_multi_company"/>
+                                    </group>
                             </group>
-                            <group name="online">
-                                <group>
-                                    <field name="user_closable"/>
-                                    <label for="auto_close_limit" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}"/>
-                                    <div class="o_row" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}">
-                                        <field name="auto_close_limit"/>
-                                        <span class="ml-1">days</span>
-                                    </div>
-                                    <field name="tag_ids" string="Group of Subscription" widget="many2many_tags" options="{'color_field': 'color'}" />
-                                    <field name="journal_id" string="Journal" options="{'no_create': True}" groups="account.group_account_manager"/>
-                                </group>
-                            </group>
-                            <group>
-                                <group>
-                                    <field name="company_id" groups="base.group_multi_company"/>
-                                </group>
                             </group>
                         </page>
                         <page name="description" string="Terms and Conditions">
                             <field name="description" placeholder="Terms and Conditions"/>
                         </page>
                         <page name="health" string="Health Check">
-                            <label for="good_health_domain" string="Good Health"/>
+                            <label for="good_health_domain" string="Good Health"/><span class="o_status o_status_green"/>
                             <field name="good_health_domain" widget="domain" options="{'model': 'sale.subscription'}"/>
                             <separator/>
-                            <label for="bad_health_domain" string="Bad Health"/>
+                            <label for="bad_health_domain" string="Bad Health"/><span class="o_status o_status_red"/>
                             <field name="bad_health_domain" widget="domain" options="{'model': 'sale.subscription'}"/>
                         </page>
                     </notebook>
@@ -553,7 +557,7 @@
                 <field name="template_id"/>
                 <field name="currency_id"/>
                 <field name="activity_ids"/>
-                <field name="health"/>
+                <field name="health" attrs="{'invisible': [('health', '!=', 'bad')]}"/>
                 <field name="to_renew"/>
                 <field name="rating_ids"/>
                 <field name="activity_state" />
@@ -588,7 +592,7 @@
                                         </b>
                                     </div>
                                     <div class="oe_kanban_bottom_right">
-                                        <field name="health" widget="state_selection" readonly="1"/>
+                                        <field name="health" widget="state_selection" readonly="1" attrs="{'invisible': [('health', '!=', 'bad')]}"/>
                                         <img t-att-src="kanban_image('res.users', 'image_128', record.user_id.raw_value)" t-att-title="record.user_id.value" t-att-alt="record.user_id.value" class="oe_kanban_avatar"/>
                                     </div>
                                 </div>
@@ -641,6 +645,9 @@
         <field name="model">sale.subscription.alert</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                       <button name="run_cron_manually" string="Trigger Now" type="object" class="btn-primary"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button"
@@ -656,14 +663,14 @@
                         <label for="name" class="oe_edit_only" string="Alert Name"/>
                         <h1><field name="name" placeholder="e.g. Closed Subscription"/></h1>
                     </div>
+                    <div attrs="{'invisible': [('cron_nextcall', '=', False)]}">
+                        By default, the alert is triggered weekly and applies on the subscriptions that match
+                        the following criterias. The next run is on <field name="cron_nextcall" nolabel="1"/>.
+                    </div>
+                    <div attrs="{'invisible': [('cron_nextcall', '!=', False)]}">
+                        The scheduled action for alerts has been deleted. Update the Subscriptions module to re-create it.
+                    </div>
                     <group name="apply_on_panel" string="Apply on">
-                        <group name="subscription_details">
-                            <field name="active" invisible="1"/>
-                            <field name="subscription_template_ids" widget="many2many_tags"/>
-                            <field name="product_ids" string="Products" widget="many2many_tags"/>
-                            <field name="customer_ids" widget="many2many_tags"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
-                        </group>
                         <group name="mrr_details">
                             <field name="currency_id" invisible="1"/>
                             <label for="mrr_min" string="MRR Between"/>
@@ -684,12 +691,19 @@
                                 <field name="rating_percentage"/>
                                 <strong>%</strong>
                             </div>
-                            <label for="stage_from_id" string="Stage"/>
+                            <label for="stage_from_id" string="Stage goes from"/>
                             <div class="o_row">
-                                <field name="stage_from_id"/>
+                                <field name="stage_from_id" placeholder="Initial"/>
                                 <strong>to</strong>
-                                <field name="stage_to_id"/>
+                                <field name="stage_to_id" placeholder=" Destination"/>
                             </div>
+                        </group>
+                        <group name="subscription_details">
+                            <field name="active" invisible="1"/>
+                            <field name="subscription_template_ids" widget="many2many_tags"/>
+                            <field name="product_ids" string="Products" widget="many2many_tags"/>
+                            <field name="customer_ids" widget="many2many_tags"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                     </group>
                     <group string="Action" name="action_wrapper">
@@ -713,17 +727,6 @@
                             <field name="model_id" invisible="1"/>
                             <field name="model_name" invisible="1"/>
                             <field name="trigger_condition"/>
-                            <field name="filter_pre_domain"
-                                   widget="domain"
-                                   options="{'model': 'model_name', 'in_dialog': True}"
-                                   readonly="1"
-                                   groups="base.group_no_one"/>
-                            <field name="filter_domain"
-                                   string="Apply On"
-                                   widget="domain"
-                                   options="{'model': 'model_name', 'in_dialog': True}"
-                                   readonly="1"
-                                   groups="base.group_no_one"/>
                             <field name="trg_date_id"
                                    attrs="{'invisible': [('trigger_condition', '!=', 'on_time')],
                                            'required': [('trigger_condition', '=', 'on_time')]}"
@@ -828,7 +831,7 @@
                         </group>
                         <group>
                             <field name="fold"/>
-                            <field name="in_progress"/>
+                            <field name="category" widget="radio"/>
                         </group>
                     </group>
                     <separator string="Requirements"/>

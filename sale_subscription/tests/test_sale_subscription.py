@@ -42,7 +42,7 @@ class TestSubscription(TestSubscriptionCommon):
             'template_id': self.subscription_tmpl.id,
         })
         self.subscription.with_context(auto_commit=False)._recurring_create_invoice(automatic=True)
-        self.assertEqual(self.subscription.in_progress, False, 'website_contrect: subscription with online payment and no payment method set should get closed after 15 days')
+        self.assertEqual(self.subscription.stage_category, 'closed', 'website_contrect: subscription with online payment and no payment method set should get closed after 15 days')
 
     # Mocking for 'test_auto_payment_with_token'
     # Necessary to have a valid and done transaction when the cron on subscription passes through
@@ -172,7 +172,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.mock_send_success_count = 0
         self.subscription.with_context(auto_commit=False)._recurring_create_invoice(automatic=True)
         self.assertEqual(self.mock_send_success_count, 1, 'a mail to the invoice recipient should have been sent')
-        self.assertEqual(self.subscription.in_progress, True, 'subscription with online payment and a payment method set should stay opened when transaction succeeds')
+        self.assertEqual(self.subscription.stage_category, 'progress', 'subscription with online payment and a payment method set should stay opened when transaction succeeds')
 
         invoice_id = self.subscription.action_subscription_invoice()['res_id']
         invoice = self.env['account.move'].browse(invoice_id)
@@ -315,7 +315,7 @@ class TestSubscription(TestSubscriptionCommon):
 
     def test_12_cron_update_kpi(self):
         Snapshot = self.env['sale.subscription.snapshot']
-        subscriptions_count = self.env['sale.subscription'].search_count([('in_progress', '=', True)])
+        subscriptions_count = self.env['sale.subscription'].search_count([('stage_category', '=', 'progress')])
         before_count = Snapshot.search_count([])
         self.env['sale.subscription']._cron_update_kpi()
         after_count = Snapshot.search_count([])

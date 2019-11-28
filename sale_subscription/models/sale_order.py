@@ -67,7 +67,7 @@ class SaleOrder(models.Model):
             'fiscal_position_id': self.fiscal_position_id.id,
             'payment_token_id': self.transaction_ids.get_last_transaction().payment_token_id.id if template.payment_mode in ['validate_send_payment', 'success_payment'] else False
         }
-        default_stage = self.env['sale.subscription.stage'].search([('in_progress', '=', True)], limit=1)
+        default_stage = self.env['sale.subscription.stage'].search([('category', '=', 'progress')], limit=1)
         if default_stage:
             values['stage_id'] = default_stage.id
         return values

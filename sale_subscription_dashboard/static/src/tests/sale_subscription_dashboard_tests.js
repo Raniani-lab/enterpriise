@@ -325,8 +325,8 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             salesman_dashboard.appendTo($('#qunit-fixture'));
             await testUtils.nextTick();
             assert.containsOnce(salesman_dashboard, '#mrr_growth_salesman', "should display the salesman graph");
-            assert.strictEqual(salesman_dashboard.$('h3').first().text(), "MRR : 600", "should contain the MRR Amount '600'");
-            assert.strictEqual(salesman_dashboard.$('h3').last().text(), "NRR : 1k", "should contain the NRR Amount '1k'");
+            assert.strictEqual(salesman_dashboard.$('h2').first().text(), "Monthly Recurring Revenue : 600", "should contain the Monthly Recurring Revenue Amount '600'");
+            assert.strictEqual(salesman_dashboard.$('h2').eq(1).text(), "Non-Recurring Revenue : 1k", "should contain the Non-Recurring Revenue Amount '1k'");
             assert.containsOnce(salesman_dashboard, '#contract_modifications .table-responsive', "should display the list of subscription");
             assert.strictEqual(salesman_dashboard.$('#contract_modifications .table-responsive tr:odd td:eq(1)').text() , "Agrolait", "should contain subscription modifications partner 'Agrolait'");
             assert.strictEqual(salesman_dashboard.$('#contract_modifications .table-responsive tr:odd td:last').text() , "800 (300)", "should contain current MRR Amount '800 (300)'");

@@ -74,8 +74,12 @@ class ApprovalRequest(models.Model):
                 else:
                     # No purchase order line found, create one.
                     purchase_order = purchase_orders[0]
-                    po_line_vals = line._prepare_purchase_order_line(
+                    po_line_vals = self.env['purchase.order.line']._prepare_purchase_order_line(
+                        line.product_id,
+                        line.quantity,
+                        line.product_uom_id,
                         line.company_id,
+                        seller,
                         purchase_order,
                     )
                     new_po_line = self.env['purchase.order.line'].create(po_line_vals)
@@ -94,8 +98,12 @@ class ApprovalRequest(models.Model):
                 # No RFQ found: create a new one.
                 po_vals = line._get_purchase_order_values(vendor)
                 new_purchase_order = self.env['purchase.order'].create(po_vals)
-                po_line_vals = line._prepare_purchase_order_line(
+                po_line_vals = self.env['purchase.order.line']._prepare_purchase_order_line(
+                    line.product_id,
+                    line.quantity,
+                    line.product_uom_id,
                     line.company_id,
+                    seller,
                     new_purchase_order,
                 )
                 new_po_line = self.env['purchase.order.line'].create(po_line_vals)

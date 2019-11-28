@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.tools.misc import format_date
 from datetime import timedelta
 
 class ProjectTaskType(models.Model):
@@ -27,10 +28,8 @@ class Task(models.Model):
 
     @api.depends('planned_date_begin')
     def _compute_planned_date_begin(self):
-        date_format = self.env['res.lang']._lang_get(self.env.user.lang).date_format
-
         for task in self:
-            task.planned_date_begin_formatted = task.planned_date_begin.strftime(date_format) if task.planned_date_begin else None
+            task.planned_date_begin_formatted = format_date(self.env, task.planned_date_begin) if task.planned_date_begin else None
 
     # ----------------------------------------------------
     # Gantt view

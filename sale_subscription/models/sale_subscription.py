@@ -1263,7 +1263,7 @@ class SaleSubscriptionAlert(models.Model):
         self.filtered(lambda alert: alert.action != 'next_activity' and alert.child_ids).unlink()
         for alert in self:
             if alert.action == 'set_tag' and alert.tag_id:
-                alert._set_field_action('tag_ids', alert.tag_id.id)
+                alert._set_field_action('tag_ids', [(4, alert.tag_id.id, False)])
             elif alert.action == 'set_stage' and alert.stage_id:
                 alert._set_field_action('stage_id', alert.stage_id.id)
             elif alert.action == 'set_to_renew':
@@ -1310,6 +1310,7 @@ class SaleSubscriptionAlert(models.Model):
             super(SaleSubscriptionAlert, alert).write({
                 'state': 'object_write',
                 'fields_lines': [(5, 0, 0), (0, False, {
+                    'evaluation_type': 'equation',
                     'col1': tag_field.id,
                     'value': value})
                 ]})

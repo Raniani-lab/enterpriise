@@ -28,6 +28,14 @@ class analytic_report(models.AbstractModel):
     def _get_report_name(self):
         return _('Analytic Report')
 
+    @api.model
+    def _init_filter_hierarchy(self, options, previous_options=None):
+        # Override because we don't depend on account.group
+        if previous_options and 'hierarchy' in previous_options:
+            options['hierarchy'] = previous_options['hierarchy']
+        else:
+            options['hierarchy'] = self.filter_hierarchy
+
     def open_analytic_entries(self, options, params):
         action = self.env.ref('analytic.account_analytic_line_action').read()[0]
         action = clean_action(action)
@@ -137,7 +145,7 @@ class analytic_report(models.AbstractModel):
 
         analytic_account_domain += ['|', ('company_id', 'in', company_ids), ('company_id', '=', False)]
 
-        if not options['hierarchy']:
+        if not options.get('hierarchy'):
             return self._generate_analytic_account_lines(AccountAnalyticAccount.search(analytic_account_domain))
 
         # display all groups that have accounts

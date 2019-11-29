@@ -354,7 +354,36 @@ var IotScanProgress = Widget.extend({
 
 widget_registry.add('iot_scan_progress', IotScanProgress);
 
-var IoTLongpolling = BusService.extend({
+var IoTConnectionMixin = {
+    _doWarnFail: function (url){
+        var $content = $('<div/>')
+            .append($('<p/>').text(_t('Odoo cannot reach the IoT Box.')))
+            .append($('<span/>').text(_t('Please check if the IoT Box is still connected.')))
+            .append($('<p/>').text(_t('If you are on a secure server (HTTPS) check if you accepted the certificate:')))
+            .append($('<p/>').html(_.str.sprintf('<a href="https://%s" target="_blank"><i class="fas fa-external-link-alt"/>' + _t('Click here to open your IoT Homepage') + '</a>', url)))
+            .append($('<li/>').text(_t('Please accept the certificate of your IoT Box (procedure depends on your browser) :')))
+            .append($('<li/>').text(_t('Click on Advanced/Show Details/Details/More information')))
+            .append($('<li/>').text(_t('Click on Proceed to .../Add Exception/Visit this website/Go on to the webpage')))
+            .append($('<li/>').text(_t('Firefox only : Click on Confirm Security Exception')))
+            .append($('<li/>').text(_t('Close this window and try again')));
+
+        var dialog = new Dialog(this, {
+            title: _t('Connection to IoT Box failed'),
+            $content: $content,
+            buttons: [
+                {
+                    text: _t('Close'),
+                    classes: 'btn-secondary o_form_button_cancel',
+                    close: true,
+                }
+            ],
+        });
+
+        dialog.open();
+    },
+}
+
+var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
     // constants
     POLL_TIMEOUT: 60000,
     POLL_ROUTE: '/hw_drivers/event',
@@ -363,7 +392,7 @@ var IoTLongpolling = BusService.extend({
 
     RPC_DELAY: 1500,
     MAX_RPC_DELAY: 1500 * 10,
-    
+
     _retries: 0,
 
     /**
@@ -406,8 +435,8 @@ var IoTLongpolling = BusService.extend({
     },
     /**
      * Stop listening to iot device with id `device_id`
-     * @param {string} iot_ip 
-     * @param {string} device_id 
+     * @param {string} iot_ip
+     * @param {string} device_id
      */
     removeListener: function(iot_ip, device_id) {
         delete this._listeners[iot_ip].devices[device_id];
@@ -571,33 +600,6 @@ var IoTLongpolling = BusService.extend({
         this._retries++;
         this._delayedStartPolling(Math.min(this.RPC_DELAY * this._retries, this.MAX_RPC_DELAY));
     },
-
-    _doWarnFail: function (url){
-        var $content = $('<div/>')
-            .append($('<p/>').text(_t('Odoo cannot reach the IoT Box.')))
-            .append($('<span/>').text(_t('Please check if the IoT Box is still connected.')))
-            .append($('<p/>').text(_t('If you are on a secure server (HTTPS) check if you accepted the certificate:')))
-            .append($('<p/>').html(_.str.sprintf('<a href="https://%s" target="_blank"><i class="fa fa-external-link"/>' + _t('Click here to open your IoT Homepage') + '</a>', url)))
-            .append($('<li/>').text(_t('Please accept the certificate of your IoT Box (procedure depends on your browser) :')))
-            .append($('<li/>').text(_t('Click on Advanced/Show Details/Details/More information')))
-            .append($('<li/>').text(_t('Click on Proceed to .../Add Exception/Visit this website/Go on to the webpage')))
-            .append($('<li/>').text(_t('Firefox only : Click on Confirm Security Exception')))
-            .append($('<li/>').text(_t('Close this window and try again')));
-
-        var dialog = new Dialog(this, {
-            title: _t('Connection to IoT Box failed'),
-            $content: $content,
-            buttons: [
-                {
-                    text: _t('Close'),
-                    classes: 'btn-secondary o_form_button_cancel',
-                    close: true,
-                }
-            ],
-        });
-
-        dialog.open();
-    },
 });
 
 core.serviceRegistry.add('iot_longpolling', IoTLongpolling);
@@ -644,7 +646,7 @@ var IotValueFieldMixin = {
     _onValueChange: function (data){},
 
     /**
-     * @private 
+     * @private
      */
     _startListening: function () {
         if (this.iot_device) {
@@ -737,6 +739,53 @@ var IotDeviceValueDisplay = Widget.extend(IotValueFieldMixin, {
 
 field_registry.add('iot_realtime_value', IotRealTimeValue);
 widget_registry.add('iot_device_value_display', IotDeviceValueDisplay);
+
+var IoTDownloadLogsButton = Widget.extend(IoTConnectionMixin, {
+    tagName: 'button',
+    className: 'o_iot_logs_button btn btn-primary',
+    events: {
+        'click': '_downloadLogs'
+    },
+
+    /**
+     * @override
+     */
+    init: function (parent, params) {
+        this._ip_url = params.data.ip_url;
+        return this._super.apply(this, arguments);
+    },
+
+    /**
+     * @override
+     */
+    start: function () {
+        this._super.apply(this, arguments);
+        this.$el.text(_('Download Logs'));
+    },
+
+    //--------------------------------------------------------------------------
+    // Handlers
+    //--------------------------------------------------------------------------
+
+    /**
+     * @param {MouseEvent} ev
+     * @private
+     */
+    _downloadLogs: function (ev) {
+        var self = this;
+        ev.stopPropagation();
+        $.ajax({
+            url: this._ip_url + '/hw_proxy/hello',
+            type: 'GET',
+            success: function() {
+                window.location = self._ip_url + '/hw_drivers/download_logs';
+            },
+            error: this._doWarnFail,
+        });
+    },
+});
+
+widget_registry.add('iot_download_logs', IoTDownloadLogsButton);
 
 var _iot_longpolling = new IoTLongpolling();
 

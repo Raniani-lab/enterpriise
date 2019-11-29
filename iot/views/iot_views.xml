@@ -28,6 +28,7 @@
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                             <field name="version"/>
                             <field name="drivers_auto_update"/>
+                            <widget name="iot_download_logs" groups="base.group_no_one"/>
                         </group>
                     </group>
                     <notebook>

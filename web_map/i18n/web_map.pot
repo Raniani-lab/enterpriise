@@ -157,3 +157,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_map.field_ir_ui_view__type
 msgid "View Type"
 msgstr ""
+
+#. module: web_map
+#. openerp-web
+#: code:addons/web_map/static/src/xml/templates.xml:0
+#, python-format
+msgid "View in Google Maps"
+msgstr ""
+
+#. module: web_map
+#. openerp-web
+#: code:addons/web_map/static/src/xml/templates.xml:0
+#, python-format
+msgid "edit"
+msgstr ""
+
+#. module: web_map
+#. openerp-web
+#: code:addons/web_map/static/src/xml/templates.xml:0
+#, python-format
+msgid "navigate to"
+msgstr ""

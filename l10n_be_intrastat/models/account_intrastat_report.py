@@ -23,7 +23,7 @@ class IntrastatReport(models.AbstractModel):
         :param options: The report options.
         :return: The xml export file content.
         '''
-        date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended = self._decode_options(options)
+        date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended, with_vat = self._decode_options(options)
         date_1 = datetime.strptime(date_from, DEFAULT_SERVER_DATE_FORMAT)
         date_2 = datetime.strptime(date_to, DEFAULT_SERVER_DATE_FORMAT)
         a_day = timedelta(days=1)
@@ -41,7 +41,7 @@ class IntrastatReport(models.AbstractModel):
         in_vals = []
         if incl_arrivals:
             query, params = self._prepare_query(
-                date_from, date_to, journal_ids=journal_ids, invoice_types=('in_invoice', 'out_refund'))
+                date_from, date_to, journal_ids=journal_ids, invoice_types=('in_invoice', 'out_refund'), with_vat=with_vat)
             self._cr.execute(query, params)
             query_res = self._cr.dictfetchall()
             in_vals = self._fill_missing_values(query_res, cache)

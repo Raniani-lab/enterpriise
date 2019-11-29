@@ -38,7 +38,7 @@ class IntrastatReport(models.AbstractModel):
         self.env['account.move.line'].check_access_rights('read')
 
         company = self.env.company
-        date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended = self._decode_options(options)
+        date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended, with_vat = self._decode_options(options)
 
         invoice_types = []
         if incl_arrivals:
@@ -46,7 +46,7 @@ class IntrastatReport(models.AbstractModel):
         if incl_dispatches:
             invoice_types += ['out_invoice', 'in_refund']
 
-        query, params = self._prepare_query(date_from, date_to, journal_ids, invoice_types=invoice_types)
+        query, params = self._prepare_query(date_from, date_to, journal_ids, invoice_types=invoice_types, with_vat=with_vat)
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()

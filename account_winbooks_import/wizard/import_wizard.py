@@ -476,14 +476,14 @@ class WinbooksImportWizard(models.TransientModel):
         for matching_number in reconcile_number_set:
             lines = self.env['account.move.line'].search([('winbooks_matching_number', '=', matching_number)])
             try:
-                lines.with_context(no_exchange_difference=sum(lines.mapped('amount_currency')) == 0).reconcile()
+                lines.with_context(no_exchange_difference=True).reconcile()
             except UserError as ue:
                 if len(lines.account_id) > 1:
                     _logger.warning('Winbooks matching number {} uses multiple accounts: {}. Lines with that number have not been reconciled in Odoo.'.format(matching_number, ', '.join(lines.mapped('account_id.display_name'))))
                 elif not lines.account_id.reconcile:
                     _logger.info("{} {} has reconciled lines, changing the config".format(lines.account_id.code, lines.account_id.name))
                     lines.account_id.reconcile = True
-                    lines.reconcile()
+                    lines.with_context(no_exchange_difference=True).reconcile()
                 else:
                     raise ue
         return True

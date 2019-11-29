@@ -45,7 +45,7 @@
         <field name="model">l10n_be.dmfa.location.unit</field>
         <field name="arch" type="xml">
             <tree string="Work address DMFA codes">
-                <field name="code"/>
+                <field name="code" options="{'format': false}"/>
                 <field name="partner_id"/>
                 <field name="company_id"/>
             </tree>

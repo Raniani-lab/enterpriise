@@ -161,7 +161,7 @@
                 </xpath>
                 <xpath expr="//field[@name='job_id']" position="after">
                     <field name="language_code"/>
-                    <field name="nif_country_code" required="True"/>
+                    <field name="nif_country_code" required="True" options="{'format': false}"/>
                 </xpath>
                 <xpath expr="//field[@name='km_home_work']" position="after">
                     <field name="has_bicycle" required="True"/>

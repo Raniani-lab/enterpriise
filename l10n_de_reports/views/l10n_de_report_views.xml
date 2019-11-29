@@ -28,7 +28,7 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='accounting_entries']" position="inside">
-                    <field name="l10n_de_datev_identifier" groups="base.group_no_one"/>
+                    <field name="l10n_de_datev_identifier" groups="base.group_no_one" options="{'format': false}" />
                 </xpath>
             </field>
         </record>

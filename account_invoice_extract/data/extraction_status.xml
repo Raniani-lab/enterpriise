@@ -42,7 +42,7 @@
                     The file has been sent and is being processed. It usually takes between 5 and 60 seconds.
                     <div class="clearfix"/>
                 </div>
-                <field name="extract_status_code" invisible="1"/>
+                <field name="extract_status_code" invisible="1" options="{'format': false}"/>
                 <div role="status" class="alert alert-info mb8"
                      attrs="{'invisible':['|', '|',
                             ('move_type', 'not in', ('in_invoice', 'in_refund')),

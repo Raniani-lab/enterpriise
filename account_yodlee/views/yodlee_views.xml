@@ -17,7 +17,7 @@
         </xpath>
         <xpath expr="//field[@name='account_number']" position="after">
           <field name="yodlee_account_status"/>
-          <field name="yodlee_status_code" groups="base.group_no_one"/>
+          <field name="yodlee_status_code" groups="base.group_no_one" options="{'format': false}"/>
         </xpath>
       </field>
     </record>

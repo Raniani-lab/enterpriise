@@ -8,9 +8,10 @@ import requests
 import werkzeug
 from werkzeug.urls import url_encode, url_join
 
-from odoo import http
+from odoo import http, _
 from odoo.http import request
 from odoo.addons.auth_oauth.controllers.main import fragment_to_query_string
+from odoo.addons.social.controllers.main import SocialValidationException
 
 
 class SocialFacebookController(http.Controller):
@@ -20,15 +21,25 @@ class SocialFacebookController(http.Controller):
 
     @fragment_to_query_string
     @http.route(['/social_facebook/callback'], type='http', auth='user')
-    def facebook_account_callback(self, access_token, is_extended_token=False):
+    def facebook_account_callback(self, access_token=None, is_extended_token=False, **kw):
         if not request.env.user.has_group('social.group_social_manager'):
-            return 'unauthorized'
+            return request.render('social.social_http_error_view',
+                                  {'error_message': _('Unauthorized. Please contact your administrator. ')})
+
+        if not access_token:
+            return request.render(
+                'social.social_http_error_view',
+                {'error_message': _('Facebook did not provide a valid access token.')})
 
         """ Facebook returns to the callback URL with all its own arguments as hash parameters.
         We use this very handy 'fragment_to_query_string' decorator to convert them to server readable parameters. """
 
         media = request.env.ref('social_facebook.social_media_facebook')
-        self._create_facebook_accounts(access_token, media, is_extended_token)
+
+        try:
+            self._create_facebook_accounts(access_token, media, is_extended_token)
+        except SocialValidationException as e:
+            return request.render('social.social_http_error_view', {'error_message': str(e)})
 
         url_params = {
             'action': request.env.ref('social.action_social_stream_post').id,
@@ -49,10 +60,12 @@ class SocialFacebookController(http.Controller):
 
         extended_access_token = access_token if is_extended_token else self._get_extended_access_token(access_token, media)
         accounts_url = url_join(request.env['social.media']._FACEBOOK_ENDPOINT, "/me/accounts/")
-        accounts_request = requests.get(accounts_url, params={
+        json_response = requests.get(accounts_url, params={
             'access_token': extended_access_token
-        })
-        json_response = accounts_request.json()
+        }).json()
+
+        if 'data' not in json_response:
+            raise SocialValidationException(_('Facebook did not provide a valid access token or it may have expired.'))
 
         accounts_to_create = []
         existing_accounts = self._get_existing_accounts(media, json_response)

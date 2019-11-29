@@ -24,7 +24,8 @@
         'views/social_stream_post_views.xml',
         'views/social_stream_views.xml',
         'views/res_config_settings_views.xml',
-        'views/utm_campaign_views.xml'
+        'views/utm_campaign_views.xml',
+        'views/social_templates.xml'
     ],
     'demo': [
         'data/social_demo.xml'

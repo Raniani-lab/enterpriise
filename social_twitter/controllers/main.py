@@ -8,8 +8,9 @@ import requests
 import werkzeug
 from werkzeug.urls import url_encode, url_join
 
-from odoo import http
+from odoo import http, _
 from odoo.http import request
+from odoo.addons.social.controllers.main import SocialValidationException
 
 
 class SocialTwitterController(http.Controller):
@@ -18,18 +19,27 @@ class SocialTwitterController(http.Controller):
     # ========================================================
 
     @http.route('/social_twitter/callback', type='http', auth='user')
-    def twitter_account_callback(self, oauth_token, oauth_verifier, iap_twitter_consumer_key=None):
+    def twitter_account_callback(self, oauth_token=None, oauth_verifier=None, iap_twitter_consumer_key=None, **kw):
         """ When we add accounts though IAP, we copy the 'iap_twitter_consumer_key' to our media's twitter_consumer_key.
         This allows preparing the signature process and the information is not sensitive so we can take advantage of it. """
         if not request.env.user.has_group('social.group_social_manager'):
-            return 'unauthorized'
+            return request.render('social.social_http_error_view',
+                                  {'error_message': _('Unauthorized. Please contact your administrator.')})
+
+        if not oauth_token or not oauth_verifier:
+            return request.render('social.social_http_error_view',
+                                  {'error_message': _('Twitter did not provide a valid access token.')})
 
         if iap_twitter_consumer_key:
             request.env['ir.config_parameter'].sudo().set_param('social.twitter_consumer_key', iap_twitter_consumer_key)
 
         media = request.env['social.media'].search([('media_type', '=', 'twitter')], limit=1)
 
-        self._create_twitter_accounts(oauth_token, oauth_verifier, media)
+        try:
+            self._create_twitter_accounts(oauth_token, oauth_verifier, media)
+        except SocialValidationException as e:
+            return request.render('social.social_http_error_view',
+                                  {'error_message': str(e)})
 
         url_params = {
             'action': request.env.ref('social.action_social_stream_post').id,
@@ -49,6 +59,9 @@ class SocialTwitterController(http.Controller):
             'oauth_token': oauth_token,
             'oauth_verifier': oauth_verifier
         })
+
+        if response.status_code != 200:
+            raise SocialValidationException(_('Twitter did not provide a valid access token or it may have expired.'))
 
         response_values = {
             response_value.split('=')[0]: response_value.split('=')[1]

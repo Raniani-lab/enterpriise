@@ -2,44 +2,44 @@
 import requests
 import werkzeug
 
-from odoo import http
+from odoo import http, _
 from odoo.http import request
-from odoo.tools import html_escape
 from werkzeug.urls import url_encode
+from odoo.addons.social.controllers.main import SocialValidationException
 
 
 class SocialLinkedin(http.Controller):
+    # ========================================================
+    # Accounts management
+    # ========================================================
+
     @http.route(['/social_linkedin/callback'], type='http', auth='user')
-    def social_linkedin_callback(self, **kw):
+    def social_linkedin_callback(self, access_token=None, code=None, state=None, **kw):
         """
         We can receive
-        - authorization_code directly from LinkedIn
+        - code directly from LinkedIn
         - access_token from IAP
+        - state from LinkedIn/IAP, the state avoid the CSRF attack
         """
         if not request.env.user.has_group('social.group_social_manager'):
-            return 'unauthorized'
+            return request.render('social.social_http_error_view',
+                                  {'error_message': _('Unauthorized. Please contact your administrator.')})
 
-        # we received the access_token from IAP
-        access_token = kw.get('access_token')
-        # we receive authorization_code from LinkedIn
-        authorization_code = kw.get('code')
+        if not access_token and not code:
+            return request.render('social.social_http_error_view',
+                                  {'error_message': _('LinkedIn did not provide a valid access token.')})
 
-        linkedin_csrf = kw.get('state')
         media = request.env.ref('social_linkedin.social_media_linkedin')
 
-        if media._compute_linkedin_csrf() != linkedin_csrf:
-            return 'Wrong CSRF token'
+        if media._compute_linkedin_csrf() != state:
+            return request.render('social.social_http_error_view',
+                                  {'error_message': _('There was a security issue during your request.')})
 
         if not access_token:
-            if not authorization_code:
-                return 'An error occurred. Authorization code is missing.'
-            else:
-                # if we do not have the acces_token, we should exchange the
-                # authorization_code for an access token
-                try:
-                    access_token = self._get_linkedin_access_token(authorization_code, media)
-                except Exception as e:
-                    return html_escape(str(e))
+            try:
+                access_token = self._get_linkedin_access_token(code, media)
+            except SocialValidationException as e:
+                return request.render('social.social_http_error_view', {'error_message': str(e)})
 
         request.env['social.account']._create_linkedin_accounts(access_token, media)
 
@@ -74,6 +74,6 @@ class SocialLinkedin(http.Controller):
 
         error_description = response.get('error_description')
         if error_description:
-            raise Exception(error_description)
+            raise SocialValidationException(error_description)
 
         return response.get('access_token')

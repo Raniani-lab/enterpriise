@@ -380,8 +380,8 @@
                                                     <i class="fa fa-1x fa-crosshairs fa-fw fa-lg"/> Commissions
                                                 </label>
                                                 <div class="col-md-7">
-                                                    <span class="form-text">This commission is only effective if the target is reached. Commissions are paid in warrant for three months which results to a monthly net commission value of
-                                                    <t t-esc="round(contract.warrant_value_employee, 2)"/> € in warrant and 9 months in cash which result in a gross monthly commission of <t t-esc="round(contract.commission_on_target, 2)"/> € in cash.</span>
+                                                    <span class="form-text">The commission is scalable and starts from the 1st € sold. The commission plan has stages with accelerators. At 100% , 3 months are paid in Warrant which results to a monthly NET commission value of 
+                                                    <t t-esc="round(contract.warrant_value_employee, 2)"/> € and 9 months in cash which result in a GROSS monthly commission of <t t-esc="round(contract.commission_on_target, 2)"/> €, taxable like your usual monthly pay.</span>
                                                 </div>
                                                 <div class="col-md-2 text-right">
                                                     <div class="input-group">

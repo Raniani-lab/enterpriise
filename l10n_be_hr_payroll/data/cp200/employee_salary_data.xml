@@ -107,18 +107,6 @@ if contract.mobile and contract.internet:
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
-        <record id="cp200_employees_salary_withholding_reduction" model="hr.salary.rule">
-            <field name="category_id" ref="hr_payroll.DED"/>
-            <field name="name">Withholding reduction</field>
-            <field name="code">P.P.DED</field>
-            <field name="amount_select">code</field>
-            <field name="sequence">60</field>
-            <field name="condition_select">python</field>
-            <field name="condition_python">result = bool(categories.EmpBonus)</field>
-            <field name="amount_python_compute">result = compute_withholding_reduction(payslip, categories, worked_days, inputs)</field>
-            <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
-        </record>
-
         <record id="cp200_employees_salary_reim_travel" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll.DED"/>
             <field name="name">Reimbursement of travel expenses</field>
@@ -184,6 +172,18 @@ if contract.mobile and contract.internet:
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = compute_withholding_taxes(payslip, categories, worked_days, inputs)
             </field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        </record>
+
+        <record id="cp200_employees_salary_withholding_reduction" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Withholding reduction</field>
+            <field name="code">P.P.DED</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">130</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(categories.EmpBonus)</field>
+            <field name="amount_python_compute">result = compute_withholding_reduction(payslip, categories, worked_days, inputs)</field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 

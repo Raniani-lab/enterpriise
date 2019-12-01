@@ -386,5 +386,5 @@ def compute_thirteen_month_withholding_taxes(payslip, categories, worked_days, i
 
 def compute_withholding_reduction(payslip, categories, worked_days, inputs):
     if categories.EmpBonus:
-        return categories.EmpBonus * 0.3314
+        return min(abs(categories.PP), categories.EmpBonus * 0.3314)
     return 0.0

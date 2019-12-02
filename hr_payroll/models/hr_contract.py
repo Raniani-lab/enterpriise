@@ -12,7 +12,6 @@ class HrContract(models.Model):
     _inherit = 'hr.contract'
     _description = 'Employee Contract'
 
-    structure_type_id = fields.Many2one('hr.payroll.structure.type', string="Salary Structure Type")
     schedule_pay = fields.Selection(related='structure_type_id.default_struct_id.schedule_pay', depends=())
     resource_calendar_id = fields.Many2one(required=True, default=lambda self: self.env.company.resource_calendar_id,
         help="Employee's working schedule.")
@@ -21,25 +20,6 @@ class HrContract(models.Model):
     is_fulltime = fields.Boolean(related='resource_calendar_id.is_fulltime')
     wage_type = fields.Selection(related='structure_type_id.wage_type')
     hourly_wage = fields.Monetary('Hourly Wage', digits=(16, 2), default=0, required=True, tracking=True, help="Employee's hourly gross wage.")
-
-    company_country_id = fields.Many2one('res.country', string="Company country", related='company_id.country_id', readonly=True)
-
-    @api.onchange('structure_type_id')
-    def _onchange_structure_type_id(self):
-        if self.structure_type_id.default_resource_calendar_id:
-            self.resource_calendar_id = self.structure_type_id.default_resource_calendar_id
-
-    @api.onchange('company_id')
-    def _onchange_company_id(self):
-        if self.company_id:
-            structure_types = self.env['hr.payroll.structure.type'].search([
-                '|',
-                ('country_id', '=', self.company_id.country_id.id),
-                ('country_id', '=', False)])
-            if structure_types:
-                self.structure_type_id = structure_types[0]
-            elif self.structure_type_id not in structure_types:
-                self.structure_type_id = False
 
     def _index_contracts(self):
         action = self.env.ref('hr_payroll.action_hr_payroll_index').read()[0]

@@ -5,7 +5,7 @@
     <record id="hr_payroll_structure_cp200_employee_departure_n1_holidays" model="hr.payroll.structure">
         <field name="name">CP200: Employees Termination Holidays N-1</field>
         <field name="rule_ids" eval="[]"/>
-        <field name="type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="country_id" ref="base.be"/>
         <field name="report_id" ref="l10n_be_hr_payroll.action_report_termination_holidays_n1"/>
         <field name="payslip_name">Certificate Relating To Annual Vacations For The Calendar Year Preceding The End Of The Contract Of Employment</field>

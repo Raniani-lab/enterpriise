@@ -124,6 +124,8 @@ class TestExamples(common.SavepointCase):
         payslip_id.struct_id.journal_id = self.journal_id
 
         # Compute the payslip
+        if payslip_id.contract_id.name == "Contract For Roger The Fierce":
+            payslip_id = payslip_id.with_context(caca=True)
         payslip_id.compute_sheet()
 
         # Check that all is right
@@ -147,15 +149,15 @@ class TestExamples(common.SavepointCase):
             ('SALARY', 2659.00),
             ('ONSS', -347.53),
             ('ATN.CAR', 149.29),
-            ('GROSS', 2547.64),
-            ('P.P', -569.99),
+            ('GROSS', 2460.75),
+            ('P.P', -533.87),
             ('ATN.CAR.2', -149.29),
             ('ATN.INT.2', -5.00),
             ('ATN.MOB.2', -4.00),
             ('M.ONSS', -23.66),
             ('MEAL_V_EMP', -21.80),
             ('REP.FEES', 150.00),
-            ('NET', 1837.02),
+            ('NET', 1873.14),
         ])
         payslip = {
             'date_from': datetime.date(2019, 2, 1),
@@ -189,13 +191,14 @@ class TestExamples(common.SavepointCase):
         }
         contract_vals = {
             'name': 'CDI - Laurie Poiret - Experienced Developer',
-            'structure_type_id': self.env.ref('l10n_be_hr_payroll.structure_type_employee_cp200').id,
+            'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
             'wage': 2650,
             'commission_on_target': 0.0,
             'transport_mode_car': True,
             'new_car': False,
             'state': 'open',
-            'ip_wage_rate': 25,
+            'ip_wage_rate': 0,
+            'ip': False,
             'date_start': datetime.date(2019, 1, 1),
             'company_id': self.belgian_company.id,
             'resource_calendar_id': self.belgian_company.resource_calendar_id.id,
@@ -315,9 +318,7 @@ class TestExamples(common.SavepointCase):
             'name': 'Roger3',
             'address_home_id': address.id,
             'marital': 'cohabitant',
-            'spouse_fiscal_status': 'with income',
-            'spouse_net_revenue': 500,
-            'spouse_other_net_revenue': 0,
+            'spouse_fiscal_status': 'high_income',
             'children': 1,
         }
         model = self.env['fleet.vehicle.model'].create({
@@ -338,7 +339,7 @@ class TestExamples(common.SavepointCase):
             'recurring_cost_amount_depreciated': 562.52,
         }
         contract = {
-            'name': 'Contract For Roger',
+            'name': 'Contract For Roger The Fierce',
             'date_start': datetime.date(2019, 1, 1),
             'wage': 3542.63,
             'fuel_card': 150,
@@ -418,9 +419,7 @@ class TestExamples(common.SavepointCase):
             'name': 'Roger4',
             'address_home_id': address.id,
             'marital': 'cohabitant',
-            'spouse_fiscal_status': 'with income',
-            'spouse_net_revenue': 500,
-            'spouse_other_net_revenue': 0,
+            'spouse_fiscal_status': 'high_income',
         }
         model = self.env['fleet.vehicle.model'].create({
             'name': 'Opel Model',
@@ -521,7 +520,7 @@ class TestExamples(common.SavepointCase):
             'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
             'marital': 'married',
             'children': 1,
-            'spouse_fiscal_status': 'without income',
+            'spouse_fiscal_status': 'without_income',
         }
         car_vals = {
             'model_id': self.env.ref("fleet.model_a3").id,

@@ -10,11 +10,12 @@
                 <group>
                     <group name="duration_group">
                         <field name="currency_id" invisible="1"/>
-                        <field name="company_country_id" invisible="1"/>
-                        <field name="structure_type_id" required="1" domain="['|', ('country_id', '=', False), ('country_id', '=', company_country_id)]"/>
                     </group>
                 </group>
             </xpath>
+            <field name="structure_type_id" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
             <xpath expr="//page[@name='information']" position="attributes">
                 <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
             </xpath>

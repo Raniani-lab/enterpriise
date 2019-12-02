@@ -5,14 +5,7 @@
         </record>
 
         <!-- Structure Type -->
-        <record id="structure_type_employee" model="hr.payroll.structure.type">
-            <field name="name">Employee</field>
-            <field name="country_id" eval="False"/>
-        </record>
-
-        <record id="structure_type_worker" model="hr.payroll.structure.type">
-            <field name="name">Worker</field>
-            <field name="country_id" eval="False"/>
+        <record id="hr_contract.structure_type_worker" model="hr.payroll.structure.type">
             <field name="wage_type">hourly</field>
         </record>
 
@@ -36,20 +29,20 @@
         <!-- Salary Structure -->
         <record id="structure_002" model="hr.payroll.structure">
             <field name="name">Regular Pay</field>
-            <field name="type_id" ref="structure_type_employee"/>
+            <field name="type_id" ref="hr_contract.structure_type_employee"/>
             <field name="unpaid_work_entry_type_ids" eval="[(4, ref('hr_work_entry_contract.work_entry_type_unpaid_leave'))]"/>
             <field name="country_id" eval="False"/>
         </record>
-        <record id="structure_type_employee" model="hr.payroll.structure.type">
+        <record id="hr_contract.structure_type_employee" model="hr.payroll.structure.type">
             <field name="default_struct_id" ref="structure_002"/>
         </record>
 
         <record id="structure_worker_001" model="hr.payroll.structure">
             <field name="name">Worker Pay</field>
-            <field name="type_id" ref="structure_type_worker"/>
+            <field name="type_id" ref="hr_contract.structure_type_worker"/>
             <field name="country_id" eval="False"/>
         </record>
-        <record id="structure_type_worker" model="hr.payroll.structure.type">
+        <record id="hr_contract.structure_type_worker" model="hr.payroll.structure.type">
             <field name="default_struct_id" ref="structure_worker_001"/>
         </record>
 
@@ -72,7 +65,7 @@
 
         <record id="structure_003" model="hr.payroll.structure">
             <field name="name">13th month - End of the year bonus</field>
-            <field name="type_id" ref="structure_type_employee"/>
+            <field name="type_id" ref="hr_contract.structure_type_employee"/>
             <field name="rule_ids" eval="[]"/>
         </record>
 
@@ -181,7 +174,7 @@
             <field name="name">Marketing Executive Contract</field>
             <field name="date_start" eval="time.strftime('%Y-%m')+'-1'"/>
             <field name="date_end" eval="time.strftime('%Y')+'-12-31'"/>
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
             <field name="employee_id" ref="hr_employee_payroll"/>
             <field name="notes">Default contract for marketing executives</field>
             <field eval="4000.0" name="wage"/>
@@ -192,7 +185,7 @@
             <field name="name">Contract For Marc Demo</field>
             <field name="date_start" eval="time.strftime('%Y-%m')+'-1'"/>
             <field name="date_end" eval="time.strftime('%Y')+'-12-31'"/>
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
             <field name="notes">This is Marc Demo's contract</field>
             <field eval="5000.0" name="wage"/>
@@ -202,7 +195,7 @@
             <field name="name">Contract For Mitchell Admin</field>
             <field name="date_start" eval="time.strftime('%Y-%m')+'-1'"/>
             <field name="date_end" eval="time.strftime('%Y')+'-12-31'"/>
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
             <field name="employee_id" ref="hr.employee_admin"/>
             <field name="notes">This is Mitchell Admin's contract</field>
             <field eval="5500.0" name="wage"/>
@@ -210,55 +203,55 @@
         </record>
 
         <record id="hr_contract.hr_contract_admin" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_al" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_mit" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_stw" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_qdp" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_han" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_niv" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_jth" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_chs" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_jve" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_fme" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_fpi" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <record id="hr_contract.hr_contract_vad" model="hr.contract">
-            <field name="structure_type_id" ref="hr_payroll.structure_type_employee"/>
+            <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
         </record>
 
         <!-- Work entries -->

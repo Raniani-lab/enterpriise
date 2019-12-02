@@ -34,25 +34,27 @@ class GenerateSimulationLink(models.TransientModel):
                 applicant.access_token = uuid.uuid4().hex
                 applicant.access_token_end_date = self.env['hr.contract']._get_access_token_end_date()
             result['applicant_id'] = applicant_id
+            contract = applicant.job_id.default_contract_id
             result['contract_id'] = applicant.job_id.default_contract_id.id
+        if contract and not contract.contract_update_template_id or result.get('applicant_id') and not contract.sign_template_id:
+            raise ValidationError(_('No signature template defined on the contract.'))
+        if not contract.hr_responsible_id:
+            raise ValidationError(_('No HR responsible defined on the job position'))
         return result
 
-    vehicle_id = fields.Many2one('fleet.vehicle', store=True)
-    new_car = fields.Boolean('Can request a new car')
-    new_car_model_id = fields.Many2one('fleet.vehicle.model', string="Model",
-        domain=lambda self: self.env['hr.contract']._get_possible_model_domain())
+    def get_contract_domain(self):
+        return [
+            '|',
+            ('employee_id', '=', False),
+            ('employee_id', '=', self.employee_contract_id.employee_id.id)]
+
     contract_id = fields.Many2one('hr.contract', string="Contract Template", required=True, store=True,
         domain="['|', ('employee_id', '=', False), ('employee_id', '=', employee_contract_employee_id)]")
-    contract_type = fields.Selection([
-        ('PFI', 'PFI'),
-        ('CDI', 'CDI'),
-        ('CDD', 'CDD')], string="Contract Type", default="PFI")
     employee_contract_id = fields.Many2one('hr.contract')
     employee_contract_employee_id = fields.Many2one(related='employee_contract_id.employee_id', string="contract employee")
     employee_id = fields.Many2one('hr.employee')
     final_yearly_costs = fields.Float(string="Employee Budget", store=True, required=True)
     applicant_id = fields.Many2one('hr.applicant')
-    customer_relation = fields.Boolean("In relations with customers", default=True)
     job_title = fields.Char("Job Title")
 
     email_to = fields.Char('Email To', compute='_compute_email_to', store=True, readonly=False)
@@ -66,33 +68,20 @@ class GenerateSimulationLink(models.TransientModel):
             elif wizard.applicant_id:
                 wizard.email_to = wizard.applicant_id.email_from
 
-    @api.depends('new_car', 'vehicle_id', 'new_car_model_id', 'contract_id',
-                 'final_yearly_costs', 'applicant_id', 'customer_relation',
-                 'contract_type', 'job_title')
+    def _get_url_triggers(self):
+        return ['applicant_id', 'final_yearly_costs', 'employee_contract_id', 'job_title']
+
+    @api.depends(lambda self: [key for key in self._fields.keys()])
     def _compute_url(self):
         for wizard in self:
             base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
             url = base_url + '/salary_package/simulation/contract/%s?' % (self.contract_id.id)
             params = {}
-            if wizard.vehicle_id:
-                params['car_id'] = wizard.vehicle_id.id
-            if wizard.new_car and wizard.new_car_model_id:
-                params['new_car_model_id'] = wizard.new_car_model_id.id
+            for trigger in self._get_url_triggers():
+                if wizard[trigger]:
+                    params[trigger] = wizard[trigger].id if isinstance(wizard[trigger], models.BaseModel) else wizard[trigger]
             if wizard.applicant_id:
-                params['applicant_id'] = wizard.applicant_id.id
                 params['token'] = wizard.applicant_id.access_token
-            if wizard.customer_relation:
-                params['customer_relation'] = 1
-            if wizard.final_yearly_costs:
-                params['final_yearly_costs'] = wizard.final_yearly_costs
-            if wizard.contract_type:
-                params['contract_type'] = wizard.contract_type
-            if wizard.employee_contract_id:
-                params['employee_contract_id'] = wizard.employee_contract_id.id
-            if wizard.job_title:
-                params['job_title'] = wizard.job_title
-            if wizard.new_car:
-                params['new_car'] = 1
             if params:
                 url = url + url_encode(params)
             wizard.url = url
@@ -102,8 +91,7 @@ class GenerateSimulationLink(models.TransientModel):
         self.final_yearly_costs = self.contract_id.final_yearly_costs
         self.job_title = self.contract_id.employee_id.job_title or self.contract_id.job_id.name
         self.contract_type = self.contract_id.contract_type
-        if self.contract_id.car_id:
-            self.vehicle_id = self.contract_id.car_id
+        # return {'domain': {'contract_id': self.get_contract_domain()}}
 
     def send_offer(self):
         try:

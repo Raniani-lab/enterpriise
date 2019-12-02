@@ -17,7 +17,9 @@ def additional_groups(user, groups):
     """ Quickly add groups to a user """
     group_ids = user.env["res.groups"]
     for xml_id in groups.split(','):
-        group_ids |= user.env.ref(xml_id.strip())
+        group = user.env.ref(xml_id.strip(), raise_if_not_found=False)
+        if group:
+            group_ids |= group
     group_ids -= user.groups_id
     try:
         user.write({'groups_id': [(4, group.id, False) for group in group_ids]})
@@ -253,7 +255,7 @@ class TestHR(common.TransactionCase):
     def create_structure(self, user, name, code):
         struct_form = Form(self.env['hr.payroll.structure'].with_user(user))
         struct_form.name = name
-        struct_form.type_id = self.env.ref('l10n_be_hr_payroll.structure_type_employee_cp200')
+        struct_form.type_id = self.env.ref('hr_contract.structure_type_employee_cp200')
         return struct_form.save()
 
     def _test_contract(self):

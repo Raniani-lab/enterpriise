@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <function model="hr.contract" name="write">
+        <value model='hr.contract' eval="obj().search([]).ids"/>
+        <value model="hr.contract" eval="{
+            'sign_template_id': obj().env.ref('hr_contract_salary.sign_template_cdi_developer').id,
+            'contract_update_template_id': obj().env.ref('hr_contract_salary.sign_template_cdi_developer').id,
+            'hr_responsible_id': obj().env.ref('base.user_admin').id,
+        }"/>
+    </function>
     <function model="res.users" name="write">
         <value eval="[1, 2]"/>
         <value eval="{'company_id': ref('l10n_be_hr_payroll.res_company_be')}"/>
@@ -18,7 +27,7 @@
 
     <record id="l10n_be_dmfa_location_unit" model="l10n_be.dmfa.location.unit">
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="partner_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="partner_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="code">578</field>
     </record>
 
@@ -176,23 +185,23 @@
     <!-- Work Entries for Laurie -->
 
     <function model="hr.contract" name="_generate_work_entries">
-        <value eval="[ref('hr_contract_salary.hr_contract_cdi_laurie_poiret')]"/>
+        <value eval="[ref('l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret')]"/>
         <value eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
         <value eval="DateTime.today()"/>
     </function>
 
     <function model="hr.work.entry" name="action_validate">
-        <value model="hr.work.entry" eval="obj().search([('employee_id', '=', ref('hr_contract_salary.hr_employee_laurie_poiret'))]).ids"/>
+        <value model="hr.work.entry" eval="obj().search([('employee_id', '=', ref('l10n_be_hr_contract_salary.hr_employee_laurie_poiret'))]).ids"/>
     </function>
 
     <!-- Individual account demo -->
 
     <record id="hr_payslip_demo_lap_january" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=1)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=2, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP661</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -204,7 +213,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">18</field>
         <field name="number_of_hours">144</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_january"/>
     </record>
 
@@ -213,7 +222,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_leave"/>
         <field name="number_of_days">4</field>
         <field name="number_of_hours">32</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_january"/>
     </record>
 
@@ -221,10 +230,10 @@
 
     <record id="hr_payslip_demo_lap_february" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=2)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=2, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=3, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP662</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -236,7 +245,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_february"/>
     </record>
 
@@ -244,10 +253,10 @@
 
     <record id="hr_payslip_demo_lap_march" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=3)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=3, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=4, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP663</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -259,7 +268,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_march"/>
     </record>
 
@@ -267,10 +276,10 @@
 
     <record id="hr_payslip_demo_lap_april" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=4)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=4, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=5, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP664</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -282,7 +291,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_april"/>
     </record>
 
@@ -290,10 +299,10 @@
 
     <record id="hr_payslip_demo_lap_may" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=5)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=5, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=6, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP665</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -305,7 +314,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_may"/>
     </record>
 
@@ -313,10 +322,10 @@
 
     <record id="hr_payslip_demo_lap_june" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=6)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=6, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=7, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP666</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -328,7 +337,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_june"/>
     </record>
 
@@ -336,10 +345,10 @@
 
     <record id="hr_payslip_demo_lap_july" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=7)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=7, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=8, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP667</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -351,7 +360,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_july"/>
     </record>
 
@@ -359,10 +368,10 @@
 
     <record id="hr_payslip_demo_lap_august" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=8)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=8, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=9, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP668</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -374,7 +383,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">0</field>
         <field name="number_of_hours">0</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_august"/>
     </record>
 
@@ -383,7 +392,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_leave"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_august"/>
     </record>
 
@@ -391,10 +400,10 @@
 
     <record id="hr_payslip_demo_lap_september" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=9)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=9, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=10, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP669</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -406,7 +415,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_september"/>
     </record>
 
@@ -414,10 +423,10 @@
 
     <record id="hr_payslip_demo_lap_october" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=10)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=10, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=11, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP670</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -429,7 +438,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_october"/>
     </record>
 
@@ -437,10 +446,10 @@
 
     <record id="hr_payslip_demo_lap_november" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=11)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=11, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=12, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP671</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -452,7 +461,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_november"/>
     </record>
 
@@ -460,10 +469,10 @@
 
     <record id="hr_payslip_demo_lap_december" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=12)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=12, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=0, month=1, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
         <field name="number">SLIP672</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -475,7 +484,7 @@
         <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="payslip_id" ref="hr_payslip_demo_lap_december"/>
     </record>
 
@@ -483,10 +492,10 @@
 
     <record id="hr_payslip_demo_lap_13th_month" model="hr.payslip">
         <field name="name" eval="'Laurie Poiret (lap) - 13th Month - ' + (DateTime.today() + relativedelta(years=-1, month=12)).strftime('%B %Y')"/>
-        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
         <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=12, day=1))"/>
         <field name="date_to" eval="(DateTime.today() + relativedelta(years=0, month=1, day=1, days=-1))"/>
-        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="employee_id" ref="l10n_be_hr_contract_salary.hr_employee_laurie_poiret"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month"/>
         <field name="number">SLIP674</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -888,7 +897,7 @@
         <field name="job_title">Chief Executive Officer</field>
         <field name="department_id" ref="hr_department_1"/>
         <field name="identification_id">10793589456</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_admin"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_admin"/>
     </record>
@@ -919,7 +928,7 @@
         <field name="work_email">marian.weaver56@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_al-image.jpg"/>
         <field name="identification_id">10793589457</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_al"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_al"/>
     </record>
@@ -952,7 +961,7 @@
         <field name="work_email">bernice.jensen60@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_mit-image.jpg"/>
         <field name="identification_id">10793589458</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_mit"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_mit"/>
     </record>
@@ -984,7 +993,7 @@
         <field name="work_email">ramona.franklin32@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_niv-image.jpg"/>
         <field name="identification_id">10793589459</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_niv"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_niv"/>
     </record>
@@ -1016,7 +1025,7 @@
         <field name="work_email">jack.mccoy17@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_stw-image.jpg"/>
         <field name="identification_id">10793589460</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_stw"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_stw"/>
     </record>
@@ -1048,7 +1057,7 @@
         <field name="work_email">mario.lambert31@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_chs-image.jpg"/>
         <field name="identification_id">10793589461</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_chs"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_chs"/>
     </record>
@@ -1081,7 +1090,7 @@
         <field name="work_email">gilles@odoo.com</field>
         <field name="image_1920" type="base64" file="hr/static/img/employee_qdp-image.png"/>
         <field name="identification_id">10793589462</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_qdp"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_qdp"/>
     </record>
@@ -1113,7 +1122,7 @@
         <field name="work_email">michael.crawford52@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_fme-image.jpg"/>
         <field name="identification_id">10793589464</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fme"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fme"/>
     </record>
@@ -1145,7 +1154,7 @@
         <field name="work_email">rene.chapman41@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_fpi-image.jpg"/>
         <field name="identification_id">10793589465</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fpi"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fpi"/>
     </record>
@@ -1177,7 +1186,7 @@
         <field name="work_email">manuel.shelton96@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jth-image.jpg"/>
         <field name="identification_id">10793589466</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jth"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jth"/>
     </record>
@@ -1209,7 +1218,7 @@
         <field name="work_email">rebecca.morrison35@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_ngh-image.jpg"/>
         <field name="identification_id">10793589467</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_ngh"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_ngh"/>
     </record>
@@ -1241,7 +1250,7 @@
         <field name="work_email">sarah.meyer87@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_vad-image.jpg"/>
         <field name="identification_id">10793589468</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_vad"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_vad"/>
     </record>
@@ -1271,7 +1280,7 @@
         <field name="work_email">eduardo.kelley37@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_han-image.jpg"/>
         <field name="identification_id">10793589469</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_han"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_han"/>
     </record>
@@ -1301,7 +1310,7 @@
         <field name="work_email">Michael.lambert17@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jve-image.jpg"/>
         <field name="identification_id">10793589470</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jve"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jve"/>
     </record>
@@ -1331,7 +1340,7 @@
         <field name="work_email">dwight.snyder59@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jep-image.jpg"/>
         <field name="identification_id">10793589471</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jep"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jep"/>
     </record>
@@ -1361,7 +1370,7 @@
         <field name="work_email">minnie.burns56@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jod-image.jpg"/>
         <field name="identification_id">10793589472</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jod"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jod"/>
     </record>
@@ -1391,7 +1400,7 @@
         <field name="work_email">andrew.hunt19@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jog-image.jpg"/>
         <field name="identification_id">10793589473</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jog"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jog"/>
     </record>
@@ -1421,7 +1430,7 @@
         <field name="work_email">arnold.horton28@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jgo-image.jpg"/>
         <field name="identification_id">10793589474</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jgo"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jgo"/>
     </record>
@@ -1451,7 +1460,7 @@
         <field name="work_email">jerry.barnes69@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_lur-image.jpg"/>
         <field name="identification_id">10793589475</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_lur"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_lur"/>
     </record>
@@ -1481,7 +1490,7 @@
         <field name="work_phone">(482)-233-3393</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_hne-image.jpg"/>
         <field name="identification_id">10793589476</field>
-        <field name="address_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_hne"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_hne"/>
     </record>
@@ -1496,10 +1505,10 @@
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1515,10 +1524,10 @@
         <field name="state">open</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1534,10 +1543,10 @@
         <field eval="4500.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1554,10 +1563,10 @@
         <field eval="4500.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1573,10 +1582,10 @@
         <field eval="3750.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1592,10 +1601,10 @@
         <field eval="4600.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1612,10 +1621,10 @@
         <field eval="4000.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1632,10 +1641,10 @@
         <field eval="4200.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1651,10 +1660,10 @@
         <field eval="3750.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1670,10 +1679,10 @@
         <field eval="3950.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1690,10 +1699,10 @@
         <field eval="3650.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">blocked</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1710,10 +1719,10 @@
         <field eval="3750.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
@@ -1730,10 +1739,10 @@
         <field eval="3750.0" name="wage"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
-        <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
-        <field name="default_contract_id" ref="hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>

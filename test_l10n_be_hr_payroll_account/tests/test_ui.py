@@ -9,7 +9,7 @@ from odoo.addons.test_mail.tests.common import mail_new_test_user
 from odoo.modules.module import get_module_resource
 
 
-@odoo.tests.tagged('-at_install', 'post_install')
+@odoo.tests.tagged('-at_install', 'post_install', 'salary')
 class TestUi(odoo.tests.HttpCase):
     def test_ui(self):
         # no user available for belgian company so to set hr responsible change company of demo
@@ -119,7 +119,6 @@ class TestUi(odoo.tests.HttpCase):
             }
         ])
 
-
         company_id = self.env['res.company'].create({
             'name': 'My Belgian Company - TEST',
             'country_id': self.env.ref('base.be').id,
@@ -172,5 +171,23 @@ class TestUi(odoo.tests.HttpCase):
         self.env.ref('base.user_admin').write({'company_ids': [(4, company_id.id)], 'name': 'Mitchell Admin'})
         self.env.ref('base.user_admin').partner_id.write({'email': 'mitchell.stephen@example.com', 'name': 'Mitchell Admin'})
         demo.write({'partner_id': partner_id, 'company_id': company_id.id, 'company_ids': [(4, company_id.id)]})
+
+        contract_template = self.env['hr.contract'].create({
+            'name': 'New Developer Template Contract',
+            'wage': 3000,
+            'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
+            'ip_wage_rate': 25,
+            'sign_template_id': template.id,
+            'contract_update_template_id': template.id,
+            'hr_responsible_id': self.env.ref('base.user_admin').id,
+            'company_id': company_id.id,
+            'representation_fees': 150,
+            'meal_voucher_amount': 7.45,
+            'fuel_card': 0,
+            'internet': 38,
+            'mobile': 30,
+            'eco_checks': 250,
+        })
+
         demo.flush()
-        self.start_tour("/", 'hr_contract_salary_tour', login='admin', timeout=100)
+        self.start_tour("/", 'hr_contract_salary_tour', login='admin', timeout=300)

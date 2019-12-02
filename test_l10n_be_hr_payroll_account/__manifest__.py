@@ -6,7 +6,8 @@
     'category': 'Human Resources',
     'summary': 'Test Belgian Payroll',
     'depends': [
-        'hr_contract_salary',
+        'hr_contract_salary_payroll',
+        'l10n_be_hr_contract_salary',
         'l10n_be_hr_payroll_account',
         'l10n_generic_coa',
         'l10n_be',
@@ -18,7 +19,7 @@
     ],
     'description': """
     """,
-    'data': [],
+    'data': ['views/assets.xml'],
     'qweb': [],
     'demo': ['data/test_l10n_be_hr_payroll_account_demo.xml'],
     'auto_install': True,

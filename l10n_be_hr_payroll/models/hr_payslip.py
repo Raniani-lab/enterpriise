@@ -198,6 +198,8 @@ class Payslip(models.Model):
             return 1
 
         self.ensure_one()
+        if self.env.context.get('salary_simulation', False):
+            return 1
         contract = self.contract_id
         hours_per_day = (self.contract_id.resource_calendar_id or self.employee_id.resource_calendar_id).hours_per_day
         mapped_data = {wd.work_entry_type_id.id: wd.number_of_hours for wd in self.worked_days_line_ids}
@@ -246,19 +248,19 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
         withholding_tax_amount = convert_to_month(basic_bareme)
     else:
         # BAREME I: Isolated or spouse with income
-        if employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'with income'):
+        if employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status != 'without_income'):
             basic_bareme = max(compute_basic_bareme(yearly_net_taxable_revenue) - payslip.rule_parameter('deduct_single_with_income'), 0.0)
             withholding_tax_amount = convert_to_month(basic_bareme)
 
         # BAREME II: spouse without income
-        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without income':
+        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
             yearly_net_taxable_revenue_for_spouse = min(yearly_net_taxable_revenue * 0.3, payslip.rule_parameter('max_spouse_income'))
             basic_bareme_1 = compute_basic_bareme(yearly_net_taxable_revenue_for_spouse)
             basic_bareme_2 = compute_basic_bareme(yearly_net_taxable_revenue - yearly_net_taxable_revenue_for_spouse)
             withholding_tax_amount = convert_to_month(max(basic_bareme_1 + basic_bareme_2 - 2 * payslip.rule_parameter('deduct_single_with_income'), 0))
 
     # Reduction for isolated people and for other family charges
-    if employee.marital in ['divorced', 'single', 'widower'] or (employee.spouse_net_revenue > 0.0 or employee.spouse_other_net_revenue > 0.0):
+    if employee.marital in ['divorced', 'single', 'widower'] or (employee.spouse_fiscal_status != 'without_income'):
         if employee.marital in ['divorced', 'single', 'widower']:
             withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
         if employee.marital == 'widower' or (employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children):
@@ -269,11 +271,11 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
             withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
         if employee.other_dependent_people and employee.dependent_juniors:
             withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
-        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status=='with income' and employee.spouse_net_revenue <= payslip.rule_parameter('spouse_low_income_limit'):
+        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_income':
             withholding_tax_amount -= payslip.rule_parameter('spouse_low_income_deduction')
-        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status=='with income' and not employee.spouse_net_revenue and employee.spouse_other_net_revenue <= payslip.rule_parameter('spouse_other_income_limit'):
+        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_pension':
             withholding_tax_amount -= payslip.rule_parameter('spouse_other_income_deduction')
-    if employee.marital in ['married', 'cohabitant'] and employee.spouse_net_revenue == 0.0 and employee.spouse_other_net_revenue == 0.0:
+    if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
         if employee.disabled:
             withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
         if employee.disabled_spouse_bool:
@@ -306,7 +308,7 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
         return 0
     if employee.resident_bool:
         result = 0.0
-    elif employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status=='without income'):
+    elif employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income'):
         if 0.01 <= wage <= 1095.09:
             result = 0.0
         elif 1095.10 <= wage <= 1945.38:
@@ -317,7 +319,7 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
             result = -min(18.60 + (wage - 2190.18) * 0.011, 60.94)
         else:
             result = -60.94
-    elif employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status=='with income':
+    elif employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status != 'without_income':
         if 0.01 <= wage <= 1095.09:
             result = 0.0
         elif 1095.10 <= wage <= 1945.38:

@@ -26,7 +26,7 @@ class TestPayslipBase(common.TransactionCase):
             'state': 'open',
             'date_start': date_start,
             'date_end': date_end,
-            'structure_type_id': self.env.ref('l10n_be_hr_payroll.structure_type_employee_cp200').id,
+            'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
             'internet': False,
             'mobile': False,
         })

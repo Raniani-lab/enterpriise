@@ -39,9 +39,12 @@ class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     spouse_fiscal_status = fields.Selection([
-        ('without income', 'Without Income'),
-        ('with income', 'With Income')
-    ], string='Tax status for spouse', groups="hr.group_hr_user")
+        ('without_income', 'Without Income'),
+        ('high_income', 'With High income'),
+        ('low_income', 'With Low Income'),
+        ('low_pension', 'With Low Pensions'),
+        ('high_pension', 'With High Pensions')
+    ], string='Tax status for spouse', groups="hr.group_hr_user", default='without_income', required=False)
     disabled = fields.Boolean(string="Disabled", help="If the employee is declared disabled by law", groups="hr.group_hr_user")
     disabled_spouse_bool = fields.Boolean(string='Disabled Spouse', help='if recipient spouse is declared disabled by law', groups="hr.group_hr_user")
     disabled_children_bool = fields.Boolean(string='Disabled Children', help='if recipient children is/are declared disabled by law', groups="hr.group_hr_user")
@@ -55,9 +58,6 @@ class HrEmployee(models.Model):
     other_disabled_juniors_dependent = fields.Integer('# disabled people (<65)', groups="hr.group_hr_user")
     dependent_seniors = fields.Integer(compute='_compute_dependent_people', string="Considered number of dependent seniors", groups="hr.group_hr_user")
     dependent_juniors = fields.Integer(compute='_compute_dependent_people', string="Considered number of dependent juniors", groups="hr.group_hr_user")
-    spouse_net_revenue = fields.Float(string="Spouse Net Revenue", help="Own professional income, other than pensions, annuities or similar income", groups="hr.group_hr_user")
-    spouse_other_net_revenue = fields.Float(string="Spouse Other Net Revenue",
-        help='Own professional income which is exclusively composed of pensions, annuities or similar income', groups="hr.group_hr_user")
 
     start_notice_period = fields.Date("Start notice period", groups="hr.group_hr_user", copy=False, tracking=True)
     end_notice_period = fields.Date("End notice period", groups="hr.group_hr_user", copy=False, tracking=True)
@@ -71,17 +71,6 @@ class HrEmployee(models.Model):
     nif_country_code = fields.Integer(string="NIF Country Code", default=0, groups="hr.group_hr_user", help="Fiscal Identification Number")
     has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr.group_hr_user",
         help="Use a bicycle as a transport mode to go to work")
-
-    @api.constrains('spouse_fiscal_status', 'spouse_net_revenue', 'spouse_other_net_revenue')
-    def _check_spouse_revenue(self):
-        for employee in self:
-            if employee.spouse_fiscal_status == 'with income' and not employee.spouse_net_revenue and not employee.spouse_other_net_revenue:
-                raise ValidationError(_("The revenue for the spouse can't be equal to zero is the fiscal status is 'With Income'."))
-
-    @api.onchange('spouse_fiscal_status')
-    def _onchange_spouse_fiscal_status(self):
-        self.spouse_net_revenue = 0.0
-        self.spouse_other_net_revenue = 0.0
 
     @api.onchange('disabled_children_bool')
     def _onchange_disabled_children_bool(self):
@@ -257,17 +246,12 @@ class HrEmployee(models.Model):
             This method returns a code that symbolizes the family situation.
         """
         if self.marital == 'married' or self.marital == 'cohabitant':
-            if self.spouse_fiscal_status == 'with income':
+            if self.spouse_fiscal_status == 'high_income':
                 return '1'
-            if self.spouse_fiscal_status == 'without income':
-                if self.spouse_net_revenue == 0 and self.spouse_other_net_revenue <= 135.0:
-                    return '2'
-                if self.spouse_net_revenue <= 225.0 and self.spouse_other_net_revenue == 0:
-                    return '3'
-                if self.spouse_other_net_revenue <= 445.0 and self.spouse_net_revenue == 0:
-                    return '3'
-                raise UserError(_('The employee %s has a spouse without any revenue, but some revenues are declared for him.') % (self.name))
-            raise UserError(_('The fiscal status for the spouse of the employee %s is not defined.') % (self.name))
+            if self.spouse_fiscal_status == 'low_pension':
+                return '2'
+            if self.spouse_fiscal_status == 'low_income':
+                return '3'
         return '0'  # single, widow, ...
 
     def _get_dependent_people(self):

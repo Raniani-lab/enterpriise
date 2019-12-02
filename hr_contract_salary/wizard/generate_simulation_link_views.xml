@@ -8,20 +8,15 @@
                 <group string="Configure the simulation">
                     <field name="contract_id"/>
                     <field name="job_title"/>
-                    <field name="contract_type"/>
                     <field name="employee_contract_id" invisible="1"/>
                     <field name="employee_contract_employee_id" invisible="1"/>
                     <field name="employee_id" invisible="1"/>
-                    <field name="customer_relation"/>
                     <field name="applicant_id" invisible="1"/>
-                    <field name="new_car"/>
-                    <field name="new_car_model_id" invisible="1"/>
-                    <field name="vehicle_id"/>
                     <field name="final_yearly_costs"/>
                 </group>
                 <group>
                     <field name="email_to" invisible="True"/>
-                    <field name="url"/>
+                    <field name="url" widget="CopyClipboardChar"/>
                 </group>
                 <footer>
                     <button name="send_offer" type="object" string="Send Offer" class="oe_highlight"/>

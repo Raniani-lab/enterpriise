@@ -153,10 +153,6 @@ class DataMergeGroup(models.Model):
         else:
             merge = self._merge_method
 
-        # YTI This is a security issue, exposing record data to everyone who has
-        # access to the record, like password like ogone_password for example.
-        # 'changes': rec._record_snapshot(),
-
         # Create a dict with chatter data, in case the merged records are deleted during the merge procedure
         chatter_data = {rec.res_id:dict(res_id=rec.res_id, merged_record=str(rec.name), changes=rec._record_snapshot()) for rec in to_merge}
         res = merge(master_record._original_records(), to_merge._original_records())

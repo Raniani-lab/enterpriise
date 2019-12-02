@@ -38,7 +38,8 @@ class HrContract(models.Model):
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         help="Employee's company car.",
         groups='fleet.fleet_group_manager')
-    car_atn = fields.Float(compute='_compute_car_atn_and_costs', string='ATN Company Car', store=True, compute_sudo=True)
+    car_atn = fields.Float(compute='_compute_car_atn_and_costs', string='Benefit in Kind (Company Car)', store=True, compute_sudo=True)
+    wishlist_car_total_depreciated_cost = fields.Float(compute_='_compute_car_atn_and_costs', compute_sudo=True)
     company_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
     available_cars_amount = fields.Integer(compute='_compute_available_cars_amount', string='Number of available cars')
     new_car = fields.Boolean('Request a new car')
@@ -64,9 +65,11 @@ class HrContract(models.Model):
             if not contract.new_car and contract.car_id:
                 contract.car_atn = contract.car_id.atn
                 contract.company_car_total_depreciated_cost = contract.car_id.total_depreciated_cost
+                contract.wishlist_car_total_depreciated_cost = 0
             elif contract.new_car and contract.new_car_model_id:
                 contract.car_atn = contract.new_car_model_id.default_atn
                 contract.company_car_total_depreciated_cost = contract.new_car_model_id.default_total_depreciated_cost
+                contract.wishlist_car_total_depreciated_cost = contract.new_car_model_id.default_total_depreciated_cost
 
     @api.depends('car_id.log_contracts.state')
     def _compute_car_open_contracts_count(self):
@@ -103,7 +106,7 @@ class HrContract(models.Model):
         for contract in self:
             contract.max_unused_cars = int(max_unused_cars)
 
-    @api.onchange('transport_mode_car', 'transport_mode_train', 'transport_mode_public', 'transport_mode_others')
+    @api.onchange('transport_mode_car', 'transport_mode_train', 'transport_mode_public')
     def _onchange_transport_mode(self):
         super(HrContract, self)._onchange_transport_mode()
         if not self.transport_mode_car:

@@ -21,8 +21,6 @@ class User(models.Model):
     other_disabled_juniors_dependent = fields.Integer(related='employee_ids.other_disabled_juniors_dependent', readonly=False)
     dependent_seniors = fields.Integer(related='employee_ids.dependent_seniors', readonly=False)
     dependent_juniors = fields.Integer(related='employee_ids.dependent_juniors', readonly=False)
-    spouse_net_revenue = fields.Float(related='employee_ids.spouse_net_revenue', readonly=False)
-    spouse_other_net_revenue = fields.Float(related='employee_ids.spouse_other_net_revenue', readonly=False)
 
     def __init__(self, pool, cr):
         """ Override of __init__ to add access rights.
@@ -44,8 +42,6 @@ class User(models.Model):
             'other_disabled_juniors_dependent',
             'dependent_seniors',
             'dependent_juniors',
-            'spouse_net_revenue',
-            'spouse_other_net_revenue',
         ]
         init_res = super(User, self).__init__(pool, cr)
         # duplicate list to avoid modifying the original reference

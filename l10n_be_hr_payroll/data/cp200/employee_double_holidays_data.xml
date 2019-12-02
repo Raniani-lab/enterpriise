@@ -9,7 +9,7 @@
             <field name="report_id" ref="l10n_be_hr_payroll.action_report_double_holiday_13th_month"/>
             <field name="payslip_name">Double Holidays Slip</field>
             <field name="use_worked_day_lines" eval="False"/>
-            <field name="type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
+            <field name="type_id" ref="hr_contract.structure_type_employee_cp200"/>
         </record>
 
         <!-- Salary Rules -->
@@ -28,7 +28,7 @@
 
         <record id="cp200_employees_double_holiday_atn_internet" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_impos"/>
-            <field name="name">ATN Internet</field>
+            <field name="name">Benefit in Kind (Internet)</field>
             <field name="code">ATN.INT</field>
             <field name="sequence">16</field>
             <field name="condition_select">python</field>
@@ -40,7 +40,7 @@
 
         <record id="cp200_employees_double_holiday_atn_mobile" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_impos"/>
-            <field name="name">ATN Mobile</field>
+            <field name="name">Benefit in Kind (Phone Subscription)</field>
             <field name="code">ATN.MOB</field>
             <field name="sequence">17</field>
             <field name="condition_select">python</field>
@@ -57,7 +57,7 @@ if contract.mobile and contract.internet:
 
         <record id="cp200_employees_double_holiday_atn_laptop" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_impos"/>
-            <field name="name">ATN Laptop</field>
+            <field name="name">Benefit in Kind (Laptop)</field>
             <field name="code">ATN.LAP</field>
             <field name="sequence">18</field>
             <field name="condition_select">python</field>
@@ -154,7 +154,7 @@ result = result * 0.85
             <value model="hr.salary.rule" search="[
                 ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
                 ('code', '=', 'GROSS')]"/>
-            <value eval="{'amount_python_compute': 'result = categories.DP + categories.ALW - categories.ONSS * contract.ip_wage_rate / 100.0', 'sequence': '101'}"/>
+            <value eval="{'amount_python_compute': 'result = categories.DP + categories.ALW - (categories.ONSS * contract.ip_wage_rate / 100.0 if contract.ip else 0)', 'sequence': '101'}"/>
         </function>
 
         <record id="cp200_employees_double_holiday_pay_p_p" model="hr.salary.rule">
@@ -170,7 +170,7 @@ result = result * 0.85
 
         <record id="cp200_employees_double_holiday_atn_internet_2" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_net"/>
-            <field name="name">ATN Internet</field>
+            <field name="name">Benefit in Kind (Internet)</field>
             <field name="code">ATN.INT.2</field>
             <field name="sequence">161</field>
             <field name="condition_select">python</field>
@@ -182,7 +182,7 @@ result = result * 0.85
 
         <record id="cp200_employee_double_holiday_atn_mobile_2" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_net"/>
-            <field name="name">ATN Mobile</field>
+            <field name="name">Benefit in Kind (Phone Subscription)</field>
             <field name="code">ATN.MOB.2</field>
             <field name="sequence">162</field>
             <field name="condition_select">python</field>
@@ -199,7 +199,7 @@ if contract.mobile and contract.internet:
 
         <record id="cp200_employees_double_holiday_atn_laptop_2" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_net"/>
-            <field name="name">ATN Laptop</field>
+            <field name="name">Benefit in Kind (Laptop)</field>
             <field name="code">ATN.LAP.2</field>
             <field name="sequence">163</field>
             <field name="condition_select">python</field>

@@ -48,7 +48,7 @@ class TestCreditTime(common.SavepointCase):
             'state': 'open',
             'date_start': datetime.date(2015, 1, 1),
             'resource_calendar_id': cls.classic_38h_calendar.id,
-            'structure_type_id': cls.env.ref('l10n_be_hr_payroll.structure_type_employee_cp200').id,
+            'structure_type_id': cls.env.ref('hr_contract.structure_type_employee_cp200').id,
             'wage': 3000,
             'fuel_card': 150,
             'meal_voucher_amount': 7.45,

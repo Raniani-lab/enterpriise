@@ -5,7 +5,11 @@
         <field name="model">account.account</field>
         <field name="inherit_id" ref="account.view_account_form"/>
         <field name="arch" type="xml">
-            <field name="user_type_id" position="after">
+            <xpath expr="//group[@name='right_main_group']" position="after">
+              <group name="asset_group" attrs="{'invisible': ['|', ('can_create_asset', '=', False), ('asset_type', 'not in', ('purchase', 'sale', 'expense'))]}">
+                <separator string="Asset Options" attrs="{'invisible': ['|', ('can_create_asset', '=', False), ('asset_type', '!=', 'purchase')]}"/>
+                <separator string="Deferred Revenue Options" attrs="{'invisible': ['|', ('can_create_asset', '=', False), ('asset_type', '!=', 'sale')]}"/>
+                <separator string="Deferred Expense Options" attrs="{'invisible': ['|', ('can_create_asset', '=', False), ('asset_type', '!=', 'expense')]}"/>
                 <field name="can_create_asset" invisible="1"/>
                 <field name="form_view_ref" invisible="1"/>
                 <field name="asset_type" invisible="1"/>
@@ -22,7 +26,8 @@
                     <label for="asset_model" string="Deferred Expense Model" attrs="{'invisible': ['|', ('create_asset', '=', 'no'), '|', ('can_create_asset', '=', False), ('asset_type', '!=', 'expense')]}"/>
                 </td>
                 <field name="asset_model" domain="[('state', '=', 'model'), ('asset_type', '=', asset_type)]" attrs="{'invisible': ['|', ('create_asset', '=', 'no'), ('can_create_asset', '=', False)], 'required': ['&amp;', ('create_asset', '=', 'validate'), ('can_create_asset', '=', True)]}" nolabel="1" context="{'default_state': 'model', 'form_view_ref': form_view_ref, 'default_asset_type': asset_type}"/>
-            </field>
+              </group>
+            </xpath>
         </field>
     </record>
 

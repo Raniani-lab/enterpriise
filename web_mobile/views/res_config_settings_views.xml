@@ -28,9 +28,9 @@
                         <field name="disable_redirect_firebase_dynamic_link"/>
                     </div>
                     <div class="o_setting_right_pane">
-                        <label string="Disable Firebase Dynamic Link" for="disable_redirect_firebase_dynamic_link"/>
+                        <label for="disable_redirect_firebase_dynamic_link"/>
                         <div class="text-muted">
-                            Allows to open mail's links in the native mobile app Android and iOS if possible (e.g. "View Task")
+                            If disabled, you won't be able to open external URL's in the Android/iOS mobile app (e.g. "View Task" button in email).
                         </div>
                     </div>
                 </div>

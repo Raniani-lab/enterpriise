@@ -313,7 +313,7 @@ class AccountFollowupReport(models.AbstractModel):
             start_index = body_html.find(b'<span>', body_html.find(b'<div class="o_account_reports_summary">'))
             end_index = start_index > -1 and body_html.find(b'</span>', start_index) or -1
             if end_index > -1:
-                replaced_msg = body_html[start_index:end_index].replace(b'\n', b'<br />')
+                replaced_msg = body_html[start_index:end_index].replace(b'\n', b'')
                 body_html = body_html[:start_index] + replaced_msg + body_html[end_index:]
             partner.with_context(mail_post_autofollow=True).message_post(
                 partner_ids=[partner.id],

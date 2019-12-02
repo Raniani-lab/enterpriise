@@ -83,6 +83,8 @@ var FollowupFormRenderer = FormRenderer.extend({
         this.$('.o_account_reports_no_print .o_account_reports_summary').show();
         if (!text) {
             text = "<input type='text' class='o_input o_field_widget' name='summary' />";
+        } else {
+            text = text.replace(/\n/g, '<br>');
         }
         this.$('.o_account_reports_no_print .o_account_report_summary').html('<span>'+text+'</span');
     },

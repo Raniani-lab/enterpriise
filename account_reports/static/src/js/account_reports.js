@@ -610,7 +610,7 @@ var accountReportsWidget = AbstractAction.extend({
                     $content.attr('placeholder', _t('Add a note'));
                 } else {
                     var $content = $('<span />').text(text).html(function (i, value) {
-                        return value.replace(/\n/g, '<br>\n');
+                        return value.replace(/\n/g, '<br>');
                     });
                 }
                 return $(e.target).parent().siblings('.o_account_reports_summary').find('> .o_account_report_summary').html($content);

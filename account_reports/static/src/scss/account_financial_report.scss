@@ -69,9 +69,6 @@
     .o_account_report_summary {
         padding-left: 5px;
     }
-    .o_account_report_summary > span {
-        white-space: pre-wrap;
-    }
     .o_account_reports_summary_edit {
         padding-bottom: 40px;
         padding-top: 15px;
@@ -490,7 +487,6 @@
         > span {
             padding: 10px 0;
             display: block;
-            white-space: pre-wrap;
             line-height: 1;
         }
     }

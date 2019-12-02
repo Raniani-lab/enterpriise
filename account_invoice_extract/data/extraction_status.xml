@@ -29,9 +29,9 @@
                             ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
-                    You don't have enough credit to extract datas from your invoice. You can buy new credits here: 
-                    <!--TODO: change because popup blocked-->
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary pull-right mb0"/>
+                    You don't have enough credit to extract data from your invoice.
+                    <div class="clearfix"/>
                 </div>
                 <div role="status" class="alert alert-info mb8"
                      attrs="{'invisible':['|', '|',

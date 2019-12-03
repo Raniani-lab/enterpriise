@@ -74,7 +74,6 @@
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/kanban_record_editor.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/list_editor.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/new_buttonbox_dialog.js"></script>
-        <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/pivot_editor.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/search_editor.js"></script>
 
         <t t-call="web._assets_helpers"/>

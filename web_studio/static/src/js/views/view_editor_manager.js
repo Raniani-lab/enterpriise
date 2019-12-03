@@ -19,7 +19,6 @@ var FormEditor = require('web_studio.FormEditor');
 var GraphEditor = require('web_studio.GraphEditor');
 var KanbanEditor = require('web_studio.KanbanEditor');
 var ListEditor = require('web_studio.ListEditor');
-var PivotEditor = require('web_studio.PivotEditor');
 var SearchEditor = require('web_studio.SearchEditor');
 var SearchRenderer = require('web_studio.SearchRenderer');
 
@@ -36,7 +35,6 @@ var Editors = {
     form: FormEditor,
     kanban: KanbanEditor,
     list: ListEditor,
-    pivot: PivotEditor,
     graph: GraphEditor,
     calendar: CalendarEditor,
     search: SearchEditor,

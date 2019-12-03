@@ -24,6 +24,8 @@ var LinesWidget = Widget.extend({
         this.groups = parent.groups;
         this.model = parent.actionParams.model;
         this.show_entire_packs = parent.show_entire_packs;
+        this.displayControlButtons = this.nbPages > 0 && parent._isControlButtonsEnabled();
+        this.displayOptionalButtons = parent._isOptionalButtonsEnabled();
     },
 
     start: function () {
@@ -45,7 +47,7 @@ var LinesWidget = Widget.extend({
      */
     incrementProduct: function(id_or_virtual_id, qty, model, doNotClearLineHighlight) {
         var $line = this.$("[data-id='" + id_or_virtual_id + "']");
-        var incrementClass = model === 'stock.picking' ? '.qty-done' : '.product_qty';
+        var incrementClass = (model === 'stock.inventory') ? '.product_qty': '.qty-done';
         var qtyDone = parseFloat($line.find(incrementClass).text());
         // increment quantity and avoid insignificant digits
         $line.find(incrementClass).text(parseFloat((qtyDone + qty).toPrecision(15)));
@@ -218,6 +220,20 @@ var LinesWidget = Widget.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * Return a list of the name of errors who could be in the barcode view.
+     *
+     * @private
+     * @returns {Array<string>}
+     */
+    _getErrorName: function () {
+        return [
+            'picking_already_done',
+            'picking_already_cancelled',
+            'inv_already_done',
+        ];
+    },
+
+    /**
      * Render the header and the body of this widget. It is called when rendering a page for the
      * first time. Once the page is rendered, the modifications will be made by `incrementProduct`
      * and `addProduct`. When another page should be displayed, the parent will destroy the current
@@ -340,7 +356,7 @@ var LinesWidget = Widget.extend({
         this.$('.o_scan_message_' + message).toggleClass('o_hidden', false);
         this.$('.o_barcode_pic').toggleClass(
             'o_js_has_warning_msg',
-            _.indexOf([ "picking_already_done", "picking_already_cancelled", "inv_already_done"], message) > -1
+            _.indexOf(this._getErrorName(), message) > -1
         );
     },
 

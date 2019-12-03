@@ -28,6 +28,8 @@ var ClientAction = AbstractAction.extend({
         next_page: '_onNextPage',
         previous_page: '_onPreviousPage',
         reload: '_onReload',
+        cancel: '_onCancel',
+        validate: '_onValidate',
         listen_to_barcode_scanned: '_onListenToBarcodeScanned',
     },
 
@@ -83,7 +85,7 @@ var ClientAction = AbstractAction.extend({
 
     willStart: function () {
         var self = this;
-        var recordId = this.actionParams.pickingId || this.actionParams.inventoryId;
+        const recordId = this._getRecordId();
         return Promise.all([
             self._super.apply(self, arguments),
             self._getState(recordId),
@@ -123,9 +125,60 @@ var ClientAction = AbstractAction.extend({
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * Makes the rpc to model's method to cancel the record.
+     *
+     * @private
+     */
+    _cancel: function () {
+        return this._save().then(() => {
+            return this._rpc({
+                model: this.actionParams.model,
+                method: this.methods.cancel,
+                args: [[this.currentState.id]],
+            });
+        });
+    },
+
+    /**
+     * Define and return a formatted command to create a new line in the record.
+     *
+     * @abstract
+     * @private
+     * @param {Object} line
+     * @returns {Array}
+     */
+    _createLineCommand: function (line) {
+        throw new Error(_t('_createLineCommand is an abstract method. You need to implement it.'));
+    },
+
     _discard: function () {
         this.currentState = this.stepState;
         return Promise.resolve();
+    },
+
+    /**
+     * Returns default values used to instantiate `ViewsWidget` and create a new line.
+     *
+     * @param {Object} currentPage
+     * @returns {Object}
+     */
+    _getAddLineDefaultValues: function (currentPage) {
+        return {
+            default_company_id: this.currentState.company_id[0],
+            default_location_id: currentPage.location_id,
+        };
+    },
+
+    /**
+     * Return the ID of the record, depending of its model.
+     *
+     * @abstract
+     * @private
+     * @returns {integer} ID of the record
+     */
+    _getRecordId: function () {
+        throw new Error(_t("_getRecordId is an abstract method. You need to implement it."));
     },
 
     /**
@@ -251,8 +304,29 @@ var ClientAction = AbstractAction.extend({
     },
 
     /**
-    *
-     * @returns {Boolean} True if the lot_name for product is already present.
+     * Instantiates a `ViewsWidget`. As the widget is similar for the different
+     * client action but used on different models and views, this method must be
+     * overrided to specify right model and view.
+     * Used to create new line or edit an existing one.
+     *
+     * @abstract
+     * @param {Object} defaultValues
+     * @param {Object} params
+     * @returns {ViewsWidget}
+     */
+    _instantiateViewsWidget: function (defaultValues, params) {
+        throw new Error(_t('_instantiateViewsWidget is an abstract method. You need to implement it.'));
+    },
+
+    /**
+     * Return true if the given lot_name for the product is already present.
+     *
+     * @abstract
+     * @private
+     * @param {Object} product
+     * @param {string} lot_name
+     *
+     * @returns {Boolean}
      */
     _lot_name_used: function (product, lot_name) {
         return false;
@@ -282,6 +356,17 @@ var ClientAction = AbstractAction.extend({
      */
     _getWriteableFields: function () {
         return [];
+    },
+
+    /**
+     * Return the name of the lines field used by the model.
+     *
+     * @abstract
+     * @private
+     * @returns {string}
+     */
+    _getLinesField: function () {
+        throw new Error(_t('_getLinesField is an abstract method. You need to implement it.'));
     },
 
     /**
@@ -323,18 +408,30 @@ var ClientAction = AbstractAction.extend({
     },
 
     /**
-     * Helper used in `this._onShowInformation`. This should be overidden by specialized client
-     * actions to display something, usually a form view. What this method does is display
-     * `this.headerWidget` into specialized mode and return the save promise.
+     * Helper used in `_onShowInformation`. It displays `this.headerWidget` into specialized
+     * mode, save the record, then display the record's informations (a form view usually).
      *
      * @private
      * @returns {Promise}
      */
     _showInformation: function () {
-        var self = this;
-        return this.mutex.exec(function () {
-            self.headerWidget.toggleDisplayContext('specialized');
-            return self._save();
+        return this.mutex.exec(() => {
+            this.headerWidget.toggleDisplayContext('specialized');
+            return this._save();
+        }).then(() => {
+            if (this.ViewsWidget) {
+                this.ViewsWidget.destroy();
+            }
+            this.linesWidget.destroy();
+            this.ViewsWidget = new ViewsWidget(
+                this,
+                this.actionParams.model,
+                this.viewInfo,
+                {},
+                {currentId: this.currentState.id},
+                'readonly'
+            );
+            this.ViewsWidget.appendTo(this.$('.o_content'));
         });
     },
 
@@ -346,8 +443,33 @@ var ClientAction = AbstractAction.extend({
      * @param {Array} changes lines in the current record needing to be created or updated
      * @returns {Promise} resolved when the rpc is done ; failed if nothing has to be updated
      */
-    _applyChanges: function (changes) {  // jshint ignore:line
-        return Promise.resolve();
+    _applyChanges: function (changes) {
+        const formattedCommands = [];
+        for (const line of changes) {
+            let cmd;
+            if (line.id) {
+                cmd = this._updateLineCommand(line);
+            } else {
+                cmd = this._createLineCommand(line);
+            }
+            formattedCommands.push(cmd);
+        }
+        if (formattedCommands.length > 0){
+            const params = {
+                mode: 'write',
+                model_name: this.actionParams.model,
+                record_id: this.currentState.id,
+                write_vals: formattedCommands,
+                write_field: this._getLinesField(),
+            };
+
+            return this._rpc({
+                route: '/stock_barcode/get_set_barcode_view_state',
+                params: params,
+            });
+        } else {
+            return Promise.reject();
+        }
     },
 
     /**
@@ -408,7 +530,7 @@ var ClientAction = AbstractAction.extend({
                     location_name: this.scanned_location.display_name,
                     lines: [],
                 };
-                if (self.actionParams.model === 'stock.picking') {
+                if (this._isPickingRelated()) {
                     pageValues.location_dest_id = this.currentState.location_dest_id.id;
                     pageValues.location_dest_name = this.currentState.location_dest_id.display_name;
                 }
@@ -508,7 +630,7 @@ var ClientAction = AbstractAction.extend({
 
 
         // make a write with the current changes
-        var recordId = this.actionParams.pickingId || this.actionParams.inventoryId;
+        var recordId = this._getRecordId();
         var applyChangesDef =  this._applyChanges(this._compareStates()).then(function (state) {
             // Fixup virtual ids in `self.scanned_lines`
             var virtual_ids_to_fixup = _.filter(self._getLines(state[0]), function (line) {
@@ -748,13 +870,13 @@ var ClientAction = AbstractAction.extend({
                 params.lot_id ||
                 params.lot_name
                 ) {
-                if (this.actionParams.model === 'stock.picking') {
+                if (this._isPickingRelated()) {
                     line.qty_done += params.product.qty || 1;
                 } else if (this.actionParams.model === 'stock.inventory') {
                     line.product_qty += params.product.qty || 1;
                 }
             }
-        } else {
+        } else if (this._isAbleToCreateNewLine()) {
             isNewLine = true;
             // Create a line with the processed quantity.
             if (params.product.tracking === 'none' ||
@@ -768,7 +890,7 @@ var ClientAction = AbstractAction.extend({
             this._getLines(this.currentState).push(line);
             this.pages[this.currentPageIndex].lines.push(line);
         }
-        if (this.actionParams.model === 'stock.picking') {
+        if (this._isPickingRelated()) {
             if (params.lot_id) {
                 line.lot_id = [params.lot_id];
             }
@@ -786,6 +908,74 @@ var ClientAction = AbstractAction.extend({
             'lineDescription': line,
             'isNewLine': isNewLine,
         };
+    },
+
+    /**
+     * Defines if the model is able to create new lines on the fly.
+     *
+     * @private
+     * @returns {boolean}
+     */
+    _isAbleToCreateNewLine: function () {
+        return true;
+    },
+
+    /**
+     * Defines if the lines widget will must display control buttons.
+     *
+     * @private
+     * @returns {boolean}
+     */
+    _isControlButtonsEnabled: function () {
+        return this.mode !== 'done' && this.mode !== 'cancel';
+    },
+
+    /**
+     * Defines if the lines widget will must display optionnal buttons
+     * ('Add product' and 'Put In Pack' buttons).
+     *
+     * @returns {boolean}
+     */
+    _isOptionalButtonsEnabled: function () {
+        return true;
+    },
+
+    /**
+     * Returns `true` if the model is related to transfers.
+     *
+     * @private
+     * @returns {boolean}
+     */
+    _isPickingRelated: function () {
+        return false;
+    },
+
+    /**
+     * Define and return a formatted command to update a record line.
+     *
+     * @abstract
+     * @private
+     * @param {Object} line
+     * @returns {Array}
+     */
+    _updateLineCommand: function (line) {
+        throw new Error(_t('_updateLineCommand is an abstract method. You need to implement it.'));
+    },
+
+    /**
+     * Makes the rpc to the validate method of the model.
+     *
+     * @private
+     * @returns {Promise}
+     */
+    _validate: function () {
+        return this._save().then(() => {
+            return this._rpc({
+                model: this.actionParams.model,
+                method: this.methods.validate,
+                args: [[this.currentState.id]],
+            });
+        });
     },
 
     // -------------------------------------------------------------------------
@@ -912,6 +1102,8 @@ var ClientAction = AbstractAction.extend({
                 } else {
                     linesActions.push([this.linesWidget.addProduct, [res.lineDescription, this.actionParams.model]]);
                 }
+            } else if (!(res.id || res.virtualId)) {
+                return Promise.reject(_("There are no lines to increment."));
             } else {
                 if (product.tracking === 'none') {
                     linesActions.push([this.linesWidget.incrementProduct, [res.id || res.virtualId, product.qty || 1, this.actionParams.model]]);
@@ -1425,6 +1617,18 @@ var ClientAction = AbstractAction.extend({
     },
 
     /**
+     * Handles the `cancel` OdooEvent.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     * @returns {Promise}
+     */
+    _onCancel: function (ev) {
+        ev.stopPropagation();
+        this._cancel();
+    },
+
+    /**
      * Handles the `exit` OdooEvent. We disable the fullscreen mode and trigger_up an
      * `history_back`.
      *
@@ -1452,46 +1656,16 @@ var ClientAction = AbstractAction.extend({
      */
      _onAddLine: function (ev) {
         ev.stopPropagation();
-        var self = this;
-        this.mutex.exec(function () {
-            self.linesWidgetState = self.linesWidget.getState();
-            self.linesWidget.destroy();
-            self.headerWidget.toggleDisplayContext('specialized');
+        this.mutex.exec(() => {
+            this.linesWidgetState = this.linesWidget.getState();
+            this.linesWidget.destroy();
+            this.headerWidget.toggleDisplayContext('specialized');
             // Get the default locations before calling save to not lose a newly created page.
-            var currentPage = self.pages[self.currentPageIndex];
-            var default_location_id = currentPage.location_id;
-            var default_location_dest_id = currentPage.location_dest_id;
-            var default_company_id = self.currentState.company_id[0];
-            return self._save().then(function () {
-                if (self.actionParams.model === 'stock.picking') {
-                    self.ViewsWidget = new ViewsWidget(
-                        self,
-                        'stock.move.line',
-                        'stock_barcode.stock_move_line_product_selector',
-                        {
-                            'default_picking_id': self.currentState.id,
-                            'default_company_id': default_company_id,
-                            'default_location_id': default_location_id,
-                            'default_location_dest_id': default_location_dest_id,
-                            'default_qty_done': 1,
-                        },
-                        false
-                    );
-                } else if (self.actionParams.model === 'stock.inventory') {
-                    self.ViewsWidget = new ViewsWidget(
-                        self,
-                        'stock.inventory.line',
-                        'stock_barcode.stock_inventory_line_barcode',
-                        {
-                            'default_company_id': default_company_id,
-                            'default_inventory_id': self.currentState.id,
-                            'default_location_id': default_location_id,
-                            'default_product_qty': 1,
-                        },
-                        false
-                    );
-                }
-                return self.ViewsWidget.appendTo(self.$('.o_content'));
+            var currentPage = this.pages[this.currentPageIndex];
+            var defaultValues = this._getAddLineDefaultValues(currentPage);
+            return this._save().then(() => {
+                this.ViewsWidget = this._instantiateViewsWidget(defaultValues);
+                return this.ViewsWidget.appendTo(this.$('.o_content'));
             });
         });
     },
@@ -1529,23 +1703,7 @@ var ClientAction = AbstractAction.extend({
                     id = rec.id;
                 }
 
-                if (self.actionParams.model === 'stock.picking') {
-                    self.ViewsWidget = new ViewsWidget(
-                        self,
-                        'stock.move.line',
-                        'stock_barcode.stock_move_line_product_selector',
-                        {},
-                        {currentId: id}
-                    );
-                } else {
-                    self.ViewsWidget = new ViewsWidget(
-                        self,
-                        'stock.inventory.line',
-                        'stock_barcode.stock_inventory_line_barcode',
-                        {},
-                        {currentId: id}
-                    );
-                }
+                self.ViewsWidget = self._instantiateViewsWidget({}, {currentId: id});
                 return self.ViewsWidget.appendTo(self.$('.o_content'));
             });
         });
@@ -1680,6 +1838,18 @@ var ClientAction = AbstractAction.extend({
             core.bus.off('barcode_scanned', this, this._onBarcodeScannedHandler);
         }
     },
+
+    /**
+    * Handles the `validate` OdooEvent. It makes an RPC call
+    * to the method 'button_validate' to validate the current picking
+    *
+    * @private
+    * @param {OdooEvent} ev
+    */
+   _onValidate: function (ev) {
+       ev.stopPropagation();
+       this._validate();
+   },
 
 });
 

@@ -226,6 +226,7 @@ class StockPicking(models.Model):
             'company_id',
         ]
 
+    @api.model
     def _get_move_line_ids_fields_to_read(self):
         """ read() on picking.move_line_ids only returns the id and the display
         name however a lot more data from stock.move.line are used by the client

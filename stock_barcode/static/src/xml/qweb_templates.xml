@@ -46,11 +46,13 @@
         <div class="o_barcode_lines_header alert mb-0"></div>
         <div class="o_barcode_lines list-group flex-grow-1 d-block bg-100 position-relative"></div>
 
-        <div t-if="widget.mode !== 'done' &amp;&amp; widget.mode !== 'cancel'" class="o_barcode_control d-flex">
-            <button class="btn btn-secondary text-uppercase o_add_line"><i class="fa fa-plus mr-1"/> Add product</button>
-            <button t-if="widget.groups.group_tracking_lot and widget.model == 'stock.picking'" class="btn btn-secondary text-uppercase o_put_in_pack"><i class="fa fa-cube mr-1"/> Put In Pack</button>
-        </div>
-        <div t-if="widget.mode !== 'done' &amp;&amp; widget.mode !== 'cancel'" class="o_barcode_control d-flex">
+        <t t-if="widget.displayOptionalButtons" t-name="optional_buttons">
+            <div t-if="widget.mode !== 'done' &amp;&amp; widget.mode !== 'cancel'" class="o_barcode_control d-flex">
+                <button class="btn btn-secondary text-uppercase o_add_line"><i class="fa fa-plus mr-1"/> Add product</button>
+                <button t-if="widget.groups.group_tracking_lot and widget.model == 'stock.picking'" class="btn btn-secondary text-uppercase o_put_in_pack"><i class="fa fa-cube mr-1"/> Put In Pack</button>
+            </div>
+        </t>
+        <div t-if="widget.displayControlButtons" class="o_barcode_control d-flex">
             <button t-if="widget.groups.group_stock_multi_locations" class="btn btn-secondary text-uppercase o_previous_page"><i class="fa fa-angle-left mr-3"/>Previous</button>
             <button t-if="widget.groups.group_stock_multi_locations" class="btn btn-secondary text-uppercase o_next_page">Next<i class="fa fa-angle-right ml-3"/></button>
             <button class="btn btn-secondary text-uppercase o_validate_page"><i class="fa fa-check mr-1"/> Validate</button>

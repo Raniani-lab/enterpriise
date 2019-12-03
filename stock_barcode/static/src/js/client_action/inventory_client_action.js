@@ -9,9 +9,6 @@ var _t = core._t;
 
 var InventoryClientAction = ClientAction.extend({
     custom_events: _.extend({}, ClientAction.prototype.custom_events, {
-        validate: '_onValidate',
-        cancel: '_onCancel',
-        show_information: '_onShowInformation',
         picking_print_inventory: '_onPrintInventory'
     }),
 
@@ -24,6 +21,11 @@ var InventoryClientAction = ClientAction.extend({
             this.actionParams.inventoryId = action.context.active_id;
             this.actionParams.model = 'stock.inventory';
         }
+        this.methods = {
+            cancel: 'action_cancel_draft',
+            validate: 'action_validate',
+        };
+        this.viewInfo = 'stock_barcode.stock_inventory_barcode2';
     },
 
     willStart: function () {
@@ -49,10 +51,48 @@ var InventoryClientAction = ClientAction.extend({
     /**
      * @override
      */
+    _createLineCommand: function (line) {
+        return [0, 0, {
+            product_id:  line.product_id.id,
+            product_uom_id: line.product_uom_id,
+            product_qty: line.product_qty,
+            location_id: line.location_id.id,
+            prod_lot_id: line.prod_lot_id && line.prod_lot_id[0],
+            package_id: line.package_id && line.package_id[0],
+            dummy_id: line.virtual_id,
+        }];
+    },
+
+    /**
+     * @override
+     */
+    _getAddLineDefaultValues: function (currentPage) {
+        const values = this._super(currentPage);
+        values.default_inventory_id = this.currentState.id;
+        values.default_product_qty = 1;
+        return values;
+    },
+
+    /**
+     * @override
+     */
+    _getRecordId: function () {
+        return this.actionParams.inventoryId;
+    },
+
+    /**
+     * @override
+     */
     _getWriteableFields: function () {
         return ['product_qty', 'location_id.id', 'prod_lot_id.id'];
     },
 
+    /**
+     * @override
+     */
+    _getLinesField: function () {
+        return 'line_ids';
+    },
 
     /**
      * @override
@@ -75,6 +115,19 @@ var InventoryClientAction = ClientAction.extend({
      */
     _getLines: function (state) {
         return state.line_ids;
+    },
+
+    /**
+     * @override
+     */
+    _instantiateViewsWidget: function (defaultValues, params) {
+        return new ViewsWidget(
+            this,
+            'stock.inventory.line',
+            'stock_barcode.stock_inventory_line_barcode',
+            defaultValues,
+            params
+        );
     },
 
     /**
@@ -126,144 +179,43 @@ var InventoryClientAction = ClientAction.extend({
     /**
      * @override
      */
-    _applyChanges: function (changes) {
-        var formattedCommands = [];
-        var cmd = [];
-        for (var i in changes) {
-            var line = changes[i];
-
-            // Lines needs to be updated
-            if (line.id) {
-                cmd = [1, line.id, {
-                    'product_qty' : line.product_qty,
-                    'prod_lot_id': line.prod_lot_id && line.prod_lot_id[0],
-                    'package_id': line.package_id && line.package_id[0],
-                }];
-                formattedCommands.push(cmd);
-            // Lines needs to be created
-            } else {
-                cmd = [0, 0, {
-                    'product_id':  line.product_id.id,
-                    'product_uom_id': line.product_uom_id,
-                    'product_qty': line.product_qty,
-                    'location_id': line.location_id.id,
-                    'prod_lot_id': line.prod_lot_id && line.prod_lot_id[0],
-                    'package_id': line.package_id && line.package_id[0],
-                    'dummy_id': line.virtual_id,
-                }];
-                formattedCommands.push(cmd);
-            }
-        }
-        if (formattedCommands.length > 0){
-            var params = {
-                'mode': 'write',
-                'model_name': this.actionParams.model,
-                'record_id': this.currentState.id,
-                'write_vals': formattedCommands,
-                'write_field': 'line_ids',
-            };
-
-            return this._rpc({
-                'route': '/stock_barcode/get_set_barcode_view_state',
-                'params': params,
+     _validate: function () {
+        const superValidate = this._super.bind(this);
+        this.mutex.exec(() => {
+            return superValidate().then(() => {
+                this.do_notify(_t("Success"), _t("The inventory adjustment has been validated"));
+                return this.trigger_up('exit');
             });
-        } else {
-            return Promise.reject();
-        }
+        });
     },
 
     /**
      * @override
      */
-    _showInformation: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            if (self.ViewsWidget) {
-                self.ViewsWidget.destroy();
-            }
-            self.linesWidget.destroy();
-            self.ViewsWidget = new ViewsWidget(
-                self,
-                'stock.inventory',
-                'stock_barcode.stock_inventory_barcode2',
-                {},
-                {currentId :self.currentState.id},
-                'readonly'
-            );
-            self.ViewsWidget.appendTo(self.$('.o_content'));
-        });
-    },
-
-    /**
-     * Makes the rpc to `action_validate`.
-     * This method could open a wizard so it takes care of removing/adding the "barcode_scanned"
-     * event listener.
-     *
-     * @private
-     * @returns {Promise}
-     */
-     _validate: function (ev) {
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                self._rpc({
-                    'model': self.actionParams.model,
-                    'method': 'action_validate',
-                    'args': [[self.currentState.id]],
-                }).then(function () {
-                    self.do_notify(_t("Success"), _t("The inventory adjustment has been validated"));
-                    return self.trigger_up('exit');
-                });
-            });
-        });
-    },
-
-    /**
-     * Makes the rpc to `action_cancel`.
-     *
-     * @private
-     */
     _cancel: function () {
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self._rpc({
-                    'model': self.actionParams.model,
-                    'method': 'action_cancel_draft',
-                    'args': [[self.currentState.id]],
-                }).then(function () {
-                    self.do_notify(_t("Cancel"), _t("The inventory adjustment has been cancelled"));
-                    self.trigger_up('exit');
-                });
+        const superCancel = this._super.bind(this);
+        this.mutex.exec(() => {
+            return superCancel().then(() => {
+                this.do_notify(_t("Cancel"), _t("The inventory adjustment has been cancelled"));
+                this.trigger_up('exit');
             });
         });
+    },
+
+    /**
+     * @override
+     */
+    _updateLineCommand: function (line) {
+        return [1, line.id, {
+            product_qty : line.product_qty,
+            prod_lot_id: line.prod_lot_id && line.prod_lot_id[0],
+            package_id: line.package_id && line.package_id[0],
+        }];
     },
 
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
-
-    /**
-     * Handles the `validate` OdooEvent.
-     *
-     * @private
-     * @param {OdooEvent} ev
-     */
-     _onValidate: function (ev) {
-         ev.stopPropagation();
-         this._validate();
-     },
-
-    /**
-    * Handles the `cancel` OdooEvent.
-    *
-    * @private
-    * @param {OdooEvent} ev
-    */
-    _onCancel: function (ev) {
-        ev.stopPropagation();
-        this._cancel();
-    },
 
     /**
      * Handles the `print_inventory` OdooEvent. It makes an RPC call

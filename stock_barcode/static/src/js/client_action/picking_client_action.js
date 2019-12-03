@@ -14,8 +14,6 @@ var PickingClientAction = ClientAction.extend({
         'picking_print_barcodes_zpl': '_onPrintBarcodesZpl',
         'picking_print_barcodes_pdf': '_onPrintBarcodesPdf',
         'picking_scrap': '_onScrap',
-        'validate': '_onValidate',
-        'cancel': '_onCancel',
         'put_in_pack': '_onPutInPack',
         'open_package': '_onOpenPackage',
     }),
@@ -33,6 +31,11 @@ var PickingClientAction = ClientAction.extend({
             this.actionParams.pickingId = action.context.active_id;
             this.actionParams.model = 'stock.picking';
         }
+        this.methods = {
+            cancel: 'action_cancel',
+            validate: 'button_validate',
+        };
+        this.viewInfo = 'stock_barcode.stock_picking_barcode';
     },
 
     willStart: function () {
@@ -76,9 +79,38 @@ var PickingClientAction = ClientAction.extend({
     /**
      * @override
      */
-    _getLines: function (state) {
-        return state.move_line_ids;
+    _createLineCommand: function (line) {
+        return [0, 0, {
+            picking_id: line.picking_id,
+            product_id:  line.product_id.id,
+            product_uom_id: line.product_uom_id[0],
+            qty_done: line.qty_done,
+            location_id: line.location_id.id,
+            location_dest_id: line.location_dest_id.id,
+            lot_name: line.lot_name,
+            lot_id: line.lot_id && line.lot_id[0],
+            state: 'assigned',
+            package_id: line.package_id ? line.package_id[0] : false,
+            result_package_id: line.result_package_id ? line.result_package_id[0] : false,
+            dummy_id: line.virtual_id,
+        }];
     },
+
+    /**
+     * @override
+     */
+    _getAddLineDefaultValues: function (currentPage) {
+        const values = this._super(currentPage);
+        values.default_location_dest_id = currentPage.location_dest_id;
+        values.default_picking_id = this.currentState.id;
+        values.default_qty_done = 1;
+        return values;
+    },
+
+    /**
+     * @override
+     */
+    _getLines: (state) => state.move_line_ids,
 
     /**
      * @override
@@ -98,6 +130,13 @@ var PickingClientAction = ClientAction.extend({
     /**
      * @override
      */
+    _getRecordId: function () {
+        return this.actionParams.pickingId;
+    },
+
+    /**
+     * @override
+     */
     _getPageFields: function () {
         return [
             ['location_id', 'location_id.id'],
@@ -112,6 +151,33 @@ var PickingClientAction = ClientAction.extend({
      */
     _getWriteableFields: function () {
         return ['qty_done', 'location_id.id', 'location_dest_id.id', 'lot_name', 'lot_id.id', 'result_package_id'];
+    },
+
+    /**
+     * @override
+     */
+    _getLinesField: function () {
+        return 'move_line_ids';
+    },
+
+    /**
+     * @override
+     */
+    _instantiateViewsWidget: function (defaultValues, params) {
+        return new ViewsWidget(
+            this,
+            'stock.move.line',
+            'stock_barcode.stock_move_line_product_selector',
+            defaultValues,
+            params
+        );
+    },
+
+    /**
+     * @override
+     */
+    _isPickingRelated: function () {
+        return true;
     },
 
     /**
@@ -151,66 +217,49 @@ var PickingClientAction = ClientAction.extend({
     },
 
     /**
-     * Makes the rpc to `button_validate`.
-     * This method could open a wizard so it takes care of removing/adding the "barcode_scanned"
-     * event listener.
+     * This method could open a wizard so it takes care of removing/adding the
+     * "barcode_scanned" event listener.
      *
-     * @private
-     * @returns {Promise}
+     * @override
      */
     _validate: function () {
-        var self = this;
+        const self = this;
+        const superValidate = this._super.bind(this);
         this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self._rpc({
-                    'model': self.actionParams.model,
-                    'method': 'button_validate',
-                    'args': [[self.actionParams.pickingId]],
-                }).then(function (res) {
-                    var def = Promise.resolve();
-                    var successCallback = function(){
-                        self.do_notify(_t("Success"), _t("The transfer has been validated"));
-                        self.trigger_up('exit');
+            const successCallback = function () {
+                self.do_notify(_t("Success"), _t("The transfer has been validated"));
+                self.trigger_up('exit');
+            };
+            const exitCallback = function (infos) {
+                if ((infos === undefined || !infos.special) && this.dialog.$modal.is(':visible')) {
+                    successCallback();
+                }
+                core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);
+            };
+
+            return superValidate().then((res) => {
+                if (_.isObject(res)) {
+                    const options = {
+                        on_close: exitCallback,
                     };
-                    var exitCallback = function (infos) {
-                        if ((infos === undefined || !infos.special) && this.dialog.$modal.is(':visible')) {
-                            successCallback();
-                        }
-                        core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);
-                    };
-                    if (_.isObject(res)) {
-                        var options = {
-                            on_close: exitCallback,
-                        };
-                        return def.then(function () {
-                            core.bus.off('barcode_scanned', self, self._onBarcodeScannedHandler);
-                            return self.do_action(res, options);
-                        });
-                    } else {
-                        return def.then(successCallback);
-                    }
-                });
+                    core.bus.off('barcode_scanned', self, self._onBarcodeScannedHandler);
+                    return self.do_action(res, options);
+                } else {
+                    return successCallback();
+                }
             });
         });
     },
 
     /**
-     * Makes the rpc to `action_cancel`.
-     *
-     * @private
+     * @override
      */
     _cancel: function () {
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self._rpc({
-                    'model': self.actionParams.model,
-                    'method': 'action_cancel',
-                    'args': [[self.actionParams.pickingId]],
-                }).then(function () {
-                    self.do_notify(_t("Cancel"), _t("The transfer has been cancelled"));
-                    self.trigger_up('exit');
-                });
+        const superCancel = this._super.bind(this);
+        this.mutex.exec(() => {
+            return superCancel().then(() => {
+                this.do_notify(_t("Cancel"), _t("The transfer has been cancelled"));
+                this.trigger_up('exit');
             });
         });
     },
@@ -241,84 +290,6 @@ var PickingClientAction = ClientAction.extend({
                     return self.do_action(res, options);
                 });
             });
-        });
-    },
-
-    /**
-     * @override
-     */
-    _applyChanges: function (changes) {
-        var formattedCommands = [];
-        var cmd = [];
-        for (var i in changes) {
-            var line = changes[i];
-            if (line.id) {
-                // Line needs to be updated
-                cmd = [1, line.id, {
-                    'qty_done' : line.qty_done,
-                    'location_id': line.location_id.id,
-                    'location_dest_id': line.location_dest_id.id,
-                    'lot_id': line.lot_id && line.lot_id[0],
-                    'lot_name': line.lot_name,
-                    'package_id': line.package_id ? line.package_id[0] : false,
-                    'result_package_id': line.result_package_id ? line.result_package_id[0] : false,
-                }];
-                formattedCommands.push(cmd);
-            } else {
-                // Line needs to be created
-                cmd = [0, 0, {
-                    'picking_id': line.picking_id,
-                    'product_id':  line.product_id.id,
-                    'product_uom_id': line.product_uom_id[0],
-                    'qty_done': line.qty_done,
-                    'location_id': line.location_id.id,
-                    'location_dest_id': line.location_dest_id.id,
-                    'lot_name': line.lot_name,
-                    'lot_id': line.lot_id && line.lot_id[0],
-                    'state': 'assigned',
-                    'package_id': line.package_id ? line.package_id[0] : false,
-                    'result_package_id': line.result_package_id ? line.result_package_id[0] : false,
-                    'dummy_id': line.virtual_id,
-                }];
-                formattedCommands.push(cmd);
-            }
-        }
-        if (formattedCommands.length > 0){
-            var params = {
-                'mode': 'write',
-                'model_name': this.actionParams.model,
-                'record_id': this.currentState.id,
-                'write_vals': formattedCommands,
-                'write_field': 'move_line_ids',
-            };
-            return this._rpc({
-                'route': '/stock_barcode/get_set_barcode_view_state',
-                'params': params,
-            });
-        } else {
-            return Promise.reject();
-        }
-    },
-
-    /**
-     * @override
-     */
-    _showInformation: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            if (self.formWidget) {
-                self.formWidget.destroy();
-            }
-            self.linesWidget.destroy();
-            self.ViewsWidget = new ViewsWidget(
-                self,
-                'stock.picking',
-                'stock_barcode.stock_picking_barcode',
-                {},
-                {currentId: self.currentState.id},
-                'readonly'
-            );
-            self.ViewsWidget.appendTo(self.$('.o_content'));
         });
     },
 
@@ -470,33 +441,24 @@ var PickingClientAction = ClientAction.extend({
         });
     },
 
+    /**
+     * @override
+     */
+    _updateLineCommand: function (line) {
+        return [1, line.id, {
+            qty_done : line.qty_done,
+            location_id: line.location_id.id,
+            location_dest_id: line.location_dest_id.id,
+            lot_id: line.lot_id && line.lot_id[0],
+            lot_name: line.lot_name,
+            package_id: line.package_id ? line.package_id[0] : false,
+            result_package_id: line.result_package_id ? line.result_package_id[0] : false,
+        }];
+    },
+
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
-
-    /**
-     * Handles the `validate` OdooEvent. It makes an RPC call
-     * to the method 'button_validate' to validate the current picking
-     *
-     * @private
-     * @param {OdooEvent} ev
-     */
-    _onValidate: function (ev) {
-        ev.stopPropagation();
-        this._validate();
-    },
-
-    /**
-     * Handles the `cancel` OdooEvent. It makes an RPC call
-     * to the method 'action_cancel' to cancel the current picking
-     *
-     * @private
-     * @param {OdooEvent} ev
-     */
-    _onCancel: function (ev) {
-        ev.stopPropagation();
-        this._cancel();
-    },
 
     /**
      * Handles the `print_picking` OdooEvent. It makes an RPC call

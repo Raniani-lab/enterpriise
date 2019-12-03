@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import random
 
-from odoo import api, models, fields, _, SUPERUSER_ID
+from odoo import api, models, fields, _
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
 
@@ -274,14 +274,6 @@ class QualityAlert(models.Model):
             'target': 'current',
             'res_id': self.check_id.id,
         }
-
-    @api.model
-    def _read_group_stage_ids(self, stages, domain, order):
-        """ Read group customization in order to display all the stages of the ECO type
-        in the Kanban view, even if there is no ECO in that stage
-        """
-        stage_ids = stages._search([], order=order, access_rights_uid=SUPERUSER_ID)
-        return stages.browse(stage_ids)
 
     @api.depends('name', 'title')
     def name_get(self):

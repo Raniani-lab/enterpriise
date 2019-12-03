@@ -3,7 +3,7 @@
 
 from datetime import datetime
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, SUPERUSER_ID
 from odoo.exceptions import UserError
 from odoo.osv.expression import AND, OR
 
@@ -215,6 +215,7 @@ class QualityAlertStage(models.Model):
     sequence = fields.Integer('Sequence')
     folded = fields.Boolean('Folded')
     done = fields.Boolean('Alert Processed')
+    team_ids = fields.Many2many('quality.alert.team', string='Teams')
 
 
 class QualityCheck(models.Model):
@@ -300,6 +301,17 @@ class QualityAlert(models.Model):
     _inherit = ['mail.thread.cc', 'mail.activity.mixin']
     _check_company_auto = True
 
+    def _get_default_stage_id(self):
+        """ Gives default stage_id """
+        team_id = self.env.context.get('default_team_id')
+        if not team_id and self.env.context.get('active_model') == 'quality.alert.team' and\
+                self.env.context.get('active_id'):
+            team_id = self.env['quality.alert.team'].browse(self.env.context.get('active_id')).exists().id
+        domain = [('team_ids', '=', False)]
+        if team_id:
+            domain = OR([domain, [('team_ids', 'in', team_id)]])
+        return self.env['quality.alert.stage'].search(domain, limit=1).id
+
     def _get_default_team_id(self):
         company_id = self.company_id.id or self.env.context.get('default_company_id', self.env.company.id)
         domain = ['|', ('company_id', '=', company_id), ('company_id', '=', False)]
@@ -307,9 +319,11 @@ class QualityAlert(models.Model):
 
     name = fields.Char('Name', default=lambda self: _('New'))
     description = fields.Html('Description')
-    stage_id = fields.Many2one('quality.alert.stage', 'Stage', ondelete='restrict',
+    stage_id = fields.Many2one(
+        'quality.alert.stage', 'Stage', ondelete='restrict',
         group_expand='_read_group_stage_ids',
-        default=lambda self: self.env['quality.alert.stage'].search([], limit=1).id, tracking=True)
+        default=lambda self: self._get_default_stage_id(),
+        domain="['|', ('team_ids', '=', False), ('team_ids', 'in', team_id)]", tracking=True)
     company_id = fields.Many2one(
         'res.company', 'Company', required=True, index=True,
         default=lambda self: self.env.company)
@@ -362,3 +376,17 @@ class QualityAlert(models.Model):
     def onchange_team_id(self):
         if self.team_id:
             self.company_id = self.team_id.company_id or self.env.company
+
+    @api.model
+    def _read_group_stage_ids(self, stages, domain, order):
+        """ Only shows the stage related to the current team.
+        """
+        team_id = self.env.context.get('default_team_id')
+        domain = [('id', 'in', stages.ids)]
+        if not team_id and self.env.context.get('active_model') == 'quality.alert.team' and\
+                self.env.context.get('active_id'):
+            team_id = self.env['quality.alert.team'].browse(self.env.context.get('active_id')).exists().id
+        if team_id:
+            domain = OR([domain, ['|', ('team_ids', '=', False), ('team_ids', 'in', team_id)]])
+        stage_ids = stages._search(domain, order=order, access_rights_uid=SUPERUSER_ID)
+        return stages.browse(stage_ids)

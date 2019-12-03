@@ -783,6 +783,7 @@
                 <field name="name" string="Stage Name"/>
                 <field name="folded"/>
                 <field name="done"/>
+                <field name="team_ids" widget="many2many_tags"/>
             </tree>
         </field>
     </record>

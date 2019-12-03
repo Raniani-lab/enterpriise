@@ -47,8 +47,8 @@ class QualityPoint(models.Model):
     product_tmpl_ids = fields.Many2many(
         'product.template', string='Product', check_company=True,
         domain="[('type', 'in', ['consu', 'product']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    picking_type_id = fields.Many2one('stock.picking.type', "Operation Type", required=True, check_company=True)
-
+    picking_type_ids = fields.Many2many(
+        'stock.picking.type', string='Operation Types', required=True, check_company=True)
     company_id = fields.Many2one(
         'res.company', string='Company', required=True, index=True,
         default=lambda self: self.env.company)

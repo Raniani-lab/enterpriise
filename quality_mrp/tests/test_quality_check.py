@@ -15,7 +15,7 @@ class TestQualityCheck(TestQualityMrpCommon):
         self.qality_point_test1 = self.env['quality.point'].create({
             'product_ids': [(4, self.product_id)],
             'product_tmpl_ids': [(4, self.product_tmpl_id)],
-            'picking_type_id': self.picking_type_id,
+            'picking_type_ids': [(4, self.picking_type_id)],
         })
 
         # Check that quality point created.

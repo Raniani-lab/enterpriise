@@ -13,7 +13,7 @@ class TestQualityCheck(TestQualityCommon):
         self.qality_point_test = self.env['quality.point'].create({
             'product_ids': [(4, self.product.id)],
             'product_tmpl_ids': [(4, self.product_tmpl_id)],
-            'picking_type_id': self.picking_type_id,
+            'picking_type_ids': [(4, self.picking_type_id)],
         })
 
         # Check that quality point created.
@@ -63,7 +63,7 @@ class TestQualityCheck(TestQualityCommon):
         self.qality_point_test = self.env['quality.point'].create({
             'product_ids': [(4, self.product.id)],
             'product_tmpl_ids': [(4, self.product_tmpl_id)],
-            'picking_type_id': self.picking_type_id,
+            'picking_type_ids': [(4, self.picking_type_id)],
             'test_type_id': self.env.ref('quality.test_type_text').id
         })
 
@@ -108,7 +108,7 @@ class TestQualityCheck(TestQualityCommon):
         self.qality_point_test = self.env['quality.point'].create({
             'product_ids': [(4, self.product.id)],
             'product_tmpl_ids': [(4, self.product_tmpl_id)],
-            'picking_type_id': self.picking_type_id,
+            'picking_type_ids': [(4, self.picking_type_id)],
             'test_type_id': self.env.ref('quality.test_type_picture').id
         })
         # Check that quality point created.

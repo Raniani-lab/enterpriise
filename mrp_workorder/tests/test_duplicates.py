@@ -100,7 +100,7 @@ class TestDuplicateProducts(common.SavepointCase):
         self.env['quality.point'].create({
             'product_ids': [(4, self.painted_boat.id)],
             'product_tmpl_ids': [(4, self.painted_boat.product_tmpl_id.id)],
-            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id,
+            'picking_type_ids': [(4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
             'operation_id': self.operation_1.id,
             'test_type_id': self.env.ref('mrp_workorder.test_type_register_consumed_materials').id,
             'component_id': self.painting.id,
@@ -108,7 +108,7 @@ class TestDuplicateProducts(common.SavepointCase):
         self.env['quality.point'].create({
             'product_ids': [(4, self.painted_boat.id)],
             'product_tmpl_ids': [(4, self.painted_boat.product_tmpl_id.id)],
-            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id,
+            'picking_type_ids': [(4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
             'operation_id': self.operation_1.id,
             'test_type_id': self.env.ref('mrp_workorder.test_type_register_consumed_materials').id,
             'component_id': self.blank_boat.id,

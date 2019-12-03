@@ -33,7 +33,7 @@ class MrpRouting(models.Model):
 class QualityPoint(models.Model):
     _inherit = "quality.point"
 
-    code = fields.Selection(related='picking_type_id.code', readonly=False)  # TDE FIXME: necessary ?
+    is_workorder_step = fields.Boolean(compute='_compute_is_workorder_step')
     operation_id = fields.Many2one(
         'mrp.routing.workcenter', 'Step', check_company=True)
     routing_id = fields.Many2one(related='operation_id.routing_id', readonly=False)
@@ -41,7 +41,7 @@ class QualityPoint(models.Model):
     component_ids = fields.One2many('product.product', compute='_compute_component_ids')
     test_type_id = fields.Many2one(
         'quality.point.test_type',
-        domain="[('allow_registration', '=', operation_id and code == 'mrp_operation')]")
+        domain="[('allow_registration', '=', operation_id and is_workorder_step)]")
     test_report_type = fields.Selection([('pdf', 'PDF'), ('zpl', 'ZPL')], string="Report Type", default="pdf", required=True)
     worksheet = fields.Selection([
         ('noupdate', 'Do not update page'),
@@ -85,6 +85,12 @@ class QualityPoint(models.Model):
                 else:
                     point.component_ids |= byproducts
 
+    @api.depends('picking_type_ids')
+    def _compute_is_workorder_step(self):
+        for quality_point in self:
+            quality_point.is_workorder_step = quality_point.picking_type_ids and\
+                all(pt.code == 'mrp_operation' for pt in quality_point.picking_type_ids)
+
     @api.depends('product_tmpl_ids.bom_ids.routing_id')
     def _compute_routing_ids(self):
         for point in self:
@@ -92,7 +98,7 @@ class QualityPoint(models.Model):
 
     @api.onchange('product_tmpl_ids')
     def onchange_product_tmpl_id(self):
-        if self.picking_type_id.code != 'mrp_operation':
+        if not self.is_workorder_step:
             return super().onchange_product_tmpl_id()
 
 

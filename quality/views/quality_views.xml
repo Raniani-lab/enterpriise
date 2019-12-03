@@ -15,9 +15,9 @@
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="title"/>
-                            <field name="picking_type_id" string="Operation"/>
                             <field name="product_tmpl_ids" widget="many2many_tags"/>
                             <field name="product_ids" groups="product.group_product_variant" widget="many2many_tags"/>
+                            <field name="picking_type_ids" string="Operations" widget="many2many_tags"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>
@@ -105,9 +105,9 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="title" optional="show"/>
-                <field name="picking_type_id" optional="hide" string="Operation"/>
                 <field name="product_tmpl_ids" widget="many2many_tags" optional="show"/>
                 <field name="product_ids" widget="many2many_tags" optional="hide"/>
+                <field name="picking_type_ids" widget="many2many_tags" optional="hide" string="Operations"/>
                 <field name="test_type_id" optional="show" string="Type"/>
                 <field name="team_id" optional="show"/>
                 <field name="user_id" optional="hide"/>

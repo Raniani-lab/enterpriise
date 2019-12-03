@@ -5,7 +5,7 @@
     <record id="quality_point_component_registration" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
         <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
-        <field name="picking_type_id" model="stock.warehouse" eval="obj().env.ref('stock.warehouse0').manu_type_id.id"/>
+        <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="mrp_workorder.test_type_register_consumed_materials"/>
         <field name="note">Please enter the table head serial number.</field>
@@ -19,7 +19,7 @@
     <record id="quality_point_text" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
         <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
-        <field name="picking_type_id" model="stock.warehouse" eval="obj().env.ref('stock.warehouse0').manu_type_id.id"/>
+        <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="quality.test_type_text"/>
         <field name="note">Please ensure you are using the new SRX679 screwdriver.</field>
@@ -32,7 +32,7 @@
     <record id="quality_point_component_registration_2" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
         <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
-        <field name="picking_type_id" model="stock.warehouse" eval="obj().env.ref('stock.warehouse0').manu_type_id.id"/>
+        <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="mrp_workorder.test_type_register_consumed_materials"/>
         <field name="note">Please encode the table legs lot number(s).</field>
@@ -46,7 +46,7 @@
     <record id="quality_point_text_2" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
         <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
-        <field name="picking_type_id" model="stock.warehouse" eval="obj().env.ref('stock.warehouse0').manu_type_id.id"/>
+        <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="quality.test_type_text"/>
         <field name="note">Please attach the legs to the table as shown below.</field>
@@ -59,7 +59,7 @@
     <record id="quality_point_print_labels" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
         <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
-        <field name="picking_type_id" model="stock.warehouse" eval="obj().env.ref('stock.warehouse0').manu_type_id.id"/>
+        <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="mrp_workorder.test_type_print_label"/>
         <field name="title">Print Labels</field>
@@ -73,7 +73,7 @@
         <field name="product_ids" eval="[(4, ref('product.product_product_3'))]"/>
         <field name="product_tmpl_ids" eval="[(4, ref('product.product_product_3_product_template'))]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_0"/>
-        <field name="picking_type_id" model="stock.warehouse" eval="obj().env.ref('stock.warehouse0').manu_type_id.id"/>
+        <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
     </record>
 
     <record id="base.group_user" model="res.groups">

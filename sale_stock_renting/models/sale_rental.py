@@ -202,27 +202,12 @@ class RentalOrderLine(models.Model):
             if line.is_rental:
                 line.qty_delivered_method = 'manual'
 
-    def _compute_qty_to_deliver(self):
-        """Don't show inventory widget for rental order lines."""
-        super(RentalOrderLine, self.filtered(lambda sol: not sol.is_rental))._compute_qty_to_deliver()
-        self.filtered('is_rental').write({
-            'qty_to_deliver': 0.0,
-            'display_qty_widget': False,
-        })
-
     @api.constrains('product_id')
     def _stock_consistency(self):
         for line in self.filtered('is_rental'):
             moves = line.move_ids.filtered(lambda m: m.state != 'cancel')
             if moves and moves.mapped('product_id') != line.product_id:
                 raise ValidationError("You cannot change the product of lines linked to stock moves.")
-
-    def _check_availability(self, product_id):
-        """No current stock warning for rental lines."""
-        if not self.order_id.is_rental_order or not product_id.rent_ok:
-            return super(RentalOrderLine, self)._check_availability(product_id)
-        else:
-            return {}  # Rental availability computation?
 
     def _onchange_product_uom_qty(self):
         if not self.is_rental:

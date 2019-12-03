@@ -17,7 +17,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="pending,ready,progress,done"/>
                 </header>
             </xpath>
-            <page name='workorder_page_misc' position="before">
+            <page name='workorder_page_work_instruction' position="before">
                 <page string="Finished Steps">
                     <field name="check_ids" domain="[('quality_state', '!=', 'none')]" readonly="1">
                         <tree>

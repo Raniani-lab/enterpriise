@@ -12,7 +12,7 @@
             <script type="text/javascript" src="/web_mobile/static/src/js/form_renderer.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/form_view.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/notification_manager.js"></script>
-            <script type="text/javascript" src="/web_mobile/static/src/js/pivot_controller.js"></script>
+            <script type="text/javascript" src="/web_mobile/static/src/js/pivot_renderer.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/rpc.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/session.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/user_menu.js"></script>

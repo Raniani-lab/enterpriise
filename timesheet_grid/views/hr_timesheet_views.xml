@@ -170,6 +170,7 @@
             <field name="name">account.analytic.line.grid.employee.manager</field>
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid_by_employee"/>
+            <field name="mode">primary</field>
             <field name="priority">15</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='employee_id']" position="attributes">

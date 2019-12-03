@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="stock_barcode_summary_template">
+        <t t-jquery=".o_barcode_product_line" t-operation="prepend">
+            <span t-if="model == 'stock.picking.batch'" class="o_barcode_locations">
+                <div class="d-inline-block font-weight-bold text-right">
+                    <span t-if="mode !== 'receipt'" class="o_barcode_location_label">From: </span> <span t-if="mode !== 'receipt'" class="o_barcode_summary_location_src" t-esc="locationName"/>
+                    <span t-if="mode !== 'delivery'" class="o_barcode_location_label">To: </span> <span t-if="mode !== 'delivery'" class="o_barcode_summary_location_dest" t-esc="locationDestName"/>
+                </div>
+            </span>
+        </t>
+    </t>
+
+    <t t-extend="stock_barcode_lines_template">
+        <t t-jquery="t[t-foreach*='lines'][t-as*='line']" t-operation="append">
+            <div class="o_barcode_line o_colored_markup list-group-item d-flex flex-row flex-nowrap"
+                t-if="model == 'stock.picking.batch'"
+                t-att-data-id="line.virtual_id || line.id"
+                t-att-data-barcode="line.product_barcode"
+                t-att-data-picking-id="line.picking_id.id"
+                t-att-style="'border-color: hsla(' + line.color_hue + ', 80%, 50%, 0.6)'">
+                <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
+                    <div class="o_barcode_line_title pb-1">
+                        <i class="fa fa-fw fa-tags"/> <span class="product-label">
+                            <t t-esc="line.display_name"/>
+                        </span>
+                    </div>
+                    <div>
+                        <i class="fa fa-fw fa-cube"/>
+                        <span t-attf-class="o_barcode_scanner_qty text-monospace badge #{' '}">
+                            <span class="qty-done d-inline-block text-left" t-esc="line.qty_done"/>
+                            <span t-if="line.product_uom_qty" t-esc="'/ ' + line.product_uom_qty"/>
+                        </span>
+                        <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
+                    </div>
+                    <div>
+                        <i class="fa fa-fw fa-truck"/>
+                        <span class="o_picking_label">
+                            <t t-esc="line.picking_id.name"/>
+                        </span>
+                    </div>
+                    <div t-if="line.package_id || line.result_package_id">
+                        <i class="fas fa-fw fa-archive"/> <t t-if="line.package_id" t-esc="line.package_id[1]"/>
+                        <span class="fa fa-long-arrow-alt-right"/> <t t-if="line.result_package_id" t-esc="line.result_package_id[1]"/>
+                    </div>
+                    <div t-if="line.owner_id">
+                        <i class="far fa-fw fa-user"/> <t t-esc="line.owner_id[1]"/>
+                    </div>
+                    <div t-if="line.product_id.tracking !== 'none'">
+                        <i class="fa fa-barcode"/>
+                        <span class="o_line_lot_name"><t t-if="line.lot_name" t-esc="line.lot_name"/></span>
+                        <span class="o_line_lot_id"><t t-if="! line.lot_name &amp;&amp; line.lot_id &amp;&amp; line.lot_id[1]" t-esc="line.lot_id[1]"/></span>
+                    </div>
+                </div>
+                <div t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-flex align-items-center pl-4">
+                    <a class="o_edit text-muted" href="#" title="Edit"><i class="fa fa-pencil"/></a>
+                </div>
+            </div>
+        </t>
+    </t>
+
+    <t t-extend="stock_barcode_settings_widget">
+        <t t-jquery=".o_barcode_settings" t-operation="prepend">
+            <button t-if="widget.model == 'stock.picking.batch'" class="btn-lg btn btn-dark text-uppercase o_print_picking_batch">Print Batch Transfer</button>
+        </t>
+    </t>
+
+    <t t-extend="stock_barcode_lines_widget">
+        <t t-jquery=".o_scan_message_inv_already_done" t-operation="after">
+            <span class="o_hidden o_scan_message o_scan_message_picking_batch_already_done"><span class="fa fa-exclamation-triangle"/>
+                This batch transfer is already done
+            </span>
+            <span class="o_hidden o_scan_message o_scan_message_picking_batch_already_cancelled"><span class="fa fa-exclamation-triangle"/>
+                This batch transfer is already cancelled
+            </span>
+            <span class="o_hidden o_scan_message o_scan_message_picking_batch_draft"><span class="fa fa-exclamation-triangle"/>
+                This batch transfer is still draft, it must be confirmed before being processed
+            </span>
+            <span class="o_hidden o_scan_message o_scan_message_picking_batch_empty"><span class="fa fa-exclamation-triangle"/>
+                This batch transfer is empty, you need to configure it
+            </span>
+        </t>
+    </t>
+</templates>

@@ -1,0 +1,534 @@
+odoo.define('test_barcode_batch_flows.tour', function(require) {
+'use strict';
+
+const tour = require('web_tour.tour');
+const helper = require('stock_barcode_picking_batch.tourHelper');
+
+function checkState(state) {
+    helper.assertPageSummary(state.pageSummary);
+    helper.assertPreviousVisible(state.previous.isVisible);
+    helper.assertPreviousEnabled(state.previous.isEnabled);
+    helper.assertNextVisible(state.next.isVisible);
+    helper.assertNextEnabled(state.next.isEnabled);
+    helper.assertNextIsHighlighted(state.next.isHighlighted);
+    helper.assertLinesCount(state.linesCount);
+    helper.assertScanMessage(state.scanMessage);
+    helper.assertPager(state.pager);
+    helper.assertValidateVisible(state.validate.isVisible);
+    helper.assertValidateIsHighlighted(state.validate.isHighlighted);
+    helper.assertValidateEnabled(state.validate.isEnabled);
+}
+
+function updateState(oldState, newState) {
+    const state = Object.assign({}, oldState, newState);
+    const buttonNames = ['next', 'previous', 'validate'];
+    for (const buttonName of buttonNames) {
+        state[buttonName] = Object.assign({}, oldState[buttonName], newState[buttonName]);
+    }
+    return state;
+}
+
+const defaultViewState = {
+    destLocationHighlight: false,
+    locationHighlight: false,
+    linesCount: 0,
+    next: {
+        isEnabled: false,
+        isHighlighted: false,
+        isVisible: false,
+    },
+    nextEnabled: false,
+    nextIsHighlighted: false,
+    nextVisible: false,
+    pageSummary: '',
+    pager: '0/0',
+    previous: {
+        isEnabled: false,
+        isVisible: false,
+    },
+    scanMessage: '',
+    validate: {
+        isEnabled: false,
+        isHighlighted: false,
+        isVisible: false,
+    },
+};
+let currentViewState;
+
+// ----------------------------------------------------------------------------
+// Tours
+// ----------------------------------------------------------------------------
+tour.register('test_barcode_batch_receipt_1', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            currentViewState = updateState(defaultViewState, {
+                linesCount: 5,
+                pager: '1/1',
+                pageSummary: 'From Partner Locations/Vendors To WH/Stock',
+                previous: {isVisible: true},
+                scanMessage: 'scan_src',
+                validate: {
+                    isEnabled: true,
+                    isVisible: true,
+                },
+            });
+            checkState(currentViewState);
+            const $linesFromFirstPicking = $( helper.getLines({to: 3}));
+            const $linesFromSecondPicking = $( helper.getLines({from: 4}));
+            helper.assertLinesBelongTo($linesFromFirstPicking, 'picking_receipt_1');
+            helper.assertLinesBelongTo($linesFromSecondPicking, 'picking_receipt_2');
+        },
+    },
+
+    //Check show information.
+    {
+        trigger: '.o_show_information',
+    },
+    {
+        trigger: '.o_form_label:contains("State")',
+    },
+    {
+        trigger: '.o_close',
+    },
+    {
+        trigger: '.o_barcode_summary_location_dest:contains("Stock")',
+    },
+
+    // Scan product1 x4
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(1).o_highlight[data-barcode="product1"]',
+        run: function() {
+            currentViewState.scanMessage = 'scan_more_dest';
+            checkState(currentViewState);
+            const $lines =  helper.getLines({barcode: 'product1'});
+            helper.assert($lines.length, 2, "Expect 2 lines for product1");
+            helper.assertLineIsHighlighted($lines, true);
+            helper.assertLineQty($($lines[0]), '1');
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(4).o_highlight[data-barcode="product1"]',
+        run: function() {
+            checkState(currentViewState);
+            const $lines =  helper.getLines({barcode: 'product1'});
+            helper.assert($lines.length, 2, "Expect 2 lines for product1");
+            helper.assertLineIsHighlightedGreen($lines, true);
+            helper.assertLineQty($($lines[0]), '1');
+            helper.assertLineQty($($lines[1]), '3');
+        }
+    },
+
+    // Scan one more time the product1 -> As no more quantity is expected, the last product1
+    // line must still be highlighted in green and its quantity must still be at 3.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            checkState(currentViewState);
+            const $lines =  helper.getLines({barcode: 'product1'});
+            helper.assert($lines.length, 2, "Expect 2 lines for product1");
+            const $line1 = $($lines[0]);
+            const $line2 = $($lines[1]);
+            helper.assertLineQty($line1, '1');
+            helper.assertLineIsHighlighted($line1, false);
+            helper.assertLineQty($line2, '3');
+            helper.assertLineIsHighlightedGreen($line2, true);
+        }
+    },
+
+    // Scan productserial1
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1'
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(2).o_highlight[data-barcode="productserial1"]',
+        run: function() {
+            currentViewState.scanMessage = 'scan_lot';
+            checkState(currentViewState);
+            const $lines =  helper.getLines({barcode: 'productserial1'});
+            helper.assert($lines.length, 2, "Expect 2 lines for productserial1");
+            const $line1 = $($lines[0]);
+            const $line2 = $($lines[1]);
+            helper.assertLineQty($line1, '0');
+            helper.assertLineIsHighlighted($line1, true);
+            helper.assertLineQty($line2, '0');
+            helper.assertLineIsHighlighted($line2, false);
+        }
+    },
+
+    // Scan two serial numbers
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan SN-LHOOQ'
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(2).o_highlight[data-barcode="productserial1"]',
+        run: function() {
+            currentViewState.scanMessage = 'scan_more_dest';
+            checkState(currentViewState);
+            const $lines =  helper.getLines({barcode: 'productserial1'});
+            helper.assert($lines.length, 2, "Expect 2 lines for productserial1");
+            const $line1 = $($lines[0]);
+            const $line2 = $($lines[1]);
+            helper.assertLineQty($line1, '1');
+            helper.assertLineQty($line2, '0');
+        }
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan SN-OQPAPT'
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(3).o_highlight[data-barcode="productserial1"]',
+        run: function() {
+            checkState(currentViewState);
+            const $lines =  helper.getLines({barcode: 'productserial1'});
+            helper.assert($lines.length, 2, "Expect 2 lines for productserial1");
+            const $line1 = $($lines[0]);
+            const $line2 = $($lines[1]);
+            helper.assertLineQty($line1, '1');
+            helper.assertLineQty($line2, '1');
+        }
+    },
+
+    // Scan productlot1
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productlot1'
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(5).o_highlight[data-barcode="productlot1"]',
+        run: function() {
+            currentViewState.scanMessage = 'scan_lot';
+            checkState(currentViewState);
+            const $lines =  helper.getLines({barcode: 'productlot1'});
+            helper.assert($lines.length, 1, "Expect 2 lines for productlot1");
+            const $line1 = $($lines[0]);
+            helper.assertLineQty($line1, '0');
+            helper.assertLineIsHighlighted($line1, true);
+        }
+    },
+
+    // Scan lot0001 x4
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot0001'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot0001'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot0001'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot0001'
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(5).o_highlight[data-barcode="productlot1"]',
+        run: function() {
+            currentViewState.scanMessage = 'scan_more_dest';
+            checkState(currentViewState);
+            const $lines =  helper.getLines({barcode: 'productlot1'});
+            helper.assert($lines.length, 1, "Expect 2 lines for productlot1");
+            const $line1 = $($lines[0]);
+            helper.assertLineQty($line1, '4');
+            helper.assertLineIsHighlighted($line1, true);
+        },
+    },
+    // Open the view to add a line and close it immediately.
+    {
+        trigger: '.o_add_line',
+    },
+    {
+        trigger: '.o_discard',
+    },
+    {
+        trigger: '.o_validate_page',
+        run: function() {
+            checkState(currentViewState);
+        },
+    },
+
+    // Create a new line for productlot1 with an another lot name...
+    {
+        trigger: '.o_add_line',
+    },
+    {
+        trigger: ".o_field_widget[name=product_id] input",
+        run: 'text productlot1',
+    },
+    {
+        trigger: ".ui-menu-item > a:contains('productlot1')",
+    },
+    {
+        trigger: "input.o_field_widget[name=qty_done]",
+        run: 'text 0',
+    },
+    {
+        trigger: ".o_field_widget[name=picking_id] input",
+        run: 'text picking_receipt_2',
+    },
+    {
+        trigger: ".ui-menu-item > a:contains('picking_receipt_2')",
+    },
+    {
+        trigger: '.o_save',
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(6)',
+        run: function() {
+            currentViewState.linesCount = 6;
+            currentViewState.validate.isHighlighted = true;
+            checkState(currentViewState);
+            const $lines =  helper.getLines({barcode: 'productlot1'});
+            helper.assert($lines.length, 2, "Expect 2 lines for productlot1");
+            const $line1 = $($lines[0]);
+            const $line2 = $($lines[1]);
+            helper.assertLineQty($line1, '4'); // Previous line (4/8).
+            helper.assertLineIsHighlighted($line1, false);
+            helper.assertLineQty($line2, '0'); // New created line.
+            helper.assertLineIsHighlighted($line2, false);
+        },
+    },
+
+    // Scan productlot1...
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"]',
+        run: 'scan productlot1'
+    },
+    {
+        trigger: '.o_barcode_line.o_highlight[data-barcode="productlot1"]',
+        run: function() {
+            currentViewState.scanMessage = 'scan_lot';
+            checkState(currentViewState);
+            const $lines =  helper.getLines({barcode: 'productlot1'});
+            helper.assert($lines.length, 2, "Expect 2 lines for productlot1");
+            const $line1 = $($lines[0]);
+            const $line2 = $($lines[1]);
+            helper.assertLineQty($line1, '4'); // Previous line (4/8).
+            helper.assertLineIsHighlighted($line1, true);
+            helper.assertLineQty($line2, '0'); // New created line.
+            helper.assertLineIsHighlighted($line2, false);
+        }
+    },
+
+    // ... then scan scan lot0002 x4
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productlot1'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot0002'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot0002'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot0002'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot0002'
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(6).o_highlight[data-barcode="productlot1"]',
+        run: function() {
+            const $lines =  helper.getLines({barcode: 'productlot1'});
+            helper.assert($lines.length, 2, "Expect 2 lines for productlot1");
+            const $line1 = $($lines[0]);
+            const $line2 = $($lines[1]);
+            helper.assertLineQty($line1, '4');
+            helper.assertLineIsHighlighted($line1, false);
+            helper.assertLineQty($line2, '4');
+            helper.assertLineIsHighlighted($line2, true);
+        }
+    },
+]);
+
+tour.register('test_barcode_batch_delivery_1', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            currentViewState = updateState(defaultViewState, {
+                linesCount: 3,
+                pager: '1/4',
+                pageSummary: 'From WH/Stock/Shelf 1 To Partner Locations/Customers',
+                next: {
+                    isEnabled: true,
+                    isVisible: true,
+                },
+                previous: {
+                    isEnabled: true,
+                    isVisible: true
+                },
+                scanMessage: 'scan_src',
+            });
+            checkState(currentViewState);
+            const $lineFromPicking1 = helper.getLines({index: 1});
+            const $linesFromPicking2 = helper.getLines({from: 2});
+            helper.assertLineBelongTo($lineFromPicking1, 'picking_delivery_1');
+            helper.assertLinesBelongTo($linesFromPicking2, 'picking_delivery_2');
+        },
+    },
+    // Scan product1 x2, product4 x1
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product4'
+    },
+
+    {
+        trigger: '.o_next_page.btn-primary',
+        run: function () {
+            currentViewState.next.isHighlighted = true;
+            currentViewState.scanMessage = 'scan_more_dest';
+            checkState(currentViewState);
+        },
+    },
+
+    // Change the location
+    {
+        trigger: '.o_next_page.btn-primary',
+    },
+    {
+        trigger: '.o_next_page:not(.btn-primary)',
+        run: function () {
+            currentViewState.pageSummary = 'From WH/Stock/Shelf 2 To Partner Locations/Customers';
+            currentViewState.linesCount = 1;
+            currentViewState.next.isHighlighted = false;
+            currentViewState.pager = '2/4';
+            currentViewState.scanMessage = 'scan_src';
+            checkState(currentViewState);
+        },
+    },
+
+    // Scan product2 x2
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2'
+    },
+
+    {
+        trigger: '.o_next_page.btn-primary',
+        run: function () {
+            currentViewState.next.isHighlighted = true;
+            currentViewState.scanMessage = 'scan_more_dest';
+            checkState(currentViewState);
+        },
+    },
+
+    // Change the location
+    {
+        trigger: '.o_next_page.btn-primary',
+    },
+    {
+        trigger: '.o_next_page:not(.btn-primary)',
+        run: function () {
+            currentViewState.pageSummary = 'From WH/Stock/Shelf 3 To Partner Locations/Customers';
+            currentViewState.linesCount = 2;
+            currentViewState.next.isHighlighted = false;
+            currentViewState.pager = '3/4';
+            currentViewState.scanMessage = 'scan_src';
+            checkState(currentViewState);
+        },
+    },
+
+    // Scan product2 x1, product3 x2
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product3'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product3'
+    },
+
+    {
+        trigger: '.o_next_page.btn-primary',
+        run: function () {
+            currentViewState.next.isHighlighted = true;
+            currentViewState.scanMessage = 'scan_more_dest';
+            checkState(currentViewState);
+        },
+    },
+
+    // Change the location (shelf 4 is the last page).
+    {
+        trigger: '.o_next_page.btn-primary',
+    },
+    {
+        trigger: '.o_validate_page',
+        run: function () {
+            currentViewState.pageSummary = 'From WH/Stock/Shelf 4 To Partner Locations/Customers';
+            currentViewState.linesCount = 1;
+            currentViewState.next.isEnabled = false;
+            currentViewState.next.isHighlighted = false;
+            currentViewState.next.isVisible = false;
+            currentViewState.validate.isEnabled = true;
+            currentViewState.validate.isVisible = true;
+            currentViewState.pager = '4/4';
+            currentViewState.scanMessage = 'scan_src';
+            checkState(currentViewState);
+        },
+    },
+
+    // Scan product4 x1
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product4'
+    },
+
+    {
+        trigger: '.o_validate_page.btn-success',
+        run: function () {
+            currentViewState.validate.isHighlighted = true;
+            currentViewState.scanMessage = 'scan_more_dest';
+            checkState(currentViewState);
+        },
+    },
+]);
+
+});

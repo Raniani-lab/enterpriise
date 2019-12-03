@@ -895,15 +895,42 @@ QUnit.module('mapView', {
             },
         });
         assert.strictEqual(map.$('a.btn.btn-primary').attr('href'),
-            'https://www.google.com/maps/dir/?api=1&waypoints=10.5,10|10.5,10',
+            'https://www.google.com/maps/dir/?api=1&waypoints=10.5,10',
             'The link\'s URL should contain the right sets of coordinates');
 
         await testUtils.dom.click(map.$('.leaflet-marker-icon'));
-
         assert.strictEqual(map.$('div.leaflet-popup').find('a.btn.btn-primary').attr('href'),
             'https://www.google.com/maps/dir/?api=1&destination=10.5,10',
             'The link\'s URL should the right set of coordinates');
 
+        map.destroy();
+    });
+
+    QUnit.test('Unicity of coordinates in Google Maps url', async function(assert){
+        assert.expect(2);
+        var map = await createView({
+            View: MapView,
+            model: 'project.task',
+            data: this.data,
+            arch: '<map res_partner="partner_id" >' +
+                '</map>',
+            mockRPC: function (route) {
+                switch (route) {
+                    case '/web/dataset/search_read':
+                        return Promise.resolve(this.data['project.task'].twoRecordOnePartner);
+                    case '/web/dataset/call_kw/res.partner/search_read':
+                        return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
+                }
+                return Promise.resolve();
+            },
+            session: {
+                map_box_token: 'token'
+            },
+        });
+
+        assert.strictEqual(map.$('a.btn.btn-primary').attr('href'), 'https://www.google.com/maps/dir/?api=1&waypoints=10.5,10', 'The link\'s URL should contain unqiue sets of coordinates');
+        await testUtils.dom.click(map.$('.leaflet-marker-icon'));
+        assert.strictEqual(map.$('div.leaflet-popup').find('a.btn.btn-primary').attr('href'), 'https://www.google.com/maps/dir/?api=1&destination=10.5,10', 'The link\'s URL should only contain unqiue sets of coordinates');
         map.destroy();
     });
 
@@ -925,7 +952,6 @@ QUnit.module('mapView', {
 
         assert.strictEqual($('.o_map_container').height(), $('.o_content').height(),
             'The map should be the same height as the content div');
-
         map.destroy();
     });
 

@@ -36,7 +36,7 @@ const MapController = AbstractController.extend({
             const coordinates = this.model.data.records
                 .filter(record => record.partner && record.partner.partner_latitude && record.partner.partner_longitude)
                 .map(record => record.partner.partner_latitude + ',' + record.partner.partner_longitude);
-            url += `&waypoints=${coordinates.join('|')}`;
+            url += `&waypoints=${_.uniq(coordinates).join('|')}`;
         }
         const $buttons = $(qweb.render("MapView.buttons"), { widget: this });
         $buttons.find('a').attr('href', url);

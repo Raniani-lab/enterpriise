@@ -226,6 +226,7 @@ class QualityCheck(models.Model):
     name = fields.Char('Name', default=lambda self: _('New'))
     point_id = fields.Many2one(
         'quality.point', 'Control Point', check_company=True)
+    title = fields.Char(related='point_id.title')
     quality_state = fields.Selection([
         ('none', 'To do'),
         ('pass', 'Passed'),

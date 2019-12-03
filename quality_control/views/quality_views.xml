@@ -76,6 +76,7 @@
                             <field name="product_tmpl_id"/>
                             <field name="product_id" groups="product.group_product_variant"/>
                             <field name="lot_id" context="{'default_product_id': product_id}" groups="stock.group_production_lot"/>
+                            <field name="picking_id"/>
                         </group>
                         <group>
                             <field name="team_id"/>
@@ -281,8 +282,13 @@
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
             <form string="Quality Checks">
-                <h2>
-                    <field name="product_id" readonly="1" options="{'no_open': True}"/>
+                <h2 class="o_row">
+                    <span>
+                        <field name="product_id" readonly="1" options="{'no_open': True}"/>
+                        :
+                        <field name="name" readonly="1"/>
+                        <field class="ml8" name="title" readonly="1"/>
+                    </span>
                 </h2>
                 <field name="note" readonly="1"/>
                 <field name="team_id" invisible="1"/>

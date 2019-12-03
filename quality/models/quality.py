@@ -238,6 +238,8 @@ class QualityCheck(models.Model):
         'product.product', 'Product', check_company=True, required=True,
         domain="[('type', 'in', ['consu', 'product']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     picking_id = fields.Many2one('stock.picking', 'Picking', check_company=True)
+    partner_id = fields.Many2one(
+        related='picking_id.partner_id', string='Partner')
     lot_id = fields.Many2one(
         'stock.production.lot', 'Lot',
         domain="[('product_id', '=', product_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")

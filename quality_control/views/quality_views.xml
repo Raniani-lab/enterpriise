@@ -258,6 +258,7 @@
                             <field name="team_id"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="user_id" string="Control Person" invisible="1"/>
+                            <field name="partner_id" string="Partner" attrs="{'invisible': [('partner_id', '=', False)]}"/>
                         </group>
                     </group>
                     <group attrs="{'invisible': [('test_type', '!=', 'picture')]}">

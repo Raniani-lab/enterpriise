@@ -338,7 +338,7 @@ class ProductTemplate(models.Model):
                 elif checks_data['quality_state'] == 'pass':
                     product_tmpl.quality_pass_qty = checks_data['quality_state_count']
             product_tmpl.quality_control_point_qty = self.env['quality.point'].search_count([
-                ('product_tmpl_id', '=', product_tmpl.id), ('company_id', '=', self.env.company.id)
+                ('product_tmpl_ids', '=', product_tmpl.id), ('company_id', '=', self.env.company.id)
             ])
 
     def action_see_quality_control_points(self):
@@ -346,8 +346,8 @@ class ProductTemplate(models.Model):
         action = self.env.ref('quality_control.quality_point_action').read()[0]
         action['context'] = dict(self.env.context)
         action['context'].update({
-            'search_default_product_tmpl_id': self.id,
-            'default_product_tmpl_id': self.id,
+            'search_default_product_tmpl_ids': self.id,
+            'default_product_tmpl_ids': self.id,
         })
         return action
 
@@ -381,7 +381,7 @@ class ProductProduct(models.Model):
                 elif checks_data['quality_state'] == 'pass':
                     product.quality_pass_qty = checks_data['quality_state_count']
             product.quality_control_point_qty = self.env['quality.point'].search_count([
-                ('product_id', '=', product.id), ('company_id', '=', self.env.company.id)
+                ('product_ids', 'in', product.id), ('company_id', '=', self.env.company.id)
             ])
 
     def action_see_quality_control_points(self):

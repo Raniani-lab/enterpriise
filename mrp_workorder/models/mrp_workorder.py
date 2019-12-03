@@ -3,7 +3,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from datetime import datetime
+from odoo.osv.expression import AND
 from odoo.tools import float_compare, float_round
 
 
@@ -248,12 +248,13 @@ class MrpProductionWorkcenterLine(models.Model):
         return res
 
     def _get_quality_points(self, iterator):
-        steps = self.env['quality.point'].search([
+        quality_point_domain = self.env['quality.point']._get_domain(self.product_id, self.production_id.picking_type_id)
+        quality_point_domain = AND([quality_point_domain, [
+            ('operation_id', 'in', self.production_id.routing_id.operation_ids.ids),
             ('test_type', 'in', ('register_byproducts', 'register_consumed_materials')),
-            ('component_id', 'in', [values.get('product_id', False) for values in iterator]),
-            ('product_id', '=', self.product_id.id),
-            ('operation_id', 'in', self.production_id.routing_id.operation_ids.ids)
-        ])
+            ('component_id', 'in', [values.get('product_id', False) for values in iterator])
+        ]])
+        steps = self.env['quality.point'].search(quality_point_domain)
         return steps
 
     def _next(self, continue_production=False):
@@ -435,11 +436,9 @@ class MrpProductionWorkcenterLine(models.Model):
             processed_move = self.env['stock.move']
 
             production = wo.production_id
-            points = self.env['quality.point'].search([('operation_id', '=', wo.operation_id.id),
-                                                       ('picking_type_id', '=', production.picking_type_id.id),
-                                                       ('company_id', '=', wo.company_id.id),
-                                                       '|', ('product_id', '=', production.product_id.id),
-                                                       '&', ('product_id', '=', False), ('product_tmpl_id', '=', production.product_id.product_tmpl_id.id)])
+            points_domain = self.env['quality.point']._get_domain(production.product_id, production.picking_type_id)
+            points_domain = AND([points_domain, [('operation_id', '=', wo.operation_id.id)]])
+            points = self.env['quality.point'].search(points_domain)
 
             move_raw_ids = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel'))
             move_finished_ids = wo.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel'))

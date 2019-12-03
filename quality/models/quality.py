@@ -5,6 +5,7 @@ from datetime import datetime
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from odoo.osv.expression import AND, OR
 
 
 class TestType(models.Model):
@@ -14,6 +15,7 @@ class TestType(models.Model):
     # Used instead of selection field in order to hide a choice depending on the view.
     name = fields.Char('Name', required=True)
     technical_name = fields.Char('Technical name', required=True)
+
 
 class QualityPoint(models.Model):
     _name = "quality.point"
@@ -39,13 +41,14 @@ class QualityPoint(models.Model):
     team_id = fields.Many2one(
         'quality.alert.team', 'Team', check_company=True,
         default=_get_default_team_id, required=True)
-    product_id = fields.Many2one(
-        'product.product', 'Product Variant',
-        domain="[('product_tmpl_id', '=', product_tmpl_id)]")
-    product_tmpl_id = fields.Many2one(
-        'product.template', 'Product', required=True, check_company=True,
+    product_ids = fields.Many2many(
+        'product.product', string='Product Variant',
+        domain="[('product_tmpl_id', 'in', product_tmpl_ids)]")
+    product_tmpl_ids = fields.Many2many(
+        'product.template', string='Product', check_company=True,
         domain="[('type', 'in', ['consu', 'product']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     picking_type_id = fields.Many2one('stock.picking.type', "Operation Type", required=True, check_company=True)
+
     company_id = fields.Many2one(
         'res.company', string='Company', required=True, index=True,
         default=lambda self: self.env.company)
@@ -65,9 +68,12 @@ class QualityPoint(models.Model):
         for point in self:
             point.check_count = result.get(point.id, 0)
 
-    @api.onchange('product_tmpl_id')
+    @api.onchange('product_tmpl_ids')
     def onchange_product_tmpl_id(self):
-        self.product_id = self.product_tmpl_id.product_variant_ids.ids and self.product_tmpl_id.product_variant_ids[0]
+        self.product_ids = self.product_ids.filtered(lambda p: p.product_tmpl_id in self.product_tmpl_ids)
+        new_product_tmpl_ids = self.product_tmpl_ids - self._origin.product_tmpl_ids
+        if new_product_tmpl_ids.product_variant_ids:
+            self.product_ids |= new_product_tmpl_ids.product_variant_ids
 
     @api.model
     def create(self, vals):
@@ -79,6 +85,69 @@ class QualityPoint(models.Model):
         # TDE FIXME: make true multi
         self.ensure_one()
         return True
+
+    def _get_checks_values(self, products, company_id, existing_checks=False):
+        quality_points_list = []
+        point_values = []
+        if not existing_checks:
+            existing_checks = []
+        for check in existing_checks:
+            point_key = (check.point_id.id, check.team_id.id, check.product_id.id)
+            quality_points_list.append(point_key)
+
+        for point in self:
+            if not point.check_execute_now():
+                continue
+            point_products = point.product_tmpl_ids.filtered(lambda t: t not in point.product_ids.product_tmpl_id).product_variant_ids
+            point_products |= point.product_ids
+
+            if not point.product_ids and not point.product_tmpl_ids:
+                point_products |= products
+
+            for product in point_products:
+                if product not in products:
+                    continue
+                point_key = (point.id, point.team_id.id, product.id)
+                if point_key in quality_points_list:
+                    continue
+                point_values.append({
+                    'point_id': point.id,
+                    'team_id': point.team_id.id,
+                    'product_id': product.id,
+                })
+                quality_points_list.append(point_key)
+
+        return point_values
+
+    @api.model
+    def _get_domain(self, product_ids, picking_type_id):
+        """ Helper that returns a domain for quality.point based on the products and picking type
+        pass as arguments. It will search for quality point having:
+        - No product_tmpl_ids
+        - At least one variant from product_ids
+        - For each product in product_ids, if there is no variants defined on the point for this
+        product, it will check if the templates match.
+
+        :param product_ids: the products that could require a quality check
+        :type product: :class:`~odoo.addons.product.models.product.ProductProduct`
+        :param picking_type_id: the products that could require a quality check
+        :type product: :class:`~odoo.addons.stock.models.stock_picking.PickingType`
+        :return: the domain for quality point with given picking_type_id for all the product_ids
+        :rtype: list
+        """
+        domain = [
+            '|', ('product_ids', 'in', product_ids.ids),
+            '&', ('product_ids', '=', False), ('product_tmpl_ids', '=', False)
+        ]
+        for product in product_ids:
+            product_tmpl_id = product.product_tmpl_id
+            domain = OR([
+                domain, [
+                    ('product_tmpl_ids', 'in', product_tmpl_id.ids),
+                    ('product_ids', 'not in', product_tmpl_id.product_variant_ids.ids)
+                ]
+            ])
+        return AND([[('picking_type_ids', 'in', picking_type_id.ids)], domain])
 
     def _get_type_default_domain(self):
         return []

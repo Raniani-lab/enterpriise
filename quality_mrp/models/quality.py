@@ -1,7 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models
+
+
+class QualityPoint(models.Model):
+    _inherit = "quality.point"
+
+    @api.model
+    def _get_domain_for_production(self, quality_points_domain):
+        return quality_points_domain
 
 
 class QualityCheck(models.Model):

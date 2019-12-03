@@ -20,12 +20,12 @@
                 <field name="worksheet" widget="radio" attrs="{'invisible': ['|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False)]}"/>
                 <field name="worksheet_page" attrs="{'invisible': ['|', '|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False), ('worksheet', '!=', 'scroll')]}"/>
             </field>
-            <xpath expr="//field[@name='product_id']" position="attributes">
+            <xpath expr="//field[@name='product_ids']" position="attributes">
                 <attribute name="domain">
                     [('variant_bom_ids', '!=', []), ('variant_bom_ids.routing_id', '!=', False), '|', ('company_id', '=', company_id), ('company_id', '=', False)]
                 </attribute>
             </xpath>
-            <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
+            <xpath expr="//field[@name='product_tmpl_ids']" position="attributes">
                 <attribute name="domain">
                     [('bom_ids', '!=', False), ('bom_ids.routing_id', '!=', False), '|', ('company_id', '=', company_id), ('company_id', '=', False)],
                 </attribute>
@@ -66,7 +66,7 @@
         <field name="model">quality.point</field>
         <field name="inherit_id" ref="quality.quality_point_view_tree"/>
         <field name="arch" type="xml">
-            <field name="product_id" position="after">
+            <field name="product_ids" position="after">
                 <field name="code" optional="show"/>
             </field>
             <field name="picking_type_id" position="after">

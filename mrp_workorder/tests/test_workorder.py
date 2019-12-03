@@ -240,8 +240,8 @@ class TestWorkOrder(common.TestMrpCommon):
         """ Production with a strict consumption
         Check that consuming a non tracked product more than planned triggers an error"""
         self.env['quality.point'].create({
-            'product_id': self.submarine_pod.id,
-            'product_tmpl_id': self.submarine_pod.product_tmpl_id.id,
+            'product_ids': [(4, self.submarine_pod.id)],
+            'product_tmpl_ids': [(4, self.submarine_pod.product_tmpl_id.id)],
             'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id,
             'operation_id': self.operation_2.id,
             'test_type_id': self.env.ref('mrp_workorder.test_type_register_consumed_materials').id,
@@ -292,8 +292,8 @@ class TestWorkOrder(common.TestMrpCommon):
         Check that consuming the right amount of component doens't trigger any error"""
 
         self.env['quality.point'].create({
-            'product_id': self.submarine_pod.id,
-            'product_tmpl_id': self.submarine_pod.product_tmpl_id.id,
+            'product_ids': [(4, self.submarine_pod.id)],
+            'product_tmpl_ids': [(4, self.submarine_pod.product_tmpl_id.id)],
             'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id,
             'operation_id': self.operation_2.id,
             'test_type_id': self.env.ref('mrp_workorder.test_type_register_consumed_materials').id,

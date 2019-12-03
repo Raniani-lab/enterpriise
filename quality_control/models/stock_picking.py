@@ -48,7 +48,6 @@ class StockPicking(models.Model):
             return res
         # remove quality check of unreceived product
         self.sudo().mapped('check_ids').filtered(lambda x: x.quality_state == 'none').unlink()
-        res.mapped('move_lines')._create_quality_checks()
         return res
 
     def _action_done(self):

@@ -11,8 +11,8 @@ class TestQualityCheck(TestQualityCommon):
 
         # Create Quality Point for incoming shipment.
         self.qality_point_test = self.env['quality.point'].create({
-            'product_id': self.product.id,
-            'product_tmpl_id': self.product_tmpl_id,
+            'product_ids': [(4, self.product.id)],
+            'product_tmpl_ids': [(4, self.product_tmpl_id)],
             'picking_type_id': self.picking_type_id,
         })
 
@@ -61,8 +61,8 @@ class TestQualityCheck(TestQualityCommon):
         """
         # Create Quality Point for incoming shipment with 'Take Picture' as test type
         self.qality_point_test = self.env['quality.point'].create({
-            'product_id': self.product.id,
-            'product_tmpl_id': self.product_tmpl_id,
+            'product_ids': [(4, self.product.id)],
+            'product_tmpl_ids': [(4, self.product_tmpl_id)],
             'picking_type_id': self.picking_type_id,
             'test_type_id': self.env.ref('quality.test_type_text').id
         })
@@ -106,8 +106,8 @@ class TestQualityCheck(TestQualityCommon):
         """
         # Create Quality Point for incoming shipment with 'Take Picture' as test type
         self.qality_point_test = self.env['quality.point'].create({
-            'product_id': self.product.id,
-            'product_tmpl_id': self.product_tmpl_id,
+            'product_ids': [(4, self.product.id)],
+            'product_tmpl_ids': [(4, self.product_tmpl_id)],
             'picking_type_id': self.picking_type_id,
             'test_type_id': self.env.ref('quality.test_type_picture').id
         })

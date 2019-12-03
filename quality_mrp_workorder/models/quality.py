@@ -1,7 +1,17 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, _
+from odoo import api, models, _
+from odoo.osv.expression import AND
+
+
+class QualityPoint(models.Model):
+    _inherit = "quality.point"
+
+    @api.model
+    def _get_domain_for_production(self, quality_points_domain):
+        quality_points_domain = super()._get_domain_for_production(quality_points_domain)
+        return AND([quality_points_domain, [('operation_id', '=', False)]])
 
 
 class QualityCheck(models.Model):

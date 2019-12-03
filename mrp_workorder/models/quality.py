@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
+
 from odoo import api, fields, models, _
 
 
@@ -49,26 +51,46 @@ class QualityPoint(models.Model):
     # Used with type register_consumed_materials the product raw to encode.
     component_id = fields.Many2one('product.product', 'Product To Register', check_company=True)
 
-    @api.depends('product_id', 'product_tmpl_id', 'test_type_id')
+    @api.depends('product_ids', 'product_tmpl_ids', 'test_type_id')
     def _compute_component_ids(self):
-        for point in self:
-            bom_ids = self.env['mrp.bom'].search([('product_tmpl_id', '=', point.product_tmpl_id.id)])
-            component_ids = self.env['product.product']
-            if point.test_type == 'register_consumed_materials':
-                for bom in bom_ids:
-                    boms_done, lines_done = bom.explode(point.product_id, 1.0)
-                    for line in lines_done:
-                        component_ids |= line[0].product_id
-            if point.test_type == 'register_byproducts':
-                component_ids |= bom_ids.byproduct_ids.product_id
-            point.component_ids = component_ids
+        self.component_ids = False
+        points = self.filtered(
+            lambda p: p.is_workorder_step and p.test_type in [
+                'register_consumed_materials',
+                'register_byproducts'
+            ])
 
-    @api.depends('product_tmpl_id.bom_ids.routing_id')
+        bom_ids = self.env['mrp.bom'].search([
+            ('product_tmpl_id', 'in', points.product_tmpl_ids.ids),
+            ('type', '=', 'normal')
+        ])
+        product_by_points = defaultdict(lambda: self.env['quality.point'])
+        for point in points:
+            for product in point.product_tmpl_ids.filtered(lambda t: t not in point.product_ids.product_tmpl_id).product_variant_ids:
+                product_by_points[product._origin] |= point
+            for product in point.product_ids:
+                product_by_points[product._origin] |= point
+
+        for bom in bom_ids:
+            bom_products = bom.product_id or bom.product_tmpl_id.product_variant_ids
+            byproducts = bom.byproduct_ids.product_id
+            for product in bom_products:
+                if product not in product_by_points:
+                    continue
+                dummy, lines_done = bom.explode(product, 1.0)
+                components = self.env['product.product'].browse([line[0].product_id.id for line in lines_done])
+            for point in product_by_points[product]:
+                if point.test_type == 'register_consumed_materials':
+                    point.component_ids |= components
+                else:
+                    point.component_ids |= byproducts
+
+    @api.depends('product_tmpl_ids.bom_ids.routing_id')
     def _compute_routing_ids(self):
         for point in self:
-            point.routing_ids = point.product_tmpl_id.bom_ids.routing_id
+            point.routing_ids = point.product_tmpl_ids.bom_ids.routing_id
 
-    @api.onchange('product_tmpl_id')
+    @api.onchange('product_tmpl_ids')
     def onchange_product_tmpl_id(self):
         if self.picking_type_id.code != 'mrp_operation':
             return super().onchange_product_tmpl_id()

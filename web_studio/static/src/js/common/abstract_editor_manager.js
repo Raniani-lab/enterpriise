@@ -59,7 +59,11 @@ var AbstractEditorManager = Widget.extend({
                     class: 'o_web_studio_view_renderer',
                 });
                 self.editor = editor;
-                defs.push(self.editor.appendTo($editorFragment));
+                if (self.editor instanceof owl.Component) {
+                    defs.push(self.editor.mount($editorFragment[0]));
+                } else {
+                    defs.push(self.editor.appendTo($editorFragment));
+                }
                 // TODO: is that correct? shouldn't this be done in then the
                 // appendTo
                 $editorFragment.appendTo(self.$el);

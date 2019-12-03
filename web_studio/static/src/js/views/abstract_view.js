@@ -75,7 +75,13 @@ AbstractView.include({
                         // content is displayed if no record
                         noContentHelp: undefined,
                     });
-                    var editor = new Renderer(parent, state, params);
+                    let editor;
+                    if (Renderer.prototype instanceof owl.Component) {
+                        state = Object.assign(state || {}, params);
+                        return new Renderer(null, state);
+                    } else {
+                        editor = new Renderer(parent, state, params);
+                    }
                     // the editor needs to have a reference to its BasicModel
                     // instance to reuse it in x2m edition
                     editor.model = model;

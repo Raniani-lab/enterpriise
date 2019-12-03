@@ -66,6 +66,7 @@
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/calendar_editor.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/fields.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/editor_mixin.js"></script>
+        <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/editor_mixin_owl.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/form_editor.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/form_editor_hook.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/graph_editor.js"></script>

@@ -12,6 +12,7 @@ var view_registry = require('web.view_registry');
 var AbstractEditorManager = require('web_studio.AbstractEditorManager');
 var bus = require('web_studio.bus');
 var EditorMixin = require('web_studio.EditorMixin');
+var EditorMixinOwl = require('web_studio.EditorMixinOwl');
 
 var CalendarEditor = require('web_studio.CalendarEditor');
 var FormEditor = require('web_studio.FormEditor');
@@ -139,7 +140,13 @@ var ViewEditorManager = AbstractEditorManager.extend({
 
         return this._instantiateEditor(options).then(function (editor) {
             var fragment = document.createDocumentFragment();
-            return editor.appendTo(fragment).then(function () {
+            let prom = undefined;
+            if (editor instanceof owl.Component) {
+                prom = editor.mount(fragment);
+            } else {
+                prom = editor.appendTo(fragment);
+            }
+            return prom.then(function () {
                 dom.append(self.$('.o_web_studio_view_renderer'), [fragment], {
                     in_DOM: self.isInDOM,
                     callbacks: [{ widget: editor }],
@@ -910,7 +917,11 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 var Editor = Editors[this.view_type];
                 if (!Editor) {
                     // generate the Editor on the fly if it doesn't exist
-                    Editor = View.prototype.config.Renderer.extend(EditorMixin);
+                    if (View.prototype.config.Renderer.prototype instanceof owl.Component) {
+                        Editor = class ExtenderEditor extends EditorMixinOwl(View.prototype.config.Renderer) { };
+                    } else {
+                        Editor = View.prototype.config.Renderer.extend(EditorMixin);
+                    }
                 }
                 var chatterAllowed = this.x2mField ? false : this.chatter_allowed;
                 var editorParams = _.defaults(params, {

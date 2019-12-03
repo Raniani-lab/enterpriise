@@ -65,12 +65,8 @@ class MaintenanceRequest(models.Model):
         'mrp.production', string='Manufacturing Order', check_company=True)
     workorder_id = fields.Many2one(
         'mrp.workorder', string='Work Order', check_company=True)
-
-    @api.onchange('production_id')
-    def _onchange_production_id(self):
-        if self.production_id and self.production_id.company_id:
-            return {'domain': {'company_id': [('id', '=', self.production_id.company_id.id)]}}
-        return {'domain': {'company_id': []}}
+    production_company_id = fields.Many2one(string='Production Company', related='production_id.company_id')
+    company_id = fields.Many2one(domain="[('id', '=?', production_company_id)]")
 
 
 class MrpProduction(models.Model):

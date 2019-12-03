@@ -21,8 +21,8 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
             [('name', '=', 'ISR')])
         for rep_line in self.tax_negative.invoice_repartition_line_ids:
             rep_line.tag_ids |= isr_tag
-        self.product.l10n_mx_edi_code_sat_id = self.ref(
-            'l10n_mx_edi.prod_code_sat_01010101')
+        self.product.unspsc_code_id = self.ref(
+            'product_unspsc.unspsc_code_01010101')
         self.payment_method_manual_out = self.env.ref(
             "account.account_payment_method_manual_out")
         self.bank = self.env.ref('base.bank_ing')

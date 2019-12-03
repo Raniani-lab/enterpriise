@@ -44,8 +44,8 @@ class InvoiceTransactionCase(AccountTestCommon):
             'l10n_mx_cfdi_tax_type': 'Tasa',
         })
         self.product.taxes_id = [self.tax_positive.id, self.tax_negative.id]
-        self.product.l10n_mx_edi_code_sat_id = self.ref(
-            'l10n_mx_edi.prod_code_sat_01010101')
+        self.product.unspsc_code_id = self.ref(
+            'product_unspsc.unspsc_code_01010101')
         self.payment_term = self.env.ref('account.account_payment_term_30days')
         # force PPD
         self.payment_term.line_ids.days = 90

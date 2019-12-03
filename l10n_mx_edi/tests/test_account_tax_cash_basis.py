@@ -180,8 +180,8 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
     def create_invoice_line(self, invoice_id, price_unit):
         self.product.sudo().write({
             'default_code': 'PR01',
-            'l10n_mx_edi_code_sat_id': self.ref(
-                'l10n_mx_edi.prod_code_sat_01010101'),
+            'unspsc_code_id': self.ref(
+                'product_unspsc.unspsc_code_01010101'),
         })
         invoice_line = self.invoice_line_model.new({
             'product_id': self.product.id,

@@ -18,6 +18,7 @@ This module allows the creation of the EDI documents and the communication with 
         'base_address_extended',
         'attachment_indexation',
         'base_address_city',
+        'product_unspsc'
     ],
     'external_dependencies' : {
         'python' : ['pyOpenSSL'],
@@ -36,6 +37,7 @@ This module allows the creation of the EDI documents and the communication with 
         'data/res_partner_category.xml',
         'data/mail_invoice_template.xml',
         'data/ir_cron_data.xml',
+        'data/product_data.xml',
         'views/account_invoice_view.xml',
         'views/account_payment_view.xml',
         'views/account_menuitem.xml',

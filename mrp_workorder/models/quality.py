@@ -35,6 +35,8 @@ class QualityPoint(models.Model):
     operation_id = fields.Many2one(
         'mrp.routing.workcenter', 'Step', check_company=True)
     routing_id = fields.Many2one(related='operation_id.routing_id', readonly=False)
+    routing_ids = fields.One2many('mrp.routing', compute='_compute_routing_ids')
+    component_ids = fields.One2many('product.product', compute='_compute_component_ids')
     test_type_id = fields.Many2one(
         'quality.point.test_type',
         domain="[('allow_registration', '=', operation_id and code == 'mrp_operation')]")
@@ -47,27 +49,24 @@ class QualityPoint(models.Model):
     # Used with type register_consumed_materials the product raw to encode.
     component_id = fields.Many2one('product.product', 'Product To Register', check_company=True)
 
-    @api.onchange('product_id', 'product_tmpl_id', 'picking_type_id', 'test_type_id')
-    def _onchange_product(self):
-        bom_ids = self.env['mrp.bom'].search([('product_tmpl_id', '=', self.product_tmpl_id.id)])
-        component_ids = set([])
-        if self.test_type == 'register_consumed_materials':
-            for bom in bom_ids:
-                boms_done, lines_done = bom.explode(self.product_id, 1.0)
-                component_ids |= {l[0].product_id.id for l in lines_done}
-        if self.test_type == 'register_byproducts':
-            for bom in bom_ids:
-                component_ids |= {byproduct.product_id.id for byproduct in bom.byproduct_ids}
-        routing_ids = bom_ids.mapped('routing_id.id')
-        if self.picking_type_id.code == 'mrp_operation':
-            return {
-                'domain': {
-                    'operation_id': [('routing_id', 'in', routing_ids), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
-                    'component_id': [('id', 'in', list(component_ids)), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
-                    'product_tmpl_id': [('bom_ids', '!=', False), ('bom_ids.routing_id', '!=', False), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
-                    'product_id': [('variant_bom_ids', '!=', False), ('variant_bom_ids.routing_id', '!=', False), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
-                }
-            }
+    @api.depends('product_id', 'product_tmpl_id', 'test_type_id')
+    def _compute_component_ids(self):
+        for point in self:
+            bom_ids = self.env['mrp.bom'].search([('product_tmpl_id', '=', point.product_tmpl_id.id)])
+            component_ids = set()
+            if point.test_type == 'register_consumed_materials':
+                for bom in bom_ids:
+                    boms_done, lines_done = bom.explode(point.product_id, 1.0)
+                    component_ids |= {l[0].product_id.id for l in lines_done}
+            if point.test_type == 'register_byproducts':
+                for bom in bom_ids:
+                    component_ids |= {byproduct.product_id.id for byproduct in bom.byproduct_ids}
+            point.component_ids = component_ids
+
+    @api.depends('product_tmpl_id.bom_ids.routing_id')
+    def _compute_routing_ids(self):
+        for point in self:
+            point.routing_ids = point.product_tmpl_id.bom_ids.routing_id
 
 
 class QualityAlert(models.Model):

@@ -6,7 +6,9 @@
         <field name="inherit_id" ref="quality.quality_point_view_form"/>
         <field name="arch" type="xml">
             <field name="test_type_id" position="after">
-                <field name="component_id" attrs="{'required': [('test_type', 'in', ('register_byproducts', 'register_consumed_materials'))], 'invisible': ['|', '|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False), ('test_type', 'not in', ('register_byproducts', 'register_consumed_materials'))]}"/>
+                <field name="routing_ids" invisible="1"/>
+                <field name="component_ids" invisible="1"/>
+                <field name="component_id" attrs="{'required': [('test_type', 'in', ('register_byproducts', 'register_consumed_materials'))], 'invisible': ['|', '|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False), ('test_type', 'not in', ('register_byproducts', 'register_consumed_materials'))]}" domain="[('id', 'in', component_ids), ('company_id', '=?', company_id)]"/>
                 <field name="test_report_type" widget="selection" attrs="{'invisible': [('test_type','!=','print_label')]}"/>
             </field>
             <field name="picking_type_id" position="after">
@@ -14,9 +16,25 @@
                 <field name="code" invisible="1"/>
             </field>
             <field name="user_id" position="after">
+                <field name="routing_ids" invisible="1"/>
                 <field name="worksheet" widget="radio" attrs="{'invisible': ['|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False)]}"/>
                 <field name="worksheet_page" attrs="{'invisible': ['|', '|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False), ('worksheet', '!=', 'scroll')]}"/>
             </field>
+            <xpath expr="//field[@name='product_id']" position="attributes">
+                <attribute name="domain">
+                    [('variant_bom_ids', '!=', False), ('variant_bom_ids.routing_id', '!=', False), ('company_id', '=?', company_id)]
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
+                <attribute name="domain">
+                    [('bom_ids', '!=', False), ('bom_ids.routing_id', '!=', False), ('company_id', '=?', company_id)],
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='operation_id']" position="attributes">
+                <attribute name="domain">
+                    [('routing_id', 'in', routing_ids), ('company_id', '=?', company_id)],
+                </attribute>
+            </xpath>
         </field>
     </record>
 

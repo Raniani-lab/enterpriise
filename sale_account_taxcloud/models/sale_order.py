@@ -46,7 +46,7 @@ class SaleOrder(models.Model):
 
         # warning: this is tightly coupled to TaxCloudRequest's _process_lines method
         # do not modify without syncing the other method
-        for index, line in enumerate(self.order_line):
+        for index, line in enumerate(self.order_line.filtered(lambda l: not l.display_type)):
             if line._get_taxcloud_price() >= 0.0 and line.product_uom_qty >= 0.0:
                 price = line.price_unit * (1 - (line.discount or 0.0) / 100.0) * line.product_uom_qty
                 if not price:

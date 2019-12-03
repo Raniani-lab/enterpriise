@@ -254,6 +254,8 @@ class QualityCheck(models.Model):
         required=True)
     test_type = fields.Char(related='test_type_id.technical_name')
     picture = fields.Binary('Picture', attachment=True)
+    additional_note = fields.Text(
+        'Addition Note', help="Additional remarks concerning this check.")
 
     def _compute_alert_count(self):
         alert_data = self.env['quality.alert'].read_group([('check_id', 'in', self.ids)], ['check_id'], ['check_id'])

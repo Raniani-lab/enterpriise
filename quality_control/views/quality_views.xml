@@ -263,10 +263,13 @@
                     <group attrs="{'invisible': [('test_type', '!=', 'picture')]}">
                         <field name="picture" widget="image"/>
                     </group>
-                    <notebook>
-                        <page string="Notes" name="notes">
-                            <field name="note"/>
-                        </page>
+                      <notebook>
+                          <page string="Notes" name="notes">
+                              <group>
+                                  <field string="Instructions" name="note"/>
+                                  <field string="Notes" name="additional_note"/>
+                              </group>
+                          </page>
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">
@@ -310,6 +313,9 @@
                 <div attrs="{'invisible': [('test_type', '!=', 'picture')]}">
                     <field name="picture" widget="image" attrs="{'required': [('test_type', '=', 'picture')]}"/>
                 </div>
+                <group>
+                    <field name="additional_note"/>
+                </group>
                 <footer>
                     <button name="do_measure" type="object" class="btn-primary" string="Validate"
                         attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>

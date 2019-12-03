@@ -37,6 +37,7 @@ const DialingPanel = Widget.extend({
         'click .o_dial_number': '_onClickDialNumber',
         'click .o_dial_window_close': '_onClickWindowClose',
         'input .o_dial_search_input': '_onInputSearch',
+        'keyup .o_dial_keypad_input': '_onKeyupKeypadInput',
     },
     custom_events: {
         'changeStatus': '_onChangeStatus',
@@ -261,6 +262,17 @@ const DialingPanel = Widget.extend({
             this._isInCall = true;
         } else {
             this.do_notify(YOUR_ARE_ALREADY_IN_A_CALL);
+        }
+    },
+    /**
+     * start a call on ENTER keyup
+     *
+     * @private
+     * @param {KeyEvent} ev
+     */
+    _onKeyupKeypadInput(ev) {
+        if (ev.keyCode === $.ui.keyCode.ENTER) {
+            this._onClickCallButton();
         }
     },
     /**

@@ -505,6 +505,104 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
     parent.destroy();
 });
 
+QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
+    assert.expect(8);
+
+    const self = this;
+
+    const {
+        dialingPanel,
+        parent,
+    } = await createDialingPanel({
+        async mockRPC(route, args) {
+            if (args.method === 'get_pbx_config') {
+                return { mode: 'demo' };
+            }
+            if (args.model === 'voip.phonecall') {
+                if (args.method === 'create_from_number') {
+                    assert.step('create_from_number');
+                    self.recentList = [{
+                        call_date: '2019-06-06 08:05:47',
+                        create_date: '2019-06-06 08:05:47.00235',
+                        create_uid: 2,
+                        date_deadline: '2019-06-06',
+                        id: 0,
+                        in_queue: 't',
+                        name: 'Call to 987654321',
+                        user_id: 2,
+                        phone: '987654321',
+                        phonecall_type: 'outgoing',
+                        start_time: 1559808347,
+                        state: 'pending',
+                        write_date: '2019-06-06 08:05:48.568076',
+                        write_uid: 2,
+                    }];
+                    return self.recentList[0];
+                }
+                if (args.method === 'get_next_activities_list') {
+                    return self.phoneCallDetailsData.filter(phoneCallDetailData =>
+                        !['done', 'cancel'].includes(phoneCallDetailData.state));
+                }
+                if (args.method === 'hangup_call') {
+                    if (args.kwargs.done) {
+                        for (const phoneCallDetailData of self.phoneCallDetailsData) {
+                            if (phoneCallDetailData.id === args.args[0]) {
+                                phoneCallDetailData.state = 'done';
+                            }
+                        }
+                    }
+                    assert.step('hangup_call');
+                    return [];
+                }
+            }
+            return this._super(...arguments);
+        },
+        services: this.services,
+    });
+
+    // make a first call
+    assert.containsNone(dialingPanel, '.o_phonecall_details', 'Details should not be visible yet');
+
+    // select keypad
+    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_icon'));
+    // click on 9
+    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[8]);
+    // click on 8
+    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[7]);
+    // click on 7
+    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[6]);
+    // click on 6
+    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[5]);
+    // click on 5
+    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[4]);
+    // click on 4
+    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[3]);
+    // click on 3
+    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[2]);
+    // click on 2
+    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[1]);
+    // click on 1
+    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[0]);
+
+    // call number 987654321 (validated by pressing enter key)
+    dialingPanel.$('.o_dial_keypad_input').trigger($.Event('keyup', {keyCode: $.ui.keyCode.ENTER}));
+    await testUtils.nextTick();
+
+    assert.verifySteps(['create_from_number']);
+    assert.strictEqual(dialingPanel.$('.o_phonecall_details .o_dial_phonecall_partner_name').text(),
+        'Call to 987654321', 'Details should have been shown');
+    assert.ok(dialingPanel._isInCall, 'should be in call on pressing ENTER after dialing a phone number');
+
+    // simulate end of setTimeout in demo mode or answer in prod
+    this.onaccepted();
+    // end call
+    await testUtils.dom.click(dialingPanel.$('.o_dial_hangup_button'));
+    assert.notOk(dialingPanel._isInCall, 'should no longer be in call after hangup');
+    assert.verifySteps(['hangup_call']);
+
+    parent.destroy();
+});
+
 });
 });
 });

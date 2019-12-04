@@ -516,8 +516,6 @@ class MrpProductionWorkcenterLine(models.Model):
         self.ensure_one()
         if any([(x.quality_state == 'none') for x in self.check_ids]):
             raise UserError(_('You still need to do the quality checks!'))
-        if (self.production_id.product_id.tracking != 'none') and not self.finished_lot_id and self.move_raw_ids:
-            raise UserError(_('You should provide a lot for the final product'))
         if self.check_ids:
             # Check if you can attribute the lot to the checks
             if (self.production_id.product_id.tracking != 'none') and self.finished_lot_id:

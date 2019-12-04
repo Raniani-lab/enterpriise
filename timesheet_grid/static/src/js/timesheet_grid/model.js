@@ -24,6 +24,113 @@ odoo.define('timesheet_grid.GridModel', function (require) {
             return this._loadTimesheetByTask();
         },
         /**
+         * Update state
+         *
+         * When the user click on a timer button, we need to update the state without reordered the data.
+         */
+        actionTimer: async function (state) {
+            await this.reload();
+
+            let i = 0;
+
+            const array = [];
+
+            while (state.hasOwnProperty(i)) {
+                array.push(state[i]);
+                i += 1;
+            }
+
+            i = 0;
+
+            // Get fields containing in rowFields without the sectionField
+            const fields = _.difference(this.rowFields, [this.sectionField]);
+
+            while (this._gridData.hasOwnProperty(i)) {
+                array.some((el, index) => {
+                    if (_.isEqual(el.__label, this._gridData[i].__label)) {
+                        state[index].cols = this._gridData[i].cols;
+                        if (this._checkRowsSameOrder(state[index].rows, this._gridData[i].rows, fields)) {
+                            // Then same order
+                            state[index].grid = this._gridData[i].grid;
+                            state[index].rows = this._gridData[i].rows;
+                        } else {
+                            // Update state with the same order than the old state
+                            const {rows, grid} = this._updateGrid(
+                                {rows: state[index].rows, grid: state[index].grid},
+                                {rows: this._gridData[i].rows, grid: this._gridData[i].grid},
+                                fields
+                            );
+
+                            state[index].rows = rows;
+                            state[index].grid = grid;
+                        }
+
+                        return true;
+                    }
+                });
+
+                i += 1;
+            }
+
+            this._gridData = state;
+            return this._gridData;
+        },
+        /**
+         * Check if the "rows" of 2 states (old and new) contains theirs elements in the same order
+         * @param {Array} a contains rows of oldState
+         * @param {Array} b contains rows of newState
+         * @param {Array} fields contains rowFields of grid view without the sectionField
+         */
+        _checkRowsSameOrder: function (a, b, fields) {
+            if (a.length !== b.length) {
+                return false;
+            }
+
+            for (let i = 0; i < a.length; i++) {
+                for (const field of fields) {
+                    if (_.difference(a[i].values[field], b[i].values[field]).length !== 0) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        },
+        /**
+         * We want to update the state when the user clicks on the timer button, but we want to keep
+         * the same order that the oldState.
+         *
+         * @param {Array} a contains rows and grid of oldState
+         * @param {Array} b contains rows and grid of newState
+         * @param {Array} fields contains rowFields of grid view without the sectionField
+         */
+        _updateGrid: function (a, b, fields) {
+            const result = {rows: [], grid: []};
+
+            let i = 0;
+            for (i = 0; i < a.rows.length; i++) {
+                b.rows.some((row, index) => {
+                    for (const field of fields) {
+                        if (_.difference(a.rows[i].values[field], row.values[field]).length !== 0) {
+                            return false;
+                        }
+                    }
+                    result.rows.push(row);
+                    result.grid.push(b.grid[index]);
+                    return true;
+                });
+            }
+
+            if (i < b.rows.length) {
+                for (i; i < b.rows.length; i++) {
+                    result.rows.push(b.rows[i]);
+                    result.grid.push(b.grid[i]);
+                }
+            }
+
+            return result;
+        },
+        /**
          * Load timesheets by task.
          *
          * _gridData is an Object containing the data of each row

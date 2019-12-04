@@ -47,9 +47,8 @@ odoo.define('timesheet_grid.GridController', function (require) {
                 }
             }
             ev.stopPropagation();
-            await this.model.reload();
 
-            const state = this.model.get();
+            const state = await this.model.actionTimer(this.model.get());
             await this.renderer.updateState(state, {});
             this._updateButtons(state);
         }

@@ -209,7 +209,7 @@ class TestRentalCommon(common.SingleTransactionCase):
 
         """ In company stock valuation """
         self.assertEqual(
-            self.product_id.with_context(company_owned=True).qty_available,
+            self.product_id.quantity_svl,
             4
         )
 
@@ -247,7 +247,7 @@ class TestRentalCommon(common.SingleTransactionCase):
 
         """ In company stock valuation """
         self.assertEqual(
-            self.product_id.with_context(company_owned=True).qty_available,
+            self.product_id.quantity_svl,
             4
         )
 

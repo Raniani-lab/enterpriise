@@ -386,7 +386,7 @@ class AccountPayment(models.Model):
             partner.state_id.code)
         date_mx = datetime.now(tz)
         if not self.l10n_mx_edi_expedition_date:
-            self.l10n_mx_edi_expedition_date = date_mx
+            self.l10n_mx_edi_expedition_date = date_mx.date()
         if not self.l10n_mx_edi_time_payment:
             self.l10n_mx_edi_time_payment = date_mx.strftime(
                 DEFAULT_SERVER_TIME_FORMAT)

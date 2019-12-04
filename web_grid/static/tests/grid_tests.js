@@ -211,7 +211,7 @@ QUnit.module('Views', {
             "first section should be for project P1");
         assert.strictEqual(grid.$('.o_grid_section:eq(0) div.o_grid_cell_container').length, 14,
             "first section should have 14 cells");
-        assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(Unknown)').length, 1,
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(Undefined)').length, 1,
             "first section should have a row without task");
         assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(BS task)').length, 1,
             "first section should have a row for BS task");
@@ -312,7 +312,7 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('tr:eq(2) th').text(), 'BS taskP1',
             "GroupBy should have been taken into account when loading the view."
         );
-        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'UnknownP1',
+        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'UndefinedP1',
             "GroupBy should have been taken into account when loading the view."
         );
 
@@ -351,7 +351,7 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('tr:eq(2) th').text(), 'BS task',
             "GroupBy should have been taken into account when loading the view."
         );
-        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'Unknown',
+        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'Undefined',
             "GroupBy should have been taken into account when loading the view."
         );
 
@@ -415,7 +415,7 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('tr:eq(2) th').text(), 'BS taskP1',
             "GroupBy should have been taken into account when loading the view."
         );
-        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'UnknownP1',
+        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'UndefinedP1',
             "GroupBy should have been taken into account when loading the view."
         );
 
@@ -427,7 +427,7 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('tr:eq(3) th').text(), 'BS task',
             "Should be grouped by default (Project > Task)."
         );
-        assert.strictEqual(grid.$('tr:eq(4) th').text(), 'Unknown',
+        assert.strictEqual(grid.$('tr:eq(4) th').text(), 'Undefined',
             "Should be grouped by default (Project > Task)."
         );
         assert.strictEqual(grid.$('tr:eq(5) th').text(), 'Webocalypse Now',
@@ -475,16 +475,16 @@ QUnit.module('Views', {
             currentDate: "2017-01-25",
         });
         await testUtils.nextTick();
-        assert.strictEqual(grid.$('tbody th:first').text(), "RerUnknown", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(1)').text(), "SassyUnknown", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUnknown", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:first').text(), "RerUndefined", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(1)').text(), "SassyUndefined", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUndefined", "Should be equal.");
 
         await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
-        assert.strictEqual(grid.$('tbody th:first').text(), "SarUnknown", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(1)').text(), "RerUnknown", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUnknown", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(3)').text(), "SassyUnknown", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(4)').text(), "SasUnknown", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:first').text(), "SarUndefined", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(1)').text(), "RerUndefined", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUndefined", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(3)').text(), "SassyUndefined", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(4)').text(), "SasUndefined", "Should be equal.");
 
         grid.destroy();
     });
@@ -1166,7 +1166,7 @@ QUnit.module('Views', {
             "first section should be for project P1");
         assert.containsN(grid, '.o_grid_section:eq(0) div.o_grid_cell_container', 1,
             "first section should have 1 cells");
-        assert.containsNone(grid, '.o_grid_section:eq(0) th:contains(Unknown)',
+        assert.containsNone(grid, '.o_grid_section:eq(0) th:contains(Undefined)',
             "first section should'nt have a row without task");
         assert.containsOnce(grid, '.o_grid_section:eq(0) th:contains(BS task)',
             "first section should have a row for BS task");

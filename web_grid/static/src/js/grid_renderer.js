@@ -165,7 +165,7 @@ return AbstractRenderer.extend({
      */
     _field2label: function (value_to_display, field_type) {
         if (!value_to_display){
-            return _t('Unknown');
+            return _t('Undefined');
         }
         if (["many2one", "many2many", "one2many", "selection"].indexOf(field_type) > -1) {
             return value_to_display[1];
@@ -360,14 +360,18 @@ return AbstractRenderer.extend({
                     });
                 }
                 rowKeys.push(value[0]);
-                rowValues.push(self._field2label(value, field_type));
+                var label = self._field2label(value, field_type);
+                if (label.length >= 50) {
+                    label = label.substring(0, 50) + '...';
+                }
+                rowValues.push(label);
             }
             var rowKey = rowKeys.join('|');
 
             return h('tr', {key: rowKey}, [
                 h('th', {}, [
                     h('div', _.map(rowValues, function (label) {
-                        var klass = label !== _t('Unknown') ? '' : 'o_grid_text_muted';
+                        var klass = label !== _t('Undefined') ? '' : 'o_grid_text_muted';
                         return h('div', {attrs: {title: label, class: klass}}, label);
                     }))
                 ])
@@ -402,7 +406,7 @@ return AbstractRenderer.extend({
                 h('tbody', {class: {o_grid_section: true}}, [
                     h('tr', [
                         h('th', {}, [
-                            (grid.__label || [])[1] || _t('Unknown')
+                            (grid.__label || [])[1] || _t('Undefined')
                         ])
                     ].concat(
                         _(columns).map(function (column, column_index) {

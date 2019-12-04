@@ -14,12 +14,7 @@ from odoo.osv import expression
 class AnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
 
-    def _domain_employee_id(self):
-        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
-            return [('user_id', '=', self.env.user.id)]
-        return []
-
-    employee_id = fields.Many2one('hr.employee', "Employee", domain=_domain_employee_id, group_expand="_group_expand_employee_ids")
+    employee_id = fields.Many2one(group_expand="_group_expand_employee_ids")
 
     # reset amount on copy
     amount = fields.Monetary(copy=False)

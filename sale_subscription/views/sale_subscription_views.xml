@@ -450,7 +450,7 @@
                             <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
                         </button>
                     </div>
-                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="e.g. Monthly Subscription"/>
@@ -630,7 +630,7 @@
                             <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
                         </button>
                     </div>
-                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only" string="Alert Name"/>
                         <h1><field name="name" placeholder="e.g. Closed Subscription"/></h1>

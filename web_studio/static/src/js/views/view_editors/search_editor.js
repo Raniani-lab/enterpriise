@@ -24,10 +24,12 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
     /**
      * @constructor
      */
-    init: function () {
+    init: function (parent, state, params) {
         this._super.apply(this, arguments);
         this.hook_nodes = {};
         this.node_id = 1;
+        this.show_invisible = params.show_invisible;
+        this.FILTER_TYPES = ['date', 'datetime'];
         this.GROUPABLE_TYPES = ['many2one', 'char', 'boolean', 'selection', 'date', 'datetime'];
     },
 
@@ -63,23 +65,27 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
             ).nearest({x: position.pageX, y: position.pageY}, {container: document.body}).eq(0);
         if ($nearest_form_hook.length) {
             // We check what is being dropped and in which table
-            // since in the autocompletion fields and group_by tables
-            // we can only drop fields and in the filter table
-            // we can only drop filter and separator components.
-            var hook_classes = $helper.attr("class");
-            var table_type = $nearest_form_hook.closest('table').data('type');
-            var accept_fields = ['autocompletion_fields', 'group_by'];
-            var is_field_droppable = hook_classes.indexOf("o_web_studio_field") > -1 && _.contains(accept_fields, table_type);
-            var is_component_droppable = table_type === 'filters' &&
-                (hook_classes.indexOf("o_web_studio_filter") > -1 || hook_classes.indexOf("o_web_studio_filter_separator") > -1);
-            // We check if the field dropped is a groupabble field
-            // if dropped in the group_by table
-            if (table_type === 'group_by' && is_field_droppable) {
-                var type = $helper.data('new_attrs').type;
-                var store = $helper.data('new_attrs').store;
-                is_field_droppable =  _.contains(this.GROUPABLE_TYPES, type) && store === 'true';
+            // since in the autocompletion fields we can drop fields
+            // in group_by tables we can drop groupabble fields and separator
+            // and in the filter table we can only drop filter and separator and
+            // date/datetime components.
+            const hookClasses = $helper.attr("class");
+            const tableType = $nearest_form_hook.closest('table').data('type');
+            const isField = hookClasses.indexOf("o_web_studio_field") > -1;
+            const isFilter = hookClasses.indexOf("o_web_studio_filter") > -1;
+            const isSeparator = hookClasses.indexOf("o_web_studio_filter_separator") > -1;
+            const newAttrs = $helper.data('new_attrs') || {};
+            const type = newAttrs.type;
+            const store = newAttrs.store;
+            let addHook = false;
+            if (tableType === 'group_by' && (isField && _.contains(this.GROUPABLE_TYPES, type) && store === 'true')) {
+                addHook = true;
+            } else if (tableType === 'filters' && (isField && _.contains(this.FILTER_TYPES, type) && store === 'true' || isSeparator || isFilter)) {
+                addHook = true;
+            } else if (tableType === 'autocompletion_fields' && isField) {
+                addHook = true;
             }
-            if (is_field_droppable || is_component_droppable){
+            if (addHook) {
                 $nearest_form_hook.addClass('o_web_studio_nearest_hook');
                 return true;
             }
@@ -155,6 +161,18 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
         }
     },
     /**
+     * if show_invisible is True then returns all nodes
+     * visible + invisible else do super call
+     *
+     * @override
+     */
+    _getNodesToTreat() {
+        if (this.show_invisible) {
+            return this.arch.children.slice();
+        }
+        return this._super(...arguments);
+    },
+    /**
      * @private
      * @param {String} model
      * @param {String} value
@@ -202,7 +220,7 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
                 if ($hook.length) {
                     var hook_id = $hook.data('hook_id');
                     var hook = self.hook_nodes[hook_id];
-                    var new_attrs = ui.draggable.data('new_attrs');
+                    var new_attrs = ui.draggable.data('new_attrs') || {};
                     var structure = ui.draggable.data('structure');
                     // Check if a filter component has been dropped
                     if (structure === "filter") {
@@ -245,14 +263,17 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
                         self.trigger_up('on_hook_selected');
                         return;
                     }
+                    if (hook.type === "filter" && structure === "field" && _.contains(self.FILTER_TYPES, new_attrs.type)) {
+                        structure = "filter";
+                        new_attrs.string = new_attrs.label;
+                        new_attrs.date = new_attrs.name;
+                        new_attrs.name = 'studio_filter_by_' + utils.randomString(5);
+                    }
                     // Since the group_by are defined by filter tag inside a group
                     // but the droppable object is a field structure,
                     // the structure is overridden
                     if (hook.type === "group_by" && structure === "field") {
                         structure = "filter";
-                        if (!new_attrs) {
-                            new_attrs = {};
-                        }
                         // There is no element 'group' in the view that can be target
                         // to add a group_by filter so we add one before the insertion
                         // of the group_by filter
@@ -287,9 +308,11 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
                 var $grouBy = self.$('.o_web_studio_search_group_by');
                 switch (ui.draggable.data('structure')) {
                     case 'field':
-                        $filters.addClass('text-muted');
                         var type = ui.draggable.data('new_attrs').type;
                         var store = ui.draggable.data('new_attrs').store;
+                        if (!(_.contains(self.FILTER_TYPES, type) && store === 'true')) {
+                            $filters.addClass('text-muted');
+                        }
                         if (!(_.contains(self.GROUPABLE_TYPES, type) && store === 'true')) {
                             $grouBy.addClass('text-muted');
                         }

@@ -2521,7 +2521,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('indicate that regular stored field can not be dropped in "Filters" section', async function (assert) {
+    QUnit.test('indicate that regular stored field(except date/datetime) can not be dropped in "Filters" section', async function (assert) {
         assert.expect(3);
 
         this.data.coucou.fields.display_name.store = true;
@@ -2599,7 +2599,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('indicate that separators can not be dropped in "Filters" and "Group by" sections', async function (assert) {
+    QUnit.test('indicate that separators can not be dropped in "Automcompletion Fields" and "Group by" sections', async function (assert) {
         assert.expect(3);
 
         var vem = await studioTestUtils.createViewEditorManager({
@@ -2633,6 +2633,116 @@ QUnit.module('ViewEditorManager', {
             "autocompletion_fields section should be muted");
         assert.doesNotHaveClass(vem.$('.o_web_studio_search_filters'), 'text-muted',
             "filter section should not be muted");
+
+        vem.destroy();
+    });
+
+    QUnit.test('indicate that filter can not be dropped in "Automcompletion Fields" and "Group by" sections', async function (assert) {
+        assert.expect(3);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<search>" +
+                    "<field name='display_name'/>" +
+                    "<filter string='My Name' " +
+                        "name='my_name' " +
+                        "domain='[(\"display_name\",\"=\",coucou)]'" +
+                    "/>" +
+                    "<group expand='0' string='Filters'>" +
+                        "<filter string='My Name2' " +
+                            "name='my_name2' " +
+                            "domain='[(\"display_name\",\"=\",coucou2)]'" +
+                        "/>" +
+                    "</group>" +
+                    "<group expand='0' string='Group By'>" +
+                        "<filter name='groupby_display_name' " +
+                            "domain='[]' context=\"{'group_by':'display_name'}\"/>" +
+                    "</group>" +
+                "</search>",
+        });
+
+        // try to add seperator in groupby
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_components > .o_web_studio_filter'), $('.o_web_studio_search_group_by .o_web_studio_hook:first'), { disableDrop: true });
+        await testUtils.nextTick();
+        assert.hasClass(vem.$('.o_web_studio_search_group_by'), 'text-muted',
+            "groupby section should be muted");
+        assert.hasClass(vem.$('.o_web_studio_search_autocompletion_fields'), 'text-muted',
+            "autocompletion_fields section should be muted");
+        assert.doesNotHaveClass(vem.$('.o_web_studio_search_filters'), 'text-muted',
+            "filter section should not be muted");
+
+        vem.destroy();
+    });
+
+    QUnit.test('move a date/datetime field in search filter dropdown', async function (assert) {
+        assert.expect(5);
+
+        const arch = "<search>" +
+                "<field name='display_name'/>" +
+                "<filter string='Start Date' " +
+                    "name='start' " +
+                    "date='start' " +
+                "/>" +
+                "<filter string='My Name' " +
+                    "name='my_name' " +
+                    "domain='[(\"display_name\",\"=\",coucou)]'" +
+                "/>" +
+                "<filter string='My Name2' " +
+                    "name='my_name2' " +
+                    "domain='[(\"display_name\",\"=\",coucou2)]'" +
+                "/>" +
+            "</search>";
+        let fieldsView;
+        this.data.coucou.fields.priority.store = true;
+        this.data.coucou.fields.start.store = true;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<search>" +
+                "<field name='display_name'/>" +
+                "<filter string='My Name' " +
+                    "name='my_name' " +
+                    "domain='[(\"display_name\",\"=\",coucou)]'" +
+                "/>" +
+                "<filter string='My Name2' " +
+                    "name='my_name2' " +
+                    "domain='[(\"display_name\",\"=\",coucou2)]'" +
+                "/>" +
+            "</search>",
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].node.attrs.date, 'start',
+                        "should date attribute in attrs when adding a date/datetime field");
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            search: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate the new fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        assert.containsN(vem, '.o_web_studio_search_sub_item .o_web_studio_search_filters.table tbody tr.o_web_studio_hook', 3,
+            "there should be three hooks in the filters dropdown");
+        // try to add a field other date/datetime in the filters section
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields .o_web_studio_field_selection'), vem.$('.o_web_studio_search_sub_item .o_web_studio_search_filters .o_web_studio_hook').eq(1));
+        assert.containsN(vem, '.o_web_studio_search_sub_item .o_web_studio_search_filters [data-node-id]', 2,
+            'should have two filters inside filters dropdown');
+
+        // try to add a date field in the filters section
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields .o_web_studio_field_datetime:first'), vem.$('.o_web_studio_search_sub_item .o_web_studio_search_filters .o_web_studio_hook').eq(1));
+        assert.containsN(vem, '.o_web_studio_search_sub_item .o_web_studio_search_filters.table tbody tr.o_web_studio_hook', 4,
+            "there should be four hooks in the filters dropdown");
+        assert.containsN(vem, '.o_web_studio_search_sub_item .o_web_studio_search_filters [data-node-id]', 3,
+            'should have three filters inside filters dropdown');
 
         vem.destroy();
     });

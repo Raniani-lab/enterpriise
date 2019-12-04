@@ -39,7 +39,7 @@
                     <label for="delete" class="custom-control-label">Can Delete</label>
                 </div>
             </div>
-            <t t-if="_.contains(['list', 'form'], widget.view_type)">
+            <t t-if="_.contains(['list', 'form', 'search'], widget.view_type)">
                 <t t-call="web_studio.ShowInvisibleElements"/>
             </t>
             <t t-if="widget.view_type === 'list'">

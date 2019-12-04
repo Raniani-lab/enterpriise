@@ -903,7 +903,10 @@ var ViewEditorManager = AbstractEditorManager.extend({
         // The search view in studio has its own renderer.
         if (this.view_type === 'search') {
             if (this.mode === 'edition') {
-                this.view = new Editors.search(this, fields_view);
+                const editorParams = _.defaults(params, {
+                    show_invisible: this.sidebar && this.sidebar.state.show_invisible,
+                });
+                this.view = new Editors.search(this, fields_view, editorParams);
             } else {
                 this.view = new SearchRenderer(this, fields_view);
             }
@@ -1533,7 +1536,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     new_attrs);
                 break;
             case 'filter':
-                new_attrs = _.pick(new_attrs, ['name', 'string', 'domain', 'context', 'create_group']);
+                new_attrs = _.pick(new_attrs, ['name', 'string', 'domain', 'context', 'create_group', 'date']);
                 this._addFilter(type, node, xpath_info, position, new_attrs);
                 break;
             case 'separator':

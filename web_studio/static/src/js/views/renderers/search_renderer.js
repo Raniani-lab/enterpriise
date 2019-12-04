@@ -75,6 +75,16 @@ var SearchRenderer = Widget.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * Return nodes which can be displayed in search view for Studio.
+     * This method is overridden in search_editor to admit invisible fields.
+     *
+     * @private
+     * @returns {Array} the list of elements to display
+     */
+    _getNodesToTreat() {
+        return this.arch.children.slice().filter(node => node.attrs.invisible !== "1");
+    },
+    /**
      * Processes a fieldsView in place. In particular, parses its arch.
      *
      * @todo: this function is also defined in SearchView and AbstractView ; the
@@ -102,7 +112,7 @@ var SearchRenderer = Widget.extend({
         this.first_field = undefined;
         this.first_filter = undefined;
         this.first_group_by = undefined;
-        var nodesToTreat = this.arch.children.slice();
+        let nodesToTreat = this._getNodesToTreat();
         while (nodesToTreat.length) {
             var node = nodesToTreat.shift();
             if (node.tag === "field"){

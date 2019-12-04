@@ -1,8 +1,11 @@
 odoo.define('delivery.iot', function (require) {
 'use strict';
 
-var FieldMany2One = require('web.relational_fields').FieldMany2One;
 var iot_widgets = require('iot.widgets');
+
+var AbstractService = require('web.AbstractService');
+var core = require('web.core');
+var FieldMany2One = require('web.relational_fields').FieldMany2One;
 var field_registry = require('web.field_registry');
 
 var FieldMany2OneIotScale = FieldMany2One.extend(iot_widgets.IotValueFieldMixin, {
@@ -81,5 +84,49 @@ var FieldMany2OneIotScale = FieldMany2One.extend(iot_widgets.IotValueFieldMixin,
 
 field_registry.add('field_many2one_iot_scale', FieldMany2OneIotScale);
 
-return FieldMany2OneIotScale;
+var DeliveryIoTNotificationManager = AbstractService.extend({
+    /**
+     * @override
+     */
+    start: function () {
+        this._super.apply(this, arguments);
+        this.call('bus_service', 'onNotification', this, this._onNotification);
+    },
+
+    /**
+     * @private
+     * @param {Object[]} notifs
+     */
+    _onNotification: function (notifs) {
+        var self = this;
+        _.each(notifs, function (notif) {
+            var model = notif[0][1];
+            var data = notif[1];
+            if (model === 'res.partner' && data.type === 'iot_print_documents' && self.call('bus_service', 'isMasterTab')) {
+                self._printDocuments(data.iot_device_identifier, data.iot_ip, data.documents);
+            }
+        });
+    },
+
+    /**
+     * @private
+     * @param {String} identifier
+     * @param {String} iot_ip
+     * @param {String[]} documents
+     */
+    _printDocuments: function (identifier, iot_ip, documents) {
+        var iot_device = new iot_widgets.DeviceProxy({identifier: identifier, iot_ip: iot_ip});
+        documents.forEach(function (document) {
+            iot_device.action({'document': document});
+        });
+    },
+});
+
+core.serviceRegistry.add('delivery_iot_notification_service', DeliveryIoTNotificationManager);
+
+return {
+    FieldMany2OneIotScale: FieldMany2OneIotScale,
+    DeliveryIoTNotificationManager: DeliveryIoTNotificationManager,
+}
+
 });

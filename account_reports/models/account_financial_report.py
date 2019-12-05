@@ -411,7 +411,7 @@ class AccountFinancialReportLine(models.Model):
     special_date_changer = fields.Selection([
         ('from_beginning', 'From the beginning'),
         ('to_beginning_of_period', 'At the beginning of the period'),
-        ('normal', 'Use given dates'),
+        ('normal', 'Use the dates that should normally be used, depending on the account types'), # So, the start of the accounting if include_initial_balance is True on the account type
         ('strict_range', 'Force given dates for all accounts and account types'),
         ('from_fiscalyear', 'From the beginning of the fiscal year'),
     ], default='normal')

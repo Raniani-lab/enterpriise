@@ -15,6 +15,10 @@ class MarketingActivity(models.Model):
 
     activity_type = fields.Selection(selection_add=[('sms', 'SMS')])
     mass_mailing_id_mailing_type = fields.Selection(selection_add=[('sms', 'SMS')])
+    trigger_type = fields.Selection(selection_add=[
+        ('sms_click', 'SMS: clicked'),
+        ('sms_not_click', 'SMS: not clicked'),
+        ('sms_bounce', 'SMS: bounced')])
 
     @api.depends('activity_type')
     def _compute_mass_mailing_id_mailing_type(self):

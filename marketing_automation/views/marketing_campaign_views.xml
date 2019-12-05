@@ -198,27 +198,27 @@
                                                         <i class="fa fa-plus-circle" /> Add child activity
                                                     </div>
                                                     <div t-if="record.id.raw_value" class="o_ma_child_activity_buttons">
-                                                        <i data-type="act" class="fa fa-code-fork fa-rotate-180 fa-flip-vertical o_ma_text_processed o_add_child" title="Add Another Activity" role="img" aria-label="Add Another Activity" />
+                                                        <i data-trigger-type="activity" class="fa fa-code-fork fa-rotate-180 fa-flip-vertical o_ma_text_processed o_add_child_activity" title="Add Another Activity" role="img" aria-label="Add Another Activity" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-type="mail_open" class="fa fa-envelope-open-o o_ma_text_processed o_add_child"
+                                                            data-trigger-type="mail_open" class="fa fa-envelope-open-o o_ma_text_processed o_add_child_activity"
                                                             title="Opened" role="img" aria-label="Opened" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-type="mail_not_open" class="fa fa-envelope-open-o o_ma_text_rejected o_add_child"
+                                                            data-trigger-type="mail_not_open" class="fa fa-envelope-open-o o_ma_text_rejected o_add_child_activity"
                                                             title="Not Opened" role="img" aria-label="Not Opened" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-type="mail_reply" class="fa fa-reply o_ma_text_processed o_add_child"
+                                                            data-trigger-type="mail_reply" class="fa fa-reply o_ma_text_processed o_add_child_activity"
                                                             title="Replied" role="img" aria-label="Replied" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-type="mail_not_reply" class="fa fa-reply o_ma_text_rejected o_add_child"
+                                                            data-trigger-type="mail_not_reply" class="fa fa-reply o_ma_text_rejected o_add_child_activity"
                                                             title="Not Replied" role="img" aria-label="Not Replied" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-type="mail_click" class="fa fa-hand-pointer-o o_ma_text_processed o_add_child"
+                                                            data-trigger-type="mail_click" class="fa fa-hand-pointer-o o_ma_text_processed o_add_child_activity"
                                                             title="Clicked" role="img" aria-label="Clicked" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-type="mail_not_click" class="fa fa-hand-pointer-o o_ma_text_rejected o_add_child"
+                                                            data-trigger-type="mail_not_click" class="fa fa-hand-pointer-o o_ma_text_rejected o_add_child_activity"
                                                             title="Not Clicked" role="img" aria-label="Not Clicked" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-type="mail_bounce" class="fa fa fa-exclamation-circle o_ma_text_rejected o_add_child"
+                                                            data-trigger-type="mail_bounce" class="fa fa-exclamation-circle o_ma_text_rejected o_add_child_activity"
                                                             title="Bounced" role="img" aria-label="Bounced" />
                                                     </div>
                                                     <div t-else="" class="o_ma_child_activity_buttons">

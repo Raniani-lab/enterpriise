@@ -103,14 +103,6 @@ class StockPicking(models.Model):
             'target': 'new',
             'context': action_ctx}
 
-    def new_product_scanned(self, barcode):
-        # TODO: remove this method in master, it's not used anymore
-        product_id = self.env['product.product'].search([('barcode', '=', barcode)])
-        if not product_id or product_id.tracking == 'none':
-            return self.on_barcode_scanned(barcode)
-        else:
-            return self.get_po_to_split_from_barcode(barcode)
-
     def _check_product(self, product, qty=1.0):
         """ This method is called when the user scans a product. Its goal
         is to find a candidate move line (or create one, if necessary)

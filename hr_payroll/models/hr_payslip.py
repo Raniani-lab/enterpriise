@@ -439,18 +439,14 @@ class HrPayslipInput(models.Model):
     name = fields.Char(related='input_type_id.name', string="Name", readonly=True)
     payslip_id = fields.Many2one('hr.payslip', string='Pay Slip', required=True, ondelete='cascade', index=True)
     sequence = fields.Integer(required=True, index=True, default=10)
-    input_type_id = fields.Many2one('hr.payslip.input.type', string='Description', required=True)
+    input_type_id = fields.Many2one('hr.payslip.input.type', string='Description', required=True, domain="['|', ('id', 'in', _allowed_input_type_ids), ('struct_ids', '=', False)]")
+    _allowed_input_type_ids = fields.Many2many('hr.payslip.input.type', related='payslip_id.struct_id.input_line_type_ids')
     code = fields.Char(related='input_type_id.code', required=True, help="The code that can be used in the salary rules")
     amount = fields.Float(help="It is used in computation. For e.g. A rule for sales having "
                                "1% commission of basic salary for per product can defined in expression "
                                "like result = inputs.SALEURO.amount * contract.wage*0.01.")
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract', required=True,
         help="The contract for which applied this input")
-    struct_id = fields.Many2one('hr.payroll.structure', string='Structure', related='payslip_id.struct_id')
-
-    @api.onchange('struct_id')
-    def _onchange_struct_id(self):
-        return {'domain': {'input_type_id': ['|', ('id', 'in', self.payslip_id.struct_id.input_line_type_ids.ids), ('struct_ids', '=', False)]}}
 
 class HrPayslipInputType(models.Model):
     _name = 'hr.payslip.input.type'

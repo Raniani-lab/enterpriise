@@ -713,7 +713,7 @@ class SaleSubscription(models.Model):
             self.increment_period()
             self.set_open()
         else:
-            invoice.action_cancel()
+            invoice.button_cancel()
             invoice.unlink()
 
     def _reconcile_and_send_mail(self, tx, invoice=False):

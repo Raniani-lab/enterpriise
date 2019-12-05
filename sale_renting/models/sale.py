@@ -189,7 +189,7 @@ class RentalOrderLine(models.Model):
         if (self.is_rental):
             if self.pickup_date.date() == self.return_date.date():
                 # If return day is the same as pickup day, don't display return_date Y/M/D in description.
-                return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='HH:mm a')
+                return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='h:mm a')
             else:
                 return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='short')
 

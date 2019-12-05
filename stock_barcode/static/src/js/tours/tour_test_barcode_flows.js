@@ -2749,7 +2749,7 @@ tour.register('test_put_in_pack_from_different_location', {test: true}, [
     },
 
     {
-        trigger: '.fa-truck',
+        trigger: '.fa-archive',
     },
 
     {

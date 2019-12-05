@@ -91,7 +91,7 @@
                             <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
                         </div>
                         <div t-if="line.package_id || line.result_package_id">
-                            <i class="fa fa-fw fa-truck"/> <t t-if="line.package_id" t-esc="line.package_id[1]"></t> <span class="fa fa-long-arrow-right"></span> <t t-if="line.result_package_id" t-esc="line.result_package_id[1]"></t>
+                            <i class="fa fa-fw fa-archive"/> <t t-if="line.package_id" t-esc="line.package_id[1]"></t> <span class="fa fa-long-arrow-right"></span> <t t-if="line.result_package_id" t-esc="line.result_package_id[1]"></t>
                         </div>
                         <div t-if="line.owner_id">
                             <i class="fa fa-fw fa-user-o"/> <t t-esc="line.owner_id[1]"></t>
@@ -118,7 +118,7 @@
                             <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
                         </div>
                         <div t-if="line.package_id">
-                            <i class="fa fa-fw fa-truck"/> <t t-esc="line.package_id[1]"/>
+                            <i class="fa fa-fw fa-archive"/> <t t-esc="line.package_id[1]"/>
                         </div>
                         <div t-if="line.product_id.tracking !== 'none'">
                             <i class="fa fa-barcode"/>
@@ -139,7 +139,7 @@
                 <div class="o_barcode_line list-group-item d-flex flex-row flex-nowrap py-3" t-att-data-id="packageLine.virtual_id || packageLine.id" t-att-data-barcode="packageLine.product_barcode">
                     <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
                         <div>
-                            <i class="fa fa-fw fa-truck"/> <t t-esc="packageLine.package_id[1]"></t> <span class="fa fa-long-arrow-right"></span> <t t-esc="packageLine.result_package_id[1]"></t>
+                            <i class="fa fa-fw fa-archive"/> <t t-esc="packageLine.package_id[1]"></t> <span class="fa fa-long-arrow-right"></span> <t t-esc="packageLine.result_package_id[1]"></t>
                         </div>
                         <div>
                             <i class="fa fa-fw fa-cube"/>

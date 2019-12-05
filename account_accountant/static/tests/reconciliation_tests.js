@@ -987,6 +987,7 @@ QUnit.module('account', {
         });
 
         await clientAction.appendTo($('#qunit-fixture'));
+
         await testUtils.nextTick();
         var widget = clientAction.widgets[0];
 
@@ -1005,12 +1006,24 @@ QUnit.module('account', {
         await testUtils.dom.click(widget.$('.o_input_dropdown input'));
         await testUtils.fields.editAndTrigger(widget.$('.o_input_dropdown input'),'',['keyup','blur']);
 
-        assert.equal(clientAction.widgets[1].$('caption button:disabled:visible').length, 1,"button should be disabled");
+        // The amount has been set automatically to the current balance (32.58 instead of 10000).
+        assert.strictEqual(widget.$('.accounting_view .cell_left .edit_amount_input').length, 1, "should display the input field to edit amount");
+
+        // Edit amount from 32.58 back to 10000.00.
         await testUtils.dom.click(widget.$('.accounting_view .cell_left .edit_amount'));
-        assert.strictEqual(widget.$('.accounting_view .cell_left .edit_amount_input:not(.d-none)').length, 1, "should display the input field to edit amount");
-        // Edit amount
-        await testUtils.fields.editAndTrigger(widget.$('.accounting_view .cell_left .edit_amount_input:not(.d-none)'),'32.58',['change','blur']);
-        assert.strictEqual(widget.$('.accounting_view .cell_left .line_amount').text().replace(/[\n\r\s]+/g, ' '), " $ 10000.00 $ 32.58 ", "should display previous amount and new amount")
+        await testUtils.fields.editAndTrigger(widget.$('.accounting_view .cell_left .edit_amount_input:not(.d-none)'), '10000', ['change']);
+        assert.strictEqual(widget.$('.accounting_view .cell_left .line_amount').text().replace(/[\n\r\s]+/g, ' '),
+            " $ 10000.00 ",
+            "Should display only 10000.0 since this amount if the full residual balance of the proposition."
+        )
+
+        // Edit amount back to 32.58.
+        await testUtils.dom.click(widget.$('.accounting_view .cell_left .edit_amount'));
+        await testUtils.fields.editAndTrigger(widget.$('.accounting_view .cell_left .edit_amount_input:not(.d-none)'), '32.58', ['change']);
+        assert.strictEqual(widget.$('.accounting_view .cell_left .line_amount').text().replace(/[\n\r\s]+/g, ' '),
+            " $ 10000.00 $ 32.58 ",
+            "Should display the original amount (10000.0) and the custom amount (32.58)."
+        )
 
         assert.strictEqual(widget.$('button.btn-primary:visible').length, 1, "should display the reconcile button");
         await testUtils.dom.click(widget.$('button.btn-primary:visible'));
@@ -1556,7 +1569,7 @@ QUnit.module('account', {
 
         // Edit amount on last invoice
         await testUtils.dom.click(widget.$('.edit_amount:last()'));
-        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:last()'),'525',['blur']);
+        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:last()'),'525',['change']);
 
         var $buttonReconcile = widget.$('button.o_reconcile:not(hidden)');
 
@@ -1569,7 +1582,7 @@ QUnit.module('account', {
     });
 
     QUnit.test('Reconciliation: payment and 2 partials', async function (assert) {
-        assert.expect(6);
+        assert.expect(8);
 
         /*
          * One payment: $1175
@@ -1655,6 +1668,22 @@ QUnit.module('account', {
         assert.ok(widget.$('.cell_right .edit_amount').length,
             "should display the pencil to edit amount");
 
+        // A partial amount of 1175.0 has been suggested automatically.
+        assert.strictEqual(widget.$('.accounting_view .cell_right .line_amount').text().replace(/[\n\r\s]+/g, ' '),
+            " $ 1200.00 $ 1175.00 ",
+            "Should suggest a partial amount matching the current balance."
+        )
+
+        await testUtils.dom.click(widget.$('.accounting_view .cell_right .edit_amount'));
+        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:first()'), '1200', ['change']);
+        assert.strictEqual(widget.$('.accounting_view .cell_right .line_amount').text().replace(/[\n\r\s]+/g, ' '),
+            " $ 1200.00 ",
+            "Should display the original proposition's amount (1200.00)."
+        )
+
+        // Get the focus back by clicking on the open balance.
+        await testUtils.dom.click(widget.$('.accounting_view .cell_left:last'));
+
         // Add second invoice
         await testUtils.dom.click(widget.$('.match:first .cell_account_code:first'));
         assert.ok(widget.$('.cell_right .edit_amount').length,
@@ -1682,7 +1711,7 @@ QUnit.module('account', {
     });
 
     QUnit.test('Reconciliation: partial payment of 2 invoices with one payment [REQUIRE FOCUS]', async function (assert) {
-        assert.expect(4);
+        assert.expect(6);
 
         /*
          * One payment: $1175
@@ -1762,6 +1791,22 @@ QUnit.module('account', {
         assert.ok(widget.$('.cell_right .edit_amount').length,
             "should display the pencil to edit amount");
 
+        // A partial amount of 1175.0 has been suggested automatically.
+        assert.strictEqual(widget.$('.accounting_view .cell_right .line_amount').text().replace(/[\n\r\s]+/g, ' '),
+            " $ 1200.00 $ 1175.00 ",
+            "Should suggest a partial amount matching the current balance."
+        )
+
+        await testUtils.dom.click(widget.$('.accounting_view .cell_right .edit_amount'));
+        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:first()'), '1200', ['change']);
+        assert.strictEqual(widget.$('.accounting_view .cell_right .line_amount').text().replace(/[\n\r\s]+/g, ' '),
+            " $ 1200.00 ",
+            "Should display the original proposition's amount (1200.00)."
+        )
+
+        // Get the focus back by clicking on the open balance.
+        await testUtils.dom.click(widget.$('.accounting_view .cell_left:last'));
+
         // Add second invoice
         await testUtils.dom.click(widget.$('.match:first .cell_account_code:first'));
         assert.ok(widget.$('.cell_right .edit_amount').length,
@@ -1769,11 +1814,11 @@ QUnit.module('account', {
 
         // Edit invoice first amount
         await testUtils.dom.click(widget.$('.edit_amount:first()'));
-        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:first()'),'500',['blur']);
+        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:first()'), '500', ['change']);
         // Edit invoice second amount
         var $buttonReconcile = widget.$('button.o_reconcile:not(hidden)');
         await testUtils.dom.click(widget.$('.edit_amount:last()'));
-        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:last()'),'675',['blur']);
+        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:last()'), '675', ['change']);
 
         assert.equal($buttonReconcile.length, 1,
             'The reconcile button must be visible');

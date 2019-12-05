@@ -136,6 +136,25 @@ var StatementModel = BasicModel.extend({
         var self = this;
         var line = this.getLine(handle);
         var prop = _.clone(_.find(line['mv_lines_'+line.mode], {'id': mv_line_id}));
+
+        /*
+        Suggest a partial amount automatically if the proposition exceeds the current balance.
+        E.g. Adding a line of 1000.0 (credit) to a statement line of 100.0 (debit) should suggest 100.0 (credit) as
+        a partial amount instead of an open-balance of 900.0 (debit).
+        */
+        var balance = line.balance.amount
+        var prop_amount = prop.partial_amount || prop.amount;
+        var format_options = {currency_id: line.st_line.currency_id};
+        if(balance > 0.0 && prop_amount > balance){
+            // Adding a line to the credit (right side).
+            prop.partial_amount = balance
+            prop.partial_amount_str = field_utils.format.monetary(prop.partial_amount, {}, format_options);
+        }else if(balance < 0.0 && prop_amount < balance){
+            // Adding a line to the debit (left side).
+            prop.partial_amount = balance
+            prop.partial_amount_str = field_utils.format.monetary(-prop.partial_amount, {}, format_options);
+        }
+
         this._addProposition(line, prop);
         line.limit_override = (line.offset + 1) + this.limitMoveLines;
 
@@ -1393,6 +1412,20 @@ var ManualModel = StatementModel.extend({
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
+
+    /**
+     * OVERRIDE
+     * Don't allow partial amount on the manual reconciliation widget.
+     */
+    addProposition: function (handle, mv_line_id) {
+        var line = this.getLine(handle);
+        var res = this._super(handle, mv_line_id);
+        _.each(line.reconciliation_proposition, function(prop){
+            delete prop["partial_amount"]
+            delete prop["partial_amount_str"]
+        });
+        return res;
+    },
 
     /**
      * Return a boolean telling if load button needs to be displayed or not

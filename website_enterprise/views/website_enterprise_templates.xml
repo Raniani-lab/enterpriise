@@ -20,7 +20,7 @@
         <xpath expr="//div[@id='o_new_content_menu_choices']//div[@name='module_website_livechat']" position="after">
             <div groups="base.group_system" name="module_website_calendar" t-att-data-module-id="env.ref('base.module_website_calendar').id" t-att-data-module-shortdesc="env.ref('base.module_website_calendar').shortdesc" class="col-md-4 mb8 o_new_content_element">
                 <a href="#" data-action="new_appointment">
-                    <i class="far fa-calendar-alt"/>
+                    <i class="fa fa-calendar"/>
                     <p>New Appointment Type</p>
                 </a>
             </div>

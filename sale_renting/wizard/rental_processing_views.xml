@@ -21,7 +21,7 @@
               <field name="qty_returned" attrs="{'column_invisible':[('parent.status', '=', 'pickup')]}"/> <!-- Should we show the qty returned at pickup if part of the rental has been returned? -->
               <field name="is_late" invisible="1"/>
               <field name="status" invisible="1"/>
-              <button icon="far fa-clock" attrs="{
+              <button icon="fa-clock-o" attrs="{
                 'column_invisible': ['|', ('parent.has_late_lines', '=', False), ('parent.status', '=', 'pickup')],
                 'invisible': [('is_late', '=', False)]}"
                 class="text-danger" title="Some delay cost will be added to the sales order."/>

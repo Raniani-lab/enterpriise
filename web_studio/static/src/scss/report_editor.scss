@@ -17,7 +17,7 @@
             height: 100px;
             @include o-position-absolute(128px, 50%);
             margin-right: -50px;
-            .fa, .far, .fas {
+            .fa {
                 animation-duration: 1s;
             }
         }

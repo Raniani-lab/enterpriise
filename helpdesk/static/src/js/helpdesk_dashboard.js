@@ -227,7 +227,7 @@ var HelpdeskDashboardView = KanbanView.extend({
         Controller: HelpdeskDashboardController,
     }),
     display_name: _lt('Dashboard'),
-    icon: 'fa-tachometer-alt',
+    icon: 'fa-dashboard',
     searchview_hidden: true,
 });
 

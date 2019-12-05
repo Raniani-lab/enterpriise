@@ -38,7 +38,7 @@
     </t>
 
     <t t-name="grid.RangeButtons.Mobile">
-        <button class="btn btn-link btn-sm fa fa-calendar-alt" data-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-link btn-sm fa fa-calendar" data-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu dropdown-menu-right list-inline">
             <li t-foreach="widget._ranges" t-as="range">

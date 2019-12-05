@@ -64,7 +64,7 @@
                         <div name="button_box" position="inside">
                             <button class="oe_stat_button" type="object"
                                 name="action_calendar_meetings"
-                                icon="far fa-calendar-alt">
+                                icon="fa-calendar">
                                 <field string="Appointments" name="appointment_count" widget="statinfo"/>
                             </button>
                             <field name="is_published" widget="website_redirect_button"/>

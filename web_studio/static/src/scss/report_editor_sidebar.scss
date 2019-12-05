@@ -84,7 +84,7 @@
                         > small {
                             font-size: 90%;
 
-                            &.fa, &.far, &.fas {
+                            &.fa {
                                 font-size: 70%;
                             }
                         }
@@ -159,7 +159,7 @@
                     .o_web_studio_tif_ifexpression {
                         position: relative;
 
-                        .fa, .far, .fas {
+                        .fa {
                             @include o-position-absolute(1px, 1px);
                             background-color: $o-web-studio-bg-darker;
                             padding: 4px;

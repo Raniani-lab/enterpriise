@@ -30,7 +30,7 @@
         <div class="o_web_studio_thumbnail">
             <span t-if="!widget.active" class="o_web_studio_view_label">Activate View</span>
             <span t-if="widget.default_view" class="o_web_studio_default_view fa-stack fa-sm" role="img" aria-label="Default view" title="Default view">
-                <i class="far fa-circle fa-stack-2x"></i>
+                <i class="fa fa-circle fa-stack-2x"></i>
                 <i class="fa fa-home fa-stack-1x"></i>
             </span>
             <img t-att-src="'/web_studio/static/src/img/view_type/' + widget.view_type + '.png'" t-attf-alt="View #{widget.view_type}"/>

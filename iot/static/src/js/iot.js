@@ -570,7 +570,7 @@ var IoTLongpolling = BusService.extend({
             .append($('<p/>').text(_t('Odoo cannot reach the IoT Box.')))
             .append($('<span/>').text(_t('Please check if the IoT Box is still connected.')))
             .append($('<p/>').text(_t('If you are on a secure server (HTTPS) check if you accepted the certificate:')))
-            .append($('<p/>').html(_.str.sprintf('<a href="https://%s" target="_blank"><i class="fas fa-external-link-alt"/>' + _t('Click here to open your IoT Homepage') + '</a>', url)))
+            .append($('<p/>').html(_.str.sprintf('<a href="https://%s" target="_blank"><i class="fa fa-external-link"/>' + _t('Click here to open your IoT Homepage') + '</a>', url)))
             .append($('<li/>').text(_t('Please accept the certificate of your IoT Box (procedure depends on your browser) :')))
             .append($('<li/>').text(_t('Click on Advanced/Show Details/Details/More information')))
             .append($('<li/>').text(_t('Click on Proceed to .../Add Exception/Visit this website/Go on to the webpage')))

@@ -49,10 +49,10 @@ const SwipeItemMixin = {
     _addSwipeNode($target) {
         $('<div class="o_swipe_separator"/></div>').prependTo($target);
         if (this.rightAction) {
-            $('<div class="o_swipe_action right" data-key="read"><i class="far fa-check-circle fa-2x text-white"/></div>').prependTo($target);
+            $('<div class="o_swipe_action right" data-key="read"><i class="fa fa-check-circle fa-2x text-white"/></div>').prependTo($target);
         }
         if (this.leftAction) {
-            $('<div class="o_swipe_action left" data-key="star"><i class="fas fa-star fa-2x text-white"/></div>').prependTo($target);
+            $('<div class="o_swipe_action left" data-key="star"><i class="fa fa-star fa-2x text-white"/></div>').prependTo($target);
         }
     },
 

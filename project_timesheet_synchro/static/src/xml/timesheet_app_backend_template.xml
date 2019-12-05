@@ -31,7 +31,7 @@
                             <p>Work in disconnected mode and sync in the background.</p>
                         </li>
                         <li>
-                            <h2><i class="far fa-chart-bar fa-li"></i> Statistics</h2>
+                            <h2><i class="fa fa-bar-chart fa-li"></i> Statistics</h2>
                             <p>Never lose track of what you need to do.</p>
                         </li>
                         <li>
@@ -39,7 +39,7 @@
                             <p>Work anywhere, anytime.</p>
                         </li>
                         <li>
-                            <h2><i class="far fa-check-square fa-li"></i> Get Things Done</h2>
+                            <h2><i class="fa fa-check-square-o fa-li"></i> Get Things Done</h2>
                             <p>Plan your day. Focus on important tasks.</p>
                         </li>
                     </ul>

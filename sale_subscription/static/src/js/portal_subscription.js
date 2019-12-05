@@ -18,7 +18,7 @@ publicWidget.registry.ContractSubmit = publicWidget.Widget.extend({
      */
     _onClick: function () {
         this.$el.attr('disabled', true);
-        this.$el.prepend('<i class="fas fa-sync fa-spin"></i> ');
+        this.$el.prepend('<i class="fa fa-refresh fa-spin"></i> ');
         this.$el.closest('form').submit();
     },
 });

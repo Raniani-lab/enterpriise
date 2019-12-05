@@ -230,7 +230,7 @@ textarea.o_sign_sign_item {
     margin-bottom: 8px;
 }
 
-.popover .o_sign_delete_field_button.fa-trash-alt {
+.popover .o_sign_delete_field_button.fa-trash {
     cursor: pointer;
     opacity: 0.5;
     transition: opacity ease 250ms;
@@ -288,7 +288,7 @@ textarea.o_sign_sign_item {
 
 }
 
-.o_sign_sign_item .o_sign_config_area .fa-expand-arrows-alt {
+.o_sign_sign_item .o_sign_config_area .fa-arrows {
     display: block;
     float: left;
     margin-right: 5px;

@@ -65,8 +65,8 @@ ThreadWidget.include(Object.assign({}, SwipeItemMixin, {
     },
     _toggleStarDisplay(ev) {
         this._getThreadMessageStar(ev)
-            .toggleClass('fas')
-            .toggleClass('far');
+            .toggleClass('fa-star-o')
+            .toggleClass('fa-star');
     },
 }));
 

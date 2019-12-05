@@ -29,9 +29,8 @@
 
                 &.o_back_button {
                     &:before {
-                        font-family: 'Font Awesome 5 Free';
-                        content: "\f060"; // fa-arrow-left
-                        font-weight: 600;
+                        font-family: FontAwesome;
+                        content: ""; // fa-arrow-left
                         display: inline-block;
 
                         padding: 0; // override bootstrap

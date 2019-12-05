@@ -8,7 +8,7 @@
             <i class="fa fa-plus" aria-hidden="true"/> Add
         </div>
         <div name="report" t-attf-class="o_web_studio_view #{widget.state.mode === 'report' ? 'active' : ''}">
-            <i class="fas fa-tv" aria-hidden="true"/> Report
+            <i class="fa fa-television" aria-hidden="true"/> Report
         </div>
         <div name="options" t-attf-class="o_web_studio_properties #{widget.state.mode === 'properties' ? 'active' : 'inactive'}">
             <i class="fa fa-cog" aria-hidden="true" /> Options
@@ -96,7 +96,7 @@
     <div class="o_web_studio_sidebar_text">
         <label for="if_expression">Visible if</label>
         <div class="o_web_studio_tif_ifexpression">
-            <i class="o_field_domain_dialog_button fas fa-pencil-alt"/>
+            <i class="o_field_domain_dialog_button fa fa-pencil"/>
         </div>
     </div>
     <div class="o_web_studio_sidebar_text">
@@ -304,7 +304,7 @@
             <div t-attf-class="o_web_studio_toption_option o_web_studio_toption_option_#{widget.key}_#{o.key} #{o.required ? 'o_web_studio_required_option' : ''}">
                 <label>
                     <t t-esc="o.string"/>
-                    <i t-if="o.description" class="far fa-question-circle" t-att-title="o.description"/>
+                    <i t-if="o.description" class="fa fa-question-circle" t-att-title="o.description"/>
                 </label>
             </div>
         </t>

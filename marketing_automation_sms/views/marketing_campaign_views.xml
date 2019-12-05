@@ -8,7 +8,7 @@
         	<xpath expr="//div[@name='mail_details']" position="after">
                 <div t-if="record.activity_type.raw_value == 'sms'" name="sms_details" class="row o_ma_email_details text-center">
                     <div class="col text-uppercase">
-                        <i class="fas fa-chart-pie" /> Details
+                        <i class="fa fa-pie-chart" /> Details
                     </div>
                     <div class="col" title="SMS Sent">
                         <a name="action_view_sent" type="object">

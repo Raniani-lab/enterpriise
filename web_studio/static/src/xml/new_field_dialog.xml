@@ -30,8 +30,8 @@
                     <t t-esc="selectionValue[1]"/>
                 </span>
                 <span class="input-group-append">
-                    <button type="button" class="btn btn-primary fas fa-edit o_web_studio_edit_selection_value" aria-label="Edit selection" title="Edit selection"/>
-                    <button type="button" class="btn btn-danger far fa-trash-alt o_web_studio_remove_selection_value" aria-label="Remove selection" title="Remove selection"/>
+                    <button type="button" class="btn btn-primary fa fa-pencil-square-o o_web_studio_edit_selection_value" aria-label="Edit selection" title="Edit selection"/>
+                    <button type="button" class="btn btn-danger fa fa-trash-o o_web_studio_remove_selection_value" aria-label="Remove selection" title="Remove selection"/>
                 </span>
             </div>
         </li>

@@ -92,7 +92,7 @@ QUnit.module('Account Reports', {
                         options: {partner: true, partner_ids: [], partner_categories:[]},
                         buttons: [],
                         searchview_html: '<a class="dropdown-toggle" data-toggle="dropdown">' +
-                            '<span class="far fa-folder-open"/> Partners' +
+                            '<span class="fa fa-folder-open"/> Partners' +
                             '<span class="caret" />' +
                             '</a>' +
                             '<ul class="dropdown-menu o_filters_menu" role="menu">' +

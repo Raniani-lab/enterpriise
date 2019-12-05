@@ -30,7 +30,7 @@
             <field name="arch" type="xml">
                 <div name="button_box" position="inside">
                     <button name="%(mrp_account_enterprise.action_cost_struct_mrp_production)d" type="action"
-                        class="oe_stat_button" icon="fa-dollar-sign" string="Cost Analysis" attrs="{'invisible': [('state', '!=', 'done')]}">
+                        class="oe_stat_button" icon="fa-dollar" string="Cost Analysis" attrs="{'invisible': [('state', '!=', 'done')]}">
                     </button>
                 </div>
             </field>
@@ -55,7 +55,7 @@
                 <xpath expr="//button[@name='action_view_mos']" position="after">
                     <field name="mrp_product_qty" invisible="1"/>
                     <button name="action_cost_structure" type="object"
-                        class="oe_stat_button" icon="fa-dollar-sign" string="Cost Analysis" attrs="{'invisible': [('mrp_product_qty', '=', 0)]}">
+                        class="oe_stat_button" icon="fa-dollar" string="Cost Analysis" attrs="{'invisible': [('mrp_product_qty', '=', 0)]}">
                     </button>
                 </xpath>
             </field>

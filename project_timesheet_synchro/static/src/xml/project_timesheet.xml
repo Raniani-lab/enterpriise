@@ -18,21 +18,21 @@
                 <div class="pt_drawer_links">
                     <ul class="list-unstyled pt_links_list">
                         <li class="pt_menu_item" data-menu-id="activities" data-options='{"show_today":"true"}'>
-                            <a href='#'><span class="fas fa-edit menu_icon"/><span class="menu_text">Today</span></a>
+                            <a href='#'><span class="fa fa-edit menu_icon"/><span class="menu_text">Today</span></a>
                         </li>
                         <li class="pt_menu_item" data-menu-id="activities" data-options='{"show_week":"true"}'>
                             <a href='#'><span class="fa fa-tasks menu_icon"></span><span class="menu_text">This Week</span></a>
                         </li>
                         <hr/>
                         <li class="pt_menu_item" data-menu-id="day_plan">
-                            <a href='#'><span class="far fa-calendar-alt menu_icon"/><span class="menu_text">Today's Plan</span></a>
+                            <a href='#'><span class="fa fa-calendar-o menu_icon"/><span class="menu_text">Today's Plan</span></a>
                         </li>
                         <li class="pt_menu_item" data-menu-id="stats">
-                            <a href='#'><span class="far fa-chart-bar menu_icon"/><span class="menu_text">Statistics</span></a>
+                            <a href='#'><span class="fa fa-bar-chart menu_icon"/><span class="menu_text">Statistics</span></a>
                         </li>
                         <hr/>
                         <li class="pt_menu_item" data-menu-id="sync">
-                            <a href='#'><span class="fas fa-cloud-download-alt menu_icon"/><span class="menu_text">Synchronize</span></a>
+                            <a href='#'><span class="fa fa-cloud-download menu_icon"/><span class="menu_text">Synchronize</span></a>
                         </li>
                         <li class="pt_menu_item" data-menu-id="settings">
                             <a href='#'><span class="fa fa-cog menu_icon"/><span class="menu_text">Settings</span></a>
@@ -50,7 +50,7 @@
             </div><div class="pt_title">
                 <a href="#"><t t-esc="_title"/></a>
             </div><div class="pt_nav_sync">
-                <a t-att-class="widget.getParent().sync_in_progress ? 'fas fa-spin fa-sync pt_sync_in_progress' : 'fa fa-spin fa-sync'" title="Sync in progress" aria-label="Sync in progress"/>
+                <a t-att-class="widget.getParent().sync_in_progress ? 'fa fa-spin fa-refresh pt_sync_in_progress' : 'fa fa-spin fa-refresh'" title="Sync in progress" aria-label="Sync in progress"/>
             </div><div t-att-class="'pt_action ' + _action">
                 <a t-att-class="'fa fa-' + _action_icon" href="#" aria-label="Action" title="Action"></a>
             </div>
@@ -142,7 +142,7 @@
                         </t>
                         <!--TODO : add styling-->
                         <div t-if="!widget.aal_flag" class="pt_empty_activities_screen">
-                            <span class="far fa-smile" style="font-size:4em;" aria-label="Motivation Text" title="Motivation Text" role="img"/>
+                            <span class="fa fa-smile-o" style="font-size:4em;" aria-label="Motivation Text" title="Motivation Text" role="img"/>
                             <div class="pt_motivation_text"><t t-esc="widget.motivation_text"/></div>
                         </div>
                     </table>
@@ -408,7 +408,7 @@
             <div class="pt_footer">
                 <a href="#" role="button" class="btn btn-md btn-primary pt_validate_edit_btn">Save</a>
                 <a href="#" role="button" class="btn btn-md pt_discard_changes">Discard</a>
-                <a role="button" class="far fa-trash-alt pt_trash btn float-right" data-toggle="modal" data-target=".pt_deletion_modal" href="#" aria-label="Discard" title="Discard"></a>
+                <a role="button" class="fa fa-trash pt_trash btn float-right" data-toggle="modal" data-target=".pt_deletion_modal" href="#" aria-label="Discard" title="Discard"></a>
             </div>
             <!-- Modal to confirm deletion of an activity -->
             <div role="dialog" class="modal pt_deletion_modal" aria-hidden="true">
@@ -556,7 +556,7 @@
             <div class="form-group">
                 <label for="pt_premise_password">Password</label>
                 <input type="password" class="pt_premise_password form-control" placeholder="******" name="pt_premise_password"></input>
-                <a href="#" class="show_password far fa-eye float-right" aria-label="Show password" title="Show password"/>
+                <a href="#" class="show_password fa fa-eye float-right" aria-label="Show password" title="Show password"/>
             </div>
             <a href="#" role="button" class="btn btn-primary pt_send_premise_login">Login</a>
         </form>

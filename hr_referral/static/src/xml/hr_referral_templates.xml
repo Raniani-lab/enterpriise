@@ -160,7 +160,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="fa fa-sync o_hr_referral_restart o_hr_referral_start" completed="false" aria-label="Restart Onboarding" t-if="widget.debug"/>
+                <div class="fa fa-refresh o_hr_referral_restart o_hr_referral_start" completed="false" aria-label="Restart Onboarding" t-if="widget.debug"/>
             </t>
         </div>
         <div class="o_hr_referral_background">

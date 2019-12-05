@@ -52,7 +52,7 @@ var PedalRenderer = PDFViewerNoReloadRenderer.extend({
                 class: 'btn o_pedal_status_button ' + (self.pedal_connect ? ' btn-primary o_active ' : ' btn-warning'),
                 disabled: self.pedal_connect,
             });
-            button.html('<i class="far fa-clipboard"></i>');
+            button.html('<i class="fa fa-clipboard"></i>');
             this.$('.o_workorder_actions').append(button);
         }
     },

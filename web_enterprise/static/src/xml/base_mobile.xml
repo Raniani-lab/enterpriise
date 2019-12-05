@@ -31,7 +31,7 @@
                 <img class="rounded-circle o_burger_menu_avatar" t-att-src="'/web/image?model=res.users&amp;field=image_128&amp;id=' + session.uid" alt="Menu"/>
                 <span class="o_burger_menu_username"><t t-esc="session.name"/></span>
             </span>
-            <span class="fas fa-times o_burger_menu_close float-right" role="img" aria-label="Close menu" title="Close menu"/>
+            <span class="fa fa-close o_burger_menu_close float-right" role="img" aria-label="Close menu" title="Close menu"/>
         </div>
         <div class="o_burger_menu_content o_burger_menu_dark">
             <div class="o_burger_menu_user">
@@ -39,7 +39,7 @@
                     <div class="o_burger_menu_user_title">COMPANIES</div>
                     <t t-foreach="session.user_companies.allowed_companies" t-as="company">
                         <div t-attf-class="o_burger_menu_company #{session.user_companies.current_company[0] == company[0] ? 'active' : ''}" t-att-data-id="company[0]">
-                            <span class="far fa-building o_burger_menu_company_icon" title="Company menu" role="img" aria-label="Company menu"/>
+                            <span class="fa fa-building-o o_burger_menu_company_icon" title="Company menu" role="img" aria-label="Company menu"/>
                             <t t-esc="company[1]"/>
                         </div>
                     </t>

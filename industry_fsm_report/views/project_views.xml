@@ -23,7 +23,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-pencil-alt">
+                        <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-pencil">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="worksheet_count"/></span>
                                 <span class="o_stat_text"> Worksheets</span>
@@ -221,7 +221,7 @@
                     string="Worksheet"
                     class="oe_stat_button"
                     name="action_fsm_worksheet"
-                    icon="fa-pencil-alt" type="object"
+                    icon="fa-pencil" type="object"
                     groups="project.group_project_user"
                     attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}">
                 </button>

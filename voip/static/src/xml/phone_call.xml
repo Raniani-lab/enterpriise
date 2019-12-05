@@ -101,14 +101,14 @@
                                     aria-label="Remove from the queue"
                                     class="
                                         fa
-                                        fa-times
+                                        fa-close
                                         o_dial_remove_phonecall"
                                     role="img"
                                     title="Remove from the queue"
                                     t-if="widget.state === 'done'"/>
                                 <i
                                     aria-label="Cancel the activity"
-                                    class="o_dial_remove_phonecall fa fa-times"
+                                    class="o_dial_remove_phonecall fa fa-close"
                                     role="img"
                                     title="Cancel the activity"
                                     t-else=""/>

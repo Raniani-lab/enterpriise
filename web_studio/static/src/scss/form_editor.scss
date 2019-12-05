@@ -141,8 +141,7 @@
 
         .oe_button_box:hover .o_web_studio_button_hook:before {
             content: "\f0fe";
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
+            font-family: FontAwesome;
             font-size: 16px;
             color: $o-brand-primary;
         }

@@ -58,17 +58,17 @@
                                 <div class="o_mail_header_social">
                                     <t t-if="company_id.social_facebook">
                                         <a t-att-href="company_id.social_facebook" aria-label="Facebook" title="Facebook">
-                                          <span class="fab fa-facebook-f"></span>
+                                          <span class="fa fa-facebook"></span>
                                         </a>
                                     </t>
                                     <t t-if="company_id.social_linkedin">
                                         <a t-att-href="company_id.social_linkedin" style="margin-left:10px" aria-label="LinkedIn" title="LinkedIn">
-                                            <span class="fab fa-linkedin-in"></span>
+                                            <span class="fa fa-linkedin"></span>
                                         </a>
                                     </t>
                                     <t t-if="company_id.social_twitter">
                                         <a t-att-href="company_id.social_twitter" style="margin-left:10px" aria-label="Twitter" title="Twitter">
-                                            <span class="fab fa-twitter"></span>
+                                            <span class="fa fa-twitter"></span>
                                         </a>
                                     </t>
                                 </div>
@@ -207,17 +207,17 @@
                             <div class="o_mail_header_social">
                                 <t t-if="company_id.social_facebook">
                                     <a t-att-href="company_id.social_facebook" aria-label="Facebook" title="Facebook">
-                                      <span class="fab fa-facebook-f"></span>
+                                      <span class="fa fa-facebook"></span>
                                     </a>
                                 </t>
                                 <t t-if="company_id.social_linkedin">
                                     <a t-att-href="company_id.social_linkedin" style="margin-left:10px" aria-label="LinkedIn" title="LinkedIn">
-                                        <span class="fab fa-linkedin-in"></span>
+                                        <span class="fa fa-linkedin"></span>
                                     </a>
                                 </t>
                                 <t t-if="company_id.social_twitter">
                                     <a t-att-href="company_id.social_twitter" style="margin-left:10px" aria-label="Twitter" title="Twitter">
-                                        <span class="fab fa-twitter"></span>
+                                        <span class="fa fa-twitter"></span>
                                     </a>
                                 </t>
                             </div>
@@ -367,17 +367,17 @@
                             <div class="o_mail_header_social">
                                 <t t-if="company_id.social_facebook">
                                     <a t-att-href="company_id.social_facebook" aria-label="Facebook" title="Facebook">
-                                      <span class="fab fa-facebook-f"></span>
+                                      <span class="fa fa-facebook"></span>
                                     </a>
                                 </t>
                                 <t t-if="company_id.social_linkedin">
                                     <a t-att-href="company_id.social_linkedin" style="margin-left:10px" aria-label="LinkedIn" title="LinkedIn">
-                                        <span class="fab fa-linkedin-in"></span>
+                                        <span class="fa fa-linkedin"></span>
                                     </a>
                                 </t>
                                 <t t-if="company_id.social_twitter">
                                     <a t-att-href="company_id.social_twitter" style="margin-left:10px" aria-label="Twitter" title="Twitter">
-                                        <span class="fab fa-twitter"></span>
+                                        <span class="fa fa-twitter"></span>
                                     </a>
                                 </t>
                             </div>
@@ -477,17 +477,17 @@
                             <div class="o_mail_header_social">
                                 <t t-if="company_id.social_facebook">
                                     <a t-att-href="company_id.social_facebook" aria-label="Facebook" title="Facebook">
-                                      <span class="fab fa-facebook-f"></span>
+                                      <span class="fa fa-facebook"></span>
                                     </a>
                                 </t>
                                 <t t-if="company_id.social_linkedin">
                                     <a t-att-href="company_id.social_linkedin" style="margin-left:10px" aria-label="LinkedIn" title="LinkedIn">
-                                        <span class="fab fa-linkedin-in"></span>
+                                        <span class="fa fa-linkedin"></span>
                                     </a>
                                 </t>
                                 <t t-if="company_id.social_twitter">
                                     <a t-att-href="company_id.social_twitter" style="margin-left:10px" aria-label="Twitter" title="Twitter">
-                                        <span class="fab fa-twitter"></span>
+                                        <span class="fa fa-twitter"></span>
                                     </a>
                                 </t>
                             </div>
@@ -520,7 +520,7 @@
                                 <table align="center">
                                     <tr>
                                         <td rowspan="2" class="text-right">
-                                            <span class="far fa-compass fa-2x text-delta" aria-label="Choose" title="Choose"></span>
+                                            <span class="fa fa-compass fa-2x text-delta" aria-label="Choose" title="Choose"></span>
                                         </td>
                                         <td style="padding-left:10px;">
                                             <p class="o_mail_no_margin"><small>Step 1:</small></p>
@@ -533,7 +533,7 @@
                                 <table align="center">
                                     <tr>
                                         <td rowspan="2" class="text-right">
-                                            <span class="far fa-credit-card fa-2x text-delta" aria-label="Order" title="Order"></span>
+                                            <span class="fa fa-credit-card fa-2x text-delta" aria-label="Order" title="Order"></span>
                                         </td>
                                         <td style="padding-left:10px;">
                                             <p class="o_mail_no_margin"><small>Step 2:</small></p>
@@ -546,7 +546,7 @@
                                 <table align="center">
                                     <tr>
                                         <td rowspan="2" class="text-right">
-                                            <span class="far fa-smile fa-2x text-delta" aria-label="Enjoy!" title="Enjoy!"></span>
+                                            <span class="fa fa-smile-o fa-2x text-delta" aria-label="Enjoy!" title="Enjoy!"></span>
                                         </td>
                                         <td style="padding-left:10px;">
                                             <p class="o_mail_no_margin"><small>Step 3:</small></p>
@@ -960,17 +960,17 @@
                             <div class="o_mail_header_social">
                                 <t t-if="company_id.social_facebook">
                                     <a t-att-href="company_id.social_facebook" aria-label="Facebook" title="Facebook">
-                                      <span class="fab fa-facebook-f"></span>
+                                      <span class="fa fa-facebook"></span>
                                     </a>
                                 </t>
                                 <t t-if="company_id.social_linkedin" aria-label="LinkedIn" title="LinkedIn">
                                     <a t-att-href="company_id.social_linkedin" style="margin-left:10px">
-                                        <span class="fab fa-linkedin-in"></span>
+                                        <span class="fa fa-linkedin"></span>
                                     </a>
                                 </t>
                                 <t t-if="company_id.social_twitter" aria-label="Twitter" title="Twitter">
                                     <a t-att-href="company_id.social_twitter" style="margin-left:10px">
-                                        <span class="fab fa-twitter"></span>
+                                        <span class="fa fa-twitter"></span>
                                     </a>
                                 </t>
                             </div>

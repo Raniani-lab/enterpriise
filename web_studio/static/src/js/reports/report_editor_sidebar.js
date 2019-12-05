@@ -258,11 +258,11 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
 
             case 'th':
             case 'td':
-                displayName.icon = 'fa-square';
+                displayName.icon = 'fa-square-o';
                 break;
 
             case 'img':
-                displayName.icon = 'fa-image';
+                displayName.icon = 'fa-picture-o';
                 break;
 
             case 'div':
@@ -280,7 +280,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                 break;
 
             case 'address':
-                displayName.icon = 'fa-address-book';
+                displayName.icon = 'fa-address-book-o';
                 break;
 
             case 'h1':

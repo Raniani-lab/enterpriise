@@ -419,7 +419,7 @@
                             <div t-attf-class="o_kanban_card_header">
                                 <div class="o_kanban_card_header_title">
                                     <div class="o_primary"><field name="name"/></div>
-                                    <small t-if="record.use_alias.value and record.alias_name.value and record.alias_domain.value"><i class="far fa-envelope" title="Domain alias" role="img" aria-label="Domain alias"></i>&amp;nbsp; <t t-esc="record.alias_id.value"/></small>
+                                    <small t-if="record.use_alias.value and record.alias_name.value and record.alias_domain.value"><i class="fa fa-envelope-o" title="Domain alias" role="img" aria-label="Domain alias"></i>&amp;nbsp; <t t-esc="record.alias_id.value"/></small>
                                 </div>
                                 <div class="o_kanban_manage_button_section" t-if="!selection_mode" groups="helpdesk.group_helpdesk_manager">
                                     <a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
@@ -451,7 +451,7 @@
                                 <div t-if="record.use_rating.raw_value and record.rating_percentage_satisfaction.raw_value &gt;= 0" class="row text-center">
                                     <a name="action_view_all_rating" type="object" title="Percentage of happy people about this team" class="float-right">
                                         <h5 t-attf-class="badge #{record.rating_percentage_satisfaction.raw_value &gt;= 50 ? 'badge-success' : 'badge-warning'}">
-                                            <i t-attf-class="far #{record.rating_percentage_satisfaction.raw_value &gt;= 50 ? 'fa-smile' : 'fa-frown'}" role="img" aria-label="Satisfaction rate" title="Satisfaction rate"/> <t t-raw="record.rating_percentage_satisfaction.raw_value"/> %
+                                            <i t-attf-class="fa #{record.rating_percentage_satisfaction.raw_value &gt;= 50 ? 'fa-smile-o' : 'fa-frown-o'}" role="img" aria-label="Satisfaction rate" title="Satisfaction rate"/> <t t-raw="record.rating_percentage_satisfaction.raw_value"/> %
                                         </h5>
                                     </a>
                                 </div> -->

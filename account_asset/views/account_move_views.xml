@@ -21,14 +21,14 @@
                 <button name="action_open_asset_ids"
                     type="object"
                     class="oe_stat_button"
-                    icon="fa-id-card"
+                    icon="fa-id-card-o"
                     attrs="{'invisible': ['|', ('number_asset_ids', '=', 0), ('draft_asset_ids', '=', True)]}">
                     <field name="asset_ids_display_name" nolabel="1"/>
                 </button>
                 <button name="action_open_asset_ids"
                     type="object"
                     class="oe_stat_button text-danger"
-                    icon="fa-id-card"
+                    icon="fa-id-card-o"
                     attrs="{'invisible': ['|', ('number_asset_ids', '=', 0), ('draft_asset_ids', '=', False)]}">
                     <field name="asset_ids_display_name" nolabel="1"/>
                 </button>

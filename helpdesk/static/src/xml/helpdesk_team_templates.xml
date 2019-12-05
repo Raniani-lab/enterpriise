@@ -21,13 +21,13 @@
                         <td class="o_main o_dashboard_action" title="My high priority tickets" name="helpdesk.helpdesk_ticket_action_high_priorities">
                             <a href="#">
                                 <span class="o_highlight"><t t-esc="values['my_high']['count']"/></span><br/>
-                                High Priority (<span title="Two stars, with a maximum of three" role="img" aria-label="Two stars, with a maximum of three"><span class="fas fa-star" style="color: gold"/><span class="fas fa-star" style="color: gold"/></span>)
+                                High Priority (<span title="Two stars, with a maximum of three" role="img" aria-label="Two stars, with a maximum of three"><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/></span>)
                             </a>
                         </td>
                         <td class="o_main o_dashboard_action" title="My urgent tickets" name="helpdesk.helpdesk_ticket_action_urgent">
                             <a href="#">
                                 <span class="o_highlight"><t t-esc="values['my_urgent']['count']"/></span><br/>
-                                Urgent (<span title="Three stars, maximum score" role="img" aria-label="Three stars, maximum score"><span class="fas fa-star" style="color: gold"/><span class="fas fa-star" style="color: gold"/><span class="fas fa-star" style="color: gold"/></span>)
+                                Urgent (<span title="Three stars, maximum score" role="img" aria-label="Three stars, maximum score"><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/></span>)
                             </a>
                         </td>
                     </tr>
@@ -164,7 +164,7 @@
 
             <div t-if="show_demo" class="o_welcome_message">
                 <div class="o_welcome_image">
-                    <i class="far fa-smile fa-5x" title="Welcome" role="img" aria-label="Welcome"></i>
+                    <i class="fa fa-smile-o fa-5x" title="Welcome" role="img" aria-label="Welcome"></i>
                 </div>
                 <div class="o_welcome_content"><br/>
                     <h4><strong>Ready to boost your customer service?</strong></h4>

@@ -3,7 +3,7 @@
     <data noupdate="1">
         <record id="mail_act_appraisal_form" model="mail.activity.type">
             <field name="name">Appraisal Form to Fill</field>
-            <field name="icon">fas fa-star-halt-alt</field>
+            <field name="icon">fa-star</field>
             <field name="res_model_id" ref="hr_appraisal.model_hr_appraisal"/>
         </record>
 

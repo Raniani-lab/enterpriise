@@ -35,9 +35,9 @@
                             </div>
 
                             <a type="object" name="toggle_favorited" title="In favorites, remove it" aria-label="In favorites, remove it"
-                               class="fas fa-lg fa-star favorite_sign_button_enabled favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) == 0"/>
+                               class="fa fa-lg fa-star favorite_sign_button_enabled favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) == 0"/>
                             <a type="object" name="toggle_favorited" title="Not in favorites, add it" aria-label="Not in favorites, add it"
-                               class="far fa-lg fa-star favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0"/>
+                               class="fa fa-lg fa-star-o favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0"/>
                             <span><field name="reference"/></span>
                         </div>
                         <div class="o_signers">
@@ -89,7 +89,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="object" name="go_to_document" class="oe_read_only oe_stat_button" icon="fa-pencil-alt">
+                        <button type="object" name="go_to_document" class="oe_read_only oe_stat_button" icon="fa-pencil">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="nb_closed"/>/<field name="nb_total"/><span class="o_stat_text"> Signed</span></span>
                                 <span class="o_stat_text">View</span>

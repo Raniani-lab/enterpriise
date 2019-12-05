@@ -8,7 +8,7 @@
             <i class="fa fa-plus"/> Add
         </div>
         <div name="view" t-attf-class="o_web_studio_view #{widget.state.mode === 'view' ? 'active' : ''}">
-            <i class="fas fa-tv"/> View
+            <i class="fa fa-television"/> View
         </div>
         <div name="properties" t-attf-class="disabled o_web_studio_properties #{widget.state.mode !== 'properties' ? 'inactive' : 'active'}">
             <i class="fa fa-server"/> Properties
@@ -593,7 +593,7 @@
     </t>
     <t t-call="web_studio.Sidebar.Groups"/>
     <div t-if="widget.state.field.manual and widget.state.field.type === 'selection'">
-        <a href="#" role="button" class="btn btn-link o_web_studio_edit_selection_values"><i class="fas fa-pencil-alt"/> Edit Values</a>
+        <a href="#" role="button" class="btn btn-link o_web_studio_edit_selection_values"><i class="fa fa-pencil"/> Edit Values</a>
     </div>
     <t t-call="web_studio.Sidebar.Toolbox">
         <t t-call="web_studio.Sidebar.Parameters"/>

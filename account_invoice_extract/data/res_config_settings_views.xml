@@ -15,7 +15,7 @@
                     </div>
                     <div class="o_setting_right_pane">
                         <label for="extract_single_line_per_tax"/>
-                        <span class="far fa-lg fa-building" title="Values set here are company-specific."/>
+                        <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."/>
                         <div class="text-muted">
                             Enable to get only one invoice line per tax
                         </div>

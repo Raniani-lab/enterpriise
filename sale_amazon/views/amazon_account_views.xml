@@ -95,7 +95,7 @@
                                     string="Test Credentials"
                                     type="object"
                                     class="btn-secondary"
-                                    icon="fa-tv"/>
+                                    icon="fa-television"/>
                             </div>
                         </page>
                         <page string="Marketplaces"
@@ -113,7 +113,7 @@
                                         synchronize and add them to the current sync marketplaces"
                                             type="object"
                                             class="oe_link"
-                                            icon="fa-sync"/>
+                                            icon="fa-refresh"/>
                                 </div>
                             </group>
                         </page>

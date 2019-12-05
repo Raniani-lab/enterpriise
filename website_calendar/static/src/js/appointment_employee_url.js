@@ -61,7 +61,7 @@ var FieldemployeeUrl = AbstractField.extend({
             text: this.url,
         });
         var $icon = $('<div>', {
-            class: 'far fa-clipboard o_website_calendar_copy_icon'
+            class: 'fa fa-clipboard o_website_calendar_copy_icon'
         });
 
         $icon.tooltip({title: _t("Copied !"), trigger: "manual", placement: "right"});

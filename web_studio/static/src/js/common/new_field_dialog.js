@@ -210,7 +210,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                 ],
             }).open();
         } else {
-            $btn.toggleClass('fa-check fa-edit');
+            $btn.toggleClass('fa-check fa-pencil-square-o');
             var $input = $btn.closest('li').find('.o_web_studio_selection_input.d-none');
             var $span = $input.siblings('.o_web_studio_selection_label');
             // Toggle span and input, and set the initial value for input

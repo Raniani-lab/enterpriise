@@ -45,7 +45,7 @@
                 <searchpanel>
                     <field name="folder_id"/>
                     <field name="tag_ids" select="multi" groupby="facet_id" icon="fa-tag"/>
-                    <field name="res_model" select="multi" string="Attached To" icon="fa-file-alt" color="#338FFC"/>
+                    <field name="res_model" select="multi" string="Attached To" icon="fa-file-text" color="#338FFC"/>
                 </searchpanel>
             </search>
         </field>
@@ -80,7 +80,7 @@
                         <div draggable="true"
                              t-attf-class="oe_kanban_global_area o_document_draggable o_kanban_attachment o_documents_attachment {{fileRequest ? 'oe_file_request' : ''}}"
                              t-att-data-id="record.id.raw_value">
-                            <i class="far fa-circle o_record_selector" title="Select document"/>
+                            <i class="fa fa-circle-thin o_record_selector" title="Select document"/>
                             <div t-attf-class="o_kanban_image #{fileRequest ? 'o_request_image' : ''}">
                                 <t t-set="webimage"
                                    t-value="new RegExp('image.*(gif|jpeg|jpg|png)').test(record.mimetype.value)"/>
@@ -101,7 +101,7 @@
                             <div class="o_kanban_details">
                                 <div class="o_kanban_details_wrapper">
                                     <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
-                                        <i t-attf-class="o_documents_lock fa {{(record.lock_uid.raw_value == user_context.uid || !record.lock_uid.raw_value)? '' : 'fa-lock'}} {{(record.lock_uid.raw_value == user_context.uid)? ' fa-unlock-alt' : ''}}"
+                                        <i t-attf-class="o_documents_lock fa {{(record.lock_uid.raw_value == user_context.uid || !record.lock_uid.raw_value)? '' : ' fa-lock'}} {{(record.lock_uid.raw_value == user_context.uid)? ' fa-unlock-alt' : ''}}"
                                                t-att-title="record.lock_uid.value"/>
                                         <field name="name" required="True" class="o_text_overflow"/>
                                     </div>
@@ -116,7 +116,7 @@
                                             </t>
                                         </t>
                                         <t t-elif="record.type.raw_value == 'url'">
-                                            <span class="o_document_url"><i class="fa fa-globe-americas" title="Document url"/> <field name="url" widget="url"/></span>
+                                            <span class="o_document_url"><i class="fa fa-globe" title="Document url"/> <field name="url" widget="url"/></span>
                                         </t>
                                         <t t-elif="fileRequest">
                                             <span><b>Requested Document</b></span>
@@ -131,7 +131,7 @@
                                         <div class="oe_kanban_bottom_right">
                                             <field name="activity_ids" widget="kanban_activity"/>
                                             <a type="object" name="toggle_favorited"
-                                                t-attf-class="fa#{(record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0)? 'r' : 's favorite_sign_button_enabled'} fa-lg fa-star favorite_sign_button" title="toggle favorite"/>
+                                                t-attf-class="fa fa-lg fa-star#{(record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0)? '-o' : ' favorite_sign_button_enabled'} favorite_sign_button" title="toggle favorite"/>
                                             <img t-att-src="kanban_image('res.users', 'image_128', record.owner_id.raw_value)" t-att-data-member_id="record.owner_id.raw_value" t-att-alt="record.owner_id.raw_value" width="32" height="32" class="oe_kanban_avatar"/>
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="open_resource" type="object" class="oe_stat_button" icon="fa-external-link-alt" attrs="{'invisible': ['|', ('res_id', '=', False), ('res_model', 'in', [False, 'documents.document'])]}">
+                        <button name="open_resource" type="object" class="oe_stat_button" icon="fa-external-link" attrs="{'invisible': ['|', ('res_id', '=', False), ('res_model', 'in', [False, 'documents.document'])]}">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_text">Related <br/> Record</span>
                             </div>
@@ -291,13 +291,13 @@
             <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_see_actions" type="object" class="oe_stat_button" icon="fa-cogs">
+                        <button name="action_see_actions" type="object" class="oe_stat_button" icon="fa-gears">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="action_count"/></span>
                                 <span class="o_stat_text">Actions</span>
                             </div>
                         </button>
-                        <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-alt" attrs="{'invisible' : [('document_count', '=', 0)]}">
+                        <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-text-o" attrs="{'invisible' : [('document_count', '=', 0)]}">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="document_count"/></span>
                                 <span class="o_stat_text">Documents</span>
@@ -808,7 +808,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
-                <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-alt">
+                <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-text-o">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value"><field name="document_count"/></span>
                         <span class="o_stat_text">Documents</span>

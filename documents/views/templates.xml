@@ -176,7 +176,7 @@
                 <t t-set="shareType" t-value="'o_share_single o_has_preview'"/>
 
                 <div class="o_loading_img text-center mt128">
-                    <i class="fas fa-circle-notch fa-spin text-white fa-3x mb8" role="img" aria-label="Loading" title="Loading"/><div>Loading</div>
+                    <i class="fa fa-circle-o-notch fa-spin text-white fa-3x mb8" role="img" aria-label="Loading" title="Loading"/><div>Loading</div>
                 </div>
                 <img class="img-responsive" t-att-alt="document.name" t-att-title="document.name" t-attf-src="#{document.mimetype and 'gif' in document.mimetype and normal_preview_URL + file_token or preview_URL + file_token}"/>
                 <div class="o_docs_single_actions col-sm-12 row no-gutters justify-content-between flex-row flex-wrap align-items-baseline text-left mt68">

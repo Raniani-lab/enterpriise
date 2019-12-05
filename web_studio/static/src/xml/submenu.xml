@@ -133,7 +133,7 @@
                     data-name="calendar"
                     href="#"
                     title="Calendar View"
-                    t-if="_.contains(widget.active_view_types, 'calendar')"><i class="far fa-calendar-alt"/></a>
+                    t-if="_.contains(widget.active_view_types, 'calendar')"><i class="fa fa-calendar-o"/></a>
                 <a
                     aria-label="Graph View"
                     data-name="graph"

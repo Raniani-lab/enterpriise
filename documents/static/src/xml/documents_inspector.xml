@@ -67,7 +67,7 @@
                 Upload Document
             </span>
         </div>
-        <i t-if="nbPreviews === 1" class="o_inspector_open_chatter rounded-circle text-center fas fa-comments" title="Open chatter"/>
+        <i t-if="nbPreviews === 1" class="o_inspector_open_chatter rounded-circle text-center fa fa-comments" title="Open chatter"/>
         <div t-if="record_index == 1 and record_size == 4" class="w-100"/>
     </t>
     <div t-if="nbPreviews &gt; 1" class="o_selection_info w-100 text-center mt-2">
@@ -136,7 +136,7 @@
 <!-- Document res_model template -->
 <t t-name="documents.DocumentsInspector.resModel">
     <td class="o_inspector_label align-middle">
-        <label t-att-title="res_model" class="o_inspector_model_name"><i class="o_documents_model_color fas fa-file-alt"/> <t t-esc="res_model"/></label>
+        <label t-att-title="res_model" class="o_inspector_model_name"><i class="o_documents_model_color fa fa-file-text"/> <t t-esc="res_model"/></label>
     </td>
     <td class="o_inspector_value w-100">
         <div class="o_inspector_model">
@@ -158,7 +158,7 @@
 <t t-name="documents.DocumentsInspector.rule">
     <div class="o_inspector_rule o_inspector_trigger_hover_target mb-2" t-att-data-id="id">
         <span t-att-title="note || ''"><t t-esc="display_name"/></span>
-        <button t-att-title="note || ''" class="btn fa fa-play text-white bg-primary fa-pull-right o_inspector_trigger_rule o_inspector_trigger_hover"/>
+        <button t-att-title="note || ''" class="btn fa fa-play text-white bg-primary pull-right o_inspector_trigger_rule o_inspector_trigger_hover"/>
     </div>
 </t>
 
@@ -176,9 +176,9 @@
             </t>
         </div>
 
-        <button t-if="widget.records[0].data.active" class="o_active btn fa fa-archive o_inspector_button o_inspector_archive fa-pull-right" title="Archive"/>
+        <button t-if="widget.records[0].data.active" class="o_active btn fa fa-archive o_inspector_button o_inspector_archive pull-right" title="Archive"/>
         <t t-else="">
-            <button class="btn pull-right o_inspector_button o_inspector_delete" title="Delete"><i class="far fa-trash-alt"/> <small>Delete</small></button>
+            <button class="btn pull-right o_inspector_button o_inspector_delete" title="Delete"><i class="fa fa-trash"/> <small>Delete</small></button>
             <button class="btn pull-right o_inspector_button o_archived o_inspector_archive" style="margin-right:4px" title="Un-archive"><i class="fa fa-upload"/> <small>Restore</small></button>
         </t>
     </div>

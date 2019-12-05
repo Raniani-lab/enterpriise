@@ -4,7 +4,7 @@
     <!-- Helpdesk-specific activities, for automatic generation mainly -->
     <record id="mail_act_helpdesk_handle" model="mail.activity.type">
         <field name="name">Handle Ticket</field>
-        <field name="icon">fas fa-ticket-alt</field>
+        <field name="icon">fa-ticket</field>
         <field name="res_model_id" ref="helpdesk.model_helpdesk_ticket"/>
     </record>
 

@@ -29,7 +29,7 @@ ProductConfiguratorWidget.include({
             if ($inputDropdown.length !== 0 && this.$('.o_edit_product_configuration').length === 0) {
                 var $editConfigurationButton = $('<button>', {
                     type: 'button',
-                    class: 'far fa-calendar-alt btn btn-secondary o_edit_product_configuration',
+                    class: 'fa fa-calendar btn btn-secondary o_edit_product_configuration',
                     tabindex: '-1',
                     draggable: false,
                     'aria-label': _t('Edit dates'),

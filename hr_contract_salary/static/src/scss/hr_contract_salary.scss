@@ -80,7 +80,7 @@
                 padding: 20px 0;
                 .col-form-label {
                     padding-left: 55px;
-                    .fa, .far, .fas {
+                    .fa {
                         @include o-position-absolute($top: -20px, $left: 15px);
                         @include size(30px, 45px);
                         line-height: 58px;

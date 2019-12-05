@@ -184,7 +184,7 @@ $o-ma-border-color: gray($o-ma-border-color-gray-value);
                     border-left: 1px solid $o-ma-border-color;
                     border-bottom: 1px solid transparent;
                     transition: all 0.2s ease 0s;
-                    .fa, .far, .fas {
+                    .fa {
                         font-size: 16px;
                         margin: 12px;
                     }
@@ -255,7 +255,7 @@ $o-ma-border-color: gray($o-ma-border-color-gray-value);
             .o_ma_child_activity_buttons {
                 display: flex;
                 justify-content: space-around;
-                i.fa, i.far, i.fas {
+                i.fa {
                     flex: 1 0 auto;
                     padding: 10px;
                     border-top: 1px solid #E2E2E2;

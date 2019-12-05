@@ -47,9 +47,7 @@
                         padding-top: 100%;
                     }
 
-                    > i.fa,
-                    > i.far,
-                    > i.fas { // studio
+                    > i.fa { // studio
                         @include o-position-absolute(25%, 0, auto, 0);
                         font-size: $o-home-menu-app-icon-max-width*0.5;
 

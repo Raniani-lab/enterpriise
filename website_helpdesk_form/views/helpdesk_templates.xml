@@ -15,7 +15,7 @@
                         <t t-if="request.session.get('form_builder_model_model', '') == 'helpdesk.ticket'">
                             <t t-set="ticket" t-value="request.website._website_form_last_record().sudo()"/>
                         </t>
-                        <h1 class="text-center"><i class="far fa-check-circle fa-2x text-success" role="img" aria-label="Success" title="Success"/></h1>
+                        <h1 class="text-center"><i class="fa fa-check-circle fa-2x text-success" role="img" aria-label="Success" title="Success"/></h1>
                         <t t-if="ticket">
                             <h1 class="text-center">Your Ticket Number is <a t-if="request.session.uid" t-attf-href="/helpdesk/ticket/#{ticket.id}">#<span t-field="ticket.id"/></a><t t-if="not request.session.get('uid')">#<span t-field="ticket.id"/></t>.</h1>
                         </t>

@@ -91,10 +91,10 @@
                             <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
                         </div>
                         <div t-if="line.package_id || line.result_package_id">
-                            <i class="fas fa-fw fa-truck"/> <t t-if="line.package_id" t-esc="line.package_id[1]"></t> <span class="fa fa-long-arrow-alt-right"></span> <t t-if="line.result_package_id" t-esc="line.result_package_id[1]"></t>
+                            <i class="fa fa-fw fa-truck"/> <t t-if="line.package_id" t-esc="line.package_id[1]"></t> <span class="fa fa-long-arrow-right"></span> <t t-if="line.result_package_id" t-esc="line.result_package_id[1]"></t>
                         </div>
                         <div t-if="line.owner_id">
-                            <i class="far fa-fw fa-user"/> <t t-esc="line.owner_id[1]"></t>
+                            <i class="fa fa-fw fa-user-o"/> <t t-esc="line.owner_id[1]"></t>
                         </div>
                         <div t-if="line.product_id.tracking !== 'none'">
                             <i class="fa fa-barcode"/>
@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-flex align-items-center pl-4">
-                        <a class="o_edit text-muted" href="#" title="Edit"><i class="fas fa-pencil-alt"/></a>
+                        <a class="o_edit text-muted" href="#" title="Edit"><i class="fa fa-pencil"/></a>
                     </div>
                 </div>
                 <div class="o_barcode_line list-group-item d-flex flex-row flex-nowrap" t-if="model == 'stock.inventory'" t-att-data-id="line.virtual_id || line.id" t-att-data-barcode="line.product_barcode">
@@ -125,11 +125,11 @@
                             <span class="o_line_lot_name"><t t-if="line.prod_lot_id" t-esc="line.prod_lot_id[1]"></t></span>
                         </div>
                         <div t-if="line.partner_id">
-                            <i class="far fa-fw fa-user"/> <t t-esc="line.partner_id.name"></t>
+                            <i class="fa fa-fw fa-user-o"/> <t t-esc="line.partner_id.name"></t>
                         </div>
                     </div>
                     <div t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-flex align-items-center pl-4">
-                        <a class="o_edit text-muted" href="#" title="Edit"><i class="fas fa-pencil-alt"/></a>
+                        <a class="o_edit text-muted" href="#" title="Edit"><i class="fa fa-pencil"/></a>
                     </div>
                 </div>
             </t>
@@ -139,7 +139,7 @@
                 <div class="o_barcode_line list-group-item d-flex flex-row flex-nowrap py-3" t-att-data-id="packageLine.virtual_id || packageLine.id" t-att-data-barcode="packageLine.product_barcode">
                     <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
                         <div>
-                            <i class="fas fa-fw fa-truck"/> <t t-esc="packageLine.package_id[1]"></t> <span class="fa fa-long-arrow-alt-right"></span> <t t-esc="packageLine.result_package_id[1]"></t>
+                            <i class="fa fa-fw fa-truck"/> <t t-esc="packageLine.package_id[1]"></t> <span class="fa fa-long-arrow-right"></span> <t t-esc="packageLine.result_package_id[1]"></t>
                         </div>
                         <div>
                             <i class="fa fa-fw fa-cube"/>
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                     <div class="o_barcode_line_actions d-flex align-items-center pl-4">
-                        <span><a class="fab fa-dropbox text-muted float-right o_package_content"></a></span>
+                        <span><a class="fa fa-dropbox text-muted float-right o_package_content"></a></span>
                     </div>
                 </div>
             </t>

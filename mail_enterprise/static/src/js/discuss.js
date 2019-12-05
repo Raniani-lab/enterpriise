@@ -226,8 +226,8 @@ Discuss.include(Object.assign({}, SwipeItemMixin, {
      */
     _toggleStarDisplay(ev) {
         $(ev.currentTarget).find('.o_thread_message_star')
-            .toggleClass('far')
-            .toggleClass('fas');
+            .toggleClass('fa-star-o')
+            .toggleClass('fa-star');
     },
     /**
      *

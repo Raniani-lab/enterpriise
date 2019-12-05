@@ -117,7 +117,7 @@ Budgets
                                     <field name="theoritical_amount" sum="Theoretical Amount"/>
                                     <field name="percentage"  widget="percentage" />
                                     <button type="object" name="action_open_budget_entries" string="Entries..."
-                                            icon="fa-arrow-alt-circle-right"/>
+                                            icon="fa-arrow-circle-o-right"/>
                                     <field name="is_above_budget" invisible="1"/>
                                 </tree>
                                 <form string="Budget Lines">
@@ -200,7 +200,7 @@ Budgets
                             </div>
                             <div class="row">
                                 <div class="col-10">
-                                    <i class="far fa-clock" role="img" aria-label="Period" title="Period"/>
+                                    <i class="fa fa-clock-o" role="img" aria-label="Period" title="Period"/>
                                     <t t-esc="record.date_from.value"/>-
                                     <t t-esc="record.date_to.value"/>
                                 </div>

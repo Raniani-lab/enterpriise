@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <button class="btn o_sign_validate_field_button btn-primary">Validate</button>
-                <span class="far fa-trash-alt fa-lg o_sign_delete_field_button"></span>
+                <span class="fa fa-trash fa-lg o_sign_delete_field_button"></span>
             </div>
         </div>
     </t>
@@ -53,7 +53,7 @@
 
         <div t-att-class="!(widget.has_sign_requests &amp;&amp; widget.isPDF) ? 'text-center' : 'd-none text-center'">
             <div class="o_sign_template_saved_info alert alert-success float-right" role="status"><span class="fa fa-check"/>Saved</div>
-            <span t-if="!widget.has_sign_requests" class="fas fa-pencil-alt" title="Edit template name" role="img" aria-label="Edit template name"/>
+            <span t-if="!widget.has_sign_requests" class="fa fa-pencil" title="Edit template name" role="img" aria-label="Edit template name"/>
             <input type="text" class="o_sign_template_name_input o_input" t-att-value="widget.sign_template.display_name"/>
         </div>
 

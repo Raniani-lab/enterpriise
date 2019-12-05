@@ -27,6 +27,7 @@ class AEATTaxReportWizard(models.TransientModel):
 
 class Mod111Wizard(models.TransientModel):
     _name = 'l10n_es_reports.mod111.wizard'
+    _description = "Spain Tax Report Wizard for (mod111)"
     _inherit = 'l10n_es_reports.aeat.report.wizard'
     _modelo = '111'
 
@@ -53,6 +54,7 @@ class Mod111Wizard(models.TransientModel):
 
 class Mod115Wizard(models.TransientModel):
     _name = 'l10n_es_reports.mod115.wizard'
+    _description = "Spain Tax Report Wizard for (mod115)"
     _inherit = 'l10n_es_reports.aeat.report.wizard'
     _modelo = '115'
 
@@ -61,6 +63,7 @@ class Mod115Wizard(models.TransientModel):
 
 class Mod303Wizard(models.TransientModel):
     _name = 'l10n_es_reports.mod303.wizard'
+    _description = "Spain Tax Report Wizard for (mod303)"
     _inherit = 'l10n_es_reports.aeat.report.wizard'
     _modelo = '303'
 

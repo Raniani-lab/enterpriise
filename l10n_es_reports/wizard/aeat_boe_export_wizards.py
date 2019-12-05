@@ -41,6 +41,7 @@ class AEATBOEExportWizard(models.TransientModel):
 class Mod111And115And303CommonBOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.export.wizard'
     _name = 'l10n_es_reports.aeat.boe.mod111and115and303.export.wizard'
+    _description = "BOE Export Wizard for (mod111, mod115 & 303)"
 
     def _get_current_company(self):
         return self.env.company
@@ -62,6 +63,7 @@ class Mod111And115And303CommonBOEWizard(models.TransientModel):
 class Mod347And349CommonBOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.export.wizard'
     _name = 'l10n_es_reports.aeat.boe.mod347and349.export.wizard'
+    _description = "BOE Export Wizard for (mod347 & mod349)"
 
     def _default_contact_name(self):
         return self.env.user.name
@@ -82,6 +84,7 @@ class Mod347And349CommonBOEWizard(models.TransientModel):
 class Mod111BOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.mod111and115and303.export.wizard'
     _name = 'l10n_es_reports.aeat.boe.mod111.export.wizard'
+    _description = "BOE Export Wizard for (mod111)"
 
     # No field, but keeping it so is mandatory for the genericity of the modelling
 
@@ -89,6 +92,7 @@ class Mod111BOEWizard(models.TransientModel):
 class Mod115BOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.mod111and115and303.export.wizard'
     _name = 'l10n_es_reports.aeat.boe.mod115.export.wizard'
+    _description = "BOE Export Wizard for (mod115)"
 
     # No field, but keeping it so is mandatory for the genericity of the modelling
 
@@ -96,6 +100,7 @@ class Mod115BOEWizard(models.TransientModel):
 class Mod303BOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.mod111and115and303.export.wizard'
     _name = 'l10n_es_reports.aeat.boe.mod303.export.wizard'
+    _description = "BOE Export Wizard for (mod303)"
 
     monthly_return = fields.Boolean(string="In Monthly Return Register")
 
@@ -109,6 +114,7 @@ class Mod303BOEWizard(models.TransientModel):
 class Mod347BOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.mod347and349.export.wizard'
     _name = 'l10n_es_reports.aeat.boe.mod347.export.wizard'
+    _description = "BOE Export Wizard for (mod347)"
 
     cash_basis_mod347_data = fields.One2many(comodel_name='l10n_es_reports.aeat.mod347.manual.partner.data', inverse_name='parent_wizard_id', relation='l10n_es_reports_mod347_boe_wizard_cash_basis_rel', string="Cash Basis Data", help="Manual entries containing the amounts perceived for the partners with cash basis criterion during this year. Leave empty for partners for which this criterion does not apply.")
 
@@ -138,5 +144,6 @@ class Mod347BOEManuaPartnerData(models.TransientModel):
 class Mod349BOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.mod347and349.export.wizard'
     _name = 'l10n_es_reports.aeat.boe.mod349.export.wizard'
+    _description = "BOE Export Wizard for (mod349)"
 
     trimester_2months_report = fields.Boolean(string="Trimester monthly report", help="Whether or not this BOE file must be generated with the data of the first two months of the trimester (in case its total amount of operation is above the threshold fixed by the law)")

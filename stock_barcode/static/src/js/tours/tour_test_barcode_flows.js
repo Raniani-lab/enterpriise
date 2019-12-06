@@ -2685,4 +2685,56 @@ tour.register('test_put_in_pack_before_dest', {test: true}, [
 
 ]);
 
+tour.register('test_picking_owner_scan_package', {test: true}, [
+    {
+        trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',
+    },
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: 'scan WH-DELIVERY',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan P00001',
+    },
+    {
+        trigger: '.o_barcode_client_action:contains("P00001")',
+    },
+    {
+        trigger: '.o_barcode_client_action:contains("Azure Interior")',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+    {
+        trigger: '.o_notification_title:contains("Success")',
+    },
+]);
+
+tour.register('test_inventory_owner_scan_package', {test: true}, [
+    {
+        trigger: '.button_inventory',
+    },
+    {
+        trigger: '.o-kanban-button-new',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan P00001',
+    },
+    {
+        trigger: '.o_barcode_client_action:contains("P00001")',
+    },
+    {
+        trigger: '.o_barcode_client_action:contains("Azure Interior")',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+    {
+        trigger: '.o_notification_title:contains("Success")',
+    },
+]);
 });

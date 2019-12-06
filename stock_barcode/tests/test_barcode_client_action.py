@@ -88,6 +88,13 @@ class TestBarcodeClientAction(HttpCase):
             'barcode': 'productlot1',
             'tracking': 'lot',
         })
+        self.package = self.env['stock.quant.package'].create({
+            'name': 'P00001',
+        })
+        self.owner= self.env['res.partner'].create({
+            'name': 'Azure Interior',
+        })
+
 
     def tearDown(self):
         global CALL_COUNT
@@ -1091,6 +1098,24 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         self.start_tour(url, 'test_highlight_packs', login='admin', timeout=180)
 
+    def test_picking_owner_scan_package(self):
+        grp_owner = self.env.ref('stock.group_tracking_owner')
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_owner.id, 0)]})
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 7, package_id=self.package, owner_id=self.owner)
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.start_tour(url, 'test_picking_owner_scan_package', login='admin', timeout=180)
+
+        move_line = self.env['stock.move.line'].search([('product_id', '=', self.product1.id)], limit=1)
+        self.assertTrue(move_line)
+
+        line_owner = move_line.owner_id
+        self.assertEqual(line_owner.id, self.owner.id)
+
 
 @tagged('post_install', '-at_install')
 class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
@@ -1229,3 +1254,21 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
             {q.product_id: q.quantity for q in pack.quant_ids},
             {self.product1: 7, self.product2: 21}
         )
+
+    def test_inventory_owner_scan_package(self):
+        group_owner = self.env.ref('stock.group_tracking_owner')
+        group_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, group_pack.id, 0)]})
+        self.env.user.write({'groups_id': [(4, group_owner.id, 0)]})
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 7, package_id=self.package, owner_id=self.owner)
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.start_tour(url, 'test_inventory_owner_scan_package', login='admin', timeout=180)
+
+        inventory_line = self.env['stock.inventory.line'].search([('product_id', '=', self.product1.id)], limit=1)
+        self.assertTrue(inventory_line)
+
+        line_owner = inventory_line.partner_id
+        self.assertEqual(line_owner.id, self.owner.id)

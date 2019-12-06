@@ -52,6 +52,7 @@ class StockInventory(models.Model):
                 'product_uom_id',
                 'prod_lot_id',
                 'package_id',
+                'partner_id',
                 'dummy_id',
             ])
             for line_id in inventory['line_ids']:

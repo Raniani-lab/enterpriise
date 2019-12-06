@@ -127,7 +127,7 @@
                             <span class="o_line_lot_name"><t t-if="line.prod_lot_id" t-esc="line.prod_lot_id[1]"></t></span>
                         </div>
                         <div t-if="line.partner_id">
-                            <i class="fa fa-fw fa-user-o"/> <t t-esc="line.partner_id.name"></t>
+                            <i class="fa fa-fw fa-user-o"/> <t t-esc="line.partner_id[1]"></t>
                         </div>
                     </div>
                     <div t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-flex align-items-center pl-4">

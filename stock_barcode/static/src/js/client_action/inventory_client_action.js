@@ -59,6 +59,7 @@ var InventoryClientAction = ClientAction.extend({
             location_id: line.location_id.id,
             prod_lot_id: line.prod_lot_id && line.prod_lot_id[0],
             package_id: line.package_id && line.package_id[0],
+            partner_id: line.partner_id && line.partner_id[0],
             dummy_id: line.virtual_id,
         }];
     },
@@ -84,7 +85,7 @@ var InventoryClientAction = ClientAction.extend({
      * @override
      */
     _getWriteableFields: function () {
-        return ['product_qty', 'location_id.id', 'prod_lot_id.id'];
+        return ['product_qty', 'location_id.id', 'prod_lot_id.id', 'partner_id.id'];
     },
 
     /**
@@ -148,30 +149,31 @@ var InventoryClientAction = ClientAction.extend({
     /**
      * @override
      */
-    _makeNewLine: function (product, barcode, qty_done, package_id) {
+    _makeNewLine: function (params) {
         var virtualId = this._getNewVirtualId();
         var currentPage = this.pages[this.currentPageIndex];
         var newLine = {
             'inventory_id': this.currentState.id,
             'product_id': {
-                'id': product.id,
-                'display_name': product.display_name,
-                'barcode': barcode,
-                'tracking': product.tracking,
+                'id': params.product.id,
+                'display_name': params.product.display_name,
+                'barcode': params.barcode,
+                'tracking': params.product.tracking,
             },
-            'product_barcode': barcode,
-            'display_name': product.display_name,
-            'product_qty': qty_done,
+            'product_barcode': params.barcode,
+            'display_name': params.product.display_name,
+            'product_qty': params.qty_done,
             'theoretical_qty': 0,
-            'product_uom_id': product.uom_id[0],
+            'product_uom_id': params.product.uom_id[0],
             'location_id': {
                 'id': currentPage.location_id,
                 'name': currentPage.location_name,
             },
-            'package_id': package_id,
+            'package_id': params.package_id,
             'state': 'confirm',
             'reference': this.name,
             'virtual_id': virtualId,
+            'partner_id': params.owner_id,
         };
         return newLine;
     },
@@ -210,6 +212,7 @@ var InventoryClientAction = ClientAction.extend({
             product_qty : line.product_qty,
             prod_lot_id: line.prod_lot_id && line.prod_lot_id[0],
             package_id: line.package_id && line.package_id[0],
+            partner_id: line.partner_id && line.partner_id[0],
         }];
     },
 

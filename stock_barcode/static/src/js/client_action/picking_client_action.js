@@ -90,6 +90,7 @@ var PickingClientAction = ClientAction.extend({
             lot_name: line.lot_name,
             lot_id: line.lot_id && line.lot_id[0],
             state: 'assigned',
+            owner_id: line.owner_id && line.owner_id[0],
             package_id: line.package_id ? line.package_id[0] : false,
             result_package_id: line.result_package_id ? line.result_package_id[0] : false,
             dummy_id: line.virtual_id,
@@ -150,7 +151,7 @@ var PickingClientAction = ClientAction.extend({
      * @override
      */
     _getWriteableFields: function () {
-        return ['qty_done', 'location_id.id', 'location_dest_id.id', 'lot_name', 'lot_id.id', 'result_package_id'];
+        return ['qty_done', 'location_id.id', 'location_dest_id.id', 'lot_name', 'lot_id.id', 'result_package_id', 'owner_id.id'];
     },
 
     /**
@@ -183,22 +184,22 @@ var PickingClientAction = ClientAction.extend({
     /**
      * @override
      */
-    _makeNewLine: function (product, barcode, qty_done, package_id, result_package_id) {
+    _makeNewLine: function (params) {
         var virtualId = this._getNewVirtualId();
         var currentPage = this.pages[this.currentPageIndex];
         var newLine = {
             'picking_id': this.currentState.id,
             'product_id': {
-                'id': product.id,
-                'display_name': product.display_name,
-                'barcode': barcode,
-                'tracking': product.tracking,
+                'id': params.product.id,
+                'display_name': params.product.display_name,
+                'barcode': params.barcode,
+                'tracking': params.product.tracking,
             },
-            'product_barcode': barcode,
-            'display_name': product.display_name,
+            'product_barcode': params.barcode,
+            'display_name': params.product.display_name,
             'product_uom_qty': 0,
-            'product_uom_id': product.uom_id,
-            'qty_done': qty_done,
+            'product_uom_id': params.product.uom_id,
+            'qty_done': params.qty_done,
             'location_id': {
                 'id': currentPage.location_id,
                 'display_name': currentPage.location_name,
@@ -207,11 +208,12 @@ var PickingClientAction = ClientAction.extend({
                 'id': currentPage.location_dest_id,
                 'display_name': currentPage.location_dest_name,
             },
-            'package_id': package_id,
-            'result_package_id': result_package_id,
+            'package_id': params.package_id,
+            'result_package_id': params.result_package_id,
             'state': 'assigned',
             'reference': this.name,
             'virtual_id': virtualId,
+            'owner_id': params.owner_id,
         };
         return newLine;
     },
@@ -451,6 +453,7 @@ var PickingClientAction = ClientAction.extend({
             location_dest_id: line.location_dest_id.id,
             lot_id: line.lot_id && line.lot_id[0],
             lot_name: line.lot_name,
+            owner_id: line.owner_id && line.owner_id[0],
             package_id: line.package_id ? line.package_id[0] : false,
             result_package_id: line.result_package_id ? line.result_package_id[0] : false,
         }];

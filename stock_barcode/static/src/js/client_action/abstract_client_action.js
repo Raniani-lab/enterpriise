@@ -561,12 +561,10 @@ var ClientAction = AbstractAction.extend({
      *
      * @abstract
      * @private
-     * @param {Object} product product on the new line
-     * @param {Object} barcode barcode of the product
-     * @param {Object} qty_done
-     * @returns {object} created line
+     * @param {Object} params attributes of the line (model depending, see implementation)
+     * @returns {Object} created line
      */
-    _makeNewLine: function (product, barcode, qty_done) {  // jshint ignore:line
+    _makeNewLine: function (params) {
         return {};
     },
 
@@ -883,10 +881,11 @@ var ClientAction = AbstractAction.extend({
                 params.lot_id ||
                 params.lot_name
                 ) {
-                line = this._makeNewLine(params.product, params.barcode, params.product.qty || 1, params.package_id, params.result_package_id);
+                params.qty_done = params.product.qty || 1;
             } else {
-                line = this._makeNewLine(params.product, params.barcode, 0, params.package_id, params.result_package_id);
+                params.qty_done = 0;
             }
+            line = this._makeNewLine(params);
             this._getLines(this.currentState).push(line);
             this.pages[this.currentPageIndex].lines.push(line);
         }
@@ -1236,7 +1235,8 @@ var ClientAction = AbstractAction.extend({
                                 package_id: [packages[0].id, packages[0].display_name],
                                 result_package_id: [packages[0].id, packages[0].display_name],
                                 lot_id: quant.lot_id[0],
-                                lot_name: quant.lot_id[1]
+                                lot_name: quant.lot_id[1],
+                                owner_id: quant.owner_id,
                             });
                             self.scannedLines.push(res.lineDescription.virtual_id);
                             if (! self.show_entire_packs) {

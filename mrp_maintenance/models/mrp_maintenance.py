@@ -62,6 +62,7 @@ class MaintenanceEquipment(models.Model):
     workcenter_id = fields.Many2one(
         'mrp.workcenter', string='Work Center', check_company=True)
 
+    @api.depends('effective_date', 'maintenance_ids.stage_id', 'maintenance_ids.close_date', 'maintenance_ids.request_date')
     def _compute_maintenance_request(self):
         for equipment in self:
             maintenance_requests = equipment.maintenance_ids.filtered(lambda x: x.maintenance_type == 'corrective' and x.stage_id.done)

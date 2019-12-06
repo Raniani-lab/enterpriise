@@ -8,7 +8,6 @@
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/renderer.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/view.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/tours/timesheet_grid.js"/>
-            <script type="text/javascript" src="/timesheet_grid/static/src/js/timer.js"></script>
         </xpath>
     </template>
 </odoo>

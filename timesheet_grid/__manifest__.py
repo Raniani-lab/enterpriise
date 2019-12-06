@@ -13,14 +13,11 @@
     'category': 'Operations/Timesheets',
     'data': [
         'data/mail_data.xml',
-        'data/timesheet_grid_data.xml',
         'security/timesheet_security.xml',
         'views/hr_timesheet_views.xml',
         'views/res_config_settings_views.xml',
-        'views/project_task_views.xml',
         'views/assets.xml',
         'wizard/timesheet_validation_views.xml',
-        'wizard/project_task_create_timesheet_views.xml',
     ],
     'demo': [
         'data/timesheet_grid_demo.xml',

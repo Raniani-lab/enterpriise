@@ -16,7 +16,7 @@ class PlanningShift(models.Model):
     _inherit = 'planning.slot'
 
     project_id = fields.Many2one('project.project', string="Project", domain="[('company_id', '=', company_id), ('allow_forecast', '=', True)]", check_company=True)
-    task_id = fields.Many2one('project.task', string="Task", domain="[('company_id', '=', company_id), ('project_id', '=', project_id)]", check_company=True)
+    task_id = fields.Many2one('project.task', string="Task", domain="[('company_id', '=', company_id), ('project_id', '=?', project_id)]", check_company=True)
 
     _sql_constraints = [
         ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "If the planning is linked to a task, the project must be set too."),
@@ -24,21 +24,13 @@ class PlanningShift(models.Model):
 
     @api.onchange('task_id')
     def _onchange_task_id(self):
-        if not self.project_id:
-            self.project_id = self.task_id.project_id
-        else:
-            self.task_id.project_id = self.project_id
+        self.project_id = self.task_id.project_id
 
     @api.onchange('project_id')
     def _onchange_project_id(self):
-        domain = [] if not self.project_id else [('project_id', '=', self.project_id.id)]
-        result = {
-            'domain': {'task_id': domain},
-        }
         if self.project_id != self.task_id.project_id:
             # reset task when changing project
             self.task_id = False
-        return result
 
     @api.constrains('task_id', 'project_id')
     def _check_task_in_project(self):

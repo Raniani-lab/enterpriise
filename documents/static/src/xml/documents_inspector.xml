@@ -123,6 +123,12 @@
         <label t-if="widget.currentFolder"><i class="o_documents_action_color fa fa-play"/> Actions</label>
         <div class="o_inspector_rules"/>
     </div>
+    <t t-if="widget.records.length === 1 and widget.records[0].data.previous_attachment_ids.res_ids.length > 0">
+        <div class="o_inspector_section o_inspector_section_history mt-3">
+            <label><i class="o_documents_history_color fa fa-history"/> History</label>
+            <div class="o_inspector_history"/>
+        </div>
+    </t>
 </t>
 
 <!-- Document field template -->
@@ -182,6 +188,31 @@
             <button class="btn pull-right o_inspector_button o_archived o_inspector_archive" style="margin-right:4px" title="Un-archive"><i class="fa fa-upload"/> <small>Restore</small></button>
         </t>
     </div>
+</t>
+
+<!-- Versioning Template -->
+<t t-name="documents.inspector.attachmentHistory">
+    <t t-foreach="attachments" t-as="attachment">
+        <div class="o_inspector_history_line">
+            <t t-set="createDate" t-value="str_to_datetime(attachment.create_date)"/>
+            <t t-set="fullDate" t-value="createDate.toLocaleString()"/>
+            <t t-set="date" t-value="createDate.toLocaleDateString()"/>
+            <t t-set="createUserName" t-value="attachment.create_uid[1]"/>
+            <div class="o_inspector_history_title">
+                <span class="o_inspector_history_name" t-att-aria-label="name" t-att-title="name" t-esc="name"/>
+                <span class="o_inspector_history_info">
+                    <span class="o_inspector_history_create_name" t-att-aria-label="createUserName" t-att-title="createUserName" t-esc="createUserName"/>
+                    <i class="o_inspector_history_info_separator">-</i>
+                    <span class="o_inspector_history_info_date" t-att-aria-label="fullDate" t-att-title="fullDate" t-esc="date"/>
+                </span>
+            </div>
+            <div class="o_inspector_history_buttons">
+                <button aria-label="delete" title="delete" class="o_inspector_history_button btn fa fa-trash text-white fa-pull-right o_inspector_history_item_delete" t-att-data-id="id"/>
+                <button aria-label="download" title="download" class="o_inspector_history_button btn fa fa-download text-white fa-pull-right o_inspector_history_item_download" t-att-data-id="id"/>
+                <button aria-label="restore" title="restore" class="o_inspector_history_button btn fa fa-retweet text-white fa-pull-right o_inspector_history_item_restore" t-att-data-id="id"/>
+            </div>
+        </div>
+    </t>
 </t>
 
 <!-- Mobile templates -->

@@ -33,6 +33,7 @@ const DocumentsViewMixin = {
             'name',
             'owner_id',
             'partner_id',
+            'previous_attachment_ids',
             'res_id',
             'res_model',
             'res_model_name',

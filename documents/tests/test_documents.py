@@ -337,3 +337,20 @@ class TestCaseDocuments(TransactionCase):
         self.assertEqual(attachment.res_id, document.id, "It should be linked to the default res_id")
         self.assertEqual(attachment.res_model, document._name, "It should be linked to the default res_model")
         self.assertEqual(document.attachment_id, attachment, "Document should be linked to the created attachment")
+
+    def test_versioning(self):
+        """
+        Tests the versioning/history of documents
+        """
+        document = self.env['documents.document'].create({'datas': GIF, 'folder_id': self.folder_b.id})
+        self.assertEqual(len(document.previous_attachment_ids.ids), 0, "The history should be empty")
+        document.write({'datas': TEXT})
+        self.assertEqual(len(document.previous_attachment_ids.ids), 1, "There should be 1 attachment in history")
+        self.assertEqual(document.previous_attachment_ids[0].datas, GIF, "The history should have the right content")
+        old_attachment = document.previous_attachment_ids[0]
+        new_attachment = document.attachment_id
+        document.write({'attachment_id': old_attachment.id})
+        self.assertEqual(len(document.previous_attachment_ids.ids), 1, "there should still be 1 attachment in history")
+        self.assertEqual(document.attachment_id.id, old_attachment.id, "the history should contain the old attachment")
+        self.assertEqual(document.previous_attachment_ids[0].id, new_attachment.id,
+                         "the document should contain the new attachment")

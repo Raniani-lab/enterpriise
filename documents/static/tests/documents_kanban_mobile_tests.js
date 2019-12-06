@@ -18,6 +18,7 @@ QUnit.module('DocumentsKanbanViewMobile', {
                     name: {string: "Name", type: 'char', default: ' '},
                     owner_id: {string: "Owner", type: "many2one", relation: 'user'},
                     partner_id: {string: "Related partner", type: 'many2one', relation: 'user'},
+                    previous_attachment_ids: {string: "History", type: 'many2many', relation: 'ir.attachment'},
                     res_model: {string: "Model (technical)", type: 'char'},
                     tag_ids: {string: "Tags", type: 'many2many', relation: 'documents.tag'},
                 },
@@ -27,6 +28,10 @@ QUnit.module('DocumentsKanbanViewMobile', {
                 ],
             },
             'documents.folder': {
+                fields: {},
+                records: [],
+            },
+            "ir.attachment": {
                 fields: {},
                 records: [],
             },

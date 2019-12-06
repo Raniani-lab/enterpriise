@@ -29,6 +29,9 @@ class Document(models.Model):
     index_content = fields.Text(related='attachment_id.index_content')
     description = fields.Text('Attachment Description', related='attachment_id.description', readonly=False)
 
+    # Versioning
+    previous_attachment_ids = fields.Many2many('ir.attachment', string="History")
+
     # Document
     name = fields.Char('Name', copy=True, store=True, compute='_compute_name', inverse='_inverse_name')
     active = fields.Boolean(default=True, string="Active")
@@ -378,7 +381,16 @@ class Document(models.Model):
                 body = _("Document Request: %s Uploaded by: %s") % (record.name, self.env.user.name)
                 record.message_post(body=body)
 
-            if vals.get('datas') and not vals.get('attachment_id') and not record.attachment_id:
+            if record.attachment_id:
+                # versioning
+                if attachment_id:
+                    if attachment_id in record.previous_attachment_ids.ids:
+                        record.previous_attachment_ids = [(3, attachment_id, False)]
+                    record.previous_attachment_ids = [(4, record.attachment_id.id, False)]
+                if 'datas' in vals:
+                    old_attachment = record.attachment_id.copy()
+                    record.previous_attachment_ids = [(4, old_attachment.id, False)]
+            elif vals.get('datas') and not vals.get('attachment_id'):
                 res_model = vals.get('res_model', record.res_model or 'documents.document')
                 res_id = vals.get('res_id') if vals.get('res_model') else record.res_id if record.res_model else record.id
                 if res_model and res_model != 'documents.document' and not self.env[res_model].browse(res_id).exists():

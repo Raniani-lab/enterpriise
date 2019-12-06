@@ -12,6 +12,7 @@ const concurrency = require('web.concurrency');
 const NotificationService = require('web.NotificationService');
 const relationalFields = require('web.relational_fields');
 const testUtils = require('web.test_utils');
+const { str_to_datetime } = require('web.time');
 
 function autocompleteLength() {
     var $el = $('.ui-autocomplete');
@@ -80,6 +81,7 @@ QUnit.module('DocumentsViews', {
                     name: {string: "Name", type: 'char', default: ' '},
                     owner_id: {string: "Owner", type: "many2one", relation: 'user'},
                     partner_id: {string: "Related partner", type: 'many2one', relation: 'user'},
+                    previous_attachment_ids: {string: "History", type: 'many2many', relation: 'ir.attachment'},
                     public: {string: "Is public", type: 'boolean'},
                     res_id: {string: "Resource id", type: 'integer'},
                     res_model: {string: "Model (technical)", type: 'char'},
@@ -126,6 +128,9 @@ QUnit.module('DocumentsViews', {
                 fields: {
                     res_id: {string: "Resource id", type: 'integer'},
                     res_model: {string: "Model (technical)", type: 'char'},
+                    name: {string: "name", type: 'char'},
+                    create_date: {string: "name", type: 'char'},
+                    create_uid: {string: "Created By", type: "many2one", relation: 'user' },
                 },
                 records: [],
             },
@@ -2986,6 +2991,79 @@ QUnit.module('DocumentsViews', {
         assert.containsNone(list, '.o_list_record_selector input:checked', "No record should be selected")
 
         list.destroy();
+    });
+
+    QUnit.test('documents: Versioning', async function (assert) {
+        assert.expect(13);
+
+        this.data['documents.document'].records.push({
+            folder_id: 1,
+            id: 12,
+            name: 'newYoutubeVideo',
+            type: 'url',
+            url: 'https://youtu.be/Ayab6wZ_U1A',
+            previous_attachment_ids: [99],
+        });
+        this.data['ir.attachment'].records.push({
+            id: 99,
+            name: 'oldYoutubeVideo',
+            create_date: '2019-12-09 14:13:21',
+            create_uid: 2,
+        });
+
+        const kanban = await createDocumentsView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: `
+                <kanban><templates><t t-name="kanban-box">
+                    <div draggable="true" class="oe_kanban_global_area">
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+            async mockRPC(route, args) {
+                if (args.model === 'ir.attachment' && args.method === 'unlink') {
+                    assert.deepEqual(args.args[0], [99],
+                        "should unlink the right attachment");
+                    assert.step('attachmentUnlinked');
+                    return;
+                }
+                if (args.model === 'documents.document' && args.method === 'write') {
+                    assert.deepEqual(args.args[0], [12],
+                        "should target the right document");
+                    assert.deepEqual(args.args[1], {attachment_id: 99},
+                        "should target the right attachment");
+                    assert.step('attachmentRestored');
+                    return;
+                }
+                return this._super(...arguments);
+            },
+        });
+
+        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(5)'));
+
+        assert.strictEqual(kanban.$('.o_inspector_history_name').text(), 'oldYoutubeVideo',
+            "should display the correct record name");
+        assert.strictEqual(kanban.$('.o_inspector_history_create_name').text(), 'Lukaku',
+            "should display the correct name");
+        assert.strictEqual(
+            kanban.$('.o_inspector_history_info_date').text(),
+            str_to_datetime('2019-12-09 14:13:21').toLocaleDateString(),
+            "should display the correct date"
+        );
+
+        assert.containsOnce(kanban, '.o_inspector_history_item_restore',
+            "There should be one restore button");
+        assert.containsOnce(kanban, '.o_inspector_history_item_download',
+            "There should be one download button");
+        assert.containsOnce(kanban, '.o_inspector_history_item_delete',
+            "There should be one delete button");
+
+        await testUtils.dom.click(kanban.$('.o_inspector_history_item_restore'));
+        assert.verifySteps(['attachmentRestored']);
+        await testUtils.dom.click(kanban.$('.o_inspector_history_item_delete'));
+        assert.verifySteps(['attachmentUnlinked']);
+        kanban.destroy();
     });
 });
 

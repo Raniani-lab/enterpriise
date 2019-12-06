@@ -9,6 +9,7 @@ odoo.define('documents.DocumentsInspector', function (require) {
 const { _t, qweb } = require('web.core');
 const fieldRegistry = require('web.field_registry');
 const session = require('web.session');
+const { str_to_datetime } = require('web.time');
 const dialogs = require('web.view_dialogs');
 const Widget = require('web.Widget');
 
@@ -25,6 +26,9 @@ const DocumentsInspector = Widget.extend({
         'click .o_inspector_delete': '_onDelete',
         'click .o_inspector_download': '_onDownload',
         'click .o_inspector_replace': '_onReplace',
+        'click .o_inspector_history_item_delete': '_onClickHistoryItemDelete',
+        'click .o_inspector_history_item_download': '_onClickHistoryItemDownload',
+        'click .o_inspector_history_item_restore': '_onClickHistoryItemRestore',
         'click .o_inspector_lock': '_onLock',
         'click .o_inspector_share': '_onShare',
         'click .o_inspector_open_chatter': '_onOpenChatter',
@@ -104,6 +108,7 @@ const DocumentsInspector = Widget.extend({
      */
     async start() {
         this._renderTags();
+        this._renderHistory();
         this._renderRules();
         this._renderModel();
         this._updateButtons();
@@ -239,6 +244,26 @@ const DocumentsInspector = Widget.extend({
             }));
         }
         return Promise.all(proms);
+    },
+    /**
+     * @private
+     * @return {Promise}
+     */
+    async _renderHistory() {
+        const attachment_ids = this.records.length === 1 ? this.records[0].data.previous_attachment_ids.res_ids : [];
+        if (!attachment_ids) {
+           return;
+        }
+        const attachments = await this._rpc({
+            model: 'ir.attachment',
+            method: 'read',
+            args: [attachment_ids, ['name', 'create_date', 'create_uid']],
+            orderBy: [{ name: 'create_date', asc: false }],
+        });
+        $(qweb.render('documents.inspector.attachmentHistory', {
+            attachments,
+            str_to_datetime,
+        })).appendTo(this.$('.o_inspector_history'));
     },
     /**
      * @private
@@ -463,6 +488,34 @@ const DocumentsInspector = Widget.extend({
     _onArchive: function () {
         this.trigger_up('archive_records', {
             records: this.records,
+        });
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onClickHistoryItemDelete(ev) {
+        this.trigger_up('history_item_delete', {
+            attachmentId: $(ev.currentTarget).data('id'),
+        });
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onClickHistoryItemDownload(ev) {
+        this.trigger_up('history_item_download', {
+            attachmentId: $(ev.currentTarget).data('id'),
+        });
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onClickHistoryItemRestore(ev) {
+        this.trigger_up('history_item_restore', {
+            resId: this.records[0].res_id,
+            attachmentId: $(ev.currentTarget).data('id'),
         });
     },
     /**

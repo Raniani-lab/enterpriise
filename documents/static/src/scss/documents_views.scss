@@ -8,6 +8,7 @@ $o-dms-p-tiny: $o-dms-p-small*0.5;
 $o-dms-color-tag: $o-searchpanel-filter-default-color;
 $o-dms-color-model: #338FFC;
 $o-dms-color-action: $o-brand-primary;
+$o-dms-color-history: #3bb97b;
 $o-dms-color-folder: $o-enterprise-color;
 
 $o-dms-btn-to-activate: #427a1c;
@@ -109,6 +110,10 @@ $o-dms-progress-bar-height: 15px;
 
     .o_documents_action_color {
         color: $o-dms-color-action;
+    }
+
+    .o_documents_history_color {
+        color: $o-dms-color-history;
     }
 
     .o_documents_view {
@@ -420,6 +425,56 @@ $o-dms-progress-bar-height: 15px;
                 &.o_inspector_hover {
                     color: white;
                 }
+            }
+        }
+
+        .o_inspector_history_line {
+            padding: 4px 0px 4px 0px;
+            display: flex;
+            align-items: center;
+
+            &:hover .o_inspector_history_name {
+                color: white;
+            }
+        }
+
+        .o_inspector_history_title {
+            flex: 1 1 auto;
+            display: flex;
+            flex-flow: column;
+            overflow: hidden;
+        }
+
+        .o_inspector_history_name {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .o_inspector_history_info {
+            opacity: 0.5;
+            display: flex;
+        }
+
+        .o_inspector_history_create_name {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .o_inspector_history_info_separator {
+            padding: 0px 2px 0px 2px;
+        }
+
+        .o_inspector_history_buttons {
+            flex: 0 0 auto;
+        }
+
+        .o_inspector_history_button {
+            opacity: 0.7;
+
+            &:hover {
+                opacity: 1;
             }
         }
 

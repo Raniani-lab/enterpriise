@@ -29,6 +29,9 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         document_viewer_attachment_changed: '_onDocumentViewerAttachmentChanged',
         download: '_onDownload',
         get_search_panel_tags: '_onGetSearchPanelTags',
+        history_item_delete: '_onHistoryItemDelete',
+        history_item_download: '_onHistoryItemDownload',
+        history_item_restore: '_onHistoryItemRestore',
         kanban_image_clicked: '_onKanbanImageClicked',
         lock_attachment: '_onLockAttachment',
         open_chatter: '_onOpenChatter',
@@ -607,6 +610,44 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      */
     _onGetSearchPanelTags(ev) {
          ev.data.callback(this._searchPanel.getTags());
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     * @param {integer} ev.data.attachmentId
+     */
+    async _onHistoryItemDelete(ev) {
+        ev.stopPropagation();
+        await this._rpc({
+            model: 'ir.attachment',
+            method: 'unlink',
+            args: [[ev.data.attachmentId]],
+        });
+        await this.reload();
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     * @param {integer} ev.data.attachmentId
+     */
+    _onHistoryItemDownload(ev) {
+        ev.stopPropagation();
+        window.location = `/web/content/${ev.data.attachmentId}?download=true`;
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     * @param {integer} ev.data.attachmentId
+     * @param {integer} ev.data.resId
+     */
+    async _onHistoryItemRestore(ev) {
+        ev.stopPropagation();
+        await this._rpc({
+            model: 'documents.document',
+            method: 'write',
+            args: [[ev.data.resId], {attachment_id: ev.data.attachmentId}],
+        });
+        await this.reload();
     },
     /**
      * @private

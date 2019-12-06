@@ -1167,7 +1167,8 @@ class AccountMove(models.Model):
                 total or 0.0, uuid or '')
             soap_env = template.format(data=params)
             try:
-                soap_xml = requests.post(url, data=soap_env, headers=headers)
+                soap_xml = requests.post(url, data=soap_env,
+                                         headers=headers, timeout=20)
                 response = fromstring(soap_xml.text)
                 status = response.xpath(
                     '//a:Estado', namespaces=namespace)

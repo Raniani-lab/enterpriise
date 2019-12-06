@@ -108,6 +108,7 @@ var IotScanProgress = Widget.extend({
     events: {
         'click .add_scan_range': '_onClickAddScanRange',
         'click .add_scan_range_ip': '_onClickAddScanRangeIp',
+        'click .delete_scan_range': '_onClickDeleteScanRange',
     },
 
     /**
@@ -283,8 +284,10 @@ var IotScanProgress = Widget.extend({
         range.current ++;
         var percent = Math.round(range.current / range.total * 100);
         range.$bar.css('width', percent + '%').attr('aria-valuenow', percent).text(percent + '%');
+        range.$delete.hide();
         if (percent === 100) {
             this._RangeProgressDone();
+            range.$delete.show();
             range.$bar.text(_t('Done'));
             if (_.isEmpty(IoTScan.iots)) {
                 this.$progressIotFound.text(_t('No IoT Box(s) found'));
@@ -302,19 +305,13 @@ var IotScanProgress = Widget.extend({
     */
     _onAddRange: function (event){
         var range = event.detail;
-        var $range = $('<li/>')
-            .addClass('list-group-item')
-            .append('<b>' + range.range + '*' + '</b>')
-            .appendTo(this.$progressRanges);
 
-        var $progress = $('<div class="progress"/>').appendTo($range);
-        var $bar = $('<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"/>')
-            .css('width', '0%')
-            .text('0%')
-            .appendTo($progress);
+        var $range = $(QWeb.render('iot.range_item', {range: range.range}));
+        this.$progressRanges.append($range);
 
         range.$range = $range;
-        range.$bar = $bar;
+        range.$bar = $range.find('.progress-bar');
+        range.$delete = $range.find('.delete_scan_range');
 
         return range;
     },
@@ -342,6 +339,16 @@ var IotScanProgress = Widget.extend({
     */
     _onClickAddScanRangeIp: function () {
         this.$addRangeInput.removeClass('is-invalid').val().trim();
+    },
+
+    /**
+     * Click to delete the selected range from the list of scanned ranges
+     */
+    _onClickDeleteScanRange: function (ev) {
+        ev.preventDefault();
+        var range = $(ev.currentTarget).attr('data-range');
+        IoTScan.ranges[range].$range.remove();
+        delete IoTScan.ranges[range];
     },
 });
 

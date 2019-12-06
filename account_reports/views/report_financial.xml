@@ -144,6 +144,10 @@
     </div>
 </template>
 
+<template id="cell_template">
+    <t t-esc="cell.get('name')"/>
+</template>
+
 <template id="line_template">
     <t t-foreach="lines['lines']" t-as="line">
         <t t-set="trclass" t-value="''"/>
@@ -213,11 +217,11 @@
                     </t>
             </td>
             <t t-set="column_index" t-value="0"/>
-            <t t-foreach="line.get('columns')" t-as="column">
+            <t t-foreach="line.get('columns')" t-as="cell">
                 <t t-set="hierarchies_enabled" t-value="len(lines.get('columns_header', [])) > 1"/>
-                <td t-att-class="'o_account_report_line ' + (column.get('class', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or '')) + ('' if hierarchies_enabled else ' o_account_report_line_indent')" t-att-style="column.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))">
-                    <span class="o_account_report_column_value" t-att-title="column.get('title')">
-                        <t t-esc="column.get('name')"/>
+                <td t-att-class="'o_account_report_line ' + (cell.get('class', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or '')) + ('' if hierarchies_enabled else ' o_account_report_line_indent')" t-att-style="cell.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))">
+                    <span class="o_account_report_column_value" t-att-title="cell.get('title')">
+                        <t t-call="{{cell.get('template', 'account_reports.cell_template')}}"/>
                     </span>
                 </td>
                 <t t-set="column_index" t-value="column_index + 1"/>
@@ -230,18 +234,13 @@
     <thead class="o_account_reports_header_hierarchy">
         <t t-foreach="lines.get('columns_header')" t-as="header_line">
             <tr>
-                <t t-foreach="header_line" t-as="header">
-                    <th t-att-class="'o_account_report_column_header ' + (header.get('class', ''))"
-                        t-att-colspan="header.get('colspan')"
-                        t-att-style="header.get('style', '')"
-                        t-att-title="header.get('title')"
-                        t-att-data-toggle="header.get('data-toggle')">
-                        <t t-if="header.get('show_bug')">
-                            <span class="fa fa-bug"/>
-                        </t>
-                        <t t-else="">
-                            <t t-esc="header.get('name')"/>
-                        </t>
+                <t t-foreach="header_line" t-as="cell">
+                    <th t-att-class="'o_account_report_column_header ' + (cell.get('class', ''))"
+                        t-att-colspan="cell.get('colspan')"
+                        t-att-style="cell.get('style', '')"
+                        t-att-title="cell.get('title')"
+                        t-att-data-toggle="cell.get('data-toggle')">
+                        <t t-call="{{cell.get('template', 'account_reports.cell_template')}}"/>
                     </th>
                 </t>
             </tr>
@@ -280,6 +279,21 @@
             <div class="js_account_report_footnotes"/>
         </div>
     </div>
+</template>
+
+<!-- Financial reports templates -->
+<template id="cell_template_show_bug_financial_reports">
+    <span class="fa fa-bug"/>
+</template>
+
+<template id="cell_template_debug_popup_financial_reports">
+    <span class="js_popup_formula" t-att-code="cell['line_code']" t-esc="cell['line_code']"/>
+    <a
+        t-att-class="'o_account_report_popup ' + cell['popup_class']"
+        t-att-template="cell['popup_template']"
+        t-att="cell['popup_attributes']"
+        t-att-data="cell['popup_data']"
+       role="button"/>
 </template>
 
 <!-- Aged partner balance templates -->

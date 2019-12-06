@@ -245,6 +245,84 @@ var accountReportsWidget = AbstractAction.extend({
         this.$('[data-toggle="tooltip"]').tooltip();
         this._add_line_classes();
     },
+    _init_line_popups: function(){
+        /*
+            Configure the popover used in the financial reports to display some details about the results given by
+            the report lines like:
+            - the code.
+            - the formula with values.
+            - the domain.
+            - A button to show the account.move.lines.
+        */
+
+        var self = this;
+        _.each(this.$('.o_account_report_popup'), function(popup){
+            $(popup).popover({
+                html: true,
+                template: "<div class='popover' role='tooltip' style='max-width: 100%; margin-right:80px;'><div class='popover-body'></div></div>",
+                placement: 'left',
+                trigger: 'focus',
+                container: 'body',
+                delay: {show: 0, hide: 100},
+                content: function(){
+                    var data = JSON.parse(popup.getAttribute('data'));
+
+                    // Render the content.
+                    var $content = $(QWeb.render(popup.getAttribute('template'), data));
+
+                    // Bind the 'view journal items' button with the 'action_view_journal_entries' python method.
+                    $content.find('.js_view_entries').on('click', function(event){
+                        self._rpc({
+                            model: 'account.financial.html.report.line',
+                            method: 'action_view_journal_entries',
+                            args: [$(event.target).data('id'), self.report_options],
+                            context: self.odoo_context,
+                        })
+                        .then(function(result){
+                            return self.do_action(result);
+                        })
+                    });
+
+                    var formula_element = $content.find('.js_popup_formula');
+
+                    // Highlight involved codes during formula evaluation.
+                    _.each($content.find('.js_popup_formula'), function(element){
+                        $(element).on("mouseenter", function(event){
+                            $(element).addClass('o_financial_report_hover_popup');
+                            self.$("[code='" + element.textContent + "']").addClass('o_financial_report_hover_popup');
+                        });
+                        $(element).on("mouseleave", function(event){
+                            $(element).removeClass('o_financial_report_hover_popup');
+                            self.$("[code='" + element.textContent + "']").removeClass('o_financial_report_hover_popup');
+                        });
+                    });
+
+                    // Redirect to another report.
+                    _.each($content.find('.js_popup_open_report'), function(element){
+                        $(element).on("click", function(event){
+                            var $target = $(event.target);
+                            self._rpc({
+                                model: 'account.financial.html.report',
+                                method: 'action_redirect_to_report',
+                                args: [$target.data('id'), self.report_options, $target.data('target')],
+                                context: self.odoo_context,
+                            })
+                            .then(function(result){
+                                return self.do_action(result);
+                            })
+                        });
+                    });
+
+                    return $content;
+                }
+            });
+            
+            // Triggered when the popup is closed without mouseleave event.
+            $(popup).on("hidden.bs.popover", function(element){
+                self.$('.js_popup_formula').removeClass('o_financial_report_hover_popup');
+            });
+        });
+    },
     _add_line_classes: function() {
         /* Pure JS to improve performance in very cornered case (~200k lines)
          * Jquery code:
@@ -263,6 +341,8 @@ var accountReportsWidget = AbstractAction.extend({
         }
         // This selector is not adaptable in pure JS
         this.$('tr[data-parent-id]').addClass('o_js_account_report_inner_row');
+
+        this._init_line_popups();
      },
     filter_accounts: function(e) {
         var self = this;

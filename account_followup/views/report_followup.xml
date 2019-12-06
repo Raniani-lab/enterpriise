@@ -67,12 +67,12 @@
             </xpath>
             <xpath expr="//span[hasclass('o_account_report_column_value')]" position="replace">
                 <span class="'o_account_report_column_value'">
-                    <t t-if="column.get('blocked') != None">
-                        <input t-if="column['blocked'] == False" type="checkbox" name="blocked" value="True" />
-                        <input t-if="column['blocked'] == True" type="checkbox" name="blocked" value="True" checked="checked" />
+                    <t t-if="cell.get('blocked') != None">
+                        <input t-if="cell['blocked'] == False" type="checkbox" name="blocked" value="True" />
+                        <input t-if="cell['blocked'] == True" type="checkbox" name="blocked" value="True" checked="checked" />
                     </t>
-                    <t t-if="column.get('blocked') == None">
-                        <t t-esc="column.get('name')"/>
+                    <t t-if="cell.get('blocked') == None">
+                        <t t-esc="cell.get('name')"/>
                     </t>
                 </span>
             </xpath>

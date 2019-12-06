@@ -77,10 +77,6 @@ class FormulaSolver:
         #   comparison only when 'partner_id' = 2.
         # * 'sub_codes' that are the formula codes used by the current formula.
         #   E.g. a line having 'A' as code and 'B + C' as formula will have ['B', 'C'] in this map.
-        # where key1, key2, ... are tuple where the first element is the period index and others are the additional
-        # group by fields.
-        # E.g. if there is a group by on 'partner_id', the key (1, 2) will be the balance for the first
-        # comparison only when 'partner_id' = 2.
         self.cache_results_by_id = {}
 
         # A set of all encountered keys when computing the leaves.
@@ -210,9 +206,17 @@ class FormulaSolver:
                     # The current line contains a 'sum' and then, must be evaluate directly.
                     self.solver._get_amls_results(self.financial_line)
                 else:
+
                     # Iterate sub-formula recursively. If the line is not already computed, it will trigger a new
                     # '_prefetch_line'.
-                    self.solver._get_line_by_code(node.id)
+                    financial_line = self.solver._get_line_by_code(node.id)
+
+                    # Track the involved codes inside the formula. Suppose a line 'A' having 'B + C' as formula.
+                    # We need to know 'B' and 'C' are used by the 'A' formula.
+                    if financial_line:
+                        self.solver.cache_results_by_id[self.financial_line.id].setdefault('sub_codes', set())
+                        self.solver.cache_results_by_id[self.financial_line.id]['sub_codes'].add(financial_line.code)
+
                 return node
 
         LeafResolver(self, financial_line).visit(ast.parse(financial_line.formulas))
@@ -281,3 +285,97 @@ class FormulaSolver:
             return False
         total_count_rows = sum(self.cache_results_by_id[financial_line.id]['amls']['count_rows'].values())
         return bool(total_count_rows)
+
+    def get_formula_string(self, financial_line):
+        ''' Helper to get a formula with replaced amounts. '''
+
+        def inject_in_formula(formula, to_replace, to_write, is_monetary=False):
+            # Inject value to write in the current formula. To find a match, the regex is composed by:
+            # - negative lookbehind assertion to match if the previous character is not a letter.
+            # - lookahead assertion to match if the following character is not a letter or the end of the string.
+
+            # Special case in case of '-sum' as formula when injecting a negative amount.
+            # Instead of displaying '-sum = -$-<amount> = $<amount>', display directly the final result.
+            if to_replace == 'sum' and is_monetary and to_write < 0.0 and re.sub(r'\s*', '', formula) == '-sum':
+                return self.env['account.report'].format_value(-to_write)
+
+            if is_monetary:
+                to_write = self.env['account.report'].format_value(to_write)
+            return re.sub(r'(?<!\w)%s(?=(\W|$))' % to_replace, str(to_write), formula)
+
+        formula = financial_line.formulas
+
+        if not formula:
+            return ''
+
+        results = self.get_results(financial_line)
+
+        if self.is_leaf(financial_line):
+            # Manage 'count_rows': Display only the count_rows for the current period.
+            formula = inject_in_formula(formula, 'count_rows', results['amls']['count_rows'].get(0, 0))
+
+            # Manage 'sum', 'sum_if_pos', 'sum_if_neg'.
+            for keyword in ('sum', 'sum_if_pos', 'sum_if_neg'):
+                balance = sum(results['amls'][keyword].values())
+                formula = inject_in_formula(formula, keyword, balance, is_monetary=True)
+
+        # Manage 'from_context': Display context value inside the first options.
+        formula = inject_in_formula(formula, 'from_context', self._get_balance_from_context(financial_line), is_monetary=True)
+
+        # Manage 'NDays': Display only the NDays for the current period.
+        formula = inject_in_formula(formula, 'NDays', self._get_number_of_days(0))
+
+        # Manage involved sub-formula.
+        for code in results.get('sub_codes', []):
+            other_line = self.cache_line_by_code[code]
+
+            # A financial line could have no code since the field is not required.
+            if not other_line.code:
+                continue
+
+            formula_results = self._get_formula_results(other_line)
+            balance = sum(formula_results.values())
+            formula = inject_in_formula(formula, other_line.code, balance, is_monetary=True)
+
+        return formula
+
+    def get_formula_popup(self, financial_line):
+        ''' Helper to get the formula with injected html to be used inside the popup. '''
+
+        def inject_in_formula(formula, other_line):
+            financial_report = other_line._get_financial_report()
+            code = other_line.code
+
+            # Regex to search the code inside the formula using:
+            # - negative lookbehind assertion to match if the previous character is not a letter.
+            # - lookahead assertion to match if the following character is not a letter or the end of the string.
+            regex = r'(?<!\w)%s(?=(\W|$))' % code
+
+            if not re.search(regex, formula):
+                return formula
+
+            if financial_report == self.financial_report:
+                code_as_html = '''<span class="js_popup_formula">%s</span>''' % code
+            else:
+                code_as_html = '''<button data-id="%s" data-target="%s" class="btn btn-sm btn-secondary js_popup_open_report">%s</button>''' % \
+                               (self.financial_report.id, financial_report.id, code)
+
+            return re.sub(regex, code_as_html, formula)
+
+        results = self.get_results(financial_line)
+
+        formula = financial_line.formulas
+
+        if not formula:
+            return ''
+
+        for code in results.get('sub_codes', []):
+            other_line = self.cache_line_by_code[code]
+
+            # A financial line could have no code since the field is not required.
+            if not other_line.code:
+                continue
+
+            formula = inject_in_formula(formula, other_line)
+
+        return formula

@@ -206,6 +206,46 @@ class ReportAccountFinancialReport(models.Model):
                and len(options['comparison'].get('periods', [])) == 1 \
                and not self._get_options_groupby_fields(options)
 
+    @api.model
+    def _compute_debug_info_column(self, options, solver, financial_line):
+        ''' Helper to get the additional columns to display the debug info popup.
+        :param options:             The report options.
+        :param solver:              The FormulaSolver instance used to compute the formulas.
+        :param financial_line:      An account.financial.html.report.line record.
+        :return:                    The new columns to add to line['columns'].
+        '''
+        if financial_line.formulas:
+            results = solver.get_results(financial_line)
+            return {
+                'style': 'width: 1%; text-align: right;',
+                'template': 'account_reports.cell_template_debug_popup_financial_reports',
+                'line_code': financial_line.code or '',
+                'popup_template': 'accountReports.FinancialReportInfosTemplate',
+                'popup_class': 'fa fa-info-circle',
+                'popup_attributes': {'tabindex': 1},
+                'popup_data': json.dumps({
+                    'id': financial_line.id,
+                    'name': financial_line.name,
+                    'code': financial_line.code or '',
+                    'formula': solver.get_formula_popup(financial_line),
+                    'formula_with_values': solver.get_formula_string(financial_line),
+                    'formula_balance': self.format_value(sum(results['formula'].values())),
+                    'domain': str(financial_line.domain) if solver.is_leaf(financial_line) and financial_line.domain else '',
+                    'display_button': solver.has_move_lines(financial_line),
+                }),
+            }
+        else:
+            return {'style': 'width: 1%;'}
+
+    @api.model
+    def _display_debug_info(self, options):
+        ''' Helper determining if the debug info popup column should be displayed or not.
+        :param options: The report options.
+        :return:        A boolean.
+        '''
+        return not self._context.get('print_mode') and self.user_has_groups('base.group_no_one') \
+               and (not options.get('comparison') or not options['comparison'].get('periods'))
+
     # -------------------------------------------------------------------------
     # COLUMNS / LINES
     # -------------------------------------------------------------------------
@@ -467,6 +507,17 @@ class ReportAccountFinancialReport(models.Model):
         if self._display_growth_comparison(options_list[0]):
             headers[0].append({'name': '%', 'class': 'number', 'colspan': 1})
 
+        # Manage the debug info columns.
+        if self._display_debug_info(options_list[0]):
+            for i in range(len(headers)):
+                if i == 0:
+                    headers[i].append({
+                        'template': 'account_reports.cell_template_show_bug_financial_reports',
+                        'style': 'width: 1%; text-align: right;',
+                    })
+                else:
+                    headers[i].append({'name': '', 'style': 'width: 1%; text-align: right;'})
+
         return headers, sorted_groupby_keys
 
     def _get_lines(self, options, line_id=None):
@@ -545,6 +596,10 @@ class ReportAccountFinancialReport(models.Model):
                 green_on_positive=financial_line.green_on_positive
             ))
 
+        # Debug info columns.
+        if self._display_debug_info(options):
+            columns.append(self._compute_debug_info_column(options, solver, financial_line))
+
         financial_report_line = {
             'id': financial_line.id,
             'name': financial_line.name,
@@ -587,6 +642,9 @@ class ReportAccountFinancialReport(models.Model):
                 columns[1]['no_format'],
                 green_on_positive=financial_line.green_on_positive
             ))
+
+        if self._display_debug_info(options):
+            columns.append({'name': '', 'style': 'width: 1%;'})
 
         return {
             'id': 'aml_%s' % groupby_id,
@@ -666,6 +724,17 @@ class ReportAccountFinancialReport(models.Model):
     # -------------------------------------------------------------------------
     # BUSINESS METHODS
     # -------------------------------------------------------------------------
+
+    def action_redirect_to_report(self, options, target_id):
+        ''' Action when clicking in a code owned by another report in the debug info popup.
+
+        :param options:     The report options.
+        :param target_id:   The target report id.
+        :return:            An action opening a new financial report.
+        '''
+        self.ensure_one()
+        action = self.browse(target_id).generated_menu_id.action
+        return self.execute_action(options, {'actionId': action.id})
 
     def _create_action_and_menu(self, parent_id):
         # create action and menu with corresponding external ids, in order to
@@ -1056,3 +1125,24 @@ class AccountFinancialReportLine(models.Model):
                     suffix = '.' + field
                     copied_formulas = copied_formulas.replace(k + suffix, v + suffix)
             copy_line_id.formulas = copied_formulas
+
+    def action_view_journal_entries(self, options):
+        ''' Action when clicking on the "View Journal Items" in the debug info popup.
+
+        :param options:     The report options.
+        :return:            An action showing the account.move.lines for the current financial report line.
+        '''
+        self.ensure_one()
+        financial_report = self._get_financial_report()
+        new_options = self._get_options_financial_line(options)
+        domain = self._get_domain(new_options, financial_report) + financial_report._get_options_domain(new_options)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Journal Items'),
+            'res_model': 'account.move.line',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'target': 'current',
+            'views': [[self.env.ref('account.view_move_line_tree').id, 'list']],
+            'domain': domain,
+        }

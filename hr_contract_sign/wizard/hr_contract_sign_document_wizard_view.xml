@@ -12,6 +12,7 @@
                 </group>
                 <group>
                     <group>
+                        <field name="sign_template_responsible_ids" invisible="1"/>
                         <field name="employee_role_id" options="{'no_create': True}"/>
                     </group>
                     <group>

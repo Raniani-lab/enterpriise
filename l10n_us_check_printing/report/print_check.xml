@@ -30,13 +30,15 @@
 
 <template id="ckus_stub">
     <div t-attf-class="ckus_stub ckus_stub_{{ stub_num }}">
-        <div class="sequence_number" t-if="page['sequence_number']" t-esc="page['sequence_number']" />
         <div class="row summary_line">
-            <div class="col-6 text-left">
+            <div class="col-xs-4 text-left">
                 <span t-esc="page['partner_name']"/>
             </div>
-            <div class="col-6 text-right">
+            <div class="col-xs-4 text-middle">
                 <span t-esc="page['payment_date']"/>
+            </div>
+            <div class="col-xs-4 text-right sequence_number">
+                <span t-if="page['sequence_number']" t-esc="page['sequence_number']"/>
             </div>
         </div>
 
@@ -49,7 +51,7 @@
                 <th class="text-right">Payment</th>
             </tr></thead>
             <tbody>
-                <t t-foreach="page['stub_lines'][:5]" t-as="stub_line">
+                <t t-foreach="page['stub_lines']" t-as="stub_line">
                     <t t-if="stub_line.get('header')">
                         <tr><th colspan="6"><t t-esc="stub_line['name']"/></th></tr>
                     </t>
@@ -63,7 +65,7 @@
                         <td class="text-right"><t t-esc="stub_line['amount_paid']"/></td>
                     </tr></t>
                 </t>
-                <tr t-if="len(page['stub_lines']) > 5"><td colspan="6" class="text-right">...</td></tr>
+                <tr t-if="page['stub_cropped']"><td colspan="6" class="text-right">...</td></tr>
             </tbody>
         </table>
         <div class="stub_total_amount">Check Amount:

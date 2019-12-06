@@ -13,7 +13,7 @@ class res_company(models.Model):
     applicable_on = fields.Selection([('sale', 'Sales Order'), ('purchase', 'Purchase Order'),
           ('sale_purchase', 'Sales and Purchase Order')], string="Apply on")
     auto_validation = fields.Boolean(string="Automatic Validation")
-    intercompany_user_id = fields.Many2one("res.users", string="Assign to", default=SUPERUSER_ID,
+    intercompany_user_id = fields.Many2one("res.users", string="Create as", default=SUPERUSER_ID, domain=["|", ["active", "=", True], ["id", "=", SUPERUSER_ID]],
         help="Responsible user for creation of documents triggered by intercompany rules.")
     warehouse_id = fields.Many2one("stock.warehouse", string="Warehouse",
         help="Default value to set on Purchase(Sales) Orders that will be created based on Sale(Purchase) Orders made to this company")

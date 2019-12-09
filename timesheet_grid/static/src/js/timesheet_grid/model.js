@@ -23,6 +23,15 @@ odoo.define('timesheet_grid.GridModel', function (require) {
 
             return this._loadTimesheetByTask();
         },
+        getServerTime: async function () {
+            const time = await this._rpc({
+                model: this.modelName,
+                method: 'get_server_time',
+                args: [false],
+            });
+
+            this._gridData.serverTime = time;
+        },
         /**
          * Update state
          *
@@ -71,7 +80,9 @@ odoo.define('timesheet_grid.GridModel', function (require) {
 
                 i += 1;
             }
-
+            if (this._gridData.serverTime) {
+                state.serverTime = this._gridData.serverTime;
+            }
             this._gridData = state;
             return this._gridData;
         },
@@ -163,6 +174,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
                         rows[rowIndex].timesheet = timesheet;
                         if (timesheet && timesheet.timer_start) {
                             grid[rowIndex].map((column) => column.readonly = column.is_current);
+                            await this.getServerTime();
                         }
                     }
                 }
@@ -229,13 +241,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
             });
         },
         _parseServerValue: function (record) {
-            const fieldNames = ['date', 'timer_start'];
-
-            fieldNames.forEach((field) => {
-                if (record) {
-                    record[field] = fieldUtils.parse.datetime(record[field], null, {_isUTC: true});
-                }
-            });
+            record.date = fieldUtils.parse.date(record.date, null, {isUTC: true});
         }
     });
 

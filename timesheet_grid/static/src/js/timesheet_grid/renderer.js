@@ -6,7 +6,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
     const h = require('snabbdom.h');
     const toVNode = require('snabbdom.tovnode');
 
-    const { FieldTimesheetTime } = require('hr_timesheet.timesheet_uom');
+    const Timer = require('hr_timesheet.Timer');
 
     return WebGridRenderer.extend({
         /**
@@ -81,8 +81,8 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
                     if (element && button.value) {
                         if (timesheet && timesheet.timer_start) {
                             // To create the timer, a method has already been written to make this
-                            // into FieldTimesheetTime class in the odoo/addons/hr_timesheet/static/src/js/timesheet_uom.js file
-                            this.time = FieldTimesheetTime.prototype._createTimer(timesheet.unit_amount, timesheet.timer_start);
+                            // into Timer class in the odoo/addons/hr_timesheet/static/src/js/Timer.js file
+                            this.time = Timer.createTimer(timesheet.unit_amount, timesheet.timer_start, this.state.serverTime);
                             // add the virtual element contains the display of timer as children
                             // of virtual element that it contains the name of a task as children.
                             element.children.push(this._renderTimer());

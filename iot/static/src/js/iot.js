@@ -226,7 +226,7 @@ var IotScanProgress = Widget.extend({
     */
     _RangeProgress: function () {
         this.$scanNetwork.text(_t('Scanning Network'));
-        this.$scanNetwork.append('<i class="fa pull-right iot-scan-status-icon mt-1 fa-spinner fa-spin"/>');
+        this.$scanNetwork.append('<i class="fa float-right iot-scan-status-icon mt-1 fa-spinner fa-spin"/>');
     },
 
     /**
@@ -236,7 +236,7 @@ var IotScanProgress = Widget.extend({
     */
     _RangeProgressDone: function () {
         this.$scanNetwork.text(_t('Scanning Network'));
-        this.$scanNetwork.append('<i class="fa pull-right iot-scan-status-icon mt-1 fa-check text-success"/>');
+        this.$scanNetwork.append('<i class="fa float-right iot-scan-status-icon mt-1 fa-check text-success"/>');
     },
 
     /**
@@ -254,7 +254,7 @@ var IotScanProgress = Widget.extend({
             var $icon = $iot.find('.iot-scan-status-icon');
             var $msg = $iot.find('.iot-scan-status-msg');
 
-            var icon = 'fa pull-right iot-scan-status-icon mt-1 ';
+            var icon = 'fa float-right iot-scan-status-icon mt-1 ';
             switch (event.detail.status) {
                 case "loading":
                     icon += 'fa-spinner fa-spin';

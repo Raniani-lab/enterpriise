@@ -340,7 +340,7 @@ $o-dms-progress-bar-height: 15px;
             label {
                 margin-bottom: 0;
 
-                i.fa, i.far, i.fas {
+                i.fa {
                     font-size: $font-size-sm;
                 }
             }
@@ -359,12 +359,11 @@ $o-dms-progress-bar-height: 15px;
                 right: 18px;
                 top: -2px;
                 font-size: 10px;
-                font-family: 'Font Awesome 5 Free';
+                font-family: 'FontAwesome';
                 color: inherit;
                 &:after {
                     border: none;
                     content: "\f0d7";
-                    font-weight: 900;
                 }
             }
 

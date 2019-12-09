@@ -5,14 +5,18 @@
         <record id="email_template_slot_single" model="mail.template">
             <field name="name">Planning: new single shift</field>
             <field name="email_from">${object.company_id.email_formatted | safe}</field>
-            <field name="subject">Planning: new shift</field>
-            <field name="email_to">${object.employee_id.work_email}</field>
+            <field name="subject">${ctx.mail_subject}</field>
+            <field name="email_to">${ctx.work_email}</field>
             <field name="model_id" ref="model_planning_slot"/>
             <field name="auto_delete" eval="False"/>
             <field name="body_html" type="html">
                 <div>
-                    <p>Dear ${object.employee_id.name or ''},<br/><br/>
-                    You have been assigned the following schedule:</p>
+                    <p>Dear ${ctx.employee_name or ''},<br/><br/></p>
+                    % if ctx.get('open_shift_available')
+                    <p>A new open shift is available:</p>
+                    % else
+                    <p>You have been assigned the following schedule:</p>
+                    % endif
                     <br/>
                     <table style="table-layout: fixed; width: 80%; margin: auto;">
                         <tr>
@@ -48,17 +52,30 @@
                         </tr>
                         % endif
                     </table>
+                    % if ctx.get('available_link')
+                    <div>
+                        <br/>
+                        <span>Please, assign yourself if you are available.</span>
+                    </div>
+                    % endif
                     <div style="text-align: center">
-                        % if ctx.get('unassign_url')
+                        % if ctx.get('unavailable_link')
                         <div style="display: inline-block; margin: 15px; text-align: center">
-                            <a href="${ctx.unassign_url}" target="_blank"
+                            <a href="${ctx.unavailable_link}" target="_blank"
                                 style="padding: 5px 10px; color: #875A7B; text-decoration: none; background-color: #FFFFFF; border: 1px solid #FFFFFF; border-radius: 3px"
                             >I am unavailable</a>
                         </div>
                         % endif
-                        % if ctx.get('render_link')
+                        % if ctx.get('available_link')
                         <div style="display: inline-block; margin: 15px; text-align: center">
-                            <a href="/web?#action=${ctx.get('action_id')}&amp;model=planning.slot&amp;menu_id=${ctx.get('menu_id')}&amp;db=${'dbname' in ctx and ctx['dbname'] or '' }" target="_blank"
+                            <a href="${ctx.available_link}" target="_blank"
+                                style="padding: 5px 10px; color: #875A7B; text-decoration: none; background-color: #FFFFFF; border: 1px solid #FFFFFF; border-radius: 3px"
+                            >Assign me this shift</a>
+                        </div>
+                        % endif
+                        % if ctx.get('link')
+                        <div style="display: inline-block; margin: 15px; text-align: center">
+                            <a href="${ctx.link}" target="_blank"
                                 style="padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
                             >View Planning</a>
                         </div>
@@ -84,9 +101,12 @@
                         Hello,
                     % endif
                         <br/><br/>
+                    % if ctx.get('assigned_new_shift'):
                         You have been assigned new shifts:
+                    % else:
+                        Planning is available:
+                    % endif
                     </p>
-                    
                     <br/>
 
                     <table style="table-layout: fixed; width: 80%; margin: auto;">
@@ -108,7 +128,9 @@
                     % endif
 
                     % if ctx.get('slot_unassigned_count'):
+                    <div>
                         <p>There are new open shifts available. Please, assign yourself if you are available.</p>
+                    </div>
                     % endif
 
                     % if ctx.get('message'):

@@ -38,6 +38,24 @@
         </field>
     </record>
 
+    <record id="planning_view_kanban" model="ir.ui.view">
+        <field name="name">planning.slot.form</field>
+        <field name="model">planning.slot</field>
+        <field name="inherit_id" ref="planning.planning_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='role_id']" position="before">
+                <field name="project_id"/>
+                <field name="task_id"/>
+            </xpath>
+            <xpath expr="//span[@name='role']" position="before">
+                <div class="o_kanban_record_title mb-2">
+                    <field name="project_id"/>
+                    <div class="font-italic font-weight-normal"><field name="task_id"/></div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
     <record id="planning_slot_view_search" model="ir.ui.view">
         <field name="name">planning.slot.search</field>
         <field name="model">planning.slot</field>
@@ -70,7 +88,7 @@
     <record id="planning_action_schedule_by_project" model="ir.actions.act_window">
         <field name="name">Schedule by Project</field>
         <field name="res_model">planning.slot</field>
-        <field name="view_mode">gantt,calendar,tree,form</field>
+        <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{'search_default_group_by_project': 1, 'planning_expand_project': 1, 'planning_groupby_project': True}</field>
     </record>
 

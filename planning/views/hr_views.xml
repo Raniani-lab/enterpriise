@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@id='o_work_employee_main']" position="inside">
                 <group name="planning" string="Planning">
-                    <field name="planning_role_ids" widget="many2many_tags"/>
+                    <field name="planning_role_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 </group>
             </xpath>
         </field>

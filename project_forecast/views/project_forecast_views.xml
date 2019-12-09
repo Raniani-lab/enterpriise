@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
             <xpath expr="/gantt" position="attributes">
                 <attribute name="consolidation">allocated_percentage</attribute>
-                <attribute name="consolidation_max">{"employee_id": 100}</attribute>
+                <attribute name="consolidation_max">{'employee_id': 100}</attribute>
             </xpath>
         </field>
     </record>

@@ -14,6 +14,7 @@
         'security/planning_security.xml',
         'security/ir.model.access.csv',
         'wizard/planning_send_views.xml',
+        'wizard/slot_planning_select_send_views.xml',
         'views/assets.xml',
         'views/hr_views.xml',
         'report/planning_report_views.xml',

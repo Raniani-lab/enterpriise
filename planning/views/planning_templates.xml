@@ -4,7 +4,6 @@
         <t t-call="web.frontend_layout">
             <t t-set="title">Your Planning</t>
             <t t-set="head">
-                <t t-call="planning.planning_shift_notification" />
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="planning.assets_frontend_planning" t-js="false"/>
                 <t t-call-assets="planning.assets_frontend_planning" t-css="false"/>
@@ -14,6 +13,7 @@
                         var employee_slots_fc_data = <t t-raw="json.dumps(employee_slots_fullcalendar_data)" />;
                         var employee_token = "<t t-esc="employee.employee_token" />";
                         var planning_token = "<t t-esc="planning_planning_id.access_token" />";
+                        var locale = "<t t-esc="locale" />";
 
                         // Hide the unassign footer by default
                         document.getElementById("dismiss_shift").style.display = "none";
@@ -21,8 +21,8 @@
                         var eventFunction = function(calEvent) {
                             $(".modal-title").text(calEvent.title);
                             $(".modal-header").css("background-color", calEvent.color);
-                            $("#start").text(moment(calEvent.start).format("YYYY-MM-DD hh:mm A"));
-                            $("#stop").text(moment(calEvent.end).format("YYYY-MM-DD hh:mm A"));
+                            $("#start").text(moment(calEvent.start).format("LLL"));
+                            $("#stop").text(moment(calEvent.end).format("LLL"));
                             $("#alloc_hours").text(calEvent.alloc_hours);
                             $("#allow_self_unassign").text(calEvent.allow_self_unassign);
 
@@ -55,10 +55,11 @@
 
                         $("#calendar_employee").fullCalendar({
                             // Settings
+                            locale: locale,
                             defaultView: 'month',
-                            defaultDate: moment.min(employee_slots_fc_data.map(item => moment(item.start))),
                             titleFormat: 'MMMM YYYY',
-                            timeFormat: 'hh:mm A',
+                            defaultDate: moment.min(employee_slots_fc_data.map(item => moment(item.start))),
+                            timeFormat: 'LT',
                             displayEventEnd: true,
                             height: 'auto',
                             eventTextColor: 'white',
@@ -85,6 +86,7 @@
                 <!-- fullcalendar object's container -->
                 <div class="container o_planning_calendar_container">
                     <h1 align="center" class="m-3">Planning: <t t-esc="employee.name"/></h1>
+                    <t t-call="planning.planning_shift_notification" />
                     <div id="calendar_employee" class="o_calendar_container">
                         <div class="o_calendar_view" >
                             <div class="o_calendar_widget" />
@@ -109,14 +111,8 @@
                                     <tbody>
                                         <t t-foreach="open_slots_ids" t-as="shift">
                                             <tr>
-                                                <td class="align-middle">
-                                                    <t t-esc="format_datetime(shift.start_datetime, dt_format='E. MMM d')"/> <br/>
-                                                    <t t-esc="format_datetime(shift.start_datetime, dt_format='h a')"/>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <t t-esc="format_datetime(shift.end_datetime, dt_format='E. MMM d')"/> <br/>
-                                                    <t t-esc="format_datetime(shift.end_datetime, dt_format='h a')"/><br/>
-                                                </td>
+                                                <td class="align-middle"><t t-esc="format_datetime(shift.start_datetime, dt_format='short')"/></td>
+                                                <td class="align-middle"><t t-esc="format_datetime(shift.end_datetime, dt_format='short')"/></td>
                                                 <td class="align-middle"><t t-esc="shift.role_id.name"/></td>
                                                 <td class="align-middle"><t t-esc="shift.name"/></td>
                                                 <td>
@@ -124,6 +120,7 @@
                                                         <div class="text-center float-right">
                                                             <form t-attf-action="/planning/#{planning_planning_id.access_token}/#{employee.employee_token}/assign/#{shift.id}" method="post">
                                                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                                <input type="hidden" name="message" value="assign"/>
                                                                 <button type="submit" class="btn btn-primary">ASSIGN ME THIS SHIFT</button>
                                                             </form>
                                                         </div>
@@ -166,6 +163,7 @@
                                 <div id="dismiss_shift" class="modal-footer">
                                     <form id="modal_action_dismiss_shift" t-attf-action="/planning" method="post">
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="message" value="unassign"/>
                                         <button type="submit" class="btn btn-outline-danger">I am unavailable</button>
                                     </form>
                                 </div>
@@ -180,17 +178,32 @@
     <!-- notification sub template -->
     <template id="planning_shift_notification" name="Shift notification">
         <t t-if="notification_text">
-            <div class="alert alert-success" role="alert">
-                <t t-if="message_slug == 'assign'">
-                    This shift is now assigned to you.
-                </t>
-                <t t-if="message_slug == 'unassign'">
-                    This shift is not assigned to you anymore.
-                </t>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    &amp;times;
-                </button>
-            </div>
+            <t t-if="message_slug in ['assign', 'unassign']">
+                <div class="alert alert-success" role="alert">
+                    <t t-if="message_slug == 'assign'">
+                        You were successfully assigned this open shift. <i class="fa fa-check-circle text-success"></i>
+                    </t>
+                    <t t-if="message_slug == 'unassign'">
+                        This shift is not assigned to you anymore.
+                    </t>
+                    <t t-if="message_slug == 'already_assign'">
+                        This shift is already assigned to another employee.
+                    </t>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        &amp;times;
+                    </button>
+                </div>
+            </t>
+            <t t-else="">
+                <div class="alert alert-danger" role="alert">
+                    <t t-if="message_slug == 'already_assign'">
+                        This shift is already assigned to another employee.
+                    </t>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        &amp;times;
+                    </button>
+                </div>
+            </t>
         </t>
     </template>
 

@@ -10,6 +10,7 @@ import pytz
 from werkzeug.utils import redirect
 import babel
 from werkzeug.exceptions import Forbidden
+from odoo.tools.misc import get_lang
 
 from odoo import tools
 
@@ -30,22 +31,16 @@ class ShiftController(http.Controller):
         employee_tz = pytz.timezone(employee_sudo.tz or 'UTC')
         employee_fullcalendar_data = []
         open_slots = []
-        planning_slots = []
 
-        # domain of slots to display
-        domain = planning_sudo._get_domain_slots()[planning_sudo.id]
         if planning_sudo.include_unassigned:
-            domain = expression.AND([domain, ['|', ('employee_id', '=', employee_sudo.id), ('employee_id', '=', False)]])
+            planning_slots = planning_sudo.slot_ids.filtered(lambda s: s.employee_id == employee_sudo or not s.employee_id)
         else:
-            domain = expression.AND([domain, [('employee_id', '=', employee_sudo.id)]])
-
-        planning_slots = request.env['planning.slot'].sudo().search(domain)
-
+            planning_slots = planning_sudo.slot_ids.filtered(lambda s: s.employee_id == employee_sudo)
         # filter and format slots
         for slot in planning_slots:
             if slot.employee_id:
                 employee_fullcalendar_data.append({
-                    'title': '%s%s' % (slot.role_id.name, u' \U0001F4AC' if slot.name else ''),
+                    'title': '%s%s' % (slot.role_id.name or '', u' \U0001F4AC' if slot.name else ''),
                     'start': str(pytz.utc.localize(slot.start_datetime).astimezone(employee_tz).replace(tzinfo=None)),
                     'end': str(pytz.utc.localize(slot.end_datetime).astimezone(employee_tz).replace(tzinfo=None)),
                     'color': self._format_planning_shifts(slot.role_id.color),
@@ -55,7 +50,7 @@ class ShiftController(http.Controller):
                     'note': slot.name,
                     'allow_self_unassign': slot.allow_self_unassign
                 })
-            elif not slot.is_past:
+            elif not slot.is_past and (not employee_sudo.planning_role_ids or not slot.role_id or slot.role_id in employee_sudo.planning_role_ids):
                 open_slots.append(slot)
 
         return request.render('planning.period_report_template', {
@@ -63,19 +58,18 @@ class ShiftController(http.Controller):
             'open_slots_ids': open_slots,
             'planning_slots_ids': planning_slots,
             'planning_planning_id': planning_sudo,
+            'locale': get_lang(request.env).code,
             'employee': employee_sudo,
             'format_datetime': lambda dt, dt_format: tools.format_datetime(request.env, dt, dt_format=dt_format),
+            'notification_text': message in ['assign', 'unassign', 'already_assign'],
             'message_slug': message,
         })
 
-    @http.route('/planning/<string:token_planning>/<string:token_employee>/assign/<int:slot_id>', type="http", auth="public", methods=['post'], website=True)
-    def planning_self_assign(self, token_planning, token_employee, slot_id, **kwargs):
+    @http.route('/planning/<string:token_planning>/<string:token_employee>/assign/<int:slot_id>', type="http", auth="public", website=True)
+    def planning_self_assign(self, token_planning, token_employee, slot_id, message=False, **kwargs):
         slot_sudo = request.env['planning.slot'].sudo().browse(slot_id)
         if not slot_sudo.exists():
             return request.not_found()
-
-        if slot_sudo.employee_id:
-            raise Forbidden(_('You can not assign yourself to this shift.'))
 
         employee_sudo = request.env['hr.employee'].sudo().search([('employee_token', '=', token_employee)], limit=1)
         if not employee_sudo:
@@ -85,11 +79,17 @@ class ShiftController(http.Controller):
         if not planning_sudo or slot_sudo.id not in planning_sudo.slot_ids._ids:
             return request.not_found()
 
-        slot_sudo.write({'employee_id': employee_sudo.id})
-        return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'assign'))
+        if slot_sudo.employee_id:
+            return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'already_assign'))
 
-    @http.route('/planning/<string:token_planning>/<string:token_employee>/unassign/<int:shift_id>', type="http", auth="public", methods=['post'], website=True)
-    def planning_self_unassign(self, token_planning, token_employee, shift_id, **kwargs):
+        slot_sudo.write({'employee_id': employee_sudo.id})
+        if message:
+            return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'assign'))
+        else:
+            return redirect('/planning/%s/%s' % (token_planning, token_employee))
+
+    @http.route('/planning/<string:token_planning>/<string:token_employee>/unassign/<int:shift_id>', type="http", auth="public", website=True)
+    def planning_self_unassign(self, token_planning, token_employee, shift_id, message=False, **kwargs):
         slot_sudo = request.env['planning.slot'].sudo().search([('id', '=', shift_id)], limit=1)
         if not slot_sudo or not slot_sudo.allow_self_unassign:
             return request.not_found()
@@ -103,21 +103,42 @@ class ShiftController(http.Controller):
             return request.not_found()
 
         slot_sudo.write({'employee_id': False})
+        if message:
+            return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'unassign'))
+        else:
+            return redirect('/planning/%s/%s' % (token_planning, token_employee))
 
-        return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, 'unassign'))
+    @http.route('/planning/assign/<string:token_employee>/<int:shift_id>', type="http", auth="user", website=True)
+    def planning_self_assign_with_user(self, token_employee, shift_id, **kwargs):
+        slot_sudo = request.env['planning.slot'].sudo().search([('id', '=', shift_id)], limit=1)
+        if not slot_sudo:
+            return request.not_found()
 
-    @http.route('/planning/<string:token_slot>/<string:token_employee>/unassign', type="http", auth="public", methods=['get'], website=True)
-    def slot_self_unassign(self, token_slot, token_employee, **kwargs):
-        slot_sudo = request.env['planning.slot'].sudo().search([('access_token', '=', token_slot)], limit=1)
+        employee = request.env.user.employee_id
+        if not employee:
+            return request.not_found()
+
+        if not slot_sudo.employee_id:
+            slot_sudo.write({'employee_id': employee})
+
+        return redirect('/web?#action=planning.planning_action_open_shift')
+
+    @http.route('/planning/unassign/<string:token_employee>/<int:shift_id>', type="http", auth="user", website=True)
+    def planning_self_unassign_with_user(self, token_employee, shift_id, **kwargs):
+        slot_sudo = request.env['planning.slot'].sudo().search([('id', '=', shift_id)], limit=1)
         if not slot_sudo or not slot_sudo.allow_self_unassign:
             return request.not_found()
 
-        employee_sudo = request.env['hr.employee'].sudo().search([('employee_token', '=', token_employee)], limit=1)
-        if not employee_sudo or employee_sudo != slot_sudo.employee_id:
+        employee = request.env['hr.employee'].sudo().search([('employee_token', '=', token_employee)], limit=1)
+        if not employee:
+            employee = request.env.user.employee_id
+        if not employee or employee != slot_sudo.employee_id:
             return request.not_found()
 
         slot_sudo.write({'employee_id': False})
 
+        if request.env.user:
+            return redirect('/web?#action=planning.planning_action_open_shift')
         return request.env['ir.ui.view'].render_template('planning.slot_unassign')
 
     @staticmethod

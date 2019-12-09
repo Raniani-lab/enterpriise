@@ -29,6 +29,7 @@ class TestForecastCreationAndEditing(TestCommonForecast):
 
         # planning_shift on one day (planning mode)
         planning_shift = self.env['planning.slot'].create(values)
+        planning_shift._compute_allocated_hours()
         self.assertEqual(planning_shift.allocated_hours, 9.0, 'resource hours should be a full workday')
 
         planning_shift.write({'allocated_percentage': 50})

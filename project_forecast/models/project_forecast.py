@@ -15,6 +15,14 @@ _logger = logging.getLogger(__name__)
 class PlanningShift(models.Model):
     _inherit = 'planning.slot'
 
+    @api.model
+    def default_get(self, fields):
+        result = super(PlanningShift, self).default_get(fields)
+        if 'task_id' in result and 'project_id' not in result:
+            task_id = self.env['project.task'].browse(result['task_id'])
+            result['project_id'] = task_id.project_id.id
+        return result
+
     project_id = fields.Many2one('project.project', string="Project", domain="[('company_id', '=', company_id), ('allow_forecast', '=', True)]", check_company=True, group_expand='_read_group_project_id')
     task_id = fields.Many2one('project.task', string="Task", domain="[('company_id', '=', company_id), ('project_id', '=?', project_id)]", check_company=True)
 
@@ -31,6 +39,14 @@ class PlanningShift(models.Model):
         if self.project_id != self.task_id.project_id:
             # reset task when changing project
             self.task_id = False
+
+    @api.onchange('template_id')
+    def _onchange_template_id(self):
+        super(PlanningShift, self)._onchange_template_id()
+        if self.template_id.project_id:
+            self.project_id = self.template_id.project_id
+        if self.template_id.task_id:
+            self.task_id = self.template_id.task_id
 
     @api.constrains('task_id', 'project_id')
     def _check_task_in_project(self):
@@ -55,3 +71,23 @@ class PlanningShift(models.Model):
     def _name_get_fields(self):
         fields = super(PlanningShift, self)._name_get_fields()
         return ['project_id', 'task_id'] + fields
+
+    def _prepare_template_values(self):
+        result = super(PlanningShift, self)._prepare_template_values()
+        return {
+            'project_id': self.project_id.id,
+            'task_id': self.task_id.id,
+            **result
+        }
+
+    def _get_domain_template_slots(self):
+        domain = super(PlanningShift, self)._get_domain_template_slots()
+        if self.task_id:
+            domain += [('task_id', '=', self.task_id.id)]
+        elif self.project_id:
+            domain += [('project_id', '=', self.project_id.id)]
+        return domain
+
+    @api.depends('role_id', 'employee_id', 'project_id', 'task_id')
+    def _compute_template_autocomplete_ids(self):
+        super(PlanningShift, self)._compute_template_autocomplete_ids()

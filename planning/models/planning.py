@@ -15,7 +15,7 @@ from odoo.osv import expression
 from odoo.tools.safe_eval import safe_eval
 from odoo.tools import format_time
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from odoo.tools.misc import format_date
+from odoo.tools.misc import format_date, format_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -50,9 +50,11 @@ class Planning(models.Model):
     name = fields.Text('Note')
     employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, group_expand='_read_group_employee_id', check_company=True)
     work_email = fields.Char("Work Email", related='employee_id.work_email')
+    department_id = fields.Many2one(related='employee_id.department_id', store=True)
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
+    manager_id = fields.Many2one(related='employee_id.parent_id')
     company_id = fields.Many2one('res.company', string="Company", required=True, compute="_compute_planning_slot_company_id", store=True, readonly=False)
-    role_id = fields.Many2one('planning.role', string="Role")
+    role_id = fields.Many2one('planning.role', string="Role", compute="_compute_role_id", store=True, readonly=False, copy=True)
     color = fields.Integer("Color", related='role_id.color')
     was_copied = fields.Boolean("This Shift Was Copied From Previous Week", default=False, readonly=True)
     access_token = fields.Char("Security Token", default=lambda self: str(uuid.uuid4()), required=True, copy=False, readonly=True)
@@ -71,7 +73,7 @@ class Planning(models.Model):
         ('planning', 'Planning'),
         ('forecast', 'Forecast')
     ], compute='_compute_allocation_type')
-    allocated_hours = fields.Float("Allocated Hours", default=0, compute='_compute_allocated_hours', store=True)
+    allocated_hours = fields.Float("Allocated Hours", default=0, compute='_compute_allocated_hours', store=True, readonly=False)
     allocated_percentage = fields.Float("Allocated Time (%)", default=100, help="Percentage of time the employee is supposed to work during the shift.")
     working_days_count = fields.Integer("Number Of Working Days", compute='_compute_working_days_count', store=True)
 
@@ -80,9 +82,8 @@ class Planning(models.Model):
     publication_warning = fields.Boolean("Modified Since Last Publication", default=False, readonly=True, help="If checked, it means that the shift contains has changed since its last publish.", copy=False)
 
     # template dummy fields (only for UI purpose)
-    template_creation = fields.Boolean("Save As a Template", default=False, store=False, inverse='_inverse_template_creation')
     template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
-    template_id = fields.Many2one('planning.slot.template', string='Shift Templates', store=False)
+    template_id = fields.Many2one('planning.slot.template', string='Shift Templates')
 
     # Recurring (`repeat_` fields are none stored, only used for UI purpose)
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
@@ -109,6 +110,15 @@ class Planning(models.Model):
         for slot in self:
             slot.is_past = slot.end_datetime < now
 
+    @api.depends('employee_id')
+    def _compute_role_id(self):
+        for slot in self:
+            if not slot.role_id:
+                if slot.employee_id and slot.employee_id.planning_role_ids:
+                    slot.role_id = slot.employee_id.planning_role_ids[0]
+                else:
+                    slot.role_id = False
+
     @api.depends('user_id')
     def _compute_is_assigned_to_me(self):
         for slot in self:
@@ -122,12 +132,25 @@ class Planning(models.Model):
             else:
                 slot.allocation_type = 'forecast'
 
+    @api.onchange('allocated_hours')
+    def _onchange_allocated_hours(self):
+        for slot in self:
+            if slot.start_datetime and slot.end_datetime and slot.start_datetime != slot.end_datetime:
+                if slot.allocation_type == 'planning':
+                    slot.allocated_percentage = min(100, 360000 * slot.allocated_hours / (slot.end_datetime - slot.start_datetime).total_seconds())
+                else:
+                    if slot.employee_id:
+                        work_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours']
+                        slot.allocated_percentage = min(100, 100 * slot.allocated_hours / work_hours) if work_hours else 100
+                    else:
+                        slot.allocated_percentage = 100
+
     @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id', 'allocated_percentage')
     def _compute_allocated_hours(self):
         for slot in self:
             if slot.start_datetime and slot.end_datetime:
                 percentage = slot.allocated_percentage / 100.0 or 1
-                if slot.allocation_type == 'planning' and slot.start_datetime and slot.end_datetime:
+                if slot.allocation_type == 'planning':
                     slot.allocated_hours = (slot.end_datetime - slot.start_datetime).total_seconds() * percentage / 3600.0
                 else:
                     if slot.employee_id:
@@ -161,17 +184,22 @@ class Planning(models.Model):
         else:
             self.overlap_slot_count = 0
 
-    def _get_template_autocomplete_ids(self):
-        self.ensure_one()
-        domain = []
+    def _get_domain_template_slots(self):
+        domain = ['|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
         if self.role_id:
-            domain = [('role_id', '=', self.role_id.id)]
-        return self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
+            domain += [('role_id', '=', self.role_id.id)]
+        elif self.employee_id and self.employee_id.sudo().planning_role_ids:
+            domain += [('role_id', 'in', self.employee_id.sudo().planning_role_ids.ids)]
+        return domain
 
-    @api.depends('role_id')
+    @api.depends('role_id', 'employee_id')
     def _compute_template_autocomplete_ids(self):
-        for slot in self:
-            slot.template_autocomplete_ids = slot._get_template_autocomplete_ids()
+        if self.template_id:
+            self.template_autocomplete_ids = False
+        else:
+            domain = self._get_domain_template_slots()
+            templates = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
+            self.template_autocomplete_ids = templates
 
     @api.depends('recurrency_id')
     def _compute_repeat(self):
@@ -209,20 +237,6 @@ class Planning(models.Model):
                 slot.recurrency_id._delete_slot(slot.end_datetime)
                 slot.recurrency_id.unlink()  # will set recurrency_id to NULL
 
-    def _inverse_template_creation(self):
-        values_list = []
-        existing_values = []
-        for slot in self:
-            if slot.template_creation:
-                values_list.append(slot._prepare_template_values())
-        # Here we check if there's already a template w/ the same data
-        existing_templates = self.env['planning.slot.template'].read_group([], ['role_id', 'start_time', 'duration'], ['role_id', 'start_time', 'duration'], limit=None, lazy=False)
-        if len(existing_templates):
-            for element in existing_templates:
-                role_id = element['role_id'][0] if element.get('role_id') else False
-                existing_values.append({'role_id': role_id, 'start_time': element['start_time'], 'duration': element['duration']})
-        self.env['planning.slot.template'].create([x for x in values_list if x not in existing_values])
-
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         employee = self.env.user.employee_id
@@ -239,21 +253,11 @@ class Planning(models.Model):
             self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
         if end_datetime:
             self.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-        # Set default role if the role field is empty
-        if self.employee_id and not self.role_id and self.employee_id.sudo().planning_role_ids:
-            self.role_id = self.employee_id.sudo().planning_role_ids[0]
 
     @api.onchange('start_datetime', 'end_datetime', 'employee_id')
     def _onchange_dates(self):
         if self.employee_id and self.is_published:
             self.publication_warning = True
-
-    @api.onchange('template_creation')
-    def _onchange_template_autocomplete_ids(self):
-        if self.template_creation:
-            self.template_autocomplete_ids = False
-        else:
-            self.template_autocomplete_ids = self._get_template_autocomplete_ids()
 
     @api.onchange('template_id')
     def _onchange_template_id(self):
@@ -266,7 +270,7 @@ class Planning(models.Model):
             h, m = divmod(self.template_id.duration, 1)
             delta = timedelta(hours=int(h), minutes=int(m * 60))
             self.end_datetime = fields.Datetime.to_string(self.start_datetime + delta)
-
+        if self.template_id.role_id:
             self.role_id = self.template_id.role_id
 
     @api.onchange('repeat')
@@ -441,6 +445,27 @@ class Planning(models.Model):
             raise UserError(_("You can not unassign another employee than yourself."))
         return self.sudo().write({'employee_id': False})
 
+    def action_create_template(self):
+        values = self._prepare_template_values()
+        domain = [(x, '=', values[x]) for x in values.keys()]
+        existing_templates = self.env['planning.slot.template'].search(domain, limit=1)
+        if not existing_templates:
+            template = self.env['planning.slot.template'].create(values)
+            self.write({'template_id': template.id})
+            title = _("Template Saved")
+            message = _("Your template was successfully saved.")
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': title,
+                    'message': message,
+                    'sticky': False,
+                }
+            }
+        else:
+            self.write({'template_id': existing_templates.id})
+
     # ----------------------------------------------------
     # Gantt - Calendar view
     # ----------------------------------------------------
@@ -547,37 +572,22 @@ class Planning(models.Model):
     # ----------------------------------------------------
 
     def action_send(self):
-        group_planning_user = self.env.ref('planning.group_planning_user')
-        template = self.env.ref('planning.email_template_slot_single')
-        start_datetime, end_datetime = self._format_start_endtime(self.employee_id.tz)
-        # update context to build a link for view in the slot
-        view_context = dict(self._context)
-        view_context.update({
-            'menu_id': str(self.env.ref('planning.planning_menu_root').id),
-            'action_id': str(self.env.ref('planning.planning_action_open_shift').id),
-            'dbname': self.env.cr.dbname,
-            'render_link': self.employee_id.user_id and self.employee_id.user_id in group_planning_user.users,
-            'unassign_url': '/planning/%s/%s/unassign' % (self.access_token, self.employee_id.employee_token) if self.allow_self_unassign else None,
-            'start_datetime': start_datetime,
-            'end_datetime': end_datetime
-        })
-        slot_template = template.with_context(view_context)
-
-        mails_to_send = self.env['mail.mail'].sudo()
-        for slot in self:
-            if slot.employee_id and slot.employee_id.work_email:
-                mail_id = slot_template.with_context(view_context).send_mail(slot.id, notif_layout='mail.mail_notification_light')
-                current_mail = self.env['mail.mail'].sudo().browse(mail_id)
-                mails_to_send |= current_mail
-
-        if mails_to_send:
-            mails_to_send.send()
-
-        self.write({
-            'is_published': True,
-            'publication_warning': False,
-        })
-        return mails_to_send
+        self.ensure_one()
+        if not self.employee_id or not self.employee_id.work_email:
+            self.is_published = True
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'slot.planning.select.send',
+                'name': _('Send Slot'),
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {
+                    'default_slot_id': self.id,
+                    'default_company_id': self.company_id.id,
+                }
+            }
+        self._send_slot(self.employee_id, self.start_datetime, self.end_datetime)
+        return True
 
     def action_publish(self):
         self.write({
@@ -662,24 +672,102 @@ class Planning(models.Model):
 
         if (end_datetime.date() - start_datetime.date()).days:  # not on the same day
             return (
-                format_date(self.env, start_datetime.date(), date_format='d/MM'),
-                format_date(self.env, end_datetime.date(), date_format='d/MM')
+                format_date(self.env, start_datetime.date(), date_format='short'),
+                format_date(self.env, end_datetime.date(), date_format='short')
             )
         else:
             return (
-                format_time(self.env, start_datetime.time(), time_format='h:mm a' if start_datetime.minute else 'h a'), format_time(self.env, end_datetime.time(), time_format='h:mm a' if end_datetime.minute else 'h a')
+                format_time(self.env, start_datetime.time(), time_format='short'),
+                format_time(self.env, end_datetime.time(), time_format='short')
             )
+
+    def _format_start_end_datetime(self, tz, lang_code=False):
+        destination_tz = pytz.timezone(tz)
+        start_datetime = pytz.utc.localize(self.start_datetime).astimezone(destination_tz).replace(tzinfo=None)
+        end_datetime = pytz.utc.localize(self.end_datetime).astimezone(destination_tz).replace(tzinfo=None)
+        return (
+            format_datetime(self.env, start_datetime, dt_format='short', lang_code=lang_code),
+            format_datetime(self.env, end_datetime, dt_format='short', lang_code=lang_code)
+        )
+
+    def _send_slot(self, employee_ids, start_datetime, end_datetime, include_unassigned=True, message=None):
+        if not include_unassigned:
+            self = self.filtered(lambda s: s.employee_id)
+        if not self:
+            return False
+
+        employee_with_backend = employee_ids.filtered(lambda e: e.user_id and e.user_id.has_group('planning.group_planning_user'))
+        employee_without_backend = employee_ids - employee_with_backend
+        planning = False
+        if len(self) > 1 or employee_without_backend:
+            planning = self.env['planning.planning'].create({
+                'start_datetime': start_datetime,
+                'end_datetime': end_datetime,
+                'include_unassigned': include_unassigned,
+                'slot_ids': [(6, 0, self.ids)],
+            })
+        if len(self) > 1:
+            return planning._send_planning(message=message, employees=employee_ids)
+
+        self.ensure_one()
+
+        template = self.env.ref('planning.email_template_slot_single')
+        employee_url_map = {**employee_without_backend._planning_get_url(planning), **employee_with_backend._slot_get_url()}
+
+        view_context = dict(self._context)
+        view_context.update({
+            'open_shift_available': not self.employee_id,
+            'mail_subject': _('Planning: new open shift available'),
+        })
+
+        if self.employee_id:
+            employee_ids = self.employee_id
+            if self.allow_self_unassign:
+                if employee_ids.filtered(lambda e: e.user_id and e.user_id.has_group('planning.group_planning_user')):
+                    unavailable_link = '/planning/unassign/%s/%s' % (self.employee_id.employee_token, self.id)
+                else:
+                    unavailable_link = '/planning/%s/%s/unassign/%s?message=1' % (planning.access_token, self.employee_id.employee_token, self.id)
+                view_context.update({'unavailable_link': unavailable_link})
+            view_context.update({'mail_subject': _('Planning: new shift')})
+
+        mails_to_send_ids = []
+        for employee in employee_ids.filtered(lambda e: e.work_email):
+            if not self.employee_id and employee in employee_with_backend:
+                view_context.update({'available_link': '/planning/assign/%s/%s' % (employee.employee_token, self.id)})
+            elif not self.employee_id:
+                view_context.update({'available_link': '/planning/%s/%s/assign/%s?message=1' % (planning.access_token, employee.employee_token, self.id)})
+            start_datetime, end_datetime = self._format_start_end_datetime(employee.tz, lang_code=employee.user_partner_id.lang)
+            # update context to build a link for view in the slot
+            view_context.update({
+                'link': employee_url_map[employee.id],
+                'start_datetime': start_datetime,
+                'end_datetime': end_datetime,
+                'employee_name': employee.name,
+                'work_email': employee.work_email,
+            })
+            mail_id = template.with_context(view_context).send_mail(self.id, notif_layout='mail.mail_notification_light')
+            mails_to_send_ids.append(mail_id)
+
+        mails_to_send = self.env['mail.mail'].sudo().browse(mails_to_send_ids)
+        if mails_to_send:
+            mails_to_send.send()
+
+        self.write({
+            'is_published': True,
+            'publication_warning': False,
+        })
 
 
 class PlanningRole(models.Model):
     _name = 'planning.role'
     _description = "Planning Role"
-    _order = 'name,id desc'
+    _order = 'sequence'
     _rec_name = 'name'
 
     name = fields.Char('Name', required=True)
     color = fields.Integer("Color", default=0)
     employee_ids = fields.Many2many('hr.employee', string='Employees')
+    sequence = fields.Integer()
 
 
 class PlanningPlanning(models.Model):
@@ -694,13 +782,8 @@ class PlanningPlanning(models.Model):
     end_datetime = fields.Datetime("Stop Date", required=True)
     include_unassigned = fields.Boolean("Includes Open Shifts", default=True)
     access_token = fields.Char("Security Token", default=_default_access_token, required=True, copy=False, readonly=True)
-    last_sent_date = fields.Datetime("Last Sent Date")
-    slot_ids = fields.Many2many('planning.slot', "Shifts", compute='_compute_slot_ids')
-    company_id = fields.Many2one('res.company', "Company", required=True, default=lambda self: self.env.company)
-
-    _sql_constraints = [
-        ('check_start_date_lower_stop_date', 'CHECK(end_datetime > start_datetime)', 'Planning end date should be greater than its start date'),
-    ]
+    slot_ids = fields.Many2many('planning.slot')
+    company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
 
     @api.depends('start_datetime', 'end_datetime')
     def _compute_display_name(self):
@@ -711,36 +794,20 @@ class PlanningPlanning(models.Model):
             end_datetime = pytz.utc.localize(planning.end_datetime).astimezone(tz).replace(tzinfo=None)
             planning.display_name = _('Planning from %s to %s') % (format_date(self.env, start_datetime), format_date(self.env, end_datetime))
 
-    @api.depends('start_datetime', 'end_datetime', 'include_unassigned')
-    def _compute_slot_ids(self):
-        domain_map = self._get_domain_slots()
-        for planning in self:
-            domain = domain_map[planning.id]
-            if not planning.include_unassigned:
-                domain = expression.AND([domain, [('employee_id', '!=', False)]])
-            planning.slot_ids = self.env['planning.slot'].search(domain)
-
     # ----------------------------------------------------
     # Business Methods
     # ----------------------------------------------------
 
-    def _get_domain_slots(self):
-        result = {}
-        for planning in self:
-            domain = ['&', '&', ('start_datetime', '<=', planning.end_datetime), ('end_datetime', '>', planning.start_datetime), ('company_id', '=', planning.company_id.id)]
-            result[planning.id] = domain
-        return result
-
-    def send_planning(self, message=None):
+    def _send_planning(self, message=None, employees=False):
         email_from = self.env.user.email or self.env.user.company_id.email or ''
         sent_slots = self.env['planning.slot']
         for planning in self:
             # prepare planning urls, recipient employees, ...
             slots = planning.slot_ids
-            slots_open = slots.filtered(lambda slot: not slot.employee_id)
+            slots_open = slots.filtered(lambda slot: not slot.employee_id) if planning.include_unassigned else 0
 
             # extract planning URLs
-            employees = slots.mapped('employee_id')
+            employees = employees or slots.mapped('employee_id')
             employee_url_map = employees.sudo()._planning_get_url(planning)
 
             # send planning email template with custom domain per employee
@@ -759,10 +826,10 @@ class PlanningPlanning(models.Model):
                         template_context['start_datetime'] = pytz.utc.localize(planning.start_datetime).astimezone(destination_tz).replace(tzinfo=None)
                         template_context['end_datetime'] = pytz.utc.localize(planning.end_datetime).astimezone(destination_tz).replace(tzinfo=None)
                         template_context['planning_url'] = employee_url_map[employee.id]
+                        template_context['assigned_new_shift'] = bool(slots.filtered(lambda slot: slot.employee_id.id == employee.id))
                         template.with_context(**template_context).send_mail(planning.id, email_values={'email_to': employee.work_email, 'email_from': email_from}, notif_layout='mail.mail_notification_light')
             sent_slots |= slots
         # mark as sent
-        self.write({'last_sent_date': fields.Datetime.now()})
         sent_slots.write({
             'is_published': True,
             'publication_warning': False

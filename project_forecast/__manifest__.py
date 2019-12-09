@@ -10,6 +10,7 @@
     'version': '1.0',
     'depends': ['project', 'planning'],
     'data': [
+        'views/planning_template_views.xml',
         'views/planning_views.xml',
         'views/project_forecast_views.xml',
         'views/project_views.xml',

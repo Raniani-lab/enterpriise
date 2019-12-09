@@ -42,3 +42,10 @@ class Employee(models.Model):
             else:
                 result[employee.id] = '/planning/%s/%s' % (planning.access_token, employee.employee_token)
         return result
+
+    def _slot_get_url(self):
+        action_id = self.env.ref('planning.planning_action_open_shift').id
+        menu_id = self.env.ref('planning.planning_menu_root').id
+        dbname = self.env.cr.dbname or [''],
+        link = "/web?#action=%s&model=planning.slot&menu_id=%s&db=%s" % (action_id, menu_id, dbname[0])
+        return {employee.id: link for employee in self}

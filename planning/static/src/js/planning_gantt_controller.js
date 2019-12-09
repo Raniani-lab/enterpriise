@@ -109,6 +109,7 @@ var PlanningGanttController = GanttController.extend({
         var additional_context = _.extend({}, this.context, {
            'default_start_datetime': this.model.convertToServerTime(state.startDate),
            'default_end_datetime': this.model.convertToServerTime(state.stopDate),
+           'default_slot_ids': _.pluck(this.model.get().records, 'id'),
            'scale': state.scale,
            'active_domain': this.model.domain,
            'active_ids': this.model.get().records

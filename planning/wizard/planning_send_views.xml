@@ -18,11 +18,12 @@
                         </group>
                         <group>
                             <field name="include_unassigned"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="slot_ids" invisible="1"/>
                         </group>
                     </group>
-                    <group>
-                        <field name="note" nolabel="1" placeholder="Additional message"/>
+                    <group col="2">
+                        <field name="employee_ids" widget="many2many_tags"/>
+                        <field name="note" nolabel="1" colspan="2" placeholder="Additional message"/>
                     </group>
                 </sheet>
                 <footer>

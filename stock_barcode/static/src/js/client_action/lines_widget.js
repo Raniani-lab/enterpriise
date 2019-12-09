@@ -105,7 +105,7 @@ var LinesWidget = Widget.extend({
 
     highlightPackage: function (barcode) {
         var $line = this.$('.o_barcode_line:contains(' + barcode + ')');
-        this._highlightLine($line);
+        $line.length && this._highlightLine($line);
     },
 
     /**

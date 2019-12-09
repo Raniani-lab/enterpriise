@@ -39,7 +39,7 @@
                         <field name="description" placeholder="Description of the ticket..."/>
                     </page>
                     <page string="Timesheets" attrs="{'invisible': ['|', ('project_id', '=', False), ('use_helpdesk_timesheet', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user">
-                        <field name='timesheet_ids' mode="tree,kanban" attrs="{'readonly': [('task_id', '=', True), '|', ('is_closed', '=', True), ('is_task_active', '=', False)]}" context="{'default_project_id': project_id, 'default_task_id': task_id}" groups="hr_timesheet.group_hr_timesheet_user">
+                        <field name='timesheet_ids' mode="tree,kanban" attrs="{'readonly': [('task_id', '!=', False), '|', ('is_closed', '=', True), ('is_task_active', '=', False)]}" context="{'default_project_id': project_id, 'default_task_id': task_id}" groups="hr_timesheet.group_hr_timesheet_user">
                             <tree editable="bottom" string="Timesheet Activities" default_order="date">
                                 <field name="date"/>
                                 <field name="user_id" invisible="1"/>

@@ -6,6 +6,7 @@ var config = require('web.config');
 var core = require('web.core');
 var dialogs = require('web.view_dialogs');
 var utils = require('web.utils');
+var concurrency = require('web.concurrency');
 
 var qweb = core.qweb;
 var _t = core._t;
@@ -33,6 +34,7 @@ var GridController = AbstractController.extend({
         this.adjustment = params.adjustment;
         this.adjustName = params.adjustName;
         this.canCreate = params.activeActions.create;
+        this.mutex = new concurrency.Mutex();
     },
 
     //--------------------------------------------------------------------------
@@ -69,38 +71,41 @@ var GridController = AbstractController.extend({
      * @private
      * @param {Object} cell
      * @param {number} newValue
+     * @returns {Promise}
      */
     _adjust: function (cell, newValue) {
         var difference = newValue - cell.value;
         // 1e-6 is probably an overkill, but that way milli-values are usable
         if (Math.abs(difference) < 1e-6) {
             // cell value was set to itself, don't hit the server
-            return;
+            return Promise.resolve();
         }
         // convert row values to a domain, concat to action domain
         var state = this.model.get();
         var domain = this.model.domain.concat(cell.row.domain);
 
         var self = this;
-        this._rpc({
-            model: this.modelName,
-            method: this.adjustName,
-            args: [ // args for type=object
-                [],
-                domain,
-                state.colField,
-                cell.col.values[state.colField][0],
-                state.cellField,
-                difference
-            ],
-            context: this.model.getContext()
-        }).then(function () {
-            return self.model.reload();
-        }).then(function () {
-            var state = self.model.get();
-            return self.renderer.updateState(state, {});
-        }).then(function () {
-            self._updateButtons(state);
+        return this.mutex.exec(function () {
+            return self._rpc({
+                model: self.modelName,
+                method: self.adjustName,
+                args: [ // args for type=object
+                    [],
+                    domain,
+                    state.colField,
+                    cell.col.values[state.colField][0],
+                    state.cellField,
+                    difference
+                ],
+                context: self.model.getContext()
+            }).then(function () {
+                return self.model.reload();
+            }).then(function () {
+                var state = self.model.get();
+                return self.renderer.updateState(state, {});
+            }).then(function () {
+                self._updateButtons(state);
+            });
         });
     },
     /**
@@ -161,7 +166,17 @@ var GridController = AbstractController.extend({
             row: utils.into(state, event.data.row_path),
             col: utils.into(state, event.data.col_path),
             value: utils.into(state, event.data.cell_path).value,
-        }, event.data.value);
+        }, event.data.value)
+        .then(function () {
+            if (event.data.doneCallback !== undefined) {
+                event.data.doneCallback();
+            }
+        })
+        .guardedCatch(function () {
+            if (event.data.doneCallback !== undefined) {
+                event.data.doneCallback();
+            }
+        })
     },
     /**
      * @private

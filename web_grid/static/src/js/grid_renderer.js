@@ -558,24 +558,31 @@ return AbstractRenderer.extend({
      * @param {OdooEvent} e
      */
     _onGridWidgetBlur: function(e) {
+        var path = e.data.path;
+        var button = this.$("div[data-path='"+path+"']").find('button');
         var value;
         try {
-            value = this._parse(e.data.formattedValue);
+            value = this._parse(button.text());
         } catch (_) {
             return;
         }
 
         // path should be [path, to, grid, 'grid', row_index, col_index]
-        var cell_path = e.data.path.split('.');
+        var cell_path = path.split('.');
         var grid_path = cell_path.slice(0, -3);
         var row_path = grid_path.concat(['rows'], cell_path.slice(-2, -1));
         var col_path = grid_path.concat(['cols'], cell_path.slice(-1));
+
+        button.prop('disabled', true);
 
         this.trigger_up('cell_edited', {
             cell_path: cell_path,
             row_path: row_path,
             col_path: col_path,
             value: value,
+            doneCallback: function () {
+                button.prop('disabled', false);
+            }
         });
     },
     /**

@@ -101,6 +101,13 @@ QUnit.module('Views', {
             "should have 14 cells");
         assert.strictEqual(grid.$('div.o_grid_input:contains(02:30)').length, 1,
             "should have correctly parsed a float_time");
+
+        var cell = grid.$('div.o_grid_input:contains(02:30)').get(0);
+        cell.focus();
+        cell.click();
+        cell.blur();
+        await testUtils.nextTick();
+
         assert.strictEqual(grid.$('div.o_grid_input:contains(00:00)').length, 12,
             "should have correctly parsed another float_time");
 
@@ -1222,6 +1229,107 @@ QUnit.module('Views', {
         await testUtils.nextTick();
         assert.strictEqual(grid.$('th div').first()[0].innerHTML, `<div title="P1" class="">P1</div><div title="A" class="">A</div>`,
             "should render properly selection value");
+        grid.destroy();
+    });
+
+    QUnit.test('button disabled after blur', async function (assert) {
+        /*
+         * OPW 2121906
+         * We disable the button and enable it only when the RPC call is done.
+         * Without this limitation, stressing the view can cause concurrency issues.
+         */
+
+        assert.expect(3);
+        const def = testUtils.makeTestPromise();
+        let rpcCalled = false;
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">' +
+                    '<field name="project_id" type="row" section="1"/>' +
+                    '<field name="task_id" type="row"/>' +
+                    '<field name="date" type="col">' +
+                        '<range name="week" string="Week" span="week" step="day"/>' +
+                        '<range name="month" string="Month" span="month" step="day"/>' +
+                    '</field>'+
+                    '<field name="unit_amount" type="measure" widget="float_toggle" options="{\'factor\': 0.125, \'range\': [0.0, 0.5, 1.0]}"/>' +
+                '</grid>',
+            currentDate: "2017-01-31",
+            async mockRPC (route, args) {
+                if (args.method === 'adjust_grid') {
+                    rpcCalled = true;
+                    await def;
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const $button = grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.0"] button');
+        $button.focus();
+        testUtils.dom.click($button);
+        $button.blur();
+        await testUtils.nextTick();
+
+        assert.ok(rpcCalled, 'The RPC should be called');
+        assert.ok($button.is(':disabled'), 'the button is disabled while the RPC call is not done');
+
+        def.resolve();
+        await testUtils.nextTick();
+
+        assert.notOk($button.is(':disabled'), 'the button is enabled when the RPC call is done');
+        grid.destroy();
+    });
+
+    QUnit.test('each button\'s value is correct after RPC call', async function (assert) {
+        /*
+         * OPW 2121906
+         * We disable the button and enable it only when the RPC call is done.
+         * Without this limitation, stressing the view can cause concurrency issues.
+         */
+        assert.expect(3);
+        const def = testUtils.makeTestPromise();
+        let rpcCalled = false;
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">' +
+                    '<field name="project_id" type="row" section="1"/>' +
+                    '<field name="task_id" type="row"/>' +
+                    '<field name="date" type="col">' +
+                        '<range name="week" string="Week" span="week" step="day"/>' +
+                        '<range name="month" string="Month" span="month" step="day"/>' +
+                    '</field>'+
+                    '<field name="unit_amount" type="measure" widget="float_toggle" options="{\'factor\': 0.125, \'range\': [0.0, 0.5, 1.0]}"/>' +
+                '</grid>',
+            currentDate: "2017-01-31",
+            async mockRPC (route, args) {
+                if (args.method === 'adjust_grid') {
+                    rpcCalled = true;
+                    await def;
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        var $button1 = grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.0"] button');
+        var $button2 = grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button');
+
+        $button1.focus();
+        $button1.click();
+        $button1.blur();
+        await testUtils.nextTick();
+        assert.ok(rpcCalled, 'The RPC should be called');
+
+        $button2.click();
+        def.resolve();
+        await testUtils.nextTick();
+
+        assert.strictEqual($button1.text(), '0.50');
+        assert.strictEqual($button2.text(), '0.50');
         grid.destroy();
     });
 });

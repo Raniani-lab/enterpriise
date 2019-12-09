@@ -120,8 +120,7 @@ var FloatToggleWidget = BaseGridWidget.extend({
             });
         }
         function triggerSaveChange () {
-            self.trigger_up('grid_cell_edited', {
-                formattedValue: current.toString(),
+            self.trigger_up('grid_cell_edited', {
                 path: path,
             });
         }

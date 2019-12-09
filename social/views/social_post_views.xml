@@ -131,6 +131,7 @@
         <field name="arch" type="xml">
             <calendar string="Social Posts" date_start="calendar_date" color="state" quick_add="false" mode="month">
                 <field name="message"/>
+                <field name="state" filters="1" invisible="1"/>
             </calendar>
         </field>
     </record>

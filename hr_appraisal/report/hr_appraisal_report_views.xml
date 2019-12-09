@@ -41,6 +41,7 @@
         <field name="arch" type="xml">
             <calendar date_start="deadline" date_stop="deadline" mode="month" color="state">
                 <field name="display_name"/>
+                <field name="state" filters="1" invisible="1"/>
             </calendar>
         </field>
     </record>

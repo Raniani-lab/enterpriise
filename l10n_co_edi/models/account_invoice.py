@@ -117,11 +117,11 @@ class AccountMove(models.Model):
 
         request = self._l10n_co_edi_create_carvajal_request()
         try:
-            response = request.download(self.journal_id.sequence_id.prefix, self.number, carvajal_type)
+            response = request.download(self.journal_id.sequence_id.prefix, self.name, carvajal_type)
         except CarvajalException as e:
             return _('Electronic invoice download failed. Message from Carvajal:<br/>%s') % e, []
         else:
-            return _('Electronic invoice download succeeded. Message from Carvajal:<br/>%s') % response['message'], [('%s.zip' % self.number, response['zip_b64'])]
+            return _('Electronic invoice download succeeded. Message from Carvajal:<br/>%s') % response['message'], [('%s.zip' % self.name, response['zip_b64'])]
 
     def l10n_co_edi_check_status_electronic_invoice(self):
         '''This checks the current status of an uploaded XML with Carvajal. It

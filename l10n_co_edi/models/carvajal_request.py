@@ -36,6 +36,23 @@ class CarvajalPlugin(Plugin):
         _logger.debug('%s with\n%s' % (func, etree.tostring(xml, encoding='utf-8', xml_declaration=True, pretty_print=True)))
 
 
+class CarvajalUsernameToken(UsernameToken):
+    def _create_password_digest(self):
+        """Carvajal expects a password hashed with sha256 with the
+        PasswordText type, together with a Nonce and Created
+        element. To do so we can manually specify a password_digest
+        (instead of password) to avoid the standard sha1 hashing and
+        we can set use_digest=True to add the Nonce and Created. The
+        only problem with this approach is that the password will have
+        the PasswordDigest type, which Carvajal doesn't accept for
+        some reason. This replaces it with PasswordText, which is
+        commonly used for non-sha1 hashed passwords.
+        """
+        res = super(CarvajalUsernameToken, self)._create_password_digest()
+        res[0].attrib['Type'] = res[0].attrib['Type'].replace('PasswordDigest', 'PasswordText')
+        return res
+
+
 class CarvajalRequest():
     def __init__(self, username, password, company, account, test_mode):
         self.username = username or ''
@@ -49,7 +66,7 @@ class CarvajalRequest():
     def _create_wsse_header(self, username, password):
 
         created = datetime.now()
-        token = UsernameToken(username=username, password=sha256(password.encode()).hexdigest(), use_digest=True, created=created)
+        token = CarvajalUsernameToken(username=username, password_digest=sha256(password.encode()).hexdigest(), use_digest=True, created=created)
 
         return token
 

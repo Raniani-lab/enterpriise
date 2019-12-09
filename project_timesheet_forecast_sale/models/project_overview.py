@@ -21,8 +21,8 @@ class ProjectOverview(models.Model):
         values.update({'with_forecasts': any(self.mapped('allow_forecast'))})
         return values
 
-    def _table_get_line_values(self):
-        result = super(ProjectOverview, self)._table_get_line_values()
+    def _table_get_line_values(self, employees=None):
+        result = super(ProjectOverview, self)._table_get_line_values(employees)
 
         if any(self.mapped('allow_forecast')):
             # add headers

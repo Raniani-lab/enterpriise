@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
-from odoo.addons.industry_fsm_sale.tests.test_industry_fsm_sale_flow import TestFsmFlow
+from odoo.addons.industry_fsm_sale.tests.test_industry_fsm_sale_flow import TestFsmFlowSale
 
-class TestFsmStock(TestFsmFlow):
+class TestFsmFlowStock(TestFsmFlowSale):
 
     @classmethod
     def setUpClass(cls):
@@ -29,5 +29,5 @@ class TestFsmStock(TestFsmFlow):
         inventory.action_start()
         inventory.action_validate()
 
-        super(TestFsmStock, self).test_fsm_flow()
+        super().test_fsm_flow()
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done'], "Pickings should be set as done")

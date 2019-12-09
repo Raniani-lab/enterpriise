@@ -1,11 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
 from datetime import datetime
-from odoo.addons.industry_fsm.tests.common import TestFsmFlowCommon
+from odoo.addons.industry_fsm_sale.tests.common import TestFsmFlowSaleCommon
 from odoo.exceptions import UserError
 
 
-class TestFsmFlow(TestFsmFlowCommon):
+class TestFsmFlowSale(TestFsmFlowSaleCommon):
 
     @classmethod
     def setUpClass(cls):

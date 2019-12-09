@@ -12,7 +12,7 @@ class HrEmployee(models.Model):
 
     def _compute_sign_request_count(self):
         for employee in self:
-            contracts = self.env['hr.contract'].search([('employee_id', '=', employee.id)])
+            contracts = self.env['hr.contract'].sudo().search([('employee_id', '=', employee.id)])
             sign_from_contract = contracts.mapped('sign_request_ids')
 
             sign_from_role = self.env['sign.request.item'].search([
@@ -23,9 +23,9 @@ class HrEmployee(models.Model):
 
     def open_employee_sign_requests(self):
         self.ensure_one()
-        contracts = self.env['hr.contract'].search([('employee_id', '=', self.id)])
+        contracts = self.env['hr.contract'].sudo().search([('employee_id', '=', self.id)])
         sign_from_contract = contracts.mapped('sign_request_ids')
-        sign_from_role = self.env['sign.request.item'].search([
+        sign_from_role = self.env['sign.request.item'].sudo().search([
             ('partner_id', '=', self.user_id.partner_id.id),
             ('role_id', '=', self.env.ref('sign.sign_item_role_employee').id)]).mapped('sign_request_id')
         sign_request_ids = sign_from_contract + sign_from_role

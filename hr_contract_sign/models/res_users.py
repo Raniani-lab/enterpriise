@@ -46,7 +46,7 @@ class ResUsers(models.Model):
         self.ensure_one()
         contracts = self.sudo().env['hr.contract'].search([('employee_id', 'in', self.env.user.employee_ids.ids)])
         sign_from_contract = contracts.mapped('sign_request_ids')
-        sign_from_role = self.env['sign.request.item'].search([
+        sign_from_role = self.env['sign.request.item'].sudo().search([
             ('partner_id', '=', self.partner_id.id),
             ('role_id', '=', self.env.ref('sign.sign_item_role_employee').id)]).mapped('sign_request_id')
         sign_request_ids = sign_from_contract + sign_from_role

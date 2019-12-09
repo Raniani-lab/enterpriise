@@ -499,7 +499,7 @@ class AccountPayment(models.Model):
             }
         ctx = dict(company_id=self.company_id.id, date=self.payment_date)
         rate = ('%.6f' % (self.currency_id.with_context(**ctx)._convert(
-            1, mxn, self.company_id, self.payment_date))) if self.currency_id.name != 'MXN' else False
+            1, mxn, self.company_id, self.payment_date, round=False))) if self.currency_id.name != 'MXN' else False
         partner_bank = self.l10n_mx_edi_partner_bank_id.bank_id
         company_bank = self.journal_id.bank_account_id
         payment_code = self.l10n_mx_edi_payment_method_id.code

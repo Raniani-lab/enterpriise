@@ -5,6 +5,8 @@ from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class Company(models.Model):
@@ -72,8 +74,17 @@ class Company(models.Model):
         """
         today_min = fields.Datetime.to_string(datetime.combine(date.today(), time.min))
         today_max = fields.Datetime.to_string(datetime.combine(date.today(), time.max))
-        companies = self.search([('timesheet_mail_employee_allow', '=', True), ('timesheet_mail_employee_nextdate', '<', today_max), ('timesheet_mail_employee_nextdate', '>=', today_min)])
+        companies = self.search([
+            ('timesheet_mail_employee_allow', '=', True),
+                '|',
+                    '&',
+                        ('timesheet_mail_employee_nextdate', '<', today_max), ('timesheet_mail_employee_nextdate', '>=', today_min),
+                        ('timesheet_mail_employee_nextdate', '<', today_min)
+        ])
         for company in companies:
+            if company.timesheet_mail_employee_nextdate < fields.Datetime.today():
+                _logger.warning('The cron "Timesheet: Employees Email Reminder" should have run on %s' % company.timesheet_mail_employee_nextdate)
+
             # get the employee that have at least a timesheet for the last 3 months
             users = self.env['account.analytic.line'].search([
                 ('date', '>=', fields.Date.to_string(date.today() - relativedelta(months=3))),

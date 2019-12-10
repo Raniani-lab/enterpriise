@@ -590,7 +590,7 @@ class AccountMove(models.Model):
             ('id', 'in', self.ids)])
         for record in records:
             if record.l10n_mx_edi_pac_status in ['to_sign', 'retry']:
-                record.l10n_mx_edi_pac_status = 'cancelled'
+                record.l10n_mx_edi_pac_status = False
                 record.message_post(body=_('The cancel service has been called with success'),
                     subtype_xmlid='account.mt_invoice_validated')
             else:

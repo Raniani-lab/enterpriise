@@ -270,6 +270,6 @@ class ResPartner(models.Model):
 
     def _cron_execute_followup(self):
         followup_data = self._query_followup_level(all_partners=True)
-        in_need_of_action = self.env['res.partner'].browse([d['partner_id'] for d in followup_data.values() if ['followup_status'] == 'in_need_of_action'])
+        in_need_of_action = self.env['res.partner'].browse([d['partner_id'] for d in followup_data.values() if d['followup_status'] == 'in_need_of_action'])
         in_need_of_action_auto = in_need_of_action.filtered(lambda p: p.followup_level.auto_execute)
         in_need_of_action_auto.execute_followup()

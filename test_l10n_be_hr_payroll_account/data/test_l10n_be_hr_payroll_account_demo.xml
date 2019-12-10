@@ -1397,7 +1397,7 @@
     </record>
 
     <record id="res_partner_employee_jgo" model="res.partner">
-        <field name="name">Arnold Horton</field>
+        <field name="name">Fred Bilson</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
@@ -1411,7 +1411,7 @@
     </record>
 
     <record id="employee_jgo" model="hr.employee">
-        <field name="name">Arnold Horton</field>
+        <field name="name">Fred Bilson</field>
         <field name="department_id" ref="hr_department_3"/>
         <field name="job_id" ref="hr_job_3"/>
         <field name="job_title">Consultant</field>

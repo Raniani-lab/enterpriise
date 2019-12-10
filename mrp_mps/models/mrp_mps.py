@@ -513,24 +513,8 @@ class MrpProductionSchedule(models.Model):
         """ Get the lead time for each product in self. The lead times are
         based on rules lead times + produce delay or supplier info delay.
         """
-        def _get_rule_lead_time(lead_time, product, location):
-            rule = self.env['procurement.group']._get_rule(product, location, {})
-            if not rule:
-                return lead_time
-
-            lead_time += rule.delay
-            if rule.action == 'manufacture':
-                lead_time += product.produce_delay
-            if rule.action == 'buy':
-                company_lead_time = self.env.company.po_lead
-                supplier_lead_time = product.seller_ids and product.seller_ids[0].delay or 0
-                lead_time += (company_lead_time + supplier_lead_time)
-            if rule.procure_method == 'make_to_stock':
-                return lead_time
-            else:
-                return _get_rule_lead_time(lead_time, product, rule.location_src_id)
-
-        return _get_rule_lead_time(0, self.product_id, self.warehouse_id.lot_stock_id)
+        rules = self.product_id._get_rules_from_location(self.warehouse_id.lot_stock_id)
+        return rules._get_lead_days(self.product_id)[0]
 
     def _get_replenish_qty(self, after_forecast_qty):
         """ Modify the quantity to replenish depending the min/max and targeted

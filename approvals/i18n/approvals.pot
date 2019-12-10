@@ -871,3 +871,9 @@ msgstr ""
 #, python-format
 msgid "You have to attach at lease one document."
 msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
+msgid "Your request %s is now in the state %s"
+msgstr ""

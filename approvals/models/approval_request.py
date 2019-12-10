@@ -200,7 +200,7 @@ class ApprovalRequest(models.Model):
                     if request.request_owner_id:
                         request.message_notify(
                             partner_ids=request.request_owner_id.partner_id.ids,
-                            body="Your request %s is now in state %s" % (request.name, selection_description_values.get(values['request_status'])),
+                            body=_("Your request %s is now in the state %s") % (request.name, selection_description_values.get(values['request_status'])),
                             subject=request.name)
         return super(ApprovalRequest, self)._write(values)
 

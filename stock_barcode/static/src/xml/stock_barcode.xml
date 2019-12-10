@@ -31,10 +31,10 @@
 
                 <div class="row">
                     <div class="col">
-                        <button class="button_operations btn btn-block btn-primary mb-4 mb-sm-0">Operations</button>
+                        <button class="button_operations btn btn-block btn-primary mb-4">Operations</button>
                     </div>
                     <div class="col">
-                        <button class="button_inventory btn btn-block btn-primary">Inventory Adjustments</button>
+                        <button class="button_inventory btn btn-block btn-primary mb-4">Inventory Adjustments</button>
                     </div>
                 </div>
             </div>

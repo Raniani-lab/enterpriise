@@ -4767,6 +4767,83 @@ QUnit.module('ViewEditorManager', {
 
         vem.destroy();
     });
+
+    QUnit.test('One2Many form datapoint doesn\'t contain the parent datapoint', async function (assert) {
+        /*
+        * OPW-2125214
+        * When editing a child o2m form with studio, the fields_get method tries to load
+        * the parent fields too. This is not allowed anymore by the ORM.
+        * It happened because, before, the child datapoint contained the parent datapoint's data
+        */
+        assert.expect(1);
+        var fieldsGet;
+
+        var fieldsView;
+        var productArchReturn = '<form>' +
+                                    '<field name="display_name" />' +
+                                '</form>';
+        var coucouArchReturn = '<form>' +
+                                    '<field name="product_ids">' +
+                                        productArchReturn +
+                                    '</field>' +
+                                '</form>';
+        var coucouFields = {
+            product_ids: {
+                string: "product",
+                type: "one2many",
+                relation: "product",
+                mode: "form",
+                views: {
+                    form: {
+                        arch: productArchReturn,
+                        fields: {
+                            display_name: {
+                                string: "Display Name",
+                                type: "char",
+                            },
+                        },
+                    },
+                },
+            }
+        };
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<form>" +
+                    "<field name='product_ids'>"
+                        + productArchReturn +
+                    "</field>" +
+                  "</form>",
+            archs: {
+                "product,false,list": "<tree><field name='display_name'/></tree>",
+            },
+            mockRPC: async function(route) {
+                if (route === '/web_studio/edit_view') {
+                    fieldsView.arch = coucouArchReturn;
+                    $.extend(fieldsView.fields, coucouFields);
+                    return Promise.resolve({
+                        fields_views: {form: fieldsView},
+                        fields: fieldsView.fields,
+                    });
+                }
+                if (route === '/web/dataset/call_kw/product/fields_get') {
+                    fieldsGet = await this._super.apply(this, arguments);
+                    return fieldsGet;
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_one2many'));
+        await testUtils.dom.click(
+            vem.$('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
+        );
+
+        assert.deepEqual(_.keys(fieldsGet), _.keys(this.data.product.fields));
+
+        vem.destroy();
+    });
 });
 
 });

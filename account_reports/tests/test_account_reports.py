@@ -61,9 +61,9 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Initial Balance.
                 ('Initial Balance',                     '',             '',             2185.00,        700.00,         1485.00),
                 # Account Move Lines.
-                ('BNK1/2017/0004',                      '03/01/2017',   'partner_c',    '',             100.00,         1385.00),
-                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    345.00,         '',             1730.00),
-                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    345.00,         '',             2075.00),
+                ('BNK1/2017/03/0001',                   '03/01/2017',   'partner_c',    '',             100.00,         1385.00),
+                ('INV/2017/03/0001',                    '03/01/2017',   'partner_c',    345.00,         '',             1730.00),
+                ('INV/2017/03/0002',                    '03/01/2017',   'partner_d',    345.00,         '',             2075.00),
                 # Account Total.
                 ('Total 121000 Account Receivable',     '',             '',             2875.00,        800.00,         2075.00),
             ],
@@ -84,8 +84,8 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Initial Balance.
                 ('Initial Balance',                     '',             '',             0.00,           700.00,         -700.00),
                 # Account Move Lines.
-                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    '',             300.00,         -1000.00),
-                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    '',             300.00,         -1300.00),
+                ('INV/2017/03/0001',                    '03/01/2017',   'partner_c',    '',             300.00,         -1000.00),
+                ('INV/2017/03/0002',                    '03/01/2017',   'partner_d',    '',             300.00,         -1300.00),
                 # Account Total.
                 ('Total 400000 Product Sales',          '',             '',             0.00,           1300.00,        -1300.00),
             ],
@@ -140,9 +140,9 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Initial Balance.
                 ('Initial Balance',                     '',             '',             2185.00,        700.00,         1485.00),
                 # Account Move Lines.
-                ('BNK1/2017/0004',                      '03/01/2017',   'partner_c',    '',             100.00,         1385.00),
-                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    345.00,         '',             1730.00),
-                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    345.00,         '',             2075.00),
+                ('BNK1/2017/03/0001',                   '03/01/2017',   'partner_c',    '',             100.00,         1385.00),
+                ('INV/2017/03/0001',                    '03/01/2017',   'partner_c',    345.00,         '',             1730.00),
+                ('INV/2017/03/0002',                    '03/01/2017',   'partner_d',    345.00,         '',             2075.00),
                 # Account Total.
                 ('Total 121000 Account Receivable',     '',             '',             2875.00,        800.00,         2075.00),
             ],
@@ -174,7 +174,7 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Initial Balance.
                 ('Initial Balance',                     '',             '',             2185.00,        700.00,         1485.00),
                 # Account Move Lines.
-                ('BNK1/2017/0004',                      '03/01/2017',   'partner_c',    '',             100.00,         1385.00),
+                ('BNK1/2017/03/0001',                   '03/01/2017',   'partner_c',    '',             100.00,         1385.00),
                 # Load more.
                 ('Load more... (2 remaining)',          '',             '',             '',             '',             ''),
                 # Account Total.
@@ -198,7 +198,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              3,              4,              5,              6],
             [
                 # Account Move Lines.
-                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    345.00,         '',             1730.00),
+                ('INV/2017/03/0001',                    '03/01/2017',   'partner_c',    345.00,         '',             1730.00),
                 # Load more.
                 ('Load more... (1 remaining)',          '',             '',             '',             '',             ''),
             ],
@@ -217,7 +217,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              3,              4,              5,              6],
             [
                 # Account Move Lines.
-                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    345.00,         '',             2075.00),
+                ('INV/2017/03/0002',                    '03/01/2017',   'partner_d',    345.00,         '',             2075.00),
             ],
         )
 
@@ -536,8 +536,8 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Partner.
                 ('partner_d',           '',         '',             0.00,           345.00,         0.00,           115.00,         0.00,           0.00,       460.00),
                 # Account Move Lines.
-                ('INV/2017/0003',    'INV',   '121000 Account Receivable', '',      '',             '',             115.00,         '',             '',         ''),
-                ('INV/2017/0007',    'INV',   '121000 Account Receivable', '',      345.00,         '',             '',             '',             '',         ''),
+                ('INV/2017/01/0003', 'INV',   '121000 Account Receivable', '',      '',             '',             115.00,         '',             '',         ''),
+                ('INV/2017/03/0002', 'INV',   '121000 Account Receivable', '',      345.00,         '',             '',             '',             '',         ''),
             ],
         )
 
@@ -576,10 +576,10 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Partner.
                 ('partner_d',           '',         '',             0.00,           690.00,         0.00,           230.00,         0.00,           0.00,       920.00),
                 # Account Move Lines.
-                ('INV/2017/0003',    'INV', '121000 Account Receivable', '',        '',             '',             115.00,         '',             '',         ''),
-                ('INV/2017/0003',    'INV', '121000 Account Receivable', '',        '',             '',             115.00,         '',             '',         ''),
-                ('INV/2017/0007',    'INV', '121000 Account Receivable', '',        345.00,         '',             '',             '',             '',         ''),
-                ('INV/2017/0007',    'INV', '121000 Account Receivable', '',        345.00,         '',             '',             '',             '',         ''),
+                ('INV/2017/01/0003', 'INV', '121000 Account Receivable', '',        '',             '',             115.00,         '',             '',         ''),
+                ('INV/2017/01/0003', 'INV', '121000 Account Receivable', '',        '',             '',             115.00,         '',             '',         ''),
+                ('INV/2017/03/0002', 'INV', '121000 Account Receivable', '',        345.00,         '',             '',             '',             '',         ''),
+                ('INV/2017/03/0002', 'INV', '121000 Account Receivable', '',        345.00,         '',             '',             '',             '',         ''),
             ],
         )
 
@@ -638,14 +638,14 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
-            #   Name                    JRNL        Account         Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
-            [   0,                      2,          3,              5,              6,              7,              8,              9,              10,         11],
+            #   Name                    JRNL        Account               Not Due On,   1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                      2,          3,                    5,            6,              7,              8,              9,              10,         11],
             [
                 # Partner.
-                ('partner_d',           '',         '',             0.00,           0.00,           30.00,          0.00,           1380.00,        0.00,       1410.00),
+                ('partner_d',           '',         '',                   0.00,         0.00,           30.00,          0.00,           1380.00,        0.00,       1410.00),
                 # Account Move Lines.
-                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',           '',             '',             '',             1380.00,        '',         ''),
-                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',           '',             30.00,          '',             '',             '',         ''),
+                ('BILL/2016/12/0003',   'BILL', '211000 Account Payable', '',           '',             '',             '',             1380.00,        '',         ''),
+                ('BILL/2017/02/0002',   'BILL', '211000 Account Payable', '',           '',             30.00,          '',             '',             '',         ''),
             ],
         )
 
@@ -678,16 +678,16 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
-            #   Name                    JRNL        Account         Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
-            [   0,                      2,          3,              5,              6,              7,              8,              9,              10,         11],
+            #   Name                    JRNL        Account             Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                      2,          3,                  5,              6,              7,              8,              9,              10,         11],
             [
                 # Partner.
-                ('partner_d',           '',         '',             0.00,           0.00,           60.00,          0.00,           2760.00,        0.00,       2820.00),
+                ('partner_d',           '',         '',                 0.00,           0.00,           60.00,          0.00,           2760.00,        0.00,       2820.00),
                 # Account Move Lines.
-                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',             '',             '',             '',             1380.00,        '',         ''),
-                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',             '',             '',             '',             1380.00,        '',         ''),
-                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',             '',             30.00,          '',             '',             '',         ''),
-                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',             '',             30.00,          '',             '',             '',         ''),
+                ('BILL/2016/12/0003', 'BILL', '211000 Account Payable', '',             '',             '',             '',             1380.00,        '',         ''),
+                ('BILL/2016/12/0003', 'BILL', '211000 Account Payable', '',             '',             '',             '',             1380.00,        '',         ''),
+                ('BILL/2017/02/0002', 'BILL', '211000 Account Payable', '',             '',             30.00,          '',             '',             '',         ''),
+                ('BILL/2017/02/0002', 'BILL', '211000 Account Payable', '',             '',             30.00,          '',             '',             '',         ''),
             ],
         )
 
@@ -730,17 +730,17 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                      2,                 3,          5,              6,              7,              8,              9,              10,            11],
             [
                 ('partner_a',           '',               '',       0.00,          45.00,         230.00,           0.00,           0.00,            0.00,        275.00),
-                ('BILL/2017/0002',  'BILL', '211000 Account Payable', '',             '',         230.00,             '',             '',              '',            ''),
-                ('BILL/2017/0004',  'BILL', '211000 Account Payable', '',          45.00,             '',             '',             '',              '',            ''),
+                ('BILL/2017/02/0001', 'BILL', '211000 Account Payable', '',           '',         230.00,             '',             '',              '',            ''),
+                ('BILL/2017/03/0001', 'BILL', '211000 Account Payable', '',        45.00,             '',             '',             '',              '',            ''),
                 ('partner_b',           '',               '',       0.00,         345.00,           0.00,           0.00,         180.00,            0.00,        525.00),
-                ('BILL/2016/0001',  'BILL', '211000 Account Payable', '',             '',             '',             '',         180.00,              '',            ''),
-                ('BILL/2017/0005',  'BILL', '211000 Account Payable', '',         345.00,             '',             '',             '',              '',            ''),
+                ('BILL/2016/12/0001', 'BILL', '211000 Account Payable', '',           '',             '',             '',         180.00,              '',            ''),
+                ('BILL/2017/03/0002', 'BILL', '211000 Account Payable', '',       345.00,             '',             '',             '',              '',            ''),
                 ('partner_c',           '',               '',       0.00,           0.00,           0.00,          65.00,        1380.00,            0.00,       1445.00),
-                ('BILL/2016/0002',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0001',  'BILL', '211000 Account Payable', '',             '',             '',          65.00,             '',              '',            ''),
+                ('BILL/2016/12/0002', 'BILL', '211000 Account Payable', '',           '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/01/0001', 'BILL', '211000 Account Payable', '',           '',             '',          65.00,             '',              '',            ''),
                 ('partner_d',           '',               '',       0.00,           0.00,          30.00,           0.00,        1380.00,            0.00,       1410.00),
-                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',             '',          30.00,             '',             '',              '',            ''),
+                ('BILL/2016/12/0003', 'BILL', '211000 Account Payable', '',           '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/02/0002', 'BILL', '211000 Account Payable', '',           '',          30.00,             '',             '',              '',            ''),
                 ('Total',               '',               '',       0.00,         390.00,         260.00,          65.00,        2940.00,            0.00,       3655.00),
             ],
         )
@@ -751,17 +751,17 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                      2,                 3,          5,              6,              7,              8,              9,              10,            11],
             [
                 ('partner_b',           '',               '',       0.00,         345.00,           0.00,           0.00,         180.00,            0.00,        525.00),
-                ('BILL/2017/0005',  'BILL', '211000 Account Payable', '',         345.00,             '',             '',             '',              '',            ''),
-                ('BILL/2016/0001',  'BILL', '211000 Account Payable', '',             '',             '',             '',         180.00,              '',            ''),
+                ('BILL/2017/03/0002', 'BILL', '211000 Account Payable', '',       345.00,             '',             '',             '',              '',            ''),
+                ('BILL/2016/12/0001', 'BILL', '211000 Account Payable', '',           '',             '',             '',         180.00,              '',            ''),
                 ('partner_a',           '',               '',       0.00,          45.00,         230.00,           0.00,           0.00,            0.00,        275.00),
-                ('BILL/2017/0004',  'BILL', '211000 Account Payable', '',          45.00,             '',             '',             '',              '',            ''),
-                ('BILL/2017/0002',  'BILL', '211000 Account Payable', '',             '',         230.00,             '',             '',              '',            ''),
+                ('BILL/2017/03/0001', 'BILL', '211000 Account Payable', '',        45.00,             '',             '',             '',              '',            ''),
+                ('BILL/2017/02/0001', 'BILL', '211000 Account Payable', '',           '',         230.00,             '',             '',              '',            ''),
                 ('partner_c',           '',               '',       0.00,           0.00,           0.00,          65.00,        1380.00,            0.00,       1445.00),
-                ('BILL/2016/0002',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0001',  'BILL', '211000 Account Payable', '',             '',             '',          65.00,             '',              '',            ''),
+                ('BILL/2016/12/0002', 'BILL', '211000 Account Payable', '',           '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/01/0001', 'BILL', '211000 Account Payable', '',           '',             '',          65.00,             '',              '',            ''),
                 ('partner_d',           '',               '',       0.00,           0.00,          30.00,           0.00,        1380.00,            0.00,       1410.00),
-                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',             '',          30.00,             '',             '',              '',            ''),
+                ('BILL/2016/12/0003', 'BILL', '211000 Account Payable', '',           '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/02/0002', 'BILL', '211000 Account Payable', '',           '',          30.00,             '',             '',              '',            ''),
                 ('Total',               '',               '',       0.00,         390.00,         260.00,          65.00,        2940.00,            0.00,       3655.00),
             ],
         )
@@ -772,17 +772,17 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                      2,                 3,          5,              6,              7,              8,              9,              10,            11],
             [
                 ('partner_a',           '',               '',       0.00,          45.00,         230.00,           0.00,           0.00,            0.00,        275.00),
-                ('BILL/2017/0002',  'BILL', '211000 Account Payable', '',             '',         230.00,             '',             '',              '',            ''),
-                ('BILL/2017/0004',  'BILL', '211000 Account Payable', '',          45.00,             '',             '',             '',              '',            ''),
+                ('BILL/2017/02/0001', 'BILL', '211000 Account Payable', '',           '',         230.00,             '',             '',              '',            ''),
+                ('BILL/2017/03/0001', 'BILL', '211000 Account Payable', '',        45.00,             '',             '',             '',              '',            ''),
                 ('partner_b',           '',               '',       0.00,         345.00,           0.00,           0.00,         180.00,            0.00,        525.00),
-                ('BILL/2016/0001',  'BILL', '211000 Account Payable', '',             '',             '',             '',         180.00,              '',            ''),
-                ('BILL/2017/0005',  'BILL', '211000 Account Payable', '',         345.00,             '',             '',             '',              '',            ''),
+                ('BILL/2016/12/0001', 'BILL', '211000 Account Payable', '',           '',             '',             '',         180.00,              '',            ''),
+                ('BILL/2017/03/0002', 'BILL', '211000 Account Payable', '',       345.00,             '',             '',             '',              '',            ''),
                 ('partner_d',           '',               '',       0.00,           0.00,          30.00,           0.00,        1380.00,            0.00,       1410.00),
-                ('BILL/2016/0003',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0003',  'BILL', '211000 Account Payable', '',             '',          30.00,             '',             '',              '',            ''),
+                ('BILL/2016/12/0003', 'BILL', '211000 Account Payable', '',           '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/02/0002', 'BILL', '211000 Account Payable', '',           '',          30.00,             '',             '',              '',            ''),
                 ('partner_c',           '',               '',       0.00,           0.00,           0.00,          65.00,        1380.00,            0.00,       1445.00),
-                ('BILL/2016/0002',  'BILL', '211000 Account Payable', '',             '',             '',             '',        1380.00,              '',            ''),
-                ('BILL/2017/0001',  'BILL', '211000 Account Payable', '',             '',             '',          65.00,             '',              '',            ''),
+                ('BILL/2016/12/0002', 'BILL', '211000 Account Payable', '',           '',             '',             '',        1380.00,              '',            ''),
+                ('BILL/2017/01/0001', 'BILL', '211000 Account Payable', '',           '',             '',          65.00,             '',              '',            ''),
                 ('Total',               '',               '',       0.00,         390.00,         260.00,          65.00,        2940.00,            0.00,       3655.00),
             ],
         )

@@ -43,7 +43,6 @@ class TestPayrollSEPACreditTransfer(TestHrPayrollAccountCommon):
             'name' : 'Bank',
             'code' : 'BNK',
             'type' : 'bank',
-            'sequence_id' : cls.ir_sequence.id,
             'bank_id' : cls.bank.id,
             'bank_account_id': cls.bank_partner.id,
         })

@@ -5,6 +5,7 @@ var core = require('web.core');
 var rpc = require('web.rpc');
 var Tour = require('web_tour.tour');
 var currentYear = new Date().getFullYear();
+var currentMonth = ("0" + (new Date().getMonth() + 1)).slice(-2)
 
 Tour.register('bank_statement_reconciliation', {
         test: true,
@@ -28,7 +29,7 @@ Tour.register('bank_statement_reconciliation', {
         },
         {
             content: "select the right line to match",
-            trigger: '.o_reconciliation_line:nth-child(4) .o_notebook .cell_label:contains("' + currentYear + '/0001")'
+            trigger: '.o_reconciliation_line:nth-child(4) .o_notebook .cell_label:contains("' + currentYear + '/' + currentMonth +'/0001")'
         },
         {
             content: "Check the suggested amount is correct",

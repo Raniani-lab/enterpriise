@@ -22,12 +22,6 @@ class TestHrPayrollAccountCommon(TestPayslipContractBase):
         cls.private_address = cls.env['res.partner'].create({'name': 'A private address'})
         cls.work_address = cls.env['res.partner'].create({'name': 'A work address'})
 
-        cls.ir_sequence = cls.env['ir.sequence'].create({
-            'name' : 'SEQ',
-            'padding' : 4,
-            'number_increment' : 1,
-        })
-
         cls.hr_employee_john = cls.env['hr.employee'].create({
             'address_home_id': cls.private_address.id,
             'address_id': cls.work_address.id,
@@ -56,7 +50,6 @@ class TestHrPayrollAccountCommon(TestPayslipContractBase):
             'name' : 'MISC',
             'code' : 'MSC',
             'type' : 'general',
-            'sequence_id' : cls.ir_sequence.id,
         })
 
         cls.hr_structure_softwaredeveloper = cls.env['hr.payroll.structure'].create({

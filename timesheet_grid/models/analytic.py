@@ -33,70 +33,79 @@ class AnalyticLine(models.Model):
         """
         result = super(AnalyticLine, self).read_grid(row_fields, col_field, cell_field, domain, range, readonly_field, orderby)
 
-        if len(result['grid']) == 0 and len(result['rows']) == 0:
-            # Then it's a record given by group_expand in project_id field
-            # We need to have some information :
-            #   1) search in domain one rule with one of next conditions :
-            #       -   project_id = value
-            #       -   user_id = value
-            #       -   employee_id = value
-            #   2) search in account.analytic.line if the user timesheeted
-            #       in the past 30 days
-            #   3) retrieve data and create correctly the grid and rows in result
-            today = fields.Date.to_string(fields.Date.today())
-            grid_anchor = self.env.context.get('grid_anchor', today)
+        if not self.env.context.get('group_expand', False):
+            return result
 
-            last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
-            domain_search = [
-                ('project_id', '!=', False),
-                ('date', '>=', last_month),
-                ('date', '<=', grid_anchor)
-            ]
+        res_rows = [row['values'] for row in result['rows']]
 
-            # check if project_id or employee_id is in domain
-            # if not then group_expand return None
-            field = None
-            for rule in domain:
-                # if in domain, we have project_id = value and user_id = value
-                # then we are in 'My Timesheet' page.
-                if len(rule) == 3:
-                    name, operator, value = rule
-                    if operator == '=':
-                        if name in ['project_id', 'employee_id']:
-                            field = name
-                            domain_search.append((name, operator, value))
-                        elif name == 'user_id':
-                            domain_search.append((name, operator, value))
-                    elif operator == 'ilike':  # When the user want to filter the results
+        # For the group_expand, we need to have some information :
+        #   1) search in domain one rule with one of next conditions :
+        #       -   project_id = value
+        #       -   user_id = value
+        #       -   employee_id = value
+        #   2) search in account.analytic.line if the user timesheeted
+        #       in the past 30 days
+        #   3) retrieve data and create correctly the grid and rows in result
+        today = fields.Date.to_string(fields.Date.today())
+        grid_anchor = self.env.context.get('grid_anchor', today)
+
+        last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
+        domain_search = [
+            ('project_id', '!=', False),
+            ('date', '>=', last_month),
+            ('date', '<=', grid_anchor)
+        ]
+
+        # check if project_id or employee_id is in domain
+        # if not then group_expand return None
+        field = None
+        for rule in domain:
+            # if in domain, we have project_id = value and user_id = value
+            # then we are in 'My Timesheet' page.
+            if len(rule) == 3:
+                name, operator, value = rule
+                if operator == '=':
+                    if name in ['project_id', 'employee_id']:
+                        field = name
                         domain_search.append((name, operator, value))
+                    elif name == 'user_id':
+                        domain_search.append((name, operator, value))
+                elif operator == 'ilike':  # When the user want to filter the results
+                    domain_search.append((name, operator, value))
 
-            if not field:
-                return result
+        if not field:
+            return result
 
-            # step 2: search timesheets
-            timesheets = self.search(domain_search)
+        # step 2: search timesheets
+        timesheets = self.search(domain_search)
 
-            # step 3: retrieve data and create correctly the grid and rows in result
-            seen = []  # use to not have duplicated rows
-            rows = []
-            for timesheet in timesheets:
-                # check uniq project or task, or employee
-                k = tuple(timesheet[f].id for f in row_fields)
-                if k not in seen:  # check if it's not a duplicated row
-                    record = {f: (timesheet[f].id, timesheet[f].name) if timesheet[f].id else False for f in row_fields}
-                    seen.append(k)
+        # step 3: retrieve data and create correctly the grid and rows in result
+        seen = []  # use to not have duplicated rows
+        rows = []
+        for timesheet in timesheets:
+            # check uniq project or task, or employee
+            k = tuple(timesheet[f].id for f in row_fields)
+            if k not in seen:  # check if it's not a duplicated row
+                record = {f: (timesheet[f].id, timesheet[f].name) if timesheet[f].id else False for f in row_fields}
+                seen.append(k)
+                if not any(record == row for row in res_rows):
                     rows.append({'values': record, 'domain': [('id', '=', timesheet.id)]})
 
-            # _grid_make_empty_cell return a dict, in this dictionary,
-            # we need to check if the cell is in the current date,
-            # then, we add a key 'is_current' into this dictionary
-            # to get the result of this checking.
-            grid = [
-                [{**self._grid_make_empty_cell(r['domain'], c['domain'], domain), 'is_current': c.get('is_current', False)} for c in result['cols']]
-                for r in rows]
+        # _grid_make_empty_cell return a dict, in this dictionary,
+        # we need to check if the cell is in the current date,
+        # then, we add a key 'is_current' into this dictionary
+        # to get the result of this checking.
+        grid = [
+            [{**self._grid_make_empty_cell(r['domain'], c['domain'], domain), 'is_current': c.get('is_current', False)} for c in result['cols']]
+            for r in rows]
 
+        if len(rows) > 0:
             # update grid and rows in result
-            result.update(grid=grid, rows=rows)
+            if len(result['rows']) == 0 and len(result['grid']) == 0:
+                result.update(rows=rows, grid=grid)
+            else:
+                result['rows'].extend(rows)
+                result['grid'].extend(grid)
 
         return result
 
@@ -401,6 +410,7 @@ class AnalyticLine(models.Model):
         context = {
             'search_default_nonvalidated': True,
             'search_default_my_team_timesheet': True,
+            'group_expand': True,
         }
 
         if oldest_timesheet:  # check if exists a timesheet to validate

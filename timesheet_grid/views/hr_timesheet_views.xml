@@ -247,7 +247,8 @@
             <field name="view_mode">grid,tree,form</field>
             <field name="context">{
                 'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'),
-                'my_timesheet_display_timer': True
+                'my_timesheet_display_timer': True,
+                'group_expand': True
             }</field>
         </record>
 
@@ -267,7 +268,11 @@
             <field name="name">All Timesheets</field>
             <field name="res_model">account.analytic.line</field>
             <field name="view_mode">grid,tree</field>
-            <field name="context">{'search_default_groupby_employee': 1, 'search_default_groupby_project': 1}</field>
+            <field name="context">{
+                'group_expand': True,
+                'search_default_groupby_employee': 1,
+                'search_default_groupby_project': 1
+            }</field>
         </record>
 
         <record id="timesheet_action_view_all_grid" model="ir.actions.act_window.view">

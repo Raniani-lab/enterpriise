@@ -2,8 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
+from datetime import timedelta, datetime
+from collections import defaultdict
 
 from odoo import api, fields, models, _
+from odoo.addons.resource.models.resource import Intervals
 
 
 class MrpWorkcenter(models.Model):
@@ -12,6 +15,40 @@ class MrpWorkcenter(models.Model):
     equipment_ids = fields.One2many(
         'maintenance.equipment', 'workcenter_id', string="Maintenance Equipment",
         check_company=True)
+
+    def _get_unavailability_intervals(self, start_datetime, end_datetime):
+        res = super(MrpWorkcenter, self)._get_unavailability_intervals(start_datetime, end_datetime)
+        if not self:
+            return res
+        sql = """
+        SELECT workcenter_id, ARRAY_AGG((schedule_date || '|' || schedule_date + INTERVAL '1h' * duration)) as date_intervals
+        FROM maintenance_request
+        LEFT JOIN maintenance_equipment
+        ON maintenance_request.equipment_id = maintenance_equipment.id
+            WHERE
+            schedule_date IS NOT NULL
+            AND duration IS NOT NULL
+            AND equipment_id IS NOT NULL
+            AND maintenance_equipment.workcenter_id IS NOT NULL
+            AND maintenance_equipment.workcenter_id IN %s
+            AND (schedule_date, schedule_date + INTERVAL '1h' * duration) OVERLAPS (%s, %s)
+        GROUP BY maintenance_equipment.workcenter_id;
+        """
+        self.env.cr.execute(sql, [tuple(self.ids), fields.Datetime.to_string(start_datetime.astimezone()), fields.Datetime.to_string(end_datetime.astimezone())])
+        res_maintenance = defaultdict(list)
+        for wc_row in self.env.cr.dictfetchall():
+            res_maintenance[wc_row.get('workcenter_id')] = [
+                [fields.Datetime.to_datetime(i) for i in intervals.split('|')]
+                for intervals in wc_row.get('date_intervals')
+            ]
+
+        for wc_id in self.ids:
+            intervals_previous_list = [(s.timestamp(), e.timestamp(), self.env['maintenance.request']) for s, e in res[wc_id]]
+            intervals_maintenances_list = [(m[0].timestamp(), m[1].timestamp(), self.env['maintenance.request']) for m in res_maintenance[wc_id]]
+            final_intervals_wc = Intervals(intervals_previous_list + intervals_maintenances_list)
+            res[wc_id] = [(datetime.fromtimestamp(s), datetime.fromtimestamp(e)) for s, e, _ in final_intervals_wc]
+        return res
+
 
 class MaintenanceEquipment(models.Model):
     _inherit = "maintenance.equipment"

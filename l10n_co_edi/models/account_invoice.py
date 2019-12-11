@@ -136,12 +136,10 @@ class AccountMove(models.Model):
             except CarvajalException as e:
                 invoice.message_post(body=_('Electronic invoice status check failed. Message from Carvajal:<br/>%s') % e)
             else:
-                carvajal_status_to_odoo = {
-                    'PROCESSING': 'processing',
-                    'OK': 'accepted',
-                    'FAIL': 'rejected',
-                }
-                invoice.l10n_co_edi_invoice_status = carvajal_status_to_odoo[response['status']]
+                if response['status'] == 'PROCESSING':
+                    invoice.l10n_co_edi_invoice_status = 'processing'
+                else:
+                    invoice.l10n_co_edi_invoice_status = 'accepted' if response['legalStatus'] == 'ACCEPTED' else 'rejected'
 
                 msg = _('Electronic invoice status check completed. Message from Carvajal:<br/>Status: %s') % response['status']
                 attachments = []

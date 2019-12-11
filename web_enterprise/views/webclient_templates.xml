@@ -50,6 +50,7 @@
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/dropdown.scss"/>
         </xpath>
         <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/base_settings_mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/home_menu.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/home_menu_layout.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/search_panel_mobile.scss"/>
@@ -82,6 +83,7 @@
             <script type="text/javascript" src="/web_enterprise/static/src/js/home_menu.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/expiration_panel.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/menu_mobile.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/res_config_settings.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/search_panel_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/swipe_item_mixin.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/core/dialog.js"></script>
@@ -121,6 +123,7 @@
             <script type="text/javascript" src="/web_enterprise/static/tests/relational_fields_mobile_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/views/calendar_mobile_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/views/kanban_mobile_tests.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/tests/tests/base_settings_mobile_tests.js"></script>
         </xpath>
     </template>
 

@@ -187,7 +187,7 @@ class PaymentTxSepaDirectDebit(models.Model):
         payment = self.env['account.payment'].create(payment_vals)
 
         # invoices should be posted before payment
-        invoices = self.mapped('invoice_ids').filtered(lambda i: i.invoice_payment_state in ['not_paid', 'in_payment'])
+        invoices = self.mapped('invoice_ids').filtered(lambda i: i.state == 'draft')
         invoices.post()
 
         payment.post()

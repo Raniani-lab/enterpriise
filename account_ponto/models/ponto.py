@@ -9,6 +9,7 @@ import time
 from odoo import models, api, fields
 from odoo.tools.translate import _
 from odoo.exceptions import UserError
+from odoo.addons.base.models.res_bank import sanitize_account_number
 
 _logger = logging.getLogger(__name__)
 
@@ -319,14 +320,20 @@ class OnlineAccount(models.Model):
                 counterpart = attributes.get('counterpartName') or ''
                 remittanceinfo = attributes.get('remittanceInformation') or ''
                 name = ' '.join([description, counterpart, remittanceinfo]) or '/'
+                account_number = transaction.get('attributes', {}).get('counterpartReference')
                 trans = {
                     'online_identifier': transaction.get('id'),
                     'date': fields.Date.from_string(transaction.get('attributes', {}).get('valueDate')),
                     'name': name,
                     'amount': transaction.get('attributes', {}).get('amount'),
-                    'account_number': transaction.get('attributes', {}).get('counterpartReference'),
+                    'account_number': account_number,
                 }
-                if transaction.get('attributes', {}).get('counterpartName'):
+                if account_number:
+                    partner_bank = self.env['res.partner.bank'].search([('sanitized_acc_number', '=', sanitize_account_number(account_number))], limit=1)
+                    if partner_bank:
+                        trans['bank_account_id'] = partner_bank.id
+                        trans['partner_id'] = partner_bank.partner_id.id
+                if not trans.get('partner_id') and transaction.get('attributes', {}).get('counterpartName'):
                     trans['online_partner_vendor_name'] = transaction['attributes']['counterpartName']
                     trans['partner_id'] = self._find_partner([('online_partner_vendor_name', '=', transaction['attributes']['counterpartName'])])
                 transactions.append(trans)

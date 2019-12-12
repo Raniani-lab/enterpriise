@@ -36,7 +36,7 @@
     <span>Drop files here to upload</span>
 </div>
 
-<span t-name="documents.lockIcon" t-att-title="tooltip" t-attf-class="o_documents_locked fa {{isLockedByUser ? 'fa-unlock-alt' : 'fa-lock'}}"/>
+<span t-name="documents.lockIcon" t-att-title="tooltip" class="o_documents_locked fa fa-lock"/>
 
 </templates>
 

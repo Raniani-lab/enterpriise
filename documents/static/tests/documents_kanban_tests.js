@@ -1753,6 +1753,44 @@ QUnit.module('DocumentsViews', {
         kanban.destroy();
     });
 
+    QUnit.test('document inspector: locked by another user', async function (assert) {
+        assert.expect(4);
+
+        this.data['documents.document'].records.push({
+            id: 54,
+            name: 'lockedByAnother',
+            folder_id: 1,
+            lock_uid: 3,
+            available_rule_ids: [1, 2, 4]
+        });
+        const kanban = await createDocumentsView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            session: {
+                uid: 2,
+            },
+            arch: `
+                <kanban><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
+
+        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
+        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(lockedByAnother)'));
+
+        assert.containsNone(kanban, '.o_inspector_rule', "should not display any rule");
+
+        assert.ok(kanban.$('.o_inspector_lock').prop('disabled'), "the lock button should be disabled");
+        assert.ok(kanban.$('.o_inspector_replace').prop('disabled'), "the replace button should be disabled");
+        assert.ok(kanban.$('.o_inspector_archive').prop('disabled'), "the archive button should be disabled");
+
+        kanban.destroy();
+    });
+
     QUnit.test('document inspector: display rules of reloaded record', async function (assert) {
         assert.expect(7);
 

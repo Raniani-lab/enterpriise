@@ -471,6 +471,7 @@ const DocumentsInspector = Widget.extend({
             this.$('.o_inspector_replace').prop('disabled', true);
             this.$('.o_inspector_delete').prop('disabled', true);
             this.$('.o_inspector_archive').prop('disabled', true);
+            this.$('.o_inspector_lock').prop('disabled', true);
             this.$('.o_inspector_table .o_field_widget').prop('disabled', true);
         }
         if (!binary && (this.records.length > 1 || (this.records.length && this.records[0].data.type === 'empty'))) {

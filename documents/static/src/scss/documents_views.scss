@@ -261,7 +261,15 @@ $o-dms-progress-bar-height: 15px;
             border: 1px solid $o-dms-inspector-bg-darker;
             box-shadow: inset 0 1px 0 fade_out(white, 0.9), 0 1px 0 fade_out(white, 0.9);
             text-shadow: 0 1px 0 $o-dms-inspector-bg-darker;
-            @include o-hover-text-color($o-dms-inspector-txt-light, white);
+            color: $o-dms-inspector-txt-light;
+
+            &:not(:disabled) {
+                @include o-hover-text-color($o-dms-inspector-txt-light, white);
+            }
+
+            &:disabled {
+                cursor: not-allowed;
+            }
 
             &.o_inspector_delete, &.o_archived {
                 color: $o-dms-inspector-txt-lighter;

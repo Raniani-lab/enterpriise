@@ -5,7 +5,6 @@ const DocumentsControllerMixin = require('documents.controllerMixin');
 const ListController = require('web.ListController');
 
 const { qweb } = require('web.core');
-const { uid } = require('web.session');
 
 const DocumentsListController = ListController.extend(DocumentsControllerMixin, {
     events: Object.assign({}, ListController.prototype.events, DocumentsControllerMixin.events),
@@ -76,7 +75,6 @@ const DocumentsListController = ListController.extend(DocumentsControllerMixin, 
             if (lockLocalId) {
                 const lockUidData = localData[lockLocalId].data;
                 $record.find('.o_data_cell:nth(0)').append(qweb.render('documents.lockIcon', {
-                    isLockedByUser: lockUidData.id === uid,
                     tooltip: lockUidData.display_name,
                 }));
             }

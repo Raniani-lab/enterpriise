@@ -101,8 +101,9 @@
                             <div class="o_kanban_details">
                                 <div class="o_kanban_details_wrapper">
                                     <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
-                                        <i t-attf-class="o_documents_lock fa {{(record.lock_uid.raw_value == user_context.uid || !record.lock_uid.raw_value)? '' : ' fa-lock'}} {{(record.lock_uid.raw_value == user_context.uid)? ' fa-unlock-alt' : ''}}"
-                                               t-att-title="record.lock_uid.value"/>
+                                        <t t-if="record.lock_uid.raw_value">
+                                            <i class="o_documents_lock fa fa-lock" t-att-title="record.lock_uid.value"/>
+                                        </t>
                                         <field name="name" required="True" class="o_text_overflow"/>
                                     </div>
                                     <div class="o_kanban_record_body">

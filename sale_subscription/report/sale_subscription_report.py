@@ -12,9 +12,10 @@ class sale_subscription_report(models.Model):
     date_end = fields.Date('End Date', readonly=True)
     product_id = fields.Many2one('product.product', 'Product', readonly=True)
     product_uom = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True)
-    recurring_monthly = fields.Float('Monthly Recurring Revenue', readonly=True)
-    recurring_yearly = fields.Float('Yearly Recurring Revenue', readonly=True)
-    recurring_total = fields.Float('Recurring Price', readonly=True)
+    recurring_monthly = fields.Float('Monthly Recurring Revenue (Tax excl.)', readonly=True)
+    recurring_yearly = fields.Float('Yearly Recurring Revenue (Tax excl.)', readonly=True)
+    recurring_total = fields.Float('Untaxed Recurring Price', readonly=True)
+    recurring_total_incl = fields.Float('Recurring Price', readonly=True)
     quantity = fields.Float('Quantity', readonly=True)
     partner_id = fields.Many2one('res.partner', 'Customer', readonly=True)
     user_id = fields.Many2one('res.users', 'Salesperson', readonly=True)
@@ -53,6 +54,7 @@ class sale_subscription_report(models.Model):
                         * sub.recurring_monthly * 12
                     ) as recurring_yearly,
                     sum(l.price_subtotal) as recurring_total,
+                    sum(l.price_total) as recurring_total_incl,
                     sum(l.quantity) as quantity,
                     sub.date_start as date_start,
                     sub.date as date_end,

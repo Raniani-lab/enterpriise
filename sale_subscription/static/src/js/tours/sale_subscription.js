@@ -24,6 +24,7 @@ tour.register('sale_subscription_tour', {
 },
 {
     trigger: '.o-kanban-button-new',
+    extra_trigger: '.o_subscription_kanban',
     content: _t('Let\'s create your first subscription template.'),
     position: 'bottom',
     width: 200,

@@ -143,7 +143,7 @@ class sale_subscription(http.Controller):
 
         history = request.session.get('my_subscriptions_history', [])
         values.update(get_records_pager(history, account))
-        values['acq_extra_fees'] = acquirers.get_acquirer_extra_fees(account.recurring_amount_total, account.currency_id, account.partner_id.country_id)
+        values['acq_extra_fees'] = acquirers.get_acquirer_extra_fees(account.recurring_total_incl, account.currency_id, account.partner_id.country_id)
 
         return request.render("sale_subscription.subscription", values)
 

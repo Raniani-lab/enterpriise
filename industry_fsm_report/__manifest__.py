@@ -22,4 +22,5 @@ Create Reports for Field Service
         'data/fsm_report_data.xml',
     ],
     'demo': ['data/fsm_report_demo.xml'],
+    'post_init_hook': 'post_init',
 }

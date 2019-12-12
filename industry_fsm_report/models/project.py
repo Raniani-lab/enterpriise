@@ -9,50 +9,38 @@ from odoo.exceptions import UserError
 class Project(models.Model):
     _inherit = "project.project"
 
-    @api.model
-    def default_get(self, fields):
-        """ Pre-fill data "Default Worksheet" as default when creating new projects allowing worksheets
-            if no other worksheet set.
-        """
-        result = super(Project, self).default_get(fields)
-        if 'worksheet_template_id' in fields and result.get('allow_worksheets') and not result.get('worksheet_template_id'):
-            default_worksheet = self.env.ref('industry_fsm_report.fsm_worksheet_template', False)
-            if default_worksheet:
-                result['worksheet_template_id'] = default_worksheet.id
-        return result
-
-    allow_worksheets = fields.Boolean("Worksheets", help="Enables customizable worksheets on tasks.")
+    allow_worksheets = fields.Boolean(
+        "Worksheets", compute='_compute_allow_worksheets', store=True, readonly=False,
+        help="Enables customizable worksheets on tasks.")
     worksheet_template_id = fields.Many2one(
-        'project.worksheet.template',
+        'project.worksheet.template', compute="_compute_worksheet_template_id", store=True, readonly=False,
         string="Default Worksheet",
         help="Choose a default worksheet template for this project (you can change it individually on each task).",
         domain="['|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
 
-    @api.onchange('allow_worksheets')
-    def _onchange_allow_worksheets(self):
-        if self.allow_worksheets:
-            default_worksheet = self.env.ref('industry_fsm_report.fsm_worksheet_template', False)
-            if default_worksheet:
-                self.worksheet_template_id = default_worksheet.id
-        else:
-            self.worksheet_template_id = False
+    @api.depends('is_fsm')
+    def _compute_allow_worksheets(self):
+        for project in self:
+            if not project._origin:
+                project.allow_worksheets = project.is_fsm
+
+    @api.depends('allow_worksheets')
+    def _compute_worksheet_template_id(self):
+        default_worksheet = self.env.ref('industry_fsm_report.fsm_worksheet_template', False)
+        for project in self:
+            if project.allow_worksheets and default_worksheet:
+                project.worksheet_template_id = default_worksheet.id
+            else:
+                project.worksheet_template_id = False
 
 
 class Task(models.Model):
     _inherit = "project.task"
 
-    def _default_worksheet_template_id(self):
-        default_project_id = self.env['project.task'].default_get(['project_id']).get('project_id')
-        if default_project_id:
-            project = self.env['project.project'].browse(default_project_id)
-            return project.worksheet_template_id
-        return False
-
-    allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', default=False)
+    allow_worksheets = fields.Boolean(related='project_id.allow_worksheets')
     worksheet_template_id = fields.Many2one(
         'project.worksheet.template', string="Worksheet Template",
-        default=_default_worksheet_template_id,
-        domain="['|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
+        compute='_compute_worksheet_template_id', store=True, readonly=False)
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
     worksheet_signature = fields.Binary('Signature', help='Signature received through the portal.', copy=False, attachment=True)
@@ -118,12 +106,14 @@ class Task(models.Model):
                 'display_send_report_secondary': send_s,
             })
 
-    @api.onchange('project_id')
-    def _onchange_project_id(self):
-        if self.project_id.allow_worksheets:
-            self.worksheet_template_id = self.project_id.worksheet_template_id.id
-        else:
-            self.worksheet_template_id = False
+    @api.depends('project_id')
+    def _compute_worksheet_template_id(self):
+        # Change worksheet when the project changes, not project.allow_worksheet (YTI To confirm)
+        for task in self:
+            if task.project_id.allow_worksheets:
+                task.worksheet_template_id = task.project_id.worksheet_template_id.id
+            else:
+                task.worksheet_template_id = False
 
     @api.depends('worksheet_template_id')
     def _compute_worksheet_count(self):

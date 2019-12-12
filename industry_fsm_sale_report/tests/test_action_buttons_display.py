@@ -134,6 +134,7 @@ class TestTimerButtons(SavepointCase):
             'allow_worksheets': True,
             'allow_material': True,
             'allow_timesheets': True,
+            'timesheet_product_id': self.product_service.id,
         })
         self.assertEqual(self.task.display_enabled_conditions_count, 3)
 

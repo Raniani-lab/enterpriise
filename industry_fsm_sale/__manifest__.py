@@ -21,4 +21,5 @@ Create Sales order with timesheets and products from tasks
     'application': False,
     'auto_install': True,
     'demo': [],
+    'post_init_hook': 'post_init',
 }

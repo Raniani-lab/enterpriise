@@ -89,6 +89,10 @@ class TestAccountReportsCommon(SavepointCase):
             'name': 'company_child_eur',
             'currency_id': cls.env.ref('base.EUR').id,
         })
+        # In real life those companies are flushed at that time.
+        # If we don't flush that could lead to issues when recomputing
+        # fields on the child_company when loading the chart template
+        cls.env['base'].flush()
 
         # EUR = 2 USD
         cls.eur_to_usd = cls.env['res.currency.rate'].create({

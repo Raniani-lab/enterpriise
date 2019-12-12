@@ -8,13 +8,18 @@ from odoo.exceptions import UserError
 class Project(models.Model):
     _inherit = 'project.project'
 
-    allow_forecast = fields.Boolean("Planning", default=False, help="Enable planning tasks on the project.")
+    allow_forecast = fields.Boolean("Planning", default=True, help="Enable planning tasks on the project.")
 
     def unlink(self):
         if self.env['planning.slot'].search([('project_id', 'in', self.ids)]):
             raise UserError(_('You cannot delete a project containing plannings. You can either delete all the project\'s forecasts and then delete the project or simply deactivate the project.'))
         return super(Project, self).unlink()
 
+    @api.depends('is_fsm')
+    def _compute_allow_forecast(self):
+        for project in self:
+            if not project._origin:
+                project.allow_forecast = not project.is_fsm
 
 class Task(models.Model):
     _inherit = 'project.task'

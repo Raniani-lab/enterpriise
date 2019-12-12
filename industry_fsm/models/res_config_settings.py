@@ -9,3 +9,6 @@ class ResConfigSettings(models.TransientModel):
 
     module_industry_fsm_report = fields.Boolean("Worksheets")
     module_industry_fsm_sale = fields.Boolean('Time and Material')
+
+    def _get_subtasks_projects_domain(self):
+        return [('is_fsm', '=', False)]

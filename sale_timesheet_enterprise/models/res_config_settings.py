@@ -27,7 +27,7 @@ class ResConfigSettings(models.TransientModel):
             qty_to_invoice and invoice status fields.
         """
         old_value = self.env["ir.config_parameter"].sudo().get_param("sale.invoiced_timesheet")
-        if self.invoiced_timesheet != old_value:
+        if old_value and self.invoiced_timesheet != old_value:
             # recompute the qty_delivered in sale.order.line for sale.order
             # where his state is set to 'sale'.
             sale_orders = self.env['sale.order'].search([

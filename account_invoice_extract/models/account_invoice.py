@@ -123,7 +123,7 @@ class AccountMove(models.Model):
         message = super(AccountMove, self).message_post(**kwargs)
         if self.env.company.extract_show_ocr_option_selection == 'auto_send':
             for record in self:
-                if record.is_invoice() and record.extract_state == "no_extract_requested":
+                if record.type in ['in_invoice', 'in_refund'] and record.extract_state == "no_extract_requested":
                     record.retry_ocr()
         return message
 
@@ -132,7 +132,7 @@ class AccountMove(models.Model):
         if self.env.company.extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
-        if attachments and attachments.exists() and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
+        if attachments and attachments.exists() and self.type in ['in_invoice', 'in_refund'] and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
             account_token = self.env['iap.account'].get('invoice_ocr')
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
                 'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/parse'
@@ -262,7 +262,7 @@ class AccountMove(models.Model):
         # OVERRIDE
         # On the validation of an invoice, send the different corrected fields to iap to improve the ocr algorithm.
         res = super(AccountMove, self).post()
-        for record in self.filtered(lambda move: move.is_invoice()):
+        for record in self.filtered(lambda move: move.type in ['in_invoice', 'in_refund']):
             if record.extract_state == 'waiting_validation':
                 endpoint = self.env['ir.config_parameter'].sudo().get_param(
                     'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/validate'

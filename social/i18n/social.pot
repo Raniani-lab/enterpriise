@@ -16,6 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid "It appears there is an issue with the Social Media link, click here to "
+"link the account again"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__accounts_count
 msgid "# Accounts"
 msgstr ""
@@ -773,6 +781,13 @@ msgid "Number of Actions"
 msgstr ""
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid "Number of Followers of your channel"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__click_count
 msgid "Number of clicks"
 msgstr ""
@@ -820,6 +835,24 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__stories
 msgid "Number of stories created from your posts (Shares, Re-tweets, ...)."
+msgstr ""
+
+#. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid ""
+"Number of times people have engaged with your posts (likes, comments, "
+"shares,...)"
+msgstr ""
+
+#. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid ""
+"Number of times people who have engaged with your channel have created "
+"stories on their friends' or followers' feed (Shares, Retweets...)"
 msgstr ""
 
 #. module: social
@@ -1408,8 +1441,22 @@ msgid "Will attach images to your posts (if the social media supports it)."
 msgstr ""
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid "Write a comment..."
+msgstr ""
+
+#. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 msgid "Write a message to see the preview."
+msgstr ""
+
+#. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid "Write a reply..."
 msgstr ""
 
 #. module: social

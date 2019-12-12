@@ -148,6 +148,8 @@
             </div>
             <div class="position-relative flex-grow-1">
                 <div class="f-flex align-items-stretch">
+                    <t t-set="write_reply_text">Write a reply...</t>
+                    <t t-set="write_comment_text">Write a comment...</t>
                     <textarea
                         name="message"
                         t-att-data-existing-attachment-id="existingAttachmentId"
@@ -155,7 +157,7 @@
                         t-att-data-is-comment-reply="isCommentReply"
                         t-att-data-comment-id="isCommentReply || isCommentEdit ? comment.id : null"
                         t-attf-class="o_social_add_comment o_social_comment_message form-control pr-5 #{bubble_design? 'bg-200 o_social_bubble_radius' : ''}"
-                        t-att-placeholder="isCommentReply ? 'Write a reply...' : 'Write a comment...'"><t t-esc="initialValue || ''"></t></textarea>
+                        t-att-placeholder="isCommentReply ? write_reply_text : write_comment_text"><t t-esc="initialValue || ''"></t></textarea>
                     <div class="o_social_comment_controls mt-2">
                         <div class="o_social_comment_add_image o_social_subtle_btn px-3 py-1">
                             <i class="fa fa-image" title="Add an image"/>
@@ -342,39 +344,43 @@
                     <a t-if="socialAccount.stats_link" t-att-href="socialAccount.stats_link" class="small" target="_blank">
                         Insights
                     </a>
+                    <t t-set="connecting_problem_content">It appears there is an issue with the Social Media link, click here to link the account again</t>
                     <a t-if="socialAccount.is_media_disconnected"
                         href="#"
                         class="o_social_account_link_disconnected text-danger ml-4"
                         t-att-data-media-id="socialAccount.media_id[0]"
                         data-toggle="popover" title="Connecting Problem"
-                        data-content="It appears there is an issue with the Social Media link, click here to link the account again">
+                        t-att-data-content="connecting_problem_content">
                         <i class="fa fa-unlink"/>
                     </a>
                 </div>
             </div>
 
             <div class="d-flex flex-nowrap flex-grow-1 px-4 pt-2 pb-3">
+                <t t-set="audience_content">Number of Followers of your channel</t>
                 <div class="d-flex align-items-center flex-grow-1 pr-3"
                     data-toggle="popover" title="Audience"
-                    data-content="Number of Followers of your channel">
+                    t-att-data-content="audience_content">
                     <t t-call="social.AccountsStatsValue">
                         <t t-set="icon" t-value="'fa-bullseye'"/>
                         <t t-set="value" t-value="socialAccount.audience"/>
                         <t t-set="trend" t-value="socialAccount.audience_trend"/>
                     </t>
                 </div>
+                <t t-set="engagement_content">Number of times people have engaged with your posts (likes, comments, shares,...)</t>
                 <div class="d-flex align-items-center justify-content-center flex-grow-1 px-3"
                     data-toggle="popover" title="Engagement"
-                    data-content="Number of times people have engaged with your posts (likes, comments, shares,...)">
+                    t-att-data-content="engagement_content">
                     <t t-call="social.AccountsStatsValue">
                         <t t-set="icon" t-value="'fa-hand-o-up'"/>
                         <t t-set="value" t-value="socialAccount.engagement"/>
                         <t t-set="trend" t-value="socialAccount.engagement_trend"/>
                     </t>
                 </div>
+                <t t-set="stories_content">Number of times people who have engaged with your channel have created stories on their friends' or followers' feed (Shares, Retweets...)</t>
                 <div class="d-flex align-items-center justify-content-end flex-grow-1 pl-3"
                     data-toggle="popover" title="Stories"
-                    data-content="Number of times people who have engaged with your channel have created stories on their friends' or followers' feed (Shares, Retweets...)">
+                    t-att-data-content="stories_content">
                     <t t-call="social.AccountsStatsValue">
                         <t t-set="icon" t-value="'fa-book'"/>
                         <t t-set="value" t-value="socialAccount.stories"/>

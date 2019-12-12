@@ -13,7 +13,7 @@ var CohortModel = AbstractModel.extend({
     * @returns {Object}
     */
     get: function () {
-      return this.data;
+        return this.data;
     },
     /**
      * @override
@@ -64,11 +64,15 @@ var CohortModel = AbstractModel.extend({
             if (timeRangeMenuData) {
                 this.timeRange = timeRangeMenuData.timeRange || [];
                 this.comparisonTimeRange = timeRangeMenuData.comparisonTimeRange || [];
-                this.compare =  this.comparisonTimeRange.length > 0;
+                this.compare = this.comparisonTimeRange.length > 0;
+                this.data.timeRangeDescription = timeRangeMenuData.timeRangeDescription;
+                this.data.comparisonTimeRangeDescription = timeRangeMenuData.comparisonTimeRangeDescription;
             } else {
                 this.timeRange = [];
                 this.comparisonTimeRange = [];
                 this.compare = false;
+                this.data.timeRangeDescription = "";
+                this.data.comparisonTimeRangeDescription = "";
             }
         }
         if ('measure' in params) {

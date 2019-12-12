@@ -1830,7 +1830,7 @@ QUnit.module('Views', {
         });
 
         // check interval
-        assert.strictEqual(dashboard.renderer.subControllers.cohort.renderer.state.interval,
+        assert.strictEqual(dashboard.renderer.subControllers.cohort.renderer.props.interval,
             "year", "should use year interval");
         assert.doesNotHaveClass(dashboard.$('button[data-interval="day"]'), 'active',
                 'day interval button should not be active');

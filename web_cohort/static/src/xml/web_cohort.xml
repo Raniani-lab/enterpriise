@@ -37,165 +37,118 @@
         </div>
     </t>
 
-    <t t-name="CohortView.tooltip">
-        <ul class="oe_tooltip_technical" role="tooltip">
-            <li>
-                <span class="oe_tooltip_technical_title">Period:</span>
-                <t t-esc="period"/>
-            </li>
-            <li>
-                <span class="oe_tooltip_technical_title"><t t-esc='measure'/>:</span>
-                <t t-esc="count"/>
-            </li>
-        </ul>
-    </t>
-
-    <div t-name="CohortView">
-        <div t-if="comparisonReport &amp;&amp; (comparisonReport.rows.length || report.rows.length)" class="table-responsive">
-            <table class="table text-center mb0">
-                <thead>
-                    <tr>
-                        <th colspan="16">
-                            <t t-esc="timeRangeDescription" />
-                        </th>
-                    </tr>
-                </thead>
-            </table>
+    <div t-name="web_cohort.CohortRenderer" class="o_cohort_view" owl="1">
+        <div t-if="_hasContent()">
+            <div t-if="props.comparisonReport &amp;&amp; (props.comparisonReport.rows.length || props.report.rows.length)" class="table-responsive">
+                <t t-call="CohortView.tableTitle">
+                    <t t-set="title" t-value="props.timeRangeDescription"/>
+                </t>
+            </div>
+            <div t-if="props.report.rows.length" class="table-responsive">
+                <t t-call="CohortView.tableContent">
+                    <t t-set="col_length" t-value="props.report.rows[0].columns.length"/>
+                    <t t-set="report_rows" t-value="props.report.rows"/>
+                    <t t-set="report_avg" t-value="props.report.avg" />
+                </t>
+            </div>
+            <div t-if="!props.report.rows.length &amp;&amp; props.comparisonReport &amp;&amp; props.comparisonReport.rows.length" class="o_cohort_no_data text-center">
+                No data available.
+            </div>
+            <br/>
+            <div t-if="props.comparisonReport &amp;&amp; (props.report.rows.length || props.comparisonReport.rows.length)" class="table-responsive">
+                <t t-call="CohortView.tableTitle">
+                    <t t-set="title" t-value="props.comparisonTimeRangeDescription"/>
+                </t>
+            </div>
+            <div t-if="props.comparisonReport &amp;&amp; props.comparisonReport.rows.length" class="table-responsive">
+                <t t-call="CohortView.tableContent">
+                    <t t-set="col_length" t-value="props.comparisonReport.rows[0].columns.length"/>
+                    <t t-set="report_rows" t-value="props.comparisonReport.rows"/>
+                    <t t-set="report_avg" t-value="props.comparisonReport.avg" />
+                </t>
+            </div>
+            <div t-if="props.report.rows.length &amp;&amp; props.comparisonReport &amp;&amp; !props.comparisonReport.rows.length" class="o_cohort_no_data text-center">
+                No data available.
+            </div>
         </div>
-        <div t-if="report.rows.length" class="table-responsive">
-            <t t-set="col_length" t-value="report.rows[0].columns.length"/>
-            <table class="table text-center mb0">
-                <thead>
-                    <tr>
-                        <th rowspan="2"><t t-esc="date_start_string" /></th>
-                        <th rowspan="2">
-                            <t t-esc="measure" />
-                        </th>
-                        <th colspan="16">
-                            <t t-esc="date_stop_string" /> - By <t t-esc="interval" />
-                        </th>
-                    </tr>
-                    <tr>
-                        <th t-foreach="_.range(col_length)" t-as="intervalNumber">
-                            <t t-if="timeline === 'backward'">
-                                <t t-esc="intervalNumber - (col_length - 1)"/>
-                            </t>
-                            <t t-else="">
-                                +<t t-esc="intervalNumber"/>
-                            </t>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr t-foreach="report.rows" t-as="row" data-type="data" t-att-data-row="row_index" class="o_cohort_row_clickable">
-                        <td class="o_cohort_value">
-                            <t t-esc="row.date" />
-                        </td>
-                        <td class="o_cohort_value">
-                            <t t-esc="format_float(row.value)" />
-                        </td>
-                        <td t-foreach="row.columns" t-as="col">
-                            <div t-if="col.percentage !== ''"
-                                t-attf-style="background-color: rgba(0, 160, 157, #{col.percentage/100.0}); color: #{col.percentage gt 50 and '#FFFFFF' or 'inherit'}"
-                                t-att-data-col="col_index"
-                                t-att-class="'o_cohort_highlight' + (col.value === '-' ? '' : ' o_cohort_value')"
-                                t-att-data-period="col.period"
-                                t-att-data-count="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)">
-                                <t t-esc="format_percentage(col.percentage / 100.0)" />
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>
-                            Average
-                        </td>
-                        <t t-set="avg" t-value="report.avg" />
-                        <td>
-                            <t t-esc="format_float(avg.avg_value)"/>
-                        </td>
-                        <td t-foreach="avg.columns_avg" t-as="col">
-                            <t t-if="avg.columns_avg[col]['count']">
-                                <t t-esc="format_percentage(avg.columns_avg[col]['percentage'] / (avg.columns_avg[col]['count'] * 100.0) )" />
-                            </t>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        <div t-if="!report.rows.length &amp;&amp; comparisonReport &amp;&amp; comparisonReport.rows.length" class="o_cohort_no_data text-center">
-            No data available.
-        </div>
-        <br/>
-        <div t-if="comparisonReport &amp;&amp; (report.rows.length || comparisonReport.rows.length)" class="table-responsive">
-            <table class="table text-center mb0">
-                <thead>
-                    <tr>
-                        <th colspan="16">
-                            <t t-esc="comparisonTimeRangeDescription" />
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <div t-if="comparisonReport &amp;&amp; comparisonReport.rows.length" class="table-responsive">
-            <table class="table text-center mb0">
-                <thead>
-                    <tr>
-                        <th rowspan="2"><t t-esc="date_start_string" /></th>
-                        <th rowspan="2">
-                            <t t-esc="measure" />
-                        </th>
-                        <th colspan="16">
-                            <t t-esc="date_stop_string" /> - By <t t-esc="interval" />
-                        </th>
-                    </tr>
-                    <tr>
-                        <th t-foreach="_.range(comparisonReport.rows[0].columns.length)" t-as="intervalNumber">
-                            +<t t-esc="intervalNumber" />
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr t-foreach="comparisonReport.rows" t-as="row" data-type="comparisonData" t-att-data-row="row_index" class="o_cohort_row_clickable">
-                        <td class="o_cohort_value">
-                            <t t-esc="row.date" />
-                        </td>
-                        <td class="o_cohort_value">
-                            <t t-esc="row.value" />
-                        </td>
-                        <td t-foreach="row.columns" t-as="col">
-                            <div t-if="col.percentage !== ''"
-                                t-attf-style="background-color: rgba(0, 160, 157, #{col.percentage/100.0}); color: #{col.percentage gt 50 and '#FFFFFF' or 'inherit'}"
-                                t-att-data-col="col_index"
-                                t-att-class="'o_cohort_highlight' + (col.value === '-' ? '' : ' o_cohort_value')"
-                                t-att-data-original-title="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)">
-                                <t t-esc="format_percentage(col.percentage / 100.0)" />
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>
-                            Average
-                        </td>
-                        <t t-set="avg" t-value="comparisonReport.avg" />
-                        <td>
-                            <t t-esc="format_float(avg.avg_value)"/>
-                        </td>
-                        <td t-foreach="avg.columns_avg" t-as="col">
-                            <t t-if="avg.columns_avg[col]['count']">
-                                <t t-esc="format_percentage(avg.columns_avg[col]['percentage'] / (avg.columns_avg[col]['count'] * 100.0))" />
-                            </t>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        <div t-if="report.rows.length &amp;&amp; comparisonReport &amp;&amp; !comparisonReport.rows.length" class="o_cohort_no_data text-center">
-            No data available.
+        <div t-else="">
+            <t t-call="web.NoContentHelper"/>
         </div>
     </div>
+
+    <t t-name="CohortView.tableTitle" owl="1">
+        <table class="table text-center mb0">
+            <thead>
+                <tr>
+                    <th colspan="16">
+                        <t t-esc="title" />
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </t>
+
+    <t t-name="CohortView.tableContent" owl="1">
+        <table class="table text-center mb0">
+            <thead>
+                <tr>
+                    <th rowspan="2"><t t-esc="props.dateStartString" /></th>
+                    <th rowspan="2">
+                        <t t-esc="props.measures[props.measure]"/>
+                    </th>
+                    <th colspan="16">
+                        <t t-esc="props.dateStopString" /> - By <t t-esc="props.intervals[props.interval]" />
+                    </th>
+                </tr>
+                <tr>
+                    <th t-foreach="_range(col_length)" t-as="intervalNumber">
+                        <t t-if="props.timeline === 'backward'">
+                            <t t-esc="intervalNumber - (col_length - 1)"/>
+                        </t>
+                        <t t-else="">
+                            +<t t-esc="intervalNumber"/>
+                        </t>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="report_rows" t-as="row" t-key="row.date" data-type="data" t-att-data-row-index="row_index" class="o_cohort_row_clickable" t-on-click="_onClickRow">
+                    <td class="o_cohort_value">
+                        <t t-esc="row.date" />
+                    </td>
+                    <td class="o_cohort_value">
+                        <t t-esc="_formatFloat(row.value)" />
+                    </td>
+                    <td t-foreach="row.columns" t-as="col" t-key="col.period">
+                        <t t-if="col.percentage !== ''">
+                            <t t-set="count" t-value="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)"/>
+                            <t t-set="measure" t-value="props.measures[props.measure]"/>
+                            <div class="o_cohort_highlight"
+                                t-attf-title="Periode: {{col.period}}&#10;{{measure}}: {{count}}"
+                                t-attf-style="background-color: rgba(0, 160, 157, #{col.percentage/100.0}); color: #{col.percentage gt 50 and '#FFFFFF' or 'inherit'}"
+                                t-att-class="{o_cohort_value: col.value !== '-'}">
+                                <t t-esc="_formatPercentage(col.percentage / 100.0)"/>
+                            </div>
+                        </t>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        Average
+                    </td>
+                    <td>
+                        <t t-esc="_formatFloat(report_avg.avg_value)"/>
+                    </td>
+                    <td t-foreach="report_avg.columns_avg" t-as="col">
+                        <t t-if="report_avg.columns_avg[col]['count']">
+                            <t t-esc="_formatPercentage(report_avg.columns_avg[col]['percentage'] / (report_avg.columns_avg[col]['count'] * 100.0))" />
+                        </t>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </t>
+
 </templates>

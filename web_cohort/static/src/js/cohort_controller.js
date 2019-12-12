@@ -1,18 +1,18 @@
 odoo.define('web_cohort.CohortController', function (require) {
 'use strict';
 
-var AbstractController = require('web.AbstractController');
-var config = require('web.config');
-var core = require('web.core');
-var framework = require('web.framework');
-var session = require('web.session');
+const ControllerAdapter = require('web.ControllerAdapter');
+const config = require('web.config');
+const core = require('web.core');
+const framework = require('web.framework');
+const session = require('web.session');
 
-var qweb = core.qweb;
-var _t = core._t;
+const qweb = core.qweb;
+const _t = core._t;
 
-var CohortController = AbstractController.extend({
-    custom_events: _.extend({}, AbstractController.prototype.custom_events, {
-        'row_clicked': '_onRowClicked',
+var CohortController = ControllerAdapter.extend({
+    events: Object.assign({}, ControllerAdapter.prototype.events, {
+        row_clicked: '_onRowClicked',
     }),
     /**
      * @override
@@ -198,7 +198,7 @@ var CohortController = AbstractController.extend({
             name: this.title,
             res_model: this.modelName,
             views: this.views,
-            domain: event.data.domain,
+            domain: event.detail.domain,
         });
     },
 });

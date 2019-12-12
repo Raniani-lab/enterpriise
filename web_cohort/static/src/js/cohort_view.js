@@ -7,6 +7,7 @@ var view_registry = require('web.view_registry');
 var CohortController = require('web_cohort.CohortController');
 var CohortModel = require('web_cohort.CohortModel');
 var CohortRenderer = require('web_cohort.CohortRenderer');
+const RendererWrapper = require('web.RendererWrapper');
 
 var _t = core._t;
 var _lt = core._lt;
@@ -101,6 +102,13 @@ var CohortView = AbstractView.extend({
         this.controllerParams.dateStartString = this.rendererParams.dateStartString;
         this.controllerParams.dateStopString = this.rendererParams.dateStopString;
         this.controllerParams.timeline = this.rendererParams.timeline;
+    },
+     /**
+     * @override
+     */
+    getRenderer(parent, state) {
+        state = Object.assign({}, state, this.rendererParams);
+        return new RendererWrapper(null, state, this.config.Renderer);
     },
 });
 

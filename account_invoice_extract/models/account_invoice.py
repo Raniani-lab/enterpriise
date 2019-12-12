@@ -152,6 +152,8 @@ class AccountMove(models.Model):
                 'user_lang': self.env.user.lang,
                 'user_email': self.env.user.email,
             }
+            #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
+            self.env['iap.account'].get_credits('invoice_ocr')
             params = {
                 'account_token': account_token.account_token,
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),

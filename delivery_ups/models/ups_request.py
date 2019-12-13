@@ -70,7 +70,7 @@ UPS_ERROR_MAP = {
     '120412': _lt("Please provide a valid shipper Number/Carrier Account."),
     '121057': _lt("This measurement system is not valid for the selected country. Please switch from LBS/IN to KGS/CM (or vice versa). Configure it from delivery method"),
     '121210': _lt("The requested service is unavailable between the selected locations."),
-    '128089': _lt("Access License number is Invalid. Provide a valid number (Length sholuld be 0-35 alphanumeric characters)"),
+    '128089': _lt("Access License number is Invalid. Provide a valid number (Length should be 0-35 alphanumeric characters)"),
     '190001': _lt("Cancel shipment not available at this time , Please try again Later."),
     '190100': _lt("Provided Tracking Ref. Number is invalid."),
     '190109': _lt("Provided Tracking Ref. Number is invalid."),

@@ -436,11 +436,11 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 params += where_params
                 queries.append('''
                     SELECT
-                        account_move_line.account_id                AS groupby,
-                        'initial_balance'                           AS key,
-                        NULL                                        AS max_date,
-                        %s                                          AS period_number,
-                        SUM(account_move_line.amount_currency)      AS amount_currency,
+                        account_move_line.account_id                            AS groupby,
+                        'initial_balance'                                       AS key,
+                        NULL                                                    AS max_date,
+                        %s                                                      AS period_number,
+                        COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
                         SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
                         SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
                         SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance

@@ -61,6 +61,7 @@ if records:
                                         <field name="payment_type" invisible="1"/>
                                         <field name="_suitable_journal_ids" invisible="1"/>
                                         <field name="journal_id" invisible="1"/>
+                                        <field name="_payment_methods" invisible="1"/>
                                         <field name="payment_method_id" invisible="1"/>
                                         <field name="state" invisible="1"/>
 

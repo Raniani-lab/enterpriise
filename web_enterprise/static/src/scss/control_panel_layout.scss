@@ -23,6 +23,7 @@
             overflow: hidden;
 
             > li {
+                margin: auto 0;
                 &:before {
                     display: none;
                 }
@@ -38,7 +39,7 @@
                     }
 
                     &.btn {
-                        padding: 0.2rem 0.4rem;
+                        padding: 0.4rem;
                     }
 
                     > a {

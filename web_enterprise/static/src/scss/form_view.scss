@@ -376,7 +376,7 @@
     .o_group {
         // Target XXS form view on mobile devices in portrait mode
         @include media-breakpoint-down(sm) {
-            &.o_inner_group > tbody > tr > td {
+            &.o_inner_group:not(.oe_subtotal_footer) > tbody > tr > td {
                 .o_field_widget {
                     margin-bottom: $o-form-spacing-unit * 4;
                 }

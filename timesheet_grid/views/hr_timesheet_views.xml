@@ -82,6 +82,7 @@
                             <group>
                                 <field name="company_id" invisible="1"/>
                                 <field name="validated" invisible="1"/>
+                                <field name="timer_start" invisible="1"/>
                                 <field name="project_id" required="1" class="o_timesheet_tour_project_name" context="{'form_view_ref': 'project.project_project_view_form_simplified',}" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
                                 <field name="task_id" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}" widget="task_with_hours"/>
                                 <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>
@@ -91,7 +92,7 @@
                                 <field name="date" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
                                 <label for="unit_amount" string="Time Spent"/>
                                 <div class="o_row">
-                                    <field name="unit_amount" widget="timesheet_uom"/>
+                                    <field name="unit_amount" widget="timesheet_uom" attrs="{'readonly': [('id', '!=', False), '|', ('validated', '=', True), ('timer_start', '!=', False)]}"/>
                                     <field name="encoding_uom_id" options="{'no_open': true}"/>
                                 </div>
                             </group>
@@ -159,7 +160,6 @@
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid_by_employee"/>
             <field name="mode">primary</field>
-            <field name="priority">10</field>
             <field name="arch" type="xml">
                 <xpath expr="/grid" position="attributes">
                     <attribute name="create">false</attribute>
@@ -172,7 +172,6 @@
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid_by_employee"/>
             <field name="mode">primary</field>
-            <field name="priority">15</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='employee_id']" position="attributes">
                     <attribute name="section">1</attribute>
@@ -188,7 +187,6 @@
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid_by_employee_editable_manager"/>
             <field name="mode">primary</field>
-            <field name="priority">10</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='unit_amount']" position="before">
                     <button type="object" class="btn-primary" name="action_validate_timesheet" string="Validate"/>

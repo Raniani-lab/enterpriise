@@ -75,6 +75,7 @@ if records:
                                     <group>
                                         <field name="payment_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                         <field name="communication" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="possible_bank_partner_ids" invisible="1"/>
                                         <field name="partner_bank_account_id" attrs="{'invisible': [('show_partner_bank_account', '!=', True)], 'required': [('show_partner_bank_account', '=', True)]}" context="{'default_partner_id': partner_id}"/>
                                         <field name="show_partner_bank_account" invisible="1"/>
                                     </group>

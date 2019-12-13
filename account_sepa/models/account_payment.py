@@ -47,16 +47,13 @@ class AccountPayment(models.Model):
         res += ['sepa_ct']
         return res
 
-    @api.onchange('payment_method_id')
-    def _onchange_payment_method_id(self):
-        if self.payment_method_id == self.env.ref('account_sepa.account_payment_method_sepa_ct'):
-            if self._context.get('active_model') == 'account.move':
-                invoice_ids = self._context.get('active_ids', [])
-                partners = self.env['account.move'].browse(invoice_ids).mapped('partner_id')
-
-                return {'domain':
-                        {'partner_bank_account_id': [('partner_id', 'in', partners.ids + partners.mapped('commercial_partner_id').ids)]}
-                }
+    @api.depends('payment_method_id', 'invoice_ids.partner_id.commercial_partner_id')
+    def _compute_possible_bank_partners(self):
+        super()._compute_possible_bank_partners()
+        sepa_ct = self.env.ref('account_sepa.account_payment_method_sepa_ct')
+        for p in self.filtered(lambda r: r.payment_method_id == sepa_ct):
+            partners = p.invoice_ids.partner_id
+            p.possible_bank_partner_ids = partners | partners.commercial_partner_id
 
     @api.constrains('payment_method_id', 'journal_id')
     def _check_bank_account(self):

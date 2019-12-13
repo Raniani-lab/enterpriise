@@ -38,7 +38,7 @@
     <li t-if="line['caret_options'] == 'account.analytic.account'">
         <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_analytic_entries" class="dropdown-item">Analytic Entries</a>
     </li>
-    <li t-if="line['caret_options'] == 'res.partner'" role="presentation"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'res.partner')" data-object="res.partner" action="open_document" class="dropdown-item">View Partner</a></li>
+    <li t-if="line['caret_options'] == 'res.partner'" role="presentation" id="res.partner.carret"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'res.partner')" data-object="res.partner" action="open_document" class="dropdown-item">View Partner</a></li>
 </template>
 
 <template id="filter_info_template">

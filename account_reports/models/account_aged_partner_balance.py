@@ -80,7 +80,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
         return '(VALUES %s) AS period_table(date_start, date_stop, period_index)' % period_table
 
     @api.model
-    def _do_query_amls(self, options, expanded_partner_id=None):
+    def _do_query_amls(self, options, expanded_partner_id=None, domain=None):
         ''' Fetch the unfolded account.move.lines.
         :param options:             The report options.
         :param expanded_partner_id: The res.partner record's id corresponding to the expanded line.
@@ -91,10 +91,12 @@ class ReportAccountAgedPartner(models.AbstractModel):
 
         groupby_partner_aml = OrderedDict()
 
-        if expanded_partner_id:
-            domain = [('partner_id', '=', expanded_partner_id)]
-        elif unfold_all:
+        if not domain:
             domain = []
+        if expanded_partner_id is not None:
+            domain.append(('partner_id', '=', expanded_partner_id))
+        elif unfold_all:
+            pass
         elif options['unfolded_lines']:
             domain = [('partner_id', 'in', [int(line[8:]) for line in options['unfolded_lines']])]
         else:
@@ -139,7 +141,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
                 )
             JOIN account_journal journal ON journal.id = account_move_line.journal_id
             JOIN account_account account ON account.id = account_move_line.account_id
-            WHERE ''' + where_clause + ''' AND NOT account_move_line.reconciled
+            WHERE ''' + where_clause + '''
             ORDER BY account_move_line.partner_id, COALESCE(account_move_line.date_maturity, account_move_line.date)
         '''
 
@@ -284,8 +286,9 @@ class ReportAccountAgedPartner(models.AbstractModel):
                 AND 
                 trust_property.company_id = %s
             )
-            WHERE ''' + where_clause + ''' AND NOT account_move_line.reconciled
+            WHERE ''' + where_clause + '''
             GROUP BY partner.id, partner.name, partner_trust
+            HAVING SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) != 0
             ORDER BY UPPER(partner.name)
         '''
 
@@ -299,10 +302,17 @@ class ReportAccountAgedPartner(models.AbstractModel):
             res['period5'] *= sign
             groupby_partner[res['partner_id']] = res
 
+        # Nothing to fetch, break.
+        if not groupby_partner:
+            return []
+
         # ===================================================================================================
         # 2) Fetch the reconciliation for each period and subtract them from the balance to compute
         # the amount due at the report's date.
         # ===================================================================================================
+
+        domain = [('partner_id', 'in', list(groupby_partner.keys()))]
+        tables, where_clause, params = self._query_get(options, domain=domain)
 
         query = '''
             SELECT
@@ -340,7 +350,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
                     OR 
                     COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)                  
                 )
-            WHERE ''' + where_clause + ''' AND NOT account_move_line.reconciled AND part.max_date <= %s
+            WHERE ''' + where_clause + ''' AND part.max_date <= %s
             GROUP BY account_move_line.partner_id
             
             UNION ALL
@@ -380,7 +390,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
                     OR 
                     COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)                  
                 )
-            WHERE ''' + where_clause + ''' AND NOT account_move_line.reconciled AND part.max_date <= %s
+            WHERE ''' + where_clause + ''' AND part.max_date <= %s
             GROUP BY account_move_line.partner_id
         '''
 
@@ -397,7 +407,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
         # 3) Fetch the unfolded lines.
         # ===================================================================================================
 
-        for partner_id, aml_rows in self._do_query_amls(options, expanded_partner_id=expanded_partner_id).items():
+        for partner_id, aml_rows in self._do_query_amls(options, expanded_partner_id=expanded_partner_id, domain=domain).items():
             groupby_partner[partner_id]['aml_lines'] = aml_rows
 
         return list(groupby_partner.values())
@@ -504,7 +514,12 @@ class ReportAccountAgedPartner(models.AbstractModel):
             totals[4] += partner_row['period4']
             totals[5] += partner_row['period5']
             lines.append(self._get_report_partner_line(options, partner_row))
-            lines += [self._get_report_move_line(options, aml_row) for aml_row in partner_row.pop('aml_lines', [])]
+
+            for aml_row in partner_row.pop('aml_lines', []):
+                # Don't display an aml report line with all zero amounts.
+                if self.env.company.currency_id.is_zero(sum(aml_row['period_amounts'])):
+                    continue
+                lines.append(self._get_report_move_line(options, aml_row))
 
         if not line_id:
             lines.append(self._get_report_total_line(options, totals))

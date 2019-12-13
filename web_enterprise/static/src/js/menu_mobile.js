@@ -62,6 +62,7 @@ Menu.include({
         this.$section_placeholder.appendTo(this.$burgerMenu.find('.o_burger_menu_app'));
 
         this.$burgerMenu.on('click', '.o_burger_menu_close', this._onCloseBurgerMenu.bind(this));
+        this.$burgerMenu.on('click', '.o_burger_menu_profile', this._onCloseBurgerMenu.bind(this));
         this.$burgerMenu.on('click', '.o_burger_menu_company', this._onCompanyClicked.bind(this));
         this.$burgerMenu.on('click', '.o_burger_menu_topbar.o_toggler', this._onTopbarClicked.bind(this));
         this.$burgerMenu.on('click', '.o_burger_menu_section', this._onBurgerMenuSectionClick.bind(this));

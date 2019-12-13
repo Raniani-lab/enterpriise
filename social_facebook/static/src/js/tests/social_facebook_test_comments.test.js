@@ -63,7 +63,7 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '                    <div class="pt8">' +
     '                        <t t-set="has_attachments" t-value="record.stream_post_image_ids.raw_value.length !== 0 || record.link_url.value"></t>' +
     '                        <div t-attf-class="o_social_stream_post_message_text p-2 pb0 mb-3 #{has_attachments ? \'o_social_stream_post_with_attachments\' : \'\'}">' +
-    '                            <field name="message"  widget="social_kanban_field_emoji" />' +
+    '                            <field name="message"  widget="text_emojis" />' +
     '                        </div>' +
     '                        <div t-if="record.stream_post_image_ids.raw_value.length !== 0"' +
     '                            class="o_social_stream_post_image pt8 p-2"' +

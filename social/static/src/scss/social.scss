@@ -73,11 +73,6 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
             }
         }
     }
-
-    .o_social_add_emoji {
-        float: right;
-        margin-bottom: 1rem;
-    }
 }
 
 // Kanban Views (Both Feed & Posts)
@@ -377,6 +372,10 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 
     .o_social_comment_controls {
         @include o-position-absolute(0, 0);
+        height: 75%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .o_social_comment_published_date, .o_social_post_published_date {
@@ -440,22 +439,6 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 
     .o_social_load_more_comments {
         display: block;
-    }
-
-    .o_social_add_emoji {
-        .dropdown-menu {
-            border-radius: $o-social-border-radius-base;
-
-            .o_mail_emoji {
-                cursor: pointer;
-                padding: 2px;
-
-                @include hover-focus() {
-                    background-color: grey('100');
-                    border-radius: $o-social-border-radius-base;
-                }
-            }
-        }
     }
 }
 

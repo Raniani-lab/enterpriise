@@ -434,7 +434,14 @@ class AnalyticLine(models.Model):
             "domain": [('is_timesheet', '=', True)],
             "search_view_id": [self.env.ref('timesheet_grid.timesheet_view_search').id, 'search'],
             "name": name,
-            "context": context
+            "context": context,
+            "help": _('''<p class="o_view_nocontent_smiling_face">
+                    Record a new activity
+                </p><p>
+                    You can register and track your workings hours by project every
+                    day. Every time spent on a project will become a cost and can be re-invoiced to
+                    customers if required.
+                </p>''')
         }
 
     def _get_domain_for_validation_timesheets(self) -> []:

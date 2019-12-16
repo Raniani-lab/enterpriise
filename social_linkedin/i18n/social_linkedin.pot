@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-07 07:21+0000\n"
-"PO-Revision-Date: 2019-10-07 07:21+0000\n"
+"POT-Creation-Date: 2019-12-16 10:15+0000\n"
+"PO-Revision-Date: 2019-12-16 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -94,6 +94,12 @@ msgid "LinkedIn access token"
 msgstr ""
 
 #. module: social_linkedin
+#: code:addons/social_linkedin/controllers/main.py:0
+#, python-format
+msgid "LinkedIn did not provide a valid access token."
+msgstr ""
+
+#. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_media__media_type
 msgid "Media Type"
 msgstr ""
@@ -134,6 +140,18 @@ msgstr ""
 msgid ""
 "The url that this service requested returned an error. Please contact the "
 "author of the app."
+msgstr ""
+
+#. module: social_linkedin
+#: code:addons/social_linkedin/controllers/main.py:0
+#, python-format
+msgid "There was a security issue during your request."
+msgstr ""
+
+#. module: social_linkedin
+#: code:addons/social_linkedin/controllers/main.py:0
+#, python-format
+msgid "Unauthorized. Please contact your administrator."
 msgstr ""
 
 #. module: social_linkedin

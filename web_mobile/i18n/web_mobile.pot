@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-12-16 10:15+0000\n"
+"PO-Revision-Date: 2019-12-16 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -37,6 +37,15 @@ msgid "Add to Home Screen"
 msgstr ""
 
 #. module: web_mobile
+#: model:ir.model.fields,help:web_mobile.field_res_config_settings__disable_redirect_firebase_dynamic_link
+msgid ""
+"Check this if dynamic mobile-app detection links cause problems for your "
+"installation. This will stop the automatic wrapping of links inside outbound"
+" emails. The links will always open in a normal browser, even for users who "
+"have the Android/iOS app installed."
+msgstr ""
+
+#. module: web_mobile
 #: model:ir.model,name:web_mobile.model_res_config_settings
 msgid "Config Settings"
 msgstr ""
@@ -47,8 +56,25 @@ msgid "Contact"
 msgstr ""
 
 #. module: web_mobile
+#: model:ir.model.fields,field_description:web_mobile.field_res_config_settings__disable_redirect_firebase_dynamic_link
+msgid "Disable link redirection to mobile app"
+msgstr ""
+
+#. module: web_mobile
+#: model:ir.model,name:web_mobile.model_mail_thread
+msgid "Email Thread"
+msgstr ""
+
+#. module: web_mobile
 #: model_terms:ir.ui.view,arch_db:web_mobile.res_config_settings_view_form
 msgid "Get notifications on Android and iOS application"
+msgstr ""
+
+#. module: web_mobile
+#: model_terms:ir.ui.view,arch_db:web_mobile.res_config_settings_view_form
+msgid ""
+"If disabled, you won't be able to open external URL's in the Android/iOS "
+"mobile app (e.g. \"View Task\" button in email)."
 msgstr ""
 
 #. module: web_mobile

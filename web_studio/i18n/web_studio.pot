@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-30 09:48+0000\n"
-"PO-Revision-Date: 2019-09-30 09:48+0000\n"
+"POT-Creation-Date: 2019-12-16 10:16+0000\n"
+"PO-Revision-Date: 2019-12-16 10:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -53,6 +53,13 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "(id)"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "(t-if=\""
@@ -75,6 +82,15 @@ msgid ""
 "                Add a new access control list\n"
 "            </p>\n"
 "            "
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/map_view_dialog.js:0
+#, python-format
+msgid ""
+"A contact field is required to use the Map view.\r\n"
+"Create a many2one field to the Contacts model before activating it."
 msgstr ""
 
 #. module: web_studio
@@ -126,6 +142,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/js/views/map_view_dialog.js:0
 #: code:addons/web_studio/static/src/js/views/new_view_dialog.js:0
 #: code:addons/web_studio/static/src/xml/action_editor.xml:0
 #, python-format
@@ -221,6 +238,13 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Additional Fields"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Address Block"
@@ -277,6 +301,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/js/reports/report_editor_manager.js:0
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Are you sure you want to remove this %s from the view?"
@@ -450,6 +475,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/edit_menu.js:0
 #: code:addons/web_studio/static/src/js/edit_menu.js:0
 #: code:addons/web_studio/static/src/js/home_menu.js:0
+#: code:addons/web_studio/static/src/js/views/map_view_dialog.js:0
 #: code:addons/web_studio/static/src/js/views/new_view_dialog.js:0
 #: code:addons/web_studio/static/src/js/views/view_editors/new_buttonbox_dialog.js:0
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
@@ -630,6 +656,21 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_editors/new_buttonbox_dialog.js:0
 #, python-format
 msgid "Confirm"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/new_view_dialog.xml:0
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Contact Field"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/map_view_dialog.js:0
+#, python-format
+msgid "Contact Field Required"
 msgstr ""
 
 #. module: web_studio
@@ -934,15 +975,6 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:0
-#, python-format
-msgid ""
-"Do you really want to remove this value? All the records with this value "
-"will be updated accordingly."
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:0
 #, python-format
 msgid "Do you want to add a dropdown with colors?"
@@ -1083,9 +1115,23 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Enable Routing"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:0
 #, python-format
 msgid "Error"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/report_editor_manager.js:0
+#, python-format
+msgid "Error when compiling AST"
 msgstr ""
 
 #. module: web_studio
@@ -1268,13 +1314,6 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
-#, python-format
-msgid "Full Width"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Gantt View"
@@ -1292,6 +1331,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/new_view_dialog.js:0
 #, python-format
 msgid "Generate %s View"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/map_view_dialog.js:0
+#, python-format
+msgid "Generate Map View"
 msgstr ""
 
 #. module: web_studio
@@ -1419,6 +1465,20 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
+msgid "Hide Address"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Hide Name"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
 msgid "Hide by default"
 msgstr ""
 
@@ -1471,7 +1531,10 @@ msgid ""
 msgstr ""
 
 #. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin__id
+#, python-format
 msgid "ID"
 msgstr ""
 
@@ -1654,6 +1717,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:0
 #, python-format
 msgid "Many2one"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
+#, python-format
+msgid "Map View"
 msgstr ""
 
 #. module: web_studio
@@ -1897,16 +1967,16 @@ msgid "No header/footer"
 msgstr ""
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/report.py:134
-#, python-format
-msgid "No view found for the given report!"
-msgstr ""
-
-#. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_editor_manager.js:0
 #, python-format
 msgid "No related many2one fields found"
+msgstr ""
+
+#. module: web_studio
+#: code:addons/web_studio/controllers/report.py:0
+#, python-format
+msgid "No view found for the given report!"
 msgstr ""
 
 #. module: web_studio
@@ -2208,7 +2278,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/action_editor.xml:0
 #, python-format
-msgid "Reporting & Presenting Views"
+msgid "Reporting Views"
 msgstr ""
 
 #. module: web_studio
@@ -2331,6 +2401,14 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/new_view_dialog.xml:0
+#, python-format
+msgid ""
+"Select the contact field to use to get the coordinates of your records."
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_components.js:0
 #, python-format
 msgid "Selection"
@@ -2427,6 +2505,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Small"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Sort by"
 msgstr ""
 
 #. module: web_studio
@@ -2879,13 +2964,6 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:0
-#, python-format
-msgid "Warning"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Week"
@@ -3013,9 +3091,11 @@ msgid ""
 msgstr ""
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:568
+#: code:addons/web_studio/controllers/main.py:0
 #, python-format
-msgid "You have %s records that have a selection value different than the ones you are defining. Please modify those records first."
+msgid ""
+"You have %s records that have a selection value different than the ones you "
+"are defining. Please modify those records first."
 msgstr ""
 
 #. module: web_studio

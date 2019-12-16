@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:38+0000\n"
-"PO-Revision-Date: 2019-09-23 11:38+0000\n"
+"POT-Creation-Date: 2019-12-16 10:15+0000\n"
+"PO-Revision-Date: 2019-12-16 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,18 @@ msgid ""
 msgstr ""
 
 #. module: account_invoice_extract
+#: model:mail.template,body_html:account_invoice_extract.account_invoice_extract_no_credit
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p>Dear,<br/></p>\n"
+"    <p>There are no more credits on your IAP Invoice OCR account.<br/>\n"
+"    You can charge your IAP Invoice OCR account in the Accounting settings page.</p>\n"
+"    <p>Best regards,<br/></p>\n"
+"    <p>Odoo S.A.</p>\n"
+"</div>"
+msgstr ""
+
+#. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
 msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
@@ -30,10 +42,20 @@ msgid ""
 msgstr ""
 
 #. module: account_invoice_extract
+#: model:mail.template,subject:account_invoice_extract.account_invoice_extract_no_credit
+msgid "Account Invoice Extract Notification"
+msgstr ""
+
+#. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__error_status
 #, python-format
 msgid "An error occurred"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model,name:account_invoice_extract.model_ir_attachment
+msgid "Attachment"
 msgstr ""
 
 #. module: account_invoice_extract
@@ -253,6 +275,14 @@ msgid "Status code"
 msgstr ""
 
 #. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid ""
+"The OCR module is not able to generate the invoice lines because the default"
+" accounts are not correctly set on the %s journal."
+msgstr ""
+
+#. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
@@ -341,9 +371,7 @@ msgstr ""
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
-msgid ""
-"You don't have enough credit to extract datas from your invoice. You can buy"
-" new credits here:"
+msgid "You don't have enough credit to extract data from your invoice."
 msgstr ""
 
 #. module: account_invoice_extract
@@ -370,12 +398,4 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__extract_not_ready
 msgid "waiting extraction, but it is not ready"
-msgstr ""
-
-#. module: account_invoice_extract
-#: code:addons/account_invoice_extract/models/account_invoice.py:0
-#, python-format
-msgid ""
-"The OCR module is not able to generate the invoice lines because "
-"the default accounts are not correctly set on the %s journal."
 msgstr ""

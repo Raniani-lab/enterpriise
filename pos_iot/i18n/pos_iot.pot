@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:37+0000\n"
-"PO-Revision-Date: 2019-09-23 11:37+0000\n"
+"POT-Creation-Date: 2019-12-16 10:15+0000\n"
+"PO-Revision-Date: 2019-12-16 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr ""
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
-msgid "Barcode Scanners"
+msgid "Barcode Scanners/Card Readers"
 msgstr ""
 
 #. module: pos_iot
@@ -124,7 +124,10 @@ msgstr ""
 
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_scan_via_proxy
-msgid "Enable barcode scanning with a remotely connected barcode scanner."
+#: model:ir.model.fields,help:pos_iot.field_pos_config__iface_scanner_ids
+msgid ""
+"Enable barcode scanning with a remotely connected barcode scanner and card "
+"swiping with a Vantiv card reader."
 msgstr ""
 
 #. module: pos_iot
@@ -144,6 +147,13 @@ msgstr ""
 #: code:addons/pos_iot/static/src/xml/pos.xml:0
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Get Weight"
 msgstr ""
 
 #. module: pos_iot

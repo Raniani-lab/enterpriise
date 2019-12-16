@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-18 10:08+0000\n"
-"PO-Revision-Date: 2019-10-18 10:08+0000\n"
+"POT-Creation-Date: 2019-12-16 10:15+0000\n"
+"PO-Revision-Date: 2019-12-16 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,20 +26,6 @@ msgid "# Payslips"
 msgstr ""
 
 #. module: hr_payroll
-#: code:addons/hr_payroll/models/hr_work_entry.py:0
-#, python-format
-msgid "%s does not have a contract from %s to %s."
-msgstr ""
-
-#. module: hr_payroll
-#: code:addons/hr_payroll/models/hr_work_entry.py:0
-#, python-format
-msgid ""
-"%s has multiple contracts from %s to %s. A work entry cannot overlap "
-"multiple contracts."
-msgstr ""
-
-#. module: hr_payroll
 #: model:ir.actions.report,print_report_name:hr_payroll.action_report_payslip
 msgid "'Payslip - %s' % (object.employee_id.name)"
 msgstr ""
@@ -54,11 +40,6 @@ msgid ""
 "* If the payslip is confirmed then status is set to 'Done'.\n"
 "                \n"
 "* When user cancel payslip the status is 'Rejected'."
-msgstr ""
-
-#. module: hr_payroll
-#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_13th_month_salary
-msgid "13th pay salary"
 msgstr ""
 
 #. module: hr_payroll
@@ -192,12 +173,6 @@ msgid "<strong>Total</strong>"
 msgstr ""
 
 #. module: hr_payroll
-#: code:addons/hr_payroll/models/hr_leave.py:0
-#, python-format
-msgid "A leave cannot be set across multiple contracts."
-msgstr ""
-
-#. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_work_entry_type_is_unforeseen_is_leave
 msgid "A unforeseen absence must be a leave."
 msgstr ""
@@ -314,11 +289,8 @@ msgid ""
 msgstr ""
 
 #. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit
-msgid "Approve Time Off"
-msgstr ""
-
-#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_rule_form
+#: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_employee_grade_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
 msgid "Archived"
 msgstr ""
@@ -359,7 +331,6 @@ msgid "Average Net Wage"
 msgstr ""
 
 #. module: hr_payroll
-#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_worker_basic
 #: model:hr.salary.rule.category,name:hr_payroll.BASIC
 msgid "Basic"
 msgstr ""
@@ -436,11 +407,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__category_id
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
 msgid "Category"
-msgstr ""
-
-#. module: hr_payroll
-#: model:ir.model.fields,help:hr_payroll.field_hr_payroll_structure__regular_pay
-msgid "Check this option if this structure is the common one"
 msgstr ""
 
 #. module: hr_payroll
@@ -529,19 +495,9 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: hr_payroll
-#: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_configuration
-msgid "Configuration"
-msgstr ""
-
-#. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Confirm"
-msgstr ""
-
-#. module: hr_payroll
-#: model:ir.ui.menu,name:hr_payroll.menu_work_entry_conflicts
-msgid "Conflicts"
 msgstr ""
 
 #. module: hr_payroll
@@ -549,7 +505,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_input__contract_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__contract_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_worked_days__contract_id
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry__contract_id
 msgid "Contract"
 msgstr ""
 
@@ -580,16 +535,6 @@ msgstr ""
 #: model:ir.actions.act_window,name:hr_payroll.action_contribution_registers
 #: model:ir.actions.report,name:hr_payroll.action_report_register
 msgid "Contribution Registers"
-msgstr ""
-
-#. module: hr_payroll
-#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_convanceallowance1
-msgid "Conveyance Allowance"
-msgstr ""
-
-#. module: hr_payroll
-#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_ca_gravie
-msgid "Conveyance Allowance For Gravie"
 msgstr ""
 
 #. module: hr_payroll
@@ -721,11 +666,6 @@ msgid "Default Scheduled Pay"
 msgstr ""
 
 #. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure_type__default_struct_id
-msgid "Default Struct"
-msgstr ""
-
-#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure_type__default_work_entry_type_id
 msgid "Default Work Entry Type"
 msgstr ""
@@ -848,7 +788,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__employee_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__employee_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__employee_id
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry__employee_id
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
@@ -912,13 +851,6 @@ msgstr ""
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_line__partner_id
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_rule__partner_id
 msgid "Eventual third party involved in the salary payment of the employees."
-msgstr ""
-
-#. module: hr_payroll
-#. openerp-web
-#: code:addons/hr_payroll/static/src/js/work_entries_calendar.js:0
-#, python-format
-msgid "Everybody's work entries"
 msgstr ""
 
 #. module: hr_payroll
@@ -1002,18 +934,8 @@ msgid "Generate payslips for all selected employees"
 msgstr ""
 
 #. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__date_generated_from
-msgid "Generated From"
-msgstr ""
-
-#. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
 msgid "Generated Payslips"
-msgstr ""
-
-#. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__date_generated_to
-msgid "Generated To"
 msgstr ""
 
 #. module: hr_payroll
@@ -1035,11 +957,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_line_filter
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
 msgid "Group By"
-msgstr ""
-
-#. module: hr_payroll
-#: model:ir.model,name:hr_payroll.model_hr_work_entry
-msgid "HR Work Entry"
 msgstr ""
 
 #. module: hr_payroll
@@ -1072,11 +989,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__hours_per_week
 #: model:ir.model.fields,field_description:hr_payroll.field_resource_calendar__hours_per_week
 msgid "Hours per Week"
-msgstr ""
-
-#. module: hr_payroll
-#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_houserentallowance1
-msgid "House Rent Allowance"
 msgstr ""
 
 #. module: hr_payroll
@@ -1175,6 +1087,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__is_fulltime
 #: model:ir.model.fields,field_description:hr_payroll.field_resource_calendar__is_fulltime
 msgid "Is Full Time"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_worked_days__is_paid
+msgid "Is Paid"
 msgstr ""
 
 #. module: hr_payroll
@@ -1313,11 +1230,6 @@ msgid "Maximum Range"
 msgstr ""
 
 #. module: hr_payroll
-#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_meal_voucher
-msgid "Meal Voucher"
-msgstr ""
-
-#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_has_error
 msgid "Message Delivery error"
 msgstr ""
@@ -1413,6 +1325,11 @@ msgstr ""
 #: code:addons/hr_payroll/models/hr_rule_parameter.py:0
 #, python-format
 msgid "No rule parameter with code '%s' was found for %s "
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__normal_wage
+msgid "Normal Wage"
 msgstr ""
 
 #. module: hr_payroll
@@ -1542,7 +1459,6 @@ msgstr ""
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.open_payroll_modules
-#: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_root
 #: model:ir.ui.menu,name:hr_payroll.menu_report_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "Payroll"
@@ -1741,16 +1657,6 @@ msgid "Print"
 msgstr ""
 
 #. module: hr_payroll
-#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_professionaltax1
-msgid "Professional Tax"
-msgstr ""
-
-#. module: hr_payroll
-#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_providentfund1
-msgid "Provident Fund"
-msgstr ""
-
-#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__amount_python_compute
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_salary_rule__amount_select__code
 msgid "Python Code"
@@ -1825,18 +1731,13 @@ msgid "Refund: "
 msgstr ""
 
 #. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit
-msgid "Refuse Time Off"
-msgstr ""
-
-#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_employee__registration_number
 msgid "Registration Number of the Employee"
 msgstr ""
 
 #. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure__regular_pay
-msgid "Regular Pay"
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure_type__default_struct_id
+msgid "Regular Pay Structure"
 msgstr ""
 
 #. module: hr_payroll
@@ -2090,7 +1991,6 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__state
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__state
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry__leave_state
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_filter
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
 msgid "Status"
@@ -2143,8 +2043,8 @@ msgid "Structures"
 msgstr ""
 
 #. module: hr_payroll
-#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_sum_alw_category
-msgid "Sum of Allowance category"
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__sum_worked_hours
+msgid "Sum Worked Hours"
 msgstr ""
 
 #. module: hr_payroll
@@ -2189,15 +2089,6 @@ msgid "The minimum amount, applied for this rule."
 msgstr ""
 
 #. module: hr_payroll
-#: model:ir.model.fields,help:hr_payroll.field_hr_work_entry__leave_state
-msgid ""
-"The status is set to 'To Submit', when a time off request is created.\n"
-"The status is 'To Approve', when time off request is confirmed by user.\n"
-"The status is 'Refused', when time off request is refused by manager.\n"
-"The status is 'Approved', when time off request is approved by manager."
-msgstr ""
-
-#. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_rule_parameter__code
 #: model:ir.model.fields,help:hr_payroll.field_hr_rule_parameter_value__code
 msgid "This code is used in salary rules to refer to this parameter."
@@ -2229,38 +2120,6 @@ msgid ""
 "This will be used to compute the % fields values; in general it is on basic,"
 " but you can also use categories code fields in lowercase as a variable "
 "names (hra, ma, lta, etc.) and the variable basic."
-msgstr ""
-
-#. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit
-msgid ""
-"This work entry cannot be validated. It is conflicting with at least one work entry. <br/>\n"
-"                            Two work entries of the same employee cannot overlap at the same time."
-msgstr ""
-
-#. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit
-msgid "This work entry cannot be validated. The work entry type is undefined."
-msgstr ""
-
-#. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit
-msgid ""
-"This work entry cannot be validated. There is a leave to approve (or refuse)"
-" at the same time."
-msgstr ""
-
-#. module: hr_payroll
-#: model:ir.model,name:hr_payroll.model_hr_leave
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry__leave_id
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_type__is_leave
-msgid "Time Off"
-msgstr ""
-
-#. module: hr_payroll
-#: model:ir.model,name:hr_payroll.model_hr_leave_type
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_type__leave_type_ids
-msgid "Time Off Type"
 msgstr ""
 
 #. module: hr_payroll
@@ -2312,6 +2171,11 @@ msgid "Total Working Days"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__sum_worked_hours
+msgid "Total hours of attendance and time off (paid or not)"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_rule_parameter__unique
 msgid "Two rule parameters cannot have the same code."
 msgstr ""
@@ -2323,6 +2187,7 @@ msgstr ""
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure__type_id
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__struct_type_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_worked_days__work_entry_type_id
 msgid "Type"
 msgstr ""
@@ -2404,6 +2269,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__wage_type
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure_type__wage_type
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__wage_type
 msgid "Wage Type"
 msgstr ""
 
@@ -2454,21 +2320,7 @@ msgstr ""
 
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_work_entries_root
-#: model:ir.ui.menu,name:hr_payroll.menu_hr_work_entry_confirguration
-#: model:ir.ui.menu,name:hr_payroll.menu_work_entry
-#: model_terms:ir.ui.view,arch_db:hr_payroll.hr_work_entry_gantt
-#: model_terms:ir.ui.view,arch_db:hr_payroll.work_entry_type_leave_form_inherit
 msgid "Work Entries"
-msgstr ""
-
-#. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_leave_type__work_entry_type_id
-msgid "Work Entry Type"
-msgstr ""
-
-#. module: hr_payroll
-#: model:ir.ui.menu,name:hr_payroll.menu_hr_work_entry_type_view
-msgid "Work Entry Types"
 msgstr ""
 
 #. module: hr_payroll

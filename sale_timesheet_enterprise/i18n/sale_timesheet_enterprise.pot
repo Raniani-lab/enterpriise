@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:39+0000\n"
-"PO-Revision-Date: 2019-09-23 11:39+0000\n"
+"POT-Creation-Date: 2019-12-16 10:15+0000\n"
+"PO-Revision-Date: 2019-12-16 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,23 +16,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_kanban
-msgid "<i class=\"fa fa-pause text-warning\" title=\"Timer is Paused\"/>"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_kanban
-msgid "<i class=\"fa fa-play text-success\" title=\"Timer is Running\"/>"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Invoicing Policy</span>"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
-msgid "<strong>Round timesheets</strong>"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
@@ -58,19 +43,12 @@ msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_sale_order_view_form
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_timesheet_view_form
 msgid "Cancel"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: code:addons/sale_timesheet_enterprise/models/project_task.py:0
-#, python-format
-msgid "Confirm Time Spent"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
@@ -87,11 +65,6 @@ msgid "Create Sales Order"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
-#: model:ir.model,name:sale_timesheet_enterprise.model_project_task_create_timesheet
-msgid "Create Timesheet from task"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
 #: model:ir.actions.act_window,name:sale_timesheet_enterprise.project_task_action_multi_create_sale_order
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_sale_order_view_form
 msgid "Create a Sales Order"
@@ -99,13 +72,11 @@ msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_sale_order__create_uid
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_sale_order__create_date
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__create_date
 msgid "Created on"
 msgstr ""
 
@@ -125,24 +96,12 @@ msgid "Customer of the sales order"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__description
-msgid "Description"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_sale_order__display_name
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__display_timesheet_timer
-msgid "Display Timesheet Time"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_sale_order__id
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__id
 msgid "ID"
 msgstr ""
 
@@ -158,30 +117,17 @@ msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_sale_order____last_update
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_sale_order__write_uid
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_sale_order__write_date
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__write_date
 msgid "Last Updated on"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__timesheet_min_duration
-msgid "Minimal duration"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
-msgid "Pause"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
@@ -202,28 +148,8 @@ msgid "Record time spent and invoice it based on:"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
-msgid "Resume"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__timesheet_rounding
-msgid "Rounding up"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_timesheet_view_form
-msgid "Save"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_timesheet_view_form
-msgid "Save time"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
@@ -232,25 +158,13 @@ msgid "Service"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
-msgid "Start"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
-msgid "Stop"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_project_task
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_sale_order__task_id
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__task_id
 msgid "Task"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task_create_sale_order__task_id
-#: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task_create_timesheet__task_id
 msgid "Task for which we are creating a sales order"
 msgstr ""
 
@@ -281,48 +195,8 @@ msgid ""
 msgstr ""
 
 #. module: sale_timesheet_enterprise
-#: model:ir.model.constraint,message:sale_timesheet_enterprise.constraint_project_task_create_timesheet_time_positive
-msgid "The timesheet's time must be positive"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__time_spent
-msgid "Time"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_project__allow_timesheet_timer
-msgid "Timesheet Timer"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_first_start
-msgid "Timesheet Timer First Use"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_pause
-msgid "Timesheet Timer Last Pause"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_last_stop
-msgid "Timesheet Timer Last Use"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_start
-msgid "Timesheet Timer Start"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__invoiced_timesheet
 msgid "Timesheets Invoicing"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_view_form_inherit
-msgid "Track your time using a timer"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
@@ -336,23 +210,7 @@ msgid "Unit price of the sales order item."
 msgstr ""
 
 #. module: sale_timesheet_enterprise
-#: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_project__allow_timesheet_timer
-msgid "Use a timer to record timesheets on tasks"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
 #: code:addons/sale_timesheet_enterprise/wizard/project_task_create_sale_order.py:0
-#: code:addons/sale_timesheet_enterprise/wizard/project_task_create_timesheet.py:0
 #, python-format
 msgid "You can only apply this action from a task."
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_timesheet_view_form
-msgid "hours"
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
-msgid "minutes"
 msgstr ""

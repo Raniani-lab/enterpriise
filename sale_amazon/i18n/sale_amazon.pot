@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-12-16 10:15+0000\n"
+"PO-Revision-Date: 2019-12-16 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -79,11 +79,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_tree
 #: model_terms:ir.ui.view,arch_db:sale_amazon.res_config_settings_view_form
 msgid "Amazon Accounts"
-msgstr ""
-
-#. module: sale_amazon
-#: model:ir.model.fields,field_description:sale_amazon.field_sale_order__amazon_cancellation_pending
-msgid "Amazon Cancellation Pending"
 msgstr ""
 
 #. module: sale_amazon
@@ -171,13 +166,6 @@ msgid "Amazon-defined item reference"
 msgstr ""
 
 #. module: sale_amazon
-#: model:ir.actions.server,name:sale_amazon.ir_cron_sync_amazon_cancellations_ir_actions_server
-#: model:ir.cron,cron_name:sale_amazon.ir_cron_sync_amazon_cancellations
-#: model:ir.cron,name:sale_amazon.ir_cron_sync_amazon_cancellations
-msgid "Amazon: sync order cancellations"
-msgstr ""
-
-#. module: sale_amazon
 #: model:ir.actions.server,name:sale_amazon.ir_cron_sync_amazon_orders_ir_actions_server
 #: model:ir.cron,cron_name:sale_amazon.ir_cron_sync_amazon_orders
 #: model:ir.cron,name:sale_amazon.ir_cron_sync_amazon_orders
@@ -203,7 +191,6 @@ msgstr ""
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #: code:addons/sale_amazon/models/amazon_account.py:0
-#: code:addons/sale_amazon/models/sale.py:0
 #: code:addons/sale_amazon/models/stock_picking.py:0
 #, python-format
 msgid "An error was encountered when preparing the connection to Amazon."
@@ -219,14 +206,6 @@ msgstr ""
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #, python-format
 msgid "An error was encountered when synchronizing Amazon orders."
-msgstr ""
-
-#. module: sale_amazon
-#: code:addons/sale_amazon/models/sale.py:0
-#, python-format
-msgid ""
-"An error was encountered when updating the status of the order with amazon "
-"ref %s."
 msgstr ""
 
 #. module: sale_amazon
@@ -341,6 +320,14 @@ msgid "Germany"
 msgstr ""
 
 #. module: sale_amazon
+#: code:addons/sale_amazon/models/amazon_account.py:0
+#, python-format
+msgid ""
+"Gift message:\n"
+"%s"
+msgstr ""
+
+#. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__id
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__id
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__id
@@ -382,11 +369,6 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__is_follow_up_displayed
 msgid "Is Follow Up Displayed"
-msgstr ""
-
-#. module: sale_amazon
-#: model:ir.model.fields,help:sale_amazon.field_sale_order__amazon_cancellation_pending
-msgid "Is True if the order cancellation must be notified to Amazon"
 msgstr ""
 
 #. module: sale_amazon
@@ -576,11 +558,6 @@ msgstr ""
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #, python-format
 msgid "Successfully updated the marketplaces available to this account !"
-msgstr ""
-
-#. module: sale_amazon
-#: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
-msgid "Sync Cancellations"
 msgstr ""
 
 #. module: sale_amazon
@@ -807,15 +784,6 @@ msgstr ""
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #, python-format
 msgid "[%s] Gift Wrapping Charges for %s"
-msgstr ""
-
-#. module: sale_amazon
-#: code:addons/sale_amazon/models/amazon_account.py:0
-#, python-format
-msgid ""
-"[%s] Gift Wrapping Charges for %s\n"
-"Gift message:\n"
-"%s"
 msgstr ""
 
 #. module: sale_amazon

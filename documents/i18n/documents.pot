@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-07 07:20+0000\n"
-"PO-Revision-Date: 2019-10-07 07:20+0000\n"
+"POT-Creation-Date: 2019-12-16 10:15+0000\n"
+"PO-Revision-Date: 2019-12-16 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -143,6 +143,11 @@ msgid ""
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
+msgid "<i class=\"fa fa-circle-thin o_record_selector\" title=\"Select document\"/>"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
 msgstr ""
@@ -157,6 +162,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
+msgid "<i class=\"fa fa-globe\" title=\"Document url\"/>"
 msgstr ""
 
 #. module: documents
@@ -512,6 +522,7 @@ msgid "Archive"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Archived"
 msgstr ""
@@ -569,16 +580,6 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_bill
 msgid "Bill"
-msgstr ""
-
-#. module: documents
-#: model:documents.folder,name:documents.documents_marketing_brand1_folder
-msgid "Brand 1"
-msgstr ""
-
-#. module: documents
-#: model:documents.folder,name:documents.documents_marketing_brand2_folder
-msgid "Brand 2"
 msgstr ""
 
 #. module: documents
@@ -755,6 +756,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #, python-format
 msgid "Delete"
@@ -1860,6 +1862,7 @@ msgstr ""
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_thread.xml:0
+#: code:addons/documents/static/src/xml/documents_thread.xml:0
 #, python-format
 msgid "Split"
 msgstr ""
@@ -2321,4 +2324,9 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "shared by"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
+msgid "toggle favorite"
 msgstr ""

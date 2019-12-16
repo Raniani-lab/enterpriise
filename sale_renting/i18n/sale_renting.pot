@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-07 07:20+0000\n"
-"PO-Revision-Date: 2019-10-07 07:20+0000\n"
+"POT-Creation-Date: 2019-12-16 10:15+0000\n"
+"PO-Revision-Date: 2019-12-16 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -197,6 +197,8 @@ msgid "Companies"
 msgstr ""
 
 #. module: sale_renting
+#: model:ir.model.fields,field_description:sale_renting.field_rental_pricing__company_id
+#: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__company_id
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__company_id
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__company_id
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
@@ -322,20 +324,14 @@ msgstr ""
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__date
-#: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Date"
 msgstr ""
 
 #. module: sale_renting
-#: model:ir.model.fields,help:sale_renting.field_rental_wizard__pickup_date
-msgid "Date of Pickup"
-msgstr ""
-
-#. module: sale_renting
-#: model:ir.model.fields,help:sale_renting.field_rental_wizard__return_date
-msgid "Date of Return"
+#: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
+msgid "Dates"
 msgstr ""
 
 #. module: sale_renting
@@ -347,11 +343,6 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__extra_product
 msgid "Delay Product"
-msgstr ""
-
-#. module: sale_renting
-#: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
-msgid "Delivered"
 msgstr ""
 
 #. module: sale_renting
@@ -385,11 +376,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_rental_pricing__duration
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__duration
 msgid "Duration"
-msgstr ""
-
-#. module: sale_renting
-#: model:ir.model.fields,help:sale_renting.field_rental_wizard__duration
-msgid "Duration of the rental (in unit of the pricing)"
 msgstr ""
 
 #. module: sale_renting
@@ -614,12 +600,6 @@ msgid "Let's now create an order."
 msgstr ""
 
 #. module: sale_renting
-#: model:product.product,name:sale_renting.rental_product_2
-#: model:product.template,name:sale_renting.rental_product_2_product_template
-msgid "Meeting Room"
-msgstr ""
-
-#. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_res_company_min_extra_hour
 msgid "Minimal delay time before applying fines has to be positive."
 msgstr ""
@@ -739,12 +719,13 @@ msgstr ""
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__qty_delivered
+#: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__return
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
+#: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
 msgid "Picked-up"
 msgstr ""
 
 #. module: sale_renting
-#: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__return
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__rental_status__return
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__report_line_status__pickedup
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
@@ -879,12 +860,6 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_renting.rental_product_template_action
 #: model:ir.ui.menu,name:sale_renting.menu_rental_products
 msgid "Products"
-msgstr ""
-
-#. module: sale_renting
-#: model:product.product,name:sale_renting.rental_product_1
-#: model:product.template,name:sale_renting.rental_product_1_product_template
-msgid "Projector"
 msgstr ""
 
 #. module: sale_renting
@@ -1221,6 +1196,11 @@ msgid "Status"
 msgstr ""
 
 #. module: sale_renting
+#: model:ir.model.fields,help:sale_renting.field_rental_wizard__duration
+msgid "The duration unit is the one of the rental pricing rule applying here."
+msgstr ""
+
+#. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_rental_pricing_rental_pricing_duration
 msgid "The pricing duration has to be greater or equal to 0."
 msgstr ""
@@ -1324,14 +1304,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__product_uom
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_uom
 msgid "Unit of Measure"
-msgstr ""
-
-#. module: sale_renting
-#: model:product.product,uom_name:sale_renting.rental_product_1
-#: model:product.product,uom_name:sale_renting.rental_product_2
-#: model:product.template,uom_name:sale_renting.rental_product_1_product_template
-#: model:product.template,uom_name:sale_renting.rental_product_2_product_template
-msgid "Units"
 msgstr ""
 
 #. module: sale_renting

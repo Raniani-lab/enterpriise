@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~13.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:38+0000\n"
-"PO-Revision-Date: 2019-09-23 11:38+0000\n"
+"POT-Creation-Date: 2019-12-16 10:15+0000\n"
+"PO-Revision-Date: 2019-12-16 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -495,6 +495,24 @@ msgstr ""
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:0
 #, python-format
+msgid "Online synchronization from %s to %s"
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/online_sync.py:0
+#, python-format
+msgid "Online synchronization of %s"
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/online_sync.py:0
+#, python-format
+msgid "Opening statement"
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/online_sync.py:0
+#, python-format
 msgid "Opening statement: first synchronization"
 msgstr ""
 
@@ -552,6 +570,14 @@ msgstr ""
 #: code:addons/account_online_sync/models/online_sync.py:0
 #, python-format
 msgid "Server not reachable, please try again later"
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/online_sync.py:0
+#, python-format
+msgid ""
+"Statement has been reset to draft because some transactions from online "
+"synchronization were added to it."
 msgstr ""
 
 #. module: account_online_sync
@@ -751,12 +777,6 @@ msgstr ""
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__provider_name
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__name
 msgid "name of the banking institution"
-msgstr ""
-
-#. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:0
-#, python-format
-msgid "online sync"
 msgstr ""
 
 #. module: account_online_sync

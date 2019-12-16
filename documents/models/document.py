@@ -404,7 +404,16 @@ class Document(models.Model):
                 record.attachment_id = attachment.id
                 record._process_activities(attachment.id)
 
-        return super(Document, self).write(vals)
+        # pops the datas and/or the mimetype key(s) to explicitly write them in batch on the ir.attachment
+        # so the mimetype is properly set. The reason was because the related keys are not written in batch
+        # and because mimetype is readonly on `ir.attachment` (which prevents writing through the related).
+        attachment_dict = {key: vals.pop(key) for key in ['datas', 'mimetype'] if key in vals}
+
+        write_result = super(Document, self).write(vals)
+        if attachment_dict:
+            self.mapped('attachment_id').write(attachment_dict)
+
+        return write_result
 
     def _process_activities(self, attachment_id):
         self.ensure_one()

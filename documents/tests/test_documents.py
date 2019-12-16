@@ -354,3 +354,12 @@ class TestCaseDocuments(TransactionCase):
         self.assertEqual(document.attachment_id.id, old_attachment.id, "the history should contain the old attachment")
         self.assertEqual(document.previous_attachment_ids[0].id, new_attachment.id,
                          "the document should contain the new attachment")
+
+    def test_write_mimetype(self):
+        """
+        Tests the consistency of documents' mimetypes
+        """
+        document = self.env['documents.document'].create({'datas': GIF, 'folder_id': self.folder_b.id})
+        document.write({'datas': TEXT, 'mimetype': 'text/plain'})
+
+        self.assertEqual(document.mimetype, 'text/plain', "the new mimetype should be the one given on write")

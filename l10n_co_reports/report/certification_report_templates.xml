@@ -13,7 +13,7 @@
                             </h2>
                             <div class="row">
                                 <div class="col-6">
-                                    NIT: <t t-esc="partner['partner_id'].vat"/>-<t t-esc="partner['partner_id'].l10n_co_verification_code"/>
+                                    NIT: <t t-esc="partner['partner_id'].vat"/>
                                 </div>
                                 <div class="col-6">
                                     Fecha de Expedición: <t t-esc="options['expedition_date']"/>
@@ -42,7 +42,7 @@
                                     Durante el año gravable de <t t-esc="current_year"/>, practicó en la ciudad de
                                     <t t-esc="env.company.city"/> retención en la fuente a
                                     <t t-esc="partner['partner_id'].display_name"/> con NIT:
-                                    <t t-esc="partner['partner_id'].vat"/>-<t t-esc="partner['partner_id'].l10n_co_verification_code"/>.
+                                    <t t-esc="partner['partner_id'].vat"/>.
                                 </div>
                             </div>
                             <div class="row">

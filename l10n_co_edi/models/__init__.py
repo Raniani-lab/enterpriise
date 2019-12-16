@@ -10,3 +10,6 @@ from . import tax_type
 from . import carvajal_request
 from . import res_company
 from . import res_config_settings
+from . import payment_option
+from . import res_country_state
+from . import res_city

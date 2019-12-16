@@ -13,6 +13,8 @@
                     <field name="l10n_co_edi_customs_type_ids" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" widget="many2many_tags"/>
                     <field name="l10n_co_edi_large_taxpayer"/>
                     <field name="l10n_co_edi_simplified_regimen"/>
+                    <field name="l10n_co_edi_fiscal_regimen"/>
+                    <field name="l10n_co_edi_commercial_name"/>
                 </field>
             </field>
         </record>

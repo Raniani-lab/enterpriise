@@ -1,6 +1,11 @@
 # coding: utf-8
 from odoo import api, fields, models, _
 
+TEMPLATE_CODE = [
+    ('01', 'CGEN03'),
+    ('02', 'CGEN04'),
+]
+
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
@@ -18,3 +23,8 @@ class ResCompany(models.Model):
     l10n_co_edi_header_resolucion_aplicable = fields.Char(string='Resolucion Aplicable')
     l10n_co_edi_header_actividad_economica = fields.Char(string='Actividad Económica')
     l10n_co_edi_header_bank_information = fields.Text(string='Bank Information')
+    l10n_co_edi_template_code = fields.Selection(TEMPLATE_CODE, string="Colombia Template Code")
+
+    def _get_l10n_co_edi_template_code_description(self):
+        return dict(TEMPLATE_CODE).get(self.l10n_co_edi_template_code)
+

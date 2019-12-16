@@ -41,7 +41,7 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
         })
 
         cls.company_data['company'].partner_id.write({
-            'l10n_co_document_type': 'rut',
+            'l10n_latam_identification_type_id': cls.env.ref('l10n_co.rut'),
             'l10n_co_edi_representation_type_id': cls.env.ref('l10n_co_edi.representation_type_0').id,
             'l10n_co_edi_establishment_type_id': cls.env.ref('l10n_co_edi.establishment_type_0').id,
             'l10n_co_edi_obligation_type_ids': [(6, 0, [cls.env.ref('l10n_co_edi.obligation_type_0').id])],
@@ -62,7 +62,7 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
         })
 
         cls.company_data_2['company'].partner_id.write({
-            'l10n_co_document_type': 'rut',
+            'l10n_latam_identification_type_id': cls.env.ref('l10n_co.rut'),
             'l10n_co_edi_representation_type_id': cls.env.ref('l10n_co_edi.representation_type_0').id,
             'l10n_co_edi_establishment_type_id': cls.env.ref('l10n_co_edi.establishment_type_0').id,
             'l10n_co_edi_obligation_type_ids': [(6, 0, [cls.env.ref('l10n_co_edi.obligation_type_0').id])],

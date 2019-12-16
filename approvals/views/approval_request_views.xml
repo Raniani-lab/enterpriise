@@ -151,6 +151,7 @@
                         <page string="Approver(s)" name="approvers">
                             <field name="approver_ids" mode="tree,kanban">
                                 <tree editable="bottom" decoration-success="status=='approved'" decoration-warning="status=='pending'" decoration-danger="status=='refused'">
+                                    <field name="existing_request_user_ids" invisible="1"/>
                                     <field name="user_id" string="Approver" attrs="{'readonly':[('status','!=','new')]}"/>
                                     <field name="status"/>
                                     <field name="company_id" invisible="1"/>
@@ -176,6 +177,7 @@
                                 <form>
                                     <group>
                                         <field name="company_id" invisible="1"/>
+                                        <field name="existing_request_user_ids" invisible="1"/>
                                         <field name="user_id"/>
                                     </group>
                                 </form>

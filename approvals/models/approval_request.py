@@ -210,7 +210,8 @@ class ApprovalApprover(models.Model):
 
     _check_company_auto = True
 
-    user_id = fields.Many2one('res.users', string="User", required=True, check_company=True)
+    user_id = fields.Many2one('res.users', string="User", required=True, check_company=True, domain="[('id', 'not in', existing_request_user_ids)]")
+    existing_request_user_ids = fields.Many2many('res.users', compute='_compute_existing_request_user_ids')
     status = fields.Selection([
         ('new', 'New'),
         ('pending', 'To Approve'),
@@ -235,6 +236,9 @@ class ApprovalApprover(models.Model):
                 'approvals.mail_activity_data_approval',
                 user_id=approver.user_id.id)
 
-    @api.onchange('user_id')
-    def _onchange_approver_ids(self):
-        return {'domain': {'user_id': [('id', 'not in', self.request_id.approver_ids.mapped('user_id').ids + self.request_id.request_owner_id.ids)]}}
+    @api.depends('request_id.request_owner_id', 'request_id.approver_ids.user_id')
+    def _compute_existing_request_user_ids(self):
+        for approver in self:
+            approver.existing_request_user_ids = \
+                self.mapped('request_id.approver_ids.user_id')._origin \
+              | self.request_id.request_owner_id._origin

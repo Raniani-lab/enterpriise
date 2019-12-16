@@ -300,6 +300,20 @@ class MarketingActivity(models.Model):
     _inherits = {'utm.source': 'utm_source_id'}
     _order = 'interval_standardized'
 
+    # definition and UTM
+    activity_type = fields.Selection([
+        ('email', 'Email'),
+        ('action', 'Server Action')
+        ], string='Activity Type', required=True, default='email')
+    mass_mailing_id = fields.Many2one(
+        'mailing.mailing', string='Marketing Template', compute='_compute_mass_mailing_id',
+        readonly=False, store=True)
+    mass_mailing_id_mailing_type = fields.Selection([
+        ('mail', 'Email')], string='Mailing Type', compute='_compute_mass_mailing_id_mailing_type',
+        readonly=True, store=True, help='Technical field doing the mapping of activity type and mailing type.')
+    server_action_id = fields.Many2one(
+        'ir.actions.server', string='Server Action', compute='_compute_server_action_id',
+        readonly=False, store=True)
     utm_source_id = fields.Many2one('utm.source', 'Source', ondelete='cascade', required=True)
     campaign_id = fields.Many2one(
         'marketing.campaign', string='Campaign',
@@ -307,6 +321,7 @@ class MarketingActivity(models.Model):
     utm_campaign_id = fields.Many2one(
         'utm.campaign', string='UTM Campaign',
         readonly=True, related='campaign_id.utm_campaign_id')  # propagate to mailings
+    # interval
     interval_number = fields.Integer(string='Send after', default=1)
     interval_type = fields.Selection([
         ('hours', 'Hours'),
@@ -315,7 +330,7 @@ class MarketingActivity(models.Model):
         ('months', 'Months')], string='Delay Type',
         default='hours', required=True)
     interval_standardized = fields.Integer('Send after (in hours)', compute='_compute_interval_standardized', store=True, readonly=True)
-
+    # validity
     validity_duration = fields.Boolean('Validity Duration',
         help='Check this to make sure your actions are not executed after a specific amount of time after the scheduled date. (e.g. : Time-limited offer, Upcoming event, …)')
     validity_duration_number = fields.Integer(string='Valid during', default=0)
@@ -325,9 +340,7 @@ class MarketingActivity(models.Model):
         ('weeks', 'Weeks'),
         ('months', 'Months')],
         default='hours', required=True)
-
-    require_sync = fields.Boolean('Require trace sync', copy=False)
-
+    # target
     domain = fields.Char(
         string='Applied Filter', default='[]',
         help='Activity will only be performed if record satisfies this domain, obtained from the combination of the activity filter and its inherited filter',
@@ -337,15 +350,6 @@ class MarketingActivity(models.Model):
         help='Domain that applies to this activity and its child activities')
     model_id = fields.Many2one('ir.model', related='campaign_id.model_id', string='Model', readonly=True)
     model_name = fields.Char(related='model_id.model', string='Model Name', readonly=True)
-
-    activity_type = fields.Selection([
-        ('email', 'Email'),
-        ('action', 'Server Action')
-        ], required=True, default='email')
-    mass_mailing_id = fields.Many2one('mailing.mailing', string='Marketing Template')
-    mass_mailing_id_mailing_type = fields.Selection([('mail', 'Email')])
-    server_action_id = fields.Many2one('ir.actions.server', string='Server Action')
-
     # Related to parent activity
     parent_id = fields.Many2one(
         'marketing.activity', string='Activity',
@@ -361,7 +365,8 @@ class MarketingActivity(models.Model):
         ('mail_click', 'Mail: clicked'),
         ('mail_not_click', 'Mail: not clicked'),
         ('mail_bounce', 'Mail: bounced')], default='begin', required=True)
-
+    # cron / updates
+    require_sync = fields.Boolean('Require trace sync', copy=False)
     # For trace
     trace_ids = fields.One2many('marketing.trace', 'activity_id', string='Traces', copy=False)
     processed = fields.Integer(compute='_compute_statistics')
@@ -373,13 +378,25 @@ class MarketingActivity(models.Model):
     total_bounce = fields.Integer(compute='_compute_statistics')
     statistics_graph_data = fields.Char(compute='_compute_statistics_graph_data')
 
-    @api.onchange('activity_type')
-    def _onchange_activity_type(self):
-        self.mass_mailing_id = False
-        if self.activity_type == 'action':
-            self.mass_mailing_id_mailing_type = False
-        elif self.activity_type == 'email':
-            self.mass_mailing_id_mailing_type = 'mail'
+    @api.depends('activity_type')
+    def _compute_mass_mailing_id_mailing_type(self):
+        for activity in self:
+            if activity.activity_type == 'email':
+                activity.mass_mailing_id_mailing_type = 'mail'
+            elif activity.activity_type == 'activity':
+                activity.mass_mailing_id_mailing_type = False
+
+    @api.depends('mass_mailing_id_mailing_type')
+    def _compute_mass_mailing_id(self):
+        for activity in self:
+            if activity.mass_mailing_id_mailing_type != activity.mass_mailing_id.mailing_type:
+                activity.mass_mailing_id = False
+
+    @api.depends('activity_type')
+    def _compute_server_action_id(self):
+        for activity in self:
+            if activity.activity_type != 'action':
+                activity.server_action_id = False
 
     @api.depends('activity_domain', 'campaign_id.domain')
     def _compute_inherited_domain(self):

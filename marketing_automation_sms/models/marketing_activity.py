@@ -16,11 +16,12 @@ class MarketingActivity(models.Model):
     activity_type = fields.Selection(selection_add=[('sms', 'SMS')])
     mass_mailing_id_mailing_type = fields.Selection(selection_add=[('sms', 'SMS')])
 
-    @api.onchange('activity_type')
-    def _onchange_activity_type(self):
-        if self.activity_type == 'sms':
-            self.mass_mailing_id_mailing_type = 'sms'
-        super(MarketingActivity, self)._onchange_activity_type()
+    @api.depends('activity_type')
+    def _compute_mass_mailing_id_mailing_type(self):
+        for activity in self:
+            if activity.activity_type == 'sms':
+                activity.mass_mailing_id_mailing_type = 'sms'
+        super(MarketingActivity, self)._compute_mass_mailing_id_mailing_type()
 
     def _execute_sms(self, traces):
         res_ids = [r for r in set(traces.mapped('res_id'))]

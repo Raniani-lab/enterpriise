@@ -14,7 +14,8 @@ class User(models.Model):
     appraisal_collaborators_ids = fields.Many2many('hr.employee', compute='_compute_appraisal_collaborators_ids')
     appraisal_by_colleagues = fields.Boolean(compute='_compute_appraisal_by_colleagues')
     appraisal_colleagues_ids = fields.Many2many('hr.employee', compute='_compute_appraisal_colleagues_ids')
-    appraisal_date = fields.Date(compute='_compute_appraisal_date')
+    next_appraisal_date = fields.Date(compute='_compute_appraisal_date')
+    last_appraisal_date = fields.Date(compute='_compute_appraisal_date')
 
     @api.depends('employee_ids.appraisal_by_manager')
     def _compute_appraisal_by_manager(self):
@@ -51,10 +52,11 @@ class User(models.Model):
         for user in self:
             user.appraisal_colleagues_ids = user.employee_ids[:1].appraisal_colleagues_ids
 
-    @api.depends('employee_ids.appraisal_date')
+    @api.depends('employee_ids.next_appraisal_date', 'employee_ids.last_appraisal_date')
     def _compute_appraisal_date(self):
         for user in self:
-            user.appraisal_date = user.employee_ids[:1].appraisal_date
+            user.next_appraisal_date = user.employee_ids[:1].next_appraisal_date
+            user.last_appraisal_date = user.employee_ids[:1].last_appraisal_date
 
     def __init__(self, pool, cr):
         """ Override of __init__ to add access rights.
@@ -69,7 +71,8 @@ class User(models.Model):
             'appraisal_collaborators_ids',
             'appraisal_by_colleagues',
             'appraisal_colleagues_ids',
-            'appraisal_date',
+            'next_appraisal_date',
+            'last_appraisal_date',
         ]
         init_res = super(User, self).__init__(pool, cr)
         # duplicate list to avoid modifying the original reference

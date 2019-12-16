@@ -222,12 +222,15 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
         if vals.get('state') and vals['state'] == 'pending':
             self.send_appraisal()
 
-        result.employee_id.sudo().appraisal_date = result.date_close
-        result.subscribe_employees()
         date_final_interview = vals.get('date_final_interview')
         if date_final_interview:
             # creating employee meeting and interview date
             result.schedule_final_meeting(date_final_interview)
+        result.employee_id.sudo().write({
+            'next_appraisal_date': result.date_close,
+            'periodic_appraisal_created': True,
+        })
+        result.subscribe_employees()
         return result
 
     def write(self, vals):
@@ -239,7 +242,7 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
         result = super(HrAppraisal, self).write(vals)
         date_final_interview = vals.get('date_final_interview')
         if vals.get('date_close'):
-            self.mapped('employee_id').write({'appraisal_date': vals.get('date_close'), 'last_duration_reminder_send': 0})
+            self.mapped('employee_id').write({'next_appraisal_date': vals.get('date_close'), 'last_duration_reminder_send': 0})
             self.activity_reschedule(['hr_appraisal.mail_act_appraisal_form'], date_deadline=vals['date_close'])
         if date_final_interview:
             # creating employee meeting and interview date
@@ -297,7 +300,10 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
         self.activity_feedback(['hr_appraisal.mail_act_appraisal_send'])
 
     def button_done_appraisal(self):
+        appraisal_max_period = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_max_period'))
+        current_date = datetime.date.today()
         self.write({'state': 'done'})
+        self.mapped('employee_id').write({'last_appraisal_date': current_date, 'last_duration_reminder_send': 0, 'next_appraisal_date': current_date + relativedelta(months=appraisal_max_period), 'periodic_appraisal_created': False})
         self.activity_feedback(['mail.mail_activity_data_meeting', 'hr_appraisal.mail_act_appraisal_form'])
 
     def button_cancel_appraisal(self):

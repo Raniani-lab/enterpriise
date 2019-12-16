@@ -79,7 +79,7 @@ class HrAppraisalReminder(models.Model):
         if reminder.event == 'arrival':
             template_data.update({'employee_creation': employee.create_date})
         else:
-            template_data.update({'last_appraisal': employee.appraisal_date})
+            template_data.update({'last_appraisal': employee.last_appraisal_date})#last or next?
 
         action_url = '%s/web#%s' % (self.env['ir.config_parameter'].sudo().get_param('web.base.url'), url)
         template_data.update({'link': action_url})

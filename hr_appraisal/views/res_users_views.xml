@@ -15,10 +15,10 @@
                 >
                 <div class="o_field_widget o_stat_info">
                     <span class="o_stat_value">
-                        <field name="appraisal_date" readonly="1"/>
+                        <field name="last_appraisal_date" readonly="1"/>
                     </span>
                     <span class="o_stat_text">
-                        Next Appraisal
+                        Last Appraisal
                     </span>
                 </div>
             </button>
@@ -33,6 +33,7 @@
         <xpath expr="//page[@name='hr_settings']" position="after">
             <page string="Appraisal">
                 <group string="Appraisals Set Up">
+                    <field name="next_appraisal_date" groups="base.group_no_one"/>
                     <field name="appraisal_by_manager" invisible="1"/>
                     <label for="appraisal_manager_ids" attrs="{'invisible':[('appraisal_by_manager', '=', False)], 'readonly': [('can_edit', '=', False)]}"/>
                     <field name="appraisal_manager_ids" nolabel="1" widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible':[('appraisal_by_manager', '=', False)]}" readonly="1"/>

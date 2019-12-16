@@ -25,17 +25,18 @@
                 >
                 <div class="o_field_widget o_stat_info">
                     <span class="o_stat_value">
-                        <field name="appraisal_date" readonly="1"/>
+                        <field name="last_appraisal_date" readonly="1"/>
                     </span>
                     <span class="o_stat_text">
-                        <span attrs="{'invisible': [('appraisal_date', '=', False)]}">Next</span> Appraisal
+                        Last Appraisal
                     </span>
                 </div>
             </button>
         </div>
         <xpath expr="//page[@name='hr_settings']" position="inside">
             <field name="parent_user_id" invisible="1"/>
-            <group string="Send Appraisals Form To" col="4">
+            <group string="Send Appraisals Form To" col="3">
+                <field name="next_appraisal_date" groups="base.group_no_one"/>
                 <field name="appraisal_by_manager"/>
                 <field name="appraisal_manager_ids" nolabel="1" placeholder="Select Appraisal Reviewer..."
                     widget="many2many_tags" options="{'color_field': 'color'}"

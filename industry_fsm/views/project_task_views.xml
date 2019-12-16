@@ -80,6 +80,13 @@
             <field name="partner_id" position="attributes">
                 <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
             </field>
+            <field name="project_id" position="attributes">
+                <attribute name="domain">[
+                    ('active', '=', True),
+                    ('company_id', '=', company_id),
+                    ('is_fsm', '=?', context.get('fsm_mode'))
+                ]</attribute>
+            </field>
         </field>
     </record>
 

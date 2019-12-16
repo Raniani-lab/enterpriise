@@ -136,11 +136,6 @@ class Task(models.Model):
             if closed_stage:
                 task.fsm_done = task.stage_id in closed_stage
 
-    @api.onchange('project_id')
-    def _onchange_project_id_fsm(self):
-        if self.env.context.get('fsm_mode'):
-            return {'domain': {'project_id': [('is_fsm', '=', True)]}}
-
     def action_view_timesheets(self):
         kanban_view = self.env.ref('hr_timesheet.view_kanban_account_analytic_line')
         form_view = self.env.ref('industry_fsm.timesheet_view_form')

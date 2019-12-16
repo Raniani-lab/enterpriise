@@ -24,6 +24,17 @@ class ReportAccountAgedPartner(models.AbstractModel):
         templates['main_template'] = 'account_reports.template_aged_partner_balance_report'
         return templates
 
+    @api.model
+    def _parse_partner_line_id(self, line_id):
+        if line_id:
+            trailing_id = line_id.split('_')[-1]
+            if str.isdigit(trailing_id):
+                return int(trailing_id)
+            else:
+                return False
+        else:
+            return None
+
     ####################################################
     # OPTIONS
     ####################################################
@@ -98,7 +109,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
         elif unfold_all:
             pass
         elif options['unfolded_lines']:
-            domain = [('partner_id', 'in', [int(line[8:]) for line in options['unfolded_lines']])]
+            domain.append(('partner_id', 'in', [self._parse_partner_line_id(line_id) for line_id in options['unfolded_lines']]))
         else:
             return groupby_partner_aml
 
@@ -149,11 +160,12 @@ class ReportAccountAgedPartner(models.AbstractModel):
 
         self._cr.execute(query, params)
         for res in self._cr.dictfetchall():
+            partner_id = res['partner_id'] or False # Map empty result with False instead of None.
             seen_aml_ids.add(res['id'])
-            groupby_partner_aml.setdefault(res['partner_id'], OrderedDict())
+            groupby_partner_aml.setdefault(partner_id, OrderedDict())
             res['period_amounts'] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
             res['period_amounts'][res['period_index']] = sign * res['balance']
-            groupby_partner_aml[res['partner_id']][res['id']] = res
+            groupby_partner_aml[partner_id][res['id']] = res
 
         # ===================================================================================================
         # 2) Fetch the reconciliation for each period and subtract them from the balance to compute
@@ -213,7 +225,8 @@ class ReportAccountAgedPartner(models.AbstractModel):
 
             self._cr.execute(query, [tuple(seen_aml_ids), options['date']['date_to']] * 2)
             for res in self._cr.dictfetchall():
-                groupby_partner_aml[res['partner_id']][res['id']]['period_amounts'][res['period_index']] -= sign * res['amount']
+                partner_id = res['partner_id'] or False # Map empty result with False instead of None.
+                groupby_partner_aml[partner_id][res['id']]['period_amounts'][res['period_index']] -= sign * res['amount']
 
         return dict((k, list(v.values())) for k, v in groupby_partner_aml.items())
 
@@ -226,7 +239,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
         '''
         sign = 1 if options['filter_account_type'] == 'receivable' else -1
 
-        if expanded_partner_id:
+        if expanded_partner_id is not None:
             domain = [('partner_id', '=', expanded_partner_id)]
         else:
             domain = []
@@ -294,13 +307,14 @@ class ReportAccountAgedPartner(models.AbstractModel):
 
         self._cr.execute(query, [self.env.company.id] + params)
         for res in self._cr.dictfetchall():
+            partner_id = res['partner_id'] or False # Map empty result with False instead of None.
             res['period0'] *= sign
             res['period1'] *= sign
             res['period2'] *= sign
             res['period3'] *= sign
             res['period4'] *= sign
             res['period5'] *= sign
-            groupby_partner[res['partner_id']] = res
+            groupby_partner[partner_id] = res
 
         # Nothing to fetch, break.
         if not groupby_partner:
@@ -396,12 +410,13 @@ class ReportAccountAgedPartner(models.AbstractModel):
 
         self._cr.execute(query, (params + [options['date']['date_to']]) * 2)
         for res in self._cr.dictfetchall():
-            groupby_partner[res['partner_id']]['period0'] -= sign * res['period0']
-            groupby_partner[res['partner_id']]['period1'] -= sign * res['period1']
-            groupby_partner[res['partner_id']]['period2'] -= sign * res['period2']
-            groupby_partner[res['partner_id']]['period3'] -= sign * res['period3']
-            groupby_partner[res['partner_id']]['period4'] -= sign * res['period4']
-            groupby_partner[res['partner_id']]['period5'] -= sign * res['period5']
+            partner_id = res['partner_id'] or False # Map empty result with False instead of None.
+            groupby_partner[partner_id]['period0'] -= sign * res['period0']
+            groupby_partner[partner_id]['period1'] -= sign * res['period1']
+            groupby_partner[partner_id]['period2'] -= sign * res['period2']
+            groupby_partner[partner_id]['period3'] -= sign * res['period3']
+            groupby_partner[partner_id]['period4'] -= sign * res['period4']
+            groupby_partner[partner_id]['period5'] -= sign * res['period5']
 
         # ===================================================================================================
         # 3) Fetch the unfolded lines.
@@ -431,7 +446,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
             {'name': self.format_value(total), 'no_format': total, 'class': 'number'},
         ]
         return {
-            'id': 'partner_%s' % row['partner_id'],
+            'id': 'partner_%s' % (row['partner_id'] or False),
             'partner_id': row['partner_id'],
             'name': row['partner_name'][:128] if row['partner_name'] else _('Unknown Partner'),
             'columns': columns,
@@ -459,7 +474,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
         columns.append({'name': '', 'no_format': 0.0})
         return {
             'id': row['id'],
-            'parent_id': 'partner_%s' % row['partner_id'],
+            'parent_id': 'partner_%s' % (row['partner_id'] or False),
             'name': row['move_name'],
             'columns': columns,
             'caret_options': caret_type,
@@ -503,7 +518,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
 
     @api.model
     def _get_lines(self, options, line_id=None):
-        expanded_partner_id = int(line_id.split('_')[-1]) if line_id else None
+        expanded_partner_id = self._parse_partner_line_id(line_id)
         lines = []
         totals = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         for partner_row in self._do_query_groupby(options, expanded_partner_id=expanded_partner_id):

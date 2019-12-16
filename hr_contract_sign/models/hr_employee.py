@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, fields
+from odoo import models, fields
 
 
 class HrEmployee(models.Model):
     _name = 'hr.employee'
     _inherit = 'hr.employee'
 
-    sign_request_count = fields.Integer(compute='_compute_sign_request_count', groups="hr_contract_sign.group_sign_employee")
+    sign_request_count = fields.Integer(
+        compute="_compute_sign_request_count",
+        groups="hr_contract.group_hr_contract_manager",
+    )
 
     def _compute_sign_request_count(self):
         for employee in self:

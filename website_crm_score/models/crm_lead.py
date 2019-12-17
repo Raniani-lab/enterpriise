@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
-from odoo.http import request
-from odoo import api, fields, models, SUPERUSER_ID
-from hashlib import md5
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import api, fields, models
 
 
 class Lead(models.Model):
     _inherit = 'crm.lead'
+
+    score = fields.Float(compute='_compute_score', store=True, group_operator="avg")
+    score_ids = fields.Many2many('website.crm.score', 'crm_lead_score_rel', 'lead_id', 'score_id', string='Scoring Rules')
+    assign_date = fields.Datetime(string='Auto Assign Date', help="Date when the lead has been assigned via the auto-assignation mechanism")
 
     @api.depends('score_ids', 'score_ids.value')
     def _compute_score(self):
@@ -22,16 +26,6 @@ class Lead(models.Model):
         scores = dict(self._cr.fetchall())
         for lead in self:
             lead.score = scores.get(lead.id, 0)
-
-    score = fields.Float(compute='_compute_score', store=True, group_operator="avg")
-    score_ids = fields.Many2many('website.crm.score', 'crm_lead_score_rel', 'lead_id', 'score_id', string='Scoring Rules')
-    assign_date = fields.Datetime(string='Auto Assign Date', help="Date when the lead has been assigned via the auto-assignation mechanism")
-
-    def _get_key(self):
-        return self.env['ir.config_parameter'].sudo().get_param('database.secret')
-
-    def get_score_domain_cookies(self):
-        return request.httprequest.host
 
     def _merge_scores(self, opportunities):
         # We needs to delete score from opportunity_id, to be sure that all rules will be re-evaluated.

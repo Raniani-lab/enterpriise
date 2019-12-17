@@ -168,6 +168,13 @@
                     href="#"
                     title="Activity View"
                     t-if="_.contains(widget.active_view_types, 'activity')"><i class="fa fa-th"/></a>
+                <!-- searchview is always active -->
+                <a
+                    aria-label="Search View"
+                    data-name="search"
+                    href="#"
+                    title="Search View"
+                    ><i class="fa fa-search"/></a>
             </div>
         </li>
     </ul>

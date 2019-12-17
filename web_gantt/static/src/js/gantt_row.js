@@ -973,9 +973,17 @@ var GanttRow = Widget.extend({
             // found to target the real cell on which the user is currently
             // hovering is calling the costly elementsFromPoint function.
             // Besides, this function will not work in the test environment.
+            var elementsFromPoint = function (x, y) {
+                if (document.elementsFromPoint)
+                    return document.elementsFromPoint(x, y);
+                if (document.msElementsFromPoint) {
+                    return Array.prototype.slice.call(document.msElementsFromPoint(x, y));
+                }
+            };
+
             var hoveredCell;
             if (ev.target.classList.contains('o_gantt_pill') || ev.target.parentNode.classList.contains('o_gantt_pill')) {
-                document.elementsFromPoint(ev.pageX, ev.pageY).some(function (element) {
+                elementsFromPoint(ev.pageX, ev.pageY).some(function (element) {
                     return element.classList.contains('o_gantt_cell') ? ((hoveredCell = element), true) : false;
                 });
             } else {

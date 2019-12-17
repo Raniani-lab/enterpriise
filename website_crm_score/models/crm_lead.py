@@ -7,9 +7,11 @@ from odoo import api, fields, models
 class Lead(models.Model):
     _inherit = 'crm.lead'
 
-    score = fields.Float(compute='_compute_score', store=True, group_operator="avg")
+    score = fields.Float(string='Score', compute='_compute_score', store=True, group_operator="avg")
     score_ids = fields.Many2many('website.crm.score', 'crm_lead_score_rel', 'lead_id', 'score_id', string='Scoring Rules')
-    assign_date = fields.Datetime(string='Auto Assign Date', help="Date when the lead has been assigned via the auto-assignment mechanism")
+    assign_date = fields.Datetime(
+        string='Auto Assign Date', compute='_compute_assign_date', readonly=False, store=True,
+        help="Date when the lead has been assigned via the auto-assignment mechanism")
 
     @api.depends('score_ids', 'score_ids.value')
     def _compute_score(self):
@@ -27,6 +29,20 @@ class Lead(models.Model):
         for lead in self:
             lead.score = scores.get(lead.id, 0)
 
+    @api.depends('user_id')
+    def _compute_assign_date(self):
+        for lead in self:
+            lead.assign_date = fields.datetime.now() if lead.user_id else False
+
+    @api.depends('user_id', 'type')
+    def _compute_team_id(self):
+        """ When changing the user, also set a team_id or restrict team id to the ones user_id is member of. """
+        lead_ok = self.env['crm.lead']
+        for lead in self:
+            if lead.user_id and lead.team_id and lead.user_id in lead.mapped('team_id.team_user_ids.user_id'):
+                lead_ok |= lead
+        super(Lead, self - lead_ok)._compute_team_id()
+
     def _merge_scores(self, opportunities):
         # We needs to delete score from opportunity_id, to be sure that all rules will be re-evaluated.
         self.sudo().write({'score_ids': [(6, 0, [])]})
@@ -38,15 +54,3 @@ class Lead(models.Model):
 
         # Call default merge function
         return super(Lead, self).merge_dependences(opportunities)
-
-    # Overwritte ORM to add or remove the assign date
-    @api.model
-    def create(self, vals):
-        if vals.get('user_id'):
-            vals['assign_date'] = vals.get('user_id') and fields.datetime.now() or False
-        return super(Lead, self).create(vals)
-
-    def write(self, vals):
-        if 'user_id' in vals:
-            vals['assign_date'] = vals.get('user_id') and fields.datetime.now() or False
-        return super(Lead, self).write(vals)

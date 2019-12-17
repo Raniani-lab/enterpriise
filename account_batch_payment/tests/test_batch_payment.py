@@ -62,7 +62,7 @@ class TestBatchPayment(AccountTestCommon):
             'payment_method_id': self.batch_deposit.id,
         })
         batch.validate_batch()
-        batch.print_batch_payment()
+        error_action = batch.print_batch_payment()
         self.assertTrue(all(payment.state == 'sent' for payment in self.payments))
         self.assertTrue(batch.state == 'sent')
         # Create a bank statement

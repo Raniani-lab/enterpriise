@@ -22,6 +22,7 @@ class AccountBatchPayment(models.Model):
         return rslt
 
     def validate_batch(self):
+        self.ensure_one()
         if self.payment_method_code == 'sdd':
             company = self.env.company
 
@@ -33,6 +34,39 @@ class AccountBatchPayment(models.Model):
                 raise UserError(_("You cannot generate a SEPA Direct Debit file with a required collection date in the past."))
 
         return super(AccountBatchPayment, self).validate_batch()
+
+    def _check_and_post_draft_payments(self, draft_payments):
+        rslt = []
+        if self.payment_method_code == 'sdd':
+
+            drafts_without_mandate = draft_payments.filtered(lambda x: not x.get_usable_mandate())
+            if drafts_without_mandate:
+                rslt = [{'title': _("Some draft payments could not be posted because of the lack of any active mandate."),
+                         'records': drafts_without_mandate,
+                         'help': _("To solve that, you should create a mandate for each of the involved customers, valid at the moment of the payment date.")
+                }]
+                draft_payments -= drafts_without_mandate
+
+        return rslt + super(AccountBatchPayment, self)._check_and_post_draft_payments(draft_payments)
+
+
+    def check_payments_for_errors(self):
+        rslt = super(AccountBatchPayment, self).check_payments_for_errors()
+
+        if self.payment_method_code == 'sdd':
+            no_bic_debtor_acc = self.env['account.payment']
+            for payment in self.payment_ids.filtered(lambda x: x.state == 'posted'):
+                if not payment.sdd_mandate_id.partner_bank_id.bank_id.bic:
+                    no_bic_debtor_acc += payment
+
+            if no_bic_debtor_acc:
+                rslt.append({
+                    'title': _("Some debtor accounts don't have any BIC associated with them."),
+                    'records': no_bic_debtor_acc,
+                    'help': _("To fix that, make sure the bank account of each debtor is linked to a bank, and that this bank has a BIC number."),
+                })
+
+        return rslt
 
     def _generate_export_file(self):
         if self.payment_method_code == 'sdd':

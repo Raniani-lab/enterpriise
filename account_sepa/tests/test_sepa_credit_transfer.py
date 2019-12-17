@@ -53,14 +53,6 @@ class TestSEPACreditTransfer(AccountTestCommon):
             'bank_name': 'Mock & Co',
         })
 
-        # Create 1 payment per supplier
-        cls.payment_1 = cls.createPayment(cls.asustek_sup, 500)
-        cls.payment_1.post()
-        cls.payment_2 = cls.createPayment(cls.asustek_sup, 600)
-        cls.payment_2.post()
-        cls.payment_3 = cls.createPayment(cls.supplier, 700)
-        cls.payment_3.post()
-
         # Get a pain.001.001.03 schema validator
         schema_file_path = get_module_resource('account_sepa', 'schemas', 'pain.001.001.03.xsd')
         cls.xmlschema = etree.XMLSchema(etree.parse(open(schema_file_path)))
@@ -88,41 +80,61 @@ class TestSEPACreditTransfer(AccountTestCommon):
 
     def testStandardSEPA(self):
         for bic in ["BBRUBEBB", False]:
+            payment_1 = self.createPayment(self.asustek_sup, 500)
+            payment_1.post()
+            payment_2 = self.createPayment(self.asustek_sup, 600)
+            payment_2.post()
+
             self.bank_journal.bank_id.bic = bic
             batch = self.env['account.batch.payment'].create({
                 'journal_id': self.bank_journal.id,
-                'payment_ids': [(4, payment.id, None) for payment in (self.payment_1 | self.payment_2)],
+                'payment_ids': [(4, payment.id, None) for payment in (payment_1 | payment_2)],
                 'payment_method_id': self.sepa_ct.id,
                 'batch_type': 'outbound',
             })
 
-            batch.validate_batch()
-            download_wizard = self.env['account.batch.download.wizard'].browse(batch.export_batch_payment()['res_id'])
-
             self.assertFalse(batch.sct_generic)
+
+            wizard_action = batch.validate_batch()
+            self.assertTrue(wizard_action, "Validation wizard should have returned an action")
+            self.assertEqual(wizard_action.get('res_model'), 'account.batch.download.wizard', "The action returned at validation should target a download wizard")
+
+            download_wizard = self.env['account.batch.download.wizard'].browse(batch.export_batch_payment()['res_id'])
             sct_doc = etree.fromstring(base64.b64decode(download_wizard.export_file))
             self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
-            self.assertEqual(self.payment_1.state, 'sent')
-            self.assertEqual(self.payment_2.state, 'sent')
+            self.assertEqual(payment_1.state, 'sent')
+            self.assertEqual(payment_2.state, 'sent')
 
     def testGenericSEPA(self):
         for bic in ["BBRUBEBB", False]:
+            payment_1 = self.createPayment(self.supplier, 500)
+            payment_1.post()
+            payment_2 = self.createPayment(self.supplier, 700)
+            payment_2.post()
+
             self.bank_journal.bank_id.bic = bic
             batch = self.env['account.batch.payment'].create({
                 'journal_id': self.bank_journal.id,
-                'payment_ids': [(4, payment.id, None) for payment in (self.payment_1 | self.payment_3)],
+                'payment_ids': [(4, payment.id, None) for payment in (payment_1 | payment_2)],
                 'payment_method_id': self.sepa_ct.id,
                 'batch_type': 'outbound',
             })
 
-            batch.validate_batch()
-            download_wizard = self.env['account.batch.download.wizard'].browse(batch.export_batch_payment()['res_id'])
-
             self.assertTrue(batch.sct_generic)
+
+            wizard_action = batch.validate_batch()
+            self.assertTrue(wizard_action, "Validation wizard should have returned an action")
+            self.assertEqual(wizard_action.get('res_model'), 'account.batch.error.wizard', "The action returned at validation should target an error wizard")
+
+            error_wizard = self.env['account.batch.error.wizard'].browse(wizard_action['res_id'])
+            self.assertTrue(len(error_wizard.warning_line_ids) > 0, "Using generic SEPA should raise warnings")
+            self.assertTrue(len(error_wizard.error_line_ids) == 0, "Error wizard should not list any error")
+
+            download_wizard = self.env['account.batch.download.wizard'].browse(error_wizard.proceed_with_validation()['res_id'])
             sct_doc = etree.fromstring(base64.b64decode(download_wizard.export_file))
             self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
-            self.assertEqual(self.payment_1.state, 'sent')
-            self.assertEqual(self.payment_3.state, 'sent')
+            self.assertEqual(payment_1.state, 'sent')
+            self.assertEqual(payment_2.state, 'sent')
 
     def testQRCode(self):
         """Test thats the QR-Code is displayed iff the mandatory fields are

@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 
 class AccountBatchPayment(models.Model):
@@ -77,7 +77,7 @@ class AccountBatchPayment(models.Model):
             if len(all_companies) > 1:
                 raise ValidationError(_("All payments in the batch must belong to the same company."))
             all_journals = set(record.payment_ids.mapped('journal_id'))
-            if len(all_journals) > 1 or record.payment_ids[0].journal_id != record.journal_id:
+            if len(all_journals) > 1 or (record.payment_ids and record.payment_ids[0].journal_id != record.journal_id):
                 raise ValidationError(_("The journal of the batch payment and of the payments it contains must be the same."))
             all_types = set(record.payment_ids.mapped('payment_type'))
             if all_types and record.batch_type not in all_types:
@@ -97,7 +97,6 @@ class AccountBatchPayment(models.Model):
     def create(self, vals):
         vals['name'] = self._get_batch_name(vals.get('batch_type'), vals.get('date', fields.Date.context_today(self)), vals)
         rec = super(AccountBatchPayment, self).create(vals)
-        rec.normalize_payments()
         return rec
 
     def write(self, vals):
@@ -106,16 +105,7 @@ class AccountBatchPayment(models.Model):
 
         rslt = super(AccountBatchPayment, self).write(vals)
 
-        if 'payment_ids' in vals:
-            self.normalize_payments()
-
         return rslt
-
-    def normalize_payments(self):
-        for batch in self:
-            # Since a batch payment has no confirmation step (it can be used to select payments in a bank reconciliation
-            # as long as state != reconciled), its payments need to be posted
-            batch.payment_ids.filtered(lambda r: r.state == 'draft').post()
 
     @api.model
     def _get_batch_name(self, batch_type, sequence_date, vals):
@@ -127,12 +117,105 @@ class AccountBatchPayment(models.Model):
         return vals['name']
 
     def validate_batch(self):
-        records = self.filtered(lambda x: x.state == 'draft')
-        for record in records:
-            record.payment_ids.write({'state':'sent', 'payment_reference': record.name})
-        records.write({'state': 'sent'})
+        """ Verifies the content of a batch and proceeds to its sending if possible.
+        If not, opens a wizard listing the errors and/or warnings encountered.
+        """
+        self.ensure_one()
+        if not self.payment_ids:
+            raise UserError(_("Cannot validate an empty batch. Please add some payments to it first."))
 
-        return self.filtered('file_generation_enabled').export_batch_payment()
+        errors = not self.export_file and self.check_payments_for_errors() or []  # We don't re-check for errors if we are regenerating the file (we know there aren't any)
+        warnings = self.check_payments_for_warnings()
+        if errors or warnings:
+            return {
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'account.batch.error.wizard',
+                'target': 'new',
+                'res_id': self.env['account.batch.error.wizard'].create_from_errors_list(self, errors, warnings).id,
+            }
+
+        return self._send_after_validation()
+
+    def validate_batch_button(self):
+        return self.validate_batch()
+
+    def _send_after_validation(self):
+        """ Sends the payments of a batch (possibly generating an export file)
+        once the batch has been validated.
+        """
+
+        self.ensure_one()
+        if self.payment_ids:
+            self.payment_ids.write({'state':'sent', 'payment_reference': self.name})
+            self.state = 'sent'
+
+            if self.file_generation_enabled:
+                return self.export_batch_payment()
+
+    def check_payments_for_warnings(self):
+        """ Checks the payments of this batch and returns (if relevant) some
+        warnings about them. These warnings are not to be confused with errors,
+        they are only messgaes displayed to make sure the user is aware of some
+        specificities in the payments he's put in the batch. He will be able to
+        ignore them.
+
+        :return:    A list of dictionaries, each one corresponding to a distinct
+                    warning and containing the following keys:
+                    - 'title': A short name for the warning (mandatory)
+                    - 'records': The recordset of payments concerned by this warning (mandatory)
+                    - 'help': A help text to give the user further information
+                              on the reason this warning exists (optional)
+        """
+        return []
+
+    def check_payments_for_errors(self):
+        """ Goes through all the payments of the batches contained in this
+        record set, and returns the ones that would impeach batch validation,
+        in such a way that the payments impeaching validation for the same reason
+        are grouped under a common error message. This function is a hook for
+        extension for modules making a specific use of batch payments, such as SEPA
+        ones.
+
+        :return:    A list of dictionaries, each one corresponding to a distinct
+                    error and containing the following keys:
+                    - 'title': A short name for the error (mandatory)
+                    - 'records': The recordset of payments facing this error (mandatory)
+                    - 'help': A help text to give the user further information
+                              on how to solve the error (optional)
+        """
+        self.ensure_one()
+        #We first try to post all the draft batch payments
+        rslt = self._check_and_post_draft_payments(self.payment_ids.filtered(lambda x: x.state == 'draft'))
+
+        wrong_state_payments = self.payment_ids.filtered(lambda x: x.state not in ('draft', 'posted'))
+
+        if wrong_state_payments:
+            rslt.append({
+                'title': _("Some payments don't have the right state to be added to a batch."),
+                'records': wrong_state_payments,
+                'help': _("Only posted and draft payments are allowed.")
+            })
+
+        return rslt
+
+    def _check_and_post_draft_payments(self, draft_payments):
+        """ Tries posting each of the draft payments contained in this batch.
+        If it fails and raise a UserError, it is catched and the process continues
+        on the following payments. All the encountered errors are then returned
+        withing a dictionary, in the same fashion as check_payments_for_errors.
+        """
+        exceptions_mapping = {}
+        for payment in draft_payments:
+            try:
+                payment.post()
+            except UserError as e:
+                if e.name in exceptions_mapping:
+                    exceptions_mapping[e.name] += payment
+                else:
+                    exceptions_mapping[e.name] = payment
+
+        return [{'title': error, 'records': pmts} for error, pmts in exceptions_mapping.items()]
 
     def export_batch_payment(self):
         export_file_data = {}
@@ -150,7 +233,6 @@ class AccountBatchPayment(models.Model):
         if len(self) == 1:
             download_wizard = self.env['account.batch.download.wizard'].create({
                     'batch_payment_id': self.id,
-                    'warning_message': export_file_data.get('warning'),
             })
             return {
                 'type': 'ir.actions.act_window',

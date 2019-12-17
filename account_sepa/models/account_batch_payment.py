@@ -26,46 +26,10 @@ class AccountBatchPayment(models.Model):
              u"a standard european credit transfer. That is if the bank journal is not in €, a transaction is not in € or a payee is "
              u"not identified by an IBAN account number.")
 
-    sct_warning = fields.Text(compute='_compute_sct_generic')
-
     @api.depends('payment_ids', 'journal_id')
     def _compute_sct_generic(self):
         for record in self:
-            warnings = record._get_genericity_info()
-            record.sct_generic = bool(warnings)
-            text_warning = None
-            if record.journal_id.company_id.country_id.code != 'CH': #We need it as generic, but we should not give warnings
-                if warnings and len(warnings) == 1:
-                    text_warning = _('Please note that the following warning has been raised:')
-                    text_warning += '\n%s\n\n' % warnings
-                    text_warning += _('In result, the file might not be accepted by all bank as a valid SEPA Credit Transfer file')
-                elif warnings:
-                    text_warning = _('Please note that the following warnings have been raised:')
-                    text_warning += '<ul>'
-                    for warning in warnings:
-                        text_warning += '<li>%s</li>' % warning
-                    text_warning += '</ul>\n\n'
-                    text_warning += _('In result, the file might not be accepted by all bank as a valid SEPA Credit Transfer file')
-            record.sct_warning = text_warning
-
-    def _get_genericity_info(self):
-        """ Find out if generating a credit transfer initiation message for payments requires to use the generic rules, as opposed to the standard ones.
-            The generic rules are used for payments which are not considered to be standard european credit transfers.
-        """
-        self.ensure_one()
-        if self.payment_method_code != 'sepa_ct':
-            return []
-        error_list = []
-        debtor_currency = self.journal_id.currency_id and self.journal_id.currency_id.name or self.journal_id.company_id.currency_id.name
-        if debtor_currency != 'EUR':
-            error_list.append(_('Your bank account is not labelled in EUR'))
-        for payment in self.payment_ids:
-            bank_account = payment.partner_bank_account_id
-            if payment.currency_id.name != 'EUR' and (self.journal_id.currency_id or self.journal_id.company_id.currency_id).name == 'EUR':
-                error_list.append(_('The transaction %s is instructed in another currency than EUR') % payment.name)
-            if not bank_account.acc_type == 'iban':
-                error_list.append(_('The creditor bank account %s used in payment %s is not identified by an IBAN') % (payment.partner_bank_account_id.acc_number, payment.name))
-        return error_list
+            record.sct_generic = bool(record._get_sct_genericity_warnings()) or any(payment.company_id.country_id.code == 'CH' for payment in record.payment_ids)
 
     def _get_methods_generating_files(self):
         rslt = super(AccountBatchPayment, self)._get_methods_generating_files()
@@ -73,24 +37,77 @@ class AccountBatchPayment(models.Model):
         return rslt
 
     def validate_batch(self):
+        self.ensure_one()
         if self.payment_method_code == 'sepa_ct':
             if self.journal_id.bank_account_id.acc_type != 'iban':
-                    raise UserError(_("The account %s, of journal '%s', is not of type IBAN.\nA valid IBAN account is required to use SEPA features.") % (self.journal_id.bank_account_id.acc_number, self.journal_id.name))
-
-            no_bank_acc_payments = self.env['account.payment']
-            wrong_comm_payments = self.env['account.payment']
-            for payment in self.payment_ids:
-                if not payment.partner_bank_account_id:
-                    no_bank_acc_payments += payment
-
-            no_bank_acc_error_format = _("The following payments have no recipient bank account set: %s. \n\n")
-            error_message = ''
-            error_message += no_bank_acc_payments and no_bank_acc_error_format % ', '.join(no_bank_acc_payments.mapped('name')) or ''
-
-            if error_message:
-                raise UserError(error_message)
+                raise UserError(_("The account %s, of journal '%s', is not of type IBAN.\nA valid IBAN account is required to use SEPA features.") % (self.journal_id.bank_account_id.acc_number, self.journal_id.name))
 
         return super(AccountBatchPayment, self).validate_batch()
+
+    def _get_sct_genericity_warnings(self):
+        rslt = []
+        no_iban_payments = self.env['account.payment']
+        no_eur_payments = self.env['account.payment']
+
+        for payment in self.mapped('payment_ids'):
+            if payment.company_id.country_id.code == 'CH':
+                #we need swiss payments as generic, but we should not give warnings (4eabbf1042d38f6c93c99c6a490f37af55303399)
+                continue
+            if payment.partner_bank_account_id.acc_type != 'iban':
+                no_iban_payments += payment
+            if payment.currency_id.name != 'EUR' and (self.journal_id.currency_id or self.journal_id.company_id.currency_id).name == 'EUR':
+                no_eur_payments += payment
+
+        if no_iban_payments:
+            rslt.append({
+                'title': _("Some payments are not made on an IBAN recipient account. This batch might not be accepted by certain banks because of that."),
+                'records': no_iban_payments,
+            })
+
+        if no_eur_payments:
+            rslt.append({
+                'title': _("Some payments were instructed in another currency than Euro. This batch might not be accepted by certain banks because of that."),
+                'records': no_eur_payments,
+            })
+
+        return rslt
+
+    def check_payments_for_warnings(self):
+        rslt = super(AccountBatchPayment, self).check_payments_for_warnings()
+
+        if self.payment_method_id.code == 'sepa_ct':
+            rslt += self._get_sct_genericity_warnings()
+
+        return rslt
+
+    def check_payments_for_errors(self):
+        rslt = super(AccountBatchPayment, self).check_payments_for_errors()
+
+        if self.payment_method_code != 'sepa_ct':
+            return rslt
+
+        no_bank_acc_payments = self.env['account.payment']
+        too_big_payments = self.env['account.payment']
+
+        for payment in self.payment_ids.filtered(lambda x: x.state == 'posted'):
+            if not payment.partner_bank_account_id:
+                no_bank_acc_payments += payment
+
+            max_digits = payment.currency_id.name == 'EUR' and 11 or 15
+            if len(float_repr(payment.amount, 2)) >= max_digits: # The dot counts in this limit
+                too_big_payments += payment
+
+        if no_bank_acc_payments:
+            rslt.append({'title': _("Some payments have no recipient bank account set."), 'records': no_bank_acc_payments})
+
+        if too_big_payments:
+            rslt.append({
+                'title': _("Some payments are above the maximum amount allowed."),
+                'records': too_big_payments,
+                'help': _("Maximum amount is %s for payments in Euros, %s for other currencies." % (8 * '9' + ".99", 12 * '9' + ".99"))
+            })
+
+        return rslt
 
     def _generate_export_file(self):
         if self.payment_method_code == 'sepa_ct':
@@ -100,7 +117,6 @@ class AccountBatchPayment(models.Model):
             return {
                 'file': base64.encodebytes(xml_doc),
                 'filename': "SCT-" + self.journal_id.code + "-" + str(fields.Date.today()) + ".xml",
-                'warning': self.sct_warning,
             }
 
         return super(AccountBatchPayment, self)._generate_export_file()

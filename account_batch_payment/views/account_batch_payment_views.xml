@@ -34,6 +34,7 @@ if records:
                             <field name="currency_id" invisible="1"/>
                             <field name="available_payment_method_ids" invisible="1"/>
                             <field name="payment_method_id" domain="[('id','in',available_payment_method_ids)]"/>
+                            <field name="payment_method_code" invisible="1"/> <!--For use in modules depending on this one-->
                         </group><group>
                             <field name="date"/>
                             <field name="name" placeholder="auto ..." required="0"/>

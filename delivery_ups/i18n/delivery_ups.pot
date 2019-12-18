@@ -676,8 +676,11 @@ msgid "UPS Username"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_sale_order__partner_ups_carrier_account
-msgid "UPS account number"
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid ""
+"UPS address lines can only contain a maximum of 35 characters. You can split"
+" the contacts addresses on multiple lines to try to avoid this limitation."
 msgstr ""
 
 #. module: delivery_ups

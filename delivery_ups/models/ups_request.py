@@ -195,6 +195,8 @@ class UPSRequest():
             res.append('State')
         if not ship_to.street and not ship_to.street2:
             res.append('Street')
+        if len(ship_to.street or '') > 35 or (ship_to.street2 or '') > 35:
+            return _("UPS address lines can only contain a maximum of 35 characters. You can split the contacts addresses on multiple lines to try to avoid this limitation.")
         if picking and not order:
             order = picking.sale_id
         phone = ship_to.mobile or ship_to.phone

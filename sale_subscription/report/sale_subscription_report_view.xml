@@ -48,7 +48,7 @@
         <field name="model">sale.subscription.report</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name" string="Subscription" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <field name="name" string="Subscription"/>
                 <field name="template_id"/>
                 <field name="user_id"/>
                 <field name="team_id"/>

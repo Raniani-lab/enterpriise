@@ -301,7 +301,7 @@ class HelpdeskTeam(models.Model):
             activity = tickets.rating_get_grades()
             total_rating = self._compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
-            team_satisfaction = round((total_rating / total_activity_values if total_activity_values else 0), 2) *10
+            team_satisfaction = round((total_rating / total_activity_values if total_activity_values else 0), 2) * 5
             if team_satisfaction:
                 result['today']['rating'] = team_satisfaction
 
@@ -311,7 +311,7 @@ class HelpdeskTeam(models.Model):
             activity = tickets.rating_get_grades()
             total_rating = self._compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
-            team_satisfaction_7days = round((total_rating / total_activity_values if total_activity_values else 0), 2) * 10
+            team_satisfaction_7days = round((total_rating / total_activity_values if total_activity_values else 0), 2) * 5
             if team_satisfaction_7days:
                 result['7days']['rating'] = team_satisfaction_7days
         return result
@@ -365,11 +365,11 @@ class HelpdeskTeam(models.Model):
     @api.model
     def _compute_activity_avg(self, activity):
         # compute average base on all rating value
-        # like: 5 great, 2 okey, 1 bad
-        # great = 10, okey = 5, bad = 0
-        # (5*10) + (2*5) + (1*0) = 60 / 8 (nuber of activity for rating)
-        great = activity['great'] * 10.00
-        okey = activity['okay'] * 5.00
+        # like: 5 great, 3 okey, 1 bad
+        # great = 5, okey = 3, bad = 0
+        # (5*5) + (2*3) + (1*0) = 60 / 8 (nuber of activity for rating)
+        great = activity['great'] * 5.00
+        okey = activity['okay'] * 3.00
         bad = activity['bad'] * 0.00
         return great + okey + bad
 

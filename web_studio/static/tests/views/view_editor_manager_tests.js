@@ -1569,6 +1569,62 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('correctly display hook at the end of tabs', async function(assert) {
+        assert.expect(2);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            debug: true,
+            model: 'coucou',
+            arch: "<form>" +
+                    "<sheet>" +
+                        "<notebook>" +
+                            "<page string='foo'>" +
+                                "<group></group>" +
+                            "</page>" +
+                        "</notebook>" +
+                    "</sheet>" +
+                "</form>",
+        });
+
+        assert.strictEqual(
+            vem.$('.o_web_studio_form_view_editor .o_notebook .tab-pane.active').children().last().attr('class'),
+            'o_web_studio_hook',
+            'When the page contains only an empty group, last child is a studio hook.'
+        );
+
+        vem.destroy();
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            debug: true,
+            model: 'coucou',
+            arch: "<form>" +
+                    "<sheet>" +
+                        "<notebook>" +
+                            "<page string='foo'>" +
+                                "<group>" +
+                                    "<field name='m2o'/>" +
+                                "</group>" +
+                                "<group>" +
+                                    "<field name='id'/>" +
+                                "</group>" +
+                                "<group></group>" +
+                            "</page>" +
+                        "</notebook>" +
+                    "</sheet>" +
+                "</form>",
+        });
+
+        assert.strictEqual(
+            vem.$('.o_web_studio_form_view_editor .o_notebook .tab-pane.active').children().last().attr('class'),
+            'o_web_studio_hook',
+            'When the page contains multiple groups with content and an empty group, last child is still a studio hook.'
+        );
+
+        vem.destroy();
+    });
+
     QUnit.test('notebook edition', async function (assert) {
         assert.expect(9);
 

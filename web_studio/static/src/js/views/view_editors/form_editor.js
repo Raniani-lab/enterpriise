@@ -502,8 +502,8 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
      */
     _renderTabPage: function (node) {
         var $result = this._super.apply(this, arguments);
-        // Add hook only for pages that have not yet content.
-        if (!$result.children().length) {
+        // Add hook only for pages that have not yet outergroups.
+        if (!$result.children('.o_group:not(.o_inner_group):last-child').length) {
             var formEditorHook = this._renderHook(node, 'inside', 'div', 'page');
             this.defs.push(formEditorHook.appendTo($result));
         }

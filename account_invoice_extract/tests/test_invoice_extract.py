@@ -402,33 +402,6 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
                 'total': il.price_total,
             })
 
-    def test_tax_type(self):
-        # test that we select the tax according to the invoice type
-        in_invoice = self.init_invoice()
-        extract_response = self.get_default_extract_response()
-        extract_response['results'][0]['invoice_lines'] = [
-            {
-                'description': {'selected_value': {'content': 'Test 1'}},
-                'unit_price': {'selected_value': {'content': 100}},
-                'quantity': {'selected_value': {'content': 1}},
-                'taxes': {'selected_values': [{'content': 15, 'amount_type': 'percent'}]},
-                'subtotal': {'selected_value': {'content': 100}},
-                'total': {'selected_value': {'content': 115}},
-            },
-        ]
-
-        with self.mock_iap_extract(extract_response, {}):
-            in_invoice._check_status()
-
-        self.assertEqual(in_invoice.invoice_line_ids.tax_ids[0].type_tax_use, 'purchase')
-
-        out_invoice = self.init_invoice(default_type='out_invoice')
-
-        with self.mock_iap_extract(extract_response, {}):
-            out_invoice._check_status()
-
-        self.assertEqual(out_invoice.invoice_line_ids.tax_ids[0].type_tax_use, 'sale')
-
     def test_automatic_sending(self):
         # test that the invoice is automatically sent to the OCR server when the option is enabled
 

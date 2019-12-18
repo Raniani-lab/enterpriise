@@ -447,22 +447,19 @@ class AccountMove(models.Model):
         Find taxes records to use from the taxes detected for an invoice line.
         """
         taxes_found = self.env['account.tax']
-        taxe_type = 'purchase'
-        if self.type == 'out_invoice':
-            taxe_type = 'sale'
-        for (taxes, taxes_amount_type) in zip(taxes_ocr, taxes_type_ocr):
+        for (taxes, taxes_type) in zip(taxes_ocr, taxes_type_ocr):
             if taxes != 0.0:
                 related_documents = self.env['account.move'].search([('state', '!=', 'draft'), ('type', '=', self.type), ('partner_id', '=', self.partner_id.id)])
                 lines = related_documents.mapped('invoice_line_ids')
                 taxes_ids = related_documents.mapped('invoice_line_ids.tax_ids')
-                taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_amount_type and tax.type_tax_use == taxe_type)
+                taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == 'purchase')
                 taxes_by_document = []
                 for tax in taxes_ids:
                     taxes_by_document.append((tax, lines.filtered(lambda line: tax in line.tax_ids)))
                 if len(taxes_by_document) != 0:
                     taxes_found |= max(taxes_by_document, key=lambda tax: len(tax[1]))[0]
                 else:
-                    taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_amount_type), ('type_tax_use', '=', taxe_type)])
+                    taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')])
                     if taxes_records:
                         # prioritize taxes that are not included in the price
                         taxes_records_not_included = taxes_records.filtered(lambda r: not r.price_include)

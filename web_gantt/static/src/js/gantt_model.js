@@ -187,6 +187,7 @@ var GanttModel = AbstractModel.extend({
                 model: self.modelName,
                 method: 'copy',
                 args: [id, defaults],
+                context: self.context,
             });
         });
     },
@@ -209,6 +210,7 @@ var GanttModel = AbstractModel.extend({
                 model: self.modelName,
                 method: 'write',
                 args: [ids, data],
+                context: self.context,
             });
         });
     },

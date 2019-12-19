@@ -54,6 +54,10 @@
                     font-size: 1.1em;
                 }
 
+                & table td {
+                    border: none;
+                }
+
                 &.o_web_studio_search_list_editable {
                     border-collapse: inherit;
                     overflow: visible;

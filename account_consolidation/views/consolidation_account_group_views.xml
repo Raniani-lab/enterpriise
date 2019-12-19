@@ -69,6 +69,7 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name"/>
+                    <field string="Consolidation" name="chart_id"/>
                     <filter name="group_parent_id" string="Parent" context="{'group_by': 'parent_id'}"/>
                 </search>
             </field>

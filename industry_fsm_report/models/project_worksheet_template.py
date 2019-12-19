@@ -5,7 +5,7 @@ from lxml import etree
 import time
 
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 
 
@@ -18,6 +18,7 @@ class ProjectWorksheetTemplate(models.Model):
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     model_id = fields.Many2one('ir.model', ondelete='cascade', readonly=True, domain=[('state', '=', 'manual')])
     action_id = fields.Many2one('ir.actions.act_window', readonly=True)
+    company_ids = fields.Many2many('res.company', string='Companies')
     report_view_id = fields.Many2one('ir.ui.view', domain=[('type', '=', 'qweb')], readonly=True)
     color = fields.Integer('Color', default=0)
     active = fields.Boolean(default=True)
@@ -35,7 +36,7 @@ class ProjectWorksheetTemplate(models.Model):
 
     @api.model
     def create(self, vals):
-        template = super(ProjectWorksheetTemplate, self).create(vals)
+        template = super().create(vals)
         if not self.env.context.get('fsm_worksheet_no_generation'):
             self._generate_worksheet_model(template)
         return template
@@ -195,7 +196,7 @@ class ProjectWorksheetTemplate(models.Model):
         # context needed to avoid "manual" removal of related fields
         self.mapped('model_id').with_context(**{MODULE_UNINSTALL_FLAG: True}).unlink()
 
-        return super(ProjectWorksheetTemplate, self).unlink()
+        return super().unlink()
 
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
@@ -330,3 +331,20 @@ class ProjectWorksheetTemplate(models.Model):
                 })
                 # linking the new one
                 worksheet_template.write({'report_view_id': report_view.id})
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'company_ids' in vals:
+            message = _('There is still projects or tasks linked to this template. Please unlink them first.')
+            for template in self:
+                projects = self.env['project.project'].search([
+                    ('worksheet_template_id', '=', template.id),
+                    ('company_id', 'not in', template.company_ids.ids)])
+                if projects:
+                    raise UserError(message)
+                tasks = self.env['project.task'].search([
+                    ('worksheet_template_id', '=', template.id),
+                    ('company_id', 'not in', template.company_ids.ids)])
+                if tasks:
+                    raise UserError(message)
+        return res

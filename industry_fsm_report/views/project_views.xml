@@ -35,7 +35,8 @@
                         <group>
                             <field name="name"/>
                             <field name="active" invisible="1"/>
-                            <field name="color" widget="color_picker"/>
+                            <field name="company_ids" widget="many2many_tags" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/>
+                            <field name="color"  widget="color_picker"/>
                         </group>
                         <group>
                             <field name="model_id" invisible="True"/>
@@ -105,6 +106,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name" string="Template name"/>
+                <field name="company_ids" widget="many2many_tags" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/>
                 <field name="worksheet_count" string="Worksheets"/>
             </tree>
         </field>
@@ -153,6 +155,17 @@
         </field>
     </record>
 
+    <record id="project_project_view_tree" model="ir.ui.view">
+        <field name="name">project.project.tree2.fsm.report</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="worksheet_template_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_task_view_search_fsm_report" model="ir.ui.view">
         <field name="name">project.task.search.fsm</field>
         <field name="model">project.task</field>
@@ -171,6 +184,7 @@
         <field name="arch" type="xml">
             <field name="user_id" position="after">
                 <field name="allow_worksheets"/>
+                <field name="company_id" invisible="1"/>
                 <field name="worksheet_template_id" invisible="1"/>
             </field>
         </field>

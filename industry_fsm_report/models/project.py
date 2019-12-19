@@ -25,7 +25,8 @@ class Project(models.Model):
     worksheet_template_id = fields.Many2one(
         'project.worksheet.template',
         string="Default Worksheet",
-        help="Choose a default worksheet template for this project (you can change it individually on each task).")
+        help="Choose a default worksheet template for this project (you can change it individually on each task).",
+        domain="['|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
 
     @api.onchange('allow_worksheets')
     def _onchange_allow_worksheets(self):
@@ -48,7 +49,10 @@ class Task(models.Model):
         return False
 
     allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', default=False)
-    worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template", default=_default_worksheet_template_id)
+    worksheet_template_id = fields.Many2one(
+        'project.worksheet.template', string="Worksheet Template",
+        default=_default_worksheet_template_id,
+        domain="['|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
     worksheet_signature = fields.Binary('Signature', help='Signature received through the portal.', copy=False, attachment=True)

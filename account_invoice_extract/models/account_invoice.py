@@ -405,21 +405,34 @@ class AccountMove(models.Model):
     def _create_supplier_from_vat(self, vat_number_ocr):
         params = {
             'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
+            'account_token': self.env['iap.account'].get('partner_autocomplete').account_token,
+            'country_code': self.company_id.country_id.code,
             'vat': vat_number_ocr,
         }
         try:
-            response = self._contact_iap_partner_autocomplete('/iap/partner_autocomplete/check_vat', params)
+            response = self._contact_iap_partner_autocomplete('/iap/partner_autocomplete/enrich', params)
         except Exception as exception:
             _logger.error('Check VAT error: %s' % str(exception))
             return False
 
-        if response and response.get('name'):
-            country_id = self.env['res.country'].search([('code', '=', response.pop('country_code', ''))])
-            values = {field: response.get(field, None) for field in ['name', 'vat', 'street', 'city', 'zip']}
-            values.update({
-                'is_company': True,
+        if response and response.get('company_data'):
+            country_id = self.env['res.country'].search([('code', '=', response.get('company_data').get('country_code',''))])
+            state_id = self.env['res.country.state'].search([('name', '=', response.get('company_data').get('state_name',''))])
+            resp_values = response.get('company_data')
+            values = {
+                'name': resp_values.get('name', ''),
+                'partner_gid': resp_values.get('partner_gid', ''),
+                'vat': resp_values.get('vat', ''),
+                'bank_ids': resp_values.get('bank_ids', ''),
+                'street': resp_values.get('street', ''),
+                'city': resp_values.get('city', ''),
+                'zip': resp_values.get('zip', ''),
+                'state_id': state_id and state_id.id,
                 'country_id': country_id and country_id.id,
-            })
+                'phone': resp_values.get('phone', ''),
+                'email': resp_values.get('email', ''),
+                'is_company': True,
+            }
             new_partner = self.env["res.partner"].with_context(clean_context(self.env.context)).create(values)
             return new_partner
         return False

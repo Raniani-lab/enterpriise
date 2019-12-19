@@ -26,7 +26,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
                 'subtotal': {'selected_value': {'content': 300}, 'words': []},
                 'invoice_id': {'selected_value': {'content': 'INV0001'}, 'words': []},
                 'currency': {'selected_value': {'content': 'EUR'}, 'words': []},
-                'VAT_Number': {'selected_value': {'content': 'BE0000000000'}, 'words': []},
+                'VAT_Number': {'selected_value': {'content': 'BE0477472701'}, 'words': []},
                 'date': {'selected_value': {'content': '2019-04-12 00:00:00'}, 'words': []},
                 'due_date': {'selected_value': {'content': '2019-04-19 00:00:00'}, 'words': []},
                 'global_taxes_amount': {'selected_value': {'content': 30.0}, 'words': []},
@@ -139,16 +139,17 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         invoice = self.init_invoice()
         extract_response = self.get_default_extract_response()
 
-        with self.mock_iap_extract(extract_response, {'name': 'Partner', 'vat': 'BE0123456789'}):
+        with self.mock_iap_extract(extract_response, {'company_data': {'name': 'Partner', 'country_code': 'BE', 'vat': 'BE0477472701',
+            'partner_gid': False, 'city': 'Namur', 'bank_ids': [], 'zip': '2110', 'street': 'OCR street'}}):
             invoice._check_status()
 
         self.assertEqual(invoice.partner_id.name, 'Partner')
-        self.assertEqual(invoice.partner_id.vat, 'BE0123456789')
+        self.assertEqual(invoice.partner_id.vat, 'BE0477472701')
 
     def test_partner_selection_from_vat(self):
         # test that if a partner with the VAT found already exists in database it is selected
         invoice = self.init_invoice()
-        existing_partner = self.env['res.partner'].create({'name': 'Existing partner', 'vat': 'BE0000000000'})
+        existing_partner = self.env['res.partner'].create({'name': 'Existing partner', 'vat': 'BE0477472701'})
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {'name': 'A new partner', 'vat': 'BE0123456789'}):
@@ -362,7 +363,8 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         invoice = self.init_invoice()
         extract_response = self.get_default_extract_response()
 
-        with self.mock_iap_extract(extract_response, {'name': 'Partner', 'vat': 'BE0123456789'}):
+        with self.mock_iap_extract(extract_response, {'company_data': {'name': 'Partner', 'country_code': 'BE', 'vat': 'BE0477472701',
+            'partner_gid': False, 'city': 'Namur', 'bank_ids': [], 'zip': '2110', 'street': 'OCR street'}}):
             invoice._check_status()
 
         with self.mock_iap_extract({'status_code': SUCCESS}, {}):

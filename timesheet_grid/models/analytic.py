@@ -4,6 +4,7 @@
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from lxml import etree
+from collections import defaultdict
 
 from odoo import models, fields, api, _
 from odoo.addons.web_grid.models.models import END_OF, STEP_BY, START_OF
@@ -64,13 +65,13 @@ class AnalyticLine(models.Model):
             # then we are in 'My Timesheet' page.
             if len(rule) == 3:
                 name, operator, value = rule
-                if operator == '=':
+                if operator in ['=', '!=']:
                     if name in ['project_id', 'employee_id']:
                         field = name
                         domain_search.append((name, operator, value))
                     elif name == 'user_id':
                         domain_search.append((name, operator, value))
-                elif operator == 'ilike':  # When the user want to filter the results
+                elif operator == ['ilike', 'not ilike']:  # When the user want to filter the results
                     domain_search.append((name, operator, value))
 
         if not field:
@@ -175,21 +176,11 @@ class AnalyticLine(models.Model):
             timesheets = analytic_lines.filtered(lambda t: t.employee_id == employee)
             # group by (employee > project)
             for project in timesheets.project_id:
-                record = {}  # structure -> {task_id.id: timesheet.id}
+                record = defaultdict(lambda: [])  # structure -> {task_id.id: timesheets.ids}
 
                 # group by (employee > project > task)
                 for timesheet in timesheets.filtered(lambda t: t.project_id == project):
-                    # the task is not required in timesheet, we need to check it.
-                    if timesheet.task_id:
-                        if timesheet.task_id.id not in record:
-                            record[timesheet.task_id.id] = [timesheet.id]
-                        else:
-                            record[timesheet.task_id.id].append(timesheet.id)
-                    else:
-                        if False not in record:
-                            record[False] = [timesheet.id]
-                        else:
-                            record[False].append(timesheet.id)
+                    record[timesheet.task_id.id].append(timesheet.id)
                 for (k, v) in record.items():
                     # create records for timesheet.validation.line
                     # each record contains a dict with
@@ -339,42 +330,32 @@ class AnalyticLine(models.Model):
 
             * Override method of hr_timesheet module.
         """
-        if not self.validated:
-            super(AnalyticLine, self).action_timer_start()
-        else:
+        if self.validated:
             raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+        super(AnalyticLine, self).action_timer_start()
 
     def action_timer_stop(self):
         """ Action stop the timer of the current timesheet
 
             * Override method of hr_timesheet module.
         """
-        if not self.validated:
-            super(AnalyticLine, self).action_timer_stop()
-        else:
+        if self.validated:
             raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+        super(AnalyticLine, self).action_timer_stop()
 
     @api.model
-    def create_timesheet_with_timer(self, vals: dict) -> dict:
+    def create_timesheet_with_timer(self, vals):
         """ Create timesheet when user launch timer in grid view.
-
             Before to create this timesheet, we must stop all timer
             of others timesheets.
-
             :param vals: dictionary contains task_id or project_id for the timesheet
-
             Return:
                 a dictionary contains the information required
                 about the timesheet created for grid view.
-
         """
-        record: dict = {
-            'name': _('Timesheet Adjustment'),
-        }
-
+        record = {'name': _('Timesheet Adjustment')}
         if 'task_id' in vals:
             task = self.env['project.task'].browse(vals.get('task_id'))
-
             record.update(task_id=task.id, project_id=task.project_id.id)
         elif 'project_id' in vals:
             record.update(project_id=vals.get('project_id'))
@@ -383,11 +364,8 @@ class AnalyticLine(models.Model):
 
         # Check if another timer is launched, if yes, stop it
         self._stop_running_timers()
-
         record['timer_start'] = fields.Datetime.now()
-
         line = self.create(record)
-
         return {
             'id': line.id,
             'timer_start': line.timer_start,
@@ -422,9 +400,9 @@ class AnalyticLine(models.Model):
             name = 'Timesheets from Last Month to Validate'
             context['grid_range'] = 'month'
 
-        return {
-            "type": "ir.actions.act_window",
-            "res_model": "account.analytic.line",
+        action = self.env.ref('hr_timesheet.act_hr_timesheet_report').read()[0]
+        action.update({
+            "name": name,
             "views": [
                 [self.env.ref('timesheet_grid.timesheet_view_grid_by_employee_validation').id, 'grid'],
                 [self.env.ref('hr_timesheet.timesheet_view_tree_user').id, 'tree'],
@@ -433,18 +411,12 @@ class AnalyticLine(models.Model):
             "view_mode": 'grid,tree',
             "domain": [('is_timesheet', '=', True)],
             "search_view_id": [self.env.ref('timesheet_grid.timesheet_view_search').id, 'search'],
-            "name": name,
             "context": context,
-            "help": _('''<p class="o_view_nocontent_smiling_face">
-                    Record a new activity
-                </p><p>
-                    You can register and track your workings hours by project every
-                    day. Every time spent on a project will become a cost and can be re-invoiced to
-                    customers if required.
-                </p>''')
-        }
 
-    def _get_domain_for_validation_timesheets(self) -> []:
+        })
+        return action
+
+    def _get_domain_for_validation_timesheets(self):
         """ Get the domain to check if the user can validate which timesheets
 
             2 access rights give access to validate timesheets:

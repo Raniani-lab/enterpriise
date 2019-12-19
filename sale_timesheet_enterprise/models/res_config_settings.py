@@ -42,12 +42,10 @@ class ResConfigSettings(models.TransientModel):
 
                 if sale_order_lines:
                     # Too much write 3 * (n records)
-                    # sale_order_lines._compute_qty_delivered()
-                    # sale_order_lines._get_to_invoice_qty()
-                    # sale_order_lines._compute_invoice_status()
-
-                    # We can simplify and merge the 3 methods to have
+                    # We could simplify and merge the 3 methods to have
                     # max 1 * (n records) writings in database.
-                    sale_order_lines._recompute_sale_order_line_timesheet()
+                    sale_order_lines._compute_qty_delivered()
+                    sale_order_lines._get_to_invoice_qty()
+                    sale_order_lines._compute_invoice_status()
 
         return res

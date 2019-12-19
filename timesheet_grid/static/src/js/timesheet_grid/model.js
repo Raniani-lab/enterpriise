@@ -27,7 +27,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
             const time = await this._rpc({
                 model: this.modelName,
                 method: 'get_server_time',
-                args: [false],
+                args: [],
             });
 
             this._gridData.serverTime = time;

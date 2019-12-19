@@ -179,7 +179,7 @@
             'fsm_mode': True,
             'search_default_my_tasks': True,
             'search_default_planned_future': True,
-            'search_default_planned_today': True, 
+            'search_default_planned_today': True,
         }</field>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>No future Tasks planned</p>
@@ -586,7 +586,7 @@
             parent="fsm_menu_settings"
             groups="industry_fsm.group_fsm_manager"/>
 
-        <menuitem id="menu_project_tags_act" 
+        <menuitem id="menu_project_tags_act"
             name="Tags"
             sequence="40"
             action="project.project_tags_action"

@@ -226,6 +226,7 @@ return AbstractModel.extend({
             var r0 = results[0];
             self._gridData.prev = r0 && r0.prev;
             self._gridData.next = r0 && r0.next;
+            self._gridData.initial = r0 && r0.initial;
         });
     },
     /**

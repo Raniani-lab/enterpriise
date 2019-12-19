@@ -17,9 +17,10 @@
     'data': [
         'views/res_config_settings_views.xml',
         'views/project_task_views.xml',
-        'wizard/project_task_create_sale_order_views.xml',
     ],
-
+    'demo': [
+        'data/sale_timesheet_enterprise_demo.xml'
+    ],
     'auto_install': True,
     'license': 'OEEL-1',
 }

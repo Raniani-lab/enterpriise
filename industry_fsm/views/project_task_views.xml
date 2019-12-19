@@ -8,7 +8,7 @@
     <record id="view_task_form2_inherit" model="ir.ui.view">
         <field name="name">view.task.form2.inherit</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="timesheet_grid.project_task_view_form"/>
+        <field name="inherit_id" ref="hr_timesheet.project_task_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_timer_start'][hasclass('btn-primary')]" position='after'>
                 <field name="is_fsm" invisible="1"/>
@@ -19,18 +19,18 @@
                 <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
                         attrs="{'invisible': [
                                 '|', '|', '|', '|', '|',
-                                    ('display_timesheet_timer', '=', True), 
-                                    ('is_fsm', '=', False), 
-                                    ('timesheet_timer_start', '!=', False), 
-                                    ('fsm_done', '=', True), 
-                                    '&amp;', 
-                                        ('allow_timesheets', '=', True), 
+                                    ('display_timesheet_timer', '=', True),
+                                    ('is_fsm', '=', False),
+                                    ('timer_start', '!=', False),
+                                    ('fsm_done', '=', True),
+                                    '&amp;',
+                                        ('allow_timesheets', '=', True),
                                         ('total_hours_spent', '=', 0)]}"/>
                 <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                         attrs="{'invisible': [
                                 '|', '|', '|',
                                     ('id', '=', False),
-                                    ('is_fsm', '=', False), 
+                                    ('is_fsm', '=', False),
                                     ('fsm_done', '=', True)]}"/>
             </xpath>
             <xpath expr="//header" position="after">
@@ -110,7 +110,7 @@
     <record id="project_view_form_inherit" model="ir.ui.view">
         <field name="name">project.view.form.inherit</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="timesheet_grid.project_view_form_inherit"/>
+        <field name="inherit_id" ref="hr_timesheet.project_view_form_inherit"/>
         <field name="arch" type="xml">
             <xpath  expr="//div[@id='rating_settings']/.." position="before">
                 <div class="row mt16 o_settings_container">

@@ -142,31 +142,31 @@
             </field>
             <field name="display_fsm_dates" position="after">
                 <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), '&amp;', ('display_timesheet_timer', '=', True), ('timesheet_timer_start', '=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), '&amp;', ('display_timesheet_timer', '=', True), ('timer_start', '=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
             </field>
             <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-primary')]" position="attributes">
                 <attribute name="attrs">
                     {'invisible': [
-                        '|', 
-                            '|',  
-                                ('allow_material', '=', True), 
-                                '|', 
-                                    ('allow_timesheets', '=', True), 
-                                    ('allow_quotations', '=', False), 
+                        '|',
+                            '|',
+                                ('allow_material', '=', True),
+                                '|',
+                                    ('allow_timesheets', '=', True),
+                                    ('allow_quotations', '=', False),
                             '|', '|', '|', '|', '|',
-                                ('display_timesheet_timer', '=', True), 
-                                ('is_fsm', '=', False), 
-                                ('timesheet_timer_start', '!=', False), 
-                                ('fsm_done', '=', True), 
-                                '&amp;', 
-                                    ('allow_timesheets', '=', True), 
+                                ('display_timesheet_timer', '=', True),
+                                ('is_fsm', '=', False),
+                                ('timer_start', '!=', False),
+                                ('fsm_done', '=', True),
+                                '&amp;',
+                                    ('allow_timesheets', '=', True),
                                     ('total_hours_spent', '=', 0)]}
                 </attribute>
             </xpath>
             <xpath expr="//button[@name='action_timer_start'][hasclass('btn-secondary')]" position='before'>
                 <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', '|', '|', '|', '|', ('is_fsm', '=', False), ('allow_billable', '=', False), ('fsm_done', '=', False), 
-                        ('timesheet_timer_start', '!=', False), '&amp;', ('timesheet_timer_start', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '!=', 0), ('total_hours_spent', '!=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                        attrs="{'invisible': ['|', '|', '|', '|', '|', ('is_fsm', '=', False), ('allow_billable', '=', False), ('fsm_done', '=', False),
+                        ('timer_start', '!=', False), '&amp;', ('timer_start', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '!=', 0), ('total_hours_spent', '!=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
 
             </xpath>
             <xpath expr="//button[@name='action_timer_resume']" position='after'>

@@ -31,7 +31,7 @@ class SaleOrder(models.Model):
         taxcloud_orders.mapped('order_line').write({'tax_id': [(5,)]})
         return super(SaleOrder, self).recompute_coupon_lines()
 
-    def _create_invoices(self, grouped=False, final=False):
+    def _create_invoices(self, grouped=False, final=False, date=None):
         """Ensure that any TaxCloud order that has discounts is invoiced in one go.
            Indeed, since the tax computation of discount lines with Taxcloud
            requires that any negative amount of a coupon line be deduced from the

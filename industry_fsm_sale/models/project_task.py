@@ -18,7 +18,7 @@ class Task(models.Model):
     material_line_total_price = fields.Float(compute='_compute_material_line_totals')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
     invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
-    fsm_to_invoice = fields.Boolean("To invoice", compute='_compute_fsm_to_invoice', search='_search_fsm_to_invoice')
+    fsm_to_invoice = fields.Boolean("To invoice", compute='_compute_fsm_to_invoice', search='_search_fsm_to_invoice', groups='sales_team.group_sale_salesman_all_leads')
 
     def _compute_quotation_count(self):
         quotation_data = self.sudo().env['sale.order'].read_group([('state', '!=', 'cancel'), ('task_id', 'in', self.ids)], ['task_id'], ['task_id'])

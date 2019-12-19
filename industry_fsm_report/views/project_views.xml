@@ -190,28 +190,28 @@
                 <field name="fsm_is_sent" invisible="1"/>
                 <field name="worksheet_signature" invisible="1"/>
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('allow_worksheets', '=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0), ('worksheet_signature', '!=', False)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('allow_worksheets', '=', False), ('timer_start', '!=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0), ('worksheet_signature', '!=', False)]}"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', 
-                    ('allow_worksheets', '=', False), 
-                    ('timesheet_timer_start', '!=', False), 
-                    ('worksheet_template_id', '=', False), 
+                    attrs="{'invisible': ['|', '|', '|', '|', '|',
+                    ('allow_worksheets', '=', False),
+                    ('timer_start', '!=', False),
+                    ('worksheet_template_id', '=', False),
                     '&amp;','&amp;',
                         ('worksheet_count', '=', 0),
                         ('total_hours_spent', '=', 0),
                     ('fsm_is_sent', '=', True),
                     ('worksheet_signature', '=', False)]}"/>
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('allow_worksheets', '=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0), ('worksheet_signature', '=', False)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('allow_worksheets', '=', False), ('timer_start', '!=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0), ('worksheet_signature', '=', False)]}"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', 
-                    ('allow_worksheets', '=', False), 
-                    ('timesheet_timer_start', '!=', False), 
-                    ('worksheet_template_id', '=', False), 
+                    attrs="{'invisible': ['|', '|', '|', '|', '|',
+                    ('allow_worksheets', '=', False),
+                    ('timer_start', '!=', False),
+                    ('worksheet_template_id', '=', False),
                     '&amp;','&amp;',
                         ('worksheet_count', '=', 0),
                         ('total_hours_spent', '=', 0),
-                    '&amp;', 
+                    '&amp;',
                         ('fsm_is_sent', '=', False),
                         ('worksheet_signature', '!=', False)]}"/>
             </field>

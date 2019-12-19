@@ -104,9 +104,9 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheetNoChart):
         validate_action = timesheet_to_validate.with_context(grid_anchor=date.today() - relativedelta(weeks=1)).action_validate_timesheet()
         wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
         wizard.action_validate()
-        # check timesheet date on the employee
-        end_of_week = (week_before + END_OF['week'])
-        self.assertEqual(self.employee_user.timesheet_validated, end_of_week, 'validate timesheet date should be the end of the week')
+        # check if timesheets are validated
+        self.assertTrue(delivered_timesheet1.validated)
+        self.assertTrue(ordered_timesheet1.validated)
 
         self.assertTrue(any([delivered_timesheet1.validated, ordered_timesheet1.validated]), 'Timesheet should be validated')
         # check timesheet is linked to SOL

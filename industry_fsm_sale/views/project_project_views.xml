@@ -3,7 +3,7 @@
     <record id="project_view_form_inherit" model="ir.ui.view">
         <field name="name">project.view.form.inherit</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="sale_timesheet_enterprise.project_view_form_inherit"/>
+        <field name="inherit_id" ref="sale_timesheet.project_view_form_inherit"/>
         <field name="arch" type="xml">
             <div id="allow_billable_setting" position="after">
                 <field name="timesheet_product_id" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('allow_timesheets', '=', False)], 'required': ['&amp;', ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}"/>

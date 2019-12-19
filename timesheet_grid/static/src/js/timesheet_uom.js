@@ -54,7 +54,6 @@ var FloatToggleWidgetTimesheet = gridWidgets.FloatToggleWidget.extend({
  * implementation (float_time, float_toggle, ...). The default
  * value will be 'float_factor'.
 **/
-var FieldTimesheetUom = FloatFactorWidgetTimesheet;
 var widgetName = 'timesheet_uom' in session ?
          session.timesheet_uom.timesheet_widget : 'float_factor';
 var FieldTimesheetUom = widgetName === 'float_toggle' ? FloatToggleWidgetTimesheet

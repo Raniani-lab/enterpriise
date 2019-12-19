@@ -23,5 +23,3 @@ class ResConfigSettings(models.TransientModel):
         ('weeks', 'after the end of the week'),
         ('months', 'after the end of the month')
     ], string='Manager Reminder Frequency', required=True, related='company_id.timesheet_mail_manager_interval', readonly=False)
-    timesheet_min_duration = fields.Integer('Minimal duration', default=15, config_parameter='sale_timesheet_enterprise.timesheet_min_duration')
-    timesheet_rounding = fields.Integer('Rounding up', default=15, config_parameter='sale_timesheet_enterprise.timesheet_rounding')

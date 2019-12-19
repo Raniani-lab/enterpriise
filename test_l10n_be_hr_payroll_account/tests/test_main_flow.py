@@ -190,7 +190,9 @@ class TestHR(common.TransactionCase):
         self.assertEqual(leave.first_approver_id, self.user_leave_team_leader.employee_id)
 
         # Holiday manager applies second approval
-        leave.with_user(self.hr_holidays_manager).action_validate()
+        # the "hr_holidays_manager" user need this group to access timesheets of other users
+        with additional_groups(self.hr_holidays_manager, 'hr_timesheet.group_hr_timesheet_approver'):
+            leave.with_user(self.hr_holidays_manager).action_validate()
 
         self.assertEqual(leave.state, 'validate')
         self.assertEqual(leave.second_approver_id, self.hr_holidays_manager.employee_id)
@@ -323,7 +325,10 @@ class TestHR(common.TransactionCase):
 
         # Check work_entries conflicting with a leave, approve them as payroll manager
         conflicting_leave = work_entries_with_error.filtered(lambda b: b.leave_id and b.leave_id.state != 'validate')
-        conflicting_leave.mapped('leave_id').with_user(self.hr_payroll_user).action_approve()
+
+        # this user need "group_hr_timesheet_approver" to access timesheets of other user
+        with additional_groups(self.hr_payroll_user, 'hr_timesheet.group_hr_timesheet_approver'):
+            conflicting_leave.mapped('leave_id').with_user(self.hr_payroll_user).action_approve()
 
         # Reload work_entries (some might have been deleted/created when approving leaves)
         work_entries = self.env['hr.work.entry'].with_user(self.hr_payroll_user).search([('employee_id', '=', self.user.employee_id.id)])

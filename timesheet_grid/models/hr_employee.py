@@ -14,9 +14,6 @@ class Employee(models.Model):
         group = self.env.ref('hr_timesheet.group_hr_timesheet_approver', raise_if_not_found=False)
         return [('groups_id', 'in', [group.id])] if group else []
 
-    timesheet_validated = fields.Date(
-        "Timesheets Validation Date", groups="hr.group_hr_user",
-        help="Date until which the employee's timesheets have been validated")
     timesheet_manager_id = fields.Many2one(
         'res.users', string='Timesheet',
         compute='_compute_timesheet_manager', store=True, readonly=False,

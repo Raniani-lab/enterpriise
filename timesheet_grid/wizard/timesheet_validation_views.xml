@@ -6,11 +6,11 @@
         <field name="model">timesheet.validation</field>
         <field name="arch" type="xml">
             <form string="Validate Timesheets">
-                Validate the timesheets of the selected employees up to
-                <field name="validation_date"/>
                 <field name="validation_line_ids">
-                    <tree editable="bottom" create="false" delete="false">
+                    <tree editable="bottom" create="false" delete="false" default_order="employee_id">
                         <field name="employee_id" readonly="1"/>
+                        <field name="project_id" readonly="1"/>
+                        <field name="task_id" readonly="1"/>
                         <field name="validate"/>
                     </tree>
                 </field>

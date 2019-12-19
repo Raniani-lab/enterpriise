@@ -2,6 +2,7 @@
 
 from odoo import api, models
 from odoo.osv import expression
+from odoo.tools import float_is_zero
 
 DEFAULT_INVOICED_TIMESHEET = 'all'
 

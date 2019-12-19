@@ -283,7 +283,79 @@ QUnit.module('MailAttachmentOnSide', {
         form.destroy();
     });
 
+    QUnit.test('Attachment triggers list resize', async function (assert) {
+        assert.expect(3);
 
+        this.data.partner.fields.yeses = { relation: 'yes', string: "Yeses", type: 'many2many' };
+        this.data.partner.records[0].yeses = [-1720932];
+        this.data.yes = {
+            fields: { the_char: { string: "The Char", type: 'char' } },
+            records: [{ id: -1720932, the_char: new Array(100).fill().map(_ => "yes").join() }],
+        };
+
+        const attachmentLoaded = testUtils.makeTestPromise();
+        const form = await createView({
+            arch: `
+                <form string="Whatever">
+                    <sheet>
+                        <field name="yeses"/>
+                    </sheet>
+                    <div class="o_attachment_preview" options="{ 'order': 'desc' }"/>
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>`,
+            archs: {
+                'yes,false,list': `
+                    <tree>
+                        <field name="the_char"/>
+                    </tree>`,
+            },
+            // Simulates a server delay before each action
+            async mockRPC(route, { method }) {
+                if (route === '/web/image/1?unique=1') {
+                    await testUtils.nextTick();
+                    attachmentLoaded.resolve();
+                }
+                switch (method) {
+                    case 'register_as_main_attachment':
+                        await testUtils.nextTick();
+                        return true;
+                    case 'search_read':
+                        await testUtils.nextTick();
+                        return [{
+                            filename: 'image1.jpg',
+                            id:1,
+                            mimetype: 'image/jpeg',
+                            name: 'Test Image 1',
+                            url: '/web/content/1?download=true',
+                        }];
+                }
+                return this._super(...arguments);
+            },
+            config: {
+                device: { size_class: config.device.SIZES.XXL },
+            },
+            data: this.data,
+            model: 'partner',
+            res_id: 2,
+            services: this.services,
+            View: FormView,
+        });
+
+        // Sets an arbitrary width to check if it is correctly overriden.
+        form.el.querySelector('table th').style.width = '0px';
+
+        assert.containsNone(form, 'img#attachment_img');
+
+        await attachmentLoaded;
+
+        assert.containsOnce(form, 'img#attachment_img');
+        assert.notEqual(form.el.querySelector('table th').style.width, '0px',
+            "List should have been resized after the attachment has been appended.");
+
+        form.destroy();
+    });
 });
 
 

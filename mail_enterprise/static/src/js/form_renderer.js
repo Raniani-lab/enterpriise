@@ -2,6 +2,7 @@ odoo.define('mail_enterprise.form_renderer', function (require) {
 "use strict";
 
 var config = require('web.config');
+var dom = require('web.dom');
 var pyUtils = require('web.py_utils');
 var FormRenderer = require('web.FormRenderer');
 var AttachmentViewer = require('mail_enterprise.AttachmentViewer');
@@ -56,11 +57,17 @@ FormRenderer.include({
         var $sheet = this.$('.o_form_sheet_bg');
 
         if (enablePreview) {
-            this.chatter.$el.appendTo($sheet);
             this.$attachmentPreview.insertAfter($sheet);
+            dom.append($sheet, this.chatter.$el, {
+                callbacks: [{ widget: this.chatter }],
+                in_DOM: this._isInDom,
+            });
         } else {
             this.chatter.$el.insertAfter($sheet);
-            this.$attachmentPreview.appendTo($sheet);
+            dom.append($sheet, this.$attachmentPreview, {
+                callbacks: [],
+                in_DOM: this._isInDom,
+            });
         }
     },
     /**

@@ -150,3 +150,11 @@ $map-number-font-size: 19px;
         }
     }
 }
+
+/* Fix opw-2124233, preventing rtlcss to reverse the map position */
+.leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow,
+.leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas,
+.leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer {
+    left: 0 #{"/*rtl:ignore*/"};
+    right: auto #{"/*rtl:ignore*/"};
+}

@@ -22,7 +22,7 @@ Menu.include({
         'click .o_mobile_menu_toggle': '_onOpenBurgerMenu',
     }),
     menusTemplate: 'Menu.sections.mobile',
-
+    animationDuration: 200,
     /**
      * @override
      */
@@ -38,6 +38,21 @@ Menu.include({
     },
 
     //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * @override
+     */
+    do_action() {
+        return this._super(...arguments)
+            .then(resp => {
+                this._closeBurgerMenu();
+                return resp;
+            });
+    },
+
+    //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
 
@@ -46,7 +61,7 @@ Menu.include({
      */
     _closeBurgerMenu: function () {
         var self = this;
-        this.$burgerMenu.animate({left: '100%'}, 200, function () {
+        this.$burgerMenu.animate({left: '100%'}, this.animationDuration, function () {
             self.$burgerMenu.addClass("o_hidden");
         });
     },
@@ -62,11 +77,11 @@ Menu.include({
         this.$section_placeholder.appendTo(this.$burgerMenu.find('.o_burger_menu_app'));
 
         this.$burgerMenu.on('click', '.o_burger_menu_close', this._onCloseBurgerMenu.bind(this));
-        this.$burgerMenu.on('click', '.o_burger_menu_profile', this._onCloseBurgerMenu.bind(this));
         this.$burgerMenu.on('click', '.o_burger_menu_company', this._onCompanyClicked.bind(this));
         this.$burgerMenu.on('click', '.o_burger_menu_topbar.o_toggler', this._onTopbarClicked.bind(this));
         this.$burgerMenu.on('click', '.o_burger_menu_section', this._onBurgerMenuSectionClick.bind(this));
 
+        core.bus.on('close_o_burger_menu', null, this._closeBurgerMenu.bind(this));
         $('body').append(this.$burgerMenu);
     },
 
@@ -135,7 +150,7 @@ Menu.include({
 
         // display the burger menu
         this.$burgerMenu.css({left: '100%'});
-        this.$burgerMenu.animate({left: '0%'}, 200).removeClass('o_hidden');
+        this.$burgerMenu.animate({left: '0%'}, this.animationDuration).removeClass('o_hidden');
     },
     /**
      * @override

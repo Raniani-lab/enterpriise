@@ -1,11 +1,19 @@
 odoo.define('web_enterprise.mobile_menu_tests', function (require) {
 "use strict";
 
+var Menu = require('web_enterprise.Menu');
 var testUtils = require('web.test_utils');
 var testUtilsEnterprise = require('web_enterprise.test_utils');
+var UserMenu = require('web.UserMenu');
 
 QUnit.module('web_enterprise mobile_menu_tests', {
+    afterEach() {
+        testUtils.mock.unpatch(Menu);
+    },
     beforeEach: function () {
+        testUtils.mock.patch(Menu, {
+            animationDuration: 0
+        });
         this.data = {
             all_menu_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             name: "root",
@@ -99,6 +107,34 @@ QUnit.module('web_enterprise mobile_menu_tests', {
             "Toggle back to main sales menu on header click");
 
         mobileMenu.destroy();
+    });
+
+    QUnit.test('Burger menu is closed when it do_action', async function (assert) {
+        assert.expect(2);
+        testUtils.mock.patch(UserMenu, {
+            _onMenuSettings() {
+                this.do_action()
+            },
+        });
+
+        const mobileMenu = await testUtilsEnterprise.createMenu({
+            menuData: this.data,
+            intercepts: {
+                do_action: function (ev) {
+                    ev.data.on_success();
+                    return Promise.resolve();
+                },
+            },
+        });
+
+        await testUtils.dom.click($('.o_mobile_menu_toggle'));
+        assert.isVisible($(".o_burger_menu"), "Burger menu should be opened on button click");
+
+        await testUtils.dom.click($('.o_user_menu_mobile a[data-menu="settings"]'));
+        assert.isNotVisible($(".o_burger_menu"), "Burger menu should be closed after do_action");
+
+        mobileMenu.destroy();
+        testUtils.mock.unpatch(UserMenu);
     });
 });
 });

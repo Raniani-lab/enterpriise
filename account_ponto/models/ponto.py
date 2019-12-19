@@ -198,7 +198,7 @@ class ProviderAccount(models.Model):
             if account.journal_ids:
                 tr = account.retrieve_transactions()
                 transactions.append({'journal': account.journal_ids[0].name, 'count': tr})
-        self.write({'status': 'SUCCESS', 'action_required': False})
+        self.write({'status': 'SUCCESS', 'action_required': False, 'last_refresh': fields.Datetime.now()})
         result = {'status': 'SUCCESS', 'transactions': transactions, 'method': 'refresh', 'added': self.env['account.online.journal']}
         return self.show_result(result)
 
@@ -266,7 +266,6 @@ class OnlineAccount(models.Model):
                 break
             count += 1
             time.sleep(2)
-        self.account_online_provider_id.last_refresh = fields.Datetime.now()
         return
 
     def retrieve_transactions(self):

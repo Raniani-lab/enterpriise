@@ -733,17 +733,17 @@ class AccountPayment(models.Model):
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
-                uuid_type = client.get_type("ns0:stringArray")
-                invoices_list = uuid_type([uuid])
-                response = client.service.cancel(invoices_list, username, password, company_id.vat, cer_pem.replace(
-                    '\n', ''), key_pem)
+                uuid_type = client.get_type('ns0:stringArray')()
+                uuid_type.string = [uuid]
+                invoices_list = client.get_type('ns1:UUIDS')(uuid_type)
+                response = client.service.cancel(invoices_list, username, password, company_id.vat, cer_pem, key_pem)
             except Exception as e:
                 inv.l10n_mx_edi_log_error(str(e))
                 continue
             if not (hasattr(response, 'Folios') and response.Folios):
                 msg = _('A delay of 2 hours has to be respected before to cancel')
             else:
-                code = getattr(response.Folios[0][0], 'EstatusUUID', None)
+                code = getattr(response.Folios.Folio[0], 'EstatusUUID', None)
                 cancelled = code in ('201', '202')  # cancelled or previously cancelled
                 # no show code and response message if cancel was success
                 code = '' if cancelled else code

@@ -287,7 +287,7 @@ class SaleOrder(models.Model):
             if (not no_confirm and self.state in ['draft', 'sent']):
                 self.action_confirm()
             if not no_confirm and can_be_invoiced:
-                self.action_invoice_create()
+                self._create_invoices()
             shipping_name = order['ShippingServiceSelected']['ShippingService']
             if self.picking_ids and shipping_name:
                 self.picking_ids[-1].message_post(

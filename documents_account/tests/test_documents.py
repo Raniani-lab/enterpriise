@@ -97,12 +97,22 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
                 'res_model': 'account.move',
                 'res_id': invoice_test.id
             })
+            attachment_txt_main_attachment_test = self.env['ir.attachment'].create({
+                'datas': TEXT,
+                'name': 'fileText_main_attachment.txt',
+                'mimetype': 'text/plain',
+                'res_model': 'account.move',
+                'res_id': invoice_test.id
+            })
 
             invoice_test.write({'message_main_attachment_id': attachment_txt_test.id})
             txt_doc = self.env['documents.document'].search([('attachment_id', '=', attachment_txt_test.id)])
             self.assertEqual(txt_doc.folder_id, folder_test, 'the text test document have a folder')
             invoice_test.write({'message_main_attachment_id': attachment_txt_alternative_test.id})
             self.assertEqual(txt_doc.attachment_id.id, attachment_txt_alternative_test.id,
+                             "the attachment of the document should have swapped")
+            attachment_txt_main_attachment_test.register_as_main_attachment()
+            self.assertEqual(txt_doc.attachment_id.id, attachment_txt_main_attachment_test.id,
                              "the attachment of the document should have swapped")
             # deleting the setting to prevent duplicate settings.
             setting.unlink()

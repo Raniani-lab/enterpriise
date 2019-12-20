@@ -60,13 +60,21 @@ class AccountMove(models.Model):
                     [('journal_id', '=', self.journal_id.id),
                      ('company_id', '=', self.company_id.id)], limit=1)
                 if setting:
-                    self.env['documents.document'].with_context(default_type='empty').sudo().create({
-                        'attachment_id': main_attachment_id,
+                    values = {
                         'folder_id': setting.folder_id.id,
                         'partner_id': self.partner_id.id,
                         'owner_id': self.create_uid.id,
-                        'tag_ids': [(6, 0, setting.tag_ids.ids if setting.tag_ids else [])]
-                    })
+                        'tag_ids': [(6, 0, setting.tag_ids.ids if setting.tag_ids else [])],
+                    }
+                    Documents = self.env['documents.document'].with_context(default_type='empty').sudo()
+                    doc = Documents.search([('attachment_id', '=', main_attachment_id)], limit=1)
+                    if doc:
+                        doc.write(values)
+                    else:
+                        # backward compatibility with documents that may be not
+                        # registered as attachments yet
+                        values.update({'attachment_id' : main_attachment_id})
+                        doc.create(values)
         return super(AccountMove, self).write(vals)
 
 

@@ -383,7 +383,7 @@ class MarketingActivity(models.Model):
         for activity in self:
             if activity.activity_type == 'email':
                 activity.mass_mailing_id_mailing_type = 'mail'
-            elif activity.activity_type == 'activity':
+            elif activity.activity_type == 'action':
                 activity.mass_mailing_id_mailing_type = False
 
     @api.depends('mass_mailing_id_mailing_type')

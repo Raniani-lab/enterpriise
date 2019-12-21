@@ -115,7 +115,7 @@ class HrPayslip(models.Model):
                                 line_id for line_id in line_ids if
                                 line_id['name'] == line.name
                                 and line_id['account_id'] == credit_account_id
-                                and (line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0)
+                                and ((line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0))
                             )
                             credit_line = next(existing_credit_line, False)
 

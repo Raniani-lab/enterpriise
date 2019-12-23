@@ -34,8 +34,7 @@ class sale_order(models.Model):
         PurchaseOrderLine = self.env['purchase.order.line']
 
         for rec in self:
-            company_partner = rec.company_id and rec.company_id.partner_id or False
-            if not company or not company_partner.id:
+            if not company or not rec.company_id.partner_id:
                 continue
 
             # find user for creating and validating SO/PO from company
@@ -46,15 +45,17 @@ class sale_order(models.Model):
             if not PurchaseOrder.with_user(intercompany_uid).check_access_rights('create', raise_exception=False):
                 raise Warning(_("Inter company user of company %s doesn't have enough access rights") % company.name)
 
+            company_partner = rec.company_id.partner_id.with_user(intercompany_uid)
             # create the PO and generate its lines from the SO
             # read it as sudo, because inter-compagny user can not have the access right on PO
             po_vals = rec.sudo()._prepare_purchase_order_data(company, company_partner)
-            purchase_order = PurchaseOrder.with_user(intercompany_uid).create(po_vals)
+            inter_user = self.env['res.users'].sudo().browse(intercompany_uid)
+            purchase_order = PurchaseOrder.with_context(allowed_company_ids=inter_user.company_ids.ids).with_user(intercompany_uid).create(po_vals)
             for line in rec.order_line.sudo().filtered(lambda l: not l.display_type):
                 po_line_vals = rec._prepare_purchase_order_line_data(line, rec.date_order,
                     purchase_order.id, company)
                 # TODO: create can be done in batch; this may be a performance bottleneck
-                PurchaseOrderLine.with_user(intercompany_uid).create(po_line_vals)
+                PurchaseOrderLine.with_user(intercompany_uid).with_context(allowed_company_ids=inter_user.company_ids.ids).create(po_line_vals)
 
             # write customer reference field on SO
             if not rec.client_order_ref:

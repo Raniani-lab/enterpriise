@@ -60,12 +60,13 @@ class purchase_order(models.Model):
             sale_order_data = rec.sudo()._prepare_sale_order_data(
                 rec.name, company_partner, company,
                 rec.dest_address_id and rec.dest_address_id.id or False)
-            sale_order = SaleOrder.with_user(intercompany_uid).create(sale_order_data)
+            inter_user = self.env['res.users'].sudo().browse(intercompany_uid)
+            sale_order = SaleOrder.with_context(allowed_company_ids=inter_user.company_ids.ids).with_user(intercompany_uid).create(sale_order_data)
             # lines are browse as sudo to access all data required to be copied on SO line (mainly for company dependent field like taxes)
             for line in rec.order_line.sudo():
                 so_line_vals = rec._prepare_sale_order_line_data(line, company, sale_order.id)
                 # TODO: create can be done in batch; this may be a performance bottleneck
-                SaleOrderLine.with_user(intercompany_uid).create(so_line_vals)
+                SaleOrderLine.with_user(intercompany_uid).with_context(allowed_company_ids=inter_user.company_ids.ids).create(so_line_vals)
 
             # write vendor reference field on PO
             if not rec.partner_ref:

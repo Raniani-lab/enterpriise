@@ -5,8 +5,8 @@ from odoo import api, models, fields
 from dateutil.relativedelta import relativedelta, MO, SU
 from dateutil import rrule
 from collections import defaultdict
-from datetime import date
-from odoo.tools import float_round
+from datetime import date, timedelta
+from odoo.tools import float_round, date_utils
 
 
 class Payslip(models.Model):
@@ -23,6 +23,18 @@ class Payslip(models.Model):
             'assignment_salary': self.env.ref('l10n_be_hr_payroll.cp200_other_input_assignment_salary').id,
             'child_support': self.env.ref('l10n_be_hr_payroll.cp200_other_input_child_support').id,
         }
+        struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
+        if self.struct_id == struct_warrant:
+            months = relativedelta(date_utils.add(self.date_to, days=1), self.date_from).months
+            warrant_type = self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant')
+            lines_to_remove = self.input_line_ids.filtered(lambda x: x.input_type_id == warrant_type)
+            to_remove_vals = [(3, line.id, False) for line in lines_to_remove]
+            to_add_vals = [(0, 0, {
+                'amount': self.contract_id.commission_on_target * months,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant')
+            })]
+            input_line_vals = to_remove_vals + to_add_vals
+            self.update({'input_line_ids': input_line_vals})
         if not self.contract_id:
             lines_to_remove = self.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_types.values())
             self.update({'input_line_ids': [(3, line.id, False) for line in lines_to_remove]})
@@ -176,6 +188,11 @@ class Payslip(models.Model):
         basic = self.contract_id._get_contract_wage()
         return basic * n_months / 12 * presence_prorata
 
+    def _get_paid_amount_warrant(self):
+        self.ensure_one()
+        warrant_input_type = self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant')
+        return sum(self.input_line_ids.filtered(lambda a: a.input_type_id == warrant_input_type).mapped('amount'))
+
     def _get_paid_amount(self):
         self.ensure_one()
         if self.struct_id.country_id == self.env.ref('base.be'):
@@ -185,6 +202,9 @@ class Payslip(models.Model):
             if self.worked_days_line_ids:
                 ratio = self._get_paid_unpaid_ratio()
                 return self.contract_id._get_contract_wage() * ratio
+            struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
+            if self.struct_id == struct_warrant:
+                return self._get_paid_amount_warrant()
         return super()._get_paid_amount()
 
     def _get_paid_unpaid_ratio(self):
@@ -226,7 +246,7 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
     # PART 1: Withholding tax amount computation
     withholding_tax_amount = 0.0
     lower_bound = categories.GROSS - categories.GROSS % 15
-
+    
     # yearly_gross_revenue = Revenu Annuel Brut
     yearly_gross_revenue = lower_bound * 12.0
 

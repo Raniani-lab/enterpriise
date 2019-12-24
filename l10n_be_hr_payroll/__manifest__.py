@@ -50,6 +50,7 @@ Belgian Payroll Rules.
         'data/cp200/employee_termination_holidays_N_data.xml',
         'data/cp200/employee_pfi_data.xml',
         'data/cp200/employee_attachment_salary_data.xml',
+        'data/cp200/employee_warrant_salary_data.xml',
         'views/res_config_settings_views.xml',
         'wizard/l10n_be_individual_account_wizard_views.xml',
         'wizard/hr_payroll_281_10_wizard_views.xml',

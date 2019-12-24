@@ -11,9 +11,8 @@
     }
 
     .o_helpdesk_dashboard {
-        margin: (0 - $o-kanban-record-margin) ($o-kanban-record-margin - $o-horizontal-padding) $o-kanban-record-margin;
         flex: 1 0 100%;
-        padding: 10px ($o-horizontal-padding - $sale-table-spacing);
+        padding: 2px 0 18px 0;
 
         background-color: $o-view-background-color;
         position: relative;

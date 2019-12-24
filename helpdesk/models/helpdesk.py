@@ -191,7 +191,7 @@ class HelpdeskTeam(models.Model):
         # other stuff
         for team in self:
             if team.use_rating:
-                for stage in self.stage_ids:
+                for stage in team.stage_ids:
                     if stage.is_close and not stage.fold:
                         stage.template_id = self.env.ref('helpdesk.rating_ticket_request_email_template', raise_if_not_found= False)
 

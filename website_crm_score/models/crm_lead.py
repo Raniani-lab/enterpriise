@@ -9,9 +9,6 @@ class Lead(models.Model):
 
     score = fields.Float(string='Score', compute='_compute_score', store=True, group_operator="avg")
     score_ids = fields.Many2many('website.crm.score', 'crm_lead_score_rel', 'lead_id', 'score_id', string='Scoring Rules')
-    assign_date = fields.Datetime(
-        string='Auto Assign Date', compute='_compute_assign_date', readonly=False, store=True,
-        help="Date when the lead has been assigned via the auto-assignment mechanism")
 
     @api.depends('score_ids', 'score_ids.value')
     def _compute_score(self):
@@ -28,11 +25,6 @@ class Lead(models.Model):
         scores = dict(self._cr.fetchall())
         for lead in self:
             lead.score = scores.get(lead.id, 0)
-
-    @api.depends('user_id')
-    def _compute_assign_date(self):
-        for lead in self:
-            lead.assign_date = fields.datetime.now() if lead.user_id else False
 
     @api.depends('user_id', 'type')
     def _compute_team_id(self):

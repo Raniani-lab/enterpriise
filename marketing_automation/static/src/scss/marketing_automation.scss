@@ -202,6 +202,7 @@ $o-ma-border-color: gray($o-ma-border-color-gray-value);
             }
         }
         .o_pane_graph {
+            overflow: hidden;
             > .row {
                 margin-left: 0px;
                 margin-right: 0px;

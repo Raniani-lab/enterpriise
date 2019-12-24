@@ -149,8 +149,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="o_pane o_pane_graph">
-                                                    <div class="row mt16">
-                                                        <div class="col-lg-9 col-9 o_ma_graph mb16">
+                                                    <div class="pb-3 row mt16">
+                                                        <div class="col-lg-9 col-9 o_ma_graph mb10">
                                                             <t t-if="record.statistics_graph_data.value">
                                                                 <field name="statistics_graph_data" widget="marketing_activity_graph" />
                                                             </t>

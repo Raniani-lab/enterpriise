@@ -73,21 +73,25 @@ QUnit.module('Views', {
                     name: {string: 'Name', type: 'char'},
                     start: {string: 'Start Date', type: 'datetime'},
                     stop: {string: 'Stop Date', type: 'datetime'},
+                    progress: {string: "progress", type: "integer"},
+                    time: {string: "Time", type: "float"},
                     stage: {string: 'Stage', type: 'selection', selection: [['todo', 'To Do'], ['in_progress', 'In Progress'], ['done', 'Done'], ['cancel', 'Cancelled']]},
                     project_id: {string: 'Project', type: 'many2one', relation: 'projects'},
                     user_id: {string: 'Assign To', type: 'many2one', relation: 'users'},
+                    active: {string: "active", type: "boolean", default: true},
                     color: {string: 'Color', type: 'integer'},
                     progress: {string: 'Progress', type: 'integer'},
                     exclude: {string: 'Excluded from Consolidation', type: 'boolean'},
+                    stage_id: {string: "Stage", type: "many2one", relation: 'stage'}
                 },
                 records: [
-                    {id: 1, name: 'Task 1', start: '2018-11-30 18:30:00', stop: '2018-12-31 18:29:59', stage: 'todo', project_id: 1, user_id: 1, color: 0, progress: 0},
-                    { id: 2, name: 'Task 2', start: '2018-12-17 11:30:00', stop: '2018-12-22 06:29:59', stage: 'done', project_id: 1, user_id: 2, color: 2, progress: 30},
-                    { id: 3, name: 'Task 3', start: '2018-12-27 06:30:00', stop: '2019-01-03 06:29:59', stage: 'cancel', project_id: 1, user_id: 2, color: 10, progress: 60},
-                    { id: 4, name: 'Task 4', start: '2018-12-19 18:30:00', stop: '2018-12-20 06:29:59', stage: 'in_progress', project_id: 1, user_id: 1, color: 1, progress: false, exclude: 0},
-                    { id: 5, name: 'Task 5', start: '2018-11-08 01:53:10', stop: '2018-12-04 02:34:34', stage: 'done', project_id: 2, user_id: 1, color: 2, progress: 100, exclude: 1},
-                    { id: 6, name: 'Task 6', start: '2018-11-19 23:00:00', stop: '2018-11-20 04:21:01', stage: 'in_progress', project_id: 2, user_id: 1, color: 1, progress: 0},
-                    { id: 7, name: 'Task 7', start: '2018-12-20 06:30:12', stop: '2018-12-20 18:29:59', stage: 'cancel', project_id: 2, user_id: 2, color: 10, progress: 80},
+                    { id: 1, name: 'Task 1', start: '2018-11-30 18:30:00', stop: '2018-12-31 18:29:59', stage: 'todo', stage_id: 1, project_id: 1, user_id: 1, color: 0, progress: 0},
+                    { id: 2, name: 'Task 2', start: '2018-12-17 11:30:00', stop: '2018-12-22 06:29:59', stage: 'done', stage_id: 4, project_id: 1, user_id: 2, color: 2, progress: 30},
+                    { id: 3, name: 'Task 3', start: '2018-12-27 06:30:00', stop: '2019-01-03 06:29:59', stage: 'cancel', stage_id: 3, project_id: 1, user_id: 2, color: 10, progress: 60},
+                    { id: 4, name: 'Task 4', start: '2018-12-19 18:30:00', stop: '2018-12-20 06:29:59', stage: 'in_progress', stage_id: 3, project_id: 1, user_id: 1, color: 1, progress: false, exclude: 0},
+                    { id: 5, name: 'Task 5', start: '2018-11-08 01:53:10', stop: '2018-12-04 02:34:34', stage: 'done', stage_id: 2, project_id: 2, user_id: 1, color: 2, progress: 100, exclude: 1},
+                    { id: 6, name: 'Task 6', start: '2018-11-19 23:00:00', stop: '2018-11-20 04:21:01', stage: 'in_progress', stage_id: 4, project_id: 2, user_id: 1, color: 1, progress: 0},
+                    { id: 7, name: 'Task 7', start: '2018-12-20 06:30:12', stop: '2018-12-20 18:29:59', stage: 'cancel', stage_id: 1, project_id: 2, user_id: 2, color: 10, progress: 80},
                 ],
             },
             projects: {
@@ -109,6 +113,29 @@ QUnit.module('Views', {
                     {id: 1, name: 'User 1'},
                     {id: 2, name: 'User 2'},
                 ],
+            },
+            stage: {
+                fields: {
+                    name: {string: "Name", type: "char"},
+                    sequence: {string: "Sequence", type: "integer"}
+                },
+                records: [{
+                    id: 1,
+                    name: "in_progress",
+                    sequence: 2,
+                }, {
+                    id: 3,
+                    name: "cancel",
+                    sequence: 4,
+                }, {
+                    id: 2,
+                    name: "todo",
+                    sequence: 1,
+                }, {
+                    id: 4,
+                    name: "done",
+                    sequence: 3,
+                }]
             },
         };
     },
@@ -228,6 +255,26 @@ QUnit.module('Views', {
         gantt.destroy();
         assert.containsNone(gantt, 'div.popover', 'should not have a popover anymore');
         GanttRow.prototype.POPOVER_DELAY = POPOVER_DELAY;
+    });
+
+    QUnit.test('ordered gantt view', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" progress="progress"></gantt>',
+            groupBy: ['stage_id'],
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        })
+
+        assert.strictEqual(gantt.$('.o_gantt_row_title').text().replace(/\s/g, ''),
+            "todoin_progressdonecancel");
+
+        gantt.destroy();
     });
 
     QUnit.test('empty single-level grouped gantt rendering', async function (assert) {

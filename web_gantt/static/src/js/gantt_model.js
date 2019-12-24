@@ -260,6 +260,7 @@ var GanttModel = AbstractModel.extend({
                 domain: domain,
                 context: context,
                 groupBy: this.ganttData.groupedBy,
+                orderBy: this.ganttData.groupedBy.map(function (f) { return {name: f}; }),
                 lazy: this.ganttData.groupedBy.length === 1,
             });
         }

@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models, api
-from odoo.tools.safe_eval import safe_eval
-from odoo.osv.expression import expression
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 import datetime
 import logging
 
+from odoo import fields, models, api
+from odoo.tools.safe_eval import safe_eval
+from odoo.osv.expression import expression
+
 
 _logger = logging.getLogger(__name__)
+
 evaluation_context = {
     'datetime': datetime,
     'context_today': datetime.datetime.now,
@@ -17,6 +21,26 @@ class website_crm_score(models.Model):
     _name = 'website.crm.score'
     _inherit = ['mail.thread']
     _description = 'Website CRM Score'
+
+    name = fields.Char('Name', required=True)
+    rule_type = fields.Selection([('score', 'Scoring'), ('active', 'Archive'), ('unlink', 'Delete')], default='score', required=True, tracking=True,
+                                 help='Scoring will add a score of `value` for this lead.\n'
+                                 'Archive will set active = False on the lead (archived)\n'
+                                 'Delete will delete definitively the lead\n\n'
+                                 'Actions are done in sql and bypass the access rights and orm mechanism (create `score`, write `active`, unlink `crm_lead`)')
+    value = fields.Float('Value', default=0, required=True, tracking=True)
+    domain = fields.Char('Domain', tracking=True, required=True)
+    event_based = fields.Boolean(
+        'Event-based rule',
+        help='When checked, the rule will be re-evaluated every time, even for leads '
+             'that have already been checked previously. This option incurs a large '
+             'performance penalty, so it should be checked only for rules that depend '
+             'on dynamic events',
+        default=False, tracking=True
+    )
+    active = fields.Boolean(default=True, tracking=True)
+    leads_count = fields.Integer(compute='_count_leads')
+    last_run = fields.Datetime('Last run', help='Date from the last scoring on all leads.')
 
     def _count_leads(self):
         for rec in self:
@@ -39,26 +63,6 @@ class website_crm_score(models.Model):
             except Exception as e:
                 _logger.warning('Exception: %s' % (e,))
                 raise Warning('The domain is incorrectly formatted')
-
-    name = fields.Char('Name', required=True)
-    rule_type = fields.Selection([('score', 'Scoring'), ('active', 'Archive'), ('unlink', 'Delete')], default='score', required=True, tracking=True,
-                                 help='Scoring will add a score of `value` for this lead.\n'
-                                 'Archive will set active = False on the lead (archived)\n'
-                                 'Delete will delete definitively the lead\n\n'
-                                 'Actions are done in sql and bypass the access rights and orm mechanism (create `score`, write `active`, unlink `crm_lead`)')
-    value = fields.Float('Value', default=0, required=True, tracking=True)
-    domain = fields.Char('Domain', tracking=True, required=True)
-    event_based = fields.Boolean(
-        'Event-based rule',
-        help='When checked, the rule will be re-evaluated every time, even for leads '
-             'that have already been checked previously. This option incurs a large '
-             'performance penalty, so it should be checked only for rules that depend '
-             'on dynamic events',
-        default=False, tracking=True
-    )
-    active = fields.Boolean(default=True, tracking=True)
-    leads_count = fields.Integer(compute='_count_leads')
-    last_run = fields.Datetime('Last run', help='Date from the last scoring on all leads.')
 
     @api.model
     def assign_scores_to_leads(self, ids=False, lead_ids=False):

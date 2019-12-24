@@ -18,9 +18,9 @@ This module allows you to:
 """,
     'data': [
         'views/website_crm_score.xml',
-        'views/sales.xml',
-        'views/marketing.xml',
         'views/crm_lead_views.xml',
+        'views/crm_team_views.xml',
+        'views/marketing.xml',
         'security/ir.model.access.csv',
         'data/website_crm_score_data.xml',
     ],

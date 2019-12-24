@@ -40,11 +40,6 @@
             <field name="code">records.assign_scores_to_leads()</field>
         </record>
 
-        <!-- Score Menu Item -->
-        <menuitem id="crm.crm_menu_leads" name="Leads" parent="crm.crm_menu_root" groups="sales_team.group_sale_manager" sequence="5"/>
-
-        <menuitem id="menu_crm_leads" name="Leads" parent="crm.crm_menu_leads" sequence="1" action="crm.crm_lead_all_leads" groups="crm.group_use_lead"/>
-
         <!-- Action to display the leads that have a particular score -->
         <record model="ir.actions.act_window" id="score_leads">
             <field name="name">Leads</field>

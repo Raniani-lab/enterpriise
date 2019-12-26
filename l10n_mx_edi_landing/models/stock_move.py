@@ -32,6 +32,7 @@ class StockMove(models.Model):
                 candidate = res.browse(candidate)
                 if candidate.remaining_qty == candidates_bfr[candidate.id]:
                     continue
-                move.write({'move_orig_fifo_ids': [
-                    (4, candidate.stock_move_id.id, 0)]})
+                if candidate.stock_move_id:
+                    move.write({'move_orig_fifo_ids': [
+                        (4, candidate.stock_move_id.id, 0)]})
         return res

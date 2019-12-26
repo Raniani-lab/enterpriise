@@ -78,7 +78,7 @@ var AttachmentViewer = Widget.extend({
             this._rpc({
                 model: 'ir.attachment',
                 method: 'register_as_main_attachment',
-                args: [[this.activeAttachment.id]],
+                args: [[this.activeAttachment.id], this.activeAttachment.is_main === false],
             });
         }
     },

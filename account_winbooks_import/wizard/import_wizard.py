@@ -669,6 +669,6 @@ class WinbooksImportWizard(models.TransientModel):
             self.import_analytic_account_line(file_dir, antfile, analytic_account_data, account_data)
             self.post_import(account_deprecated_ids)
             _logger.info("Completed")
-            self.env.company.set_onboarding_step_done('account_onboarding_winbooks_state')
-            self.env.company.set_onboarding_step_done('account_setup_coa_state')
+            self.env.company.sudo().set_onboarding_step_done('account_onboarding_winbooks_state')
+            self.env.company.sudo().set_onboarding_step_done('account_setup_coa_state')
         return True

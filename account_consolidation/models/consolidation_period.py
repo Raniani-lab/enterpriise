@@ -264,7 +264,7 @@ class ConsolidationPeriod(models.Model):
         """
         Save the "done" state of onboarding step of create first analysis period
         """
-        self.env.user.company_id.set_onboarding_step_done('consolidation_create_period_state')
+        self.env.user.company_id.sudo().set_onboarding_step_done('consolidation_create_period_state')
 
     # PROTECTEDS
 

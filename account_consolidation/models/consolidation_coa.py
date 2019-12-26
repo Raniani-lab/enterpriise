@@ -92,7 +92,7 @@ class ConsolidationChart(models.Model):
         return action
 
     def action_save_onboarding_consolidation_step(self):
-        self.env.company.set_onboarding_step_done('consolidation_setup_consolidation_state')
+        self.env.company.sudo().set_onboarding_step_done('consolidation_setup_consolidation_state')
 
     @api.model
     def setting_consolidated_chart_of_accounts_action(self):
@@ -109,7 +109,7 @@ class ConsolidationChart(models.Model):
                 (False, 'form')
             ]
         })
-        self.env.company.set_onboarding_step_done('consolidation_setup_ccoa_state')
+        self.env.company.sudo().set_onboarding_step_done('consolidation_setup_ccoa_state')
         return action
 
     @api.model

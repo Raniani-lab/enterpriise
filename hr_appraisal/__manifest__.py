@@ -41,6 +41,7 @@ Key Features
         'views/hr_employee_public_views.xml',
         'data/hr_appraisal_data.xml',
         'data/mail_data.xml',
+        'wizard/hr_departure_wizard_views.xml',
     ],
     "demo": [
         "data/hr_appraisal_demo.xml",

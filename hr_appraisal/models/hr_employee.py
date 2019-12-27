@@ -33,7 +33,7 @@ class HrEmployee(models.Model):
 
     def _default_next_appraisal_date(self):
         current_date = datetime.date.today()
-        months = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_max_period'))
+        months = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_max_period', default=18))
         return current_date + relativedelta(months=months)
 
     def _compute_name(self):
@@ -125,6 +125,7 @@ class HrEmployee(models.Model):
         employees_to_appraise = self._get_employees_to_appraise(months)
         appraisal_values = [{
             'employee_id': employee.id,
+            'company_id': employee.company_id.id,
             'date_close': fields.Date.to_string(current_date + relativedelta(months=months)),
             'manager_ids': [(4, manager.id) for manager in employee.appraisal_manager_ids],
             'manager_body_html': employee.company_id.appraisal_by_manager_body_html,

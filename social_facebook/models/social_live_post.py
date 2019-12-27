@@ -98,7 +98,7 @@ class SocialLivePostFacebook(models.Model):
             else:
                 values = {
                     'state': 'failed',
-                    'failure_reason': result.text
+                    'failure_reason': json.loads(result.text or '{}').get('error', {}).get('message', '')
                 }
 
             live_post.write(values)

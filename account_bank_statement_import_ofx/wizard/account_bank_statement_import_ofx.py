@@ -5,6 +5,7 @@ import datetime
 import io
 import logging
 import re
+import unicodedata
 from xml.etree import ElementTree
 
 try:
@@ -104,7 +105,14 @@ class AccountBankStatementImport(models.TransientModel):
         if OfxParser is None:
             raise UserError(_("The library 'ofxparse' is missing, OFX import cannot proceed."))
 
-        ofx = PatchedOfxParser.parse(io.BytesIO(data_file))
+        try:
+            ofx = PatchedOfxParser.parse(io.BytesIO(data_file))
+        except UnicodeDecodeError:
+            # Replacing utf-8 chars with ascii equivalent
+            encoding = re.findall(b'encoding="(.*?)"', data_file)
+            encoding = encoding[0] if len(encoding) > 1 else 'utf-8'
+            data_file = unicodedata.normalize('NFKD', data_file.decode(encoding)).encode('ascii', 'ignore')
+            ofx = PatchedOfxParser.parse(io.BytesIO(data_file))
         vals_bank_statement = []
         account_lst = set()
         currency_lst = set()

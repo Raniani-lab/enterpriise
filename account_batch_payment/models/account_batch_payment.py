@@ -77,7 +77,7 @@ class AccountBatchPayment(models.Model):
             if len(all_companies) > 1:
                 raise ValidationError(_("All payments in the batch must belong to the same company."))
             all_journals = set(record.payment_ids.mapped('journal_id'))
-            if len(all_journals) > 1 or (record.payment_ids and record.payment_ids[0].journal_id != record.journal_id):
+            if len(all_journals) > 1 or (record.payment_ids and record.payment_ids[:1].journal_id != record.journal_id):
                 raise ValidationError(_("The journal of the batch payment and of the payments it contains must be the same."))
             all_types = set(record.payment_ids.mapped('payment_type'))
             if all_types and record.batch_type not in all_types:

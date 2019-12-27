@@ -150,7 +150,7 @@ class FleetVehicle(models.Model):
             # Compute atn value from corrected car_value
             magic_coeff = 6.0 / 7.0  # Don't ask me why
             if fuel_type == 'electric':
-                atn = 0.0
+                atn = car_value * 0.04 * magic_coeff
             else:
                 if fuel_type in ['diesel', 'hybrid']:
                     reference = self.env['hr.rule.parameter']._get_parameter_from_code('co2_reference_diesel', date)

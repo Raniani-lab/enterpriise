@@ -32,7 +32,7 @@ class RentalSchedule(models.Model):
     product_id = fields.Many2one('product.product', 'Product', readonly=True, group_expand="_read_group_product_ids")
     product_uom = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True)
     product_uom_qty = fields.Float('Qty Ordered', readonly=True)
-    qty_delivered = fields.Float('Qty Delivered', readonly=True)
+    qty_delivered = fields.Float('Qty Picked-Up', readonly=True)
     qty_returned = fields.Float('Qty Returned', readonly=True)
     partner_id = fields.Many2one('res.partner', 'Customer', readonly=True)
     card_name = fields.Char(string="Customer Name", readonly=True)

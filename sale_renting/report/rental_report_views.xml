@@ -6,7 +6,7 @@
            <field name="model">sale.rental.report</field>
            <field name="arch" type="xml">
                <pivot string="Rental Analysis" disable_linking="True">
-                   <field name="categ_id" type="row"/>
+                   <field name="date" type="row" interval="day"/>
                    <field name="quantity" type="measure"/>
                    <field name="qty_delivered" type="measure"/>
                    <field name="price" type="measure"/>

@@ -12,9 +12,9 @@ class RentalReport(models.Model):
     order_id = fields.Many2one('sale.order', 'Order #', readonly=True)
     product_id = fields.Many2one('product.product', 'Product', readonly=True)
     product_uom = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True)
-    quantity = fields.Float('Qty Ordered', readonly=True)
-    qty_delivered = fields.Float('Qty Picked-Up', readonly=True)
-    qty_returned = fields.Float('Qty Returned', readonly=True)
+    quantity = fields.Float('Daily Ordered Qty', readonly=True)
+    qty_delivered = fields.Float('Daily Picked-Up Qty', readonly=True)
+    qty_returned = fields.Float('Daily Returned Qty', readonly=True)
     partner_id = fields.Many2one('res.partner', 'Customer', readonly=True)
     user_id = fields.Many2one('res.users', 'Salesman', readonly=True)
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
@@ -27,7 +27,7 @@ class RentalReport(models.Model):
         ('done', 'Sales Done'),
         ('cancel', 'Cancelled'),
     ], string='Status', readonly=True)
-    price = fields.Float('Price', readonly=True)
+    price = fields.Float('Daily Amount', readonly=True)
     currency_id = fields.Many2one('res.currency', 'Currency', readonly=True)
 
     def _query(self):

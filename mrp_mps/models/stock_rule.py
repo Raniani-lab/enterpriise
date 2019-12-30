@@ -10,6 +10,6 @@ class StockRule(models.Model):
     def _make_po_get_domain(self, company_id, values, partner):
         """ Avoid to merge two RFQ for the same MPS replenish. """
         domain = super(StockRule, self)._make_po_get_domain(company_id, values, partner)
-        if values.get('skip_lead_time', False) and values.get('date_planned', False):
+        if self.env.context.get('skip_lead_time') and values.get('date_planned'):
             domain += (('date_planned_mps', '=', values['date_planned']),)
         return domain

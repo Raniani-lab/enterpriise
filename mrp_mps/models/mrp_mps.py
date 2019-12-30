@@ -146,7 +146,7 @@ class MrpProductionSchedule(models.Model):
                         'production_schedule_id': production_schedule.id
                     })
         if procurements:
-            self.env['procurement.group'].run(procurements)
+            self.env['procurement.group'].with_context(skip_lead_time=True).run(procurements)
 
         forecasts_to_set_as_launched.write({
             'procurement_launched': True,
@@ -447,7 +447,6 @@ class MrpProductionSchedule(models.Model):
         return {
             'date_planned': forecast_values['date_start'],
             'warehouse_id': self.warehouse_id,
-            'skip_lead_time': True,
         }
 
     def _get_forecasts_state(self, production_schedule_states, date_range, procurement_date):

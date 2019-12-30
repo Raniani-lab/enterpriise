@@ -186,7 +186,7 @@
                 plan="false"
                 string="Schedule"
                 scales="day,week,month,year"
-                precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
+                precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full', 'year': 'day:full'}"
                 decoration-info="not is_published"
                 decoration-warning="publication_warning and is_published"
                 decoration-danger="overlap_slot_count > 0"

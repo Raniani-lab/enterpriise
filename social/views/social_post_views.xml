@@ -49,7 +49,8 @@
                                     </t>
                                 </div>
                                 <div>
-                                    <field name="state" widget="label_selection" options="{'classes': {'draft': 'secondary', 'posting': 'warning', 'posted': 'success'}}"/>
+                                    <field t-if="!record.has_post_errors.raw_value" name="state" widget="label_selection" options="{'classes': {'draft': 'secondary', 'posting': 'warning', 'posted': 'success'}}"/>
+                                    <span t-else="" class="badge badge-danger">Failed</span> <!-- OPW-2161231 -->
                                 </div>
                             </div>
 

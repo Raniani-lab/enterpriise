@@ -719,6 +719,7 @@
                             <field name="product_ids" string="Products" widget="many2many_tags"/>
                             <field name="customer_ids" widget="many2many_tags"/>
                             <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="team_ids" widget="many2many_tags"/>
                         </group>
                     </group>
                     <group string="Action" name="action_wrapper">

@@ -1287,6 +1287,7 @@ class SaleSubscriptionAlert(models.Model):
     customer_ids = fields.Many2many('res.partner', string='Customers')
     company_id = fields.Many2one('res.company', string='Company')
     mrr_min = fields.Monetary('MRR Range Min', currency_field='currency_id', help="Monthly Recurring Revenue")
+    team_ids = fields.Many2many('crm.team', string='Sales Team')
     mrr_max = fields.Monetary('MRR Range Max', currency_field='currency_id')
     product_ids = fields.Many2many(
         'product.product', string='Specific Products',
@@ -1328,6 +1329,8 @@ class SaleSubscriptionAlert(models.Model):
                 domain += [('template_id', 'in', alert.subscription_template_ids.ids)]
             if alert.customer_ids:
                 domain += [('partner_id', 'in', alert.customer_ids.ids)]
+            if alert.team_ids:
+                domain += [('team_id', 'in', alert.team_ids.ids)]
             if alert.company_id:
                 domain += [('company_id', '=', alert.company_id.id)]
             if alert.mrr_min:

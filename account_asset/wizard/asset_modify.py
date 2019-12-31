@@ -28,7 +28,7 @@ class AssetModify(models.TransientModel):
     def create(self, vals):
         if 'asset_id' in vals:
             asset = self.env['account.asset'].browse(vals['asset_id'])
-            if asset.depreciation_move_ids.filtered(lambda m: m.state == 'posted' and not m.reversal_move_id and m.date >= fields.Date.today()):
+            if asset.depreciation_move_ids.filtered(lambda m: m.state == 'posted' and not m.reversal_move_id and m.date > fields.Date.today()):
                 raise UserError(_('Reverse the depreciation entries posted in the future in order to modify the depreciation'))
             if 'method_number' not in vals:
                 vals.update({'method_number': len(asset.depreciation_move_ids.filtered(lambda move: move.state != 'posted')) or 1})

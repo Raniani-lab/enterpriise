@@ -10,14 +10,24 @@ from odoo.exceptions import UserError, MissingError
 from odoo.tests.common import Form
 from odoo.addons.account_reports.tests.common import _init_options
 from odoo.addons.account.tests.common import AccountTestCommon
+from unittest.mock import patch
 
+def today():
+    # 31'st of december is a particular date because entries are configured
+    # to be autoposted on that day. The test values dont take it into account
+    # so we just mock the date and run the 31'st as if it was the 30'th
+    today = fields.Date.today()
+    if today.month == 12 and today.day == 31:
+        today += relativedelta(day=30)
+    return today
 
 class TestAccountAsset(AccountTestCommon):
 
     # YTI TODO: Convert this to a classmethod setUpClass
     # But the test test_asset_reverse_depreciation depends on
     # data created in a previous test
-    def setUp(self):
+    @patch('odoo.fields.Date.today', return_value=today())
+    def setUp(self, today_mock):
         super(TestAccountAsset, self).setUp()
         today = fields.Date.today()
         self.truck = self.env['account.asset'].create({
@@ -166,7 +176,7 @@ class TestAccountAsset(AccountTestCommon):
             'method_number': 3,
             'prorata': True,
             'prorata_date': time.strftime('%Y-01-01'),
-            'first_depreciation_date': time.strftime('%Y-01-01'), 
+            'first_depreciation_date': time.strftime('%Y-01-01'),
             'state': 'draft',
             'original_value': 30000.0,
             'model_id': account_asset_model_sale_test0.id,
@@ -180,7 +190,7 @@ class TestAccountAsset(AccountTestCommon):
             'method_period': '12',
             'prorata': True,
             'prorata_date': time.strftime('%Y-01-01'),
-            'first_depreciation_date': time.strftime('%Y-01-01'), 
+            'first_depreciation_date': time.strftime('%Y-01-01'),
             'state': 'open',
             'original_value': 1000.0,
             'model_id': account_asset_model_sale1.id,
@@ -342,10 +352,12 @@ class TestAccountAsset(AccountTestCommon):
         self.assertEqual(self.truck.children_ids.value_residual, 1000)
         self.assertEqual(self.truck.children_ids.salvage_value, 500)
 
-    def test_asset_modify_value_01(self):
+    @patch('odoo.fields.Date.today', return_value=today())
+    def test_asset_modify_value_01(self, today_mock):
         "Decrease the residual value, decrease the salvage value"
         self.env['asset.modify'].create({
             'name': "Accident :'(",
+            'date': fields.Date.today(),
             'asset_id': self.truck.id,
             'value_residual': 1000,
             'salvage_value': 2000,
@@ -399,7 +411,8 @@ class TestAccountAsset(AccountTestCommon):
         self.assertEqual(self.truck.children_ids.value_residual, 500)
         self.assertEqual(self.truck.children_ids.salvage_value, 0)
 
-    def test_asset_modify_report(self):
+    @patch('odoo.fields.Date.today', return_value=today())
+    def test_asset_modify_report(self, today_mock):
         """Test the asset value modification flows"""
         #           PY      +   -  Final    PY     +    - Final Bookvalue
         #   -6       0  10000   0  10000     0   750    0   750      9250
@@ -474,6 +487,7 @@ class TestAccountAsset(AccountTestCommon):
         # test value decrease
         self.env['asset.modify'].create({
             'name': "Huge scratch on beautiful sticker :'( It is ruined",
+            'date': fields.Date.today(),
             'asset_id': self.truck.children_ids.id,
             'value_residual': 0,
             'salvage_value': 500,
@@ -481,6 +495,7 @@ class TestAccountAsset(AccountTestCommon):
         }).modify()
         self.env['asset.modify'].create({
             'name': "Huge scratch on beautiful sticker :'( It went through...",
+            'date': fields.Date.today(),
             'asset_id': self.truck.id,
             'value_residual': 1000,
             'salvage_value': 2500,
@@ -503,9 +518,6 @@ class TestAccountAsset(AccountTestCommon):
 
     def test_asset_reverse_depreciation(self):
         """Test the reversal of a depreciation move"""
-        today = fields.Date.today()
-
-        report = self.env['account.assets.report']
 
         self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted').mapped('amount_total')), 4500)
         self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft').mapped('amount_total')), 3000)

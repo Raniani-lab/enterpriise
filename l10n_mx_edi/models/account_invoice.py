@@ -618,7 +618,7 @@ class AccountMove(models.Model):
     def button_draft(self):
         """Reset l10n_mx_edi_time_invoice when invoice state set to draft"""
         # OVERRIDE
-        if self.l10n_mx_edi_is_required():
+        if self and self.l10n_mx_edi_is_required():
             signed = self.filtered(lambda r: r.l10n_mx_edi_is_required() and
                                    not r.company_id.l10n_mx_edi_pac_test_env and
                                    r.l10n_mx_edi_cfdi_uuid)

@@ -4,6 +4,7 @@
 import datetime
 
 from odoo.addons.hr_payroll.tests.common import TestPayslipBase
+from dateutil.relativedelta import relativedelta
 
 
 class TestPayslipFlow(TestPayslipBase):
@@ -69,11 +70,10 @@ class TestPayslipFlow(TestPayslipBase):
 
         # 13th month pay
         payslip_run = self.env['hr.payslip.run'].create({
-            'date_start': datetime.date(2018, 8, 1),
-            'date_end': datetime.date(2018, 8, 31),
+            'date_start': datetime.date.today() + relativedelta(years=-1, month=8, day=1),
+            'date_end': datetime.date.today() + relativedelta(years=-1, month=8, day=31),
             'name': 'End of the year bonus'
         })
-
         # I create record for generating the payslip for this Payslip run.
         payslip_employee = self.env['hr.payslip.employees'].create({
             'employee_ids': [(4, self.richard_emp.id)],

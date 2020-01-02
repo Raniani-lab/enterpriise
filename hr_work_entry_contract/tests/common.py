@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from dateutil.relativedelta import relativedelta
 from odoo.fields import Date
 from odoo.tests.common import SavepointCase
 
@@ -29,7 +30,7 @@ class TestWorkEntryBase(SavepointCase):
 
         # I create a contract for "Richard"
         cls.env['hr.contract'].create({
-            'date_end': Date.to_date('2019-12-31'),
+            'date_end': Date.today() + relativedelta(years=2),
             'date_start': Date.to_date('2018-01-01'),
             'name': 'Contract for Richard',
             'wage': 5000.0,

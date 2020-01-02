@@ -68,7 +68,6 @@ KanbanRenderer.include(Object.assign({}, KanbanTabsMobileMixin, {
                 left: $column.scrollLeft(),
                 top: $column.scrollTop(),
             };
-            this._lastGroupedByField = this.columnOptions.groupedBy;
         } else {
             this._scrollPosition = null;
         }
@@ -235,6 +234,7 @@ KanbanRenderer.include(Object.assign({}, KanbanTabsMobileMixin, {
             return Promise.resolve();
         }
         this.activeColumnIndex = moveToIndex;
+        this._lastGroupedByField = this.columnOptions.groupedBy;
         var column = this.widgets[this.activeColumnIndex];
         if (column.data.isOpen) {
             this._layoutUpdate(animate);

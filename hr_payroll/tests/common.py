@@ -5,6 +5,7 @@ from datetime import datetime
 
 from odoo.fields import Date, Datetime
 from odoo.tests.common import SavepointCase
+from dateutil.relativedelta import relativedelta
 
 
 class TestPayslipBase(SavepointCase):
@@ -43,7 +44,7 @@ class TestPayslipBase(SavepointCase):
 
         # I create a contract for "Richard"
         cls.env['hr.contract'].create({
-            'date_end': Date.to_date('2019-12-31'),
+            'date_end': Date.today() + relativedelta(years=2),
             'date_start': Date.to_date('2018-01-01'),
             'name': 'Contract for Richard',
             'wage': 5000.0,

@@ -53,14 +53,14 @@ class QualityPoint(models.Model):
     def _compute_component_ids(self):
         for point in self:
             bom_ids = self.env['mrp.bom'].search([('product_tmpl_id', '=', point.product_tmpl_id.id)])
-            component_ids = set()
+            component_ids = self.env['product.product']
             if point.test_type == 'register_consumed_materials':
                 for bom in bom_ids:
                     boms_done, lines_done = bom.explode(point.product_id, 1.0)
-                    component_ids |= {l[0].product_id.id for l in lines_done}
+                    for line in lines_done:
+                        component_ids |= line[0].product_id
             if point.test_type == 'register_byproducts':
-                for bom in bom_ids:
-                    component_ids |= {byproduct.product_id.id for byproduct in bom.byproduct_ids}
+                component_ids |= bom_ids.byproduct_ids.product_id
             point.component_ids = component_ids
 
     @api.depends('product_tmpl_id.bom_ids.routing_id')

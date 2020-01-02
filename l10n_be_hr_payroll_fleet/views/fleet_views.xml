@@ -48,7 +48,7 @@
                 </group>
             </xpath>
             <xpath expr="//page[@name='vendors']" position="before">
-                <page string="Information">
+                <page string="Information" name="information">
                     <group>
                         <group string="Vehicle Cost">
                             <label for="default_car_value"/>

@@ -43,10 +43,10 @@
                 <field name="active" invisible="1"/>
                 <field name="meeting_id" invisible="1"/>
                 <notebook>
-                    <page string="Final Evaluation" attrs="{'invisible':[('state','=','new')]}">
+                    <page string="Final Evaluation" name="final_evaluation" attrs="{'invisible':[('state','=','new')]}">
                         <field name="action_plan"/>
                     </page>
-                    <page string="Mail To Send">
+                    <page string="Mail To Send" name="mail_to_send">
                         <group>
                             <field name="manager_body_html" string="Mail To Manager" attrs="{'invisible':[('manager_ids', '=', [])]}"/>
                             <field name="employee_body_html" string="Mail To Employee"/>

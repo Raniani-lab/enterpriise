@@ -7,7 +7,7 @@
             <field name="model">res.company</field>
             <field name="arch" type="xml">
                 <xpath expr="//notebook" position="inside">
-                    <page string="Inter-Company Transactions" groups="base.group_no_one">
+                    <page string="Inter-Company Transactions" name="inter_company_transactions" groups="base.group_no_one">
                         <group>
                             <group>
                                 <field name="rule_type" widget="radio"/>

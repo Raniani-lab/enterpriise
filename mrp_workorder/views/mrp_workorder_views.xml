@@ -18,7 +18,7 @@
                 </header>
             </xpath>
             <page name='workorder_page_work_instruction' position="before">
-                <page string="Finished Steps">
+                <page string="Finished Steps" name="finished_steps">
                     <field name="check_ids" domain="[('quality_state', '!=', 'none')]" readonly="1">
                         <tree>
                             <field name="quality_state" invisible="1"/>

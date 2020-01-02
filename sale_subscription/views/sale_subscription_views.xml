@@ -486,7 +486,7 @@
                         </h1>
                     </div>
                     <notebook>
-                        <page string="Invoicing">
+                        <page string="Invoicing" name="invoicing">
                             <group name="invoicing">
                                 <group>
                                     <label for="recurring_interval"/>

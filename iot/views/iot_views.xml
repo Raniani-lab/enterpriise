@@ -31,7 +31,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Devices">
+                        <page string="Devices" name="devices">
                             <field name="device_ids">
                                 <tree>
                                     <field name="name"/>

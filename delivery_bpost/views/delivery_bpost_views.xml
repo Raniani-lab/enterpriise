@@ -6,7 +6,7 @@
     <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
     <field name="arch" type="xml">
       <xpath expr="//page[@name='destination']" position="before">
-        <page string="bpost Configuration" attrs="{'invisible': [('delivery_type', '!=', 'bpost')]}">
+        <page string="bpost Configuration" name="bpost_configuration" attrs="{'invisible': [('delivery_type', '!=', 'bpost')]}">
           <group>
             <group>
               <field name="bpost_account_number" attrs="{'required': [('delivery_type', '=', 'bpost')]}"/>

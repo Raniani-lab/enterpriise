@@ -226,7 +226,7 @@
                     <field name="credit_note" invisible="1"/>
                 </group>
                 <notebook>
-                    <page string="Worked Days &amp; Inputs">
+                    <page string="Worked Days &amp; Inputs" name="worked_days_input">
                         <separator string="Worked Days"/>
                         <field name="worked_days_line_ids">
                             <tree string="Worked Days" editable="bottom">
@@ -271,7 +271,7 @@
                             </form>
                         </field>
                     </page>
-                    <page string="Salary Computation" >
+                    <page string="Salary Computation" name="salary_computation">
                         <field name="line_ids" colspan="4" nolabel="1">
                             <tree string="Salary Structure" editable="bottom" decoration-info="total == 0">
                                 <field name="name"/>

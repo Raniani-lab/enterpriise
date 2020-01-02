@@ -33,7 +33,7 @@
               </group>
             </group>
             <notebook>
-              <page string="Bank Accounts">
+              <page string="Bank Accounts" name="bank_accounts">
                 <field name="account_online_journal_ids" nolabel="1" widget="one2many" mode="tree">
                   <tree string="Bank Accounts" create="false" editable="bottom">
                     <field name="name"/>
@@ -44,7 +44,7 @@
                   </tree>
                 </field>
               </page>
-              <page string="Additional information">
+              <page string="Additional information" name="additional_info">
                 <group>
                   <field name="status_code"/>
                   <field name="message" groups="base.group_no_one"/>

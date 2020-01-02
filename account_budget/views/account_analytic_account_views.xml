@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath  expr="//group[@name='main']" position='after'>
                     <notebook  groups="account.group_account_user">
-                        <page string="Budget Items">
+                        <page string="Budget Items" name="budget_items">
                                 <field name="crossovered_budget_line" widget="one2many" colspan="4" nolabel="1" mode="tree">
                                     <tree string="Budget Items" editable="top">
                                         <field name="crossovered_budget_id"/>

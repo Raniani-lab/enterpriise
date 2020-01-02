@@ -85,7 +85,7 @@
                          </tree>
                       </field>
                      </page>
-                     <page string="Unpaid Work Entry Types">
+                     <page string="Unpaid Work Entry Types" name="unpaid_work_entry_types">
                        <field name="unpaid_work_entry_type_ids"/>
                      </page>
                      <page name="other_input" string="Other Input">

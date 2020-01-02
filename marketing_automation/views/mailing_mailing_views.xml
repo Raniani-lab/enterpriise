@@ -85,7 +85,7 @@
                             'inline-field': 'body_html'
                         }"/>
                     </page>
-                    <page string="Options">
+                    <page string="Options" name="options">
                         <group>
                             <group string="Mailing" name="group_mailing">
                                 <field name="attachment_ids" widget="many2many_binary" string="Attach a file" class="oe_inline"/>

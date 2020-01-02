@@ -22,7 +22,7 @@
                 </button>
             </xpath>
             <xpath expr="//notebook" position="inside">
-                <page string="Social Media" class="order-2" attrs="{'invisible': [('social_posts_count', '=', 0)]}">
+                <page string="Social Media" name="social_media" class="order-2" attrs="{'invisible': [('social_posts_count', '=', 0)]}">
                     <field name="social_post_ids" mode="kanban" widget="one2many" nolabel="1" context="{'default_campaign_id': active_id}"/>
                 </page>
             </xpath>

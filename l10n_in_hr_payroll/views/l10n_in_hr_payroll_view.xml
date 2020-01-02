@@ -97,7 +97,7 @@
                             </group>
                         </group>
                         <notebook colspan="4">
-                            <page string="Payment Lines">
+                            <page string="Payment Lines" name="payment_lines">
                                 <field name="line_ids" colspan="4" nolabel="1">
                                     <tree string="Payment Lines" editable="bottom">
                                         <field name="employee_id"/>
@@ -109,7 +109,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Other Information">
+                            <page string="Other Information" name="other_info">
                                 <group colspan="4" col="6">
                                 <field name="company_id"
                                 groups="base.group_multi_company" options="{'no_create': True}"/>

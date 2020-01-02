@@ -28,7 +28,7 @@
                     attrs="{'invisible': ['|', ('payslip_run_id', '!=', False), ('state', '!=', 'done')]}"/>
             </button>
             <notebook position="inside">
-                <page string="Exported File" attrs="{'invisible': [('sepa_export','=', False)]}">
+                <page string="Exported File" name="exported_file" attrs="{'invisible': [('sepa_export','=', False)]}">
                     <group>
                         <field name="sepa_export_date"/>
                         <field name="sepa_export_filename" invisible="1"/>

@@ -131,7 +131,7 @@
                 </group>
             </xpath>
             <page name="information" position="after">
-                <page string="Attachment of Salary">
+                <page string="Attachment of Salary" name="salary_attachment">
                     <field name="attachment_salary_ids">
                         <tree editable="bottom">
                             <field name="name"/>

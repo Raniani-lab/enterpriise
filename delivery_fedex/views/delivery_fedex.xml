@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='destination']" position='before'>
-                <page string="Fedex Configuration" attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}">
+                <page string="Fedex Configuration" name="feded_configuration" attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}">
                     <group>
                         <group>
                             <field name="fedex_developer_key" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>

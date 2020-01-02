@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="Equipment">
+                <page string="Equipment" name="equipment">
                     <field name="equipment_ids" widget="many2many">
                         <tree string="Equipments">
                             <field name="name"/>

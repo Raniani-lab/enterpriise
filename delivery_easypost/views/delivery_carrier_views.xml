@@ -6,7 +6,7 @@
     <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
     <field name="arch" type="xml">
       <page name="destination" position="before">
-        <page string="Easypost Configuration" attrs="{'invisible': [('delivery_type', '!=', 'easypost')]}">
+        <page string="Easypost Configuration" name="easypost_configuration" attrs="{'invisible': [('delivery_type', '!=', 'easypost')]}">
           <group>
             <group>
               <field name="easypost_test_api_key" attrs="{'required': [('easypost_production_api_key', '=', False), ('delivery_type', '=', 'easypost')]}"/>

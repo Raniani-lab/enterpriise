@@ -85,16 +85,16 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Description">
+                        <page string="Description" name="description">
                             <field name="description" placeholder="Description of the issue..."/>
                         </page>
-                        <page string="Corrective Actions">
+                        <page string="Corrective Actions" name="corrective_actions">
                             <field name="action_corrective" placeholder="Describe the corrective actions you did..."/>
                         </page>
-                        <page string="Preventive Actions">
+                        <page string="Preventive Actions" name="preventive_actions">
                             <field name="action_preventive" placeholder="Describe the preventive actions you did..."/>
                         </page>
-                        <page string="Miscellaneous">
+                        <page string="Miscellaneous" name="miscellaneous">
                             <group>
                                 <group>
                                     <field name="partner_id"/>
@@ -262,7 +262,7 @@
                         <field name="picture" widget="image"/>
                     </group>
                     <notebook>
-                        <page string="Notes">
+                        <page string="Notes" name="notes">
                             <field name="note"/>
                         </page>
                     </notebook>
@@ -884,7 +884,8 @@
                 </button>
             </xpath>
             <xpath expr="//page[@name='instructions']" position="after">
-                <page string="Message If Failure" attrs="{'invisible': [('test_type', 'in', ['picture', 'text', 'register_consumed_materials', 'print_label'])]}">
+                <page string="Message If Failure" name="message_if_failure"
+                    attrs="{'invisible': [('test_type', 'in', ['picture', 'text', 'register_consumed_materials', 'print_label'])]}">
                     <field name="failure_message"/>
                 </page>
             </xpath>

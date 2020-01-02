@@ -127,13 +127,16 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Message" id='letter_format' attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False)]}">
+                            <page string="Message" name="message"
+                                id='letter_format' attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False)]}">
                                 <field name="description" nolabel="1" colspan="2"/>
                             </page>
-                            <page string="SMS Message" attrs="{'invisible': [('send_sms', '=', False)]}">
+                            <page string="SMS Message" name="sms_message"
+                                attrs="{'invisible': [('send_sms', '=', False)]}">
                                 <field name="sms_description" widget="sms_widget" nolabel="1" colspan="2"/>
                             </page>
-                            <page string="Manual Action" attrs="{'invisible': [('manual_action', '=', False)]}">
+                            <page string="Manual Action" name="manual_action"
+                                attrs="{'invisible': [('manual_action', '=', False)]}">
                                 <group>
                                     <group>
                                         <field name="manual_action_responsible_id"/>

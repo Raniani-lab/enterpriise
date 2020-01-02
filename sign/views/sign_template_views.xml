@@ -110,10 +110,10 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Document">
+                        <page name="document" string="Document">
                             <field name="datas" widget="pdf_viewer"/>
                         </page>
-                        <page string="Signatures" groups="base.group_no_one">
+                        <page string="Signatures" name="signatures" groups="base.group_no_one">
                             <label for="sign_item_ids"/>
                             <field name="sign_item_ids"/>
                         </page>

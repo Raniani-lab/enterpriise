@@ -318,7 +318,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Tags">
+                        <page string="Tags" name="tags">
                             <field name="facet_ids" context="{
                                 'form_view_ref' : 'documents.facet_view_form',
                                 'documents_view_from_folder' : True,
@@ -337,7 +337,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Access Rights">
+                        <page string="Access Rights" name="access_rights">
                             <group>
                                 <group string="Write Access">
                                     <field name="group_ids" widget="many2many_tags"/>
@@ -348,7 +348,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Description">
+                        <page string="Description" name="description">
                             <field name="description" widget="html"/>
                         </page>
                     </notebook>
@@ -553,7 +553,7 @@
                       <field name="note" placeholder="Write a tooltip for the action here"/>
                     </div>
                         <notebook>
-                            <page string="Actions">
+                            <page string="Actions" name="actions">
                                 <group>
                                     <field name="has_business_option" invisible="1"/>
                                     <group>
@@ -604,7 +604,7 @@
                                     <field name="activity_note" placeholder="Log a note..."/>
                                 </group>
                             </page>
-                            <page string="Conditions">
+                            <page string="Conditions" name="conditions">
                                 <group>
                                     <group>
                                         <field name="domain_folder_id" required="1" groups="base.group_no_one"/>
@@ -701,7 +701,7 @@
                         <h1><field name="name" placeholder="E.g. Status"/></h1>
                     </div>
                     <notebook>
-                        <page string="Tags">
+                        <page string="Tags" name="tags">
                             <field name="tag_ids">
                                 <tree editable="bottom">
                                     <field name="sequence" widget="handle"/>
@@ -710,7 +710,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Tooltip">
+                        <page string="Tooltip" name="tooltip">
                             <field name="tooltip"/>
                         </page>
                     </notebook>

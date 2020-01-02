@@ -47,7 +47,7 @@ Budgets
                     <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                 </group>
                 <notebook>
-                    <page string="Accounts">
+                    <page string="Accounts" name="accounts">
                         <field name="account_ids">
                             <tree>
                                 <field name="code"/>
@@ -101,7 +101,7 @@ Budgets
                         </group>
                     </group>
                     <notebook>
-                        <page string="Budget Lines">
+                        <page string="Budget Lines" name="budget_lines">
                             <field name="crossovered_budget_line"
                                    context="{'default_date_from': date_from,'default_date_to': date_to}" colspan="4"
                                    nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">

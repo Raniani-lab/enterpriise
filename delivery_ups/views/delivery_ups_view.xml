@@ -7,7 +7,8 @@
         <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='destination']" position='before'>
-                <page string="UPS Configuration" attrs="{'invisible': [('delivery_type', '!=', 'ups')]}">
+                <page string="UPS Configuration" name="ups_configuration"
+                    attrs="{'invisible': [('delivery_type', '!=', 'ups')]}">
                     <group>
                         <group>
                             <field name="ups_username" attrs="{'required': [('delivery_type', '=', 'ups')]}"/>

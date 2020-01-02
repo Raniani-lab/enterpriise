@@ -21,7 +21,7 @@
             options="{'no_open':1, 'no_create_edit':1}"/>
       </xpath>
       <xpath expr="//notebook" position="inside">
-        <page string="Stock" attrs="{'invisible': [('is_product_storable', '=', False)]}">
+        <page string="Stock" name="stock" attrs="{'invisible': [('is_product_storable', '=', False)]}">
           <field name="is_product_storable" invisible="1"/>
           <group>
             <group>
@@ -34,7 +34,7 @@
             </group>
           </group>
         </page>
-        <page string="Serials Tracking" attrs="{'invisible': [('tracking', '!=', 'serial')]}">
+        <page string="Serials Tracking" name="serials_tracking" attrs="{'invisible': [('tracking', '!=', 'serial')]}">
           <field name="tracking" invisible="1"/>
           <group>
             <field name="rented_lot_ids" widget="many2many_tags"/>

@@ -31,7 +31,7 @@
                 class="btn btn-primary"/>
         </button>
         <xpath expr="//page[@name='hr_settings']" position="after">
-            <page string="Appraisal">
+            <page string="Appraisal" name="appraisals">
                 <group string="Appraisals Set Up">
                     <field name="next_appraisal_date" groups="base.group_no_one"/>
                     <field name="appraisal_by_manager" invisible="1"/>

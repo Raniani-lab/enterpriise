@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <form string="IRAS File Generation">
                 <notebook>
-                    <page string="Options">
+                    <page string="Options" name="options">
                         <group>
                             <field name="date_from"/>
                             <field name="date_to"/>

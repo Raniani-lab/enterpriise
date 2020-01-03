@@ -7,8 +7,8 @@
             <script type="text/javascript" src="/web_grid/static/src/js/grid_model.js"/>
             <script type="text/javascript" src="/web_grid/static/src/js/grid_controller.js"/>
             <script type="text/javascript" src="/web_grid/static/src/js/grid_renderer.js"/>
-            <script type="text/javascript" src="/web_grid/static/src/js/grid_widget.js"/>
-            <script type="text/javascript" src="/web_grid/static/src/js/grid_widget_registry.js"/>
+            <script type="text/javascript" src="/web_grid/static/src/js/grid_components.js"/>
+            <script type="text/javascript" src="/web_grid/static/src/js/grid_component_registry.js"/>
         </xpath>
     </template>
 

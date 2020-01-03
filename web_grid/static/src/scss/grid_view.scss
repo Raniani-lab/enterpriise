@@ -67,6 +67,7 @@
         }
         .o_grid_cell_container {
             display: flex;
+            outline: none;
             align-items: center;
 
             &:hover {
@@ -100,7 +101,10 @@
 
         .o_grid_input {
             cursor: text;
+            padding: 0;
             text-align: right;
+            outline: none;
+            border: none;
             &:focus {
                 opacity: 1 !important;
                 background-color: $o-view-background-color;
@@ -108,7 +112,6 @@
             }
             &.o_has_error {
                 color: theme-color('danger');
-                border-color: theme-color('danger');
             }
         }
 
@@ -144,6 +147,13 @@
     .o_grid_add_line {
         text-align: left;
     }
+
+    .o_grid_float_toggle {
+        outline: 0;
+        border: 0;
+        box-shadow: none;
+    }
+
     @media print {
         .o_grid_add_line {
             display: none;

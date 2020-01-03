@@ -9,6 +9,7 @@ var GridController = require('web_grid.GridController');
 var GridRenderer = require('web_grid.GridRenderer');
 var viewRegistry = require('web.view_registry');
 var pyUtils = require('web.py_utils');
+const RendererWrapper = require('web.RendererWrapper');
 
 var _t = core._t;
 var _lt = core._lt;
@@ -29,7 +30,7 @@ var GridView = AbstractView.extend({
         var arch = this.arch;
         var fields = this.fields;
         var rowFields = [];
-        var sectionField, colField, cellField, ranges, cellWidget, cellWidgetOptions, measureLabel, readonlyField;
+        var sectionField, colField, cellField, ranges, cellComponent, cellComponentOptions, measureLabel, readonlyField;
         _.each(arch.children, function (child) {
             if (child.tag === 'field') {
                 if (child.attrs.type === 'row') {
@@ -44,9 +45,9 @@ var GridView = AbstractView.extend({
                 }
                 if (child.attrs.type === 'measure') {
                     cellField = child.attrs.name;
-                    cellWidget = child.attrs.widget;
+                    cellComponent = child.attrs.widget;
                     if (child.attrs.options) {
-                        cellWidgetOptions = JSON.parse(child.attrs.options.replace(/'/g, '"'));
+                        cellComponentOptions = JSON.parse(child.attrs.options.replace(/'/g, '"'));
                     }
                     measureLabel = child.attrs.string;
                 }
@@ -60,6 +61,7 @@ var GridView = AbstractView.extend({
         this.loadParams.ranges = ranges;
         var contextRangeName = params.context.grid_range;
         var contextRange = contextRangeName && _.findWhere(ranges, {name: contextRangeName});
+        this.loadParams.fields = this.fields;
         this.loadParams.currentRange = contextRange || ranges[0];
         this.loadParams.rowFields = rowFields;
         this.loadParams.sectionField = sectionField;
@@ -72,12 +74,9 @@ var GridView = AbstractView.extend({
         this.rendererParams.canCreate = this.controllerParams.activeActions.create;
         this.rendererParams.fields = fields;
         this.rendererParams.measureLabel = measureLabel;
-        this.rendererParams.noContentHelper = _.find(arch.children, function (c) {
-            return c.tag === 'empty';
-        });
-        this.rendererParams.editableCells = this.controllerParams.activeActions.edit && arch.attrs.adjustment;
-        this.rendererParams.cellWidget = cellWidget;
-        this.rendererParams.cellWidgetOptions = cellWidgetOptions;
+        this.rendererParams.editableCells = !!(this.controllerParams.activeActions.edit && arch.attrs.adjustment);
+        this.rendererParams.cellComponent = cellComponent;
+        this.rendererParams.cellComponentOptions = cellComponentOptions;
         this.rendererParams.hideLineTotal = !!JSON.parse(arch.attrs.hide_line_total || '0');
         this.rendererParams.hideColumnTotal = !!JSON.parse(arch.attrs.hide_column_total || '0');
 
@@ -100,6 +99,18 @@ var GridView = AbstractView.extend({
             .map(function (c) { return c.attrs; });
         this.controllerParams.adjustment = arch.attrs.adjustment;
         this.controllerParams.adjustName = arch.attrs.adjust_name;
+    },
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * @override
+     */
+    getRenderer(parent, state) {
+        state = Object.assign({}, state, this.rendererParams);
+        return new RendererWrapper(null, this.config.Renderer, state);
     },
 
     //--------------------------------------------------------------------------

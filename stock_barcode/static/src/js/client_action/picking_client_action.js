@@ -9,6 +9,7 @@ var _t = core._t;
 
 var PickingClientAction = ClientAction.extend({
     custom_events: _.extend({}, ClientAction.prototype.custom_events, {
+        'increment_line': '_onIncrementLine',
         'picking_print_delivery_slip': '_onPrintDeliverySlip',
         'picking_print_picking': '_onPrintPicking',
         'picking_print_barcodes_zpl': '_onPrintBarcodesZpl',
@@ -434,6 +435,27 @@ var PickingClientAction = ClientAction.extend({
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
+
+    /**
+     * Handles the 'increment_line' OdooEvent. From a line (`LinesWidget`), it
+     * will increase the quantity of the corresponding line.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     * @param {integer} ev.data.id id on the line to increment
+     * @param {integer} [ev.data.qty] quantity to increase (1 by default)
+     */
+    _onIncrementLine: function (ev) {
+        ev.stopPropagation();
+        const id = ev.data.id;
+        const qty = ev.data.qty || 1;
+        const line = this._getLines(this.currentState).find(l => id === l.id || l.virtual_id);
+        line.qty_done += qty;
+        // Add the line like if user scanned it to be able to find it if user
+        // will scan the same product after.
+        this.scannedLines.push(id);
+        this.linesWidget.incrementProduct(id, qty, this.actionParams.model, true);
+    },
 
     /**
      * Handles the `print_picking` OdooEvent. It makes an RPC call

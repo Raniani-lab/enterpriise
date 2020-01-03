@@ -32,6 +32,27 @@ function assert (current, expected, info) {
     }
 }
 
+/**
+ * Checks if both "Add unit" and "Add reserved remaining quantity" buttons are
+ * displayed or not on the given line.
+ *
+ * @param {integer} lineIndex
+ * @param {boolean} isVisible
+ */
+function assertLineButtonsAreVisible (lineIndex, isVisible) {
+    const cssClass = isVisible ? 'block' : 'none';
+    const $addUnit = $('.o_barcode_line').eq(lineIndex).find('.o_add_unit');
+    const $addReserved = $('.o_barcode_line').eq(lineIndex).find('.o_add_reserved');
+    assert(
+        $addUnit.css('display'), cssClass,
+        `Buttons must be ${(isVisible ? 'visible' : 'hidden')}`
+    );
+    assert(
+        $addReserved.css('display'), cssClass,
+        `Buttons must be ${(isVisible ? 'visible' : 'hidden')}`
+    );
+}
+
 function assertPageSummary (expected) {
     // FIXME sle: fix the tests instead of fixing the assert method
     var res = '';
@@ -131,6 +152,19 @@ function assertLineQty($line, qty) {
     assert($line.find('.qty-done').text(), qty, 'line quantity is wrong');
 }
 
+/**
+ * Checks the done quantity on the reserved quantity is what is expected.
+ *
+ * @param {integer} lineIndex
+ * @param {string} textQty quantity on the line, formatted as "n / N"
+ */
+function assertLineQuantityOnReservedQty (lineIndex, textQty) {
+    const $line = $('.o_barcode_line').eq(lineIndex);
+    const qty = $line.find('.qty-done').text();
+    const reserved = $line.find('.qty-done').next().text();
+    assert(qty + ' ' + reserved, textQty, 'Something wrong with the quantities');
+}
+
 function assertFormLocationSrc(expected) {
     var $location = $('.o_field_widget[name="location_id"] input');
     assert($location.val(), expected, 'Wrong source location');
@@ -164,6 +198,7 @@ function assertQuantsCount(expected) {
 
 return {
     assert: assert,
+    assertLineButtonsAreVisible: assertLineButtonsAreVisible,
     assertDestinationLocationHighlight: assertDestinationLocationHighlight,
     assertErrorMessage: assertErrorMessage,
     assertFormLocationDest: assertFormLocationDest,
@@ -173,6 +208,7 @@ return {
     assertLinesCount: assertLinesCount,
     assertLineIsHighlighted: assertLineIsHighlighted,
     assertLineQty: assertLineQty,
+    assertLineQuantityOnReservedQty: assertLineQuantityOnReservedQty,
     assertLocationHighlight: assertLocationHighlight,
     assertNextEnabled: assertNextEnabled,
     assertNextIsHighlighted: assertNextIsHighlighted,

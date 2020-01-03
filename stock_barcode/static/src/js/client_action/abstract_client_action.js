@@ -569,8 +569,7 @@ var ClientAction = AbstractAction.extend({
             this.linesWidget.destroy();
         }
         var nbPages = this.pages.length;
-        var preparedPage = $.extend(true, {}, this.pages[pageIndex]);
-        this.linesWidget = new LinesWidget(this, preparedPage, pageIndex, nbPages);
+        this.linesWidget = new LinesWidget(this, this.pages[pageIndex], pageIndex, nbPages);
         return this.linesWidget.appendTo(this.$('.o_content')).then(function() {
             // In some cases, we want to restore the GUI state of the linesWidget
             // (on a reload not calling _endBarcodeFlow)

@@ -6,7 +6,7 @@ except ImportError:
     from mock import patch
 
 import odoo
-from odoo.tests import HttpCase, tagged
+from odoo.tests import Form, HttpCase, tagged
 
 
 def clean_access_rights(env):
@@ -649,6 +649,52 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         lines = delivery_picking.move_line_ids
         self.assertEqual(lines.mapped('lot_id.name'), ['sn1', 'sn2', 'sn3', 'sn4'])
         self.assertEqual(lines.mapped('qty_done'), [1, 1, 1, 1])
+
+    def test_delivery_using_buttons(self):
+        """ Creates a delivery with 3 lines, then:
+            - Completes first line with "+1" button;
+            - Completes second line with "Add reserved quantities" button;
+            - Completes last line with "+1" button and scanning barcode.
+        Checks also written quantity on buttons is correctly updated and only
+        "+1" button is displayed on new line created by user.
+        """
+        clean_access_rights(self.env)
+
+        # Creates a new product.
+        product3 = self.env['product.product'].create({
+            'name': 'product3',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': 'product3',
+        })
+
+        # Creates some quants.
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 2)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 3)
+        self.env['stock.quant']._update_available_quantity(product3, self.stock_location, 4)
+
+        # Create the delivery transfer.
+        delivery_form = Form(self.env['stock.picking'])
+        delivery_form.picking_type_id = self.picking_type_out
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 2
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product2
+            move.product_uom_qty = 3
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = product3
+            move.product_uom_qty = 4
+
+        delivery_picking = delivery_form.save()
+        delivery_picking.action_confirm()
+        delivery_picking.action_assign()
+
+        url = self._get_client_action_url(delivery_picking.id)
+        self.start_tour(url, 'test_delivery_using_buttons', login='admin', timeout=180)
+
+        self.assertEqual(len(delivery_picking.move_line_ids), 4)
+        self.assertEqual(delivery_picking.move_line_ids.mapped('qty_done'), [2, 3, 4, 2])
 
     def test_receipt_reserved_lots_multiloc_1(self):
         clean_access_rights(self.env)

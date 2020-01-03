@@ -1203,6 +1203,190 @@ tour.register('test_delivery_reserved_3', {test: true}, [
     },
 ]);
 
+tour.register('test_delivery_using_buttons', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertPageSummary('');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(false);
+            helper.assertNextVisible(false);
+            helper.assertNextEnabled(false);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(3);
+            helper.assertScanMessage('scan_products');
+            helper.assertLocationHighlight(false);
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(true);
+            helper.assert(
+                $('.o_line_button').length, 6,
+                "6 buttons must be present in the view (2 by line)"
+            );
+            helper.assert($('.o_add_reserved').eq(0).text(), '+ 2');
+            helper.assert($('.o_add_reserved').eq(1).text(), '+ 3');
+            helper.assert($('.o_add_reserved').eq(2).text(), '+ 4');
+            helper.assertLineQuantityOnReservedQty(0, '0 / 2');
+            helper.assertLineQuantityOnReservedQty(1, '0 / 3');
+            helper.assertLineQuantityOnReservedQty(2, '0 / 4');
+            helper.assertLineButtonsAreVisible(0, true);
+            helper.assertLineButtonsAreVisible(1, true);
+            helper.assertLineButtonsAreVisible(2, true);
+        }
+    },
+
+    // On the first line...
+    // Press +1 button , remaining quantity must be updated on the button.
+    {
+        trigger: '.o_barcode_line:first-child() .o_add_unit'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assert($('.o_add_reserved').eq(0).text(), '+ 1');
+            helper.assertLineQuantityOnReservedQty(0, '1 / 2');
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child()'), true);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child()'), false);
+        }
+    },
+    // Press +1 button again, now its buttons must be hidden.
+    {
+        trigger: '.o_barcode_line:first-child() .o_add_unit'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assert($('.o_add_reserved').eq(0).text(), '+ 1');
+            helper.assertLineButtonsAreVisible(0, false);
+            helper.assertLineQuantityOnReservedQty(0, '2 / 2');
+        }
+    },
+
+    // On the second line...
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assert($('.o_add_reserved').eq(1).text(), '+ 3');
+            helper.assertLineButtonsAreVisible(1, true);
+            helper.assertLineQuantityOnReservedQty(1, '0 / 3');
+        }
+    },
+    // Press the add remaining quantity button, now its buttons must be hidden.
+    {
+        trigger: '.o_barcode_line:nth-child(2) .o_add_reserved'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertLineButtonsAreVisible(1, false);
+            helper.assertLineQuantityOnReservedQty(1, '3 / 3');
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child()'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), true);
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child()'), false);
+        }
+    },
+
+    // On the third line...
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assert($('.o_add_reserved').eq(2).text(), '+ 4');
+            helper.assertLineButtonsAreVisible(2, true);
+            helper.assertLineQuantityOnReservedQty(2, '0 / 4');
+        }
+    },
+    // Scan product3 one time, then checks the quantities.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product3',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assert($('.o_add_reserved').eq(2).text(), '+ 3');
+            helper.assertLineButtonsAreVisible(2, true);
+            helper.assertLineQuantityOnReservedQty(2, '1 / 4');
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child()'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child()'), true);
+        }
+    },
+    // Press +1 button, then checks the quantities.
+    {
+        trigger: '.o_barcode_line:last-child() .o_add_unit'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assert($('.o_add_reserved').eq(2).text(), '+ 2');
+            helper.assertLineButtonsAreVisible(2, true);
+            helper.assertLineQuantityOnReservedQty(2, '2 / 4');
+        }
+    },
+    // Press the add remaining quantity button, now its buttons must be hidden.
+    {
+        trigger: '.o_barcode_line:nth-child(3) .o_add_reserved'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertLineButtonsAreVisible(2, false);
+            helper.assertLineQuantityOnReservedQty(2, '4 / 4');
+            helper.assertValidateIsHighlighted(true);
+        }
+    },
+
+    // Now, scan one more time the product3...
+    // ... So, a new line must be created and only the +1 button must be visible.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product3',
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(4)',
+        run: function() {
+            helper.assertLinesCount(4);
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child()'), true);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(3)'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child()'), false);
+            const $line = $('.o_barcode_line:first-child()');
+            helper.assertLineQty($line, '1');
+            // +1 button must be present on new line.
+            helper.assert($line.find('.o_add_unit').length, 1);
+            // "Add remaining reserved quantity" button must not be present on new line.
+            helper.assert($line.find('.o_add_reserved').length, 0);
+        }
+    },
+    // Press +1 button of the new line.
+    {
+        trigger: '.o_barcode_line:first-child() .o_add_unit'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child()'), true);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(3)'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child()'), false);
+            const $line = $('.o_barcode_line:first-child()');
+            helper.assertLineQty($line, '2');
+            // +1 button must still be present.
+            helper.assert($line.find('.o_add_unit').length, 1);
+            helper.assert($line.find('.o_add_reserved').length, 0);
+        }
+    },
+
+    // Validate the delivery.
+    {
+        trigger: '.o_validate_page'
+    },
+    {
+        trigger: '.o_notification_title:contains("Success")',
+    },
+]);
+
 
 tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
     {

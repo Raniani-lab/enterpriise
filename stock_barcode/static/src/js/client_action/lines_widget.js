@@ -9,6 +9,9 @@ var LinesWidget = Widget.extend({
     template: 'stock_barcode_lines_widget',
     events: {
         'click .o_add_line': '_onClickAddLine',
+        'click .o_add_reserved': '_onClickAddReserved',
+        'click .o_add_unit': '_onClickAddUnit',
+        'click .o_barcode_line': '_onClickLine',
         'click .o_validate_page': '_onClickValidatePage',
         'click .o_next_page': '_onClickNextPage',
         'click .o_previous_page': '_onClickPreviousPage',
@@ -68,6 +71,7 @@ var LinesWidget = Widget.extend({
             this._toggleScanMessage('scan_products');
         }
 
+        this._updateIncrementButtons($line);
     },
 
     /**
@@ -282,6 +286,11 @@ var LinesWidget = Widget.extend({
                 groups: this.groups,
                 isPickingRelated: this.isPickingRelated,
             }));
+            for (const line of $lines) {
+                if (line.dataset) {
+                    this._updateIncrementButtons($(line));
+                }
+            }
             $body.prepend($lines);
             $lines.on('click', '.o_edit', this._onClickEditLine.bind(this));
             $lines.on('click', '.o_package_content', this._onClickTruckLine.bind(this));
@@ -488,9 +497,79 @@ var LinesWidget = Widget.extend({
         }, 500);
     },
 
+    /**
+     * Updates the buttons to add quantities (updates written quantity or hides buttons).
+     *
+     * @private
+     * @param {jQueryElement} $line
+     */
+    _updateIncrementButtons: function ($line) {
+        const id = $line.data('id');
+        const qtyDone = parseFloat($line.find('.qty-done').text());
+        const line = this.page.lines.find(l => id === (l.id || l.virtual_id));
+        if (line.product_uom_qty === 0) {
+            // Does nothing it the line has no reserved quantity.
+            return;
+        }
+        if (qtyDone < line.product_uom_qty) {
+            // Updates the remaining quantities...
+            const $button = $line.find('.o_add_reserved');
+            const qty = line.product_uom_qty - qtyDone;
+            $button.data('reserved', qty);
+            $button.text(`+ ${qty}`);
+        } else {
+            // ...or hides the buttons if they are now useless.
+            $line.find('.o_line_button').hide();
+        }
+    },
+
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
+
+    /**
+     * Handles the click on the "Add Unit" button. This will trigger up
+     * `abstract_client_action` `_incrementLines` method.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onClickAddUnit: function (ev) {
+        ev.preventDefault();
+        const $line = $(ev.target).parents('.o_barcode_line');
+        const id = $line.data('id');
+        this.trigger_up('increment_line', {id: id});
+    },
+
+    /**
+     * Handles the click on the "Add Remaining Reserved Quantity" button.
+     * This will trigger up `abstract_client_action` `_incrementLines` method.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onClickAddReserved: function (ev) {
+        ev.preventDefault();
+        const $line = $(ev.target).parents('.o_barcode_line');
+        const id = $line.data('id');
+        const reserved_qty = $line.find('[data-reserved]').data('reserved');
+        this.trigger_up('increment_line', {
+            id: id,
+            qty: reserved_qty,
+        });
+    },
+
+    /**
+     * Handles the click on a line to select this line.
+     */
+    _onClickLine: function (ev) {
+        let $target = $(ev.target);
+        if (!$target.hasClass('o_barcode_line')) {
+            // Gets the line if it was one of its children whom was clicked on.
+            $target = $target.parents('.o_barcode_line');
+        }
+        this._highlightLine($target);
+    },
 
     /**
      * Handles the click on the `validate button`.

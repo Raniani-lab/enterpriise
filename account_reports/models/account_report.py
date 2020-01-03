@@ -744,13 +744,6 @@ class AccountReport(models.AbstractModel):
             if action.tag == 'account_report':
                 options['unfolded_lines'] = []
                 options['unfold_all'] = False
-                another_report_context = safe_eval(action_read['context'])
-                another_report = self.browse(another_report_context['id'])
-                if not self.date_range and another_report.date_range:
-                    # Don't propagate the filter if current report is date based while the targetted
-                    # report is date_range based, because the semantic is not the same:
-                    # 'End of Following Month' in BS != 'Last Month' in P&L (it has to go from 1st day of fiscalyear)
-                    options['date'].pop('filter', None)
                 action_read.update({'options': options, 'ignore_session': 'read'})
         if params.get('id'):
             # Add the id of the account.financial.html.report.line in the action's context

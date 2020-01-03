@@ -64,6 +64,10 @@ var StreamPostFacebookComments = StreamPostComments.extend({
         return _.str.sprintf("/social_facebook/redirect_to_profile/%s/%s?name=%s", this.accountId, comment.from.id, encodeURI(comment.from.name));
     },
 
+    isCommentDeletable: function (comment) {
+        return comment.from.id === this.pageFacebookId;
+    },
+
     isCommentEditable: function (comment) {
         return comment.from.id === this.pageFacebookId;
     },

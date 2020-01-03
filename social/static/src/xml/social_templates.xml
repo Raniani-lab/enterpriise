@@ -54,7 +54,7 @@
 
             <div class="flex-grow-1">
                 <div class="o_social_comment_content">
-                    <div t-attf-class="o_social_comment_message #{widget.isCommentEditable(comment) ? 'o_social_comment_editable' : ''}">
+                    <div t-attf-class="o_social_comment_message #{widget.isCommentEditable(comment) || widget.isCommentDeletable(comment) ? 'o_social_comment_editable' : ''}">
                         <a t-att-href="widget.getAuthorLink(comment)"
                             class="o_social_comment_author_name font-weight-bold"
                             t-esc="comment.from.name"
@@ -86,8 +86,8 @@
                                     <i class="fa fa-ellipsis-v"/>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right" t-attf-aria-labelledby="post_actions_#{comment.id}">
-                                    <a t-if="widget.isCommentDeletable()" class="o_social_edit_comment dropdown-item" href="#">Edit Comment</a>
-                                    <a class="o_social_delete_comment dropdown-item" href="#">Delete Comment</a>
+                                    <a t-if="widget.isCommentEditable(comment)" class="o_social_edit_comment dropdown-item" href="#">Edit Comment</a>
+                                    <a t-if="widget.isCommentDeletable(comment)" class="o_social_delete_comment dropdown-item" href="#">Delete Comment</a>
                                 </div>
                             </div>
                         </div>
@@ -110,13 +110,15 @@
                         </div>
 
                         <div class="o_social_comment_commands">
-                            <a t-attf-class="o_social_comment_like btn btn-sm btn-link px-0 #{comment.user_likes ? 'o_social_comment_user_likes' : ''}"
-                                href="#"
-                                t-att-data-user-likes="comment.user_likes"
-                                t-att-data-comment-id="comment.id">
-                                Like
-                            </a>
-                            <span>&#183;</span>
+                            <t t-if="widget.isCommentLikable()">
+                                <a t-attf-class="o_social_comment_like btn btn-sm btn-link px-0 #{comment.user_likes ? 'o_social_comment_user_likes' : ''}"
+                                    href="#"
+                                    t-att-data-user-likes="comment.user_likes"
+                                    t-att-data-comment-id="comment.id">
+                                    Like
+                                </a>
+                                <span>&#183;</span>
+                            </t>
                             <a class="o_social_comment_reply btn btn-sm btn-link px-0" href="#"> Reply </a>
                             <span t-if="comment.comments" class="o_social_comment_load_replies" t-att-data-inner-comments="JSON.stringify(comment.comments.data)">
                                 <span t-if="comment.comments">&#183;</span>
@@ -159,7 +161,7 @@
                         t-attf-class="o_social_add_comment o_social_comment_message form-control pr-5 #{bubble_design? 'bg-200 o_social_bubble_radius' : ''}"
                         t-att-placeholder="isCommentReply ? write_reply_text : write_comment_text"><t t-esc="initialValue || ''"></t></textarea>
                     <div class="o_social_comment_controls mt-2">
-                        <div class="o_social_comment_add_image o_social_subtle_btn px-3 py-1">
+                        <div t-attf-class="o_social_comment_add_image o_social_subtle_btn px-3 py-1 #{widget.canAddImage() ? '' : 'invisible'}">
                             <i class="fa fa-image" title="Add an image"/>
                         </div>
                         <t t-call="mail.EmojisDropdown"/>

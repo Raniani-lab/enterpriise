@@ -100,12 +100,20 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
         return "";
     },
 
-    getAuthorLink: function (comment) {
-        return "";
+    isCommentDeletable: function (comment) {
+        return false;
     },
 
-    isCommentEditable: function (comment) {
+    isCommentEditable: function () {
         return false;
+    },
+
+    isCommentLikable: function () {
+        return true;
+    },
+
+    getAuthorLink: function (comment) {
+        return "";
     },
 
     getLikesClass: function () {
@@ -120,9 +128,11 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
         return null;
     },
 
-    isCommentDeletable: function () {
+
+    canAddImage: function () {
         return true;
     },
+
 
     showMoreComments: function (result) {
         return false;

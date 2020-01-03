@@ -38,7 +38,7 @@
           <div class="badge-pill badge-info float-right"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']),
-              '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Reserved</div>
+              '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Confirmed</div>
           <div class="badge-pill badge-info float-right"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']),

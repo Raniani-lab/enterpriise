@@ -15,7 +15,7 @@ const BatchPickingClientAction = PickingClientAction.extend({
     init: function (parent, action) {
         this._super.apply(this, arguments);
         this.actionParams.model = 'stock.picking.batch';
-        this.actionParams.pickingBatchID = action.params.picking_batch_id;
+        this.actionParams.id = action.params.picking_batch_id;
         this.methods.validate = 'action_done';
         this.viewInfo = 'stock_barcode_picking_batch.stock_barcode_batch_picking_view_info';
     },
@@ -42,13 +42,6 @@ const BatchPickingClientAction = PickingClientAction.extend({
         values.default_batch_id = this.currentState.id;
         values.default_picking_id = this.currentState.picking_ids[0].id;
         return values;
-    },
-
-    /**
-     * @override
-     */
-    _getRecordId: function () {
-        return this.actionParams.pickingBatchID;
     },
 
     /**
@@ -114,7 +107,7 @@ const BatchPickingClientAction = PickingClientAction.extend({
                 return this._rpc({
                     'model': 'stock.picking.batch',
                     'method': 'action_print',
-                    'args': [[this.actionParams.pickingBatchID]],
+                    'args': [[this.actionParams.id]],
                 }).then((res) => {
                     return this.do_action(res);
                 });

@@ -26,6 +26,7 @@ var LinesWidget = Widget.extend({
         this.show_entire_packs = parent.show_entire_packs;
         this.displayControlButtons = this.nbPages > 0 && parent._isControlButtonsEnabled();
         this.displayOptionalButtons = parent._isOptionalButtonsEnabled();
+        this.isPickingRelated = parent._isPickingRelated();
     },
 
     start: function () {
@@ -83,6 +84,7 @@ var LinesWidget = Widget.extend({
             lines: [lineDescription],
             groups: this.groups,
             model: model,
+            isPickingRelated: this.isPickingRelated,
         }));
         $body.prepend($line);
         $line.on('click', '.o_edit', this._onClickEditLine.bind(this));
@@ -158,8 +160,7 @@ var LinesWidget = Widget.extend({
     setLotName: function(id_or_virtual_id, lotName) {
         var $line = this.$("[data-id='" + id_or_virtual_id + "']");
         var $lotName = $line.find('.o_line_lot_name');
-        var $lotId = $line.find('.o_line_lot_id');
-        if (! $lotName.text() && !$lotId.text()) {
+        if (!$lotName.text()) {
             var $span = $('<span>', {class: 'o_line_lot_name', text: lotName});
             $lotName.replaceWith($span);
         }
@@ -267,6 +268,7 @@ var LinesWidget = Widget.extend({
             pageIndex: this.pageIndex + 1,
             mode: this.mode,
             model: this.model,
+            isPickingRelated: this.isPickingRelated,
         }));
         $header.append($pageSummary);
 
@@ -278,6 +280,7 @@ var LinesWidget = Widget.extend({
                 packageLines: this.getPackageLines(this.page.lines),
                 model: this.model,
                 groups: this.groups,
+                isPickingRelated: this.isPickingRelated,
             }));
             $body.prepend($lines);
             $lines.on('click', '.o_edit', this._onClickEditLine.bind(this));

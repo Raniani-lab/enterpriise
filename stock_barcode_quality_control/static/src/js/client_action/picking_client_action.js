@@ -22,7 +22,7 @@ var PickingQualityClientAction = PickingClientAction.include({
                 return self._rpc({
                     'model': 'stock.picking',
                     'method': 'check_quality',
-                    'args': [[self.actionParams.pickingId]],
+                    'args': [[self.actionParams.id]],
                 }).then(function(res) {
                     var exitCallback = function () {
                         self.trigger_up('reload');

@@ -1,7 +1,7 @@
 .o_barcode_client_action {
     .o_barcode_lines {
         .o_barcode_line {
-            &.o_colored_markup {
+            &.o_colored_markup[data-picking-id] {
                 border-left-width: 24px;
                 border-left-style: solid;
             }

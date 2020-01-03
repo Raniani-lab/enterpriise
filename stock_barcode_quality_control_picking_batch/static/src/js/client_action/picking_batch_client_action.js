@@ -24,7 +24,7 @@ BatchPickingClientAction.include({
                 return this._rpc({
                     'model': 'stock.picking.batch',
                     'method': 'action_open_quality_check',
-                    'args': [[this.actionParams.pickingBatchID]],
+                    'args': [[this.actionParams.id]],
                 }).then((res) => {
                     const exitCallback = () => {
                         this.trigger_up('reload');

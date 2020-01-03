@@ -17,8 +17,8 @@ var InventoryClientAction = ClientAction.extend({
         this.commands['O-BTN.validate'] = this._validate.bind(this);
         this.commands['O-BTN.cancel'] = this._cancel.bind(this);
         this.mode = 'inventory';
-        if (! this.actionParams.inventoryId) {
-            this.actionParams.inventoryId = action.context.active_id;
+        if (! this.actionParams.id) {
+            this.actionParams.id = action.context.active_id;
             this.actionParams.model = 'stock.inventory';
         }
         this.methods = {
@@ -72,13 +72,6 @@ var InventoryClientAction = ClientAction.extend({
         values.default_inventory_id = this.currentState.id;
         values.default_product_qty = 1;
         return values;
-    },
-
-    /**
-     * @override
-     */
-    _getRecordId: function () {
-        return this.actionParams.inventoryId;
     },
 
     /**
@@ -236,7 +229,7 @@ var InventoryClientAction = ClientAction.extend({
                 return self.do_action(self.currentState.actionReportInventory, {
                     'additional_context': {
                         'active_id': self.actionParams.id,
-                        'active_ids': [self.actionParams.inventoryId],
+                        'active_ids': [self.actionParams.id],
                         'active_model': 'stock.inventory',
                     }
                 });

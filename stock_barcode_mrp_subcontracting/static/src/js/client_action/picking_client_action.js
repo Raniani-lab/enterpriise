@@ -72,7 +72,7 @@ var MrpSubcontractingPickingClientAction = PickingClientAction.include({
             def = this._rpc({
                 'model': 'stock.picking',
                 'method': 'action_record_components',
-                'args': [[this.actionParams.pickingId]],
+                'args': [[this.actionParams.id]],
             });
         }
         return def.then(function (res) {

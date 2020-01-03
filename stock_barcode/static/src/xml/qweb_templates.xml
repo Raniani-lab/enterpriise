@@ -5,7 +5,7 @@
         <div class="o_barcode_header navbar navbar-expand navbar-dark bg-beta">
             <nav class="navbar-nav mr-auto">
                 <a tabindex="" class="nav-link o_exit mr-4"><i class="fa fa-chevron-left"/></a>
-                <span class="o_title navbar-text text-white"><t t-esc="widget.title"></t></span>
+                <span class="o_title navbar-text text-white" t-esc="widget.title"/>
             </nav>
             <nav class="navbar-nav">
                 <a tabindex="" class="nav-link o_show_information mr-4"><i class="fa fa-info-circle"/></a>
@@ -62,17 +62,17 @@
     <t t-name="stock_barcode_summary_template">
         <div class="o_barcode_page_summary" t-if="mode !== 'no_multi_locations'">
             <div class="o_barcode_product_line d-flex justify-content-between align-items-center">
-                <span t-if="model == 'stock.picking'" class="o_barcode_locations">
+                <span t-if="isPickingRelated" class="o_barcode_locations">
                     <div class="d-inline-block font-weight-bold text-right">
                         <span t-if="mode !== 'receipt'" class="o_barcode_location_label">From: </span> <span t-if="mode !== 'receipt'" class="o_barcode_summary_location_src" t-esc="locationName"/>
                         <span t-if="mode !== 'delivery'" class="o_barcode_location_label">To: </span> <span t-if="mode !== 'delivery'" class="o_barcode_summary_location_dest" t-esc="locationDestName"/>
                     </div>
                 </span>
                 <span t-if="model == 'stock.inventory'" class="o_barcode_locations">
-                    <span class="o_barcode_summary_location_src"><t t-esc="locationName"/></span>
+                    <span class="o_barcode_summary_location_src" t-esc="locationName"/>
                 </span>
                 <t t-if="nbPages">
-                    <span class="o_barcode_move_number font-weight-bold"><t t-esc="pageIndex"></t>/<t t-esc="nbPages"></t></span>
+                    <span class="o_barcode_move_number font-weight-bold"><t t-esc="pageIndex"/>/<t t-esc="nbPages"/></span>
                 </t>
             </div>
         </div>
@@ -81,54 +81,46 @@
     <t t-name="stock_barcode_lines_template">
         <t t-if="lines">
             <t t-foreach="lines" t-as="line">
-                <div class="o_barcode_line list-group-item d-flex flex-row flex-nowrap" t-if="model == 'stock.picking'" t-att-data-id="line.virtual_id || line.id" t-att-data-barcode="line.product_barcode">
+                <div class="o_barcode_line list-group-item d-flex flex-row flex-nowrap"
+                    t-att-data-id="line.virtual_id || line.id"
+                    t-att-data-barcode="line.product_barcode">
                     <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
-                        <div class="o_barcode_line_title pb-1"><i class="fa fa-fw fa-tags"/> <span class="product-label"><t t-esc="line.display_name"></t></span></div>
-                        <div>
+                        <div class="o_barcode_line_title pb-1">
+                            <i class="fa fa-fw fa-tags"/>
+                            <span class="product-label" t-esc="line.display_name || line.product_id.display_name"/>
+                        </div>
+                        <div name="quantity"> <!-- Name used for inheritance -->
                             <i class="fa fa-fw fa-cube"/>
                             <span t-attf-class="o_barcode_scanner_qty text-monospace badge #{' '}"> <!-- @SLE: Eventually add contextual classes: "badge-warning", "badge-danger", "badge-success"  -->
-                                <span class="qty-done d-inline-block text-left" t-esc="line.qty_done"/>
-                                <span t-if="line.product_uom_qty" t-esc="'/ ' + line.product_uom_qty"/>
+                                <t t-if="isPickingRelated">
+                                    <span class="qty-done d-inline-block text-left" t-esc="line.qty_done"/>
+                                    <span t-if="line.product_uom_qty" t-esc="'/ ' + line.product_uom_qty"/>
+                                </t>
+                                <t t-if="model == 'stock.inventory'">
+                                    <span class="product_qty d-inline-block text-left" t-esc="line.product_qty"/>
+                                    <span t-if="line.theoretical_qty" t-esc="'/ ' + line.theoretical_qty"/>
+                                </t>
                             </span>
                             <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
                         </div>
                         <div t-if="line.package_id || line.result_package_id">
-                            <i class="fa fa-fw fa-archive"/> <t t-if="line.package_id" t-esc="line.package_id[1]"></t> <span class="fa fa-long-arrow-right"></span> <t t-if="line.result_package_id" t-esc="line.result_package_id[1]"></t>
+                            <i class="fa fa-fw fa-archive"/>
+                            <t t-if="line.package_id" t-esc="line.package_id[1]"/>
+                            <t t-if="isPickingRelated">
+                                <i class="fa fa-long-arrow-right"/>
+                                <t t-if="line.result_package_id" t-esc="line.result_package_id[1]"/>
+                            </t>
                         </div>
                         <div t-if="line.owner_id">
-                            <i class="fa fa-fw fa-user-o"/> <t t-esc="line.owner_id[1]"></t>
+                            <i class="fa fa-fw fa-user-o"/> <t t-esc="line.owner_id[1]"/>
                         </div>
                         <div t-if="line.product_id.tracking !== 'none'">
                             <i class="fa fa-barcode"/>
-                            <span class="o_line_lot_name"><t t-if="line.lot_name" t-esc="line.lot_name"></t></span>
-                            <span class="o_line_lot_id"><t t-if="! line.lot_name &amp;&amp; line.lot_id &amp;&amp; line.lot_id[1]" t-esc="line.lot_id[1]"></t></span>
+                            <span class="o_line_lot_name" t-esc="(line.lot_id &amp;&amp; line.lot_id[1]) || (line.prod_lot_id &amp;&amp;line.prod_lot_id[1]) || line.lot_name || ''"/>
                         </div>
                     </div>
-                    <div t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-flex align-items-center pl-4">
-                        <a class="o_edit text-muted" href="#" title="Edit"><i class="fa fa-pencil"/></a>
-                    </div>
-                </div>
-                <div class="o_barcode_line list-group-item d-flex flex-row flex-nowrap" t-if="model == 'stock.inventory'" t-att-data-id="line.virtual_id || line.id" t-att-data-barcode="line.product_barcode">
-                    <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
-                        <div class="o_barcode_line_title pb-1"><i class="fa fa-fw fa-tags"/> <span class="product-label"><t t-esc="line.product_id.display_name"></t></span></div>
-                        <div>
-                            <i class="fa fa-fw fa-cube"/>
-                            <span t-attf-class="o_barcode_scanner_qty text-monospace badge #{' '}"> <!-- @SLE, Eventually add contextual classes: "badge-warning", "badge-danger", "badge-success"  -->
-                                <span class="product_qty d-inline-block text-left" t-esc="line.product_qty"/>
-                                <span t-if="line.theoretical_qty" t-esc="'/ ' + line.theoretical_qty"/>
-                            </span>
-                            <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
-                        </div>
-                        <div t-if="line.package_id">
-                            <i class="fa fa-fw fa-archive"/> <t t-esc="line.package_id[1]"/>
-                        </div>
-                        <div t-if="line.product_id.tracking !== 'none'">
-                            <i class="fa fa-barcode"/>
-                            <span class="o_line_lot_name"><t t-if="line.prod_lot_id" t-esc="line.prod_lot_id[1]"></t></span>
-                        </div>
-                        <div t-if="line.partner_id">
-                            <i class="fa fa-fw fa-user-o"/> <t t-esc="line.partner_id[1]"></t>
-                        </div>
+                    <div t-if="line.partner_id">
+                        <i class="fa fa-fw fa-user-o"/> <t t-esc="line.partner_id[1]"/>
                     </div>
                     <div t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-flex align-items-center pl-4">
                         <a class="o_edit text-muted" href="#" title="Edit"><i class="fa fa-pencil"/></a>
@@ -141,7 +133,7 @@
                 <div class="o_barcode_line list-group-item d-flex flex-row flex-nowrap py-3" t-att-data-id="packageLine.virtual_id || packageLine.id" t-att-data-barcode="packageLine.product_barcode">
                     <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
                         <div>
-                            <i class="fa fa-fw fa-archive"/> <t t-esc="packageLine.package_id[1]"></t> <span class="fa fa-long-arrow-right"></span> <t t-esc="packageLine.result_package_id[1]"></t>
+                            <i class="fa fa-fw fa-archive"/> <t t-esc="packageLine.package_id[1]"/> <i class="fa fa-long-arrow-right"/> <t t-esc="packageLine.result_package_id[1]"/>
                         </div>
                         <div>
                             <i class="fa fa-fw fa-cube"/>

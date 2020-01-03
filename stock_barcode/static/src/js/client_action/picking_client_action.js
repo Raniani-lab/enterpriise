@@ -25,10 +25,9 @@ var PickingClientAction = ClientAction.extend({
         this.commands['O-BTN.validate'] = this._validate.bind(this);
         this.commands['O-BTN.cancel'] = this._cancel.bind(this);
         this.commands['O-BTN.pack'] = this._putInPack.bind(this);
-        this.commands['O-BTN.print-slip'] = this._printDeliverySlip.bind(this);
         this.commands['O-BTN.print-op'] = this._printPicking.bind(this);
-        if (! this.actionParams.pickingId) {
-            this.actionParams.pickingId = action.context.active_id;
+        if (! this.actionParams.id) {
+            this.actionParams.id = action.context.active_id;
             this.actionParams.model = 'stock.picking';
         }
         this.methods = {
@@ -42,6 +41,8 @@ var PickingClientAction = ClientAction.extend({
         var self = this;
         var res = this._super.apply(this, arguments);
         res.then(function() {
+            // Bind the print slip command here to be able to pass the action as argument.
+            self.commands['O-BTN.print-slip'] = self._printReport.bind(self, self.currentState.actionReportBarcodesZplId);
             // Get the usage of the picking type of `this.picking_id` to chose the mode between
             // `receipt`, `internal`, `delivery`.
             var picking_type_code = self.currentState.picking_type_code;
@@ -126,13 +127,6 @@ var PickingClientAction = ClientAction.extend({
             }
         }
         return false;
-    },
-
-    /**
-     * @override
-     */
-    _getRecordId: function () {
-        return this.actionParams.pickingId;
     },
 
     /**
@@ -280,7 +274,7 @@ var PickingClientAction = ClientAction.extend({
                 return self._rpc({
                     'model': 'stock.picking',
                     'method': 'button_scrap',
-                    'args': [[self.actionParams.pickingId]],
+                    'args': [[self.actionParams.id]],
                 }).then(function(res) {
                     var exitCallback = function () {
                         core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);
@@ -309,7 +303,7 @@ var PickingClientAction = ClientAction.extend({
                 return self._rpc({
                     'model': 'stock.picking',
                     'method': 'put_in_pack',
-                    'args': [[self.actionParams.pickingId]],
+                    'args': [[self.actionParams.id]],
                     kwargs: {
                         context: _.extend({}, self.context || {}, {barcode_view: true})
                     },
@@ -390,7 +384,7 @@ var PickingClientAction = ClientAction.extend({
                 return self._rpc({
                     'model': 'stock.picking',
                     'method': 'do_print_picking',
-                    'args': [[self.actionParams.pickingId]],
+                    'args': [[self.actionParams.id]],
                 }).then(function(res) {
                     return self.do_action(res);
                 });
@@ -398,45 +392,19 @@ var PickingClientAction = ClientAction.extend({
         });
     },
 
-    _printDeliverySlip: function () {
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self.do_action(self.currentState.actionReportDeliverySlipId, {
-                    'additional_context': {
-                        'active_id': self.actionParams.pickingId,
-                        'active_ids': [self.actionParams.pickingId],
-                        'active_model': 'stock.picking',
-                    }
-                });
-            });
-        });
-    },
-
-    _printBarcodesZpl: function () {
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self.do_action(self.currentState.actionReportBarcodesZplId, {
-                    'additional_context': {
-                        'active_id': self.actionParams.pickingId,
-                        'active_ids': [self.actionParams.pickingId],
-                        'active_model': 'stock.picking',
-                    }
-                });
-            });
-        });
-    },
-
-    _printBarcodesPdf: function () {
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self.do_action(self.currentState.actionReportBarcodesPdfId, {
-                    'additional_context': {
-                        'active_id': self.actionParams.pickingId,
-                        'active_ids': [self.actionParams.pickingId],
-                        'active_model': 'stock.picking',
+    /**
+     * Calls the action to print the according report.
+     *
+     * @param {integer} action id of the report action
+     */
+    _printReport: function (action) {
+        this.mutex.exec(() => {
+            return this._save().then(() => {
+                return this.do_action(action, {
+                    additional_context: {
+                        active_id: this.actionParams.id,
+                        active_ids: [this.actionParams.id],
+                        active_model: 'stock.picking',
                     }
                 });
             });
@@ -485,7 +453,7 @@ var PickingClientAction = ClientAction.extend({
      */
     _onPrintDeliverySlip: function (ev) {
         ev.stopPropagation();
-        this._printDeliverySlip();
+        this._printReport(this.currentState.actionReportDeliverySlipId);
     },
 
     /**
@@ -497,7 +465,7 @@ var PickingClientAction = ClientAction.extend({
      */
     _onPrintBarcodesZpl: function (ev) {
         ev.stopPropagation();
-        this._printBarcodesZpl();
+        this._printReport(this.currentState.actionReportBarcodesZplId);
     },
 
     /**
@@ -509,7 +477,7 @@ var PickingClientAction = ClientAction.extend({
      */
     _onPrintBarcodesPdf: function (ev) {
         ev.stopPropagation();
-        this._printBarcodesPdf();
+        this._printReport(this.currentState.actionReportBarcodesPdfId);
     },
 
     /**

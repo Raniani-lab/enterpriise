@@ -38,8 +38,7 @@ var ClientAction = AbstractAction.extend({
 
         // We keep a copy of the action's parameters in order to make the calls to `this._getState`.
         this.actionParams = {
-            pickingId: action.params.picking_id,
-            inventoryId: action.params.inventory_id,
+            id: action.params.picking_id || action.params.inventory_id,
             model: action.params.model,
         };
 
@@ -85,10 +84,9 @@ var ClientAction = AbstractAction.extend({
 
     willStart: function () {
         var self = this;
-        const recordId = this._getRecordId();
         return Promise.all([
             self._super.apply(self, arguments),
-            self._getState(recordId),
+            self._getState(this.actionParams.id),
             self._getProductBarcodes(),
             self._getLocationBarcodes()
         ]).then(function () {
@@ -168,17 +166,6 @@ var ClientAction = AbstractAction.extend({
             default_company_id: this.currentState.company_id[0],
             default_location_id: currentPage.location_id,
         };
-    },
-
-    /**
-     * Return the ID of the record, depending of its model.
-     *
-     * @abstract
-     * @private
-     * @returns {integer} ID of the record
-     */
-    _getRecordId: function () {
-        throw new Error(_t("_getRecordId is an abstract method. You need to implement it."));
     },
 
     /**
@@ -628,7 +615,7 @@ var ClientAction = AbstractAction.extend({
 
 
         // make a write with the current changes
-        var recordId = this._getRecordId();
+        var recordId = this.actionParams.id;
         var applyChangesDef =  this._applyChanges(this._compareStates()).then(function (state) {
             // Fixup virtual ids in `self.scanned_lines`
             var virtual_ids_to_fixup = _.filter(self._getLines(state[0]), function (line) {

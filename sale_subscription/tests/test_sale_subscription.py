@@ -121,8 +121,8 @@ class TestSubscription(TestSubscriptionCommon):
              'type': 'sale',
              'company_id': self.company.id,
              'sequence_id': self.env['ir.sequence'].search([], limit=1).id,
-             'default_credit_account_id': self.account_receivable.id,
-             'default_debit_account_id': self.account_receivable.id})
+             'default_credit_account_id': self.account_sale.id,
+             'default_debit_account_id': self.account_sale.id})
 
         self.partner = self.env['res.partner'].create(
             {'name': 'Stevie Nicks',

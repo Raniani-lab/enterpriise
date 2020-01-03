@@ -43,8 +43,8 @@
             <span class="o_hidden o_scan_message o_scan_message_picking_already_cancelled"><span class="fa fa-exclamation-triangle"/> This picking is already cancelled</span>
             <span class="o_hidden o_scan_message o_scan_message_inv_already_done"><span class="fa fa-exclamation-triangle"/> This inventory adjustment is already done</span>
         </div>
-        <div class="o_barcode_lines_header alert mb-0"></div>
-        <div class="o_barcode_lines list-group flex-grow-1 d-block bg-100 position-relative"></div>
+        <div class="o_barcode_lines_header alert mb-0 bg-beta text-white"></div>
+        <div class="o_barcode_lines list-group flex-grow-1 d-block position-relative"></div>
 
         <t t-if="widget.displayOptionalButtons" t-name="optional_buttons">
             <div t-if="widget.mode !== 'done' &amp;&amp; widget.mode !== 'cancel'" class="o_barcode_control d-flex">
@@ -63,9 +63,9 @@
         <div class="o_barcode_page_summary" t-if="mode !== 'no_multi_locations'">
             <div class="o_barcode_product_line d-flex justify-content-between align-items-center">
                 <span t-if="isPickingRelated" class="o_barcode_locations">
-                    <div class="d-inline-block font-weight-bold text-right">
-                        <span t-if="mode !== 'receipt'" class="o_barcode_location_label">From: </span> <span t-if="mode !== 'receipt'" class="o_barcode_summary_location_src" t-esc="locationName"/>
-                        <span t-if="mode !== 'delivery'" class="o_barcode_location_label">To: </span> <span t-if="mode !== 'delivery'" class="o_barcode_summary_location_dest" t-esc="locationDestName"/>
+                    <div class="d-inline-block">
+                        <span t-if="mode !== 'receipt'" class="o_barcode_location_label">From </span> <span t-if="mode !== 'receipt'" class="o_barcode_summary_location_src" t-esc="locationName"/>
+                        <span t-if="mode !== 'delivery'" class="o_barcode_location_label">To </span> <span t-if="mode !== 'delivery'" class="o_barcode_summary_location_dest" t-esc="locationDestName"/>
                     </div>
                 </span>
                 <span t-if="model == 'stock.inventory'" class="o_barcode_locations">
@@ -123,7 +123,7 @@
                         <i class="fa fa-fw fa-user-o"/> <t t-esc="line.partner_id[1]"/>
                     </div>
                     <div t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-flex align-items-center pl-4">
-                        <a class="o_edit text-muted" href="#" title="Edit"><i class="fa fa-pencil"/></a>
+                        <a class="o_edit text-muted" href="#" title="Edit"><i class="fa fa-2x fa-pencil"/></a>
                     </div>
                 </div>
             </t>

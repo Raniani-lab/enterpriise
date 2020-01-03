@@ -223,7 +223,11 @@ var PickingClientAction = ClientAction.extend({
         const superValidate = this._super.bind(this);
         this.mutex.exec(function () {
             const successCallback = function () {
-                self.do_notify(_t("Success"), _t("The transfer has been validated"));
+                self.displayNotification({
+                    title: _t("Success"),
+                    message: _t("The transfer has been validated"),
+                    type: 'success',
+                });
                 self.trigger_up('exit');
             };
             const exitCallback = function (infos) {

@@ -43,9 +43,9 @@
         <field name="name">calendar.appointment.type.tree</field>
         <field name="model">calendar.appointment.type</field>
         <field name="arch" type="xml">
-            <tree string="Appointment Type">
+            <tree string="Appointment Type" multi_edit="1">
                 <field name="sequence" widget="handle"/>
-                <field name="name"/>
+                <field name="name" readonly="1"/>
                 <field name="location"/>
                 <field name="appointment_tz"/>
                 <field name="employee_ids" widget="many2many_tags"/>

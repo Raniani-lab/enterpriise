@@ -49,7 +49,7 @@ class AccountJournal(models.Model):
         for bank_journal in self.search(domain):
             bank_journal.write({'outbound_payment_method_ids': [(4, sepa_ct.id, None)]})
 
-    def create_iso20022_credit_transfer(self, payments, batch_booked=False, sct_generic=False):
+    def create_iso20022_credit_transfer(self, payments, batch_booking=False, sct_generic=False):
         """
             This method creates the body of the XML file for the SEPA document.
             It returns the content of the XML file.
@@ -92,7 +92,7 @@ class AccountJournal(models.Model):
             PmtMtd = etree.SubElement(PmtInf, "PmtMtd")
             PmtMtd.text = 'TRF'
             BtchBookg = etree.SubElement(PmtInf, "BtchBookg")
-            BtchBookg.text = str(batch_booked).lower()
+            BtchBookg.text = batch_booking and 'true' or 'false'
             NbOfTxs = etree.SubElement(PmtInf, "NbOfTxs")
             NbOfTxs.text = str(len(payments_list))
             CtrlSum = etree.SubElement(PmtInf, "CtrlSum")

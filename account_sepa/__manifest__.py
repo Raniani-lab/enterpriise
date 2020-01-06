@@ -17,6 +17,7 @@
         'views/account_journal_dashboard_view.xml',
         'views/res_config_settings_views.xml',
         'views/account_payment.xml',
+        'views/account_batch_payment_views.xml',
     ],
     'post_init_hook': 'init_initiating_party_names',
     'license': 'OEEL-1',

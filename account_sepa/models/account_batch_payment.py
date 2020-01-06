@@ -21,6 +21,7 @@ def check_valid_SEPA_str(string):
 class AccountBatchPayment(models.Model):
     _inherit = 'account.batch.payment'
 
+    sct_batch_booking = fields.Boolean(string="SCT Batch Booking", default=True, help="Request batch booking from the bank for the related bank statements.")
     sct_generic = fields.Boolean(compute='_compute_sct_generic',
         help=u"Technical feature used during the file creation. A SEPA message is said to be 'generic' if it cannot be considered as "
              u"a standard european credit transfer. That is if the bank journal is not in €, a transaction is not in € or a payee is "
@@ -113,7 +114,7 @@ class AccountBatchPayment(models.Model):
         if self.payment_method_code == 'sepa_ct':
             payments = self.payment_ids.sorted(key=lambda r: r.id)
             payment_dicts = self._generate_payment_template(payments)
-            xml_doc = self.journal_id.create_iso20022_credit_transfer(payment_dicts, False, self.sct_generic)
+            xml_doc = self.journal_id.create_iso20022_credit_transfer(payment_dicts, self.sct_batch_booking, self.sct_generic)
             return {
                 'file': base64.encodebytes(xml_doc),
                 'filename': "SCT-" + self.journal_id.code + "-" + str(fields.Date.today()) + ".xml",

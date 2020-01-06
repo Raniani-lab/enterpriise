@@ -25,7 +25,8 @@ class Task(models.Model):
 
     def _validate_stock(self):
         # need to re-run _action_launch_stock_rule, since the sale order can already be confirmed
-        self.sale_order_id.order_line._action_launch_stock_rule()
+        previous_product_uom_qty = {line.id: line.product_uom_qty for line in self.sale_order_id.order_line}
+        self.sale_order_id.order_line._action_launch_stock_rule(previous_product_uom_qty=previous_product_uom_qty)
         for picking in self.sale_order_id.picking_ids:
             for move in picking.move_lines.filtered(lambda ml: ml.state != 'done'):
                 for move_line in move.move_line_ids:

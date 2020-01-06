@@ -9,6 +9,7 @@ from random import randint, shuffle
 import datetime
 import logging
 import math
+import threading
 
 _logger = logging.getLogger(__name__)
 
@@ -99,10 +100,16 @@ class crm_team(models.Model):
                             _logger.debug('Lead [%s] merged of [%s]' % (merged, leads_duplicated))
                             leads_merged.add(merged.id)
                         leads_done.update(leads_duplicated.ids)
-                    self._cr.commit()
+                    # auto-commit except in testing mode
+                    auto_commit = not getattr(threading.currentThread(), 'testing', False)
+                    if auto_commit:
+                        self._cr.commit()
                 if leads_merged:
                     self.env['website.crm.score'].assign_scores_to_leads(lead_ids=list(leads_merged))
-                self._cr.commit()
+                # auto-commit except in testing mode
+                auto_commit = not getattr(threading.currentThread(), 'testing', False)
+                if auto_commit:
+                    self._cr.commit()
 
     @api.model
     def assign_leads_to_salesmen(self, all_team_users):
@@ -158,7 +165,10 @@ class crm_team(models.Model):
             # ToDo in master/saas-14: add option mail_auto_subscribe_no_notify on the saleman/saleteam
             lead.with_context(mail_auto_subscribe_no_notify=True).write(data)
             lead.convert_opportunity(lead.partner_id and lead.partner_id.id or None)
-            self._cr.commit()
+            # auto-commit except in testing mode
+            auto_commit = not getattr(threading.currentThread(), 'testing', False)
+            if auto_commit:
+                self._cr.commit()
 
             user['nbr'] -= 1
             if not user['nbr']:

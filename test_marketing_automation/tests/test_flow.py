@@ -98,7 +98,9 @@ for record in records:
 
         # First traces are processed, emails are sent
         with patch.object(IrMailServer, 'connect'):
-            campaign.execute_activities()
+            with patch.object(campaign.env.cr, 'commit'):
+                campaign.execute_activities()
+
         self.assertEqual(set(act_0.trace_ids.mapped('state')), set(['processed']))
 
         # Child traces should have been generated for all traces of parent activity as filter is taken into account at processing, not generation
@@ -110,7 +112,8 @@ for record in records:
         self.assertEqual(set(act_1.trace_ids.mapped('schedule_date')), set([date + relativedelta(hours=1)]))
 
         # Traces are processed, but this is not the time to execute child traces
-        campaign.execute_activities()
+        with patch.object(campaign.env.cr, 'commit'):
+            campaign.execute_activities()
         self.assertEqual(set(act_1.trace_ids.mapped('state')), set(['scheduled']))
 
         # Time is coming, a bit like the winter
@@ -118,7 +121,8 @@ for record in records:
         self.mock_datetime.now.return_value = date
         self.mock_datetime2.now.return_value = date
 
-        campaign.execute_activities()
+        with patch.object(campaign.env.cr, 'commit'):
+            campaign.execute_activities()
         # There should be one rejected activity not matching the filter
         self.assertEqual(
             set(act_1.trace_ids.filtered(lambda tr: tr.participant_id.res_id != self.test_rec4.id).mapped('state')),

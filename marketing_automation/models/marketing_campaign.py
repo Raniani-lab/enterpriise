@@ -568,13 +568,11 @@ class MarketingActivity(models.Model):
                 trace_to_activities[trace.activity_id] |= trace
 
         # execute activity on their traces
-        BATCH_SIZE = 40
-        index = 1
+        BATCH_SIZE = 500  # same batch size as the MailComposer
         for activity, traces in trace_to_activities.items():
-            activity.execute_on_traces(traces)
-            if not index % BATCH_SIZE:
+            for traces_batch in (traces[i:i + BATCH_SIZE] for i in range(0, len(traces), BATCH_SIZE)):
+                activity.execute_on_traces(traces_batch)
                 self.env.cr.commit()
-            index += 1
 
     def execute_on_traces(self, traces):
         """ Execute current activity on given traces.

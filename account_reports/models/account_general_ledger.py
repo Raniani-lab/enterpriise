@@ -815,16 +815,23 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             'unfoldable': False,
             'unfolded': False,
         }]
-        for tax, results in taxes_results:
-            sign = journal_type == 'sale' and -1 or 1
-            base_amount = sign * results.get('base_amount', 0.0)
-            tax_amount = sign * results.get('tax_amount', 0.0)
-            lines.append({
-                'id': '%s_tax' % tax.id,
-                'name': '%s (%s)' % (tax.name, tax.amount),
-                'caret_options': 'account.tax',
-                'unfoldable': False,
-                'columns': [{'name': v} for v in ['', '', '', '', self.format_value(base_amount), self.format_value(tax_amount), '']],
-                'level': 4,
-            })
+
+        tax_report_date = options['date'].copy()
+        tax_report_date['strict_range'] = True
+        tax_report_options = self.env['account.generic.tax.report']._get_options()
+        tax_report_options.update({
+                'tax_grids': False,
+                'date': tax_report_date,
+                'journals': options['journals'],
+                'all_entries': options['all_entries'],
+        })
+        journal = self.env['account.journal'].browse(self._get_options_journals(options)[0]['id'])
+        tax_report_lines = self.env['account.generic.tax.report'].with_company(journal.company_id)._get_lines(tax_report_options)
+
+        for tax_line in tax_report_lines:
+            if tax_line['id'] not in ('sale', 'purchase'): # We want to exclude title lines here
+                tax_line['columns'].append({'name': ''})
+                tax_line['colspan'] = 5
+                lines.append(tax_line)
+
         return lines

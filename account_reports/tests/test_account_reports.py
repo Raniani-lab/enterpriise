@@ -246,7 +246,7 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Tax Declaration.
                 ('Tax Declaration',                     '',             '',             ''),
                 ('Name',                                'Base Amount',  'Tax Amount',   ''),
-                ('Tax 15.00% (15.0)',                   600.00,         375.00,         ''),
+                ('Tax 15.00% (15.0)',                   600.00,         90.0,         ''),
             ],
         )
     # -------------------------------------------------------------------------

@@ -37,6 +37,12 @@ class generic_tax_report(models.AbstractModel):
             default_report = self.env.company.get_default_selected_tax_report()
             options['tax_report'] = default_report and default_report.id or None
 
+    @api.model
+    def _get_options(self, previous_options=None):
+        rslt = super(generic_tax_report, self)._get_options(previous_options)
+        rslt['date']['strict_range'] = True
+        return rslt
+
     def _get_reports_buttons(self):
         res = super(generic_tax_report, self)._get_reports_buttons()
         res.append({'name': _('Closing Journal Entry'), 'action': 'periodic_tva_entries', 'sequence': 8})
@@ -234,11 +240,6 @@ class generic_tax_report(models.AbstractModel):
         rslt['search_template'] = 'account_reports.search_template_generic_tax_report'
         return rslt
 
-    def _set_context(self, options):
-        ctx = super(generic_tax_report, self)._set_context(options)
-        ctx['strict_range'] = True
-        return ctx
-
     def _sql_cash_based_taxes(self):
         sql = """SELECT id, sum(base) AS base, sum(net) AS net FROM (
                     SELECT tax.id,
@@ -291,7 +292,7 @@ class generic_tax_report(models.AbstractModel):
         """ Fills dict_to_fill with the data needed to generate the report, when
         the report is set to group its line by tax grid.
         """
-        tables, where_clause, where_params = self.env['account.move.line']._query_get()
+        tables, where_clause, where_params = self._query_get(options)
         sql = """SELECT account_tax_report_line_tags_rel.account_tax_report_line_id,
                         SUM(coalesce(account_move_line.balance, 0) * CASE WHEN acc_tag.tax_negate THEN -1 ELSE 1 END
                                                  * CASE WHEN account_journal.type = 'sale' THEN -1 ELSE 1 END
@@ -328,10 +329,10 @@ class generic_tax_report(models.AbstractModel):
 
     def _compute_from_amls_taxes(self, options, dict_to_fill, period_number):
         """ Fills dict_to_fill with the data needed to generate the report, when
-        the report is set to group its line by tax grid.
+        the report is set to group its line by tax.
         """
         sql = self._sql_cash_based_taxes()
-        tables, where_clause, where_params = self.env['account.move.line']._query_get()
+        tables, where_clause, where_params = self._query_get(options)
         query = sql % (tables, where_clause, tables, where_clause)
         self.env.cr.execute(query, where_params + where_params)
         results = self.env.cr.fetchall()

@@ -110,6 +110,9 @@ odoo.define('timesheet_grid.GridModel', function (require) {
 
             for (let i = 0; i < a.length; i++) {
                 for (const field of fields) {
+                    if (a[i].values[field] === false && b[i].values[field] !== false) {
+                        return false;
+                    }
                     if (_.difference(a[i].values[field], b[i].values[field]).length !== 0) {
                         return false;
                     }
@@ -133,6 +136,9 @@ odoo.define('timesheet_grid.GridModel', function (require) {
             for (i = 0; i < a.rows.length; i++) {
                 b.rows.some((row, index) => {
                     for (const field of fields) {
+                        if (a.rows[i].values[field] === false && row.values[field] !== false) {
+                            return false;
+                        }
                         if (_.difference(a.rows[i].values[field], row.values[field]).length !== 0) {
                             return false;
                         }

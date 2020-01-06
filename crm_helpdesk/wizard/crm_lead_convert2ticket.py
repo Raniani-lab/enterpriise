@@ -27,7 +27,7 @@ class CrmLeadConvert2Ticket(models.TransientModel):
         lead = self.lead_id
         partner_id = self._find_matching_partner()
         if not partner_id and (lead.partner_name or lead.contact_name):
-            partner_id = lead.handle_partner_assignation()[lead.id]
+            partner_id = lead.handle_partner_assignation(action='create')[lead.id]
         # create new helpdesk.ticket
         vals = {
             "name": lead.name,
@@ -45,7 +45,7 @@ class CrmLeadConvert2Ticket(models.TransientModel):
         attachments = self.env['ir.attachment'].search([('res_model', '=', 'crm.lead'), ('res_id', '=', lead.id)])
         attachments.sudo().write({'res_model': 'helpdesk.ticket', 'res_id': ticket.id})
         # archive the lead
-        lead.write({'active': False})
+        lead.action_archive()
         # return the action to go to the form view of the new Ticket
         view = self.env.ref('helpdesk.helpdesk_ticket_view_form')
         return {

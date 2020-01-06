@@ -55,7 +55,7 @@ class TestAccountReportsFilters(AccountTestCommon):
     def test_filter_date_month_range(self):
         ''' Test the filter_date with 'this_month'/'last_month' in 'range' mode.'''
         def get_month_string(date):
-            return format_date(self.env, fields.Date.to_string(date), date_format='MMM YYYY')
+            return format_date(self.env, fields.Date.to_string(date), date_format='MMM yyyy')
 
         frozen_today = fields.Date.today()
         with patch.object(fields.Date, 'today', lambda *args, **kwargs: frozen_today), patch.object(fields.Date, 'context_today', lambda *args, **kwargs: frozen_today):
@@ -575,14 +575,14 @@ class TestAccountReportsFilters(AccountTestCommon):
                 {'filter': 'previous_period', 'number_period': 2},
                 [
                     {
-                        'string': format_date(self.env, '2017-12-31', date_format='MMM YYYY'),
+                        'string': format_date(self.env, '2017-12-31', date_format='MMM yyyy'),
                         'period_type': 'month',
                         'mode': 'range',
                         'date_from': '2017-12-01',
                         'date_to': '2017-12-31',
                     },
                     {
-                        'string': format_date(self.env, '2017-11-30', date_format='MMM YYYY'),
+                        'string': format_date(self.env, '2017-11-30', date_format='MMM yyyy'),
                         'period_type': 'month',
                         'mode': 'range',
                         'date_from': '2017-11-01',
@@ -635,7 +635,7 @@ class TestAccountReportsFilters(AccountTestCommon):
                     'date_to': fields.Date.to_string(month_dt),
                 },
                 {
-                    'string': format_date(self.env, fields.Date.to_string(month_dt), date_format='MMM YYYY'),
+                    'string': format_date(self.env, fields.Date.to_string(month_dt), date_format='MMM yyyy'),
                     'period_type': 'month',
                     'mode': 'range',
                     'filter': 'custom',

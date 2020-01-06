@@ -56,7 +56,7 @@ class Company(models.Model):
         lang = self.env.context.get('lang')
         for date_start, date_stop in date_range:
             if self.manufacturing_period == 'month':
-                dates_as_str.append(format_date(self.env, date_start, date_format='MMM YYYY'))
+                dates_as_str.append(format_date(self.env, date_start, date_format='MMM yyyy'))
             elif self.manufacturing_period == 'week':
                 dates_as_str.append(_('Week %s') % format_date(self.env, date_start, date_format='w'))
             else:

@@ -163,7 +163,7 @@ class report_account_consolidated_journal(models.AbstractModel):
             if self._need_to_unfold('account_%s_%s' % (values['account_id'], values['journal_id']), options):
                 vals = {
                     'id': 'month_%s__%s_%s_%s' % (values['journal_id'], values['account_id'], values['month'], values['yyyy']),
-                    'name': convert_date('%s-%s-01' % (values['yyyy'], values['month']), {'format': 'MMM YYYY'}),
+                    'name': convert_date('%s-%s-01' % (values['yyyy'], values['month']), {'format': 'MMM yyyy'}),
                     'caret_options': True,
                     'level': 4,
                     'parent_id': "account_%s_%s" % (values['account_id'], values['journal_id']),

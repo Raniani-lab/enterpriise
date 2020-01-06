@@ -209,7 +209,7 @@ class AccountReport(models.AbstractModel):
             elif period_type == 'fiscalyear' and (date_from, date_to) == date_utils.get_fiscal_year(date_to, day=fy_day, month=fy_month):
                 string = '%s - %s' % (date_to.year - 1, date_to.year)
             elif period_type == 'month':
-                string = format_date(self.env, fields.Date.to_string(date_to), date_format='MMM YYYY')
+                string = format_date(self.env, fields.Date.to_string(date_to), date_format='MMM yyyy')
             elif period_type == 'quarter':
                 quarter_names = get_quarter_names('abbreviated', locale=get_lang(self.env).code)
                 string = u'%s\N{NO-BREAK SPACE}%s' % (

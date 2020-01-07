@@ -239,7 +239,7 @@ const MapModel = AbstractModel.extend({
     _getErrorMessage: function (message) {
         const ERROR_MESSAGES = {
             'Too many coordinates; maximum number of coordinates is 25': _t("Too many routing points (maximum 25)"),
-            'Route exceeds maximum distance limitation': _t("Some routing points are too further apart"),
+            'Route exceeds maximum distance limitation': _t("Some routing points are too far apart"),
             'Too Many Requests': _t("Too many requests, try again in a few minutes"),
         };
         return ERROR_MESSAGES[message];

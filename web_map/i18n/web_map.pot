@@ -113,7 +113,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_map/static/src/js/map_model.js:0
 #, python-format
-msgid "Some routing points are too further apart"
+msgid "Some routing points are too far apart"
 msgstr ""
 
 #. module: web_map

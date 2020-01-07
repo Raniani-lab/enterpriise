@@ -65,6 +65,10 @@ class ProviderAccount(models.Model):
                 if resp_json.get('errors', [{}])[0].get('code', '') == 'credentialsInvalid':
                     self._generate_access_token()
                     return self._ponto_fetch(method, url, params, data)
+                # If the error is because we recently synchronized the resource, just return the error as it
+                # will be handled in the _ponto_synchronize method
+                if resp_json.get('errors', [{}])[0].get('code', '') == 'accountRecentlySynchronized':
+                   return resp_json
                 message = ('%s for route %s') % (json.dumps(resp_json.get('errors')), url)
                 if resp_json.get('errors', [{}])[0].get('code', '') in ('authorizationCodeInvalid', 'clientIdInvalid'):
                     message = _('Invalid access keys')
@@ -111,6 +115,17 @@ class ProviderAccount(models.Model):
         if not self._context.get('no_post_message'):
             subject = _("An error occurred during online synchronization")
             message = _('The following error happened during the synchronization: %s' % (message,))
+            # We have to call rollback manually here because if we don't do so we risk a deadlock in some case
+            # Deadlock could appear in the following case: call to _ponto_fetch that will result in an error
+            # because access token has expired, in that case we generate a new access token (which will write the
+            # new access token to the record) and then we call back the original route again to retry. This new
+            # call can result in en error which we have to log to the record as well as raise it for the user to see
+            # (we log it to the record because it can happen in a cron as well).
+            # Therefore we have a conflict as we already wrote some value on the record for the new access token and 
+            # we try to write on the same record within a new cursor to say that its status should be changed to FAILED
+            # hence a deadlock. Solution is to rollback the transaction just before writing the FAILED status to the 
+            # record as it would be rollbacked anyway due to the raise UserError at the end.
+            self.env.cr.rollback()
             with self.pool.cursor() as cr:
                 self.with_env(self.env(cr=cr)).message_post(body=message, subject=subject)
                 self.with_env(self.env(cr=cr)).write({'status': 'FAILED', 'action_required': True})
@@ -248,6 +263,9 @@ class OnlineAccount(models.Model):
         }
         # Synchronization ressource for account
         resp_json = self.account_online_provider_id._ponto_fetch('POST', '/synchronizations', {}, data)
+        if resp_json.get('errors', [{}])[0].get('code', '') == 'accountRecentlySynchronized':
+            _logger.info('Skip refresh of ponto transaction as last refresh was too recent')
+            return
         # Get id of synchronization ressources
         sync_id = resp_json.get('data', {}).get('id')
         sync_ressource = resp_json.get('data', {}).get('attributes', {})

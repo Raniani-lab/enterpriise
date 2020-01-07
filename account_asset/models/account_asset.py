@@ -704,7 +704,8 @@ class AccountAsset(models.Model):
                 # When original_asset is set, only one asset is created since its from the form view
                 original_asset = self.env['account.asset'].browse(self.env.context.get('original_asset'))
                 original_asset.model_id = new_recs
-        new_recs.filtered(lambda r: r.state != 'model')._set_value()
+        if not self._context.get('import_file', False):
+            new_recs.filtered(lambda r: r.state != 'model')._set_value()
         return new_recs
 
     def write(self, vals):

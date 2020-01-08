@@ -121,6 +121,7 @@ var GanttModel = AbstractModel.extend({
         if (!params.groupedBy || !params.groupedBy.length) {
             params.groupedBy = this.defaultGroupBy;
         }
+        params.groupedBy = this._filterDateInGroupedBy(params.groupedBy);
 
         this.ganttData = {
             dateStartField: params.dateStartField,
@@ -157,12 +158,7 @@ var GanttModel = AbstractModel.extend({
         }
         if ('groupBy' in params) {
             if (params.groupBy && params.groupBy.length) {
-                this.ganttData.groupedBy = params.groupBy.filter(
-                    groupedByField => {
-                        var fieldName = groupedByField.split(':')[0]
-                        return fieldName in this.fields && this.fields[fieldName].type.indexOf('date') === -1;
-                    }
-                );
+                this.ganttData.groupedBy = this._filterDateInGroupedBy(params.groupBy);
                 if(this.ganttData.groupedBy.length !== params.groupBy.length){
                     this.do_warn(_t('Invalid group by'), _t('Grouping by date is not supported, ignoring it'));
                 }
@@ -554,6 +550,17 @@ var GanttModel = AbstractModel.extend({
         this.ganttData.focusDate = focusDate;
         this.ganttData.startDate = focusDate.clone().startOf(scale);
         this.ganttData.stopDate = focusDate.clone().endOf(scale);
+    },
+    /**
+     * Remove date in groupedBy field
+     */
+    _filterDateInGroupedBy(groupedBy) {
+        return groupedBy.filter(
+            groupedByField => {
+                var fieldName = groupedByField.split(':')[0];
+                return fieldName in this.fields && this.fields[fieldName].type.indexOf('date') === -1;
+            }
+        );
     },
 });
 

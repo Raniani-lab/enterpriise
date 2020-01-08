@@ -38,7 +38,7 @@
             <field name="name">Importe de las operaciones intracomunitarias</field>
             <field name="code">aeat_mod_349_statistics_invoices_total_amount</field>
             <field name="parent_id" ref="mod_349_summary_title"/>
-            <field name="domain" eval="[('debit', '>', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.type','in',['in_invoice','out_invoice'])]"/>
+            <field name="domain" eval="[('debit', '>', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.type','in',['in_invoice','out_invoice']), ('tax_line_id', '=', False)]"/>
             <field name="formulas">sum</field>
             <field name="special_date_changer">strict_range</field>
             <field name="sequence" eval="3"/>
@@ -63,7 +63,7 @@
             <field name="name">Importe de las operaciones intracomunitarias con rectificaciones</field>
             <field name="code">aeat_mod_349_statistics_refunds_total_amount</field>
             <field name="parent_id" ref="mod_349_summary_title"/>
-            <field name="domain" eval="[('debit', '>', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.type','in',['in_refund','out_refund'])]"/>
+            <field name="domain" eval="[('debit', '>', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.type','in',['in_refund','out_refund']), ('tax_line_id', '=', False)]"/>
             <field name="formulas">sum</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="2"/>
@@ -95,7 +95,7 @@
             <field name="name">A. Adquisiciones intracomunitarias sujetas</field>
             <field name="code">aeat_mod_349_acquisitions</field>
             <field name="parent_id" ref="mod_349_invoices_title"/>
-            <field name="domain" eval="[('debit', '>', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','A')]"/>
+            <field name="domain" eval="[('debit', '>', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','A'), ('tax_line_id', '=', False)]"/>
             <field name="show_domain">always</field>
             <field name="formulas">sum</field>
             <field name="groupby">partner_id</field>
@@ -194,7 +194,7 @@
             <field name="name">A. Adquisiciones intracomunitarias sujetas</field>
             <field name="code">aeat_mod_349_acquisitions_refunds</field>
             <field name="parent_id" ref="mod_349_refunds_title"/>
-            <field name="domain" eval="[('debit', '>', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','A')]"/>
+            <field name="domain" eval="[('debit', '>', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','A'), ('tax_line_id', '=', False)]"/>
             <field name="show_domain">always</field>
             <field name="formulas">sum</field>
             <field name="groupby">partner_id</field>

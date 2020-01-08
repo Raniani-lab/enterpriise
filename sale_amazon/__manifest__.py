@@ -18,6 +18,7 @@ Key Features
 """,
     'category': 'Sales/Sales',
     'version': '1.0',
+    'application': True,
     'depends': ['sale_management', 'stock'],
     'data': [
         'security/ir.model.access.csv',
@@ -31,5 +32,4 @@ Key Features
         'views/res_config_settings_views.xml',
         'views/sale_order_views.xml',
     ],
-    'application': False,
 }

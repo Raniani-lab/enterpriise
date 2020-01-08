@@ -5,6 +5,7 @@
     'description': "Send your shippings through DHL and track them online",
     'category': 'Operations/Inventory/Delivery',
     'version': '1.0',
+    'application': True,
     'depends': ['delivery', 'mail'],
     'data': [
         'data/delivery_dhl_data.xml',

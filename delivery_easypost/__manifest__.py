@@ -5,6 +5,7 @@
     'description': "Send your parcels through Easypost and track them online",
     'category': 'Operations/Inventory/Delivery',
     'version': '1.0',
+    'application': True,
     'depends': ['delivery', 'mail'],
     'data': [
         'security/ir.model.access.csv',

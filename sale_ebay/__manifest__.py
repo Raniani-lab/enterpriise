@@ -27,6 +27,7 @@ Key Features
   # for the full list
   'category': 'Sales/Sales',
   'version': '1.0',
+  'application': True,
 
   # any module necessary for this one to work correctly
   'depends': ['base', 'sale_management', 'stock', 'delivery', 'attachment_indexation'],
@@ -53,7 +54,6 @@ Key Features
   'js': ['static/src/js/*.js'],
   'css': ['static/src/css/*.css'],
   'qweb': ['static/src/xml/*.xml'],
-  'application': False,
-    'license': 'OEEL-1',
+  'license': 'OEEL-1',
   'uninstall_hook': 'uninstall_hook',
 }

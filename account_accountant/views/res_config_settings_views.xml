@@ -84,7 +84,7 @@
                     </div>
                 </div>
             </xpath>
-            <xpath expr="//div[@id='account_yodlee']" position="before">
+            <xpath expr="//div[@id='import_bank_statements_csv']" position="before">
                 <field name="module_account_accountant" invisible="1"/>
                 <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('chart_template_id','=',False), ('module_account_accountant','=',False)]}">
                     <div class="o_setting_left_pane"/>

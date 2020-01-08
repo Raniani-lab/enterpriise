@@ -11,6 +11,7 @@ by enabling cohort view for registered attendees.
     'category': 'Marketing/Events',
     'depends': ['event', 'web_cohort'],
     'data': [
+        'views/event_event_views.xml',
         'views/event_registration_views.xml',
     ],
     'auto_install': True,

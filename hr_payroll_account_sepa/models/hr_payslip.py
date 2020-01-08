@@ -34,6 +34,8 @@ class HrPayslip(models.Model):
         employees = self.mapped('employee_id').filtered(lambda e: not e.bank_account_id)
         if employees:
             raise UserError(_("Some employees (%s) don't have a bank account.") % (','.join(employees.mapped('name'))))
+        if journal_id.bank_account_id.acc_type != 'iban':
+            raise UserError(_("The journal '%s' requires a proper IBAN account to pay via SEPA. Please configure it first.") % journal_id.name)
 
         # Map the necessary data
         payments_data = [{

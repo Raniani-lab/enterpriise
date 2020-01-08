@@ -27,7 +27,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
             {'name': _('Initial Balance'), 'class': 'number', 'colspan': 2},
         ] + [
             {'name': period['string'], 'class': 'number', 'colspan': 2}
-            for period in options['comparison'].get('periods', [])
+            for period in reversed(options['comparison'].get('periods', []))
         ] + [
             {'name': options['date']['string'], 'class': 'number', 'colspan': 2},
             {'name': _('Total'), 'class': 'number', 'colspan': 2},

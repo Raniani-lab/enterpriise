@@ -50,7 +50,7 @@ class MxReportAccountTrial(models.AbstractModel):
             {'name': '', 'colspan': 2},
         ] + [
             {'name': period['string'], 'class': 'text-center', 'colspan': 2}
-            for period in options['comparison'].get('periods', [])
+            for period in reversed(options['comparison'].get('periods', []))
         ] + [
             {'name': options['date']['string'], 'class': 'text-center', 'colspan': 2},
             {'name': ''},

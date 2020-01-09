@@ -259,8 +259,8 @@
                                                         </t>
                                                     </datalist>
                                                 </div>
-                                                <span class="form-text mt8">In addition to your legal leaves, you can chose up to 15 extra days off.</span>
-                                                <span class="form-text mt8">The amount of annual time off (legal leaves) you get depends on your work schedule in the previous year. A full-time work schedule through the 12 months of the last year, under Belgian contract, will grant you 20 annual time off (legal leaves).</span>
+                                                <span class="form-text mt8">In addition to your legal leaves, you can choose to have extra days off (up to +15 days).</span>
+                                                <span class="form-text mt8">The amount of annual time off (legal leaves) allocated to you depends on your working hours from the previous year. For example, if you worked full-time for 12 months under a Belgian contract, you are entitled to 20 days off.</span>
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="input-group">
@@ -328,7 +328,7 @@
                                                         <input type="radio" name="ip" value="0" t-att-checked="not contract.ip" class="advantage_input"/> No
                                                         <div class="hr_cs_control_indicator hr_cs_control_no"/>
                                                     </label>
-                                                    <span class="form-text mt8" id="ip_tooltip">As Odoo invests massively in developing and writing Intellectual Property content, we benefit from fiscal ruling allowing us to pay a part of employee's salary as an intellectual property income instead of a regular salary. This amount will be paid in cash every month and is less taxed.</span>
+                                                    <span class="form-text mt8" id="ip_tooltip">Since Odoo invests massively in developing and writing intellectual property content, legally we are able to pay part of our employees' salaries as intellectual property income. This amount will be paid in cash every month and is taxed less.</span>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="input-group">
@@ -405,7 +405,7 @@
                                                     <i class="fa fa-1x fa-cutlery fa-fw"/> Meal Vouchers
                                                 </label>
                                                 <div class="col-md-7">
-                                                    <span class="form-text">Every month, you'll get 7.45€ per worked day on your meal voucher card.
+                                                    <span class="form-text">Each month you'll receive 7.45€ per day worked on a meal voucher card.
 </span>
                                                 </div>
                                                 <div class="col-md-2">
@@ -540,10 +540,10 @@
 
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="col-md-6 col-form-label" for="monthly_nature">Nature</label>
+                                            <label class="col-md-6 col-form-label" for="monthly_cash">Cash</label>
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <input type="text" disabled="disabled" name="monthly_nature" class="form-control"/>
+                                                    <input type="text" disabled="disabled" name="monthly_cash" class="form-control"/>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">€</div>
                                                     </div>
@@ -554,10 +554,10 @@
 
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="col-md-6 col-form-label" for="monthly_cash">Cash</label>
+                                            <label class="col-md-6 col-form-label" for="monthly_nature">Extra</label>
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <input type="text" disabled="disabled" name="monthly_cash" class="form-control"/>
+                                                    <input type="text" disabled="disabled" name="monthly_nature" class="form-control"/>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">€</div>
                                                     </div>

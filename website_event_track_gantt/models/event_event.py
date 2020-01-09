@@ -14,6 +14,6 @@ class Event(models.Model):
     def _compute_track_gantt_initial_date(self):
         for event in self:
             if event.track_ids:
-                event.track_gantt_initial_date = min(event.date_begin, *[track.date for track in event.track_ids])
+                event.track_gantt_initial_date = min(event.date_begin, *[track.date for track in event.track_ids if track.date])
             else:
                 event.track_gantt_initial_date = event.date_begin

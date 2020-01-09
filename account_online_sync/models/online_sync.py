@@ -457,6 +457,10 @@ class AccountBankStatement(models.Model):
 
         sorted_transactions = sorted(transactions, key=lambda l: l['date'])
         min_date = date_utils.start_of(sorted_transactions[0]['date'], 'month')
+        if journal.bank_statement_creation == 'week':
+            # key is not always the first of month
+            weekday = min_date.weekday()
+            min_date = date_utils.subtract(min_date, days=weekday)
         max_date = sorted_transactions[-1]['date']
         total = sum([t['amount'] for t in sorted_transactions])
 
@@ -467,7 +471,7 @@ class AccountBankStatement(models.Model):
         digits_rounding_precision = journal.currency_id.rounding if journal.currency_id else journal.company_id.currency_id.rounding
         if all_statement == 0 and not float_is_zero(ending_balance - total, precision_rounding=digits_rounding_precision):
             opening_transaction = [(0, 0, {
-                'date': transactions and (transactions[0]['date']) or datetime.now(),
+                'date': date_utils.subtract(min_date, days=1),
                 'name': _("Opening statement: first synchronization"),
                 'amount': ending_balance - total,
             })]
@@ -512,11 +516,11 @@ class AccountBankStatement(models.Model):
                 key = max_date
 
             # Decide if we have to update an existing statement or create a new one with this line
-            stmt = statements_in_range.search([('date', '=', key)], limit=1)
-            if stmt.id:
-                line['statement_id'] = stmt.id
+            stmt = statements_in_range.filtered(lambda x: x.date == key)
+            if stmt and stmt[0].id:
+                line['statement_id'] = stmt[0].id
                 transactions_in_statements.append(line)
-                statement_to_reset_to_draft += stmt
+                statement_to_reset_to_draft += stmt[0]
             else:
                 if not transactions_to_create.get(key):
                     transactions_to_create[key] = []

@@ -68,7 +68,7 @@ class TestDeliveryEasypost(TransactionCase):
             'package_carrier_type': 'easypost',
             'max_weight': 10,
             'height': 10,
-            'length': 10,
+            'packaging_length': 10,
             'width': 10,
         })
         self.easypost_fedex_carrier.easypost_default_packaging_id = self.fedex_default_packaging

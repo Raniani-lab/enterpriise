@@ -222,7 +222,7 @@ class EasypostRequest():
             })
         elif package.package_carrier_type == 'easypost':
             shipment.update({
-                'order[shipments][%d][parcel][length]' % shipment_id: package.length,
+                'order[shipments][%d][parcel][length]' % shipment_id: package.packaging_length,
                 'order[shipments][%d][parcel][width]' % shipment_id: package.width,
                 'order[shipments][%d][parcel][height]' % shipment_id: package.height
             })

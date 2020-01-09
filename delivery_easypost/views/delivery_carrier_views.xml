@@ -81,10 +81,10 @@
           <span attrs="{'invisible': [('package_carrier_type', '!=', 'easypost')]}">Inches</span>
         </div>
       </xpath>
-      <xpath expr="//field[@name='length']" position='replace'>
-        <label for="length"/>
+      <xpath expr="//field[@name='packaging_length']" position='replace'>
+        <label for="packaging_length"/>
         <div class="o_row">
-          <field name="length" nolabel="1"/>
+          <field name="packaging_length" nolabel="1"/>
           <span attrs="{'invisible': [('package_carrier_type', '!=', 'easypost')]}">Inches</span>
         </div>
       </xpath>

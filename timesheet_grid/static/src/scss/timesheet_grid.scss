@@ -1,12 +1,24 @@
-table > tbody.o_grid_section > tr > th {
-    width: 30rem !important;
+table > tbody.o_grid_section > tr {
+    > th {
+        width: 30rem !important;
 
-    div {
-        width: 100%;
+        div {
+            width: 100%;
+        }
+
+        div > :first-child {
+            width: 20rem;
+        }
+
+        @include media-breakpoint-up(md) {
+            .o-timer-play-button {
+                opacity: 0;
+            }
+        }
     }
 
-    div > :first-child {
-        width: 20rem;
+    &:hover .o-timer-play-button {
+        opacity: 1;
     }
 }
 

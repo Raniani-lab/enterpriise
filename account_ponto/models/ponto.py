@@ -5,11 +5,15 @@ import json
 import logging
 import datetime
 import time
+import dateutil.parser
 
 from odoo import models, api, fields
 from odoo.tools.translate import _
 from odoo.exceptions import UserError
 from odoo.addons.base.models.res_bank import sanitize_account_number
+from pytz import timezone
+
+GMT_BELGIUM = timezone('Europe/Brussels')
 
 _logger = logging.getLogger(__name__)
 
@@ -238,19 +242,6 @@ class OnlineAccount(models.Model):
     ponto_last_synchronization_identifier = fields.Char(readonly=True, help='id of ponto synchronization')
 
     def _ponto_synchronize(self, subtype):
-        # To fetch the latest transactions and balance of accounts we have to call a special
-        # url on ponto to tell him to refresh the data, this ressource is called "synchronization"
-        # We have to call it for both "account" and "transactions" as ponto does not have the option
-        # to have both in one. Once the "synchronization" are finished, their status will changed to "success"
-        # and we know we can now continue and fetch the latest transactions and account balance.
-        # however if we try to refresh both one after another or at the same time, an error is received
-        # An error is also received if we call their synchronization route too quickly. Therefore we
-        # only call this route if it has not been called in the last 5 minutes.
-        last_sync_age = fields.Datetime.now() - self.account_online_provider_id.last_refresh
-        # We can refresh if last refresh was greater than 5min in the past
-        if last_sync_age <= datetime.timedelta(minutes=5):
-            _logger.info('Skip refresh of ponto transaction as last refresh was less than 5min ago')
-            return
         data = {
             'data': {
                 'type': 'synchronization',
@@ -326,7 +317,15 @@ class OnlineAccount(models.Model):
                     # a chunk sent by Ponto always has its most recent transaction first
                     latest_transaction_identifier = data_lines[0].get('id')
             for transaction in data_lines:
-                tr_date = fields.Date.from_string(transaction.get('attributes', {}).get('valueDate'))
+                # Convert received transaction datetime into Brussel timezone as we receive transaction date in an UTC
+                # format but we store a date (which will loose information about the time) and some banks don't provide
+                # the time of the transactions hence what we receive is a datetime in the form 2019-01-01T23:00:00.000z for a
+                # transaction where the correct date should be of 2019-01-02
+                # This is not the best fix as we should instead convert to the time of the country where the bank is located
+                # but since ponto only support bank in belgium/france/nl for now this is acceptable.
+                tr_date = dateutil.parser.parse(transaction.get('attributes', {}).get('valueDate'))
+                tr_date = tr_date.astimezone(GMT_BELGIUM)
+                tr_date = fields.Date.to_date(tr_date)
                 if paging_forward and tr_date < last_sync:
                     # Stop fetching transactions because we are paging forward
                     # and the following transactions are older than specified last_sync date.
@@ -340,7 +339,7 @@ class OnlineAccount(models.Model):
                 account_number = transaction.get('attributes', {}).get('counterpartReference')
                 trans = {
                     'online_identifier': transaction.get('id'),
-                    'date': fields.Date.from_string(transaction.get('attributes', {}).get('valueDate')),
+                    'date': tr_date,
                     'name': name,
                     'amount': transaction.get('attributes', {}).get('amount'),
                     'account_number': account_number,

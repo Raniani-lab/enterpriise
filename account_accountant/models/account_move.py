@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
+from odoo.exceptions import UserError
 
 
 class AccountMove(models.Model):
@@ -47,3 +48,60 @@ class AccountMoveLine(models.Model):
     def _compute_attachment(self):
         for record in self:
             record.move_attachment_ids = record.move_id.attachment_ids + record.statement_id.attachment_ids + record.payment_id.attachment_ids
+
+    def action_reconcile(self):
+        """ This function is called by the 'Reconcile' action of account.move.line's
+        tree view. It performs reconciliation between the selected lines, or, if they
+        only consist of payable and receivable lines for the same partner, it opens
+        the transfer wizard, pre-filled with the necessary data to transfer
+        the payable/receivable open balance into the receivable/payable's one.
+        This way, we can simulate reconciliation between receivable and payable
+        accounts, using an intermediate account.move doing the transfer.
+        """
+        all_accounts = self.mapped('account_id')
+        account_types = all_accounts.mapped('user_type_id.type')
+        all_partners = self.mapped('partner_id')
+
+        if len(all_accounts) == 2 and 'payable' in account_types and 'receivable' in account_types:
+
+            if len(all_partners) != 1:
+                raise UserError(_("You cannot reconcile together the payable and receivable accounts of multiple partners at once."))
+
+            # In case we have only lines for one (or no) partner and they all
+            # are located on a single receivable or payable account,
+            # we can simulate reconciliation between them with a transfer entry.
+            # So, we open the wizard allowing to do that, pre-filling the values.
+
+            max_total = 0
+            max_account = None
+            for account in all_accounts:
+                account_total = abs(sum(line.balance for line in self.filtered(lambda x: x.account_id == account)))
+                if not max_account or max_total < account_total:
+                    max_account = account
+                    max_total = account_total
+
+            wizard = self.env['account.transfer.wizard'].create({
+                'move_line_ids': [(6, 0, self.ids)],
+                'destination_account_id': max_account.id,
+            })
+
+            return {
+                'name': _("Transfer Accounts"),
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'account.transfer.wizard',
+                'res_id': wizard.id,
+                'target': 'new',
+                'context': {'active_ids': self.ids, 'active_model': 'account.move.line'},
+            }
+
+        return {
+            'type': 'ir.actions.client',
+            'name': 'Reconcile',
+            'tag': 'manual_reconciliation_view',
+            'binding_model_id': self.env['ir.model.data'].xmlid_to_res_id('account.model_account_move_line'),
+            'binding_type': 'action',
+            'binding_view_types': 'list',
+            'context': {'active_ids': self.ids, 'active_model': 'account.move.line'},
+        }

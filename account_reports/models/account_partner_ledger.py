@@ -195,6 +195,7 @@ class ReportPartnerLedger(models.AbstractModel):
                 account_move_line.partner_id,
                 account_move_line.currency_id,
                 account_move_line.amount_currency,
+                account_move_line.matching_number,
                 ROUND(account_move_line.debit * currency_table.rate, currency_table.precision)   AS debit,
                 ROUND(account_move_line.credit * currency_table.rate, currency_table.precision)  AS credit,
                 ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance,
@@ -205,8 +206,7 @@ class ReportPartnerLedger(models.AbstractModel):
                 account.code                            AS account_code,
                 account.name                            AS account_name,
                 journal.code                            AS journal_code,
-                journal.name                            AS journal_name,
-                full_rec.name                           AS full_rec_name
+                journal.name                            AS journal_name
             FROM account_move_line
             LEFT JOIN account_move account_move_line__move_id ON account_move_line__move_id.id = account_move_line.move_id
             LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
@@ -214,7 +214,6 @@ class ReportPartnerLedger(models.AbstractModel):
             LEFT JOIN res_partner partner               ON partner.id = account_move_line.partner_id
             LEFT JOIN account_account account           ON account.id = account_move_line.account_id
             LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
-            LEFT JOIN account_full_reconcile full_rec   ON full_rec.id = account_move_line.full_reconcile_id
             WHERE %s
             ORDER BY account_move_line.id
         ''' % (ct_query, where_clause)
@@ -329,7 +328,7 @@ class ReportPartnerLedger(models.AbstractModel):
             {'name': aml['account_code']},
             {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name'])},
             {'name': date_maturity or '', 'class': 'date'},
-            {'name': aml['full_rec_name'] or ''},
+            {'name': aml['matching_number'] or ''},
             {'name': self.format_value(cumulated_init_balance), 'class': 'number'},
             {'name': self.format_value(aml['debit'], blank_if_zero=True), 'class': 'number'},
             {'name': self.format_value(aml['credit'], blank_if_zero=True), 'class': 'number'},

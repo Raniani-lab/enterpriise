@@ -39,12 +39,15 @@
         </field>
     </record>
 
-    <record id="action_view_account_move_line_reconcile" model="ir.actions.client">
-         <field name="name">Reconcile</field>
-         <field name="tag">manual_reconciliation_view</field>
-         <field name="binding_model_id" ref="account.model_account_move_line"/>
-         <field name="binding_type">action</field>
-         <field name="binding_view_types">list</field>
+     <record model="ir.actions.server" id="action_view_account_move_line_reconcile">
+            <field name="name">Reconcile</field>
+            <field name="model_id" ref="account.model_account_move_line"/>
+            <field name="binding_model_id" ref="account.model_account_move_line" />
+            <field name="state">code</field>
+            <field name="code">
+if records:
+    action = records.action_reconcile()
+            </field>
      </record>
 
      <record id="action_manual_reconcile" model="ir.actions.client">

@@ -83,13 +83,11 @@
 </t>
 
 <t t-name="HomeMenu" owl="1">
-    <div class="o_home_menu">
+    <div class="o_home_menu" t-att-class="{ o_search_hidden: !state.isSearching }">
         <ExpirationPanel t-if="state.displayExpirationPanel" t-on-hide-expiration-panel.stop="_onHideExpirationPanel"/>
-        <div class="o_home_menu_header">
-            <div class="o_menu_search d-md-flex" t-att-class="{o_search_hidden: !state.isSearching}">
-                <span class="fa fa-search o_menu_search_icon" role="img" aria-label="Search" title="Search"/>
-                <input t-ref="input" type="text" placeholder="Search..." class="o_menu_search_input" t-on-input="_onInputSearch"/>
-            </div>
+        <div class="o_menu_search">
+            <span class="fa fa-search o_menu_search_icon" role="img" aria-label="Search" title="Search"/>
+            <input t-ref="input" type="text" placeholder="Search..." class="o_menu_search_input" t-on-input="_onInputSearch"/>
         </div>
         <div class="o_home_menu_scrollable" t-ref="mainContent">
             <div t-if="displayedApps.length" class="o_apps">
@@ -128,9 +126,6 @@
             <div t-elif="!displayedApps.length" class="o_no_result" role="alert">
                 No result
             </div>
-        </div>
-        <div class="o_home_menu_footer">
-            <img src="/web/static/src/img/logo_inverse_white_206px.png" alt="Logo"/>
         </div>
     </div>
 </t>

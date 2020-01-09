@@ -129,13 +129,4 @@
         color: $o-brand-lightsecondary;
         font-size: 22px;
     }
-
-    .o_home_menu_footer {
-        user-select: none;
-
-        > img {
-            filter: drop-shadow(0 1px 0px rgba(0, 0, 0, 0.4));
-            -webkit-filter: drop-shadow(0 1px 0px rgba(0, 0, 0, 0.4));
-        }
-    }
 }

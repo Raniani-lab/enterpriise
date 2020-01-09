@@ -50,7 +50,7 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
         QUnit.module("StudioHomeMenu");
 
         QUnit.test("simple rendering", async function (assert) {
-            assert.expect(22);
+            assert.expect(21);
 
             class Parent extends Component {
                 constructor() {
@@ -72,9 +72,7 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
             // Hidden elements
             assert.isNotVisible(parent.el.querySelector('.database_expiration_panel'),
                 "Expiration panel should not be visible");
-            assert.hasClass(parent.el.querySelector('.o_menu_search'), 'o_search_hidden');
-            assert.isNotVisible(parent.el.querySelector('.o_home_menu_footer'),
-                "Footer should not be visible");
+            assert.hasClass(parent.el, 'o_search_hidden');
 
             // App list
             assert.containsOnce(parent.el, 'div.o_apps');

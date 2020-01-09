@@ -115,9 +115,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -134,13 +131,13 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             await parent.mount(testUtils.prepareTarget());
             const homeMenu = parent.homeMenuRef.comp;
 
-            assert.hasClass(homeMenu.el.querySelector("div.o_menu_search"), "o_search_hidden",
+            assert.hasClass(homeMenu.el, "o_search_hidden",
                 "search bar must be hidden by default");
 
             await testUtils.fields.editInput(homeMenu.inputRef.el, "dis");
 
             assert.containsOnce(homeMenu.el, '.o_menuitem.o_focused');
-            assert.doesNotHaveClass(homeMenu.el.querySelector("div.o_menu_search"), "o_search_hidden",
+            assert.doesNotHaveClass(homeMenu.el, "o_search_hidden",
                 "search must be visible after some input");
 
             assert.strictEqual(homeMenu.inputRef.el.value, "dis",
@@ -152,7 +149,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             assert.strictEqual(homeMenu.inputRef.el.value, "",
                 "search must have no text after ESC");
 
-            assert.doesNotHaveClass(homeMenu.el.querySelector("div.o_menu_search"), "o_search_hidden",
+            assert.doesNotHaveClass(homeMenu.el, "o_search_hidden",
                 "search must still become visible after clearing some non-empty text");
 
             await testUtils.dom.triggerEvent(window, 'keydown', { key: 'Escape' });
@@ -187,9 +184,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -206,14 +200,11 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
 
             const input = homeMenu.inputRef.el;
             await testUtils.dom.triggerEvent(input, 'focus');
-
-            const searchBar = homeMenu.el.querySelector("div.o_menu_search");
-
             await testUtils.fields.editInput(input, "a");
 
             assert.hasClass(homeMenu.el.querySelectorAll('.o_menuitem')[0], 'o_focused');
 
-            assert.doesNotHaveClass(searchBar, "o_search_hidden",
+            assert.doesNotHaveClass(homeMenu.el, "o_search_hidden",
                 "search must be visible after some input");
 
             assert.strictEqual(input.value, "a",
@@ -252,9 +243,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -293,9 +281,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -334,9 +319,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -379,9 +361,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -490,9 +469,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -559,9 +535,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -631,9 +604,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -699,9 +669,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -766,9 +733,6 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             }
             Parent.components = { HomeMenu };
             Parent.env = makeTestEnvironment({
-                services: {
-                    getCookie: function () { }
-                },
                 session: {
                     warning: false,
                 },
@@ -809,6 +773,66 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             input.setSelectionRange(0, 0);
 
             await walkOn(assert, homeMenu, path.slice(11));
+
+            parent.destroy();
+        });
+
+        QUnit.test("State reset", async function (assert) {
+            assert.expect(6);
+
+            const homeMenuData = this.props;
+            class Parent extends Component {
+                constructor() {
+                    super();
+                    this.state = useState({
+                        homeMenuData,
+                        homeMenuDisplayed: true,
+                    });
+                    this.homeMenuRef = useRef('home-menu');
+                }
+            }
+            Parent.components = { HomeMenu };
+            Parent.env = makeTestEnvironment({
+                session: {
+                    warning: false,
+                },
+            });
+            Parent.template = xml`
+                <div>
+                    <HomeMenu t-if="state.homeMenuDisplayed"
+                        t-ref="home-menu"
+                        t-props="state.homeMenuData"
+                    />
+                </div>`;
+
+            const parent = new Parent();
+            const target = testUtils.prepareTarget();
+            await parent.mount(target);
+
+            assert.hasClass(parent.homeMenuRef.el, "o_search_hidden",
+                "search bar must be hidden by default");
+
+            await testUtils.fields.editInput(parent.homeMenuRef.comp.inputRef.el, "dis");
+
+            assert.doesNotHaveClass(parent.homeMenuRef.el, "o_search_hidden",
+                "search must be visible after some input");
+            assert.strictEqual(parent.homeMenuRef.comp.inputRef.el.value, "dis",
+                "search bar input must contain the input text");
+
+            // Unmount and remount the home menu
+            parent.state.homeMenuDisplayed = false;
+            await testUtils.nextTick();
+
+            assert.containsNone(target, 'o_home_menu',
+                "home menu should no longer be displayed");
+
+            parent.state.homeMenuDisplayed = true;
+            await testUtils.nextTick();
+
+            assert.hasClass(parent.homeMenuRef.el, "o_search_hidden",
+                "search bar is hidden after remount");
+            assert.strictEqual(parent.homeMenuRef.comp.inputRef.el.value, "",
+                "search bar input must be empty");
 
             parent.destroy();
         });

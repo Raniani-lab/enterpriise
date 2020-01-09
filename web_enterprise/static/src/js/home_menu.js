@@ -57,6 +57,16 @@ odoo.define("web_enterprise.HomeMenu", function (require) {
             }
         }
 
+        async willUpdateProps() {
+            // State is reset on each remount
+            this.state.focusedIndex = null;
+            this.state.isSearching = false;
+            this.state.query = "";
+
+            this.availableApps = this.props.apps;
+            this.displayedMenuItems = [];
+        }
+
         patched() {
             if (this.state.focusedIndex !== null && !this.env.device.isMobile) {
                 const selectedItem = document.querySelector('.o_home_menu .o_menuitem.o_focused');

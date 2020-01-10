@@ -26,6 +26,7 @@ def post_init_hook(cr, registry):
 def uninstall_hook(cr, registry):
     cr.execute("DELETE FROM l10n_mx_edi_product_sat_code;")
     cr.execute("DELETE FROM ir_model_data WHERE model='l10n_mx_edi.product.sat.code';")
+    cr.execute("DELETE FROM ir_model_data WHERE model='l10n_mx_edi.tariff.fraction';")
 
 def _load_product_sat_catalog(cr, registry):
     """Import CSV data as it is faster than xml and because we can't use

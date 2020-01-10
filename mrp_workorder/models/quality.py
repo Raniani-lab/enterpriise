@@ -68,6 +68,11 @@ class QualityPoint(models.Model):
         for point in self:
             point.routing_ids = point.product_tmpl_id.bom_ids.routing_id
 
+    @api.onchange('product_tmpl_id')
+    def onchange_product_tmpl_id(self):
+        if self.picking_type_id.code != 'mrp_operation':
+            return super().onchange_product_tmpl_id()
+
 
 class QualityAlert(models.Model):
     _inherit = "quality.alert"

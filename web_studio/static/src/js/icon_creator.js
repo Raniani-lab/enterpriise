@@ -74,7 +74,7 @@ odoo.define('web_studio.IconCreator', function (require) {
          * @private
          */
         _onDesignIconClick() {
-            this.trigger('icon_changed', Object.assign({
+            this.trigger('icon-changed', Object.assign({
                 type: 'custom_icon'
             }, DEFAULT_ICON));
         }
@@ -95,7 +95,7 @@ odoo.define('web_studio.IconCreator', function (require) {
                 args: [[file.id], ['datas']],
             });
 
-            this.trigger('icon_changed', {
+            this.trigger('icon-changed', {
                 type: 'base64',
                 uploaded_attachment_id: file.id,
                 webIconData: 'data:image/png;base64,' + res[0].datas.replace(/\s/g, ''),
@@ -120,7 +120,7 @@ odoo.define('web_studio.IconCreator', function (require) {
             };
             detail[palette] = value;
 
-            this.trigger('icon_changed', detail);
+            this.trigger('icon-changed', detail);
         }
 
         /**

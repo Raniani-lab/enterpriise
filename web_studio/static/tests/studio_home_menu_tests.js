@@ -121,19 +121,19 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
                     this.studioHomeMenuProps = useState(studioHomeMenuProps);
                 }
                 _onAppClicked(ev) {
-                    assert.step('app_clicked');
+                    assert.step('app-clicked');
                     assert.deepEqual(ev.detail, { action_id: "121", menu_id: 1 });
                 }
             }
             Parent.components = { StudioHomeMenu };
-            Parent.template = xml`<StudioHomeMenu t-props="studioHomeMenuProps" t-on-app_clicked.stop="_onAppClicked"/>`;
+            Parent.template = xml`<StudioHomeMenu t-props="studioHomeMenuProps" t-on-app-clicked.stop="_onAppClicked"/>`;
 
             const parent = new Parent();
             await parent.mount(testUtils.prepareTarget());
 
             await testUtils.dom.click(parent.el.querySelector('.o_menuitem'));
 
-            assert.verifySteps(['app_clicked']);
+            assert.verifySteps(['app-clicked']);
 
             parent.destroy();
         });
@@ -147,11 +147,11 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
                     this.studioHomeMenuProps = useState(studioHomeMenuProps);
                 }
                 _onNewApp(ev) {
-                    assert.step('new_app');
+                    assert.step('new-app');
                 }
             }
             Parent.components = { StudioHomeMenu };
-            Parent.template = xml`<StudioHomeMenu t-props="studioHomeMenuProps" t-on-new_app.stop="_onNewApp"/>`;
+            Parent.template = xml`<StudioHomeMenu t-props="studioHomeMenuProps" t-on-new-app.stop="_onNewApp"/>`;
 
             const parent = new Parent();
             await parent.mount(testUtils.prepareTarget());
@@ -159,7 +159,7 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
             const newApp = parent.el.querySelector('a.o_app.o_web_studio_new_app');
             await testUtils.dom.click(newApp);
 
-            assert.verifySteps(['new_app']);
+            assert.verifySteps(['new-app']);
 
             parent.destroy();
         });

@@ -110,7 +110,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 // Handlers
                 _onHideHomeMenu() {
                     this.state.homeMenuDisplayed = false;
-                    assert.step('hide_home_menu');
+                    assert.step('hide-home-menu');
                 }
             }
             Parent.components = { HomeMenu };
@@ -123,7 +123,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 <div>
                     <HomeMenu t-if="state.homeMenuDisplayed" t-ref="home-menu"
                         t-props="state.homeMenuData"
-                        t-on-hide_home_menu="_onHideHomeMenu"
+                        t-on-hide-home-menu="_onHideHomeMenu"
                     />
                 </div>`;
 
@@ -161,7 +161,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             assert.containsNone(parent, '.o_home_menu',
                 "home menu must be hidden after ESC on empty text");
 
-            assert.verifySteps(['hide_home_menu']);
+            assert.verifySteps(['hide-home-menu']);
 
             parent.destroy();
         });
@@ -178,7 +178,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 }
                 // Handlers
                 _onAppClicked(ev) {
-                    assert.step('app_clicked');
+                    assert.step('app-clicked');
                     assert.deepEqual(ev.detail, { action_id: undefined, menu_id: 2 });
                 }
             }
@@ -191,7 +191,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             Parent.template = xml`
                 <HomeMenu t-ref="home-menu"
                     t-props="state.homeMenuData"
-                    t-on-app_clicked="_onAppClicked"
+                    t-on-app-clicked="_onAppClicked"
                 />`;
 
             const parent = new Parent();
@@ -221,11 +221,11 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             // open first app (Calendar)
             await testUtils.dom.triggerEvent(window, 'keydown', { key: 'Enter' });
 
-            assert.verifySteps(['app_clicked']);
+            assert.verifySteps(['app-clicked']);
             parent.destroy();
         });
 
-        QUnit.test("Click on an app should trigger a custom event 'app_clicked'", async function (assert) {
+        QUnit.test("Click on an app should trigger a custom event 'app-clicked'", async function (assert) {
             assert.expect(3);
 
             const homeMenuData = this.props;
@@ -237,7 +237,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 }
                 // Handlers
                 _onAppClicked(ev) {
-                    assert.step('app_clicked');
+                    assert.step('app-clicked');
                     assert.deepEqual(ev.detail, { action_id: "121", menu_id: 1 });
                 }
             }
@@ -250,7 +250,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             Parent.template = xml`
                 <HomeMenu t-ref="home-menu"
                     t-props="state.homeMenuData"
-                    t-on-app_clicked="_onAppClicked"
+                    t-on-app-clicked="_onAppClicked"
                 />`;
 
             const parent = new Parent();
@@ -258,12 +258,12 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             const homeMenu = parent.homeMenuRef.comp;
 
             await testUtils.dom.click(homeMenu.el.querySelectorAll('.o_menuitem')[0]);
-            assert.verifySteps(['app_clicked']);
+            assert.verifySteps(['app-clicked']);
 
             parent.destroy();
         });
 
-        QUnit.test("Click on a menu item should trigger a custom event 'menu_clicked'", async function (assert) {
+        QUnit.test("Click on a menu item should trigger a custom event 'menu-clicked'", async function (assert) {
             assert.expect(3);
 
             const homeMenuData = this.props;
@@ -275,7 +275,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 }
                 // Handlers
                 _onMenuClicked(ev) {
-                    assert.step('menu_clicked');
+                    assert.step('menu-clicked');
                     assert.deepEqual(ev.detail, { action_id: undefined, menu_id: 8 });
                 }
             }
@@ -288,7 +288,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             Parent.template = xml`
                 <HomeMenu t-ref="home-menu"
                     t-props="state.homeMenuData"
-                    t-on-menu_clicked="_onMenuClicked"
+                    t-on-menu-clicked="_onMenuClicked"
                 />`;
 
             const parent = new Parent();
@@ -301,7 +301,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             await testUtils.fields.editInput(input, "a");
 
             await testUtils.dom.click(homeMenu.el.querySelectorAll('.o_menuitem')[2]);
-            assert.verifySteps(['menu_clicked']);
+            assert.verifySteps(['menu-clicked']);
 
             parent.destroy();
         });
@@ -352,7 +352,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 }
                 // Handlers
                 _onMenuClicked(ev) {
-                    assert.step('menu_clicked');
+                    assert.step('menu-clicked');
                     assert.deepEqual(ev.detail, {
                         action_id: undefined,
                         menu_id: 4
@@ -368,7 +368,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             Parent.template = xml`
                 <HomeMenu t-ref="home-menu"
                     t-props="state.homeMenuData"
-                    t-on-menu_clicked="_onMenuClicked"
+                    t-on-menu-clicked="_onMenuClicked"
                 />`;
 
             const parent = new Parent();
@@ -394,7 +394,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             // press ENTER
             await testUtils.dom.triggerEvent(window, 'keydown', { key: 'Enter' });
 
-            assert.verifySteps(['menu_clicked']);
+            assert.verifySteps(['menu-clicked']);
 
             parent.destroy();
         });

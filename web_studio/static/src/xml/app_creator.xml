@@ -52,7 +52,7 @@
                                 t-att-class="{ o_web_studio_app_creator_field_warning: invalid.modelId }"
                                 >
                                 <label for="name">Model</label>
-                                <div t-ref="many2one-container" t-on-field_changed.stop="_onFieldChanged"/>
+                                <div t-ref="many2one-container" t-on-field-changed.stop="_onFieldChanged"/>
                             </div>
                         </t>
                     </t>
@@ -89,7 +89,7 @@
                         editable="state.step === 'app'"
                         type="state.iconData.type"
                         webIconData="state.iconData.webIconData"
-                        t-on-icon_changed.stop="_onIconChanged"
+                        t-on-icon-changed.stop="_onIconChanged"
                     />
                 </div>
             </div>

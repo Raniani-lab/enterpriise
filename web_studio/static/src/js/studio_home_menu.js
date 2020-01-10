@@ -79,7 +79,7 @@ odoo.define("web_studio.StudioHomeMenu", function (require) {
         _openMenu({ menu, isApp }) {
             if (menu.isNewAppButton) {
                 this.canEditIcons = false;
-                this.trigger('new_app');
+                this.trigger('new-app');
             } else {
                 super._openMenu(...arguments);
             }
@@ -179,7 +179,7 @@ odoo.define("web_studio.StudioHomeMenu", function (require) {
          */
         _onNewAppClick() {
             this.canEditIcons = false;
-            this.trigger('new_app');
+            this.trigger('new-app');
         }
     }
 

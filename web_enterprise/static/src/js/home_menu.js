@@ -158,7 +158,7 @@ odoo.define("web_enterprise.HomeMenu", function (require) {
          * @param {boolean} param.isApp
          */
         _openMenu({ menu, isApp }) {
-            this.trigger(isApp ? 'app_clicked' : 'menu_clicked', {
+            this.trigger(isApp ? 'app-clicked' : 'menu-clicked', {
                 menu_id: menu.id,
                 action_id: menu.action,
             });
@@ -407,7 +407,7 @@ odoo.define("web_enterprise.HomeMenu", function (require) {
                     if (!currentQuery) {
                         this.state.focusedIndex = null;
                         this.state.isSearching = false;
-                        this.trigger("hide_home_menu");
+                        this.trigger("hide-home-menu");
                     }
                     break;
                 case 'c':

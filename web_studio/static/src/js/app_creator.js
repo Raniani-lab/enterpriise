@@ -83,7 +83,7 @@ odoo.define('web_studio.AppCreator', function (require) {
          */
         async _onFieldChanged({ target, data }) {
             await StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
-            const ev = new CustomEvent('field_changed', {
+            const ev = new CustomEvent('field-changed', {
                 bubbles: true,
                 cancelable: true,
                 detail: data,
@@ -215,7 +215,7 @@ odoo.define('web_studio.AppCreator', function (require) {
                     context: this.env.session.user_context,
                 },
             }).guardedCatch(() => this.env.services.unblockUI());
-            this.trigger('new_app_created', result);
+            this.trigger('new-app-created', result);
             this.env.services.unblockUI();
         }
 

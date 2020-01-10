@@ -63,10 +63,10 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                     },
                 },
                 events: {
-                    new_app_created: ev => {
+                    'new-app-created': ev => {
                         ev.stopPropagation();
                         ev.preventDefault();
-                        assert.step('new_app_created');
+                        assert.step('new-app-created');
                     },
                 },
                 rpc: async (route, params) => {
@@ -197,7 +197,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
             await testUtils.fields.editInput(appCreator.el.querySelector('input[name="menuName"]'), "Petite Perruche");
             await testUtils.dom.click(appCreator.el.querySelector('.o_web_studio_app_creator_next'));
 
-            assert.verifySteps(['/web/binary/upload_attachment', 'UI blocked', 'new_app_created', 'UI unblocked']);
+            assert.verifySteps(['/web/binary/upload_attachment', 'UI blocked', 'new-app-created', 'UI unblocked']);
 
             container.destroy();
         });
@@ -268,10 +268,10 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                     },
                 },
                 events: {
-                    new_app_created: ev => {
+                    'new-app-created': ev => {
                         ev.stopPropagation();
                         ev.preventDefault();
-                        assert.step('new_app_created');
+                        assert.step('new-app-created');
                     },
                 },
                 rpc: (route, { app_name, is_app, menu_name, model_id }) => {
@@ -319,7 +319,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
             await testUtils.fields.editInput(appCreator.el.querySelector('input[name="menuName"]'), "Petite Perruche");
             await testUtils.dom.triggerEvent(window, 'keydown', { key: 'Enter' });
 
-            assert.verifySteps(['UI blocked', 'new_app_created', 'UI unblocked']);
+            assert.verifySteps(['UI blocked', 'new-app-created', 'UI unblocked']);
 
             container.destroy();
         });
@@ -336,7 +336,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                 }
                 _onIconChanged(ev) {
                     // default values
-                    assert.step('icon_changed');
+                    assert.step('icon-changed');
                     assert.deepEqual(ev.detail, {
                         backgroundColor: '#34495e',
                         color: '#f1c40f',
@@ -352,7 +352,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                     editable="true"
                     type="'base64'"
                     webIconData="webIconData"
-                    t-on-icon_changed.stop.prevent="_onIconChanged"
+                    t-on-icon-changed.stop.prevent="_onIconChanged"
                 />`;
             const parent = new Parent();
             await parent.mount(testUtils.prepareTarget());
@@ -364,7 +364,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
             // click on first link: "Design icon"
             await testUtils.dom.click(parent.el.querySelector('.o_web_studio_upload a'));
 
-            assert.verifySteps(['icon_changed']);
+            assert.verifySteps(['icon-changed']);
 
             parent.destroy();
         });

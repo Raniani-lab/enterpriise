@@ -14,10 +14,9 @@ const Menu = require('web_enterprise.Menu');
 return AbstractWebClient.extend({
     // We should review globally the communication with the web client via events
     events: _.extend({}, AbstractWebClient.prototype.events, {
-        app_clicked: 'on_app_clicked',
-        hide_home_menu: '_onHideHomeMenu',
-        menu_clicked: 'on_menu_clicked',
-        show_home_menu: '_onShowHomeMenu',
+        'app-clicked': 'on_app_clicked',
+        'hide-home-menu': '_onHideHomeMenu',
+        'menu-clicked': 'on_menu_clicked',
     }),
     // The navbar (and maybe other components) communicates via trigger_up
     // with the web client. We don't change that for now.

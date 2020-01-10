@@ -13,8 +13,8 @@ const HomeMenuWrapper = require('web_enterprise.HomeMenuWrapper');
 
 WebClient.include({
     events: _.extend({}, WebClient.prototype.events, {
-        'new_app': 'openAppCreator',
-        'new_app_created': '_onNewAppCreated',
+        'new-app': 'openAppCreator',
+        'new-app-created': '_onNewAppCreated',
         'reload_menu_data': '_onReloadMenuData',
     }),
     custom_events: _.extend({}, WebClient.prototype.custom_events, {

@@ -42,15 +42,4 @@ if (mobile.methods.getFCMKey) {
     }
 }
 
-if (mobile.methods.hashChange) {
-    var currentHash;
-    $(window).bind('hashchange', function (event) {
-        var hash = event.getState();
-        if (!_.isEqual(currentHash, hash)) {
-            mobile.methods.hashChange(hash);
-        }
-        currentHash = hash;
-    });
-}
-
 });

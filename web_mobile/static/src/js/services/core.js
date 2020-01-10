@@ -62,6 +62,20 @@ _.each(plugins, function (plugin) {
     };
 });
 
+/**
+ * Use to notify an uri hash change on native devices (ios / android)
+ */
+if (methods.hashChange) {
+    var currentHash;
+    $(window).bind('hashchange', function (event) {
+        var hash = event.getState();
+        if (!_.isEqual(currentHash, hash)) {
+            methods.hashChange(hash);
+        }
+        currentHash = hash;
+    });
+}
+
 return {'methods': methods};
 
 });

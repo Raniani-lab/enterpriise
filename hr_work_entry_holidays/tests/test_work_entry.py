@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 import pytz
 
 from odoo.tests.common import tagged
+from odoo.fields import Date, Datetime
 from odoo.addons.hr_work_entry_holidays.tests.common import TestWorkEntryHolidaysBase
 
 
@@ -93,3 +94,56 @@ class TestWorkeEntryHolidaysWorkEntry(TestWorkEntryHolidaysBase):
         sum_hours = sum(leave_work_entry.mapped('duration'))
 
         self.assertEqual(sum_hours, 5.0, "It should equal the number of hours richard should have worked")
+
+    def test_contract_on_another_company(self):
+        """ Test that the work entry generation still work if
+            the contract is not on the same company than
+            the employee (Internal Use Case)
+            So when generating the work entries in Belgium,
+            there is an issue when accessing to the time off
+            in Hong Kong.
+        """
+        company = self.env['res.company'].create({'name': 'Another Company'})
+
+        employee = self.env['hr.employee'].create({
+            'name': 'New Employee',
+            'company_id': company.id,
+        })
+
+        contract = self.env['hr.contract'].create({
+            'name': 'Employee Contract',
+            'employee_id': employee.id,
+            'date_start': Date.from_string('2015-01-01'),
+            'state': 'open',
+            'company_id': self.env.ref('base.main_company').id,
+            'wage': 4000,
+        })
+
+        leave_type = self.env['hr.leave.type'].create({
+            'name': 'Sick',
+            'request_unit': 'hour',
+            'leave_validation_type': 'both',
+            'allocation_type': 'no',
+            'company_id': company.id,
+        })
+        leave1 = self.env['hr.leave'].create({
+            'name': 'Sick 1 week during christmas snif',
+            'employee_id': employee.id,
+            'holiday_status_id': leave_type.id,
+            'date_from': Datetime.from_string('2019-12-23 06:00:00'),
+            'date_to': Datetime.from_string('2019-12-27 20:00:00'),
+            'number_of_days': 5,
+        })
+        leave1.action_approve()
+        leave1.action_validate()
+
+        # The work entries generation shouldn't raise an error
+
+        user = self.env['res.users'].create({
+            'name': 'Classic User',
+            'login': 'Classic User',
+            'company_id': self.env.ref('base.main_company').id,
+            'company_ids': self.env.ref('base.main_company').ids,
+            'groups_id': [(6, 0, [self.env.ref('hr_contract.group_hr_contract_manager').id, self.env.ref('base.group_user').id])],
+        })
+        self.env['hr.employee'].with_user(user).generate_work_entries('2019-12-01', '2019-12-31')

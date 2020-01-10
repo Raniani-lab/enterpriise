@@ -58,7 +58,7 @@ class HrContract(models.Model):
         employee = self.employee_id
         calendar = self.resource_calendar_id
         resource = employee.resource_id
-        leaves = self.env['resource.calendar.leaves'].search([
+        leaves = self.env['resource.calendar.leaves'].sudo().search([
             ('resource_id', 'in', [False, resource.id]),
             ('calendar_id', '=', calendar.id),
             ('date_from', '<', date_stop),

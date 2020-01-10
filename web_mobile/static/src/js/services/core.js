@@ -24,19 +24,14 @@ function native_invoke(name, args) {
         args = {};
     }
     var id = _.uniqueId();
-    var def = new Promise(function (resolve, reject) {
-        deferreds[id] = {
-            successCallback: function (success) {
-                resolve(success);
-            },
-            errorCallback: function (error) {
-                reject(error);
-            }
-        };
-    });
     args = JSON.stringify(args);
     DeviceUtility.execute(name, args, id);
-    return def;
+    return new Promise(function (resolve, reject) {
+        deferreds[id] = {
+            successCallback: resolve,
+            errorCallback: reject
+        };
+    });
 }
 
 /**

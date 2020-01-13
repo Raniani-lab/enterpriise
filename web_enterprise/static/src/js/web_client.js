@@ -289,15 +289,15 @@ return AbstractWebClient.extend({
             // Attach the home_menu
             await this.homeMenuManager.mount(this.el);
         } else {
+            // Detach the home_menu
+            this.homeMenuManager.unmount();
+
             dom.append(this.$el, [this.web_client_content], {
                 in_DOM: true,
                 callbacks: [{ widget: this.action_manager }],
             });
             delete this.web_client_content;
             this.trigger_up('scrollTo', this.scrollPosition);
-
-            // Detach the home_menu
-            this.homeMenuManager.unmount();
         }
     },
     _onShowHomeMenu: function () {

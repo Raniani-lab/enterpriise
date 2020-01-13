@@ -46,7 +46,7 @@ class TestPayrollPerformance(TestPayslipBase):
         work_entry = self.create_work_entry(datetime(2018, 1, 1, 7, 0), datetime(2018, 1, 1, 12, 0))
         self.create_work_entry(datetime(2018, 1, 1, 11, 0), datetime(2018, 1, 1, 17, 0))
 
-        with self.assertQueryCount(__system__=14, admin=23):
+        with self.assertQueryCount(__system__=14, admin=15):
             work_entry.unlink()
 
     @users('__system__', 'admin')
@@ -55,7 +55,7 @@ class TestPayrollPerformance(TestPayslipBase):
         work_entry = self.create_work_entry(datetime(2018, 1, 1, 3, 0), datetime(2018, 1, 1, 4, 0))
         self.create_work_entry(datetime(2018, 1, 1, 11, 0), datetime(2018, 1, 1, 17, 0))
 
-        with self.assertQueryCount(__system__=6, admin=9):
+        with self.assertQueryCount(__system__=6, admin=8):
             work_entry.write({'date_stop': datetime(2018, 1, 1, 13, 0)})
 
     @users('__system__', 'admin')
@@ -65,7 +65,7 @@ class TestPayrollPerformance(TestPayslipBase):
         work_entry_2 = self.create_work_entry(datetime(2018, 1, 1, 7, 0), datetime(2018, 1, 1, 11, 0))
         self.create_work_entry(datetime(2018, 1, 1, 11, 0), datetime(2018, 1, 1, 17, 0))
 
-        with self.assertQueryCount(__system__=7, admin=10):
+        with self.assertQueryCount(__system__=7, admin=9):
             (work_entry_1 | work_entry_2).write({'date_stop': datetime(2018, 1, 1, 13, 0)})
 
     @users('__system__', 'admin')

@@ -11,7 +11,11 @@
         'views/assets.xml',
         'views/social_views.xml',
         'views/social_linkedin_preview.xml',
+        'views/social_stream_posts_views.xml',
         'views/res_config_settings_views.xml',
+    ],
+    'qweb': [
+        "static/src/xml/social_linkedin_templates.xml",
     ],
     'auto_install': True,
 }

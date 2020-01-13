@@ -202,6 +202,10 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
     }
 }
 
+.o_social_subtle_btn_disabled {
+    color: lighten($o-main-text-color, 10%);
+}
+
 .o_social_author_image {
     &:after {
         @include o-position-absolute(0, 0, 0, 0);
@@ -389,6 +393,10 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
         @include size(32px);
     }
 
+    .o_social_comment_user_likes{
+        font-weight: bold;
+    }
+
     // Original Post
     .o_social_comments_modal_original_post {
         .o_social_author_image img {
@@ -450,4 +458,3 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
         display: inline-block;
     }
 }
-

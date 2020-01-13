@@ -82,7 +82,6 @@
                                     <div class="o_social_stream_post_message_text overflow-hidden mb-2">
                                         <field t-if="record.message.raw_value" name="message" widget="social_kanban_field_stream_post" t-att-media_type="record.media_type.raw_value || ''" t-att-data-account-id="account_id"/>
                                     </div>
-
                                     <a t-if="record.link_url.value"
                                         class="o_social_stream_post_link p-2 d-flex bg-100"
                                         t-att-href="record.link_url.raw_value"

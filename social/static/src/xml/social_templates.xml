@@ -49,7 +49,8 @@
 
         <div class="o_social_comment_wrapper d-flex align-items-start">
             <div class="o_social_author_image position-relative rounded-circle flex-shrink-0 mr-2 overflow-hidden">
-                <img t-att-src="widget.getAuthorPictureSrc(comment)" t-att-title="comment.from.name" />
+                <t t-set="authorPicture" t-value="widget.getAuthorPictureSrc(comment)"/>
+                <img t-if="authorPicture" t-att-src="authorPicture" t-att-title="comment.from.name" />
             </div>
 
             <div class="flex-grow-1">
@@ -146,7 +147,8 @@
     <div class="o_social_write_reply" t-name="social.StreamPostReply">
         <form t-attf-class="d-flex flex-nowrap align-items-start #{classes ? classes : ''}">
             <div class="o_social_author_image position-relative rounded-circle flex-shrink-0 overflow-hidden mr-2">
-                <img t-att-src="widget.getAuthorPictureSrc()" t-att-title="isCommentReply ? ('Write a reply as ' + widget.accountName) : ('Write comment as ' + widget.accountName)" />
+                <t t-set="authorPicture" t-value="widget.getAuthorPictureSrc()"/>
+                <img t-if="authorPicture" t-att-src="authorPicture" t-att-title="isCommentReply ? ('Write a reply as ' + widget.accountName) : ('Write comment as ' + widget.accountName)" />
             </div>
             <div class="position-relative flex-grow-1">
                 <div class="f-flex align-items-stretch">

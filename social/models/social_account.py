@@ -88,3 +88,6 @@ class SocialAccount(models.Model):
             'media_id': [account.media_id.id],
             'stats_link': account.stats_link
         } for account in all_accounts]
+
+    def _compute_trend(self, value, delta_30d):
+        return 0.0 if value - delta_30d <= 0 else (delta_30d / (value - delta_30d)) * 100

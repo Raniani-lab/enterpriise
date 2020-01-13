@@ -59,9 +59,6 @@ class SocialAccountFacebook(models.Model):
                 'stories_trend': self._compute_trend(account.stories, statistics_30d['page_content_activity'])
             })
 
-    def _compute_trend(self, value, delta_30d):
-        return 0.0 if value - delta_30d <= 0 else (delta_30d / (value - delta_30d)) * 100
-
     def _compute_statistics_facebook_360d(self, insights_endpoint_url):
         """ Facebook only accepts requests for a range of maximum 90 days.
         We loop 4 times over 90 days to build the last 360 days of data (~ 1 year). """

@@ -34,7 +34,7 @@ class SocialLinkedinCase(SocialCase):
             return response
 
         with patch.object(requests, 'post', _patched_post), \
-             patch.object(SocialLivePostLinkedin, '_likedin_upload_image', lambda *a, **kw: 'fake_image_urn'):
+             patch.object(SocialLivePostLinkedin, '_linkedin_upload_image', lambda *a, **kw: 'fake_image_urn'):
             self.social_post._action_post()
 
         self._checkPostedStatus(success)
@@ -93,7 +93,7 @@ class SocialLinkedinCase(SocialCase):
 
         responses = []
         with patch.object(requests, 'post', _patched_post), \
-             patch.object(SocialLivePostLinkedin, '_likedin_upload_image', lambda *a, **kw: 'fake_image_urn'):
+             patch.object(SocialLivePostLinkedin, '_linkedin_upload_image', lambda *a, **kw: 'fake_image_urn'):
             self.social_post._action_post()
 
         self.assertTrue(responses)

@@ -66,6 +66,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
             size: 'medium',
         });
 
+        this.accountId = options.accountId;
         this.originalPost = options.originalPost;
         this.emojis = emojis;
         this.postId = options.postId;
@@ -132,7 +133,6 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
     canAddImage: function () {
         return true;
     },
-
 
     showMoreComments: function (result) {
         return false;

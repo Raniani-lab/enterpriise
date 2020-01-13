@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import requests
+from urllib.parse import quote
 from werkzeug.urls import url_join
 
 from odoo import models, fields, _
@@ -12,6 +13,40 @@ class SocialLivePostLinkedin(models.Model):
     _inherit = 'social.live.post'
 
     linkedin_post_id = fields.Char('Actual LinkedIn ID of the post')
+
+    def _refresh_statistics(self):
+        super(SocialLivePostLinkedin, self)._refresh_statistics()
+        accounts = self.env['social.account'].search([('media_type', '=', 'linkedin')])
+
+        for account in accounts:
+            linkedin_post_ids = self.env['social.live.post'].sudo().search([('account_id', '=', account.id)], order='create_date DESC', limit=700)
+            if not linkedin_post_ids:
+                continue
+
+            linkedin_post_ids = {post.linkedin_post_id: post for post in linkedin_post_ids}
+
+            endpoint = url_join(
+                self.env['social.media']._LINKEDIN_ENDPOINT,
+                'organizationalEntityShareStatistics?shares=List(%s)' % ','.join([quote(urn) for urn in linkedin_post_ids]))
+
+            response = requests.get(
+                endpoint, params={'q': 'organizationalEntity', 'organizationalEntity': account.linkedin_account_urn, 'count': 700},
+                headers=account._linkedin_bearer_headers())
+
+            if response.status_code != 200 or 'elements' not in response.json():
+                account.sudo().write({'is_media_disconnected': True})
+                continue
+
+            for stats in response.json()['elements']:
+                urn = stats.get('share')
+                stats = stats.get('totalShareStatistics')
+
+                if not urn or not stats or urn not in linkedin_post_ids:
+                    continue
+
+                linkedin_post_ids[urn].write({
+                    'engagement': stats.get('likeCount', 0) + stats.get('commentCount', 0) + stats.get('shareCount', 0)
+                })
 
     def _post(self):
         linkedin_live_posts = self.filtered(lambda post: post.account_id.media_type == 'linkedin')
@@ -27,7 +62,7 @@ class SocialLivePostLinkedin(models.Model):
 
             if live_post.post_id.image_ids:
                 images_urn = [
-                    self._likedin_upload_image(live_post.account_id, image_id)
+                    self._linkedin_upload_image(live_post.account_id, image_id)
                     for image_id in live_post.post_id.image_ids
                 ]
 
@@ -69,7 +104,7 @@ class SocialLivePostLinkedin(models.Model):
                 }
 
             data = {
-                "author": live_post.account_id.linkedin_account_id,
+                "author": live_post.account_id.linkedin_account_urn,
                 "lifecycleState": "PUBLISHED",
                 "specificContent": specific_content,
                 "visibility": {
@@ -79,7 +114,7 @@ class SocialLivePostLinkedin(models.Model):
 
             response = requests.post(
                 url_join(self.env['social.media']._LINKEDIN_ENDPOINT, 'ugcPosts'),
-                headers=live_post.account_id._bearer_headers(),
+                headers=live_post.account_id._linkedin_bearer_headers(),
                 json=data).json()
 
             response_id = response.get('id')
@@ -98,14 +133,14 @@ class SocialLivePostLinkedin(models.Model):
 
             live_post.write(values)
 
-    def _likedin_upload_image(self, account_id, image_id):
+    def _linkedin_upload_image(self, account_id, image_id):
         # 1 - Register your image to be uploaded
         data = {
             "registerUploadRequest": {
                 "recipes": [
                     "urn:li:digitalmediaRecipe:feedshare-image"
                 ],
-                "owner": account_id.linkedin_account_id,
+                "owner": account_id.linkedin_account_urn,
                 "serviceRelationships": [
                     {
                         "relationshipType": "OWNER",
@@ -117,7 +152,7 @@ class SocialLivePostLinkedin(models.Model):
 
         response = requests.post(
                 url_join(self.env['social.media']._LINKEDIN_ENDPOINT, 'assets?action=registerUpload'),
-                headers=account_id._bearer_headers(),
+                headers=account_id._linkedin_bearer_headers(),
                 json=data).json()
 
         if 'value' not in response or 'asset' not in response['value']:
@@ -129,7 +164,7 @@ class SocialLivePostLinkedin(models.Model):
 
         file = open(image_id._full_path(image_id.store_fname), 'rb').read()
 
-        headers = account_id._bearer_headers()
+        headers = account_id._linkedin_bearer_headers()
         headers['Content-Type'] = 'application/octet-stream'
 
         response = requests.request('POST', upload_url, data=file, headers=headers)

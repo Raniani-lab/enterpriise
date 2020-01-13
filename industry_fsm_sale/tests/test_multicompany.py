@@ -81,6 +81,8 @@ class TestMultiCompanyCommon(TestCommonSaleTimesheetMultiCompanyNoChart):
         self.task_1.with_context(allowed_company_ids=[self.env.company.id, self.company_B.id], company_id=self.company_B.id).action_fsm_view_material()
 
         self.assertFalse(self.task_1.fsm_done, "Task should not be validated")
+        self.assertFalse(self.task_1.sale_order_id, "Task should not be linked to a SO")
+        self.task_1._fsm_ensure_sale_order()
         self.assertEqual(self.task_1.sale_order_id.state, 'draft', "Sale order should not be confirmed")
         # Validating a task while in another company should not impact the propagation of the company_id to the sale order
         self.task_1.with_user(self.user_manager).with_context(allowed_company_ids=[self.env.company.id, self.company_B.id], company_id=self.company_B.id).action_fsm_validate()

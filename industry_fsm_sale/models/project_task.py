@@ -118,7 +118,8 @@ class Task(models.Model):
         return action
 
     def action_fsm_view_material(self):
-        self._fsm_ensure_sale_order()
+        if not self.partner_id:
+            raise UserError(_('The FSM task must have a customer set to be sold.'))
 
         domain = [('sale_ok', '=', True), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
         if self.project_id and self.project_id.timesheet_product_id:

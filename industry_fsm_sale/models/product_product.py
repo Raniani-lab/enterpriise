@@ -29,6 +29,9 @@ class ProductProduct(models.Model):
             if task.fsm_done:
                 return False
 
+            # create a sale order
+            task._fsm_ensure_sale_order()
+
             # project user with no sale rights should be able to add materials
             SaleOrderLine = self.env['sale.order.line']
             if self.user_has_groups('project.group_project_user'):

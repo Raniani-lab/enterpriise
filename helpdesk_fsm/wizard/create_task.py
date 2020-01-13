@@ -9,9 +9,10 @@ class CreateTask(models.TransientModel):
     _description = 'Create a Field Service task'
 
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket', string='Related ticket', required=True)
+    company_id = fields.Many2one(related='helpdesk_ticket_id.company_id')
     name = fields.Char('Title', required=True)
-    project_id = fields.Many2one('project.project', string='Project', help='Project in which to create the task', required=True, domain=[('is_fsm', '=', True)])
-    partner_id = fields.Many2one('res.partner', string='Customer', help="Ticket's customer, will be linked to the task", required=True)
+    project_id = fields.Many2one('project.project', string='Project', help='Project in which to create the task', required=True, domain="[('company_id', '=', company_id), ('is_fsm', '=', True)]")
+    partner_id = fields.Many2one('res.partner', string='Customer', help="Ticket's customer, will be linked to the task", required=True, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
     @api.model
     def default_get(self, fields_list):

@@ -6,12 +6,13 @@ import io
 from collections import defaultdict
 from lxml import etree
 from lxml.builder import E
-from odoo import api, models, _
 import json
 import uuid
 import random
 
+from odoo import api, models, _
 from odoo.exceptions import UserError
+from odoo.osv import expression
 
 
 CONTAINER_TYPES = (
@@ -791,6 +792,7 @@ class View(models.Model):
 
     def copy_qweb_template(self):
         new = self.copy()
+        new.inherit_id = False
 
         domain = [
             ('type', '=', 'qweb'),
@@ -820,16 +822,29 @@ class View(models.Model):
                 callview.copy_qweb_template()
             node.set('t-call', cloned_templates[tcall])
 
-        subtree = arch_tree.find(".//*[@t-name]")
-        if subtree is not None:
-            subtree.set('t-name', new_key)
-            arch_tree = subtree
+        subtree = arch_tree.xpath("//*[@t-name]")
+        if subtree:
+            subtree[0].set('t-name', new_key)
+            arch_tree = subtree[0]
+
+        # copy translation from view combinations
+        combined_views = self.browse()
+        views_to_process = [self]
+        while views_to_process:
+            view = views_to_process.pop()
+            if not view or view in combined_views:
+                continue
+            combined_views += view
+            views_to_process += view.inherit_id
+            views_to_process += view.get_inheriting_views_arch(view.model)
+        fields_to_ignore = (field for field in self._fields if field != 'arch_base')
+        for view in (combined_views - self).with_context(from_copy_translation=True):
+            view.copy_translations(new, fields_to_ignore)
 
         new.write({
             'name': '%s copy(%s)' % (new.name, copy_no),
             'key': new_key,
             'arch_base': etree.tostring(arch_tree, encoding='unicode'),
-            'inherit_id': False,
         })
 
         return new

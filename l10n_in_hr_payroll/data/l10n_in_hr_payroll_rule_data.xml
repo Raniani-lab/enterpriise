@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Salary Structure -->
+    <!-- Salary Structure and structure type -->
+    <record id="structure_0002" model="hr.payroll.structure">
+        <field name="name">Regular Pay</field>
+        <field name="type_id" ref="hr_contract.structure_type_employee"/>
+        <field name="unpaid_work_entry_type_ids" eval="[(4, ref('hr_work_entry_contract.work_entry_type_unpaid_leave'))]"/>
+        <field name="country_id" ref="base.in"/>
+    </record>
+    <record id="structure_worker_0001" model="hr.payroll.structure">
+        <field name="name">Worker Pay</field>
+        <field name="type_id" ref="hr_contract.structure_type_worker"/>
+        <field name="country_id" ref="base.in"/>
+    </record>
+    <record id="hr_contract.structure_type_employee" model="hr.payroll.structure.type">
+        <field name="default_struct_id" ref="structure_0002"/>
+    </record>
+    <record id="hr_contract.structure_type_worker" model="hr.payroll.structure.type">
+        <field name="wage_type">hourly</field>
+        <field name="default_struct_id" ref="structure_worker_0001"/>
+    </record>
     <record id="hr_payroll_salary_structure_type_ind_emp" model="hr.payroll.structure.type">
         <field name="name">Non-Executives</field>
         <field name="country_id" ref="base.in"/>
@@ -193,9 +211,9 @@ Now difference of income tax between payment year and actual year would be allow
         <field name="name">Medical Allowance</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="amount_select">fix</field>
-        <field eval="1250.0" name="amount_fix"/>
+        <field eval="1500.0" name="amount_fix"/>
         <field name="sequence" eval="43"/>
-        <field name="note">This component is on-taxable up to 15000 per year (or Rs 1250 per month) on producing medical bills.</field>
+        <field name="note">This component is on-taxable up to 15000 per year (or Rs 1500 per month) on producing medical bills.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>
 
@@ -206,14 +224,14 @@ Now difference of income tax between payment year and actual year would be allow
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = inputs.MR and inputs.MR.amount</field>
         <field name="sequence" eval="32"/>
-        <field name="note">This component is on-taxable up to 15000 per year (or Rs 1250 per month) on producing medical bills.</field>
+        <field name="note">This component is on-taxable up to 15000 per year (or Rs 1500 per month) on producing medical bills.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>
 
      <record id="hr_salary_rule_food_coupon" model="hr.salary.rule">
         <field name="amount_select">fix</field>
         <field eval="50" name="amount_fix"/>
-        <field name="quantity">worked_days.WORK100.number_of_days</field>
+        <field name="quantity">worked_days.WORK100 and worked_days.WORK100.number_of_days</field>
         <field name="code">FC</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="name">Food Allowance</field>
@@ -221,6 +239,34 @@ Now difference of income tax between payment year and actual year would be allow
         <field name="sequence" eval="33"/>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
      </record>
+
+     <record id="hr_payslip_rule_employer_alw_esic" model="hr.salary.rule">
+        <field name="code">ESICF</field>
+        <field name="name">Employer's State Insurance Corporation</field>
+        <field name="sequence" eval="168"/>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = categories.GROSS &lt;= 21000 </field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = (categories.GROSS * 0.0325) if categories.GROSS &lt;= 21000 else 0</field>
+        <field name="sequence" eval="110"/>
+        <field name="appears_on_payslip" eval="False"/>
+        <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
+    </record>
+
+    <record id="hr_payslip_rule_alw_erpf" model="hr.salary.rule">
+        <field name="code">ERPF</field>
+        <field name="name">Employer's PF Contribution</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = -(payslip.company_id.dearness_allowance and - ((contract.wage + categories.DA) * 0.12)
+or - (contract.wage * 0.12))</field>
+        <field name="sequence" eval="37"/>
+        <field name="partner_id" ref="hr_register_provident_fund"/>
+        <field name="appears_on_payslip" eval="False"/>
+        <field name="note">Both the employees and employer contribute to the fund at the rate of 12% of the basic wages, dearness allowance and retaining allowance, if any, payable to employees per month.</field>
+        <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
+    </record>
 
     <record id="hr_salary_rule_journals" model="hr.salary.rule">
         <field name="code">PERJ</field>
@@ -240,17 +286,6 @@ Now difference of income tax between payment year and actual year would be allow
         <field name="amount_select">fix</field>
         <field eval="1000" name="amount_fix"/>
         <field name="sequence" eval="35"/>
-        <field name="note">Some sections of employees mat get allowance for purchase of office dress/uniform.In such case, the component would become non-taxable.</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
-    </record>
-
-    <record id="hr_salary_rule_uniform_junior" model="hr.salary.rule">
-        <field name="code">UNIFJ</field>
-        <field name="name">Uniform/Dress Allowance for Junior Executive</field>
-        <field name="category_id" ref="hr_payroll.ALW"/>
-        <field name="amount_select">fix</field>
-        <field eval="600" name="amount_fix"/>
-        <field name="sequence" eval="42"/>
         <field name="note">Some sections of employees mat get allowance for purchase of office dress/uniform.In such case, the component would become non-taxable.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>
@@ -334,12 +369,11 @@ Now difference of income tax between payment year and actual year would be allow
         <field name="name">Professional Tax</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = contract.wage &gt;= 3000 </field>
+        <field name="condition_python">result = categories.GROSS &gt;= 3000 </field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (-200 if contract.wage &gt;= 12000
-else -150 if ((contract.wage &gt;= 9000) and (contract.wage &lt;= 11999))
-else -80 if ((contract.wage &gt;= 6000) and (contract.wage &lt;= 8999))
-else -20 if  ((contract.wage &gt;= 3000) and (contract.wage &lt;= 5999))
+        <field name="amount_python_compute">result = (-200 if categories.GROSS &gt;= 12000
+else -150 if ((categories.GROSS &gt;= 9000) and (categories.GROSS &lt;= 11999))
+else -80 if ((categories.GROSS &gt;= 6000) and (categories.GROSS &lt;= 8999))
 else -0)</field>
         <field name="partner_id" ref="hr_professional_tax_deduction_register"/>
         <field eval="145" name="sequence"/>
@@ -398,7 +432,6 @@ or - (contract.wage * contract.voluntary_provident_fund / 100))</field>
         <field eval="-1500.0" name="amount_fix"/>
         <field name="partner_id" ref="hr_company_transport_register"/>
         <field name="sequence" eval="165"/>
-        <field name="appears_on_payslip" eval="False"/>
         <field name="note">Company provided transport amount is based on company.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>
@@ -406,7 +439,7 @@ or - (contract.wage * contract.voluntary_provident_fund / 100))</field>
      <record id="hr_salary_rule_food_coupon_ded" model="hr.salary.rule">
         <field name="amount_select">fix</field>
         <field eval="-50" name="amount_fix"/>
-        <field name="quantity">worked_days.WORK100.number_of_days</field>
+        <field name="quantity">worked_days.WORK100 and worked_days.WORK100.number_of_days</field>
         <field name="code">FD</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="name">Deduction Towards Food Coupons</field>
@@ -435,7 +468,6 @@ or - (contract.wage * contract.voluntary_provident_fund / 100))</field>
         <field eval="-6.0" name="amount_fix"/>
         <field name="sequence" eval="171"/>
         <field name="partner_id" ref="hr_labour_Welfare_fund_register"/>
-        <field name="appears_on_payslip" eval="False"/>
         <field name="note">The LWF is applicable to all the members of the organisation except the Management staff (Staffs having authority to sign on the cheque/official documents on behalf of the organisation). for e.x. Employee Contribution is Rs. 3.00 and Employer contribution Rs. 6.00 Total Rs 9.00 and deposited to the LWF office.It is half yearly contribution (June and December).</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>
@@ -473,7 +505,6 @@ or - (contract.wage * contract.voluntary_provident_fund / 100))</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = - (contract.medical_insurance)</field>
         <field eval="-50.0" name="amount_fix"/>
-        <field name="appears_on_payslip" eval="False"/>
         <field name="partner_id" ref="hr_medical_insurance_register"/>
         <field name="sequence" eval="185"/>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -485,7 +516,6 @@ or - (contract.wage * contract.voluntary_provident_fund / 100))</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="amount_select">fix</field>
         <field eval="-200.0" name="amount_fix"/>
-        <field name="appears_on_payslip" eval="False"/>
         <field name="partner_id" ref="hr_other_deduction_register"/>
         <field name="sequence" eval="187"/>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -500,7 +530,6 @@ or - (contract.wage * contract.voluntary_provident_fund / 100))</field>
 or - (contract.wage * 0.10))</field>
         <field name="sequence" eval="190"/>
         <field name="partner_id" ref="hr_nps_contribution_register"/>
-        <field name="appears_on_payslip" eval="False"/>
         <field name= "note">Any amount contributed by your employer to your NPS account is treated as part of your salary and is included in your income but you can claim deduction under Section 80C for this too.thus, effectively making it exempt from tax within the limit of 10% of your basic salary. This is very useful and tax efficient for you particularly if you fall in the maximum tax.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>
@@ -516,6 +545,31 @@ or - (contract.wage * 0.12))</field>
         <field name="partner_id" ref="hr_register_provident_fund"/>
         <field name="appears_on_payslip" eval="False"/>
         <field name="note">Both the employees and employer contribute to the fund at the rate of 12% of the basic wages, dearness allowance and retaining allowance, if any, payable to employees per month.</field>
+        <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
+    </record>
+
+    <record id="hr_payslip_rule_employee_esic" model="hr.salary.rule">
+        <field name="code">ESIC</field>
+        <field name="name">Employee's State Insurance Corporation</field>
+        <field name="sequence" eval="167"/>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = categories.GROSS &lt;= 21000 </field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = -(categories.GROSS * 0.0075) if categories.GROSS &lt;= 21000 else 0</field>
+        <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
+    </record>
+
+    <record id="hr_payslip_rule_employer_esics" model="hr.salary.rule">
+        <field name="code">ESICS</field>
+        <field name="name">Employer's State Insurance Corporation</field>
+        <field name="sequence" eval="168"/>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = categories.GROSS &lt;= 21000 </field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = -(categories.GROSS * 0.0325) if categories.GROSS &lt;= 21000 else 0</field>
+        <field name="appears_on_payslip" eval="False"/>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>
 </odoo>

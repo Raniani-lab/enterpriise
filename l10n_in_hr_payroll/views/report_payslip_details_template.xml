@@ -91,4 +91,19 @@
             </t>
         </t>
     </template>
+
+    <template id="report_india_payslip" inherit_id='hr_payroll.report_payslip'>
+        <xpath expr="//table[@name='employee-infos']" position="inside">
+            <tr>
+                <td><strong>UAN</strong></td>
+                <td><span t-field="o.employee_id.uan"/></td>
+                <td><strong>PAN</strong></td>
+                <td><span t-field="o.employee_id.pan"/></td>
+            </tr>
+            <tr>
+                <td><strong>ESIC</strong></td>
+                <td><span t-field="o.employee_id.esic_number"/></td>
+            </tr>
+        </xpath>
+    </template>
 </odoo>

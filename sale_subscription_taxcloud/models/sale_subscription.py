@@ -23,7 +23,7 @@ class SaleSubscription(models.Model):
     def validate_taxes_on_subscription(self):
         for subscription in self:
             company = subscription.company_id
-            shipper = company or subscription.env.company_id
+            shipper = company or subscription.env.company
             api_id = shipper.taxcloud_api_id
             api_key = shipper.taxcloud_api_key
             request = TaxCloudRequest(api_id, api_key)

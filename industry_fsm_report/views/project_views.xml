@@ -11,6 +11,20 @@
         </field>
     </record>
 
+    <record id="project_task_view_calendar_fsm_worksheet" model="ir.ui.view">
+        <field name="name">project.task.calendar.fsm.worksheet</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_calendar_fsm"/>
+        <field name="arch" type="xml">
+            <xpath expr="//calendar" position="attributes">
+                <attribute name="color">worksheet_color</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="worksheet_template_id" invisible="1" filters="1" color="color"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_worksheet_template_view_form" model="ir.ui.view">
         <field name="name">project.worksheet.template.view.form</field>
         <field name="model">project.worksheet.template</field>

@@ -41,10 +41,11 @@ tour.register('web_studio_tests_tour', {
     // open the app creator and leave it
     trigger: '.o_web_studio_new_app',
 }, {
+    extra_trigger: '.o_web_studio_app_creator',
     trigger: '.o_web_studio_leave',
 }, {
     // go back to the previous app
-    trigger: 'body',
+    trigger: '.o_home_menu',
     run: () => {
         window.dispatchEvent(new KeyboardEvent('keydown', {
             bubbles: true,
@@ -248,7 +249,7 @@ tour.register('web_studio_tests_tour', {
     // search results should have been updated
     extra_trigger: `.o_menuitem.o_focused:contains(${createdAppString} / ${createdMenuString})`,
     // cleans the search bar query
-    trigger: 'body',
+    trigger: '.o_home_menu',
     run: () => {
         window.dispatchEvent(new KeyboardEvent('keydown', {
             bubbles: true,
@@ -257,7 +258,7 @@ tour.register('web_studio_tests_tour', {
     },
 }, {
     // go back again to the app (using keyboard)
-    trigger: 'body',
+    trigger: '.o_home_menu',
     run: () => {
         window.dispatchEvent(new KeyboardEvent('keydown', {
             bubbles: true,

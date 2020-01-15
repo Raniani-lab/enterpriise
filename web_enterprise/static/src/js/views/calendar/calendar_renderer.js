@@ -14,15 +14,69 @@ var core = require('web.core');
 var CalendarRenderer = require('web.CalendarRenderer');
 
 var qweb = core.qweb;
-
+// FIXME: in the future we should use modal instead of popover (on Event Click)
 CalendarRenderer.include({
 
-    // FIXME: in the future we should use modal instead of popover
+    /**
+     * @constructor
+     * @param {Widget} parent
+     * @param {Object} state
+     * @param {Object} params
+     */
+    init: function (parent, state, params) {
+        this._super.apply(this, arguments);
+        this.isSwipeEnabled = true;
+    },
+    /**
+     * @override
+     * @returns {Promise}
+     */
+    start: function () {
+        var promise = this._super();
+        this._bindSwipe();
+        return promise;
+    },
 
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * Bind handlers to enable swipe navigation
+     *
+     * @private
+     */
+    _bindSwipe: function () {
+        var self = this;
+        var touchStartX;
+        var touchEndX;
+        this.calendarElement.addEventListener('touchstart', function (event) {
+            self.isSwipeEnabled = true;
+            touchStartX = event.touches[0].pageX;
+        });
+        this.calendarElement.addEventListener('touchend', function (event) {
+            if (!self.isSwipeEnabled) {
+                return;
+            }
+            touchEndX = event.changedTouches[0].pageX;
+            if (touchStartX - touchEndX > 100) {
+                self.trigger_up('next');
+            } else if (touchStartX - touchEndX < -100) {
+                self.trigger_up('prev');
+            }
+        });
+    },
+    /**
+     * In mobile we change the column header to avoid to much text
+     *
+     * @override
+     * @private
+     */
+    _getFullCalendarOptions: function () {
+        const oldOptions = this._super(...arguments);
+        oldOptions.views.dayGridMonth.columnHeaderFormat = 'ddd';
+        return oldOptions;
+    },
     /**
      * Prepare the parameters for the popover.
      * Setting the popover is append to the body
@@ -37,7 +91,45 @@ CalendarRenderer.include({
         popoverParameters['container'] = 'body';
         return popoverParameters;
     },
+    /**
+     * In mobile, we add the swipe and so we need to disable it on some action
+     *
+     * @override
+     * @private
+     */
+    _initCalendar: function () {
+        var self = this;
+        this._super.apply(this, arguments);
+        var oldEventPositioned = this.calendar.getOption('eventPositioned');
+        var oldEventRender = this.calendar.getOption('eventRender');
+        var oldEventResize = this.calendar.getOption('eventResize');
+        var oldEventResizeStart = this.calendar.getOption('eventResizeStart');
 
+        this.calendar.setOption('eventPositioned', function (info) {
+            self.isSwipeEnabled = false;
+            if (oldEventPositioned) {
+                oldEventPositioned(info);
+            }
+        });
+        this.calendar.setOption('eventRender', function (info) {
+            self.isSwipeEnabled = false;
+            if (oldEventRender) {
+                oldEventRender(info);
+            }
+        });
+        this.calendar.setOption('eventResize', function (eventResizeInfo) {
+            self.isSwipeEnabled = false;
+            if (oldEventResize) {
+                oldEventResize(eventResizeInfo);
+            }
+        });
+        this.calendar.setOption('eventResizeStart', function (mouseResizeInfo) {
+            self.isSwipeEnabled = false;
+            if (oldEventResizeStart) {
+                oldEventResizeStart(mouseResizeInfo);
+            }
+        });
+    },
     /**
      * Finalise the popover
      * We adding some inline css to put the popover in a "fullscreen" mode

@@ -764,6 +764,7 @@ var TIf = AbstractEditComponent.extend({
             debugMode: config.isDebug(),
             fields: availableKeys,
             default: [[availableKeys[0].name, '!=', false]],
+            operators: ["=", "!=", ">", "<", ">=", "<=", "in", "not in", "set", "not set"],
         }).open();
         dialog.on("domain_selected", this, function (e) {
             var condition = Domain.prototype.domainToCondition(e.data.domain);

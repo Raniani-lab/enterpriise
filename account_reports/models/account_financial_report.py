@@ -647,7 +647,7 @@ class ReportAccountFinancialReport(models.Model):
             columns.append({'name': '', 'style': 'width: 1%;'})
 
         return {
-            'id': 'aml_%s' % groupby_id,
+            'id': groupby_id,
             'name': display_name and len(display_name) >= 45 and display_name[:40] + '...' or display_name,
             'level': financial_line.level + 1,
             'parent_id': financial_line.id,

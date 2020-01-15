@@ -69,8 +69,15 @@
 
     <record id="social_account_linkedin" model="social.account">
         <field name="name">My Company</field>
+        <field name="audience">1337</field>
+        <field name="audience_trend">15</field>
+        <field name="engagement">7713</field>
+        <field name="engagement_trend">35</field>
+        <field name="stories">31337</field>
+        <field name="stories_trend">7</field>
+        <field name="has_trends" eval="True" />
         <field name="media_id" ref="social_linkedin.social_media_linkedin"/>
-        <field name="has_account_stats" eval="False" />
+        <field name="linkedin_account_urn">urn:li:organization:31337</field>
     </record>
 
     <record id="social_utm_campaign" model="utm.campaign">
@@ -158,6 +165,14 @@ Better run to our website while it lasts 🏃</field>
         <field name="stream_type_id" ref="social_twitter.stream_type_twitter_keyword" />
         <field name="media_id" ref="social_twitter.social_media_twitter" />
         <field name="account_id" ref="social_account_twitter" />
+    </record>
+
+    <record id="social_stream_linkedin_page" model="social.stream">
+        <field name="name">LinkedIn Posts: My Company</field>
+        <field name="create_uid" ref="base.user_admin"/>
+        <field name="stream_type_id" ref="social_linkedin.stream_type_linkedin_company_post" />
+        <field name="media_id" ref="social_linkedin.social_media_linkedin" />
+        <field name="account_id" ref="social_account_linkedin" />
     </record>
 
     <record id="social_live_post_facebook_1" model="social.live.post">
@@ -250,6 +265,29 @@ Better run to our website while it lasts 🏃</field>
         <field name="message">Get 20% out of your purchases on https://mycompany.com/shop
 Better run to our website while it lasts 🏃</field>
         <field name="published_date" eval="time.strftime('%Y-01-07 09:00:00')"/>
+    </record>
+
+    <record id="social_stream_post_linkedin_1" model="social.stream.post">
+        <field name="stream_id" ref="social_stream_linkedin_page" />
+        <field name="linkedin_comments_count">94</field>
+        <field name="linkedin_likes_count">4584</field>
+        <field name="author_name">My Company Page</field>
+        <field name="twitter_profile_image_url" eval="'/web/image/res.users/%s/image_128' % ref('base.user_admin')" />
+        <field name="message">Our new product has been released 🎉 Check it out!</field>
+        <field name="published_date" eval="time.strftime('%Y-01-05 08:00:00')"/>
+        <field name="linkedin_author_urn">XX:XX:XX</field>
+    </record>
+
+    <record id="social_stream_post_linkedin_2" model="social.stream.post">
+        <field name="stream_id" ref="social_stream_linkedin_page" />
+        <field name="linkedin_comments_count">77</field>
+        <field name="linkedin_likes_count">1325</field>
+        <field name="author_name">My Company Page</field>
+        <field name="twitter_profile_image_url" eval="'/web/image/res.users/%s/image_128' % ref('base.user_admin')" />
+        <field name="message">Get 20% out of your purchases on https://mycompany.com/shop
+Better run to our website while it lasts 🏃</field>
+        <field name="published_date" eval="time.strftime('%Y-01-04 08:00:00')"/>
+        <field name="linkedin_author_urn">XX:XX:XX</field>
     </record>
 
     <record id="social_stream_post_image_1" model="social.stream.post.image">

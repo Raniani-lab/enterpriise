@@ -18,7 +18,8 @@ class DemoSocialStream(models.Model):
             self.env.ref('social_demo.social_stream_facebook_page', raise_if_not_found=False),
             self.env.ref('social_demo.social_stream_twitter_account', raise_if_not_found=False),
             self.env.ref('social_demo.social_stream_twitter_search', raise_if_not_found=False),
-            self.env.ref('social_demo.social_stream_twitter_search_competitor', raise_if_not_found=False)
+            self.env.ref('social_demo.social_stream_twitter_search_competitor', raise_if_not_found=False),
+            self.env.ref('social_demo.social_stream_linkedin_page', raise_if_not_found=False),
         ]
         for stream in res:
             # Once all demo streams are created, we start creating default stream posts for new streams.

@@ -240,6 +240,13 @@ Tour.register('hr_contract_salary_tour', {
             },
         },
         {
+            content: "Gender",
+            trigger: 'input[name="gender"]',
+            run: function () {
+                $('input[value="female"]').prop('checked', true);
+            },
+        },
+        {
             content: "National Identification Number",
             trigger: 'input[name="identification_id"]',
             run: 'text 11.11.11-111.11',

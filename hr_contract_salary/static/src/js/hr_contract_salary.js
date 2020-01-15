@@ -131,9 +131,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     get_personal_info: function() {
         return {
             'name': $("input[name='name']").val(),
-            'gender': _.find($("input[name='gender']"), function(gender) {
-                return gender.checked;
-            }).value,
+            'gender': $("input[name='gender']:checked").val() || false,
             'disabled': $("input[name='disabled']")[0].checked,
             'marital': $("select[name='marital']").val(),
             'spouse_fiscal_status': $("select[name='spouse_fiscal_status']").val(),
@@ -571,11 +569,12 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     check_form_validity: function() {
         var required_empty_input = _.find($("input:required"), function(input) {return input.value === ''; });
         var required_empty_select = _.find($("select:required"), function(select) {return $(select).val() === ''; });
+        var required_empty_gender = !$("input[name='gender']:checked").val();
         var email = $("input[name='email']").val();
         var atpos = email.indexOf("@");
         var dotpos = email.lastIndexOf(".");
         var invalid_email = atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length;
-        if(required_empty_input || required_empty_select) {
+        if(required_empty_input || required_empty_select || required_empty_gender) {
             $("button#hr_cs_submit").parent().append("<div class='alert alert-danger alert-dismissable fade show'>" + _('Some required fields are not filled') + "</div>");
             _.each($("input:required"), function(input) {
                 if (input.value === '') {
@@ -591,6 +590,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                     $(select).parent().find('.select2-choice').removeClass('bg-danger');
                 }
             });
+            $('.o_hr_cs_gender_required .hr_cs_control_indicator').toggleClass('border-danger', required_empty_gender);
             $("section#hr_cs_personal_information")[0].scrollIntoView({block: "end", behavior: "smooth"});
         }
         if (invalid_email) {
@@ -603,7 +603,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $(".alert").delay(4000).slideUp(200, function() {
             $(this).alert('close');
         });
-        return !invalid_email && !required_empty_input && !required_empty_select;
+        return !invalid_email && !required_empty_input && !required_empty_select && !required_empty_gender;
     },
 
     get_form_info: function() {

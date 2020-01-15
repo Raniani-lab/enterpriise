@@ -697,9 +697,9 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group mt32">
+                                            <div class="form-group mt32 o_hr_cs_gender_required">
                                                 <label class="hr_cs_control hr_cs_control_radio">Male
-                                                    <input type="radio" name="gender" value="male" class="advantage_input" t-att-checked="contract.employee_id.id and contract.employee_id.gender == 'male' or True"/>
+                                                    <input type="radio" name="gender" value="male" class="advantage_input" t-att-checked="contract.employee_id.id and contract.employee_id.gender == 'male' or False"/>
                                                     <div class="hr_cs_control_indicator hr_cs_control_indicator_white"/>
                                                 </label>
                                                 <label class="hr_cs_control hr_cs_control_radio">Female

@@ -108,7 +108,7 @@ var CohortView = AbstractView.extend({
      */
     getRenderer(parent, state) {
         state = Object.assign({}, state, this.rendererParams);
-        return new RendererWrapper(null, state, this.config.Renderer);
+        return new RendererWrapper(null, this.config.Renderer, state);
     },
 });
 

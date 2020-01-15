@@ -21,8 +21,7 @@ class FsmStockTracking(models.TransientModel):
     def generate_lot(self):
         if self.fsm_done:
             return
-        if not self.env.user.has_group('industry_fsm.group_fsm_user'):
-            raise AccessError(_("You must be a FSM user to edit lot and quantity."))
+
         if self.tracking_line_ids.filtered(lambda l: not l.lot_id):
             raise UserError(_('Each line need a Lot/Serial Number'))
 

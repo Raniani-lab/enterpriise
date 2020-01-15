@@ -9,6 +9,7 @@
     'category': 'Operations/Helpdesk',
     'depends': ['helpdesk', 'industry_fsm'],
     'data': [
+        'security/ir.model.access.csv',
         'views/helpdesk_views.xml',
         'views/project_task_views.xml',
         'wizard/create_task_views.xml',

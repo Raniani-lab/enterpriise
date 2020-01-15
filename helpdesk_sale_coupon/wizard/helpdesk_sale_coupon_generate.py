@@ -16,8 +16,6 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
         """Generates a coupon for the selected program and the partner linked
         to the ticket
         """
-        if not self.env.user.has_group('sales_team.group_sale_salesman') or not self.env.user.has_group('helpdesk.group_helpdesk_user'):
-            return []
         vals = {
             'partner_id': self.ticket_id.partner_id.id,
             'state': 'new',

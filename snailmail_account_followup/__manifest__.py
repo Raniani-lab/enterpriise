@@ -11,6 +11,7 @@ Extension to send follow-up documents by post
     """,
     'depends': ['snailmail', 'account_followup'],
     'data': [
+        'security/ir.model.access.csv',
         'data/account_followup_data.xml',
         'views/account_followup_views.xml',
         'views/assets.xml',

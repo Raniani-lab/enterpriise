@@ -12,6 +12,7 @@
     'depends': ['web_grid', 'hr_timesheet'],
     'category': 'Operations/Timesheets',
     'data': [
+        'security/ir.model.access.csv',
         'data/mail_data.xml',
         'security/timesheet_security.xml',
         'views/hr_timesheet_views.xml',

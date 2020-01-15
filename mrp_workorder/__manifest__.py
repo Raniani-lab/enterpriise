@@ -13,6 +13,7 @@
 * Traceability report
 * Cost Structure report (mrp_account)""",
     'data': [
+        'security/ir.model.access.csv',
         'security/mrp_workorder_security.xml',
         'data/mrp_workorder_data.xml',
         'views/quality_views.xml',

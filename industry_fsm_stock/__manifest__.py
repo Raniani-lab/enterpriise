@@ -11,6 +11,7 @@ Validate stock moves for Field Service
 """,
     'depends': ['industry_fsm_sale', 'sale_stock'],
     'data': [
+        'security/ir.model.access.csv',
         'views/product_product_views.xml',
         'wizard/fsm_stock_tracking_views.xml',
     ],

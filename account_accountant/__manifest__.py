@@ -18,6 +18,7 @@ It assigns manager and user access rights to the Administrator for the accountin
     'data': [
         'data/account_accountant_data.xml',
         'data/digest_data.xml',
+        'security/ir.model.access.csv',
         'security/account_accountant_security.xml',
         'views/account_accountant_templates.xml',
         'views/account_account_views.xml',

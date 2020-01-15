@@ -15,6 +15,7 @@
     'description': """
     """,
     'data': [
+        'security/ir.model.access.csv',
         'wizard/generate_simulation_link_views.xml',
         'views/hr_applicant_views.xml',
         'views/hr_contract_salary_templates.xml',

@@ -4,3 +4,4 @@ access_hr_appraisal_reminder_user,hr.appraisal.reminder.user,model_hr_appraisal_
 access_hr_appraisal_employee,hr.appraisal.employee,model_hr_appraisal,base.group_user,1,1,1,0
 access_hr_appraisal_report,hr.appraisal.report,model_hr_appraisal_report,hr_appraisal.group_hr_appraisal_manager,1,1,1,1
 access_mail_activity_type_appraisal_manager,mail.activity.type.appraisal.manager,mail.model_mail_activity_type,hr_appraisal.group_hr_appraisal_manager,1,1,1,1
+access_request_appraisal,access.request.appraisal,model_request_appraisal,base.group_user,1,1,1,0

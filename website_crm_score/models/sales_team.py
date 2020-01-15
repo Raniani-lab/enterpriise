@@ -113,7 +113,7 @@ class crm_team(models.Model):
 
                 for lead in leads:
                     if lead.id not in leads_done:
-                        leads_duplicated = lead.get_duplicated_leads(False)
+                        leads_duplicated = lead._get_lead_duplicates(email=lead.email_from)
                         if len(leads_duplicated) > 1:
                             merged = leads_duplicated.with_context(assign_leads_to_salesteams=True).merge_opportunity(False, False)
                             _logger.debug('Lead [%s] merged of [%s]' % (merged, leads_duplicated))

@@ -93,7 +93,7 @@
                         </th>
                         <th class="text-right">
                             <button type="button" class="btn btn-link o_no_padding o_mrp_mps_edit">
-                                <t t-esc="productionSchedule.min_to_replenish_qty"/> &lt;&amp;hellip;&lt; <t t-esc="productionSchedule.max_to_replenish_qty"/>
+                                <t t-esc="productionSchedule.min_to_replenish_qty"/> &#8804;&amp;hellip;&#8804; <t t-esc="productionSchedule.max_to_replenish_qty"/>
                             </button>
                         </th>
                         <t t-foreach="productionSchedule.forecast_ids" t-as="forecast">

@@ -15,7 +15,7 @@
                 <field name="effective_hours" optional="hide"/>
                 <field name="date_deadline" optional="hide"/>
                 <field name="stage_id" invisible="context.get('set_visible',False)" optional="show" readonly="1"/>
-                <field name="tag_ids" optional="hide" widget="many2many_tags"/>
+                <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
                 <field name="company_id"  optional="show" groups="base.group_multi_company" readonly="1"/>
             </tree>

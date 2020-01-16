@@ -598,6 +598,8 @@ class SaleSubscription(models.Model):
         return recurring_next_date
 
     def _prepare_invoice_line(self, line, fiscal_position, date_start=False, date_stop=False):
+        fpos = self.env['account.fiscal.position'].browse(fiscal_position or None)
+        accounts = line.product_id.product_tmpl_id.get_product_accounts(fiscal_pos=fpos)
         return {
             'name': line.name,
             'subscription_id': line.analytic_account_id.id,
@@ -606,6 +608,7 @@ class SaleSubscription(models.Model):
             'quantity': line.quantity,
             'product_uom_id': line.uom_id.id,
             'product_id': line.product_id.id,
+            'account_id': accounts['income'],
             'tax_ids': [(6, 0, line.tax_ids.ids)],
             'analytic_account_id': line.analytic_account_id.analytic_account_id.id,
             'analytic_tag_ids': [(6, 0, line.analytic_account_id.tag_ids.ids)],

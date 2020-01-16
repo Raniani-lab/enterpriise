@@ -25,6 +25,7 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheetNoChart):
         self.setUpServiceProducts()
         # create SO
         self.sale_order = self.env['sale.order'].with_context(tracking_disable=True).create({
+            'company_id': self.env.company.id,
             'partner_id': self.partner_customer_usd.id,
             'partner_invoice_id': self.partner_customer_usd.id,
             'partner_shipping_id': self.partner_customer_usd.id,

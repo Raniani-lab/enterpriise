@@ -8,8 +8,9 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
     _name = "helpdesk.sale.coupon.generate"
     _description = 'Generate Sales Coupon from Helpdesk'
 
-    program = fields.Many2one('sale.coupon.program', string="Coupon Program", domain=[('program_type', '=', 'coupon_program')])
     ticket_id = fields.Many2one('helpdesk.ticket')
+    company_id = fields.Many2one(related="ticket_id.company_id")
+    program = fields.Many2one('sale.coupon.program', string="Coupon Program", domain=lambda self: [('program_type', '=', 'coupon_program'), '|', ('company_id', '=', False), ('company_id', '=', self.ticket_id.company_id.id)])
 
     def generate_coupon(self):
         """Generates a coupon for the selected program and the partner linked

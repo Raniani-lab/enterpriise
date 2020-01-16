@@ -96,7 +96,8 @@ class Task(models.Model):
                 'form_view_initial_mode': 'edit',
                 'default_partner_id': self.partner_id.id,
                 'default_state': 'draft',
-                'default_task_id': self.id
+                'default_task_id': self.id,
+                'default_company_id': self.company_id.id,
             },
         })
         return action
@@ -119,7 +120,7 @@ class Task(models.Model):
     def action_fsm_view_material(self):
         self._fsm_ensure_sale_order()
 
-        domain = [('sale_ok', '=', True)]
+        domain = [('sale_ok', '=', True), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
         if self.project_id and self.project_id.timesheet_product_id:
             domain = expression.AND([domain, [('id', '!=', self.project_id.timesheet_product_id.id)]])
         deposit_product = self.env['ir.config_parameter'].sudo().get_param('sale.default_deposit_product_id')
@@ -184,6 +185,7 @@ class Task(models.Model):
         context = literal_eval(action.get('context', "{}"))
         context.update({
             'active_ids': self.mapped('sale_order_id').ids,
+            'default_company_id': self.company_id.id,
         })
         action['context'] = context
         return action
@@ -208,6 +210,7 @@ class Task(models.Model):
 
         sale_order = SaleOrder.create({
             'partner_id': self.partner_id.id,
+            'company_id': self.company_id.id,
             'analytic_account_id': self.project_id.analytic_account_id.id,
         })
         sale_order.onchange_partner_id()

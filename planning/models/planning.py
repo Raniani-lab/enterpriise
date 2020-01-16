@@ -39,7 +39,7 @@ class Planning(models.Model):
     _check_company_auto = True
 
     def _default_employee_id(self):
-        return self.env.user.employee_id
+        return self.env['hr.employee'].search([('user_id', '=', self.env.uid), ('company_id', '=', self.env.company.id)])
 
     def _default_start_datetime(self):
         return fields.Datetime.to_string(datetime.combine(fields.Datetime.now(), datetime.min.time()))
@@ -50,7 +50,7 @@ class Planning(models.Model):
     name = fields.Text('Note')
     employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, group_expand='_read_group_employee_id', check_company=True)
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
-    company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
+    company_id = fields.Many2one('res.company', string="Company", required=True, compute="_compute_planning_slot_company_id", store=True, readonly=False)
     role_id = fields.Many2one('planning.role', string="Role")
     color = fields.Integer("Color", related='role_id.color')
     was_copied = fields.Boolean("This shift was copied from previous week", default=False, readonly=True)
@@ -92,6 +92,13 @@ class Planning(models.Model):
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Shift end date should be greater than its start date'),
         ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'You cannot have negative shift'),
     ]
+
+    @api.depends('employee_id')
+    def _compute_planning_slot_company_id(self):
+        if self.employee_id:
+            self.company_id = self.employee_id.company_id.id
+        if not self.company_id.id:
+            self.company_id = self.env.company
 
     @api.depends('user_id')
     def _compute_is_assigned_to_me(self):
@@ -257,6 +264,7 @@ class Planning(models.Model):
         for fname in recurrence_fields:
             self[fname] = default_values.get(fname)
 
+
     # ----------------------------------------------------
     # ORM overrides
     # ----------------------------------------------------
@@ -290,6 +298,14 @@ class Planning(models.Model):
 
             result.append([slot.id, name])
         return result
+
+    @api.model
+    def create(self, vals):
+        if not vals.get('company_id') and vals.get('employee_id'):
+            vals['company_id'] = self.env['hr.employee'].browse(vals.get('employee_id')).company_id.id
+        if not vals.get('company_id'):
+            vals['company_id'] = self.env.company.id
+        return super().create(vals)
 
     def write(self, values):
         # detach planning entry from recurrency

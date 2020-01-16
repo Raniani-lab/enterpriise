@@ -5,13 +5,18 @@ const Dialog = require('web.Dialog');
 const dom = require('web.dom');
 const FormView = require('web.FormView');
 const KanbanView = require('web.KanbanView');
+const session = require('web.session');
 const testUtils = require('web.test_utils');
 const Widget = require('web.Widget');
 
-const mobileMixins = require('web_mobile.mixins');
+const { BackButtonEventMixin, UpdateDeviceAccountControllerMixin } = require('web_mobile.mixins');
 const mobile = require('web_mobile.core');
+const UserPreferencesFormView = require('web_mobile.UserPreferencesFormView');
+const { base64ToBlob } = require('web_mobile.testUtils');
 
 const {createParent, createView} = testUtils;
+
+const MY_IMAGE = 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==';
 
 QUnit.module('web_mobile', {
     beforeEach: function () {
@@ -59,6 +64,12 @@ QUnit.module('web_mobile', {
                     function: 'function',
                     title: 'title',
                 }],
+            },
+            users: {
+                fields: {
+                    name: { string: "name", type: "char" },
+                },
+                records: [],
             },
         };
     },
@@ -204,7 +215,7 @@ QUnit.module('web_mobile', {
             assert.step(`overrideBackButton: ${enabled}`);
         };
 
-        const DummyWidget = Widget.extend(mobileMixins.BackButtonEventMixin, {
+        const DummyWidget = Widget.extend(BackButtonEventMixin, {
             _onBackButton(ev) {
                 assert.step(`${ev.type} event`);
             },
@@ -246,7 +257,7 @@ QUnit.module('web_mobile', {
             assert.step(`overrideBackButton: ${enabled}`);
         };
 
-        const DummyWidget = Widget.extend(mobileMixins.BackButtonEventMixin, {
+        const DummyWidget = Widget.extend(BackButtonEventMixin, {
             init(parent, {name}) {
                 this._super.apply(this, arguments);
                 this.name = name;
@@ -343,6 +354,106 @@ QUnit.module('web_mobile', {
         parent.destroy();
         testUtils.mock.unpatch(Dialog);
         mobile.methods.overrideBackButton = __overrideBackButton;
+    });
+
+    QUnit.module('UpdateDeviceAccountControllerMixin');
+
+    QUnit.test('controller should call native updateAccount method when saving record', async function (assert) {
+        assert.expect(4);
+
+        const __updateAccount = mobile.methods.updateAccount;
+        mobile.methods.updateAccount = function (options) {
+            const { avatar, name, username } = options;
+            assert.ok("should call updateAccount");
+            assert.strictEqual(avatar, MY_IMAGE, "should have a base64 encoded avatar");
+            assert.strictEqual(name, "Marc Demo");
+            assert.strictEqual(username, "demo");
+            return Promise.resolve();
+        };
+
+        testUtils.mock.patch(session, {
+            fetchAvatar() {
+                return Promise.resolve(base64ToBlob(MY_IMAGE, 'image/png'));
+            },
+        });
+
+        const DummyView = FormView.extend({
+            config: Object.assign({}, FormView.prototype.config, {
+                Controller: FormView.prototype.config.Controller.extend(UpdateDeviceAccountControllerMixin),
+            }),
+        });
+
+        const dummy = await createView({
+            View: DummyView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form>
+                    <sheet>
+                        <field name="name"/>
+                    </sheet>
+                </form>`,
+            viewOptions: {
+                mode: 'edit',
+            },
+            session: {
+                username: "demo",
+                name: "Marc Demo",
+            }
+        });
+
+        await testUtils.form.clickSave(dummy);
+        await dummy.savingDef;
+
+        dummy.destroy();
+        testUtils.mock.unpatch(session);
+        mobile.methods.updateAccount = __updateAccount;
+    });
+
+    QUnit.test('UserPreferencesFormView should call native updateAccount method when saving record', async function (assert) {
+        assert.expect(4);
+
+        const __updateAccount = mobile.methods.updateAccount;
+        mobile.methods.updateAccount = function (options) {
+            const { avatar, name, username } = options;
+            assert.ok("should call updateAccount");
+            assert.strictEqual(avatar, MY_IMAGE, "should have a base64 encoded avatar");
+            assert.strictEqual(name, "Marc Demo");
+            assert.strictEqual(username, "demo");
+            return Promise.resolve();
+        };
+
+        testUtils.mock.patch(session, {
+            fetchAvatar() {
+                return Promise.resolve(base64ToBlob(MY_IMAGE, 'image/png'));
+            },
+        });
+
+        const view = await createView({
+            View: UserPreferencesFormView,
+            model: 'users',
+            data: this.data,
+            arch: `
+                <form>
+                    <sheet>
+                        <field name="name"/>
+                    </sheet>
+                </form>`,
+            viewOptions: {
+                mode: 'edit',
+            },
+            session: {
+                username: "demo",
+                name: "Marc Demo",
+            }
+        });
+
+        await testUtils.form.clickSave(view);
+        await view.savingDef;
+
+        view.destroy();
+        testUtils.mock.unpatch(session);
+        mobile.methods.updateAccount = __updateAccount;
     });
 });
 });

@@ -1,8 +1,9 @@
 odoo.define('web_mobile.Session', function (require) {
 "use strict";
 
-var core = require('web.core');
+const core = require('web.core');
 const Session = require('web.Session');
+const utils = require('web.utils');
 
 const mobile = require('web_mobile.core');
 
@@ -37,6 +38,39 @@ Session.include({
         } else {
             return this._super.apply(this, arguments);
         }
+    },
+
+    /**
+     * Update the user's account details on the mobile app
+     *
+     * @returns {Promise}
+     */
+    async updateAccountOnMobileDevice() {
+        if (!mobile.methods.updateAccount) {
+            return;
+        }
+        const avatar = await this.fetchAvatar();
+        const base64Avatar = await utils.getDataURLFromFile(avatar);
+        return mobile.methods.updateAccount({
+            avatar: base64Avatar.substring(base64Avatar.indexOf(',') + 1),
+            name: this.name,
+            username: this.username,
+        });
+    },
+
+    /**
+     * Fetch current user's avatar
+     *
+     * @returns {Promise<Blob>}
+     */
+    async fetchAvatar() {
+        const url = this.url('/web/image', {
+            model: 'res.users',
+            field: 'image_medium',
+            id: this.uid,
+        });
+        const response = await fetch(url);
+        return response.blob();
     },
 });
 

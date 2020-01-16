@@ -18,8 +18,15 @@
             <script type="text/javascript" src="/web_mobile/static/src/js/notification_manager.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/pivot_renderer.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/user_menu.js"></script>
+            <script type="text/javascript" src="/web_mobile/static/src/js/user_preferences_form_view.js"></script>
             <link rel="stylesheet" type="text/scss" href="/web_mobile/static/src/scss/mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_mobile/static/src/scss/pivot_view_mobile.scss"/>
+        </xpath>
+    </template>
+
+    <template id="tests_assets" name="mobile_tests_assets" inherit_id="web.tests_assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/web_mobile/static/tests/helpers/test_utils.js"></script>
         </xpath>
     </template>
 

@@ -1,6 +1,7 @@
 odoo.define('web_mobile.mixins', function (require) {
 "use strict";
 
+const session = require('web.session');
 const mobile = require('web_mobile.core');
 
 var backButtonEventListeners = [];
@@ -57,9 +58,34 @@ var BackButtonEventMixin = {
     _onBackButton: function () {},
 };
 
+/**
+ * Mixin to hook into the controller record's saving method and
+ * trigger the update of the user's account details on the mobile app.
+ *
+ * @mixin
+ * @name UpdateDeviceAccountControllerMixin
+ *
+ */
+const UpdateDeviceAccountControllerMixin = {
+    /**
+     * @override
+     */
+    async saveRecord() {
+        const changedFields = await this._super(...arguments);
+        this.savingDef = this.savingDef.then(() => session.updateAccountOnMobileDevice());
+        return changedFields;
+    },
+};
+
+/**
+ * Trigger the update of the user's account details on the mobile app as soon as
+ * the session is correctly initialized.
+ */
+session.is_bound.then(() => session.updateAccountOnMobileDevice());
 
 return {
     BackButtonEventMixin: BackButtonEventMixin,
+    UpdateDeviceAccountControllerMixin,
 };
 
 });

@@ -291,12 +291,16 @@ class DatevExportCSV(models.AbstractModel):
                 # back the gross amount for both lines. This case is not supported by this export
                 # function and will result in incorrect exported lines for datev.
                 code_correction = ''
+                letter = 's' if aml.balance >= 0 else 'h'
                 if aml.tax_ids:
                     amount = 0
+                    tax_balance_sum = 0
                     for tax in aml.tax_ids:
                         # Find tax line in the move and get it's tax_base_amount
                         tax_line = m.line_ids.filtered(lambda l: l.tax_line_id == tax and l.partner_id == aml.partner_id)
                         amount += abs(sum(tax_line.mapped('balance'))) + abs(sum(tax_line.mapped('tax_base_amount')))
+                        tax_balance_sum += tax_line.balance
+                    letter = 's' if tax_balance_sum >= 0 else 'h'
 
                 # account and counterpart account
                 to_account_code = self._find_partner_account(aml.move_id.l10n_de_datev_main_account_id, aml.partner_id)
@@ -325,7 +329,7 @@ class DatevExportCSV(models.AbstractModel):
                 partner_vat = aml.tax_ids and aml.move_id.partner_id.vat or ''
                 line_value = {
                     'waehrung': currency.name,
-                    'sollhaben': 's' if aml.balance >= 0 else 'h',
+                    'sollhaben': letter,
                     'amount': str(amount).replace('.', ','),
                     'buschluessel': code_correction,
                     'gegenkonto': to_account_code,

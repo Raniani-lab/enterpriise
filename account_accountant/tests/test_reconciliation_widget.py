@@ -305,5 +305,5 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         self.assertTrue(all(l.reconciled for l in inv1_receivable))
         self.assertTrue(all(l.reconciled for l in inv2_receivable))
 
-        self.assertEqual(inv1.invoice_payment_state, 'paid')
-        self.assertEqual(inv2.invoice_payment_state, 'paid')
+        self.assertEqual(inv1.payment_state, 'paid')
+        self.assertEqual(inv2.payment_state, 'paid')

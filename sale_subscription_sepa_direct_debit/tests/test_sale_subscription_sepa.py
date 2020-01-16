@@ -113,7 +113,7 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
                 assertEqual(len(tx), 1, 'a single transaction should be created')
                 assertEqual(tx.state, 'pending', 'transaction should be pending')
                 assertEqual(payment.state, 'posted', 'payment should be posted')
-                assertEqual(invoice.invoice_payment_state, 'in_payment', 'invoice should be in_payment')
+                assertEqual(invoice.payment_state, 'in_payment', 'invoice should be in_payment')
                 assertEqual(invoice.state, 'posted', 'move should be posted')
 
                 # reconcile the payment
@@ -140,7 +140,7 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
                 assertEqual(payment.state, 'reconciled', 'payment should be reconciled')
                 assertEqual(tx.state, 'done', 'transaction should be done')
                 assertEqual(invoice.state, 'posted', 'invoice should be posted')
-                assertEqual(invoice.invoice_payment_state, 'paid', 'invoice should be paid')
+                assertEqual(invoice.payment_state, 'paid', 'invoice should be paid')
 
     def _mock_send_success_mail(self, tx, invoice):
         self.send_success_count += 1

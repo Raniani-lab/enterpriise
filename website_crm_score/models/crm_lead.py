@@ -39,15 +39,6 @@ class Lead(models.Model):
         # Call default merge function
         return super(Lead, self).merge_dependences(opportunities)
 
-    @api.model
-    def _onchange_user_values(self, user_id):
-        """ returns new values when user_id has changed """
-        if user_id and self._context.get('team_id'):
-            team = self.env['crm.team'].browse(self._context['team_id'])
-            if user_id in team.team_user_ids.mapped('user_id').ids:
-                return {}
-        return super(Lead, self)._onchange_user_values(user_id)
-
     # Overwritte ORM to add or remove the assign date
     @api.model
     def create(self, vals):

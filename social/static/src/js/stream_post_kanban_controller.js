@@ -15,6 +15,7 @@ var StreamPostKanbanController = KanbanController.extend({
         'click .o_social_stream_post_image_more, .o_social_stream_post_image_click': '_onClickMoreImages',
         'click .o_social_js_add_stream': '_onNewStream',
         'click .o_social_account_link_disconnected': '_onRelinkAccount',
+        'click .o_social_stream_post_kanban_global:not(a,i)': '_onClickRecord'
     }),
     custom_events: _.extend({}, KanbanController.prototype.custom_events, {
         'new_stream_account_clicked': '_onNewSteamAccountClicked',
@@ -33,7 +34,7 @@ var StreamPostKanbanController = KanbanController.extend({
         var superPromise = this._super.apply(this, arguments);
 
         var isSocialManagerPromise = this.getSession()
-            .user_has_group('social.group_social_manager').then(function (hasGroup){
+            .user_has_group('social.group_social_manager').then(function (hasGroup) {
                 self.isSocialManager = hasGroup;
         });
 
@@ -219,6 +220,22 @@ var StreamPostKanbanController = KanbanController.extend({
         });
     },
 
+
+    /**
+     * We want to open the "comments modal" when clicking on the record.
+     * Unless we clicked on a link, a button or an image (that opens the carousel).
+     *
+     * @param {MouseEvent} ev
+     */
+    _onClickRecord: function (ev) {
+        var $target = $(ev.target);
+        if ($target.closest('a,.o_social_subtle_btn,img').length !== 0) {
+            return;
+        }
+        ev.preventDefault();
+        $(ev.currentTarget).find('.o_social_comments').click();
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -248,7 +265,7 @@ var StreamPostKanbanController = KanbanController.extend({
             likesCount++;
         }
 
-        if (likesCount === 0){
+        if (likesCount === 0) {
             likesCount = '';
         }
         $target.find('.o_social_kanban_likes_count').text(likesCount);

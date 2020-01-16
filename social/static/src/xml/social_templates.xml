@@ -279,7 +279,7 @@
                     <button t-foreach="widget.socialAccounts" t-as="socialAccount" class="list-group-item list-group-item-action">
                         <div class="o_social_account_card d-flex align-items-center" t-att-data-media-id="socialAccount.media_id[0]" t-att-data-account-id="socialAccount.id">
                             <img width="24" t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/24x24" class="mr-4"/>
-                            <img t-attf-src="/web/image/social.account/#{socialAccount.id}/image/32x32" class="o_social_account_image rounded-circle border mr-2" />
+                            <img t-if="socialAccount.image" t-attf-src="/web/image/social.account/#{socialAccount.id}/image/32x32" class="o_social_account_image rounded-circle border mr-2" />
                             <h4 t-esc="socialAccount.name" class="o_social_account_name font-weight-bold flex-grow-1 m-0"/>
                         </div>
                     </button>

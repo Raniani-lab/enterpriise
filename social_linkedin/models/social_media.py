@@ -28,7 +28,7 @@ class SocialMediaLinkedin(models.Model):
     def _compute_linkedin_csrf(self):
         return hmac.new(
             self.env['ir.config_parameter'].sudo().get_param('database.secret').encode('utf-8'),
-            str(self.id).encode('utf-8'), hashlib.sha256).hexdigest()
+            str((self.env.cr.dbname, 'social.account', self.id)).encode('utf-8'), hashlib.sha256).hexdigest()
 
     def action_add_account(self):
         self.ensure_one()

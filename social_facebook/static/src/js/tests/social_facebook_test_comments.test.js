@@ -169,6 +169,7 @@ QUnit.module('Facebook Comments', {
                     has_account_stats: {type: 'boolean'},
                     has_trends: {type: 'boolean'},
                     stats_link: {type: 'char'},
+                    image: {type: 'image'},
                     media_id: {
                         string: 'Media',
                         type: 'many2one',

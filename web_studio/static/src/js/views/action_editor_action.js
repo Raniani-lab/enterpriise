@@ -483,9 +483,10 @@ var ActionEditorAction = AbstractAction.extend({
      * @param {OdooEvent} event
      */
     _onSetDefaultView: function (event) {
-        var view_type = event.data.view_type;
-        var view_mode = _.without(this.action.view_mode.split(','), view_type);
-        view_mode.unshift(view_type);
+        var selected_view_type = event.data.view_type;
+        var view_types = _.map(this.action.views, ({ type }) => type);
+        var view_mode = _.without(view_types, selected_view_type);
+        view_mode.unshift(selected_view_type);
         view_mode = view_mode.toString();
 
         this._writeViewMode(view_mode, this.action.view_mode);

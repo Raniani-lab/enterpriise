@@ -52,3 +52,10 @@ class Task(models.Model):
                     rounding_method='HALF-UP')
                 move._set_quantity_done(qty_to_do)
         pickings_to_do.with_context(skip_sms=True, cancel_backorder=True).button_validate()
+
+    def write(self, vals):
+        result = super().write(vals)
+        if 'user_id' in vals:
+            orders = self.mapped('sale_order_id').filtered(lambda order: order.state in ['draft', 'sent'])
+            orders.write({'user_id': vals['user_id']})
+        return result

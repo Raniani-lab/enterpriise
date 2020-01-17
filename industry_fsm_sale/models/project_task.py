@@ -253,6 +253,7 @@ class Task(models.Model):
 
         # write after creation since onchange_partner_id sets the current user
         sale_order.write({'user_id': self.user_id.id})
+        sale_order.onchange_user_id()
 
         self.sale_order_id = sale_order
 

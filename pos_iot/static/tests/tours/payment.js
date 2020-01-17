@@ -142,6 +142,10 @@ tour.register('payment_terminals_tour', {
         trigger: '.button.send_payment_request.highlight',
     }, {
         content: "Validate payment",
-        trigger: '.button.next.highlight',
+        trigger: '.button.next.highlight:contains("Validate")',
+    }, {
+        content: "Check that we're on the receipt screen",
+        trigger: '.button.next.highlight:contains("Next Order")',
+        run: function() {}
     }]);
 });

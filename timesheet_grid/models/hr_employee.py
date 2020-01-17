@@ -18,7 +18,8 @@ class Employee(models.Model):
         'res.users', string='Timesheet',
         compute='_compute_timesheet_manager', store=True, readonly=False,
         domain=_get_timesheet_manager_id_domain,
-        help="User responsible of timesheet validation. Should be Timesheet Manager.")
+        help='Select the user responsible for approving "Timesheet" of this employee.\n'
+             'If empty, the approval is done by an Administrator or Team Approver (determined in settings/users).')
 
     @api.depends('parent_id')
     def _compute_timesheet_manager(self):

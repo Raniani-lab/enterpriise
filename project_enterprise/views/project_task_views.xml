@@ -4,6 +4,7 @@
     <record id="project_task_view_form" model="ir.ui.view">
         <field name="name">project.task.view.form.inherit.project.enterprise</field>
         <field name="model">project.task</field>
+        <field name="priority">15</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
             <field name="date_deadline" position="after">
@@ -13,10 +14,9 @@
         </field>
     </record>
 
-
-    <!-- Add Gantt and map view -->
+    <!-- Add map view -->
     <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
-        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity,gantt,map</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity,map</field>
     </record>
 
     <!-- Adding manager gantt view to Project -->

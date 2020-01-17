@@ -2,9 +2,11 @@ odoo.define('voip.UserAgent', function (require) {
 "use strict";
 
 const Class = require('web.Class');
+const concurrency = require('web.concurrency');
 const core = require('web.core');
 const Dialog = require('web.Dialog');
 const mixins = require('web.mixins');
+const mobile = require('web_mobile.core');
 const ServicesMixin = require('web.ServicesMixin');
 
 const _t = core._t;
@@ -42,7 +44,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._audioDialRingtone = undefined;
         this._audioIncomingRingtone = undefined;
         this._audioRingbackTone = undefined;
-        this._callState = CALL_STATE.NO_CALL;
+        this._updateCallState(CALL_STATE.NO_CALL);
         this._currentNumber = undefined;
         this._dialog = undefined;
         this._currentCallParams = false;
@@ -74,12 +76,37 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._answerCall();
     },
     /**
+     * Return the Mobile Call config
+     */
+    async getMobileCallConfig() {
+        this.infoPbxConfiguration = await this._rpc({
+            model: 'voip.configurator',
+            method: 'get_pbx_config',
+            args: [],
+            kwargs: {},
+        });
+        return this.infoPbxConfiguration.mobile_call_method;
+    },
+    /**
      * Returns PBX Configuration.
      *
      * @return {Object} result user and pbx configuration return by the rpc
      */
     getPbxConfiguration() {
         return this.infoPbxConfiguration;
+    },
+    /**
+     *
+     * @param userUID
+     * @param useVoIPChoice
+     */
+    async updateCallPreference(userUID, useVoIPChoice) {
+        await this._rpc({
+            model: 'res.users',
+            method: 'write',
+            args: [[userUID], {mobile_call_method: useVoIPChoice}],
+        });
+        await this.getMobileCallConfig();
     },
     /**
      * Hangs up the current call.
@@ -89,13 +116,13 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             if (this._callState === CALL_STATE.ONGOING_CALL) {
                 this._onBye();
             } else {
-                this._callState = CALL_STATE.CANCELING_CALL;
+                this._updateCallState(CALL_STATE.CANCELING_CALL);
                 this._onCancel();
             }
         }
         if (this._callState !== CALL_STATE.NO_CALL) {
             if (this._callState === CALL_STATE.RINGING_CALL) {
-                this._callState = CALL_STATE.CANCELING_CALL;
+                this._updateCallState(CALL_STATE.CANCELING_CALL);
                 try {
                     this._sipSession.cancel();
                 } catch (err) {
@@ -141,7 +168,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * Reject an incoming Call
      */
     rejectIncomingCall() {
-        this._callState = CALL_STATE.REJECTING_CALL;
+        this._updateCallState(CALL_STATE.REJECTING_CALL);
         if (this._mode === 'demo') {
             this.trigger_up('sip_rejected', this._currentCallParams);
         }
@@ -200,7 +227,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         const incomingCallParams = this._currentCallParams;
 
         if (this._mode === 'demo') {
-            this._callState = CALL_STATE.ONGOING_CALL;
+            this._updateCallState(CALL_STATE.ONGOING_CALL);
             this.trigger_up('sip_incoming_call', incomingCallParams);
             return;
         }
@@ -238,7 +265,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @private
      */
     _canceledIncomingCall() {
-        this._callState = CALL_STATE.CANCELING_CALL;
+        this._updateCallState(CALL_STATE.CANCELING_CALL);
         this._onCancel();
     },
     /**
@@ -500,7 +527,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _setupOutCall() {
         this._isOutgoing = true;
-        this._callState = CALL_STATE.RINGING_CALL;
+        this._updateCallState(CALL_STATE.RINGING_CALL);
         this.trigger_up('sip_error', {
             isConnecting: true,
             message: _t("Please accept the use of the microphone."),
@@ -534,6 +561,35 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         });
     },
 
+    _updateCallState(newState) {
+        this._callState = newState;
+        if (!mobile.methods.changeAudioMode) {
+            return;
+        }
+        let mode = false;
+        switch (this._callState) {
+            case CALL_STATE.NO_CALL:
+                mode = 'NO_CALL';
+                break;
+            case CALL_STATE.RINGING_CALL:
+                mode = 'RINGING_CALL';
+                break;
+            case CALL_STATE.ONGOING_CALL:
+                mode = 'CALL';
+                break;
+            case CALL_STATE.CANCELING_CALL:
+            case CALL_STATE.REJECTING_CALL:
+                // check if we are already in existing call
+                mode = this._isOutgoing ? false : 'NO_CALL';
+                break;
+            default: // Don't update if call state set with an unknown value
+                mode = false;
+        }
+        if (mode) {
+            concurrency.delay(50).then(() => mobile.methods.changeAudioMode({mode}));
+        }
+    },
+
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
@@ -544,7 +600,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @private
      */
     async _onAccepted() {
-        this._callState = CALL_STATE.ONGOING_CALL;
+        this._updateCallState(CALL_STATE.ONGOING_CALL);
         const call = this._sipSession;
         this._stopRingtones();
         if (this._mode === 'prod') {
@@ -567,7 +623,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._cleanRemoteAudio();
         this._audioDialRingtone.pause();
         this._sipSession = false;
-        this._callState = CALL_STATE.NO_CALL;
+        this._updateCallState(CALL_STATE.NO_CALL);
         if (this._mode === 'demo') {
             clearTimeout(this._timerAcceptedTimeout);
         }
@@ -588,7 +644,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this.trigger_up('sip_cancel_incoming', this._currentCallParams);
         }
         this._sipSession = false;
-        this._callState = CALL_STATE.NO_CALL;
+        this._updateCallState(CALL_STATE.NO_CALL);
         this._stopRingtones();
         if (this._mode === 'demo') {
             clearTimeout(this._timerAcceptedTimeout);
@@ -611,7 +667,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         if (this._callState === CALL_STATE.REJECTING_CALL) {
             this.trigger_up('sip_rejected', this._currentCallParams);
-            this._callState = CALL_STATE.NO_CALL;
+            this._updateCallState(CALL_STATE.NO_CALL);
         } else {
             this._canceledIncomingCall();
         }
@@ -715,7 +771,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             content = _.str.sprintf(_t("Incoming call from %s"), number);
         }
         this._isOutgoing = false;
-        this._callState = CALL_STATE.RINGING_CALL;
+        this._updateCallState(CALL_STATE.RINGING_CALL);
         this._audioIncomingRingtone.currentTime = 0;
         if (this.PLAY_MEDIA) {
             this._audioIncomingRingtone.play().catch(() => {});
@@ -767,7 +823,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {integer} incomingCallParams.partnerId
      */
     _onMicrophoneAccepted(incomingCallParams) {
-        this._callState = CALL_STATE.ONGOING_CALL;
+        this._updateCallState(CALL_STATE.ONGOING_CALL);
         this.trigger_up('sip_incoming_call', incomingCallParams);
     },
     /**
@@ -813,10 +869,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * - 603 : Decline
      */
     _onRejected(response) {
-        this._callState = CALL_STATE.REJECTING_CALL;
+        this._updateCallState(CALL_STATE.REJECTING_CALL);
         this._stopRingtones();
         this._sipSession = false;
-        this._callState = CALL_STATE.NO_CALL;
+        this._updateCallState(CALL_STATE.NO_CALL);
         if (
             response.statusCode === 404 ||
             response.statusCode === 488 ||

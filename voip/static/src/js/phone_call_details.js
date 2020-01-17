@@ -1,6 +1,7 @@
 odoo.define('voip.PhoneCallDetails', function (require) {
 "use strict";
 
+const config = require('web.config');
 const core = require('web.core');
 const session = require('web.session');
 const Widget = require('web.Widget');
@@ -233,6 +234,8 @@ const PhoneCallDetails = Widget.extend({
                 target: 'new',
                 type: 'ir.actions.act_window',
                 views: [[false, 'form']],
+            }, {
+                fullscreen: config.device.isMobile
             });
         } else if (this.partnerId) {
             this.do_action({
@@ -250,6 +253,8 @@ const PhoneCallDetails = Widget.extend({
                 target: 'new',
                 type: 'ir.actions.act_window',
                 views: [[false, 'form']],
+            }, {
+                fullscreen: config.device.isMobile
             });
         }
     },
@@ -270,6 +275,8 @@ const PhoneCallDetails = Widget.extend({
                 default_res_model: this._activityResModel,
             },
             res_id: this.activityId,
+        }, {
+            fullscreen: config.device.isMobile
         });
     },
     /**
@@ -307,6 +314,8 @@ const PhoneCallDetails = Widget.extend({
                 default_res_model: this._activityResModel,
             },
             res_id: false,
+        }, {
+            fullscreen: config.device.isMobile
         });
     },
     /**
@@ -347,9 +356,11 @@ const PhoneCallDetails = Widget.extend({
             this.do_action({
                 res_id: resId,
                 res_model: "res.partner",
-                target: 'current',
+                target: config.device.isMobile ? 'new' : 'current',
                 type: 'ir.actions.act_window',
                 views: [[false, 'form']],
+            }, {
+                fullscreen: config.device.isMobile
             });
         } else {
             this.do_action({
@@ -359,9 +370,11 @@ const PhoneCallDetails = Widget.extend({
                     default_mobile: this.mobileNumber,
                 },
                 res_model: 'res.partner',
-                target: 'current',
+                target: config.device.isMobile ? 'new' : 'current',
                 type: 'ir.actions.act_window',
                 views: [[false, 'form']],
+            }, {
+                fullscreen: config.device.isMobile
             });
         }
     },
@@ -386,6 +399,9 @@ const PhoneCallDetails = Widget.extend({
             views: [[viewId || false, 'form']],
             view_mode: 'form',
             view_type: 'form',
+            target: config.device.isMobile ? 'new' : 'current',
+        }, {
+            fullscreen: config.device.isMobile
         });
     },
     /**
@@ -405,6 +421,8 @@ const PhoneCallDetails = Widget.extend({
             target: 'new',
             type: 'ir.actions.act_window',
             views: [[false, 'form']],
+        }, {
+            fullscreen: config.device.isMobile
         });
     },
 });

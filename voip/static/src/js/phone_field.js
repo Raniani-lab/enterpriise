@@ -3,16 +3,9 @@ odoo.define('voip.PhoneField', function (require) {
 
 const basicFields = require('web.basic_fields');
 const core = require('web.core');
-const config = require('web.config');
 
 const Phone = basicFields.FieldPhone;
 const _t = core._t;
-
-// As voip is not supported on mobile devices,
-// we want to keep the standard phone widget
-if (config.device.isMobile) {
-    return;
-}
 
 /**
  * Override of FieldPhone to use the DialingPanel to perform calls on clicks.
@@ -41,6 +34,22 @@ Phone.include({
         });
     },
 
+    async _hasPbxConfig() {
+
+        const pbxConfiguration = await new Promise(resolve => {
+            this.trigger_up('get_pbx_configuration', {
+                callback: output => resolve(output.pbxConfiguration),
+            });
+        });
+
+        return pbxConfiguration.mode !== 'prod' ||
+        (
+            pbxConfiguration.pbx_ip &&
+            pbxConfiguration.wsServer &&
+            pbxConfiguration.login &&
+            pbxConfiguration.password
+        );
+    },
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
@@ -51,26 +60,13 @@ Phone.include({
      * @private
      * @param {MouseEvent} ev
      */
-    _onClick(ev) {
+    async _onClick(ev) {
         if (this.mode !== 'readonly' || !window.RTCPeerConnection || !window.MediaStream || !navigator.mediaDevices) {
             return;
         }
-        let pbxConfiguration;
-        this.trigger_up('get_pbx_configuration', {
-            callback(output) {
-                pbxConfiguration = output.pbxConfiguration;
-            },
-        });
-        if (
-            pbxConfiguration.mode !== 'prod' ||
-            (
-                pbxConfiguration.pbx_ip &&
-                pbxConfiguration.wsServer &&
-                pbxConfiguration.login &&
-                pbxConfiguration.password
-            )
-        ) {
-            ev.preventDefault();
+        ev.preventDefault();
+        const canMadeVoipCall = await this._hasPbxConfig();
+        if (canMadeVoipCall) {
             this._call(this.value);
         }
     },

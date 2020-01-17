@@ -6,12 +6,6 @@ const DialingPanel = require('voip.DialingPanel');
 const config = require('web.config');
 const WebClient = require('web.WebClient');
 
-// As voip is not supported on mobile devices,
-// we want to keep the standard phone widget
-if (config.device.isMobile) {
-    return;
-}
-
 WebClient.include({
 
     //--------------------------------------------------------------------------

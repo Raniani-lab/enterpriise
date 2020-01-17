@@ -15,7 +15,7 @@ Allows to make call from next activities or with click-to-dial.
     'version': '2.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail', 'web', 'phone_validation'],
+    'depends': ['base', 'mail', 'web', 'phone_validation', 'web_mobile'],
 
     # always loaded
     'data': [

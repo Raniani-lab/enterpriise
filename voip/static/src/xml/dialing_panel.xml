@@ -135,6 +135,7 @@
             class="o_dial_keypad_input_div">
             <input
                 class="o_dial_keypad_input"
+                type="tel"
                 placeholder="Enter the number..."/>
             <div
                 aria-label="Backspace"
@@ -146,7 +147,7 @@
                 title="Backspace"/>
         </div>
         <div
-            class="
+            t-attrf-class="{{ widget._isMobileDevice ? 'o_hidden' : '' }}
                 clearfix
                 mt16
                 mb16

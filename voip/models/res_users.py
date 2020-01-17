@@ -24,6 +24,7 @@ class ResUsers(models.Model):
             'sip_external_phone',
             'sip_always_transfer',
             'sip_ignore_incoming',
+            'mobile_call_method',
         ]
         # duplicate list to avoid modifying the original reference
         type(self).SELF_WRITEABLE_FIELDS = list(self.SELF_WRITEABLE_FIELDS)
@@ -33,6 +34,16 @@ class ResUsers(models.Model):
         type(self).SELF_READABLE_FIELDS.extend(voip_fields)
         return init_res
 
+    mobile_call_method = fields.Selection(
+        [('ask', 'Ask'), ('voip', 'Voip'), ('phone', 'Phone')],
+        string="Mobile call",
+        groups="base.group_user",
+        default='ask',
+        required=True,
+        help="""Method to use to made a call on mobile:
+        * VoIP: Always used as a softphone
+        * Phone: Always use the device's phone
+        * Ask: Always prompt""")
     sip_login = fields.Char("SIP Login / Browser's Extension", groups="base.group_user")
     sip_password = fields.Char('SIP Password', groups="base.group_user")
     sip_external_phone = fields.Char("Handset Extension", groups="base.group_user")

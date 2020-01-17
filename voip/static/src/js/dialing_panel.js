@@ -8,6 +8,10 @@ const UserAgent = require('voip.UserAgent');
 
 const core = require('web.core');
 const config = require('web.config');
+const Dialog = require('web.Dialog');
+const dom = require('web.dom');
+const mobile = require('web_mobile.core');
+const mobileMixins = require('web_mobile.mixins');
 const realSession = require('web.session');
 const Widget = require('web.Widget');
 
@@ -16,13 +20,7 @@ const HEIGHT_OPEN = '480px';
 const HEIGHT_FOLDED = '0px';
 const YOUR_ARE_ALREADY_IN_A_CALL = _lt("You are already in a call");
 
-// As voip is not supported on mobile devices,
-// we want to keep the standard phone widget
-if (config.device.isMobile) {
-    return;
-}
-
-const DialingPanel = Widget.extend({
+const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEventMixin,{
     template: 'voip.DialingPanel',
     events: {
         'click .o_dial_accept_button': '_onClickAcceptButton',
@@ -76,6 +74,26 @@ const DialingPanel = Widget.extend({
             recent: new PhoneCallRecentTab(this),
         };
         this._userAgent = new UserAgent(this);
+    },
+    /**
+     * We override destroy() to be able to call on_detach_callback at the very
+     * last moment before detaching the DialingPanel from the DOM.
+     *
+     * @override
+     */
+    destroy() {
+        this.on_detach_callback();
+        this._super(...arguments);
+    },
+    /**
+     * Call on_attach_callback when the DialingPanel has been just attached to
+     * the DOM.
+     *
+     * @override
+     */
+    async appendTo() {
+        await this._super(...arguments);
+        this.on_attach_callback();
     },
     /**
      * @override
@@ -179,6 +197,10 @@ const DialingPanel = Widget.extend({
         return this._userAgent.getPbxConfiguration();
     },
 
+    async getMobileCallConfig() {
+        return this._userAgent.getMobileCallConfig();
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -231,7 +253,7 @@ const DialingPanel = Widget.extend({
      */
     _hideHeader() {
         this._$searchBar.hide();
-        this._$tabs.hide();
+        this._$tabs.parent().hide();
     },
     /**
      * @private
@@ -249,6 +271,16 @@ const DialingPanel = Widget.extend({
      */
     async _makeCall(number, phoneCall) {
         if (!this._isInCall) {
+            if (!await this._useVoip()) {
+                // restore the default browser behavior
+                const $a = $('<a/>', {
+                    href: `tel:${number}`,
+                    style: "display:none"
+                }).appendTo(document.body);
+                $a[0].click();
+                $a.remove();
+                return;
+            }
             if (!this._isWebRTCSupport) {
                 this.do_notify(_t("Your browser could not support WebRTC. Please check your configuration."));
                 return;
@@ -320,7 +352,7 @@ const DialingPanel = Widget.extend({
      */
     _showHeader() {
         this._$searchBar.show();
-        this._$tabs.show();
+        this._$tabs.parent().show();
     },
     /**
      * @private
@@ -401,11 +433,85 @@ const DialingPanel = Widget.extend({
         this._$tabsPanel.unblock();
         this._$mainButtons.unblock();
     },
+    /**
+     * Check if the user wants to use voip to make the call.
+     * It's check the value res_user field `mobile_call_method` and
+     * ask to the end user is choice and update the value as needed
+     * @return {Promise<boolean>}
+     * @private
+     */
+    async _useVoip() {
+        // Only for mobile device
+        if (!config.device.isMobileDevice) {
+            return true;
+        }
+
+        const mobileCallMethod = await this.getMobileCallConfig();
+        // avoid ask choice if value is set
+        if (mobileCallMethod !== 'ask') {
+            return mobileCallMethod === 'voip';
+        }
+
+        const useVOIP = await new Promise(resolve => {
+            const $content = $('<main/>', {
+                role: 'alert',
+                text: _t("Made call with using")
+            });
+
+            const $checkbox = dom.renderCheckbox({
+                text: _t("Remember ?"),
+            }).addClass('mb-0');
+
+            $content.append($checkbox);
+
+            const processChoice = useVoip => {
+                if ($checkbox.find('input[type="checkbox"]').is(':checked')) {
+                    this._userAgent.updateCallPreference(realSession.uid, useVoip ? 'voip' : 'phone');
+                }
+                resolve(useVoip);
+            };
+
+            new Dialog(this, {
+                size: 'medium',
+                fullscreen: false,
+                buttons: [{
+                    text: _t("Voip"),
+                    close: true,
+                    click: () => processChoice(true),
+                }, {
+                    text: _t("Phone"),
+                    close: true,
+                    click: () => processChoice(false),
+                }],
+                $content: $content,
+                renderHeader: false,
+            }).open({shouldFocusButtons: true});
+        });
+        if (useVOIP && mobile.methods.setupVoip) {
+            const hasMicroPhonePermission = await mobile.methods.setupVoip();
+            if (!hasMicroPhonePermission) {
+                await new Promise(resolve => Dialog.alert(this, _t("You don't allow the access to the microphone on your device. The VoIP call receiver will not hear you"), {
+                    confirm_callback: resolve,
+                }));
+            }
+        }
+        return useVOIP;
+    },
 
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
 
+    /**
+     * Bind directly the DialingPanel#_onClickWindowClose method to the
+     * 'backbutton' event.
+     *
+     * @private
+     * @override
+     */
+    _onBackButton(ev) {
+        this._onClickWindowClose(ev);
+    },
     /**
      * @private
      */
@@ -772,7 +878,7 @@ const DialingPanel = Widget.extend({
     _onUnmuteCall() {
         this._userAgent.unmuteCall();
     },
-});
+}));
 
 return DialingPanel;
 

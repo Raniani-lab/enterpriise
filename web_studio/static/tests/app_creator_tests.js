@@ -1,7 +1,7 @@
 odoo.define('web_studio.AppCreator_tests', function (require) {
     "use strict";
 
-    const AppCreator = require('web_studio.AppCreator');
+    const AppCreatorWrapper = require('web_studio.AppCreator');
     const IconCreator = require('web_studio.IconCreator');
     const makeTestEnvironment = require("web.test_env");
     const testUtils = require('web.test_utils');
@@ -11,22 +11,26 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
     const { xml } = tags;
 
     async function createAppCreator({ debug, env, events, rpc, state }) {
-        const testEnv = makeTestEnvironment(env, rpc);
-        const appCreatorContainer = new AppCreator(null, {}, { env: testEnv });
-        await appCreatorContainer.prependTo(testUtils.prepareTarget(debug));
+        Component.env = makeTestEnvironment(env, rpc);
+        const appCreatorWrapper = new AppCreatorWrapper(null, {});
+        await appCreatorWrapper.prependTo(testUtils.prepareTarget(debug));
         Object.keys(events || {}).forEach(eventName => {
-            appCreatorContainer.el.addEventListener(eventName, events[eventName]);
+            appCreatorWrapper.appCreatorComponent.el.addEventListener(eventName, ev => {
+                ev.stopPropagation();
+                ev.preventDefault();
+                events[eventName](ev);
+            });
         });
+        const appCreator = Object.values(
+            appCreatorWrapper.appCreatorComponent.__owl__.children
+        )[0];
         if (state) {
             for (const key in state) {
-                appCreatorContainer._component.state[key] = state[key];
+                appCreator.state[key] = state[key];
             }
             await testUtils.nextTick();
         }
-        return {
-            container: appCreatorContainer,
-            appCreator: appCreatorContainer._component,
-        };
+        return { appCreator, wrapper: appCreatorWrapper };
     }
 
     const fadeEmptyFunction = (delay, cb) => cb ? cb() : null;
@@ -48,7 +52,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
         QUnit.test('app creator: standard flow', async function (assert) {
             assert.expect(35);
 
-            const { container, appCreator } = await createAppCreator({
+            const { wrapper, appCreator } = await createAppCreator({
                 env: {
                     isDebug: () => false,
                     services: {
@@ -63,11 +67,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                     },
                 },
                 events: {
-                    'new-app-created': ev => {
-                        ev.stopPropagation();
-                        ev.preventDefault();
-                        assert.step('new-app-created');
-                    },
+                    'new-app-created': () => assert.step('new-app-created'),
                 },
                 rpc: async (route, params) => {
                     if (route === '/web_studio/create_new_menu') {
@@ -199,15 +199,31 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
 
             assert.verifySteps(['/web/binary/upload_attachment', 'UI blocked', 'new-app-created', 'UI unblocked']);
 
-            container.destroy();
+            wrapper.destroy();
         });
 
         QUnit.test('app creator: standard flow in debug mode', async function (assert) {
-            assert.expect(9);
+            assert.expect(15);
 
-            const { container, appCreator } = await createAppCreator({
+            const { wrapper, appCreator } = await createAppCreator({
                 env: {
                     isDebug: () => true,
+                    services: {
+                        blockUI() { },
+                        unblockUI() { },
+                    },
+                },
+                async rpc(route, params) {
+                    assert.step(route);
+                    switch (route) {
+                        case '/web/dataset/call_kw/ir.model/name_search':
+                            assert.strictEqual(params.model, 'ir.model',
+                                "request should target the right model");
+                            return [[69, "The Value"]];
+                        case '/web_studio/create_new_menu':
+                            assert.strictEqual(params.model_id, 69,
+                                "model id should be the one provided");
+                    }
                 },
                 state: {
                     menuName: "Kikou",
@@ -236,30 +252,26 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                 'o_web_studio_app_creator_field_warning');
             assert.doesNotHaveClass(buttonNext, 'is_ready');
 
-            await testUtils.fields.editAndTrigger(
-                appCreator.el.querySelector('.o_field_many2one input'),
-                "Floating value",
-                ['keyup', 'blur']
-            );
+            await testUtils.dom.click(appCreator.el.querySelector('.o_field_many2one input'));
+            await testUtils.dom.click(document.querySelector('.ui-menu-item-wrapper'));
 
-            assert.containsOnce(document.body, '.modal',
-                "many2one should work as intended (slow create)");
+            assert.strictEqual(appCreator.el.querySelector('.o_field_many2one input').value, "The Value");
 
-            await testUtils.dom.click(document.querySelector('.modal .btn-primary'));
+            assert.doesNotHaveClass(appCreator.el.querySelector('.o_web_studio_app_creator_model'),
+                'o_web_studio_app_creator_field_warning');
+            assert.hasClass(buttonNext, 'is_ready');
 
-            // uncheck the model choice box
-            await testUtils.dom.click(appCreator.el.querySelector('input[name="modelChoice"]'));
+            await testUtils.dom.click(buttonNext);
 
-            assert.containsNone(appCreator, '.o_field_many2one',
-                "There should not be a many2one anymore");
+            assert.verifySteps(['/web/dataset/call_kw/ir.model/name_search', '/web_studio/create_new_menu']);
 
-            container.destroy();
+            wrapper.destroy();
         });
 
         QUnit.test('app creator: navigate through steps using "ENTER"', async function (assert) {
             assert.expect(13);
 
-            const { container, appCreator } = await createAppCreator({
+            const { wrapper, appCreator } = await createAppCreator({
                 env: {
                     isDebug: () => false,
                     services: {
@@ -268,11 +280,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                     },
                 },
                 events: {
-                    'new-app-created': ev => {
-                        ev.stopPropagation();
-                        ev.preventDefault();
-                        assert.step('new-app-created');
-                    },
+                    'new-app-created': () => assert.step('new-app-created'),
                 },
                 rpc: (route, { app_name, is_app, menu_name, model_id }) => {
                     if (route === '/web_studio/create_new_menu') {
@@ -321,7 +329,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
 
             assert.verifySteps(['UI blocked', 'new-app-created', 'UI unblocked']);
 
-            container.destroy();
+            wrapper.destroy();
         });
 
         QUnit.module('IconCreator');

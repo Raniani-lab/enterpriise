@@ -9,10 +9,11 @@ odoo.define('web_studio.AppCreator', function (require) {
     const StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
     const { useFocusOnUpdate, useExternalListener } = require('web.custom_hooks');
 
-    const { Component, hooks } = owl;
-    const { useState, useRef } = hooks;
+    const { ComponentAdapter, ComponentWrapper, WidgetAdapterMixin } = require('web.OwlCompatibility');
 
-    const AppCreatorAdapter = AbstractAction.extend(StandaloneFieldManagerMixin, {
+    const { Component, useState } = owl;
+
+    const AppCreatorWrapper = AbstractAction.extend(StandaloneFieldManagerMixin, WidgetAdapterMixin, {
 
         /**
          * This widget is directly bound to its inner owl component and its sole purpose
@@ -21,74 +22,36 @@ odoo.define('web_studio.AppCreator', function (require) {
          * and destroy it when destroyed itself.
          * @constructor
          */
-        init(parent, action, options={}) {
+        init() {
             this._super(...arguments);
             StandaloneFieldManagerMixin.init.call(this);
-
-            if (options.env) {
-                AppCreator.env = options.env;
-            }
-            this.AppCreatorProps = options.props || {};
-        },
-
-        /**
-         * Generate a legacy many2one field. This has to be done manually since as
-         * long as the many2one field is not an owl Component.
-         * This is only made in debug mode.
-         */
-        async willStart() {
-            let many2one = false;
-            if (AppCreator.env.isDebug()) {
-                const recordId = await this.model.makeRecord('ir.actions.act_window', [{
-                    name: 'model',
-                    relation: 'ir.model',
-                    type: 'many2one',
-                    domain: [['transient', '=', false], ['abstract', '=', false]]
-                }]);
-                const record = this.model.get(recordId);
-                many2one = new FieldMany2One(this, 'model', record, { mode: 'edit' });
-                this._registerWidget(recordId, 'model', many2one);
-                await many2one.appendTo(document.createDocumentFragment());
-            }
-            this._component = new AppCreator(null, Object.assign({ many2one }, this.AppCreatorProps));
+            this.appCreatorComponent = new ComponentWrapper(this, AppCreator, { model: this.model });
         },
 
         async start() {
             await this._super(...arguments);
-            return this._component.mount(this.el);
+            return this.appCreatorComponent.mount(this.el);
         },
 
         destroy() {
-            this._component.destroy();
-            this._super(...arguments);
-        },
-
-        on_attach_callback() {
-            return this._component.__callMounted();
-        },
-
-        on_detach_callback: function () {
-            return this._component.__callWillUnmount();
+            WidgetAdapterMixin.destroy.call(this);
+            this._super();
         },
 
         //--------------------------------------------------------------------------
         // Handlers
         //--------------------------------------------------------------------------
 
+
         /**
-         * @private
-         * @param {OdooEvent} ev
-         * @param {Widget} ev.target
-         * @param {Object} ev.data
+         * Overriden to register widgets on the fly since they have been instanciated
+         * by the Component.
+         * @override
          */
-        async _onFieldChanged({ target, data }) {
-            await StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
-            const ev = new CustomEvent('field-changed', {
-                bubbles: true,
-                cancelable: true,
-                detail: data,
-            });
-            target.el.dispatchEvent(ev);
+        _onFieldChanged(ev) {
+            const targetWidget = ev.data.__targetWidget;
+            this._registerWidget(ev.data.dataPointID, targetWidget.name, targetWidget);
+            StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
         },
     });
 
@@ -124,30 +87,26 @@ odoo.define('web_studio.AppCreator', function (require) {
                 },
             });
 
+            this.FieldMany2One = FieldMany2One;
+
             this.focusOnUpdate = useFocusOnUpdate();
             this.invalid = useState({
                 appName: false,
                 menuName: false,
                 modelId: false,
             });
-            this.many2oneContainerRef = useRef('many2one-container');
             useExternalListener(window, 'keydown', this._onKeydown);
         }
 
-        mounted() {
-            // Manualy mounts many2one widget if its container is in the DOM.
-            // Theoretically, it should never be the case when first mounted, but
-            // since we can set a custom state in tests, we need to do it here
-            // too anyway.
-            if (this.many2oneContainerRef.el) {
-                this.many2oneContainerRef.el.appendChild(this.props.many2one.el);
-            }
-        }
-
-        patched() {
-            // Manualy mounts many2one widget if its container is in the DOM.
-            if (this.many2oneContainerRef.el) {
-                this.many2oneContainerRef.el.appendChild(this.props.many2one.el);
+        async willStart() {
+            if (this.env.isDebug()) {
+                const recordId = await this.props.model.makeRecord('ir.actions.act_window', [{
+                    name: 'model',
+                    relation: 'ir.model',
+                    type: 'many2one',
+                    domain: [['transient', '=', false], ['abstract', '=', false]]
+                }]);
+                this.record = this.props.model.get(recordId);
             }
         }
 
@@ -162,7 +121,7 @@ odoo.define('web_studio.AppCreator', function (require) {
             return (
                     this.state.step === 'welcome'
                 ) || (
-                    this.state.step ===  'app' &&
+                    this.state.step === 'app' &&
                     this.state.appName
                 ) || (
                     this.state.step === 'model' &&
@@ -236,11 +195,11 @@ odoo.define('web_studio.AppCreator', function (require) {
 
         /**
          * @private
+         * @param {OwlEvent} ev
          */
-        _onFieldChanged() {
-            if (this.props.many2one.value) {
-                this.state.modelId = this.props.many2one.value.res_id;
-            }
+        _onModelIdChanged(ev) {
+            this.state.modelId = ev.detail.changes.model.id;
+            this.invalid.modelId = isNaN(this.state.modelId);
         }
 
         /**
@@ -299,7 +258,7 @@ odoo.define('web_studio.AppCreator', function (require) {
                     break;
                 case 'model':
                     if (!this.state.menuName) {
-                        this.invalid.menuName= true;
+                        this.invalid.menuName = true;
                     }
                     if (this.state.modelChoice && !this.state.modelId) {
                         this.invalid.modelId = true;
@@ -330,13 +289,13 @@ odoo.define('web_studio.AppCreator', function (require) {
         }
     }
 
-    AppCreator.components = { IconCreator };
+    AppCreator.components = { ComponentAdapter, IconCreator };
     AppCreator.props = {
-        many2one: FieldMany2One,
+        model: Object,
     };
     AppCreator.template = 'AppCreator';
 
-    action_registry.add('action_web_studio_app_creator', AppCreatorAdapter);
+    action_registry.add('action_web_studio_app_creator', AppCreatorWrapper);
 
-    return AppCreatorAdapter;
+    return AppCreatorWrapper;
 });

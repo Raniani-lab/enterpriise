@@ -9,15 +9,13 @@ const WebClient = require('web.WebClient');
 const studioBus = require('web_studio.bus');
 const SystrayItem = require('web_studio.SystrayItem');
 
-const HomeMenuWrapper = require('web_enterprise.HomeMenuWrapper');
-
 WebClient.include({
     events: _.extend({}, WebClient.prototype.events, {
         'new-app': 'openAppCreator',
-        'new-app-created': '_onNewAppCreated',
         'reload_menu_data': '_onReloadMenuData',
     }),
     custom_events: _.extend({}, WebClient.prototype.custom_events, {
+        'new_app_created': '_onNewAppCreated',
         'reload_menu_data': '_onReloadMenuData',
         'studio_history_back': '_onStudioHistoryBack',
         'studio_icon_clicked': '_onStudioIconClicked',
@@ -372,7 +370,7 @@ WebClient.include({
     },
     /**
      * @private
-     * @param {CustomEvent} ev
+     * @param {OdooEvent} ev
      */
     _onNewAppCreated: async function (ev) {
         bus.trigger('clear_cache');
@@ -386,7 +384,7 @@ WebClient.include({
             menu_id: null,
             action_id: null,
             options: { viewType: 'form' },
-        }, ev.detail);
+        }, ev.data);
         await this.on_app_clicked({ detail });
         this.menu.toggle_mode(false);  // display home menu button
     },

@@ -4,7 +4,8 @@
 import base64
 import psycopg2
 
-from odoo import api, models
+from odoo import _, api, models
+from odoo.exceptions import UserError
 
 
 class AccountBankStatementImport(models.TransientModel):
@@ -14,7 +15,15 @@ class AccountBankStatementImport(models.TransientModel):
         return filename and filename.lower().strip().endswith('.csv')
 
     def import_file(self):
-        self.attachment_ids.ensure_one()
+        # In case of CSV files, only one file can be imported at a time.
+        if len(self.attachment_ids) > 1:
+            csv = [bool(self._check_csv(att.name)) for att in self.attachment_ids]
+            if True in csv and False in csv:
+                raise UserError(_('Mixing CSV files with other file types is not allowed.'))
+            if csv.count(True) > 1:
+                raise UserError(_('Only one CSV file can be selected.'))
+            return super(AccountBankStatementImport, self).import_file()
+
         if not self._check_csv(self.attachment_ids.name):
             return super(AccountBankStatementImport, self).import_file()
         ctx = dict(self.env.context)

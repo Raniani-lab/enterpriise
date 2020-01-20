@@ -249,8 +249,9 @@ class ResPartner(models.Model):
                     summary=followup_line.manual_action_note,
                     user_id=(followup_line.manual_action_responsible_id and followup_line.manual_action_responsible_id.id) or self.env.user.id
                 )
-            next_date = followup_line._get_next_date()
-            self.update_next_action(options={'next_action_date': datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT), 'action': 'done'})
+            if followup_line:
+                next_date = followup_line._get_next_date()
+                self.update_next_action(options={'next_action_date': datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT), 'action': 'done'})
             if followup_line.print_letter:
                 return self
         return None

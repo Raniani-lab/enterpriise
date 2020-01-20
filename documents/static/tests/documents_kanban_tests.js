@@ -177,9 +177,9 @@ QUnit.module('DocumentsViews', {
                       group_tooltip: 'A priority tooltip',
                       group_hex_color: '#F06050',
                       id: 5,
-                      name: 'No stress',
+                      display_name: 'No stress',
                       sequence: 10,
-                      count: 0,
+                      __count: 0,
                     }, {
                       group_id: 1,
                       group_name: 'Status',
@@ -187,9 +187,9 @@ QUnit.module('DocumentsViews', {
                       group_tooltip: 'A Status tooltip',
                       group_hex_color: '#6CC1ED',
                       id: 2,
-                      name: 'Draft',
+                      display_name: 'Draft',
                       sequence: 10,
-                      count: 0,
+                      __count: 0,
                     }, {
                       group_id: 1,
                       group_name: 'Status',
@@ -197,9 +197,9 @@ QUnit.module('DocumentsViews', {
                       group_tooltip: 'A Status tooltip',
                       group_hex_color: '#F7CD1F',
                       id: 1,
-                      name: 'New',
+                      display_name: 'New',
                       sequence: 11,
-                      count: 0,
+                      __count: 0,
                     }];
                 },
             },
@@ -272,7 +272,7 @@ QUnit.module('DocumentsViews', {
     },
 }, function () {
     QUnit.test('kanban basic rendering', async function (assert) {
-        assert.expect(20);
+        assert.expect(21);
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
@@ -285,9 +285,10 @@ QUnit.module('DocumentsViews', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
-
         assert.strictEqual(kanban.$('header.active > label > span').text().trim(), 'Workspace1',
             "the first selected record should be the first folder");
+        assert.strictEqual(kanban.$('header.active > span').text().trim(), '5',
+            "the first folder should have 5 as counter");
         assert.containsOnce(kanban, '.o_search_panel_category_value:contains(All) header',
             "Should only have a single all selector");
 
@@ -2535,12 +2536,12 @@ QUnit.module('DocumentsViews', {
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_group', 2,
             "should have 2 facets");
 
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:first label:first > span:nth(1)').text().trim(),
-            'Priority', "the first facet should be 'Priority'");
+        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:first label:first > span').text().replace(/\s/g, ''),
+            '●Priority', "the first facet should be 'Priority'");
         assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:first label:first').attr('title').trim(),
             'A priority tooltip', "the first facet have a tooltip");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last label:first > span:nth(1)').text().trim(),
-            'Status', "the last facet should be 'Status'");
+        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last label:first > span').text().replace(/\s/g, ''),
+            '●Status', "the last facet should be 'Status'");
         assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last label:first').attr('title').trim(),
             'A Status tooltip', "the last facet should be 'Status'");
 
@@ -2741,7 +2742,7 @@ QUnit.module('DocumentsViews', {
         assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="task"]').text().replace(/\s/g, ""),
             'Task1', "should display the correct number of records");
         assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="order"]').text().replace(/\s/g, ""),
-            'SaleOrder', "should display the correct number of records");
+            'SaleOrder1', "should display the correct number of records");
 
         // filter on 'Sale Order'
         await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id=order] input:checkbox'));

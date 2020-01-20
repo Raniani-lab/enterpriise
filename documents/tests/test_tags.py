@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo.tests.common import TransactionCase
 
-
 class TestTags(TransactionCase):
 
     def test_create_tag(self):
@@ -33,11 +32,11 @@ class TestTags(TransactionCase):
             'group_sequence': facet_assets.sequence,
             'group_tooltip': None,
             'id': tag_assets_ads.id,
-            'name': tag_assets_ads.name,
+            'display_name': tag_assets_ads.name,
             'sequence': tag_assets_ads.sequence,
         }
         first_tag = tags[0]
-        first_tag.pop('count')
+        first_tag.pop('__count')
         self.assertEqual(tags[0], first_record, 'first record should match')
 
         last_record = {
@@ -46,9 +45,9 @@ class TestTags(TransactionCase):
             'group_sequence': facet_assets.sequence,
             'group_tooltip': None,
             'id': tag_assets_videos.id,
-            'name': tag_assets_videos.name,
+            'display_name': tag_assets_videos.name,
             'sequence': tag_assets_videos.sequence,
-            'count': 0,
+            '__count': 0,
         }
         self.assertEqual(tags[-1], last_record, 'last record should match')
 
@@ -71,11 +70,11 @@ class TestTags(TransactionCase):
             'group_sequence': facet_assets.sequence,
             'group_tooltip': None,
             'id': tag_assets_images.id,
-            'name': tag_assets_images.name,
+            'display_name': tag_assets_images.name,
             'sequence': tag_assets_images.sequence,
         }
         first_tag = tags[0]
-        first_tag.pop('count')
+        first_tag.pop('__count')
         self.assertEqual(first_tag, first_record, 'first record should match')
 
         last_record = {
@@ -84,11 +83,11 @@ class TestTags(TransactionCase):
             'group_sequence': facet_assets.sequence,
             'group_tooltip': None,
             'id': tag_assets_videos.id,
-            'name': tag_assets_videos.name,
+            'display_name': tag_assets_videos.name,
             'sequence': tag_assets_videos.sequence,
         }
         second_tag = tags[-1]
-        second_tag.pop('count')
+        second_tag.pop('__count')
         self.assertEqual(second_tag, last_record, 'last record should match')
 
     def test_get_tags_empty_folder(self):
@@ -112,9 +111,9 @@ class TestTags(TransactionCase):
             'group_sequence': facet_assets.sequence,
             'group_tooltip': None,
             'id': tag_assets_ads.id,
-            'name': tag_assets_ads.name,
+            'display_name': tag_assets_ads.name,
             'sequence': tag_assets_ads.sequence,
-            'count': 0,
+            '__count': 0,
         }
         self.assertEqual(tags[0], first_record, 'first record should match')
 
@@ -124,8 +123,8 @@ class TestTags(TransactionCase):
             'group_sequence': facet_assets.sequence,
             'group_tooltip': None,
             'id': tag_assets_videos.id,
-            'name': tag_assets_videos.name,
+            'display_name': tag_assets_videos.name,
             'sequence': tag_assets_videos.sequence,
-            'count': 0,
+            '__count': 0,
         }
         self.assertEqual(tags[-1], last_record, 'last record should match')

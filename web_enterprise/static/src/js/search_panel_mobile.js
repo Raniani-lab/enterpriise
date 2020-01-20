@@ -70,7 +70,7 @@ SearchPanel.include({
             return Object.keys(values).filter(function (valueId) {
                 return values[valueId].checked;
             }).map(function (valueId) {
-                return values[valueId].name;
+                return values[valueId].display_name;
             });
         }
 

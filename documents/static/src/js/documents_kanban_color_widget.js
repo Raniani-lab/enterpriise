@@ -32,7 +32,7 @@ odoo.define('documents.Many2ManyColorWidget', function (require) {
                     const color = tag.group_hex_color || '#00000022';
                     $('<span>', {
                         class: 'o_tag',
-                        text: tag.name,
+                        text: tag.display_name,
                         title: tag.group_name + ' > ' + tag.name,
                     })
                     .prepend($('<span>', {

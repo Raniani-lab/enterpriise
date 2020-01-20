@@ -130,7 +130,7 @@ class Document(models.Model):
         :return: a list of model data, the latter being a dict with the keys
             'id' (technical name),
             'name' (display name) and
-            'count' (how many attachments with that domain).
+            '__count' (how many attachments with that domain).
         """
         not_a_file = []
         not_attached = []
@@ -141,22 +141,22 @@ class Document(models.Model):
             if not res_model:
                 not_a_file.append({
                     'id': res_model,
-                    'name': _('Not a file'),
-                    'count': group['res_model_count'],
+                    'display_name': _('Not a file'),
+                    '__count': group['res_model_count'],
                 })
             elif res_model == 'documents.document':
                 not_attached.append({
                     'id': res_model,
-                    'name': _('Not attached'),
-                    'count': group['res_model_count'],
+                    'display_name': _('Not attached'),
+                    '__count': group['res_model_count'],
                 })
             else:
                 models.append({
                     'id': res_model,
-                    'name': self.env['ir.model']._get(res_model).display_name,
-                    'count': group['res_model_count'],
+                    'display_name': self.env['ir.model']._get(res_model).display_name,
+                    '__count': group['res_model_count'],
                 })
-        return sorted(models, key=lambda m: m['name']) + not_attached + not_a_file
+        return sorted(models, key=lambda m: m['display_name']) + not_attached + not_a_file
 
     @api.depends('res_model')
     def _compute_res_model_name(self):
@@ -431,17 +431,36 @@ class Document(models.Model):
         ])
 
     @api.model
-    def search_panel_select_range(self, field_name):
+    def search_panel_select_range(self, field_name, **kwargs):
         if field_name == 'folder_id':
+            disable_counters = kwargs.get('disable_counters', False)
             fields = ['display_name', 'description', 'parent_folder_id']
             available_folders = self.env['documents.folder'].search([])
             folder_domain = expression.OR([[('parent_folder_id', 'parent_of', available_folders.ids)], [('id', 'in', available_folders.ids)]])
             # also fetches the ancestors of the available folders to display the complete folder tree for all available folders.
             DocumentFolder = self.env['documents.folder'].sudo().with_context(hierarchical_naming=False)
+            records = DocumentFolder.search_read(folder_domain, fields)
+
+            local_counters = {}
+            if not disable_counters:
+                local_counters = self.search_panel_local_counters(field_name, **kwargs)
+
+            values_range = OrderedDict()
+            for record in records:
+                record_id = record['id']
+                record['__count'] = local_counters.get(record_id, 0)
+                value = record['parent_folder_id']
+                record['parent_folder_id'] = value and value[0]
+                values_range[record_id] = record
+
+            if not disable_counters:
+                self.search_panel_global_counters(values_range, 'parent_folder_id')
+
             return {
                 'parent_field': 'parent_folder_id',
-                'values': DocumentFolder.search_read(folder_domain, fields),
+                'values': list(values_range.values()),
             }
+
         return super(Document, self).search_panel_select_range(field_name)
 
     def _get_processed_tags(self, domain, folder_id):
@@ -467,7 +486,7 @@ class Document(models.Model):
         filter_domain = kwargs.get('filter_domain', [])
 
         if field_name == 'tag_ids':
-            folder_id = category_domain[0][2] if len(category_domain) else []
+            folder_id = category_domain[0][2] if len(category_domain) else False
             if folder_id:
                 domain = expression.AND([
                     search_domain, category_domain, filter_domain,
@@ -485,12 +504,12 @@ class Document(models.Model):
                 # fetch new counters
                 domain = expression.AND([search_domain, category_domain, filter_domain])
                 model_count = {
-                    model['id']: model['count']
+                    model['id']: model['__count']
                     for model in self._get_models(domain)
                 }
                 # update result with new counters
                 for model in model_values:
-                    model['count'] = model_count.get(model['id'], 0)
+                    model['__count'] = model_count.get(model['id'], 0)
 
             return model_values
 

@@ -1,8 +1,10 @@
 odoo.define('web_enterprise.kanban_mobile_tests', function (require) {
 "use strict";
 
+const AbstractStorageService = require('web.AbstractStorageService');
 const KanbanView = require('web.KanbanView');
 const {createView, dom} = require('web.test_utils');
+const RamStorage = require('web.RamStorage');
 const {_t} = require('web.core');
 
 QUnit.module('Views', {
@@ -52,7 +54,11 @@ QUnit.module('Views', {
     },
 }, function () {
     QUnit.test('kanban with searchpanel: rendering in mobile', async function (assert) {
-        assert.expect(30);
+        assert.expect(31);
+
+        const RamStorageService = AbstractStorageService.extend({
+            storage: new RamStorage(),
+        });
 
         const kanban = await createView({
             View: KanbanView,
@@ -81,6 +87,9 @@ QUnit.module('Views', {
                 assert.step(method || route);
                 return this._super.apply(this, arguments);
             },
+            services: {
+                local_storage: RamStorageService,
+            }
         });
 
         assert.containsOnce(kanban, 'details.o_search_panel');
@@ -115,8 +124,9 @@ QUnit.module('Views', {
         await dom.click($productSection.find('.o_search_panel_category_value:contains(hello) label'));
         assert.containsOnce($searchPanel.find('.o_search_panel_current_selection'), '.o_search_panel_category:contains(hello)');
         assert.verifySteps([
-            'search_panel_select_multi_range',
+            'search_panel_select_range',
             '/web/dataset/search_read',
+            'search_panel_select_multi_range',
         ]);
 
         // looking for 'filter' sample section

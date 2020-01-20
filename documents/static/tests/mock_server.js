@@ -20,22 +20,48 @@ MockServer.include({
         return this._super.apply(this, arguments);
     },
     /**
-     * Override to handle the specific case of model 'documents.document'.
+     * Mocks the '_get_models' method of the model 'documents.document'.
      *
-     * @override
-     * @private
+     * @param {string} model
+     * @param {any[]} domain
      */
-    _mockSearchPanelSelectRange: function (model, args) {
-        var fieldName = args[0];
-
-        if (model === 'documents.document' && fieldName === 'folder_id') {
-            var fields = ['display_name', 'description', 'parent_folder_id'];
-            return {
-                parent_field: 'parent_folder_id',
-                values: this._mockSearchRead('documents.folder', [[], fields], {}),
-            };
+    _mockGetModels(model, domain) {
+        const notAFile = [];
+        const notAttached = [];
+        const models = [];
+        const groups = this._mockReadGroup(model, {
+            domain: domain,
+            fields: ['res_model'],
+            groupby: ['res_model'],
+        });
+        for (const group of groups) {
+            if (!group.res_model) {
+                notAFile.push({
+                    id: group.res_model,
+                    display_name: "Not a file",
+                    __count: group.res_model_count,
+                });
+            } else if (group.res_model === 'documents.document') {
+                notAttached.push({
+                    id: group.res_model,
+                    display_name: "Not attached",
+                    __count: group.res_model_count,
+                });
+            } else {
+                const { res_model_name } = this.data['documents.document'].records.find(
+                    record => record.res_model === group.res_model
+                );
+                models.push({
+                    id: group.res_model,
+                    display_name: res_model_name,
+                    __count: group.res_model_count,
+                });
+            }
         }
-        return this._super.apply(this, arguments);
+        const sorted = models.sort(({ display_name: a }, { display_name: b }) => {
+            return a > b ? 1 : a < b ? -1 : 0;
+        });
+        return [...sorted, ...notAttached, ...notAFile];
     },
     /**
      * Override to handle the specific case of model 'documents.document'.
@@ -43,89 +69,73 @@ MockServer.include({
      * @override
      * @private
      */
-    _mockSearchPanelSelectMultiRange: function (model, args, kwargs) {
-        var self = this;
-        var fieldName = args[0];
-        var categoryDomain = kwargs.category_domain || [];
-        var filterValues = [];
-        var groups;
-        var modelDomain;
+    _mockSearchPanelSelectRange: function (model, [fieldName], kwargs) {
+        if (model === 'documents.document' && fieldName === 'folder_id') {
+            const fields = ['display_name', 'description', 'parent_folder_id'];
+            const records = this._mockSearchRead('documents.folder', [[], fields], {});
 
-        function get_models(domain) {
-            var models = [];
-            var notAttached = [];
-            var notAFile = [];
-            groups = self._mockReadGroup('documents.document', {
-                domain: domain,
-                fields: ['res_model', 'res_model_name'],
-                groupby: ['res_model', 'res_model_name'],
-            });
-            groups.forEach(function (group) {
-                // we don't want undefined value
-                var res_model = group.res_model || false;
-                var model = {
-                    count: group.res_model_count,
-                    id: res_model,
-                };
-                if (!res_model) {
-                    model.name = 'Not a file';
-                    notAFile.push(model);
-                } else if (res_model === 'documents.document') {
-                    model.name = 'Not attached';
-                    notAttached.push(model);
-                } else {
-                    model.name = self.data['documents.document'].records.find(function (record) {
-                        return record.res_model === res_model;
-                    }).res_model_name;
-                    models.push(model);
-                }
-            });
-            return Array.prototype.concat.apply([], [models, notAttached, notAFile]);
+            let localCounters = {};
+            if (!kwargs.disable_counters) {
+                localCounters = this._mockSearchPanelLocalCounters(model, fieldName, kwargs);
+            }
+
+            const valuesRange = new Map();
+            for (const record of records) {
+                record.__count = localCounters[record.id] || 0;
+                const value = record.parent_folder_id;
+                record.parent_folder_id = value && value[0];
+                valuesRange.set(record.id, record);
+            }
+            if (!kwargs.disable_counters) {
+                this._mockSearchPanelGlobalCounters(valuesRange, 'parent_folder_id');
+            }
+            return {
+                parent_field: 'parent_folder_id',
+                values: [...valuesRange.values()],
+            };
         }
+        return this._super(...arguments);
+    },
+    /**
+     * Override to handle the specific case of model 'documents.document'.
+     *
+     * @override
+     * @private
+     */
+    _mockSearchPanelSelectMultiRange: function (model, [fieldName], kwargs) {
+        const searchDomain = kwargs.search_domain || [];
+        const categoryDomain = kwargs.category_domain || [];
+        const filterDomain = kwargs.filter_domain || [];
 
         if (model === 'documents.document') {
             if (fieldName === 'tag_ids') {
-                var folderId = categoryDomain.length && categoryDomain[0][2] || false;
+                const folderId = categoryDomain.length ? categoryDomain[0][2] : false;
                 if (folderId) {
-                    modelDomain = Array.prototype.concat.apply([], [
-                        kwargs.search_domain || [],
-                        kwargs.category_domain || [],
-                        kwargs.filter_domain || [],
-                        [[fieldName, '!=', false]]
-                    ]);
-                    filterValues = this.data['documents.tag'].get_tags(modelDomain, folderId);
-                }
-                return filterValues;
-            } else if (fieldName === 'res_model') {
-                var modelDomainEnlarge = Array.prototype.concat.apply([], [
-                    kwargs.search_domain || [],
-                    kwargs.category_domain || []
-                ]);
-                var modelDomainEnlargeImage = get_models(modelDomainEnlarge);
-                if (kwargs.filter_domain.length) {
-                    modelDomain = Array.prototype.concat.apply([], [
-                        kwargs.search_domain || [],
-                        kwargs.category_domain || [],
-                        kwargs.filter_domain || []
-                    ]);
-                    var modelDomainImage = get_models(modelDomain);
-                    var modelIds = modelDomainImage.map(function (m) {
-                        return m.id;
-                    });
-                    filterValues = modelDomainImage;
-                    modelDomainEnlargeImage.forEach(function (model) {
-                        if (!_.contains(modelIds, model.id)) {
-                            model.count = 0;
-                            filterValues.push(model);
-                        }
-                    });
+                    const domain = [
+                        ...searchDomain,
+                        ...categoryDomain,
+                        ...filterDomain,
+                        [[fieldName, '!=', false]],
+                    ];
+                    return this.data['documents.tag'].get_tags(domain, folderId);
                 } else {
-                    filterValues = modelDomainEnlargeImage;
+                    return [];
                 }
-                return _.sortBy(filterValues, 'name');
+            } else if (fieldName === 'res_model') {
+                let domain = [...searchDomain, ...categoryDomain];
+                const modelValues = this._mockGetModels(model, domain);
+                if (filterDomain) {
+                    domain = [...searchDomain, ...categoryDomain, ...filterDomain];
+                    const modelCount = {};
+                    for (const { id, __count } of this._mockGetModels(model, domain)) {
+                        modelCount[id] = __count;
+                    }
+                    modelValues.forEach(m => m.__count = modelCount[m.id] || 0);
+                }
+                return modelValues;
             }
         }
-        return this._super.apply(this, arguments);
+        return this._super(...arguments);
     },
 });
 

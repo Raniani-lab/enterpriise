@@ -391,7 +391,7 @@ const DocumentsInspector = Widget.extend({
             if (!_.contains(this.commonTagIds, tag.id)) {
                 tags.push({
                     id: tag.id,
-                    label: tag.group_name + ' > ' + tag.name,
+                    label: tag.group_name + ' > ' + tag.display_name,
                 });
             }
         }

@@ -1,7 +1,7 @@
 odoo.define('web_enterprise.CalendarRenderer', function (require) {
 "use strict";
 
-var config = require('web.config');
+const config = require('web.config');
 if (!config.device.isMobile) {
     return;
 }
@@ -10,10 +10,8 @@ if (!config.device.isMobile) {
  * This file implements some tweaks to improve the UX in mobile.
  */
 
-var core = require('web.core');
-var CalendarRenderer = require('web.CalendarRenderer');
+const CalendarRenderer = require('web.CalendarRenderer');
 
-var qweb = core.qweb;
 // FIXME: in the future we should use modal instead of popover (on Event Click)
 CalendarRenderer.include({
 
@@ -32,7 +30,7 @@ CalendarRenderer.include({
      * @returns {Promise}
      */
     start: function () {
-        var promise = this._super();
+        const promise = this._super();
         this._bindSwipe();
         return promise;
     },
@@ -47,9 +45,9 @@ CalendarRenderer.include({
      * @private
      */
     _bindSwipe: function () {
-        var self = this;
-        var touchStartX;
-        var touchEndX;
+        const self = this;
+        let touchStartX;
+        let touchEndX;
         this.calendarElement.addEventListener('touchstart', function (event) {
             self.isSwipeEnabled = true;
             touchStartX = event.touches[0].pageX;
@@ -87,8 +85,8 @@ CalendarRenderer.include({
      * @param {Object} eventData
      */
     _getPopoverParams: function (eventData) {
-        var popoverParameters = this._super.apply(this, arguments);
-        popoverParameters['container'] = 'body';
+        const popoverParameters = this._super.apply(this, arguments);
+        popoverParameters.container = 'body';
         return popoverParameters;
     },
     /**
@@ -98,12 +96,12 @@ CalendarRenderer.include({
      * @private
      */
     _initCalendar: function () {
-        var self = this;
+        const self = this;
         this._super.apply(this, arguments);
-        var oldEventPositioned = this.calendar.getOption('eventPositioned');
-        var oldEventRender = this.calendar.getOption('eventRender');
-        var oldEventResize = this.calendar.getOption('eventResize');
-        var oldEventResizeStart = this.calendar.getOption('eventResizeStart');
+        const oldEventPositioned = this.calendar.getOption('eventPositioned');
+        const oldEventRender = this.calendar.getOption('eventRender');
+        const oldEventResize = this.calendar.getOption('eventResize');
+        const oldEventResizeStart = this.calendar.getOption('eventResizeStart');
 
         this.calendar.setOption('eventPositioned', function (info) {
             self.isSwipeEnabled = false;
@@ -141,7 +139,7 @@ CalendarRenderer.include({
      */
     _onPopoverShown: function ($popoverElement, calendarPopover) {
         this._super.apply(this, arguments);
-        var $popover = $($popoverElement.data('bs.popover').tip);
+        const $popover = $($popoverElement.data('bs.popover').tip);
         // Need to be executed after Bootstrap popover
         // Bootstrap set style inline and so override the scss style
         setTimeout(() => {
@@ -184,10 +182,11 @@ CalendarRenderer.include({
                 event.preventDefault();
             });
             // When the user click on a link the popover must be removed
-            $popover.find('a.o_field_widget[href]')
+            $popover
+                .find('a.o_field_widget[href]')
                 .on('click', (event) => {
                     $('.o_cw_popover').popover('dispose');
-                })
+                });
         }, 0);
     },
     /**

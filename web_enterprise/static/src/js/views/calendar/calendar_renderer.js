@@ -98,11 +98,19 @@ CalendarRenderer.include({
     _initCalendar: function () {
         const self = this;
         this._super.apply(this, arguments);
+        const oldEventDragStart = this.calendar.getOption('eventDragStart');
         const oldEventPositioned = this.calendar.getOption('eventPositioned');
         const oldEventRender = this.calendar.getOption('eventRender');
         const oldEventResize = this.calendar.getOption('eventResize');
         const oldEventResizeStart = this.calendar.getOption('eventResizeStart');
+        const oldSelectAllow = this.calendar.getOption('selectAllow');
 
+        this.calendar.setOption('eventDragStart', function (info) {
+            self.isSwipeEnabled = false;
+            if (oldEventDragStart) {
+                oldEventDragStart(info);
+            }
+        });
         this.calendar.setOption('eventPositioned', function (info) {
             self.isSwipeEnabled = false;
             if (oldEventPositioned) {
@@ -126,6 +134,13 @@ CalendarRenderer.include({
             if (oldEventResizeStart) {
                 oldEventResizeStart(mouseResizeInfo);
             }
+        });
+        this.calendar.setOption('selectAllow', function (selectInfo) {
+            self.isSwipeEnabled = false;
+            if (oldSelectAllow) {
+                return oldSelectAllow(selectInfo);
+            }
+            return true;
         });
     },
     /**

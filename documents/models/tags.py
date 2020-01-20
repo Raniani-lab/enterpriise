@@ -15,7 +15,7 @@ class TagsCategories(models.Model):
                           '#EB7E7F', '#2C8397']
 
     folder_id = fields.Many2one('documents.folder', string="Workspace", ondelete="cascade")
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, translate=True)
     tag_ids = fields.One2many('documents.tag', 'facet_id')
     tooltip = fields.Char(help="Text shown when hovering on this tag category or its tags", string="Tooltip")
     sequence = fields.Integer('Sequence', default=10)

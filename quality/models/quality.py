@@ -43,10 +43,12 @@ class QualityPoint(models.Model):
         default=_get_default_team_id, required=True)
     product_ids = fields.Many2many(
         'product.product', string='Product Variant',
-        domain="[('product_tmpl_id', 'in', product_tmpl_ids)]")
+        domain="[('id', 'in', available_product_ids)]")
     product_tmpl_ids = fields.Many2many(
         'product.template', string='Product', check_company=True,
-        domain="[('type', 'in', ['consu', 'product']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        domain="[('id', 'in', available_product_tmpl_ids)]")
+    available_product_ids = fields.One2many('product.product', compute='_compute_available_products')
+    available_product_tmpl_ids = fields.One2many('product.template', compute='_compute_available_products')
     picking_type_ids = fields.Many2many(
         'stock.picking.type', string='Operation Types', required=True, check_company=True)
     company_id = fields.Many2one(
@@ -61,6 +63,17 @@ class QualityPoint(models.Model):
     test_type = fields.Char(related='test_type_id.technical_name', readonly=True)
     note = fields.Html('Note')
     reason = fields.Html('Cause')
+
+    @api.depends('company_id', 'product_tmpl_ids')
+    def _compute_available_products(self):
+        for point in self:
+            point.available_product_ids = self.env['product.product'].search([
+                ('product_tmpl_id', 'in', point.product_tmpl_ids.ids)
+            ])
+            point.available_product_tmpl_ids = self.env['product.template'].search([
+                ('type', 'in', ['product', 'consu']),
+                '|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)
+            ])
 
     def _compute_check_count(self):
         check_data = self.env['quality.check'].read_group([('point_id', 'in', self.ids)], ['point_id'], ['point_id'])

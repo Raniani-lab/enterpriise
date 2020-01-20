@@ -22,17 +22,7 @@
             </field>
             <xpath expr="//field[@name='product_ids']" position="attributes">
                 <attribute name="domain">
-                    [('variant_bom_ids', '!=', []), ('variant_bom_ids.routing_id', '!=', False), '|', ('company_id', '=', company_id), ('company_id', '=', False)]
-                </attribute>
-            </xpath>
-            <xpath expr="//field[@name='product_tmpl_ids']" position="attributes">
-                <attribute name="domain">
-                    [('bom_ids', '!=', False), ('bom_ids.routing_id', '!=', False), '|', ('company_id', '=', company_id), ('company_id', '=', False)],
-                </attribute>
-            </xpath>
-            <xpath expr="//field[@name='operation_id']" position="attributes">
-                <attribute name="domain">
-                    [('routing_id', 'in', routing_ids), '|', ('company_id', '=', company_id), ('company_id', '=', False)],
+                  [('id', 'in', available_product_ids), '|', ('company_id', '=', company_id), ('company_id', '=', False)],
                 </attribute>
             </xpath>
         </field>

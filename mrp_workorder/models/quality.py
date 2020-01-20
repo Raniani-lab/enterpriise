@@ -30,6 +30,7 @@ class MrpRouting(models.Model):
         action.update({'context': ctx})
         return action
 
+
 class QualityPoint(models.Model):
     _inherit = "quality.point"
 
@@ -50,6 +51,17 @@ class QualityPoint(models.Model):
     worksheet_page = fields.Integer('Worksheet Page')
     # Used with type register_consumed_materials the product raw to encode.
     component_id = fields.Many2one('product.product', 'Product To Register', check_company=True)
+
+    def _compute_available_products(self):
+        super()._compute_available_products()
+        points_for_workorder_step = self.filtered(lambda p: p.is_workorder_step)
+        for point in points_for_workorder_step:
+            point.available_product_ids = point.available_product_ids.filtered(
+                lambda p: p.variant_bom_ids and p.variant_bom_ids.routing_id
+            )
+            point.available_product_tmpl_ids = point.available_product_tmpl_ids.filtered(
+                lambda p: p.bom_ids and p.bom_ids.routing_id
+            )
 
     @api.depends('product_ids', 'product_tmpl_ids', 'test_type_id')
     def _compute_component_ids(self):

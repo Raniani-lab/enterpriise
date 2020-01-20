@@ -7,6 +7,8 @@
         <field name="model">quality.point</field>
         <field name="arch" type="xml">
             <form>
+                <field name="available_product_ids" invisible="1"/>
+                <field name="available_product_tmpl_ids" invisible="1"/>
                 <sheet>
                     <div class="oe_button_box" name="button_box"/>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>

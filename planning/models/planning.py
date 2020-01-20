@@ -675,7 +675,7 @@ class PlanningPlanning(models.Model):
 
             # extract planning URLs
             employees = slots.mapped('employee_id')
-            employee_url_map = employees._planning_get_url(planning)
+            employee_url_map = employees.sudo()._planning_get_url(planning)
 
             # send planning email template with custom domain per employee
             template = self.env.ref('planning.email_template_planning_planning', raise_if_not_found=False)

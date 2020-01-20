@@ -41,7 +41,7 @@ class AccountMove(models.Model):
             for line in inv.invoice_line_ids:
                 invoice_vals['invoice_line_ids'].append((0, 0, line._inter_company_prepare_invoice_line_data(company)))
 
-            inv_new = inv.new(invoice_vals)
+            inv_new = inv.with_context(default_type=invoice_vals['type']).new(invoice_vals)
             for line in inv_new.invoice_line_ids:
                 line.tax_ids = line._get_computed_taxes()
             invoice_vals = inv_new._convert_to_write(inv_new._cache)

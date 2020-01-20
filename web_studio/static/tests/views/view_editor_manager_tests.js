@@ -3973,6 +3973,51 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('default value for new field name', async function (assert) {
+        assert.expect(2);
+
+        let editViewCount = 0;
+        let fieldsView;
+        const arch = `<form><sheet>
+            <group>
+            <field name='display_name'/>
+            </group>
+            </sheet></form>`;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    editViewCount++;
+                    // new field default name should be x_studio_[FieldType]_field_[RandomString]
+                    if (editViewCount === 1) {
+                        assert.ok(args.operations[0].node.field_description.name.startsWith('x_studio_char_field_'),
+                            "default new field name should start with x_studio_char_field_*");
+                    } else if (editViewCount === 2) {
+                        assert.ok(args.operations[1].node.field_description.name.startsWith('x_studio_float_field_'),
+                            "default new field name should start with x_studio_float_field_*");
+                    }
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            form: fieldsView,
+                        },
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate the new fields view in mockRPC
+        fieldsView = Object.assign({}, vem.fields_view);
+
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_group .o_web_studio_hook:first'));
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_float'), vem.$('.o_group .o_web_studio_hook:first'));
+
+        vem.destroy();
+    });
+
     QUnit.test('notebook and group not drag and drop in a group', async function (assert) {
         assert.expect(2);
         var editViewCount = 0;

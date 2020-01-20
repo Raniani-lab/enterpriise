@@ -284,7 +284,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
             // "extend" avoids having the same reference in "this.operations"
             // We can thus modify it without editing previous existing operations
             field_description = _.extend({}, field_description, {
-                name: 'x_studio_field_' + utils.randomString(5),
+                name: `x_studio_${field_description.type}_field_${utils.randomString(5)}`,
                 model_name: modelName,
             });
             // Fields with requirements

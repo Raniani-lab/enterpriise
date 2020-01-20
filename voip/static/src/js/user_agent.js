@@ -635,7 +635,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     async _onInvite(inviteSession) {
         if (
             this._ignoreIncoming ||
-            this._callState !== CALL_STATE.NO_CALL
+            this._callState === CALL_STATE.ONGOING_CALL
         ) {
             inviteSession.reject();
             return;

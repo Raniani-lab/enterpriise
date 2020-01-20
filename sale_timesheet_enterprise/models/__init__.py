@@ -3,6 +3,5 @@
 
 from . import account
 from . import analytic
-from . import helpdesk
 from . import res_config_settings
 from . import sale

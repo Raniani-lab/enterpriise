@@ -15,7 +15,6 @@
 
     'depends': ['sale_timesheet', 'timesheet_grid'],
     'data': [
-        'views/helpdesk_views.xml',
         'views/res_config_settings_views.xml',
         'views/project_task_views.xml',
         'data/industry_fsm_data.xml',

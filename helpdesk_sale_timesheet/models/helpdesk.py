@@ -7,6 +7,14 @@ from odoo.osv import expression
 from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_TIMESHEET
 
 
+class HelpdeskTeam(models.Model):
+    _inherit = 'helpdesk.team'
+
+    def _create_project(self, name, allow_billable, other):
+        new_values = dict(other, allow_billable=allow_billable)
+        return super(HelpdeskTeam, self)._create_project(name, allow_billable, new_values)
+
+
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.tools.misc import get_lang
 
 
 class ResPartner(models.Model):
@@ -40,13 +41,15 @@ class ResPartner(models.Model):
 
     @api.depends('country_id')
     def _compute_nationality(self):
+        default_lang = get_lang(self.env, lang_code='es_MX').code
         for partner in self:
             partner.l10n_mx_nationality = partner.country_id.with_context(
-                lang='es_MX').demonym
+                lang=default_lang).demonym
 
     def _inverse_nationality(self):
+        default_lang = get_lang(self.env, lang_code='es_MX').code
         for partner in self.filtered('country_id'):
-            partner.country_id.with_context(lang='es_MX').demonym = (
+            partner.country_id.with_context(lang=default_lang).demonym = (
                 partner.l10n_mx_nationality)
 
     def _get_not_partners_diot(self):

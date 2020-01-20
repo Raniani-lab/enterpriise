@@ -190,3 +190,10 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Write email or search contact..."
 msgstr ""
+
+#. module: hr_contract_sign
+#: code:addons/hr_contract_sign/models/hr_contract.py:0
+#, python-format
+msgid ""
+"You can't delete a contract linked to a signed document, archive it instead."
+msgstr ""

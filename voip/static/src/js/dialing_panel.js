@@ -477,6 +477,7 @@ const DialingPanel = Widget.extend({
      */
     _onClickDialNumber(ev) {
         ev.preventDefault();
+        this._$keypadInput.focus();
         this._onKeypadButtonClick(ev.currentTarget.textContent);
     },
     /**

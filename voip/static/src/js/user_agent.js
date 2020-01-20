@@ -42,7 +42,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._audioDialRingtone = undefined;
         this._audioIncomingRingtone = undefined;
         this._audioRingbackTone = undefined;
-        this._audioRingbackToneProm = undefined;
         this._callState = CALL_STATE.NO_CALL;
         this._currentNumber = undefined;
         this._dialog = undefined;
@@ -116,9 +115,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     makeCall(number) {
         this._progressCount = 0;
         if (this._mode === 'demo') {
-            this._audioRingbackToneProm = this.PLAY_MEDIA
-                ? this._audioRingbackTone.play()
-                : Promise.resolve();
+            if (this.PLAY_MEDIA) {
+                this._audioRingbackTone.play();
+            }
             this._timerAcceptedTimeout = this._demoTimeout(() =>
                 this._onAccepted());
             this._isOutgoing = true;
@@ -514,6 +513,13 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this._onInviteSentHelper());
     },
     /**
+     * @private
+     */
+    _stopRingtones() {
+        this._audioRingbackTone.pause();
+        this._audioDialRingtone.pause();
+    },
+    /**
      * Triggers up an error.
      *
      * @private
@@ -540,11 +546,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     async _onAccepted() {
         this._callState = CALL_STATE.ONGOING_CALL;
         const call = this._sipSession;
-        if (this._audioRingbackToneProm) {
-            await this._audioRingbackToneProm;
-            this._audioRingbackTone.pause();
-            this._audioRingbackToneProm = undefined;
-        }
+        this._stopRingtones();
         if (this._mode === 'prod') {
             this._configureRemoteAudio();
             call.sessionDescriptionHandler.on('addTrack', () =>
@@ -587,8 +589,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         this._sipSession = false;
         this._callState = CALL_STATE.NO_CALL;
-        this._audioRingbackTone.pause();
-        this._audioDialRingtone.pause();
+        this._stopRingtones();
         if (this._mode === 'demo') {
             clearTimeout(this._timerAcceptedTimeout);
         }
@@ -766,8 +767,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _onRejected(response) {
         this._callState = CALL_STATE.REJECTING_CALL;
-        this._audioDialRingtone.pause();
-        this._audioRingbackTone.pause();
+        this._stopRingtones();
         this._sipSession = false;
         this._callState = CALL_STATE.NO_CALL;
         if (
@@ -792,10 +792,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _onTry() {
         if (this._progressCount === 2) {
             this._progressCount = 0;
-            this._audioDialRingtone.pause();
-            this._audioRingbackToneProm = this.PLAY_MEDIA
-                ? this._audioRingbackTone.play()
-                : Promise.resolve();
+            this._stopRingtones();
+            if (this.PLAY_MEDIA) {
+                this._audioRingbackTone.play();
+            }
             this.trigger_up('changeStatus');
         } else {
             this._progressCount++;

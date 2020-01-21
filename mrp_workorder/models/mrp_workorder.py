@@ -448,6 +448,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 if point.check_execute_now():
                     moves = self.env['stock.move']
                     values = {
+                        'production_id': production.id,
                         'workorder_id': wo.id,
                         'point_id': point.id,
                         'team_id': point.team_id.id,
@@ -482,6 +483,7 @@ class MrpProductionWorkcenterLine(models.Model):
             quality_team_id = self.env['quality.alert.team'].search([], limit=1).id
             for move in moves_without_check:
                 values = {
+                    'production_id': production.id,
                     'workorder_id': wo.id,
                     'product_id': production.product_id.id,
                     'company_id': wo.company_id.id,

@@ -198,46 +198,46 @@
         <field name="arch" type="xml">
             <field name="project_id" position="after">
                 <field name="allow_worksheets" invisible="1"/>
+                <field name="display_sign_report_primary" invisible="1"/>
+                <field name="display_sign_report_secondary" invisible="1"/>
+                <field name="display_send_report_primary" invisible="1"/>
+                <field name="display_send_report_secondary" invisible="1"/>
                 <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
             </field>
             <field name="display_fsm_dates" position="after">
                 <field name="fsm_is_sent" invisible="1"/>
                 <field name="worksheet_signature" invisible="1"/>
-                <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('allow_worksheets', '=', False), ('timer_start', '!=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0), ('worksheet_signature', '!=', False)]}"/>
-                <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|',
-                    ('allow_worksheets', '=', False),
-                    ('timer_start', '!=', False),
-                    ('worksheet_template_id', '=', False),
-                    '&amp;','&amp;',
-                        ('worksheet_count', '=', 0),
-                        ('total_hours_spent', '=', 0),
-                    ('fsm_is_sent', '=', True),
-                    ('worksheet_signature', '=', False)]}"/>
-                <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('allow_worksheets', '=', False), ('timer_start', '!=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0), ('worksheet_signature', '=', False)]}"/>
-                <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|',
-                    ('allow_worksheets', '=', False),
-                    ('timer_start', '!=', False),
-                    ('worksheet_template_id', '=', False),
-                    '&amp;','&amp;',
-                        ('worksheet_count', '=', 0),
-                        ('total_hours_spent', '=', 0),
-                    '&amp;',
-                        ('fsm_is_sent', '=', False),
-                        ('worksheet_signature', '!=', False)]}"/>
             </field>
+            <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-primary')]" position="before">
+                <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
+                    attrs="{'invisible': [('display_sign_report_primary', '=', False)]}"/>
+                <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
+                    attrs="{'invisible': [('display_send_report_primary', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-secondary')]" position="before">
+                <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
+                    attrs="{'invisible': [('display_sign_report_secondary', '=', False)]}"/>
+                <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
+                    attrs="{'invisible': [('display_send_report_secondary', '=', False)]}"/>
+            </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
                 <field name="worksheet_count" invisible="1"/>
+                <field name="worksheet_signature" invisible="1"/>
+                <button
+                    string="Customer Preview"
+                    class="oe_stat_button"
+                    name="action_preview_worksheet"
+                    icon="fa-globe" type="object"
+                    groups="project.group_project_user"
+                    attrs="{'invisible': [('worksheet_signature', '=', False)]}">
+                </button>
                 <button
                     string="Worksheet"
                     class="oe_stat_button"
                     name="action_fsm_worksheet"
                     icon="fa-pencil" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}">
+                    attrs="{'invisible': ['|', '|', '|', ('partner_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}">
                 </button>
                 <button
                     string="Worksheet Completed"

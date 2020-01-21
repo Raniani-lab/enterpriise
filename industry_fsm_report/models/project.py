@@ -58,6 +58,65 @@ class Task(models.Model):
     worksheet_signature = fields.Binary('Signature', help='Signature received through the portal.', copy=False, attachment=True)
     worksheet_signed_by = fields.Char('Signed By', help='Name of the person that signed the task.', copy=False)
     worksheet_color = fields.Integer(related='worksheet_template_id.color')
+    display_sign_report_primary = fields.Boolean(compute='_compute_display_sign_report_buttons')
+    display_sign_report_secondary = fields.Boolean(compute='_compute_display_sign_report_buttons')
+    display_send_report_primary = fields.Boolean(compute='_compute_display_send_report_buttons')
+    display_send_report_secondary = fields.Boolean(compute='_compute_display_send_report_buttons')
+
+    @api.depends('allow_worksheets', 'worksheet_count')
+    def _compute_display_conditions_count(self):
+        super(Task, self)._compute_display_conditions_count()
+        for task in self:
+            enabled = task.display_enabled_conditions_count
+            satisfied = task.display_satisfied_conditions_count
+            enabled += 1 if task.allow_worksheets else 0
+            satisfied += 1 if task.allow_worksheets and task.worksheet_count else 0
+            task.write({
+                'display_enabled_conditions_count': enabled,
+                'display_satisfied_conditions_count': satisfied
+            })
+
+    @api.depends(
+        'allow_worksheets', 'timer_start', 'worksheet_signature', 'worksheet_template_id',
+        'display_satisfied_conditions_count', 'display_enabled_conditions_count')
+    def _compute_display_sign_report_buttons(self):
+        for task in self:
+            sign_p, sign_s = True, True
+            if not task.allow_worksheets or task.timer_start or \
+                    task.worksheet_signature or not task.worksheet_template_id or \
+                    not task.display_satisfied_conditions_count:
+                sign_p, sign_s = False, False
+            else:
+                if task.display_enabled_conditions_count == task.display_satisfied_conditions_count:
+                    sign_s = False
+                else:
+                    sign_p = False
+            task.write({
+                'display_sign_report_primary': sign_p,
+                'display_sign_report_secondary': sign_s,
+            })
+
+    @api.depends(
+        'allow_worksheets', 'timer_start', 'worksheet_signature', 'worksheet_template_id',
+        'display_satisfied_conditions_count', 'display_satisfied_conditions_count',
+        'fsm_is_sent')
+    def _compute_display_send_report_buttons(self):
+        for task in self:
+            send_p, send_s = True, True
+            if not task.allow_worksheets or task.timer_start or \
+                    not task.worksheet_signature or not task.worksheet_template_id or \
+                    not task.display_satisfied_conditions_count:
+                send_p, send_s = False, False
+            else:
+                if task.display_enabled_conditions_count == task.display_satisfied_conditions_count \
+                        and not task.fsm_is_sent:
+                    send_s = False
+                else:
+                    send_p = False
+            task.write({
+                'display_send_report_primary': send_p,
+                'display_send_report_secondary': send_s,
+            })
 
     @api.onchange('project_id')
     def _onchange_project_id(self):

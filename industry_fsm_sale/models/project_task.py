@@ -19,6 +19,41 @@ class Task(models.Model):
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
     invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
     fsm_to_invoice = fields.Boolean("To invoice", compute='_compute_fsm_to_invoice', search='_search_fsm_to_invoice', groups='sales_team.group_sale_salesman_all_leads')
+    display_create_invoice_primary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
+    display_create_invoice_secondary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
+
+    @api.depends(
+        'is_fsm', 'fsm_done', 'allow_billable', 'timer_start',
+        'fsm_to_invoice', 'sale_order_id.invoice_status')
+    def _compute_display_create_invoice_buttons(self):
+        for task in self:
+            primary, secondary = True, True
+            if not task.is_fsm or not task.fsm_done or not task.allow_billable or task.timer_start or \
+                    not task.sale_order_id or task.sale_order_id.invoice_status == 'invoiced' or \
+                    task.sale_order_id.state in ['cancel']:
+                primary, secondary = False, False
+            else:
+                if task.sale_order_id.invoice_status in ['upselling', 'to invoice']:
+                    secondary = False
+                else:  # Means invoice status is 'Nothing to Invoice'
+                    primary = False
+            task.write({
+                'display_create_invoice_primary': primary,
+                'display_create_invoice_secondary': secondary,
+            })
+
+    @api.depends('allow_material', 'material_line_product_count')
+    def _compute_display_conditions_count(self):
+        super(Task, self)._compute_display_conditions_count()
+        for task in self:
+            enabled = task.display_enabled_conditions_count
+            satisfied = task.display_satisfied_conditions_count
+            enabled += 1 if task.allow_material else 0
+            satisfied += 1 if task.allow_material and task.material_line_product_count else 0
+            task.write({
+                'display_enabled_conditions_count': enabled,
+                'display_satisfied_conditions_count': satisfied
+            })
 
     def _compute_quotation_count(self):
         quotation_data = self.sudo().env['sale.order'].read_group([('state', '!=', 'cancel'), ('task_id', 'in', self.ids)], ['task_id'], ['task_id'])
@@ -119,7 +154,7 @@ class Task(models.Model):
 
     def action_fsm_view_material(self):
         if not self.partner_id:
-            raise UserError(_('The FSM task must have a customer set to be sold.'))
+            raise UserError(_('A customer should be set on the task to generate a worksheet.'))
 
         domain = [('sale_ok', '=', True), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
         if self.project_id and self.project_id.timesheet_product_id:
@@ -185,6 +220,7 @@ class Task(models.Model):
         action = self.env.ref('sale.action_view_sale_advance_payment_inv').read()[0]
         context = literal_eval(action.get('context', "{}"))
         context.update({
+            'active_id': self.sale_order_id.id if len(self) == 1 else False,
             'active_ids': self.mapped('sale_order_id').ids,
             'default_company_id': self.company_id.id,
         })
@@ -203,7 +239,7 @@ class Task(models.Model):
     def _fsm_create_sale_order(self):
         """ Create the SO from the task, with the 'service product' sales line and link all timesheet to that line it """
         if not self.partner_id:
-            raise UserError(_('The FSM task must have a customer set to be sold.'))
+            raise UserError(_('A customer should be set on the task to generate a worksheet.'))
 
         SaleOrder = self.env['sale.order']
         if self.user_has_groups('project.group_project_user'):

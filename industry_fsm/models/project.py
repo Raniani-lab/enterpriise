@@ -54,6 +54,54 @@ class Task(models.Model):
     fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True)
     user_id = fields.Many2one(group_expand='_read_group_user_ids')
     display_fsm_dates = fields.Boolean(compute='_compute_display_fsm_dates')
+    # Use to count conditions between : time, worksheet and materials
+    # If 2 over 3 are enabled for the project, the required count = 2
+    # If 1 over 3 is met (enabled + encoded), the satisfied count = 2
+    display_enabled_conditions_count = fields.Integer(compute='_compute_display_conditions_count')
+    display_satisfied_conditions_count = fields.Integer(compute='_compute_display_conditions_count')
+    display_mark_as_done_primary = fields.Boolean(compute='_compute_mark_as_done_buttons')
+    display_mark_as_done_secondary = fields.Boolean(compute='_compute_mark_as_done_buttons')
+
+    @api.depends(
+        'fsm_done', 'is_fsm', 'timer_start',
+        'display_enabled_conditions_count', 'display_satisfied_conditions_count')
+    def _compute_mark_as_done_buttons(self):
+        for task in self:
+            primary, secondary = True, True
+            if task.fsm_done or not task.is_fsm or task.timer_start:
+                primary, secondary = False, False
+            else:
+                if task.display_enabled_conditions_count == task.display_satisfied_conditions_count:
+                    secondary = False
+                else:
+                    primary = False
+            task.write({
+                'display_mark_as_done_primary': primary,
+                'display_mark_as_done_secondary': secondary,
+            })
+
+    @api.depends('project_id.allow_timesheets', 'total_hours_spent')
+    def _compute_display_conditions_count(self):
+        for task in self:
+            enabled = 1 if task.project_id.allow_timesheets else 0
+            satisfied = 1 if enabled and task.total_hours_spent else 0
+            task.write({
+                'display_enabled_conditions_count': enabled,
+                'display_satisfied_conditions_count': satisfied
+            })
+
+    @api.depends('fsm_done', 'display_timesheet_timer', 'timer_start', 'total_hours_spent')
+    def _compute_display_timer_buttons(self):
+        fsm_done_tasks = self.filtered(lambda task: task.fsm_done)
+        start_p, start_s, stop, pause, resume = False, False, False, False, False
+        fsm_done_tasks.write({
+            'display_timer_start_primary': start_p,
+            'display_timer_start_secondary': start_s,
+            'display_timer_stop': stop,
+            'display_timer_pause': pause,
+            'display_timer_resume': resume,
+        })
+        super(Task, self - fsm_done_tasks)._compute_display_timer_buttons()
 
     # determines if planned_date_begin and planned_date_end used for the gantt
     # view should be visible on the task form view

@@ -93,7 +93,7 @@ var CohortController = AbstractController.extend({
         var data = this.model.get();
         data = _.extend(data, {
             title: this.title,
-            interval_string: this.intervals[data.interval],
+            interval_string: this.intervals[data.interval].toString(), // intervals are lazy-translated
             measure_string: this.measures[data.measure] || _t('Count'),
             date_start_string: this.dateStartString,
             date_stop_string: this.dateStopString,

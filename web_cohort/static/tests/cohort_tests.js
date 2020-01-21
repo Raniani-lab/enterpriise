@@ -213,6 +213,34 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
+    QUnit.test('export cohort', async function (assert) {
+        assert.expect(6);
+
+        var cohort = await createView({
+            View: CohortView,
+            model: 'subscription',
+            data: this.data,
+            arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />',
+            session: {
+                get_file: async function (params) {
+                    var data = JSON.parse(params.data.data);
+                    assert.strictEqual(params.url, '/web/cohort/export');
+                    assert.strictEqual(data.interval_string, 'Day');
+                    assert.strictEqual(data.measure_string, 'Count');
+                    assert.strictEqual(data.date_start_string, 'Start');
+                    assert.strictEqual(data.date_stop_string, 'Stop');
+                    assert.strictEqual(data.title, 'Subscription');
+                    params.complete();
+                    return true;
+                },
+            },
+        });
+
+        await testUtils.dom.click(cohort.$buttons.find('.o_cohort_download_button'));
+
+        cohort.destroy();
+    });
+
     QUnit.test('when clicked on cell redirects to the correct list/form view ', async function(assert) {
         assert.expect(6);
 

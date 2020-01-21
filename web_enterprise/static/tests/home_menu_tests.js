@@ -778,16 +778,13 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
         });
 
         QUnit.test("State reset", async function (assert) {
-            assert.expect(6);
+            assert.expect(7);
 
             const homeMenuData = this.props;
             class Parent extends Component {
                 constructor() {
                     super();
-                    this.state = useState({
-                        homeMenuData,
-                        homeMenuDisplayed: true,
-                    });
+                    this.homeMenuData = homeMenuData;
                     this.homeMenuRef = useRef('home-menu');
                 }
             }
@@ -797,13 +794,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                     warning: false,
                 },
             });
-            Parent.template = xml`
-                <div>
-                    <HomeMenu t-if="state.homeMenuDisplayed"
-                        t-ref="home-menu"
-                        t-props="state.homeMenuData"
-                    />
-                </div>`;
+            Parent.template = xml`<HomeMenu t-ref="home-menu" t-props="homeMenuData"/>`;
 
             const parent = new Parent();
             const target = testUtils.prepareTarget();
@@ -819,20 +810,31 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             assert.strictEqual(parent.homeMenuRef.comp.inputRef.el.value, "dis",
                 "search bar input must contain the input text");
 
-            // Unmount and remount the home menu
-            parent.state.homeMenuDisplayed = false;
+            /**
+             * Unmount and remount the home menu. Normally we would use conditionnal
+             * rendering and let Owl do all the work, but since the webclient is
+             * not converted yet we simulate the actual behaviour of the home menu
+             * toggling (manually unmount/mount the parent).
+             * @see web_enterprise.WebClient.toggleHomeMenu()
+             * @todo change assertions when the webclient is converted
+             */
+            parent.unmount();
             await testUtils.nextTick();
 
             assert.containsNone(target, 'o_home_menu',
                 "home menu should no longer be displayed");
 
-            parent.state.homeMenuDisplayed = true;
-            await testUtils.nextTick();
+            await parent.mount(target);
 
             assert.hasClass(parent.homeMenuRef.el, "o_search_hidden",
                 "search bar is hidden after remount");
             assert.strictEqual(parent.homeMenuRef.comp.inputRef.el.value, "",
                 "search bar input must be empty");
+
+            await testUtils.fields.editInput(parent.homeMenuRef.comp.inputRef.el, "dis");
+
+            assert.strictEqual(parent.homeMenuRef.comp.inputRef.el.value, "dis",
+                "search bar input must contain the input text");
 
             parent.destroy();
         });

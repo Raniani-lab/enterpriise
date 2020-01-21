@@ -62,6 +62,7 @@ odoo.define("web_enterprise.HomeMenu", function (require) {
             this.state.focusedIndex = null;
             this.state.isSearching = false;
             this.state.query = "";
+            this.inputRef.el.value = "";
 
             this.availableApps = this.props.apps;
             this.displayedMenuItems = [];

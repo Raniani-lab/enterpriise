@@ -98,10 +98,14 @@ var PickingBarcodeHandler = AbstractField.extend({
     init: function() {
         this._super.apply(this, arguments);
 
+        this.data = this.record.data
+        var fieldName = 'move_line_ids_without_package';
+        if (this.data.show_reserved == false || this.data.show_operations == false)
+            fieldName = 'move_line_nosuggest_ids';
         this.trigger_up('activeBarcode', {
             name: this.name,
             notifyChange: false,
-            fieldName: 'move_line_ids_without_package',
+            fieldName: fieldName,
             quantity: 'qty_done',
             setQuantityWithKeypress: true,
             commands: {

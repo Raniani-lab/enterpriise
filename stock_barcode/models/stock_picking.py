@@ -113,8 +113,11 @@ class StockPicking(models.Model):
         # arbitrary the first one. Filter out the ones processed by
         # `_check_location` and the ones already having a # destination
         # package.
-        corresponding_ml = self.move_line_ids.filtered(lambda ml: ml.product_id.id == product.id and not ml.result_package_id and not ml.location_processed and not ml.lots_visible)
-        corresponding_ml = corresponding_ml[0] if corresponding_ml else False
+        picking_move_lines = self.move_line_ids_without_package
+        if not self.show_reserved:
+            picking_move_lines = self.move_line_nosuggest_ids
+
+        corresponding_ml = picking_move_lines.filtered(lambda ml: ml.product_id.id == product.id and not ml.result_package_id and not ml.location_processed and not ml.lots_visible)[:1]
 
         if corresponding_ml:
             corresponding_ml.qty_done += qty
@@ -124,7 +127,7 @@ class StockPicking(models.Model):
             # set a `qty_done`: a next scan of this product will open the
             # lots wizard.
             picking_type_lots = (self.picking_type_id.use_create_lots or self.picking_type_id.use_existing_lots)
-            self.move_line_ids_without_package += self.move_line_ids.new({
+            new_move_line = self.move_line_ids.new({
                 'product_id': product.id,
                 'product_uom_id': product.uom_id.id,
                 'location_id': self.location_id.id,
@@ -133,6 +136,10 @@ class StockPicking(models.Model):
                 'product_uom_qty': 0.0,
                 'date': fields.datetime.now(),
             })
+            if self.show_reserved:
+                self.move_line_ids_without_package += new_move_line
+            else:
+                self.move_line_nosuggest_ids += new_move_line
         return True
 
     def _check_source_package(self, package):

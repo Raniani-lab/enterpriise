@@ -106,41 +106,43 @@
 
     // Notebooks
     .o_notebook {
-        > .nav.nav-tabs {
-            border-bottom: 1px solid gray('400');
+        > .o_notebook_headers {
             @include o-form-sheet-negative-margin;
-            @include o-form-sheet-inner-left-padding;
 
-            > .nav-item {
-                > .nav-link {
-                    color: $body-color;
-                    border: 1px solid gray('400');
-                    border-bottom-width: 0;
-                    padding: $btn-padding-y-lg $btn-padding-x-lg;
+            > .nav.nav-tabs {
+                @include o-form-sheet-inner-left-padding;
+                border-bottom: $nav-tabs-border-width solid gray('400');
 
-                    &:hover, &:focus, &:active {
-                        outline: none;
-                        color: $link-color;
-                    }
+                > .nav-item {
+                    white-space: nowrap;
 
-                    &.active {
-                        border: 1px solid gray('400');
-                        border-bottom: 0;
+                    > .nav-link {
+                        color: $body-color;
+                        border-color: gray('400');
+                        background-color: white;
 
-                        &, &:hover, &:focus, &:active {
-                            color: $headings-color;
-                            border-top-color: $o-brand-odoo;
-                            background-color: white;
+                        &:hover, &:focus, &:active {
+                            outline: none;
+                            color: $link-color;
+                        }
+
+                        &.active {
+                            border-bottom-color: white;
+
+                            &, &:hover, &:focus, &:active {
+                                color: $headings-color;
+                                border-top-color: $o-brand-odoo;
+                            }
+                        }
+
+                        &.disabled {
+                            color: $text-muted;
                         }
                     }
 
-                    &.disabled {
-                        color: $text-muted;
+                    + .nav-item > .nav-link {
+                        border-left: 0;
                     }
-                }
-
-                + .nav-item {
-                    margin-left: -1px;
                 }
             }
         }
@@ -217,27 +219,13 @@
     }
     // Notebooks for small screen
     @include media-breakpoint-down(sm) {
-        .o_notebook {
-            position: relative;
-            // We need this to be 39px and not only 30px because when there is a table
-            // inside the tab, the tabs are overlapping the table if only 30px.
-            // Issue only on mobile small screen.
-            padding-top: 39px;
-            ul.nav-tabs {
-                position: absolute;
-                top: 0;
-                z-index: 1;
+        .o_notebook .o_notebook_headers {
+            overflow-x: auto;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            .nav.nav-tabs {
                 flex-flow: row nowrap;
-                min-width: 100%;
-                max-width:  calc(100% + #{$o-horizontal-padding});
-                overflow-x : auto;
-                &::-webkit-scrollbar {
-                    display: none;
-                }
-                .nav-item {
-                    white-space: nowrap;
-                    margin-bottom: 0; // As above is overflow-x auto, the -1px margin was only breaking the layout
-                }
             }
         }
         .o_cp_buttons {

@@ -55,6 +55,20 @@ FormRenderer.include({
     },
 
     /**
+     * Adds a wrapper div because 'overflow' creates a stacking context which modifies 
+     * the way borders are applied on children
+     *
+     * @private
+     * @override
+     * @returns {jQueryElement}
+     */
+    _renderTagNotebook() {
+        const $notebook = this._super(...arguments);
+        $notebook.find('.nav.nav-tabs').wrap('<div class="o_notebook_headers">');
+        return $notebook;
+    },
+
+    /**
      * Hide action dropdown button if no visible dropdown item button
      *
      * @private

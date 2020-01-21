@@ -363,14 +363,17 @@ class UPSRequest():
             if response.Response.ResponseStatus.Code != "1":
                 return self.get_error_message(response.Response.ResponseStatus.Code, response.Response.ResponseStatus.Description)
 
-            result = {}
-            result['currency_code'] = response.RatedShipment[0].TotalCharges.CurrencyCode
+            rate = response.RatedShipment[0]
+            charge = rate.TotalCharges
 
             # Some users are qualified to receive negotiated rates
-            negotiated_rate = 'NegotiatedRateCharges' in response.RatedShipment[0] and response.RatedShipment[0].NegotiatedRateCharges and response.RatedShipment[0].NegotiatedRateCharges.TotalCharge.MonetaryValue or None
+            if 'NegotiatedRateCharges' in rate and rate.NegotiatedRateCharges and rate.NegotiatedRateCharges.TotalCharge.MonetaryValue:
+                charge = rate.NegotiatedRateCharges.TotalCharge
 
-            result['price'] = negotiated_rate or response.RatedShipment[0].TotalCharges.MonetaryValue
-            return result
+            return {
+                'currency_code': charge.CurrencyCode,
+                'price': charge.MonetaryValue,
+            }
 
         except Fault as e:
             code = e.detail.xpath("//err:PrimaryErrorCode/err:Code", namespaces=self.ns)[0].text

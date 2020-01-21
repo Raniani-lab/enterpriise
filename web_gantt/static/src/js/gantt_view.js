@@ -107,8 +107,8 @@ var GanttView = AbstractView.extend({
             allowedScales = Object.keys(this.SCALES);
         }
 
-        var scale = arch.attrs.default_scale || 'month';
-        var initialDate = moment(params.initialDate || params.context.initialDate || new Date());
+        var scale = params.context.default_scale || arch.attrs.default_scale || 'month';
+        var initialDate = moment(params.context.initialDate || params.initialDate || arch.attrs.initial_date || new Date());
         var offset = arch.attrs.offset;
         if (offset && scale) {
             initialDate.add(offset, scale);
@@ -134,9 +134,11 @@ var GanttView = AbstractView.extend({
         this.loadParams.progressField = arch.attrs.progress;
         this.loadParams.decorationFields = decorationFields;
         this.loadParams.defaultGroupBy = this.arch.attrs.default_group_by;
+        this.loadParams.dynamicRange = this.arch.attrs.dynamic_range;
         this.loadParams.displayUnavailability = displayUnavailability;
         this.loadParams.fields = this.fields;
         this.loadParams.scale = scale;
+        this.loadParams.SCALES = this.SCALES;
         this.loadParams.consolidationParams = consolidationParams;
 
         this.rendererParams.canCreate = this.controllerParams.activeActions.create;

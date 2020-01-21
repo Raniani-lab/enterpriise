@@ -9,6 +9,43 @@
         }
     }
 
+    .o_calendar_container {
+        flex-direction: column;
+
+        .o_other_calendar_panel {
+            padding: 8px 16px;
+
+            .fa-filter {
+                min-height: 1.59rem;
+                line-height: 1.59rem;
+            }
+
+            > .o_filter {
+                > span > span {
+                    font-size: x-small;
+                    &:nth-child(1) {
+                        font-size: xx-small;
+                    }
+                }
+                @for $i from 1 through length($o-colors-complete) {
+                    $color: nth($o-colors-complete, $i);
+    
+                    .o_color_#{$i - 1} {
+                        color: $color;
+                    }
+                }
+            }
+        }
+
+        .o_calendar_sidebar_container {
+            flex-grow: 1;
+
+            > .o_calendar_sidebar {
+                width: auto;
+            }
+        }
+    }
+
     .o_calendar_view {
         .fc-day-header {
             word-spacing: 1000px; // force line break in week mode

@@ -10,10 +10,16 @@ if (!config.device.isMobile) {
  * This file implements some tweaks to improve the UX in mobile.
  */
 
+const {qweb} = require('web.core');
+
 const CalendarRenderer = require('web.CalendarRenderer');
 
 // FIXME: in the future we should use modal instead of popover (on Event Click)
 CalendarRenderer.include({
+
+    events: _.extend({}, CalendarRenderer.events, {
+        'click .o_other_calendar_panel': '_toggleSidePanel',
+    }),
 
     /**
      * @constructor
@@ -24,6 +30,8 @@ CalendarRenderer.include({
     init: function (parent, state, params) {
         this._super.apply(this, arguments);
         this.isSwipeEnabled = true;
+        this.isSidePanelVisible = false;
+        this.filtersMobile = [];
     },
     /**
      * @override
@@ -63,6 +71,23 @@ CalendarRenderer.include({
                 self.trigger_up('prev');
             }
         });
+    },
+    /**
+     * Concat all filter available in side panel and filter the inactive
+     *
+     * @private
+     * @return {[]}
+     */
+    _getFilters: function () {
+        const filters = this.state.filters;
+        return Object.keys(filters)
+            .filter(key => filters[key].filters)
+            .map(key => ({
+                label: filters[key].title,
+                values: this._prepareDataFilterForQWeb(filters[key].filters),
+                countItems: filters[key].filters.length,
+            }))
+            ;
     },
     /**
      * In mobile we change the column header to avoid to much text
@@ -203,6 +228,71 @@ CalendarRenderer.include({
                     $('.o_cw_popover').popover('dispose');
                 });
         }, 0);
+    },
+    /**
+     * Filter the inactive element and set the color
+     *
+     * @private
+     * @param {[]} array
+     * @return {[]}
+     */
+    _prepareDataFilterForQWeb: function (array) {
+        const self = this;
+        return array
+            .filter(element => element.active)
+            .map(function (element) {
+                return Object.assign({}, element, {
+                    color: self.getColor(element.color_index),
+                });
+            });
+    },
+    /**
+     * Add a element to be able to manage other calendar in mobile
+     *
+     * @override
+     * @private
+     */
+    _render: function () {
+        return this._super(...arguments).then(() => {
+            this.$('.o_calendar_mini').toggleClass('d-none', true);
+            this._renderOtherCalendar();
+        });
+    },
+    /**
+     * Recalculate the filters for mobile view
+     *
+     * @private
+     */
+    _renderFilters: function () {
+        return this._super(...arguments).then(() => {
+            this.filtersMobile = this._getFilters();
+            const reduce = !!this.filtersMobile.reduce((visible, filter) => visible | (filter.countItems > 0), false);
+            this.$('.o_calendar_sidebar .o_view_nocontent').toggleClass('d-none', reduce);
+        });
+    },
+    /**
+     * Render the specific view for OtherCalendarPanel
+     *
+     * @private
+     */
+    _renderOtherCalendar: function () {
+        this.$('.o_other_calendar_panel').remove();
+        this.otherCalendarMobile = $(qweb.render('CalendarView.OtherCalendarMobile', {
+            filters: this.filtersMobile,
+            isSidePanelVisible: this.isSidePanelVisible,
+        }));
+        this.$el.prepend(this.otherCalendarMobile);
+    },
+    /**
+     * Toggle the d-none class of calendar and side panel to switch between the two elements
+     *
+     * @private
+     */
+    _toggleSidePanel: async function () {
+        this.isSidePanelVisible = !this.isSidePanelVisible;
+        this.$('.o_calendar_view').toggleClass('d-none', this.isSidePanelVisible);
+        this.$('.o_calendar_sidebar_container').toggleClass('d-none', !this.isSidePanelVisible);
+        this._renderOtherCalendar();
     },
     /**
      * Remove highlight classes and dispose of popovers

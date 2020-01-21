@@ -161,7 +161,7 @@
         <a type="button" class="dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-user"/>
             Account:
-            <t t-set="account_value" t-value="'Both'"/>
+            <t t-set="account_value">Both</t>
             <t t-foreach="options['account_type']" t-as="a">
                 <t t-if="a.get('selected') == True">
                     <t t-set="account_value" t-value="''"/>
@@ -190,7 +190,7 @@
         <a type="button" class="dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-filter"/>
             Filters:
-            <t t-set="filter_name" t-value="'None'"/>
+            <t t-set="filter_name">None</t>
             <t t-foreach="options['ir_filters']" t-as="ir_filter">
                 <t t-if="ir_filter['selected']">
                     <t t-set="filter_name" t-value="ir_filter['name']"/>

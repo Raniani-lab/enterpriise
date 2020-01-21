@@ -23,11 +23,7 @@
                             <templates>
                                 <t t-name="kanban-box">
                                     <t t-set="active" t-value="record.active.raw_value"/>
-                                    <t t-set="button_state">
-                                        <t t-if="active">o_assignation_button_active</t>
-                                        <t t-if="!active">o_assignation_button_inactive</t>
-                                    </t>
-
+                                    <t t-set="button_state" t-value="'o_assignation_button_active' if active else 'o_assignation_button_inactive'"/>
                                     <div class="o_assignation_kanban_record pb-0">
                                         <div class="o_kanban_record_top mb-0">
                                             <ul class="nav">

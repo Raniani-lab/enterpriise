@@ -27,10 +27,10 @@
                                 <div class="d-flex align-items-start flex-row">
                                     <div class="mt-2 h6 flex-grow-1">
                                         <t t-if="record.no_of_recruitment.raw_value > 1">
-                                            <t t-set="pos" t-value="'Positions'"/>
+                                            <t t-set="pos">Positions</t>
                                         </t>
                                         <t t-else="">
-                                            <t t-set="pos" t-value="'Position'"/>
+                                            <t t-set="pos">Position</t>
                                         </t>
                                         <field name="no_of_recruitment"/> Open <t t-esc="pos"/>
                                     </div>

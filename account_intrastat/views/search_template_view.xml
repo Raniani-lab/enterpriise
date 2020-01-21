@@ -5,7 +5,7 @@
             <a type="button" class="dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-filter"/>
                 Types:
-                <t t-set="type_value" t-value="'All'"/>
+                <t t-set="type_value">All</t>
                 <t t-set="selected_types" t-value="[c['name'] for c in options['intrastat_type'] if c['selected']]"/>
                 <t t-if="len(selected_types) > 0">
                     <t t-set="type_value" t-value="', '.join(selected_types)"/>

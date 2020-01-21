@@ -224,7 +224,7 @@
                                             <t t-set="form_action" t-value="'/my/subscription/payment/' + str(account.id) + '/' + str(account.uuid)"/>
                                             <t t-set="pms" t-value="part_pms"/>
                                             <t t-set="icon_class" t-value="'fa-lock'"/>
-                                            <t t-set="submit_txt" t-value="'Pay Subscription'"/>
+                                            <t t-set="submit_txt">Pay Subscription</t>
                                             <t t-set="checked_pm_id" t-value="account.payment_token_id.id"/>
                                             <t t-set="mode" t-value="'payment'"/>
                                         </t>
@@ -248,7 +248,7 @@
                                                     <t t-set="return_url" t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid)"/>
                                                     <t t-set="pms" t-value="part_pms"/>
                                                     <t t-set="icon_class" t-value="'fa-lock'"/>
-                                                    <t t-set="submit_txt" t-value="'Change'"/>
+                                                    <t t-set="submit_txt">Change</t>
                                                     <t t-set="checked_pm_id" t-value="account.payment_token_id.id"/>
                                                     <t t-set="mode" t-value="'payment'"/>
                                                     <t t-set="s2s_acquirers" t-value="acquirers"/>

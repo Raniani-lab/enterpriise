@@ -45,7 +45,7 @@
             </t>
             <t t-if="options.get('multi_company')">
                 <br/>Companies:
-                <t t-set="company_value" t-value="'All'"/>
+                <t t-set="company_value">All</t>
                 <t t-foreach="options['multi_company']" t-as="c">
                     <t t-set="company_value" t-value="''"/>
                     <t t-esc="c.get('name')"/>
@@ -57,7 +57,7 @@
             <div class="col-12">
                 <t t-if="options.get('journals')">
                     Journals:
-                    <t t-set="journal_value" t-value="'All'"/>
+                    <t t-set="journal_value">All</t>
                     <t t-foreach="options['journals']" t-as="j">
                         <t t-if="j.get('selected') == True">
                             <t t-set="journal_value" t-value="''"/>
@@ -70,7 +70,7 @@
             <div class="col-12">
                 <t t-if="options.get('analytic_accounts') != None">
                     Analytic Accounts:
-                    <t t-set="analytic_account_value" t-value="'All'"/>
+                    <t t-set="analytic_account_value">All</t>
                     <t t-foreach="options['selected_analytic_account_names']" t-as="analytic_account_name">
                         <t t-set="analytic_account_value" t-value="''"/>
                         <t t-esc="analytic_account_name"/>
@@ -81,7 +81,7 @@
             <div class="col-12">
                 <t t-if="options.get('analytic_tags') != None">
                     Analytic Tags:
-                    <t t-set="analytic_tag_value" t-value="'All'"/>
+                    <t t-set="analytic_tag_value">All</t>
                     <t t-foreach="options['selected_analytic_tag_names']" t-as="analytic_tag_name">
                         <t t-set="analytic_tag_value" t-value="''"/>
                         <t t-esc="analytic_tag_name"/>
@@ -92,7 +92,7 @@
             <div class="col-12">
                 <t t-if="options.get('partner_ids') != None">
                     Partners:
-                    <t t-set="res_partner_value" t-value="'All'"/>
+                    <t t-set="res_partner_value">All</t>
                     <t t-foreach="options['selected_partner_ids']" t-as="partner_name">
                         <t t-set="res_partner_value" t-value="''"/>
                         <t t-esc="partner_name"/>
@@ -103,7 +103,7 @@
             <div class="col-12">
                 <t t-if="options.get('partner_categories') != None">
                     Partner Categories:
-                    <t t-set="res_partner_category_value" t-value="'All'"/>
+                    <t t-set="res_partner_category_value">All</t>
                     <t t-foreach="options['selected_partner_categories']" t-as="partner_category_name">
                         <t t-set="res_partner_category_value" t-value="''"/>
                         <t t-esc="partner_category_name"/>
@@ -114,7 +114,7 @@
             <div class="col-12">
                 <t t-if="options.get('ir_filters') != None">
                     Filter:
-                    <t t-set="selected_filter_name" t-value="'None'"/>
+                    <t t-set="selected_filter_name">None</t>
                     <t t-foreach="options['ir_filters']" t-as="current_filter">
                         <t t-if="current_filter['selected']">
                             <t t-set="selected_filter_name" t-value="current_filter['name']"/>

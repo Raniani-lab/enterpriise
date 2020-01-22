@@ -61,11 +61,9 @@ class Tags(models.Model):
         self.env['documents.facet'].flush(['sequence', 'name', 'tooltip'])
         query = """
             SELECT  facet.sequence AS group_sequence,
-                    facet.name AS group_name,
                     facet.id AS group_id,
                     facet.tooltip AS group_tooltip,
                     documents_tag.sequence AS sequence,
-                    documents_tag.name AS name,
                     documents_tag.id AS id,
                     COUNT(rel.documents_document_id) AS count
             FROM documents_tag
@@ -81,4 +79,17 @@ class Tags(models.Model):
             list(documents.ids),  # using Postgresql's ANY() with a list to prevent empty list of documents
         ]
         self.env.cr.execute(query, params)
-        return self.env.cr.dictfetchall()
+        result = self.env.cr.dictfetchall()
+
+        # Translating result
+        groups = self.env['documents.facet'].browse({r['group_id'] for r in result})
+        group_names = {group['id']: group['name'] for group in groups}
+
+        tags = self.env['documents.tag'].browse({r['id'] for r in result})
+        tags_names = {tag['id']: tag['name'] for tag in tags}
+
+        for r in result:
+            r['group_name'] = group_names.get(r['group_id'])
+            r['name'] = tags_names.get(r['id'])
+
+        return result

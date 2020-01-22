@@ -421,7 +421,6 @@ class AccountMove(models.Model):
             resp_values = response.get('company_data')
             values = {
                 'name': resp_values.get('name', ''),
-                'partner_gid': resp_values.get('partner_gid', ''),
                 'vat': resp_values.get('vat', ''),
                 'bank_ids': resp_values.get('bank_ids', ''),
                 'street': resp_values.get('street', ''),
@@ -433,6 +432,10 @@ class AccountMove(models.Model):
                 'email': resp_values.get('email', ''),
                 'is_company': True,
             }
+            # partner_gid is defined in partner_autocomplete, which is not a dependency of
+            # account_invoice_extract
+            if 'partner_gid' in self.env['res.partner']._fields:
+                values['partner_gid'] = resp_values.get('partner_gid', '')
             new_partner = self.env["res.partner"].with_context(clean_context(self.env.context)).create(values)
             return new_partner
         return False

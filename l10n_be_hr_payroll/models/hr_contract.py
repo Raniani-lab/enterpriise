@@ -250,7 +250,7 @@ class HrContract(models.Model):
         date_today = fields.Date.from_string(fields.Date.today())
         outdated_days = fields.Date.to_string(date_today + relativedelta(days=+14))
         nearly_expired_contracts = self.search([('state', '=', 'open'), ('time_credit', '=', True), ('date_end', '<', outdated_days)])
-        nearly_expired_contracts.write({'state': 'pending'})
+        nearly_expired_contracts.write({'kanban_state': 'blocked'})
 
         for contract in nearly_expired_contracts.filtered(lambda contract: contract.hr_responsible_id):
             contract.activity_schedule(

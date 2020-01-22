@@ -453,13 +453,11 @@ class AccountPayment(models.Model):
             'related': [u.strip() for u in uuids],
             }
 
-    def l10n_mx_edi_payment_data(self):
+    @api.multi
+    def _l10n_mx_edi_invoice_payment_data(self):
+        """Provide a single method to fetch the Totals paid in the Payment
+        and makes the l10n_mx_edi_payment_data method more inheritable"""
         self.ensure_one()
-        # Based on "En caso de no contar con la hora se debe registrar 12:00:00"
-        mxn = self.env.ref('base.MXN')
-        date = datetime.combine(
-            fields.Datetime.from_string(self.payment_date),
-            datetime.strptime('12:00:00', '%H:%M:%S').time()).strftime('%Y-%m-%dT%H:%M:%S')
         total_paid = total_curr = total_currency = 0
         for invoice in self.invoice_ids:
             amount = [p for p in invoice._get_reconciled_info_JSON_values() if (
@@ -473,6 +471,23 @@ class AccountPayment(models.Model):
                 date=self.payment_date)._convert(
                     amount_payment, self.currency_id, self.company_id,
                     self.payment_date)
+        return dict(
+            total_paid=total_paid,
+            total_curr=total_curr,
+            total_currency=total_currency)
+
+    @api.multi
+    def l10n_mx_edi_payment_data(self):
+        self.ensure_one()
+        # Based on "En caso de no contar con la hora se debe registrar 12:00:00"
+        mxn = self.env.ref('base.MXN')
+        date = datetime.combine(
+            fields.Datetime.from_string(self.payment_date),
+            datetime.strptime('12:00:00', '%H:%M:%S').time()).strftime('%Y-%m-%dT%H:%M:%S')
+        res = self._l10n_mx_edi_invoice_payment_data()
+        total_paid = res.get('total_paid', 0)
+        total_curr = res.get('total_curr', 0)
+        total_currency = res.get('total_currency', 0)
         precision = self.env['decimal.precision'].precision_get('Account')
         if not self.move_reconciled and float_compare(
                 self.amount, total_curr, precision_digits=precision) > 0:

@@ -2,10 +2,9 @@ odoo.define("web_enterprise.HomeMenu", function (require) {
     "use strict";
 
     const ExpirationPanel = require("web_enterprise.ExpirationPanel");
-    const { useExternalListener } = require('web.custom_hooks');
 
     const { Component, hooks } = owl;
-    const { useState, useRef } = hooks;
+    const { useExternalListener, useState, useRef } = hooks;
 
     /**
      * Home menu

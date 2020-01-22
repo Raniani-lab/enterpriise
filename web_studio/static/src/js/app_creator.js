@@ -7,11 +7,11 @@ odoo.define('web_studio.AppCreator', function (require) {
     const { FieldMany2One } = require('web.relational_fields');
     const IconCreator = require('web_studio.IconCreator');
     const StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
-    const { useFocusOnUpdate, useExternalListener } = require('web.custom_hooks');
+    const { useFocusOnUpdate } = require('web.custom_hooks');
 
     const { ComponentAdapter, ComponentWrapper, WidgetAdapterMixin } = require('web.OwlCompatibility');
-
-    const { Component, useState } = owl;
+    const { Component, hooks, useState } = owl;
+    const { useExternalListener } = hooks;
 
     const AppCreatorWrapper = AbstractAction.extend(StandaloneFieldManagerMixin, WidgetAdapterMixin, {
 

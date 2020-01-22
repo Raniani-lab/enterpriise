@@ -187,6 +187,9 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
             });
         },
 
+        /*
+         * Show pdf when using mouse
+         */
         _onRowClicked: function (ev) {
             ev.stopPropagation();
             var id = $(ev.currentTarget).data('id');
@@ -195,6 +198,21 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                     recordId: id,
                 });
             }
+            return this._super.apply(this, arguments);
+        },
+
+        /*
+         * Show pdf when using keys
+         */
+        _findConnectedCell: function ($cell, direction, colIndex) {
+            var res = this._super.apply(this, arguments);
+            var id = res.closest('tr').data('id');
+            if (id) {
+                this.trigger_up('row_selected', {
+                    recordId: id,
+                });
+            }
+            return res;
         },
 
         _renderGroupRow: function (group, groupLevel) {

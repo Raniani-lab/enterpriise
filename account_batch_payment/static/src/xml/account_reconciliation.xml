@@ -31,11 +31,19 @@
                             <t t-esc="batch.name"/>
                         </td>
                         <td class="cell_left">
+                            <t t-if="batch.amount &lt; 0">
+                                <t t-esc="batch.amount_str"/>
+                                <t t-if="batch.amount_currency_str">
+                                    (<t t-esc="batch.amount_currency_str"/>)
+                                </t>
+                            </t>
                         </td>
                         <td class="cell_right">
-                            <t t-esc="batch.amount_str"/>
-                            <t t-if="batch.amount_currency_str">
-                                (<t t-esc="batch.amount_currency_str"/>)
+                            <t t-if="batch.amount &gt;= 0">
+                                <t t-esc="batch.amount_str"/>
+                                <t t-if="batch.amount_currency_str">
+                                    (<t t-esc="batch.amount_currency_str"/>)
+                                </t>
                             </t>
                         </td>
                     </tr>

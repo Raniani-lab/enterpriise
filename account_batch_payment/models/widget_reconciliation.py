@@ -52,6 +52,7 @@ class AccountReconciliation(models.AbstractModel):
                 'name': batch_payment.name,
                 'date': format_date(self.env, batch_payment.date),
                 'journal_id': journal.id,
+                'amount': batch_payment.amount * (1 if batch_payment.batch_type == 'inbound' else -1),
                 'amount_str': amount_journal_currency,
                 'amount_currency_str': amount_payment_currency,
             })

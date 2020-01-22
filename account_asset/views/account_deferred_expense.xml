@@ -56,7 +56,7 @@
                 <attribute name="string">Expense Recognition</attribute>
             </xpath>
             <xpath expr="//button[@name='compute_depreciation_board']" position="attributes">
-                <attribute name="string">Compute Deferal</attribute>
+                <attribute name="string">Compute Expense</attribute>
             </xpath>
             <xpath expr="//button[@name='action_asset_modify']" position="attributes">
                 <attribute name="string">Modify Expense</attribute>

@@ -1534,6 +1534,70 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('invisible group in form sheet', async function (assert) {
+        assert.expect(8);
+
+        let fieldsView;
+        const arch = `<form>
+            <sheet>
+                <group>
+                    <group class="kikou" string="Kikou" modifiers="{&quot;invisible&quot;: true}"/>
+                    <group class="kikou2" string='Kikou2'/>
+                </group>
+            </sheet>
+        </form>`;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: `<form>
+                    <sheet>
+                        <group>
+                            <group class="kikou" string='Kikou'/>
+                            <group class="kikou2" string='Kikou2'/>
+                        </group>
+                    </sheet>
+                </form>`,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.equal(args.operations[0].new_attrs.invisible, 1,
+                        'we should send "invisible"');
+
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            form: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        fieldsView = JSON.parse(JSON.stringify(vem.fields_view));
+
+        assert.containsN(vem, '.o_group.o_inner_group', 2,
+            "there should be two groups");
+
+        await testUtils.dom.click(vem.$('.o_group.o_inner_group:first'));
+        assert.containsOnce(vem.$('.o_web_studio_sidebar'), 'input#invisible',
+            "should have invisible checkbox");
+        assert.notOk(vem.$('input#invisible').is(":checked"),
+            "invisible checkbox should not be checked");
+
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#invisible'));
+        assert.containsN(vem, '.o_group.o_inner_group', 2,
+            "there should be one visible and one invisible group now");
+        assert.isNotVisible(vem.$('.o_group.o_inner_group.kikou'),
+            "there should be an invisible group");
+        assert.hasClass(vem.$('.o_group.o_inner_group.kikou2'), 'o_web_studio_clicked');
+        const $groupInput = vem.$('.o_web_studio_sidebar_content.o_display_group input[name="string"]');
+        assert.strictEqual($groupInput.val(), "Kikou2", "the group name in sidebar should be set");
+
+        vem.destroy();
+    });
+
     QUnit.test('correctly display hook in form sheet', async function (assert) {
         assert.expect(4);
 
@@ -1747,6 +1811,78 @@ QUnit.module('ViewEditorManager', {
 
         // add a new page
         await testUtils.dom.click(vem.$('.o_notebook li:eq(1) > a'));
+
+        vem.destroy();
+    });
+
+    QUnit.test('invisible notebook page in form', async function (assert) {
+        assert.expect(8);
+
+        let fieldsView;
+        const arch = `<form>
+            <sheet>
+                <notebook>
+                    <page class="kikou" string='Kikou' modifiers="{&quot;invisible&quot;: true}">
+                        <field name='id'/>
+                    </page>
+                    <page class="kikou2" string='Kikou2'>
+                        <field name='char_field'/>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>`;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: `<form>
+                        <sheet>
+                            <notebook>
+                                <page class="kikou" string='Kikou'>
+                                    <field name='id'/>
+                                </page>
+                                <page class="kikou2" string='Kikou2'>
+                                    <field name='char_field'/>
+                                </page>
+                            </notebook>
+                        </sheet>
+                    </form>`,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.equal(args.operations[0].new_attrs.invisible, 1,
+                        'we should send "invisible"');
+
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            form: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        fieldsView = JSON.parse(JSON.stringify(vem.fields_view));
+
+        assert.containsN(vem, '.o_notebook li[data-node-id]', 2,
+            "there should be two pages");
+
+        await testUtils.dom.click(vem.$('.o_notebook li:first'));
+        assert.containsOnce(vem.$('.o_web_studio_sidebar'), 'input#invisible',
+            "should have invisible checkbox");
+        assert.notOk(vem.$('input#invisible').is(":checked"),
+            "invisible checkbox should not be checked");
+
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#invisible'));
+        assert.containsN(vem, '.o_notebook li', 3,
+            "there should be one visible, one invisible page and a fake one");
+        assert.isNotVisible(vem.$('.o_notebook li.kikou'),
+            "there should be an invisible page");
+        assert.hasClass(vem.$('.o_notebook li.kikou2'), 'o_web_studio_clicked');
+        const $pageInput = vem.$('.o_web_studio_sidebar_content.o_display_page input[name="string"]');
+        assert.strictEqual($pageInput.val(), "Kikou2", "the page name in sidebar should be set");
 
         vem.destroy();
     });

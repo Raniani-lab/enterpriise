@@ -110,6 +110,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
     setLocalState: function (state) {
         this.silent = true;
         this._super.apply(this, arguments);
+        this.silent = false;
         this.unselectedElements();
         if (state.selected_node_id) {
             var $selected_node = this.$('[data-node-id="' + state.selected_node_id + '"]');
@@ -117,7 +118,6 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
                 $selected_node.click();
             }
         }
-        this.silent = false;
     },
     /**
      * Selects the field on view
@@ -439,14 +439,17 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
                 });
             }
         });
-        // Add click event to see group properties in sidebar
-        $result.attr('data-node-id', this.node_id++);
-        this.setSelectable($result);
-        $result.click(function (event) {
-            event.stopPropagation();
-            self.selected_node_id = $result.data('node-id');
-            self.trigger_up('node_clicked', {node: node});
-        });
+        const modifiers = this._getEvaluatedModifiers(node, this.state);
+        if (!modifiers.invisible || this.show_invisible) {
+            // Add click event to see group properties in sidebar
+            $result.attr('data-node-id', this.node_id++);
+            this.setSelectable($result);
+            $result.click(function (event) {
+                event.stopPropagation();
+                self.selected_node_id = $result.data('node-id');
+                self.trigger_up('node_clicked', { node: node });
+            });
+        }
         // Add hook for groups that have not yet content.
         if (!node.children.length) {
             formEditorHook = this._renderHook(node, 'inside', 'tr', 'insideGroup');
@@ -501,24 +504,6 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
             }
         });
         return $button;
-    },
-    /**
-     * @override
-     * @private
-     */
-    _renderTabHeader: function (page) {
-        var self = this;
-        var $result = this._super.apply(this, arguments);
-        $result.attr('data-node-id', this.node_id++);
-        this.setSelectable($result);
-        $result.click(function (event) {
-            event.preventDefault();
-            if (!self.silent) {
-                self.selected_node_id = $result.data('node-id');
-                self.trigger_up('node_clicked', {node: page});
-            }
-        });
-        return $result;
     },
     /**
      * @override
@@ -590,6 +575,25 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
 
         var formEditorHook = this._renderHook(node, 'after', '', 'afterNotebook');
         this.defs.push(formEditorHook.appendTo($result));
+
+        // add node-id data on all tabs once whole notebook tabs are rendered
+        // as registerModifiers of all tabs are called from _renderTagNotebook
+        // so we need to evaluate modifiers here else we will not get modifiers
+        Object.entries(node.children).forEach(([index, child]) => {
+            const modifiers = this._getEvaluatedModifiers(child, this.state);
+            if (!modifiers.invisible || this.show_invisible) {
+                const $page = $result.find(`.nav-item:eq(${index})`);
+                $page.attr('data-node-id', this.node_id++);
+                this.setSelectable($page);
+                $page.click(function (event) {
+                    event.preventDefault();
+                    if (!self.silent) {
+                        self.selected_node_id = $page.data('node-id');
+                        self.trigger_up('node_clicked', { node: child });
+                    }
+                });
+            }
+        });
         return $result;
     },
     /**

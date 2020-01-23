@@ -422,17 +422,22 @@
     </t>
 </div>
 
-<!-- FieldEditor -->
-<t t-name="web_studio.ViewEditorSidebar.field">
+<!-- custom checkbox for invisibility settings -->
+<t t-name="web_studio.ViewEditorSidebar.InvisibleCheckbox">
     <div class="clearfix o_web_studio_sidebar_checkbox">
-        <t t-set="attrs_invisible" t-value="widget.state.modifiers.invisible and widget.state.modifiers.invisible !== true"/>
-        <div t-attf-class="custom-control custom-checkbox#{attrs_invisible ? ' o_web_studio_checkbox_inactive' : ''}">
+        <t t-set="attrs_invisible" t-value="widget.state.attrs.modifiers.invisible and widget.state.attrs.modifiers.invisible !== true"/>
+        <div t-attf-class="custom-control custom-checkbox{{attrs_invisible ? ' o_web_studio_checkbox_inactive' : ''}}">
             <input type="checkbox" id="invisible" name="invisible" class="custom-control-input" data-type="attributes"
-                t-att-checked="widget.state.attrs.invisible ? 'checked' : undefined"/>
+                t-att-checked="widget.state.modifiers.invisible ? 'checked' : undefined"/>
             <label for="invisible" class="custom-control-label">Invisible</label>
             <a role="button" href="#" data-type="invisible" class="btn btn-link o_web_studio_attrs">Conditional</a>
         </div>
     </div>
+</t>
+
+<!-- FieldEditor -->
+<t t-name="web_studio.ViewEditorSidebar.field">
+    <t t-call="web_studio.ViewEditorSidebar.InvisibleCheckbox"/>
     <t t-if="widget.state.modifiers.invisible !== true">
         <t t-if="_.contains(['list', 'form'], widget.view_type)">
             <div class="clearfix o_web_studio_sidebar_checkbox">
@@ -623,6 +628,7 @@
 
 <!-- PageEditor -->
 <t t-name="web_studio.ViewEditorSidebar.page">
+    <t t-call="web_studio.ViewEditorSidebar.InvisibleCheckbox"/>
     <div class="o_web_studio_sidebar_text">
         <label for="string">Label</label>
         <input id="string" name="string" type="text"
@@ -640,6 +646,7 @@
 
 <!-- GroupEditor -->
 <t t-name="web_studio.ViewEditorSidebar.group">
+    <t t-call="web_studio.ViewEditorSidebar.InvisibleCheckbox"/>
     <div class="o_web_studio_sidebar_text">
         <label for="string">Column Title</label>
         <input id="string" name="string" type="text"

@@ -25,10 +25,9 @@
                 );
                 background-attachment: fixed;
             }
-            .o_notebook li.o_web_studio_show_invisible {
-                outline: none;
-                border: 1px solid $o-web-studio-bg-lighter;
-                border-bottom-width: 0;
+            // remove background color of notebook page anchor to have invisible background
+            .o_form_view .o_notebook > .o_notebook_headers > .nav.nav-tabs > .nav-item.o_web_studio_show_invisible > .nav-link {
+                background-color: inherit;
             }
             .o_web_studio_widget_empty {
                 background-color: $o-web-studio-bg-lighter;

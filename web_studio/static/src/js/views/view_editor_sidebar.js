@@ -141,6 +141,11 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         this._searchValue = '';
         this._isSearchValueActive = false;
 
+        const allowedModifiersNode = ['group', 'page', 'field', 'filter'];
+        if (this.state.node && allowedModifiersNode.includes(this.state.node.tag)) {
+            this.state.modifiers = this.state.attrs.modifiers || {};
+        }
+
         if (this.state.node && (this.state.node.tag === 'field' || this.state.node.tag === 'filter')) {
             // deep copy of field because the object is modified
             // in this widget and this shouldn't impact it
@@ -166,7 +171,6 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             this.state.field = field;
 
             // only for list & tree view
-            this.state.modifiers = this.state.attrs.modifiers || {};
             this._computeFieldAttrs();
 
             var Widget = this.state.attrs.Widget;

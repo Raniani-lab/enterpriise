@@ -492,7 +492,7 @@ class AccountBankStatementImport(models.TransientModel):
                 o_idx = p_idx; p_idx +=  1; note.append(_('Detail') + ': ' + _('Type of R transaction') + ': ' + sepa_type[communication[o_idx:p_idx]])
                 o_idx = p_idx; p_idx +=  4; note.append(_('Detail') + ': ' + _('Reason') + ': ' + rmspaces(communication[o_idx:p_idx]))
             else:
-                note.append(_('Type of structured communication not supported: ' + type))
+                structured_com = _('Type of structured communication not supported: ' + type)
                 note.append(communication)
             return structured_com, note
 
@@ -681,7 +681,7 @@ class AccountBankStatementImport(models.TransientModel):
                 if line['type'] == 'information' and statement_line:
                     statement_line[-1]['note'] = "\n".join([statement_line[-1]['note'], line['type'].title() + ' with Ref. ' + str(line['ref']), 'Date: ' + str(line['entryDate'])])
                     if line['communication_struct']:
-                        statement_line[-1]['note'] = "\n".join([statement_line[-1]['note'], 'Communication: '] + parse_structured_communication(line['communication_type'], line['communication']))[1]
+                        statement_line[-1]['note'] = "\n".join([statement_line[-1]['note'], 'Communication: '] + parse_structured_communication(line['communication_type'], line['communication'])[1])
                 elif line['type'] == 'communication':
                     statement['coda_note'] = "\n".join([statement['coda_note'], line['type'].title() + ' with Ref. ' + str(line['ref']), 'Ref: ', 'Communication: ' + line['communication'], ''])
                 elif line['type'] == 'normal'\

@@ -655,16 +655,17 @@ class WebStudioController(http.Controller):
         })
 
     @http.route('/web_studio/edit_field', type='json', auth='user')
-    def edit_field(self, model_name, field_name, values):
+    def edit_field(self, model_name, field_name, values, force_edit=False):
         field = request.env['ir.model.fields'].search([('model', '=', model_name), ('name', '=', field_name)])
 
         if field.ttype == 'selection' and 'selection' in values:
             selection_values = [False] + [x[0] for x in literal_eval(values['selection'])]
-            records_count = request.env[model_name].search_count([(field_name, 'not in', selection_values)])
-            if records_count:
-                raise UserError(
-                    _("""You have %s records that have a selection value different than the ones you are defining. Please modify those records first.""") % records_count
-                )
+            records = request.env[model_name].search([(field_name, 'not in', selection_values)])
+            if records and not force_edit:
+                message = _("""There are %s records using selection values not listed in those you are trying to save.
+Are you sure you want to remove the selection values of those records?""") % len(records)
+                return {'records_linked': len(records), 'message': message}
+            records.write({field_name: False})
 
         field.write(values)
 

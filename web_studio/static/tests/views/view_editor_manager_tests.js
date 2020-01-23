@@ -42,6 +42,7 @@ QUnit.module('ViewEditorManager', {
                     priority: {
                         string: "Priority",
                         type: "selection",
+                        manual: true,
                         selection: [['1', "Low"], ['2', "Medium"], ['3', "High"]],
                     },
                     start: {
@@ -447,6 +448,68 @@ QUnit.module('ViewEditorManager', {
         $('.modal .o_web_studio_selection_new_value input').val('Hardest');
         await testUtils.dom.click($('.modal .o_web_studio_selection_new_value button.o_web_studio_add_selection_value'));
         await testUtils.dom.click($('.modal.o_web_studio_field_modal footer .btn-primary'));
+
+        vem.destroy();
+    });
+
+    QUnit.test('deleting selection field value which is linked in other records', async function (assert) {
+        assert.expect(8);
+
+        let editCalls = 0;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: `<form>
+                <group>
+                <field name="priority"/>
+                </group>
+                </form>`,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_field') {
+                    editCalls++;
+                    if (editCalls === 1) {
+                        // High selection value removed
+                        assert.deepEqual(args.values, {
+                            selection: '[["1","Low"],["2","Medium"]]',
+                        });
+                        assert.notOk(args.force_edit, "force_edit is false");
+                        return Promise.resolve({
+                            records_linked: 3,
+                            message: "There are 3 records linked, upon confirming records will be deleted.",
+                        });
+                    } else if (editCalls === 2) {
+                        assert.deepEqual(args.values, {
+                            selection: '[["1","Low"],["2","Medium"]]',
+                        });
+                        assert.ok(args.force_edit, "force_edit is true");
+                    }
+                    return Promise.resolve({});
+                }
+                if (route === '/web_studio/edit_view') {
+                    return Promise.resolve({});
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        await testUtils.dom.click(vem.$('[name="priority"]'));
+        await testUtils.dom.click(vem.$('.o_web_studio_edit_selection_values'));
+        assert.containsN($('.modal'), ".o_web_studio_selection_editor > li", 3,
+            "there should be 2 selection values");
+
+        await testUtils.dom.click($('.modal .o_web_studio_selection_editor > li:eq(2) .o_web_studio_remove_selection_value'));
+        assert.containsN($('.modal'), ".o_web_studio_selection_editor > li", 2,
+            "there should be 2 selection values");
+
+        await testUtils.dom.click($('.modal button:contains(Confirm)'));
+        assert.containsN($(document), '.modal', 2,
+            "should contain 2 modals");
+        assert.strictEqual($('.modal .o_web_studio_preserve_space').text(),
+            "There are 3 records linked, upon confirming records will be deleted.",
+            "should have right message");
+
+        await testUtils.dom.click($('.modal:eq(1) button:contains(Ok)'));
 
         vem.destroy();
     });

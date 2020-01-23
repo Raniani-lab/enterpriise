@@ -714,6 +714,17 @@ var ViewEditorManager = AbstractEditorManager.extend({
             this._do(newOp);
         }
     },
+    _editField(modelName, fieldName, values, forceEdit) {
+        return this._rpc({
+            route: '/web_studio/edit_field',
+            params: {
+                model_name: modelName,
+                field_name: fieldName,
+                values: values,
+                force_edit: forceEdit,
+            }
+        })
+    },
     /**
      * @override
      */
@@ -1336,16 +1347,23 @@ var ViewEditorManager = AbstractEditorManager.extend({
         var dialog = new NewFieldDialog(this, this.model_name, field, this.fields).open();
         var modelName = this.x2mModel ? this.x2mModel : this.model_name;
         dialog.on('field_default_values_saved', this, function (values) {
-            self._rpc({
-                route: '/web_studio/edit_field',
-                params: {
-                    model_name: modelName,
-                    field_name: field.name,
-                    values: values,
+            self._editField(modelName, field.name, values).then(function (result) {
+                const _closeDialog = function () {
+                    dialog.close();
+                    self._applyChanges(false, false);
+                };
+                if (result && result.records_linked) {
+                    const message = result.message || _t("Are you sure you want to remove the selection values?");
+                    Dialog.confirm(self, message, {
+                        confirm_callback: async function () {
+                            await self._editField(modelName, field.name, values, true);
+                            _closeDialog();
+                        },
+                        dialogClass: 'o_web_studio_preserve_space'
+                    });
+                } else {
+                    _closeDialog();
                 }
-            }).then(function () {
-                dialog.close();
-                self._applyChanges(false, false);
             });
         });
     },

@@ -797,10 +797,12 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         }
 
         this._selectedRecordIds = [...new Set(newSelection)];
-        await Promise.all([
-            this._updateChatter(),
-            this._renderDocumentsInspector()
-        ]);
+        await this._updateChatter();
+        /*
+         * since rendering inspector is relatively slow (as we destroy and re-create it),
+         * move this function to the next callStack so the selection can already be painted into the DOM
+         */
+        setTimeout(() => this._renderDocumentsInspector());
         this._updateSelection();
     },
     /**

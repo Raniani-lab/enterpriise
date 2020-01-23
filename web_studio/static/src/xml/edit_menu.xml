@@ -44,12 +44,7 @@
             </t>
         </ul>
         <div class="o_web_studio_edit_menu_desc small float-right">
-            <small><i class="fa fa-info-circle"/>Drag a menu to the right to create a sub-menu</small>
-        </div>
-        <div class="mt48">
-            <a href="#" role="button" class="btn btn-secondary js_add_menu">
-                <i class="fa fa-plus-circle"/> New Menu
-            </a>
+            <i class="fa fa-info-circle"/> Drag a menu to the right to create a sub-menu
         </div>
     </div>
 </t>

@@ -251,7 +251,7 @@ class WebStudioController(http.Controller):
         }
 
     @http.route('/web_studio/create_new_menu', type='json', auth='user')
-    def create_new_menu(self, menu_name=False, model_choice=False, model_id=False, model_options=False, parent_id=None):
+    def create_new_menu(self, menu_name=False, model_choice=False, model_id=False, model_options=False, parent_id=None, sequence=10):
         """ Create a new menu @menu_name, linked to a new action associated to the model_id
             @param model_choice: 'new' for a new model, 'existing' for an existing model selected in the wizard
             @param model_id: the model which will be associated to the action if menu_choice is 'existing'
@@ -287,6 +287,7 @@ class WebStudioController(http.Controller):
             'name': menu_name,
             'action': action_ref,
             'parent_id': parent_id,
+            'sequence': sequence,
         })
 
         # create extra menus for configuration of extra models (tags, stages)

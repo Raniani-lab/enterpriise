@@ -408,7 +408,7 @@ WebClient.include({
 
         const detail = ev.data || ev.detail || {};
         if (detail.keep_open && this.menu.edit_menu) {
-            this.menu.edit_menu.editMenu();
+            this.menu.edit_menu.editMenu(detail.scroll_to_bottom);
         }
 
         if (detail.def) {

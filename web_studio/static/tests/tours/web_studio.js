@@ -104,7 +104,7 @@ tour.register('web_studio_tests_tour', {
     // create a new menu
     trigger: '.o_main_navbar .o_web_edit_menu',
 }, {
-    trigger: '.o_web_studio_edit_menu_modal .js_add_menu',
+    trigger: 'footer.modal-footer .js_add_menu',
 }, {
     trigger: 'input[name="name"]',
     run: 'text ' + (createdMenuString = randomString(6)),

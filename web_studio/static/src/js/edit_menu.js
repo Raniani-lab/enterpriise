@@ -37,8 +37,8 @@ var MenuItem = Widget.extend({
     // Public
     //--------------------------------------------------------------------------
 
-    editMenu: function () {
-        new EditMenuDialog(this, this.menu_data, this.current_primary_menu)
+    editMenu: function (scrollToBottom) {
+        new EditMenuDialog(this, this.menu_data, this.current_primary_menu, scrollToBottom)
             .open();
     },
 
@@ -61,7 +61,6 @@ var MenuItem = Widget.extend({
 var EditMenuDialog = Dialog.extend({
     template: 'web_studio.EditMenu.Dialog',
     events: _.extend({}, Dialog.prototype.events, {
-        'click a.js_add_menu': '_onAddMenu',
         'click button.js_edit_menu': '_onEditMenu',
         'click button.js_delete_menu': '_onDeleteMenu',
     }),
@@ -71,7 +70,7 @@ var EditMenuDialog = Dialog.extend({
      * @param {Object} menu_data
      * @param {Integer} current_primary_menu
      */
-    init: function (parent, menu_data, current_primary_menu) {
+    init: function (parent, menu_data, current_primary_menu, scrollToBottom) {
         var options = {
             title: _t('Edit Menu'),
             size: 'medium',
@@ -83,11 +82,16 @@ var EditMenuDialog = Dialog.extend({
             }, {
                 text: _t("Cancel"),
                 close: true,
+            }, {
+                icon: 'fa-plus-circle',
+                text: _t("New Menu"),
+                classes: 'btn-secondary js_add_menu ml-auto',
+                click: this._onAddMenu.bind(this),
             }],
         };
         this.current_primary_menu = current_primary_menu;
         this.roots = this.getMenuDataFiltered(menu_data);
-
+        this.scrollToBottom = scrollToBottom;
         this.to_delete = [];
         this.to_move = {};
 
@@ -111,7 +115,11 @@ var EditMenuDialog = Dialog.extend({
             expression: '()(.+)', // nestedSortable takes the second match of an expression (*sigh*)
             relocate: this.moveMenu.bind(this),
         });
-
+        this.opened().then(() => {
+            if (this.scrollToBottom) {
+                this.$el.scrollTop(this.$el.prop('scrollHeight'));
+            }
+        });
         return this._super.apply(this, arguments);
     },
 
@@ -163,8 +171,8 @@ var EditMenuDialog = Dialog.extend({
      * @private
      * @param {Boolean} keep_open
      */
-    _reloadMenuData: function (keep_open) {
-        this.trigger_up('reload_menu_data', {keep_open: keep_open});
+    _reloadMenuData: function (keep_open, scrollToBottom) {
+        this.trigger_up('reload_menu_data', { keep_open: keep_open, scroll_to_bottom: scrollToBottom});
     },
 
     //--------------------------------------------------------------------------
@@ -179,11 +187,14 @@ var EditMenuDialog = Dialog.extend({
         ev.preventDefault();
 
         var self = this;
+        // find menu with max sequence from direct childs
+        const maxSequenceMenu = Math.max(...this.roots[0].children.map((menu) => menu.sequence));
         new NewMenuDialog(this, {
             parent_id: this.current_primary_menu,
+            sequence: maxSequenceMenu + 1,
             on_saved: function () {
                 self._saveChanges().then(function () {
-                    self._reloadMenuData(true);
+                    self._reloadMenuData(true, true);
                 });
             },
         }).open();
@@ -224,6 +235,10 @@ var EditMenuDialog = Dialog.extend({
      */
     _onSave: function () {
         var self = this;
+        const $menus = this.$("[data-menu-id]");
+        if (!$menus.length) {
+            return Dialog.alert(self, _t('You cannot remove all the menu items of an app.\r\nTry uninstalling the app instead.'));
+        }
         if (
             !_.isEmpty(this.to_move) ||
             !_.isEmpty(this.to_delete)
@@ -297,6 +312,7 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
      */
     init: function (parent, params) {
         this.parent_id = params.parent_id;
+        this.sequence = params.sequence;
         this.on_saved = params.on_saved;
         var options = {
             title: _t('Create a new Menu'),
@@ -366,10 +382,11 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
      * @private
      * @param {String} menu_name
      * @param {Integer} parent_id
+     * @param {Integer} sequence
      * @param {Integer} model_id
      * @returns {Promise}
      */
-    _createNewMenu: function (menu_name, parent_id, model_id) {
+    _createNewMenu: function (menu_name, parent_id, sequence, model_id) {
         core.bus.trigger('clear_cache');
         return this._rpc({
             route: '/web_studio/create_new_menu',
@@ -379,6 +396,7 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                 model_choice: this.model_choice.value,
                 model_options: this.model_options,
                 parent_id: parent_id,
+                sequence: sequence,
                 context: session.user_context,
             },
         });
@@ -471,7 +489,7 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         var name = this.$el.find('input').first().val();
         var model_id = this.many2one.value && this.many2one.value.res_id;
 
-        var def = this._createNewMenu(name, this.parent_id, model_id);
+        var def = this._createNewMenu(name, this.parent_id, this.sequence, model_id);
         return def.then(function () {
             self.on_saved();
         }).guardedCatch(function () {

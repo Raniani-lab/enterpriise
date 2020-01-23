@@ -16,6 +16,7 @@ QUnit.module('Studio', {
                 }, {
                     id: 2,
                     name: 'Menu 2',
+                    sequence: 10,
                 }, {
                     id: 21,
                     name: 'Submenu 1',
@@ -42,12 +43,14 @@ QUnit.module('Studio', {
                             id: 21,
                             name: 'Submenu 1',
                             parent_id: 2,
+                            sequence: 50,
 
                         }, {
                             children: [],
                             id: 21,
                             name: 'Submenu 2',
                             parent_id: 2,
+                            sequence: 100,
                         },
                     ],
                 },
@@ -92,14 +95,15 @@ QUnit.module('Studio', {
     });
 
     QUnit.test('edit menu dialog', async function(assert) {
-        assert.expect(20);
+        assert.expect(23);
 
         var $target = $('#qunit-fixture');
 
-        var dialog = new EditMenu.Dialog(null, this.menu_data, 2);
-        await dialog.appendTo($target);
+        const dialog = new EditMenu.Dialog(null, this.menu_data, 2);
+        dialog.open();
+        await dialog.opened();
 
-        var customizeCalls = 0;
+        let customizeCalls = 0;
 
         testUtils.mock.addMockEnvironment(dialog, {
             data: this.data,
@@ -109,10 +113,17 @@ QUnit.module('Studio', {
                     customizeCalls++;
                     return Promise.reject();
                 }
+                if (route === "/web_studio/create_new_menu") {
+                    // return rejected promise as resovled promise will call customize controller,
+                    // we just want to check sequence here
+                    assert.strictEqual(args.sequence, 101, "should have sequence 101");
+                    return Promise.reject();
+                }
                 return this._super(route, args);
             },
         });
 
+        const $modal = $('.modal');
         assert.containsOnce(dialog, 'ul.oe_menu_editor',
             "there should be the list of menus");
         assert.containsOnce(dialog, 'ul.oe_menu_editor > li',
@@ -125,11 +136,12 @@ QUnit.module('Studio', {
             "there should be a button to remove the menu");
         assert.containsN(dialog, 'ul.oe_menu_editor > li > ul > li', 2,
             "there should be two submenus");
-        assert.containsOnce(dialog, '.js_add_menu',
+        assert.containsOnce($modal, '.js_add_menu',
             "there should be a link to add new menu");
 
         // open the dialog to create a new menu
-        await testUtils.dom.click(dialog.$('.js_add_menu'));
+        await testUtils.dom.click($modal.find('.js_add_menu'));
+        await testUtils.nextTick();
         assert.strictEqual($('.o_web_studio_add_menu_modal').length, 1,
             "there should be a modal in the dom");
         assert.strictEqual($('.o_web_studio_add_menu_modal input[name="name"]').length, 1,
@@ -146,7 +158,10 @@ QUnit.module('Studio', {
         await testUtils.dom.click($('.o_web_studio_add_menu_modal .o_field_widget[name="model_choice"] [data-value="existing"]'));
         assert.strictEqual($('.o_web_studio_add_menu_modal .o_field_many2one').filter(':visible').length, 1,
             "there should be a visible many2one for the model in the dialog");
-        // close the modal
+
+        // add menu and close the modal
+        await testUtils.fields.editInput($('.o_web_studio_add_menu_modal input[name="name"]'), "AA");
+        await testUtils.dom.click($('.o_web_studio_add_menu_modal .btn-primary'));
         await testUtils.dom.click($('.o_web_studio_add_menu_modal .btn-secondary'));
 
         // move submenu above root menu
@@ -171,6 +186,14 @@ QUnit.module('Studio', {
             "there should be no submenu after deletion");
         assert.strictEqual(dialog.to_delete.length, 1,
             "there should be one menu to delete");
+
+        await testUtils.dom.click(dialog.$('.js_delete_menu:first'));
+        await testUtils.dom.click(dialog.$('.js_delete_menu:first'));
+        await testUtils.dom.click($modal.find('footer .btn-primary'));
+        assert.containsN($(document), '.modal', 2,
+            "should have 2 dialogsm");
+        assert.strictEqual($('.modal-title:last').text(), "Alert",
+            "should have alert dialog if we delete all menus");
 
         dialog.destroy();
     });

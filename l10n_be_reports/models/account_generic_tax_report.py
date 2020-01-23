@@ -134,8 +134,8 @@ class AccountGenericTaxReport(models.AbstractModel):
         lines_grids_map = {line.id: line.tag_name for line in non_compound_rep_lines}
         lines_grids_map['section_' + str(self.env.ref('l10n_be.tax_report_title_operations_sortie_46').id)] = '46'
         lines_grids_map['section_' + str(self.env.ref('l10n_be.tax_report_title_operations_sortie_48').id)] = '48'
-        lines_grids_map['total_71'] = '71'
-        lines_grids_map['total_72'] = '72'
+        lines_grids_map['total_' + str(self.env.ref('l10n_be.tax_report_line_71').id)] = '71'
+        lines_grids_map['total_' + str(self.env.ref('l10n_be.tax_report_line_72').id)] = '72'
 
         # Iterate on the report lines, using this mapping
         for line in lines:

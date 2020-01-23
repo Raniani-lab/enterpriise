@@ -3,8 +3,9 @@
 
 from odoo import models, _, fields, tools
 from odoo.exceptions import ValidationError
-from odoo.tools.safe_eval import safe_eval
 from odoo.tools.xml_utils import _check_with_xsd
+
+import ast
 
 MX_NS_REFACTORING = {
     'catalogocuentas__': 'catalogocuentas',
@@ -56,7 +57,7 @@ class MXReportAccountCoa(models.AbstractModel):
         account_obj = self.env['account.account']
         for domain in afr_lines.mapped('children_ids').mapped('domain'):
             account_ids = account_obj.search(
-                safe_eval(domain or '[]'), order='code')
+                ast.literal_eval(domain or '[]'), order='code')
             accounts.extend(account_ids.ids)
         basis_account_ids = self.env['account.tax'].search_read(
             [('cash_basis_base_account_id', '!=', False)], ['cash_basis_base_account_id'])

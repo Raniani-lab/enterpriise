@@ -4,6 +4,7 @@ import logging
 import datetime
 import traceback
 
+from ast import literal_eval
 from collections import Counter
 from dateutil.relativedelta import relativedelta
 from uuid import uuid4
@@ -12,7 +13,6 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
 from odoo.tools import format_date
-from odoo.tools.safe_eval import safe_eval
 
 
 _logger = logging.getLogger(__name__)
@@ -441,9 +441,9 @@ class SaleSubscription(models.Model):
     def _get_subscription_health(self):
         self.ensure_one()
         domain = [('id', '=', self.id)]
-        if self.template_id.bad_health_domain != '[]' and self.search_count(domain + safe_eval(self.template_id.bad_health_domain)):
+        if self.template_id.bad_health_domain != '[]' and self.search_count(domain + literal_eval(self.template_id.bad_health_domain)):
             health = 'bad'
-        elif self.template_id.good_health_domain != '[]' and self.search_count(domain + safe_eval(self.template_id.good_health_domain)):
+        elif self.template_id.good_health_domain != '[]' and self.search_count(domain + literal_eval(self.template_id.good_health_domain)):
             health = 'done'
         else:
             health = 'normal'
@@ -1235,7 +1235,7 @@ class SaleSubscriptionAlert(models.Model):
 
     def _compute_subscription_count(self):
         for alert in self:
-            domain = safe_eval(alert.filter_domain) if alert.filter_domain else []
+            domain = literal_eval(alert.filter_domain) if alert.filter_domain else []
             alert.subscription_count = self.env['sale.subscription'].search_count(domain)
 
     def _configure_filter_domain(self):
@@ -1313,7 +1313,7 @@ class SaleSubscriptionAlert(models.Model):
 
     def action_view_subscriptions(self):
         self.ensure_one()
-        domain = safe_eval(self.filter_domain) if self.filter_domain else []
+        domain = literal_eval(self.filter_domain) if self.filter_domain else []
         return {
             'type': 'ir.actions.act_window',
             'name': _('Subscriptions'),
@@ -1325,7 +1325,7 @@ class SaleSubscriptionAlert(models.Model):
 
     def run_cron_manually(self):
         self.ensure_one()
-        domain = safe_eval(self.filter_domain)
+        domain = literal_eval(self.filter_domain)
         subs = self.env['sale.subscription'].search(domain)
         ctx = {
             'active_model': 'sale.subscription',

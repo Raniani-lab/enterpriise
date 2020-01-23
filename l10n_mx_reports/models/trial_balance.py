@@ -1,11 +1,11 @@
 # coding: utf-8
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
 from lxml import etree
 from lxml.objectify import fromstring
 from odoo import models, api, _, fields, tools
 from odoo.exceptions import UserError
-from odoo.tools.safe_eval import safe_eval
 from odoo.tools.xml_utils import _check_with_xsd
 
 MX_NS_REFACTORING = {
@@ -172,7 +172,7 @@ class MxReportAccountTrial(models.AbstractModel):
                                options, comparison_table):
         """Return list of accounts found in the third level"""
         lines = []
-        domain = safe_eval(line.domain or '[]')
+        domain = ast.literal_eval(line.domain or '[]')
         domain += [
             ('deprecated', '=', False),
             ('company_id', 'in', self.env.companies.ids),

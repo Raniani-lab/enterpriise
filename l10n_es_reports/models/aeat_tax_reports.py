@@ -5,10 +5,10 @@ from odoo import fields, models, api, _
 from odoo.exceptions import UserError
 import odoo.release
 from odoo.tools.float_utils import float_split_str
-from odoo.tools.safe_eval import safe_eval
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import ast
 import json
 import re
 import unicodedata
@@ -781,7 +781,7 @@ class AEATAccountFinancialReport(models.Model):
 
         # En metálico
         report_line = self.env.ref(report_data['line_xml_id'])
-        evaluated_domain = safe_eval(report_line.domain)
+        evaluated_domain = ast.literal_eval(report_line.domain)
 
         # We search for current invoice type in the parent line's domain
         current_invoice_type = None

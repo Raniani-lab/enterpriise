@@ -5,7 +5,6 @@ import json
 
 from .formula import FormulaSolver, PROTECTED_KEYWORDS
 from odoo import models, fields, api, _
-from odoo.tools.safe_eval import safe_eval
 from odoo.tools import float_is_zero, ustr
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
@@ -896,7 +895,7 @@ class AccountFinancialReportLine(models.Model):
         self.ensure_one()
 
         # Domain defined on the line.
-        domain = self.domain and safe_eval(ustr(self.domain)) or []
+        domain = self.domain and ast.literal_eval(ustr(self.domain)) or []
 
         # Take care of the tax exigibility.
         # /!\ Still needed as there are still some custom tax reports in localizations.

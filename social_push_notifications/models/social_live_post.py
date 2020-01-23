@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
 import pytz
 
 from odoo import models, fields, _
 from odoo.osv import expression
-from odoo.tools.safe_eval import safe_eval
 
 
 class SocialLivePostPushNotifications(models.Model):
@@ -32,7 +32,7 @@ class SocialLivePostPushNotifications(models.Model):
             icon_url = '/web/image/social.post/%s/push_notification_image/64x64' % post.id if post.push_notification_image else '/mail/static/src/img/odoobot_transparent.png'
 
             # TODO awa: force push_token domain here in case user manually removed it in form view?
-            visitor_domain = safe_eval(live_post.post_id.visitor_domain)
+            visitor_domain = ast.literal_eval(live_post.post_id.visitor_domain)
             target_link = ''
             if post.push_notification_target_url:
                 link_tracker_values = live_post._get_utm_values()

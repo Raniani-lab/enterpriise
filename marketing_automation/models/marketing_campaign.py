@@ -4,6 +4,7 @@
 import json
 import logging
 
+from ast import literal_eval
 from datetime import timedelta, date, datetime
 from dateutil.relativedelta import relativedelta
 
@@ -11,7 +12,6 @@ from odoo import api, fields, models, _
 from odoo.fields import Datetime
 from odoo.exceptions import ValidationError, AccessError
 from odoo.osv import expression
-from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
 
@@ -252,7 +252,7 @@ class MarketingCampaign(models.Model):
             participants_data = participants.search_read([('campaign_id', '=', campaign.id)], ['res_id'])
             existing_rec_ids = set([live_participant['res_id'] for live_participant in participants_data])
 
-            record_domain = safe_eval(campaign.domain or [])
+            record_domain = literal_eval(campaign.domain or "[]")
             db_rec_ids = set(RecordModel.search(record_domain).ids)
             to_create = db_rec_ids - existing_rec_ids
             to_remove = existing_rec_ids - db_rec_ids
@@ -401,11 +401,11 @@ class MarketingActivity(models.Model):
     @api.depends('activity_domain', 'campaign_id.domain')
     def _compute_inherited_domain(self):
         for activity in self:
-            domain = expression.AND([safe_eval(activity.activity_domain),
-                                     safe_eval(activity.campaign_id.domain)])
+            domain = expression.AND([literal_eval(activity.activity_domain),
+                                     literal_eval(activity.campaign_id.domain)])
             ancestor = activity.parent_id
             while ancestor:
-                domain = expression.AND([domain, safe_eval(ancestor.activity_domain)])
+                domain = expression.AND([domain, literal_eval(ancestor.activity_domain)])
                 ancestor = ancestor.parent_id
             activity.domain = domain
 
@@ -592,9 +592,9 @@ class MarketingActivity(models.Model):
 
         # Filter traces not fitting the activity filter and whose record has been deleted
         if self.domain:
-            rec_domain = expression.AND([safe_eval(self.campaign_id.domain), safe_eval(self.domain)])
+            rec_domain = expression.AND([literal_eval(self.campaign_id.domain), literal_eval(self.domain)])
         else:
-            rec_domain = safe_eval(self.campaign_id.filter)
+            rec_domain = literal_eval(self.campaign_id.filter)
         if rec_domain:
             rec_valid = self.env[self.model_name].search(rec_domain)
             rec_ids_domain = set(rec_valid.ids)

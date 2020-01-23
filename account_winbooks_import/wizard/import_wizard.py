@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
 import base64
 import collections
 import itertools
@@ -17,7 +18,6 @@ from os.path import isfile, join
 
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError
-from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
 
@@ -238,7 +238,7 @@ class WinbooksImportWizard(models.TransientModel):
                         }
                         if rec.get('VATCODE'):
                             account_tax[rec.get('NUMBER')] = rec.get('VATCODE')
-                        account_code = safe_eval(rec.get('NUMBER'))
+                        account_code = ast.literal_eval(rec.get('NUMBER'))
                         for account_type in account_types:
                             if account_code in range(account_type['min'], account_type['max']):
                                 data.update({

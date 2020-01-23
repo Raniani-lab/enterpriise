@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import ast
 import copy
 import json
 import io
@@ -19,7 +20,6 @@ from odoo.osv import expression
 from babel.dates import get_quarter_names, parse_date
 from odoo.tools.misc import formatLang, format_date
 from odoo.addons.web.controllers.main import clean_action
-from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
 
@@ -749,7 +749,7 @@ class AccountReport(models.AbstractModel):
                 action_read.update({'options': options, 'ignore_session': 'read'})
         if params.get('id'):
             # Add the id of the account.financial.html.report.line in the action's context
-            context = action_read.get('context') and safe_eval(action_read['context']) or {}
+            context = action_read.get('context') and ast.literal_eval(action_read['context']) or {}
             context.setdefault('active_id', int(params['id']))
             action_read['context'] = context
         return action_read
@@ -974,7 +974,7 @@ class AccountReport(models.AbstractModel):
                 # as 'hierarchy_xxx'. This will obviously cause a crash at domain evaluation.
                 if not (isinstance(params['financial_group_line_id'], str) and 'hierarchy_' in params['financial_group_line_id']):
                     parent_financial_report_line = self.env['account.financial.html.report.line'].browse(params['financial_group_line_id'])
-                    domain = expression.AND([domain, safe_eval(parent_financial_report_line.domain)])
+                    domain = expression.AND([domain, ast.literal_eval(parent_financial_report_line.domain)])
 
             if not options.get('all_entries'):
                 ctx['search_default_posted'] = True

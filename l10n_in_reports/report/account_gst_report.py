@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
 import json
 from itertools import groupby
 from odoo import api, models, fields, _
-from odoo.tools.safe_eval import safe_eval
 from collections import OrderedDict
 
 class L10nInReportAccount(models.AbstractModel):
@@ -240,7 +240,7 @@ class L10nInReportAccount(models.AbstractModel):
         gst_return_type = gst_id[0]
         gst_section = gst_id[1] if len(gst_id) > 1 else None
         [action_read] = self.env['ir.actions.client'].browse(int(params.get('actionId'))).read()
-        context = action_read.get('context') and safe_eval(action_read['context']) or {}
+        context = action_read.get('context') and ast.literal_eval(action_read['context']) or {}
         context.update({'gst_return_type': gst_return_type, 'gst_section': gst_section})
         action_read['context'] = context
         display_name = gst_return_type.upper()

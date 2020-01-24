@@ -49,59 +49,61 @@
         </div>
         <div
             class="o_notebook">
-            <!-- Nav tabs -->
-            <ul
-                class="
-                    nav
-                    nav-tabs
-                    o_dial_tabs"
-                role="tablist">
-                <li
+            <div class="o_notebook_headers">
+                <!-- Nav tabs -->
+                <ul
                     class="
-                        col-lg-3
-                        nav-item
-                        o_dial_recent_tab
-                        text-center">
-                <a
-                    aria-controls="recent"
-                    class="
-                        nav-link
-                        o_dial_tab"
-                    data-toggle="tab"
-                    href="#recent"
-                    role="tab">RECENT</a>
-                </li>
-                <li
-                    class="
-                        col-lg-5
-                        nav-item
-                        o_dial_activities_tab
-                        text-center">
-                    <a
-                        aria-controls="nextActivities"
+                        nav
+                        nav-tabs
+                        o_dial_tabs"
+                    role="tablist">
+                    <li
                         class="
-                            active
-                            nav-link
-                            o_dial_tab"
-                        data-toggle="tab"
-                        href="#nextActivities"
-                        role="tab">NEXT ACTIVITIES</a>
-                </li>
-                <li
-                    class="
-                        col-lg-4
-                        nav-item
-                        text-center">
+                            col-lg-3
+                            nav-item
+                            o_dial_recent_tab
+                            text-center">
                     <a
-                        aria-controls="contacts"
+                        aria-controls="recent"
                         class="
                             nav-link
                             o_dial_tab"
                         data-toggle="tab"
-                        href="#contacts"
-                        role="tab">CONTACTS</a>
-                </li>
-            </ul>
+                        href="#recent"
+                        role="tab">RECENT</a>
+                    </li>
+                    <li
+                        class="
+                            col-lg-5
+                            nav-item
+                            o_dial_activities_tab
+                            text-center">
+                        <a
+                            aria-controls="nextActivities"
+                            class="
+                                active
+                                nav-link
+                                o_dial_tab"
+                            data-toggle="tab"
+                            href="#nextActivities"
+                            role="tab">NEXT ACTIVITIES</a>
+                    </li>
+                    <li
+                        class="
+                            col-lg-4
+                            nav-item
+                            text-center">
+                        <a
+                            aria-controls="contacts"
+                            class="
+                                nav-link
+                                o_dial_tab"
+                            data-toggle="tab"
+                            href="#contacts"
+                            role="tab">CONTACTS</a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <!-- Tab panes -->
         <div

@@ -122,18 +122,21 @@
         padding-bottom: 19%;
     }
     .o_dial_panel{
-        ul.nav.nav-tabs {
+        .o_notebook_headers {
             margin-left: 0;
             margin-right: 0;
-            padding-left: 0;
-            > li {
-                padding: 0;
-                > a {
-                    color: $o-mid-gray;
-                    padding: 5px 0;
-                    background: transparent;
-                    margin-right: 0;
-                    padding: 10px 0;
+            
+            ul.nav.nav-tabs {
+                padding-left: 0;
+                > li {
+                    padding: 0;
+                    > a {
+                        color: $o-mid-gray;
+                        padding: 5px 0;
+                        background: transparent;
+                        margin-right: 0;
+                        padding: 10px 0;
+                    }
                 }
             }
         }

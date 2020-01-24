@@ -362,11 +362,13 @@ class MrpEco(models.Model):
     @api.depends('bom_id.bom_line_ids', 'new_bom_id.bom_line_ids', 'new_bom_id.bom_line_ids.product_qty', 'new_bom_id.bom_line_ids.product_uom_id', 'new_bom_id.bom_line_ids.operation_id')
     def _compute_bom_change_ids(self):
         # Compute difference between old bom and new bom revision.
+        self.mapped('bom_change_ids').unlink()
         for eco in self:
             eco.bom_change_ids = eco._get_difference_bom_lines(eco.bom_id, eco.new_bom_id)
 
     @api.depends('bom_id.bom_line_ids', 'current_bom_id.bom_line_ids', 'current_bom_id.bom_line_ids.product_qty', 'current_bom_id.bom_line_ids.product_uom_id', 'current_bom_id.bom_line_ids.operation_id')
     def _compute_previous_bom_change(self):
+        self.mapped('previous_change_ids').unlink()
         for eco in self:
             if eco.current_bom_id:
                 # Compute difference between old bom and newly activated bom.
@@ -376,6 +378,7 @@ class MrpEco(models.Model):
 
     @api.depends('routing_id.operation_ids', 'new_routing_id.operation_ids')
     def _compute_routing_change_ids(self):
+        self.mapped('routing_change_ids').unlink()
         for rec in self:
             # TDE TODO: should we add workcenter logic ?
             new_routing_commands = []

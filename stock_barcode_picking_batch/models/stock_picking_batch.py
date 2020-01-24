@@ -58,6 +58,7 @@ class StockPickingBatch(models.Model):
         picking_colors = self._define_picking_colors()
         fields_to_read = self._get_fields_to_read()
         batch_pickings = self.read(fields_to_read)
+        source_location_list, destination_location_list = self.picking_ids._get_locations()
         for batch_picking in batch_pickings:
             pickings = self.env['stock.picking'].browse(batch_picking.pop('picking_ids'))
             batch_picking['picking_ids'] = pickings.get_barcode_view_state()
@@ -88,6 +89,8 @@ class StockPickingBatch(models.Model):
             if batch_picking['picking_type_id']:
                 batch_picking['use_create_lots'] = self.env['stock.picking.type'].browse(batch_picking['picking_type_id'][0]).use_create_lots
                 batch_picking['use_existing_lots'] = self.env['stock.picking.type'].browse(batch_picking['picking_type_id'][0]).use_existing_lots
+            batch_picking['source_location_list'] = source_location_list
+            batch_picking['destination_location_list'] = destination_location_list
         return batch_pickings
 
     @api.model

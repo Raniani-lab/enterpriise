@@ -131,7 +131,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 2")',
+        trigger: '.o_current_dest_location:contains("WH/Stock/Shelf 2")',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 2');
             helper.assertPreviousVisible(true);
@@ -217,7 +217,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 3")',
+        trigger: '.o_current_dest_location:contains("WH/Stock/Shelf 3")',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 3');
             helper.assertPreviousVisible(true);
@@ -304,7 +304,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 2")',
+        trigger: '.o_current_dest_location:contains("WH/Stock/Shelf 2")',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 2');
             helper.assertPreviousVisible(true);
@@ -371,7 +371,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("Shelf 2")',
+        trigger: '.o_current_dest_location:contains("Shelf 2")',
         run: function() {
             helper.assertLinesCount(1);
         },
@@ -416,7 +416,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("Shelf 3")',
+        trigger: '.o_current_dest_location:contains("Shelf 3")',
         run: function() {
             helper.assertLinesCount(1);
         },
@@ -625,7 +625,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 2")',
+        trigger: '.o_current_dest_location:contains("WH/Stock/Shelf 2")',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Shelf 3 To WH/Stock/Shelf 2');
             helper.assertPreviousVisible(true);
@@ -813,7 +813,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 4")',
+        trigger: '.o_current_dest_location:contains("WH/Stock/Shelf 4")',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Shelf 3 To WH/Stock/Shelf 4');
             helper.assertPreviousVisible(true);
@@ -840,6 +840,264 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             var $line = helper.getLine({barcode: 'product2'});
             helper.assertLineIsHighlighted($line, false);
         }
+    },
+]);
+
+tour.register('test_internal_change_location', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            helper.assertPageSummary('From Stock House/Abandonned Ground Floor To Stock House');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(true);
+            helper.assertNextVisible(true);
+            helper.assertNextEnabled(true);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(1);
+            helper.assertScanMessage('scan_src');
+            helper.assertLocationHighlight(false);
+            helper.assertDestinationLocationHighlight(false);
+            helper.assertPager('1/2');
+            helper.assertValidateVisible(false);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(false);
+            const $lineproduct1 = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted($lineproduct1, false);
+        }
+    },
+    // Clicks on the source location and checks the locations list is correclty displayed.
+    {
+        trigger: '.o_barcode_summary_location_src',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            const $src_loc_list = $('.o_barcode_list_locations.o_source_locations');
+            helper.assert($src_loc_list.css('display'), 'block');
+            helper.assert($src_loc_list.find('li').length, 3);
+            const $dest_loc_list = $('.o_barcode_list_locations.o_destination_locations');
+            helper.assert($dest_loc_list.css('display'), 'none');
+        }
+    },
+    // Clicks on the destination location and checks the locations list is correclty displayed.
+    {
+        trigger: '.o_barcode_summary_location_dest',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            const $src_loc_list = $('.o_barcode_list_locations.o_source_locations');
+            helper.assert($src_loc_list.css('display'), 'none');
+            const $dest_loc_list = $('.o_barcode_list_locations.o_destination_locations');
+            helper.assert($dest_loc_list.css('display'), 'block');
+            helper.assert($dest_loc_list.find('li').length, 3);
+        }
+    },
+    // Changes the destination location for 'Poorly lit floor'...
+    {
+        trigger: '.o_destination_locations li:contains("Poorly lit floor")',
+    },
+    {
+        trigger: '.o_current_dest_location:contains("Poorly lit floor")',
+        run: function () {
+            helper.assertPageSummary('From Stock House/Abandonned Ground Floor To Stock House/Poorly lit floor');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(true);
+            helper.assertNextVisible(true);
+            helper.assertNextEnabled(true);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(1);
+            helper.assertScanMessage('scan_src');
+            helper.assertLocationHighlight(false);
+            helper.assertDestinationLocationHighlight(false);
+            helper.assertPager('1/2');
+            helper.assertValidateVisible(false);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(false);
+            const $lineproduct1 = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted($lineproduct1, false);
+        }
+    },
+    // ... then checks the dest location is really updated on the move line.
+    {
+        trigger: '.o_edit i',
+    },
+    {
+        trigger: '.o_field_widget[name="location_dest_id"]',
+        run: function () {
+            helper.assert(
+                $('.o_field_widget[name="location_dest_id"] input').val(),
+                'Stock House/Poorly lit floor'
+            );
+        },
+    },
+    {
+        trigger: '.o_save',
+    },
+    // Scans the product1 then changes the page.
+    {
+        trigger: '.o_barcode_lines',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.o_next_page.btn-primary',
+        run: function () {
+            const $lineproduct1 = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted($lineproduct1, true);
+            helper.assertLineQty($lineproduct1, "1");
+        }
+    },
+    {
+        trigger: '.o_next_page',
+    },
+    {
+        trigger: '.o_barcode_client_action:contains("product2")',
+        run: function () {
+            helper.assertPageSummary('From Stock House/Poorly lit floor To Stock House');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(true);
+            helper.assertNextVisible(false);
+            helper.assertNextEnabled(false);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(1);
+            helper.assertScanMessage('scan_src');
+            helper.assertLocationHighlight(false);
+            helper.assertDestinationLocationHighlight(false);
+            helper.assertPager('2/2');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(true);
+            const $lineproduct2 = helper.getLine({barcode: 'product2'});
+            helper.assertLineIsHighlighted($lineproduct2, false);
+        }
+    },
+    // Clicks on the destination location and checks the locations list is correclty displayed.
+    {
+        trigger: '.o_barcode_summary_location_dest',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            const $src_loc_list = $('.o_barcode_list_locations.o_source_locations');
+            helper.assert($src_loc_list.css('display'), 'none');
+            const $dest_loc_list = $('.o_barcode_list_locations.o_destination_locations');
+            helper.assert($dest_loc_list.css('display'), 'block');
+            helper.assert($dest_loc_list.find('li').length, 3);
+        }
+    },
+    // Scans product2 and changes the destination location for 'Poorly lit floor'...
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2',
+    },
+    {
+        trigger: '.o_destination_locations li:contains("Poorly lit floor")',
+    },
+    // ... then checks the dest location is really updated on the move line.
+    {
+        trigger: '.o_edit i',
+    },
+    {
+        trigger: '.o_field_widget[name="location_dest_id"]',
+        run: function () {
+            helper.assert(
+                $('.o_field_widget[name="location_dest_id"] input').val(),
+                'Stock House/Poorly lit floor'
+            );
+        },
+    },
+    {
+        trigger: '.o_save',
+    },
+    // Now, changes the source location for 'Abandonned Ground Floor'.
+    // The purpose of this operation is to get the 2 lines on the same page.
+    {
+        trigger: '.o_barcode_summary_location_src',
+    },
+    {
+        trigger: '.o_source_locations li:contains("Abandonned Ground Floor")',
+    },
+    {
+        trigger: '.o_current_location:contains("Abandonned Ground Floor")',
+        run: function () {
+            helper.assertPageSummary('From Stock House/Abandonned Ground Floor To Stock House/Poorly lit floor');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(false);
+            helper.assertNextVisible(false);
+            helper.assertNextEnabled(false);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(2);
+            helper.assertScanMessage('scan_src');
+            helper.assertLocationHighlight(false);
+            helper.assertDestinationLocationHighlight(false);
+            helper.assertPager('1/1');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(true);
+            helper.assertValidateEnabled(true);
+            const $lineproduct1 = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted($lineproduct1, false);
+            const $lineproduct2 = helper.getLine({barcode: 'product2'});
+            helper.assertLineIsHighlighted($lineproduct2, false);
+        }
+    },
+    // Changes the destination location for 'Stock House'...
+    {
+        trigger: '.o_barcode_summary_location_dest',
+    },
+    {
+        trigger: '.o_destination_locations li:first-child()',
+    },
+    {
+        trigger: '.o_current_dest_location:contains("Stock House"):not(:contains("/"))',
+        run: function () {
+            helper.assertPageSummary('From Stock House/Abandonned Ground Floor To Stock House');
+        }
+    },
+    // ... then checks the dest location is really updated on the two move lines.
+    {
+        trigger: '.o_barcode_line:first-child() .o_edit i',
+    },
+    {
+        trigger: '.o_field_widget[name="location_id"]',
+        run: function () {
+            helper.assert(
+                $('.o_field_widget[name="location_id"] input').val(),
+                'Stock House/Abandonned Ground Floor'
+            );
+            helper.assert(
+                $('.o_field_widget[name="location_dest_id"] input').val(),
+                'Stock House'
+            );
+        },
+    },
+    {
+        trigger: '.o_save',
+    },
+    {
+        trigger: '.o_barcode_line:last-child() .o_edit i',
+    },
+    {
+        trigger: '.o_field_widget[name="location_id"]',
+        run: function () {
+            helper.assert(
+                $('.o_field_widget[name="location_id"] input').val(),
+                'Stock House/Abandonned Ground Floor'
+            );
+            helper.assert(
+                $('.o_field_widget[name="location_dest_id"] input').val(),
+                'Stock House'
+            );
+        },
+    },
+    {
+        trigger: '.o_save',
+    },
+    // Validate the delivery.
+    {
+        trigger: '.o_validate_page'
+    },
+    {
+        trigger: '.o_notification_title:contains("Success")',
     },
 ]);
 
@@ -910,7 +1168,7 @@ tour.register('test_receipt_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 1")',
+        trigger: '.o_current_dest_location:contains("WH/Stock/Shelf 1")',
         run: function() {
             helper.assertPageSummary(' To WH/Stock/Shelf 1');
             helper.assertPreviousVisible(true);
@@ -1013,7 +1271,7 @@ tour.register('test_delivery_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Shelf 1")',
+        trigger: '.o_current_location:contains("WH/Stock/Shelf 1")',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Shelf 1 ');
             helper.assertPreviousVisible(true);
@@ -1443,7 +1701,7 @@ tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 1")',
+        trigger: '.o_current_dest_location:contains("WH/Stock/Shelf 1")',
         run: function() {
             helper.assertPageSummary(' To WH/Stock/Shelf 1');
             helper.assertPreviousVisible(true);
@@ -1490,7 +1748,7 @@ tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 1")',
+        trigger: '.o_current_dest_location:contains("WH/Stock/Shelf 1")',
         run: function() {
             helper.assertPageSummary(' To WH/Stock/Shelf 1');
             helper.assertPreviousVisible(true);
@@ -2496,7 +2754,7 @@ tour.register('test_pack_multiple_location', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Shelf 1")',
+        trigger: '.o_current_location:contains("WH/Stock/Shelf 1")',
         run: 'scan PACK0000666',
     },
 
@@ -2521,7 +2779,7 @@ tour.register('test_pack_multiple_location', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 2")',
+        trigger: '.o_current_dest_location:contains("WH/Stock/Shelf 2")',
         run: 'scan O-BTN.validate',
     },
 

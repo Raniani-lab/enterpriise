@@ -9,6 +9,7 @@ var _t = core._t;
 
 var PickingClientAction = ClientAction.extend({
     custom_events: _.extend({}, ClientAction.prototype.custom_events, {
+        'change_location': '_onChangeLocation',
         'increment_line': '_onIncrementLine',
         'picking_print_delivery_slip': '_onPrintDeliverySlip',
         'picking_print_picking': '_onPrintPicking',
@@ -41,7 +42,7 @@ var PickingClientAction = ClientAction.extend({
     willStart: function () {
         var self = this;
         var res = this._super.apply(this, arguments);
-        res.then(function() {
+        res.then(function () {
             // Bind the print slip command here to be able to pass the action as argument.
             self.commands['O-BTN.print-slip'] = self._printReport.bind(self, self.currentState.actionReportBarcodesZplId);
             // Get the usage of the picking type of `this.picking_id` to chose the mode between
@@ -77,6 +78,49 @@ var PickingClientAction = ClientAction.extend({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+
+    /**
+     * Applies new destination or source location for all page's lines and then refresh it.
+     *
+     * @private
+     * @param {number} locationId
+     * @param {boolean} isSource true for the source, false for destination
+     */
+    _changeLocation: function (locationId, isSource) {
+        const currentPage = this.pages[this.currentPageIndex];
+        const sourceLocation = isSource ? locationId : currentPage.location_id;
+        const destinationLocation = isSource ? currentPage.location_dest_id : locationId;
+        const fieldName = isSource ? 'location_id' : 'location_dest_id';
+        const currentPageLocationId = currentPage[fieldName];
+        if (currentPageLocationId === locationId) {
+            // Do nothing if the user try to change for the current page.
+            return;
+        }
+
+        this.mutex.exec(() => {
+            const locations = isSource ? this.sourceLocations : this.destinationLocations;
+            const locationData = _.find(locations, (location) => location.id === locationId);
+            // Apply the selected location on the page's lines.
+            for (const line of currentPage.lines) {
+                line[fieldName] = locationData;
+            }
+            return this._save().then(() => {
+                // Find the page index (because due to the change, the page
+                // could be to another place in the pages list).
+                for (let i = 0; i < this.pages.length; i++) {
+                    const page = this.pages[i];
+                    if (page.location_id === sourceLocation &&
+                        page.location_dest_id === destinationLocation) {
+                        this.currentPageIndex = i;
+                        break;
+                    }
+                }
+                const prom = this._reloadLineWidget(this.currentPageIndex);
+                this._endBarcodeFlow();
+                return prom;
+            });
+        });
+    },
 
     /**
      * @override
@@ -435,6 +479,17 @@ var PickingClientAction = ClientAction.extend({
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
+
+    /**
+     * Handles the `change_location` OdooEvent. It will change location for move lines.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onChangeLocation: function (ev) {
+        ev.stopPropagation();
+        this._changeLocation(ev.data.locationId, ev.data.isSource);
+    },
 
     /**
      * Handles the 'increment_line' OdooEvent. From a line (`LinesWidget`), it

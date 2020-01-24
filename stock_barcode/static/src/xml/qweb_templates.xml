@@ -64,8 +64,24 @@
             <div class="o_barcode_product_line d-flex justify-content-between align-items-center">
                 <span t-if="isPickingRelated" class="o_barcode_locations">
                     <div class="d-inline-block">
-                        <span t-if="mode !== 'receipt'" class="o_barcode_location_label">From </span> <span t-if="mode !== 'receipt'" class="o_barcode_summary_location_src" t-esc="locationName"/>
-                        <span t-if="mode !== 'delivery'" class="o_barcode_location_label">To </span> <span t-if="mode !== 'delivery'" class="o_barcode_summary_location_dest" t-esc="locationDestName"/>
+                        <span t-if="mode !== 'receipt'" class="o_barcode_location_label">From </span>
+                        <span t-if="mode !== 'receipt'" class="o_barcode_summary_location_src o_clickable">
+                            <span t-esc="locationName" class="o_current_location"/>
+                            <ul t-if="sourceLocations" class="o_barcode_list_locations o_source_locations d-none">
+                                <li t-foreach="sourceLocations" t-as="location"
+                                    class="o_list_location_lines" t-esc="location.display_name"
+                                    t-att-data-location-id="location.id"/>
+                            </ul>
+                        </span>
+                        <span t-if="mode !== 'delivery'" class="o_barcode_location_label">To </span>
+                        <span t-if="mode !== 'delivery'" class="o_barcode_summary_location_dest o_clickable">
+                            <span t-esc="locationDestName" class="o_current_dest_location"/>
+                            <ul t-if="destinationLocations" class="o_barcode_list_locations o_destination_locations d-none">
+                                <li t-foreach="destinationLocations" t-as="location"
+                                    class="o_list_location_lines" t-esc="location.display_name"
+                                    t-att-data-location-id="location.id"/>
+                            </ul>
+                        </span>
                     </div>
                 </span>
                 <span t-if="model == 'stock.inventory'" class="o_barcode_locations">

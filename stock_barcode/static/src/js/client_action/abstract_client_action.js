@@ -205,7 +205,10 @@ var ClientAction = AbstractAction.extend({
                 'group_uom': self.currentState.group_uom,
             };
             self.show_entire_packs = self.currentState.show_entire_packs;
-
+            if (self._isPickingRelated()) {
+                self.sourceLocations = self.currentState.source_location_list;
+                self.destinationLocations = self.currentState.destination_location_list;
+            }
             return res;
         });
     },

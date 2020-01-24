@@ -32,6 +32,7 @@ class StockPicking(models.Model):
         picking_fields_to_read = self._get_picking_fields_to_read()
         move_line_ids_fields_to_read = self._get_move_line_ids_fields_to_read()
         pickings = self.read(picking_fields_to_read)
+        source_location_list, destination_location_list = self._get_locations()
         for picking in pickings:
             picking['move_line_ids'] = self.env['stock.move.line'].browse(picking.pop('move_line_ids')).read(move_line_ids_fields_to_read)
             for move_line_id in picking['move_line_ids']:
@@ -71,7 +72,24 @@ class StockPicking(models.Model):
             picking['actionReportBarcodesPdfId'] = self.env.ref('stock.action_label_transfer_template_pdf').id
             if self.env.company.nomenclature_id:
                 picking['nomenclature_id'] = [self.env.company.nomenclature_id.id]
+            picking['source_location_list'] = source_location_list
+            picking['destination_location_list'] = destination_location_list
         return pickings
+
+    def _get_locations(self):
+        """Used by the client action to get the picking locations.
+
+        :return: childs of source location and childs of destination location
+        :rtype: tuple
+        """
+        fields = ['id', 'display_name']
+        source_locations = self.env['stock.location'].search_read(
+            [('id', 'child_of', self.location_id.ids)], fields,
+        )
+        destination_locations = self.env['stock.location'].search_read(
+            [('id', 'child_of', self.location_dest_id.ids)], fields,
+        )
+        return (source_locations, destination_locations)
 
     def get_po_to_split_from_barcode(self, barcode):
         """ Returns the lot wizard's action for the move line matching

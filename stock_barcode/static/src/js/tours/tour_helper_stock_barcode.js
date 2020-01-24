@@ -55,12 +55,12 @@ function assertLineButtonsAreVisible (lineIndex, isVisible) {
 
 function assertPageSummary (expected) {
     // FIXME sle: fix the tests instead of fixing the assert method
-    var res = '';
-    var $src = $('.o_barcode_summary_location_src');
+    let res = '';
+    const $src = $('.o_current_location');
     if ($src.length) {
         res = "From " + $src.text() + " ";
     }
-    var $dest = $('.o_barcode_summary_location_dest');
+    const $dest = $('.o_current_dest_location');
     if ($dest.length) {
         res += "To " + $dest.text();
     }

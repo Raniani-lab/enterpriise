@@ -83,12 +83,62 @@
             line-height: 19px;
         }
         .o_barcode_summary_location_src, .o_barcode_summary_location_dest {
+            position: relative;
             padding: 1px 4px 0 2px;
+
+            @include media-breakpoint-down(xs) {
+                // Used to display the location list on all width on small
+                // screen instead of below the current location.
+                position: initial;
+            }
+
             &.o_barcode_summary_location_highlight {
                 border-bottom: 1px solid white;
             }
             &.o_strong {
                 background-color: transparent;
+            }
+            &.o_clickable {
+                cursor: pointer;
+
+                &:hover {
+                    background-color: white;
+                    color: $o-enterprise-color;
+                }
+            }
+
+            .o_barcode_list_locations {
+                width: max-content;
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 0;
+                text-align: left;
+                color: $gray-800;
+                background-color: white;
+                border: 1px solid $o-brand-secondary;
+                z-index: 1;
+
+                @include media-breakpoint-down(xs) {
+                    width: 100%;
+                }
+
+                .o_list_location_lines {
+                    list-style-type: none;
+                    padding: 4px 20px;
+
+                    &:hover {
+                        color: white;
+                        background-color: $o-enterprise-color;
+                    }
+
+                    &:first-child {
+                        padding-top: 8px;
+                    }
+                    &:last-child {
+                        padding-bottom: 8px;
+                    }
+                }
             }
         }
     }

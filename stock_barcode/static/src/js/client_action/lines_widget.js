@@ -12,10 +12,14 @@ var LinesWidget = Widget.extend({
         'click .o_add_reserved': '_onClickAddReserved',
         'click .o_add_unit': '_onClickAddUnit',
         'click .o_barcode_line': '_onClickLine',
+        'click .o_barcode_summary_location_src': '_onClickLocation',
+        'click .o_barcode_summary_location_dest': '_onClickLocation',
+        'click .o_destination_locations': '_onClickChangeDestinationLocation',
         'click .o_validate_page': '_onClickValidatePage',
         'click .o_next_page': '_onClickNextPage',
         'click .o_previous_page': '_onClickPreviousPage',
         'click .o_put_in_pack': '_onPutInPack',
+        'click .o_source_locations': '_onClickChangeSourceLocation',
     },
 
     init: function (parent, page, pageIndex, nbPages) {
@@ -30,6 +34,8 @@ var LinesWidget = Widget.extend({
         this.displayControlButtons = this.nbPages > 0 && parent._isControlButtonsEnabled();
         this.displayOptionalButtons = parent._isOptionalButtonsEnabled();
         this.isPickingRelated = parent._isPickingRelated();
+        this.sourceLocations = parent.sourceLocations;
+        this.destinationLocations = parent.destinationLocations;
     },
 
     start: function () {
@@ -273,6 +279,8 @@ var LinesWidget = Widget.extend({
             mode: this.mode,
             model: this.model,
             isPickingRelated: this.isPickingRelated,
+            sourceLocations: this.sourceLocations,
+            destinationLocations: this.destinationLocations,
         }));
         $header.append($pageSummary);
 
@@ -557,6 +565,66 @@ var LinesWidget = Widget.extend({
             id: id,
             qty: reserved_qty,
         });
+    },
+
+    /**
+     * Handles the click on a location to change the destination location.
+     * Will trigger up the `picking_client_action` `_changeLocation`.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onClickChangeDestinationLocation: function (ev) {
+        const locationId = Number(ev.target.dataset.locationId);
+        this.trigger_up('change_location', {
+            locationId: locationId,
+            isSource: false,
+        });
+    },
+
+    /**
+     * Handles the click on a location to change the source location.
+     * Will trigger up the `picking_client_action` `_changeLocation`.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onClickChangeSourceLocation: function (ev) {
+        const locationId = Number(ev.target.dataset.locationId);
+        this.trigger_up('change_location', {
+            locationId: locationId,
+            isSource: true,
+        });
+    },
+
+    /**
+     * Handles the click on the page's source or destination location to display the location list.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onClickLocation: function (ev) {
+        ev.stopPropagation();
+        if (!this.isPickingRelated) {
+            return;
+        }
+        let target = ev.target;
+        if (!target.classList.contains('o_clickable')) {
+            target = $(target).parents('.o_clickable')[0];
+        }
+        // Looks if user clicked on source or destination location...
+        const isSource = target.classList.contains('o_barcode_summary_location_src');
+        const locationsToDisplay = isSource ? '.o_source_locations' : '.o_destination_locations';
+        const locationsToHide = isSource ? '.o_destination_locations' : '.o_source_locations';
+        // ... then force to hide the other locations list and display the wanted list.
+        $(locationsToHide).toggleClass('d-none', true);
+        const $dest_location_list = $(locationsToDisplay);
+        const hideLocationDest = function () {
+            $(locationsToDisplay).toggleClass('d-none', true);
+            window.removeEventListener('click', hideLocationDest);
+        };
+        $dest_location_list.toggleClass('d-none');
+        window.addEventListener('click', hideLocationDest);
     },
 
     /**

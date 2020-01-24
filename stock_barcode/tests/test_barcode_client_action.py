@@ -268,6 +268,63 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             self.start_tour(url, 'test_internal_picking_reserved_1', login='admin', timeout=180)
             self.assertEqual(CALL_COUNT, 2)
 
+    def test_internal_picking_change_location(self):
+        """ Changes the locations directly with the location list displayed in the header.
+        """
+        # Activates multilocations.
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        # Creates some locations.
+        parent_location = self.env["stock.location"].create({
+            'name': 'Stock House',
+            'barcode': 'stock-house',
+        })
+        sub_location_1 = self.env["stock.location"].create({
+            'name': 'Abandonned Ground Floor',
+            'location_id': parent_location.id,
+            'barcode': 'first-floor',
+        })
+        sub_location_2 = self.env["stock.location"].create({
+            'name': 'Poorly lit floor',
+            'location_id': parent_location.id,
+            'barcode': 'second-floor',
+        })
+        # Creates some quants.
+        self.env['stock.quant']._update_available_quantity(self.product1, sub_location_1, 1)
+        self.env['stock.quant']._update_available_quantity(self.product2, sub_location_2, 1)
+
+        # Creates an internal transfer, from WH/Stock to WH/Stock.
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_internal
+        picking_form.location_id = parent_location
+        picking_form.location_dest_id = parent_location
+        # Adds two products from two distinct locations.
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 1
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = self.product2
+            move.product_uom_qty = 1
+
+        internal_transfer = picking_form.save()
+        internal_transfer.action_confirm()
+        internal_transfer.action_assign()
+
+        move_lines = internal_transfer.move_line_ids
+        self.assertEqual(move_lines[0].location_id.id, sub_location_1.id)
+        self.assertEqual(move_lines[1].location_id.id, sub_location_2.id)
+        self.assertEqual(move_lines[0].location_dest_id.id, parent_location.id)
+        self.assertEqual(move_lines[1].location_dest_id.id, parent_location.id)
+
+        url = self._get_client_action_url(internal_transfer.id)
+        self.start_tour(url, 'test_internal_change_location', login='admin', timeout=180)
+
+        self.assertEqual(move_lines[0].location_id.id, sub_location_1.id)
+        self.assertEqual(move_lines[1].location_id.id, sub_location_1.id)
+        self.assertEqual(move_lines[0].location_dest_id.id, parent_location.id)
+        self.assertEqual(move_lines[1].location_dest_id.id, parent_location.id)
+
     def test_receipt_from_scratch_with_lots_1(self):
         clean_access_rights(self.env)
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')

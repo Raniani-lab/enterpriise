@@ -543,6 +543,7 @@ class generic_tax_report(models.AbstractModel):
             'unfoldable': False,
             'columns': columns,
             'level': hierarchy_level,
+            'line_code': report_line.code
         }
 
 

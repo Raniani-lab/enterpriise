@@ -31,11 +31,12 @@ class HrContract(models.Model):
         employee = self.employee_id
         calendar = self.resource_calendar_id
         resource = employee.resource_id
+        tz = pytz.timezone(calendar.tz)
 
         attendances = calendar._work_intervals(
             pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
             pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-            resource=resource
+            resource=resource, tz=tz
         )
         # Attendances
         for interval in attendances:

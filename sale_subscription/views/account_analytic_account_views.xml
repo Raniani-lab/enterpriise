@@ -22,7 +22,18 @@
         <field name="inherit_id" ref="account.view_move_line_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='analytic_tag_ids']" position="after">
-                <field name="subscription_id" optional="hide"/>
+                <field name="subscription_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_move_form_inherit_sale_subscription" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@id='invoice_tab']//form//field[@name='analytic_tag_ids']" position="after">
+                <field name="subscription_id" />
             </xpath>
         </field>
     </record>

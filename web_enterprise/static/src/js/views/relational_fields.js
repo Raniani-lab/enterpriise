@@ -22,6 +22,16 @@ var qweb = core.qweb;
 var _t = core._t;
 
 FieldStatus.include({
+    /**
+     * Override the custom behavior of FieldStatus to hide it if it is not set,
+     * in mobile (which is the default behavior for fields).
+     *
+     * @returns {boolean}
+     */
+    isEmpty: function () {
+        return !this.isSet();
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------

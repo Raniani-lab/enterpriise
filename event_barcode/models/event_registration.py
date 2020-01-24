@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-import random
+import os
 
 from odoo import api, fields, models
 
@@ -23,7 +23,7 @@ class EventRegistration(models.Model):
         Generate 8 bytes (64 bits) barcodes as 16 bytes barcodes are not
         compatible with all scanners.
          """
-        return str(random.getrandbits(64))
+        return str(int.from_bytes(os.urandom(8), 'little'))
 
     barcode = fields.Char(default=_get_random_token, readonly=True, copy=False, index=True)
 

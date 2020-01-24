@@ -15,6 +15,7 @@
 
         <record id="account.group_account_readonly" model="res.groups">
             <field name="name">Auditor</field>
+            <field name="category_id" ref="base.module_category_accounting_accounting"/>
         </record>
 
         <record id="account.group_account_user" model="res.groups">

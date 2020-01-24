@@ -709,7 +709,7 @@ var ClientAction = AbstractAction.extend({
                 }
                 if (packageId &&
                     (! lineInCurrentPage.package_id ||
-                    lineInCurrentPage.package_id.id !== packageId[0])
+                    lineInCurrentPage.package_id[0] !== packageId[0])
                     ) {
                     continue;
                 }
@@ -982,8 +982,7 @@ var ClientAction = AbstractAction.extend({
             return self._rpc({
                 model: 'product.product',
                 method: 'read',
-                args: [product],
-                limit: 1,
+                args: [product, ['barcode', 'display_name', 'uom_id', 'tracking']],
             });
         };
         var get_contained_quants = function (quant_ids) {

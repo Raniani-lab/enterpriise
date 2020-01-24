@@ -32,12 +32,13 @@ class CrmLeadConvert2Ticket(models.TransientModel):
         vals = {
             "name": lead.name,
             "description": lead.description,
-            "email": lead.email_from,
             "team_id": self.team_id.id,
             "ticket_type_id": self.ticket_type_id.id,
             "partner_id": partner_id,
             "user_id": None
         }
+        if lead.email_from:
+            vals['email'] = lead.email_from
         ticket_sudo = self.env['helpdesk.ticket'].with_context(mail_create_nosubscribe=True).sudo().create(vals)
         # move the mail thread
         lead.message_change_thread(ticket_sudo)

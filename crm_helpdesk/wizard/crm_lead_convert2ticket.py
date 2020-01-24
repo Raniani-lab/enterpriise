@@ -38,7 +38,7 @@ class CrmLeadConvert2Ticket(models.TransientModel):
             "partner_id": partner_id,
             "user_id": None
         }
-        ticket = self.env['helpdesk.ticket'].create(vals)
+        ticket = self.env['helpdesk.ticket'].with_context(mail_create_nosubscribe=True).create(vals)
         # move the mail thread
         lead.message_change_thread(ticket)
         # move attachments

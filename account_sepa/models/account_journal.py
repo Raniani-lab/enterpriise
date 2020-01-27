@@ -4,6 +4,10 @@
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_round, float_repr, DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools.misc import mod10r
+from odoo.tools.xml_utils import create_xml_node, create_xml_node_chain
+
+from collections import defaultdict
 
 import random
 import re
@@ -78,13 +82,12 @@ class AccountJournal(models.Model):
         GrpHdr.append(self._get_InitgPty(sct_generic))
 
         # Create one PmtInf XML block per execution date
-        payments_date_wise = {}
+        payments_date_instr_wise = defaultdict(lambda: [])
         for payment in payments:
-            if payment['payment_date'] not in payments_date_wise:
-                payments_date_wise[payment['payment_date']] = []
-            payments_date_wise[payment['payment_date']].append(payment)
+            local_instrument = self._get_local_instrument(payment)
+            payments_date_instr_wise[(payment['payment_date'], local_instrument)].append(payment)
         count = 0
-        for payment_date, payments_list in payments_date_wise.items():
+        for (payment_date, local_instrument), payments_list in payments_date_instr_wise.items():
             count += 1
             PmtInf = etree.SubElement(CstmrCdtTrfInitn, "PmtInf")
             PmtInfId = etree.SubElement(PmtInf, "PmtInfId")
@@ -97,7 +100,11 @@ class AccountJournal(models.Model):
             NbOfTxs.text = str(len(payments_list))
             CtrlSum = etree.SubElement(PmtInf, "CtrlSum")
             CtrlSum.text = self._get_CtrlSum(payments_list)
-            PmtInf.append(self._get_PmtTpInf(sct_generic))
+
+            PmtTpInf = self._get_PmtTpInf(sct_generic, local_instrument)
+            if len(PmtTpInf) != 0: #Boolean conversion from etree element triggers a deprecation warning ; this is the proper way
+                PmtInf.append(PmtTpInf)
+
             ReqdExctnDt = etree.SubElement(PmtInf, "ReqdExctnDt")
             ReqdExctnDt.text = fields.Date.to_string(payment_date)
             PmtInf.append(self._get_Dbtr(sct_generic))
@@ -114,7 +121,7 @@ class AccountJournal(models.Model):
 
             # One CdtTrfTxInf per transaction
             for payment in payments_list:
-                PmtInf.append(self._get_CdtTrfTxInf(PmtInfId, payment, sct_generic))
+                PmtInf.append(self._get_CdtTrfTxInf(PmtInfId, payment, sct_generic, local_instrument))
 
         return etree.tostring(Document, pretty_print=True, xml_declaration=True, encoding='utf-8')
 
@@ -197,15 +204,16 @@ class AccountJournal(models.Model):
 
         return ret
 
-    def _get_PmtTpInf(self, sct_generic=False):
+    def _get_PmtTpInf(self, sct_generic=False, local_instrument=None):
         PmtTpInf = etree.Element("PmtTpInf")
-        InstrPrty = etree.SubElement(PmtTpInf, "InstrPrty")
-        InstrPrty.text = 'NORM'
 
         if not sct_generic:
             SvcLvl = etree.SubElement(PmtTpInf, "SvcLvl")
             Cd = etree.SubElement(SvcLvl, "Cd")
             Cd.text = 'SEPA'
+
+        if local_instrument:
+            create_xml_node_chain(PmtTpInf, ['LclInstrm', 'Prtry'], local_instrument)
 
         return PmtTpInf
 
@@ -236,7 +244,7 @@ class AccountJournal(models.Model):
             AdrLine.text = sanitize_communication((partner_id.zip + " " + partner_id.city)[:70])
         return PstlAdr
 
-    def _get_CdtTrfTxInf(self, PmtInfId, payment, sct_generic):
+    def _get_CdtTrfTxInf(self, PmtInfId, payment, sct_generic, local_instrument=None):
         CdtTrfTxInf = etree.Element("CdtTrfTxInf")
         PmtId = etree.SubElement(CdtTrfTxInf, "PmtId")
         InstrId = etree.SubElement(PmtId, "InstrId")
@@ -264,7 +272,9 @@ class AccountJournal(models.Model):
 
         partner_bank = self.env['res.partner.bank'].browse(partner_bank_id)
 
-        CdtTrfTxInf.append(self._get_CdtrAgt(partner_bank, sct_generic))
+        if local_instrument != 'CH01':
+            CdtTrfTxInf.append(self._get_CdtrAgt(partner_bank, sct_generic))
+
         Cdtr = etree.SubElement(CdtTrfTxInf, "Cdtr")
         Nm = etree.SubElement(Cdtr, "Nm")
         Nm.text = sanitize_communication((partner_bank.acc_holder_name or partner.name)[:70])
@@ -320,6 +330,34 @@ class AccountJournal(models.Model):
         if not payment['communication']:
             return False
         RmtInf = etree.Element("RmtInf")
-        Ustrd = etree.SubElement(RmtInf, "Ustrd")
-        Ustrd.text = sanitize_communication(payment['communication'])
+
+        # In Switzerland, postal accounts always require a structured communication with the ISR reference
+        if self._get_local_instrument(payment) == 'CH01':
+            create_xml_node_chain(RmtInf, ['Strd', 'CdtrRefInf', 'Ref'], payment['communication'])
+        else:
+            Ustrd = etree.SubElement(RmtInf, "Ustrd")
+            Ustrd.text = sanitize_communication(payment['communication'])
         return RmtInf
+
+    def _has_isr_ref(self, payment_comm):
+        """Check if the communication is a valid ISR reference (for Switzerland)
+        e.g.
+        210000000003139471430009017
+        21 00000 00003 13947 14300 09017
+        This is used to determine SEPA local instrument
+        """
+        if not payment_comm:
+            return False
+        if re.match(r'^(\d{27}|\d{2}( \d{5}){5})$', payment_comm):
+            ref = payment_comm.replace(' ', '')
+            return ref == mod10r(ref[:-1])
+        return False
+
+    def _get_local_instrument(self, payment):
+        """ Local instrument node is used to indicate the use of some regional
+        variant, such as in Switzerland.
+        """
+        partner_bank_ids = self.env['res.partner'].browse(payment['partner_id']).bank_ids
+        if partner_bank_ids and partner_bank_ids[0].acc_type == 'postal' and self._has_isr_ref(payment['communication']):
+            return 'CH01'
+        return None

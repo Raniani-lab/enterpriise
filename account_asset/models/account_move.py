@@ -39,9 +39,6 @@ class AccountMove(models.Model):
         # log the post of a depreciation
         self._log_depreciation_asset()
 
-        # reduce the remaining value on the asset
-        self._depreciate()
-
         # look for any asset to create, in case we just posted a bill on an account
         # configured to automatically create assets
         self._auto_create_asset()
@@ -100,16 +97,6 @@ class AccountMove(models.Model):
             msg = _('Depreciation entry %s posted (%s)') % (move.name, formatLang(self.env, move.amount_total, currency_obj=move.company_id.currency_id))
             asset.message_post(body=msg)
 
-    def _depreciate(self):
-        for move in self.filtered(lambda m: m.asset_id):
-            asset = move.asset_id
-            if asset.state in ('open', 'pause'):
-                asset.value_residual -= abs(sum(move.line_ids.filtered(lambda l: l.account_id == asset.account_depreciation_id).mapped('balance')))
-            elif asset.state == 'close':
-                asset.value_residual -= abs(sum(move.line_ids.filtered(lambda l: l.account_id != asset.account_depreciation_id).mapped('balance')))
-            else:
-                raise UserError(_('You cannot post a depreciation on an asset in this state: %s') % dict(self.env['account.asset']._fields['state'].selection)[asset.state])
-
     def _auto_create_asset(self):
         create_list = []
         invoice_list = []
@@ -156,7 +143,6 @@ class AccountMove(models.Model):
         for asset, vals, invoice, validate in zip(assets, create_list, invoice_list, auto_validate):
             if 'model_id' in vals:
                 asset._onchange_model_id()
-                asset._onchange_method_period()
                 if validate:
                     asset.validate()
             if invoice:

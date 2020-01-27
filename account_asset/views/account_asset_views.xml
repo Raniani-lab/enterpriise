@@ -42,7 +42,7 @@
                         <label for="name" name="name_label" class="oe_edit_only" attrs="{'invisible': [('state', '=', 'model')]}"/>
                         <label for="name" name="model_name_label" string="Asset Model name" class="oe_edit_only" attrs="{'invisible': [('state', '!=', 'model')]}"/>
                         <h1>
-                            <field name="name" placeholder="e.g. Laptop iBook" required="1"/>
+                            <field name="name" placeholder="e.g. Laptop iBook" required="1" attrs="{'readonly': [('state', 'not in', ('draft', 'model'))]}"/>
                         </h1>
                     </div>
                     <group>
@@ -52,7 +52,7 @@
                             <span colspan="2" attrs="{'invisible': ['|', ('original_move_line_ids', '!=', []), ('original_value', '!=', 0)]}" class="oe_edit_only text-muted">Set manually the original values or <button class="btn btn-link oe_inline align-baseline p-0 add_original_move_line" string="selected related purchases"/></span>
                             <field name="original_value" attrs="{'invisible': [('state', '=', 'model')], 'readonly': ['|', ('state','!=','draft'), ('original_move_line_ids', '!=', [])]}"/>
                             <field name="gross_increase_value" widget="monetary" attrs="{'invisible': ['|', ('state', '=', 'model'), ('gross_increase_value', '=', 0)]}" options="{'currency_field': 'currency_id'}"/>
-                            <field name="acquisition_date" attrs="{'invisible': [('state', '=', 'model')], 'readonly': ['|', ('state','!=','draft'), ('original_move_line_ids', '!=', [])]}"/>
+                            <field name="acquisition_date" attrs="{'invisible': [('state', '=', 'model')], 'readonly': ['|', ('state','!=','draft'), ('original_move_line_ids', '!=', [])], 'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group string="Current Values" attrs="{'invisible': [('state', '=', 'model')]}">
                             <field name="currency_id" groups="base.group_multi_currency"/>
@@ -74,7 +74,7 @@
                                 <label for="prorata_date" attrs="{'invisible': ['|', ('prorata', '=', False), ('state', '=', 'model')]}"/>
                                 <field name="prorata_date" attrs="{'invisible': ['|', ('prorata', '=', False), ('state', '=', 'model')], 'required': [('prorata', '=', True), ('state', '!=', 'model')]}"/>
                             </div>
-                            <field name="first_depreciation_date" attrs="{'invisible': [('state', '=', 'model')]}"/>
+                            <field name="first_depreciation_date" string="Start Depreciating" required="1" attrs="{'invisible': [('state', '=', 'model')], 'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group string="Accounting">
                             <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
@@ -84,6 +84,11 @@
                             <field name="journal_id" required="1"/>
                             <field name="account_analytic_id" groups="analytic.group_analytic_accounting" />
                             <field name="analytic_tag_ids" groups="analytic.group_analytic_accounting" widget="many2many_tags"/>
+                        </group>
+                        <group string="Imported Asset" groups="base.group_no_one">
+                            <field name="already_depreciated_amount_import" string="Depreciated Amount"/>
+                            <field name="depreciation_number_import" string="Existing Depreciations"/>
+                            <field name="first_depreciation_date_import" string="First Depreciation Date"/>
                         </group>
                     </group>
                     <notebook colspan="4" attrs="{'invisible': ['|', ('state', '=', 'model'), '&amp;', ('total_depreciation_entries_count', '=', 0), ('original_move_line_ids', '=', [])]}">

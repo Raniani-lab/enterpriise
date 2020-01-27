@@ -65,7 +65,6 @@ class AssetModify(models.TransientModel):
         }
         if self.need_date:
             asset_vals.update({
-                'first_depreciation_date': self.asset_id._get_first_depreciation_date(),
                 'prorata_date': self.date,
             })
         if self.env.context.get('resume_after_pause'):

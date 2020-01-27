@@ -122,6 +122,12 @@ class assets_report(models.AbstractModel):
             asset_add = 0.0 if al['max_date_before'] else al['asset_original_value']
             asset_minus = 0.0
 
+            if al['import_depreciated']:
+                asset_opening += asset_add
+                asset_add = 0
+                depreciation_opening += al['import_depreciated']
+                depreciation_closing += al['import_depreciated']
+
             for child in children_lines[al['asset_id']]:
                 depreciation_opening += child['depreciated_start'] - child['depreciation']
                 depreciation_closing += child['depreciated_end']
@@ -205,14 +211,14 @@ class assets_report(models.AbstractModel):
                 SELECT asset.id as asset_id,
                        asset.parent_id as parent_id,
                        asset.name as asset_name,
-                       asset.value_residual as asset_value,
                        asset.original_value as asset_original_value,
-                       asset.first_depreciation_date as asset_date,
+                       COALESCE(asset.first_depreciation_date_import, asset.first_depreciation_date) as asset_date,
+                       asset.already_depreciated_amount_import as import_depreciated,
                        max_date_before.date as max_date_before,
                        asset.disposal_date as asset_disposal_date,
                        asset.acquisition_date as asset_acquisition_date,
                        asset.method as asset_method,
-                       (SELECT COUNT(*) FROM account_move WHERE asset_id = asset.id AND asset_value_change != 't') as asset_method_number,
+                       (SELECT COUNT(*) FROM account_move WHERE asset_id = asset.id AND asset_value_change != 't') + asset.depreciation_number_import as asset_method_number,
                        asset.method_period as asset_method_period,
                        asset.method_progress_factor as asset_method_progress_factor,
                        asset.state as asset_state,
@@ -262,6 +268,6 @@ class assets_report(models.AbstractModel):
             'res_model': 'account.asset',
             'view_mode': 'form',
             'view_id': False,
-            'views': [(False, 'form')],
+            'views': [(self.env.ref('account_asset.view_account_asset_form').id, 'form')],
             'res_id': line.id,
         }

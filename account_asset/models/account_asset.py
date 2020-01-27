@@ -19,7 +19,7 @@ class AccountAsset(models.Model):
     gross_increase_count = fields.Integer(compute='_entry_count', string='# Gross Increases', help="Number of assets made to increase the value of the asset")
     total_depreciation_entries_count = fields.Integer(compute='_entry_count', string='# Depreciation Entries', help="Number of depreciation entries (posted or not)")
 
-    name = fields.Char(string='Asset Name', required=True, readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]})
+    name = fields.Char(string='Asset Name', compute='_compute_name', store=True, required=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, readonly=True, states={'draft': [('readonly', False)]},
                                   default=lambda self: self.env.company.currency_id.id)
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)]},
@@ -30,7 +30,7 @@ class AccountAsset(models.Model):
             "The 'On Hold' status can be set manually when you want to pause the depreciation of an asset for some time.\n"
             "You can manually close an asset when the depreciation is over. If the last line of depreciation is posted, the asset automatically goes in that status.")
     active = fields.Boolean(default=True)
-    asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset'), ('expense', 'Deferred Expense')], index=True, readonly=False, states={'draft': [('readonly', False)]})
+    asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset'), ('expense', 'Deferred Expense')], compute='_compute_asset_type', store=True, index=True)
 
     # Depreciation params
     method = fields.Selection([('linear', 'Linear'), ('degressive', 'Degressive'), ('degressive_then_linear', 'Accelerated Degressive')], string='Method', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default='linear',
@@ -54,9 +54,9 @@ class AccountAsset(models.Model):
     journal_id = fields.Many2one('account.journal', string='Journal', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('type', '=', 'general'), ('company_id', '=', company_id)]")
 
     # Values
-    original_value = fields.Monetary(string="Original Value", compute='_compute_value', inverse='_set_value', store=True, readonly=True, states={'draft': [('readonly', False)]})
+    original_value = fields.Monetary(string="Original Value", compute='_compute_value', store=True, readonly=True, states={'draft': [('readonly', False)]})
     book_value = fields.Monetary(string='Book Value', readonly=True, compute='_compute_book_value', store=True, help="Sum of the depreciable value, the salvage value and the book value of all value increase items")
-    value_residual = fields.Monetary(string='Depreciable Value', digits=0, readonly="1")
+    value_residual = fields.Monetary(string='Depreciable Value', digits=0, compute='_compute_value_residual')
     salvage_value = fields.Monetary(string='Not Depreciable Value', digits=0, readonly=True, states={'draft': [('readonly', False)]},
                                     help="It is the amount you plan to have that you cannot depreciate.")
     gross_increase_value = fields.Monetary(string="Gross Increase Value", compute="_compute_book_value", compute_sudo=True)
@@ -72,10 +72,10 @@ class AccountAsset(models.Model):
     # Dates
     first_depreciation_date = fields.Date(
         string='First Depreciation Date',
-        readonly=True, states={'draft': [('readonly', False)]}, required=True,
+        compute='_compute_first_depreciation_date', store=True, readonly=False,
         help='Note that this date does not alter the computation of the first journal entry in case of prorata temporis assets. It simply changes its accounting date',
     )
-    acquisition_date = fields.Date(readonly=True, states={'draft': [('readonly', False)]},)
+    acquisition_date = fields.Date(compute='_compute_acquisition_date', store=True)
     disposal_date = fields.Date(readonly=True, states={'draft': [('readonly', False)]},)
 
     # model-related fields
@@ -88,12 +88,19 @@ class AccountAsset(models.Model):
     parent_id = fields.Many2one('account.asset', help="An asset has a parent when it is the result of gaining value")
     children_ids = fields.One2many('account.asset', 'parent_id', help="The children are the gains in value of this asset")
 
+    # Adapt for import fields
+    already_depreciated_amount_import = fields.Monetary(help="In case of an import from another software, you might need to use this field to have the right depreciation table report. This is the value that was already depreciated with entries not computed from this model")
+    depreciation_number_import = fields.Integer(help="In case of an import from another software, provide the number of depreciations already done before starting with Odoo.")
+    first_depreciation_date_import = fields.Date(help="In case of an import from another software, provide the first depreciation date in it.")
+
     @api.depends('original_move_line_ids', 'original_move_line_ids.account_id', 'asset_type')
     def _compute_value(self):
         for record in self:
             misc_journal_id = self.env['account.journal'].search([('type', '=', 'general'), ('company_id', '=', record.company_id.id)], limit=1)
             if not record.original_move_line_ids:
                 record.account_asset_id = record.account_asset_id or False
+                if not record.account_asset_id and (record.state == 'model' or not record.account_asset_id or record.asset_type != 'purchase'):
+                    record.account_asset_id = record.account_depreciation_id if record.asset_type in ('purchase', 'expense') else record.account_depreciation_expense_id
                 record.original_value = record.original_value or False
                 record.display_model_choice = record.state == 'draft' and self.env['account.asset'].search([('state', '=', 'model'), ('asset_type', '=', record.asset_type)])
                 record.display_account_asset_id = True
@@ -113,39 +120,36 @@ class AccountAsset(models.Model):
             if (total_credit and total_debit) or record.original_value == 0:
                 raise UserError(_("You cannot create an asset from lines containing credit and debit on the account or with a null amount"))
 
-    def _set_value(self):
+    @api.depends('original_move_line_ids', 'prorata_date', 'first_depreciation_date')
+    def _compute_acquisition_date(self):
         for record in self:
-            record.acquisition_date = min(record.original_move_line_ids.mapped('date') + [record.prorata_date or record.first_depreciation_date or fields.Date.today()])
-            record.first_depreciation_date = record._get_first_depreciation_date()
-            record.value_residual = record.original_value - record.salvage_value
+            record.acquisition_date = record.acquisition_date or min(record.original_move_line_ids.mapped('date') + [record.prorata_date or record.first_depreciation_date or fields.Date.today()])
+
+    @api.depends('original_move_line_ids')
+    def _compute_name(self):
+        for record in self:
             record.name = record.name or (record.original_move_line_ids and record.original_move_line_ids[0].name or '')
+
+    @api.depends('original_move_line_ids')
+    @api.depends_context('asset_type')
+    def _compute_asset_type(self):
+        for record in self:
             if not record.asset_type and 'asset_type' in self.env.context:
                 record.asset_type = self.env.context['asset_type']
             if not record.asset_type and record.original_move_line_ids:
                 account = record.original_move_line_ids.account_id
                 record.asset_type = account.asset_type
-            record._onchange_depreciation_account()
+
+    @api.depends('original_value', 'salvage_value', 'already_depreciated_amount_import', 'depreciation_move_ids.state')
+    def _compute_value_residual(self):
+        for record in self:
+            record.value_residual = record.original_value - record.salvage_value - record.already_depreciated_amount_import - abs(sum(record.depreciation_move_ids.filtered(lambda m: m.state == 'posted').mapped('amount_total')))
 
     @api.depends('value_residual', 'salvage_value', 'children_ids.book_value')
     def _compute_book_value(self):
         for record in self:
             record.book_value = record.value_residual + record.salvage_value + sum(record.children_ids.mapped('book_value'))
             record.gross_increase_value = sum(record.children_ids.mapped('original_value'))
-
-    @api.onchange('salvage_value')
-    def _onchange_salvage_value(self):
-        # When we are configuring the asset we dont want the book value to change
-        # when we change the salvage value because of _compute_book_value
-        # we need to reduce value_residual to do that
-        self.value_residual = self.original_value - self.salvage_value
-
-    @api.onchange('original_value')
-    def _onchange_value(self):
-        self._set_value()
-
-    @api.onchange('method_period')
-    def _onchange_method_period(self):
-        self.first_depreciation_date = self._get_first_depreciation_date()
 
     @api.onchange('prorata')
     def _onchange_prorata(self):
@@ -189,11 +193,6 @@ class AccountAsset(models.Model):
         else:
             self.account_depreciation_expense_id = self.account_depreciation_expense_id or self.account_asset_id
 
-    @api.onchange('account_depreciation_id', 'account_depreciation_expense_id')
-    def _onchange_depreciation_account(self):
-        if not self.account_asset_id and not self.original_move_line_ids and (self.state == 'model' or not self.account_asset_id or self.asset_type != 'purchase'):
-            self.account_asset_id = self.account_depreciation_id if self.asset_type in ('purchase', 'expense') else self.account_depreciation_expense_id
-
     @api.onchange('model_id')
     def _onchange_model_id(self):
         model = self.model_id
@@ -219,16 +218,18 @@ class AccountAsset(models.Model):
             else:
                 self.method_period = '12'
 
-    def _get_first_depreciation_date(self, vals={}):
-        pre_depreciation_date = fields.Date.to_date(vals.get('acquisition_date') or vals.get('date') or min(self.original_move_line_ids.mapped('date'), default=self.acquisition_date or fields.Date.today()))
-        depreciation_date = pre_depreciation_date + relativedelta(day=31)
-        # ... or fiscalyear depending the number of period
-        if '12' in (self.method_period, vals.get('method_period')):
-            depreciation_date = depreciation_date + relativedelta(month=int(self.company_id.fiscalyear_last_month))
-            depreciation_date = depreciation_date + relativedelta(day=self.company_id.fiscalyear_last_day)
-            if depreciation_date < pre_depreciation_date:
-                depreciation_date = depreciation_date + relativedelta(years=1)
-        return depreciation_date
+    @api.depends('acquisition_date', 'original_move_line_ids', 'method_period', 'company_id')
+    def _compute_first_depreciation_date(self):
+        for record in self:
+            pre_depreciation_date = record.acquisition_date or min(record.original_move_line_ids.mapped('date'), default=record.acquisition_date) or fields.Date.today()
+            depreciation_date = pre_depreciation_date + relativedelta(day=31)
+            # ... or fiscalyear depending the number of period
+            if record.method_period == '12':
+                depreciation_date = depreciation_date + relativedelta(month=int(record.company_id.fiscalyear_last_month))
+                depreciation_date = depreciation_date + relativedelta(day=record.company_id.fiscalyear_last_day)
+                if depreciation_date < pre_depreciation_date:
+                    depreciation_date = depreciation_date + relativedelta(years=1)
+            record.first_depreciation_date = depreciation_date
 
     def unlink(self):
         for asset in self:
@@ -683,29 +684,18 @@ class AccountAsset(models.Model):
             original_move_line_ids = 'original_move_line_ids' in vals and self.resolve_2many_commands('original_move_line_ids', vals['original_move_line_ids'], ['date'])
             if 'state' in vals and vals['state'] != 'draft' and not (set(vals) - set({'account_depreciation_id', 'account_depreciation_expense_id', 'journal_id'})):
                 raise UserError(_("Some required values are missing"))
-            if 'first_depreciation_date' not in vals:
-                if 'acquisition_date' in vals:
-                    vals['first_depreciation_date'] = self._get_first_depreciation_date(vals)
-                elif original_move_line_ids and 'date' in original_move_line_ids[0]:
-                    vals['first_depreciation_date'] = self._get_first_depreciation_date(original_move_line_ids[0])
-                else:
-                    vals['first_depreciation_date'] = self._get_first_depreciation_date()
             if self._context.get('import_file', False) and 'category_id' in vals:
                 changed_vals = self.onchange_category_id_values(vals['category_id'])
                 vals.update(changed_vals['value'])
-        with self.env.norecompute():
-            new_recs = super(AccountAsset, self.with_context(mail_create_nolog=True)).create(vals_list)
-            # if original_value is passed in vals, make sure the right value is set (as a different original_value may have been computed by _compute_value())
-            for i in range(len(vals_list)):
-                if 'original_value' in vals_list[i]:
-                    new_recs[i]._compute_value()
-                    new_recs[i].original_value = vals_list[i]['original_value']
-            if self.env.context.get('original_asset'):
-                # When original_asset is set, only one asset is created since its from the form view
-                original_asset = self.env['account.asset'].browse(self.env.context.get('original_asset'))
-                original_asset.model_id = new_recs
-        if not self._context.get('import_file', False):
-            new_recs.filtered(lambda r: r.state != 'model')._set_value()
+        new_recs = super(AccountAsset, self.with_context(mail_create_nolog=True)).create(vals_list)
+        # if original_value is passed in vals, make sure the right value is set (as a different original_value may have been computed by _compute_value())
+        for i in range(len(vals_list)):
+            if 'original_value' in vals_list[i]:
+                new_recs[i].original_value = vals_list[i]['original_value']
+        if self.env.context.get('original_asset'):
+            # When original_asset is set, only one asset is created since its from the form view
+            original_asset = self.env['account.asset'].browse(self.env.context.get('original_asset'))
+            original_asset.model_id = new_recs
         return new_recs
 
     def write(self, vals):

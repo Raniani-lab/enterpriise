@@ -516,7 +516,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="[('account_id.code', '=like', '11%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_1"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_1_3" model="account.financial.html.report.line">
@@ -526,7 +526,7 @@
         <field name="sequence" eval="3"/>
         <field name="domain" eval="[('account_id.code', '=like', '12%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_1"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_1_4" model="account.financial.html.report.line">
@@ -624,7 +624,7 @@
         <field name="sequence" eval="7"/>
         <field name="domain" eval="[('account_id.code', '=like', '15%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_1"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_1_8" model="account.financial.html.report.line">
@@ -634,7 +634,7 @@
         <field name="sequence" eval="8"/>
         <field name="domain" eval="[('account_id.code', '=like', '16%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_1"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_2" model="account.financial.html.report.line">
@@ -652,7 +652,7 @@
         <field name="sequence" eval="1"/>
         <field name="domain" eval="[('account_id.code', '=like', '181%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_2"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_2_2" model="account.financial.html.report.line">
@@ -662,7 +662,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="['|', ('account_id.code', '=like', '182%'), ('account_id.code', '=like', '183%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_2"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_2_3" model="account.financial.html.report.line">
@@ -672,7 +672,7 @@
         <field name="sequence" eval="3"/>
         <field name="domain" eval="[('account_id.code', '=like', '188%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_2"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_3" model="account.financial.html.report.line">
@@ -716,7 +716,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="['|', ('account_id.code', '=like', '1912%'), ('account_id.code', '=like', '1922%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_1_1"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_3_1_2" model="account.financial.html.report.line">
@@ -744,7 +744,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="[('account_id.code', '=like', '1932%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_1_2"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_3_2" model="account.financial.html.report.line">
@@ -772,7 +772,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="[('account_id.code', '=like', '1942%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_2"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_3_3" model="account.financial.html.report.line">
@@ -800,7 +800,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="[('account_id.code', '=like', '432%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_3"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_3_4" model="account.financial.html.report.line">
@@ -828,7 +828,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="['|', ('account_id.code', '=like', '4025%'), ('account_id.code', '=like', '4412%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_4"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_3_5" model="account.financial.html.report.line">
@@ -856,7 +856,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="[('account_id.code', '=like', '4422%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_5"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_3_6" model="account.financial.html.report.line">
@@ -884,7 +884,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="[('account_id.code', '=like', '4512%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_6"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_3_7" model="account.financial.html.report.line">
@@ -912,7 +912,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="[('account_id.code', '=like', '4522%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_7"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_3_8" model="account.financial.html.report.line">
@@ -968,7 +968,7 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="[('account_id.code', '=like', '472%')]" />
         <field name="groupby">account_id</field>
-        <field name="formulas">sum</field>
+        <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_8_3"/>
     </record>
     <record id="account_financial_report_l10n_lu_bs_line_2_4" model="account.financial.html.report.line">

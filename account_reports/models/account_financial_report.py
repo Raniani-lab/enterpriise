@@ -700,8 +700,7 @@ class ReportAccountFinancialReport(models.Model):
 
     def unlink(self):
         for report in self:
-            default_parent_id = self.env['ir.model.data'].xmlid_to_res_id('account.menu_finance_reports')
-            menu = self.env['ir.ui.menu'].search([('parent_id', '=', default_parent_id), ('name', '=', report.name)])
+            menu = report.generated_menu_id
             if menu:
                 menu.action.unlink()
                 menu.unlink()

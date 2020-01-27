@@ -385,32 +385,35 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         if expanded_account:
             domain.append(('company_id', '=', expanded_account.company_id.id))
 
-        for i, options_period in enumerate(options_list):
+        # Compute only the unaffected earnings for the oldest period.
 
-            # The period domain is expressed as:
-            # [
-            #   ('date' <= fiscalyear['date_from'] - 1),
-            #   ('account_id.user_type_id.include_initial_balance', '=', False),
-            # ]
+        i = len(options_list) - 1
+        options_period = options_list[-1]
 
-            new_options = self._get_options_unaffected_earnings(options_period)
-            tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-            params += where_params
-            queries.append('''
-                SELECT
-                    account_move_line.company_id                            AS groupby,
-                    'unaffected_earnings'                                   AS key,
-                    NULL                                                    AS max_date,
-                    %s                                                      AS period_number,
-                    COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
-                    SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
-                    SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
-                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
-                FROM %s
-                LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
-                WHERE %s
-                GROUP BY account_move_line.company_id
-            ''' % (i, tables, ct_query, where_clause))
+        # The period domain is expressed as:
+        # [
+        #   ('date' <= fiscalyear['date_from'] - 1),
+        #   ('account_id.user_type_id.include_initial_balance', '=', False),
+        # ]
+
+        new_options = self._get_options_unaffected_earnings(options_period)
+        tables, where_clause, where_params = self._query_get(new_options, domain=domain)
+        params += where_params
+        queries.append('''
+            SELECT
+                account_move_line.company_id                            AS groupby,
+                'unaffected_earnings'                                   AS key,
+                NULL                                                    AS max_date,
+                %s                                                      AS period_number,
+                COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
+                SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
+                SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
+                SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
+            FROM %s
+            LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
+            WHERE %s
+            GROUP BY account_move_line.company_id
+        ''' % (i, tables, ct_query, where_clause))
 
         # ============================================
         # 3) Get sums for the initial balance.

@@ -8,7 +8,7 @@ var Widget = require('web.Widget');
 
 var OpenStudioButton = Widget.extend({
     tagName: 'button',
-    className: 'o_fsm_report_button btn btn-primary',
+    className: 'o_fsm_report_button btn btn-primary d-none d-md-block',
     events: {
         'click': '_onButtonClick',
     },

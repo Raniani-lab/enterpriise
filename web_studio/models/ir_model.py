@@ -10,6 +10,10 @@ from odoo.tools import ustr
 
 _logger = logging.getLogger(__name__)
 
+OPTIONS_WL = ['use_active', 'use_responsible', 'use_partner', 'use_company',
+              'use_notes', 'use_value', 'use_image', 'use_tags', 'use_sequence',
+              'use_mail', 'use_stages', 'use_date', 'use_double_dates']
+
 
 def sanitize_for_xmlid(s):
     """ Transforms a string to a name suitable for use in an xmlid.
@@ -94,9 +98,6 @@ class IrModel(models.Model):
         # will contain extra models (tags, stages) for which a menu entry might need to be created
         extra_models = self
         options = options if options is not None else []
-        OPTIONS_WL = ['use_active', 'use_responsible', 'use_partner', 'use_company',
-                      'use_notes', 'use_value', 'use_image', 'use_tags', 'use_sequence',
-                      'use_mail', 'use_stages', 'use_date', 'use_double_dates']
         valid_options = [opt for opt in options if opt in OPTIONS_WL]
         auto_vals = {
             'name': name,

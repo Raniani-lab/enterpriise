@@ -139,7 +139,13 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                 .append($('<span>', {
                     text: _t('Add tags'),
                 }));
-            $kanban_tags_hook.prependTo(this.$el);
+            let has_kanban_body = true;
+            let $hook_attach_node = this.$el.find('.o_kanban_record_body');
+            if ($hook_attach_node.length === 0) {
+                $hook_attach_node = this.$el;
+                has_kanban_body = false;
+            }
+            $kanban_tags_hook.prependTo($hook_attach_node);
             $kanban_tags_hook.click(function () {
                 var compatible_fields = _.pick(self.state.fields, function (e) {
                     return e.type === 'many2many';
@@ -156,9 +162,9 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                         structure: 'field',
                         new_attrs: { name: field_name },
                         node: {
-                            tag: 'div/*[1]',
+                            tag: has_kanban_body?'div[hasclass("o_kanban_record_body")]':'div/*[1]',
                         },
-                        position: 'before',
+                        position: 'inside',
                     });
                 });
             });
@@ -231,7 +237,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
             });
         }
 
-        // add the image hook
+        // add the avatr hook
         var $image = this.$('img.oe_kanban_avatar');
         if ($image.length) {
             $image.attr('data-node-id', this.node_id++);
@@ -255,7 +261,11 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                 .append($('<span>', {
                     text: _t('Add an image'),
                 }));
-            $kanban_image_hook.appendTo(this.$el);
+            let $hook_attach_node = this.$el.find('.o_kanban_record_bottom');
+            if ($hook_attach_node.length === 0) {
+                $hook_attach_node = this.$el;
+            }
+            $kanban_image_hook.appendTo($hook_attach_node);
             $kanban_image_hook.click(function () {
                 var compatible_fields = _.pick(self.state.fields, function (e) {
                     return e.type === 'many2one' && (e.relation === 'res.partner' || e.relation === 'res.users');

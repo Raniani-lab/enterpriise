@@ -567,6 +567,7 @@ class SaleSubscription(models.Model):
             'product_id': line.product_id.id,
             'tax_ids': [(6, 0, line.tax_ids.ids)],
             'analytic_account_id': line.analytic_account_id.analytic_account_id.id,
+            'analytic_tag_ids': [(6, 0, line.analytic_account_id.tag_ids.ids)],
             'subscription_start_date': date_start,
             'subscription_end_date': date_stop,
         }

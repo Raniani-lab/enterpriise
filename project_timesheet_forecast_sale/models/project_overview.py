@@ -85,7 +85,7 @@ class ProjectOverview(models.Model):
                     (SELECT max(end_datetime) FROM planning_slot)::date,
                     '1 day'::interval
                 ) date
-                    LEFT JOIN planning_slot F ON date >= F.start_datetime AND date <= end_datetime
+                    LEFT JOIN planning_slot F ON date >= F.start_datetime::date AND date <= end_datetime::date
                     LEFT JOIN hr_employee E ON F.employee_id = E.id
                     LEFT JOIN resource_resource R ON E.resource_id = R.id
                     LEFT JOIN sale_order_line S ON F.order_line_id = S.id

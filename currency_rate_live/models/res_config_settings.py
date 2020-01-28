@@ -35,13 +35,14 @@ class ResCompany(models.Model):
         ('banxico', 'Mexican Bank'),
         ('boc', 'Bank Of Canada'),
         ('xe_com', 'xe.com'),
+        ('bnr', 'National Bank Of Romania'),
     ], default='ecb', string='Service Provider')
 
     @api.model
     def create(self, vals):
         ''' Change the default provider depending on the company data.'''
         if vals.get('country_id') and 'currency_provider' not in vals:
-            code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc'}
+            code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc', 'RO': 'bnr'}
             cc = self.env['res.country'].browse(vals['country_id']).code.upper()
             if cc in code_providers:
                 vals['currency_provider'] = code_providers[cc]
@@ -61,6 +62,9 @@ class ResCompany(models.Model):
             elif company.country_id.code == 'CA':
                 # Bank of Canada
                 company.currency_provider = 'boc'
+            elif company.country_id.code == 'RO':
+                # Set National Bank of Romania for every romanian company that was already installed
+                company.currency_provider = 'bnr'
             else:
                 company.currency_provider = 'ecb'
 
@@ -330,6 +334,37 @@ class ResCompany(models.Model):
                     rate = float(rate_entry.find("td[@class='historicalRateTable-rateHeader']").text)
                     rslt[currency_code] = (rate, today)
 
+        return rslt
+
+    def _parse_bnr_data(self, available_currencies):
+        ''' This method is used to update the currencies by using
+        BNR service provider. Rates are given against RON
+        '''
+        request_url = "https://www.bnr.ro/nbrfxrates.xml"
+        try:
+            parse_url = requests.request('GET', request_url)
+        except:
+            #connection error, the request wasn't successful
+            return False
+
+        xmlstr = etree.fromstring(parse_url.content)
+        data = xml2json_from_elementtree(xmlstr)
+        available_currency_names = available_currencies.mapped('name')
+        rate_date = fields.Date.today()
+        rslt = {}
+        rates_node = data['children'][1]['children'][2]
+        if rates_node:
+            rate_date = (datetime.datetime.strptime(
+                rates_node['attrs']['date'], DEFAULT_SERVER_DATE_FORMAT
+            ) + datetime.timedelta(days=1)).strftime(DEFAULT_SERVER_DATE_FORMAT)
+            for x in rates_node['children']:
+                if x['attrs']['currency'] in available_currency_names:
+                    rslt[x['attrs']['currency']] = (
+                        float(x['attrs'].get('multiplier', '1')) / float(x['children'][0]),
+                        rate_date
+                    )
+        if rslt and 'RON' in available_currency_names:
+            rslt['RON'] = (1.0, rate_date)
         return rslt
 
     @api.model

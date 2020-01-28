@@ -5,6 +5,27 @@ from dateutil.relativedelta import relativedelta
 from odoo.http import request
 from odoo import _lt
 
+from datetime import datetime
+
+
+def currency_normalisation(sql_result, sum_name):
+    result = 0
+    currencies = request.env['res.currency'].browse([row['currency_id'] for row in sql_result if row.get('currency_id')])
+    currencies_mapped = {c.id: c for c in currencies}
+    for row in sql_result:
+        if not row.get('currency_id'):
+            # account move line in the same currency than the company currency
+            amount = row[sum_name]
+        else:
+            currency_id = currencies_mapped[row['currency_id']]
+            company_currency_id = currencies_mapped[row['company_currency_id']]
+            amount_foreign_cur = row[sum_name]
+            company_id = request.env.company
+            amount = currency_id._convert(
+                from_amount=amount_foreign_cur, to_currency=company_currency_id,
+                company=company_id, date=datetime.utcnow().date())
+        result += amount
+    return result
 
 def _execute_sql_query(fields, tables, conditions, query_args, filters, groupby=None):
     """ Returns the result of the SQL query. """
@@ -64,7 +85,7 @@ def _build_sql_query(fields, tables, conditions, query_args, filters, groupby=No
 
 
 def compute_net_revenue(start_date, end_date, filters):
-    fields = ['SUM(account_move_line.price_subtotal)']
+    fields = ['account_move_line.price_subtotal,account_move_line.currency_id,account_move_line.company_currency_id']
     tables = ['account_move_line', 'account_move']
     conditions = [
         "account_move.invoice_date BETWEEN %(start_date)s AND %(end_date)s",
@@ -78,7 +99,7 @@ def compute_net_revenue(start_date, end_date, filters):
         'end_date': end_date,
     }, filters)
 
-    return 0 if not sql_results or not sql_results[0]['sum'] else int(sql_results[0]['sum'])
+    return currency_normalisation(sql_results, 'price_subtotal')
 
 
 def compute_arpu(start_date, end_date, filters):
@@ -94,7 +115,8 @@ def compute_arr(start_date, end_date, filters):
 
 
 def compute_ltv(start_date, end_date, filters):
-    fields = ['CASE WHEN COUNT(DISTINCT account_move_line.subscription_id)!=0 THEN SUM(account_move_line.subscription_mrr)/COUNT(DISTINCT account_move_line.subscription_id) ELSE 0 END AS sum']
+    fields = ['account_move_line.subscription_mrr', 'account_move_line.subscription_id',
+              'account_move_line.currency_id', 'account_move_line.company_currency_id', 'account_move_line.company_id']
     tables = ['account_move_line', 'account_move']
     conditions = [
         "date %(date)s BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
@@ -107,14 +129,17 @@ def compute_ltv(start_date, end_date, filters):
         'date': end_date,
     }, filters)
 
-    avg_mrr_per_customer = 0 if not sql_results or not sql_results[0]['sum'] else sql_results[0]['sum']
+    sum_mrr = currency_normalisation(sql_results, 'subscription_mrr')
+    n_customer = len({x['subscription_id'] for x in sql_results})
+    avg_mrr_per_customer = sum_mrr/n_customer if n_customer else 0
     logo_churn = compute_logo_churn(start_date, end_date, filters)
     result = 0 if logo_churn == 0 else avg_mrr_per_customer/float(logo_churn)
     return int(result)
 
 
 def compute_nrr(start_date, end_date, filters):
-    fields = ['SUM(account_move_line.price_subtotal)']
+    fields = ['account_move_line.price_subtotal', 'account_move_line.currency_id',
+              'account_move_line.company_currency_id', 'account_move_line.company_id']
     tables = ['account_move_line', 'account_move']
     conditions = [
         "(account_move.invoice_date BETWEEN %(start_date)s AND %(end_date)s)",
@@ -122,14 +147,14 @@ def compute_nrr(start_date, end_date, filters):
         "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
         "account_move_line.subscription_start_date IS NULL",
+        "account_move_line.exclude_from_invoice_tab = false",
     ]
 
     sql_results = _execute_sql_query(fields, tables, conditions, {
         'start_date': start_date,
         'end_date': end_date,
     }, filters)
-
-    return 0 if not sql_results or not sql_results[0]['sum'] else int(sql_results[0]['sum'])
+    return currency_normalisation(sql_results, 'price_subtotal')
 
 
 def compute_nb_contracts(start_date, end_date, filters):
@@ -151,7 +176,8 @@ def compute_nb_contracts(start_date, end_date, filters):
 
 
 def compute_mrr(start_date, end_date, filters):
-    fields = ['SUM(account_move_line.subscription_mrr)']
+    fields = ['account_move_line.subscription_mrr', 'account_move_line.currency_id',
+              'account_move_line.company_currency_id', 'account_move_line.company_id']
     tables = ['account_move_line', 'account_move']
     conditions = [
         "date %(date)s BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
@@ -164,7 +190,7 @@ def compute_mrr(start_date, end_date, filters):
         'date': end_date,
     }, filters)
 
-    return 0 if not sql_results or not sql_results[0]['sum'] else sql_results[0]['sum']
+    return currency_normalisation(sql_results, 'subscription_mrr')
 
 
 def compute_logo_churn(start_date, end_date, filters):
@@ -212,7 +238,8 @@ def compute_logo_churn(start_date, end_date, filters):
 
 def compute_revenue_churn(start_date, end_date, filters):
 
-    fields = ['SUM(account_move_line.subscription_mrr) AS sum']
+    fields = ['account_move_line.subscription_mrr,account_move_line.currency_id,account_move_line.company_currency_id',
+              'account_move_line.company_id']
     tables = ['account_move_line', 'account_move']
     conditions = [
         "date %(date)s - interval '1 months' BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
@@ -232,7 +259,7 @@ def compute_revenue_churn(start_date, end_date, filters):
         'date': end_date,
     }, filters)
 
-    churned_mrr = 0 if not sql_results or not sql_results[0]['sum'] else sql_results[0]['sum']
+    churned_mrr = currency_normalisation(sql_results, 'subscription_mrr')
     previous_month_mrr = compute_mrr(start_date, (end_date - relativedelta(months=+1)), filters)
     return 0 if previous_month_mrr == 0 else 100*churned_mrr/float(previous_month_mrr)
 
@@ -245,7 +272,8 @@ def compute_mrr_growth_values(start_date, end_date, filters):
     net_new_mrr = 0
 
     # 1. NEW
-    fields = ['SUM(account_move_line.subscription_mrr) AS sum']
+    fields = ['account_move_line.subscription_mrr,account_move_line.currency_id,account_move_line.company_currency_id',
+              'account_move_line.company_id']
     tables = ['account_move_line', 'account_move']
     conditions = [
         "date %(date)s BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
@@ -265,42 +293,47 @@ def compute_mrr_growth_values(start_date, end_date, filters):
         'date': end_date,
     }, filters)
 
-    new_mrr = 0 if not sql_results or not sql_results[0]['sum'] else sql_results[0]['sum']
+    new_mrr = currency_normalisation(sql_results, 'subscription_mrr')
 
     # 2. DOWN & EXPANSION
-    fields = ['account_move_line.subscription_id', 'SUM(account_move_line.subscription_mrr) AS sum']
-    tables = ['account_move_line', 'account_move']
+    ##############################
+    # We rely on the sale_subscription_log value because comparing aml evolution is too verbose
+    # with currency conversion.
+    # The log already have the converted currencies.
+
+    fields = ['sale_subscription_log.amount_company_currency AS diff']
+    tables = ['sale_subscription_log', 'sale_subscription_template', 'sale_subscription']
     conditions = [
-        "account_move.id = account_move_line.move_id",
-        "account_move.move_type IN ('out_invoice', 'out_refund')",
-        "account_move.state NOT IN ('draft', 'cancel')",
+        "sale_subscription_log.event_type = '1_change'",
+        "sale_subscription_template.id = sale_subscription.template_id",
+        "sale_subscription.id = sale_subscription_log.subscription_id",
+        "sale_subscription_log.event_date >= %(date)s",
+        "sale_subscription_log.event_date >= %(date)s",
     ]
-    groupby = "account_move_line.subscription_id"
 
-    subquery_1 = _build_sql_query(fields, tables, [
-        "account_move.id = account_move_line.move_id",
-        "account_move.move_type IN ('out_invoice', 'out_refund')",
-        "account_move.state NOT IN ('draft', 'cancel')",
-        "account_move_line.subscription_start_date BETWEEN date %(date)s - interval '1 months' + interval '1 days' and date %(date)s"
-    ], {'date': end_date}, filters, groupby=groupby)
+    query_args = {'date': end_date}
+    if filters.get('template_ids'):
+        conditions.append("sale_subscription.template_id IN %(template_ids)s")
+        query_args['template_ids'] = tuple(filters.get('template_ids'))
 
-    subquery_2 = _build_sql_query(fields, tables, [
-        "account_move.id = account_move_line.move_id",
-        "account_move.move_type IN ('out_invoice', 'out_refund')",
-        "account_move.state NOT IN ('draft', 'cancel')",
-        "account_move_line.subscription_end_date BETWEEN date %(date)s - interval '1 months' + interval '1 days' and date %(date)s"
-    ], {'date': end_date}, filters, groupby=groupby)
+    if filters.get('sale_team_ids'):
+        conditions.append("sale_subscription_log.team_id IN %(team_ids)s")
+        conditions.append("sale_subscription.team_id IN %(team_ids)s")
+        query_args['team_ids'] = tuple(filters.get('sale_team_ids'))
 
-    computed_query = """
-        SELECT old_line.subscription_id, old_line.sum AS old_sum, new_line.sum AS new_sum, (new_line.sum - old_line.sum) AS diff
-        FROM ( """ + subquery_1[0] + """ ) AS new_line, ( """ + subquery_2[0] + """ ) AS old_line
-        WHERE
-            new_line.subscription_id IS NOT NULL AND
-            old_line.subscription_id = new_line.subscription_id
-    """
-    request.cr.execute(computed_query, subquery_1[1])
+    if filters.get('tag_ids'):
+        tables.append("sale_subscription")
+        conditions.append("sale_subscription.tag_ids = IN %(tag_ids)s)")
+        query_args['tag_ids'] = tuple(filters.get('tag_ids'))
 
-    sql_results = request.cr.dictfetchall()
+    if filters.get('company_ids'):
+        conditions.append("sale_subscription_log.company_id IN %(company_ids)s")
+        conditions.append("sale_subscription.company_id IN %(company_ids)s")
+        query_args['company_ids'] = tuple(filters.get('company_ids'))
+
+    # Filters are empty in the following call because we took care above
+    sql_results = _execute_sql_query(fields, tables, conditions, query_args, {})
+
     for account in sql_results:
         if account['diff'] > 0:
             expansion_mrr += account['diff']
@@ -308,7 +341,7 @@ def compute_mrr_growth_values(start_date, end_date, filters):
             down_mrr -= account['diff']
 
     # 3. CHURNED
-    fields = ['SUM(account_move_line.subscription_mrr)']
+    fields = ['account_move_line.subscription_mrr']
     tables = ['account_move_line', 'account_move']
     conditions = [
         "date %(date)s - interval '1 months' BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",
@@ -328,7 +361,7 @@ def compute_mrr_growth_values(start_date, end_date, filters):
         'date': end_date,
     }, filters)
 
-    churned_mrr = 0 if not sql_results or not sql_results[0]['sum'] else sql_results[0]['sum']
+    churned_mrr = currency_normalisation(sql_results, 'subscription_mrr')
 
     net_new_mrr = new_mrr - churned_mrr + expansion_mrr - down_mrr
 

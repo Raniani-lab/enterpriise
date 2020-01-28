@@ -46,6 +46,13 @@
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
 
+    <record model="ir.rule" id="sale_subscription_log_multicompany">
+        <field name="name">Subscription log multi-company</field>
+        <field name="model_id" ref="model_sale_subscription_log"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+
     <!-- Reporting -->
     <record model="ir.rule" id="sale_subscription_report_comp_rule">
         <field name="name">Subscription Analysis multi-company</field>

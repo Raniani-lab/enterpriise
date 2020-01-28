@@ -13,6 +13,17 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
     QUnit.module('sale_subscription_dashboard', {
         beforeEach: function () {
             this.data = {
+                dashboard_options : {
+                    filter: 'this_month',
+                    ranges: {
+                        this_quarter: {date_from: undefined, date_to: undefined},
+                        this_year: {date_from: undefined, date_to: undefined},
+                        last_quarter: {date_from: undefined, date_to: undefined},
+                        last_year: {date_from: undefined, date_to: undefined},
+                        this_month: {date_from: undefined, date_to: undefined},
+                        last_month: {date_from: undefined, date_to: undefined},
+                    }
+                },
                 fetch_data: {
                     stat_types: {
                         net_revenue: {
@@ -52,7 +63,16 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                         name: "YourCompany"
                     },
                     has_mrr: true,
-                    has_template: true
+                    has_template: true,
+                    dates_ranges: {
+                        'this_year': {'date_from':  '2020-01-01', 'date_to': '2020-12-31'},
+                        'last_year': {'date_from': '2019-01-01' , 'date_to': '2019-12-31'},
+                        'this_quarter': {'date_from':  '2019-12-01' , 'date_to': '2020-02-01'},
+                        'last_quarter': {'date_from': '2019-09-01', 'date_to': '2019-11-31'},
+                        'this_month': {'date_from': '2020-02-01', 'date_to':  '2020-02-29'},
+                        'last_month':  {'date_from': '2020-01-01', 'date_to': '2020-01-31' },
+                    }
+
                 },
                 compute_stats_graph: {
                     graph: [{
@@ -123,7 +143,15 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                     }, {
                         id: 5,
                         name: "Marc Demo"
-                    }]
+                    }],
+                    dates_ranges: {
+                        'this_year': {'date_from':  '2020-01-01', 'date_to': '2020-12-31'},
+                        'last_year': {'date_from': '2019-01-01' , 'date_to': '2019-12-31'},
+                        'this_quarter': {'date_from':  '2019-12-01' , 'date_to': '2020-02-01'},
+                        'last_quarter': {'date_from': '2019-09-01', 'date_to': '2019-11-31'},
+                        'this_month': {'date_from': '2020-02-01', 'date_to':  '2020-02-29'},
+                        'last_month':  {'date_from': '2020-01-01', 'date_to': '2020-01-31' },
+                    }
                 },
                 salesman_values: {
                     salespersons_statistics: {1: {
@@ -183,7 +211,8 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             var self = this;
             assert.expect(2);
             var subscription_dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_main(null, {
-                id: 1
+                id: 1,
+                dashboard_options: this.data.dashboard_options,
             });
             await testUtils.nextTick();
             testUtils.mock.addMockEnvironment(subscription_dashboard, {
@@ -219,11 +248,13 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 tags: null,
                 companies: null,
                 filters: null,
+                dashboard_options: this.data.dashboard_options,
             });
             testUtils.mock.addMockEnvironment(dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/get_default_values_forecast') {
-                        assert.deepEqual(_.keys(args).sort(), ['end_date', 'filters', 'forecast_type'], "should be requested only with defined parameters");
+                        assert.deepEqual(_.keys(args).sort(), ['context', 'end_date', 'filters', 'forecast_type'],
+                                                                "should be requested only with defined parameters");
                         return Promise.resolve(self.data.forecast_values);
                     }
                     return Promise.resolve();
@@ -267,6 +298,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 tags: null,
                 companies: null,
                 filters: {},
+                dashboard_options: this.data.dashboard_options,
             });
             testUtils.mock.addMockEnvironment(dashboard, {
                 mockRPC: function (route, args) {

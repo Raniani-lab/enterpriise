@@ -42,11 +42,14 @@ class SalemanDashboard(http.Controller):
                               (sale_subscription_migration_date,))
                 sale_subscription_migration_date = False
 
+        dates_ranges = request.env['sale.subscription'].get_dates_ranges()
+
         return {
             'salesman_ids': salesman_ids,
             'default_salesman': [current_salesmen[0]] if current_salesmen else None,
             'currency_id': request.env.company.currency_id.id,
             'migration_date': sale_subscription_migration_date,
+            'dates_ranges': dates_ranges,
         }
 
     @http.route('/sale_subscription_dashboard/get_values_salesmen', type='json', auth='user')

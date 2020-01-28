@@ -20,6 +20,15 @@
     }
 }
 
+.o_foldable_menu {
+    &.o_closed_menu {
+        display: none;
+    }
+    .o_open_menu {
+        display: block;
+    }
+}
+
 .o_account_contract_dashboard {
     svg {
         padding-top: 2px;
@@ -135,7 +144,9 @@
 
     .o_loader {
         text-align: center;
+        margin-top: 70px;
         width: 100%;
+        height: 80px; // total height is 150px, 150-70 = 80
     }
 
     .o_green {
@@ -182,4 +193,14 @@
     .o_subscription_ellipsis {
         max-width:20px !important;
     }
+}
+
+.o_subscription_dashboard_search {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.o_dropdown_toggler_btn:first-child {
+    // apply the padding to the first element so that when the `favorites` menu goes under
+    // the `filters` menu, they're still aligned
+    margin-right: 10px;
 }

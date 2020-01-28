@@ -2,14 +2,35 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-from odoo.tools import config
+from odoo.tools import config, date_utils
 
 from itertools import groupby
 from operator import itemgetter
+from dateutil.relativedelta import relativedelta
 
 
 class SaleSubscription(models.Model):
     _inherit = 'sale.subscription'
+
+    @api.model
+    def get_dates_ranges(self):
+        today = fields.Date.context_today(self)
+        this_year_dates = self.env.company.compute_fiscalyear_dates(today)
+        last_year_dates = self.env.company.compute_fiscalyear_dates(today - relativedelta(years=1))
+
+        this_quarter_from, this_quarter_to = date_utils.get_quarter(today)
+        last_quarter_from, last_quarter_to = date_utils.get_quarter(today - relativedelta(months=3))
+
+        this_month_from, this_month_to = date_utils.get_month(today)
+        last_month_from, last_month_to = date_utils.get_month(today - relativedelta(months=1))
+        return {
+            'this_year': {'date_from': this_year_dates['date_from'], 'date_to': this_year_dates['date_to']},
+            'last_year': {'date_from': last_year_dates['date_from'], 'date_to': last_year_dates['date_to']},
+            'this_quarter': {'date_from': this_quarter_from, 'date_to': this_quarter_to},
+            'last_quarter': {'date_from': last_quarter_from, 'date_to': last_quarter_to},
+            'this_month': {'date_from': this_month_from, 'date_to': this_month_to},
+            'last_month': {'date_from': last_month_from, 'date_to': last_month_to},
+        }
 
     def _get_salesperson_kpi(self, user_id, start_date, end_date):
         start_date = fields.Date.from_string(start_date)
@@ -53,8 +74,12 @@ class SaleSubscription(models.Model):
             subscription_id = self.env['sale.subscription'].browse(log['subscription_id'][0])
             date = log['event_date']
             currency_id = self.env['res.currency'].browse(log['currency_id'][0])
-            recurring_monthly = self._convert_amount(log['recurring_monthly'], date, currency_id)
-            amount_signed = self._convert_amount(log['amount_signed'], date, currency_id)
+            recurring_monthly = currency_id._convert(
+                from_amount=log['recurring_monthly'], date=date,
+                to_currency=self.env.company.currency_id, company=self.env.company)
+            amount_signed = currency_id._convert(
+                from_amount=log['amount_signed'], date=date,
+                to_currency=self.env.company.currency_id, company=self.env.company)
             previous_mrr = recurring_monthly - amount_signed
             contract_modifications.append({'date': date, 'type': self._get_log_type(log['event_type'], log['amount_signed']),
                                            'partner': subscription_id.partner_id.name,
@@ -76,14 +101,6 @@ class SaleSubscription(models.Model):
             'net_new': metrics['net_new_mrr'],
             'contract_modifications': contracts_clean,
         }
-
-    def _convert_amount(self, amount, date, currency_id):
-        return self.env.company.currency_id._convert(
-            from_amount=amount,
-            to_currency=currency_id,
-            date=date,
-            company=self.env.company
-        )
 
     def metrics_calculation(self, contract_log):
         metrics_update = {}
@@ -261,17 +278,21 @@ class SaleSubscription(models.Model):
                 currency_id = invoice_lines[0]['currency_id'][0]
             else:
                 currency_id = invoice_lines[0]['company_currency_id'][0]
-            total_nrr += self._convert_amount(total_invoice, invoice_id.date, self.env['res.currency'].browse(currency_id))
+            currency_id = self.env['res.currency'].browse(currency_id)
+            nrr = currency_id._convert(
+                from_amount=total_invoice, date=invoice_id.date,
+                to_currency=self.env.company.currency_id, company=self.env.company)
+            total_nrr += nrr
             nrr_invoice_ids.append({
-                    'date': invoice_id.date,
-                    'partner': invoice_id.partner_id.name,
-                    'code': invoice_id.name,
-                    'nrr': self._convert_amount(total_invoice, invoice_id.date, self.env['res.currency'].browse(currency_id)),
-                    'move_id': invoice_id.id,
-                    'model': 'account.move',
-                    'company_id': invoice_id.company_id.id,
-                    'company_name': invoice_id.company_id.name,
-                })
+                'date': invoice_id.date,
+                'partner': invoice_id.partner_id.name,
+                'code': invoice_id.name,
+                'nrr': nrr,
+                'move_id': invoice_id.id,
+                'model': 'account.move',
+                'company_id': invoice_id.company_id.id,
+                'company_name': invoice_id.company_id.name,
+            })
         return {
             'nrr': total_nrr,
             'nrr_invoices': nrr_invoice_ids,

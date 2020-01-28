@@ -24,10 +24,11 @@
         </div>
     </div>
 
-    <!-- 2. Detailed dashboard -->
+        <div t-name="sale_subscription_dashboard.detailed_analysis_btn" class="o_detailed_analysis">
+            <button t-if="_.contains(['mrr', 'nrr', 'net_revenue'], stat_type)" class="btn btn-primary o_detailed_analysis">Detailed Analysis</button>
+        </div>
+        <!-- 2. Detailed dashboard -->
     <div t-name="sale_subscription_dashboard.detailed_dashboard" class="container o_account_contract_dashboard">
-        <button t-if="_.contains(['mrr', 'nrr', 'net_revenue'], stat_type)" class="btn btn-primary o_detailed_analysis">Detailed Analysis</button>
-
         <div class="box o_graph_detailed">
             <h1 class="o_metric_current o_blue">
                 <t t-esc="format_number(value, selected_stat_values['add_symbol'])"/>
@@ -37,6 +38,9 @@
         </div>
 
         <div class="container">
+            <div class="o_description">
+                The current value is measured at the end of the selected period and historical data are relative to this last value.
+            </div>
             <div id="o-stat-history-box" class="box row"/>
         </div>
 
@@ -44,7 +48,10 @@
             <h3>Monthly Recurring Revenue Growth</h3>
             <div id="mrr_growth_chart_div"/>
         </div>
-
+        
+        <div t-if="display_stats_by_plan" class="o_description">
+                The following values are measured at the end of the selected period.
+        </div>
         <div t-if="display_stats_by_plan" class="box o_stats_by_plan"/>
     </div>
 
@@ -249,20 +256,19 @@
     </div>
 
     <div t-name="sale_subscription_dashboard.salesman_searchview" class="o_datepickers_searchview">
-        <span class="o_datepicker_separator"> to </span>
+        <div class="btn-group o_dropdown o_subscription_dashboard_filter_date"></div>
         <span class="salesman_tags"></span>
         <button class="btn btn-primary o_update_options">Update</button>
     </div>
 
     <!-- Common top bar -->
     <!-- TODO: Hide in mobile as it is going to push in control panel and it breaks UI, maybe we will improve it in future -->
-    <div t-name="sale_subscription_dashboard.dashboard_option_pickers" class="o_datepickers_searchview d-none d-md-flex">
-        <span class="o_datepicker_separator"> to </span><button class="btn btn-primary o_update_options">Update</button>
-    </div>
     <t t-name="sale_subscription_dashboard.dashboard_option_filters">
+        <div class="o_dropdown_toggler_btn btn-group o_dropdown o_subscription_dashboard_filter_date"></div>
         <!-- Subscriptions -->
         <div t-if="widget.contract_templates &amp;&amp; widget.contract_templates.length > 1" class="o_dropdown dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">Filter on Subscriptions</a>
+            <button class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                <span class="fa fa-file-o"/> Subscriptions</button>
             <div class="dropdown-menu o_filter_menu" role="menu">
                 <t t-foreach="widget.contract_templates" t-as="template">
                     <a role="menuitem" href="#" class="dropdown-item o_contract_template_filter js_tag" t-att-data-id="template.id"><t t-esc="template.name"/></a>
@@ -272,7 +278,7 @@
 
         <!-- Tags -->
         <div t-if="widget.tags &amp;&amp; widget.tags.length > 1" class="o_dropdown dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">Filter on Categories</a>
+            <a class="dropdown-toggle" data-toggle="dropdown"> <span class="fa fa-bar-chart"/> Categories</a>
             <div class="dropdown-menu o_filter_menu" role="menu">
                 <t t-foreach="widget.tags" t-as="tag">
                     <a role="menuitem" href="#" class="dropdown-item o_tags_filter js_tag" t-att-data-id="tag.id"><t t-esc="tag.name"/></a>
@@ -282,7 +288,8 @@
 
         <!-- Companies -->
         <div t-if="widget.companies &amp;&amp; widget.companies.length > 1" class="o_dropdown dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">Filter on Companies</a>
+            <button class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                <span class="fa fa-building"/> Companies</button>
             <div class="dropdown-menu o_filter_menu" role="menu">
                 <t t-foreach="widget.companies" t-as="company">
                     <a role="menuitem" href="#" class="dropdown-item o_companies_filter js_tag" t-att-data-id="company.id"><t t-esc="company.name"/></a>
@@ -292,13 +299,15 @@
 
         <!-- Sales Team -->
         <div t-if="widget.sales_team &amp;&amp; widget.sales_team.length > 1" class="o_dropdown dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">Filter on Sales Team<span class="caret"/></a>
+            <button class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                <span class="fa fa-users"/>Sales Team<span class="caret"/></button>
             <div class="dropdown-menu o_filter_menu" role="menu">
                 <t t-foreach="widget.sales_team" t-as="sale_team">
                     <a role="menuitem" href="#" class="dropdown-item o_sales_team_filter js_tag" t-att-data-id="sale_team.id"><t t-esc="sale_team.name"/></a>
                 </t>
             </div>
         </div>
+        <button class="btn btn-primary o_update_options">Update</button>
     </t>
 
 <!-- SPECIFIC TEMPLATES -->
@@ -309,19 +318,11 @@
                 <th>Plan</th>
                 <th># of Subscriptions</th>
                 <th t-if="stat_type != 'nb_contracts'"><t t-esc="stat_types[stat_type]['name']"/></th>
-                <th/>
             </tr>
             <tr t-foreach="stats_by_plan" t-as="plan">
                 <td><t t-esc="plan['name']"/></td>
                 <td><t t-esc="plan['nb_customers']"/></td>
                 <td t-if="stat_type != 'nb_contracts'"><t t-esc="format_number(plan['value'], stat_types[stat_type]['add_symbol'])"/></td>
-                <td>
-                    <div t-if="value != 0" class="progress" style="width:80%; height:10px;">
-                        <div class="progress-bar" role="progressbar" t-att-aria-valuenow="100*plan['value']/value" aria-valuemin="0" aria-valuemax="100" t-att-style="'width: '+100*plan['value']/value+'%'">
-                            <span class="sr-only"><t t-esc="100*plan['value']/value"/>% Complete (success)</span>
-                        </div>
-                    </div>
-                </td>
             </tr>
         </table>
     </div>
@@ -357,16 +358,23 @@
         </div>
     </t>
 
+    <t t-name="sale_subscription_dashboard.box_name">
+        <span class="o_sale_subscription_dashboard_value">
+            <span t-if="has_mrr" t-esc="format_number(value, currency_id)"/>
+            <span t-else="" t-esc="format_number(demo_values[stat_type], currency_id)"/>
+        </span>
+    </t>
+    <t t-name="sale_subscription_dashboard.box_trend">
+        <span class="o_sale_subscription_dashboard_value">
+            <h4 t-attf-class="o_percentage #{color}"><t t-esc="perc"/>%</h4>
+            <span class="o_legend">30 Days Ago</span>
+        </span>
+    </t>
     <div t-name="sale_subscription_dashboard.stat_box_content" class="box o_stat_box" t-att-name="widget.box_name" t-att-code="widget.stat_type">
+        <div class="o_loader"><span class="fa fa-3x fa-spin fa-spinner fa-pulse" role="img" aria-label="Loading..." title="Loading..."/></div>
         <div class="o_stat_box_header">
-            <h2 class="o_stat_box_card_amount">
-                <t t-if="widget.has_mrr" t-esc="widget.format_number(widget.value)"/>
-                <t t-if="!widget.has_mrr" t-esc="widget.format_number(widget.demo_values[widget.stat_type])"/>
-            </h2>
-            <div class="o_trend">
-                <h4 t-attf-class="o_percentage #{widget.color}"><t t-esc="widget.perc"/>%</h4>
-                <span class="o_legend">30 Days Ago</span>
-            </div>
+            <h2 class="o_stat_box_card_amount"></h2>
+            <div class="o_trend"></div>
         </div>
         <div class="o_graph" t-att-id="widget.chart_div_id"/>
         <div>
@@ -379,11 +387,9 @@
     </div>
 
     <div t-name="sale_subscription_dashboard.forecast_stat_box_content" class="box o_forecast_box" t-att-name="widget.box_name" t-att-code="widget.stat_type">
+        <div class="o_loader"><span class="fa fa-3x fa-spin fa-spinner fa-pulse" role="img" aria-label="Loading..." title="Loading..."/></div>
         <div class="o_stat_box_header">
-            <h2 class="o_stat_box_card_amount">
-                <t t-if="widget.has_mrr" t-esc="widget.format_number(widget.value)"/>
-                <t t-if="!widget.has_mrr" t-esc="widget.format_number(widget.demo_values[widget.stat_type])"/>
-            </h2>
+            <h2 class="o_stat_box_card_amount"></h2>
         </div>
         <div class="o_graph" t-att-id="widget.chart_div_id"/>
          <span t-if="widget.tooltip" class="o_kpi_definition" data-toggle="popover" t-att-data-content="widget.tooltip"><i class="fa fa-question-circle"/></span>
@@ -460,6 +466,53 @@
                     <td><t t-esc="format_number(invoice['nrr'], company_currency_id)"/></td>
                 </tr>
             </table>
+        </div>
+    </t>
+
+    <t t-name="sale_subscription_dashboard.date_filter">
+        <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-calendar" title="Dates" role="img" aria-label="Dates"/>
+            From:
+            <span class="js_format_date">
+                <t t-esc="date_from"/>
+            </span>
+            <span class="o_reports_date_to">to:
+                <span class="js_format_date">
+                    <t t-esc="date_to"/>
+                </span>
+            </span>
+        </a>
+        <div class="dropdown-menu o_filters_menu" role="menu">
+            <a role="menuitem" class="dropdown-item js_subscription_dashboard_date_filter o_predefined_range" title="This Month" data-filter="this_month">This Month</a>
+            <a role="menuitem" class="dropdown-item js_subscription_dashboard_date_filter o_predefined_range" title="This Quarter" data-filter="this_quarter">This Quarter</a>
+            <a role="menuitem" class="dropdown-item js_subscription_dashboard_date_filter o_predefined_range" title="This Financial Year" data-filter="this_year">This Financial Year</a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a role="menuitem" class="dropdown-item js_subscription_dashboard_date_filter o_predefined_range" title="Last Month" data-filter="last_month">Last Month</a>
+            <a role="menuitem" class="dropdown-item js_subscription_dashboard_date_filter o_predefined_range" title="Last Quarter" data-filter="last_quarter">Last Quarter</a>
+            <a role="menuitem" class="dropdown-item js_subscription_dashboard_date_filter o_predefined_range" title="Last Financial Year" data-filter="last_year">Last Financial Year</a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu" data-filter='custom_filter_date'>Custom
+            </a>
+            <div class="o_foldable_menu o_closed_menu o_subscription_dashboard_search" data-filter='custom_filter_date'>
+            <label class="custom-date" for="date_from">Start Date :</label>
+            <div class="form-group custom-date">
+                <div class='o_datepicker js_subscription_dashboard_datetimepicker'
+                        t-att-data-default-value="date_from">
+                    <input type='text' class="o_datepicker_input" name="date_from"/>
+                    <span class="o_datepicker_button"/>
+                </div>
+            </div>
+            <label class="custom-date" for="date_to">End Date :</label>
+            <div class="form-group custom-date">
+                <div class='o_datepicker js_subscription_dashboard_datetimepicker'
+                 t-att-data-default-value="date_to">
+                    <input type='text' class="o_datepicker_input" name="date_to"/>
+                    <span class="o_datepicker_button"/>
+                </div>
+            </div>
+                <button type="button" class="btn btn-primary js_subscription_dashboard_date_filter"
+                        data-filter="custom">Apply</button>
+            </div>
         </div>
     </t>
 

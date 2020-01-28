@@ -14,6 +14,7 @@ var Widget = require('web.Widget');
 var relational_fields = require('web.relational_fields');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 var ajax = require('web.ajax');
+var WarningDialog = require('web.CrashManager').WarningDialog;
 
 var FieldMany2ManyTags = relational_fields.FieldMany2ManyTags;
 var _t = core._t;
@@ -54,19 +55,40 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneField
     ],
     hasControlPanel: true,
 
+    events: {
+        'click .js_foldable_trigger': 'preventMenuFold',
+        'click .js_subscription_dashboard_date_filter': 'handleDateSelection'
+    },
+
     /**
      * @constructor
      */
     init: function (parent, action) {
         this._super.apply(this, arguments);
         StandaloneFieldManagerMixin.init.call(this);
+        this.$dateFilter = undefined;
+        this.contract_templates = [];
+        this.companies = [];
+        this.tags = [];
+        this.sales_team = [];
+        this.dashboard_options = {
+            filter: 'last_month',
+            ranges: {
+                this_quarter: {date_from: undefined, date_to: undefined},
+                this_year: {date_from: undefined, date_to: undefined},
+                last_quarter: {date_from: undefined, date_to: undefined},
+                last_year: {date_from: undefined, date_to: undefined},
+                this_month: {date_from: undefined, date_to: undefined},
+                last_month: {date_from: undefined, date_to: undefined},
+            }
+
+        };
     },
 
-    start: function() {
-        var self = this;
-        return this._super().then(function() {
-            self.render_dashboard();
-        });
+    start: async function () {
+        const [res, data] = await Promise.all([this._super(), this.fetch_data()]);
+        this.render_dashboard();
+        return res;
     },
 
     on_reverse_breadcrumb: function() {
@@ -96,9 +118,24 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneField
         });
     },
 
+    convert_dates: function (string_ranges) {
+        /*
+            Convert the dates ranges provided by the backend to javascript Moments.
+            string_ranges: object containing the date ranges.
+            Same properties than `this.dashboard_options.ranges`
+            with the difference that the dates are formatted strings ('YYYY-MM-DD').
+        */
+        const ranges = {};
+        for (const element in string_ranges) {
+            ranges[element] = {
+                'date_from': moment(string_ranges[element].date_from),
+                'date_to': moment(string_ranges[element].date_to)
+            };
+        }
+        return ranges;
+    },
+
     on_update_options: function() {
-        this.start_date = this.start_picker.getValue() || '0001-02-01';
-        this.end_date = this.end_picker.getValue()  || '9999-12-31';
         this.filters.template_ids = this.get_filtered_template_ids();
         this.filters.tag_ids = this.get_filtered_tag_ids();
         this.filters.sale_team_ids = this.get_filtered_sales_team_ids();
@@ -116,9 +153,10 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneField
         return self._rpc({
                 route: '/sale_subscription_dashboard/companies_check',
                 params: {
-                    company_ids: company_ids
+                    company_ids: company_ids,
+                    context: session.user_context
                 },
-            }).then(function(response) {
+            }, {shadow: true}).then(function (response) {
                 if (response.result === true) {
                     self.currency_id = response.currency_id;
                     self.filters.company_ids = company_ids;
@@ -133,12 +171,12 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneField
     },
 
     get_filtered_template_ids: function() {
-        var $contract_inputs = this.$searchview_buttons.find(".o_contract_template_filter.selected");
+        var $contract_inputs = this.$searchview.find(".o_contract_template_filter.selected");
         return _.map($contract_inputs, function(el) { return $(el).data('id'); });
     },
 
     get_filtered_tag_ids: function() {
-        var $tag_inputs = this.$searchview_buttons.find(".o_tags_filter.selected");
+        var $tag_inputs = this.$searchview.find(".o_tags_filter.selected");
         return _.map($tag_inputs, function(el) { return $(el).data('id'); });
     },
 
@@ -146,90 +184,159 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneField
         if (this.companies && this.companies.length === 1) {
             return [this.companies[0].id];
         } else {
-            var $company_inputs = this.$searchview_buttons.find(".o_companies_filter.selected");
+            var $company_inputs = this.$searchview.find(".o_companies_filter.selected");
             return _.map($company_inputs, function(el) { return $(el).data('id'); });
         }
     },
 
     get_filtered_sales_team_ids: function() {
-        var $sales_team_inputs = this.$searchview_buttons.find(".o_sales_team_filter.selected");
+        var $sales_team_inputs = this.$searchview.find(".o_sales_team_filter.selected");
         return _.map($sales_team_inputs, function(el) { return $(el).data('id'); });
     },
 
     render_filters: function() {
-        this.$searchview_buttons = $();
-        if(this.contract_templates.length || this.companies.length || this.tags.length || this.sales_team.length) {
-            this.$searchview_buttons = $(QWeb.render("sale_subscription_dashboard.dashboard_option_filters", {widget: this}));
+        var self = this;
+        if (this.contract_templates.length || this.companies.length || this.tags.length || this.sales_team.length) {
+            self.$searchview = $(QWeb.render("sale_subscription_dashboard.dashboard_option_filters", {widget: this}));
         }
-        this.$searchview_buttons.on('click', '.js_tag', function(e) {
+        this.$searchview.on('click', '.js_tag', function(e) {
             e.preventDefault();
             $(e.target).toggleClass('selected');
         });
-
         // Check the boxes if it was already checked before the update
-        var self = this;
         _.each(this.filters.template_ids, function(id) {
-            self.$searchview_buttons.find('.o_contract_template_filter[data-id=' + id + ']').addClass('selected');
+            self.$searchview.find('.o_contract_template_filter[data-id=' + id + ']').addClass('selected');
         });
         _.each(this.filters.tag_ids, function(id) {
-            self.$searchview_buttons.find('.o_tags_filter[data-id=' + id + ']').addClass('selected');
+            self.$searchview.find('.o_tags_filter[data-id=' + id + ']').addClass('selected');
         });
         _.each(this.filters.company_ids, function(id) {
-            self.$searchview_buttons.find('.o_companies_filter[data-id=' + id + ']').addClass('selected');
+            self.$searchview.find('.o_companies_filter[data-id=' + id + ']').addClass('selected');
         });
         _.each(this.filters.sale_team_ids, function(id) {
-            self.$searchview_buttons.find('.o_sales_team_filter[data-id=' + id + ']').addClass('selected');
+            self.$searchview.find('.o_sales_team_filter[data-id=' + id + ']').addClass('selected');
         });
     },
 
     update_cp: function() {
-        var self = this;
-
-        var def;
-        if(!this.$searchview) {
-            this.$searchview = $(QWeb.render("sale_subscription_dashboard.dashboard_option_pickers"));
-            this.$searchview.on('click', '.o_update_options', this.on_update_options);
-            def = this.set_up_datetimepickers();
+        const PeriodChange = this.$searchview &&
+        this.dashboard_options.filter !== this.$searchview.find('.o_predefined_range.selected').data('filter');
+        let def;
+        if (!this.$searchview || PeriodChange) {
             this.render_filters();
+            this.$searchview.filter('.o_update_options').on('click', this.on_update_options);
+            def = this.set_up_datetimepickers({});
         }
-
-        Promise.resolve(def).then(function() {
+        const self = this;
+        Promise.resolve(def).then(function () {
             self.updateControlPanel({
                 cp_content: {
                     $searchview: self.$searchview,
-                    $searchview_buttons: self.$searchview_buttons,
+                    $buttons: self.$cpButton
                 },
             });
         });
     },
 
-    set_up_datetimepickers: function() {
-        var $sep = this.$searchview.find('.o_datepicker_separator');
-
-        this.start_picker = new datepicker.DateWidget(this, {viewMode: 'years'});
-        this.end_picker = new datepicker.DateWidget(this, {viewMode: 'years'});
-        var def1 = this.start_picker.insertBefore($sep);
-        var def2 = this.end_picker.insertAfter($sep);
-
-        var self = this;
-        return Promise.all([def1, def2]).then(function() {
-            self.start_picker.on('datetime_changed', self, function() {
-                if (this.start_picker.getValue()) {
-                    this.end_picker.minDate(moment(this.start_picker.getValue()));
+    set_up_datetimepickers: function (datetimeContext) {
+        /*
+            Datetime picker handler: create the datetime widget, render the filter.
+            datetimeContext: the behavior differs if called from the KPI dashboard or the salesman
+            dashboard.
+            Without context: this.$searchview is a list of jquery elements, it can be filtered.
+            With the salesman context: this.$searchview is a single jquery element, we can use find
+            on it.
+        */
+        const dates_options = {
+            filter: this.dashboard_options.filter,
+            date_from: this.start_date.format('YYYY-MM-DD'),
+            date_to: this.end_date.format('YYYY-MM-DD'),
+        };
+        this.$dateFilter = $(QWeb.render("sale_subscription_dashboard.date_filter", dates_options));
+        if (datetimeContext.salesman) {
+            this.$searchview.find('.o_subscription_dashboard_filter_date').append(this.$dateFilter);
+        } else {
+            this.$searchview.filter('.o_subscription_dashboard_filter_date').append(this.$dateFilter);
+        }
+        const $dateTimePickers = this.$searchview.find('.js_subscription_dashboard_datetimepicker');
+        const options = { // Set the options for the datetimepickers
+            locale : moment.locale(),
+            format : 'L',
+            icons: {
+                date: "fa fa-calendar",
+            },
+        };
+        const self = this;
+        // attach datepicker
+        $dateTimePickers.each(function () {
+            const name = $(this).find('input').attr('name');
+            const defaultValue = $(this).data('default-value');
+            $(this).datetimepicker(options);
+            const dt = new datepicker.DateWidget(options);
+            dt.replace($(this)).then(function () {
+                dt.$el.find('input').attr('name', name);
+                if (defaultValue) { // Set its default value if there is one
+                    dt.setValue(moment(defaultValue));
                 }
             });
-            self.end_picker.on('datetime_changed', self, function() {
-                if (this.end_picker.getValue()) {
-                    this.start_picker.maxDate(moment(this.end_picker.getValue()).add(1, 'M'));
-                }
-            });
-
-            self.start_picker.setValue(moment(self.start_date));
-            self.end_picker.setValue(moment(self.end_date));
         });
+         //format date that needs to be show in user lang
+         this.$dateFilter.find('.js_format_date').each(function (key, dt) {
+             const date_value = $(dt).html();
+             $(dt).html((new moment(date_value, 'YYYY-MM-DD')).format('ll'));
+         });
+         // fold all menu$dateFilter
+         this.$dateFilter.find('.js_foldable_trigger').click(function (event) {
+            $(this).toggleClass('o_closed_menu o_open_menu');
+            self.$dateFilter.find('.o_foldable_menu[data-filter="' + $(this).data('filter') + '"]').toggleClass('o_closed_menu');
+        });
+        // render filter (add selected class to the options that are selected)
+        this.$searchview.find('[data-filter="' + this.dashboard_options.filter + '"]').addClass('selected');
+    },
+
+    preventMenuFold: function (e) {
+        // prevent the custom date selector menu to close the whole menu
+        e.stopPropagation();
+    },
+
+    handleDateSelection: function (e) {
+        /*
+            Update the options upon date selection.
+            Values are retrieved from the widget or the selected item in the list of predefined periods.
+            dashboard_options are set accordingly.
+        */
+        this.dashboard_options.filter = $(e.currentTarget).data('filter');
+        let error = false;
+        if ($(e.currentTarget).data('filter') === 'custom') {
+            const dateFrom = this.$searchview.find('.o_datepicker_input[name="date_from"]');
+            const dateTo = this.$searchview.find('.o_datepicker_input[name="date_to"]');
+            if (dateFrom.length > 0) {
+                error = dateFrom.val() === "" || dateTo.val() === "";
+                this.start_date = field_utils.parse.date(dateFrom.val());
+                this.end_date = field_utils.parse.date(dateTo.val());
+            } else {
+                error = dateTo.val() === "";
+                this.end_date = field_utils.parse.date(dateTo.val());
+            }
+        } else if ($(e.currentTarget).hasClass('o_predefined_range')) {
+            this.start_date = this.dashboard_options.ranges[this.dashboard_options.filter].date_from;
+            this.end_date = this.dashboard_options.ranges[this.dashboard_options.filter].date_to;
+        }
+
+        if (error) {
+            new WarningDialog(this, {
+                title: _t("Odoo Warning"),
+            }, {
+                message: _t("Date cannot be empty")
+            }).open();
+        } else {
+            this.on_update_options();
+        }
     },
 
     render_dashboard: function() {}, // Abstract
+
+    fetch_data: function() {}, // Abstract
 
     format_number: function(value, symbol) {
         value = value || 0.0; // sometime, value is 'undefined'
@@ -244,12 +351,12 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneField
 
 // 1. Main dashboard
 var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.extend({
-    events: {
+    events: Object.assign({}, sale_subscription_dashboard_abstract.prototype.events, {
         'click .on_stat_box': 'on_stat_box',
         'click .on_forecast_box': 'on_forecast_box',
         'click .on_demo_contracts': 'on_demo_contracts',
         'click .on_demo_templates': 'on_demo_templates',
-    },
+    }),
 
     init: function(parent, action) {
         this._super.apply(this, arguments);
@@ -269,58 +376,72 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
         this.unresolved_defs_vals = [];
     },
 
-    willStart: function() {
+    fetch_data: async function () {
         var self = this;
-        return this._super().then(function() {
-            return Promise.resolve(self.fetch_data());
+        const data = await this._rpc({
+            route: '/sale_subscription_dashboard/fetch_data',
+            params: {context: session.user_context},
+            }, {
+                shadow: true
+            },
+        );
+        this.stat_types = data.stat_types;
+        this.forecast_stat_types = data.forecast_stat_types;
+        this.currency_id = data.currency_id;
+        this.contract_templates = data.contract_templates;
+        this.tags = data.tags;
+        this.companies = data.companies;
+        this.has_mrr = data.has_mrr;
+        this.has_template = data.has_template;
+        this.sales_team = data.sales_team;
+        this.dashboard_options.ranges = this.convert_dates(data.dates_ranges);
+    },
+
+    populateBoxes: function ($stat_boxes, $forecast_boxes) {
+        var self = this;
+        $stat_boxes.each(function (key, box) {
+            self.defs.push(new SaleSubscriptionDashboardStatBox(
+                self,
+                self.start_date,
+                self.end_date,
+                self.filters,
+                self.currency_id,
+                self.stat_types,
+                box.getAttribute('name'),
+                box.getAttribute('code'),
+                self.has_mrr
+            ).replace($(box)));
+        });
+
+        $forecast_boxes.each(function (key, box) {
+            self.defs.push(new SaleSubscriptionDashboardForecastBox(
+                self,
+                self.end_date,
+                self.filters,
+                self.forecast_stat_types,
+                box.getAttribute("name"),
+                box.getAttribute("code"),
+                self.currency_id,
+                self.has_mrr
+            ).replace($(box)));
         });
     },
 
-    on_reverse_breadcrumb: function() {
+    on_reverse_breadcrumb: function () {
         this._super();
 
         var self = this;
         if(this.$main_dashboard) {
             this.defs = [];
-
             // If there is unresolved defs, we need to replace the uncompleted boxes
-            if (this.unresolved_defs_vals.length){
-                var stat_boxes = this.$main_dashboard.find('.o_stat_box');
-                _.each(this.unresolved_defs_vals, function(v){
-                    self.defs.push(new SaleSubscriptionDashboardStatBox(
-                        self,
-                        self.start_date,
-                        self.end_date,
-                        self.filters,
-                        self.currency_id,
-                        self.stat_types,
-                        stat_boxes[v].getAttribute("name"),
-                        stat_boxes[v].getAttribute("code"),
-                        self.has_mrr
-                    ).replace($(stat_boxes[v])));
-                });
+            if (this.unresolved_defs_vals.length) {
+                const $stat_boxes = this.$main_dashboard.find('.o_stat_box');
+                const $forecast_boxes = this.$main_dashboard.find('.o_forecast_box');
+                this.populateBoxes($stat_boxes, $forecast_boxes);
             }
         } else {
             this.render_dashboard();
         }
-    },
-
-    fetch_data: function() {
-        var self = this;
-        return self._rpc({
-                route: '/sale_subscription_dashboard/fetch_data',
-                params: {},
-            }).then(function(result) {
-                self.stat_types = result.stat_types;
-                self.forecast_stat_types = result.forecast_stat_types;
-                self.currency_id = result.currency_id;
-                self.contract_templates = result.contract_templates;
-                self.tags = result.tags;
-                self.companies = result.companies;
-                self.has_mrr = result.has_mrr;
-                self.has_template = result.has_template;
-                self.sales_team = result.sales_team;
-        });
     },
 
     render_dashboard: function() {
@@ -334,36 +455,10 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
         }));
         this.$('.o_content').append(this.$main_dashboard);
 
-        var stat_boxes = this.$main_dashboard.find('.o_stat_box');
-        var forecast_boxes = this.$main_dashboard.find('.o_forecast_box');
-
-        for (var i=0; i < stat_boxes.length; i++) {
-            this.defs.push(new SaleSubscriptionDashboardStatBox(
-                this,
-                this.start_date,
-                this.end_date,
-                this.filters,
-                this.currency_id,
-                this.stat_types,
-                stat_boxes[i].getAttribute("name"),
-                stat_boxes[i].getAttribute("code"),
-                this.has_mrr
-            ).replace($(stat_boxes[i])));
-        }
-
-        for (var j=0; j < forecast_boxes.length; j++) {
-            this.defs.push(new SaleSubscriptionDashboardForecastBox(
-                this,
-                this.end_date,
-                this.filters,
-                this.forecast_stat_types,
-                forecast_boxes[j].getAttribute("name"),
-                forecast_boxes[j].getAttribute("code"),
-                this.currency_id,
-                this.has_mrr
-            ).replace($(forecast_boxes[j])));
-        }
-
+        var $stat_boxes = this.$main_dashboard.find('.o_stat_box');
+        var $forecast_boxes = this.$main_dashboard.find('.o_forecast_box');
+        this.defs = [];
+        this.populateBoxes($stat_boxes, $forecast_boxes);
         this.defs.push(this.update_cp());
         return Promise.all(this.defs);
     },
@@ -396,6 +491,7 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
             'currency_id': this.currency_id,
             'push_main_state': true,
             'sales_team': this.sales_team,
+            'dashboard_options': this.dashboard_options,
         };
         this.load_action("sale_subscription_dashboard.action_subscription_dashboard_report_detailed", options);
     },
@@ -432,9 +528,9 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
 
 // 2. Detailed dashboard
 var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.extend({
-    events: {
+    events: Object.assign({}, sale_subscription_dashboard_abstract.prototype.events, {
         'click .o_detailed_analysis': 'on_detailed_analysis',
-    },
+    }),
 
     init: function(parent, action, options) {
         this._super.apply(this, arguments);
@@ -450,27 +546,31 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
         this.filters = options.filters;
         this.currency_id = options.currency_id;
         this.sales_team = options.sales_team;
+        this.dashboard_options = options.dashboard_options;
 
         this.display_stats_by_plan = !_.contains(['nrr', 'arpu', 'logo_churn'], this.selected_stat);
         this.report_name = this.stat_types[this.selected_stat].name;
     },
 
-    fetch_computed_stat: function() {
-
-        var self = this;
-        var rpcProm = self._rpc({
+    fetch_computed_stat: async function () {
+        const data = await this._rpc({
                 route: '/sale_subscription_dashboard/compute_stat',
                 params: {
                     stat_type: this.selected_stat,
                     start_date: this.start_date.format('YYYY-MM-DD'),
                     end_date: this.end_date.format('YYYY-MM-DD'),
                     filters: this.filters,
+                    context: session.user_context,
                 },
-            });
-        rpcProm.then(function(result) {
-                self.value = result;
-        });
-        return rpcProm;
+            }, {shadow: true});
+        this.value = data;
+    },
+
+    update_cp: function () {
+        this.$cpButton = $(QWeb.render("sale_subscription_dashboard.detailed_analysis_btn", {
+            stat_type: this.selected_stat,
+        }));
+        this._super.apply(this);
     },
 
     render_dashboard: function() {
@@ -517,8 +617,9 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                     start_date: this.start_date.format('YYYY-MM-DD'),
                     end_date: this.end_date.format('YYYY-MM-DD'),
                     filters: this.filters,
+                    context: session.user_context,
                 },
-            }).then(function(result) {
+            }, {shadow: true}).then(function (result) {
                 // Rounding of result
                 _.map(result, function(v, k, dict) {
                     dict[k] = Math.round(v * 100) / 100;
@@ -548,8 +649,9 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                     start_date: this.start_date.format('YYYY-MM-DD'),
                     end_date: this.end_date.format('YYYY-MM-DD'),
                     filters: this.filters,
+                    context: session.user_context,
                 },
-            }).then(function(result) {
+            }, {shadow: true}).then(function (result) {
                 var html = QWeb.render('sale_subscription_dashboard.stats_by_plan', {
                     stats_by_plan: result,
                     stat_type: self.selected_stat,
@@ -580,6 +682,7 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                     end_date: this.end_date.format('YYYY-MM-DD'),
                     points_limit: 0,
                     filters: this.filters,
+                    context: session.user_context,
                 },
             }).then(function(result) {
                 load_chart('#stat_chart_div', self.stat_types[self.selected_stat].name, result, true);
@@ -599,8 +702,9 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                     end_date: this.end_date.format('YYYY-MM-DD'),
                     points_limit: 0,
                     filters: this.filters,
+                    context: session.user_context,
                 },
-            }).then(function(result) {
+            }, {shadow: true}).then(function (result) {
                 self.load_chart_mrr_growth_stat('#mrr_growth_chart_div', result);
                 self.$('#mrr_growth_chart_div div.o_loader').hide();
         });
@@ -614,8 +718,8 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
         // To get the same numbers as in the dashboard, we need to give the filters to the backend
         if (this.selected_stat === 'mrr') {
             additional_context = {
-                'search_default_subscription_end_date': moment(this.end_date).toDate(),
-                'search_default_subscription_start_date': moment(this.start_date).toDate(),
+                'search_default_subscription_end_date': moment(this.end_date).format('YYYY-MM-DD'),
+                'search_default_subscription_start_date': moment(this.start_date).format('YYYY-MM-DD'),
                 // TODO: add contract_ids as another filter
             };
             view_xmlid = "sale_subscription_dashboard.action_move_line_entries_report";
@@ -787,18 +891,17 @@ var sale_subscription_dashboard_forecast = sale_subscription_dashboard_abstract.
         this.reload_chart(forecast_type);
     },
 
-    fetch_default_values_forecast: function(forecast_type) {
-        var self = this;
-        return self._rpc({
-                route: '/sale_subscription_dashboard/get_default_values_forecast',
-                params: {
-                    end_date: this.end_date.format('YYYY-MM-DD'),
-                    forecast_type: forecast_type,
-                    filters: this.filters,
-                },
-            }).then(function(result) {
-                self.values[forecast_type] = result;
-        });
+    fetch_default_values_forecast: async function(forecast_type) {
+        const data = await  this._rpc({
+            route: '/sale_subscription_dashboard/get_default_values_forecast',
+            params: {
+                end_date: this.end_date.format('YYYY-MM-DD'),
+                forecast_type: forecast_type,
+                filters: this.filters,
+                context: session.user_context,
+            },
+        }, {shadow: true});
+        this.values[forecast_type] = data;
     },
 
     reload_chart: function(chart_type) {
@@ -930,45 +1033,48 @@ var SaleSubscriptionDashboardStatBox = Widget.extend({
         };
     },
 
-    willStart: function() {
-        var self = this;
-        return this._super().then(function() {
-            return Promise.resolve(self.compute_graph());
-        });
-    },
-
-    start: function() {
-        var self = this;
-        var display_tooltip = '<b>' + this.box_name + '</b><br/>' + _t('Current Value: ') + this.value;
+    start: async function() {
+        const data = await this.compute_graph();
+        const display_tooltip = '<b>' + this.box_name + '</b><br/>' + _t('Current Value: ') + this.format_number(this.value);
         this.$el.tooltip({title: display_tooltip, trigger: 'hover'});
         this.$('[data-toggle="popover"]').popover({trigger: 'hover'});
-        return this._super().then(function() {
-            load_chart('#'+self.chart_div_id, false, self.computed_graph, false, !self.has_mrr);
-        });
+        const options = {
+            has_mrr: this.has_mrr, format_number: this.format_number,
+            value: this.value, demo_values: this.demo_values,
+            stat_type: this.stat_type, currency_id: this.currency_id,
+            added_symbol: this.added_symbol,
+        };
+        const $boxName = $(QWeb.render("sale_subscription_dashboard.box_name", options));
+        this.$('.o_stat_box_card_amount').append($boxName);
+        const $boxPerc = $(QWeb.render("sale_subscription_dashboard.box_trend", {color: this.color, perc: this.perc}));
+        this.$('.o_trend').append($boxPerc);
+        load_chart('#' + this.chart_div_id, false, this.computed_graph, false, !this.has_mrr);
+        this.$('.o_loader').remove();
     },
 
-    compute_graph: function() {
-        var self = this;
-        return self._rpc({
+    compute_graph: async function() {
+        const data = await this._rpc({
                 route: '/sale_subscription_dashboard/compute_graph_and_stats',
-                params: {
-                    stat_type: this.stat_type,
-                    start_date: this.start_date.format('YYYY-MM-DD'),
-                    end_date: this.end_date.format('YYYY-MM-DD'),
-                    points_limit: 30,
-                    filters: this.filters,
-                },
-            }).then(function(result) {
-                self.value = result.stats.value_2;
-                self.perc = result.stats.perc;
-                self.color = get_color_class(result.stats.perc, self.stat_types[self.stat_type].dir);
-                self.computed_graph = result.graph;
-        });
+                    params: {
+                        stat_type: this.stat_type,
+                        start_date: this.start_date.format('YYYY-MM-DD'),
+                        end_date: this.end_date.format('YYYY-MM-DD'),
+                        points_limit: 30,
+                        filters: this.filters,
+                        context: session.user_context,
+                    },
+                }, {shadow: true},
+            );
+        this.value = data.stats.value_2;
+        this.perc = data.stats.perc;
+        this.color = get_color_class(data.stats.perc, this.stat_types[this.stat_type].dir);
+        this.computed_graph = data.graph;
     },
 
-    format_number: function(value) {
+    format_number: function(value, currency_id) {
         value = utils.human_number(value);
-        if (this.is_monetary) {
+        if ((currency_id || this.is_monetary) && this.added_symbol) {
+            this.currency_id = (currency_id) ? currency_id : this.currency_id;
             return render_monetary_field(value, this.currency_id);
         } else {
             return value + this.added_symbol;
@@ -1000,51 +1106,48 @@ var SaleSubscriptionDashboardForecastBox = Widget.extend({
             'contracts_forecast': 240,
         };
     },
-
-    willStart: function() {
-        var self = this;
-        return this._super().then(function() {
-            return Promise.resolve(
-                self.compute_numbers()
-            );
-        });
-    },
-
-    start: function() {
-        var self = this;
-        var display_tooltip = '<b>' + this.box_name + '</b><br/>' + _t('Current Value: ') + this.value;
+    start: async function() {
+        const data = await this.compute_numbers();
+        const display_tooltip = '<b>' + this.box_name + '</b><br/>' + _t('Current Value: ') + this.format_number(this.value);
         this.$el.tooltip({title: display_tooltip, trigger: 'hover'});
-        return this._super().then(function() {
-            load_chart('#'+self.chart_div_id, false, self.computed_graph, false, !self.has_mrr);
-        });
+        const options = {
+            has_mrr: this.has_mrr, format_number: this.format_number,
+            value: this.value, demo_values: this.demo_values,
+            stat_type: this.stat_type, currency_id: this.currency_id,
+            added_symbol: this.added_symbol,
+        };
+        const $boxName = $(QWeb.render("sale_subscription_dashboard.box_name", options));
+        this.$('.o_stat_box_card_amount').append($boxName);
+        load_chart('#' + this.chart_div_id, false, this.computed_graph, false, !this.has_mrr);
+        this.$('.o_loader').remove();
     },
 
-    compute_numbers: function() {
-
-        var self = this;
-        return self._rpc({
-                route: '/sale_subscription_dashboard/get_default_values_forecast',
-                params: {
-                    forecast_type: this.stat_type,
-                    end_date: this.end_date.format('YYYY-MM-DD'),
-                    filters: this.filters,
-                },
-            }).then(function(result) {
-                self.computed_graph = compute_forecast_values(
-                    result.starting_value,
-                    result.projection_time,
-                    'linear',
-                    result.churn,
-                    result.linear_growth,
-                    0
-                );
-                self.value = self.computed_graph[self.computed_graph.length - 1][1];
-            });
+    compute_numbers: async function () {
+        const data = await this._rpc({
+                    route: '/sale_subscription_dashboard/get_default_values_forecast',
+                    params: {
+                        forecast_type: this.stat_type,
+                        end_date: this.end_date.format('YYYY-MM-DD'),
+                        filters: this.filters,
+                        context: session.user_context,
+                    },
+                }, {shadow: true},
+            );
+        this.computed_graph = compute_forecast_values(
+            data.starting_value,
+            data.projection_time,
+            'linear',
+            data.churn,
+            data.linear_growth,
+            0
+        );
+        this.value = this.computed_graph[this.computed_graph.length - 1][1];
     },
 
-    format_number: function(value) {
+    format_number: function(value, currency_id) {
         value = utils.human_number(value);
-        if (this.is_monetary) {
+        if ((currency_id || this.is_monetary) && this.added_symbol) {
+            this.currency_id = (currency_id) ? currency_id : this.currency_id;
             return render_monetary_field(value, this.currency_id);
         } else {
             return value + this.added_symbol;
@@ -1074,13 +1177,14 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         var self = this;
         return self._rpc({
                 route: '/sale_subscription_dashboard/fetch_salesmen',
-                params: {},
+                params: {context: session.user_context,},
             }).then(function(result) {
                 self.salesman_ids = result.salesman_ids;
                 self.salesman = result.default_salesman || [];
                 self.currency_id = result.currency_id;
-                self.migrationDate = moment(result['migration_date'], 'YYYY-MM-DD');
-        });
+                self.migrationDate = moment(result.migration_date, 'YYYY-MM-DD');
+                self.dashboard_options.ranges = self.convert_dates(result.dates_ranges);
+        }, {shadow: true});
     },
 
     render_dashboard: function() {
@@ -1107,9 +1211,11 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
                 start_date: this.start_date.format('YYYY-MM-DD'),
                 end_date: this.end_date.format('YYYY-MM-DD'),
                 salesman_ids: this.salesman,
+                context: session.user_context,
             },
-        }).then(function(result) {
-            var salespersons_statistics = result['salespersons_statistics'];
+
+        }, {shadow: true}).then(function (result) {
+            var salespersons_statistics = result.salespersons_statistics;
             Object.keys(salespersons_statistics).forEach(element => {
                 var cur_salesman = self.salesman_ids.find(val => val.id === Number(element));
                 self.$('.o_salesman_loop').append(QWeb.render("sale_subscription_dashboard.salesman", {
@@ -1119,8 +1225,8 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
             });
             $('.o_subscription_row').each(function (index, value) {
                 $(this).on('click', function () {
-                    var subscription_id = $(this).data()['id'];
-                    var model = $(this).data()['model'];
+                    var subscription_id = $(this).data().id;
+                    var model = $(this).data().model;
                     var action = {
                         type: 'ir.actions.act_window',
                         res_model: model,
@@ -1134,9 +1240,10 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
     },
 
     render_section: function (cur_salesman, salesman_data) {
-        addLoader(this.$('#mrr_growth_salesman_' + cur_salesman['id']));
-        this.barGraph[cur_salesman['id']] = load_chart_mrr_salesman('#mrr_growth_salesman_' + cur_salesman['id'], salesman_data, self.currency_id);
-        this.$('#mrr_growth_salesman_' + cur_salesman['id'] + ' div.o_loader').hide();
+        addLoader(this.$('#mrr_growth_salesman_' + cur_salesman.id));
+        this.barGraph[cur_salesman.id] = load_chart_mrr_salesman(
+            '#mrr_growth_salesman_' + cur_salesman.id, salesman_data, this.currency_id);
+        this.$('#mrr_growth_salesman_' + cur_salesman.id + ' div.o_loader').hide();
 
         // 1. Subscriptions modifcations
         var ICON_BY_TYPE = {
@@ -1162,7 +1269,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
             company_currency_id: this.currency_id,
             nCompanies: nCompanies,
         });
-        this.$('#contract_modifications_' + cur_salesman['id']).append(html_modifications);
+        this.$('#contract_modifications_' + cur_salesman.id).append(html_modifications);
 
         // 2. NRR invoices
         var html_nrr_invoices = QWeb.render('sale_subscription_dashboard.nrr_invoices', {
@@ -1171,7 +1278,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
             format_number: this.format_number,
             nCompanies: nCompanies,
         });
-        this.$('#NRR_invoices_' + cur_salesman['id']).append(html_nrr_invoices);
+        this.$('#NRR_invoices_' + cur_salesman.id).append(html_nrr_invoices);
 
         // 3. Summary
         var html_summary = QWeb.render('sale_subscription_dashboard.salesman_summary', {
@@ -1180,7 +1287,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
             company_currency_id: this.currency_id,
             format_number: this.format_number,
         });
-        this.$('#mrr_growth_salesman_' + cur_salesman['id']).before(html_summary);
+        this.$('#mrr_growth_salesman_' + cur_salesman.id).before(html_summary);
 
         function load_chart_mrr_salesman (div_to_display, result, currency_id) {
             var labels = [_t("New MRR"), _t("Churned MRR"), _t("Expansion MRR"),
@@ -1194,22 +1301,20 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
 
             var $div_to_display = $(div_to_display).css({position: 'relative', height: '16em'});
             $div_to_display.empty();
-            var $canvas = $('<canvas class="canvas_'+ cur_salesman['id'] + '"/>');
+            var $canvas = $('<canvas class="canvas_'+ cur_salesman.id + '"/>');
             $div_to_display.append($canvas);
 
             var ctx = $canvas.get(0).getContext('2d');
-            ctx['currency_id'] = currency_id;
-            var ChartValuePlugin = {
+            ctx.currency_id = currency_id;
+            let ChartValuePlugin = {
                 updated: false,
                 afterDraw: function(chart) {
-                var self = this;
                 var ctx = chart.ctx;
                 ctx.font = chart.config.options.defaultFontFamily;
                 ctx.fillStyle = chart.config.options.defaultFontColor;
                 var chartdatasets = chart.data.datasets;
-                var height = chart.controller.boxes[0].bottom;
                 // Clear the area where values are drawn to avoid rendering multiple times and glitches
-                ctx.clearRect(50,-5,2000,20);
+                ctx.clearRect(50, -5, 2000, 20);
                 Chart.helpers.each(chartdatasets.forEach(function (dataset, i) {
                     var meta = chart.controller.getDatasetMeta(i);
                     Chart.helpers.each(meta.data.forEach(function (bar, index) {
@@ -1245,15 +1350,13 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
 
     format_number: function(value, currency_id) {
         if (!currency_id) {
-            var currency_id = this.currency_id;
+            currency_id = this.currency_id;
         }
         value = utils.human_number(value);
         return render_monetary_field(value, currency_id);
     },
 
-    on_update_options: function() {
-        this.start_date = this.start_picker.getValue() || '0001-02-01';
-        this.end_date = this.end_picker.getValue()  || '9999-12-31';
+    on_update_options: function () {
         var selected_salesman_id = Number(this.$searchview.find('option[name="salesman"]:selected').val());
         this.salesman = _.findWhere(this.salesman_ids, {id: selected_salesman_id});
         this.render_dashboard();
@@ -1262,15 +1365,15 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
     update_cp: function() {
         var self = this;
         self.$searchview = $(QWeb.render("sale_subscription_dashboard.salesman_searchview"));
-        self.$exportButton = $(QWeb.render("sale_subscription_dashboard.export"));
-        var $WarningContent = $('.o_subscription_dashboard_warning');
-        self.$exportButton.on('click', function () {
+        self.set_up_datetimepickers({salesman: true});
+        self.$cpButton = $(QWeb.render("sale_subscription_dashboard.export"));
+        self.$cpButton.on('click', function () {
             ajax.rpc('/web/dataset/call_kw/sale.subscription/print_pdf', {
             model: 'sale.subscription',
             method: 'print_pdf',
             args: [],
             kwargs: {},
-            })
+            }, {shadow: true})
             .then(function (result) {
                 for (var key in self.barGraph) {
                     var base64Image = self.barGraph[key].toBase64Image();
@@ -1290,12 +1393,11 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         });
 
         self.$searchview.on('click', '.o_update_options', this.on_update_options);
-        self.set_up_datetimepickers();
         this.updateControlPanel({
-            cp_content: {
-                $searchview: this.$searchview,
-                $buttons: this.$exportButton,
-            }
+           cp_content: {
+               $searchview: this.$searchview,
+               $buttons: this.$cpButton,
+           },
         });
         // We need the many2many widget to limit the available users to the ones returned by the `fetch_salesmen` RPC call.
         var domainList = [];
@@ -1309,7 +1411,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
            self.salesman = values;
         }
         self.salesman_ids.forEach(saleman => {
-            domainList.push(saleman['id']);
+            domainList.push(saleman.id);
         });
         // Make a dummy record to attach the salesman selector widget
         let def = self.model.makeRecord('ir.actions.act_window', [{
@@ -1324,9 +1426,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
                 mode: 'edit',
             };
             self.many2manytags = new FieldMany2ManyTags(self, 'model', record, options);
-            // FIXME: by default the many2many widget in edit mode allows to create new records on the fly.
-            self.many2manytags.nodeOptions.no_create_edit = true;
-            self.many2manytags.nodeOptions.no_create = true;
+            self.many2manytags.nodeOptions.create = false;
             if (Object.keys(self.salesman).length > 0) {
                 self.many2manytags._addTag(self.salesman);
             }

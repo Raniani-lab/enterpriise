@@ -22,6 +22,8 @@ class SocialStreamPostFacebook(models.Model):
     facebook_shares_count = fields.Integer('Shares')
     facebook_reach = fields.Integer('Reach')
 
+    facebook_is_event_post = fields.Boolean('Is event post')
+
     def _compute_author_link(self):
         facebook_posts = self.filtered(lambda post: post.stream_id.media_id.media_type == 'facebook')
         super(SocialStreamPostFacebook, (self - facebook_posts))._compute_author_link()

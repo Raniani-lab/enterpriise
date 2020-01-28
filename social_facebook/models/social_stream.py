@@ -65,6 +65,7 @@ class SocialStreamFacebook(models.Model):
                 'facebook_comments_count': post.get('comments').get('summary').get('total_count'),
                 'facebook_reach': post.get('insights').get('data')[0].get('values')[0].get('value'),
                 'facebook_post_id': post.get('id'),
+                'facebook_is_event_post': post.get('attachments', {}).get('data', [{}])[0].get('type') == 'event',
             }
 
             existing_post = existing_posts_by_facebook_post_id.get(post.get('id'))
@@ -109,8 +110,20 @@ class SocialStreamFacebook(models.Model):
                         'stream_post_image_ids': [(0, 0, attachment) for attachment in images],
                     })
             elif attachment.get('type') == 'photo':
+                image_src = attachment.get('media', {}).get('image', {}).get('src')
+                if image_src:
+                    result.update({'stream_post_image_ids': [(0, 0, {'image_url': image_src})]})
+
+            elif attachment.get('type') == 'event':
+                # events creation post are handle like link and image in the frontend
                 result.update({
-                    'stream_post_image_ids': [(0, 0, {'image_url': attachment.get('media').get('image').get('src')})],
+                    'link_title': attachment.get('title'),
+                    'link_description': attachment.get('description'),
+                    'link_url': attachment.get('target', {}).get('url', ''),
                 })
+
+                image_src = attachment.get('media', {}).get('image', {}).get('src')
+                if image_src:
+                    result.update({'stream_post_image_ids': [(0, 0, {'image_url': image_src})]})
 
         return result

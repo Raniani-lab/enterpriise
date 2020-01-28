@@ -49,8 +49,8 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
     }, function () {
         QUnit.module('AppCreator');
 
-        QUnit.test('app creator: standard flow', async function (assert) {
-            assert.expect(35);
+        QUnit.test('app creator: standard flow with model creation', async function (assert) {
+            assert.expect(39);
 
             const { wrapper, appCreator } = await createAppCreator({
                 env: {
@@ -70,17 +70,19 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                     'new-app-created': () => assert.step('new-app-created'),
                 },
                 rpc: async (route, params) => {
-                    if (route === '/web_studio/create_new_menu') {
-                        const { app_name, is_app, menu_name, model_id } = params;
+                    if (route === '/web_studio/create_new_app') {
+                        const { app_name, menu_name, model_choice, model_id, model_options } = params;
                         assert.strictEqual(app_name, "Kikou",
                             "App name should be correct");
-                        assert.ok(is_app,
-                            "Created app should be of type app");
                         assert.strictEqual(menu_name, "Petite Perruche",
                             "Menu name should be correct");
                         assert.notOk(model_id,
                             "Should not have a model id");
-
+                        assert.strictEqual(model_choice, "new",
+                            "Model choice should be 'new'");
+                        assert.deepEqual(model_options,
+                            ["use_partner", "use_company", "use_active", "use_mail", "use_sequence"],
+                            "Model options should include the defaults and 'use_partner'");
                         return Promise.resolve();
                     }
                     if (route === '/web/dataset/call_kw/ir.attachment/read') {
@@ -185,25 +187,44 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
             assert.containsNone(appCreator, '.o_web_studio_selectors',
                 "Icon creator should be rendered in readonly mode");
 
-            // try to go to create app
+            // try to go to next step
             await testUtils.dom.click(appCreator.el.querySelector('.o_web_studio_app_creator_next'));
 
             assert.hasClass(appCreator.el.querySelector('input[name="menuName"]').parentNode, 'o_web_studio_app_creator_field_warning',
                 "Input should be in warning mode");
 
-            assert.containsNone(appCreator, 'input[name="modelChoice"]',
-                "It shouldn't be possible to select a model in non-debug mode");
-
             await testUtils.fields.editInput(appCreator.el.querySelector('input[name="menuName"]'), "Petite Perruche");
+
+            // go to next step (model configuration)
             await testUtils.dom.click(appCreator.el.querySelector('.o_web_studio_app_creator_next'));
+            assert.strictEqual(appCreator.state.step, 'model_configuration',
+                "Current step should be model_configuration");
+            assert.containsNone(appCreator, 'input[name="use_active"]',
+                "Debug options should only be visible in debug mode")
+            // check an option
+            await testUtils.dom.click(appCreator.el.querySelector('input[name="use_partner"]'));
+            assert.containsOnce(appCreator, 'input[name="use_partner"]:checked',
+                "Option should have been checked")
+
+            // go back then go forward again
+            await testUtils.dom.click(appCreator.el.querySelector('.o_web_studio_model_configurator_previous'));
+            await testUtils.dom.click(appCreator.el.querySelector('.o_web_studio_app_creator_next'));
+            // options should have been reset
+            assert.containsNone(appCreator, 'input[name="use_partner"]:checked',
+                "Options should have been reset by going back then forward")
+            
+            // check the option again, we want to test it in the RPC
+            await testUtils.dom.click(appCreator.el.querySelector('input[name="use_partner"]'));
+
+            await testUtils.dom.click(appCreator.el.querySelector('.o_web_studio_model_configurator_next'));
 
             assert.verifySteps(['/web/binary/upload_attachment', 'UI blocked', 'new-app-created', 'UI unblocked']);
 
             wrapper.destroy();
         });
 
-        QUnit.test('app creator: standard flow in debug mode', async function (assert) {
-            assert.expect(15);
+        QUnit.test('app creator: debug flow with existing model', async function (assert) {
+            assert.expect(16);
 
             const { wrapper, appCreator } = await createAppCreator({
                 env: {
@@ -220,7 +241,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                             assert.strictEqual(params.model, 'ir.model',
                                 "request should target the right model");
                             return [[69, "The Value"]];
-                        case '/web_studio/create_new_menu':
+                        case '/web_studio/create_new_app':
                             assert.strictEqual(params.model_id, 69,
                                 "model id should be the one provided");
                     }
@@ -231,14 +252,28 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                 },
             });
 
-            const buttonNext = appCreator.el.querySelector('button.o_web_studio_app_creator_next');
+            let buttonNext = appCreator.el.querySelector('button.o_web_studio_app_creator_next');
 
-            assert.containsOnce(appCreator, 'input[name="modelChoice"]',
-                "It should be possible to select a model in debug mode");
             assert.hasClass(buttonNext, 'is_ready');
 
-            // check the model choice box
-            await testUtils.dom.click(appCreator.el.querySelector('input[name="modelChoice"]'));
+            await testUtils.fields.editInput(appCreator.el.querySelector('input[name="menuName"]'), "Petite Perruche");
+            // check the 'new model' radio
+            await testUtils.dom.click(appCreator.el.querySelector('input[name="model_choice"][value="new"]'));
+
+            // go to next step (model configuration)
+            await testUtils.dom.click(appCreator.el.querySelector('.o_web_studio_app_creator_next'));
+            assert.strictEqual(appCreator.state.step, 'model_configuration',
+                "Current step should be model_configuration");
+            assert.containsOnce(appCreator, 'input[name="use_active"]',
+                "Debug options should be visible in debug mode")
+            // go back, we want the 'existing model flow'
+            await testUtils.dom.click(appCreator.el.querySelector('.o_web_studio_model_configurator_previous'));
+
+            // since we came back, we need to update our buttonNext ref - the querySelector is not live
+            buttonNext = appCreator.el.querySelector('button.o_web_studio_app_creator_next');
+
+            // check the 'existing model' radio
+            await testUtils.dom.click(appCreator.el.querySelector('input[name="model_choice"][value="existing"]'));
 
             assert.doesNotHaveClass(appCreator.el.querySelector('.o_web_studio_app_creator_model'),
                 'o_web_studio_app_creator_field_warning');
@@ -263,13 +298,13 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
 
             await testUtils.dom.click(buttonNext);
 
-            assert.verifySteps(['/web/dataset/call_kw/ir.model/name_search', '/web_studio/create_new_menu']);
+            assert.verifySteps(['/web/dataset/call_kw/ir.model/name_search', '/web_studio/create_new_app']);
 
             wrapper.destroy();
         });
 
         QUnit.test('app creator: navigate through steps using "ENTER"', async function (assert) {
-            assert.expect(13);
+            assert.expect(12);
 
             const { wrapper, appCreator } = await createAppCreator({
                 env: {
@@ -283,11 +318,9 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                     'new-app-created': () => assert.step('new-app-created'),
                 },
                 rpc: (route, { app_name, is_app, menu_name, model_id }) => {
-                    if (route === '/web_studio/create_new_menu') {
+                    if (route === '/web_studio/create_new_app') {
                         assert.strictEqual(app_name, "Kikou",
                             "App name should be correct");
-                        assert.ok(is_app,
-                            "Created app should be of type app");
                         assert.strictEqual(menu_name, "Petite Perruche",
                             "Menu name should be correct");
                         assert.notOk(model_id,
@@ -325,6 +358,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                 "a warning should be displayed on the input");
 
             await testUtils.fields.editInput(appCreator.el.querySelector('input[name="menuName"]'), "Petite Perruche");
+            await testUtils.dom.triggerEvent(window, 'keydown', { key: 'Enter' });
             await testUtils.dom.triggerEvent(window, 'keydown', { key: 'Enter' });
 
             assert.verifySteps(['UI blocked', 'new-app-created', 'UI unblocked']);

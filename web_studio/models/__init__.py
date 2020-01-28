@@ -1,6 +1,7 @@
 from . import studio_mixin
 from . import base_automation
 from . import mail_template
+from . import mail_thread
 from . import ir_actions_act_window
 from . import ir_actions_report
 from . import ir_actions_server

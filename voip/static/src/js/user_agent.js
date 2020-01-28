@@ -680,12 +680,13 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
 
         this._currentInviteSession.on('rejected', () =>
             this._onCurrentInviteSessionRejected(inviteSession));
-        window.Notification.requestPermission().then(permission =>
-            this._onWindowNotificationPermissionRequested({
-                content,
-                inviteSession,
-                permission,
-            }));
+        if (window.Notification && window.Notification.requestPermission) {
+            window.Notification.requestPermission()
+                .then(permission => this._onWindowNotificationPermissionRequested({ content, inviteSession, permission }))
+                .catch(() => this._onWindowNotificationPermissionRequested({ content, inviteSession }));
+        } else {
+            this._onWindowNotificationPermissionRequested({ content, inviteSession })
+        }
     },
     /**
      * Starts the first ringing tone
@@ -806,7 +807,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {Object} param0
      * @param {string} param0.content
      * @param {Object} param0.inviteSession
-     * @param {strig} param0.permission
+     * @param {string} [param0.permission]
      */
     _onWindowNotificationPermissionRequested({
         content,

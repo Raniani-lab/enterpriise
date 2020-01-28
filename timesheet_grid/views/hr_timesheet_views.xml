@@ -97,6 +97,9 @@
                                 </div>
                             </group>
                         </group>
+                        <group>
+                            <field name="name" string="Describe Your Activity" required="False"/>
+                        </group>
                     </sheet>
                 </form>
             </field>

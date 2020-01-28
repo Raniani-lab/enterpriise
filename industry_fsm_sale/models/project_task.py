@@ -175,7 +175,7 @@ class Task(models.Model):
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
                 'search_default_consumable': 1,
-                'hide_qty_buttons': self.fsm_done
+                'hide_qty_buttons': self.fsm_done or self.sale_order_id.state == 'done'
             },
             'help': _("""<p class="o_view_nocontent_smiling_face">
                             Create a new product

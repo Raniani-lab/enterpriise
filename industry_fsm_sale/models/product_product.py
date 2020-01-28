@@ -33,8 +33,8 @@ class ProductProduct(models.Model):
         if task_id:
             task = self.env['project.task'].browse(task_id)
 
-            # don't add material on confirmed SO to avoid inconsistence with the stock picking
-            if task.fsm_done:
+            # don't add material on confirmed/locked SO to avoid inconsistence with the stock picking
+            if task.fsm_done or task.sale_order_id.state == 'done':
                 return False
 
             # create a sale order
@@ -85,8 +85,8 @@ class ProductProduct(models.Model):
         if task_id:
             task = self.env['project.task'].browse(task_id)
 
-            # don't remove material on confirmed SO to avoid inconsistence with the stock picking
-            if task.fsm_done:
+            # don't remove material on confirmed/locked SO to avoid inconsistence with the stock picking
+            if task.fsm_done or task.sale_order_id.state == 'done':
                 return False
 
             wizard_product_lot = self.action_assign_serial()

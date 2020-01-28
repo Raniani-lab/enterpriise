@@ -122,7 +122,7 @@ class SocialPost(models.Model):
     def _compute_live_posts_by_media(self):
         """ See field 'help' for more information. """
         for post in self:
-            accounts_by_media = dict((media.id, list()) for media in post.media_ids)
+            accounts_by_media = dict((post.account_id.media_id.id, list()) for post in post.live_post_ids)
             for live_post in post.live_post_ids:
                 accounts_by_media[live_post.account_id.media_id.id].append(live_post.display_name)
             post.live_posts_by_media = json.dumps(accounts_by_media)
@@ -216,21 +216,26 @@ class SocialPost(models.Model):
         }
         return action
 
-    def action_schedule(self):
+    def _has_no_accounts(self):
+        self.ensure_one()
+        return not self.account_ids
+
+    def _check_post_access(self):
+        """
+        Raise an error if the user cannot post on a social media
+        """
         if not self.user_has_groups('social.group_social_manager'):
             raise AccessError(_('You are not allowed to do this operation.'))
 
-        if any(not post.message or not post.account_ids for post in self):
+        if any(not post.message or post._has_no_accounts() for post in self):
             raise UserError(_('Please specify a message and at least one account to post into.'))
 
+    def action_schedule(self):
+        self._check_post_access()
         self.write({'state': 'scheduled'})
 
     def action_post(self):
-        if not self.user_has_groups('social.group_social_manager'):
-            raise AccessError(_('You are not allowed to do this operation.'))
-
-        if any(not post.message or not post.account_ids for post in self):
-            raise UserError(_('Please specify a message and at least one account to post into.'))
+        self._check_post_access()
 
         self.write({
             'post_method': 'now',
@@ -249,18 +254,23 @@ class SocialPost(models.Model):
         It will create one social.live.post per social.account and call '_post' on each of them. """
 
         for post in self:
-            live_posts_create_vals = [{
-                'post_id': post.id,
-                'account_id': account.id,
-            } for account in post.account_ids]
-
             post.write({
                 'state': 'posting',
                 'published_date': fields.Datetime.now(),
-                'live_post_ids': [(0, 0, live_post) for live_post in live_posts_create_vals]
+                'live_post_ids': [
+                    (0, 0, live_post)
+                    for live_post in post._prepare_live_post_values()]
             })
 
             post.live_post_ids._post()
+
+    def _prepare_live_post_values(self):
+        self.ensure_one()
+
+        return [{
+            'post_id': self.id,
+            'account_id': account.id,
+        } for account in self.account_ids]
 
     def _get_stream_post_domain(self):
         return []

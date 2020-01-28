@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <record id="social_facebook_event_action" model="ir.actions.act_window">
+        <field name="name">Social Events</field>
+        <field name="res_model">social.facebook.event</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'group_by': 'account_id', 'search_default_filter_social_event_facebook_upcoming': True}</field>
+    </record>
+
+    <menuitem
+        id="social_facebook_event_menu_global"
+        name="Facebook Events"
+        action="event_social_facebook.social_facebook_event_action"
+        parent="social.menu_social_configuration"
+        sequence="80"
+        groups="base.group_no_one"/>
+
+    <record id="social_facebook_event_view_search" model="ir.ui.view">
+        <field name="name">social.facebook.event.search</field>
+        <field name="model">social.facebook.event</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter string="Upcoming" name="filter_social_event_facebook_upcoming"
+                    domain="[('date_begin', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Past events" name="filter_social_event_facebook_past_events"
+                    domain="[('date_begin', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="social_facebook_event_view_tree" model="ir.ui.view">
+        <field name="name">social.facebook.event.view.tree</field>
+        <field name="model">social.facebook.event</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="id"/>
+                <field name="name"/>
+                <field name="date_begin"/>
+                <field name="date_end"/>
+            </tree>
+        </field>
+    </record>
+</data>
+</odoo>

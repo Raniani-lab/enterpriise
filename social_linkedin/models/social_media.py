@@ -3,10 +3,10 @@
 import hmac
 import hashlib
 import requests
+from werkzeug.urls import url_encode, url_join
 
 from odoo import _, models, fields
 from odoo.exceptions import UserError
-from werkzeug.urls import url_encode, url_join
 
 
 class SocialMediaLinkedin(models.Model):

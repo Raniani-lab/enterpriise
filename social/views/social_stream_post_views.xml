@@ -57,16 +57,18 @@
                                         <span class="text-truncate ml-2" t-esc="record.author_name.value or 'Unknown'"/>
                                     </t>
 
-                                    <a t-if="record.author_link.value"
-                                        class="o_social_stream_post_author d-flex align-items-center"
-                                        t-att-href="record.author_link.value"
-                                        t-att-title="record.author_name.value or 'Unknown'"
-                                        t-raw="author_info"
-                                        target="_blank"/>
+                                    <div class="o_social_author_information d-flex align-items-center">
+                                        <a t-if="record.author_link.value"
+                                            class="o_social_stream_post_author d-flex align-items-center"
+                                            t-att-href="record.author_link.value"
+                                            t-att-title="record.author_name.value or 'Unknown'"
+                                            t-raw="author_info"
+                                            target="_blank"/>
 
-                                    <div t-else=""
-                                        class="o_social_stream_post_author d-flex align-items-center"
-                                        t-raw="author_info"/>
+                                        <div t-else=""
+                                            class="o_social_stream_post_author d-flex align-items-center"
+                                            t-raw="author_info"/>
+                                    </div>
 
                                     <a t-att-href="record.post_link.value" target="_blank">
                                         <time class="o_social_stream_post_published_date small"
@@ -78,9 +80,19 @@
                                 <div t-attf-class="o_social_stream_post_message_body pb-2 #{has_attachments ? 'o_social_stream_post_with_attachments' : 'mb-2 border-bottom'}">
 
                                     <div class="o_social_stream_post_message_text overflow-hidden mb-2">
-                                        <field name="message" widget="social_kanban_field_stream_post" />
+                                        <field t-if="record.message.raw_value" name="message" widget="social_kanban_field_stream_post" />
                                     </div>
 
+                                    <a t-if="record.link_url.value"
+                                        class="o_social_stream_post_link p-2 d-flex bg-100"
+                                        t-att-href="record.link_url.raw_value"
+                                        target="_blank">
+                                        <img t-if="record.link_image_url.raw_value" class="mr-2 flex-shrink-0" t-att-src="record.link_image_url.raw_value" alt="Link Image"/>
+                                        <div class="o_social_stream_post_link_text">
+                                            <div class="o_social_stream_post_link_title font-weight-bold text-truncate" t-esc="record.link_title.value"/>
+                                            <div class="o_social_stream_post_link_description text-truncate" t-esc="record.link_description.value"/>
+                                        </div>
+                                    </a>
                                     <div t-if="has_attachments"
                                         class="o_social_stream_post_image d-flex mx-n2 overflow-hidden"
                                         t-att-data-images="record.stream_post_image_urls.raw_value">
@@ -98,16 +110,6 @@
                                             <img t-else="" class="o_social_stream_post_image_click" t-att-src="image_url" alt="Post Image" t-att-data-current-index="image_url_index" />
                                         </t>
                                     </div>
-                                    <a t-if="record.link_url.value"
-                                        class="o_social_stream_post_link p-2 d-flex bg-100"
-                                        t-att-href="record.link_url.raw_value"
-                                        target="_blank">
-                                        <img t-if="record.link_image_url.raw_value" class="mr-2 flex-shrink-0" t-att-src="record.link_image_url.raw_value" alt="Link Image"/>
-                                        <div class="o_social_stream_post_link_text">
-                                            <div class="o_social_stream_post_link_title font-weight-bold text-truncate" t-esc="record.link_title.value"/>
-                                            <div class="o_social_stream_post_link_description text-truncate" t-esc="record.link_description.value"/>
-                                        </div>
-                                    </a>
                                 </div>
                             </div>
                         </div>

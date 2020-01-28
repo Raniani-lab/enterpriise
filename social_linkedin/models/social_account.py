@@ -3,6 +3,7 @@
 
 import base64
 import requests
+
 from odoo import models, fields
 
 

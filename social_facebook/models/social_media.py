@@ -42,7 +42,7 @@ class SocialMediaFacebook(models.Model):
             'client_id': facebook_app_id,
             'redirect_uri': url_join(base_url, "social_facebook/callback"),
             'response_type': 'token',
-            'scope': 'manage_pages,publish_pages,read_insights'
+            'scope': 'manage_pages,publish_pages,read_insights,user_events'
         }
 
         return {

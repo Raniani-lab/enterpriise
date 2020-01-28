@@ -214,7 +214,9 @@
                 </a>
             </div>
             <div t-attf-class="o_social_original_post_message_body">
-                <div t-raw="widget._formatCommentStreamPost(originalPost.postMessage)" class="o_social_original_post_message_text overflow-auto mb-2" />
+                <div t-if="originalPost.postMessage"
+                    t-raw="widget._formatCommentStreamPost(originalPost.postMessage)"
+                    class="o_social_original_post_message_text overflow-auto mb-2"/>
                 <div t-if="originalPost.postImages.length > 0"
                     class="o_social_stream_post_image mt-3 d-flex overflow-hidde">
                     <t t-foreach="originalPost.postImages.length > 2 ? originalPost.postImages.slice(0, 2) : originalPost.postImages" t-as="image_url">

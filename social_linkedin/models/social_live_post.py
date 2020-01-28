@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import requests
+from werkzeug.urls import url_join
 
 from odoo import models, fields, _
 from odoo.exceptions import UserError
-from werkzeug.urls import url_join
 
 
 class SocialLivePostLinkedin(models.Model):

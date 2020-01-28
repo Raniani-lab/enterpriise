@@ -43,7 +43,7 @@
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click o_social_post_kanban #{record.has_post_errors.raw_value ? 'o_social_post_kanban_error' : ''} d-flex flex-column p-0">
                             <div class="o_social_post_header d-flex justify-content-between border-bottom py-2 px-3">
-                                <div>
+                                <div class="o_social_post_media d-flex align-items-center">
                                     <t t-foreach="record.media_ids.raw_value" t-as="media_id">
                                         <img class="img mr-1" width="16" t-att-title="JSON.parse(record.live_posts_by_media.raw_value)[media_id].join('\n')" t-attf-src="/web/image/social.media/#{media_id}/image/16x16" alt="Media"/>
                                     </t>

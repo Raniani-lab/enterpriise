@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="event_social_facebook_backend_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/event_social_facebook/static/src/js/synchronize_facebook_events_widget.js"/>
+            <link rel="stylesheet" type="text/scss" href="/event_social_facebook/static/src/scss/social_event.scss"/>
+        </xpath>
+    </template>
+</odoo>

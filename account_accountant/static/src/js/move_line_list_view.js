@@ -131,7 +131,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                 if (!attachments.length) {
                     var $empty = $('<p>', {
                         class: 'o_move_line_without_attachment',
-                        text: _t("There is no attachment linked to this move."),
+                        text: _t("No attachments linked."),
                     });
                     self.$attachmentPreview.empty().append($empty);
                 }

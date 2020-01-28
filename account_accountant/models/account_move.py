@@ -3,6 +3,7 @@
 
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError
+from odoo.osv import expression
 
 
 class AccountMove(models.Model):
@@ -29,29 +30,15 @@ class AccountMove(models.Model):
             'context': action_context,
         }
 
-
-class AccountPayment(models.Model):
-    _inherit = "account.payment"
-
-    attachment_ids = fields.One2many('ir.attachment', 'res_id', domain=[('res_model', '=', 'account.payment')], string='Attachments')
-
-
-class AccountBankStatement(models.Model):
-    _inherit = "account.bank.statement"
-
-    attachment_ids = fields.One2many('ir.attachment', 'res_id', domain=[('res_model', '=', 'account.bank.statement')], string='Attachments')
-
-
 class AccountMoveLine(models.Model):
     _name = "account.move.line"
     _inherit = "account.move.line"
 
     move_attachment_ids = fields.One2many('ir.attachment', compute='_compute_attachment')
 
-    @api.depends('move_id', 'payment_id')
     def _compute_attachment(self):
         for record in self:
-            record.move_attachment_ids = record.move_id.attachment_ids + record.statement_id.attachment_ids + record.payment_id.attachment_ids
+            record.move_attachment_ids = self.env['ir.attachment'].search(expression.OR(record._get_attachment_domains()))
 
     def action_reconcile(self):
         """ This function is called by the 'Reconcile' action of account.move.line's

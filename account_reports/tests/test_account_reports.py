@@ -1409,7 +1409,7 @@ class TestAccountReports(TestAccountReportsCommon):
         def assertCashFlowValues(lines, expected_lines):
             folded_lines = []
             for line in lines:
-                self.assertNotEquals(line['id'], 'cash_flow_line_unexplained_difference', 'Test failed due to an unexplained difference in the report.')
+                self.assertNotEqual(line['id'], 'cash_flow_line_unexplained_difference', 'Test failed due to an unexplained difference in the report.')
                 if line.get('style') != 'display: none;':
                     folded_lines.append(line)
             self.assertLinesValues(folded_lines, [0, 1], expected_lines)

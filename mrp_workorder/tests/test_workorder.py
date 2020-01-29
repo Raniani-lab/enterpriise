@@ -1234,3 +1234,65 @@ class TestWorkOrder(common.TestMrpCommon):
         add_move_finished = mf.filtered(lambda m: m.product_id == self.product_2)
         self.assertTrue(add_move_finished)
         self.assertTrue(add_move_finished.quantity_done, 1)
+
+    def test_add_component_form(self):
+        """Add a component to consume in the workorder form view. It should create
+        a quality check to be processed in the tablet view."""
+        self.bom_submarine.bom_line_ids.write({'operation_id': False})
+        self.bom_submarine.routing_id = self.mrp_routing_0
+        self.bom_submarine.consumption = 'flexible'
+        self.env['stock.production.lot'].create({
+            'product_id': self.product_1.id,
+            'name': 'lot1',
+            'company_id': self.env.company.id,
+        })
+        self.env['stock.production.lot'].create({
+            'product_id': self.product_2.id,
+            'name': 'lot2',
+            'company_id': self.env.company.id,
+        })
+        sn1 = self.env['stock.production.lot'].create({
+            'product_id': self.submarine_pod.id,
+            'name': 'sn1',
+            'company_id': self.env.company.id,
+        })
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = self.submarine_pod
+        # Use 'Primary assembly' routing (1 workorder)'
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.action_assign()
+        production.button_plan()
+        self.assertEqual(len(production.workorder_ids.raw_workorder_line_ids), 3)
+        # Add a product to consume on the form view
+        new_product = self.env['product.product'].create({
+            'name': 'New Product',
+            'type': 'product',
+        })
+        wo_form = Form(production.workorder_ids[0])
+        # Check we have opened the form view
+        self.assertEqual(wo_form._view['name'], 'mrp.production.work.order.form')
+        with wo_form.raw_workorder_line_ids.new() as line:
+            line.product_id = new_product
+            line.qty_to_consume = 3
+        wo = wo_form.save()
+        production.workorder_ids[0].button_start()
+        self.assertEqual(len(production.workorder_ids.check_ids), 3)
+        # Open tablet view
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.component_id, new_product)
+        self.assertEqual(wo_form.qty_done, 3)
+        wo = wo_form.save()
+        wo._next()
+        wo._next()
+        wo._next()
+        wo._next()
+        # summary page
+        self.assertFalse(wo.current_quality_check_id)
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.finished_lot_id = sn1
+        wo = wo_form.save()
+        wo.do_finish()
+        production.button_mark_done()
+        new_move = production.move_raw_ids.filtered(lambda move: move.product_id == new_product)
+        self.assertEqual(new_move.quantity_done, 3)

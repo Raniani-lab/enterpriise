@@ -38,14 +38,11 @@ class MrpWorkorderAdditionalProduct(models.TransientModel):
                 self.product_qty = 1
 
     def add_product(self):
-        """ create a quality check and a workorder line for the additional product"""
-        # Create a workorder line
+        """Create workorder line for the additional product."""
         if self.type == 'component':
             line = {'raw_workorder_id': self.workorder_id.id}
-            test_type = self.env.ref('mrp_workorder.test_type_register_consumed_materials')
         else:
             line = {'finished_workorder_id': self.workorder_id.id}
-            test_type = self.env.ref('mrp_workorder.test_type_register_byproducts')
 
         line.update({
             'product_id': self.product_id.id,
@@ -55,31 +52,4 @@ class MrpWorkorderAdditionalProduct(models.TransientModel):
             'qty_done': self.product_qty,
         })
         additional_line = self.env['mrp.workorder.line'].create(line)
-
-        # Create a quality check
-        check = {
-            'workorder_id': self.workorder_id.id,
-            'component_id': self.product_id.id,
-            'product_id': self.workorder_id.product_id.id,
-            'company_id': self.company_id.id,
-            'team_id': self.env['quality.alert.team'].search([], limit=1).id,
-            'finished_product_sequence': self.workorder_id.qty_produced,
-            'test_type_id': test_type.id,
-            'qty_done': self.product_qty,
-            'workorder_line_id': additional_line.id
-        }
-        additional_check = self.env['quality.check'].create(check)
-
-        # Insert the quality check in the chain. The process is slighty different
-        # if we are between two quality checks or at the summary step.
-        if self.workorder_id.current_quality_check_id:
-            additional_check._insert_in_chain('before', self.workorder_id.current_quality_check_id)
-            self.workorder_id._change_quality_check(position='previous')
-        else:
-            last_check = self.workorder_id.check_ids.filtered(
-                lambda c: not c.next_check_id and
-                c.finished_product_sequence == self.workorder_id.qty_produced and
-                c != additional_check
-            )
-            additional_check._insert_in_chain('after', last_check)
-            self.workorder_id._change_quality_check(position='last')
+        additional_line._create_additional_check()

@@ -108,6 +108,21 @@ class MrpProductionWorkcenterLine(models.Model):
                     wo.component_remaining_qty = self._prepare_component_quantity(move, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
                 wo.component_uom_id = lines[:1].product_uom_id
 
+    def write(self, values):
+        res = super().write(values)
+        if 'raw_workorder_line_ids' in values or 'finished_workorder_line_id' in values:
+            # Additional lines should have a linked check if they normally should
+            # not (i.e. we create check for untracked product if they aren't in the bom)
+            for line in self._workorder_line_ids():
+                # no quality check for finished lot lines
+                if line.product_id == line.finished_workorder_id.product_id:
+                    continue
+                # A line is additional if no stock_move is linked
+                additional = not line.move_id
+                if additional and not line.check_ids:
+                    line._create_additional_check()
+        return res
+
     def action_back(self):
         self.ensure_one()
         if self.is_user_working and self.working_state != 'blocked':
@@ -656,3 +671,38 @@ class MrpWorkorderLine(models.Model):
                     # In case some lines are deleted or some quantities updated
                     line.check_ids.qty_done = line.qty_to_consume
         return res
+
+    def _create_additional_check(self):
+        """Create a quality check for a newly created workorder line."""
+        self.ensure_one()
+        if self.raw_workorder_id:
+            test_type = self.env.ref('mrp_workorder.test_type_register_consumed_materials')
+        else:
+            test_type = self.env.ref('mrp_workorder.test_type_register_byproducts')
+        wo = self.raw_workorder_id or self.finished_workorder_id
+        check = {
+            'workorder_id': wo.id,
+            'component_id': self.product_id.id,
+            'product_id': wo.product_id.id,
+            'company_id': self.company_id.id,
+            'team_id': self.env['quality.alert.team'].search([], limit=1).id,
+            'finished_product_sequence': wo.qty_produced,
+            'test_type_id': test_type.id,
+            'qty_done': self.qty_to_consume,
+            'workorder_line_id': self.id
+        }
+        additional_check = self.env['quality.check'].create(check)
+
+        # Insert the quality check in the chain. The process is slighty different
+        # if we are between two quality checks or at the summary step.
+        if wo.current_quality_check_id:
+            additional_check._insert_in_chain('before', wo.current_quality_check_id)
+            wo._change_quality_check(position='previous')
+        else:
+            last_check = wo.check_ids.filtered(
+                lambda c: not c.next_check_id and
+                c.finished_product_sequence == wo.qty_produced and
+                c != additional_check
+            )
+            additional_check._insert_in_chain('after', last_check)
+            wo._change_quality_check(position='last')

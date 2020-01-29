@@ -3,11 +3,10 @@
 
 import base64
 import logging
-from contextlib import closing
 from os.path import join, dirname, realpath
 from lxml import etree, objectify
 
-from werkzeug import url_quote
+from werkzeug.urls import url_quote
 
 from odoo import api, tools, SUPERUSER_ID
 import requests

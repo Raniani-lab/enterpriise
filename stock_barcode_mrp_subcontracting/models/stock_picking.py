@@ -1,7 +1,7 @@
 #  -*- coding: utf-8 -*-
 #  Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models
+from odoo import api, models
 
 
 class StockPicking(models.Model):
@@ -15,8 +15,9 @@ class StockPicking(models.Model):
         fields.append('display_action_record_components')
         return fields
 
+    @api.model
     def _get_move_line_ids_fields_to_read(self):
-        fields = super(StockPicking, self)._get_move_line_ids_fields_to_read()
+        fields = super()._get_move_line_ids_fields_to_read()
         fields.append('move_id')
         return fields
 

@@ -35,6 +35,6 @@ class l10nBeMealVoucherReport(models.Model):
                     WHERE t.meal_voucher = TRUE AND b1.state='validated'
                 ) AS b
                 GROUP BY b.employee_id, b.date_start_day::date, b.date_stop_day::date
-                HAVING SUM(date_part('hour', b.date_stop_day - b.date_start_day)) >= 4
+                HAVING SUM(date_part('hour', b.date_stop_day - b.date_start_day)) >= 3
             );
         """ % self._table)

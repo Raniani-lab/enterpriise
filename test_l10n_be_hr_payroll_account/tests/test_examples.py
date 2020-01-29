@@ -244,11 +244,11 @@ class TestExamples(common.SavepointCase):
             ('ATN.INT.2', 0),
             ('ATN.MOB.2', 0),
             ('M.ONSS', -34.73),
-            ('MEAL_V_EMP', -21.80),
+            ('MEAL_V_EMP', -22.89),
             ('REP.FEES', 150.00),
             ('IP', 914.18),
             ('IP.DED', -59.6),
-            ('NET', 2678.26),
+            ('NET', 2677.17),
         ])
         employee = {
             'name': 'Roger2',

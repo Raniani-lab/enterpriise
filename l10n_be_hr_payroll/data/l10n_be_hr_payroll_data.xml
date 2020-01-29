@@ -113,6 +113,31 @@
         <field name="leave_right">True</field>
     </record>
 
+    <record id="work_entry_type_bank_holiday" model="hr.work.entry.type">
+        <field name="name">Bank Holiday</field>
+        <field name="code">LEAVE500</field>
+        <field name="is_leave">True</field>
+    </record>
+
+    <record id="work_entry_type_solicitation_time_off" model="hr.work.entry.type">
+        <field name="name">Solicitation Time Off</field>
+        <field name="code">LEAVE600</field>
+        <field name="is_leave">True</field>
+    </record>
+
+    <record id="work_entry_type_training" model="hr.work.entry.type">
+        <field name="name">Training</field>
+        <field name="meal_voucher">True</field>
+        <field name="code">WORK400</field>
+    </record>
+
+    <record id="work_entry_type_unjustified_reason" model="hr.work.entry.type">
+        <field name="name">Unjustified Reason</field>
+        <field name="code">LEAVE700</field>
+        <field name="is_leave">True</field>
+        <field name="leave_type_ids" eval="[(6,0,[ref('hr_holidays.holiday_status_unpaid')])]"/>
+    </record>
+
     <!-- Default advantage values -->
     <function model="ir.default" name="set" eval="('hr.contract', 'commission_on_target', 0.0)"/>
     <function model="ir.default" name="set" eval="('hr.contract', 'fuel_card', 150.0)"/>

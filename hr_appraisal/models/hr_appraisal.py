@@ -113,7 +113,7 @@ class HrAppraisal(models.Model):
                 user_ids = employee_attendees.mapped('user_id').ids or [self.env.uid]
                 values['user_id'] = user_ids[0]
                 # values['activity_ids'] = [(4, activity.id)]
-                meeting = CalendarEvent.create(values)
+                meeting = CalendarEvent.create(values)  # LUL TODO batch creation
                 appraisal.activity_schedule(
                     'mail.mail_activity_data_meeting', interview_deadline,
                     note=_('<a href="#" data-oe-model="%s" data-oe-id="%s">Meeting</a> for <a href="#" data-oe-model="%s" data-oe-id="%s">%s\'s</a> appraisal') % (

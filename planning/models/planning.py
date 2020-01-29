@@ -309,7 +309,7 @@ class Planning(models.Model):
         if 'employee_id' in groupby:
             # Always prepend 'Undefined Employees' (will be printed 'Open Shifts' when called by the frontend)
             d = {}
-            for field in fields:
+            for field in fields + groupby:
                 d.update({field: False})
             result.insert(0, d)
 

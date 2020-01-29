@@ -8,7 +8,6 @@
         <field name="arch" type="xml">
             <form>
                 <field name="available_product_ids" invisible="1"/>
-                <field name="available_product_tmpl_ids" invisible="1"/>
                 <sheet>
                     <div class="oe_button_box" name="button_box"/>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
@@ -17,7 +16,6 @@
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="title"/>
-                            <field name="product_tmpl_ids" widget="many2many_tags"/>
                             <field name="product_ids" groups="product.group_product_variant" widget="many2many_tags"/>
                             <field name="picking_type_ids" string="Operations" widget="many2many_tags"/>
                             <field name="company_id" groups="base.group_multi_company"/>
@@ -107,7 +105,6 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="title" optional="show"/>
-                <field name="product_tmpl_ids" widget="many2many_tags" optional="show"/>
                 <field name="product_ids" widget="many2many_tags" optional="hide"/>
                 <field name="picking_type_ids" widget="many2many_tags" optional="hide" string="Operations"/>
                 <field name="test_type_id" optional="show" string="Type"/>

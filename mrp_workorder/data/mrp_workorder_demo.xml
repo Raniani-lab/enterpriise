@@ -4,7 +4,6 @@
     <!-- For [FURN001] Computer Desk-->
     <record id="quality_point_component_registration" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
-        <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="mrp_workorder.test_type_register_consumed_materials"/>
@@ -18,7 +17,6 @@
 
     <record id="quality_point_text" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
-        <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="quality.test_type_text"/>
@@ -31,7 +29,6 @@
 
     <record id="quality_point_component_registration_2" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
-        <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="mrp_workorder.test_type_register_consumed_materials"/>
@@ -45,7 +42,6 @@
 
     <record id="quality_point_text_2" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
-        <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="quality.test_type_text"/>
@@ -58,7 +54,6 @@
 
     <record id="quality_point_print_labels" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
-        <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="mrp_workorder.test_type_print_label"/>
@@ -71,7 +66,6 @@
     <!-- For [PCSC234] Computer SC234 -->
     <record id="quality_point4" model="quality.point">
         <field name="product_ids" eval="[(4, ref('product.product_product_3'))]"/>
-        <field name="product_tmpl_ids" eval="[(4, ref('product.product_product_3_product_template'))]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_0"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
     </record>

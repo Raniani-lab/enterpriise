@@ -4,6 +4,7 @@
 from collections import defaultdict
 
 from odoo import api, fields, models, _
+from odoo.osv.expression import OR
 
 
 class TestType(models.Model):
@@ -59,11 +60,8 @@ class QualityPoint(models.Model):
             point.available_product_ids = point.available_product_ids.filtered(
                 lambda p: p.variant_bom_ids and p.variant_bom_ids.routing_id
             )
-            point.available_product_tmpl_ids = point.available_product_tmpl_ids.filtered(
-                lambda p: p.bom_ids and p.bom_ids.routing_id
-            )
 
-    @api.depends('product_ids', 'product_tmpl_ids', 'test_type_id')
+    @api.depends('product_ids', 'test_type_id')
     def _compute_component_ids(self):
         self.component_ids = False
         points = self.filtered(
@@ -71,15 +69,10 @@ class QualityPoint(models.Model):
                 'register_consumed_materials',
                 'register_byproducts'
             ])
-
-        bom_ids = self.env['mrp.bom'].search([
-            ('product_tmpl_id', 'in', points.product_tmpl_ids.ids),
-            ('type', '=', 'normal')
-        ])
+        bom_domain = OR([self.env['mrp.bom']._bom_find_domain(product=product._origin, bom_type='normal') for product in points.product_ids])
+        bom_ids = self.env['mrp.bom'].search(bom_domain)
         product_by_points = defaultdict(lambda: self.env['quality.point'])
         for point in points:
-            for product in point.product_tmpl_ids.filtered(lambda t: t not in point.product_ids.product_tmpl_id).product_variant_ids:
-                product_by_points[product._origin] |= point
             for product in point.product_ids:
                 product_by_points[product._origin] |= point
 
@@ -103,15 +96,10 @@ class QualityPoint(models.Model):
             quality_point.is_workorder_step = quality_point.picking_type_ids and\
                 all(pt.code == 'mrp_operation' for pt in quality_point.picking_type_ids)
 
-    @api.depends('product_tmpl_ids.bom_ids.routing_id')
+    @api.depends('product_ids.product_tmpl_id.bom_ids.routing_id')
     def _compute_routing_ids(self):
         for point in self:
-            point.routing_ids = point.product_tmpl_ids.bom_ids.routing_id
-
-    @api.onchange('product_tmpl_ids')
-    def onchange_product_tmpl_id(self):
-        if not self.is_workorder_step:
-            return super().onchange_product_tmpl_id()
+            point.routing_ids = point.product_ids.product_tmpl_id.bom_ids.routing_id
 
 
 class QualityAlert(models.Model):

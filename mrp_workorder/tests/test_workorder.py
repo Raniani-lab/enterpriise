@@ -241,7 +241,6 @@ class TestWorkOrder(common.TestMrpCommon):
         Check that consuming a non tracked product more than planned triggers an error"""
         self.env['quality.point'].create({
             'product_ids': [(4, self.submarine_pod.id)],
-            'product_tmpl_ids': [(4, self.submarine_pod.product_tmpl_id.id)],
             'picking_type_ids': [(4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
             'operation_id': self.operation_2.id,
             'test_type_id': self.env.ref('mrp_workorder.test_type_register_consumed_materials').id,
@@ -293,7 +292,6 @@ class TestWorkOrder(common.TestMrpCommon):
 
         self.env['quality.point'].create({
             'product_ids': [(4, self.submarine_pod.id)],
-            'product_tmpl_ids': [(4, self.submarine_pod.product_tmpl_id.id)],
             'picking_type_ids': [(4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
             'operation_id': self.operation_2.id,
             'test_type_id': self.env.ref('mrp_workorder.test_type_register_consumed_materials').id,

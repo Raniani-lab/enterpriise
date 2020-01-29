@@ -840,8 +840,8 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name" string="Control Point" filter_domain="[
-                    '|', '|', ('name', 'ilike', self), ('title', 'ilike', self), ('product_tmpl_ids', 'ilike', self)]"/>
-                <field name="product_tmpl_ids"/>
+                    '|', '|', ('name', 'ilike', self), ('title', 'ilike', self), ('product_ids', 'ilike', self)]"/>
+                <field name="product_ids"/>
                 <field name="picking_type_ids"/>
                 <field name="test_type_id"/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
@@ -860,13 +860,13 @@
         <field name="arch" type="xml">
             <kanban class="o_kanban_mobile">
                 <field name="name"/>
-                <field name="product_tmpl_ids"/>
+                <field name="product_ids"/>
                 <field name="picking_type_ids"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                             <div><strong><t t-esc="record.name.value"/></strong></div>
-                            <div><strong>Products :</strong> <t t-esc="record.product_tmpl_ids.value"/></div>
+                            <div><strong>Products :</strong> <t t-esc="record.product_ids.value"/></div>
                             <div><strong>Operations :</strong> <t t-esc="record.picking_type_ids.value"/></div>
                         </div>
                     </t>

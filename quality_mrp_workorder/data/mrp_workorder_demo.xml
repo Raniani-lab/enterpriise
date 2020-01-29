@@ -3,7 +3,6 @@
 
     <record id="quality_point_pass_fail" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
-        <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="quality_control.test_type_passfail"/>
@@ -16,7 +15,6 @@
 
     <record id="quality_point_measure" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
-        <field name="product_tmpl_ids" eval="[(4, ref('mrp.product_product_computer_desk_product_template'))]"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="quality_control.test_type_measure"/>

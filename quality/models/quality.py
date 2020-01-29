@@ -5,7 +5,7 @@ from datetime import datetime
 
 from odoo import api, fields, models, _, SUPERUSER_ID
 from odoo.exceptions import UserError
-from odoo.osv.expression import AND, OR
+from odoo.osv.expression import OR
 
 
 class TestType(models.Model):
@@ -42,13 +42,9 @@ class QualityPoint(models.Model):
         'quality.alert.team', 'Team', check_company=True,
         default=_get_default_team_id, required=True)
     product_ids = fields.Many2many(
-        'product.product', string='Product Variant',
+        'product.product', string='Products',
         domain="[('id', 'in', available_product_ids)]")
-    product_tmpl_ids = fields.Many2many(
-        'product.template', string='Product', check_company=True,
-        domain="[('id', 'in', available_product_tmpl_ids)]")
-    available_product_ids = fields.One2many('product.product', compute='_compute_available_products')
-    available_product_tmpl_ids = fields.One2many('product.template', compute='_compute_available_products')
+    available_product_ids = fields.One2many('product.product', compute='_compute_available_product_ids')
     picking_type_ids = fields.Many2many(
         'stock.picking.type', string='Operation Types', required=True, check_company=True)
     company_id = fields.Many2one(
@@ -64,13 +60,10 @@ class QualityPoint(models.Model):
     note = fields.Html('Note')
     reason = fields.Html('Cause')
 
-    @api.depends('company_id', 'product_tmpl_ids')
-    def _compute_available_products(self):
+    @api.depends('company_id')
+    def _compute_available_product_ids(self):
         for point in self:
             point.available_product_ids = self.env['product.product'].search([
-                ('product_tmpl_id', 'in', point.product_tmpl_ids.ids)
-            ])
-            point.available_product_tmpl_ids = self.env['product.template'].search([
                 ('type', 'in', ['product', 'consu']),
                 '|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)
             ])
@@ -80,13 +73,6 @@ class QualityPoint(models.Model):
         result = dict((data['point_id'][0], data['point_id_count']) for data in check_data)
         for point in self:
             point.check_count = result.get(point.id, 0)
-
-    @api.onchange('product_tmpl_ids')
-    def onchange_product_tmpl_id(self):
-        self.product_ids = self.product_ids.filtered(lambda p: p.product_tmpl_id in self.product_tmpl_ids)
-        new_product_tmpl_ids = self.product_tmpl_ids - self._origin.product_tmpl_ids
-        if new_product_tmpl_ids.product_variant_ids:
-            self.product_ids |= new_product_tmpl_ids.product_variant_ids
 
     @api.model
     def create(self, vals):
@@ -111,10 +97,9 @@ class QualityPoint(models.Model):
         for point in self:
             if not point.check_execute_now():
                 continue
-            point_products = point.product_tmpl_ids.filtered(lambda t: t not in point.product_ids.product_tmpl_id).product_variant_ids
-            point_products |= point.product_ids
+            point_products = point.product_ids
 
-            if not point.product_ids and not point.product_tmpl_ids:
+            if not point.product_ids:
                 point_products |= products
 
             for product in point_products:
@@ -136,10 +121,8 @@ class QualityPoint(models.Model):
     def _get_domain(self, product_ids, picking_type_id):
         """ Helper that returns a domain for quality.point based on the products and picking type
         pass as arguments. It will search for quality point having:
-        - No product_tmpl_ids
+        - No product_ids
         - At least one variant from product_ids
-        - For each product in product_ids, if there is no variants defined on the point for this
-        product, it will check if the templates match.
 
         :param product_ids: the products that could require a quality check
         :type product: :class:`~odoo.addons.product.models.product.ProductProduct`
@@ -148,19 +131,10 @@ class QualityPoint(models.Model):
         :return: the domain for quality point with given picking_type_id for all the product_ids
         :rtype: list
         """
-        domain = [
-            '|', ('product_ids', 'in', product_ids.ids),
-            '&', ('product_ids', '=', False), ('product_tmpl_ids', '=', False)
+        return [
+            ('picking_type_ids', 'in', picking_type_id.ids),
+            '|', ('product_ids', '=', False), ('product_ids', 'in', product_ids.ids),
         ]
-        for product in product_ids:
-            product_tmpl_id = product.product_tmpl_id
-            domain = OR([
-                domain, [
-                    ('product_tmpl_ids', 'in', product_tmpl_id.ids),
-                    ('product_ids', 'not in', product_tmpl_id.product_variant_ids.ids)
-                ]
-            ])
-        return AND([[('picking_type_ids', 'in', picking_type_id.ids)], domain])
 
     def _get_type_default_domain(self):
         return []

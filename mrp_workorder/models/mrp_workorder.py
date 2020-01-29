@@ -436,6 +436,7 @@ class MrpProductionWorkcenterLine(models.Model):
             processed_move = self.env['stock.move']
 
             production = wo.production_id
+            import pudb; pudb.set_trace()
             points_domain = self.env['quality.point']._get_domain(production.product_id, production.picking_type_id)
             points_domain = AND([points_domain, [('operation_id', '=', wo.operation_id.id)]])
             points = self.env['quality.point'].search(points_domain)

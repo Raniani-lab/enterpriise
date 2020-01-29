@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0alpha1+e\n"
+"Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-04 00:38+0000\n"
-"PO-Revision-Date: 2019-08-04 00:38+0000\n"
+"POT-Creation-Date: 2020-01-29 15:26+0000\n"
+"PO-Revision-Date: 2020-01-29 15:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,11 @@ msgstr ""
 #. module: l10n_ar_reports
 #: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
 msgid "AFIP responsibility"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__afip_responsibility_type_name
+msgid "Afip Responsibility Type Name"
 msgstr ""
 
 #. module: l10n_ar_reports
@@ -44,22 +49,27 @@ msgid "Company"
 msgstr ""
 
 #. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__cuit
+msgid "Cuit"
+msgstr ""
+
+#. module: l10n_ar_reports
 #: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__company_currency_id
 msgid "Currency"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: selection:account.ar.vat.line,type:0
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__out_refund
+msgid "Customer Credit Note"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__out_invoice
 msgid "Customer Invoice"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: selection:account.ar.vat.line,type:0
-msgid "Customer Refund"
-msgstr ""
-
-#. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:17
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__date
 #: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
 #, python-format
@@ -73,7 +83,7 @@ msgid "Display Name"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:18
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #, python-format
 msgid "Document"
 msgstr ""
@@ -127,8 +137,18 @@ msgid "ID"
 msgstr ""
 
 #. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__invoice_date
+msgid "Invoice Date"
+msgstr ""
+
+#. module: l10n_ar_reports
 #: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__journal_id
 msgid "Journal"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__entry
+msgid "Journal Entry"
 msgstr ""
 
 #. module: l10n_ar_reports
@@ -138,26 +158,31 @@ msgid "Last Modified on"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:19
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__move_name
+msgid "Move Name"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #, python-format
 msgid "Name"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:23
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #, python-format
 msgid "Not Taxed"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: model:ir.model.fields,help:l10n_ar_reports.field_account_ar_vat_line__no_gravado
+#: model:ir.model.fields,help:l10n_ar_reports.field_account_ar_vat_line__not_taxed
 msgid ""
 "Not Taxed / Exempt.\\All lines that have VAT 0, Exempt, Not Taxed or Not "
 "Correspond"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__no_gravado
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__not_taxed
 msgid "Not taxed/ex"
 msgstr ""
 
@@ -172,7 +197,7 @@ msgid "Open journal entry"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:29
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__other_taxes
 #, python-format
 msgid "Other Taxes"
@@ -185,7 +210,12 @@ msgid "Partner"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: selection:account.ar.vat.line,state:0
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__partner_name
+msgid "Partner Name"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__state__posted
 #: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
 msgid "Posted"
 msgstr ""
@@ -196,16 +226,26 @@ msgid "Posted Journal Items"
 msgstr ""
 
 #. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__in_receipt
+msgid "Purchase Receipt"
+msgstr ""
+
+#. module: l10n_ar_reports
 #: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
 msgid "Purchase VAT"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:36
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #: model:ir.actions.client,name:l10n_ar_reports.action_l10n_ar_purchases_vat_book
 #: model:ir.ui.menu,name:l10n_ar_reports.menu_l10n_ar_purchases_vat_book
 #, python-format
 msgid "Purchases VAT book"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__out_receipt
+msgid "Sales Receipt"
 msgstr ""
 
 #. module: l10n_ar_reports
@@ -214,7 +254,7 @@ msgid "Sales VAT"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:36
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #: model:ir.actions.client,name:l10n_ar_reports.action_l10n_ar_sales_vat_book
 #: model:ir.ui.menu,name:l10n_ar_reports.menu_l10n_ar_sales_vat_book
 #, python-format
@@ -227,14 +267,14 @@ msgid "Status"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:22
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #, python-format
 msgid "Taxed"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:30
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:104
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__total
 #: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_tree
 #, python-format
@@ -248,46 +288,46 @@ msgid "Type"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: selection:account.ar.vat.line,state:0
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__state__draft
 msgid "Unposted"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:21
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #, python-format
 msgid "VAT"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:26
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_10
 #, python-format
 msgid "VAT 10,5%"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:24
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_25
 #, python-format
 msgid "VAT 2,5%"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:27
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_21
 #, python-format
 msgid "VAT 21%"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:28
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_27
 #, python-format
 msgid "VAT 27%"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:25
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_5
 #, python-format
 msgid "VAT 5%"
@@ -310,24 +350,30 @@ msgid "VAT Summary"
 msgstr ""
 
 #. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "VAT book"
+msgstr ""
+
+#. module: l10n_ar_reports
 #: model:ir.model,name:l10n_ar_reports.model_account_ar_vat_line
 msgid "VAT line for Analysis in Argentinian Localization"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:20
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
 #, python-format
 msgid "Vat Cond."
 msgstr ""
 
 #. module: l10n_ar_reports
-#: selection:account.ar.vat.line,type:0
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__in_invoice
 msgid "Vendor Bill"
 msgstr ""
 
 #. module: l10n_ar_reports
-#: selection:account.ar.vat.line,type:0
-msgid "Vendor Refund"
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__in_refund
+msgid "Vendor Credit Note"
 msgstr ""
 
 #. module: l10n_ar_reports

@@ -133,7 +133,11 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
         var self = this;
 
         // add the tags hook
-        if (!this.$('.o_kanban_tags').length) {
+        const tagsWidget =this._findNodeWithWidget({
+            tag: 'field',
+            widget: 'many2many_tags',
+        });
+        if (_.isUndefined(tagsWidget)) {
             var $kanban_tags_hook = $('<span>')
                 .addClass('o_web_studio_add_kanban_tags')
                 .append($('<span>', {
@@ -216,7 +220,11 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
             tag: 'field',
             widget: 'priority',
         });
-        if (_.isUndefined(priorityWidget)) {
+        const favoriteWidget =this._findNodeWithWidget({
+            tag: 'field',
+            widget: 'boolean_favorite',
+        });
+        if (_.isUndefined(priorityWidget) && _.isUndefined(favoriteWidget)) {
             var $priority_hook = $('<div>')
                 .addClass('o_web_studio_add_priority oe_kanban_bottom_left')
                 .append($('<span>', {
@@ -259,7 +267,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
             var $kanban_image_hook = $('<div>')
                 .addClass('o_web_studio_add_kanban_image oe_kanban_bottom_right')
                 .append($('<span>', {
-                    text: _t('Add an image'),
+                    text: _t('Add an avatar'),
                 }));
             let $hook_attach_node = this.$el.find('.o_kanban_record_bottom');
             if ($hook_attach_node.length === 0) {

@@ -17,6 +17,6 @@ class CalendarEvent(models.Model):
                 if appraisal.exists():
                     appraisal.write({
                         'meeting_id': event.id,
-                        'date_final_interview': event.start_date if event.allday else event.start_datetime
+                        'date_final_interview': event.start_date if event.allday else event.start
                     })
         return events

@@ -58,8 +58,6 @@
         <field name="arch" type="xml">
             <field name="product_ids" position="after">
                 <field name="picking_type_ids" widget="many2many_tags" optional="show"/>
-            </field>
-            <field name="picking_type_ids" position="after">
                 <field name="operation_id" optional="hide" string="Work Order Operation"/>
             </field>
         </field>

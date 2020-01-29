@@ -551,6 +551,8 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.containsN(kanban, '.o_record_selected', 3,
             "should have 3 selected records");
@@ -609,6 +611,9 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.containsN(kanban, '.o_record_selected', 3,
             "should have 3 selected records");
@@ -761,6 +766,9 @@ QUnit.module('DocumentsViews', {
         // select a first document
         await testUtils.dom.click(kanban.$('.o_kanban_record:first .o_record_selector'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.containsNone(kanban, '.o_documents_inspector_info .o_selection_size',
             "should not display the number of selected documents (because only 1)");
         assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
@@ -770,6 +778,9 @@ QUnit.module('DocumentsViews', {
 
         // select a second document
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(2) .o_record_selector'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_selection_size').text().trim(),
             '2 documents selected', "should display the correct number of selected documents");
@@ -800,6 +811,9 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(2) .o_record_selector'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(3) .o_record_selector'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(4) .o_record_selector'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_selection_size').text().trim(),
             '5 documents selected', "should display the correct number of selected documents");
@@ -927,6 +941,10 @@ QUnit.module('DocumentsViews', {
             },
         });
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         kanban.$('input[name=name]').val("foo").trigger('input');
 
         await testUtils.dom.click(kanban.$('.o_document_preview img'));
@@ -1017,12 +1035,17 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.containsN(kanban, '.o_record_selected', 2,
             "should have 2 selected records");
         assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 2,
             "should show 2 document previews in the DocumentsInspector");
 
         await testUtils.dom.click(kanban.$('.o_documents_inspector_info .o_inspector_archive'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
         assert.containsNone(kanban, '.o_record_selected',
@@ -1095,6 +1118,9 @@ QUnit.module('DocumentsViews', {
         // select a record that is locked by ourself
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(zip)'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.hasClass(kanban.$('.o_inspector_lock'), 'o_locked',
             "this attachment should be locked");
         assert.notOk(kanban.$('.o_inspector_lock').is(':disabled'),
@@ -1104,6 +1130,9 @@ QUnit.module('DocumentsViews', {
 
         // select a record that is locked by someone else
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(gnap)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.hasClass(kanban.$('.o_inspector_lock'), 'o_locked',
             "this attachment should be locked as well");
@@ -1143,6 +1172,9 @@ QUnit.module('DocumentsViews', {
         });
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.doesNotHaveClass(kanban.$('.o_inspector_lock'), 'o_locked',
             "this attachment should not be locked");
@@ -1293,6 +1325,9 @@ QUnit.module('DocumentsViews', {
         assert.hasClass($yop, 'o_record_selected',
             "yop record should be selected");
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(),
             'Multiple values', "should display 'Multiple values'");
         assert.containsNone(kanban, '.o_field_many2one .o_external_button:visible',
@@ -1336,6 +1371,10 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click($firstRecord);
         await testUtils.dom.click($secondRecord.find('.o_record_selector'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.hasClass($firstRecord, 'o_record_selected',
             "first record should be selected");
         assert.hasClass($secondRecord, 'o_record_selected',
@@ -1506,6 +1545,9 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(gnap)'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.containsN(kanban, '.o_inspector_tag', 3,
             "should have 3 tags");
         assert.containsNone(kanban, '.o_inspector_tags .o_inspector_tag_add',
@@ -1545,6 +1587,9 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(4) .o_record_selector'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.containsN(kanban, '.o_inspector_tag', 2,
             "should display two tags");
@@ -1702,10 +1747,16 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.containsN(kanban, '.o_inspector_rule', 3,
             "should display the rules of the selected document");
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.containsN(kanban, '.o_record_selected', 2,
             "should have 2 selected records");
@@ -1742,10 +1793,16 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(0)'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.containsN(kanban, '.o_inspector_rule', 3,
             "should display the rules of the selected document (2 multi record, 1 single record)");
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(4) .o_record_selector'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.containsN(kanban, '.o_inspector_rule', 2,
             "should display the rules in common except the single record rule");
@@ -1781,6 +1838,9 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(lockedByAnother)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.containsNone(kanban, '.o_inspector_rule', "should not display any rule");
 
@@ -1818,6 +1878,9 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.containsN(kanban, '.o_inspector_rule span', 3,
             "should display the rules of the selected document");
 
@@ -1840,6 +1903,9 @@ QUnit.module('DocumentsViews', {
         // to make sure its rules have been reloaded correctly as well)
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop changed)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop changed)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.strictEqual(kanban.$('.o_inspector_rule span').text(),
             'Convincing AI not to turn evilFollow the white rabbitOne record rule',
@@ -1877,6 +1943,9 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.containsOnce(kanban, '.o_inspector_rule',
             "should display the common rules between the two selected documents");
         await testUtils.dom.click(kanban.$('.o_inspector_rule .o_inspector_trigger_rule'));
@@ -1906,6 +1975,9 @@ QUnit.module('DocumentsViews', {
 
         // select a record
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.containsNone(kanban, '.o_document_chatter_container .o_chatter',
             "should still not display any chatter");
@@ -1952,6 +2024,10 @@ QUnit.module('DocumentsViews', {
         });
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
@@ -1992,6 +2068,10 @@ QUnit.module('DocumentsViews', {
         });
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
@@ -2039,6 +2119,10 @@ QUnit.module('DocumentsViews', {
         });
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
@@ -2101,6 +2185,10 @@ QUnit.module('DocumentsViews', {
         });
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
@@ -2118,6 +2206,9 @@ QUnit.module('DocumentsViews', {
             "should display the activity Cancel button");
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
             "should display the chatter");
@@ -2162,6 +2253,10 @@ QUnit.module('DocumentsViews', {
 
         // select a record and open the chatter
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
@@ -2205,6 +2300,10 @@ QUnit.module('DocumentsViews', {
 
         // select a record and open the chatter
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
@@ -2216,6 +2315,9 @@ QUnit.module('DocumentsViews', {
 
         // select another record
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
             "should still display the chatter");
@@ -2244,6 +2346,10 @@ QUnit.module('DocumentsViews', {
 
         // select a record and open the chatter
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
@@ -2278,6 +2384,10 @@ QUnit.module('DocumentsViews', {
 
         // select a record and open the chatter
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
@@ -2285,6 +2395,9 @@ QUnit.module('DocumentsViews', {
 
         // select another record alongside the first one
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.containsNone(kanban, '.o_document_chatter_container .o_chatter',
             "should have closed the chatter");
@@ -2309,6 +2422,10 @@ QUnit.module('DocumentsViews', {
 
         // select a record and open the chatter
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
@@ -2649,6 +2766,9 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:first .o_record_selector'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         searchValue('.o_inspector_tag_add', 'stress');
         concurrency.delay(0).then(async function () {
             assert.strictEqual(autocompleteLength(), 1,
@@ -2727,6 +2847,9 @@ QUnit.module('DocumentsViews', {
         await testUtils.dom.click($yopRecord);
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         // starts the drag on a selected record
         const startEvent = new Event('dragstart', { bubbles: true, });
@@ -2988,6 +3111,9 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(youtubeVideo) .o_record_selector'));
 
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.strictEqual(
             kanban.$('.o_documents_inspector img, .o_documents_single_preview .o_preview_available').attr('data-src'),
             "https://img.youtube.com/vi/Ayab6wZ_U1A/0.jpg",
@@ -3079,6 +3205,9 @@ QUnit.module('DocumentsViews', {
         });
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(5)'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
 
         assert.strictEqual(kanban.$('.o_inspector_history_name').text(), 'oldYoutubeVideo',
             "should display the correct record name");

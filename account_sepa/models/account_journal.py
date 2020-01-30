@@ -256,24 +256,23 @@ class AccountJournal(models.Model):
         InstdAmt.text = val_InstdAmt
         CdtTrfTxInf.append(self._get_ChrgBr(sct_generic))
 
-        partner_id = self.env['res.partner'].search([('id', '=', payment['partner_id'])], limit=1)
-        if partner_id.bank_ids:
-            bank_id = partner_id.bank_ids[0]
-        elif partner_id.parent_id and partner_id.parent_id.bank_ids:
-            bank_id = partner_id.parent_id.bank_ids[0]
-        else:
-            raise UserError(_('A partner has not a bank id.'))
+        partner = self.env['res.partner'].browse(payment['partner_id'])
 
-        CdtTrfTxInf.append(self._get_CdtrAgt(bank_id, sct_generic))
+        partner_bank_id = payment.get('partner_bank_id')
+        if not partner_bank_id:
+            raise UserError(_('Partner %s has not bank account defined.') % partner.name)
+
+        partner_bank = self.env['res.partner.bank'].browse(partner_bank_id)
+
+        CdtTrfTxInf.append(self._get_CdtrAgt(partner_bank, sct_generic))
         Cdtr = etree.SubElement(CdtTrfTxInf, "Cdtr")
         Nm = etree.SubElement(Cdtr, "Nm")
-        Nm.text = sanitize_communication((bank_id.acc_holder_name or partner_id.name)[:70])
-        if partner_id.city and partner_id.country_id.code:
-            Cdtr.append(self._get_PstlAdr(partner_id))
-        if payment['payment_type'] == 'transfer':
-            CdtTrfTxInf.append(self._get_CdtrAcct(payment['destination_bank_account_id']))
-        else:
-            CdtTrfTxInf.append(self._get_CdtrAcct(bank_id, sct_generic))
+        Nm.text = sanitize_communication((partner_bank.acc_holder_name or partner.name)[:70])
+        if partner.city and partner.country_id.code:
+            Cdtr.append(self._get_PstlAdr(partner))
+
+        CdtTrfTxInf.append(self._get_CdtrAcct(partner_bank, sct_generic))
+
         val_RmtInf = self._get_RmtInf(payment)
         if val_RmtInf is not False:
             CdtTrfTxInf.append(val_RmtInf)

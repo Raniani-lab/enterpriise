@@ -38,17 +38,20 @@ class HrPayslip(models.Model):
             raise UserError(_("The journal '%s' requires a proper IBAN account to pay via SEPA. Please configure it first.") % journal_id.name)
 
         # Map the necessary data
-        payments_data = [{
-            'id' : slip.id,
-            'name': slip.number,
-            'payment_date' : slip.date_to,
-            'amount' : slip.net_wage,
-            'journal_id' : journal_id.id,
-            'currency_id' : journal_id.currency_id.id,
-            'payment_type' : 'outbound',
-            'communication' : slip.number,
-            'partner_id' : slip.employee_id.address_home_id.id,
-        } for slip in self]
+        payments_data = []
+        for slip in self:
+            payments_data.append({
+                'id' : slip.id,
+                'name': slip.number,
+                'payment_date' : slip.date_to,
+                'amount' : slip.net_wage,
+                'journal_id' : journal_id.id,
+                'currency_id' : journal_id.currency_id.id,
+                'payment_type' : 'outbound',
+                'communication' : slip.number,
+                'partner_id' : slip.employee_id.address_home_id.id,
+                'partner_bank_id': slip.employee_id.bank_account_id.id,
+            })
 
         # Generate XML File
         xml_doc = journal_id.create_iso20022_credit_transfer(payments_data, True)

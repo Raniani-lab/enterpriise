@@ -302,3 +302,9 @@ msgstr ""
 #, python-format
 msgid "Your bank account is not labelled in EUR"
 msgstr ""
+
+#. module: account_sepa
+#: code:addons/account_sepa/models/account_journal.py:0
+#, python-format
+msgid "Partner %s has not bank account defined."
+msgstr ""

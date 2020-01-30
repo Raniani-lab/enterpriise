@@ -138,9 +138,8 @@ class AccountBatchPayment(models.Model):
                 'payment_type' : payment.payment_type,
                 'communication' : payment.communication,
                 'partner_id' : payment.partner_id.id,
+                'partner_bank_id': payment.partner_bank_account_id.id,
             }
-            if payment['payment_type'] == 'transfer':
-                payment_dict['destination_bank_account_id'] = payment.destination_journal_id.bank_account_id
 
             payment_dicts.append(payment_dict)
 

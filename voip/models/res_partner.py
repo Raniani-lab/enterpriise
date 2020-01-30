@@ -40,7 +40,7 @@ class Contact(models.Model):
             country_code = country.code if country else None
             try:
                 phone_nbr = phonenumbers.parse(number, region=country_code, keep_raw_input=True)
-            except phonenumbers.phonenumberutil.NumberParseException:
+            except (phonenumbers.phonenumberutil.NumberParseException, AttributeError):
                 return number
             if not phonenumbers.is_possible_number(phone_nbr) or not phonenumbers.is_valid_number(phone_nbr):
                 return number

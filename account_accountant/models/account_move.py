@@ -9,6 +9,10 @@ class AccountMove(models.Model):
     _inherit = "account.move"
 
     attachment_ids = fields.One2many('ir.attachment', 'res_id', domain=[('res_model', '=', 'account.move')], string='Attachments')
+    payment_state_before_switch = fields.Char(string="Payment State Before Switch", copy=False,
+                                              help="Technical field to keep the value of payment_state when switching from invoicing to accounting "\
+                                                   "(using invoicing_switch_threshold setting field). It allows keeping the former payment state, so that "\
+                                                   "we can restore it if the user misconfigured the switch date and wants to change it.")
 
     def action_open_matching_suspense_moves(self):
         self.ensure_one()

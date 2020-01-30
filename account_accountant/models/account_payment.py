@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, _
+from odoo import models, fields, _
 from odoo.exceptions import UserError
 
 
 class account_payment(models.Model):
     _inherit = "account.payment"
+
+    state_before_switch = fields.Char(string="State Before Switch", copy=False,
+                                      help="Technical field to keep the state when switching from invoicing to accounting "\
+                                           "(using invoicing_switch_threshold setting field). It allows keeping the former state, so that "\
+                                           "we can restore it if the user misconfigured the switch date and wants to change it.")
 
     def open_payment_matching_screen(self):
         # Open reconciliation view for customers/suppliers

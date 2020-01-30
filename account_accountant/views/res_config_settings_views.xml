@@ -41,6 +41,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 col-lg-6" style="padding-left: 0; padding-right: 0;" groups="account.group_account_manager">
+                    <div class="col-12 col-lg-12 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <label for="invoicing_switch_threshold"/>
+                            <div class="text-muted">
+                                The invoices up to this date will not be taken into account as accounting entries
+                            </div>
+                            <field name="invoicing_switch_threshold"/>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="dynamic_report" position="attributes">
                 <attribute name="invisible">0</attribute>

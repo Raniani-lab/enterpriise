@@ -16,11 +16,9 @@ class FinancialReportController(http.Controller):
         uid = request.session.uid
         account_report_model = request.env['account.report']
         options = json.loads(options)
-        report_obj = request.env[model].with_user(uid)
-        if not options.get('multi_company'):
-            cids = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
-            allowed_company_ids = [int(cid) for cid in cids.split(',')]
-            report_obj = report_obj.with_context(allowed_company_ids=allowed_company_ids)
+        cids = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
+        allowed_company_ids = [int(cid) for cid in cids.split(',')]
+        report_obj = request.env[model].with_user(uid).with_context(allowed_company_ids=allowed_company_ids)
         if financial_id and financial_id != 'null':
             report_obj = report_obj.browse(int(financial_id))
         report_name = report_obj.get_report_filename(options)

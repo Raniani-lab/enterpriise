@@ -218,6 +218,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         return {
             document_id: recordId,
             folder_id: this._searchPanel.getSelectedFolderId(),
+            owner_id: context && context.default_owner_id,
             partner_id: context && context.default_partner_id,
         };
     },

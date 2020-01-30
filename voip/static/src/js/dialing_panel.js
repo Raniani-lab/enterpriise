@@ -298,6 +298,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _showCallButton() {
+        this._resetMainButton();
         this._$callButton.addClass('o_dial_call_button');
         this._$callButton.removeClass('o_dial_hangup_button');
     },
@@ -305,6 +306,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _showHangupButton() {
+        this._resetMainButton();
         this._$callButton.removeClass('o_dial_call_button');
         this._$callButton.addClass('o_dial_hangup_button');
     },

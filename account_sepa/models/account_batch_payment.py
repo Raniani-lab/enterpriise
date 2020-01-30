@@ -134,7 +134,7 @@ class AccountBatchPayment(models.Model):
                 'payment_date' : payment.payment_date,
                 'amount' : payment.amount,
                 'journal_id' : self.journal_id.id,
-                'currency_id' : self.journal_id.currency_id.id,
+                'currency_id' : payment.currency_id.id,
                 'payment_type' : payment.payment_type,
                 'communication' : payment.communication,
                 'partner_id' : payment.partner_id.id,

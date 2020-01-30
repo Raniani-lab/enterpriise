@@ -83,6 +83,8 @@ class AccountMove(models.Model):
             can_show = False
         if record.state != 'draft':
             can_show = False
+        if record.type in ('out_invoice', 'out_refund'):
+            can_show = False
         if record.message_main_attachment_id is None or len(record.message_main_attachment_id) == 0:
             can_show = False
         return can_show

@@ -20,10 +20,10 @@ class AccountGenericTaxReport(models.AbstractModel):
     def _get_reports_buttons(self):
         buttons = super(AccountGenericTaxReport, self)._get_reports_buttons()
         if self.env.company.country_id.code == 'BE':
-            buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
+            buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'l10n_be_print_xml', 'file_export_type': _('XML')}]
         return buttons
 
-    def print_xml(self, options):
+    def l10n_be_print_xml(self, options):
         # add options to context and return action to open transient model
         ctx = self.env.context.copy()
         ctx['l10n_be_reports_generation_options'] = options

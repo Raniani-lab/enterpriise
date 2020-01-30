@@ -299,7 +299,7 @@ class DatevExportCSV(models.AbstractModel):
                         # Find tax line in the move and get it's tax_base_amount
                         tax_line = m.line_ids.filtered(lambda l: l.tax_line_id == tax and l.partner_id == aml.partner_id)
                         amount += abs(sum(tax_line.mapped('balance'))) + abs(sum(tax_line.mapped('tax_base_amount')))
-                        tax_balance_sum += tax_line.balance
+                        tax_balance_sum += sum(tax_line.mapped('balance'))
                     letter = 's' if tax_balance_sum >= 0 else 'h'
 
                 # account and counterpart account

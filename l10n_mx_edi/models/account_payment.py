@@ -878,10 +878,14 @@ class AccountPayment(models.Model):
         return super(AccountPayment, self).action_draft()
 
     def unlink(self):
-        for rec in self.filtered(lambda r: r.l10n_mx_edi_is_required() and
-                                 r.l10n_mx_edi_pac_status == 'signed'):
-            rec._l10n_mx_edi_cancel()
-        if self.filtered(lambda p: p.l10n_mx_edi_pac_status == 'signed'):
+        mx_payment = self.filtered(lambda r: r.l10n_mx_edi_is_required() and r.l10n_mx_edi_cfdi)
+        mx_payment.with_context(disable_after_commit=True)._l10n_mx_edi_cancel()
+        mx_payment.l10n_mx_edi_update_sat_status()
+        env_demo = mx_payment.mapped('company_id').filtered(
+            'l10n_mx_edi_pac_test_env')
+        if mx_payment.filtered(
+                lambda p: p.company_id not in env_demo and p.l10n_mx_edi_pac_status in [
+                    'to_cancel', 'cancelled'] and p.l10n_mx_edi_sat_status != 'cancelled'):
             raise UserError(_('In order to delete a payment, you must first '
                               'cancel it in the SAT system.'))
         return super(AccountPayment, self).unlink()

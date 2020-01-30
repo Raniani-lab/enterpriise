@@ -56,8 +56,7 @@
         <field name="model">quality.point</field>
         <field name="inherit_id" ref="quality.quality_point_view_tree"/>
         <field name="arch" type="xml">
-            <field name="product_ids" position="after">
-                <field name="picking_type_ids" widget="many2many_tags" optional="show"/>
+            <field name="picking_type_ids" position="after">
                 <field name="operation_id" optional="hide" string="Work Order Operation"/>
             </field>
         </field>

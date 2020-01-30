@@ -105,8 +105,8 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="title" optional="show"/>
-                <field name="product_ids" widget="many2many_tags" optional="hide"/>
-                <field name="picking_type_ids" widget="many2many_tags" optional="hide" string="Operations"/>
+                <field name="product_ids" widget="many2many_tags" optional="show"/>
+                <field name="picking_type_ids" widget="many2many_tags" optional="show" string="Operations"/>
                 <field name="test_type_id" optional="show" string="Type"/>
                 <field name="team_id" optional="show"/>
                 <field name="user_id" optional="hide"/>

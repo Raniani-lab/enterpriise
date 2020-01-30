@@ -9,7 +9,7 @@
             <div id="dynamic_report" position="attributes">
                 <attribute name="attrs">{'invisible': [('module_account_reports', '!=', False)]}</attribute>
             </div>
-            <div id="fiscalyear" position="after">
+            <div id="default_taxes" position="after">
                 <div class="col-lg-6 o_setting_box" id="account_tax_periodicity">
                     <div class="o_setting_left_pane"/>
                     <div class="o_setting_right_pane">

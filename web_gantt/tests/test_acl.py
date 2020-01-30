@@ -7,15 +7,8 @@ from odoo.addons.base.tests.common import TransactionCaseWithUserDemo
 
 
 class TestACL(TransactionCaseWithUserDemo):
-
     def setUp(self):
         super().setUp()
-        self.user_demo = self.env['res.users'].create({
-            'login': 'demo1',
-            'password': 'demo',
-            'partner_id': self.partner_demo.id,
-            'groups_id': [(6, 0, [self.env.ref('base.group_user').id])],
-        })
         self.user_manager = self.env['res.users'].create({
             'login': 'demo123',
             'password': 'demo',

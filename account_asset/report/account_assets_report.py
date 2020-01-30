@@ -60,6 +60,15 @@ class assets_report(models.AbstractModel):
             ],
         ]
 
+    @api.model
+    def _init_filter_hierarchy(self, options, previous_options=None):
+        # overwrite because we don't depend on account.group
+        if self.filter_hierarchy is not None:
+            if previous_options and 'hierarchy' in previous_options:
+                options['hierarchy'] = previous_options['hierarchy']
+            else:
+                options['hierarchy'] = self.filter_hierarchy
+
     def get_account_codes(self, account):
         return [(name, name) for name in self._get_account_group(account.code)[1:]]
 

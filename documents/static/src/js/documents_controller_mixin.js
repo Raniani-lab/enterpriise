@@ -127,6 +127,22 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         this._chatter = null;
     },
     /**
+     * Renders the inspector with a slight delay.
+     * This is useful to let browser do some painting before, notably the record selection,
+     * as the rendering of inspector may be quite slow (up to a few seconds).
+     *
+     * @private
+     * @param {ev} event used for custom behaviour on override.
+     */
+    async _deferredRenderInspector(ev) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                this._renderDocumentsInspector();
+                resolve();
+            });
+        });
+    },
+    /**
      * @override
      */
     _getFileUploadRenderOptions() {
@@ -798,11 +814,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
 
         this._selectedRecordIds = [...new Set(newSelection)];
         await this._updateChatter();
-        /*
-         * since rendering inspector is relatively slow (as we destroy and re-create it),
-         * move this function to the next callStack so the selection can already be painted into the DOM
-         */
-        setTimeout(() => this._renderDocumentsInspector());
+        this._deferredRenderInspector(ev);
         this._updateSelection();
     },
     /**

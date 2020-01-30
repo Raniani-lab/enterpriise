@@ -4,7 +4,7 @@ odoo.define('documents.mobile_tests', function (require) {
 const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const { createDocumentsView } = require('documents.test_utils');
 
-const { dom } = require('web.test_utils');
+const { dom, nextTick } = require('web.test_utils');
 
 QUnit.module('Views');
 
@@ -106,6 +106,7 @@ QUnit.module('DocumentsKanbanViewMobile', {
 
         // select a first record
         await dom.click(kanban.$('.o_kanban_record:first .o_record_selector'));
+        await nextTick();
         assert.containsOnce(kanban, '.o_kanban_record.o_record_selected:not(.o_kanban_ghost)',
             "should have 1 record selected");
         const toggleInspectorSelector = '.o_documents_mobile_inspector > .o_documents_toggle_inspector';
@@ -123,12 +124,14 @@ QUnit.module('DocumentsKanbanViewMobile', {
 
         // select a second record
         await dom.click(kanban.$('.o_kanban_record:eq(1) .o_record_selector'));
+        await nextTick();
         assert.containsN(kanban, '.o_kanban_record.o_record_selected:not(.o_kanban_ghost)', 2,
             "should have 2 records selected");
         assert.strictEqual(kanban.$(toggleInspectorSelector).text().replace(/\s+/g, " ").trim(), '2 documents selected');
 
         // click on the record
         await dom.click(kanban.$('.o_kanban_record:first'));
+        await nextTick();
         assert.containsOnce(kanban, '.o_kanban_record.o_record_selected:not(.o_kanban_ghost)',
             "should have 1 record selected");
         assert.strictEqual(kanban.$(toggleInspectorSelector).text().replace(/\s+/g, " ").trim(), '1 document selected');

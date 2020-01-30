@@ -29,6 +29,21 @@ DocumentsKanbanController.include({
     },
 
     //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * @override
+     * @param {MouseEvent} ev
+     */
+    async _deferredRenderInspector(ev) {
+        await this._super(...arguments);
+        if (!ev.data.isKeepSelection && this._selectedRecordIds.length === 1) {
+            this._documentsInspector.open();
+        }
+    },
+
+    //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
 
@@ -49,9 +64,6 @@ DocumentsKanbanController.include({
             this._selectedRecordIds[0] !== ev.data.resId
         ) {
             await this._super(...arguments);
-        }
-        if (!ev.data.isKeepSelection && this._selectedRecordIds.length === 1) {
-            this._documentsInspector.open();
         }
     },
 });

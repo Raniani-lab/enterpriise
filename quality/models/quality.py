@@ -15,6 +15,7 @@ class TestType(models.Model):
     # Used instead of selection field in order to hide a choice depending on the view.
     name = fields.Char('Name', required=True)
     technical_name = fields.Char('Technical name', required=True)
+    active = fields.Boolean('active', default=True)
 
 
 class QualityPoint(models.Model):

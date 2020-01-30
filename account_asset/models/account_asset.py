@@ -680,7 +680,7 @@ class AccountAsset(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            original_move_line_ids = 'original_move_line_ids' in vals and self._check_original_move_line_ids(vals['original_move_line_ids'])
+            original_move_line_ids = 'original_move_line_ids' in vals and self.resolve_2many_commands('original_move_line_ids', vals['original_move_line_ids'], ['date'])
             if 'state' in vals and vals['state'] != 'draft' and not (set(vals) - set({'account_depreciation_id', 'account_depreciation_expense_id', 'journal_id'})):
                 raise UserError(_("Some required values are missing"))
             if 'first_depreciation_date' not in vals:
@@ -709,7 +709,6 @@ class AccountAsset(models.Model):
         return new_recs
 
     def write(self, vals):
-        'original_move_line_ids' in vals and self._check_original_move_line_ids(vals['original_move_line_ids'])
         res = super(AccountAsset, self).write(vals)
         return res
 
@@ -718,9 +717,3 @@ class AccountAsset(models.Model):
         for record in self:
             if record.state == 'open' and record.depreciation_move_ids and not record.currency_id.is_zero(record.depreciation_move_ids.filtered(lambda x: not x.reversal_move_id).sorted(lambda x: (x.date, x.id))[-1].asset_remaining_value):
                 raise UserError(_("The remaining value on the last depreciation line must be 0"))
-
-    def _check_original_move_line_ids(self, original_move_line_ids):
-        original_move_line_ids = self.resolve_2many_commands('original_move_line_ids', original_move_line_ids) or []
-        if any(line.get('asset_id') for line in original_move_line_ids):
-            raise UserError(_("One of the selected Journal Items already has a depreciation associated"))
-        return original_move_line_ids

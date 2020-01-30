@@ -291,7 +291,6 @@ class AccountMoveLine(models.Model):
             raise UserError(_("All the lines should be posted"))
         if any(account != self[0].account_id for account in self.mapped('account_id')):
             raise UserError(_("All the lines should be from the same account"))
-        self.env['account.asset']._check_original_move_line_ids(ctx['default_original_move_line_ids'])
         return {
             "name": view_name,
             "type": "ir.actions.act_window",

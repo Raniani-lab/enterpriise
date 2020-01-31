@@ -80,6 +80,7 @@ class TestResPartner(AccountTestInvoicingCommon):
             'city': 'La Louvière',
             'vat': 'BE0475646468',
             'is_company': True,
+            'category_id': [(4, cls.env.ref('l10n_be_reports.res_partner_tag_281_50').id)]
         })
         cls.partner_a_information = {
             'name': 'partner_a',
@@ -120,34 +121,41 @@ class TestResPartner(AccountTestInvoicingCommon):
         move.invoice_line_ids.account_id.tag_ids |= self.tag_281_50_commissions
         move.post()
 
-        payment = self.env['account.payment'].create({
-            'payment_type': 'outbound',
-            'amount': 1000,
-            'currency_id': self.currency_data['currency'].id,
-            'journal_id': self.bank_journal_euro.id,
-            'company_id': self.env.ref('base.main_company').id,
-            'payment_date': fields.Date.from_string('2000-05-12'),
-            'partner_id': self.partner_a.id,
-            'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
-            'destination_journal_id': move.journal_id.id,
-            'partner_type': 'supplier'
-        })
-        payment.post()
+        payment_dicts = []
+        for i in range(2):
+            payment_dicts.append({
+                'payment_type': 'outbound',
+                'amount': 500,
+                'currency_id': self.currency_data['currency'].id,
+                'journal_id': self.bank_journal_euro.id,
+                'company_id': self.env.ref('base.main_company').id,
+                'payment_date': fields.Date.from_string('200%s-05-12' % i),
+                'partner_id': self.partner_a.id,
+                'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
+                'destination_journal_id': move.journal_id.id,
+                'partner_type': 'supplier'
+            })
+
+        payments = self.env['account.payment'].create(payment_dicts)
+        payments.post()
 
         payable_move_lines = move.mapped('line_ids').filtered(lambda x: x.account_internal_type == 'payable')
-        payable_move_lines += payment.mapped('move_line_ids').filtered(lambda x: x.account_internal_type == 'payable')
+        payable_move_lines += payments.mapped('move_line_ids').filtered(lambda x: x.account_internal_type == 'payable')
         payable_move_lines.reconcile()
 
         move.flush()
-        payment.flush()
+        payments.flush()
 
         self.assertEqual(move.amount_residual, 150.0)
 
         tags = self.env['account.account.tag'] + self.tag_281_50_commissions + self.tag_281_50_fees + self.tag_281_50_atn + self.tag_281_50_exposed_expenses
         paid_amount_per_partner = self.partner_a._get_paid_amount_per_partner('2000', tags)
         paid_amount_for_partner_a = paid_amount_per_partner.get(self.partner_a.id, 0.0)
+        self.assertEqual(paid_amount_for_partner_a, self.partner_a.currency_id.round(434.7826))
 
-        self.assertEqual(paid_amount_for_partner_a, self.partner_a.currency_id.round(869.5652))
+        paid_amount_per_partner = self.partner_a._get_paid_amount_per_partner('2001', tags)
+        paid_amount_for_partner_a = paid_amount_per_partner.get(self.partner_a.id, 0.0)
+        self.assertEqual(paid_amount_for_partner_a, self.partner_a.currency_id.round(434.7826))
 
     def test_res_partner_get_partner_information(self):
         '''Checking of all information about a specific partner.'''

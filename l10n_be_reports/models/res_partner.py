@@ -56,12 +56,12 @@ class ResPartner(models.Model):
         fees_per_partner = self._get_balance_per_partner(tag_281_50_fees, reference_year)
         atn_per_partner = self._get_balance_per_partner(tag_281_50_atn, reference_year)
         exposed_expenses_per_partner = self._get_balance_per_partner(tag_281_50_exposed_expenses, reference_year)
-
-        if not any([commissions_per_partner, fees_per_partner, atn_per_partner, exposed_expenses_per_partner]):
-            raise UserError(_('There are no accounts with a 281.50 tag.'))
-
-        partners = self._get_partners(commissions_per_partner, fees_per_partner, atn_per_partner, exposed_expenses_per_partner) # Get only partner with a balance > 0
         paid_amount_per_partner = self._get_paid_amount_per_partner(reference_year, tags)
+
+        if not any([commissions_per_partner, fees_per_partner, atn_per_partner, exposed_expenses_per_partner, paid_amount_per_partner]):
+            raise UserError(_('There are no accounts or partner with a 281.50 tag.'))
+
+        partners = self._get_partners(commissions_per_partner, fees_per_partner, atn_per_partner, exposed_expenses_per_partner, paid_amount_per_partner) # Get only partner with a balance > 0
 
         attachments = []
         for partner in partners:
@@ -84,7 +84,7 @@ class ResPartner(models.Model):
             if 'xml' in file_type:
                 attachments.append((file_name+'.xml', partner._generate_281_50_xml(values_dict)))
             if 'pdf' in file_type:
-                attachments.append((file_name+'.pdf',partner._generate_281_50_pdf(values_dict)))
+                attachments.append((file_name+'.pdf', partner._generate_281_50_pdf(values_dict)))
 
         downloaded_filename = ''
         if len(attachments) > 1: # If there are more than one file, we zip all these files.
@@ -264,6 +264,7 @@ class ResPartner(models.Model):
         :return: A dict of partner_id: balance
         '''
         accounts = self.env['account.account'].search([('tag_ids', 'in', tag.ids)])
+        partner_tag_281_50 = self.env.ref('l10n_be_reports.res_partner_tag_281_50')
         if not accounts:
             return {}
         date_from = fields.Date().from_string(reference_year+'-01-01')
@@ -272,13 +273,16 @@ class ResPartner(models.Model):
         self._cr.execute('''
             SELECT line.partner_id, SUM(line.balance) AS balance
             FROM account_move_line line
+            INNER JOIN res_partner_res_partner_category_rel partner_category
+            ON line.partner_id = partner_category.partner_id
             WHERE line.partner_id in %s
+            AND partner_category.category_id = %s
             AND line.account_id = %s
             AND line.date BETWEEN %s AND %s
             AND line.parent_state = 'posted'
             AND line.company_id = %s
             GROUP BY line.partner_id
-        ''', [tuple(self.ids), tuple(accounts.ids), date_from, date_to, self.env.company.id])
+        ''', [tuple(self.ids), partner_tag_281_50.id, tuple(accounts.ids), date_from, date_to, self.env.company.id])
         balance_per_partner_list = self._cr.dictfetchall()
         tmp = {}
         for bpp in balance_per_partner_list:
@@ -287,7 +291,7 @@ class ResPartner(models.Model):
 
         return tmp
 
-    def _get_partners(self, commissions, fees, atn, exposed_expenses):
+    def _get_partners(self, commissions, fees, atn, exposed_expenses, paid_amount_per_partner):
         '''
         This method gets all partner_ids from each list in params
         and returns a recordset of res.partner.\n
@@ -298,7 +302,7 @@ class ResPartner(models.Model):
         :params exposed_expenses: Dict of balance by partner for the exposed_expenses tag.
         :return: A recordset of res.partner
         '''
-        tmp = list(commissions) + list(fees) + list(atn) + list(exposed_expenses)
+        tmp = list(commissions) + list(fees) + list(atn) + list(exposed_expenses) + list(paid_amount_per_partner)
         partner_ids = set(tmp)
         return self.env['res.partner'].browse(partner_ids)
 
@@ -309,6 +313,7 @@ class ResPartner(models.Model):
         :params tags: Which tags to get paid amount for
         :return: A dict of paid amount (for the specific year and the previous year) per partner.
         '''
+        partner_tag_281_50 = self.env.ref('l10n_be_reports.res_partner_tag_281_50')
         date_from = reference_year+'-01-01'
         date_to = reference_year+'-12-31'
         max_date_from = date_from
@@ -330,14 +335,17 @@ class ResPartner(models.Model):
             INNER JOIN account_move_line line1 ON line1.move_id = mv.id
             INNER JOIN account_account_account_tag account_tag
             ON line1.account_id = account_tag.account_account_id
+            INNER JOIN res_partner_res_partner_category_rel partner_category
+            ON mv.partner_id = partner_category.partner_id
             WHERE account_tag.account_account_tag_id IN %s
+            AND partner_category.category_id = %s
             AND mv.state = 'posted' AND mv.company_id = %s
             AND mv.date BETWEEN %s AND %s
             AND mv.partner_id = paid_per_partner.partner_id
             GROUP BY mv.partner_id, paid_per_partner.paid_amount
             ORDER BY mv.partner_id ASC) sub
             GROUP BY sub.partner_id
-        ''', [company_id, max_date_to, date_from, date_to, tuple(tags.ids), company_id, date_from, date_to])
+        ''', [company_id, max_date_to, date_from, date_to, tuple(tags.ids), partner_tag_281_50.id, company_id, date_from, date_to])
         amount_per_partner = self._cr.dictfetchall()
 
         dict_amount_per_partner = {}
@@ -365,14 +373,17 @@ class ResPartner(models.Model):
             INNER JOIN account_move_line line1 ON line1.move_id = mv.id
             INNER JOIN account_account_account_tag account_tag
             ON line1.account_id = account_tag.account_account_id
+            INNER JOIN res_partner_res_partner_category_rel partner_category
+            ON mv.partner_id = partner_category.partner_id
             WHERE account_tag.account_account_tag_id IN %s
+            AND partner_category.category_id = %s
             AND mv.state = 'posted' AND mv.company_id = %s
             AND mv.date BETWEEN %s AND %s
             AND mv.partner_id = paid_per_partner.partner_id
             GROUP BY mv.partner_id, paid_per_partner.paid_amount
             ORDER BY mv.partner_id ASC) sub
             GROUP BY sub.partner_id
-        ''', [company_id, max_date_from, max_date_to, date_from, date_to, tuple(tags.ids), company_id, date_from, date_to])
+        ''', [company_id, max_date_from, max_date_to, date_from, date_to, tuple(tags.ids), partner_tag_281_50.id, company_id, date_from, date_to])
         amount_for_previous_year = self._cr.dictfetchall()
 
         dict_amount_for_previous_year = {}

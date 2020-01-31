@@ -27,6 +27,16 @@ class L10nBe28150Wizard(models.Model):
         ], string="Treatment Type", default='0', required=True,
         help="This field represents the nature of the form.")
 
+    @api.onchange('reference_year')
+    def _onchange_reference_year(self):
+        if len(self.reference_year) == 4:
+            try:
+                reference_year_int = int(self.reference_year)
+            except:
+                pass
+            if reference_year_int and (reference_year_int >= fields.Date.today().year or reference_year_int <= 0):
+                self.is_test = True # Set to True when the user enter a year superior or equals to the current year
+
     def action_generate_281_50_form(self, file_type=('pdf', 'xml')):
         self._check_reference_year()
         values = {
@@ -49,7 +59,7 @@ class L10nBe28150Wizard(models.Model):
 
     @api.constrains('reference_year')
     def _check_reference_year(self):
-        for record in self:
+        for record in self.filtered(lambda r: not r.is_test): # No constrains when it's a test.
             if len(record.reference_year) != 4:
                 raise UserError(_('Please make sure the reference year is written with four characters (e.g. 2019)'))
             reference_year_int = 0

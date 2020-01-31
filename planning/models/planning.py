@@ -667,7 +667,8 @@ class Planning(models.Model):
         }
 
     def _read_group_employee_id(self, employees, domain, order):
-        if self._context.get('planning_expand_employee'):
+        all_employees = self.env['hr.employee'].search([])
+        if len(all_employees) >= 20:
             start_date_list = [dom[2] for dom in domain if dom[0] == 'start_datetime']
             start_date = datetime.strptime(start_date_list[-1], '%Y-%m-%d %H:%M:%S') if start_date_list else datetime.now()
             min_date = start_date - timedelta(days=30)

@@ -341,11 +341,12 @@ class ResPartner(models.Model):
             AND partner_category.category_id = %s
             AND mv.state = 'posted' AND mv.company_id = %s
             AND mv.date BETWEEN %s AND %s
+            AND mv.partner_id IN %s
             AND mv.partner_id = paid_per_partner.partner_id
             GROUP BY mv.partner_id, paid_per_partner.paid_amount
             ORDER BY mv.partner_id ASC) sub
             GROUP BY sub.partner_id
-        ''', [company_id, max_date_to, date_from, date_to, tuple(tags.ids), partner_tag_281_50.id, company_id, date_from, date_to])
+        ''', [company_id, max_date_to, date_from, date_to, tuple(tags.ids), partner_tag_281_50.id, company_id, date_from, date_to, tuple(self.ids)])
         amount_per_partner = self._cr.dictfetchall()
 
         dict_amount_per_partner = {}
@@ -379,11 +380,12 @@ class ResPartner(models.Model):
             AND partner_category.category_id = %s
             AND mv.state = 'posted' AND mv.company_id = %s
             AND mv.date BETWEEN %s AND %s
+            AND mv.partner_id IN %s
             AND mv.partner_id = paid_per_partner.partner_id
             GROUP BY mv.partner_id, paid_per_partner.paid_amount
             ORDER BY mv.partner_id ASC) sub
             GROUP BY sub.partner_id
-        ''', [company_id, max_date_from, max_date_to, date_from, date_to, tuple(tags.ids), partner_tag_281_50.id, company_id, date_from, date_to])
+        ''', [company_id, max_date_from, max_date_to, date_from, date_to, tuple(tags.ids), partner_tag_281_50.id, company_id, date_from, date_to, tuple(self.ids)])
         amount_for_previous_year = self._cr.dictfetchall()
 
         dict_amount_for_previous_year = {}

@@ -200,7 +200,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                     'data-toggle': 'dropdown',
                     href: '#',
                 }).append($('<span>', {
-                    class: 'fa fa-bars fa-lg',
+                    class: 'fa fa-ellipsis-v',
                 })));
             $top_left_hook.prependTo(this.$el);
             $top_left_hook.click(function () {

@@ -11,7 +11,7 @@ class StockMoveLine(models.Model):
     _name= 'stock.move.line'
     _inherit = ['stock.move.line', 'barcodes.barcode_events_mixin']
 
-    product_barcode = fields.Char(related='product_id.barcode', readonly=False)
+    product_barcode = fields.Char(related='product_id.barcode')
     location_processed = fields.Boolean()
     dummy_id = fields.Char(compute='_compute_dummy_id', inverse='_inverse_dummy_id')
 

@@ -17,6 +17,22 @@ from odoo.tools import ustr, sql
 
 _logger = logging.getLogger(__name__)
 
+# contains all valid operations
+OPERATIONS_WHITELIST = [
+    'add',
+    'attributes',
+    'buttonbox',
+    'chatter',
+    'kanban_dropdown',
+    'kanban_image',
+    'kanban_priority',
+    'kanban_set_cover',
+    'map_popup_fields',
+    'move',
+    'remove',
+    'statusbar',
+]
+
 
 class WebStudioController(http.Controller):
 
@@ -498,7 +514,10 @@ class WebStudioController(http.Controller):
     def edit_view(self, view_id, studio_view_arch, operations=None):
         IrModelFields = request.env['ir.model.fields']
         view = request.env['ir.ui.view'].browse(view_id)
-
+        operations = operations or []
+        for op in operations:
+            if op['type'] not in OPERATIONS_WHITELIST:
+                raise ValidationError(_('The operation  type "%s" is not supported') % op['type'])
         parser = etree.XMLParser(remove_blank_text=True)
         if studio_view_arch == "":
             studio_view_arch = '<data/>'

@@ -277,12 +277,32 @@ class generic_tax_report(models.AbstractModel):
         return sql
 
     def _sql_net_amt_regular_taxes(self):
-        sql = """SELECT r.account_tax_id, COALESCE(SUM("account_move_line".debit-"account_move_line".credit), 0)
-                 FROM %s
-                 INNER JOIN account_move_line_account_tax_rel r ON ("account_move_line".id = r.account_move_line_id)
-                 INNER JOIN account_tax t ON (r.account_tax_id = t.id)
-                 WHERE %s AND t.tax_exigibility = 'on_invoice' GROUP BY r.account_tax_id"""
-        return sql
+        return '''
+            SELECT 
+                tax.id,
+                 COALESCE(SUM(account_move_line.balance))
+            FROM %s
+            JOIN account_move_line_account_tax_rel rel ON rel.account_move_line_id = account_move_line.id
+            JOIN account_tax tax ON tax.id = rel.account_tax_id
+            WHERE %s AND tax.tax_exigibility = 'on_invoice' 
+            GROUP BY tax.id
+
+            UNION ALL
+
+            SELECT 
+                child_tax.id,
+                 COALESCE(SUM(account_move_line.balance))
+            FROM %s
+            JOIN account_move_line_account_tax_rel rel ON rel.account_move_line_id = account_move_line.id
+            JOIN account_tax tax ON tax.id = rel.account_tax_id
+            JOIN account_tax_filiation_rel child_rel ON child_rel.parent_tax = tax.id
+            JOIN account_tax child_tax ON child_tax.id = child_rel.child_tax
+            WHERE %s 
+                AND child_tax.tax_exigibility = 'on_invoice' 
+                AND tax.amount_type = 'group' 
+                AND child_tax.amount_type != 'group'
+            GROUP BY child_tax.id
+        '''
 
     def _compute_from_amls(self, options, dict_to_fill, period_number):
         """ Fills dict_to_fill with the data needed to generate the report.
@@ -345,14 +365,17 @@ class generic_tax_report(models.AbstractModel):
                 dict_to_fill[result[0]]['periods'][period_number]['net'] = result[1]
                 dict_to_fill[result[0]]['periods'][period_number]['tax'] = result[2]
                 dict_to_fill[result[0]]['show'] = True
+
+        # Tax base amount.
         sql = self._sql_net_amt_regular_taxes()
-        query = sql % (tables, where_clause)
-        self.env.cr.execute(query, where_params)
-        results = self.env.cr.fetchall()
-        for result in results:
-            if result[0] in dict_to_fill:
-                dict_to_fill[result[0]]['periods'][period_number]['net'] = result[1]
-                dict_to_fill[result[0]]['show'] = True
+        query = sql % (tables, where_clause, tables, where_clause)
+        self.env.cr.execute(query, where_params + where_params)
+
+        for tax_id, balance in self.env.cr.fetchall():
+            if tax_id in dict_to_fill:
+                dict_to_fill[tax_id]['periods'][period_number]['net'] += balance
+                dict_to_fill[tax_id]['show'] = True
+
         sql = self._sql_tax_amt_regular_taxes()
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
@@ -565,16 +588,31 @@ class generic_tax_report(models.AbstractModel):
         types = ['sale', 'purchase']
         groups = dict((tp, {}) for tp in types)
         for key, tax in taxes.items():
+
+            # 'none' taxes are skipped.
             if tax['obj'].type_tax_use == 'none':
                 continue
-            if tax['obj'].children_tax_ids:
+
+            if tax['obj'].amount_type == 'group':
+
+                # Group of taxes without child are skipped.
+                if not tax['obj'].children_tax_ids:
+                    continue
+
+                # - If at least one children is 'none', show the group of taxes.
+                # - If all children are different of 'none', only show the children.
+
                 tax['children'] = []
+                tax['show'] = False
                 for child in tax['obj'].children_tax_ids:
+
                     if child.type_tax_use != 'none':
                         continue
-                    tax['children'].append(taxes[child.id])
-            if tax['obj'].children_tax_ids and not tax.get('children'):
-                continue
+
+                    tax['show'] = True
+                    for i, period_vals in enumerate(taxes[child.id]['periods']):
+                        tax['periods'][i]['tax'] += period_vals['tax']
+
             groups[tax['obj'].type_tax_use][key] = tax
 
         period_number = len(options['comparison'].get('periods'))
@@ -595,9 +633,15 @@ class generic_tax_report(models.AbstractModel):
                     columns = []
                     for period in tax['periods']:
                         columns += [{'name': self.format_value(period['net'] * sign), 'style': 'white-space:nowrap;'},{'name': self.format_value(period['tax'] * sign), 'style': 'white-space:nowrap;'}]
+
+                    if tax['obj'].amount_type == 'group':
+                        report_line_name = tax['obj'].name
+                    else:
+                        report_line_name = '%s (%s)' % (tax['obj'].name, tax['obj'].amount)
+
                     lines.append({
                         'id': tax['obj'].id,
-                        'name': tax['obj'].name + ' (' + str(tax['obj'].amount) + ')',
+                        'name': report_line_name,
                         'unfoldable': False,
                         'columns': columns,
                         'level': 4,

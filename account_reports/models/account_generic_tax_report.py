@@ -80,7 +80,9 @@ class generic_tax_report(models.AbstractModel):
         for tg, result in zip(self.env['account.tax.group'].browse(tax_group_ids), results):
             if tg not in tax_groups:
                 tax_groups[tg] = {}
-            tax_groups[tg][result.get('tax_id')] = (result.get('tax_name'), result.get('account_id'), result.get('amount'))
+            if result.get('tax_id') not in tax_groups[tg]:
+                tax_groups[tg][result.get('tax_id')] = []
+            tax_groups[tg][result.get('tax_id')].append((result.get('tax_name'), result.get('account_id'), result.get('amount')))
 
         # then loop on previous results to
         #    * add the lines that will balance their sum per account
@@ -88,16 +90,17 @@ class generic_tax_report(models.AbstractModel):
         # (if 2 tax groups share the same 3 accounts, they should consolidate in the vat closing entry)
         move_vals_lines = []
         tax_group_subtotal = {}
-        for tg, value in tax_groups.items():
+        for tg, values in tax_groups.items():
             total = 0
             # ignore line that have no property defined on tax group
             if not tg.property_tax_receivable_account_id or not tg.property_tax_payable_account_id:
                 continue
-            for dummy, values in value.items():
-                tax_name, account_id, amt = values
-                # Line to balance
-                move_vals_lines.append((0, 0, {'name': tax_name, 'debit': abs(amt) if amt < 0 else 0, 'credit': amt if amt > 0 else 0, 'account_id': account_id}))
-                total += amt
+            for dummy, value in values.items():
+                for v in value:
+                    tax_name, account_id, amt = v
+                    # Line to balance
+                    move_vals_lines.append((0, 0, {'name': tax_name, 'debit': abs(amt) if amt < 0 else 0, 'credit': amt if amt > 0 else 0, 'account_id': account_id}))
+                    total += amt
 
             if total != 0:
                 # Add total to correct group

@@ -202,7 +202,8 @@
                             <field name="image_ids" widget="many2many_binary" class="o_social_post_form_attachments"
                                  attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}" />
                             <field string="Campaign" name="utm_campaign_id"
-                                attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>
+                                attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"
+                                context="{'form_view_ref': 'social.utm_campaign_view_form_quick_create_social'}"/>
                             <field name="post_method" widget="radio" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
                             <field name="scheduled_date" attrs="{'invisible': ['|', ('post_method', '=', 'now'), ('state', 'in', ['posting', 'posted'])], 'required': [('post_method', '!=', 'now')]}" />
                         </group>

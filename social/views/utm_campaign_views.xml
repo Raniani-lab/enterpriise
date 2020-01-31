@@ -29,6 +29,20 @@
         </field>
     </record>
 
+    <record id="utm_campaign_view_form_quick_create_social" model="ir.ui.view">
+        <field name="name">utm.campaign.view.form.quick.create.social</field>
+        <field name="model">utm.campaign</field>
+        <field name="arch" type="xml">
+            <form string="Campaign">
+                <group>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="tag_ids" widget="many2many_tags"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="utm_campaign_view_kanban">
         <field name="name">utm.campaign.view.kanban.inherit.social</field>
         <field name="model">utm.campaign</field>

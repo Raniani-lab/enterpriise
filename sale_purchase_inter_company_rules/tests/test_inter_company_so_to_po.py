@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from .common import TestInterCompanyRulesCommon
+from .common import TestInterCompanyRulesCommonSOPO
 from odoo.tests import Form
 
 
-class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommon):
+class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommonSOPO):
 
     def _generate_draft_sale_order(self, company, partner, user):
         """ Generate sale order and confirm its state """
@@ -57,26 +57,26 @@ class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommon):
 
         # Generate sale order in company A for company B
         self.company_b.update({
-            'applicable_on': 'sale_purchase',
+            'rule_type': 'sale_purchase',
         })
         self.generate_sale_order(self.company_a, self.company_b.partner_id, self.res_users_company_a)
         # Check purchase order is created in company B ( for company A )
         self.validate_generated_purchase_order(self.company_a, self.company_b)
         # reset configuration of company B
         self.company_b.update({
-            'applicable_on': False,
+            'rule_type': False,
         })
 
         # Generate sale order in company B for company A
         self.company_a.update({
-            'applicable_on': 'sale_purchase',
+            'rule_type': 'sale_purchase',
         })
         self.generate_sale_order(self.company_b, self.company_a.partner_id, self.res_users_company_b)
         # Check purchase order is created in company A ( for company B )
         self.validate_generated_purchase_order(self.company_b, self.company_a)
         # reset configuration of company A
         self.company_a.update({
-            'applicable_on': False,
+            'rule_type': False,
         })
 
     def test_01_inter_company_sale_order_with_configuration(self):
@@ -86,26 +86,26 @@ class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommon):
 
         # Generate sale order in company A for company B
         self.company_b.update({
-            'applicable_on': 'sale',
+            'rule_type': 'sale',
         })
         self.generate_sale_order(self.company_a, self.company_b.partner_id, self.res_users_company_a)
         # Check purchase order is created in company B ( for company A )
         self.validate_generated_purchase_order(self.company_a, self.company_b)
         # reset configuration of company B
         self.company_b.update({
-            'applicable_on': False,
+            'rule_type': False,
         })
 
         # Generate sale order in company B for company A
         self.company_a.update({
-            'applicable_on': 'sale',
+            'rule_type': 'sale',
         })
         self.generate_sale_order(self.company_b, self.company_a.partner_id, self.res_users_company_b)
         # Check purchase order is created in company A ( for company B )
         self.validate_generated_purchase_order(self.company_b, self.company_a)
         # reset configuration of company A
         self.company_a.update({
-            'applicable_on': False,
+            'rule_type': False,
         })
 
     def test_02_sale_to_purchase_without_configuration(self):
@@ -133,7 +133,7 @@ class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommon):
 
         # Generate sale order in company A for company B
         self.company_b.update({
-            'applicable_on': 'sale_purchase',
+            'rule_type': 'sale_purchase',
         })
         so = self._generate_draft_sale_order(self.company_a, self.company_b.partner_id, self.res_users_company_a)
         so.write({

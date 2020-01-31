@@ -11,10 +11,7 @@
                         <group>
                             <group>
                                 <field name="rule_type" widget="radio"/>
-                                <field name="applicable_on" attrs="{'required':[('rule_type', '=', 'so_and_po')], 'invisible':[('rule_type', '!=', 'so_and_po')]}"/>
-                                <field name="warehouse_id" options="{'no_create_edit': True}" domain="[('company_id', '=', id)]" attrs="{'invisible':['|', ('rule_type', '!=', 'so_and_po'), ('applicable_on', '=', 'sale')]}"/>
                                 <field name="intercompany_user_id" require="1" attrs="{'required':[('rule_type', '!=', 'not_synchronize')], 'invisible':[('rule_type', '=', 'not_synchronize')]}"/>
-                                <field name="auto_validation" attrs="{'invisible':[('rule_type', '!=', 'so_and_po')]}"/>
                             </group>
                             <group col="1">
                                 <div class="alert alert-info" role="alert" attrs="{'invisible':[('rule_type', '=', 'not_synchronize')]}">

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models, _
+from odoo import fields, models, _
 
 
 class AccountMove(models.Model):
@@ -11,21 +11,20 @@ class AccountMove(models.Model):
     def post(self):
         # OVERRIDE to generate cross invoice based on company rules.
         invoices_map = {}
+        res = super(AccountMove, self).post()
         for invoice in self.filtered(lambda move: move.is_invoice()):
             company = self.env['res.company']._find_company_from_partner(invoice.partner_id.id)
             if company and company.rule_type == 'invoice_and_refund' and not invoice.auto_generated:
                 invoices_map.setdefault(company, self.env['account.move'])
                 invoices_map[company] += invoice
         for company, invoices in invoices_map.items():
-            invoices._inter_company_create_invoices(company)
-        return super(AccountMove, self).post()
+            invoices.with_user(company.intercompany_user_id).with_context(default_company_id=company.id).with_company(company)._inter_company_create_invoices()
+        return res
 
-    def _inter_company_create_invoices(self, company):
+    def _inter_company_create_invoices(self):
         ''' Create cross company invoices.
-        :param company: The targeted new company (res.company record).
         :return:        The newly created invoices.
         '''
-        invoices_ctx = self.with_user(company.intercompany_user_id).with_context(default_company_id=company.id).with_company(company)
 
         # Prepare invoice values.
         invoices_vals_per_type = {}
@@ -35,11 +34,11 @@ class AccountMove(models.Model):
             'out_invoice': 'in_invoice',
             'out_refund': 'in_refund',
         }
-        for inv in invoices_ctx:
-            invoice_vals = inv._inter_company_prepare_invoice_data(company, inverse_types[inv.type])
+        for inv in self:
+            invoice_vals = inv._inter_company_prepare_invoice_data(inverse_types[inv.type])
             invoice_vals['invoice_line_ids'] = []
             for line in inv.invoice_line_ids:
-                invoice_vals['invoice_line_ids'].append((0, 0, line._inter_company_prepare_invoice_line_data(company)))
+                invoice_vals['invoice_line_ids'].append((0, 0, line._inter_company_prepare_invoice_line_data()))
 
             inv_new = inv.with_context(default_type=invoice_vals['type']).new(invoice_vals)
             for line in inv_new.invoice_line_ids:
@@ -51,19 +50,14 @@ class AccountMove(models.Model):
             invoices_vals_per_type[invoice_vals['type']].append(invoice_vals)
 
         # Create invoices.
-        moves = None
+        moves = self.env['account.move']
         for invoice_type, invoices_vals in invoices_vals_per_type.items():
-            invoices = invoices_ctx.with_context(default_type=invoice_type).create(invoices_vals)
-            if moves:
-                moves += invoices
-            else:
-                moves = invoices
+            moves += self.with_context(default_type=invoice_type).create(invoices_vals)
         return moves
 
-    def _inter_company_prepare_invoice_data(self, company, invoice_type):
+    def _inter_company_prepare_invoice_data(self, invoice_type):
         ''' Get values to create the invoice.
         /!\ Doesn't care about lines, see '_inter_company_prepare_invoice_line_data'.
-        :param company: The targeted company.
         :return: Python dictionary of values.
         '''
         self.ensure_one()
@@ -83,13 +77,11 @@ class AccountMove(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    def _inter_company_prepare_invoice_line_data(self, company):
+    def _inter_company_prepare_invoice_line_data(self):
         ''' Get values to create the invoice line.
-        :param company: The targeted company.
         :return: Python dictionary of values.
         '''
         self.ensure_one()
-
         return {
             'display_type': self.display_type,
             'sequence': self.sequence,

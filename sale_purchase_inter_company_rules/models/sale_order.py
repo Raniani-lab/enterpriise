@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
-from odoo.exceptions import Warning
+from odoo.exceptions import UserError
 
 
 class sale_order(models.Model):
@@ -18,8 +18,8 @@ class sale_order(models.Model):
                 continue
             # if company allow to create a Purchase Order from Sales Order, then do it !
             company = self.env['res.company']._find_company_from_partner(order.partner_id.id)
-            if company and company.applicable_on in ('sale', 'sale_purchase') and (not order.auto_generated):
-                order.inter_company_create_purchase_order(company)
+            if company and company.rule_type in ('sale', 'sale_purchase') and (not order.auto_generated):
+                order.with_user(company.intercompany_user_id).with_context(default_company_id=company.id).with_company(company).inter_company_create_purchase_order(company)
         return res
 
     def inter_company_create_purchase_order(self, company):
@@ -29,10 +29,6 @@ class sale_order(models.Model):
             :param company : the company of the created PO
             :rtype company : res.company record
         """
-        self = self.with_company(company).with_context(company_id=company.id)
-        PurchaseOrder = self.env['purchase.order']
-        PurchaseOrderLine = self.env['purchase.order.line']
-
         for rec in self:
             if not company or not rec.company_id.partner_id:
                 continue
@@ -40,22 +36,19 @@ class sale_order(models.Model):
             # find user for creating and validating SO/PO from company
             intercompany_uid = company.intercompany_user_id and company.intercompany_user_id.id or False
             if not intercompany_uid:
-                raise Warning(_('Provide one user for intercompany relation for % ') % company.name)
+                raise UserError(_('Provide one user for intercompany relation for % ') % company.name)
             # check intercompany user access rights
-            if not PurchaseOrder.with_user(intercompany_uid).check_access_rights('create', raise_exception=False):
-                raise Warning(_("Inter company user of company %s doesn't have enough access rights") % company.name)
+            if not self.env['purchase.order'].with_user(intercompany_uid).check_access_rights('create', raise_exception=False):
+                raise UserError(_("Inter company user of company %s doesn't have enough access rights") % company.name)
 
             company_partner = rec.company_id.partner_id.with_user(intercompany_uid)
             # create the PO and generate its lines from the SO
             # read it as sudo, because inter-compagny user can not have the access right on PO
             po_vals = rec.sudo()._prepare_purchase_order_data(company, company_partner)
             inter_user = self.env['res.users'].sudo().browse(intercompany_uid)
-            purchase_order = PurchaseOrder.with_context(allowed_company_ids=inter_user.company_ids.ids).with_user(intercompany_uid).create(po_vals)
             for line in rec.order_line.sudo().filtered(lambda l: not l.display_type):
-                po_line_vals = rec._prepare_purchase_order_line_data(line, rec.date_order,
-                    purchase_order.id, company)
-                # TODO: create can be done in batch; this may be a performance bottleneck
-                PurchaseOrderLine.with_user(intercompany_uid).with_context(allowed_company_ids=inter_user.company_ids.ids).create(po_line_vals)
+                po_vals['order_line'] += [(0, 0, rec._prepare_purchase_order_line_data(line, rec.date_order, company))]
+            purchase_order = self.env['purchase.order'].create(po_vals)
 
             # write customer reference field on SO
             if not rec.client_order_ref:
@@ -74,16 +67,15 @@ class sale_order(models.Model):
         """
         self.ensure_one()
         # find location and warehouse, pick warehouse from company object
-        PurchaseOrder = self.env['purchase.order']
         warehouse = company.warehouse_id and company.warehouse_id.company_id.id == company.id and company.warehouse_id or False
         if not warehouse:
-            raise Warning(_('Configure correct warehouse for company(%s) from Menu: Settings/Users/Companies' % (company.name)))
+            raise UserError(_('Configure correct warehouse for company(%s) from Menu: Settings/Users/Companies' % (company.name)))
         picking_type_id = self.env['stock.picking.type'].search([
             ('code', '=', 'incoming'), ('warehouse_id', '=', warehouse.id)
         ], limit=1)
         if not picking_type_id:
             intercompany_uid = company.intercompany_user_id.id
-            picking_type_id = PurchaseOrder.with_user(intercompany_uid)._default_picking_type()
+            picking_type_id = self.env['purchase.order'].with_user(intercompany_uid)._default_picking_type()
         return {
             'name': self.env['ir.sequence'].sudo().next_by_code('purchase.order'),
             'origin': self.name,
@@ -96,16 +88,16 @@ class sale_order(models.Model):
             'auto_generated': True,
             'auto_sale_order_id': self.id,
             'partner_ref': self.name,
-            'currency_id': self.currency_id.id
+            'currency_id': self.currency_id.id,
+            'order_line': [],
         }
 
     @api.model
-    def _prepare_purchase_order_line_data(self, so_line, date_order, purchase_id, company):
+    def _prepare_purchase_order_line_data(self, so_line, date_order, company):
         """ Generate purchase order line values, from the SO line
             :param so_line : origin SO line
             :rtype so_line : sale.order.line record
             :param date_order : the date of the orgin SO
-            :param purchase_id : the id of the purchase order
             :param company : the company in which the PO line will be created
             :rtype company : res.company record
         """
@@ -119,15 +111,11 @@ class sale_order(models.Model):
 
         # fetch taxes by company not by inter-company user
         company_taxes = taxes.filtered(lambda t: t.company_id == company)
-        if purchase_id:
-            po = self.env["purchase.order"].with_user(company.intercompany_user_id).browse(purchase_id)
-            company_taxes = po.fiscal_position_id.map_tax(company_taxes, so_line.product_id, po.partner_id)
 
         quantity = so_line.product_id and so_line.product_uom._compute_quantity(so_line.product_uom_qty, so_line.product_id.uom_po_id) or so_line.product_uom_qty
         price = so_line.product_id and so_line.product_uom._compute_price(price, so_line.product_id.uom_po_id) or price
         return {
             'name': so_line.name,
-            'order_id': purchase_id,
             'product_qty': quantity,
             'product_id': so_line.product_id and so_line.product_id.id or False,
             'product_uom': so_line.product_id and so_line.product_id.uom_po_id.id or so_line.product_uom.id,

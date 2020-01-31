@@ -64,6 +64,13 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $("#hr_contract_salary select").select2({
             minimumResultsForSearch: -1
         });
+        // We create a fake event in order to trigger the representation fees onchange. This is
+        // necessary since the events are not bound yet, therefore
+        // $("input[name='representation_fees_radio']:checked").change() won't work.
+        var fake_event = {};
+        fake_event.target = {};
+        fake_event.target.value = $("input[name='representation_fees_radio']:checked").val();
+        this.onchange_representation_fees(fake_event);
         var fuel_card_input = $("input[name='fuel_card_input']");
         var fuel_card_slider = $("input[name='fuel_card_slider']");
         if(parseInt(fuel_card_input.val()) !== parseInt(fuel_card_slider.val())) {

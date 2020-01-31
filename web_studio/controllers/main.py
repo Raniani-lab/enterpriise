@@ -1099,7 +1099,7 @@ class WebStudioController(http.Controller):
 
     def _operation_kanban_image(self, arch, operation, model):
         """ Insert a image and its corresponding needs in an kanban view arch
-            Implied modifications:
+            Implied modifications (if not already done):
                 - add the field in the view
                 - add a section (kanban_right) in the view
                 - add the field with `kanban_image` in this section
@@ -1124,21 +1124,36 @@ class WebStudioController(http.Controller):
             'position': 'before',
         }).append(etree.Element('field', {'name': field_id.name}))
 
+        # check if there's already a bottom right section
+        # boy o boy i sure hope there's only one kanban!
+        base_arch = request.env[model].fields_view_get(view_type='kanban')['arch']
+        base_tree = etree.fromstring(base_arch)
+        has_br_container = base_tree.xpath('//div[hasclass("oe_kanban_bottom_right")]')
+
+        img_elem = """<img
+                t-att-src="kanban_image('{model}', 'image_128', record.{field}.raw_value)"
+                t-att-title="record.{field}.value" t-att-alt="record.{field}.value"
+                class="oe_kanban_avatar o_image_24_cover float-right"
+            />""".format(model=field_id.relation, field=field_id.name)
         # add the image inside the view
-        etree.SubElement(arch, 'xpath', {
-            'expr': '//div',
-            'position': 'inside',
-        }).append(
-            etree.fromstring("""
-                <div class="oe_kanban_bottom_right">
-                    <img
-                        t-att-src="kanban_image('%(model)s', 'image_128', record.%(field)s.raw_value)"
-                        t-att-title="record.%(field)s.value"
-                        class="oe_kanban_avatar o_image_24_cover float-right"
-                    />
-                </div>
-            """ % {'model': field_id.relation, 'field': field_id.name})
-        )
+        if has_br_container:
+            etree.SubElement(arch, 'xpath', {
+                'expr': '//div[hasclass("oe_kanban_bottom_right")]',
+                'position': 'inside',
+            }).append(
+                etree.fromstring(img_elem)
+            )
+        else:
+            etree.SubElement(arch, 'xpath', {
+                'expr': '//div',
+                'position': 'inside',
+            }).append(
+                etree.fromstring("""
+                    <div class="oe_kanban_bottom_right">
+                        %s
+                    </div>
+                """ % img_elem)
+            )
 
     def _operation_kanban_set_cover(self, arch, operation, model):
         """ Insert a menu in dropdown to set cover image in a kanban view.

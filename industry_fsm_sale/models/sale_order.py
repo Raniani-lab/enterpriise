@@ -19,3 +19,9 @@ class SaleOrderLine(models.Model):
         if self.env.context.get('fsm_no_message_post'):
             return
         super(SaleOrderLine, self)._update_line_quantity(values)
+
+    def _timesheet_create_task_prepare_values(self, project):
+        res = super(SaleOrderLine, self)._timesheet_create_task_prepare_values(project)
+        if project.is_fsm:
+            res.update({'partner_id': self.order_id.partner_shipping_id.id})
+        return res

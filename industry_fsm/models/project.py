@@ -76,6 +76,7 @@ class Task(models.Model):
     display_satisfied_conditions_count = fields.Integer(compute='_compute_display_conditions_count')
     display_mark_as_done_primary = fields.Boolean(compute='_compute_mark_as_done_buttons')
     display_mark_as_done_secondary = fields.Boolean(compute='_compute_mark_as_done_buttons')
+    has_complete_partner_address = fields.Boolean(compute='_compute_has_complete_partner_address')
 
     @api.depends(
         'fsm_done', 'is_fsm', 'timer_start',
@@ -130,6 +131,11 @@ class Task(models.Model):
                 task.display_fsm_dates = True
             else:
                 task.display_fsm_dates = False
+
+    @api.depends('partner_id')
+    def _compute_has_complete_partner_address(self):
+        for task in self:
+            task.has_complete_partner_address = task.partner_id.city and task.partner_id.country_id
 
     @api.model
     def _search_is_fsm(self, operator, value):
@@ -252,6 +258,17 @@ class Task(models.Model):
                 'fsm_mode': True,
                 'task_nameget_with_hours': False,
             }
+        }
+
+    def action_fsm_navigate(self):
+        if not self.partner_id.partner_latitude and not self.partner_id.partner_longitude:
+            self.partner_id.geo_localize()
+        # YTI TODO: The url should be set with single method everywhere in the codebase
+        url = "https://www.google.com/maps/dir/?api=1&destination=%s,%s" % (self.partner_id.partner_latitude, self.partner_id.partner_longitude)
+        return {
+            'type': 'ir.actions.act_url',
+            'url': url,
+            'target': 'new'
         }
 
     def _get_fsm_overlap_domain(self):

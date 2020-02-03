@@ -9,7 +9,7 @@ class Project(models.Model):
 
     allow_billable = fields.Boolean("Bill from Tasks", compute='_compute_allow_billable', store=True, readonly=False)
     allow_material = fields.Boolean("Products on Tasks", compute="_compute_allow_material", store=True, readonly=False)
-    allow_quotations = fields.Boolean("Extra Quotations")
+    allow_quotations = fields.Boolean("Extra Quotations", compute='_compute_allow_quotations')
     timesheet_product_id = fields.Many2one(
         'product.product', string='Timesheet Product',
         compute='_compute_timesheet_product_id', store=True, readonly=False,
@@ -61,3 +61,9 @@ class Project(models.Model):
                 project.allow_material = project.is_fsm
             else:
                 project.allow_material = project.allow_billable
+
+    @api.depends('is_fsm')
+    def _compute_allow_quotations(self):
+        has_group = self.env.user.has_group('industry_fsm_sale.group_fsm_quotation_from_task')
+        for record in self.filtered(lambda p: not p.allow_quotations):
+            record.allow_quotations = record.is_fsm and has_group

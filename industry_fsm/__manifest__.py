@@ -19,7 +19,7 @@ Adds the following options:
     """,
     'category': 'Operations/Field Service',
     'version': '1.0',
-    'depends': ['project_enterprise', 'timesheet_grid'],
+    'depends': ['project_enterprise', 'timesheet_grid', 'base_geolocalize'],
     'data': [
         'data/fsm_data.xml',
         'security/fsm_security.xml',

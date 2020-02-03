@@ -230,7 +230,8 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
         'click .create .add_line': '_onCreateProposition',
         'click .reconcile_model_create': '_onCreateReconcileModel',
         'click .reconcile_model_edit': '_onEditReconcileModel',
-        'change input': '_onInputKeyup',
+        'keyup input': '_onInputKeyup',
+        'blur input': '_onInputKeyup',
         'keydown': '_onKeydown',
     },
     custom_events: _.extend({}, FieldManagerMixin.custom_events, {

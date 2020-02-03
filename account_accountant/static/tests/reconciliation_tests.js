@@ -1011,7 +1011,7 @@ QUnit.module('account', {
 
         // Edit amount from 32.58 back to 10000.00.
         await testUtils.dom.click(widget.$('.accounting_view .cell_left .edit_amount'));
-        await testUtils.fields.editAndTrigger(widget.$('.accounting_view .cell_left .edit_amount_input:not(.d-none)'), '10000', ['change']);
+        await testUtils.fields.editAndTrigger(widget.$('.accounting_view .cell_left .edit_amount_input:not(.d-none)'), '10000', ['blur']);
         assert.strictEqual(widget.$('.accounting_view .cell_left .line_amount').text().replace(/[\n\r\s]+/g, ' '),
             " $ 10000.00 ",
             "Should display only 10000.0 since this amount if the full residual balance of the proposition."
@@ -1019,7 +1019,7 @@ QUnit.module('account', {
 
         // Edit amount back to 32.58.
         await testUtils.dom.click(widget.$('.accounting_view .cell_left .edit_amount'));
-        await testUtils.fields.editAndTrigger(widget.$('.accounting_view .cell_left .edit_amount_input:not(.d-none)'), '32.58', ['change']);
+        await testUtils.fields.editAndTrigger(widget.$('.accounting_view .cell_left .edit_amount_input:not(.d-none)'), '32.58', ['blur']);
         assert.strictEqual(widget.$('.accounting_view .cell_left .line_amount').text().replace(/[\n\r\s]+/g, ' '),
             " $ 10000.00 $ 32.58 ",
             "Should display the original amount (10000.0) and the custom amount (32.58)."
@@ -1569,7 +1569,7 @@ QUnit.module('account', {
 
         // Edit amount on last invoice
         await testUtils.dom.click(widget.$('.edit_amount:last()'));
-        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:last()'),'525',['change']);
+        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:last()'),'525',['blur']);
 
         var $buttonReconcile = widget.$('button.o_reconcile:not(hidden)');
 
@@ -1675,7 +1675,7 @@ QUnit.module('account', {
         )
 
         await testUtils.dom.click(widget.$('.accounting_view .cell_right .edit_amount'));
-        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:first()'), '1200', ['change']);
+        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:first()'), '1200', ['blur']);
         assert.strictEqual(widget.$('.accounting_view .cell_right .line_amount').text().replace(/[\n\r\s]+/g, ' '),
             " $ 1200.00 ",
             "Should display the original proposition's amount (1200.00)."
@@ -1798,7 +1798,7 @@ QUnit.module('account', {
         )
 
         await testUtils.dom.click(widget.$('.accounting_view .cell_right .edit_amount'));
-        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:first()'), '1200', ['change']);
+        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:first()'), '1200', ['blur']);
         assert.strictEqual(widget.$('.accounting_view .cell_right .line_amount').text().replace(/[\n\r\s]+/g, ' '),
             " $ 1200.00 ",
             "Should display the original proposition's amount (1200.00)."
@@ -1814,11 +1814,11 @@ QUnit.module('account', {
 
         // Edit invoice first amount
         await testUtils.dom.click(widget.$('.edit_amount:first()'));
-        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:first()'), '500', ['change']);
+        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:first()'), '500', ['blur']);
         // Edit invoice second amount
         var $buttonReconcile = widget.$('button.o_reconcile:not(hidden)');
         await testUtils.dom.click(widget.$('.edit_amount:last()'));
-        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:last()'), '675', ['change']);
+        await testUtils.fields.editAndTrigger(widget.$('.edit_amount_input:last()'), '675', ['blur']);
 
         assert.equal($buttonReconcile.length, 1,
             'The reconcile button must be visible');

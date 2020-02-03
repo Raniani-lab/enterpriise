@@ -39,12 +39,6 @@
         </xpath>
     </template>
 
-    <template id="qunit_suite" name="sign_tests" inherit_id="web.qunit_suite">
-        <xpath expr="//t[@t-set='head']" position="inside">
-            <script type="text/javascript" src="/sign/static/tests/document_backend_tests.js"></script>
-        </xpath>
-    </template>
-
     <template id="sign._doc_sign" name="Document Sign">
         <div t-if="current_request_item and current_request_item.state == 'sent' and hasItems" class="o_sign_validate_banner">
             <button type="button" class="btn btn-primary o_validate_button">Validate &amp; Send Completed Document</button>

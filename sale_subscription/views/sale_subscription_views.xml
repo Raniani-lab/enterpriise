@@ -205,10 +205,10 @@
                         </button>
                     </div>
                     <div class="badge-pill badge-warning float-right" attrs="{'invisible': [('to_renew', '=', False)]}">To Renew</div>
-                    <div class="oe_title">
+                    <div class="oe_title mw-100 pr-0">
                         <h1 class="flex-fill d-flex flex-row" attrs="{'invisible': [('id', '=', False)]}">
                             <field name="starred" widget="boolean_favorite" class="mr-3" nolabel="1"/>
-                            <field name="display_name" class="text-truncate"/>
+                            <field name="display_name" class="text-truncate w-100"/>
                             <field name="health" widget="state_selection" class="ml-3" readonly="1" attrs="{'invisible': [('health', '!=', 'bad')]}"/>
                         </h1>
                         <h1 attrs="{'invisible': [('id', '!=', False)]}">

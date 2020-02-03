@@ -5,6 +5,7 @@ var core = require('web.core');
 var FormRenderer = require('web.FormRenderer');
 
 var EditorMixin = require('web_studio.EditorMixin');
+var FieldSelectorDialog = require('web_studio.FieldSelectorDialog');
 var FormEditorHook = require('web_studio.FormEditorHook');
 var pyUtils = require('web.py_utils');
 
@@ -306,6 +307,29 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
                     self.trigger_up('view_change', values);
                 });
                 self.$('.o_form_sheet_bg').prepend($statusbar);
+            }
+            // Add avtar
+            if (self.$('.oe_title').length & !self.$('.oe_title').siblings('.oe_avatar').length && !self.$('.oe_title > h1 > .oe_avatar').length) {
+                const $avatar = $('<div>', {
+                    text: _t("Add Picture"),
+                    class: self.$('.oe_title > h1.d-flex.flex-row').length ? 'oe_avatar ml-3 p-3 o_web_studio_avatar h4': 'oe_avatar ml-3 mr-3 o_web_studio_avatar',
+                }).click(function () {
+                    const compatibleFields = _.pick(self.state.fields, function (e) {
+                        return e.type === 'binary';
+                    });
+                    const dialog = new FieldSelectorDialog(self, compatibleFields, true).open();
+                    dialog.on('confirm', self, function (field) {
+                        self.trigger_up('view_change', {
+                            structure: 'avatar_image',
+                            field: field,
+                        });
+                    });
+                });
+                if (self.$('h1').hasClass('d-flex flex-row')) {
+                    self.$('.oe_title > h1').append($avatar);
+                } else {
+                    self.$('.oe_title').before($avatar);
+                }
             }
         });
     },

@@ -1939,6 +1939,133 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('form editor add avatar image', async function (assert) {
+        assert.expect(15);
+        const arch = `<form>
+                <sheet>
+                    <div class='oe_title'>
+                        <field name='name'/>
+                    </div>
+                </sheet>
+            </form>`;
+        let fieldsView;
+        let editViewCount = 0;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'partner',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    editViewCount++;
+                    if (editViewCount === 1) {
+                        assert.deepEqual(args.operations[0], {
+                            field: 'image',
+                            type: 'avatar_image',
+                        }, "Proper field name and operation type should be passed");
+                        fieldsView.arch = `<form>
+                                <sheet>
+                                    <field name='image' widget='image' class='oe_avatar' options='{"preview_image": "image"}'/>
+                                    <div class='oe_title'>
+                                        <field name='name'/>
+                                    </div>
+                                </sheet>
+                            </form>`;
+                    } else if (editViewCount === 2) {
+                        assert.deepEqual(args.operations[1], {
+                            type: 'remove',
+                            target: {
+                                tag: "field",
+                                attrs: {
+                                    name: "image",
+                                }
+                            }
+                        }, "Proper field name and operation type should be passed");
+                        fieldsView.arch = arch;
+                    } else if (editViewCount === 3) {
+                        assert.deepEqual(args.operations[2], {
+                            field: '',
+                            type: 'avatar_image',
+                        }, "Proper field name and operation type should be passed");
+                        fieldsView.fields['x_avatar_image'] = {
+                            string: "Image",
+                            type: "binary"
+                        };
+                        this.data.partner.fields['x_avatar_image'] = {
+                            string: "Image",
+                            type: "binary"
+                        };
+                        fieldsView.arch = `<form>
+                                <sheet>
+                                    <field name='x_avatar_image' widget='image' class='oe_avatar' options='{"preview_image": "x_avatar_image"}'/>
+                                    <div class='oe_title'>
+                                        <field name='name'/>
+                                    </div>
+                                </sheet>
+                            </form>`;
+                    }
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            form: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate the new fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        assert.containsNone(vem, '.o_field_widget.oe_avatar',
+            "there should be no avatar image field");
+        assert.containsOnce(vem, '.oe_avatar.o_web_studio_avatar',
+            "there should be the hook for avatar image");
+
+        // Test with existing field.
+        await testUtils.dom.click(vem.$('.oe_avatar.o_web_studio_avatar'));
+        assert.strictEqual($('.modal .modal-body select > option').length, 2,
+            "there should be two option Field selection drop-down ");
+        assert.strictEqual($('.modal .modal-body select > option[value="image"]').length, 1,
+            "there should be 'Image' option with proper value set in Field selection drop-down ");
+        // add existing image field
+        testUtils.fields.editSelect($("select[name='field']"), 'image');
+        // Click 'Confirm' Button
+        await testUtils.dom.click($('.modal .modal-footer .btn-primary'));
+        assert.containsOnce(vem, '.o_field_widget.oe_avatar[name="image"]',
+            "there should be avatar image with field image");
+        assert.containsNone(vem, '.oe_avatar.o_web_studio_avatar',
+            "there should be the hook for avatar image");
+
+        // Remove already added field from view to test new image field case.
+        await testUtils.dom.click(vem.$('.oe_avatar'));
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
+        assert.strictEqual($('.modal-body:first').text(),
+            "Are you sure you want to remove this field from the view?",
+            "should display the correct message");
+        await testUtils.dom.click($('.modal-footer .btn-primary'));
+        assert.containsNone(vem, '.o_field_widget.oe_avatar',
+            "there should be no avatar image field");
+        assert.containsOnce(vem, '.oe_avatar.o_web_studio_avatar',
+            "there should be the hook for avatar image");
+
+        // Test with new field.
+        await testUtils.dom.click(vem.$('.oe_avatar.o_web_studio_avatar'));
+        assert.strictEqual($('.modal .modal-body select > option[value=""]').length, 1,
+            "there should be 'New Field' option in Field selection drop-down");
+        // add new image field
+        testUtils.fields.editSelect($("select[name='field']"), '');
+        // Click 'Confirm' Button
+        await testUtils.dom.click($('.modal .modal-footer .btn-primary'));
+        assert.containsOnce(vem, '.o_field_widget.oe_avatar[name="x_avatar_image"]',
+            "there should be avatar image with field name x_avatar_image");
+        assert.containsNone(vem, '.oe_avatar.o_web_studio_avatar',
+            "there should be the hook for avatar image");
+
+        vem.destroy();
+    });
+
     QUnit.module('Kanban');
 
     QUnit.test('empty kanban editor', async function (assert) {

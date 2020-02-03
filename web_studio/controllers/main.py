@@ -21,6 +21,7 @@ _logger = logging.getLogger(__name__)
 OPERATIONS_WHITELIST = [
     'add',
     'attributes',
+    'avatar_image',
     'buttonbox',
     'chatter',
     'kanban_dropdown',
@@ -1274,6 +1275,56 @@ Are you sure you want to remove the selection values of those records?""") % len
                     <field name="%s" widget="priority"/>
                 </div>
             """ % (field_id.name))
+        )
+
+    def _operation_avatar_image(self, arch, operation, model):
+        studio_view_arch = arch  # The actual arch is the studio view arch
+        arch = request.env[model].fields_view_get(view_type='form')['arch']
+        parser = etree.XMLParser(remove_blank_text=True)
+        arch = etree.fromstring(arch, parser=parser)
+
+        model_id = request.env['ir.model'].search([('model', '=', model)])
+        IrModelFields = request.env['ir.model.fields']
+
+        if not model_id:
+            raise UserError(_('The model %s does not exist.') % model)
+        if operation.get('field'):
+            field_id = IrModelFields.search([
+                ('model', '=', model),
+                ('name', '=', operation['field'])
+            ])
+            if not field_id:
+                raise UserError(_('The field %s does not exist.') % operation['field'])
+        else:
+            field_id = IrModelFields.search([
+                ('model_id', '=', model_id.id),
+                ('name', '=', 'x_avatar_image'),
+                ('ttype', '=', 'binary')
+            ])
+            # create a field selection x_avatar_image if it doesn't exist in the model
+            if not field_id:
+                field_id = IrModelFields.create({
+                    'model': model,
+                    'model_id': model_id.id,
+                    'name': 'x_avatar_image',
+                    'field_description': 'Avatar',
+                    'ttype': 'binary',
+                })
+        attrs = {
+            'expr': '//div[hasclass("oe_title")]',
+            'position': 'before',
+        }
+        hasFlexH1 = arch.xpath("//div[hasclass('oe_title')]//h1[hasclass('d-flex')]") and True
+        if hasFlexH1:
+            attrs.update({
+                "expr": "//div[hasclass('oe_title')]//h1[hasclass('d-flex')]",
+                "position": "inside",
+            })
+        avatar_class = "oe_avatar ml-3 h4" if hasFlexH1 else "oe_avatar ml-3 mr-3"
+        etree.SubElement(studio_view_arch, 'xpath', attrs).append(
+            etree.fromstring("""
+                <field name="%s" widget="image" class="%s"/>
+            """ % (field_id.name, avatar_class))
         )
 
     def _operation_statusbar(self, arch, operation, model=None):

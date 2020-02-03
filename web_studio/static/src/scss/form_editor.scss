@@ -192,6 +192,17 @@
                 }
             }
         }
+        .o_web_studio_avatar {
+            color: $o-brand-primary;
+            background-color: lightgray;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 38px;
+            opacity: 0.5;
+            &:hover {
+                opacity: 1;
+            }
+        }
     }
 }
 

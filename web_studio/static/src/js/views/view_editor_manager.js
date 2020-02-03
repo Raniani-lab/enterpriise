@@ -170,6 +170,16 @@ var ViewEditorManager = AbstractEditorManager.extend({
 
     /**
      * @private
+     * @param {Object} data
+     */
+    _addAvatarImage: function (data) {
+        this._do({
+            type: 'avatar_image',
+            field: data.field,
+        });
+    },
+    /**
+     * @private
      * @param {String} type
      */
     _addButton: function (data) {
@@ -1567,6 +1577,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
             case 'map_popup':
                 this._changeMapPopupFields(type, event.data.field_ids);
                 break;
+            case 'avatar_image':
+                this._addAvatarImage(event.data);
         }
     },
 });

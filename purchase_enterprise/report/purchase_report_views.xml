@@ -33,19 +33,5 @@
         <record id="purchase.menu_report_purchase" model="ir.ui.menu">
             <field name="action" ref="purchase_report_action_dashboard"/>
         </record>
-
-        <record id="view_purchase_order_search_inherit" model="ir.ui.view">
-            <field name="name">view.purchase.order.search.inherit</field>
-            <field name="mode">primary</field>
-            <field name="model">purchase.report</field>
-            <field name="inherit_id" ref="purchase.view_purchase_order_search"/>
-            <field name="arch" type="xml">
-                <xpath expr="//filter[@name='group_partner_id']" position="before">
-                    <filter string="Pivot" name="pivot_by" context="{'pivot_row_groupby': ['product_id'], 'pivot_column_groupby': ['category_id'],'pivot_measures': ['nbr_lines', 'untaxed_total', 'price_total']}"/>
-                    <filter string="Graph" name="graph_by" context="{'graph_groupbys': ['date_approve:day']}"/>
-                </xpath>
-            </field>
-        </record>
-
     </data>
 </odoo>

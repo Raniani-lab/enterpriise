@@ -29,7 +29,6 @@
         </field>
     </record>
 
-
     <record id="action_subscription_dashboard_report_main" model="ir.actions.client">
         <field name="name">Revenue KPIs</field>
         <field name="tag">sale_subscription_dashboard_main</field>
@@ -52,6 +51,7 @@
         <field name="name">Invoice Line Entries Analysis</field>
         <field name="res_model">account.move.line</field>
         <field name="view_mode">pivot</field>
+        <field name="view_id" ref="move_line_entries_report_pivot"/>
         <field name="search_view_id" ref="move_line_entries_report_search"/>
         <field name="context">{'search_default_OUT':1, 'search_default_ACTIVE':1,}</field>
         <field name="help">From this view, have an analysis of your different invoice line entries.</field>

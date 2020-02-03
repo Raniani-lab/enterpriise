@@ -19,7 +19,7 @@ class StockPicking(models.Model):
     def write(self, vals):
         pickings = self
         if 'date_done' in vals:
-            amazon_pickings = self.filtered(lambda p: p.sale_id and p.sale_id.amazon_order_ref)
+            amazon_pickings = self.sudo().filtered(lambda p: p.sale_id and p.sale_id.amazon_order_ref)
             super(StockPicking, amazon_pickings).write(dict(amazon_sync_pending=True, **vals))
             pickings -= amazon_pickings
         return super(StockPicking, pickings).write(vals)

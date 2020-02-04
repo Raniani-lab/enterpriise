@@ -419,6 +419,8 @@ class AccountMove(models.Model):
             country_id = self.env['res.country'].search([('code', '=', response.get('company_data').get('country_code',''))])
             state_id = self.env['res.country.state'].search([('name', '=', response.get('company_data').get('state_name',''))])
             resp_values = response.get('company_data')
+            if 'bank_ids' in resp_values:
+                resp_values['bank_ids'] = [(0, 0, vals) for vals in resp_values['bank_ids']]
             values = {
                 'name': resp_values.get('name', ''),
                 'vat': resp_values.get('vat', ''),

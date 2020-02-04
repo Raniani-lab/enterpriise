@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+import logging
 import unicodedata
 import uuid
 import re
 from odoo.osv import expression
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.tools import ustr
+
+_logger = logging.getLogger(__name__)
+
+OPTIONS_WL = ['use_active', 'use_responsible', 'use_partner', 'use_company',
+              'use_notes', 'use_value', 'use_image', 'use_tags', 'use_sequence',
+              'use_mail', 'use_stages', 'use_date', 'use_double_dates']
 
 
 def sanitize_for_xmlid(s):
@@ -76,31 +82,355 @@ class IrModel(models.Model):
         return [('model', dom_operator, abstract_models)]
 
     @api.model
-    def studio_name_create(self, name):
-        model_name = 'x_' + sanitize_for_xmlid(name)
-        return self.create({
+    def studio_model_create(self, name, vals=None, options=None):
+        """ Allow quick creation of models through Studio.
+        
+        :param name: functional name of the model (_description attribute)
+        :param vals: dict of values that will be included in the create call
+        :param options: list of options that can trigger automated behaviours,
+                        in the form of 'use_<behaviour>' (e.g. 'use_tags')
+        :return: the main model created as well as extra models needed for the
+                 requested behaviours (e.g. tag or stage models) in the form of
+                 a tuple (main_model, extra_models)
+        :rtype: tuple
+        """
+        model_name = vals and vals.get('model') or ('x_' + sanitize_for_xmlid(name))
+        # will contain extra models (tags, stages) for which a menu entry might need to be created
+        extra_models = self
+        options = options if options is not None else []
+        valid_options = [opt for opt in options if opt in OPTIONS_WL]
+        auto_vals = {
             'name': name,
             'model': model_name,
-        })
+        }
+        if vals is not None:
+            vals.update(auto_vals)
+        else:
+            vals = auto_vals
+        main_model = self.create(vals)
+        # setup mail first so that other behaviours know if they can
+        # enable tracking on important fields
+        if 'use_mail' in options:
+            main_model.write({
+                'is_mail_thread': True,
+                'is_mail_activity': True,
+            })
+            main_model.field_id.filtered(lambda f: f.name == 'x_name').tracking = True
+        # now let's check other options and accumulate potential extra models (tags, stages)
+        # created during this process, they will need to get their own action and menu
+        # (which will be done at the controller level)
+        if 'use_active' in valid_options:
+            extra_models |= main_model._setup_active()
+        if 'use_responsible' in valid_options:
+            extra_models |= main_model._setup_responsible()
+        if 'use_partner' in valid_options:
+            extra_models |= main_model._setup_partner()
+        if 'use_company' in valid_options:
+            extra_models |= main_model._setup_company()
+        if 'use_notes' in valid_options:
+            extra_models |= main_model._setup_notes()
+        if 'use_value' in valid_options:
+            extra_models |= main_model._setup_value()
+        if 'use_image' in valid_options:
+            extra_models |= main_model._setup_image()
+        if 'use_tags' in valid_options:
+            extra_models |= main_model._setup_tags()
+        if 'use_sequence' in valid_options or 'use_stages' in valid_options:
+            extra_models |= main_model._setup_sequence()
+        if 'use_stages' in valid_options:
+            extra_models |= main_model._setup_stages()
+        if 'use_date' in valid_options:
+            extra_models |= main_model._setup_date()
+        if 'use_double_dates' in valid_options:
+            extra_models |= main_model._setup_double_dates()
+        # set the ordering of the model, depending on the use of sequences and stages
+        # stages create a kanban view and a priority field, in which case the list view
+        # will not have the handle widget to avoid inconsistencies
+        # note that using stages will automatically add sequences as well, since the
+        # kanban view needs both for ordering anyway
+        if 'use_stages' in valid_options:
+            # need to order by priority then sequence
+            main_model.order = 'x_studio_priority desc, x_studio_sequence asc, id asc'
+        elif 'use_sequence' in valid_options:
+            main_model.order = 'x_studio_sequence asc, id asc'
+        # Create automatic views that will include fields and views relevant to the model's options
+        self.env['ir.ui.view'].create_automatic_views(main_model.model)
+        main_model._setup_access_rights()
+        return (main_model, extra_models)
 
-    @api.model
-    def create(self, vals):
-        res = super(IrModel, self).create(vals)
+    def _setup_active(self):
+        for model in self:
+            active_field = self.env['ir.model.fields'].create({
+                'name': 'x_active',  # can't use x_studio_active as not supported by ORM
+                'ttype': 'boolean',
+                'field_description': _('Active'),
+                'model_id': model.id,
+                'tracking': model.is_mail_thread,
+            })
+            self.env['ir.default'].set(model.model, active_field.name, True)
+        return self.env['ir.model']
 
-        # Create a simplified form view and access rights for the created model
-        # if we are in studio, but not if we are currently installing the module
-        # (i.e. importing it from Studio), because those data are already
-        # defined in the module (as Studio generates them automatically)
-        if self._context.get('studio') and not self._context.get('install_mode'):
-            # Create a simplified form view to prevent getting the default one containing all model's fields
-            self.env['ir.ui.view'].create_simplified_form_view(res.model)
+    def _setup_sequence(self):
+        for model in self:
+            sequence_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_sequence',
+                'ttype': 'integer',
+                'field_description': _('Sequence'),
+                'model_id': model.id,
+                'copied': True,
+            })
+            # set a default to 10 like most other sequence fields, avoid
+            # new stages to become the first one upon creation 'by accident'
+            self.env['ir.default'].set(model.model, sequence_field.name, 10)
+        return self.env['ir.model']
 
-            # Give read access to the created model to Employees by default and all access to System
+    def _setup_responsible(self):
+        for model in self:
+            responsible_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_user_id',
+                'ttype': 'many2one',
+                'relation': 'res.users',
+                'domain': "[('share', '=', False)]",
+                'field_description': _('Responsible'),
+                'model_id': model.id,
+                'tracking': model.is_mail_thread,
+                'copied': True,
+            })
+        return self.env['ir.model']
+
+    def _setup_partner(self):
+        for model in self:
+            partner_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_partner_id',
+                'ttype': 'many2one',
+                'relation': 'res.partner',
+                'field_description': _('Partner'),
+                'model_id': model.id,
+                'tracking': model.is_mail_thread,
+                'copied': True,
+            })
+            phone_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_partner_phone',
+                'ttype': 'char',
+                'related': 'x_studio_partner_id.phone',
+                'field_description': _('Phone Number'),
+                'model_id': model.id,
+            })
+            email_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_partner_email',
+                'ttype': 'char',
+                'related': 'x_studio_partner_id.email',
+                'field_description': _('Email'),
+                'model_id': model.id,
+            })
+        return self.env['ir.model']
+
+    def _setup_company(self):
+        for model in self:
+            company_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_company_id',
+                'ttype': 'many2one',
+                'relation': 'res.company',
+                'field_description': _('Company'),
+                'model_id': model.id,
+                'tracking': model.is_mail_thread,
+                'copied': True,
+            })
+            rule = self.env['ir.rule'].create({
+                'name': '%s - Multi-Company' % model.name,
+                'model_id': model.id,
+                'domain_force': "['|', ('x_studio_company_id', '=', False), ('x_studio_company_id', 'in', company_ids)]"
+            })
+            # generate default for each company (note: also done when creating a new company)
+            for company in self.env['res.company'].sudo().search([]):
+                self.env['ir.default'].set(model.model, company_field.name, company.id, company_id=company.id)
+        return self.env['ir.model']
+
+    def _setup_notes(self):
+        for model in self:
+            note_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_notes',
+                'ttype': 'text',
+                'field_description': _('Notes'),
+                'model_id': model.id,
+                'copied': True,
+            })
+        return self.env['ir.model']
+
+    def _setup_date(self):
+        for model in self:
+            date_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_date',
+                'ttype': 'date',
+                'field_description': _('Date'),
+                'model_id': model.id,
+                'copied': True,
+            })
+        return self.env['ir.model']
+
+    def _setup_double_dates(self):
+        for model in self:
+            stop_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_date_stop',
+                'ttype': 'datetime',
+                'field_description': _('End Date'),
+                'model_id': model.id,
+                'copied': True,
+            })
+            start_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_date_start',
+                'ttype': 'datetime',
+                'field_description': _('Start Date'),
+                'model_id': model.id,
+                'copied': True,
+            })
+        return self.env['ir.model']
+
+    def _setup_value(self):
+        for model in self:
+            currency_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_currency_id',
+                'ttype': 'many2one',
+                'relation': 'res.currency',
+                'field_description': _('Currency'),
+                'model_id': model.id,
+                'copied': True,
+            })
+            value_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_value',
+                'ttype': 'float',
+                'field_description': _('Value'),
+                'model_id': model.id,
+                'tracking': model.is_mail_thread,
+                'copied': True,
+            })
+            # generate default for each company (note: also done when creating a new company)
+            for company in self.env['res.company'].sudo().search([]):
+                self.env['ir.default'].set(model.model, currency_field.name, company.currency_id.id, company_id=company.id)
+        return self.env['ir.model']
+
+    def _setup_image(self):
+        for model in self:
+            image_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_image',
+                'ttype': 'binary',
+                'field_description': _('Image'),
+                'model_id': model.id,
+                'copied': True,
+            })
+        return self.env['ir.model']
+
+    def _setup_stages(self):
+        stage_models = self.env['ir.model']
+        for model in self:
+            # 1. Create the stage model
+            stage_model_vals = {
+                'name': '%s Stages' % model.name,
+                'model': '%s_stage' % model.model,
+                'field_id' : list(),
+            }
+            stage_model_vals['field_id'].append((0, 0, {
+                'name': 'x_name',
+                'ttype': 'char',
+                'field_description': _('Name'),
+                'translate': True,
+                'copied': True,
+            }))
+            stage_options = ['use_sequence']
+            stage_model = self.with_context(list_editable="bottom").studio_model_create(
+                '%s Stages' % model.name,
+                vals=stage_model_vals,
+                options=stage_options
+            )[0]
+            _logger.info('created stage model %s (%s) for main model %s', stage_model.model, stage_model.name, model.model)
+            # 2. Link our model with the tag model
+            stage_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_stage_id',
+                'ttype': 'many2one',
+                'relation': stage_model.model,
+                'on_delete': 'restrict',
+                'required': True,
+                'field_description': _('Stage'),
+                'model_id': model.id,
+                'tracking': model.is_mail_thread,
+                'copied': True,
+                'group_expand': True,
+            })
+            # create stage 'New' and set as default
+            default_stage = self.env[stage_model.model].create({'x_name': _('New')})
+            self.env['ir.default'].set(model.model, stage_field.name, default_stage.id)
+            priority_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_priority',
+                'ttype': 'boolean',
+                'field_description': _('High Priority'),
+                'model_id': model.id,
+                'copied': True,
+            })
+            kanban_state_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_kanban_state',
+                'ttype': 'selection',
+                'selection_ids': [
+                    (0, 0 ,{'value': 'normal', 'name': _('Grey'), 'sequence': 10}),
+                    (0, 0 ,{'value': 'done', 'name': _('Green'), 'sequence': 20}),
+                    (0, 0 ,{'value': 'blocked', 'name': _('Red'), 'sequence': 30})
+                ],
+                'relation': stage_model.model,
+                'field_description': _('Kanban State'),
+                'model_id': model.id,
+                'copied': True,
+            })
+            stage_models |= stage_model
+        return stage_models
+
+    def _setup_tags(self):
+        tag_models = self.env['ir.model']
+        for model in self:
+            # 1. Create the tag model
+            tag_model_vals = {
+                'name': '%s Tags' % model.name,
+                'model': '%s_tag' % model.model,
+                'field_id' : list(),
+            }
+            tag_model_vals['field_id'].append((0, 0, {
+                'name': 'x_name',
+                'ttype': 'char',
+                'field_description': _('Name'),
+                'copied': True,
+            }))
+            tag_model_vals['field_id'].append((0, 0, {
+                'name': 'x_color',
+                'ttype': 'integer',
+                'field_description': _('Color'),
+                'copied': True,
+            }))
+            tag_model = self.with_context(list_editable="bottom").studio_model_create(
+                '%s Tags' % model.name,
+                vals=tag_model_vals
+            )[0]
+            _logger.info('created tag model %s (%s) for main model %s', tag_model.model, tag_model.name, model.model)
+            # 2. Link our model with the tag model
+            tag_field = self.env['ir.model.fields'].create({
+                'name': 'x_studio_tag_ids',
+                'ttype': 'many2many',
+                'relation': tag_model.model,
+                'field_description': _('Tags'),
+                'model_id': model.id,
+                'relation_table': '%s_tag_rel' % model.model,
+                'column1': '%s_id' % model.model,
+                'column2': 'x_tag_id',
+                'copied': True,
+            })
+            tag_models |= tag_model
+        return tag_models
+
+    def _setup_access_rights(self):
+        for model in self:
+            # Give all access to the created model to Employees by default, except deletion. All access to System
             # Note: a better solution may be to create groups at the app creation but the model is created
             # before the app and for other models we need to have info about the app.
             self.env['ir.model.access'].create({
-                'name': vals.get('name', '') + ' group_system',
-                'model_id': res.id,
+                'name': model.name + ' group_system',
+                'model_id': model.id,
                 'group_id': self.env.ref('base.group_system').id,
                 'perm_read': True,
                 'perm_write': True,
@@ -108,16 +438,69 @@ class IrModel(models.Model):
                 'perm_unlink': True,
             })
             self.env['ir.model.access'].create({
-                'name': vals.get('name', '') + ' group_user',
-                'model_id': res.id,
+                'name': model.name + ' group_user',
+                'model_id': model.id,
                 'group_id': self.env.ref('base.group_user').id,
                 'perm_read': True,
-                'perm_write': False,
-                'perm_create': False,
+                'perm_write': True,
+                'perm_create': True,
                 'perm_unlink': False,
             })
-        return res
+        return True
 
+    def _get_default_view(self, view_type, view_id=False, create=True):
+        """Get the default view for a given model.
+        
+        By default, create a view if one does not exist.
+        """
+        self.ensure_one()
+        View = self.env['ir.ui.view']
+        # If we have no view_id to inherit from, it's because we are adding
+        # fields to the default view of a new model. We will materialize the
+        # default view as a true view so we can keep using our xpath mechanism.
+        if view_id:
+            view = View.browse(view_id)
+        elif create:
+            arch = self.env[self.model].fields_view_get(view_id, view_type)['arch']
+            view = View.create({
+                'type': view_type,
+                'model': self.model,
+                'arch': arch,
+                'name': "Default %s view for %s" % (view_type, self),
+            })
+        else:
+            view = View.browse(View.default_view(self.model, view_type))
+        return view
+
+    def _create_default_action(self, name):
+        """Create an ir.act_window record set up with the available view types set up."""
+        self.ensure_one()
+        model_views = self.env['ir.ui.view'].search_read([('model', '=', self.model), ('type', '!=', 'search')],
+                                                         fields=['type'])
+        available_view_types = set(map(lambda v: v['type'], model_views))
+        # in actions, kanban should be first, then list, etc.
+        # this is arbitrary, but we need consistency!
+        VIEWS_ORDER = {'kanban': 0, 'tree': 1, 'form': 2, 'calendar': 3, 'gantt': 4, 'map': 5,
+                       'pivot': 6, 'graph': 7, 'qweb': 8, 'activity': 9}
+        sorted_view_types = list(sorted(available_view_types, key=lambda vt: VIEWS_ORDER.get(vt, 10)))
+        action = self.env['ir.actions.act_window'].create({
+            'name': name,
+            'res_model': self.model,
+            'view_mode': ','.join(sorted_view_types),
+            'help': _("""
+                <p class="o_view_nocontent_smiling_face">
+                    This is your new action.
+                </p>
+                <p>By default, it contains a list and a form view and possibly
+                    other view types depending on the options you chose for your model.
+                </p>
+                <p>
+                    You can start customizing these screens by clicking on the Studio icon on the
+                    top right corner (you can also customize this help message there).
+                </p>
+            """),
+        })
+        return action
 
 class IrModelField(models.Model):
     _name = 'ir.model.fields'

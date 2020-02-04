@@ -60,6 +60,9 @@
         <input class="o_input" name="name" placeholder="My Menu" type="text"/>
     </div>
     <div class="mt16">
+        <div class="model_choice"/>
+    </div>
+    <div class="mt16 model_chooser">
         <label for="name">Model</label>
         <div class="js_model"/>
     </div>

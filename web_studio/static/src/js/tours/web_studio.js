@@ -55,13 +55,18 @@ tour.register('web_studio_new_app_tour', {
     run: 'text ' + utils.randomString(6),
 }, {
     trigger: '.o_web_studio_app_creator_next.is_ready',
-    content: _t('You are just one click away from <b>generating your first app</b>.'),
+    content: _t('Continue to configure some typical behaviors for your new type of object.'),
+    position: 'bottom',
+}, {
+    trigger: '.o_web_studio_model_configurator_next',
+    content: _t('All set? You are just one click away from <b>generating your first app</b>.'),
     position: 'bottom',
 }, {
     trigger: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_char',
     content: _t('Nicely done! Let’s build your screen now; <b>drag</b> a <i>text field</i> and <b>drop</b> it in your view, on the right.'),
     position: 'bottom',
     run: 'drag_and_drop .o_web_studio_form_view_editor .o_inner_group',
+    timeout: 15000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.o_web_studio_form_view_editor td.o_td_label',
     content: _t('To <b>customize a field</b>, click on its <i>label</i>.'),
@@ -94,12 +99,11 @@ tour.register('web_studio_new_app_tour', {
     trigger: '.modal-footer > button:eq(0)',
     auto: true,
 }, {
-    trigger: '.o_web_studio_add_chatter',
-    content: _t("Add a <b>chatter widget</b> to allow discussions on your document: by email or online."),
-    position: 'top',
+    trigger: '.o_web_studio_sidebar_text',
+    auto: true,
 }, {
     trigger: '.o_web_studio_form_view_editor .oe_chatter',
-    content: _t("Click to edit."),
+    content: _t("Click to edit messaging features on your model."),
     position: 'top',
 }, {
     trigger: '.o_web_studio_sidebar .o_display_chatter input[name="email_alias"]',

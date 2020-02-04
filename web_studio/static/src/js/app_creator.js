@@ -8,6 +8,7 @@ odoo.define('web_studio.AppCreator', function (require) {
     const IconCreator = require('web_studio.IconCreator');
     const StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
     const { useFocusOnUpdate } = require('web.custom_hooks');
+    const { ModelConfigurator } = require('web_studio.ModelConfigurator');
 
     const { ComponentAdapter, ComponentWrapper, WidgetAdapterMixin } = require('web.OwlCompatibility');
     const { Component, hooks, useState } = owl;
@@ -77,7 +78,8 @@ odoo.define('web_studio.AppCreator', function (require) {
                 step: 'welcome',
                 appName: "",
                 menuName: "",
-                modelChoice: false,
+                modelChoice: "new",
+                modelOptions: [],
                 modelId: false,
                 iconData: {
                     backgroundColor: BG_COLORS[5],
@@ -86,6 +88,7 @@ odoo.define('web_studio.AppCreator', function (require) {
                     type: 'custom_icon',
                 },
             });
+            this.debug = Boolean(AppCreator.env.isDebug()),
 
             this.FieldMany2One = FieldMany2One;
 
@@ -99,15 +102,13 @@ odoo.define('web_studio.AppCreator', function (require) {
         }
 
         async willStart() {
-            if (this.env.isDebug()) {
-                const recordId = await this.props.model.makeRecord('ir.actions.act_window', [{
-                    name: 'model',
-                    relation: 'ir.model',
-                    type: 'many2one',
-                    domain: [['transient', '=', false], ['abstract', '=', false]]
-                }]);
-                this.record = this.props.model.get(recordId);
-            }
+            const recordId = await this.props.model.makeRecord('ir.actions.act_window', [{
+                name: 'model',
+                relation: 'ir.model',
+                type: 'many2one',
+                domain: [['transient', '=', false], ['abstract', '=', false]]
+            }]);
+            this.record = this.props.model.get(recordId);
         }
 
         //--------------------------------------------------------------------------
@@ -127,8 +128,9 @@ odoo.define('web_studio.AppCreator', function (require) {
                     this.state.step === 'model' &&
                     this.state.menuName &&
                     (
-                        !this.state.modelChoice ||
-                        this.state.modelId
+                        this.state.modelChoice === 'new' ||
+                        (this.state.modelChoice === 'existing' &&
+                        this.state.modelId)
                     )
                 );
         }
@@ -164,12 +166,13 @@ odoo.define('web_studio.AppCreator', function (require) {
                 this.state.iconData.uploaded_attachment_id;
 
             const result = await this.rpc({
-                route: '/web_studio/create_new_menu',
+                route: '/web_studio/create_new_app',
                 params: {
                     app_name: this.state.appName,
                     menu_name: this.state.menuName,
+                    model_choice: this.state.modelChoice,
                     model_id: this.state.modelChoice && this.state.modelId,
-                    is_app: true,
+                    model_options: this.state.modelOptions,
                     icon: iconValue,
                     context: this.env.session.user_context,
                 },
@@ -187,10 +190,8 @@ odoo.define('web_studio.AppCreator', function (require) {
          * @param {Event} ev
          */
         _onChecked(ev) {
-            this.state.modelChoice = ev.currentTarget.checked;
-            if (!ev.currentTarget.checked) {
-                this.invalid.modelId = false;
-            }
+            const modelChoice = ev.currentTarget.name;
+            this.state.modelChoice = modelChoice;
         }
 
         /**
@@ -198,8 +199,13 @@ odoo.define('web_studio.AppCreator', function (require) {
          * @param {OwlEvent} ev
          */
         _onModelIdChanged(ev) {
-            this.state.modelId = ev.detail.changes.model.id;
-            this.invalid.modelId = isNaN(this.state.modelId);
+            if (this.state.modelChoice === 'existing') {
+                this.state.modelId = ev.detail.changes.model.id;
+                this.invalid.modelId = isNaN(this.state.modelId);
+            } else {
+                this.state.modelId = false;
+                this.invalid.modelId = false;
+            }
         }
 
         /**
@@ -241,6 +247,17 @@ odoo.define('web_studio.AppCreator', function (require) {
             }
         }
 
+
+        /**
+         * Handle the confirmation of options in the modelconfigurator
+         * @param {OdooEvent} ev 
+         */
+        _onConfirmOptions(ev) {
+            const options = ev.detail;
+            this.state.modelOptions = Object.entries(options).filter(opt => opt[1].value).map(opt => opt[0]);
+            return this._onNext();
+        }
+
         /**
          * @private
          */
@@ -260,16 +277,26 @@ odoo.define('web_studio.AppCreator', function (require) {
                     if (!this.state.menuName) {
                         this.invalid.menuName = true;
                     }
-                    if (this.state.modelChoice && !this.state.modelId) {
+                    if (this.state.modelChoice === 'existing' && !this.state.modelId) {
                         this.invalid.modelId = true;
+                    } else if (this.state.modelChoice === 'new') {
+                        this.invalid.modelId = false;
                     }
                     const isValid = Object.values(this.invalid).reduce(
                         (valid, key) => valid && !key,
                         true
                     );
                     if (isValid) {
-                        this._createNewApp();
+                        if (this.state.modelChoice === 'new') {
+                            this._changeStep('model_configuration');
+                        } else {
+                            this._createNewApp();
+                        }
                     }
+                    break;
+                case 'model_configuration':
+                    // no validation for this step, every configuration is valid
+                    this._createNewApp();
                     break;
             }
         }
@@ -285,11 +312,14 @@ odoo.define('web_studio.AppCreator', function (require) {
                 case 'model':
                     this._changeStep('app');
                     break;
+                case 'model_configuration':
+                    this._changeStep('model');
+                    break;
             }
         }
     }
 
-    AppCreator.components = { ComponentAdapter, IconCreator };
+    AppCreator.components = { ComponentAdapter, IconCreator, ModelConfigurator };
     AppCreator.props = {
         model: Object,
     };

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import logging
 import json
 
 from ast import literal_eval
@@ -12,6 +13,25 @@ from odoo.http import content_disposition, request
 from odoo.exceptions import UserError, AccessError, ValidationError
 from odoo.addons.web_studio.controllers import export
 from odoo.tools import ustr, sql
+
+
+_logger = logging.getLogger(__name__)
+
+# contains all valid operations
+OPERATIONS_WHITELIST = [
+    'add',
+    'attributes',
+    'buttonbox',
+    'chatter',
+    'kanban_dropdown',
+    'kanban_image',
+    'kanban_priority',
+    'kanban_set_cover',
+    'map_popup_fields',
+    'move',
+    'remove',
+    'statusbar',
+]
 
 
 class WebStudioController(http.Controller):
@@ -175,71 +195,107 @@ class WebStudioController(http.Controller):
 
         return action
 
-    @http.route('/web_studio/create_new_menu', type='json', auth='user')
-    def create_new_menu(self, app_name=False, menu_name=False, model_id=False, is_app=False, parent_id=None, icon=None):
-        """ Create a new menu @menu_name, linked to a new action associated to the model_id
-            @param model_id: if not set, the action associated to this menu is the home menu
-                except if @is_app is True that will create a new model
-            @param is_app: if True, create an extra menu (app, without parent)
-            @param parent_id: the parent of the new menu.
-                To be set if is_app is False.
+    @http.route('/web_studio/create_new_app', type='json', auth='user')
+    def create_new_app(self, app_name=False, menu_name=False, model_choice=False, model_id=False, model_options=False, icon=None):
+        """Create a new app @app_name, linked to a new action associated to the model_id or the newlyy created model.
+            @param menu_name: name of the first menu (and model if model_choice is 'new') of the app
+            @param model_choice: 'new' for a new model, 'existing' for an existing model selected in the wizard
+            @param model_id: the model which will be associated to the action if menu_choice is 'existing'
+            @param model_options: dictionary of options for the model to be created to include some behaviours OoB
+                (e.g. archiving, messaging, etc.)
             @param icon: the icon of the new app.
                 It can either be:
                  - the ir.attachment id of the uploaded image
                  - if the icon has been created, an array containing: [icon_class, color, background_color]
-                To be set if is_app is True.
         """
-        model = None
-        if model_id:
+        _logger.info('creating new app "%s" with main menu "%s"', app_name, menu_name)
+        if model_choice == 'existing' and model_id:
             model = request.env['ir.model'].browse(model_id)
-        elif is_app:
+            extra_models = request.env['ir.model']
+            _logger.info('using existing model %s as main model, all main views duplicated for use in the new app', model.model)
+        elif model_choice == 'new' and menu_name:
             # create a new model
-            model = request.env['ir.model'].studio_name_create(menu_name)
+            (model, extra_models) = request.env['ir.model'].studio_model_create(menu_name, options=model_options)
+            _logger.info('created new model %s as main model with the following options: %s', model.model, ','.join(model_options))
+        else:
+            _logger.error('inconsistent parameters: model_choice is %s, model_id is %s and menu_name(model) is %s', model_choice, model_id, menu_name)
+            raise UserError(_("If you don't want to create a new model, an existing model should be selected."))
+
+        action = model._create_default_action(menu_name)
+        action_ref = 'ir.actions.act_window,' + str(action.id)
+
+        # create the menus (app menu + first submenu)
+        menu_values = {
+            'name': app_name,
+        }
+        child_menu_vals = [(0, 0, {'name': menu_name,'action': action_ref})]
+
+        # check if a configuration menu is needed
+        if extra_models:
+            configuration_menu_vals = {'name': _('Configuration'), 'child_id': [], 'is_studio_configuration': True, 'sequence': 100}
+            for extra_model in extra_models:
+                extra_action = extra_model._create_default_action(extra_model.name)
+                configuration_menu_vals['child_id'].append((0, 0, {'name': extra_model.name, 'action': 'ir.actions.act_window,'+ str(extra_action.id)}))
+            child_menu_vals.append((0, 0, configuration_menu_vals))
+
+        menu_values.update(self._get_icon_fields(icon))
+        menu_values['child_id'] = child_menu_vals
+
+        new_context = dict(request.context)
+        new_context.update({'ir.ui.menu.full_list': True})  # allows to create a menu without action
+        new_menu = request.env['ir.ui.menu'].with_context(new_context).create(menu_values)
+
+        return {
+            'menu_id': new_menu.id,
+            'action_id': action.id,
+        }
+
+    @http.route('/web_studio/create_new_menu', type='json', auth='user')
+    def create_new_menu(self, menu_name=False, model_choice=False, model_id=False, model_options=False, parent_id=None):
+        """ Create a new menu @menu_name, linked to a new action associated to the model_id
+            @param model_choice: 'new' for a new model, 'existing' for an existing model selected in the wizard
+            @param model_id: the model which will be associated to the action if menu_choice is 'existing'
+            @param model_options: dictionary of options for the model to be created to include some behaviours OoB
+                (e.g. archiving, messaging, etc.)
+            @param parent_id: the parent of the new menu.
+        """
+        _logger.info('creating new menu "%s"', menu_name)
+        if model_choice == 'existing' and model_id:
+            model = request.env['ir.model'].browse(model_id)
+            extra_models = request.env['ir.model']
+            _logger.info('using existing model %s, all main views duplicated for use in the new app', model.model)
+        elif model_choice == 'new' and menu_name:
+            # create a new model
+            (model, extra_models) = request.env['ir.model'].studio_model_create(menu_name, options=model_options)
+            _logger.info('created new model %s with the following options: %s', model.model, ','.join(model_options))
+        else:
+            _logger.error('inconsistent parameters: model_choice is %s, model_id is %s and menu_name(model) is %s', model_choice, model_id, menu_name)
+            raise UserError(_("If you don't want to create a new model, an existing model should be selected."))
 
         # create the action
         if model:
-            action = request.env['ir.actions.act_window'].create({
-                'name': menu_name,
-                'res_model': model.model,
-                'help': """
-                    <p class="o_view_nocontent_smiling_face">
-                        This is your new action ; by default, it contains a list view and a form view.
-                    </p>
-                    <p>
-                        You can start customizing these screens by clicking on the Studio icon on the
-                        top right corner (you can also customize this help message there).
-                    </p>
-                """,
-            })
+            action = model._create_default_action(menu_name)
             action_ref = 'ir.actions.act_window,' + str(action.id)
         else:
             action = request.env.ref('base.action_open_website')
             action_ref = 'ir.actions.act_url,' + str(action.id)
 
-        if is_app:
-            # create the menus (app menu + first submenu)
-            menu_values = {
-                'name': app_name,
-                'child_id': [(0, 0, {
-                    'name': menu_name,
-                    'action': action_ref,
-                })]
-            }
+        # create the submenu
+        new_menu = request.env['ir.ui.menu'].create({
+            'name': menu_name,
+            'action': action_ref,
+            'parent_id': parent_id,
+        })
 
-            menu_values.update(self._get_icon_fields(icon))
-
-            new_context = dict(request.context)
-            new_context.update({'ir.ui.menu.full_list': True})  # allows to create a menu without action
-            new_menu = request.env['ir.ui.menu'].with_context(new_context).create(menu_values)
-
-        else:
-            # create the submenu
-            new_menu = request.env['ir.ui.menu'].create({
-                'name': menu_name,
-                'action': action_ref,
-                'parent_id': parent_id,
-            })
-
+        # create extra menus for configuration of extra models (tags, stages)
+        if extra_models:
+            config_menu = new_menu._get_studio_configuration_menu()
+            child_menu_vals = list()
+            for extra_model in extra_models:
+                views = request.env['ir.ui.view'].search([('model', '=', extra_model.model)])
+                extra_action = extra_model._create_default_action(extra_model.name)
+                child_menu_vals.append((0, 0, {'name': extra_model.name, 'action': 'ir.actions.act_window,'+ str(extra_action.id)}))
+            config_menu.write({'child_id': child_menu_vals})
         return {
             'menu_id': new_menu.id,
             'action_id': action.id,
@@ -425,7 +481,8 @@ class WebStudioController(http.Controller):
             # try to find the lowest priority matching ir.ui.view
             view_id = request.env['ir.ui.view'].default_view(request.env[model]._name, view_type)
         # We have to create a view with the default view if we want to customize it.
-        view = self._get_or_create_default_view(model, view_type, view_id)
+        ir_model = request.env['ir.model'].search([('model', '=', model)])
+        view = ir_model._get_default_view(view_type, view_id)
         studio_view = self._get_studio_view(view)
 
         return {
@@ -457,7 +514,10 @@ class WebStudioController(http.Controller):
     def edit_view(self, view_id, studio_view_arch, operations=None):
         IrModelFields = request.env['ir.model.fields']
         view = request.env['ir.ui.view'].browse(view_id)
-
+        operations = operations or []
+        for op in operations:
+            if op['type'] not in OPERATIONS_WHITELIST:
+                raise ValidationError(_('The operation  type "%s" is not supported') % op['type'])
         parser = etree.XMLParser(remove_blank_text=True)
         if studio_view_arch == "":
             studio_view_arch = '<data/>'
@@ -662,23 +722,6 @@ class WebStudioController(http.Controller):
     def _get_default_view(self, view_type, attrs):
         arch = etree.Element(view_type, attrs)
         return etree.tostring(arch, encoding='unicode', pretty_print=True, method='html')
-
-    def _get_or_create_default_view(self, model, view_type, view_id=False):
-        View = request.env['ir.ui.view']
-        # If we have no view_id to inherit from, it's because we are adding
-        # fields to the default view of a new model. We will materialize the
-        # default view as a true view so we can keep using our xpath mechanism.
-        if view_id:
-            view = View.browse(view_id)
-        else:
-            arch = request.env[model].fields_view_get(view_id, view_type)['arch']
-            view = View.create({
-                'type': view_type,
-                'model': model,
-                'arch': arch,
-                'name': "Default %s view for %s" % (view_type, model),
-            })
-        return view
 
     def _node_to_expr(self, node):
         if not node.get('attrs') and node.get('xpath_info'):
@@ -1027,7 +1070,7 @@ class WebStudioController(http.Controller):
         dropdown_node = etree.fromstring("""
             <div class="o_dropdown_kanban dropdown" name="kanban_dropdown">
                 <a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu" role="button">
-                    <span class="fa fa-bars fa-lg"/>
+                    <span class="fa fa-ellipsis-v"/>
                 </a>
                 <div class="dropdown-menu" role="menu">
                     <t t-if="widget.editable"><a type="edit" class="dropdown-item">Edit</a></t>
@@ -1056,7 +1099,7 @@ class WebStudioController(http.Controller):
 
     def _operation_kanban_image(self, arch, operation, model):
         """ Insert a image and its corresponding needs in an kanban view arch
-            Implied modifications:
+            Implied modifications (if not already done):
                 - add the field in the view
                 - add a section (kanban_right) in the view
                 - add the field with `kanban_image` in this section
@@ -1081,21 +1124,36 @@ class WebStudioController(http.Controller):
             'position': 'before',
         }).append(etree.Element('field', {'name': field_id.name}))
 
+        # check if there's already a bottom right section
+        # boy o boy i sure hope there's only one kanban!
+        base_arch = request.env[model].fields_view_get(view_type='kanban')['arch']
+        base_tree = etree.fromstring(base_arch)
+        has_br_container = base_tree.xpath('//div[hasclass("oe_kanban_bottom_right")]')
+
+        img_elem = """<img
+                t-att-src="kanban_image('{model}', 'image_128', record.{field}.raw_value)"
+                t-att-title="record.{field}.value" t-att-alt="record.{field}.value"
+                class="oe_kanban_avatar o_image_24_cover float-right"
+            />""".format(model=field_id.relation, field=field_id.name)
         # add the image inside the view
-        etree.SubElement(arch, 'xpath', {
-            'expr': '//div',
-            'position': 'inside',
-        }).append(
-            etree.fromstring("""
-                <div class="oe_kanban_bottom_right">
-                    <img
-                        t-att-src="kanban_image('%(model)s', 'image_128', record.%(field)s.raw_value)"
-                        t-att-title="record.%(field)s.value"
-                        class="oe_kanban_avatar o_image_24_cover float-right"
-                    />
-                </div>
-            """ % {'model': field_id.relation, 'field': field_id.name})
-        )
+        if has_br_container:
+            etree.SubElement(arch, 'xpath', {
+                'expr': '//div[hasclass("oe_kanban_bottom_right")]',
+                'position': 'inside',
+            }).append(
+                etree.fromstring(img_elem)
+            )
+        else:
+            etree.SubElement(arch, 'xpath', {
+                'expr': '//div',
+                'position': 'inside',
+            }).append(
+                etree.fromstring("""
+                    <div class="oe_kanban_bottom_right">
+                        %s
+                    </div>
+                """ % img_elem)
+            )
 
     def _operation_kanban_set_cover(self, arch, operation, model):
         """ Insert a menu in dropdown to set cover image in a kanban view.

@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models
+from odoo import api, models, fields, _
 
 
 class IrUiMenu(models.Model):
     _name = 'ir.ui.menu'
     _description = 'Menu'
     _inherit = ['studio.mixin', 'ir.ui.menu']
+
+    is_studio_configuration = fields.Boolean(
+        string='Studio Configuration Menu',
+        help='Indicates that this menu was created by Studio to hold configuration sub-menus',
+        readonly=True)
 
     @api.model
     def load_menus(self, debug):
@@ -39,3 +44,38 @@ class IrUiMenu(models.Model):
         self.browse(to_delete).write({'active': False})
 
         return True
+
+    def _get_studio_configuration_menu(self):
+        """
+        Get (or create) a configuration menu that will hold some Studio models.
+
+        Creating a model through Studio can create secondary models, such as tags
+        or stages. These models need their own menu+action, which should be stored
+        under a config menu (child of the app root menu). If this is a Studio app,
+        find or create the Configuration menu; if the app is not a Studio app, find or
+        create the 'Custom Configuration' menu, to avoid confusion with a potential
+        'Configuration' menu which could already be present.
+        """
+        self.ensure_one()
+        root_id = int(self.parent_path.split('/')[0])
+        root_xmlids = self.env['ir.model.data'].search_read(
+            domain=[('model', '=', 'ir.ui.menu'), ('res_id', '=', root_id)],
+            fields=['module', 'name', 'studio']
+        )
+        # look for a studio config menu in the submenus
+        parent_path = '%s/' % root_id
+        new_context = dict(self._context)
+        new_context.update({'ir.ui.menu.full_list': True})  # allows to create a menu without action
+        config_menu = self.with_context(new_context).search([
+            ('parent_path', 'like', parent_path), ('is_studio_configuration', '=', True)
+        ])
+        if not config_menu:
+            is_studio_app = root_xmlids and any(map(lambda xmlid: xmlid['studio'], root_xmlids))
+            menu_name = _('Configuration') if is_studio_app else _('Custom Configuration')
+            config_menu = self.create({
+                'name': menu_name,
+                'is_studio_configuration': True,
+                'parent_id': root_id,
+                'sequence': 1000,
+            })
+        return config_menu

@@ -30,9 +30,18 @@ tour.register('web_studio_tests_tour', {
 }, {
     trigger: '.o_web_studio_app_creator_next.is_ready',
 }, {
+    // disable chatter in model configurator, we'll test adding it on later
+    trigger: 'input[name="use_mail"]',
+}, {
+    // disable company if visible, otherwise it might make the test uncertain
+    trigger: 'input[name="use_company"]',
+}, {
+    trigger: '.o_web_studio_model_configurator_next',
+}, {
     // toggle the home menu outside of studio and come back in studio
     extra_trigger: '.o_menu_toggle.fa-th',
     trigger: '.o_web_studio_leave',
+    timeout: 15000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.o_menu_toggle.fa-th',
 }, {
@@ -99,6 +108,8 @@ tour.register('web_studio_tests_tour', {
     trigger: 'input[name="name"]',
     run: 'text ' + (createdMenuString = randomString(6)),
 }, {
+    trigger: 'div[name="model_choice"] input[data-value="existing"]',
+}, {
     trigger: '.o_field_many2one[name="model"] input',
     run: 'text a',
 }, {
@@ -122,6 +133,8 @@ tour.register('web_studio_tests_tour', {
 }, {
     // click on the field
     trigger: '.o_web_studio_form_view_editor td.o_td_label:first',
+    // when it's there
+    extra_trigger: 'input[data-type="field_name"]',
 }, {
     // rename the label
     trigger: '.o_web_studio_sidebar_content.o_display_field input[name="string"]',
@@ -365,9 +378,12 @@ tour.register('web_studio_hide_fields_tour', {
 }, {
     trigger: '.o_web_studio_app_creator_next',
 }, {
+    trigger: '.o_web_studio_model_configurator_next',
+}, {
     // check that the Studio menu is still there
     extra_trigger: '.o_web_studio_menu',
     trigger: '.o_web_studio_leave',
+    timeout: 15000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.oe_title input',
     run: 'text Test',

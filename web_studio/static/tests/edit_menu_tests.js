@@ -92,7 +92,7 @@ QUnit.module('Studio', {
     });
 
     QUnit.test('edit menu dialog', async function(assert) {
-        assert.expect(17);
+        assert.expect(20);
 
         var $target = $('#qunit-fixture');
 
@@ -134,8 +134,18 @@ QUnit.module('Studio', {
             "there should be a modal in the dom");
         assert.strictEqual($('.o_web_studio_add_menu_modal input[name="name"]').length, 1,
             "there should be an input for the name in the dialog");
-        assert.strictEqual($('.o_web_studio_add_menu_modal .o_field_many2one').length, 1,
-            "there should be a many2one for the model in the dialog");
+        await testUtils.dom.click($('.o_web_studio_add_menu_modal .o_field_widget[name="model_choice"] [data-value="new"]'));
+        assert.isNotVisible($('.o_web_studio_add_menu_modal .o_field_many2one'),
+            "there should be no visible many2one for the model in the dialog");
+        await testUtils.dom.click($('.o_web_studio_add_menu_modal .btn-primary'));
+        assert.containsOnce($, '.o_web_studio_model_configurator input[name="use_partner"]',
+            "the ModelConfigurator should show the available model options");
+        await testUtils.dom.click($('.o_web_studio_model_configurator .o_web_studio_model_configurator_previous'));
+        assert.containsNone($, '.o_web_studio_model_configurator',
+            "the ModelConfigurator should be gone");
+        await testUtils.dom.click($('.o_web_studio_add_menu_modal .o_field_widget[name="model_choice"] [data-value="existing"]'));
+        assert.strictEqual($('.o_web_studio_add_menu_modal .o_field_many2one').filter(':visible').length, 1,
+            "there should be a visible many2one for the model in the dialog");
         // close the modal
         await testUtils.dom.click($('.o_web_studio_add_menu_modal .btn-secondary'));
 

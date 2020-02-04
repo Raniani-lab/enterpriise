@@ -25,6 +25,9 @@ Note: Only the admin user is allowed to make those customizations.
         'web',
         'web_enterprise',
         'web_editor',
+        'web_map',
+        'web_gantt',
+        'sms',
     ],
     'data': [
         'views/assets.xml',

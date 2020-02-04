@@ -3,11 +3,11 @@
 
 <t t-name="AppCreator" owl="1">
     <div class="o_web_studio_app_creator">
-        <div class="o_web_studio_app_creator_box">
-            <div class="o_web_studio_app_creator_left">
+        <div t-if="state.step !== 'model_configuration'" class="o_web_studio_app_creator_box">
+            <div t-attf-class="o_web_studio_app_creator_left">
                 <div class="o_web_studio_app_creator_left_content">
                     <t t-if="state.step === 'welcome'">
-                        <h2 class="mb0">Welcome to</h2>
+                        <h2 class="mb0 o_web_studio_welcome">Welcome to</h2>
                         <h1 class="mt8">Odoo Studio</h1>
                         <h5 class="text-muted">The fastest way to create a web application.</h5>
                     </t>
@@ -36,31 +36,29 @@
                                 t-on-input="_onInput"
                             />
                         </div>
-                        <t t-if="env.isDebug()">
-                            <div class="o_web_studio_app_creator_modelChoice">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" id="modelChoice" class="custom-control-input"
-                                        autofocus=""
-                                        name="modelChoice"
-                                        t-att-checked="state.modelChoice"
-                                        t-on-change="_onChecked"
-                                    />
-                                    <label for="modelChoice" class="custom-control-label">Use an existing Model</label>
-                                </div>
+                        <div class="o_web_studio_app_creator_model_choice">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="model_choice_new" name="model_choice" value="new" class="custom-control-input" t-model="state.modelChoice" />
+                                <label class="custom-control-label" for="model_choice_new">New Model</label>
                             </div>
-                            <div t-if="state.modelChoice" class="o_web_studio_app_creator_model mt8"
-                                t-att-class="{ o_web_studio_app_creator_field_warning: invalid.modelId }"
-                                >
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="model_choice_existing" name="model_choice" value="existing" class="custom-control-input" t-model="state.modelChoice" />
+                                <label class="custom-control-label" for="model_choice_existing">Existing Model</label>
+                            </div>
+                        </div>
+                        <div
+                            t-if="state.modelChoice === 'existing'" class="o_web_studio_app_creator_model mt8"
+                            t-att-class="{ o_web_studio_app_creator_field_warning: invalid.modelId }"
+                        >
                                 <label for="name">Model</label>
                                 <ComponentAdapter Component="FieldMany2One"
                                     widgetArgs="['model', record, { mode: 'edit' }]"
                                     name="'model'"
                                     record="record"
-                                    options="{ mode: 'edit' }"
+                                    options="{ mode: 'edit', noCreate: true }"
                                     t-on-field-changed="_onModelIdChanged"
                                 />
-                            </div>
-                        </t>
+                        </div>
                     </t>
                 </div>
                 <div class="o_web_studio_app_creator_buttons">
@@ -77,13 +75,13 @@
                         t-att-class="{ is_ready: isReady }"
                         t-on-click="_onNext"
                         >
-                        <span t-if="state.step === 'welcome' or (state.step === 'app' and state.appName)">Next</span>
-                        <span t-elif="state.step === 'model' and state.menuName and (!state.modelChoice or state.modelId)">Create your app</span>
+                        <span t-if="state.step === 'welcome' or (state.step === 'app' and state.app_name) or (state.step === 'model' and state.modelChoice === 'new' and state.menu_name)">Next</span>
+                        <span t-elif="(state.step === 'model' and state.modelChoice === 'existing' and state.menu_name and !invalid.modelChoice) or (state.step === 'model_configuration')">Create your app</span>
                         <i class="fa fa-chevron-right"/>
                     </button>
                 </div>
             </div>
-            <div class="o_web_studio_app_creator_right">
+            <div class="o_web_studio_app_creator_right" t-if="state.step !== 'model_configuration'">
                 <div class="o_web_studio_app_creator_right_content">
                     <t t-if="state.step === 'welcome'">
                         <img class="o_web_studio_welcome_image" src="/web_studio/static/src/img/studio_app_icon.png"/>
@@ -100,6 +98,13 @@
                 </div>
             </div>
         </div>
+        <ModelConfigurator
+            t-if="state.step === 'model_configuration'"
+            debug='debug'
+            label="'Create your app'"
+            t-on-confirm-options.stop="_onConfirmOptions"
+            t-on-previous.stop="_onPrevious"
+        />
     </div>
 </t>
 

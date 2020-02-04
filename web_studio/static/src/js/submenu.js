@@ -182,7 +182,15 @@ var SubMenu = Widget.extend({
      * @private
      */
     _setActiveButtons() {
-        this.$(`.o_menu_sections li:contains(${this.activeMenu})`).addClass('active');
+        /* we want to hide the active indicator for the 'Views' menu item
+        when we're not in the 'overview' of all available view types */
+        const $active_menu = this.$(`.o_menu_sections li:contains(${this.activeMenu})`);
+        const is_action_menu = $active_menu.data('name') === 'views';
+        const cur_act = this.studio_actions[this.studio_actions.length - 1];
+        const is_action_overview = cur_act.action === 'action_web_studio_action_editor' && !cur_act.viewType;
+        if (!(is_action_menu && !is_action_overview)) {
+            this.$(`.o_menu_sections li:contains(${this.activeMenu})`).addClass('active');
+        }
         if (this.studio_actions.length === 0) {
             return;
         }

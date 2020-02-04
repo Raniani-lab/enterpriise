@@ -75,9 +75,74 @@ class View(models.Model):
         if field_ids:
             node.attrib['studio_map_field_ids'] = json.dumps(field_ids)
 
-    def create_simplified_form_view(self, res_model):
+    @api.model
+    def create_automatic_views(self, res_model):
+        """Generates automatic views for the given model depending on its fields."""
+        model = self.env[res_model]
+        views = self.env['ir.ui.view']
+        # form, list and search: always
+        views |= self.auto_list_view(res_model)
+        views |= self.auto_form_view(res_model)
+        views |= self.auto_search_view(res_model)
+        # calendar: only if x_studio_date
+        if 'x_studio_date' in model._fields:
+            views |= self.auto_calendar_view(res_model)
+        # gantt: only if x_studio_date_start & x_studio_date_stop
+        if 'x_studio_date_start' in model._fields and 'x_studio_date_stop' in model._fields:
+            views |= self.auto_gantt_view(res_model)
+        # kanban: only if x_studio_stage_id
+        if 'x_studio_stage_id' in model._fields:
+            views |= self.auto_kanban_view(res_model)
+        # map: only if x_studio_partner_id
+        if 'x_studio_partner_id' in model._fields:
+            views |= self.auto_map_view(res_model)
+        # pivot: only if x_studio_value
+        if 'x_studio_value' in model._fields:
+            views |= self.auto_pivot_view(res_model)
+        return views
+
+    def auto_list_view(self, res_model):
         model = self.env[res_model]
         rec_name = model._rec_name_fallback()
+        fields = list()
+        if 'x_studio_sequence' in model._fields and not 'x_studio_priority' in model._fields:
+            fields.append(E.field(name='x_studio_sequence', widget='handle'))
+        fields.append(E.field(name=rec_name))
+        if 'x_studio_partner_id' in model._fields:
+            fields.append(E.field(name='x_studio_partner_id'))
+        if 'x_studio_user_id' in model._fields:
+            fields.append(E.field(name='x_studio_user_id'))
+        if 'x_studio_company_id' in model._fields:
+            fields.append(E.field(name='x_studio_company_id', groups='base.group_multi_company'))
+        if 'x_studio_currency_id' in model._fields and 'x_studio_value' in model._fields:
+            fields.append(E.field(name='x_studio_currency_id', invisible='1'))
+            fields.append(E.field(name='x_studio_value', widget='monetary', options="{'currency_field': 'x_studio_currency_id'}", sum=_("Total")))
+        if 'x_studio_tag_ids' in model._fields:
+            fields.append(E.field(name='x_studio_tag_ids', widget='many2many_tags', options="{'color_field': 'x_color'}"))
+        if 'x_color' in model._fields:
+            fields.append(E.field(name='x_color', widget='color_picker'))
+        tree_params = {} if not self._context.get('list_editable') else {'editable': self._context.get('list_editable')}
+        tree = E.tree(**tree_params)
+        tree.extend(fields)
+        arch = etree.tostring(tree, encoding='unicode', pretty_print=True)
+
+        return self.create({
+            'type': 'tree',
+            'model': res_model,
+            'arch': arch,
+            'name': "Default %s view for %s" % ('list', res_model),
+        })
+
+    def auto_form_view(self, res_model):
+        ir_model = self.env['ir.model'].search([('model', '=', res_model)])
+        model = self.env[res_model]
+        rec_name = model._rec_name_fallback()
+        sheet_content = list()
+        if 'x_active' in model._fields:
+            sheet_content.append(E.widget(name='web_ribbon', text=_('Archived'), bg_color='bg-danger', attrs="{'invisible': [('x_active', '=', True)]}"))
+            sheet_content.append(E.field(name='x_active', invisible='1'))
+        if 'x_studio_image' in model._fields:
+            sheet_content.append(E.field({'class': 'oe_avatar', 'widget': 'image', 'name': 'x_studio_image'}))
         title = etree.fromstring("""
             <div class="oe_title">
                 <h1>
@@ -85,18 +150,246 @@ class View(models.Model):
                 </h1>
             </div>
         """ % {'field_name': rec_name})
+        sheet_content.append(title)
         group_name = 'studio_group_' + str(uuid.uuid4())[:6]
-        group_1 = E.group(name=group_name + '_left')
-        group_2 = E.group(name=group_name + '_right')
-        group = E.group(group_1, group_2, name=group_name)
-        form = E.form(E.sheet(title, group, string=model._description))
+        left_group = E.group(name=group_name + '_left')
+        right_group = E.group(name=group_name + '_right')
+        left_group_content, right_group_content = list(), list()
+        if 'x_studio_user_id' in model._fields:
+            right_group_content.append(E.field(name='x_studio_user_id'))
+        if 'x_studio_partner_id' in model._fields:
+            left_group_content.append(E.field(name='x_studio_partner_id'))
+            left_group_content.append(E.field(name='x_studio_partner_phone', widget='phone', options="{'enable_sms': True}"))
+            left_group_content.append(E.field(name='x_studio_partner_email', widget='email'))
+        if 'x_studio_currency_id' in model._fields and 'x_studio_value' in model._fields:
+            right_group_content.append(E.field(name='x_studio_currency_id', invisible='1'))
+            right_group_content.append(E.field(name='x_studio_value', widget='monetary', options="{'currency_field': 'x_studio_currency_id'}"))
+        if 'x_studio_tag_ids' in model._fields:
+            right_group_content.append(E.field(name='x_studio_tag_ids', widget='many2many_tags', options="{'color_field': 'x_color'}"))
+        if 'x_studio_company_id' in model._fields:
+            right_group_content.append(E.field(name='x_studio_company_id', groups='base.group_multi_company', options="{'no_create': True}"))
+        if 'x_studio_date' in model._fields:
+            left_group_content.append(E.field(name='x_studio_date'))
+        if 'x_studio_date_start' in model._fields and 'x_studio_date_stop' in model._fields:
+            left_group_content.append(E.label({'for': "x_studio_date_start"}, string='Dates'))
+            daterangeDiv = E.div({'class': 'o_row'})
+            daterangeDiv.append(E.field(name='x_studio_date_start', widget='daterange', options='{"related_end_date": "x_studio_date_stop"}'))
+            daterangeDiv.append(E.span(_(' to ')))
+            daterangeDiv.append(E.field(name='x_studio_date_stop', widget='daterange', options='{"related_start_date": "x_studio_date_start"}'))
+            left_group_content.append(daterangeDiv)
+        if not left_group_content:
+            # there is nothing in our left group; switch the groups' content
+            # to avoid a weird looking form view
+            left_group_content = right_group_content
+            right_group_content = list()
+        left_group.extend(left_group_content)
+        right_group.extend(right_group_content)
+        sheet_content.append(E.group(left_group, right_group, name=group_name))
+        if 'x_studio_notes' in model._fields:
+            sheet_content.append(E.group(E.field(name='x_studio_notes', placeholder=_('Type down your notes here...'), nolabel='1')))
+        header_content = list()
+        if 'x_studio_stage_id' in model._fields:
+            header_content.append(E.field(name='x_studio_stage_id', widget='statusbar', clickable='1'))
+        form = E.form(E.header(*header_content), E.sheet(*sheet_content, string=model._description))
+        chatter_widgets = list()
+        if ir_model.is_mail_thread:
+            chatter_widgets.append(E.field(name='message_follower_ids', widget='mail_followers'))
+            chatter_widgets.append(E.field(name='message_ids', widget='mail_thread'))
+        if ir_model.is_mail_activity:
+            chatter_widgets.append(E.field(name='activity_ids', widget='mail_activity'))
+        if chatter_widgets:
+            chatter_div = E.div({'class': 'oe_chatter', 'name': 'oe_chatter'})
+            chatter_div.extend(chatter_widgets)
+            form.append(chatter_div)
         arch = etree.tostring(form, encoding='unicode', pretty_print=True)
 
-        self.create({
+        return self.create({
             'type': 'form',
             'model': res_model,
             'arch': arch,
             'name': "Default %s view for %s" % ('form', res_model),
+        })
+
+    def auto_search_view(self, res_model):
+        model = self.env[res_model]
+        rec_name = model._rec_name_fallback()
+        fields = list()
+        filters = list()
+        groupbys = list()
+        fields.append(E.field(name=rec_name))
+        if 'x_studio_partner_id' in model._fields:
+            fields.append(E.field(name='x_studio_partner_id', operator='child_of'))
+            groupbys.append(E.filter(name='groupby_x_partner', string=_('Partner'), context="{'group_by': 'x_studio_partner_id'}", domain="[]"))
+        if 'x_studio_user_id' in model._fields:
+            fields.append(E.field(name='x_studio_user_id'))
+            filters.append(E.filter(string=_('My %s') % model._description, name='my_%s' % res_model, domain="[['x_studio_user_id', '=', uid]]"))
+            groupbys.append(E.filter(name='groupby_x_user', string=_('Responsible'), context="{'group_by': 'x_studio_user_id'}", domain="[]"))
+        date_filters = []
+        if 'x_studio_date' in model._fields:
+            date_filters.append(E.filter(date='x_studio_date', name='studio_filter_date', string=_('Date')))
+        if 'x_studio_date_start' in model._fields and 'x_studio_date_stop' in model._fields:
+            date_filters.append(E.filter(date='x_studio_date_start', name='studio_filter_date_start', string=_('Start Date')))
+            date_filters.append(E.filter(date='x_studio_date_stop', name='studio_filter_date_stop', string=_('End Date')))
+        if date_filters:
+            filters.append(E.separator())
+            filters.extend(date_filters)
+        if 'x_active' in model._fields:
+            filters.append(E.separator())
+            filters.append(E.filter(string=_('Archived'), name='archived_%s' % res_model, domain="[['x_active', '=', False]]"))
+            filters.append(E.separator())
+        if 'x_studio_tag_ids' in model._fields:
+            fields.append(E.field(name='x_studio_tag_ids'))
+        if 'x_studio_stage_id' in model._fields:
+            groupbys.append(E.filter(name='x_studio_stage_id', string=_('Stage'), context="{'group_by': 'x_studio_stage_id'}", domain="[]"))
+        search = E.search(*fields)
+        search.extend(filters)
+        if groupbys:
+            groupby = E.group(expand="0", string=_('Group By'))
+            groupby.extend(groupbys)
+            search.extend(groupby)
+        arch = etree.tostring(search, encoding='unicode', pretty_print=True)
+
+        return self.create({
+            'type': 'search',
+            'model': res_model,
+            'arch': arch,
+            'name': "Default %s view for %s" % ('search', res_model),
+        })
+
+    def auto_calendar_view(self, res_model):
+        model = self.env[res_model]
+        if not 'x_studio_date' in model._fields:
+            return self
+        calendar = E.calendar(date_start='x_studio_date')
+        arch = etree.tostring(calendar, encoding='unicode', pretty_print=True)
+
+        return self.create({
+            'type': 'calendar',
+            'model': res_model,
+            'arch': arch,
+            'name': "Default %s view for %s" % ('calendar', res_model),
+        })
+
+    def auto_gantt_view(self, res_model):
+        gantt = E.gantt(date_start='x_studio_date_start', date_stop='x_studio_date_stop')
+        arch = etree.tostring(gantt, encoding='unicode', pretty_print=True)
+
+        return self.create({
+            'type': 'gantt',
+            'model': res_model,
+            'arch': arch,
+            'name': "Default %s view for %s" % ('gantt', res_model),
+        })
+
+    def auto_map_view(self, res_model):
+        field = E.field(name='x_studio_partner_id', string=_('Partner'))
+        map_view = E.map(field, res_partner='x_studio_partner_id')
+        arch = etree.tostring(map_view, encoding='unicode', pretty_print=True)
+
+        return self.create({
+            'type': 'map',
+            'model': res_model,
+            'arch': arch,
+            'name': "Default %s view for %s" % ('map', res_model),
+        })
+
+    def auto_pivot_view(self, res_model):
+        model = self.env[res_model]
+        fields = list()
+        fields.append(E.field(name='x_studio_value', type='measure'))
+        if 'x_studio_stage_id' in model._fields:
+            fields.append(E.field(name='x_studio_stage_id', type='col'))
+        if 'x_studio_date' in model._fields:
+            fields.append(E.field(name='x_studio_date', type='row'))
+        pivot = E.pivot()
+        pivot.extend(fields)
+        arch = etree.tostring(pivot, encoding='unicode', pretty_print=True)
+
+        return self.create({
+            'type': 'pivot',
+            'model': res_model,
+            'arch': arch,
+            'name': "Default %s view for %s" % ('pivot', res_model),
+        })
+
+    def auto_kanban_view(self, res_model):
+        model = self.env[res_model]
+        pre_fields = list()  # fields not used in a t-field node but needed for display
+        content_div = E.div({'class': "o_kanban_record_details"})
+        title = E.strong({'class': 'o_kanban_record_title', 'name': 'studio_auto_kanban_title'})
+        title.append(E.field(name=model._rec_name_fallback()))
+        headers_div = E.div({'class': 'o_kanban_record_headings', 'name': 'studio_auto_kanban_headings'})
+        headers_div.append(E.field(name='x_studio_priority', widget='boolean_favorite', nolabel='1'))
+        headers_div.append(title)
+        dropdown_div = E.div({'class': 'o_dropdown_kanban dropdown'})
+        dropdown_toggle = E.a({
+            'role': 'button',
+            'class': 'dropdown-toggle o-no-caret btn',
+            'data-toggle': 'dropdown',
+            'data-display': 'static',
+            'href': '#',
+            'aria-label': _('Dropdown Menu'),
+            'title': _('Dropdown Menu'),
+            })
+        dropdown_toggle.append(E.span({'class': 'fa fa-ellipsis-v'}))
+        dropdown_menu = E.div({'class': 'dropdown-menu', 'role': 'menu'})
+        dropdown_menu.extend([
+            E.a({'t-if': 'widget.editable', 'role': 'menuitem', 'type': 'edit', 'class': 'dropdown-item'},_('Edit')),
+            E.a({'t-if': 'widget.deletable', 'role': 'menuitem', 'type': 'delete', 'class': 'dropdown-item'}, _('Delete'))
+        ])
+        dropdown_div.extend([dropdown_toggle, dropdown_menu])
+        top_div = E.div({'class': 'o_kanban_record_top', 'name': 'studio_auto_kanban_top'})
+        top_div.extend([headers_div, dropdown_div])
+        body_div = E.div({'class': 'o_kanban_record_body', 'name': 'studio_auto_kanban_body'})
+        bottom_div = E.div({'class': 'o_kanban_record_bottom', 'name': 'studio_auto_kanban_bottom'})
+        bottom_left_div = E.div({'class': 'oe_kanban_bottom_left', 'name': 'studio_auto_kanban_bottom_left'})
+        bottom_right_div = E.div({'class': 'oe_kanban_bottom_right', 'name': 'studio_auto_kanban_bottom_right'})
+        bottom_div.extend([bottom_left_div, bottom_right_div])
+        bottom_right_div.append(E.field(name='x_studio_kanban_state', widget='state_selection'))
+        if 'x_studio_user_id' in model._fields:
+            pre_fields.append(E.field(name='x_studio_user_id'))
+            unassigned_var = E.t({'t-set': 'unassigned'})
+            unassigned_var.append(E.t({'t-esc': "_t('Unassigned')"}))
+            img = E.img({'t-att-src': "kanban_image('res.users', 'image_128', record.x_studio_user_id.raw_value)",
+                         't-att-title': "record.x_studio_user_id.value || unassigned",
+                         't-att-alt': "record.x_studio_user_id.value",
+                         'class': "oe_kanban_avatar o_image_24_cover float-right"})
+            bottom_right_div.append(unassigned_var)
+            bottom_right_div.append(img)
+        content_div.extend([top_div, body_div, bottom_div])
+        card_div = E.div({'class': "o_kanban_record oe_kanban_global_click o_kanban_record_has_image_fill"})
+        if 'x_studio_value' and 'x_studio_currency_id' in model._fields:
+            pre_fields.append(E.field(name='x_studio_currency_id'))
+            bottom_left_div.append(E.field(name='x_studio_value', widget='monetary', options="{'currency_field': 'x_studio_currency_id'}"))
+        if 'x_studio_tag_ids' in model._fields:
+            body_div.append(E.field(name='x_studio_tag_ids', options="{'color_field': 'x_color'}"))
+        if 'x_studio_image' in model._fields:
+            image_field = E.field({
+                'class': 'o_kanban_image_fill_left',
+                'name': 'x_studio_image',
+                'widget': 'image',
+                'options': '{"zoom": true, "background": true, "preventClicks": false}'
+            })
+            card_div.append(image_field)
+        card_div.append(content_div)
+        kanban_box = E.t(card_div, {'t-name': "kanban-box"})
+        templates = E.templates(kanban_box)
+        order = 'x_studio_priority desc, x_studio_sequence asc, id desc' if 'x_studio_sequence' in model._fields else 'x_studio_priority desc, id desc'
+        kanban = E.kanban(default_group_by='x_studio_stage_id', default_order=order)
+        kanban.extend(pre_fields)
+        if 'x_studio_value' in model._fields:
+            progressbar = E.progressbar(field='x_studio_kanban_state', colors='{"normal": "muted", "done": "success", "blocked": "danger"}', sum_field='x_studio_value')
+        else:
+            progressbar = E.progressbar(field='x_studio_kanban_state', colors='{"normal": "muted", "done": "success", "blocked": "danger"}')
+        kanban.append(progressbar)
+        kanban.append(templates)
+        arch = etree.tostring(kanban, encoding='unicode', pretty_print=True)
+
+        return self.create({
+            'type': 'kanban',
+            'model': res_model,
+            'arch': arch,
+            'name': "Default %s view for %s" % ('kanban', res_model),
         })
 
     # Returns "true" if the view_id is the id of the studio view.

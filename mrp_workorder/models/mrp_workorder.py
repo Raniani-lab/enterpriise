@@ -631,7 +631,7 @@ class MrpProductionWorkcenterLine(models.Model):
             if not lot:
                 # create a new lot
                 # create in an onchange is necessary here ("new" cannot work here)
-                lot = self.env['stock.production.lot'].create({
+                lot = self.env['stock.production.lot'].with_context(active_mo_id=self.production_id.id).create({
                     'name': barcode,
                     'product_id': self.component_id.id,
                     'company_id': self.company_id.id,

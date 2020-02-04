@@ -116,7 +116,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._progressCount = 0;
         if (this._mode === 'demo') {
             if (this.PLAY_MEDIA) {
-                this._audioRingbackTone.play();
+                this._audioRingbackTone.play().catch(() => {});
             }
             this._timerAcceptedTimeout = this._demoTimeout(() =>
                 this._onAccepted());
@@ -696,7 +696,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _onInviteSent() {
         this.trigger_up('sip_error_resolved');
         if (this.PLAY_MEDIA) {
-            this._audioDialRingtone.play();
+            this._audioDialRingtone.play().catch(() => {});
         }
     },
     /**
@@ -795,7 +795,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this._progressCount = 0;
             this._stopRingtones();
             if (this.PLAY_MEDIA) {
-                this._audioRingbackTone.play();
+                this._audioRingbackTone.play().catch(() => {});
             }
             this.trigger_up('changeStatus');
         } else {

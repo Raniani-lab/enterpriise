@@ -255,7 +255,7 @@ class OnlineAccount(models.Model):
         # Synchronization ressource for account
         resp_json = self.account_online_provider_id._ponto_fetch('POST', '/synchronizations', {}, data)
         if resp_json.get('errors', [{}])[0].get('code', '') == 'accountRecentlySynchronized':
-            _logger.info('Skip refresh of ponto transaction as last refresh was too recent')
+            _logger.info('Skip refresh of ponto %s as last refresh was too recent' % (subtype,))
             return
         # Get id of synchronization ressources
         sync_id = resp_json.get('data', {}).get('id')
@@ -288,6 +288,7 @@ class OnlineAccount(models.Model):
         # balance of the account won't be up-to-date. However this is not a big problem as the record that
         # store the balance is hidden for most user.
         self._ponto_synchronize('accountTransactions')
+        self._ponto_synchronize('accountDetails')
         transactions = []
         # Update account balance
         url = '/accounts/%s' % (self.online_identifier,)

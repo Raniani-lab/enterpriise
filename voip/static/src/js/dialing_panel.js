@@ -495,6 +495,8 @@ const DialingPanel = Widget.extend({
      */
     _onClickHangupButton() {
         this._userAgent.hangup();
+        this._cancelCall();
+        this._activeTab._selectPhoneCall(this._activeTab._currentPhoneCallId);
     },
     /**
      * @private

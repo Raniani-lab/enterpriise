@@ -12,7 +12,7 @@ class DemoSocialLivePost(models.Model):
         """ Overridden to bypass third-party API calls. """
         pass
 
-    def _post_facebook(self):
+    def _post_facebook(self, facebook_target_id):
         facebook_stream = self.env.ref('social_demo.social_stream_facebook_page', raise_if_not_found=False)
         if facebook_stream:
             self._post_demo(facebook_stream.id)

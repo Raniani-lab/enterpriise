@@ -4,10 +4,10 @@
 import requests
 from unittest.mock import patch
 
-from odoo.addons.social.tests.common import SocialCase
+from odoo.addons.social_facebook.tests.common import SocialFacebookCommon
 
 
-class EventSocialFacebookCase(SocialCase):
+class EventSocialFacebookCase(SocialFacebookCommon):
     @classmethod
     def setUpClass(cls):
         super(EventSocialFacebookCase, cls).setUpClass()

@@ -6,18 +6,11 @@ import requests
 
 from unittest.mock import patch
 
-from odoo.addons.social_facebook.models.social_account import SocialAccountFacebook
 from odoo.addons.social_facebook.models.social_post import SocialPostFacebook
-from odoo.addons.social.tests.common import SocialCase
+from odoo.addons.social_facebook.tests.common import SocialFacebookCommon
 
 
-class SocialFacebookCase(SocialCase):
-    @classmethod
-    def setUpClass(cls):
-        with patch.object(SocialAccountFacebook, '_compute_statistics', lambda x: None), \
-             patch.object(SocialAccountFacebook, '_create_default_stream_facebook', lambda *args, **kwargs: None):
-            super(SocialFacebookCase, cls).setUpClass()
-
+class SocialFacebookCase(SocialFacebookCommon):
     def test_post_success(self):
         self._test_post()
 

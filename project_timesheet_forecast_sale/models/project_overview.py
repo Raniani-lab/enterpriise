@@ -79,7 +79,7 @@ class ProjectOverview(models.Model):
                     F.employee_id AS employee_id,
                     S.order_id AS sale_order_id,
                     F.order_line_id AS sale_line_id,
-                    SUM(F.allocated_hours) / SUM(F.working_days_count) * count(*) AS number_hours
+                    SUM(F.allocated_hours) / NULLIF(SUM(F.working_days_count), 0) * count(*) AS number_hours
                 FROM generate_series(
                     (SELECT min(start_datetime) FROM planning_slot)::date,
                     (SELECT max(end_datetime) FROM planning_slot)::date,
@@ -140,8 +140,8 @@ class ProjectOverview(models.Model):
                     index = fc_months.index(data['month_date']) + 6
                 elif data['month_date'] > fc_months[-1]:
                     index = 9
-                rows_employee[row_key][index] += data['number_hours']
-                rows_employee[row_key][10] += data['number_hours']
+                rows_employee[row_key][index] += data['number_hours'] if data['number_hours'] else 0
+                rows_employee[row_key][10] += data['number_hours'] if data['number_hours'] else 0
         return rows_employee
 
     def _table_get_empty_so_lines(self):

@@ -145,6 +145,7 @@ const PhoneCallContactsTab = PhoneCallTab.extend({
     _makePhoneCallsDataFromContactsData(contactsData) {
         return contactsData.map(contactData => {
             return {
+                id: _.uniqueId(`virtual_phone_call_id_${contactData.id}_`),
                 isContact: true,
                 mobile: contactData.mobile,
                 partner_email: contactData.email,

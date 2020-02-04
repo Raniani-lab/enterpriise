@@ -16,9 +16,10 @@ class ProductTemplate(models.Model):
     # TODO replace by UI greying of unselectable conflicting choices ?
     @api.constrains('rent_ok', 'tracking')
     def _lot_not_supported_rental(self):
-        if self.rent_ok and self.tracking == 'lot':
-            raise exceptions.ValidationError("Tracking by lots isn't supported for rental products. \
-                \n You should rather change the tracking mode to unique serial numbers.")
+        for product_temp in self:
+            if product_temp.rent_ok and product_temp.tracking == 'lot':
+                raise exceptions.ValidationError("Tracking by lots isn't supported for rental products. \
+                    \n You should rather change the tracking mode to unique serial numbers.")
 
 
 class Product(models.Model):

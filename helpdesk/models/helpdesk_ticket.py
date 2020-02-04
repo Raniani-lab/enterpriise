@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
+from datetime import timedelta
 
 from odoo import api, fields, models, tools, _
 from odoo.osv import expression
@@ -58,9 +59,11 @@ class HelpdeskSLAStatus(models.Model):
     color = fields.Integer("Color Index", compute='_compute_color')
     exceeded_days = fields.Float("Excedeed Working Days", compute='_compute_exceeded_days', compute_sudo=True, store=True, help="Working days exceeded for reached SLAs compared with deadline. Positive number means the SLA was eached after the deadline.")
 
-    @api.depends('ticket_id.create_date', 'sla_id')
+    @api.depends('ticket_id.create_date', 'sla_id', 'ticket_id.stage_id')
     def _compute_deadline(self):
         for status in self:
+            if (status.deadline and status.reached_datetime) or (status.deadline and status.target_type == 'stage' and not status.sla_id.exclude_stage_id) or (status.status == 'failed'):
+                continue
             if status.target_type == 'assigning' and status.sla_stage_id == status.ticket_id.stage_id:
                 deadline = fields.Datetime.now()
             elif status.target_type == 'assigning' and status.sla_stage_id:
@@ -69,23 +72,33 @@ class HelpdeskSLAStatus(models.Model):
             else:
                 deadline = status.ticket_id.create_date
             working_calendar = status.ticket_id.team_id.resource_calendar_id
-
             if not working_calendar:
+                # Normally, having a working_calendar is mandatory
                 status.deadline = deadline
                 continue
 
-            if status.sla_id.time_days and (status.sla_id.target_type == 'stage' or status.sla_id.target_type == 'assigning' and not status.sla_id.stage_id):
-                deadline = working_calendar.plan_days(status.sla_id.time_days + 1, deadline, compute_leaves=True)
+            if status.target_type == 'stage' and status.sla_id.exclude_stage_id:
+                if status.sla_id.exclude_stage_id == status.ticket_id.stage_id:
+                    # We are in the freezed time stage: No deadline
+                    status.deadline = False
+                    continue
+
+            time_days = status.sla_id.time_days
+            if time_days and (status.sla_id.target_type == 'stage' or status.sla_id.target_type == 'assigning' and not status.sla_id.stage_id):
+                deadline = working_calendar.plan_days(time_days + 1, deadline, compute_leaves=True)
                 # We should also depend on ticket creation time, otherwise for 1 day SLA, all tickets
                 # created on monday will have their deadline filled with tuesday 8:00
                 create_dt = status.ticket_id.create_date
                 deadline = deadline.replace(hour=create_dt.hour, minute=create_dt.minute, second=create_dt.second, microsecond=create_dt.microsecond)
-            elif status.sla_id.time_days and status.target_type == 'assigning' and status.sla_stage_id == status.ticket_id.stage_id:
-                deadline = working_calendar.plan_days(status.sla_id.time_days + 1, deadline, compute_leaves=True)
+            elif time_days and status.target_type == 'assigning' and status.sla_stage_id == status.ticket_id.stage_id:
+                deadline = working_calendar.plan_days(time_days + 1, deadline, compute_leaves=True)
                 reached_stage_dt = fields.Datetime.now()
                 deadline = deadline.replace(hour=reached_stage_dt.hour, minute=reached_stage_dt.minute, second=reached_stage_dt.second, microsecond=reached_stage_dt.microsecond)
 
             sla_hours = status.sla_id.time_hours + (status.sla_id.time_minutes / 60)
+
+            if status.target_type == 'stage' and status.sla_id.exclude_stage_id:
+                sla_hours += status._get_freezed_hours(working_calendar)
 
             # We should execute the function plan_hours in any case because, in a 1 day SLA environment,
             # if I create a ticket knowing that I'm not working the day after at the same time, ticket
@@ -148,6 +161,28 @@ class HelpdeskSLAStatus(models.Model):
                 status.exceeded_days = duration_data['days'] * factor
             else:
                 status.exceeded_days = False
+
+    def _get_freezed_hours(self, working_calendar):
+        self.ensure_one()
+        hours_freezed = 0
+
+        field_stage = self.env['ir.model.fields']._get(self.ticket_id._name, "stage_id")
+        freeze_stage = self.sla_id.exclude_stage_id.id
+        tracking_lines = self.ticket_id.message_ids.tracking_value_ids.filtered(lambda tv: tv.field == field_stage).sorted(key="create_date")
+
+        if not tracking_lines:
+            return 0
+
+        old_time = self.ticket_id.create_date
+        for tracking_line in tracking_lines:
+            if tracking_line.old_value_integer == freeze_stage:
+                # We must use get_work_hours_count to compute real waiting hours (as the deadline computation is also based on calendar)
+                hours_freezed += working_calendar.get_work_hours_count(old_time, tracking_line.create_date)
+            old_time = tracking_line.create_date
+        if tracking_lines[-1].new_value_integer == freeze_stage:
+            # the last tracking line is not yet created
+            hours_freezed += working_calendar.get_work_hours_count(old_time, fields.Datetime.now())
+        return hours_freezed
 
 
 class HelpdeskTicket(models.Model):

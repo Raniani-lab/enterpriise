@@ -197,7 +197,7 @@
                                 <label string="Reach Stage" for="stage_id" attrs="{'invisible': [('target_type', '=', 'assigning')]}"/>
                                 <label string="Applies To Stage" for="stage_id" attrs="{'invisible': [('target_type', '=', 'stage')]}"/>
                             </div>
-                            <field name="stage_id" nolabel="1" domain="[('team_ids', '=', team_id)]" attrs="{'required': [('target_type', '=', 'stage')]}"/>
+                            <field name="stage_id" nolabel="1" domain="[('team_ids', '=', team_id), ('id', '!=', exclude_stage_id)]" attrs="{'required': [('target_type', '=', 'stage')]}"/>
                             <div class="o_td_label">
                                 <label for="time_days" string="Reach In" attrs="{'invisible': [('target_type', '=', 'assigning')]}"/>
                                 <label for="time_days" string="Within" attrs="{'invisible': [('target_type', '=', 'stage')]}"/>
@@ -207,6 +207,7 @@
                                 <field name="time_hours"/> hours<br/>
                                 <field name="time_minutes"/> minutes<br/>
                             </div>
+                            <field name="exclude_stage_id" domain="[('id', '!=', stage_id), ('team_ids', '=', team_id)]" attrs="{'invisible': [('target_type', '=', 'assigning')]}"/>
                         </group>
                     </group>
                     <field name="description" placeholder="Description of the policy..."/>

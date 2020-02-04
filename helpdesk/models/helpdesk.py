@@ -489,6 +489,10 @@ class HelpdeskSLA(models.Model):
     stage_id = fields.Many2one(
         'helpdesk.stage', 'Target Stage',
         help='Minimum stage a ticket needs to reach in order to satisfy this SLA.')
+    exclude_stage_id = fields.Many2one(
+        'helpdesk.stage', 'Exclude Stage',
+        domain="[('id', '!=', stage_id.id)]",
+        help='The amount of time the ticket spends in this stage will not be taken into account when evaluating the status of the SLA Policy.')
     priority = fields.Selection(
         TICKET_PRIORITY, string='Minimum Priority',
         default='0', required=True,
@@ -510,3 +514,7 @@ class HelpdeskSLA(models.Model):
         if self.time_hours >= 24:
             self.time_days += self.time_hours / 24
             self.time_hours = self.time_hours % 24
+
+    @api.onchange('target_type')
+    def _onchange_target_type(self):
+        self.exclude_stage_id = False

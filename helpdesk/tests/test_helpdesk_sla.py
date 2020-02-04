@@ -1,16 +1,22 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from contextlib import contextmanager
+from unittest.mock import patch
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 from odoo import fields
 from odoo.tests.common import SavepointCase
 
+NOW = datetime(2018, 10, 10, 9, 18)
+NOW2 = datetime(2019, 1, 8, 9, 0)
 
-class HelpdeskCommon(SavepointCase):
+
+class HelpdeskSLA(SavepointCase):
 
     @classmethod
     def setUpClass(cls):
-        super(HelpdeskCommon, cls).setUpClass()
+        super(HelpdeskSLA, cls).setUpClass()
 
         # we create a helpdesk user and a manager
         Users = cls.env['res.users'].with_context(tracking_disable=True)
@@ -48,6 +54,12 @@ class HelpdeskCommon(SavepointCase):
             'team_ids': [(4, cls.test_team.id, 0)],
             'is_close': False,
         })
+        cls.stage_wait = stage_as_manager.create({
+            'name': 'Waiting',
+            'sequence': 25,
+            'team_ids': [(4, cls.test_team.id, 0)],
+            'is_close': False,
+        })
         cls.stage_done = stage_as_manager.create({
             'name': 'Done',
             'sequence': 30,
@@ -63,6 +75,7 @@ class HelpdeskCommon(SavepointCase):
 
         cls.tag_vip = cls.env['helpdesk.tag'].with_user(cls.helpdesk_manager).create({'name': 'VIP'})
         cls.tag_urgent = cls.env['helpdesk.tag'].with_user(cls.helpdesk_manager).create({'name': 'Urgent'})
+        cls.tag_freeze = cls.env['helpdesk.tag'].with_user(cls.helpdesk_manager).create({'name': 'Freeze'})
 
         cls.sla = cls.env['helpdesk.sla'].create({
             'name': 'SLA',
@@ -70,6 +83,16 @@ class HelpdeskCommon(SavepointCase):
             'time_days': 1,
             'time_hours': 24,
             'stage_id': cls.stage_progress.id,
+        })
+        cls.sla_2 = cls.env['helpdesk.sla'].create({
+            'name': 'SLA done stage with freeze time',
+            'team_id': cls.test_team.id,
+            'time_days': 1,
+            'time_hours': 2,
+            'time_minutes': 2,
+            'tag_ids': [(4, cls.tag_freeze.id)],
+            'exclude_stage_id': cls.stage_wait.id,
+            'stage_id': cls.stage_done.id,
         })
         cls.sla_assigning_1 = cls.env['helpdesk.sla'].create({
             'name': 'SLA assigning no stage',
@@ -110,7 +133,7 @@ class HelpdeskCommon(SavepointCase):
             'name': 'Issue_test',
         }).sudo()
 
-    def _utils_set_create_date(self, records, date_str):
+    def _utils_set_create_date(self, records, date_str, ticket_to_update=False):
         """ This method is a hack in order to be able to define/redefine the create_date
             of the any recordset. This is done in SQL because ORM does not allow to write
             onto the create_date field.
@@ -124,6 +147,9 @@ class HelpdeskCommon(SavepointCase):
         self.env.cr.execute(query, (date_str, tuple(records.ids)))
 
         records.invalidate_cache()
+
+        if ticket_to_update:
+            ticket_to_update.sla_status_ids._compute_deadline()
 
     @contextmanager
     def _ticket_patch_now(self, datetime_str):
@@ -191,6 +217,51 @@ class HelpdeskCommon(SavepointCase):
         self.assertEqual(ticket.sla_status_ids.filtered(lambda sla: sla.target_type != 'assigning').sla_id, self.sla, "SLA should have been applied")
         ticket.tag_ids = [(5,)]  # Remove all tags
         self.assertFalse(ticket.sla_status_ids.filtered(lambda sla: sla.target_type != 'assigning'), "SLA should no longer apply")
+
+    @patch.object(fields.Datetime, 'now', lambda: NOW2)
+    def test_sla_waiting(self):
+        ticket = self.create_ticket(tag_ids=self.tag_freeze)
+        self._utils_set_create_date(ticket, '2019-01-08 9:00:00', ticket)
+        status = ticket.sla_status_ids.filtered(lambda sla: sla.sla_id.id == self.sla_2.id)
+        self.assertEqual(status.deadline, datetime(2019, 1, 9, 12, 2, 0), 'No waiting time, deadline = creation date + 1 day + 2 hours + 2 minutes')
+
+        ticket.write({'stage_id': self.stage_progress.id})
+        initial_values = {ticket.id: {'stage_id': self.stage_new}}
+        ticket.message_track(['stage_id'], initial_values)
+        self._utils_set_create_date(ticket.message_ids.tracking_value_ids, '2019-01-08 11:09:50', ticket)
+        self.assertEqual(status.deadline, datetime(2019, 1, 9, 12, 2, 0), 'No waiting time, deadline = creation date + 1 day + 2 hours + 2 minutes')
+
+        # We are in waiting stage, they are no more deadline.
+        ticket.write({'stage_id': self.stage_wait.id})
+        initial_values = {ticket.id: {'stage_id': self.stage_progress}}
+        ticket.message_track(['stage_id'], initial_values)
+        self._utils_set_create_date(ticket.message_ids.tracking_value_ids[0], '2019-01-08 12:15:00', ticket)
+        self.assertFalse(status.deadline, 'In waiting stage: no more deadline')
+
+        #  We have a response of our customer, the ticket switch to in progress stage (outside working hours)
+        ticket.write({'stage_id': self.stage_progress.id})
+        initial_values = {ticket.id: {'stage_id': self.stage_wait}}
+        ticket.message_track(['stage_id'], initial_values)
+        self._utils_set_create_date(ticket.message_ids.tracking_value_ids[0], '2019-01-12 10:35:58', ticket)
+        # waiting time = 3 full working days 9 - 10 - 11 January (12 doesn't count as it's Saturday)
+        #  + (8 January) 12:15:00 -> 16:00:00 (end of working day) 3,75 hours
+        # Old deadline = '2019-01-09 12:02:00'
+        # New: '2019-01-09 12:02:00' + 3 days (waiting) + 2 days (weekend) + 3.75 hours (waiting) = '2019-01-14 15:47:00'
+        self.assertEqual(status.deadline, datetime(2019, 1, 14, 15, 47), 'We have waiting time: deadline = old_deadline + 3 full working days (waiting) + 3.75 hours (waiting) + 2 days (weekend)')
+
+        ticket.write({'stage_id': self.stage_wait.id})
+        initial_values = {ticket.id: {'stage_id': self.stage_progress}}
+        ticket.message_track(['stage_id'], initial_values)
+        self._utils_set_create_date(ticket.message_ids.tracking_value_ids[0], '2019-01-14 15:30:00', ticket)
+        self.assertFalse(status.deadline, 'In waiting stage: no more deadline')
+
+        # We need to patch now with a new value as it will be used to compute freezed time.
+        with patch.object(fields.Datetime, 'now', lambda: datetime(2019, 1, 16, 15, 0)):
+            ticket.write({'stage_id': self.stage_done.id})
+            initial_values = {ticket.id: {'stage_id': self.stage_wait}}
+            ticket.message_track(['stage_id'], initial_values)
+            self._utils_set_create_date(ticket.message_ids.tracking_value_ids[0], '2019-01-16 15:00:00', ticket)
+            self.assertEqual(status.deadline, datetime(2019, 1, 16, 15, 17), 'We have waiting time: deadline = old_deadline +  7.5 hours (waiting)')
 
     def test_sla_assigning(self):
         ticket = self.create_ticket()
@@ -265,3 +336,19 @@ class HelpdeskCommon(SavepointCase):
         ticket.write({'user_id': self.helpdesk_user.id})
 
         self.assertTrue(status_1.reached_datetime, "SLA status 1: reached his target")
+
+    @patch.object(fields.Date, 'today', lambda: NOW.date())
+    @patch.object(fields.Datetime, 'today', lambda: NOW.replace(hour=0, minute=0, second=0))
+    @patch.object(fields.Datetime, 'now', lambda: NOW)
+    def test_failed_tickets(self):
+        self.sla.time_days = 0
+        self.sla.time_hours = 3
+        # Failed ticket
+        failed_ticket = self.create_ticket(user_id=self.env.user.id, create_date=NOW - relativedelta(hours=3, minutes=2))
+
+        # Not failed ticket
+        ticket = self.create_ticket(user_id=self.env.user.id, create_date=NOW - relativedelta(hours=2, minutes=2))
+
+        data = self.env['helpdesk.team'].retrieve_dashboard()
+        self.assertEqual(data['my_all']['count'], 2, "There should be 2 tickets")
+        self.assertEqual(data['my_all']['failed'], 1, "There should be 1 failed ticket")

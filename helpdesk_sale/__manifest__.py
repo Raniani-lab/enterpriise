@@ -3,7 +3,7 @@
 
 {
     'name': 'Helpdesk After Sales',
-    'category': 'Operations/Helpdesk',
+    'category': 'Services/Helpdesk',
     'summary': 'Project, Tasks, After Sales',
     'depends': ['helpdesk', 'sale_management'],
     'auto_install': True,

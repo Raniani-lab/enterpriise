@@ -4,7 +4,7 @@
 {
     'name': 'Belgian Registered Cash Register',
     'version': '1.0',
-    'category': 'Sales/Point Of Sale',
+    'category': 'Sales/Point of Sale',
     'sequence': 6,
     'summary': 'Implements the registered cash system, adhering to guidelines by FPS Finance.',
     'description': """

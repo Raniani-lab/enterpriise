@@ -4,7 +4,7 @@
 {
     'name': "Stock Accounting",
     'version': "1.0",
-    'category': 'Operations/Inventory',
+    'category': 'Inventory/Inventory',
     'summary': "Bridge between Stock and Accounting",
     'description': """
 Filters the stock lines out of the reconciliation widget

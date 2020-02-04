@@ -3,7 +3,7 @@
 
 {
     'name': 'Mail Enterprise',
-    'category': 'Discuss',
+    'category': 'Productivity/Discuss',
     'depends': ['mail', 'web_mobile'],
     'description': """
 Bridge module for mail and enterprise

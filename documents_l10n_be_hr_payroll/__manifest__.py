@@ -4,7 +4,7 @@
 {
     'name': 'Documents - Belgian Payroll',
     'version': '1.0',
-    'category': 'Operations/Documents',
+    'category': 'Human Resources/Payroll',
     'summary': 'Store employee 281.10 and 281.45 forms in the Document app',
     'description': """
 Employee 281.10 and 281.45 forms will be automatically integrated to the Document app.

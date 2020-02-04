@@ -3,7 +3,7 @@
 {
     'name': "IoT for Delivery",
     'description': "Allows using iot devices, such as scales, for delivery operations.",
-    'category': 'IoT',
+    'category': 'Manufacturing/Internet of Things (IoT)',
     'version': '1.0',
     'depends': ['iot', 'delivery'],
     'data': [

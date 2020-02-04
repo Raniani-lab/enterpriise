@@ -4,7 +4,7 @@
 {
     'name': 'Mail Mobile',
     'version': '1.0',
-    'category': 'Tools',
+    'category': 'Hidden/Tools',
     'summary': 'Provides push notification and redirection to the mobile app.',
     'description': """
 Mail Mobile

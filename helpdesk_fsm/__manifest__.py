@@ -6,7 +6,7 @@
     'description': """
         Convert helpdesk tickets to field service tasks.
     """,
-    'category': 'Operations/Helpdesk',
+    'category': 'Services/Helpdesk',
     'depends': ['helpdesk', 'industry_fsm'],
     'data': [
         'security/ir.model.access.csv',

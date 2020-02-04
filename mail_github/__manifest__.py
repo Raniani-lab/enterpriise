@@ -3,7 +3,7 @@
 
 {
     'name': 'Github Integration with Discuss',
-    'category': 'Discuss',
+    'category': 'Productivity/Discuss',
     'depends': ['mail'],
     'description': """
 Integrate Github to Odoo Discuss.

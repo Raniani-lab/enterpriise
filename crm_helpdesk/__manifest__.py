@@ -4,7 +4,7 @@
     'name': 'Lead to Tickets',
     'summary': 'Create Tickets from Leads',
     'sequence': '19',
-    'category': 'Operations/Helpdesk',
+    'category': 'Services/Helpdesk',
     'complexity': 'easy',
     'description': """
 Lead to Tickets

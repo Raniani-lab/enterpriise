@@ -5,6 +5,7 @@
     'name': 'Contacts Enterprise',
     'summary': 'Enterprise features on contacts',
     'description': 'Adds notably the map view of contact',
+    'category': 'Sales/CRM',
     'version': '1.0',
     'depends': [
         'contacts',

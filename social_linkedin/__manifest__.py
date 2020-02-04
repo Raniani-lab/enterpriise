@@ -3,7 +3,7 @@
     'name': 'Social LinkedIn',
     'summary': 'Manage your LinkedIn accounts and schedule posts',
     'description': 'Manage your LinkedIn accounts and schedule posts',
-    'category': 'Social',
+    'category': 'Marketing/Social Marketing',
     'version': '0.1',
     'depends': ['social', 'iap'],
     'data': [

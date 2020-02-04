@@ -3,7 +3,7 @@
 
 {
     'name': 'Helpdesk Repair',
-    'category': 'Operations/Helpdesk',
+    'category': 'Services/Helpdesk',
     'summary': 'Project, Tasks, Repair',
     'depends': ['helpdesk_stock', 'repair'],
     'auto_install': False,

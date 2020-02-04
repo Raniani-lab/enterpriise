@@ -3,7 +3,7 @@
 
 {
     'name': 'Mobile',
-    'category': 'Mobile',
+    'category': 'Hidden',
     'summary': 'Odoo Mobile Core module',
     'version': '1.0',
     'description': """

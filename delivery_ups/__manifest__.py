@@ -3,7 +3,7 @@
 {
     'name': "UPS Shipping",
     'description': "Send your shippings through UPS and track them online",
-    'category': 'Operations/Inventory/Delivery',
+    'category': 'Inventory/Delivery',
     'version': '1.0',
     'application': True,
     'depends': ['delivery', 'mail'],

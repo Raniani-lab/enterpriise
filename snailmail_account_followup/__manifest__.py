@@ -4,7 +4,7 @@
 {
     'name': 'Snail Mail Follow-Up',
     'version': '1.0',
-    'category': 'Tools',
+    'category': 'Accounting/Accounting',
     'summary': "Extension to send follow-up documents by post",
     'description': """
 Extension to send follow-up documents by post

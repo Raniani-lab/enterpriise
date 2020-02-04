@@ -4,7 +4,7 @@
 {
     'name': 'Hr Expense Extract',
     'version': '1.0',
-    'category': 'Accounting/Expenses',
+    'category': 'Human Resources/Expenses',
     'summary': 'Extract data from expense scans to fill them automatically',
     'depends': ['hr_expense', 'iap', 'mail_enterprise', 'hr_expense_predict_product'],
     'data': [

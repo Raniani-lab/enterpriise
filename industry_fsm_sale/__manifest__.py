@@ -6,7 +6,7 @@
     'description': """
 Create Sales order with timesheets and products from tasks
     """,
-    'category': 'Operations/Field Service',
+    'category': 'Services/Field Service',
     'version': '1.0',
     'depends': ['industry_fsm', 'sale_timesheet_enterprise'],
     'qweb': [

@@ -3,7 +3,7 @@
 
 {
     'name': 'Helpdesk Sale Coupon',
-    'category': 'Operations/Helpdesk',
+    'category': 'Services/Helpdesk',
     'summary': 'Project, Tasks, Sale Coupon',
     'depends': ['helpdesk_sale', 'sale_coupon'],
     'auto_install': False,

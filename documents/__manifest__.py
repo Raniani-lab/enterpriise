@@ -9,7 +9,7 @@
     """,
 
     'author': "Odoo",
-    'category': 'Operations/Documents',
+    'category': 'Productivity/Documents',
     'version': '1.0',
     'application': True,
     'website': 'https://www.odoo.com/page/documents',

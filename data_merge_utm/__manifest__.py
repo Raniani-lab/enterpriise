@@ -4,7 +4,7 @@
 {
     'name': 'UTM Deduplication',
     'version': '1.0',
-    'category': '',
+    'category': 'Productivity/Data Cleaning',
     'summary': 'Find duplicate records and merge them',
     'description': """Find duplicate records and merge them""",
     'website': '',

@@ -3,7 +3,7 @@
 
 {
     'name': 'Stock Barcode in Mobile',
-    'category': 'Mobile',
+    'category': 'Inventory/Inventory',
     'summary': 'Stock Barcode scan in Mobile',
     'version': '1.0',
     'description': """ """,

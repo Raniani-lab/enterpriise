@@ -3,7 +3,7 @@
 
 {
     'name': 'Social Twitter',
-    'category': 'Social',
+    'category': 'Marketing/Social Marketing',
     'summary': 'Manage your Twitter accounts and schedule tweets',
     'version': '1.0',
     'description': """Manage your Twitter accounts and schedule tweets""",

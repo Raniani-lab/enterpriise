@@ -7,7 +7,7 @@
     'description': """
 Bridge module for project and enterprise
     """,
-    'category': 'Operations/Project',
+    'category': 'Services/Project',
     'version': '1.0',
     'depends': ['project', 'web_map', 'web_gantt'],
     'data': [

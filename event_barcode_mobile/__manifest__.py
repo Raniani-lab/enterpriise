@@ -3,7 +3,7 @@
 
 {
     'name': 'Event Barcode in Mobile',
-    'category': 'Mobile',
+    'category': 'Marketing/Events',
     'summary': 'Event Barcode scan in Mobile',
     'version': '1.0',
     'description': """ """,

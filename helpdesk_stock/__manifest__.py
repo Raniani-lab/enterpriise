@@ -3,7 +3,7 @@
 
 {
     'name': 'Helpdesk Stock',
-    'category': 'Operations/Helpdesk',
+    'category': 'Services/Helpdesk',
     'summary': 'Project, Tasks, Stock',
     'depends': ['helpdesk_sale', 'stock'],
     'auto_install': False,

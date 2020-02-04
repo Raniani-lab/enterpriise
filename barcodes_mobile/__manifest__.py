@@ -3,7 +3,7 @@
 
 {
     'name': 'Barcode in Mobile',
-    'category': 'Mobile',
+    'category': 'Hidden',
     'summary': 'Barcode scan in Mobile',
     'version': '1.0',
     'description': """ """,

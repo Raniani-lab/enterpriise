@@ -3,7 +3,7 @@
 
 {
     'name': "Facebook Event",
-    'category': 'Marketing/Social',
+    'category': 'Marketing/Social Marketing',
     'summary': "Manage your Facebook events",
     'description': """Link your Facebook events within Event.
 

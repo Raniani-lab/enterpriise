@@ -10,7 +10,7 @@
     """,
     'version': '1.0',
     'depends': ['web_grid', 'hr_timesheet'],
-    'category': 'Operations/Timesheets',
+    'category': 'Services/Timesheets',
     'data': [
         'security/ir.model.access.csv',
         'data/mail_data.xml',

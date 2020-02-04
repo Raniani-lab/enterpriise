@@ -4,7 +4,7 @@
     'name': "Field Service - Project Forecast",
     'summary': "",
     'description': """""",
-    'category': 'Operations/Field Service',
+    'category': 'Services/Field Service',
     'version': '1.0',
     'depends': ['industry_fsm', 'project_forecast'],
     'data': [],

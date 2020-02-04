@@ -4,7 +4,7 @@
 {
     'name': 'Documents - Accounting',
     'version': '1.0',
-    'category': 'Operations/Documents',
+    'category': 'Productivity/Documents',
     'summary': 'Invoices from Documents',
     'description': """
 Bridge module between the accounting and documents apps. It enables

@@ -13,7 +13,7 @@
     'license': 'OEEL-1',
     'author': "Focusate",
     'website': "http://www.focusate.eu",
-    'category': 'Localization',
+    'category': 'Accounting/Localizations',
     'depends': [
         'account_reports',
         'l10n_lt'

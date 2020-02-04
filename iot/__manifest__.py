@@ -4,7 +4,7 @@
 
 {
     'name': 'Internet of Things',
-    'category': 'Tools',
+    'category': 'Manufacturing/Internet of Things (IoT)',
     'summary': 'Basic models and helpers to support Internet of Things.',
     'description': """
 This module provides management of your IoT Boxes inside Odoo.

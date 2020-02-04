@@ -17,7 +17,7 @@ Adds the following options:
 - add products on tasks
 
     """,
-    'category': 'Operations/Field Service',
+    'category': 'Services/Field Service',
     'version': '1.0',
     'depends': ['project_enterprise', 'timesheet_grid', 'base_geolocalize'],
     'data': [

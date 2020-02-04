@@ -3,7 +3,7 @@
 
 {
     'name': 'Social Push Notifications',
-    'category': 'Social',
+    'category': 'Marketing/Social Marketing',
     'summary': 'Send live notifications to your web visitors',
     'version': '1.0',
     'description': """Send live notifications to your web visitors""",

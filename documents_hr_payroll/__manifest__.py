@@ -4,7 +4,7 @@
 {
     'name': 'Documents - Payroll',
     'version': '1.0',
-    'category': 'Operations/Documents',
+    'category': 'Productivity/Documents',
     'summary': 'Store employee payslips in the Document app',
     'description': """
 Employee payslips will be automatically integrated to the Document app.

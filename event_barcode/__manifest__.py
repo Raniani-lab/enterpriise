@@ -8,7 +8,7 @@ This module adds support for barcodes scanning to the Event management system.
 A barcode is generated for each attendee and printed on the badge. When scanned,
 the registration is confirmed.
     """,
-    'category': 'Tools',
+    'category': 'Marketing/Events',
     'depends': ['barcodes', 'event'],
     'data': [
         'views/event_barcode_template.xml',

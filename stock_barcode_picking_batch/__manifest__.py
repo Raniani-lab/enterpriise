@@ -4,7 +4,7 @@
 {
     'name': 'Barcode for Batch Transfer',
     'version': '1.0',
-    'category': 'Operations/Inventory',
+    'category': 'Inventory/Inventory',
     'summary': "Add the support of batch transfers into the barcode view",
     'description': "",
     'depends': ['stock_barcode', 'stock_picking_batch'],

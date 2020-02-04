@@ -3,7 +3,7 @@
     'name': 'Argentinian Accounting Reports',
     'version': '1.0',
     'author': 'ADHOC SA',
-    'category': 'Localization',
+    'category': 'Accounting/Localizations',
     'description': """
 Functional
 ----------

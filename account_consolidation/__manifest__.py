@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Consolidation",
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'summary': """All you need to make financial consolidation""",
     'description': """All you need to make financial consolidation""",
     'author': "Odoo S.A.",

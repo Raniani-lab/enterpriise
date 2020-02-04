@@ -3,7 +3,7 @@
 {
     'name': "DHL Express Shipping",
     'description': "Send your shippings through DHL and track them online",
-    'category': 'Operations/Inventory/Delivery',
+    'category': 'Inventory/Delivery',
     'version': '1.0',
     'application': True,
     'depends': ['delivery', 'mail'],

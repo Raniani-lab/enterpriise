@@ -3,7 +3,7 @@
 
 {
     'name': 'Social Facebook',
-    'category': 'Marketing/Social',
+    'category': 'Marketing/Social Marketing',
     'summary': 'Manage your Facebook pages and schedule posts',
     'version': '1.0',
     'description': """Manage your Facebook pages and schedule posts""",

@@ -3,7 +3,7 @@
 
 {
     'name': 'Quality checks with IoT',
-    'category': 'Tools',
+    'category': 'Manufacturing/Internet of Things (IoT)',
     'summary': 'Control the quality of your products with IoT devices',
     'depends': ['quality_control', 'iot'],
     'data': [

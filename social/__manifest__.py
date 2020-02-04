@@ -3,7 +3,7 @@
 
 {
     'name': 'Social Marketing',
-    'category': 'Marketing/Social',
+    'category': 'Marketing/Social Marketing',
     'summary': 'Easily manage your social media and website visitors',
     'version': '1.0',
     'description': """Easily manage your social media and website visitors""",

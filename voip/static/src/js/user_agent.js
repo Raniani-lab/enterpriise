@@ -387,7 +387,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 isConnecting: true,
                 message: _t("Connecting..."),
             });
-            if (!window.RTCPeerConnection) {
+            if (!window.RTCPeerConnection || !window.MediaStream || !navigator.mediaDevices) {
                 this._triggerError(
                     _t("Your browser could not support WebRTC. Please check your configuration."));
                 return;

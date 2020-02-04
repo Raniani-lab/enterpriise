@@ -68,6 +68,7 @@ const DialingPanel = Widget.extend({
         this._isInCall = false;
         this._isPostpone = false;
         this._isShow = false;
+        this._isWebRTCSupport = window.RTCPeerConnection && window.MediaStream && navigator.mediaDevices;
         this._onInputSearch = _.debounce(this._onInputSearch.bind(this), 500);
         this._tabs = {
             contacts: new PhoneCallContactsTab(this),
@@ -248,6 +249,10 @@ const DialingPanel = Widget.extend({
      */
     async _makeCall(number, phoneCall) {
         if (!this._isInCall) {
+            if (!this._isWebRTCSupport) {
+                this.do_notify(_t("Your browser could not support WebRTC. Please check your configuration."));
+                return;
+            }
             if (!number) {
                 this.do_notify(
                     _t("The phonecall has no number"),
@@ -334,7 +339,9 @@ const DialingPanel = Widget.extend({
             this.$el.show();
             this._isShow = true;
             this._isFolded = false;
-            this._$searchInput.focus();
+            if (this._isWebRTCSupport) {
+                this._$searchInput.focus();
+            }
         }
         if (this._isFolded) {
             return this._toggleFold({ isFolded: false });
@@ -356,7 +363,9 @@ const DialingPanel = Widget.extend({
             this.$el.show();
             this._isShow = true;
             this._isFolded = false;
-            this._$searchInput.focus();
+            if (this._isWebRTCSupport) {
+                this._$searchInput.focus();
+            }
         }
     },
     /**
@@ -384,7 +393,9 @@ const DialingPanel = Widget.extend({
             this._$keypadInputDiv.hide();
         } else {
             this._$keypadInputDiv.show();
-            this._$keypadInput.focus();
+            if (this._isWebRTCSupport) {
+                this._$keypadInput.focus();
+            }
         }
     },
     /**

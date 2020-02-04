@@ -54,7 +54,7 @@ Phone.include({
      * @param {MouseEvent} ev
      */
     _onClick(ev) {
-        if (this.mode !== 'readonly') {
+        if (this.mode !== 'readonly' || !window.RTCPeerConnection || !window.MediaStream || !navigator.mediaDevices) {
             return;
         }
         let pbxConfiguration;

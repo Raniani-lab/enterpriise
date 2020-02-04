@@ -5,6 +5,7 @@
     <t t-name="event_barcode_template">
         <div class="o_event_barcode_bg o_home_menu_background">
             <div class="o_event_barcode_main">
+                <a href="#" class="o_event_previous_menu float-left"><i class="fa fa-chevron-left"></i></a>
                 <div class="text-center">
                     <h1 t-esc="widget.data.name"/>
                     <p>
@@ -37,24 +38,43 @@
 
     <t t-name="event_registration_summary">
         <div class="row">
-          <div class="col-lg-8 offset-lg-2">
-            <div class="text-center" style="margin-bottom: 18px;">
-                <img t-if="registration.partner_id" t-attf-src="/web/image/res.partner/{{registration.partner_id}}/image_128" alt="Registration" class="o_image_64_cover"/>
-                <img t-else="" src="/web/static/src/img/placeholder.png" alt="Registration" class="o_image_64_cover"/>
+            <div class="col-lg-8 offset-lg-2">
+                <div class="text-center mb-3">
+                    <img t-attf-src="/web/image/res.partner/{{registration.partner_id}}/image_128" alt="Registration" class="o_image_64_cover"/>
+                </div>
+                <div t-if="registration.is_different_event" class="alert alert-warning text-center" role="alert">
+                    <div>This ticket is for another event</div>
+                    <t t-if="registration.status == 'canceled_registration'">Canceled registration</t>
+                    <t t-elif="registration.status == 'need_manual_confirmation'">
+                        Confirm attendance for <t t-esc="registration.name"/> ?
+                    </t>
+                    <t t-else=""><t t-esc="registration.name"/> is already registered</t>
+                </div>
+                <t t-else="">
+                    <div t-if="registration.status == 'canceled_registration'" class="alert alert-warning text-center" role="alert">
+                        Canceled registration
+                    </div>
+                    <div t-elif="registration.status == 'confirmed_registration'" class="alert alert-success text-center" role="alert">
+                        <t t-esc="registration.name"/> is successfully registered
+                    </div>
+                    <div t-else="" class="alert alert-warning text-center" role="alert">
+                        <t t-esc="registration.name"/> is already registered
+                    </div>
+                </t>
+                <div t-if="registration.has_to_pay" class="alert alert-danger text-center" role="alert">
+                    The registration must be paid
+                </div>
             </div>
-            <div t-if="success" class="alert alert-success text-center" role="status"><t t-esc="success"/></div>
-            <div t-if="warning" class="alert alert-warning text-center" role="alert"><t t-esc="warning"/></div>
-            <div t-if="registration.alert" class="alert alert-danger text-center" role="alert"><t t-esc="registration.alert"/></div>
-          </div>
         </div>
         <div id="registration_information" class="row">
-          <div class="col-lg-12">
-            <table class="table table-striped">
-              <tr t-foreach="registration.information" t-as="info">
-                <td><t t-esc="info[0]"/></td><td t-att-class="info[2] ? ('text-' + info[2]) : undefined"><t t-esc="info[1]"/></td>
-              </tr>
-            </table>
-          </div>
+            <div class="col-lg-12">
+                <table class="table table-striped">
+                    <tr><td>Event</td><td><t t-esc="registration.event_name"/></td></tr>
+                    <tr><td>Name</td><td><t t-esc="registration.name"/></td></tr>
+                    <tr t-if="registration.ticket_name"><td>Ticket</td><td><t t-esc="registration.ticket_name"/></td></tr>
+                    <tr t-if="registration.payment_status"><td>Payment</td><td><t t-esc="registration.payment_status"/></td></tr>
+                </table>
+            </div>
         </div>
     </t>
 

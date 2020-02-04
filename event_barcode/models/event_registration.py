@@ -23,10 +23,10 @@ class EventRegistration(models.Model):
          """
         return str(random.getrandbits(64))
 
-    barcode = fields.Char(default=_get_random_token, readonly=True, copy=False)
+    barcode = fields.Char(default=_get_random_token, readonly=True, copy=False, index=True)
 
     _sql_constraints = [
-        ('barcode_event_uniq', 'unique(barcode, event_id)', "Barcode should be unique per event")
+        ('barcode_event_uniq', 'unique(barcode)', "Barcode should be unique")
     ]
 
     def _init_column(self, column_name):

@@ -12,7 +12,7 @@ For that purposes it adds
 
     """,
     'category': 'Marketing/Events',
-    'depends': ['event', 'web_cohort', 'web_gantt'],
+    'depends': ['event', 'web_cohort', 'web_gantt', 'web_map'],
     'data': [
         'views/event_event_views.xml',
         'views/event_registration_views.xml',

@@ -1,5 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="event_view_gantt" model="ir.ui.view">
         <field name="name">event.event.gantt</field>
         <field name="model">event.event</field>
@@ -15,7 +16,19 @@
         </field>
     </record>
 
-    <record id="event.action_event_view" model="ir.actions.act_window">
-        <field name="view_mode">kanban,calendar,tree,gantt,form,pivot</field>
+    <record id="event_event_view_map" model="ir.ui.view">
+        <field name="name">event.event.view.map</field>
+        <field name="model">event.event</field>
+        <field name="arch" type="xml">
+            <map res_partner="address_id" hide_name="true">
+                <field name="name" string="Name"/>
+                <field name="address_id" string="Venue"/>
+            </map>
+        </field>
     </record>
+
+    <record id="event.action_event_view" model="ir.actions.act_window">
+        <field name="view_mode">kanban,calendar,tree,gantt,form,pivot,graph,map</field>
+    </record>
+
 </odoo>

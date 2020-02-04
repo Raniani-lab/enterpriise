@@ -8,20 +8,24 @@ class EventBarcode(http.Controller):
     @http.route('/event_barcode/register_attendee', type='json', auth="user")
     def register_attendee(self, barcode, event_id, **kw):
         Registration = request.env['event.registration']
-        attendee = Registration.search([('barcode', '=', barcode), ('event_id', '=', event_id)], limit=1)
+        attendee = Registration.search([('barcode', '=', barcode)], limit=1)
         if not attendee:
-            return {'warning': _('This ticket is not valid for this event')}
-        res = {
-            'registration': dict(attendee.summary(), id=attendee.id, partner_id=attendee.partner_id.id),
-        }
-        attendee_name = attendee.name or _('Attendee')
-        if attendee.state == 'cancel':
-            res.update({'warning': _('Canceled registration')})
-        elif attendee.state != 'done':
-            attendee.write({'state': 'done', 'date_closed': fields.Datetime.now()})
-            res.update({'success': _('%s is successfully registered') % attendee_name})
+            return {'error': 'invalid_ticket'}
+        is_different_event = attendee.event_id.id != event_id
+        need_confirmation = attendee.state not in ['done', 'cancel']
+        res = attendee._get_registration_summary()
+        if need_confirmation:
+            if not is_different_event:
+                attendee.action_set_done()
+                status = 'confirmed_registration'
+            else:
+                status = 'need_manual_confirmation'
+        elif attendee.state == 'cancel':
+            status = 'canceled_registration'
         else:
-            res.update({'warning': _('%s is already registered') % attendee_name})
+            status = 'already_registered'
+        res.update({'is_different_event': is_different_event,
+                    'status': status})
         return res
 
     @http.route(['/event_barcode/event'], type='json', auth="user")

@@ -25,7 +25,7 @@ class Task(models.Model):
             fsm_sn_moves = self.env['stock.move']
             if not qty:
                 continue
-            for last_move in so_line.move_ids:
+            for last_move in so_line.move_ids.filtered(lambda p: p.state not in ['done', 'cancel']):
                 move = last_move
                 fsm_sn_moves |= last_move
                 while move.move_orig_ids:

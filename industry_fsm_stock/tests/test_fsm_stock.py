@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
+from odoo.tests import Form
 from odoo.addons.industry_fsm_sale.tests.test_industry_fsm_sale_flow import TestFsmFlowSale
 
 
@@ -157,5 +158,77 @@ class TestFsmFlowStock(TestFsmFlowSale):
         self.assertEqual(len(order_line_ids), 2, "There are 2 order lines.")
         self.assertEqual(move.move_line_ids.lot_id, self.lot_id1 + self.lot_id3, "Lot stay the same.")
         self.assertEqual(sum(move.move_line_ids.mapped('qty_done')), 4, "We deliver 4 (1+3)")
+
+        self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done'], "The 2 pickings should be set as done")
+
+    def test_fsm_stock_validate_half_SOL_manually(self):
+        '''
+            1 delivery step
+            1. add product and lot with wizard
+            2. Validate SO
+            3. In picking, deliver the half of the quantity of the SOL
+            4. Open wizard for lot, and ensure that:
+                a. the lot validated is the one chosen in picking
+                b. the not yet validated line has the half of the quantity
+            5. In wizard, add quantity in the non validated line
+            6. Validate fsm task
+            7. Ensure that lot and quantity are correct
+        '''
+        self.warehouse.delivery_steps = 'ship_only'
+
+        self.task.write({'partner_id': self.partner_1.id})
+        self.task.with_user(self.project_user)._fsm_ensure_sale_order()
+
+        wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+
+        wizard_id.write({
+            'tracking_line_ids': [
+                (0, 0, {
+                    'product_id': self.product_lot.id,
+                    'quantity': 5,
+                    'lot_id': self.lot_id3.id,
+                })
+            ]
+        })
+        wizard_id.generate_lot()
+
+        self.task.sale_order_id.action_confirm()
+
+        order_line_ids = self.task.sale_order_id.order_line.filtered(lambda l: l.product_id == self.product_lot)
+        ml_vals = order_line_ids[0].move_ids[0]._prepare_move_line_vals(quantity=0)
+        # We chose the quantity to deliver manually
+        ml_vals['qty_done'] = 3
+        # And we chose the lot
+        ml_vals['lot_id'] = self.lot_id2.id
+        self.env['stock.move.line'].create(ml_vals)
+
+        # When we validate the picking manually, we create a backorder.
+        backorder_wizard_dict = self.task.sale_order_id.picking_ids.button_validate()
+        backorder_wizard = Form(self.env[backorder_wizard_dict['res_model']].with_context(backorder_wizard_dict['context'])).save()
+        backorder_wizard.process()
+
+        wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+        self.assertEqual(wizard_id.tracking_line_ids.product_id, self.product_lot, "There are one (non validated) line with the right product")
+        self.assertEqual(wizard_id.tracking_line_ids.lot_id, self.lot_id3, "The line has lot_id3, (the lot choosed at the beginning in the wizard)")
+        self.assertEqual(wizard_id.tracking_line_ids.quantity, 2, "Quantity is 2 (5 from the beginning in the wizard - 3 already delivered)")
+        self.assertEqual(wizard_id.tracking_validated_line_ids.product_id, self.product_lot, "There are one validated line with the right product")
+        self.assertEqual(wizard_id.tracking_validated_line_ids.lot_id, self.lot_id2, "The line has lot_id2, (not the lot choosed at the beginning, but the lot put in picking)")
+        self.assertEqual(wizard_id.tracking_validated_line_ids.quantity, 3, "Quantity is 3, chosen in the picking")
+
+        # We add 2 to already present quantity on non validated line (2+2=4)
+        wizard_id.tracking_line_ids.quantity = 4
+        wizard_id.generate_lot()
+
+        self.assertEqual(order_line_ids.product_uom_qty, 7, "Quantity on SOL is 7 (3 already delivered and 4 set in wizard)")
+        self.assertEqual(order_line_ids.qty_delivered, 3, "Quantity already delivered is 3, chosen in the picking")
+
+        self.task.with_user(self.project_user).action_fsm_validate()
+        order_line_ids = self.task.sale_order_id.order_line.filtered(lambda l: l.product_id == self.product_lot)
+        move = order_line_ids.move_ids
+        self.assertEqual(len(order_line_ids), 1, "There are 1 order lines, delivered in 2 times (first manually, second with fsm task validation).")
+        self.assertEqual(move.move_line_ids.lot_id, self.lot_id2 + self.lot_id3, "Lot stay the same.")
+        self.assertEqual(sum(move.move_line_ids.mapped('qty_done')), 7, "We deliver 7 (4+3)")
 
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done'], "The 2 pickings should be set as done")

@@ -68,11 +68,11 @@ class ProductProduct(models.Model):
             ('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id), ('product_uom_qty', '>', 0)])
         tracking_line_ids = [(0, 0, {
             'lot_id': line.fsm_lot_id.id,
-            'quantity': line.product_uom_qty,
+            'quantity': line.product_uom_qty - line.qty_delivered,
             'product_id': self.id,
             'sale_order_line_id': line.id,
             'company_id': task.sale_order_id.company_id.id,
-        }) for line in sale_lines.filtered(lambda sl: not bool(sl.qty_delivered) and not task.fsm_done)]
+        }) for line in sale_lines.filtered(lambda sl: sl.product_uom_qty - sl.qty_delivered and not task.fsm_done)]
 
         lot_done_dict = defaultdict(int)
         for move_line in sale_lines.move_ids.filtered(lambda m: m.state == 'done').move_line_ids:

@@ -267,7 +267,7 @@ class UPSRequest():
                 package.PackageServiceOptions = self.factory_ns2.PackageServiceOptionsType()
                 package.PackageServiceOptions.COD = self.factory_ns2.CODType()
                 package.PackageServiceOptions.COD.CODFundsCode = str(cod_info['funds_code'])
-                package.PackageServiceOptions.COD.CODAmount = self.factory_ns2.CODAmountType()
+                package.PackageServiceOptions.COD.CODAmount = self.factory_ns2.CODAmountType() if request_type == 'rating' else self.factory_ns2.CurrencyMonetaryType()
                 package.PackageServiceOptions.COD.CODAmount.MonetaryValue = cod_info['monetary_value']
                 package.PackageServiceOptions.COD.CODAmount.CurrencyCode = cod_info['currency']
 

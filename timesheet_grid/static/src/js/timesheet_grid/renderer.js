@@ -122,7 +122,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
                 }
             }
 
-            return tab.length > 0 ? tab : null;
+            return tab;
         },
         /**
          * Render a timer for the current timesheet

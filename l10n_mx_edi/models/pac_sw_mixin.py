@@ -9,13 +9,7 @@ import string
 import requests
 
 from odoo import _, models
-
-try:
-    from json.decoder import JSONDecodeError
-except ImportError:
-    # py2 compatibility
-    JSONDecodeError = ValueError
-
+from json.decoder import JSONDecodeError
 
 class PACSWMixin(models.AbstractModel):
     """PAC SW Mixin is a mixin Abstract class to add methods

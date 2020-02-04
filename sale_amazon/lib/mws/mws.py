@@ -12,17 +12,10 @@ import warnings
 
 from requests import request
 from requests.exceptions import HTTPError
+from urllib.parse import quote
+from xml.etree.ElementTree import ParseError as XMLError
 
 from . import utils
-
-try:
-    from urllib.parse import quote
-except ImportError:
-    from urllib import quote
-try:
-    from xml.etree.ElementTree import ParseError as XMLError
-except ImportError:
-    from xml.parsers.expat import ExpatError as XMLError
 
 
 __all__ = [

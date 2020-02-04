@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
+from unittest.mock import patch
+
 from odoo.exceptions import UserError
 from odoo.addons.account.tests.common import AccountTestCommon
 from datetime import datetime

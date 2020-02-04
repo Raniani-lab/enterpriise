@@ -8,6 +8,7 @@ import json
 import logging
 import pytz
 import uuid
+from math import ceil
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, AccessError
@@ -161,7 +162,7 @@ class Planning(models.Model):
     def _compute_working_days_count(self):
         for slot in self:
             if slot.employee_id:
-                slot.working_days_count = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['days']
+                slot.working_days_count = ceil(slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['days'])
             else:
                 slot.working_days_count = 0
 

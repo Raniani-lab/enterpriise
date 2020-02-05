@@ -298,7 +298,7 @@ var LinesWidget = Widget.extend({
             $validate.toggleClass('o_hidden');
         }
 
-        if (! this.page.lines.length) {
+        if (! this.page.lines.length && this.model !== 'stock.inventory') {
             $validate.prop('disabled', true);
         }
 

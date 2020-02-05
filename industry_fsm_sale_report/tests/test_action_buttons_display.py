@@ -360,6 +360,7 @@ class TestTimerButtons(SavepointCase):
             })]
         })
         order.action_confirm()
+        order.flush()
         project = order.order_line.project_id
         self.assertTrue(project.sale_line_id)
         self.assertTrue(project.partner_id)

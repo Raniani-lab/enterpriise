@@ -335,7 +335,9 @@ class AccountJournal(models.Model):
 
         # In Switzerland, postal accounts always require a structured communication with the ISR reference
         if self._get_local_instrument(payment) == 'CH01':
-            create_xml_node_chain(RmtInf, ['Strd', 'CdtrRefInf', 'Ref'], payment['communication'])
+            ref = payment['communication'].replace(' ', '')
+            ref = ref.rjust(27, '0')
+            create_xml_node_chain(RmtInf, ['Strd', 'CdtrRefInf', 'Ref'], ref)
         else:
             Ustrd = etree.SubElement(RmtInf, "Ustrd")
             Ustrd.text = sanitize_communication(payment['communication'])
@@ -344,13 +346,15 @@ class AccountJournal(models.Model):
     def _has_isr_ref(self, payment_comm):
         """Check if the communication is a valid ISR reference (for Switzerland)
         e.g.
+        12371
+        000000000000000000000012371
         210000000003139471430009017
         21 00000 00003 13947 14300 09017
         This is used to determine SEPA local instrument
         """
         if not payment_comm:
             return False
-        if re.match(r'^(\d{27}|\d{2}( \d{5}){5})$', payment_comm):
+        if re.match(r'^(\d{2,27}|\d{2}( \d{5}){5})$', payment_comm):
             ref = payment_comm.replace(' ', '')
             return ref == mod10r(ref[:-1])
         return False

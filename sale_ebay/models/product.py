@@ -331,11 +331,13 @@ class ProductTemplate(models.Model):
                 variant.ebay_variant_url = item.dict()['Item']['ListingDetails']['ViewItemURL']
 
     @api.model
-    def get_ebay_api(self, domain):
+    def _ebay_configured(self):
+        return bool(self._get_ebay_params())
+
+    @api.model
+    def _get_ebay_params(self):
         params = self.env['ir.config_parameter'].sudo()
-        dev_id = params.get_param('ebay_dev_id')
-        site_id = params.get_param('ebay_site')
-        site = self.env['ebay.site'].browse(int(site_id))
+        domain = params.get_param('ebay_domain')
         if domain == 'sand':
             app_id = params.get_param('ebay_sandbox_app_id')
             cert_id = params.get_param('ebay_sandbox_cert_id')
@@ -348,22 +350,35 @@ class ProductTemplate(models.Model):
             domain = 'api.ebay.com'
 
         if not app_id or not cert_id or not token:
+            return {}
+
+        dev_id = params.get_param('ebay_dev_id')
+        site_id = params.get_param('ebay_site')
+        site = self.env['ebay.site'].browse(int(site_id))
+        return dict(
+            domain=domain,
+            appid=app_id,
+            certid=cert_id,
+            token=token,
+            siteid=site.ebay_id,
+            devid=dev_id,
+            config_file=None,
+        )
+
+    @api.model
+    def get_ebay_api(self):
+        params = self._get_ebay_params()
+
+        if not params:
             action = self.env.ref('sale.action_sale_config_settings')
             raise RedirectWarning(_('One parameter is missing.'),
                                   action.id, _('Configure The eBay Integrator Now'))
 
-        return Trading(domain=domain,
-                       config_file=None,
-                       appid=app_id,
-                       devid=dev_id,
-                       certid=cert_id,
-                       token=token,
-                       siteid=site.ebay_id)
+        return Trading(**params)
 
     @api.model
     def ebay_execute(self, verb, data=None, list_nodes=[], verb_attrs=None, files=None):
-        domain = self.env['ir.config_parameter'].sudo().get_param('ebay_domain')
-        ebay_api = self.get_ebay_api(domain)
+        ebay_api = self.get_ebay_api()
         try:
             return ebay_api.execute(verb, data, list_nodes, verb_attrs, files)
         except ConnectionError as e:
@@ -513,6 +528,8 @@ class ProductTemplate(models.Model):
         Get all eBay orders since the parameter 'ebay_last_sync'.
         Note that all datetimes are considered in UTC.
         """
+        if not self._ebay_configured():
+            return
         now = datetime.now()
         last_sync_str = self.env['ir.config_parameter'].sudo().get_param('ebay_last_sync')
         if not last_sync_str:

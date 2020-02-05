@@ -27,7 +27,7 @@ class TestEbay(TransactionCase):
     def test_synchronize_order(self):
         """Test importing two basic orders."""
         with patch('odoo.addons.sale_ebay.models.product.ProductTemplate.ebay_execute',
-                   new=self.fake_execute_data(EBAY_ANSWER_1)):
+                   new=self.fake_execute_data(EBAY_ANSWER_1)), patch('odoo.addons.sale_ebay.models.product.ProductTemplate._ebay_configured', new=lambda d: True):
             number_of_sos = []
             number_of_sos.append(self.env['sale.order'].search_count([]))
             # if an error happens during synchronisation, it will create a logging with name 'eBay'

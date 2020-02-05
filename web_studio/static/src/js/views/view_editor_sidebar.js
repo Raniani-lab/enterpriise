@@ -7,12 +7,13 @@ var Dialog = require('web.Dialog');
 var DomainSelectorDialog = require("web.DomainSelectorDialog");
 var Domain = require("web.Domain");
 var field_registry = require('web.field_registry');
+var pyUtils = require('web.py_utils');
 var relational_fields = require('web.relational_fields');
 var session = require("web.session");
-var Widget = require('web.Widget');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
+var utils = require('web.utils');
 var view_components = require('web_studio.view_components');
-var pyUtils = require('web.py_utils');
+var Widget = require('web.Widget');
 
 var form_component_widget_registry = view_components.registry;
 var _lt = core._lt;
@@ -150,22 +151,15 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             field.field_widgets = _.chain(field_registry.map)
                 .pairs()
                 .filter(function (arr) {
-                    var isSupported = _.contains(arr[1].prototype.supportedFieldTypes, field.type)
+                    const supportedFieldTypes = self.getFieldInfo(arr[1], 'supportedFieldTypes');
+                    const description = self.getFieldInfo(arr[1], 'description');
+                    var isSupported = _.contains(supportedFieldTypes, field.type)
                         && arr[0].indexOf('.') < 0;
-                    return config.isDebug() ? isSupported
-                        : (
-                            isSupported &&
-                            arr[1].prototype.description &&
-                            arr[1].prototype.hasOwnProperty('description')
-                        );
+                    return config.isDebug() ? isSupported : isSupported && description;
                 })
                 .sortBy(function (arr) {
-                    return (
-                        (
-                            arr[1].prototype.description &&
-                            arr[1].prototype.hasOwnProperty('description')
-                        ) ? arr[1].prototype.description : arr[0]
-                    );
+                    const description = self.getFieldInfo(arr[1], 'description');
+                    return description || arr[0];
                 })
                 .value();
 
@@ -280,6 +274,17 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      */
     domainToStr: function (domain) {
         return Domain.prototype.arrayToString(domain);
+    },
+    /**
+     * Returns class property's value.
+     *
+     * @param {any} fieldType
+     * @param {string} propName
+     */
+    getFieldInfo(fieldType, propName) {
+        return utils.isComponent(fieldType) ?
+            (fieldType.hasOwnProperty(propName) && fieldType[propName]) :
+            (fieldType.prototype.hasOwnProperty(propName) && fieldType.prototype[propName]);
     },
     /**
      * @param {string} fieldName

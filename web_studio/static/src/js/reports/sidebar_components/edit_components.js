@@ -6,8 +6,11 @@ var config = require('web.config');
 var core = require('web.core');
 var utils = require('web.utils');
 var fieldRegistry = require('web.field_registry');
+var fieldRegistryOwl = require('web.field_registry_owl');
+const FieldWrapper = require('web.FieldWrapper');
 var ModelFieldSelector = require('web.ModelFieldSelector');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
+const { WidgetAdapterMixin } = require('web.OwlCompatibility');
 
 var Wysiwyg = require('web_editor.wysiwyg');
 var SummernoteManager = require('web_editor.rte.summernote');
@@ -19,7 +22,7 @@ var Domain = require("web.Domain");
 var py = window.py; // look py.js
 var qweb = core.qweb;
 
-var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
+var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldManagerMixin, {
     events: {
         'change input': function (e) {
             e.stopPropagation();
@@ -98,6 +101,25 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
         var defParent = this._super.apply(this, arguments);
         return Promise.all([defDirective, defParent]);
     },
+    /**
+     * @override
+     */
+    destroy: function () {
+        this._super.apply(this, arguments);
+        WidgetAdapterMixin.destroy.call(this);
+    },
+    /**
+     * Called each time the widget is attached into the DOM.
+     */
+    on_attach_callback: function () {
+        WidgetAdapterMixin.on_attach_callback.call(this);
+    },
+    /**
+     * Called each time the widget is detached from the DOM.
+     */
+    on_detach_callback: function () {
+        WidgetAdapterMixin.on_detach_callback.call(this);
+    },
 
     //--------------------------------------------------------------------------
     // Public
@@ -112,13 +134,22 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
     createField: function (directiveKey, options) {
         var directiveRecord = this.model.get(this.directiveRecordId);
 
-        var field = directiveRecord.fields[directiveKey];
-        var FieldClass = fieldRegistry.getAny([options.Widget, field.type]);
+        options = _.extend({mode: 'edit', attrs: _.extend({
+            quick_create: false, can_create: false}, options)}, options);
 
-        this.fieldSelector[directiveKey] = new FieldClass(
-            this, directiveKey,
-            directiveRecord,
-            _.extend({mode: 'edit', attrs: _.extend({quick_create: false, can_create: false}, options)}, options));
+        var field = directiveRecord.fields[directiveKey];
+        var FieldClass = fieldRegistryOwl.getAny([options.Widget, field.type]);
+        if (FieldClass) {
+            this.fieldSelector[directiveKey] = new FieldWrapper(this, FieldClass, {
+                fieldName: directiveKey,
+                record: directiveRecord,
+                options,
+            });
+        } else {
+            FieldClass = fieldRegistry.getAny([options.Widget, field.type]);
+            this.fieldSelector[directiveKey] = new FieldClass(
+                this, directiveKey, directiveRecord, options);
+        }
     },
     /**
      * Creates a new field selector (for related fields).
@@ -1393,10 +1424,18 @@ var TOptions = AbstractEditComponent.extend( {
         var defs = _.map(this.widget.options, function (option) {
             var $option = $options.find('.o_web_studio_toption_option_' + self.widget.key + '_' + option.key);
             var field = self.fieldSelector[self.widget.key + ':' + option.key];
-            if (option.type === "boolean") {
-                return field.prependTo($option.find('label'));
+            if (field instanceof owl.Component) {
+                if (option.type === "boolean") {
+                    return field.mount($option.find('label')[0], {position: 'first-child'});
+                } else {
+                    return field.mount($option[0]);
+                }
             } else {
-                return field.appendTo($option);
+                if (option.type === "boolean") {
+                    return field.prependTo($option.find('label'));
+                } else {
+                    return field.appendTo($option);
+                }
             }
 
         });

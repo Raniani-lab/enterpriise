@@ -137,7 +137,7 @@ var InventoryClientAction = ClientAction.extend({
         var lines = this._getLines(this.currentState);
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
-            if (line.product_id.id === product.id &&
+            if (line.product_qty !== 0 && line.product_id.id === product.id &&
                 line.prod_lot_id && line.prod_lot_id[1] === lot_name) {
                 return true;
             }

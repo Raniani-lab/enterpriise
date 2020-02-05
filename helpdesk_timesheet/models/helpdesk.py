@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from math import ceil
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
@@ -10,6 +11,12 @@ class HelpdeskTeam(models.Model):
 
     project_id = fields.Many2one("project.project", string="Project", ondelete="restrict", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]",
         help="Project to which the tickets (and the timesheets) will be linked by default.")
+    timesheet_timer = fields.Boolean('Timesheet Timer', default=True)
+
+    @api.depends('use_helpdesk_timesheet')
+    def _compute_timesheet_timer(self):
+        for team in self:
+            team.timesheet_timer = team.use_helpdesk_timesheet
 
     def _create_project(self, name, allow_billable, other):
         return self.env['project.project'].create({
@@ -33,19 +40,20 @@ class HelpdeskTeam(models.Model):
             vals['project_id'] = False
         result = super(HelpdeskTeam, self).write(vals)
         for team in self.filtered(lambda team: team.use_helpdesk_timesheet and not team.project_id):
-            team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {'allow_timesheets': True, })
+            team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {'allow_timesheets': True, 'allow_timesheet_timer': True})
             self.env['helpdesk.ticket'].search([('team_id', '=', team.id), ('project_id', '=', False)]).write({'project_id': team.project_id.id})
         return result
 
     @api.model
     def _init_data_create_project(self):
         for team in self.search([('use_helpdesk_timesheet', '=', True), ('project_id', '=', False)]):
-            team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {'allow_timesheets': True, })
+            team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {'allow_timesheets': True, 'allow_timesheet_timer': True})
             self.env['helpdesk.ticket'].search([('team_id', '=', team.id), ('project_id', '=', False)]).write({'project_id': team.project_id.id})
 
 
 class HelpdeskTicket(models.Model):
-    _inherit = 'helpdesk.ticket'
+    _name = 'helpdesk.ticket'
+    _inherit = ['helpdesk.ticket', 'timer.mixin']
 
     @api.model
     def default_get(self, fields_list):
@@ -61,6 +69,38 @@ class HelpdeskTicket(models.Model):
     is_closed = fields.Boolean(related="task_id.stage_id.is_closed", string="Is Closed", readonly=True)
     is_task_active = fields.Boolean(related="task_id.active", string='Is Task Active', readonly=True)
     use_helpdesk_timesheet = fields.Boolean('Timesheet activated on Team', related='team_id.use_helpdesk_timesheet', readonly=True)
+    timesheet_timer = fields.Boolean(related='team_id.timesheet_timer')
+    display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')
+    total_hours_spent = fields.Float(compute='_compute_total_hours_spent', default=0)
+
+    display_timer_start_secondary = fields.Boolean(compute='_compute_display_timer_buttons')
+
+    @api.depends('display_timesheet_timer', 'timer_start', 'timer_pause', 'total_hours_spent')
+    def _compute_display_timer_buttons(self):
+        for ticket in self:
+            displays = super()._compute_display_timer_buttons()
+            start_p, start_s, stop, pause, resume = displays['start_p'], displays['start_p'], displays['stop'], displays['pause'], displays['resume']
+            if not ticket.display_timesheet_timer:
+                start_p, start_s, stop, pause, resume = False, False, False, False, False
+            else:
+                if not ticket.timer_start:
+                    stop, pause, resume = False, False, False
+                    if not ticket.total_hours_spent:
+                        start_s = False
+                    else:
+                        start_p = False
+            ticket.write({
+                'display_timer_start_primary': start_p,
+                'display_timer_start_secondary': start_s,
+                'display_timer_stop': stop,
+                'display_timer_pause': pause,
+                'display_timer_resume': resume,
+            })
+
+    @api.depends('use_helpdesk_timesheet', 'timesheet_timer', 'timesheet_ids')
+    def _compute_display_timesheet_timer(self):
+        for ticket in self:
+            ticket.display_timesheet_timer = ticket.use_helpdesk_timesheet and ticket.timesheet_timer
 
     @api.depends('project_id', 'company_id')
     def _compute_related_task_ids(self):
@@ -69,6 +109,11 @@ class HelpdeskTicket(models.Model):
             if t.project_id:
                 domain = [('project_id', '=', t.project_id.id)]
             t._related_task_ids = self.env['project.task'].search(domain)._origin
+
+    @api.depends('timesheet_ids')
+    def _compute_total_hours_spent(self):
+        for ticket in self:
+            ticket.total_hours_spent = round(sum(ticket.timesheet_ids.mapped('unit_amount')), 2)
 
     @api.onchange('project_id')
     def _onchange_project_id(self):
@@ -148,3 +193,32 @@ class HelpdeskTicket(models.Model):
     def _timesheet_forced_fields(self):
         """ return the list of field that should also be written on related timesheets """
         return ['task_id', 'project_id']
+
+    def action_timer_start(self):
+        if not self.user_timer_id.timer_start and self.display_timesheet_timer:
+            super().action_timer_start()
+
+    def action_timer_stop(self):
+        # timer was either running or paused
+        if self.user_timer_id.timer_start and self.display_timesheet_timer:
+            minutes_spent = super().action_timer_stop()
+            minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
+            rounding = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_rounding', 0))
+            minutes_spent = self._timer_rounding(minutes_spent, minimum_duration, rounding)
+            return self._action_create_timesheet(minutes_spent * 60 / 3600)
+        return False
+
+    def _action_create_timesheet(self, time_spent):
+        return {
+            "name": _("Validate Spent Time"),
+            "type": 'ir.actions.act_window',
+            "res_model": 'helpdesk.ticket.create.timesheet',
+            "views": [[False, "form"]],
+            "target": 'new',
+            "context": {
+                **self.env.context,
+                'active_id': self.id,
+                'active_model': self._name,
+                'default_time_spent': time_spent,
+            },
+        }

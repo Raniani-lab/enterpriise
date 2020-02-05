@@ -17,7 +17,6 @@ class AccountMoveReversal(models.TransientModel):
 
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket')
     helpdesk_sale_order_id = fields.Many2one('sale.order', related="helpdesk_ticket_id.sale_order_id", string='Sales Order')
-    move_ids = fields.Many2many(domain="[('id', 'in', suitable_move_ids)]")
     suitable_move_ids = fields.Many2many('account.move', compute='_compute_suitable_moves')
 
     @api.depends('helpdesk_ticket_id.sale_order_id.invoice_ids', 'helpdesk_ticket_id.partner_id.commercial_partner_id')

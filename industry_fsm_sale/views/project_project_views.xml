@@ -48,7 +48,7 @@
                 <field name="allow_material" invisible="1"/>
             </field>
             <field name="allow_timesheet_timer" position="after">
-                <field name="timesheet_product_id" attrs="{'invisible': ['|', '|', ('allow_billable', '=', False), ('allow_timesheets', '=', False)], 'required': ['&amp;', ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}"/>
+                <field name="timesheet_product_id" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('allow_timesheets', '=', False)], 'required': ['&amp;', ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}"/>
             </field>
         </field>
     </record>

@@ -303,7 +303,6 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         trigger: '.o_barcode_line:nth-child(6)',
         run: function() {
             currentViewState.linesCount = 6;
-            currentViewState.validate.isHighlighted = true;
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'productlot1'});
             helper.assert($lines.length, 2, "Expect 2 lines for productlot1");

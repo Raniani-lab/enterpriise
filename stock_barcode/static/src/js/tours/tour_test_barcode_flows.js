@@ -1124,26 +1124,6 @@ tour.register('test_receipt_reserved_1', {test: true}, [
 
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
         run: 'scan product2'
     },
 
@@ -1160,6 +1140,40 @@ tour.register('test_receipt_reserved_1', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: 'scan product2'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertValidateIsHighlighted(false);
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertValidateIsHighlighted(true);
+        }
     },
 
     {
@@ -2987,7 +3001,7 @@ tour.register('test_highlight_packs', {test: true}, [
             helper.assertLinesCount(2);
             helper.assertScanMessage('scan_products');
             helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
+            helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
             var $line = $('.o_barcode_line').eq(1);
             helper.assertLineIsHighlighted($line, true);

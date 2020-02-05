@@ -405,14 +405,13 @@ var LinesWidget = Widget.extend({
             return false;
         } else {
             var reservationProcessed = true;
-            $lines.each(function () {
-                var $line = $(this);
-                reservationProcessed = self._isReservationProcessedLine($line);
+            for (const line of $lines) {
+                reservationProcessed = self._isReservationProcessedLine($(line));
                 if (reservationProcessed === -1) {
                     reservationProcessed = false;
-                    return;
+                    break;
                 }
-            });
+            }
             if (reservationProcessed === 0 || reservationProcessed === 1){
                 reservationProcessed = true;
             }

@@ -183,7 +183,12 @@ class PaymentTxSepaDirectDebit(models.Model):
 
         # create associated account payment and make it a one2one with the transaction.
         payment_vals = self._prepare_account_payment_vals()
-        payment_vals.update({'sdd_mandate_id': mandate.id})
+        payment_vals.update({
+            'sdd_mandate_id': mandate.id,
+            # we have to use this payment method to allow easy export of these payments
+            # through the accounting dashboard
+            'payment_method_id': self.env.ref('account_sepa_direct_debit.payment_method_sdd').id,
+        })
         payment = self.env['account.payment'].create(payment_vals)
 
         # invoices should be posted before payment

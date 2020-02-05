@@ -325,6 +325,7 @@ class AnalyticLine(models.Model):
     # ----------------------------------------------------
     # Timer Methods
     # ----------------------------------------------------
+    
     def action_timer_start(self):
         """ Action start the timer of current timesheet
 
@@ -346,8 +347,6 @@ class AnalyticLine(models.Model):
     @api.model
     def create_timesheet_with_timer(self, vals):
         """ Create timesheet when user launch timer in grid view.
-            Before to create this timesheet, we must stop all timer
-            of others timesheets.
             :param vals: dictionary contains task_id or project_id for the timesheet
             Return:
                 a dictionary contains the information required
@@ -362,13 +361,11 @@ class AnalyticLine(models.Model):
         else:
             return
 
-        # Check if another timer is launched, if yes, stop it
-        self._stop_running_timers()
-        record['timer_start'] = fields.Datetime.now()
         line = self.create(record)
+        # Start the timer
+        line.action_timer_start()
         return {
             'id': line.id,
-            'timer_start': line.timer_start,
             'task_id': line.task_id.id,
             'project_id': line.project_id.id,
             'unit_amount': line.unit_amount

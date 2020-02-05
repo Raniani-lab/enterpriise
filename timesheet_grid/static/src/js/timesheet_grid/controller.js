@@ -25,7 +25,6 @@ odoo.define('timesheet_grid.GridController', function (require) {
             const button = ev.currentTarget;
             const index = button.id.split(' ')[1];
             const { data, timesheet } = this.renderer.timerButtons[index];
-
             if (timesheet) {
                 const action = button.name;
 

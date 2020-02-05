@@ -98,17 +98,6 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
                 'employee_id': self.empl_employee2.id
             })
 
-        # employee 1 start timer for his timesheet
-        timesheet_user1.with_user(self.user_employee).action_timer_start()
-
-        # employee 2 try to stop the timer
-        with self.assertRaises(AccessError):
-            timesheet_user1.with_user(self.user_employee2).action_timer_stop()
-
-        # employee 1 stop the timer of his timesheet
-        timesheet_user1.with_user(self.user_employee).action_timer_stop()
-        self.assertEqual(timesheet_user1.unit_amount, 1)
-
         # employee 1 update his timesheet
         timesheet_user1.with_user(self.user_employee).write({
             'unit_amount': 5
@@ -116,11 +105,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
 
         # check if the updating is correct
         self.assertEqual(timesheet_user1.unit_amount, 5)
-
-        # employee 2 try to launch timer on timesheet of employee 1
-        with self.assertRaises(AccessError):
-            timesheet_user1.with_user(self.user_employee2).action_timer_start()
-
+        
         # employee 1 remove his timesheet
         timesheet_user1.with_user(self.user_employee).unlink()
 

@@ -25,7 +25,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
         },
         getServerTime: async function () {
             const time = await this._rpc({
-                model: this.modelName,
+                model: 'timer.timer',
                 method: 'get_server_time',
                 args: [],
             });
@@ -168,13 +168,17 @@ odoo.define('timesheet_grid.GridModel', function (require) {
                 const timesheets = await Promise.all(promises);
                 for (const data of timesheets) {
                     if (data) {
-                        const {rowIndex, gridIndex, timesheet} = data;
+                        const {rowIndex, gridIndex, timesheet, project} = data;
                         const { rows, grid } = this._gridData[gridIndex];
-
-                        rows[rowIndex].timesheet = timesheet;
-                        if (timesheet && timesheet.timer_start) {
-                            grid[rowIndex].map((column) => column.readonly = column.is_current);
-                            await this.getServerTime();
+                        if (project) {
+                            rows[rowIndex].project = project;
+                        }
+                        if (timesheet) {
+                            rows[rowIndex].timesheet = timesheet;
+                            if (timesheet.timer_start) {
+                                grid[rowIndex].map((column) => column.readonly = column.is_current);
+                                await this.getServerTime();
+                            }
                         }
                     }
                 }
@@ -197,21 +201,43 @@ odoo.define('timesheet_grid.GridModel', function (require) {
 
             this._parseServerData(timesheets);
 
+            
             if (timesheets.length === 0) {
                 return null;
             } else {
                 const today = moment().utc().get('date');
-
+                
                 for (const record of timesheets) {
                     const date = record.date.get('date');
 
+                    // Get the project then return it in any case
+                    const project = await this._searchProject(record.project_id[0]);
+
                     if (record.name === _t('Timesheet Adjustment') && date === today) {
-                        return {rowIndex, gridIndex, timesheet: record};
+                        return {rowIndex, gridIndex, timesheet: record, project};
                     }
+                    return {rowIndex, gridIndex, project}
                 }
 
                 return null;
             }
+        },
+        /**
+         * Search project project id given in parameter
+         *
+         * @param {Number} projectId the id of the project
+         */
+        _searchProject: async function(projectId){
+            const project = await this._rpc({
+                model: 'project.project',
+                method: 'search_read',
+                fields: ['id', 'name', 'allow_timesheet_timer'],
+                domain: [['id', '=', projectId]]
+            });
+            if (project.length > 0) {
+                return project[0]
+            }
+            return null;
         },
         /**
          * Request to create a timesheet when we click to start a timer for a task.

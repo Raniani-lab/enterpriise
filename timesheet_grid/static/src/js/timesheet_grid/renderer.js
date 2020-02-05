@@ -6,7 +6,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
     const h = require('snabbdom.h');
     const toVNode = require('snabbdom.tovnode');
 
-    const Timer = require('hr_timesheet.Timer');
+    const Timer = require('timer.Timer');
 
     return WebGridRenderer.extend({
         /**
@@ -173,14 +173,15 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
                         const data = row.values;
 
                         data.project_id = this.state[i].__label;
-                        row.button = this._createTimerButtons(row.timesheet);
-
-                        this.timerButtons.push({
-                            button: row.button,
-                            data,
-                            domain: row.domain,
-                            timesheet: row.timesheet
-                        });
+                        row.button = this._createTimerButtons(row.timesheet, row.project);
+                        if(row.button){
+                            this.timerButtons.push({
+                                button: row.button,
+                                data,
+                                domain: row.domain,
+                                timesheet: row.timesheet
+                            });
+                        }
                     }
                 }
 
@@ -192,7 +193,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
          *
          * @param {Object} task contains the information about a task_id field, like id and name.
          */
-        _createTimerButtons: function (timesheet) {
+        _createTimerButtons: function (timesheet, project) {
             const propsButton = {
                 value: false,
                 class: 'o_icon_button timer_task o-timer-button',
@@ -218,6 +219,10 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
                 propsButton.name = 'action_timer_start';
                 propsButton['aria-label'] = 'start';
                 propsIcon.class += ' fa-play-circle o-timer-play-button';
+            }
+
+            if(!project.allow_timesheet_timer){
+                propsButton.class += ' d-none';
             }
 
             const button = document.createElement('button');

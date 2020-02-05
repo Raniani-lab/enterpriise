@@ -460,10 +460,10 @@ class AccountBankStatementImport(models.TransientModel):
             elif type == '125':  # Credit
                 structured_com = _('Credit')
                 o_idx = p_idx; p_idx += 12; note.append(_('Detail') + ': ' + _('account number of the credit') + ': ' + rmspaces(communication[o_idx:p_idx]))
-                o_idx = p_idx; p_idx += 15; note.append(_('Detail') + ': ' + _('extension zone of account number of the credit') + ': ' + rmspaces(communication[o_idx:p_idx], 3))
+                o_idx = p_idx; p_idx += 15; note.append(_('Detail') + ': ' + _('extension zone of account number of the credit') + ': ' + rmspaces(communication[o_idx:p_idx]))
                 o_idx = p_idx; p_idx += 15; note.append(_('Detail') + ': ' + _('old balance of the credit') + ': ' + parsefloat(communication[o_idx:p_idx], 3))
                 o_idx = p_idx; p_idx += 15; note.append(_('Detail') + ': ' + _('new balance of the credit') + ': ' + parsefloat(communication[o_idx:p_idx], 3))
-                o_idx = p_idx; p_idx += 15; note.append(_('Detail') + ': ' + _('amount (equivalent in foreign currency)') + ': ' + parsefloat(communication[o_idx:p_idx]))
+                o_idx = p_idx; p_idx += 15; note.append(_('Detail') + ': ' + _('amount (equivalent in foreign currency)') + ': ' + parsefloat(communication[o_idx:p_idx], 3))
                 o_idx = p_idx; p_idx +=  3; note.append(_('Detail') + ': ' + _('currency') + ': ' + rmspaces(communication[o_idx:p_idx]))
                 o_idx = p_idx; p_idx +=  6; note.append(_('Detail') + ': ' + _('starting date') + ': ' + parsedate(communication[o_idx:p_idx]))
                 o_idx = p_idx; p_idx +=  6; note.append(_('Detail') + ': ' + _('end date') + ': ' + parsedate(communication[o_idx:p_idx]))

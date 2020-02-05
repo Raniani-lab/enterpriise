@@ -67,3 +67,13 @@ class Project(models.Model):
         has_group = self.env.user.has_group('industry_fsm_sale.group_fsm_quotation_from_task')
         for record in self.filtered(lambda p: not p.allow_quotations):
             record.allow_quotations = record.is_fsm and has_group
+
+    def flush(self, fnames=None, records=None):
+        if fnames is not None:
+            # force 'allow_billable' and 'allow_material' to be flushed
+            # altogether in order to satisfy the SQL constraint above
+            fnames = set(fnames)
+            if 'allow_billable' in fnames or 'allow_material' in fnames:
+                fnames.add('allow_billable')
+                fnames.add('allow_material')
+        return super().flush(fnames, records)

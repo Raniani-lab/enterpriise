@@ -70,6 +70,7 @@ class StockPicking(models.Model):
             picking['actionReportDeliverySlipId'] = self.env.ref('stock.action_report_delivery').id
             picking['actionReportBarcodesZplId'] = self.env.ref('stock.action_label_transfer_template_zpl').id
             picking['actionReportBarcodesPdfId'] = self.env.ref('stock.action_label_transfer_template_pdf').id
+            picking['actionReturn'] = self.env.ref('stock.act_stock_return_picking').id
             if self.env.company.nomenclature_id:
                 picking['nomenclature_id'] = [self.env.company.nomenclature_id.id]
             picking['source_location_list'] = source_location_list

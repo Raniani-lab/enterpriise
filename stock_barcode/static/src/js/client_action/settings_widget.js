@@ -13,6 +13,7 @@ var SettingsWidget = Widget.extend({
         'click .o_print_barcodes_zpl': '_onClickPrintBarcodesZpl',
         'click .o_print_barcodes_pdf': '_onClickPrintBarcodesPdf',
         'click .o_print_inventory': '_onClickPrintInventory',
+        'click .o_return': '_onClickReturn',
         'click .o_scrap': '_onClickScrap',
     },
 
@@ -108,6 +109,17 @@ var SettingsWidget = Widget.extend({
      _onClickPrintInventory: function (ev) {
         ev.stopPropagation();
         this.trigger_up('picking_print_inventory');
+    },
+
+    /**
+     * Handles the click on the return button. This is specific to the `stock.picking` model.
+     *
+     * @private
+     * @param {MouseEvent} ev
+     */
+     _onClickReturn: function (ev) {
+        ev.stopPropagation();
+        this.trigger_up('picking_return');
     },
 
     /**

@@ -15,6 +15,7 @@ var PickingClientAction = ClientAction.extend({
         'picking_print_picking': '_onPrintPicking',
         'picking_print_barcodes_zpl': '_onPrintBarcodesZpl',
         'picking_print_barcodes_pdf': '_onPrintBarcodesPdf',
+        'picking_return': '_onReturn',
         'picking_scrap': '_onScrap',
         'put_in_pack': '_onPutInPack',
         'open_package': '_onOpenPackage',
@@ -559,6 +560,33 @@ var PickingClientAction = ClientAction.extend({
     _onPrintBarcodesPdf: function (ev) {
         ev.stopPropagation();
         this._printReport(this.currentState.actionReportBarcodesPdfId);
+    },
+
+    /**
+     * Handles the `picking_return` OdooEvent and opens the return wizard.
+     * As this method opens a wizard, it takes care of removing/adding the
+     * "barcode_scanned" event listener.
+     *
+     * @param {OdooEvent} ev
+     */
+    _onReturn: function (ev) {
+        ev.stopPropagation();
+        this.mutex.exec(() => {
+            return this._save().then(() => {
+                const exitCallback = function () {
+                    core.bus.on('barcode_scanned', this, this._onBarcodeScannedHandler);
+                };
+                const options = {
+                    additional_context: {
+                        active_id: this.currentState.id,
+                        active_model: 'stock.picking',
+                    },
+                    on_close: exitCallback.bind(this),
+                };
+                core.bus.off('barcode_scanned', this, this._onBarcodeScannedHandler);
+                return this.do_action(this.currentState.actionReturn, options);
+            });
+        });
     },
 
     /**

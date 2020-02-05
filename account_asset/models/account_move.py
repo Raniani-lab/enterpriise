@@ -91,6 +91,12 @@ class AccountMove(models.Model):
         self.env['account.asset'].sudo().search([('original_move_line_ids.move_id', 'in', self.ids)]).write({'active': False})
         return res
 
+    def button_draft(self):
+        for move in self:
+            if any(asset_id.state != 'draft' for asset_id in move.asset_ids):
+                raise UserError(_('You cannot reset to draft an entry having a posted deferred revenue/expense'))
+        return super(AccountMove, self).button_draft()
+
     def _log_depreciation_asset(self):
         for move in self.filtered(lambda m: m.asset_id):
             asset = move.asset_id

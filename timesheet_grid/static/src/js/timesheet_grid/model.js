@@ -6,7 +6,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
 
     const WebGridModel = require('web_grid.GridModel');
 
-    return WebGridModel.extend({
+    var TimerWebGridModel = WebGridModel.extend({
         /**
          * @override
          */
@@ -18,7 +18,18 @@ odoo.define('timesheet_grid.GridModel', function (require) {
         /**
          * @override
          */
-        reload: async function () {
+        reload: async function (handle, params) {
+            if ('groupBy' in params) {
+                // With timesheet grid, it makes nonsense to manage group_by with a field date (as the dates are already in the rows).
+                // Detection of groupby date with ':' (date:day). Ignore grouped by date, and display warning.
+                var GroupBy = params.groupBy.filter(filter => {
+                    return filter.split(':').length === 1;
+                });
+                if (GroupBy.length !== params.groupBy.length) {
+                    this.do_warn(_t('Invalid group by'), _t('Grouping by date is not supported, ignoring it'));
+                }
+                params.groupBy = GroupBy;
+            }
             await this._super.apply(this, arguments);
 
             return this._loadTimesheetByTask();
@@ -270,5 +281,30 @@ odoo.define('timesheet_grid.GridModel', function (require) {
             record.date = fieldUtils.parse.date(record.date, null, {isUTC: true});
         }
     });
+
+    var NoGroupByDateWebGridModel = WebGridModel.extend({
+        /**
+         * @override
+         */
+        reload: async function (handle, params) {
+            if ('groupBy' in params) {
+                // With timesheet grid, it makes nonsense to manage group_by with a field date (as the dates are already in the rows).
+                // Detection of groupby date with ':' (date:day). Ignore grouped by date, and display warning.
+                var GroupBy = params.groupBy.filter(filter => {
+                    return filter.split(':').length === 1;
+                });
+                if (GroupBy.length !== params.groupBy.length) {
+                    this.do_warn(_t('Invalid group by'), _t('Grouping by date is not supported, ignoring it'));
+                }
+                params.groupBy = GroupBy;
+            }
+            return this._super.apply(this, arguments);
+        },
+    });
+
+    return {
+        timer: TimerWebGridModel,
+        no_group_by_date: NoGroupByDateWebGridModel
+    };
 
 });

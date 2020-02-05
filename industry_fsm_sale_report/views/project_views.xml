@@ -1,42 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_task_form2_inherit" model="ir.ui.view">
-        <field name="name">task.form.inherit</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="industry_fsm_report.view_task_form2_inherit"/>
-        <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_send_report'][hasclass('btn-primary')]" position="attributes">
-                <attribute name="attrs">
-                    {'invisible': ['|', '|', '|', '|', '|',
-                    ('allow_worksheets', '=', False),
-                    ('timer_start', '!=', False),
-                    ('worksheet_template_id', '=', False),
-                    '&amp;','&amp;',
-                        ('worksheet_count', '=', 0),
-                        ('total_hours_spent', '=', 0),
-                        ('material_line_product_count', '=', 0),
-                    ('fsm_is_sent', '=', True),
-                    ('worksheet_signature', '=', False)]}
-                </attribute>
-            </xpath>
-            <xpath expr="//button[@name='action_send_report'][hasclass('btn-secondary')]" position="attributes">
-                <attribute name="attrs">
-                    {'invisible': ['|', '|', '|', '|', '|',
-                    ('allow_worksheets', '=', False),
-                    ('timer_start', '!=', False),
-                    ('worksheet_template_id', '=', False),
-                    '&amp;','&amp;',
-                        ('worksheet_count', '=', 0),
-                        ('total_hours_spent', '=', 0),
-                        ('material_line_product_count', '=', 0),
-                    '&amp;',
-                        ('fsm_is_sent', '=', False),
-                        ('worksheet_signature', '!=', False)]}
-                </attribute>
-            </xpath>
-        </field>
-    </record>
-
     <record id="industry_fsm.project_project_action_only_fsm" model="ir.actions.act_window">
         <field name="context">
             {

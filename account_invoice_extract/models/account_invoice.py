@@ -249,6 +249,8 @@ class AccountMove(models.Model):
             text_to_send["content"] = self.currency_id.name
         elif field == "payment_ref":
             text_to_send["content"] = self.invoice_payment_ref
+        elif field == "iban":
+            text_to_send["content"] = self.invoice_partner_bank_id.acc_number if self.invoice_partner_bank_id else False
         elif field == "invoice_lines":
             text_to_send = {'lines': []}
             for il in self.invoice_line_ids:
@@ -290,6 +292,7 @@ class AccountMove(models.Model):
                     'VAT_Number': record.get_validation('VAT_Number'),
                     'currency': record.get_validation('currency'),
                     'payment_ref': record.get_validation('payment_ref'),
+                    'iban': record.get_validation('iban'),
                     'merged_lines': self.env.company.extract_single_line_per_tax,
                     'invoice_lines': record.get_validation('invoice_lines')
                 }
@@ -635,6 +638,7 @@ class AccountMove(models.Model):
         currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
         vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
         payment_ref_ocr = ocr_results['payment_ref']['selected_value']['content'] if 'payment_ref' in ocr_results else ""
+        iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
         invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
         vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
@@ -674,6 +678,16 @@ class AccountMove(models.Model):
 
             if not move_form.invoice_payment_ref:
                 move_form.invoice_payment_ref = payment_ref_ocr
+
+            if not move_form.invoice_partner_bank_id and move_form.partner_id:
+                bank_account = self.env['res.partner.bank'].search([('partner_id', '=', move_form.partner_id.id), ('acc_number', '=ilike', iban_ocr)])
+                if bank_account.exists():
+                    move_form.invoice_partner_bank_id = bank_account
+                else:
+                    move_form.invoice_partner_bank_id = self.env['res.partner.bank'].create({
+                        'partner_id': move_form.partner_id.id,
+                        'acc_number': iban_ocr,
+                    })
 
             if not move_form.invoice_line_ids:
                 for line_val in vals_invoice_lines:

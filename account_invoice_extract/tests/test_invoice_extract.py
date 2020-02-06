@@ -34,6 +34,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
                 'email': {'selected_value': {'content': 'test@email.com'}, 'words': []},
                 'website': {'selected_value': {'content': 'www.test.com'}, 'words': []},
                 'payment_ref': {'selected_value': {'content': '+++123/1234/12345+++'}, 'words': []},
+                'iban': {'selected_value': {'content': 'BE01234567890123'}, 'words': []},
                 'invoice_lines': [
                     {
                         'description': {'selected_value': {'content': 'Test 1'}},
@@ -465,3 +466,26 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
             test_attachment.register_as_main_attachment()
 
         self.assertEqual(invoice.extract_state, 'no_extract_requested')
+
+    def test_bank_account(self):
+        # test that the bank account is set when an iban is found
+
+        # test that an account is created if no existing matches the account number
+        invoice = self.init_invoice()
+        extract_response = self.get_default_extract_response()
+        partner = self.env['res.partner'].create({'name': 'Test'})
+
+        with self.mock_iap_extract(extract_response, {}):
+            invoice._check_status()
+
+        self.assertEqual(invoice.invoice_partner_bank_id.acc_number, 'BE01234567890123')
+
+        # test that it uses the existing bank account if it exists
+        created_bank_account = invoice.invoice_partner_bank_id
+        invoice = self.init_invoice()
+        extract_response = self.get_default_extract_response()
+
+        with self.mock_iap_extract(extract_response, {}):
+            invoice._check_status()
+
+        self.assertEqual(invoice.invoice_partner_bank_id, created_bank_account)

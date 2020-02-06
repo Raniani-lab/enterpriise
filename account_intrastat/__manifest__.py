@@ -21,6 +21,7 @@ Intrastat Reports
         'data/account_financial_report_data.xml',
         'views/search_template_view.xml',
         'views/res_config_settings.xml',
+        'views/report_invoice.xml',
     ],
     'installable': True,
     'license': 'OEEL-1',

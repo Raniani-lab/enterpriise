@@ -33,6 +33,8 @@ class IntrastatReport(models.AbstractModel):
             {'name': _('Region Code')},
             {'name': _('Commodity Code')},
             {'name': _('Type')},
+            {'name': _('Origin Country')},
+            {'name': _('Partner VAT')},
         ]
         if options.get('intrastat_extended'):
             columns += [
@@ -52,7 +54,8 @@ class IntrastatReport(models.AbstractModel):
 
         columns = [{'name': c} for c in [
             vals['invoice_date'], vals['system'], vals['country_code'], vals['trans_code'],
-            vals['region_code'], vals['commodity_code'], vals['type']
+            vals['region_code'], vals['commodity_code'], vals['type'],
+            vals['intrastat_product_origin_country'], vals['partner_vat'],
         ]]
         if options.get('intrastat_extended'):
             columns += [{'name': c} for c in [
@@ -130,7 +133,15 @@ class IntrastatReport(models.AbstractModel):
                     CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
                     THEN 1 ELSE inv_line_uom.factor END
                 ) AS quantity,
-                inv_line.price_subtotal AS value
+                inv_line.price_subtotal AS value,
+                CASE WHEN inv_line.intrastat_product_origin_country_id IS NULL
+                     THEN \'QU\'  -- If you don't know the country of origin of the goods, as an exception you may replace the country code by "QU".
+                     ELSE product_country.code
+                END AS intrastat_product_origin_country,
+                CASE WHEN partner_country.id IS NULL
+                     THEN \'QV999999999999\'  -- For VAT numbers of companies outside the European Union, for example in the case of triangular trade, you always have to use the code "QV999999999999".
+                     ELSE partner.vat
+                END AS partner_vat
                 '''
         from_ = '''
                 account_move_line inv_line
@@ -151,6 +162,8 @@ class IntrastatReport(models.AbstractModel):
                 LEFT JOIN account_incoterms comp_incoterm ON company.incoterm_id = comp_incoterm.id
                 LEFT JOIN account_intrastat_code inv_transport ON inv.intrastat_transport_mode_id = inv_transport.id
                 LEFT JOIN account_intrastat_code comp_transport ON company.intrastat_transport_mode_id = comp_transport.id
+                LEFT JOIN res_country product_country ON product_country.id = inv_line.intrastat_product_origin_country_id
+                LEFT JOIN res_country partner_country ON partner.country_id = partner_country.id AND partner_country.intrastat IS TRUE
                 '''
         where = '''
                 inv.state = 'posted'

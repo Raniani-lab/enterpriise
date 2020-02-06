@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo import fields, models, _
 
 
 class HrPayroll28110Wizard(models.TransientModel):
     _name = 'hr.payroll.281.10.wizard'
     _description = 'HR Payroll 281.10 Wizard'
-
-    @api.model
-    def default_get(self, field_list=None):
-        if self.env.company.country_id != self.env.ref('base.be'):
-            raise UserError(_('You must be logged in a Belgian company to use this feature'))
-        return super().default_get(field_list)
+    _inherit = 'hr.payroll.281.base.wizard'
 
     def _get_years(self):
         return [(str(i), i) for i in range(fields.Date.today().year - 1, 2009, -1)]
@@ -32,6 +26,10 @@ class HrPayroll28110Wizard(models.TransientModel):
         ('2', 'Add'),
         ('3', 'Cancel'),
         ], string="Treatment Type", default='0', required=True)
+    pdf_file = fields.Binary('PDF File', readonly=True, attachment=False)
+    xml_file = fields.Binary('XML File', readonly=True, attachment=False)
+    pdf_filename = fields.Char()
+    xml_filename = fields.Char()
 
     def action_generate_files(self, file_type=['pdf', 'xml']):
         basic_info = {
@@ -40,11 +38,33 @@ class HrPayroll28110Wizard(models.TransientModel):
             'type_sending': self.type_sending,
             'type_treatment': self.type_treatment,
         }
-        employees = self.env['hr.employee'].browse(self.env.context.get('active_ids'))
-        employees._generate_281_10_form(basic_info, file_type)
+
+        files = self.employee_ids._generate_281_10_form(basic_info, file_type)
+        pdf_files = files['pdf']
+        xml_files = files['xml']
+
+        if pdf_files:
+            filename, binary = self._process_files(pdf_files, default_filename='281.10 PDF - %s.zip' % fields.Date.today())
+            self.pdf_filename = filename
+            self.pdf_file = binary
+
+        if xml_files:
+            filename, binary = self._process_files(xml_files, default_filename='281.10 XML - %s.zip' % fields.Date.today())
+            self.xml_filename = filename
+            self.xml_file = binary
+
+        self.state = 'get'
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'view_mode': 'form',
+            'res_id': self.id,
+            'views': [(False, 'form')],
+            'target': 'new',
+        }
 
     def action_generate_xml(self):
-        self.action_generate_files(file_type=['xml'])
+        return self.action_generate_files(file_type=['xml'])
 
     def action_generate_pdf(self):
-        self.action_generate_files(file_type=['pdf'])
+        return self.action_generate_files(file_type=['pdf'])

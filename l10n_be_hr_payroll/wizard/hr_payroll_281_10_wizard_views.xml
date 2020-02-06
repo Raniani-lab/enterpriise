@@ -5,7 +5,11 @@
         <field name="model">hr.payroll.281.10.wizard</field>
         <field name="arch" type="xml">
             <form string="Create 281.10 Form">
-                <group>
+                <field name="state" invisible="1"/>
+                <field name="pdf_filename" invisible="1"/>
+                <field name="xml_filename" invisible="1"/>
+                <field name="employee_ids" invisible="1"/>
+                <group states="generate">
                     <group>
                         <field name="reference_year"/>
                         <field name="type_sending"/>
@@ -13,11 +17,24 @@
                         <field name="is_test" groups="base.group_no_one"/>
                     </group>
                 </group>
-                <footer>
+                <div states="get">
+                    <h2>Generation Complete</h2>
+                    <p attrs="{'invisible': [('pdf_file', '=', False)]}">
+                        Download the 281.10 PDF file: <field name="pdf_file" readonly="1" filename="pdf_filename"/>
+                    </p>
+                    <p attrs="{'invisible': [('xml_file', '=', False)]}">
+                        Download the 281.10 XML file: <field name="xml_file" readonly="1" filename="xml_filename"/>
+                    </p>
+                </div>
+                <p name="save_warning" states="generate">The file is not saved into Odoo if you don't have the Documents app.</p>
+                <footer states="generate">
                     <button name="action_generate_pdf" string="Create PDF" type="object" class="btn-primary"/>
                     <button name="action_generate_xml" string="Create XML" type="object" class="btn-primary"/>
                     <button name="action_generate_files" string="Create Both" type="object"/>
                     <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+                <footer states="get">
+                    <button special="cancel" string="Close" type="object" class="btn-primary"/>
                 </footer>
             </form>
         </field>

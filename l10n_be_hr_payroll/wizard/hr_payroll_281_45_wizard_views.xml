@@ -5,12 +5,23 @@
         <field name="model">hr.payroll.281.45.wizard</field>
         <field name="arch" type="xml">
             <form string="Generate 281.45">
-                <group>
+                <field name="state" invisible="1"/>
+                <field name="pdf_filename" invisible="1"/>
+                <field name="employee_ids" invisible="1"/>
+                <group states="generate">
                     <field name="year"/>
                 </group>
-                <footer>
+                <div states="get">
+                    <h2>Generation Complete</h2>
+                    <p>Download the 281.45 file: <field name="pdf_file" readonly="1" filename="pdf_filename"/></p>
+                </div>
+                <p name="save_warning" states="generate">The PDF is not saved into Odoo if you don't have the Documents app.</p>
+                <footer states="generate">
                     <button name="action_generate_file_281_45" class="btn-primary" string="Generate PDF" type="object"/>
                     <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+                <footer states="get">
+                    <button special="cancel" string="Close" type="object" class="btn-primary"/>
                 </footer>
             </form>
         </field>

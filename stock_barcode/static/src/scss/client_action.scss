@@ -338,4 +338,51 @@
             box-shadow: 0 -3px 10px $gray-300;
         }
     }
+
+    // Line form
+    // =====================================
+    .o_barcode_line_form {
+        width: 700px;
+        margin-left: 24px;
+        font-size: 1.4em;
+
+        @include media-breakpoint-down(sm) {
+            margin: 0;
+            max-width: 100vw;
+        }
+
+        .row {
+            a.o_field_widget {
+                display: inline-block;
+                padding-top: 8px;
+            }
+
+            & > div {
+                .o_input {
+                    padding: 8px;
+                    border: 1px solid $o-form-lightsecondary;
+
+                    @include media-breakpoint-up(sm) {
+                        min-width: 260px;
+                        max-width: 260px;
+                    }
+                }
+
+                .o_required_modifier .o_input {
+                    border-bottom: 2px solid $o-main-text-color;
+                }
+
+                .o_dropdown_button {
+                    display: none;
+                }
+
+                i {
+                    min-width: 24px;
+                    max-width: 24px;
+                    color: $o-main-color-muted;
+                }
+            }
+        }
+    }
+
 }

@@ -6,10 +6,14 @@
         <field name="mode">primary</field>
         <field name="inherit_id" ref="stock_barcode.stock_move_line_product_selector"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='picking_id']" position="attributes">
-                <attribute name="invisible">0</attribute>
-                <attribute name="options">{'no_create_edit': True}</attribute>
-                <attribute name="required">1</attribute>
+            <xpath expr="//field[@name='picking_id']" position="replace">
+                <div class="row" groups="stock.group_production_lot">
+                    <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
+                        <i class="fa fa-fw fa-lg fa-truck mr-3" title="Transfer"/>
+                        <field name="picking_id" placeholder="Transfer"
+                            required="1" options="{'no_create_edit': True}"/>
+                    </div>
+                </div>
             </xpath>
         </field>
     </record>

@@ -334,7 +334,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        extra_trigger: '.o_form_label:contains("Product")',
+        extra_trigger: '.o_field_widget[name="product_id"]',
         trigger: "input.o_field_widget[name=qty_done]",
         run: 'text 2',
     },
@@ -384,7 +384,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        extra_trigger: '.o_form_label:contains("Product")',
+        extra_trigger: '.o_field_widget[name="product_id"]',
         trigger: ".o_field_widget[name=product_id] input",
         run: 'text product2',
     },
@@ -451,7 +451,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_id"]',
         run: function() {
             helper.assertFormLocationSrc("WH/Stock/Shelf 1");
             helper.assertFormLocationDest("WH/Stock/Shelf 2");
@@ -470,7 +470,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        extra_trigger: '.o_form_label:contains("Product")',
+        extra_trigger: '.o_field_widget[name="product_id"]',
         trigger: ".o_field_widget[name=product_id] input",
         run: 'text product2',
     },
@@ -528,7 +528,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_id"]',
     },
 
     {
@@ -1214,7 +1214,7 @@ tour.register('test_receipt_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_id"]',
         run: function() {
             helper.assertFormLocationDest('WH/Stock/Shelf 1');
         },
@@ -1797,7 +1797,7 @@ tour.register('test_delivery_from_scratch_with_lots_1', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_id"]',
     },
 
 ]);
@@ -1851,7 +1851,7 @@ tour.register('test_delivery_from_scratch_with_sn_1', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_id"]',
     },
 
 ]);
@@ -1882,7 +1882,7 @@ tour.register('test_delivery_reserved_lots_1', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_id"]',
     },
 
 ]);
@@ -1936,7 +1936,7 @@ tour.register('test_delivery_reserved_with_sn_1', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_id"]',
     },
 
 ]);
@@ -1992,7 +1992,7 @@ tour.register('test_receipt_reserved_lots_multiloc_1', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_id"]',
     },
 
 ]);
@@ -2197,7 +2197,7 @@ tour.register('test_bypass_source_scan', {test: true}, [
 
     {
         trigger: '.o_field_many2one[name=lot_id]',
-        extra_trigger: '.o_form_label:contains("Product")',
+        extra_trigger: '.o_field_widget[name="qty_done"]',
         position: "bottom",
         run: function (actions) {
             actions.text("", this.$anchor.find("input"));
@@ -2295,9 +2295,9 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_qty"]',
         run: function () {
-            helper.assertInventoryFormQuantity('2.000');
+            helper.assertInventoryFormQuantity('2');
         }
     },
 
@@ -2420,7 +2420,7 @@ tour.register('test_inventory_adjustment_mutli_location', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_id"]',
     },
 
 ]);
@@ -2506,7 +2506,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_field_widget[name="product_id"]',
     },
 ]);
 
@@ -2916,7 +2916,7 @@ tour.register('test_reload_flow', {test: true}, [
     },
 
     {
-        extra_trigger: '.o_form_label:contains("Product")',
+        extra_trigger: '.o_field_widget[name="product_id"]',
         trigger: 'input.o_field_widget[name=qty_done]',
         run: 'text 2',
     },

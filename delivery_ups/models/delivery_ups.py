@@ -330,16 +330,14 @@ class ProviderUPS(models.Model):
 
         superself = self.sudo()
         srm = UPSRequest(self.log_xml, superself.ups_username, superself.ups_passwd, superself.ups_shipper_number, superself.ups_access_number, self.prod_environment)
-        errors = []
-        for package_ref in tracking_ref.split('+'):
-            result = srm.cancel_shipment(package_ref)
-            if result.get('error_message'):
-                errors.append('{}: {}'.format(package_ref, result['error_message']))
-        if errors:
-            raise UserError('\n'.join(errors))
-        picking.message_post(body=_(u'Shipment N° %s has been cancelled' % picking.carrier_tracking_ref))
-        picking.write({'carrier_tracking_ref': '',
-                       'carrier_price': 0.0})
+        result = srm.cancel_shipment(tracking_ref.partition('+')[0])
+
+        if result.get('error_message'):
+            raise UserError(result['error_message'])
+        else:
+            picking.message_post(body=_(u'Shipment N° %s has been cancelled' % picking.carrier_tracking_ref))
+            picking.write({'carrier_tracking_ref': '',
+                           'carrier_price': 0.0})
 
     def _ups_get_default_custom_package_code(self):
         return '02'

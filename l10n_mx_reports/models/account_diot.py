@@ -164,23 +164,26 @@ class MxReportPartnerLedger(models.AbstractModel):
         tag_0 = self.env.ref('l10n_mx.tag_diot_0')
         tag_ret = self.env.ref('l10n_mx.tag_diot_ret')
         tag_exe = self.env.ref('l10n_mx.tag_diot_exento')
-        rep_line_obj = self.env['account.tax.repartition.line']
-        get_diot_tax = lambda rep_ln: rep_ln.mapped(lambda x: x.invoice_tax_id or x.refund_tax_id).filtered(lambda x: x.type_tax_use == 'purchase')
+        rep_line_obj =  self.env['account.tax.repartition.line']
+
+        purchase_tax_ids = self.env['account.tax'].search([('type_tax_use', '=', 'purchase')]).ids
+        diot_common_domain = ['|', ('invoice_tax_id', 'in', purchase_tax_ids), ('refund_tax_id', 'in', purchase_tax_ids)]
+
         company = self.env.company.id
-        tax16 = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_16.ids), ('company_id', '=', company)]))
+        tax16 = rep_line_obj.search([('tag_ids', 'in', tag_16.ids), ('company_id', '=', company)] + diot_common_domain)
         taxnoncre = self.env['account.tax']
         if tag_non_cre:
-            taxnoncre = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_non_cre.ids), ('company_id', '=', company)]))
+            taxnoncre = rep_line_obj.search([('tag_ids', 'in', tag_non_cre.ids), ('company_id', '=', company)] + diot_common_domain)
         tax8 = self.env['account.tax']
         if tag_8:
-            tax8 = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_8.ids), ('company_id', '=', company)]))
+            tax8 = rep_line_obj.search([('tag_ids', 'in', tag_8.ids), ('company_id', '=', company)] + diot_common_domain)
         tax8_noncre = self.env['account.tax']
         if tag_8_non_cre:
-            tax8_noncre = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_8_non_cre.ids), ('company_id', '=', company)]))
-        taximp = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_imp.ids), ('company_id', '=', company)]))
-        tax0 = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_0.ids), ('company_id', '=', company)]))
-        tax_ret = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_ret.ids), ('company_id', '=', company)]))
-        tax_exe = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_exe.ids), ('company_id', '=', company)]))
+            tax8_noncre = rep_line_obj.search([('tag_ids', 'in', tag_8_non_cre.ids), ('company_id', '=', company)] + diot_common_domain)
+        taximp = rep_line_obj.search([('tag_ids', 'in', tag_imp.ids), ('company_id', '=', company)] + diot_common_domain)
+        tax0 = rep_line_obj.search([('tag_ids', 'in', tag_0.ids), ('company_id', '=', company)] + diot_common_domain)
+        tax_ret = rep_line_obj.search([('tag_ids', 'in', tag_ret.ids), ('company_id', '=', company)] + diot_common_domain)
+        tax_exe = rep_line_obj.search([('tag_ids', 'in', tag_exe.ids), ('company_id', '=', company)] + diot_common_domain)
         for partner in sorted_partners:
             amls = grouped_partners[partner]['lines']
             if not amls:

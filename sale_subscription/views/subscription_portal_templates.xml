@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="col-12 col-lg flex-grow-0 text-lg-right mb-1 mb-lg-0">
                                     <span t-if="account.stage_category == 'progress' and not account.to_renew" class="badge badge-pill badge-success"><i class="fa fa-fw fa-check"/> In Progress</span>
-                                    <span t-if="account.to_renew and account.category == 'progress'" class="badge badge-pill badge-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
+                                    <span t-if="account.to_renew and account.stage_category == 'progress'" class="badge badge-pill badge-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
                                     <span t-if="account.stage_category == 'closed'" class="badge badge-pill badge-default"><i class="fa fa-fw fa-remove"/> Closed</span>
                                 </div>
                             </div>

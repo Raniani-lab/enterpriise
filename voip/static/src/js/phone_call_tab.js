@@ -43,8 +43,8 @@ const PhoneCallTab = Widget.extend({
      * When the user clicks on the call button and the details are displayed,
      * the first number is called.
      */
-    callFirstNumber() {
-        const selectedPhoneCall = this._getSelectedPhoneCall();
+    async callFirstNumber() {
+        const selectedPhoneCall = await this._getPhoneCall(this._selectedPhoneCallId);
         const number = selectedPhoneCall.phoneNumber || selectedPhoneCall.mobileNumber;
         if (number) {
             this._currentPhoneCallId = this._selectedPhoneCallId;
@@ -78,8 +78,8 @@ const PhoneCallTab = Widget.extend({
             durationSeconds: this._phoneCallDetails.durationSeconds,
             isDone,
         });
+        await this.refreshPhonecallsStatus();
         this._phoneCallDetails.hideCallDisplay();
-        return this.refreshPhonecallsStatus();
     },
     /**
      * Function overriden by each tab. Called when a phonecall starts.
@@ -290,6 +290,26 @@ const PhoneCallTab = Widget.extend({
             phoneCall.id === this._currentPhoneCallId);
     },
     /**
+     * Use to retrieve the phone call, fetch the phone call on Odoo if needed
+     *
+     * @private
+     * @param {integer} phoneCallId
+     * @return {voip.PhoneCall}
+     */
+    async _getPhoneCall(phoneCallId) {
+        const phoneCall = this._phoneCalls.find(phoneCall => phoneCall.id === phoneCallId);
+        if (phoneCall) {
+            return phoneCall;
+        }
+        const phoneCallData = await this._rpc({
+            model: 'voip.phonecall',
+            method: 'search_read',
+            domain: [['id', '=', phoneCallId]],
+        });
+        const id = await this._displayInQueue(phoneCallData[0]);
+        return this._phoneCalls.find(phoneCall => phoneCall.id === id);
+    },
+    /**
      * @private
      * @return {voip.PhoneCall|undefined}
      */
@@ -359,11 +379,11 @@ const PhoneCallTab = Widget.extend({
      * @param {OdooEvent} ev
      * @param {string} ev.data.number the number that will be called
      */
-    _onClickedOnNumber(ev) {
+    async _onClickedOnNumber(ev) {
         this._currentPhoneCallId = this._selectedPhoneCallId;
         this.trigger_up('callNumber', {
             number: ev.data.number,
-            phoneCall: this._getSelectedPhoneCall(),
+            phoneCall: await this._getPhoneCall(this._selectedPhoneCallId),
         });
     },
     /**

@@ -31,12 +31,22 @@ const PhoneCallContactsTab = PhoneCallTab.extend({
     async initPhoneCall() {
         const _super = this._super.bind(this, ...arguments); // limitation of class.js
         const currentPhoneCall = this._getCurrentPhoneCall();
-        const phoneCallData = await this._rpc({
-            model: 'voip.phonecall',
-            method: 'create_from_contact',
-            args: [currentPhoneCall.partnerId],
-        });
-        this._currentPhoneCallId = this._createPhoneCall(phoneCallData);
+        // if a state exists, a call was previously made so we use log it as created from a recent call
+        let phoneCallData;
+        if (currentPhoneCall.state) {
+            phoneCallData = await this._rpc({
+                model: 'voip.phonecall',
+                method: 'create_from_recent',
+                args: [currentPhoneCall.id],
+            });
+        } else {
+            phoneCallData = await this._rpc({
+                model: 'voip.phonecall',
+                method: 'create_from_contact',
+                args: [currentPhoneCall.partnerId],
+            });
+        }
+        this._currentPhoneCallId = await this._displayInQueue(phoneCallData);
         await this._selectPhoneCall(this._currentPhoneCallId);
         return _super();
     },

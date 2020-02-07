@@ -22,7 +22,7 @@
                 </div>
             </xpath>
             <xpath expr="//button[@name='fsm_remove_quantity']" position="attributes">
-                <attribute name="attrs">{'invisible': [('quantity_decreasable', '=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': [('fsm_quantity', '!=', 0), ('quantity_decreasable', '=', False)]}</attribute>
             </xpath>
         </field>
     </record>

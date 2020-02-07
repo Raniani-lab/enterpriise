@@ -922,7 +922,7 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
         });
     },
     _dataInheritanceValues: function (values) {
-        var currency_id = values.related.split('.')[0] + ".env['res.currency']";
+        var currency_id = values.related.split('.')[0] + ".env.company.currency_id";
         var amount_untaxed = '0.0';
         var amount_total = '0.0';
         var amount_by_groups = 'None';

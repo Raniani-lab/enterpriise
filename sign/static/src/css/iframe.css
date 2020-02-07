@@ -369,9 +369,19 @@ textarea.o_sign_sign_item {
 
 @media (max-width: 767px) { /* @screen-xs-max */
     .o_sign_sign_item_navigator {
+        width: 100%;
+        top: 32px !important;
+        z-index: 9999;
         line-height: 25px;
-        height: 25px;
+        height: 35px;
+        padding: 5px 0 0;
         font-size: 0.8em;
+        background-image: none;
+        background-color: #875A7B;
+        text-align: center;
+    }
+    .o_sign_sign_item_navline {
+        display: none !important;
     }
 }
 

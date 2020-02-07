@@ -13,6 +13,13 @@ class AccountMove(models.Model):
         help='Intrastat country, arrival for sales, dispatch for purchases',
         readonly=True, states={'draft': [('readonly', False)]}, domain=[('intrastat', '=', True)])
 
+    def _get_invoice_intrastat_country_id(self):
+        ''' Hook allowing to retrieve the intrastat country depending of installed modules.
+        :return: A res.country record's id.
+        '''
+        self.ensure_one()
+        return self.partner_id.country_id.id
+
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
         # OVERRIDE to set 'intrastat_country_id' depending of the partner's country.

@@ -107,28 +107,6 @@
             parent="industry_fsm.fsm_menu_all_tasks_root"
             groups="sales_team.group_sale_salesman"/>
 
-    <record id="view_task_form2_inherit_sale_timesheet" model="ir.ui.view">
-        <field name="name">view.task.form2.inherit</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="sale_project.view_sale_project_inherit_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_so']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('sale_order_id', '=', False)]}</attribute>
-            </xpath>
-            <!-- Sales order item is invisible if it's a fsm task. In that case we show the sale order. -->
-             <xpath expr="//field[@name='sale_line_id']" position="attributes">
-                <attribute name="attrs">
-                    {'invisible': ['|', ('is_fsm', '=', True), ('partner_id', '=', False)]}
-                </attribute>
-            </xpath>
-            <xpath expr="//group[@name='sales_order_group']//field[@name='sale_order_id']" position="attributes">
-                <attribute name="attrs">
-                    {'invisible': ['|', '|', ('is_fsm', '=', False), ('partner_id', '=', False), ('sale_order_id', '=', False)], 'readonly': [('is_fsm', '=', True)]}
-                </attribute>
-            </xpath>
-        </field>
-    </record>
-
     <record id="view_task_form2_inherit" model="ir.ui.view">
         <field name="name">view.task.form2.inherit</field>
         <field name="model">project.task</field>
@@ -167,6 +145,28 @@
                 <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('invoice_count', '=', 0)]}" groups="industry_fsm.group_fsm_manager">
                     <field name="invoice_count" widget="statinfo" string="Invoices"/>
                 </button>
+            </xpath>
+        </field>
+    </record>
+
+        <record id="view_task_form2_inherit_sale_timesheet" model="ir.ui.view">
+        <field name="name">view.task.form2.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="sale_project.view_sale_project_inherit_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_so']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('sale_order_id', '=', False)]}</attribute>
+            </xpath>
+            <!-- Sales order item is invisible if it's a fsm task. In that case we show the sale order. -->
+             <xpath expr="//field[@name='sale_line_id']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['|', ('is_fsm', '=', True), ('partner_id', '=', False)]}
+                </attribute>
+            </xpath>
+            <xpath expr="//group[@name='sales_order_group']//field[@name='sale_order_id']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['|', ('is_fsm', '=', False), ('partner_id', '=', False)], 'readonly': ['|', ('material_line_product_count', '!=', 0), ('effective_hours', '!=', 0)]}
+                </attribute>
             </xpath>
         </field>
     </record>

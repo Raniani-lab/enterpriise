@@ -135,24 +135,3 @@ class TestSEPACreditTransfer(AccountTestCommon):
             self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
             self.assertEqual(payment_1.state, 'sent')
             self.assertEqual(payment_2.state, 'sent')
-
-    def testQRCode(self):
-        """Test thats the QR-Code is displayed iff the mandatory fields are
-        written and in the good state"""
-
-        form = Form(self.env['account.payment'])
-        form.partner_type = 'customer'
-        self.assertEqual(form.display_qr_code, False)
-        form.partner_type = 'supplier'
-        self.assertEqual(form.display_qr_code, False)
-        form.payment_method_code == 'manual'
-        self.assertEqual(form.display_qr_code, False)
-        form.partner_id = self.supplier
-        self.assertIn('The SEPA QR Code information is not set correctly', form.qr_code_url, 'A warning should be displayed')
-        form.partner_id = self.asustek_sup
-        self.assertEqual(form.display_qr_code, True)
-        self.assertIn('<img ', form.qr_code_url, 'The QR code should be displayed')
-        form.partner_bank_account_id = self.env['res.partner.bank']
-        self.assertIn('The SEPA QR Code information is not set correctly', form.qr_code_url, 'A warning should be displayed')
-        form.payment_method_id = self.sepa_ct
-        self.assertEqual(form.display_qr_code, False)

@@ -134,6 +134,7 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//kanban" position="attributes" t-translation="off">
+                <attribute name="group_create">0</attribute>
                 <attribute name="default_order">planned_date_begin</attribute>
                 <attribute name="default_group_by">planned_date_begin:day</attribute>
                 <attribute name="class">o_fsm_kanban</attribute>

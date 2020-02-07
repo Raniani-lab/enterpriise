@@ -247,6 +247,8 @@ class AccountMove(models.Model):
             text_to_send["content"] = self.partner_id.vat
         elif field == "currency":
             text_to_send["content"] = self.currency_id.name
+        elif field == "payment_ref":
+            text_to_send["content"] = self.invoice_payment_ref
         elif field == "invoice_lines":
             text_to_send = {'lines': []}
             for il in self.invoice_line_ids:
@@ -287,6 +289,7 @@ class AccountMove(models.Model):
                     'partner': record.get_validation('supplier'),
                     'VAT_Number': record.get_validation('VAT_Number'),
                     'currency': record.get_validation('currency'),
+                    'payment_ref': record.get_validation('payment_ref'),
                     'merged_lines': self.env.company.extract_single_line_per_tax,
                     'invoice_lines': record.get_validation('invoice_lines')
                 }
@@ -631,6 +634,7 @@ class AccountMove(models.Model):
         invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
         currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
         vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
+        payment_ref_ocr = ocr_results['payment_ref']['selected_value']['content'] if 'payment_ref' in ocr_results else ""
         invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
         vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
@@ -665,6 +669,9 @@ class AccountMove(models.Model):
                 move_form.currency_id = self.env["res.currency"].search([
                         '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
                         ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+
+            if not move_form.invoice_payment_ref:
+                move_form.invoice_payment_ref = payment_ref_ocr
 
             if not move_form.invoice_line_ids:
                 for line_val in vals_invoice_lines:

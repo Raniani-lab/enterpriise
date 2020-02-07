@@ -33,6 +33,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
                 'global_taxes': [{'selected_value': {'content': 15.0, 'amount_type': 'percent'}, 'words': []}],
                 'email': {'selected_value': {'content': 'test@email.com'}, 'words': []},
                 'website': {'selected_value': {'content': 'www.test.com'}, 'words': []},
+                'payment_ref': {'selected_value': {'content': '+++123/1234/12345+++'}, 'words': []},
                 'invoice_lines': [
                     {
                         'description': {'selected_value': {'content': 'Test 1'}},
@@ -80,6 +81,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertEqual(invoice.ref, 'INV0001')
         self.assertEqual(invoice.invoice_date, fields.Date.from_string('2019-04-12'))
         self.assertEqual(invoice.invoice_date_due, fields.Date.from_string('2019-04-19'))
+        self.assertEqual(invoice.invoice_payment_ref, "+++123/1234/12345+++")
 
         self.assertEqual(len(invoice.invoice_line_ids), 3)
         for i, invoice_line in enumerate(invoice.invoice_line_ids):
@@ -388,6 +390,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertEqual(invoice.get_validation('supplier')['content'], invoice.partner_id.name)
         self.assertEqual(invoice.get_validation('VAT_Number')['content'], invoice.partner_id.vat)
         self.assertEqual(invoice.get_validation('currency')['content'], invoice.currency_id.name)
+        self.assertEqual(invoice.get_validation('payment_ref')['content'], invoice.invoice_payment_ref)
         validation_invoice_lines = invoice.get_validation('invoice_lines')['lines']
         for i, il in enumerate(invoice.invoice_line_ids):
             self.assertDictEqual(validation_invoice_lines[i], {

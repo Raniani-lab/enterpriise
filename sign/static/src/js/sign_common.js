@@ -546,6 +546,7 @@ odoo.define('sign.document_signing', function (require) {
     'use strict';
 
     var ajax = require('web.ajax');
+    var config = require('web.config');
     var core = require('web.core');
     var Dialog = require('web.Dialog');
     var Document = require('sign.Document');
@@ -651,6 +652,10 @@ odoo.define('sign.document_signing', function (require) {
             options.title = options.title || _t("Adopt Your Signature");
             options.size = options.size || 'medium';
             options.technical = false;
+            if (config.device.isMobile) {
+                options.technical = true;
+                options.fullscreen = true;
+            }
 
             if (!options.buttons) {
                 options.buttons = [];
@@ -887,6 +892,11 @@ odoo.define('sign.document_signing', function (require) {
             options.size = options.size || "medium";
             options.technical = false;
 
+            if (config.device.isMobile) {
+                options.technical = true;
+                options.fullscreen = true;
+            }
+
             if(!options.buttons) {
                 options.buttons = [];
                 options.buttons.push({text: _t("Validate & Send"), classes: "btn-primary", click: function(e) {
@@ -1000,6 +1010,9 @@ odoo.define('sign.document_signing', function (require) {
 
         init: function(parent, requestID, requestToken, signature, signerPhone, RedirectURL, options) {
             options = (options || {});
+            if (config.device.isMobile) {
+                options.fullscreen = true;
+            }
             options.title = options.title || _t("Final Validation");
             options.size = options.size || "medium";
             if(!options.buttons) {
@@ -1047,6 +1060,9 @@ odoo.define('sign.document_signing', function (require) {
 
         init: function(parent, requestID, options) {
             options = (options || {});
+            if (config.device.isMobile) {
+                options.fullscreen = true;
+            }
             options.title = options.title || _t("PDF is encrypted");
             options.size = options.size || "medium";
             if(!options.buttons) {
@@ -1179,6 +1195,10 @@ odoo.define('sign.document_signing', function (require) {
             options.subtitle = options.subtitle || _t("Your signature has been saved.") + " " +_.str.sprintf(_t("Next signatory is %s"), this.name_list[0]);
             options.size = options.size || "medium";
             options.technical = false;
+            if (config.device.isMobile) {
+                options.technical = true;
+                options.fullscreen = true;
+            }
             options.buttons = [{text: _.str.sprintf(_t("Next signatory (%s)"), this.name_list[0]), click: this.on_click_next}],
             this.options = options;
             this.RedirectURL = "RedirectURL";

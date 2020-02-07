@@ -1,6 +1,7 @@
 odoo.define('sign.PDFIframe', function (require) {
     'use strict';
 
+    var config = require('web.config');
     var core = require('web.core');
     var Dialog = require('web.Dialog');
     var Widget = require('web.Widget');
@@ -50,7 +51,8 @@ odoo.define('sign.PDFIframe', function (require) {
             this.readonlyFields = this.pdfView || this.editMode;
 
             var viewerURL = "/web/static/lib/pdfjs/web/viewer.html?file=";
-            viewerURL += encodeURIComponent(this.attachmentLocation).replace(/'/g,"%27").replace(/"/g,"%22") + "#page=1&zoom=page-width";
+            viewerURL += encodeURIComponent(this.attachmentLocation).replace(/'/g,"%27").replace(/"/g,"%22") + "#page=1";
+            viewerURL += config.device.isMobile ? "&zoom=page-fit" : "&zoom=page-width";
             this.$iframe.ready(function () {
                 self.waitForPDF();
             });
@@ -83,8 +85,11 @@ odoo.define('sign.PDFIframe', function (require) {
             this.$('#openFile, #pageRotateCw, #pageRotateCcw, #pageRotateCcw, #viewBookmark').add(this.$('#lastPage').next()).hide();
             this.$('button#print').prop('title', _t("Print original document"));
             this.$('button#download').prop('title', _t("Download original document"));
-            this.$('button#zoomOut').click().click();
-
+            if (config.device.isMobile) {
+                this.$('button#zoomIn').click();
+            } else {
+                this.$('button#zoomOut').click().click();
+            }
             for(var i = 1 ; i <= this.nbPages ; i++) {
                 this.configuration[i] = [];
             }

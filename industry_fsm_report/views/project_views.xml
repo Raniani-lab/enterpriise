@@ -3,7 +3,7 @@
     <record id="project_task_view_gantt_fsm_worksheet" model="ir.ui.view">
         <field name="name">project.task.view.gantt.fsm.worksheet</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" eval="ref('industry_fsm.project_task_view_gantt_fsm')" />
+        <field name="inherit_id" ref="industry_fsm.project_task_view_gantt_fsm" />
         <field name="arch" type="xml">
             <xpath expr="//gantt" position="attributes">
                 <attribute name="color">worksheet_color</attribute>
@@ -183,7 +183,7 @@
     <record id="project_task_view_search_fsm_report" model="ir.ui.view">
         <field name="name">project.task.search.fsm</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" eval="ref('industry_fsm.project_task_view_search_fsm')" />
+        <field name="inherit_id" ref="industry_fsm.project_task_view_search_fsm"/>
         <field name="arch" type="xml">
             <xpath expr="//group" position="inside">
                 <filter string="Worksheet Template" name="groupby_worksheet_template" context="{'group_by':'worksheet_template_id'}"/>

@@ -38,7 +38,7 @@
             <field name="allocation_type">fixed_allocation</field>
             <field name="request_unit">half_day</field>
             <field name="color_name">lavender</field>
-            <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_small_unemployment"></field>
         </record>
 
@@ -55,7 +55,7 @@
             <field name="leave_validation_type">no_validation</field>
             <field name="request_unit">half_day</field>
             <field name="color_name">lavender</field>
-            <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_maternity"></field>
         </record>
 
@@ -84,7 +84,7 @@
             <field name="allocation_type">no</field>
             <field name="request_unit">half_day</field>
             <field name="color_name">lavender</field>
-            <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_unpredictable"></field>
         </record>
 
@@ -106,7 +106,7 @@
             <field name="allocation_type">fixed_allocation</field>
             <field name="request_unit">half_day</field>
             <field name="color_name">lavender</field>
-            <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_training_time_off"></field>
         </record>
 
@@ -162,7 +162,7 @@
             <field name="allocation_type">fixed_allocation</field>
             <field name="request_unit">half_day</field>
             <field name="color_name">lavender</field>
-            <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_extra_legal"></field>
         </record>
 
@@ -184,7 +184,7 @@
             <field name="allocation_type">fixed_allocation</field>
             <field name="request_unit">day</field>
             <field name="color_name">lavender</field>
-            <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_recovery"></field>
         </record>
 
@@ -199,7 +199,7 @@
             <field name="allocation_type">fixed_allocation</field>
             <field name="request_unit">half_day</field>
             <field name="color_name">lavender</field>
-            <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_european"></field>
         </record>
     </data>

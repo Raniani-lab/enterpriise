@@ -16,8 +16,8 @@
         <field name="allocation_type">fixed</field>
         <field name="leave_validation_type">both</field>
         <field name="color_name">black</field>
-        <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
-        <field name="allocation_notif_subtype_id" eval="ref('hr_holidays.mt_leave_allocation')"/>
+        <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
+        <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
         <field name="validity_start" eval="time.strftime('%Y-%m-01')"/>
         <field name="company_id" ref="res_company_be"/>
     </record>

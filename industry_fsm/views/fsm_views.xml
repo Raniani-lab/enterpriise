@@ -76,7 +76,7 @@
     <record id="project_task_view_gantt_fsm" model="ir.ui.view">
         <field name="name">project.task.view.gantt</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" eval="ref('project_enterprise.project_task_view_gantt')" />
+        <field name="inherit_id" ref="project_enterprise.project_task_view_gantt"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="planning_overlap" />

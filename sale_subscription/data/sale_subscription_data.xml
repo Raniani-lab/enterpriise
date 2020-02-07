@@ -87,7 +87,7 @@
         <field name="category">closed</field>
         <field name="fold">True</field>
     </record>
-    
+
     <!-- Default Subscription Templates -->
     <data noupdate="1">
         <record id="monthly_subscription" model="sale.subscription.template">
@@ -97,10 +97,10 @@
             <field name="recurring_rule_type">monthly</field>
             <field name="payment_mode">success_payment</field>
             <field name="invoice_mail_template_id"
-                   eval="ref('sale_subscription.mail_template_subscription_invoice')"/>
+                   ref="sale_subscription.mail_template_subscription_invoice"/>
             <field name="user_closable">True</field>
         </record>
-    
+
         <record id="yearly_subscription" model="sale.subscription.template">
             <field name="name">Yearly Subscription</field>
             <field name="code">YEA</field>
@@ -108,9 +108,9 @@
             <field name="recurring_rule_type">yearly</field>
             <field name="payment_mode">success_payment</field>
             <field name="invoice_mail_template_id"
-                   eval="ref('sale_subscription.mail_template_subscription_invoice')"/>
+                   ref="sale_subscription.mail_template_subscription_invoice"/>
             <field name="user_closable">True</field>
         </record>
     </data>
-    
+
 </odoo>

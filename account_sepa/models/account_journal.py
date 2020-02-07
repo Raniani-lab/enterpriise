@@ -83,9 +83,11 @@ class AccountJournal(models.Model):
 
         # Create one PmtInf XML block per execution date
         payments_date_instr_wise = defaultdict(lambda: [])
+        today = fields.Date.today()
         for payment in payments:
             local_instrument = self._get_local_instrument(payment)
-            payments_date_instr_wise[(payment['payment_date'], local_instrument)].append(payment)
+            required_payment_date = payment['payment_date'] if payment['payment_date'] > today else today
+            payments_date_instr_wise[(required_payment_date, local_instrument)].append(payment)
         count = 0
         for (payment_date, local_instrument), payments_list in payments_date_instr_wise.items():
             count += 1

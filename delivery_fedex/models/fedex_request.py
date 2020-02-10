@@ -8,7 +8,7 @@ import re
 from datetime import datetime, date
 from zeep import Client, Plugin, Settings
 from zeep.exceptions import Fault
-
+from zeep.wsdl.utils import etree_to_string
 
 _logger = logging.getLogger(__name__)
 # uncomment to enable logging of Zeep requests and responses
@@ -24,11 +24,11 @@ class LogPlugin(Plugin):
         self.debug_logger = debug_logger
 
     def egress(self, envelope, http_headers, operation, binding_options):
-        self.debug_logger(envelope, 'fedex_request')
+        self.debug_logger(etree_to_string(envelope).decode(), 'fedex_request')
         return envelope, http_headers
 
     def ingress(self, envelope, http_headers, operation):
-        self.debug_logger(envelope, 'fedex_response')
+        self.debug_logger(etree_to_string(envelope).decode(), 'fedex_response')
         return envelope, http_headers
 
     def marshalled(self, context):

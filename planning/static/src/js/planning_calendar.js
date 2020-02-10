@@ -1,13 +1,34 @@
 odoo.define('planning.Calendar', function (require) {
 "use strict";
 
+    var core = require('web.core');
+
     var CalendarPopover = require('web.CalendarPopover');
     var CalendarRenderer = require('web.CalendarRenderer');
     var CalendarModel = require('web.CalendarModel');
     var CalendarView = require('web.CalendarView');
     var view_registry = require('web.view_registry');
 
+    var QWeb = core.qweb;
+
     var PlanningCalendarPopover = CalendarPopover.extend({
+        willStart: function() {
+            const self = this;
+            const check_group = this.getSession().user_has_group('planning.group_planning_manager').then(function(has_group) {
+                self.is_manager = has_group;
+            });
+            return Promise.all([this._super.apply(this, arguments), check_group]);
+        },
+
+        renderElement: function () {
+            let render = $(QWeb.render(this.template, { widget: this }));
+            if(!this.is_manager) {
+                render.find('.card-footer').remove();
+            }
+
+            this._replaceElement(render);
+        },
+
         /**
          * Hide empty fields from the calendar popover
          * @override

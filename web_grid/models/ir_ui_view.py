@@ -16,7 +16,8 @@ class View(models.Model):
         super(View, self)._postprocess_access_rights(model, node)
 
         if node.tag == 'grid':
-            Model = self.env[model]
+            # testing ACL as real user
+            Model = self.env[model].sudo(False)
             is_base_model = self.env.context.get('base_model_name', model) == model
             for action, operation in (('create', 'create'), ('delete', 'unlink'), ('edit', 'write')):
                 if (not node.get(action) and

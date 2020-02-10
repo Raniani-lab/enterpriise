@@ -48,7 +48,8 @@ class View(models.Model):
         many2one-based grouping views. """
         super(View, self)._postprocess_access_rights(model, node)
 
-        Model = self.env[model]
+        # testing ACL as real user
+        Model = self.env[model].sudo(False)
         is_base_model = self.env.context.get('base_model_name', model) == model
 
         if node.tag in ('gantt'):

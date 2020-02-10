@@ -27,6 +27,8 @@
         }
     }
     &.o_home_menu_background_custom .o_home_menu {
+        background-position: center;
+        background-repeat: no-repeat;
         background-size: cover;
     }
 }

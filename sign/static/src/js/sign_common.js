@@ -8,10 +8,80 @@ odoo.define('sign.PDFIframe', function (require) {
 
     var _t = core._t;
 
-    var PDFIframe = Widget.extend({
+    const PinchItemMixin = {
+
+        events: {
+            'touchstart .o_pinch_item': '_onResetPinchCache',
+            'touchmove .o_pinch_item': '_onPinchMove',
+            'touchend .o_pinch_item': '_onResetPinchCache',
+        },
+
+        /**
+         * @param {Object} options
+         * @param {jQuery} options.$target
+         *        Element used as target where the pinch must be applied
+         * @param {function} [options.increaseDistanceHandler]
+         *        Handler called when the distance pinched between the 2 pointer is decreased
+         * @param {function} [options.decreaseDistanceHandler]
+         *        Handler called when the distance pinched between the 2 pointer is increased
+         * }
+         */
+        init(options) {
+            this.prevDiff = null;
+            this.$target = options.$target;
+            this.$target.addClass('o_pinch_item');
+            this.increaseDistanceHandler = options.increaseDistanceHandler ? options.increaseDistanceHandler : () => {};
+            this.decreaseDistanceHandler = options.decreaseDistanceHandler ? options.decreaseDistanceHandler : () => {};
+        },
+
+        //--------------------------------------------------------------------------
+        // Handlers
+        //--------------------------------------------------------------------------
+
+        /**
+         * This function implements a 2-pointer horizontal pinch/zoom gesture.
+         *
+         * If the distance between the two pointers has increased (zoom in),
+         * distance is decreasing (zoom out)
+         *
+         * This function sets the target element's border to "dashed" to visually
+         * indicate the pointer's target received a move event.
+         * @param ev
+         * @private
+         */
+        _onPinchMove(ev) {
+            const touches = ev.touches;
+            // If two pointers are down, check for pinch gestures
+            if (touches.length === 2) {
+                // Calculate the current distance between the 2 fingers
+                const deltaX = touches[0].pageX - touches[1].pageX;
+                const deltaY = touches[0].pageY - touches[1].pageY;
+                const curDiff = Math.hypot(deltaX, deltaY);
+                if (this.prevDiff == null) {
+                    this.prevDiff = curDiff;
+                }
+                const scale = this.prevDiff / curDiff;
+                if (scale < 1) {
+                    this.decreaseDistanceHandler(ev);
+                } else if (scale > 1) {
+                    this.increaseDistanceHandler(ev);
+                }
+            }
+        },
+
+        /**
+         *
+         * @private
+         */
+        _onResetPinchCache() {
+            this.prevDiff = null;
+        },
+    };
+
+    var PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         init: function(parent, attachmentLocation, editMode, datas, role) {
             this._super(parent);
-
+            var self = this;
             this.attachmentLocation = attachmentLocation;
             this.editMode = editMode;
             for(var dataName in datas) {
@@ -25,6 +95,14 @@ odoo.define('sign.PDFIframe', function (require) {
             this.fullyLoaded = new Promise(function(resolve, reject) {
                 _res = resolve;
                 _rej = reject;
+            }).then(function() {
+                // Init pinch event only after have the pdf loaded
+                PinchItemMixin.init.call(self, {
+                    $target: self.$el.find('#viewerContainer #viewer'),
+                    decreaseDistanceHandler: () => self.$('button#zoomIn').click(),
+                    increaseDistanceHandler: () => self.$('button#zoomOut').click()
+                });
+                return arguments;
             });
             this.fullyLoaded.resolve = _res;
             this.fullyLoaded.reject = _rej;
@@ -300,7 +378,7 @@ odoo.define('sign.PDFIframe', function (require) {
             clearTimeout(this.refresh_timer);
             this._super.apply(this, arguments);
         },
-    });
+    }));
 
     return PDFIframe;
 });

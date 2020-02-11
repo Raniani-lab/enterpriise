@@ -134,10 +134,8 @@
                 <xpath expr="//field[@name='project_id']" position="replace">
                     <field name="project_id" type="row"/>
                 </xpath>
-                <!-- group view by employee (only) instead of (project, task) -->
-                <xpath expr="//field[@name='task_id']" position="attributes">
-                    <attribute name="name">employee_id</attribute>
-                </xpath>
+                <!-- group view by only project instead of (project, task) -->
+                <xpath expr="//field[@name='task_id']" position="replace"/>
             </field>
         </record>
 
@@ -178,6 +176,9 @@
                 <xpath expr="//field[@name='employee_id']" position="attributes">
                     <attribute name="section">1</attribute>
                 </xpath>
+                <field name="employee_id" position="after">
+                    <field name="project_id" type="row"/>
+                </field>
                 <xpath expr="/grid" position="attributes">
                     <attribute name="create">true</attribute>
                     <attribute name="edit">true</attribute>
@@ -248,7 +249,9 @@
             <field name="context">{
                 'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'),
                 'my_timesheet_display_timer': True,
-                'group_expand': True
+                'group_expand': True,
+                'search_default_groupby_project': 1,
+                'search_default_groupby_task': 2
             }</field>
         </record>
 
@@ -271,7 +274,7 @@
             <field name="context">{
                 'group_expand': True,
                 'search_default_groupby_employee': 1,
-                'search_default_groupby_project': 1
+                'search_default_groupby_project': 2
             }</field>
         </record>
 

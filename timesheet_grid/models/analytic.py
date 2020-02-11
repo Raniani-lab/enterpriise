@@ -386,6 +386,8 @@ class AnalyticLine(models.Model):
             'search_default_nonvalidated': True,
             'search_default_my_team_timesheet': True,
             'group_expand': True,
+            'search_default_groupby_employee': 1,
+            'search_default_groupby_project': 2
         }
 
         if oldest_timesheet:  # check if exists a timesheet to validate
@@ -400,6 +402,7 @@ class AnalyticLine(models.Model):
         action = self.env.ref('hr_timesheet.act_hr_timesheet_report').read()[0]
         action.update({
             "name": name,
+            "display_name": name,
             "views": [
                 [self.env.ref('timesheet_grid.timesheet_view_grid_by_employee_validation').id, 'grid'],
                 [self.env.ref('hr_timesheet.timesheet_view_tree_user').id, 'tree'],

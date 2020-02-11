@@ -39,6 +39,7 @@
         <field name="priority">100</field>
         <field name="arch" type="xml">
             <search string="Asset Model">
+                <field name="name"/>
                 <group expand="0" string="Group By...">
                         <filter string="Revenue Account" name="account_depreciation_id" domain="[]" context="{'group_by':'account_depreciation_id'}"/>
                         <filter string="Deferred Revenue Account" name="account_depreciation_expense_id" domain="[]" context="{'group_by':'account_depreciation_expense_id'}"/>

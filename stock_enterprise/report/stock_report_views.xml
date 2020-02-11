@@ -7,6 +7,7 @@
             <field name="model">stock.report</field>
             <field name="arch" type="xml">
                 <search>
+                    <field name="reference"/>
                     <filter string="Done Transfers" name="done" domain="[('state', '=', 'done')]"/>
                     <filter string="Done Deliveries" name="done_deliveries" domain="[('state', '=', 'done'), ('picking_type_code', '=', 'outgoing')]"/>
                     <filter string="Done Receipts" name="done_receipts" domain="[('state', '=', 'done'), ('picking_type_code', '=', 'incoming')]"/>

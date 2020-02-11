@@ -48,6 +48,7 @@
         <field name="priority">20</field>
         <field name="arch" type="xml">
             <search>
+                <field name="name"/>
                 <filter string="My Request" name="filter_my_request" domain="[('request_owner_id', '=', uid)]"/>
                 <filter string="My Approvals to Review" name="filter_approvals_to_review"
                     domain="[('approver_ids.user_id', '=', uid), ('request_status', '=', 'pending')]"/>

@@ -192,7 +192,7 @@ class ReportCertificationReportIca(models.AbstractModel):
 
     def _get_domain(self, options):
         res = super(ReportCertificationReportIca, self)._get_domain(options)
-        res += [('account_id.code', '=', '236805')]
+        res += [('account_id.code', '=like', '2368%')]
         return res
 
     def _handle_aml(self, aml, lines_per_bimonth):

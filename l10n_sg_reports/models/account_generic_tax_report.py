@@ -16,10 +16,12 @@ class GenericTaxReport(models.AbstractModel):
         if self.env.company.country_id.code == 'SG':
             net_profit_query = """select coalesce(-sum(balance), 0)
                                   from account_move_line aml
+                                  join account_account account
+                                  on account.id = aml.account_id
                                   join account_move move
                                   on move.id = aml.move_id
                                   where
-                                  user_type_id in %(account_types)s
+                                  account.user_type_id in %(account_types)s
                                   and (%(show_draft)s or move.state = 'posted')
                                   and aml.date <= %(date_to)s
                                   and aml.date >= %(date_from)s

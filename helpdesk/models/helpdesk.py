@@ -45,8 +45,8 @@ class HelpdeskTeam(models.Model):
     assign_method = fields.Selection([
         ('manual', 'Manually'),
         ('randomly', 'Random'),
-        ('balanced', 'Balanced')], string='Assignment Method',
-        default='manual', required=True,
+        ('balanced', 'Balanced')], string='Assignment Method', default='manual',
+        compute='_compute_assign_method', store=True, readonly=False, required=True,
         help='Automatic assignment method for new tickets:\n'
              '\tManually: manual\n'
              '\tRandomly: randomly but everyone gets the same amount\n'
@@ -65,14 +65,18 @@ class HelpdeskTeam(models.Model):
     use_website_helpdesk_forum = fields.Boolean('Help Center')
     use_website_helpdesk_slides = fields.Boolean('Enable eLearning')
     use_helpdesk_timesheet = fields.Boolean('Timesheet on Ticket', help="This required to have project module installed.")
-    use_helpdesk_sale_timesheet = fields.Boolean('Time Reinvoicing', help="Reinvoice the time spent on ticket through tasks.")
+    use_helpdesk_sale_timesheet = fields.Boolean(
+        'Time Reinvoicing', compute='_compute_use_helpdesk_sale_timesheet', store=True,
+        readonly=False, help="Reinvoice the time spent on ticket through tasks.")
     use_credit_notes = fields.Boolean('Refunds')
     use_coupons = fields.Boolean('Coupons')
     use_product_returns = fields.Boolean('Returns')
     use_product_repairs = fields.Boolean('Repairs')
     use_twitter = fields.Boolean('Twitter')
     use_rating = fields.Boolean('Ratings on tickets')
-    portal_show_rating = fields.Boolean('Display Rating on Customer Portal')
+    portal_show_rating = fields.Boolean(
+        'Display Rating on Customer Portal', compute='_compute_portal_show_rating', store=True,
+        readonly=False)
     portal_rating_url = fields.Char('URL to Submit an Issue', readonly=True, compute='_compute_portal_rating_url')
     use_sla = fields.Boolean('SLA Policies')
     upcoming_sla_fail_tickets = fields.Integer(string='Upcoming SLA Fail Tickets', compute='_compute_upcoming_sla_fail_tickets')
@@ -108,20 +112,25 @@ class HelpdeskTeam(models.Model):
         for team in self:
             team.unassigned_tickets = mapped_data.get(team.id, 0)
 
-    @api.onchange('use_rating')
-    def _onchange_use_rating(self):
-        if not self.use_rating:
-            self.portal_show_rating = False
+    @api.depends('use_rating')
+    def _compute_portal_show_rating(self):
+        without_rating = self.filtered(lambda t: not t.use_rating)
+        without_rating.update({'portal_show_rating': False})
+
+    @api.depends('member_ids', 'visibility_member_ids')
+    def _compute_assign_method(self):
+        with_manual = self.filtered(lambda t: not t.member_ids and not t.visibility_member_ids)
+        with_manual.update({'assign_method': 'manual'})
 
     @api.onchange('use_alias', 'name')
     def _onchange_use_alias(self):
         if not self.use_alias:
             self.alias_name = False
 
-    @api.onchange('use_helpdesk_timesheet')
-    def _onchange_use_helpdesk_timesheet(self):
-        if not self.use_helpdesk_timesheet:
-            self.use_helpdesk_sale_timesheet = False
+    @api.depends('use_helpdesk_timesheet')
+    def _compute_use_helpdesk_sale_timesheet(self):
+        without_timesheet = self.filtered(lambda t: not t.use_helpdesk_timesheet)
+        without_timesheet.update({'use_helpdesk_sale_timesheet': False})
 
     @api.constrains('assign_method', 'member_ids', 'visibility_member_ids')
     def _check_member_assignation(self):
@@ -489,6 +498,7 @@ class HelpdeskSLA(models.Model):
         help='Minimum stage a ticket needs to reach in order to satisfy this SLA.')
     exclude_stage_ids = fields.Many2many(
         'helpdesk.stage', string='Exclude Stages',
+        compute='_compute_exclude_stage_ids', store=True, readonly=False, copy=True,
         domain="[('id', '!=', stage_id.id)]",
         help='The amount of time the ticket spends in this stage will not be taken into account when evaluating the status of the SLA Policy.')
     priority = fields.Selection(
@@ -496,23 +506,30 @@ class HelpdeskSLA(models.Model):
         default='0', required=True,
         help='Tickets under this priority will not be taken into account.')
     company_id = fields.Many2one('res.company', 'Company', related='team_id.company_id', readonly=True, store=True)
-    time_days = fields.Integer('Days', default=0, required=True, help="Days to reach given stage based on ticket creation date")
-    time_hours = fields.Integer('Hours', default=0, required=True, help="Hours to reach given stage based on ticket creation date")
-    time_minutes = fields.Integer('Minutes', default=0, required=True, help="Minutes to reach given stage based on ticket creation date")
+    time_days = fields.Integer(
+        'Days', default=0, required=True,
+        help="Days to reach given stage based on ticket creation date")
+    time_hours = fields.Integer(
+        'Hours', default=0, inverse='_inverse_time_hours', required=True,
+        help="Hours to reach given stage based on ticket creation date")
+    time_minutes = fields.Integer(
+        'Minutes', default=0, inverse='_inverse_time_minutes', required=True,
+        help="Minutes to reach given stage based on ticket creation date")
 
-    @api.onchange('time_minutes', 'time_hours')
-    def _onchange_time(self):
-        self.time_minutes = max(0, self.time_minutes)
-        self.time_hours = max(0, self.time_hours)
+    @api.depends('target_type')
+    def _compute_exclude_stage_ids(self):
+        self.update({'exclude_stage_ids': False})
 
-        if self.time_minutes >= 60:
-            self.time_hours += self.time_minutes / 60
-            self.time_minutes = self.time_minutes % 60
+    def _inverse_time_hours(self):
+        for sla in self:
+            sla.time_hours = max(0, sla.time_hours)
+            if sla.time_hours >= 24:
+                sla.time_days += sla.time_hours / 24
+                sla.time_hours = sla.time_hours % 24
 
-        if self.time_hours >= 24:
-            self.time_days += self.time_hours / 24
-            self.time_hours = self.time_hours % 24
-
-    @api.onchange('target_type')
-    def _onchange_target_type(self):
-        self.exclude_stage_ids = False
+    def _inverse_time_minutes(self):
+        for sla in self:
+            sla.time_minutes = max(0, sla.time_minutes)
+            if sla.time_minutes >= 60:
+                sla.time_hours += sla.time_minutes / 60
+                sla.time_minutes = sla.time_minutes % 60

@@ -6,7 +6,7 @@
         <field name="name">helpdesk.team.tree</field>
         <field name="model">helpdesk.team</field>
         <field name="arch" type="xml">
-            <tree string="Helpdesk Team">
+            <tree string="Helpdesk Team" multi_edit="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name" class="field_name"/>
                 <field name="alias_id"/>

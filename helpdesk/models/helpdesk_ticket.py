@@ -241,33 +241,32 @@ class HelpdeskTicket(models.Model):
     legend_done = fields.Char(related='stage_id.legend_done', string='Kanban Valid Explanation', readonly=True, related_sudo=False)
     legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing Explanation', readonly=True, related_sudo=False)
     domain_user_ids = fields.Many2many('res.users', compute='_compute_domain_user_ids')
-    user_id = fields.Many2one('res.users', string='Assigned to', tracking=True, domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
+    user_id = fields.Many2one(
+        'res.users', string='Assigned to', compute='_compute_user_and_stage_ids', store=True,
+        readonly=False, tracking=True,
+        domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
     partner_id = fields.Many2one('res.partner', string='Customer')
     partner_ticket_count = fields.Integer('Number of closed tickets from the same partner', compute='_compute_partner_ticket_count')
     attachment_number = fields.Integer(compute='_compute_attachment_number', string="Number of Attachments")
     is_self_assigned = fields.Boolean("Am I assigned", compute='_compute_is_self_assigned')
-
     # Used to submit tickets from a contact form
     partner_name = fields.Char(string='Customer Name', compute='_compute_partner_info', store=True, readonly=False)
     partner_email = fields.Char(string='Customer Email', compute='_compute_partner_info', store=True, readonly=False)
-
     closed_by_partner = fields.Boolean('Closed by Partner', readonly=True, help="If checked, this means the ticket was closed through the customer portal by the customer.")
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
     email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
-
     priority = fields.Selection(TICKET_PRIORITY, string='Priority', default='0')
-    stage_id = fields.Many2one('helpdesk.stage', string='Stage', ondelete='restrict', tracking=True,
-                               group_expand='_read_group_stage_ids', copy=False,
-                               index=True, domain="[('team_ids', '=', team_id)]")
+    stage_id = fields.Many2one(
+        'helpdesk.stage', string='Stage', compute='_compute_user_and_stage_ids', store=True,
+        readonly=False, ondelete='restrict', tracking=True, group_expand='_read_group_stage_ids',
+        copy=False, index=True, domain="[('team_ids', '=', team_id)]")
     date_last_stage_update = fields.Datetime("Last Stage Update", copy=False, readonly=True)
-
     # next 4 fields are computed in write (or create)
     assign_date = fields.Datetime("First assignment date")
     assign_hours = fields.Integer("Time to first assignment (hours)", compute='_compute_assign_hours', store=True, help="This duration is based on the working calendar of the team")
     close_date = fields.Datetime("Close date", copy=False)
     close_hours = fields.Integer("Time to close (hours)", compute='_compute_close_hours', store=True, help="This duration is based on the working calendar of the team")
     open_hours = fields.Integer("Open Time (hours)", compute='_compute_open_hours', search='_search_open_hours', help="This duration is not based on the working calendar of the team")
-
     # SLA relative
     sla_ids = fields.Many2many('helpdesk.sla', 'helpdesk_sla_status', 'ticket_id', 'sla_id', string="SLAs", copy=False)
     sla_status_ids = fields.One2many('helpdesk.sla.status', 'ticket_id', string="SLA Status")
@@ -377,13 +376,13 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.is_self_assigned = self.env.user == ticket.user_id
 
-    @api.onchange('team_id')
-    def _onchange_team_id(self):
-        if self.team_id:
-            if not self.user_id:
-                self.user_id = self.team_id._determine_user_to_assign()[self.team_id.id]
-            if not self.stage_id or self.stage_id not in self.team_id.stage_ids:
-                self.stage_id = self.team_id._determine_stage()[self.team_id.id]
+    @api.depends('team_id')
+    def _compute_user_and_stage_ids(self):
+        for ticket in self.filtered(lambda ticket: ticket.team_id):
+            if not ticket.user_id:
+                ticket.user_id = ticket.team_id._determine_user_to_assign()[ticket.team_id.id]
+            if not ticket.stage_id or ticket.stage_id not in ticket.team_id.stage_ids:
+                ticket.stage_id = ticket.team_id._determine_stage()[ticket.team_id.id]
 
     @api.depends('partner_id')
     def _compute_partner_info(self):

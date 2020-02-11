@@ -71,7 +71,7 @@
         <field name="name">helpdesk.stages.tree</field>
         <field name="model">helpdesk.stage</field>
         <field name="arch" type="xml">
-            <tree string="Stage">
+            <tree string="Stage" multi_edit="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="is_close"/>
@@ -148,7 +148,7 @@
         <field name="name">helpdesk.sla.tree</field>
         <field name="model">helpdesk.sla</field>
         <field name="arch" type="xml">
-            <tree string="SLA Policies">
+            <tree string="SLA Policies" multi_edit="1">
                 <field name="name"/>
                 <field name="team_id"/>
                 <field name="active"/>

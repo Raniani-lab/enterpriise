@@ -833,6 +833,28 @@ odoo.define('sign.document_signing', function (require) {
             if(!this.started) {
                 return;
             }
+            this._scrollToSignItemPromise($item).then(function () {
+                if($item.val() === "" && !$item.data('signature')) {
+                    self.setTip(self.types[$item.data('type')].tip);
+                }
+
+                self.getParent().refreshSignItems();
+                $item.focus();
+                self.isScrolling = false;
+            });
+
+            this.getParent().$('.ui-selected').removeClass('ui-selected');
+            $item.addClass('ui-selected').focus();
+        },
+
+        _scrollToSignItemPromise($item) {
+            if (config.device.isMobile) {
+                return new Promise(resolve => {
+                    this.isScrolling = true;
+                    $item[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+                    resolve();
+                });
+            }
 
             var $container = this.getParent().$('#viewerContainer');
             var $viewer = $container.find('#viewer');
@@ -866,18 +888,7 @@ odoo.define('sign.document_signing', function (require) {
                     resolve();
                 });
             });
-            Promise.all([def1, def2]).then(function() {
-                if($item.val() === "" && !$item.data('signature')) {
-                    self.setTip(self.types[$item.data('type')].tip);
-                }
-
-                self.getParent().refreshSignItems();
-                $item.focus();
-                self.isScrolling = false;
-            });
-
-            this.getParent().$('.ui-selected').removeClass('ui-selected');
-            $item.addClass('ui-selected').focus();
+            return Promise.all([def1, def2]);
         },
     });
 

@@ -12,9 +12,9 @@ class HrContract(models.Model):
     _description = 'Employee Contract'
 
     date_generated_from = fields.Datetime(string='Generated From', readonly=True, required=True,
-        default=lambda self: datetime.now().replace(hour=0, minute=0, second=0))
+        default=lambda self: datetime.now().replace(hour=0, minute=0, second=0), copy=False)
     date_generated_to = fields.Datetime(string='Generated To', readonly=True, required=True,
-        default=lambda self: datetime.now().replace(hour=0, minute=0, second=0))
+        default=lambda self: datetime.now().replace(hour=0, minute=0, second=0), copy=False)
 
     def _get_default_work_entry_type(self):
         return self.env.ref('hr_work_entry.work_entry_type_attendance', raise_if_not_found=False)
@@ -134,3 +134,29 @@ class HrContract(models.Model):
             return self.env['hr.work.entry']
 
         return self.env['hr.work.entry'].create(vals_list)
+
+    def _remove_work_entries(self):
+        ''' Remove all work_entries that are outside contract period (function used after writing new start or/and end date) '''
+        all_we_to_unlink = self.env['hr.work.entry']
+        for contract in self:
+            date_start = fields.Datetime.to_datetime(contract.date_start)
+            if contract.date_generated_from < date_start:
+                we_to_remove = self.env['hr.work.entry'].search([('date_stop', '<=', date_start), ('contract_id', '=', contract.id)])
+                if we_to_remove:
+                    contract.date_generated_from = date_start
+                    all_we_to_unlink |= we_to_remove
+            if not contract.date_end:
+                continue
+            date_end = datetime.combine(contract.date_end, datetime.max.time())
+            if contract.date_generated_to > date_end:
+                we_to_remove = self.env['hr.work.entry'].search([('date_start', '>=', date_end), ('contract_id', '=', contract.id)])
+                if we_to_remove:
+                    contract.date_generated_to = date_end
+                    all_we_to_unlink |= we_to_remove
+        all_we_to_unlink.unlink()
+
+    def write(self, vals):
+        result = super(HrContract, self).write(vals)
+        if vals.get('date_end') or vals.get('date_start'):
+            self._remove_work_entries()
+        return result

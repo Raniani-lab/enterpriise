@@ -11,6 +11,7 @@ Generate Electronic Invoice with custom numbers
     'depends': [
         'stock_landed_costs',
         'sale_management',
+        'sale_stock',
         'l10n_mx_edi',
     ],
     'data': [

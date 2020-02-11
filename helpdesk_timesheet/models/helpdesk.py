@@ -65,7 +65,10 @@ class HelpdeskTicket(models.Model):
         return result
 
     project_id = fields.Many2one("project.project", string="Project", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]")
-    task_id = fields.Many2one("project.task", string="Task", domain="[('id', 'in', _related_task_ids)]", tracking=True, help="The task must have the same customer as this ticket.")
+    task_id = fields.Many2one(
+        "project.task", string="Task", compute='_compute_task_id', store=True, readonly=False,
+        domain="[('id', 'in', _related_task_ids)]", tracking=True,
+        help="The task must have the same customer as this ticket.")
     _related_task_ids = fields.Many2many('project.task', compute='_compute_related_task_ids')
     timesheet_ids = fields.One2many('account.analytic.line', 'helpdesk_ticket_id', 'Timesheets')
     is_closed = fields.Boolean(related="task_id.stage_id.is_closed", string="Is Closed", readonly=True)
@@ -120,11 +123,10 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.total_hours_spent = round(sum(ticket.timesheet_ids.mapped('unit_amount')), 2)
 
-    @api.onchange('project_id')
-    def _onchange_project_id(self):
-        if self.project_id != self.task_id.project_id:
-            # reset task when changing project
-            self.task_id = False
+    @api.depends('project_id')
+    def _compute_task_id(self):
+        with_different_project = self.filtered(lambda t: t.project_id != t.task_id.project_id)
+        with_different_project.update({'task_id': False})
 
     @api.onchange('task_id')
     def _onchange_task_id(self):

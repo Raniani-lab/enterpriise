@@ -9,12 +9,11 @@ class AccountAnalyticLine(models.Model):
 
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket', 'Helpdesk Ticket')
 
-    @api.onchange('project_id')
-    def onchange_project_id(self):
-        result = super(AccountAnalyticLine, self).onchange_project_id()
-        if self.helpdesk_ticket_id:
-            self.task_id = self.helpdesk_ticket_id.task_id
-        return result
+    @api.depends('project_id')
+    def _compute_task_id(self):
+        super(AccountAnalyticLine, self)._compute_task_id()
+        for line in self.filtered(lambda line: line.helpdesk_ticket_id):
+            line.task_id = line.helpdesk_ticket_id.task_id
 
     def _timesheet_preprocess(self, vals):
         helpdesk_ticket_id = vals.get('helpdesk_ticket_id')

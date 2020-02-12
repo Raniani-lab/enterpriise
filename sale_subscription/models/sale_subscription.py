@@ -1008,6 +1008,7 @@ class SaleSubscriptionLine(models.Model):
             product = product.with_context(lang=partner.lang)
 
         self.name = product.get_product_multiline_description_sale()
+        self.uom_id = product.uom_id.id
         self._compute_tax_id()
 
     @api.onchange('product_id', 'quantity')

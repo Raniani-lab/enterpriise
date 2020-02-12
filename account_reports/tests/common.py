@@ -30,6 +30,15 @@ class TestAccountReportsCommon2(common.TransactionCase):
             'reconcile': False,
             'company_id': self.company.id,
         })
+        self.account_rec = self.env['account.account'].create({
+            'name': 'RECEIVABLE',
+            'code': '003',
+            'user_type_id': self.env.ref('account.data_account_type_receivable').id,
+            'reconcile': True,
+            'company_id': self.company.id,
+        })
+        self.partner_timmy_thomas.property_account_receivable_id = self.account_rec
+
         self.sale_journal = self.env['account.journal'].create({
             'name': 'sale',
             'code': 'SALE',

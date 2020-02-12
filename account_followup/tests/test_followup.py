@@ -31,11 +31,13 @@ class TestAccountFollowup(TestAccountReportsCommon2):
         })
 
         account_sale1 = self.account_sale.copy({'company_id': company1.id})
+        account_rec1 = self.account_rec.copy({'company_id': company1.id})
         sale_journal1 = self.sale_journal.copy({
             'company_id': company1.id,
             'default_debit_account_id': account_sale1.id,
             'default_credit_account_id': account_sale1.id,
         })
+        self.partner_timmy_thomas.with_company(company1.id).property_account_receivable_id = account_rec1
 
         invoice_move1 = self.env['account.move'].with_context(default_type='out_invoice').create({
             'partner_id': self.partner_timmy_thomas.id,
@@ -98,6 +100,7 @@ class TestAccountFollowup(TestAccountReportsCommon2):
             'name': 'Pinco Pallino',
             'email': 'test@example.com',
         })
+        test_partner.property_account_receivable_id = self.account_rec
 
         today = fields.Date.today()
 
@@ -145,7 +148,8 @@ class TestAccountFollowup(TestAccountReportsCommon2):
 
         self.assertEqual(some_attachments, sent_attachments)
 
-class TestAccountReportsCommon2(common.TransactionCase):
+class TestAccountReportsCommon2(TestAccountReportsCommon2):
+
     def test_followup_level_and_status(self):
         self.env['account_followup.followup.line'].search([]).unlink()
         (first_followup_level, second_followup_level) = self.env['account_followup.followup.line'].create([
@@ -167,6 +171,7 @@ class TestAccountReportsCommon2(common.TransactionCase):
         test_partner = self.env['res.partner'].create({
             'name': 'Mr Bluesky',
         })
+        test_partner.property_account_receivable_id = self.account_rec
 
         today = fields.Date.today()
         tomorrow = today + relativedelta(days=1)
@@ -233,6 +238,7 @@ class TestAccountReportsCommon2(common.TransactionCase):
         # register a payment for the older invoice
         self.env['account.payment.register'].with_context(active_model='account.move', active_ids=forty_days_ago_invoice.ids).create({
             'payment_date': today,
+            'journal_id': self.sale_journal.id,
         }).create_payments()
 
         # nothing more to see as the first invoice was earlier than the delay

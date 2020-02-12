@@ -38,3 +38,17 @@ class ResConfigSettings(models.TransientModel):
                     _('Incorrect fiscal year date: day is out of range for month. Month: %s; Day: %s') %
                     (wiz.fiscalyear_last_month, wiz.fiscalyear_last_day)
                 )
+
+    @api.model
+    def create(self, vals):
+        # Amazing workaround: non-stored related fields on company are a BAD idea since the 2 fields
+        # must follow the constraint '_check_fiscalyear_last_day'. The thing is, in case of related
+        # fields, the inverse write is done one value at a time, and thus the constraint is verified
+        # one value at a time... so it is likely to fail.
+        self.env.company.write({
+            'fiscalyear_last_day': vals.get('fiscalyear_last_day') or self.env.company.fiscalyear_last_day,
+            'fiscalyear_last_month': vals.get('fiscalyear_last_month') or self.env.company.fiscalyear_last_month,
+        })
+        vals.pop('fiscalyear_last_day', None)
+        vals.pop('fiscalyear_last_month', None)
+        return super().create(vals)

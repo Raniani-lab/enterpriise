@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import os
 
-from defusedxml.lxml import fromstring
+from lxml.etree import fromstring
 from datetime import datetime, date, timedelta
 from lxml import etree
 from zeep import Client, Plugin

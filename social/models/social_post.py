@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
-import re
 import threading
 
 from odoo import _, api, fields, models
@@ -13,15 +12,19 @@ class SocialPost(models.Model):
     """ A social.post represents a post that will be published on multiple social.accounts at once.
     It doesn't do anything on its own except storing the global post configuration (message, images, ...).
 
+    This model inherits from `social.post.template` which contains the common part of both
+    (all fields related to the post content like the message, the images...). So we do not
+    duplicate the code by inheriting from it. We can generate a `social.post` from a
+    `social.post.template` with `action_generate_post`.
+
     When posted, it actually creates several instances of social.live.posts (one per social.account)
     that will publish their content through the third party API of the social.account. """
 
     _name = 'social.post'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'social.post.template']
     _description = 'Social Post'
     _order = 'create_date desc'
 
-    message = fields.Text("Message")
     state = fields.Selection([
         ('draft', 'Draft'),
         ('scheduled', 'Scheduled'),
@@ -30,28 +33,18 @@ class SocialPost(models.Model):
         string='Status', default='draft', readonly=True, required=True,
         help="The post is considered as 'Posted' when all its sub-posts (one per social account) are either 'Failed' or 'Posted'")
     has_post_errors = fields.Boolean("There are post errors on sub-posts", compute='_compute_has_post_errors')
-    account_ids = fields.Many2many('social.account', 'social_post_social_account', 'post_id', 'account_id',
-                                   string='Social Accounts',
-                                   help="The accounts on which this post will be published.",
-                                   domain="[('id', 'in', account_allowed_ids)]",
-                                   compute='_compute_account_ids', store=True, readonly=False)
+    account_ids = fields.Many2many(domain="[('id', 'in', account_allowed_ids)]")
     account_allowed_ids = fields.Many2many('social.account', string='Allowed Accounts', compute='_compute_account_allowed_ids',
                                            help='List of the accounts which can be selected for this post.')
     company_id = fields.Many2one('res.company', string='Company',
                                  default=lambda self: self.env.company,
                                  domain=lambda self: [('id', 'in', self.env.companies.ids)])
-    has_active_accounts = fields.Boolean('Are Accounts Available?', compute='_compute_has_active_accounts')
     media_ids = fields.Many2many('social.media', compute='_compute_media_ids', store=True,
         help="The social medias linked to the selected social accounts.")
     live_post_ids = fields.One2many('social.live.post', 'post_id', string="Posts By Account", readonly=True,
         help="Sub-posts that will be published on each selected social accounts.")
     live_posts_by_media = fields.Char('Live Posts by Social Media', compute='_compute_live_posts_by_media', readonly=True,
         help="Special technical field that holds a dict containing the live posts names by media ids (used for kanban view).")
-
-    image_ids = fields.Many2many('ir.attachment', string='Attach Images',
-        help="Will attach images to your posts (if the social media supports it).")
-    image_urls = fields.Text('Images URLs', compute='_compute_image_urls',
-        help="Technical JSON array capturing the URLs of the images to make it easy to display them in the kanban view.")
     post_method = fields.Selection([
         ('now', 'Send now'),
         ('scheduled', 'Schedule later')], string="When", default='now', required=True,
@@ -72,17 +65,6 @@ class SocialPost(models.Model):
         help="Number of people engagements with the post (Likes, comments...)")
     click_count = fields.Integer('Number of clicks', compute="_compute_click_count")
 
-    @api.constrains('message')
-    def _check_message_not_empty(self):
-        for social_post in self:
-            if not social_post.message:
-                raise UserError(_("The 'message' field is required for post ID %s", social_post.id))
-
-    @api.constrains('image_ids')
-    def _check_image_ids_mimetype(self):
-        for social_post in self:
-            if any(not image.mimetype.startswith('image') for image in social_post.image_ids):
-                raise UserError(_('Uploaded file does not seem to be a valid image.'))
 
     @api.constrains('account_ids')
     def _check_account_ids(self):
@@ -122,12 +104,7 @@ class SocialPost(models.Model):
 
     @api.depends('company_id')
     def _compute_account_ids(self):
-        """If there are less than 3 social accounts available, select them all by default."""
-        all_account_ids = self.env['social.account'].sudo().search([])
-
-        for post in self:
-            accounts = all_account_ids.filtered_domain(post._get_default_accounts_domain())
-            post.account_ids = accounts if len(accounts) <= 3 else False
+        super(SocialPost, self)._compute_account_ids()
 
     @api.depends('company_id')
     def _compute_account_allowed_ids(self):
@@ -156,12 +133,6 @@ class SocialPost(models.Model):
     def _compute_calendar_date(self):
         for post in self:
             post.calendar_date = post.published_date if post.state == 'posted' else post.scheduled_date
-
-    @api.depends('image_ids')
-    def _compute_image_urls(self):
-        """ See field 'help' for more information. """
-        for post in self:
-            post.image_urls = json.dumps(['web/image/%s' % image_id.id for image_id in post.image_ids if image_id.id])
 
     @api.depends('live_post_ids.account_id', 'live_post_ids.display_name')
     def _compute_live_posts_by_media(self):
@@ -375,44 +346,11 @@ class SocialPost(models.Model):
         return ['|', ('company_id', '=', False), ('company_id', 'in', self.env.companies.ids)]
 
     def _get_default_accounts_domain(self):
-        """ Can be overridden by underlying social.media implementation to remove default accounts.
-        It's used to filter the default accounts to tick when creating a new social.post. """
         return self._get_company_domain()
+
 
     def _get_stream_post_domain(self):
         return []
-
-    @api.model
-    def _prepare_post_content(self, message, media_type, **kw):
-        """ Prepares the post content and can be customized by underlying social implementations.
-        e.g: YouTube will automatically include a link at the end of the message.
-        kwargs are limited to fields actually used by the underlying implementations
-        (e.g: 'youtube_video_id'). """
-
-        if media_type not in [key for (key, val) in self.env['social.media'].fields_get(['media_type'])['media_type']['selection']]:
-            raise ValueError("Unknown media_type %s" % media_type)
-
-        return message or ''
-
-    @api.model
-    def _get_post_message_modifying_fields(self):
-        """ Returns additional fields required by the '_prepare_post_content' to compute the value
-        of the social.live.post's "message" field. Which is a post-processed version of this model's
-        "message" field (i.e shortened links, UTMized, ...).
-        For example, social_youtube requires the 'youtube_video_id' field to be able to correctly
-        prepare the post content. """
-        return []
-
-    @api.model
-    def _extract_url_from_message(self, message):
-        """ Utility method that extracts an URL (ex: https://www.google.com) from a string message.
-        Copied from: https://daringfireball.net/2010/07/improved_regex_for_matching_urls """
-        # TDE FIXME: use a tool method instead
-        url_regex = re.compile(r"""((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|(([^\s()<>]+|(([^\s()<>]+)))*))+(?:(([^\s()<>]+|(([^\s()<>]+)))*)|[^\s`!()[]{};:'".,<>?«»“”‘’]))""", re.DOTALL)
-        urls = url_regex.search(message)
-        if urls:
-            return urls.group(0)
-        return None
 
     def _check_post_completion(self):
         """ This method will check if all live.posts related to the post are completed ('posted' / 'failed').

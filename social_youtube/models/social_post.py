@@ -89,14 +89,6 @@ class SocialPostYoutube(models.Model):
             if not social_post.youtube_video_id and 'youtube' in social_post.media_ids.mapped('media_type'):
                 raise UserError(_("You have to upload a video when posting on YouTube."))
 
-    def _get_default_accounts_domain(self):
-        """ As YouTube requires 'extra work' (video upload, ...), we don't want it selected by default. """
-        youtube_media = self.env.ref('social_youtube.social_media_youtube')
-        return expression.AND([
-            super(SocialPostYoutube, self)._get_default_accounts_domain(),
-            [('media_id', '!=', youtube_media.id)]
-        ])
-
     def _get_stream_post_domain(self):
         domain = super(SocialPostYoutube, self)._get_stream_post_domain()
         youtube_video_ids = self.mapped('youtube_video_id')

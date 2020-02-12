@@ -13,6 +13,7 @@
     },
     'data': [
         'security/ir.model.access.csv',
+        'views/social_post_template_views.xml',
         'views/social_post_views.xml',
         'views/res_config_settings_views.xml',
         'views/social_push_notifications_templates.xml',

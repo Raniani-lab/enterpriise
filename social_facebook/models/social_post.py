@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import requests
-import base64
 
 from odoo import models, api, fields
 from odoo.osv import expression
@@ -11,9 +10,6 @@ from werkzeug.urls import url_join
 
 class SocialPostFacebook(models.Model):
     _inherit = 'social.post'
-
-    display_facebook_preview = fields.Boolean('Display Facebook Preview', compute='_compute_display_facebook_preview')
-    facebook_preview = fields.Html('Facebook Preview', compute='_compute_facebook_preview')
 
     @api.depends('live_post_ids.facebook_post_id')
     def _compute_stream_posts_count(self):
@@ -24,26 +20,6 @@ class SocialPostFacebook(models.Model):
                 post.stream_posts_count += self.env['social.stream.post'].search_count(
                     [('facebook_post_id', 'in', facebook_post_ids)]
                 )
-
-    @api.depends('message', 'account_ids.media_id.media_type')
-    def _compute_display_facebook_preview(self):
-        for post in self:
-            post.display_facebook_preview = post.message and ('facebook' in post.account_ids.media_id.mapped('media_type'))
-
-    @api.depends(lambda self: ['message', 'scheduled_date', 'image_ids'] + self._get_post_message_modifying_fields())
-    def _compute_facebook_preview(self):
-        for post in self:
-            post.facebook_preview = self.env.ref('social_facebook.facebook_preview')._render({
-                'message': post._prepare_post_content(
-                    post.message,
-                    'facebook',
-                    **{field: post[field] for field in post._get_post_message_modifying_fields()}),
-                'published_date': post.scheduled_date if post.scheduled_date else fields.Datetime.now(),
-                'images': [
-                    image.datas if not image.id
-                    else base64.b64encode(open(image._full_path(image.store_fname), 'rb').read()) for image in post.image_ids
-                ]
-            })
 
     def _get_stream_post_domain(self):
         domain = super(SocialPostFacebook, self)._get_stream_post_domain()

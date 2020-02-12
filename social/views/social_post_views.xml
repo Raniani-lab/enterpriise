@@ -172,8 +172,10 @@
     <record id="social_post_view_form" model="ir.ui.view">
         <field name="name">social.post.view.form</field>
         <field name="model">social.post</field>
+        <field name="inherit_id" ref="social_post_template_view_form"/>
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <form string="Social Post" class="o_social_post_view_form">
+            <xpath expr="//sheet" position="before">
                 <header>
                     <button name="action_post" string="Post" type="object" class="oe_highlight"
                         attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('post_method', '=', 'scheduled')]}"
@@ -186,96 +188,95 @@
                         groups="social.group_social_manager" />
                     <field name="state" widget="statusbar"/>
                 </header>
-                <sheet>
-                    <div class="oe_button_box" name="button_box" attrs="{'invisible': [('state', '=', 'draft')]}">
-                        <button class="oe_stat_button" icon="fa-newspaper-o" type="object" name="social_stream_post_action_my"
-                            attrs="{'invisible': [('stream_posts_count', '=', 0)]}">
-                            <field string="Feed Posts" name="stream_posts_count" widget="statinfo" />
-                        </button>
-                        <button class="oe_stat_button" icon="fa-thumbs-up"
-                            attrs="{'invisible': [('engagement', '=', 0)]}">
-                            <field string="Engagement" name="engagement" widget="statinfo" />
-                        </button>
-                        <button class="oe_stat_button order-4" name="action_redirect_to_clicks" type="object" icon="fa-mouse-pointer">
-                            <field name="click_count" string="Clicks" widget="statinfo"/>
-                        </button>
-                    </div>
-                    <group>
-                        <group string="Your Post" name="social_post_global" class="o_social_post_form_content">
-                            <field name="has_active_accounts" invisible="1" />
-                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"
-                                attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>
-                            <field name="account_allowed_ids" invisible="1"/>
-                            <field name="account_ids" options="{'no_create': True}" string="Post on" widget="many2many_checkboxes"
-                                 attrs="{'invisible': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}" />
-                            <div colspan="2" class="alert alert-info o_social_post_no_accounts_available" role="alert" attrs="{'invisible': [('has_active_accounts', '=', True)]}">
-                                <p><a href="/web#action=social.action_social_media">Link social accounts</a> before posting.</p>
-                            </div>
-                            <field name="message" widget="text_emojis" class="o_social_post_message_wrapper"
-                                    options="{'onchange_on_keydown': true}" force_save="1"
-                                     attrs="{'required': [(1, '=', 1)], 'readonly': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}" />
-                            <field name="image_ids" widget="many2many_binary" class="o_social_post_form_attachments" options="{'accepted_file_extensions': 'image/*'}"
-                                 attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}" />
-                            <field string="Campaign" name="utm_campaign_id"
-                                attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"
-                                context="{'form_view_ref': 'social.utm_campaign_view_form_quick_create_social'}"/>
-                            <field name="post_method" widget="radio" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                            <field name="scheduled_date" attrs="{'invisible': ['|', ('post_method', '=', 'now'), ('state', 'in', ['posting', 'posted'])], 'required': [('post_method', '!=', 'now')]}" />
-                        </group>
-                        <group name="previews_placeholder" class="o_social_post_preview_group m-0">
-                            <div class="o_social_post_empty_preview overflow-hidden o_view_nocontent bg-100"
-                                attrs="{'invisible': [('account_ids', '!=', []), ('message', '!=', False), ('message', '!=', '')]}">
-                                <div class="o_nocontent_help">
-                                    <p class="o_view_nocontent_smiling_face">
-                                        Preview your post
-                                    </p>
-                                    <p>
-                                        Write a message to see the preview.
-                                    </p>
-                                </div>
-                            </div>
-                        </group>
-                        <group name="live_posts" colspan="2" string="Posts By Accounts"
-                            attrs="{'invisible': [('state', 'not in', ['posting', 'posted'])]}">
-                            <field name="live_post_ids" colspan="2" nolabel="1">
-                                <kanban>
-                                    <field name="account_id"/>
-                                    <field name="state"/>
-                                    <field name="failure_reason" />
-                                    <templates>
-                                        <t t-name="kanban-box">
-                                            <div class="o_social_live_post_kanban ml-0 mr-3">
-                                                <div class="row">
-                                                    <div class="col-md-9 o_social_live_post_kanban_account">
-                                                        <field name="account_id" />
-                                                    </div>
-                                                    <div class="col-md-3 text-right">
-                                                        <field name="state" widget="label_selection" options="{'classes': {'ready': 'info', 'posting': 'warning', 'posted': 'success', 'failed': 'danger'}}"/>
-                                                    </div>
-                                                </div>
-                                                <div class="o_social_live_post_kanban_failure_reason mt-2" t-att-title="record.failure_reason.raw_value">
-                                                    <field name="failure_reason" />
-                                                </div>
-                                                <div class="text-right mt-4">
-                                                    <button name="action_retry_post" string="Retry" type="object" class="btn btn-primary"
-                                                        attrs="{'invisible': [('state', '!=', 'failed')]}">
-                                                        Retry
-                                                    </button>
-                                                </div>
+            </xpath>
+
+            <xpath expr="//sheet/group[1]" position="before">
+                <div class="oe_button_box" name="button_box" attrs="{'invisible': [('state', '=', 'draft')]}">
+                    <button class="oe_stat_button" icon="fa-newspaper-o" type="object" name="social_stream_post_action_my"
+                        attrs="{'invisible': [('stream_posts_count', '=', 0)]}">
+                        <field string="Feed Posts" name="stream_posts_count" widget="statinfo" />
+                    </button>
+                    <button class="oe_stat_button" icon="fa-thumbs-up"
+                        attrs="{'invisible': [('engagement', '=', 0)]}">
+                        <field string="Engagement" name="engagement" widget="statinfo" />
+                    </button>
+                    <button class="oe_stat_button order-4" name="action_redirect_to_clicks" type="object" icon="fa-mouse-pointer">
+                        <field name="click_count" string="Clicks" widget="statinfo"/>
+                    </button>
+                </div>
+            </xpath>
+
+            <xpath expr="//field[@name='account_ids']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}</attribute>
+                <!-- Remove the domain added on the social post template form view and allow to select Youtube accounts for a social post -->
+                <attribute name="domain">[('id', 'in', account_allowed_ids)]</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='message']" position="attributes">
+                <attribute name="attrs">{'required': [(1, '=', 1)], 'readonly': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='image_ids']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ['posting', 'posted'])]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='account_ids']" position="before">
+                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"
+                        attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>
+                <field name="account_allowed_ids" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='image_ids']" position="after">
+                <field string="Campaign" name="utm_campaign_id"
+                    attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"
+                    context="{'form_view_ref': 'social.utm_campaign_view_form_quick_create_social'}"/>
+                <field name="post_method" widget="radio" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                <field name="scheduled_date" attrs="{'invisible': ['|', ('post_method', '=', 'now'), ('state', 'in', ['posting', 'posted'])], 'required': [('post_method', '!=', 'now')]}" />
+            </xpath>
+
+            <xpath expr="//group[@name='previews_placeholder']" position="after">
+                <group name="live_posts" colspan="2" string="Posts By Accounts"
+                    attrs="{'invisible': [('state', 'not in', ['posting', 'posted'])]}">
+                    <field name="live_post_ids" colspan="2" nolabel="1">
+                        <kanban>
+                            <field name="account_id"/>
+                            <field name="state"/>
+                            <field name="failure_reason" />
+                            <templates>
+                                <t t-name="kanban-box">
+                                    <div class="o_social_live_post_kanban ml-0 mr-3">
+                                        <div class="row">
+                                            <div class="col-md-9 o_social_live_post_kanban_account">
+                                                <field name="account_id" />
                                             </div>
-                                        </t>
-                                    </templates>
-                                </kanban>
-                            </field>
-                        </group>
-                    </group>
-                </sheet>
+                                            <div class="col-md-3 text-right">
+                                                <field name="state" widget="label_selection" options="{'classes': {'ready': 'info', 'posting': 'warning', 'posted': 'success', 'failed': 'danger'}}"/>
+                                            </div>
+                                        </div>
+                                        <div class="o_social_live_post_kanban_failure_reason mt-2" t-att-title="record.failure_reason.raw_value">
+                                            <field name="failure_reason" />
+                                        </div>
+                                        <div class="text-right mt-4">
+                                            <button name="action_retry_post" string="Retry" type="object" class="btn btn-primary"
+                                                attrs="{'invisible': [('state', '!=', 'failed')]}">
+                                                Retry
+                                            </button>
+                                        </div>
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
+                    </field>
+                </group>
+            </xpath>
+
+            <xpath expr="//sheet" position="after">
                 <div class="oe_chatter">
                     <field name="message_follower_ids" groups="base.group_user"/>
                     <field name="activity_ids"/>
                     <field name="message_ids"/>
                 </div>
-            </form>
+            </xpath>
         </field>
     </record>
 </data>

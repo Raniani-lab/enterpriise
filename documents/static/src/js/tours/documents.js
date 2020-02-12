@@ -12,8 +12,12 @@ tour.register('documents_tour', {
     trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
     content: _t("Want to become a <b>paperless company</b>? Let's discover Odoo DMS."),
     position: 'bottom',
+}, { // equivalent to '.o_search_panel_label:contains('Internal')' but language agnostic.
+    trigger: '.o_search_panel_category_value[data-id="1"] .o_search_panel_label',
+    content: _t("Select the Internal workspace."),
+    position: 'bottom',
 }, {
-    trigger: '.o_kanban_record:contains(People)',
+    trigger: '.o_kanban_record:contains(Video: Odoo Documents)',
     content: _t("Click on a card to <b>view the document</b>."),
     position: 'bottom',
 }, {
@@ -27,11 +31,11 @@ tour.register('documents_tour', {
     position: 'left',
 }, {
     trigger: '.o_inspector_open_chatter',
-    content: _t("This icons gets you to the <b>discussion board</b>, to chat with followers of this document"),
+    content: _t("This icon gets you to the <b>discussion board</b>, to chat with followers of this document"),
     position: 'left',
 }, {
     trigger: '.o_chatter_button_new_message',
-    extra_trigger: '.o_documents_kanban',
+    extra_trigger: '.o_mail_thread_content',
     content: _t("Try to <b>post a message</b>"),
     position: 'bottom',
 }, {
@@ -49,19 +53,23 @@ tour.register('documents_tour', {
     extra_trigger: '.o_documents_kanban',
     content: _t("<b>Actions</b> allows you to assign tags, automate actions like creating a task or vendor bill,</br> create activities for users, etc.</br> Actions can be customized through the Configuration menu."),
     position: 'left',
-}, {
-    trigger: "span:contains('Finance')",
+}, { // equivalent to '.o_search_panel_label:contains('Finance')' but language agnostic.
+    trigger: '.o_search_panel_category_value[data-id="2"] .o_search_panel_label',
     extra_trigger: '.o_documents_kanban',
-    content: _t("Use <b>folders</b> to organize documents by departments, or group of interests"),
+    content: _t("Use <b>workspaces</b> to organize documents by departments, or group of interests"),
+    position: 'right',
+}, { // equivalent to '.o_search_panel_label_title:contains('Inbox')' but language agnostic.
+    trigger: '.o_search_panel_filter_value[data-value-id="13"] .o_search_panel_label_title',
+    extra_trigger: '.o_documents_kanban',
+    content: _t("<b>Use tags</b> to easily filter documents. Tags are defined according to the workspace."),
     position: 'right',
 }, {
-    trigger: "label:contains('Inbox')",
-    extra_trigger: '.o_documents_kanban',
-    content: _t("<b>Use tags</b> to easily filter documents. Tags are defined according to the folder."),
-    position: 'right',
+    trigger: '.o_documents_kanban_upload',
+    content: _t("When you <b>upload documents</b>, they appear in the selected workspace and tags."),
+    position: 'bottom',
 }, {
-    trigger: ".o_documents_kanban_upload",
-    content: _t("When you <b>upload documents</b>, they appear in the selected folder and tags."),
+    trigger: '.o_kanban_record:nth(0)',
+    content: _t("Select a record."),
     position: 'bottom',
 }, {
     trigger: '.o_inspector_archive',

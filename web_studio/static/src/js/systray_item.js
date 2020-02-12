@@ -13,9 +13,9 @@ var SystrayItem = Widget.extend({
     events: {
         'click': '_onClick',
     },
-    // force this item to be the first one to the left of the UserMenu in the
+    // force this item to be the second to the left of the UserMenu in the
     // systray
-    sequence: 1,
+    sequence: 2,
     template: 'web_studio.SystrayItem',
     /**
      * @constructor

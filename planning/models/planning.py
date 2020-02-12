@@ -42,10 +42,10 @@ class Planning(models.Model):
         return self.env.user.employee_id
 
     def _default_start_datetime(self):
-        return fields.Datetime.to_string(datetime.combine(fields.Datetime.now(), datetime.min.time()))
+        return datetime.combine(fields.Datetime.now(), datetime.min.time())
 
     def _default_end_datetime(self):
-        return fields.Datetime.to_string(datetime.combine(fields.Datetime.now(), datetime.max.time()))
+        return datetime.combine(fields.Datetime.now(), datetime.max.time())
 
     name = fields.Text('Note')
     employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, group_expand='_read_group_employee_id', check_company=True)
@@ -59,9 +59,12 @@ class Planning(models.Model):
     was_copied = fields.Boolean("This Shift Was Copied From Previous Week", default=False, readonly=True)
     access_token = fields.Char("Security Token", default=lambda self: str(uuid.uuid4()), required=True, copy=False, readonly=True)
 
-    start_datetime = fields.Datetime("Start Date", required=True, default=_default_start_datetime)
-    end_datetime = fields.Datetime("End Date", required=True, default=_default_end_datetime)
-
+    start_datetime = fields.Datetime(
+        "Start Date", compute='_compute_datetime', store=True, readonly=False, required=True,
+        copy=True, default=_default_start_datetime)
+    end_datetime = fields.Datetime(
+        "End Date", compute='_compute_datetime', store=True, readonly=False, required=True,
+        copy=True, default=_default_end_datetime)
     # UI fields and warnings
     allow_self_unassign = fields.Boolean('Let Employee Unassign Themselves', related='company_id.planning_allow_self_unassign')
     is_assigned_to_me = fields.Boolean('Is This Shift Assigned To The Current User', compute='_compute_is_assigned_to_me')
@@ -81,8 +84,10 @@ class Planning(models.Model):
 
     # publication and sending
     is_published = fields.Boolean("Is The Shift Sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.", copy=False)
-    publication_warning = fields.Boolean("Modified Since Last Publication", default=False, readonly=True, help="If checked, it means that the shift contains has changed since its last publish.", copy=False)
-
+    publication_warning = fields.Boolean(
+        "Modified Since Last Publication", default=False, compute='_compute_publication_warning',
+        store=True, readonly=True, copy=False,
+        help="If checked, it means that the shift contains has changed since its last publish.")
     # template dummy fields (only for UI purpose)
     template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
     template_id = fields.Many2one('planning.slot.template', string='Shift Templates')
@@ -113,7 +118,7 @@ class Planning(models.Model):
         for slot in self:
             slot.is_past = slot.end_datetime < now
 
-    @api.depends('employee_id')
+    @api.depends('employee_id', 'template_id')
     def _compute_role_id(self):
         for slot in self:
             if not slot.role_id:
@@ -121,6 +126,9 @@ class Planning(models.Model):
                     slot.role_id = slot.employee_id.planning_role_ids[0]
                 else:
                     slot.role_id = False
+
+            if slot.template_id.role_id:
+                slot.role_id = slot.template_id.role_id
 
     @api.depends('user_id')
     def _compute_is_assigned_to_me(self):
@@ -251,43 +259,37 @@ class Planning(models.Model):
                 slot.recurrency_id._delete_slot(slot.end_datetime)
                 slot.recurrency_id.unlink()  # will set recurrency_id to NULL
 
-    @api.onchange('employee_id')
-    def _onchange_employee_id(self):
-        employee = self.env.user.employee_id
-        if self.employee_id:
-            employee = self.employee_id
-        if not employee:
-            return
+    @api.depends('employee_id', 'template_id')
+    def _compute_datetime(self):
+        for slot in self:
+            user_tz = pytz.timezone(slot.env.user.tz or 'UTC')
+            employee = slot.employee_id if slot.employee_id else slot.env.user.employee_id
 
-        start = self.start_datetime or datetime.combine(fields.Datetime.now(), datetime.min.time())
-        end = self.end_datetime or datetime.combine(fields.Datetime.now(), datetime.max.time())
-        work_interval = employee._adjust_to_calendar(start, end)
-        start_datetime, end_datetime = work_interval[employee] if employee else (start, end)
-        if start_datetime:
-            self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-        if end_datetime:
-            self.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
+            start = slot.start_datetime or self._default_start_datetime()
+            end = slot.end_datetime or self._default_end_datetime()
+            work_interval = employee._adjust_to_calendar(start, end)
+            start_datetime, end_datetime = work_interval[employee] if employee else (start, end)
 
-    @api.onchange('start_datetime', 'end_datetime', 'employee_id')
-    def _onchange_dates(self):
-        if self.employee_id and self.is_published:
-            self.publication_warning = True
+            if start_datetime:
+                slot.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
+            if end_datetime:
+                slot.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)            
 
-    @api.onchange('template_id')
-    def _onchange_template_id(self):
-        user_tz = pytz.timezone(self.env.user.tz or 'UTC')
-        if self.template_id and self.start_datetime:
-            h = int(self.template_id.start_time)
-            m = round(modf(self.template_id.start_time)[0] * 60.0)
-            start = pytz.utc.localize(self.start_datetime).astimezone(user_tz)
-            start = start.replace(hour=int(h), minute=int(m))
-            self.start_datetime = start.astimezone(pytz.utc).replace(tzinfo=None)
-            h = int(self.template_id.duration)
-            m = round(modf(self.template_id.duration)[0] * 60.0)
-            delta = timedelta(hours=int(h), minutes=int(m))
-            self.end_datetime = fields.Datetime.to_string(self.start_datetime + delta)
-        if self.template_id.role_id:
-            self.role_id = self.template_id.role_id
+            if slot.template_id and slot.start_datetime:
+                h = int(slot.template_id.start_time)
+                m = round(modf(slot.template_id.start_time)[0] * 60.0)
+                start = pytz.utc.localize(slot.start_datetime).astimezone(user_tz)
+                start = start.replace(hour=int(h), minute=int(m))
+                slot.start_datetime = start.astimezone(pytz.utc).replace(tzinfo=None)
+
+                h, m = divmod(slot.template_id.duration, 1)
+                delta = timedelta(hours=int(h), minutes=int(m * 60))
+                slot.end_datetime = slot.start_datetime + delta
+
+    @api.depends('start_datetime', 'end_datetime', 'employee_id')
+    def _compute_publication_warning(self):
+        with_warning = self.filtered(lambda t: t.employee_id and t.is_published)
+        with_warning.update({'publication_warning': True})
 
     @api.onchange('repeat')
     def _onchange_default_repeat_values(self):

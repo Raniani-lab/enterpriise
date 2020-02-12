@@ -315,7 +315,7 @@
         <field name="name">planning.role.tree</field>
         <field name="model">planning.role</field>
         <field name="arch" type="xml">
-            <tree string="Planning Role List" editable="bottom">
+            <tree string="Planning Role List" editable="bottom" multi_edit="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="color" widget="color_picker"/>

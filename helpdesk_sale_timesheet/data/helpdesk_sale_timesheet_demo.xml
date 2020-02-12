@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    <!-- Project -->
+    <record id="project_helpdesk" model="project.project">
+        <field name="name">Customer Services</field>
+        <field name="privacy_visibility">employees</field>
+        <field name="type_ids" eval="[(4, ref('project.project_stage_0')), (4, ref('project.project_stage_1')), (4, ref('project.project_stage_2')), (4, ref('project.project_stage_3'))]"/>
+        <field name="allow_timesheets">True</field>
+        <field name="allow_timesheet_timer">True</field>
+        <field name="allow_billable">True</field>
+        <field name="timesheet_product_id" ref="sale_timesheet.time_product"/>
+    </record>
+
+    <!-- Task -->
+    <record id="project_helpdesk_task_1" model="project.task">
+        <field name="planned_hours" eval="40.0"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="priority">0</field>
+        <field name="project_id" ref="helpdesk_sale_timesheet.project_helpdesk"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="name">Modification of the installation</field>
+        <field name="stage_id" ref="project.project_stage_0"/>
+        <field name="color">3</field>
+    </record>
+
+    <!-- Helpdesk Team -->
+    <record id="helpdesk_team2" model="helpdesk.team">
+        <field name="name">Customer Services</field>
+        <field name="alias_name">after_sale</field>
+        <field name="use_sla" eval="True"/>
+        <field name="use_helpdesk_timesheet">True</field>
+        <field name="project_id" ref="helpdesk_sale_timesheet.project_helpdesk"/>
+        <field name="use_helpdesk_sale_timesheet">True</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="helpdesk.stage_new" model="helpdesk.stage">
+        <field name="team_ids" eval="[(4, ref('helpdesk_team2'))]"/>
+    </record>
+    <record id="helpdesk.stage_in_progress" model="helpdesk.stage">
+        <field name="team_ids" eval="[(4, ref('helpdesk_team2'))]"/>
+    </record>
+    <record id="helpdesk.stage_solved" model="helpdesk.stage">
+        <field name="team_ids" eval="[(4, ref('helpdesk_team2'))]"/>
+        <field name="is_close" eval="True"/>
+        <field name="fold" eval="True"/>
+    </record>
+
+    <!-- Ticket -->
+    <record id="helpdesk_ticket_3" model="helpdesk.ticket">
+        <field name="name">Installation problem</field>
+        <field name="team_id" ref="helpdesk_sale_timesheet.helpdesk_team2"/>
+        <field name="priority">0</field>
+        <field name="ticket_type_id" ref="helpdesk.type_question"/>
+        <field name="task_id" ref="helpdesk_sale_timesheet.project_helpdesk_task_1"/>
+    </record>
+</odoo>

@@ -185,16 +185,6 @@ class Task(models.Model):
                         </p>""")
         }
 
-    def action_make_billable(self):
-        """ Override to set the selected timesheet_product_id by default in the
-            'create sale order from task' wizard
-        """
-        action = super(Task, self).action_make_billable()
-        product = self.project_id.timesheet_product_id
-        if product:
-            action['context']['default_product_id'] = product.id
-        return action
-
     def action_fsm_validate(self):
         """ If allow billable on task, timesheet product set on project and user has privileges :
             Create SO confirmed with time and material.

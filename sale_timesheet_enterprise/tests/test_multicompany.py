@@ -17,6 +17,7 @@ class TestSaleTimesheetEnterpriseMultiCompany(TestCommonSaleTimesheetMultiCompan
             'name': "Billable on tasks",
             'company_id': cls.env.company.id,
             'allow_billable': 'yes',
+            'timesheet_product_id': cls.env.ref('sale_timesheet.time_product').id,
             'partner_id': False,
         })
 

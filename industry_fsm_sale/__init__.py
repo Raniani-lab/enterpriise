@@ -12,5 +12,5 @@ def post_init(cr, registry):
         'allow_material': True,
         'allow_timesheets': True,
         'allow_timesheet_timer': True,
-        'timesheet_product_id': env.ref('sale_timesheet_enterprise.fsm_time_product')
+        'timesheet_product_id': env.ref('sale_timesheet.time_product')
     })

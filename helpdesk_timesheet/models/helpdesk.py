@@ -25,6 +25,8 @@ class HelpdeskTeam(models.Model):
                 (0, 0, {'name': _('In Progress')}),
                 (0, 0, {'name': _('Closed'), 'is_closed': True})
             ],
+            'allow_timesheets': True,
+            'allow_timesheet_timer': True,
             **other,
         })
 

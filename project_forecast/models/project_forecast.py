@@ -23,8 +23,14 @@ class PlanningShift(models.Model):
             result['project_id'] = task_id.project_id.id
         return result
 
-    project_id = fields.Many2one('project.project', string="Project", domain="[('company_id', '=', company_id), ('allow_forecast', '=', True)]", check_company=True, group_expand='_read_group_project_id')
-    task_id = fields.Many2one('project.task', string="Task", domain="[('company_id', '=', company_id), ('project_id', '=?', project_id)]", check_company=True)
+    project_id = fields.Many2one(
+        'project.project', string="Project", compute='_compute_project_id', store=True,
+        readonly=False, copy=True, check_company=True, group_expand='_read_group_project_id',
+        domain="[('company_id', '=', company_id),""('allow_forecast', '=', True)]")
+    task_id = fields.Many2one(
+        'project.task', string="Task", compute='_compute_task_id', store=True, readonly=False,
+        copy=True, check_company=True,
+        domain="[('company_id', '=', company_id),""('project_id', '=?', project_id)]")
     planned_hours = fields.Float("Initially Planned Hours", related="task_id.planned_hours")
     allow_forecast = fields.Boolean(related="project_id.allow_forecast")
     forecast_hours = fields.Float("Forecast Hours", compute='_compute_forecast_hours', help="Number of hours already forecast for this task (and its sub-tasks).")
@@ -47,24 +53,22 @@ class PlanningShift(models.Model):
             else:
                 slot.forecast_hours = slot.task_id.forecast_hours
 
-    @api.onchange('task_id')
-    def _onchange_task_id(self):
-        if self.task_id:
-            self.project_id = self.task_id.project_id
+    @api.depends('task_id.project_id', 'template_id.project_id')
+    def _compute_project_id(self):
+        for slot in self:
+            if slot.task_id:
+                slot.project_id = slot.task_id.project_id
 
-    @api.onchange('project_id')
-    def _onchange_project_id(self):
-        if self.project_id != self.task_id.project_id:
-            # reset task when changing project
-            self.task_id = False
+            if slot.template_id.project_id:
+                slot.project_id = slot.template_id.project_id
 
-    @api.onchange('template_id')
-    def _onchange_template_id(self):
-        super(PlanningShift, self)._onchange_template_id()
-        if self.template_id.project_id:
-            self.project_id = self.template_id.project_id
-        if self.template_id.task_id:
-            self.task_id = self.template_id.task_id
+    @api.depends('project_id', 'template_id.project_id')
+    def _compute_task_id(self):
+        for slot in self:
+            if slot.project_id != slot.task_id.project_id:
+                slot.task_id = False
+            if slot.template_id.task_id:
+                slot.task_id = slot.template_id.task_id
 
     @api.constrains('task_id', 'project_id')
     def _check_task_in_project(self):

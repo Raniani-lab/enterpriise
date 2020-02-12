@@ -326,18 +326,6 @@
         </field>
     </record>
 
-    <record id="marketing_campaign_action_archived" model="ir.actions.act_window">
-        <field name="name">Campaigns</field>
-        <field name="res_model">marketing.campaign</field>
-        <field name="view_mode">kanban,tree,form</field>
-        <field name="context" eval="{'search_default_archive': 1}"/>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Create a campaign
-            </p>
-        </field>
-    </record>
-
     <menuitem id="marketing_campaign_menu" name="Campaigns"
         parent="marketing_automation_menu"
         action="marketing_campaign_action"

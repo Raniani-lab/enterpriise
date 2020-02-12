@@ -841,7 +841,7 @@
                   <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
                   <filter string="Ticket Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
                   <filter string="Creation Date" context="{'group_by':'create_date:week'}" name="group_by_create_date"/>
-                  <filter string="First Assignation Date" context="{'group_by': 'assign_date:month'}" name="group_by_assign_date"/>
+                  <filter string="First Assignment Date" context="{'group_by': 'assign_date:month'}" name="group_by_assign_date"/>
                 </group>
             </search>
         </field>

@@ -29,7 +29,7 @@ Features:
     - Use the chatter to communicate additional information and ping co-workers on tickets.
     - Enjoy the use of an adapted dashboard, and an easy-to-use kanban view to handle your tickets.
     - Make an in-depth analysis of your tickets through the pivot view in the reports menu.
-    - Create a team and define its members, use an automatic assignation method if you wish.
+    - Create a team and define its members, use an automatic assignment method if you wish.
     - Use a mail alias to automatically create tickets and communicate with your customers.
     - Add Service Level Agreement deadlines automatically to your tickets.
     - Get customer feedback by using ratings.

@@ -4,7 +4,7 @@
 
         <!-- Scheduler for Lead Scoring and Assignation -->
         <record forcecreate="True" id="ir_cron_lead_assign" model="ir.cron">
-            <field name="name">Crm Score: lead assignation</field>
+            <field name="name">Crm Score: lead assignment</field>
             <field name="model_id" ref="crm.model_crm_team"/>
             <field name="state">code</field>
             <field name="code">model.direct_assign_leads()</field>
@@ -281,12 +281,12 @@
         </record>
 
         <!-- Team User Menu Item -->
-        <menuitem id="team_user" name="Leads Assignation" parent="crm.crm_menu_leads" action="team_user_action" sequence="4" groups="sales_team.group_sale_manager"/>
+        <menuitem id="team_user" name="Leads Assignment" parent="crm.crm_menu_leads" action="team_user_action" sequence="4" groups="sales_team.group_sale_manager"/>
 
         <!-- TEAM -->
         <!-- Team Action - form - tree - kanban -->
         <record model="ir.actions.act_window" id="team_action">
-            <field name="name">Teams Assignation</field>
+            <field name="name">Teams Assignment</field>
             <field name="res_model">crm.team</field>
             <field name="view_mode">tree,kanban,form</field>
             <field name="view_ids" eval="[(5, 0, 0),
@@ -304,7 +304,7 @@
         </record>
 
         <!-- Team User Menu Item -->
-        <menuitem id="team" name="Teams Assignation" parent="crm.crm_menu_leads" action="team_action" sequence="3" groups="sales_team.group_sale_manager"/>
+        <menuitem id="team" name="Teams Assignment" parent="crm.crm_menu_leads" action="team_action" sequence="3" groups="sales_team.group_sale_manager"/>
 
     </data>
 </odoo>

@@ -43,9 +43,9 @@ class HelpdeskTeam(models.Model):
     assign_method = fields.Selection([
         ('manual', 'Manually'),
         ('randomly', 'Random'),
-        ('balanced', 'Balanced')], string='Assignation Method',
+        ('balanced', 'Balanced')], string='Assignment Method',
         default='manual', required=True,
-        help='Automatic assignation method for new tickets:\n'
+        help='Automatic assignment method for new tickets:\n'
              '\tManually: manual\n'
              '\tRandomly: randomly but everyone gets the same amount\n'
              '\tBalanced: to the person with the least amount of open tickets')
@@ -130,7 +130,7 @@ class HelpdeskTeam(models.Model):
     @api.constrains('assign_method', 'member_ids', 'visibility_member_ids')
     def _check_member_assignation(self):
         if not self.member_ids and not self.visibility_member_ids and self.assign_method != 'manual':
-            raise ValidationError(_("You must have team members assigned to change the assignation method."))
+            raise ValidationError(_("You must have team members assigned to change the assignment method."))
 
     # ------------------------------------------------------------
     # ORM overrides

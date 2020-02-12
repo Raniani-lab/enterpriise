@@ -15,7 +15,7 @@
                 <field name="min_for_assign" class="oe_inline"/>
             </xpath>
             <xpath expr="//page[@name='members']" position="replace">
-                <page string="Assignation" name="assignation">
+                <page string="Assignment" name="assignation">
                     <field name="team_user_ids" widget="one2many" mode="kanban" context="{'default_team_id':active_id, 'ro_team':True}">
                         <kanban>
                             <field name="user_id"/>

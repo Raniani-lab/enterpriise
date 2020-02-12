@@ -23,7 +23,7 @@ class HelpdeskSLAReport(models.Model):
     ticket_closed = fields.Boolean("Ticket Closed", readonly=True)
     ticket_close_hours = fields.Integer("Time to close (hours)", group_operator="avg", readonly=True)
     ticket_open_hours = fields.Integer("Open Time (hours)", group_operator="avg", readonly=True)
-    ticket_assignation_hours = fields.Integer("Time to first assignation (hours)", group_operator="avg", readonly=True)
+    ticket_assignation_hours = fields.Integer("Time to first assignment (hours)", group_operator="avg", readonly=True)
 
     sla_id = fields.Many2one('helpdesk.sla', string="SLA", readonly=True)
     sla_stage_id = fields.Many2one('helpdesk.stage', string="SLA Stage", readonly=True)

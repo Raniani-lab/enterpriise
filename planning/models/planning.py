@@ -95,11 +95,29 @@ class Planning(models.Model):
     repeat_interval = fields.Integer("Repeat Every", default=1, compute='_compute_repeat', inverse='_inverse_repeat')
     repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Repeat Type', default='forever', compute='_compute_repeat', inverse='_inverse_repeat')
     repeat_until = fields.Date("Repeat Until", compute='_compute_repeat', inverse='_inverse_repeat', help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
+    confirm_delete = fields.Boolean('Confirm Slots Deletion', compute='_compute_confirm_delete')
 
     _sql_constraints = [
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Shift end date should be greater than its start date'),
         ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'You cannot have negative shift'),
     ]
+
+    @api.depends('repeat_until')
+    def _compute_confirm_delete(self):
+        for slot in self:
+            if slot.recurrency_id and slot.repeat_until:
+                slot.confirm_delete = fields.Date.to_date(slot.recurrency_id.repeat_until) > slot.repeat_until if slot.recurrency_id.repeat_until else True
+            else:
+                slot.confirm_delete = False
+
+    @api.constrains('repeat_until')
+    def _check_repeat_until(self):
+        if any([slot.repeat_until and slot.repeat_until < slot.start_datetime.date() for slot in self]):
+            raise UserError(_('The recurrence until date should be after the shift start date')) 
+
+    @api.onchange('repeat_until')
+    def _onchange_repeat_until(self):
+        self._check_repeat_until()
 
     @api.depends('employee_id.company_id')
     def _compute_planning_slot_company_id(self):
@@ -374,13 +392,8 @@ class Planning(models.Model):
                         'repeat_type': repeat_type,
                         'company_id': slot.company_id.id,
                     }
-                    # Kill recurrence A
-                    slot.recurrency_id.repeat_type = 'until'
-                    slot.recurrency_id.repeat_until = slot.start_datetime
-                    slot.recurrency_id._delete_slot(slot.end_datetime)
-                    # Create recurrence B
-                    recurrence = slot.env['planning.recurrency'].create(recurrency_values)
-                    slot.recurrency_id = recurrence
+                    slot.recurrency_id.write(recurrency_values)
+                    slot.recurrency_id._delete_slot(recurrency_values.get('repeat_until'))
                     slot.recurrency_id._repeat_slot()
         return result
 

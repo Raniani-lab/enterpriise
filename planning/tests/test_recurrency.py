@@ -426,3 +426,16 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
 
             slot.update({'repeat_type': 'forever'})
             self.assertEqual(slot.recurrency_id.repeat_until, False, 'Repeat forever should not have a date')
+
+    def test_recurrency_past(self):
+        with self._patch_now('2020-01-01 08:00:00'):
+            with self.assertRaises(UserError):
+                slot = self.env['planning.slot'].create({
+                    'start_datetime': datetime(2020, 1, 1, 8, 0, 0),
+                    'end_datetime': datetime(2020, 1, 1, 17, 0, 0),
+                    'employee_id': self.employee_joseph.id,
+                    'repeat': True,
+                    'repeat_type': 'until',
+                    'repeat_until': datetime(2019, 12, 25, 17, 0, 0),
+                    'repeat_interval': 1,
+                })

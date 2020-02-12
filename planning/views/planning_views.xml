@@ -148,7 +148,9 @@
                     <field name="publication_warning" invisible="1"/>
                     <field name="is_published" invisible="1"/>
                     <field name="is_past" invisible="1"/>
-                    <button string="Save" special="save" class="btn btn-primary" close="1" groups="planning.group_planning_manager"/>
+                    <field name="confirm_delete" invisible="1"/>
+                    <button string="Save" special="save" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', True)]}"/>
+                    <button string="Save" special="save" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', False)]}" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1" attrs="{'invisible': [('is_published', '=', True)]}" groups="planning.group_planning_manager"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1" attrs="{'invisible': [('is_published', '=', False)]}" groups="planning.group_planning_manager"/>
                     <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('is_published', '=', True)]}"/>

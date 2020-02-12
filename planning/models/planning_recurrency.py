@@ -97,5 +97,9 @@ class PlanningRecurrency(models.Model):
                 recurrency.unlink()
 
     def _delete_slot(self, start_datetime):
-        slots = self.env['planning.slot'].search([('recurrency_id', 'in', self.ids), ('start_datetime', '>=', start_datetime), ('is_published', '=', False)])
+        slots = self.env['planning.slot'].search([
+            ('recurrency_id', 'in', self.ids),
+            ('start_datetime', '>=', start_datetime),
+            ('is_published', '=', False),
+        ])
         slots.unlink()

@@ -14,6 +14,7 @@ class TestCommonPlanning(SavepointCase):
     def _patch_now(self, datetime_str):
         datetime_now_old = getattr(fields.Datetime, 'now')
         datetime_today_old = getattr(fields.Datetime, 'today')
+        date_today_old = getattr(fields.Date, 'today')
 
         def new_now():
             return fields.Datetime.from_string(datetime_str)
@@ -21,15 +22,20 @@ class TestCommonPlanning(SavepointCase):
         def new_today():
             return fields.Datetime.from_string(datetime_str).replace(hour=0, minute=0, second=0)
 
+        def new_date_today():
+            return fields.Date.from_string(datetime_str)
+
         try:
             setattr(fields.Datetime, 'now', new_now)
             setattr(fields.Datetime, 'today', new_today)
+            setattr(fields.Date, 'today', new_date_today)
 
             yield
         finally:
             # back
             setattr(fields.Datetime, 'now', datetime_now_old)
             setattr(fields.Datetime, 'today', datetime_today_old)
+            setattr(fields.Date, 'today', date_today_old)
 
     def get_by_employee(self, employee):
         return self.env['planning.slot'].search([('employee_id', '=', employee.id)])

@@ -3,7 +3,7 @@
 
 {
     'name': 'Helpdesk',
-    'version': '1.2',
+    'version': '1.3',
     'category': 'Operations/Helpdesk',
     'sequence': 57,
     'summary': 'Track help tickets',

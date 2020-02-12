@@ -236,6 +236,7 @@ class HelpdeskTicket(models.Model):
     legend_blocked = fields.Char(related='stage_id.legend_blocked', string='Kanban Blocked Explanation', readonly=True, related_sudo=False)
     legend_done = fields.Char(related='stage_id.legend_done', string='Kanban Valid Explanation', readonly=True, related_sudo=False)
     legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing Explanation', readonly=True, related_sudo=False)
+    domain_user_ids = fields.Many2many('res.users', compute='_compute_domain_user_ids')
     user_id = fields.Many2one('res.users', string='Assigned to', tracking=True, domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
     partner_id = fields.Many2one('res.partner', string='Customer')
     partner_ticket_count = fields.Integer('Number of closed tickets from the same partner', compute='_compute_partner_ticket_count')
@@ -287,6 +288,16 @@ class HelpdeskTicket(models.Model):
                 task.kanban_state_label = task.legend_blocked
             else:
                 task.kanban_state_label = task.legend_done
+
+    @api.depends('team_id')
+    def _compute_domain_user_ids(self):
+        for task in self:
+            if task.team_id and task.team_id.visibility_member_ids:
+                helpdesk_manager = self.env['res.users'].search([('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_manager').id)])
+                task.domain_user_ids = [(6, 0, (helpdesk_manager + task.team_id.visibility_member_ids).ids)]
+            else:
+                helpdesk_users = self.env['res.users'].search([('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)]).ids
+                task.domain_user_ids = [(6, 0, helpdesk_users)]
 
     def _compute_access_url(self):
         super(HelpdeskTicket, self)._compute_access_url()

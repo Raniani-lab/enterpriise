@@ -50,6 +50,8 @@ class HelpdeskTeam(models.Model):
              '\tRandomly: randomly but everyone gets the same amount\n'
              '\tBalanced: to the person with the least amount of open tickets')
     member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids())
+    visibility_member_ids = fields.Many2many('res.users', 'helpdesk_visibility_team', string='Team Visibility', domain=lambda self: self._default_domain_member_ids(),
+        help="Team Members to whom this team will be visible. Keep empty for everyone to see this team.")
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
     use_alias = fields.Boolean('Email alias', default=True)
@@ -108,9 +110,9 @@ class HelpdeskTeam(models.Model):
         if not self.use_rating:
             self.portal_show_rating = False
 
-    @api.onchange('member_ids')
+    @api.onchange('member_ids', 'visibility_member_ids')
     def _onchange_member_ids(self):
-        if not self.member_ids:
+        if not self.member_ids and not self.visibility_member_ids:
             self.assign_method = 'manual'
 
     @api.onchange('use_alias', 'name')
@@ -125,9 +127,9 @@ class HelpdeskTeam(models.Model):
         if not self.use_helpdesk_timesheet:
             self.use_helpdesk_sale_timesheet = False
 
-    @api.constrains('assign_method', 'member_ids')
+    @api.constrains('assign_method', 'member_ids', 'visibility_member_ids')
     def _check_member_assignation(self):
-        if not self.member_ids and self.assign_method != 'manual':
+        if not self.member_ids and not self.visibility_member_ids and self.assign_method != 'manual':
             raise ValidationError(_("You must have team members assigned to change the assignation method."))
 
     # ------------------------------------------------------------
@@ -383,7 +385,7 @@ class HelpdeskTeam(models.Model):
         """
         result = dict.fromkeys(self.ids, self.env['res.users'])
         for team in self:
-            member_ids = sorted(team.member_ids.ids)
+            member_ids = sorted(team.member_ids.ids) if team.member_ids else sorted(team.visibility_member_ids.ids)
             if member_ids:
                 if team.assign_method == 'randomly':  # randomly means new tickets get uniformly distributed
                     last_assigned_user = self.env['helpdesk.ticket'].search([('team_id', '=', team.id)], order='create_date desc, id desc', limit=1).user_id

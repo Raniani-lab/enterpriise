@@ -75,9 +75,20 @@
                     <field name="active" invisible="1"/>
                     <field name="description" placeholder="Description for customer portal"/>
                     <field name="company_id" groups="base.group_multi_company" required="1"/>
-                    <h2>Productivity</h2>
+                    <h2>Productivity &amp; Visibility</h2>
                     <div class="row mt16 o_settings_container" id="productivity">
-                        <div class="col-lg-6 o_setting_box">
+                        <div class="col-lg-6 o_setting_box" title="With random assignation, every user gets the same number of tickets. With balanced assignation, tickets are assigned to the user with the least amount of open tickets.">
+                            <div class="o_setting_right_pane">
+                                <label for="assign_method"/>
+                                <div class="text-muted">
+                                    How to assign newly created tickets to the right person
+                                </div>
+                                <div>
+                                    <field name="assign_method" class="mt16 o_light_label" widget="radio"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 o_setting_box" attrs="{'invisible': [('assign_method', '=', 'manual')]}">
                             <div class="o_setting_right_pane">
                                 <label for="member_ids"/>
                                 <div class="text-muted">
@@ -88,14 +99,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 o_setting_box" title="With random assignation, every user gets the same number of tickets. With balanced assignation, tickets are assigned to the user with the least amount of open tickets.">
+                        <div class="col-lg-6 o_setting_box">
                             <div class="o_setting_right_pane">
-                                <label for="assign_method"/>
+                                <label for="visibility_member_ids"/>
                                 <div class="text-muted">
-                                    How to assign newly created tickets to the right person
+                                    Team Members to whom this team will be visible. Keep empty for everyone to see this team.
                                 </div>
                                 <div>
-                                    <field name="assign_method" class="mt16 o_light_label" widget="radio"/>
+                                    <field name="visibility_member_ids" widget="many2many_tags" options="{'color_field': 'color'}" class="mt16"/>
                                 </div>
                             </div>
                         </div>

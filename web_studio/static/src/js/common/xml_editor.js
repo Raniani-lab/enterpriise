@@ -9,6 +9,10 @@ var AceEditor = require('web_editor.ace');
  */
 return AceEditor.extend({
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
     /**
      * @override
      */
@@ -18,9 +22,19 @@ return AceEditor.extend({
     },
 
     //--------------------------------------------------------------------------
-    // Public
+    // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * @override
+     */
+    _isCustomResource(resID) {
+        if (this.currentType === "xml") {
+            return _.str.startsWith(this.views[resID].xml_id, 'studio_customization');
+        } else {
+            return this._super(...arguments);
+        }
+    },
     /**
      * @override
      */

@@ -4,7 +4,7 @@ odoo.define('planning.PlanningGanttController', function (require) {
 var GanttController = require('web_gantt.GanttController');
 var core = require('web.core');
 var _t = core._t;
-var confirmDialog = require('web.Dialog').confirm;
+var Dialog = require('web.Dialog');
 var dialogs = require('web.view_dialogs');
 
 var QWeb = core.qweb;
@@ -70,8 +70,29 @@ var PlanningGanttController = GanttController.extend({
             // we reload as record can be created or modified (sent, unpublished, ...)
             self.reload();
         });
+        dialog.on('execute_action', this, function(e) {
+            const action_name = e.data.action_data.name || e.data.action_data.special;
+            const event_data = _.clone(e.data);
+            let message;
 
-        return dialog.open();
+            if (action_name === "unlink") {
+                e.stopPropagation();
+                message = _('Are you sure that you want to do delete this shift?');
+
+                Dialog.confirm(self, message, {
+                    confirm_callback: function(evt) {
+                        self.trigger_up('execute_action', event_data);
+                        _.delay(function() { self.dialog.destroy() }, 100);
+                    },
+                    cancel_callback: function(evt) {
+                        self.dialog.$footer.find('button').removeAttr('disabled');
+                    }
+                });
+            }
+        });
+
+        self.dialog = dialog.open();
+        return self.dialog;
     },
 
     //--------------------------------------------------------------------------

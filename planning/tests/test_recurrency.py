@@ -407,3 +407,22 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             self.assertEqual(len(self.env['planning.recurrency'].search([('slot_ids', '=', False)])), 1)
             self.env['planning.recurrency']._cron_schedule_next()
             self.assertFalse(len(self.env['planning.recurrency'].search([('slot_ids', '=', False)])), 'cron with no slot gets deleted (there is no original slot to copy from)')
+
+    def test_recurrency_change_date(self):
+        with self._patch_now('2020-01-01 08:00:00'):
+            slot = self.env['planning.slot'].create({
+                'start_datetime': datetime(2020, 1, 1, 8, 0, 0),
+                'end_datetime': datetime(2020, 1, 1, 17, 0, 0),
+                'employee_id': self.employee_bert.id,
+                'repeat': True,
+                'repeat_type': 'until',
+                'repeat_until': datetime(2020, 2, 29, 17, 0, 0),
+                'repeat_interval': 1,
+            })
+
+            slot.update({'repeat_until': datetime(2020, 2, 29, 17, 0, 0) })
+
+            self.assertEqual(slot.recurrency_id.repeat_type, 'until', 'Changing the date should not change the repeat_type')
+
+            slot.update({'repeat_type': 'forever'})
+            self.assertEqual(slot.recurrency_id.repeat_until, False, 'Repeat forever should not have a date')

@@ -152,7 +152,7 @@
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1" attrs="{'invisible': [('is_published', '=', True)]}" groups="planning.group_planning_manager"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1" attrs="{'invisible': [('is_published', '=', False)]}" groups="planning.group_planning_manager"/>
                     <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('is_published', '=', True)]}"/>
-                    <button name="unlink" string="Delete" type="object" class="btn-secondary" close="1" attrs="{'invisible': [('id', '=', False)]}" confirm="Are you sure you want to do delete this shift?" groups="planning.group_planning_manager"/>
+                    <button name="unlink" string="Delete" type="object" class="btn-secondary" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager"/>
                     <button string="Discard" special="cancel" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
 
                     <button name="action_self_assign" class="btn btn-primary float-right" type="object" string="I Take It" attrs="{'invisible': ['|', ('employee_id', '!=', False), ('is_past', '=', True)]}" close="1"/>

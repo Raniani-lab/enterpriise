@@ -380,10 +380,11 @@ class Planning(models.Model):
             # and we create recurrence B from now on w/ the new parameters
             for slot in self:
                 if slot.recurrency_id and values.get('repeat') is None:
+                    repeat_type = values.get('repeat_type') or slot.recurrency_id.repeat_type
                     recurrency_values = {
                         'repeat_interval': values.get('repeat_interval') or slot.recurrency_id.repeat_interval,
-                        'repeat_until': values.get('repeat_until') if values.get('repeat_type') == 'until' else False,
-                        'repeat_type': values.get('repeat_type'),
+                        'repeat_until': values.get('repeat_until') if repeat_type == 'until' else False,
+                        'repeat_type': repeat_type,
                         'company_id': slot.company_id.id,
                     }
                     # Kill recurrence A

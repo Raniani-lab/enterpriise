@@ -7,18 +7,17 @@ from odoo import fields, models, api
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    # YTI TO CHECK: SHould be a related right ? 
-    worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template")
+    worksheet_template_id = fields.Many2one(
+        'project.worksheet.template', string="Worksheet Template",
+        compute='_compute_worksheet_template_id', store=True, readonly=False)
 
-    @api.onchange('service_tracking')
-    def _onchange_service_tracking(self):
-        if self.service_tracking not in ['task_global_project', 'task_new_project']:
-            self.worksheet_template_id = False
-        super(ProductTemplate, self)._onchange_service_tracking()
+    @api.depends('service_tracking', 'project_id')
+    def _compute_worksheet_template_id(self):
+        for template in self:
+            if template.service_tracking not in ['task_global_project', 'task_new_project']:
+                template.worksheet_template_id = False
 
-    @api.onchange('project_id')
-    def _onchange_project_id(self):
-        if self.project_id.is_fsm:
-            self.worksheet_template_id = self.project_id.worksheet_template_id
-        else:
-            self.worksheet_template_id = False
+            if template.project_id.is_fsm:
+                template.worksheet_template_id = template.project_id.worksheet_template_id
+            else:
+                template.worksheet_template_id = False

@@ -126,4 +126,5 @@ class purchase_order(models.Model):
             'price_unit': price,
             'customer_lead': line.product_id and line.product_id.sale_delay or 0.0,
             'company_id': company.id,
+            'display_type': line.display_type,
         }

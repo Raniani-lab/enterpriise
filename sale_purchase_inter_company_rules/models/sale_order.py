@@ -46,7 +46,7 @@ class sale_order(models.Model):
             # read it as sudo, because inter-compagny user can not have the access right on PO
             po_vals = rec.sudo()._prepare_purchase_order_data(company, company_partner)
             inter_user = self.env['res.users'].sudo().browse(intercompany_uid)
-            for line in rec.order_line.sudo().filtered(lambda l: not l.display_type):
+            for line in rec.order_line.sudo():
                 po_vals['order_line'] += [(0, 0, rec._prepare_purchase_order_line_data(line, rec.date_order, company))]
             purchase_order = self.env['purchase.order'].create(po_vals)
 
@@ -123,4 +123,5 @@ class sale_order(models.Model):
             'company_id': company.id,
             'date_planned': so_line.order_id.expected_date or date_order,
             'taxes_id': [(6, 0, company_taxes.ids)],
+            'display_type': so_line.display_type,
         }

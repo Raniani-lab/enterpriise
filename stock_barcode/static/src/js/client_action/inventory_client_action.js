@@ -70,7 +70,11 @@ var InventoryClientAction = ClientAction.extend({
     _getAddLineDefaultValues: function (currentPage) {
         const values = this._super(currentPage);
         values.default_inventory_id = this.currentState.id;
+        values.default_is_editable = true;
         values.default_product_qty = 1;
+        values.default_state = this.currentState.state;
+        values.active_id = this.currentState.id;
+        values.active_model = 'stock.inventory';
         return values;
     },
 

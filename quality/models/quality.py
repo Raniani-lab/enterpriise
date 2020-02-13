@@ -273,12 +273,16 @@ class QualityCheck(models.Model):
             'quality_state': 'fail',
             'user_id': self.env.user.id,
             'control_date': datetime.now()})
+        if self.env.context.get('no_redirect'):
+            return True
         return self.redirect_after_pass_fail()
 
     def do_pass(self):
         self.write({'quality_state': 'pass',
                     'user_id': self.env.user.id,
                     'control_date': datetime.now()})
+        if self.env.context.get('no_redirect'):
+            return True
         return self.redirect_after_pass_fail()
 
     def redirect_after_pass_fail(self):

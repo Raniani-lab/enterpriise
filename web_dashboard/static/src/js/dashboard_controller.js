@@ -87,6 +87,18 @@ var DashboardController = AbstractController.extend({
      */
     _onReload: function (ev) {
         ev.stopPropagation();
+
+        /*
+        * If we do not have a control panel, this method
+        * will not work. e.g. user dashboard
+        */
+        if (!this._controlPanel) {
+            return this.do_warn(
+                _t("Incorrect Operation"),
+                _t("You cannot apply a filter from this view.")
+            );
+        }
+
         var newFilters = [];
         if (ev.data.domain && ev.data.domain.length) {
             newFilters.push({

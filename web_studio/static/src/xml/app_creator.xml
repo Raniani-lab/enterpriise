@@ -38,11 +38,23 @@
                         </div>
                         <div class="o_web_studio_app_creator_model_choice">
                             <div class="custom-control custom-radio">
-                                <input type="radio" id="model_choice_new" name="model_choice" value="new" class="custom-control-input" t-model="state.modelChoice" />
+                                <input type="radio"
+                                    id="model_choice_new"
+                                    name="model_choice"
+                                    value="new"
+                                    class="custom-control-input"
+                                    t-on-change="_onChecked"
+                                    t-att-checked="state.modelChoice === 'new'" />
                                 <label class="custom-control-label" for="model_choice_new">New Model</label>
                             </div>
                             <div class="custom-control custom-radio">
-                                <input type="radio" id="model_choice_existing" name="model_choice" value="existing" class="custom-control-input" t-model="state.modelChoice" />
+                                <input type="radio"
+                                    id="model_choice_existing"
+                                    name="model_choice"
+                                    value="existing"
+                                    class="custom-control-input"
+                                    t-on-change="_onChecked"
+                                    t-att-checked="state.modelChoice === 'existing'" />
                                 <label class="custom-control-label" for="model_choice_existing">Existing Model</label>
                             </div>
                         </div>

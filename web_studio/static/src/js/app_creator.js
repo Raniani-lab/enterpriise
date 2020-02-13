@@ -190,8 +190,11 @@ odoo.define('web_studio.AppCreator', function (require) {
          * @param {Event} ev
          */
         _onChecked(ev) {
-            const modelChoice = ev.currentTarget.name;
+            const modelChoice = ev.currentTarget.value;
             this.state.modelChoice = modelChoice;
+            if (this.state.modelChoice === 'new') {
+                this.state.modelId = undefined;
+            }
         }
 
         /**

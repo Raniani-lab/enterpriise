@@ -90,12 +90,12 @@ class TestMultiCompanyCommon(TestCommonSaleTimesheetMultiCompanyNoChart):
         self.assertEqual(self.task_1.sale_order_id.state, 'sale', "Sale order should be confirmed")
         self.assertEqual(self.task_1.sale_order_id.company_id.id, self.task_1.company_id.id, "The company of the sale order should be the same as the one from the task")
         # Generating an invoice from a task while in another company should not impact the propagation of the company_id to the invoice
-        self.assertTrue(self.task_1.fsm_to_invoice, "Task should be invoiceable")
+        self.assertTrue(self.task_1.task_to_invoice, "Task should be invoiceable")
         # YTI This is supposed to be reintroduced after a fix from DBO See #42408
-        # invoice_ctx = self.task_1.action_fsm_create_invoice()['context']
+        # invoice_ctx = self.task_1.action_create_invoice()['context']
         # invoice_ctx['allowed_company_ids']=[self.env.company.id, self.company_B.id]
         # invoice_ctx['company_id']=self.company_B.id
         # invoice_wizard = self.env['sale.advance.payment.inv'].with_context(invoice_ctx).create({})
         # invoice_wizard.create_invoices()
-        # self.assertFalse(self.task_1.fsm_to_invoice, "Task should not be invoiceable")
+        # self.assertFalse(self.task_1.task_to_invoice, "Task should not be invoiceable")
         # self.assertEqual(self.task_1.sale_order_id.invoice_ids[0].company_id.id, self.task_1.company_id.id, "The company of the invoice should be the same as the one from the task")

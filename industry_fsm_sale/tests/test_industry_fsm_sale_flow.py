@@ -35,7 +35,7 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
         with self.assertRaises(UserError, msg='Should not be able to get to material without customer set'):
             self.task.action_fsm_view_material()
         self.task.write({'partner_id': self.partner_1.id})
-        self.assertFalse(self.task.fsm_to_invoice, "Nothing should be invoiceable on task")
+        self.assertFalse(self.task.task_to_invoice, "Nothing should be invoiceable on task")
         self.task.with_user(self.project_user).action_fsm_view_material()
         self.product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
         self.assertEqual(self.task.material_line_product_count, 1, "1 product should be linked to the task")
@@ -74,11 +74,11 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
         self.assertEqual(self.task.sale_order_id.state, 'sale', "Sale order should be confirmed")
 
         # invoice
-        self.assertTrue(self.task.fsm_to_invoice, "Task should be invoiceable")
-        invoice_ctx = self.task.action_fsm_create_invoice()['context']
+        self.assertTrue(self.task.task_to_invoice, "Task should be invoiceable")
+        invoice_ctx = self.task.action_create_invoice()['context']
         invoice_wizard = self.env['sale.advance.payment.inv'].with_context(invoice_ctx).create({})
         invoice_wizard.create_invoices()
-        self.assertFalse(self.task.fsm_to_invoice, "Task should not be invoiceable")
+        self.assertFalse(self.task.task_to_invoice, "Task should not be invoiceable")
 
         # quotation
         self.assertEqual(self.task.quotation_count, 1, "1 quotation should be linked to the task")

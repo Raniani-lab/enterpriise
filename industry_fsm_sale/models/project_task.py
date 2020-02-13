@@ -17,30 +17,8 @@ class Task(models.Model):
     material_line_product_count = fields.Integer(compute='_compute_material_line_totals')
     material_line_total_price = fields.Float(compute='_compute_material_line_totals')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
-    invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
-    fsm_to_invoice = fields.Boolean("To invoice", compute='_compute_fsm_to_invoice', search='_search_fsm_to_invoice', groups='sales_team.group_sale_salesman_all_leads')
     display_create_invoice_primary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
     display_create_invoice_secondary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
-
-    @api.depends(
-        'is_fsm', 'fsm_done', 'allow_billable', 'timer_start',
-        'fsm_to_invoice', 'sale_order_id.invoice_status')
-    def _compute_display_create_invoice_buttons(self):
-        for task in self:
-            primary, secondary = True, True
-            if not task.is_fsm or not task.fsm_done or not task.allow_billable or task.timer_start or \
-                    not task.sale_order_id or task.sale_order_id.invoice_status == 'invoiced' or \
-                    task.sale_order_id.state in ['cancel']:
-                primary, secondary = False, False
-            else:
-                if task.sale_order_id.invoice_status in ['upselling', 'to invoice']:
-                    secondary = False
-                else:  # Means invoice status is 'Nothing to Invoice'
-                    primary = False
-            task.write({
-                'display_create_invoice_primary': primary,
-                'display_create_invoice_secondary': secondary,
-            })
 
     @api.depends('allow_material', 'material_line_product_count')
     def _compute_display_conditions_count(self):
@@ -75,26 +53,25 @@ class Task(models.Model):
             task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
             task.material_line_product_count = sum(material_sale_lines.mapped('product_uom_qty'))
 
-    @api.depends('sale_order_id.invoice_status', 'sale_order_id.order_line')
-    def _compute_fsm_to_invoice(self):
+    @api.depends(
+        'is_fsm', 'fsm_done', 'allow_billable', 'timer_start',
+        'task_to_invoice', 'sale_order_id.invoice_status')
+    def _compute_display_create_invoice_buttons(self):
         for task in self:
-            if task.sale_order_id:
-                task.fsm_to_invoice = bool(task.sale_order_id.invoice_status not in ('no', 'invoiced'))
+            primary, secondary = True, True
+            if not task.is_fsm or not task.fsm_done or not task.allow_billable or task.timer_start or \
+                    not task.sale_order_id or task.sale_order_id.invoice_status == 'invoiced' or \
+                    task.sale_order_id.state in ['cancel']:
+                primary, secondary = False, False
             else:
-                task.fsm_to_invoice = False
-
-    @api.model
-    def _search_fsm_to_invoice(self, operator, value):
-        query = """
-            SELECT so.id
-            FROM sale_order so
-            WHERE so.invoice_status != 'invoiced'
-                AND so.invoice_status != 'no'
-        """
-        operator_new = 'inselect'
-        if(bool(operator == '=') ^ bool(value)):
-            operator_new = 'not inselect'
-        return [('sale_order_id', operator_new, (query, ()))]
+                if task.sale_order_id.invoice_status in ['upselling', 'to invoice']:
+                    secondary = False
+                else:  # Means invoice status is 'Nothing to Invoice'
+                    primary = False
+            task.write({
+                'display_create_invoice_primary': primary,
+                'display_create_invoice_secondary': secondary,
+            })
 
     def action_view_invoices(self):
         invoices = self.mapped('sale_order_id.invoice_ids')
@@ -198,26 +175,6 @@ class Task(models.Model):
             task._fsm_ensure_sale_order()
             if task.sudo().sale_order_id.state in ['draft', 'sent']:
                 task.sudo().sale_order_id.action_confirm()
-
-    def action_fsm_create_invoice(self):
-        if not all(self.mapped('is_fsm')):
-            raise UserError(_('This action is only allowed on FSM project.'))
-        for task in self:
-            # ensure the SO exists before invoicing, then confirm it
-            task._fsm_ensure_sale_order()
-            if task.sale_order_id.state in ['draft', 'sent']:
-                task.sale_order_id.action_confirm()
-
-        # redirect create invoice wizard (of the Sales Order)
-        action = self.env.ref('sale.action_view_sale_advance_payment_inv').read()[0]
-        context = literal_eval(action.get('context', "{}"))
-        context.update({
-            'active_id': self.sale_order_id.id if len(self) == 1 else False,
-            'active_ids': self.mapped('sale_order_id').ids,
-            'default_company_id': self.company_id.id,
-        })
-        action['context'] = context
-        return action
 
     def _fsm_ensure_sale_order(self):
         """ get the SO of the task. If no one, create it and return it """

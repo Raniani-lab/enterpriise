@@ -332,6 +332,7 @@ class IrModel(models.Model):
             stage_model_vals['field_id'].append((0, 0, {
                 'name': 'x_name',
                 'ttype': 'char',
+                'required': True,
                 'field_description': _('Name'),
                 'translate': True,
                 'copied': True,
@@ -394,6 +395,7 @@ class IrModel(models.Model):
             tag_model_vals['field_id'].append((0, 0, {
                 'name': 'x_name',
                 'ttype': 'char',
+                'required': True,
                 'field_description': _('Name'),
                 'copied': True,
             }))

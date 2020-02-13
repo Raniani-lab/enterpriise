@@ -116,7 +116,7 @@ odoo.define('sign.views_custo', function(require) {
     function _sign_upload_file(inactive, sign_directly_without_mail, sign_edit_context) {
         var self = this;
         var sign_directly_without_mail =  sign_directly_without_mail || false;
-        var $upload_input = $('<input type="file" name="files[]" accept=".pdf"/>');
+        var $upload_input = $('<input type="file" name="files[]" accept="application/pdf, application/x-pdf, application/vnd.cups-pdf"/>');
         $upload_input.on('change', function (e) {
             var f = e.target.files[0];
             utils.getDataURLFromFile(f).then(function (result) {

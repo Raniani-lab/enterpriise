@@ -14,5 +14,6 @@
         'views/project_task_views.xml',
         'wizard/create_task_views.xml',
     ],
+    'demo': ['data/helpdesk_fsm_demo.xml'],
     'auto_install': True,
 }

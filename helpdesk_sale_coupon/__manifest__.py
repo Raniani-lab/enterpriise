@@ -15,4 +15,5 @@ Generate Coupons from Helpdesks tickets
         'wizard/helpdesk_sale_coupon_generate_views.xml',
         'views/helpdesk_views.xml',
     ],
+    'demo': ['data/helpdesk_sale_coupon_demo.xml'],
 }

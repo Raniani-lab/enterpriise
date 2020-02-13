@@ -14,4 +14,5 @@ Repair Products from helpdesk tickets
         'views/helpdesk_views.xml',
         'views/repair_views.xml',
     ],
+    'demo': ['data/helpdesk_repair_demo.xml'],
 }

@@ -23,6 +23,7 @@ class MXReportAccountCoa(models.AbstractModel):
     _description = "Mexican Chart of Account Report"
 
     filter_comparison = None
+    filter_cash_basis = None
     filter_all_entries = None
     filter_hierarchy = None
     filter_journals = None

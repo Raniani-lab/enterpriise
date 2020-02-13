@@ -41,6 +41,8 @@ class IrasAuditFile(models.AbstractModel):
     _name = 'l10n.sg.reports.iaf'
     _description = 'Create IRAS audit file'
 
+    filter_cash_basis = None
+
     def _get_company_infos(self, date_from, date_to):
         """
         Generate the informations about the company for the IRAS Audit File

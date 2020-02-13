@@ -120,22 +120,16 @@ class AccountReport(models.AbstractModel):
 
     @api.model
     def _get_options_journals(self, options):
-        journals = []
-        for journal_option in options.get('journals', []):
-            if journal_option['id'] in ('divider', 'group'):
-                continue
-            if journal_option['selected']:
-                journals.append(journal_option)
-        return journals
+        return [
+            journal for journal in options.get('journals', []) if
+            not journal['id'] in ('divider', 'group') and journal['selected']
+        ]
 
     @api.model
     def _get_options_journals_domain(self, options):
-        if not options.get('journals'):
-            return []
-
         # Make sure to return an empty array when nothing selected to handle archived journals.
         selected_journals = self._get_options_journals(options)
-        return selected_journals and [('journal_id', 'in', [j['id'] for j in self._get_options_journals(options)])] or []
+        return selected_journals and [('journal_id', 'in', [j['id'] for j in selected_journals])] or []
 
     ####################################################
     # OPTIONS: date + comparison

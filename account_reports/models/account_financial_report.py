@@ -891,6 +891,9 @@ class AccountFinancialReportLine(models.Model):
     # HELPERS
     # -------------------------------------------------------------------------
 
+    def _cr_execute(self, query, params=None):
+        return self.env.cr.execute(query, params)
+
     def _get_financial_report(self):
         ''' Retrieve the financial report owning the current line.
         The current financial report you are rendering is not always the report owning the
@@ -983,7 +986,7 @@ class AccountFinancialReportLine(models.Model):
 
         results = {}
 
-        self._cr.execute(' UNION ALL '.join(queries), params)
+        self._cr_execute(' UNION ALL '.join(queries), params)
         for res in self._cr.dictfetchall():
             # Build the key.
             key = [res['period_index']]
@@ -1066,7 +1069,7 @@ class AccountFinancialReportLine(models.Model):
             params += where_params
 
         # Fetch the results.
-        
+
         results = {
             'sum': {},
             'sum_if_pos': {},
@@ -1074,7 +1077,7 @@ class AccountFinancialReportLine(models.Model):
             'count_rows': {},
         }
 
-        self._cr.execute(' UNION ALL '.join(queries), params)
+        self._cr_execute(' UNION ALL '.join(queries), params)
         for res in self._cr.dictfetchall():
             # Build the key.
             key = [res['period_index']]

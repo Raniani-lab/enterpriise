@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-02-13 08:46+0000\n"
+"PO-Revision-Date: 2020-02-13 08:46+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -177,6 +177,11 @@ msgid "Comments"
 msgstr ""
 
 #. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.field_project_worksheet_template__company_ids
+msgid "Companies"
+msgstr ""
+
+#. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_project_form_inherit_industry_fsm_report
 msgid "Create and fill report on tasks"
 msgstr ""
@@ -189,6 +194,11 @@ msgstr ""
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_worksheet_template__create_date
 msgid "Created on"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_task_form2_inherit
+msgid "Customer Preview"
 msgstr ""
 
 #. module: industry_fsm_report
@@ -211,6 +221,26 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_worksheet_template__display_name
 #: model:ir.model.fields,field_description:industry_fsm_report.field_report_industry_fsm_report_worksheet_custom__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__display_send_report_primary
+msgid "Display Send Report Primary"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__display_send_report_secondary
+msgid "Display Send Report Secondary"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__display_sign_report_primary
+msgid "Display Sign Report Primary"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__display_sign_report_secondary
+msgid "Display Sign Report Secondary"
 msgstr ""
 
 #. module: industry_fsm_report
@@ -366,6 +396,11 @@ msgid "Sequence"
 msgstr ""
 
 #. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
+msgid "Sign"
+msgstr ""
+
+#. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_task_form2_inherit
 msgid "Sign Report"
 msgstr ""
@@ -408,12 +443,6 @@ msgid "Task Worksheet Custom Report"
 msgstr ""
 
 #. module: industry_fsm_report
-#: code:addons/industry_fsm_report/controllers/portal.py:0
-#, python-format
-msgid "Task signed by %s"
-msgstr ""
-
-#. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
 msgid "Task:"
 msgstr ""
@@ -440,7 +469,21 @@ msgstr ""
 #. module: industry_fsm_report
 #: code:addons/industry_fsm_report/controllers/portal.py:0
 #, python-format
+msgid "The worksheet has been signed"
+msgstr ""
+
+#. module: industry_fsm_report
+#: code:addons/industry_fsm_report/controllers/portal.py:0
+#, python-format
 msgid "The worksheet is not in a state requiring customer signature."
+msgstr ""
+
+#. module: industry_fsm_report
+#: code:addons/industry_fsm_report/models/project_worksheet_template.py:0
+#, python-format
+msgid ""
+"There is still projects or tasks linked to this template. Please unlink them"
+" first."
 msgstr ""
 
 #. module: industry_fsm_report

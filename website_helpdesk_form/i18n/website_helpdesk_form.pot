@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-02-13 08:45+0000\n"
+"PO-Revision-Date: 2020-02-13 08:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -29,22 +29,12 @@ msgid "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"
 msgstr ""
 
 #. module: website_helpdesk_form
-#. openerp-web
-#: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:0
-#, python-format
-msgid "Attachment"
-msgstr ""
-
-#. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
 msgid "Attachment(s)"
 msgstr ""
 
 #. module: website_helpdesk_form
-#. openerp-web
-#: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:0
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-#, python-format
 msgid "Description"
 msgstr ""
 
@@ -63,15 +53,12 @@ msgstr ""
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-msgid "Send"
+msgid "Subject<span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
 
 #. module: website_helpdesk_form
-#. openerp-web
-#: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:0
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-#, python-format
-msgid "Subject"
+msgid "Submit"
 msgstr ""
 
 #. module: website_helpdesk_form
@@ -101,19 +88,13 @@ msgid "URL to Submit Issue"
 msgstr ""
 
 #. module: website_helpdesk_form
-#. openerp-web
-#: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:0
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-#, python-format
-msgid "Your Email"
+msgid "Your Email<span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
 
 #. module: website_helpdesk_form
-#. openerp-web
-#: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:0
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-#, python-format
-msgid "Your Name"
+msgid "Your Name<span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
 
 #. module: website_helpdesk_form

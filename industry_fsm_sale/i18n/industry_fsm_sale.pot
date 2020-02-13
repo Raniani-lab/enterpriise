@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-02-13 08:46+0000\n"
+"PO-Revision-Date: 2020-02-13 08:46+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -35,6 +35,13 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm_sale
+#: code:addons/industry_fsm_sale/models/project_task.py:0
+#: code:addons/industry_fsm_sale/models/project_task.py:0
+#, python-format
+msgid "A customer should be set on the task to generate a worksheet."
+msgstr ""
+
+#. module: industry_fsm_sale
 #. openerp-web
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
@@ -56,6 +63,11 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_fsm_imply_task_rate
 msgid "An FSM project must be billed at task rate."
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_billable
+msgid "Bill from Tasks"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -93,6 +105,21 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__currency_id
 msgid "Currency"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_primary
+msgid "Display Create Invoice Primary"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_secondary
+msgid "Display Create Invoice Secondary"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,help:industry_fsm_sale.field_project_project__allow_timesheets
+msgid "Enable timesheeting on the project."
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -250,12 +277,6 @@ msgid "Select or create a customer."
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:product.product,name:industry_fsm_sale.fsm_time_product
-#: model:product.template,name:industry_fsm_sale.fsm_time_product_product_template
-msgid "Service on Timesheet"
-msgstr ""
-
-#. module: industry_fsm_sale
 #. openerp-web
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
@@ -278,12 +299,6 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_sale_order__task_id
 msgid "Task from which quotation have been created"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: code:addons/industry_fsm_sale/models/project_task.py:0
-#, python-format
-msgid "The FSM task must have a customer set to be sold."
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -310,6 +325,16 @@ msgid "Timesheet Product"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_timesheet_timer
+msgid "Timesheet Timer"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_timesheets
+msgid "Timesheets"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.actions.act_window,name:industry_fsm_sale.project_task_action_to_invoice_fsm
 #: model:ir.ui.menu,name:industry_fsm_sale.fsm_menu_all_tasks_invoice
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search
@@ -328,10 +353,13 @@ msgstr ""
 
 #. module: industry_fsm_sale
 #: model:product.product,uom_name:industry_fsm_sale.field_service_product
-#: model:product.product,uom_name:industry_fsm_sale.fsm_time_product
 #: model:product.template,uom_name:industry_fsm_sale.field_service_product_product_template
-#: model:product.template,uom_name:industry_fsm_sale.fsm_time_product_product_template
 msgid "Units"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,help:industry_fsm_sale.field_project_project__allow_timesheet_timer
+msgid "Use a timer to record timesheets on tasks"
 msgstr ""
 
 #. module: industry_fsm_sale

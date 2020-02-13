@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-02-13 08:45+0000\n"
+"PO-Revision-Date: 2020-02-13 08:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,16 +17,16 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#: code:addons/documents/static/src/js/documents_controller_mixin.js:0
 #, python-format
-msgid " (+%s locked)"
+msgid "%s Documents"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#: code:addons/documents/static/src/js/documents_controller_mixin.js:0
 #, python-format
-msgid "%s Documents"
+msgid "%s Documents (%s locked)"
 msgstr ""
 
 #. module: documents
@@ -45,13 +45,6 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_progress_card.js:0
-#, python-format
-msgid "(%s/%sMb)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/static/src/js/documents_inspector.js:0
 #, python-format
 msgid "+ Add a tag "
@@ -64,12 +57,12 @@ msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
-msgid "2018"
+msgid "2019"
 msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
-msgid "2019"
+msgid "2020"
 msgstr ""
 
 #. module: documents
@@ -365,7 +358,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#: code:addons/documents/static/src/xml/documents_views.xml:0
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
 #, python-format
 msgid "Action"
@@ -445,7 +438,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#: code:addons/documents/static/src/xml/documents_views.xml:0
 #, python-format
 msgid "Add URL"
 msgstr ""
@@ -497,13 +490,6 @@ msgid "All files uploaded"
 msgstr ""
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_thread.xml:0
-#, python-format
-msgid "All pages:&nbsp;"
-msgstr ""
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
 msgid "Allows to"
 msgstr ""
@@ -531,6 +517,11 @@ msgstr ""
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_afv
 msgid "Ask For Validation"
+msgstr ""
+
+#. module: documents
+#: model:documents.facet,name:documents.documents_marketing_assets
+msgid "Assets"
 msgstr ""
 
 #. module: documents
@@ -601,13 +592,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "Cancel"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_progress_bar.xml:0
-#, python-format
-msgid "Cancel Upload"
 msgstr ""
 
 #. module: documents
@@ -792,13 +776,6 @@ msgid "Display Name"
 msgstr ""
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_progress_bar.js:0
-#, python-format
-msgid "Do you really want to cancel the upload of %s?"
-msgstr ""
-
-#. module: documents
 #: model:ir.model,name:documents.model_documents_document
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -850,6 +827,7 @@ msgstr ""
 #: code:addons/documents/models/folder.py:0
 #: code:addons/documents/models/res_partner.py:0
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#: model:documents.facet,name:documents.documents_finance_documents
 #: model:ir.actions.act_window,name:documents.document_action
 #: model:ir.model.fields,field_description:documents.field_documents_folder__document_ids
 #: model:ir.model.fields,field_description:documents.field_res_users__document_count
@@ -922,7 +900,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#: code:addons/documents/static/src/xml/documents_views.xml:0
 #, python-format
 msgid "Drop files here to upload"
 msgstr ""
@@ -962,31 +940,14 @@ msgid "E.g. Validate document"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/ir_attachment.py:0
-#, python-format
-msgid "ERROR: Invalid PDF file!"
-msgstr ""
-
-#. module: documents
-#: code:addons/documents/models/ir_attachment.py:0
-#, python-format
-msgid "ERROR: Invalid list of pages to split. Example: 1,5-9,10"
-msgstr ""
-
-#. module: documents
-#: code:addons/documents/models/ir_attachment.py:0
-#, python-format
-msgid "ERROR: the file must be a PDF"
-msgstr ""
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__email_cc
 msgid "Email cc"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#: code:addons/documents/static/src/js/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/js/documents_document_viewer.js:0
 #, python-format
 msgid "Error"
 msgstr ""
@@ -1004,13 +965,6 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__expired
 msgid "Expired"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_thread.xml:0
-#, python-format
-msgid "Extract pages:&nbsp;"
 msgstr ""
 
 #. module: documents
@@ -1057,6 +1011,11 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_fiscal
 msgid "Fiscal"
+msgstr ""
+
+#. module: documents
+#: model:documents.facet,name:documents.documents_finance_fiscal_year
+msgid "Fiscal years"
 msgstr ""
 
 #. module: documents
@@ -1117,6 +1076,14 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#: model:ir.model.fields,field_description:documents.field_documents_document__previous_attachment_ids
+#, python-format
+msgid "History"
 msgstr ""
 
 #. module: documents
@@ -1202,6 +1169,11 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "It will be sent to the followers of this document"
+msgstr ""
+
+#. module: documents
+#: model:documents.facet,name:documents.documents_internal_knowledge
+msgid "Knowledge"
 msgstr ""
 
 #. module: documents
@@ -1571,14 +1543,6 @@ msgid "Presentations"
 msgstr ""
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_progress_card.js:0
-#: code:addons/documents/static/src/xml/documents_progress_bar.xml:0
-#, python-format
-msgid "Processing..."
-msgstr ""
-
-#. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_project
 msgid "Project"
 msgstr ""
@@ -1633,7 +1597,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#: code:addons/documents/static/src/xml/documents_views.xml:0
 #, python-format
 msgid "Request Document"
 msgstr ""
@@ -1752,7 +1716,7 @@ msgstr ""
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
-msgid "Set As 2019 Contracts"
+msgid "Set As 2020 Contracts"
 msgstr ""
 
 #. module: documents
@@ -1779,7 +1743,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#: code:addons/documents/static/src/xml/documents_views.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Share"
@@ -1815,7 +1779,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#: code:addons/documents/static/src/xml/documents_views.xml:0
 #, python-format
 msgid "Share this domain"
 msgstr ""
@@ -1861,13 +1825,21 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_thread.xml:0
-#: code:addons/documents/static/src/xml/documents_thread.xml:0
+#: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #, python-format
 msgid "Split"
 msgstr ""
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:0
+#, python-format
+msgid "Split PDF"
+msgstr ""
+
+#. module: documents
+#: model:documents.facet,name:documents.documents_finance_status
+#: model:documents.facet,name:documents.documents_internal_status
 #: model:ir.model.fields,field_description:documents.field_documents_share__state
 msgid "Status"
 msgstr ""
@@ -1930,6 +1902,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Tags"
+msgstr ""
+
+#. module: documents
+#: model:documents.facet,name:documents.documents_internal_template
+msgid "Templates"
 msgstr ""
 
 #. module: documents
@@ -2082,7 +2059,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#: code:addons/documents/static/src/js/documents_controller_mixin.js:0
 #, python-format
 msgid "Unnamed"
 msgstr ""
@@ -2101,7 +2078,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#: code:addons/documents/static/src/xml/documents_views.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
@@ -2115,22 +2092,15 @@ msgid ""
 msgstr ""
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#, python-format
+msgid "Upload Document"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
 msgid "Upload by Email"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_progress_bar.js:0
-#, python-format
-msgid "Upload cancelled"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_progress_card.js:0
-#, python-format
-msgid "Uploading... (%s%%)"
 msgstr ""
 
 #. module: documents
@@ -2271,6 +2241,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #, python-format
+msgid "delete"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#, python-format
 msgid "document"
 msgstr ""
 
@@ -2295,9 +2272,9 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_thread.xml:0
+#: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #, python-format
-msgid "e.g. 1-5, 7, 8-9"
+msgid "download"
 msgstr ""
 
 #. module: documents
@@ -2309,9 +2286,9 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #, python-format
-msgid "message: %s"
+msgid "restore"
 msgstr ""
 
 #. module: documents
@@ -2324,6 +2301,13 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "shared by"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_controller_mixin.js:0
+#, python-format
+msgid "status code: %s </br> message: %s"
 msgstr ""
 
 #. module: documents

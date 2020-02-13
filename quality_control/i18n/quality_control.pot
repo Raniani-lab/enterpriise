@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
-"PO-Revision-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2020-02-13 08:45+0000\n"
+"PO-Revision-Date: 2020-02-13 08:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -49,7 +49,8 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
 msgid ""
-"<span class=\"o_stat_text text-success\" attrs=\"{'invisible': [('quality_check_fail', '=', True)]}\">Quality Checks</span>\n"
+"<span class=\"o_stat_text\" attrs=\"{'invisible': ['|', ('quality_check_fail', '=', True), ('quality_check_todo', '!=', True)]}\">Quality Checks</span>\n"
+"                    <span class=\"o_stat_text text-success\" attrs=\"{'invisible': ['|', ('quality_check_fail', '=', True), ('quality_check_todo', '=', True)]}\">Quality Checks</span>\n"
 "                    <span class=\"o_stat_text text-danger\" attrs=\"{'invisible': [('quality_check_fail', '!=', True)]}\">Quality Checks</span>"
 msgstr ""
 
@@ -90,12 +91,12 @@ msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
-msgid "<strong>Operation :</strong>"
+msgid "<strong>Operations :</strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
-msgid "<strong>Product :</strong>"
+msgid "<strong>Products :</strong>"
 msgstr ""
 
 #. module: quality_control
@@ -299,6 +300,11 @@ msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
+msgid "Instructions"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Make Alert"
 msgstr ""
 
@@ -396,13 +402,13 @@ msgid "OK"
 msgstr ""
 
 #. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
-msgid "Operation Type"
+#: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
+msgid "Overview"
 msgstr ""
 
 #. module: quality_control
-#: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
-msgid "Overview"
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
+msgid "Partner"
 msgstr ""
 
 #. module: quality_control
@@ -446,7 +452,6 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_product_product
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Product"
 msgstr ""
 

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-02-13 08:45+0000\n"
+"PO-Revision-Date: 2020-02-13 08:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,9 +28,8 @@ msgid "A bank account must be set on the following documents: "
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_journal.py:0
-#, python-format
-msgid "A partner has not a bank id."
+#: model_terms:ir.ui.view,arch_db:account_sepa.view_batch_payment_form_inherit
+msgid "Batch Booking"
 msgstr ""
 
 #. module: account_sepa
@@ -83,15 +82,6 @@ msgid "Identification assigned by an institution (eg. VAT number)."
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:0
-#: code:addons/account_sepa/models/account_batch_payment.py:0
-#, python-format
-msgid ""
-"In result, the file might not be accepted by all bank as a valid SEPA Credit"
-" Transfer file"
-msgstr ""
-
-#. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_orgid_issr
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_orgid_issr
 msgid "Issuer"
@@ -103,10 +93,22 @@ msgid "Journal"
 msgstr ""
 
 #. module: account_sepa
+#: code:addons/account_sepa/models/account_batch_payment.py:0
+#, python-format
+msgid "Maximum amount is %s for payments in Euros, %s for other currencies."
+msgstr ""
+
+#. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_config_settings__sepa_initiating_party_name
 msgid ""
 "Name of the Creditor Reference Party. Usage Rule: Limited to 70 characters "
 "in length."
+msgstr ""
+
+#. module: account_sepa
+#: code:addons/account_sepa/models/account_journal.py:0
+#, python-format
+msgid "Partner %s has not bank account defined."
 msgstr ""
 
 #. module: account_sepa
@@ -125,18 +127,6 @@ msgid "Payments to send via SEPA"
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:0
-#, python-format
-msgid "Please note that the following warning has been raised:"
-msgstr ""
-
-#. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:0
-#, python-format
-msgid "Please note that the following warnings have been raised:"
-msgstr ""
-
-#. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__qr_code_url
 msgid "Qr Code Url"
 msgstr ""
@@ -144,6 +134,16 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_payment_register
 msgid "Register Payment"
+msgstr ""
+
+#. module: account_sepa
+#: model:ir.model.fields,help:account_sepa.field_account_batch_payment__sct_batch_booking
+msgid "Request batch booking from the bank for the related bank statements."
+msgstr ""
+
+#. module: account_sepa
+#: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_batch_booking
+msgid "SCT Batch Booking"
 msgstr ""
 
 #. module: account_sepa
@@ -189,8 +189,31 @@ msgid "Sct Generic"
 msgstr ""
 
 #. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_warning
-msgid "Sct Warning"
+#: code:addons/account_sepa/models/account_batch_payment.py:0
+#, python-format
+msgid "Some payments are above the maximum amount allowed."
+msgstr ""
+
+#. module: account_sepa
+#: code:addons/account_sepa/models/account_batch_payment.py:0
+#, python-format
+msgid ""
+"Some payments are not made on an IBAN recipient account. This batch might "
+"not be accepted by certain banks because of that."
+msgstr ""
+
+#. module: account_sepa
+#: code:addons/account_sepa/models/account_batch_payment.py:0
+#, python-format
+msgid "Some payments have no recipient bank account set."
+msgstr ""
+
+#. module: account_sepa
+#: code:addons/account_sepa/models/account_batch_payment.py:0
+#, python-format
+msgid ""
+"Some payments were instructed in another currency than Euro. This batch "
+"might not be accepted by certain banks because of that."
 msgstr ""
 
 #. module: account_sepa
@@ -237,21 +260,6 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:0
-#, python-format
-msgid ""
-"The creditor bank account %s used in payment %s is not identified by an IBAN"
-msgstr ""
-
-#. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:0
-#, python-format
-msgid ""
-"The following payments have no recipient bank account set: %s. \n"
-"\n"
-msgstr ""
-
-#. module: account_sepa
 #: code:addons/account_sepa/models/account_payment.py:0
 #, python-format
 msgid ""
@@ -272,12 +280,6 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:0
-#, python-format
-msgid "The transaction %s is instructed in another currency than EUR"
-msgstr ""
-
-#. module: account_sepa
 #: code:addons/account_sepa/models/account_journal.py:0
 #, python-format
 msgid "Too many transactions for a single file."
@@ -295,16 +297,4 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_initiating_party_name
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_initiating_party_name
 msgid "Your Company Name"
-msgstr ""
-
-#. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:0
-#, python-format
-msgid "Your bank account is not labelled in EUR"
-msgstr ""
-
-#. module: account_sepa
-#: code:addons/account_sepa/models/account_journal.py:0
-#, python-format
-msgid "Partner %s has not bank account defined."
 msgstr ""

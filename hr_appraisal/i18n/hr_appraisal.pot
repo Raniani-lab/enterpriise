@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-02-13 08:45+0000\n"
+"PO-Revision-Date: 2020-02-13 08:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -140,17 +140,10 @@ msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-msgid ""
-"<span class=\"o_stat_text\">\n"
-"                        <span attrs=\"{'invisible': [('appraisal_date', '=', False)]}\">Next</span> Appraisal\n"
-"                    </span>"
-msgstr ""
-
-#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 msgid ""
 "<span class=\"o_stat_text\">\n"
-"                        Next Appraisal\n"
+"                        Last Appraisal\n"
 "                    </span>"
 msgstr ""
 
@@ -245,21 +238,6 @@ msgid "Appraisal Analysis"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_collaborators
-msgid "Appraisal By Collaborators"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_colleagues
-msgid "Appraisal By Colleagues"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_manager
-msgid "Appraisal By Manager"
-msgstr ""
-
-#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_collaborators_ids
 msgid "Appraisal Collaborators"
@@ -269,11 +247,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_colleagues_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_colleagues_ids
 msgid "Appraisal Colleagues"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_date
-msgid "Appraisal Date"
 msgstr ""
 
 #. module: hr_appraisal
@@ -375,7 +348,6 @@ msgid "Appraisal: Run employee appraisal"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_count
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_department_view_kanban
 msgid "Appraisals"
 msgstr ""
@@ -453,6 +425,16 @@ msgid "Cancel"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_departure_wizard__cancel_appraisal
+msgid "Cancel Future Appraisals"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_departure_wizard_view_form
+msgid "Cancel all appraisals after this date"
+msgstr ""
+
+#. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal__state__cancel
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_report__state__cancel
@@ -476,6 +458,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_collaborators
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_collaborators
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_collaborators
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_collaborators
 msgid "Collaborators"
 msgstr ""
 
@@ -495,6 +478,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_colleagues
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_colleagues
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_colleagues
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_colleagues
 msgid "Colleagues"
 msgstr ""
 
@@ -607,10 +591,16 @@ msgid "Delete"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model,name:hr_appraisal.model_hr_department
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__department_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__department_id
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Department"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model,name:hr_appraisal.model_hr_departure_wizard
+msgid "Departure Wizard"
 msgstr ""
 
 #. module: hr_appraisal
@@ -782,11 +772,6 @@ msgid "Group by..."
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model,name:hr_appraisal.model_hr_department
-msgid "HR Department"
-msgstr ""
-
-#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
 msgid "Hello"
 msgstr ""
@@ -862,6 +847,12 @@ msgstr ""
 msgid ""
 "It has been a while since your last appraisal, go to your employee profile "
 "to request an appraisal to your manager."
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__last_appraisal_date
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__last_appraisal_date
+msgid "Last Appraisal Date"
 msgstr ""
 
 #. module: hr_appraisal
@@ -952,6 +943,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_manager
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_manager
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_manager
 msgid "Managers"
 msgstr ""
 
@@ -1008,7 +1000,8 @@ msgid "Next Activity Type"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_date
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__next_appraisal_date
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__next_appraisal_date
 msgid "Next Appraisal Date"
 msgstr ""
 
@@ -1176,13 +1169,20 @@ msgid "Subordinates"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,help:hr_appraisal.field_hr_employee__last_appraisal_date
+#: model:ir.model.fields,help:hr_appraisal.field_res_users__last_appraisal_date
+msgid "The date of the last appraisal"
+msgstr ""
+
+#. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_employee.py:0
 #, python-format
 msgid "The date of the next appraisal cannot be in the past"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,help:hr_appraisal.field_hr_employee__appraisal_date
+#: model:ir.model.fields,help:hr_appraisal.field_hr_employee__next_appraisal_date
+#: model:ir.model.fields,help:hr_appraisal.field_res_users__next_appraisal_date
 msgid ""
 "The date of the next appraisal is computed by the appraisal plan's dates "
 "(first appraisal + periodicity)."

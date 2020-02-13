@@ -1,0 +1,262 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* event_social_facebook
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-13 08:45+0000\n"
+"PO-Revision-Date: 2020-02-13 08:45+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: event_social_facebook
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.event_event_view_kanban
+msgid ""
+"<i class=\"o_social_stat_facebook_icon text-center p-0 col-sm fa fa-facebook"
+" p-1\" title=\"Facebook stats\"/>"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_event_event__social_attending_count
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__attending_count
+msgid "Attendee count"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__date_begin
+msgid "Date begin"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__date_end
+msgid "Date end"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_event_event__social_declined_count
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__declined_count
+msgid "Decline count"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__description
+msgid "Description"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model,name:event_social_facebook.model_event_event
+msgid "Event"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_live_post__social_facebook_event_id
+msgid "Facebook Event"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_post__social_facebook_event_ids
+#: model:ir.ui.menu,name:event_social_facebook.social_facebook_event_menu_global
+msgid "Facebook Events"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__facebook_event_identifier
+msgid "Facebook ID of the event"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_event_event__social_event_id
+msgid "Facebook event"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__media_id
+msgid "Facebook media"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,help:event_social_facebook.field_event_event__social_event_id
+msgid ""
+"First create an event on Facebook, then link this event to the Facebook "
+"event"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__id
+msgid "ID"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_event_event__social_noreply_count
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__noreply_count
+msgid "Ignore count"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_event_event__social_interested_count
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__interested_count
+msgid "Interest count"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_event_event__social_maybe_count
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__maybe_count
+msgid "Maybe count"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__name
+msgid "Name"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,help:event_social_facebook.field_event_event__social_attending_count
+#: model:ir.model.fields,help:event_social_facebook.field_social_facebook_event__attending_count
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.event_event_view_kanban
+msgid "Number of people attending"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,help:event_social_facebook.field_event_event__social_interested_count
+#: model:ir.model.fields,help:event_social_facebook.field_social_facebook_event__interested_count
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.event_event_view_kanban
+msgid "Number of people interested"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,help:event_social_facebook.field_event_event__social_declined_count
+#: model:ir.model.fields,help:event_social_facebook.field_social_facebook_event__declined_count
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.event_event_view_kanban
+msgid "Number of people who declined"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,help:event_social_facebook.field_event_event__social_noreply_count
+#: model:ir.model.fields,help:event_social_facebook.field_social_facebook_event__noreply_count
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.event_event_view_kanban
+msgid "Number of people who ignored"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,help:event_social_facebook.field_event_event__social_maybe_count
+#: model:ir.model.fields,help:event_social_facebook.field_social_facebook_event__maybe_count
+msgid "Number of people who replied \"maybe\""
+msgstr ""
+
+#. module: event_social_facebook
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.event_event_view_kanban
+msgid "Number of people who replied 'maybe'"
+msgstr ""
+
+#. module: event_social_facebook
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.social_facebook_event_view_search
+msgid "Past events"
+msgstr ""
+
+#. module: event_social_facebook
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.social_post_view_form
+msgid "Post on Events"
+msgstr ""
+
+#. module: event_social_facebook
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.social_post_view_kanban
+msgid "Posted on a event"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,help:event_social_facebook.field_social_facebook_event__media_id
+msgid "Related Social Media (Facebook, Twitter, ...)."
+msgstr ""
+
+#. module: event_social_facebook
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.event_event_view_form
+msgid "Send post"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,field_description:event_social_facebook.field_social_facebook_event__account_id
+msgid "Social Account"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.actions.act_window,name:event_social_facebook.social_facebook_event_action
+msgid "Social Events"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model,name:event_social_facebook.model_social_facebook_event
+msgid "Social Facebook Event"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model,name:event_social_facebook.model_social_live_post
+msgid "Social Live Post"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model,name:event_social_facebook.model_social_post
+msgid "Social Post"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model,name:event_social_facebook.model_social_stream
+msgid "Social Stream"
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,help:event_social_facebook.field_social_facebook_event__account_id
+msgid "The Facebook account link to the event."
+msgstr ""
+
+#. module: event_social_facebook
+#: model:ir.model.fields,help:event_social_facebook.field_social_live_post__social_facebook_event_id
+#: model:ir.model.fields,help:event_social_facebook.field_social_post__social_facebook_event_ids
+msgid "The events on which this post will be published."
+msgstr ""
+
+#. module: event_social_facebook
+#: model_terms:ir.ui.view,arch_db:event_social_facebook.social_facebook_event_view_search
+msgid "Upcoming"
+msgstr ""
+
+#. module: event_social_facebook
+#: code:addons/event_social_facebook/models/social_facebook_event.py:0
+#, python-format
+msgid "You must be event/social user to synchronize the Facebook events."
+msgstr ""

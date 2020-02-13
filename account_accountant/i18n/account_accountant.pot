@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-02-13 08:45+0000\n"
+"PO-Revision-Date: 2020-02-13 08:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -131,9 +131,7 @@ msgid "Anglo-Saxon Accounting"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.model.fields,field_description:account_accountant.field_account_bank_statement__attachment_ids
 #: model:ir.model.fields,field_description:account_accountant.field_account_move__attachment_ids
-#: model:ir.model.fields,field_description:account_accountant.field_account_payment__attachment_ids
 msgid "Attachments"
 msgstr ""
 
@@ -209,6 +207,11 @@ msgstr ""
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Close statement"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_res_company
+msgid "Companies"
 msgstr ""
 
 #. module: account_accountant
@@ -299,6 +302,16 @@ msgid "Due Date"
 msgstr ""
 
 #. module: account_accountant
+#: model:ir.model.fields,help:account_accountant.field_res_company__invoicing_switch_threshold
+#: model:ir.model.fields,help:account_accountant.field_res_config_settings__invoicing_switch_threshold
+msgid ""
+"Every payment and invoice before this date will receive the 'From Invoicing'"
+" status, hiding all the accounting entries related to it. Use this option "
+"after installing Accounting if you were using only Invoicing before, before "
+"importing all your actual accounting data in to Odoo."
+msgstr ""
+
+#. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
@@ -369,6 +382,12 @@ msgstr ""
 msgid ""
 "Intermediary account used when moving money from a liquidity account to "
 "another"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
+#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__invoicing_switch_threshold
+msgid "Invoicing Switch Threshold"
 msgstr ""
 
 #. module: account_accountant
@@ -535,6 +554,13 @@ msgid "New"
 msgstr ""
 
 #. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:0
+#, python-format
+msgid "No attachments linked."
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
 msgid ""
@@ -609,6 +635,11 @@ msgid "Payment Matching"
 msgstr ""
 
 #. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_move__payment_state_before_switch
+msgid "Payment State Before Switch"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_payment
 msgid "Payments"
 msgstr ""
@@ -630,6 +661,12 @@ msgid "Predict vendor bill accounts"
 msgstr ""
 
 #. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_reconcile_model
+msgid ""
+"Preset to create journal entries during a invoices and payments matching"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_product_product_categories
 msgid "Product Categories"
 msgstr ""
@@ -645,9 +682,10 @@ msgstr ""
 
 #. module: account_accountant
 #. openerp-web
+#: code:addons/account_accountant/models/account_move.py:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
-#: model:ir.actions.client,name:account_accountant.action_view_account_move_line_reconcile
+#: model:ir.actions.server,name:account_accountant.action_view_account_move_line_reconcile
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_form
 #, python-format
@@ -725,6 +763,11 @@ msgid "Some fields are undefined"
 msgstr ""
 
 #. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_payment__state_before_switch
+msgid "State Before Switch"
+msgstr ""
+
+#. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
@@ -745,6 +788,24 @@ msgid "Taxes"
 msgstr ""
 
 #. module: account_accountant
+#: model:ir.model.fields,help:account_accountant.field_account_payment__state_before_switch
+msgid ""
+"Technical field to keep the state when switching from invoicing to "
+"accounting (using invoicing_switch_threshold setting field). It allows "
+"keeping the former state, so that we can restore it if the user "
+"misconfigured the switch date and wants to change it."
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model.fields,help:account_accountant.field_account_move__payment_state_before_switch
+msgid ""
+"Technical field to keep the value of payment_state when switching from "
+"invoicing to accounting (using invoicing_switch_threshold setting field). It"
+" allows keeping the former payment state, so that we can restore it if the "
+"user misconfigured the switch date and wants to change it."
+msgstr ""
+
+#. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
@@ -761,15 +822,15 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
-"The system will try to predict the accounts on vendor bill lines based on "
-"history of previous bills"
+"The invoices up to this date will not be taken into account as accounting "
+"entries"
 msgstr ""
 
 #. module: account_accountant
-#. openerp-web
-#: code:addons/account_accountant/static/src/js/move_line_list_view.js:0
-#, python-format
-msgid "There is no attachment linked to this move."
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+msgid ""
+"The system will try to predict the accounts on vendor bill lines based on "
+"history of previous bills"
 msgstr ""
 
 #. module: account_accountant
@@ -799,6 +860,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
+msgid "This was the model that generated the lines suggested"
+msgstr ""
+
+#. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
+#, python-format
 msgid "To Check"
 msgstr ""
 
@@ -819,6 +887,12 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__transfer_account_id
 msgid "Transfer Account"
+msgstr ""
+
+#. module: account_accountant
+#: code:addons/account_accountant/models/account_move.py:0
+#, python-format
+msgid "Transfer Accounts"
 msgstr ""
 
 #. module: account_accountant
@@ -851,6 +925,14 @@ msgstr ""
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Writeoff Date"
+msgstr ""
+
+#. module: account_accountant
+#: code:addons/account_accountant/models/account_move.py:0
+#, python-format
+msgid ""
+"You cannot reconcile together the payable and receivable accounts of "
+"multiple partners at once."
 msgstr ""
 
 #. module: account_accountant

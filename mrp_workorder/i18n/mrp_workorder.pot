@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-02-13 08:45+0000\n"
+"PO-Revision-Date: 2020-02-13 08:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -132,6 +132,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_id
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__component_ids
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__mrp_workorder_additional_product__type__component
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Component"
@@ -305,6 +306,11 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_last_lot
 msgid "Is Last lot"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__is_workorder_step
+msgid "Is Workorder Step"
 msgstr ""
 
 #. module: mrp_workorder
@@ -585,6 +591,7 @@ msgid "Result"
 msgstr ""
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__routing_ids
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
 msgid "Routing"
 msgstr ""
@@ -711,11 +718,6 @@ msgid "Type"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__code
-msgid "Type of Operation"
-msgstr ""
-
-#. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Unblock"
@@ -836,12 +838,6 @@ msgstr ""
 msgid ""
 "You should consume the quantity of %s defined in the BoM. If you want to "
 "consume more or less components, change the consumption setting on the BoM."
-msgstr ""
-
-#. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:0
-#, python-format
-msgid "You should provide a lot for the final product"
 msgstr ""
 
 #. module: mrp_workorder

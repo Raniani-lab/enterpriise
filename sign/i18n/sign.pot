@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-02-13 08:46+0000\n"
+"PO-Revision-Date: 2020-02-13 08:46+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -65,6 +65,7 @@ msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "- <em>Waiting Signature</em>"
 msgstr ""
 
@@ -100,6 +101,7 @@ msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "<br/>(the email access has not been sent)"
 msgstr ""
 
@@ -125,6 +127,16 @@ msgstr ""
 msgid ""
 "<span attrs=\"{'invisible': [('url', '!=', False)]}\">To be able to share, "
 "there should be only one responsible for all the fields.</span>"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
+msgid "<span class=\"o_portal_category\">Summary</span>"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
+msgid "<span class=\"o_portal_category\">Your Information</span>"
 msgstr ""
 
 #. module: sign
@@ -179,6 +191,16 @@ msgid "<span>(1.0 = full page size)</span>"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
+msgid "<strong>Creation Date:</strong>"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
+msgid "<strong>Message and communication history</strong>"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid ""
@@ -205,6 +227,11 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Access Logs"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request_item__access_warning
+msgid "Access warning"
 msgstr ""
 
 #. module: sign
@@ -300,6 +327,12 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format
 msgid "Adopt and Sign"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/controllers/portal.py:0
+#, python-format
+msgid "All"
 msgstr ""
 
 #. module: sign
@@ -429,7 +462,9 @@ msgid "Company"
 msgstr ""
 
 #. module: sign
+#: code:addons/sign/controllers/portal.py:0
 #: model:ir.model.fields.selection,name:sign.selection__sign_request_item__state__completed
+#, python-format
 msgid "Completed"
 msgstr ""
 
@@ -463,6 +498,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__partner_id
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__partner_ids
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__partner_id
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "Contact"
 msgstr ""
 
@@ -520,8 +556,18 @@ msgid "Creation"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
+msgid "Current status of the signature request"
+msgstr ""
+
+#. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_customer
 msgid "Customer"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,help:sign.field_sign_request_item__access_url
+msgid "Customer Portal URL"
 msgstr ""
 
 #. module: sign
@@ -600,6 +646,7 @@ msgid "Display Name"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Document"
 msgstr ""
@@ -611,6 +658,7 @@ msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__reference
+#: model:ir.model.fields,field_description:sign.field_sign_request_item__reference
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Document Name"
 msgstr ""
@@ -628,6 +676,13 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Document/Signer"
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#, python-format
+msgid "Downlad Document"
 msgstr ""
 
 #. module: sign
@@ -799,8 +854,11 @@ msgid "From:"
 msgstr ""
 
 #. module: sign
+#: code:addons/sign/controllers/portal.py:0
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__signed
 #: model:ir.model.fields.selection,name:sign.selection__sign_request__state__signed
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
+#, python-format
 msgid "Fully Signed"
 msgstr ""
 
@@ -1158,6 +1216,12 @@ msgid "Need to sign? Check your inbox to get your secure access"
 msgstr ""
 
 #. module: sign
+#: code:addons/sign/controllers/portal.py:0
+#, python-format
+msgid "Newest"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr ""
@@ -1189,6 +1253,12 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
 msgid "No documents to sign"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/controllers/portal.py:0
+#, python-format
+msgid "None"
 msgstr ""
 
 #. module: sign
@@ -1340,6 +1410,16 @@ msgstr ""
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Please configure the signer's email address"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
+msgid "Portal"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request_item__access_url
+msgid "Portal Access URL"
 msgstr ""
 
 #. module: sign
@@ -1527,6 +1607,12 @@ msgid "Saved"
 msgstr ""
 
 #. module: sign
+#: code:addons/sign/controllers/portal.py:0
+#, python-format
+msgid "Search <span class=\"nolabel\"> (in Document)</span>"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__access_token
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__access_token
 msgid "Security Token"
@@ -1655,6 +1741,7 @@ msgstr ""
 #: code:addons/sign/wizard/sign_send_request.py:0
 #: code:addons/sign/wizard/sign_template_share.py:0
 #: model:ir.ui.menu,name:sign.menu_document
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 #, python-format
 msgid "Sign"
 msgstr ""
@@ -1751,6 +1838,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Signature"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
+msgid "Signature Date"
 msgstr ""
 
 #. module: sign
@@ -1851,6 +1943,9 @@ msgstr ""
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_action
 #: model:ir.ui.menu,name:sign.sign_request_menu
+#: model_terms:ir.ui.view,arch_db:sign.portal_my_home_menu_sign
+#: model_terms:ir.ui.view,arch_db:sign.portal_my_home_sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Signatures"
 msgstr ""
@@ -1869,6 +1964,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signing_date
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "Signed on"
 msgstr ""
 
@@ -1881,6 +1977,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signers_count
 msgid "Signers Count"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/controllers/portal.py:0
+#, python-format
+msgid "Signing Date"
 msgstr ""
 
 #. module: sign
@@ -1920,6 +2022,13 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__request_state
 msgid "State of the request on action log"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/controllers/portal.py:0
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
+#, python-format
+msgid "Status"
 msgstr ""
 
 #. module: sign
@@ -2024,6 +2133,11 @@ msgid ""
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
+msgid "There are no signatures request."
+msgstr ""
+
+#. module: sign
 #: code:addons/sign/models/sign_template.py:0
 #, python-format
 msgid "This file cannot be read. Is it a valid PDF?"
@@ -2031,6 +2145,7 @@ msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__reference
+#: model:ir.model.fields,help:sign.field_sign_request_item__reference
 msgid "This is how the document will be named in the mail"
 msgstr ""
 
@@ -2047,8 +2162,15 @@ msgid "Tip"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields.selection,name:sign.selection__sign_request_item__state__sent
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "To Sign"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/controllers/portal.py:0
+#, python-format
+msgid "To sign"
 msgstr ""
 
 #. module: sign
@@ -2178,6 +2300,11 @@ msgid "Verify"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
+msgid "View Document"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "View document"
 msgstr ""
@@ -2198,22 +2325,10 @@ msgid "Viewed/downloaded by"
 msgstr ""
 
 #. module: sign
-#: model:ir.model.fields.selection,name:sign.selection__sign_request_item__state__sent
-msgid "Waiting for completion"
-msgstr ""
-
-#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format
 msgid "Warning"
-msgstr ""
-
-#. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:0
-#, python-format
-msgid "We will let you know by email once everyone has signed."
 msgstr ""
 
 #. module: sign
@@ -2266,6 +2381,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_follower
 msgid ""
 "You will be notified once the document has been signed by everyone involved."
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_common.xml:0
+#, python-format
+msgid "You will receive a copy of the signed document by mail."
 msgstr ""
 
 #. module: sign

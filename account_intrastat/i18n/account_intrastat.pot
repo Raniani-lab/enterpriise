@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-02-13 08:45+0000\n"
+"PO-Revision-Date: 2020-02-13 08:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -33,6 +33,7 @@ msgid "<span class=\"fa fa-filter\"/> Partners:"
 msgstr ""
 
 #. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_type
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
 msgid "All"
 msgstr ""
@@ -118,12 +119,6 @@ msgid "Default Transport Mode"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.model.fields,field_description:account_intrastat.field_res_company__incoterm_id
-#: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__incoterm_id
-msgid "Default incoterm for Intrastat"
-msgstr ""
-
-#. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Dispatch"
@@ -169,14 +164,6 @@ msgstr ""
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Incoterm Code"
-msgstr ""
-
-#. module: account_intrastat
-#: model:ir.model.fields,help:account_intrastat.field_res_company__incoterm_id
-#: model:ir.model.fields,help:account_intrastat.field_res_config_settings__incoterm_id
-msgid ""
-"International Commercial Terms are a series of predefined commercial terms "
-"used in international transactions."
 msgstr ""
 
 #. module: account_intrastat
@@ -302,7 +289,6 @@ msgid "Total"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__transaction
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transaction"
 msgstr ""
@@ -314,6 +300,7 @@ msgid "Transaction Code"
 msgstr ""
 
 #. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__transport
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transport"
 msgstr ""

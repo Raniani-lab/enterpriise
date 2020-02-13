@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~13.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:29+0000\n"
-"PO-Revision-Date: 2019-08-12 11:29+0000\n"
+"POT-Creation-Date: 2020-02-13 08:46+0000\n"
+"PO-Revision-Date: 2020-02-13 08:46+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,25 +16,19 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_subscription_taxcloud
-#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.portal_subscription
-msgid "(Not in"
+#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.sale_subscription_view_form
+msgid "Go to Settings."
 msgstr ""
 
 #. module: sale_subscription_taxcloud
-#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.portal_subscription
+#: model:ir.model.fields,field_description:sale_subscription_taxcloud.field_sale_subscription__is_taxcloud_configured
+msgid "Is Taxcloud Configured"
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.sale_subscription_view_form
 msgid ""
-"<abbr title=\"You need to be logged in as this subscription's customer to "
-"change country\">Taxes</abbr>:<br/>"
-msgstr ""
-
-#. module: sale_subscription_taxcloud
-#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.portal_subscription
-msgid "<strong>Next Billing Amount:</strong><br/>"
-msgstr ""
-
-#. module: sale_subscription_taxcloud
-#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.portal_subscription
-msgid "Additional taxes may be charged at payment."
+"Please enter your Taxcloud credentials to compute tax rates automatically."
 msgstr ""
 
 #. module: sale_subscription_taxcloud
@@ -43,11 +37,68 @@ msgid "Subscription"
 msgstr ""
 
 #. module: sale_subscription_taxcloud
-#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.portal_subscription
-msgid "Subtotal:<br/>"
+#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.sale_subscription_view_form
+msgid "Tax"
 msgstr ""
 
 #. module: sale_subscription_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.portal_subscription
-msgid "Taxes:<br/>"
+msgid "TaxCloud"
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.sale_subscription_view_form
+msgid "Taxes are automatically updated before each invoice."
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.portal_subscription
+msgid "Taxes are subject to change"
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: model:ir.model.fields,help:sale_subscription_taxcloud.field_sale_subscription__is_taxcloud
+msgid "Technical field to determine whether to hide taxes in views or not."
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: code:addons/sale_subscription_taxcloud/models/sale_subscription.py:0
+#, python-format
+msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: code:addons/sale_subscription_taxcloud/models/sale_subscription.py:0
+#, python-format
+msgid "Unable to retrieve taxes from TaxCloud: "
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.sale_subscription_view_form
+msgid "Update taxes"
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: model:ir.model.fields,field_description:sale_subscription_taxcloud.field_sale_subscription__is_taxcloud
+msgid "Use TaxCloud API"
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: model:ir.model.fields,help:sale_subscription_taxcloud.field_sale_subscription__is_taxcloud_configured
+msgid ""
+"Used to determine whether or not to warn the user to configure TaxCloud."
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.portal_subscription
+msgid "We use"
+msgstr ""
+
+#. module: sale_subscription_taxcloud
+#: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.portal_subscription
+msgid ""
+"to\n"
+"                            automatically compute appropriate sales taxes upon payment depending on\n"
+"                            invoice date, address, etc. Taxes on your next invoice may be slightly\n"
+"                            different than the amount currently displayed."
 msgstr ""

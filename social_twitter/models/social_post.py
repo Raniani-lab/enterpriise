@@ -31,7 +31,7 @@ class SocialPostTwitter(models.Model):
     @api.depends('message', 'scheduled_date', 'image_ids')
     def _compute_twitter_preview(self):
         for post in self:
-            post.twitter_preview = self.env.ref('social_twitter.twitter_preview').render({
+            post.twitter_preview = self.env.ref('social_twitter.twitter_preview')._render({
                 'message': post.message,
                 'images': [
                     image.datas if not image.id

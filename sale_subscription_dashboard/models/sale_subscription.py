@@ -310,14 +310,14 @@ class SaleSubscription(models.Model):
             'base_url': base_url,
             'company': self.env.company,
         }
-        body = self.env['ir.ui.view'].render_template("sale_subscription_dashboard.print_template", values=dict(rcontext))
+        body = self.env['ir.ui.view']._render_template("sale_subscription_dashboard.print_template", values=dict(rcontext))
         body_html = str.encode(body_html)
         body = body.replace(b'<body class="o_sale_subscription_dashboard_reports_body_print">', b'<body class="o_sale_subscription_dashboard_reports_body_print">' + body_html)
         if minimal_layout:
             header = ''
-            footer = self.env['ir.actions.report'].render_template("web.internal_layout", values=rcontext)
+            footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)
             spec_paperformat_args = {'data-report-margin-top': 10, 'data-report-header-spacing': 10}
-            footer = self.env['ir.actions.report'].render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=footer))
+            footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=footer))
 
         landscape = False
         return self.env['ir.actions.report']._run_wkhtmltopdf(

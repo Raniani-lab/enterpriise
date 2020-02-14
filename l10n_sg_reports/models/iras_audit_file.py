@@ -254,7 +254,7 @@ class IrasAuditFile(models.AbstractModel):
         """
         qweb = self.env['ir.qweb']
         values = self._get_generic_data(options['date_from'], options['date_to'])
-        doc = qweb.render(IRAS_XML_TEMPLATE, values=values)
+        doc = qweb._render(IRAS_XML_TEMPLATE, values=values)
         with tools.file_open(IRAS_XSD, 'rb') as xsd:
             _check_with_xsd(doc, xsd)
         tree = fromstring(doc)

@@ -180,7 +180,7 @@ class AccountInvoice(models.Model):
 
         withholding_amount = '%.2f' % (self.amount_untaxed + sum(self.line_ids.filtered(lambda move: move.tax_line_id and not move.tax_line_id.l10n_co_edi_type.retention).mapped('price_total')))
 
-        return self.env.ref('l10n_co_edi_ubl_2_1.electronic_invoice_xml').render({
+        return self.env.ref('l10n_co_edi_ubl_2_1.electronic_invoice_xml')._render({
             'invoice': self,
             'company_partner': self.company_id.partner_id,
             'sales_partner': self.user_id,

@@ -134,7 +134,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             'moves_debit': moves_debit or 0.0,
             'moves_credit': moves_credit or 0.0,
         }
-        audit_content = self.env['ir.qweb'].render('l10n_nl_reports.xaf_audit_file', values)
+        audit_content = self.env['ir.qweb']._render('l10n_nl_reports.xaf_audit_file', values)
         with tools.file_open('l10n_nl_reports/data/xml_audit_file_3_2.xsd', 'rb') as xsd:
             _check_with_xsd(audit_content, xsd)
         return audit_content

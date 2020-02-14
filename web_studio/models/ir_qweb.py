@@ -36,11 +36,11 @@ class IrQWeb(models.AbstractModel, QWeb):
         keys.append('full_branding')
         return keys
 
-    def render(self, template, values=None, **options):
+    def _render(self, template, values=None, **options):
         if values is None:
             values = {}
         values['json'] = json
-        return super(IrQWeb, self).render(template, values=values, **options)
+        return super(IrQWeb, self)._render(template, values=values, **options)
 
     def _is_static_node(self, el, options):
         return not options.get('full_branding') and super(IrQWeb, self)._is_static_node(el, options)

@@ -113,7 +113,7 @@ class ResPartner(models.Model):
         '''
         self.ensure_one()
         partner_id = self.parent_id and self.parent_id.id or self.id
-        xml, dummy = self.env.ref('l10n_be_reports.action_report_partner_281_50_xml').render_qweb_text(partner_id, values_dict)
+        xml, dummy = self.env.ref('l10n_be_reports.action_report_partner_281_50_xml')._render_qweb_text(partner_id, values_dict)
         xml_element = etree.fromstring(xml)
         xml_file = etree.tostring(xml_element, xml_declaration=True, encoding='utf-8') # Well format the xml and add the xml_declaration
         return xml_file
@@ -126,7 +126,7 @@ class ResPartner(models.Model):
         '''
         self.ensure_one()
         partner_id = self.parent_id and self.parent_id.id or self.id
-        pdf_file, dummy = self.env.ref('l10n_be_reports.action_report_partner_281_50_pdf').render_qweb_pdf(partner_id, values_dict)
+        pdf_file, dummy = self.env.ref('l10n_be_reports.action_report_partner_281_50_pdf')._render_qweb_pdf(partner_id, values_dict)
         return pdf_file
 
     def _check_required_values(self):

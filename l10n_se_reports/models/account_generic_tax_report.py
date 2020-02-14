@@ -28,7 +28,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         template_context['comment'] = 'COMMENT_PLACEHOLDER'
 
         qweb = self.env['ir.qweb']
-        doc = qweb.render('l10n_se_reports.tax_export_xml', values=template_context)
+        doc = qweb._render('l10n_se_reports.tax_export_xml', values=template_context)
         tree = fromstring(doc)
 
         return etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='ISO-8859-1', doctype=DOCTYPE)

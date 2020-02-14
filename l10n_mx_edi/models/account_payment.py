@@ -409,7 +409,7 @@ class AccountPayment(models.Model):
         values['certificate'] = certificate_id.sudo().get_data()[0]
 
         # -Compute cfdi
-        cfdi = qweb.render(CFDI_TEMPLATE, values=values)
+        cfdi = qweb._render(CFDI_TEMPLATE, values=values)
 
         # -Compute cadena
         tree = self.l10n_mx_edi_get_xml_etree(cfdi)

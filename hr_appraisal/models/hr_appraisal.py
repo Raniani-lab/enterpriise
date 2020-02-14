@@ -151,7 +151,7 @@ class HrAppraisal(models.Model):
 
         notif_layout = self.env.ref('mail.mail_notification_light')
         notif_values = {'model_description': header_text, 'company': company_id}
-        body_html = notif_layout.render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
+        body_html = notif_layout._render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
         body_html = self.env['mail.render.mixin']._replace_local_links(body_html)
         email = self.env.user.work_email or self.env.user.email
 
@@ -186,7 +186,7 @@ class HrAppraisal(models.Model):
                     else:
                         header_text = _('appraisal')
                     tpl = self.env.ref('hr_appraisal.mail_template_appraisal_reminder')
-                    body = tpl.render(template_data, engine='ir.qweb', minimal_qcontext=True)
+                    body = tpl._render(template_data, engine='ir.qweb', minimal_qcontext=True)
                     self._send_mail(employee, appraisal.company_id, header_text, subject, body)
 
                     if employee.user_id:

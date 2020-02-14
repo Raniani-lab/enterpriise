@@ -297,7 +297,7 @@ class SignRequest(models.Model):
             if not self.create_uid.email:
                 raise UserError(_("Please configure the sender's email address"))
             tpl_follower = tpl.with_context(lang=get_lang(self.env, lang_code=follower.lang).code)
-            body = tpl_follower.render({
+            body = tpl_follower._render({
                 'record': self,
                 'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, self.access_token)),
                 'subject': subject,
@@ -341,7 +341,7 @@ class SignRequest(models.Model):
         if not public_user:
             # public user was deleted, fallback to avoid crash (info may leak)
             public_user = self.env.user
-        pdf_content, __ = report_action.with_user(public_user).sudo().render_qweb_pdf(self.id)
+        pdf_content, __ = report_action.with_user(public_user).sudo()._render_qweb_pdf(self.id)
         attachment_log = self.env['ir.attachment'].create({
             'name': "Activity Logs - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
             'datas': base64.b64encode(pdf_content),
@@ -355,7 +355,7 @@ class SignRequest(models.Model):
                 continue
             signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
             tpl = tpl.with_context(lang=signer_lang)
-            body = tpl.render({
+            body = tpl._render({
                 'record': self,
                 'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, signer.access_token)),
                 'subject': '%s signed' % self.reference,
@@ -388,7 +388,7 @@ class SignRequest(models.Model):
                 raise UserError(_("Please configure the sender's email address"))
 
             tpl_follower = tpl.with_context(lang=get_lang(self.env, lang_code=follower.lang).code)
-            body = tpl.render({
+            body = tpl._render({
                 'record': self,
                 'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, self.access_token)),
                 'subject': '%s signed' % self.reference,
@@ -538,7 +538,7 @@ class SignRequest(models.Model):
         # See @tde-banana-odoo for details
         msg = sign_request.env['mail.message'].sudo().new(dict(body=body, **message_values))
         notif_layout = sign_request.env.ref(notif_template_xmlid)
-        body_html = notif_layout.render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
+        body_html = notif_layout._render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
         body_html = sign_request.env['mail.render.mixin']._replace_local_links(body_html)
 
         mail = sign_request.env['mail.mail'].sudo().create(dict(body_html=body_html, state='outgoing', **mail_values))
@@ -646,7 +646,7 @@ class SignRequestItem(models.Model):
                 continue
             signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
             tpl = tpl.with_context(lang=signer_lang)
-            body = tpl.render({
+            body = tpl._render({
                 'record': signer,
                 'link': url_join(base_url, "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
                 'subject': subject,

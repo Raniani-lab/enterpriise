@@ -1125,7 +1125,7 @@ class AccountReport(models.AbstractModel):
                 'footnotes': [{'id': f.id, 'line': f.line, 'text': f.text} for f in report_manager.footnotes_ids],
                 'buttons': self._get_reports_buttons_in_sequence(),
                 'main_html': self.get_html(options),
-                'searchview_html': self.env['ir.ui.view'].render_template(self._get_templates().get('search_template', 'account_report.search_template'), values=searchview_dict),
+                'searchview_html': self.env['ir.ui.view']._render_template(self._get_templates().get('search_template', 'account_report.search_template'), values=searchview_dict),
                 }
         return info
 
@@ -1186,7 +1186,7 @@ class AccountReport(models.AbstractModel):
                     footnotes_to_render.append({'id': f.id, 'number': number, 'text': f.text})
 
         # Render.
-        html = self.env.ref(template).render(render_values)
+        html = self.env.ref(template)._render(render_values)
         if self.env.context.get('print_mode', False):
             for k,v in self._replace_class().items():
                 html = html.replace(k, v)
@@ -1197,7 +1197,7 @@ class AccountReport(models.AbstractModel):
     def get_html_footnotes(self, footnotes):
         template = self._get_templates().get('footnotes_template', 'account_reports.footnotes_template')
         rcontext = {'footnotes': footnotes, 'context': self.env.context}
-        html = self.env['ir.ui.view'].render_template(template, values=dict(rcontext))
+        html = self.env['ir.ui.view']._render_template(template, values=dict(rcontext))
         return html
 
     def _get_reports_buttons_in_sequence(self):
@@ -1345,7 +1345,7 @@ class AccountReport(models.AbstractModel):
             'company': self.env.company,
         }
 
-        body = self.env['ir.ui.view'].render_template(
+        body = self.env['ir.ui.view']._render_template(
             "account_reports.print_template",
             values=dict(rcontext),
         )
@@ -1354,16 +1354,16 @@ class AccountReport(models.AbstractModel):
         body = body.replace(b'<body class="o_account_reports_body_print">', b'<body class="o_account_reports_body_print">' + body_html)
         if minimal_layout:
             header = ''
-            footer = self.env['ir.actions.report'].render_template("web.internal_layout", values=rcontext)
+            footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)
             spec_paperformat_args = {'data-report-margin-top': 10, 'data-report-header-spacing': 10}
-            footer = self.env['ir.actions.report'].render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=footer))
+            footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=footer))
         else:
             rcontext.update({
                     'css': '',
                     'o': self.env.user,
                     'res_company': self.env.company,
                 })
-            header = self.env['ir.actions.report'].render_template("web.external_layout", values=rcontext)
+            header = self.env['ir.actions.report']._render_template("web.external_layout", values=rcontext)
             header = header.decode('utf-8') # Ensure that headers and footer are correctly encoded
             spec_paperformat_args = {}
             # Default header and footer in case the user customized web.external_layout and removed the header/footer
@@ -1376,11 +1376,11 @@ class AccountReport(models.AbstractModel):
 
                 for node in root.xpath(match_klass.format('header')):
                     headers = lxml.html.tostring(node)
-                    headers = self.env['ir.actions.report'].render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=headers))
+                    headers = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=headers))
 
                 for node in root.xpath(match_klass.format('footer')):
                     footer = lxml.html.tostring(node)
-                    footer = self.env['ir.actions.report'].render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=footer))
+                    footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=footer))
 
             except lxml.etree.XMLSyntaxError:
                 headers = header.encode()

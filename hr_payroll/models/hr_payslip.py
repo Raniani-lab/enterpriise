@@ -120,7 +120,7 @@ class HrPayslip(models.Model):
                     report = self.env.ref('hr_payroll.action_report_payslip', False)
                 else:
                     report = payslip.struct_id.report_id
-                pdf_content, content_type = report.render_qweb_pdf(payslip.id)
+                pdf_content, content_type = report._render_qweb_pdf(payslip.id)
                 if payslip.struct_id.report_id.print_report_name:
                     pdf_name = safe_eval(payslip.struct_id.report_id.print_report_name, {'object': payslip})
                 else:

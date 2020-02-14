@@ -139,7 +139,7 @@ class ShiftController(http.Controller):
 
         if request.env.user:
             return redirect('/web?#action=planning.planning_action_open_shift')
-        return request.env['ir.ui.view'].render_template('planning.slot_unassign')
+        return request.env['ir.ui.view']._render_template('planning.slot_unassign')
 
     @staticmethod
     def _format_planning_shifts(color_code):

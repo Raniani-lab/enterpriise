@@ -44,7 +44,7 @@ class HrPayroll28145Wizard(models.TransientModel):
         for employee in employees:
             filename = '281.45-%s.pdf' % employee.name
             data = dict(employees_data[employee], employee=employee)
-            pdf_data, ext = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_45').render_qweb_pdf(employee.ids, data)
+            pdf_data, ext = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_45')._render_qweb_pdf(employee.ids, data)
             pdfs += [(employee, filename, pdf_data)]
 
         filename, binary = self._process_files(pdfs, default_filename='281.45 - %s.zip' % fields.Date.today())

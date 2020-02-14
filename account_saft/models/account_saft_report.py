@@ -407,7 +407,7 @@ class AccountGeneralLedger(models.AbstractModel):
         # We do not want data from multi companies, just for current selected companies
         'multi_company' in options and options.pop('multi_company')
         report_data = self._prepare_saft_report_data(options)
-        rendered_content = self.env['ir.qweb'].render(template, report_data)
+        rendered_content = self.env['ir.qweb']._render(template, report_data)
         # Indent the XML data and return as Pretty XML string.
         pretty_xml = xml.dom.minidom.parseString(rendered_content).toprettyxml()
         # remove extra new lines

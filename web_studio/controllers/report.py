@@ -271,7 +271,7 @@ class WebStudioReportController(main.WebStudioController):
         Qweb = request.env['ir.qweb']
         Attachment = request.env['ir.attachment']
 
-        html = Qweb.render('web.report_layout', values={
+        html = Qweb._render('web.report_layout', values={
             'studio': True,
         })
         root = etree.fromstring(html).getroottree()
@@ -287,7 +287,7 @@ class WebStudioReportController(main.WebStudioController):
         # render the report to catch a rendering error
         report = request.env['ir.actions.report']._get_report_from_name(report_name)
         try:
-            return report.render_qweb_html([record_id], {
+            return report._render_qweb_html([record_id], {
                 'full_branding': True,
                 'studio': True,
             })

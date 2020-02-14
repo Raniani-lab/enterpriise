@@ -283,7 +283,7 @@ class HrEmployee(models.Model):
             file_name += '-test'
         export_281_sheet_filename_pdf = file_name + '.pdf'
 
-        export_281_sheet_pdf, _ = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_10').render_qweb_pdf(self.id, employee_data)
+        export_281_sheet_pdf, _ = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_10')._render_qweb_pdf(self.id, employee_data)
 
         return export_281_sheet_filename_pdf, export_281_sheet_pdf
 

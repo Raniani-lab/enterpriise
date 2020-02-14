@@ -43,7 +43,7 @@ class TestReportEditor(TransactionCase):
         })
 
         # check original report render to expected output
-        report_html = report.render_template(report.report_name).decode('utf-8')
+        report_html = report._render_template(report.report_name).decode('utf-8')
         self.assertEqual(''.join(report_html.split()), 'hi!hi!!')
 
         # duplicate original report
@@ -53,7 +53,7 @@ class TestReportEditor(TransactionCase):
         ])
 
         # check duplicated report render to expected output
-        copy_report_html = copy_report.render_template(copy_report.report_name).decode('utf-8')
+        copy_report_html = copy_report._render_template(copy_report.report_name).decode('utf-8')
         self.assertEqual(''.join(copy_report_html.split()), 'hi!hi!!')
 
         # check that duplicated view is inheritance combination of original view
@@ -105,7 +105,7 @@ class TestReportEditor(TransactionCase):
             ''' % copy1.report_name,})
 
         # Assert the duplicated view renders "bar" then unlink the report
-        copy1_html = copy1.render_template(copy1.report_name).decode('utf-8')
+        copy1_html = copy1._render_template(copy1.report_name).decode('utf-8')
         self.assertEqual(''.join(copy1_html.split()), 'bar')
         copy1.unlink()
 
@@ -113,7 +113,7 @@ class TestReportEditor(TransactionCase):
         report.copy_report_and_template()
         copy2 = self.env['ir.actions.report'].search(duplicate_domain)
         copy2.ensure_one()
-        copy2_html = copy2.render_template(copy2.report_name).decode('utf-8')
+        copy2_html = copy2._render_template(copy2.report_name).decode('utf-8')
         self.assertEqual(''.join(copy2_html.split()), 'foo')
 
     def test_copy_custom_model_rendering(self):

@@ -123,7 +123,7 @@ class Sign(http.Controller):
         document = None
         if download_type == "log":
             report_action = http.request.env.ref('sign.action_sign_request_print_logs').sudo()
-            pdf_content, __ = report_action.render_qweb_pdf(sign_request.id)
+            pdf_content, __ = report_action._render_qweb_pdf(sign_request.id)
             pdfhttpheaders = [
                 ('Content-Type', 'application/pdf'),
                 ('Content-Length', len(pdf_content)),
@@ -337,4 +337,4 @@ class Sign(http.Controller):
     @http.route("/sign/render_assets_pdf_iframe", type="json", auth="public")
     def render_assets_pdf_iframe(self, **kw):
         context = {'debug': kw.get('debug')} if 'debug' in kw else {}
-        return request.env['ir.ui.view'].sudo().render_template('sign.compiled_assets_pdf_iframe', context)
+        return request.env['ir.ui.view'].sudo()._render_template('sign.compiled_assets_pdf_iframe', context)

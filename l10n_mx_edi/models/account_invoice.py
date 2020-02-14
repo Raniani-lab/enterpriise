@@ -935,7 +935,7 @@ class AccountMove(models.Model):
             'record': self,
         }
         tree = fromstring(base64.decodebytes(xml_signed))
-        addenda_node = fromstring(addenda.render(values=values))
+        addenda_node = fromstring(addenda._render(values=values))
         if addenda_node.tag != '{http://www.sat.gob.mx/cfd/3}Addenda':
             node = etree.Element(etree.QName(
                 'http://www.sat.gob.mx/cfd/3', 'Addenda'))
@@ -1006,7 +1006,7 @@ class AccountMove(models.Model):
         values['certificate'] = certificate_id.sudo().get_data()[0]
 
         # -Compute cfdi
-        cfdi = qweb.render(CFDI_TEMPLATE_33, values=values)
+        cfdi = qweb._render(CFDI_TEMPLATE_33, values=values)
         cfdi = cfdi.replace(b'xmlns__', b'xmlns:')
         node_sello = 'Sello'
         attachment = self.env.ref('l10n_mx_edi.xsd_cached_cfdv33_xsd', False)

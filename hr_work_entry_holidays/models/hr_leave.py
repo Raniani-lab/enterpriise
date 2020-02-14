@@ -54,7 +54,7 @@ class HrLeave(models.Model):
             It happens if a leave is correctly created (not accross multiple contracts) but
             contracts are later modifed/created in the middle of the leave.
         """
-        for holiday in self:
+        for holiday in self.filtered('employee_id'):
             domain = [
                 ('employee_id', '=', holiday.employee_id.id),
                 ('date_start', '<=', holiday.date_to),
@@ -71,7 +71,8 @@ class HrLeave(models.Model):
             ]
             nbr_contracts = self.env['hr.contract'].sudo().search_count(domain)
             if nbr_contracts > 1:
-                raise ValidationError(_('A leave cannot be set across multiple contracts.'))
+                contracts = self.env['hr.contract'].sudo().search(domain)
+                raise ValidationError(_('A leave cannot be set across multiple contracts.') + '\n' + ', '.join(contracts.mapped('name')))
 
     def _cancel_work_entry_conflict(self):
         """

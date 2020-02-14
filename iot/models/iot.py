@@ -102,6 +102,18 @@ class IrActionReport(models.Model):
         data_base64 = base64.b64encode(data_bytes)
         return device.iot_id.ip, device.identifier, data_base64
 
+    def report_action(self, docids, data=None, config=True):
+        result = super(IrActionReport, self).report_action(docids, data, config)
+        if result.get('type') != 'ir.actions.report':
+            return result
+        device = self.device_id
+        if data and data.get('device_id'):
+            device = self.env['iot.device'].browse(data['device_id'])
+
+        result['id'] = self.id
+        result['device_id'] = device.identifier
+        return result
+
 class PublisherWarrantyContract(models.AbstractModel):
     _inherit = "publisher_warranty.contract"
     _description = 'Publisher Warranty Contract For IoT Box'

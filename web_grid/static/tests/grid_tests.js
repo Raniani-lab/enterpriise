@@ -421,12 +421,6 @@ QUnit.module('Views', {
     });
 
     QUnit.test('DOM keys are unique', async function (assert) {
-        /*Snabbdom, the virtual dom libraries, use keys to distinguish similar
-        elements (typically grid rows).
-        If these keys are not unique, and there are rows that are repeated,
-        the library might crash upon comparing the elements to refresh.
-        */
-
         assert.expect(8);
 
         var line_records = [

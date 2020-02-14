@@ -23,7 +23,7 @@
     </template>
 
     <template id="notification">
-<t t-esc="num_records" /> <t t-esc="res_model_label" /> duplicates have been identified.<br/>
-Click <a t-attf-href="/web?#action=data_merge.action_data_merge_record_notification&amp;active_id={{model_id}}">here</a> to see them.
+I've identified <t t-esc="num_records" /> duplicate records with the '<t t-esc="res_model_label" />' deduplication rule.<br/>
+You can merge them <a t-attf-href="/web?#action=data_merge.action_data_merge_record_notification&amp;active_id={{model_id}}&amp;menu_id={{menu_id}}">here</a>.
     </template>
 </odoo>

@@ -7,11 +7,12 @@ odoo.define('data_merge.ListView', function (require) {
     var ListRenderer = require('web.ListRenderer');
     var ListView = require('web.ListView');
     var viewRegistry = require('web.view_registry');
+    var DataCommonListController = require('data_cleaning.CommonListController');
     var _t = core._t;
 
 
-    var DataMergeListController = ListController.extend({
-        custom_events: _.extend({}, ListController.prototype.custom_events, {
+    var DataMergeListController = DataCommonListController.extend({
+        custom_events: _.extend({}, DataCommonListController.prototype.custom_events, {
             merge_records: '_onMergeDiscardRecords',
             discard_records: '_onMergeDiscardRecords',
             field_changed: '_onFieldChanged',
@@ -23,39 +24,6 @@ odoo.define('data_merge.ListView', function (require) {
             var self = this;
             this._super.apply(this, arguments);
             setTimeout(function() { self.trigger_up('reload'); });
-        },
-
-        /**
-         * Open the form view of the original record, and not the data_merge.record view
-         * @override
-         */
-        _onOpenRecord: function(event) {
-            var record = this.model.get(event.data.id, {raw: true});
-
-            this.do_action({
-                type: 'ir.actions.act_window',
-                views: [[false, 'form']],
-                res_model: record.data.res_model_name,
-                res_id: record.data.res_id,
-                context: {
-                    create: false,
-                    edit: false
-                }
-            });
-        },
-
-        /**
-         * Render the "Merge" & "Unselect" buttons when records are selected
-         * @override
-         */
-        _toggleSidebar: function (ev) {
-            this._super.apply(this, arguments);
-
-            if(this.selectedRecords.length > 0) {
-                $('.o_list_buttons').removeClass('d-none');
-            } else {
-                $('.o_list_buttons').addClass('d-none');
-            }
         },
 
         /**
@@ -104,16 +72,8 @@ odoo.define('data_merge.ListView', function (require) {
         },
 
         /**
-         * Unselect all the records
-         * @param {*} ev 
-         */
-        _onUnselectClick: function(ev) {
-            this.renderer._onToggleSelection(ev);
-        },
-
-        /**
          * Merge all the selected records
-         * @param {*} ev 
+         * @param {*} ev
          */
         _onMergeClick: function(ev) {
             const records = this.getSelectedRecords();
@@ -171,7 +131,7 @@ odoo.define('data_merge.ListView', function (require) {
         _doActionMergeDiscard: function(action, group_id, record_ids, discard_view) {
             const self = this;
             this._callAction(action, group_id, record_ids, discard_view).then(function (res) {
-                if(res && 'type' in res && res['type'].startsWith('ir.actions')) {
+                if(res && 'type' in res && res.type.startsWith('ir.actions')) {
                     if(!('views' in res)) {
                         res = _.extend(res, {
                             views: [[false, 'form']]
@@ -182,7 +142,7 @@ odoo.define('data_merge.ListView', function (require) {
                 }
                 else {
                     if(action === 'merge_records') {
-                        const records_merged = res && 'records_merged' in res ? res['records_merged'] : 'The selected';
+                        const records_merged = res && 'records_merged' in res ? res.records_merged : 'The selected';
                         self._showMergeNotification(records_merged);
                     }
                     self.trigger_up('reload');

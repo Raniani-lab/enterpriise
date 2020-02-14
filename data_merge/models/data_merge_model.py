@@ -137,8 +137,9 @@ class DataMergeModel(models.Model):
         if num_records:
             partner_ids = self.notify_user_ids.partner_id.ids
             template = self.env.ref('data_merge.notification')
+            menu_id = self.env.ref('data_cleaning.menu_data_cleaning_root').id
             kwargs = {
-                'body': template.render(dict(num_records=num_records, res_model_label=self.res_model_id.name, model_id=self.id)),
+                'body': template.render(dict(num_records=num_records, res_model_label=self.res_model_id.name, model_id=self.id, menu_id=menu_id)),
                 'partner_ids': partner_ids,
             }
             self.env['mail.thread'].with_context(mail_notify_author=True).sudo().message_notify(**kwargs)
@@ -157,7 +158,7 @@ class DataMergeModel(models.Model):
         :param bool batch_commits: If set, will automatically commit every X records
         """
 
-        # YTI CLEAN: Use add_join from the Query object maybe ? 
+        # YTI CLEAN: Use add_join from the Query object maybe ?
         def field_join(field_id, table, res_model_name, env):
             join, join_data = '', ()
 
@@ -204,7 +205,7 @@ class DataMergeModel(models.Model):
                 # Get all the rows matching the rule defined
                 # (e.g. exact match of the name) having at least 2 records
                 # Each row contains the matched value and an array of matching records:
-                #   | value matched | {array of record IDs matching the field} 
+                #   | value matched | {array of record IDs matching the field}
                 query = """
                     SELECT
                         %(field)s as group_field_name,
@@ -234,7 +235,7 @@ class DataMergeModel(models.Model):
                 rows = self._cr.fetchall()
                 ids = ids + [row[1] for row in rows]
 
-            # Fetches the IDs of all the records who already matched (and are not merged), 
+            # Fetches the IDs of all the records who already matched (and are not merged),
             # as well as the discarded ones.
             # This prevents creating twice the same groups.
             self._cr.execute("""

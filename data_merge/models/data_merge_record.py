@@ -248,7 +248,7 @@ class DataMergeRecord(models.Model):
         """
         Update all the foreign keys referring to `source` records with `destination` as new referencee.
         The parameters are the real records and not data_merge.record
-        
+
         :param destination: destination record of the foreign keys
         :param source: list of records
         """
@@ -290,7 +290,7 @@ class DataMergeRecord(models.Model):
                             UPDATE %(table)s o
                             SET %(column)s = %%(destination_id)s            --- master record
                             WHERE %(column)s = %%(record_id)s         --- record to merge
-                            AND NOT EXISTS ( 
+                            AND NOT EXISTS (
                                 SELECT 1
                                 FROM %(table)s i
                                 WHERE %(column)s = %%(destination_id)s

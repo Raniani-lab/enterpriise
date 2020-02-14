@@ -2,12 +2,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Data Cleaning',
+    'name': 'Data Cleaning (merge)',
     'version': '1.1',
     'category': 'Productivity/Data Cleaning',
     'summary': 'Find duplicate records and merge them',
     'description': """Find duplicate records and merge them""",
-    'depends': ['web', 'mail'],
+    'depends': ['mail', 'data_cleaning'],
     'data': [
         'security/ir.model.access.csv',
         'views/data_merge_rule_views.xml',
@@ -21,7 +21,8 @@
     'qweb': [
         'static/src/xml/data_merge_list_views.xml',
     ],
+    'auto_install': True,
     'installable': True,
-    'application': True,
+    'application': False,
     'post_init_hook': 'post_init',
 }

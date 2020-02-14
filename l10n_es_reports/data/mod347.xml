@@ -25,7 +25,8 @@
             <field name="name">Número total de personas y entitades</field>
             <field name="code">aeat_mod_347_statistics_operations_count</field>
             <field name="parent_id" ref="mod_347_summary_title"/>
-            <field name="domain" eval="[('move_id.move_type', 'in', ('in_invoice', 'out_invoice', 'in_refund', 'out_refund'))]"/>
+            <field name="domain" eval="[('move_id.l10n_es_reports_mod347_invoice_type', '!=', None), ('account_internal_type', 'in', ('receivable', 'payable'))]"/>
+            <field name="show_domain">never</field>
             <field name="formulas">count_rows</field>
             <field name="groupby">partner_id</field>
             <field name="l10n_es_mod347_threshold">3005.06</field>

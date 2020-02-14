@@ -23,6 +23,9 @@
     'demo': [
         'data/timesheet_grid_demo.xml',
     ],
+    'qweb': [
+        'static/src/xml/timesheet_grid.xml',
+    ],
     'website': ' https://www.odoo.com/page/timesheet-mobile-app',
     'auto_install': True,
     'application': True,

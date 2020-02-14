@@ -7,6 +7,7 @@
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/controller.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/renderer.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/view.js"/>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timer_component.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/tours/timesheet_grid.js"/>
         </xpath>
     </template>

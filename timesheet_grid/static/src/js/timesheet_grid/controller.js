@@ -1,12 +1,53 @@
 odoo.define('timesheet_grid.GridController', function (require) {
     "use strict";
 
-    const WebGridController = require('web_grid.GridController');
+    const GridController = require('web_grid.GridController');
 
-    return WebGridController.extend({
-        events: _.extend({}, WebGridController.prototype.events, {
-            'click button.timer_task': "_onClickTimerButton",
+    const TimesheetGridController = GridController.extend({
+        custom_events: Object.assign({}, GridController.prototype.custom_events, {
+            click_timer_button: '_onClickTimerButton',
         }),
+
+        init: function () {
+            this._super(...arguments);
+            this.isWritting = false;
+        },
+
+        //----------------------------------------------------------------------
+        // Private
+        //----------------------------------------------------------------------
+
+        /**
+         * @private
+         */
+        _handleTimer: async function (timerData) {
+            if (timerData.timesheet) {
+                await this._rpc({
+                    model: this.modelName,
+                    method: timerData.action,
+                    args: [timerData.timesheet.id]
+                });
+            } else {
+                // create the timesheet and render
+                // The task can be false.
+                if (timerData.data.task_id) {
+                    await this.model._createTimesheet({
+                        task_id: timerData.data.task_id[0]
+                    });
+                } else {
+                    // if task is false then retrieve the project_id
+                    // in the domain to create timesheet
+                    // with the project_id
+                    await this.model._createTimesheet({
+                        project_id: timerData.data.project_id[0]
+                    });
+                }
+            }
+        },
+        //----------------------------------------------------------------------
+        // Handlers
+        //----------------------------------------------------------------------
+
         /**
          * When the user click on a timer button, some actions can be launch:
          *
@@ -18,39 +59,26 @@ odoo.define('timesheet_grid.GridController', function (require) {
          *  - Otherwise, we create the timesheet for today and after we launch the timesheet.
          *
          * Once the action is done, we reload the view.
+         *
          * @private
          * @param {MouseEvent} ev
          */
         _onClickTimerButton: async function (ev) {
-            const button = ev.currentTarget;
-            const index = button.id.split(' ')[1];
-            const { data, timesheet } = this.renderer.timerButtons[index];
-            if (timesheet) {
-                const action = button.name;
-
-                await this._rpc({
-                    model: this.modelName,
-                    method: action,
-                    args: [timesheet.id]
-                });
-            } else {
-                // create the timesheet and render
-                // The task can be false.
-                if (data.task_id) {
-                    await this.model._createTimesheet({task_id: data.task_id[0]});
-                } else {
-                    // if task is false then retrieve the project_id
-                    // in the domain to create timesheet
-                    // with the project_id
-                    await this.model._createTimesheet({project_id: data.project_id[0]});
-                }
+            if (this.isWritting) {
+                return;
             }
             ev.stopPropagation();
-
+            this.isWritting = true;
+            try {
+                await this._handleTimer(ev.data);
+            } finally {
+                this.isWritting = false;
+            }
             const state = await this.model.actionTimer(this.model.get());
-            await this.renderer.updateState(state, {});
+            await this.renderer.update(state);
             this.updateButtons(state);
-        }
+        },
     });
 
+    return TimesheetGridController;
 });

@@ -3,14 +3,15 @@ odoo.define('documents.Many2ManyColorWidget', function (require) {
 
     const fieldRegistry = require('web.field_registry');
 
-    const { FieldMany2ManyTags } = require('web.relational_fields');
+    const { KanbanFieldMany2ManyTags } = require('web.relational_fields');
 
-    const Many2ManyColorWidget = FieldMany2ManyTags.extend({
+    const Many2ManyColorWidget = KanbanFieldMany2ManyTags.extend({
 
         /**
          * @override
          */
         async start() {
+            this.tags = [];
             this.trigger_up('get_search_panel_tags', {callback: val => {this.tags = val;}});
             await this._super(...arguments);
         },
@@ -19,6 +20,11 @@ odoo.define('documents.Many2ManyColorWidget', function (require) {
          * @private
          */
         _render() {
+            // In studio mode searchPanel will not be rendered and we will not have
+            // tags here, in that case render standard many2many tags widget for kanban
+            if (!this.tags.length) {
+                return this._super(...arguments);
+            }
             this.$el.empty().addClass('o_field_many2manytags o_kanban_tags');
             const tagIDs = this.value.data.map(m2m => m2m.data.id);
             for (const tag of this.tags) {

@@ -5,6 +5,7 @@ const DocumentsKanbanController = require('documents.DocumentsKanbanController')
 const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const DocumentsListView = require('documents.DocumentsListView');
 const { createDocumentsView } = require('documents.test_utils');
+const KanbanView = require('web.KanbanView');
 
 const mailTestUtils = require('mail.testUtils');
 
@@ -13,6 +14,8 @@ const NotificationService = require('web.NotificationService');
 const relationalFields = require('web.relational_fields');
 const testUtils = require('web.test_utils');
 const { str_to_datetime } = require('web.time');
+
+const createView = testUtils.createView;
 
 function autocompleteLength() {
     var $el = $('.ui-autocomplete');
@@ -2870,6 +2873,38 @@ QUnit.module('DocumentsViews', {
 
         assert.strictEqual(kanban.$('.o_field_many2manytags:nth(2) > span:first > span').css('color'),
             "rgb(240, 96, 80)", "should have the right color");
+
+        kanban.destroy();
+    });
+
+    QUnit.test('kanban color widget without SearchPanel', async function (assert) {
+        assert.expect(5);
+
+        const kanban = await createView({
+            View: KanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: `<kanban><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                        <field name="tag_ids" widget="documents_many2many_tags"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
+
+        assert.containsN(kanban, '.o_field_many2manytags', 6,
+            "All the records should have a color widget");
+
+        assert.containsN(kanban, '.o_field_many2manytags:nth(2) > span', 3,
+            "Third record should have 3 tags");
+
+        assert.containsOnce(kanban.$('.o_field_many2manytags:nth(2) > span:first'), '> span',
+            "should have a span for color ball");
+        assert.containsN(kanban.$('.o_field_many2manytags:nth(2)'), '.o_tag_color_0', 3,
+            "should have 3 spans for color ball with grey color by default");
+
+        assert.strictEqual(kanban.$('.o_field_many2manytags:nth(2) > span:first > span').css('color'),
+            "rgb(102, 102, 102)", "should have the right color");
 
         kanban.destroy();
     });

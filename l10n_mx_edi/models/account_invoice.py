@@ -618,14 +618,14 @@ class AccountMove(models.Model):
     def button_draft(self):
         """Reset l10n_mx_edi_time_invoice when invoice state set to draft"""
         # OVERRIDE
-        if self and self.l10n_mx_edi_is_required():
+        if self and any([r.l10n_mx_edi_is_required() for r in self]):
             signed = self.filtered(lambda r: r.l10n_mx_edi_is_required() and
                                    not r.company_id.l10n_mx_edi_pac_test_env and
                                    r.l10n_mx_edi_cfdi_uuid)
             signed.l10n_mx_edi_update_sat_status()
             not_allow = signed.filtered(lambda r: r.l10n_mx_edi_sat_status != 'cancelled' or r.l10n_mx_edi_pac_status == 'to_cancel')
-            if not_allow:
-                not_allow.message_post(
+            for record in not_allow:
+                record.message_post(
                     subject=_('An error occurred while setting to draft.'),
                     message_type='comment',
                     body=_('This invoice does not have a properly cancelled XML and '

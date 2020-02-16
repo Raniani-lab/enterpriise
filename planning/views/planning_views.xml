@@ -434,6 +434,7 @@
         id="planning_menu_root"
         name="Planning"
         sequence="25"
+        groups="planning.group_planning_user"
         web_icon="planning,static/description/icon.png"/>
 
     <menuitem

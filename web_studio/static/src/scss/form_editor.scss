@@ -1,6 +1,29 @@
 .o_web_studio_client_action {
     .o_web_studio_editor_manager .o_web_studio_view_renderer .o_form_view {
         $-web-studio-form-edition-gap: 10px;
+        flex-flow: column nowrap;
+
+        > .o_form_sheet_bg {
+            flex: 1 0 auto;
+            border-bottom: 1px solid gray('300');
+            width: auto;
+            padding: 0px;
+            overflow: unset;
+            .o_form_sheet {
+                @include make-container-max-widths();
+            }
+        }
+
+        > .o_FormRenderer_chatterContainer {
+            max-width: 100%;
+        }
+
+        .o_Chatter {
+            width: 100%;
+            overflow: unset;
+            flex: 1000 0 auto;
+            padding: $grid-gutter-width*0.25 0;
+        }
 
         &:not(.o_form_nosheet) {
             padding: 0;

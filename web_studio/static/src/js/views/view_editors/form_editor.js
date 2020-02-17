@@ -216,6 +216,15 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
         }
     },
     /**
+     * Override to always return false to get chatter always below form sheet.
+     *
+     * @override
+     * @returns {Boolean}
+     */
+    _isChatterAside() {
+        return false;
+    },
+    /**
      * @override
      * @private
      */

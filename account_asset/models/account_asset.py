@@ -685,8 +685,10 @@ class AccountAsset(models.Model):
             if 'state' in vals and vals['state'] != 'draft' and not (set(vals) - set({'account_depreciation_id', 'account_depreciation_expense_id', 'journal_id'})):
                 raise UserError(_("Some required values are missing"))
             if self._context.get('import_file', False) and 'category_id' in vals:
-                changed_vals = self.onchange_category_id_values(vals['category_id'])
-                vals.update(changed_vals['value'])
+                changed_vals = self.onchange_category_id_values(vals['category_id'])['value']
+                # To avoid to overwrite vals explicitly set by the import
+                [changed_vals.pop(key, None) for  key in vals.keys()]
+                vals.update(changed_vals)
         new_recs = super(AccountAsset, self.with_context(mail_create_nolog=True)).create(vals_list)
         # if original_value is passed in vals, make sure the right value is set (as a different original_value may have been computed by _compute_value())
         for i in range(len(vals_list)):

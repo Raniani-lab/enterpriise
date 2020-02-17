@@ -44,7 +44,7 @@ class Job(models.Model):
 
     def _compute_max_points(self):
         for job in self:
-            stages = self.env['hr.recruitment.stage'].search(['|', ('job_ids', '=', False), ('job_ids', '=', job.id)])
+            stages = self.env['hr.recruitment.stage'].search([('not_hired_stage', '=', False), '|', ('job_ids', '=', False), ('job_ids', '=', job.id)])
             job.max_points = sum(stages.mapped('points'))
 
     def set_recruit(self):

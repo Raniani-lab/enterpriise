@@ -6,7 +6,8 @@
         <field name="inherit_id" ref="hr_recruitment.hr_recruitment_stage_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='fold']" position="after">
-                <field name="points"/>
+                <field name="points" attrs="{'invisible': [('not_hired_stage', '=', True)]}"/>
+                <field name="not_hired_stage"/>
             </xpath>
         </field>
     </record>
@@ -17,7 +18,8 @@
         <field name="inherit_id" ref="hr_recruitment.hr_recruitment_stage_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='job_ids']" position="after">
-                <field name="points"/>
+                <field name="points" attrs="{'invisible': [('not_hired_stage', '=', True)]}"/>
+                <field name="not_hired_stage"/>
             </xpath>
         </field>
     </record>

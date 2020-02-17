@@ -23,6 +23,7 @@ class Applicant(models.Model):
     shared_item_infos = fields.Text(compute="_compute_shared_item_infos")
     max_points = fields.Integer(related="job_id.max_points")
     friend_id = fields.Many2one('hr.referral.friend', copy=False)
+    last_valuable_stage_id = fields.Many2one('hr.recruitment.stage', "Last Valuable Stage")
 
     @api.depends('source_id')
     def _compute_ref_user_id(self):
@@ -50,7 +51,7 @@ class Applicant(models.Model):
     @api.depends('referral_points_ids')
     def _compute_shared_item_infos(self):
         for applicant in self:
-            stages = self.env['hr.recruitment.stage'].search(['|', ('job_ids', '=', False), ('job_ids', '=', applicant.job_id.id)])
+            stages = self.env['hr.recruitment.stage'].search([('not_hired_stage', '=', False), '|', ('job_ids', '=', False), ('job_ids', '=', applicant.job_id.id)])
             infos = [{
                 'name': stage.name,
                 'points': stage.points,
@@ -70,6 +71,9 @@ class Applicant(models.Model):
                 if 'ref_user_id' in vals:
                     applicant.referral_points_ids.unlink()
                 applicant._update_points(applicant.stage_id.id, vals.get('last_stage_id', False))
+            if 'stage_id' in vals and vals['stage_id']:
+                if not self.env['hr.recruitment.stage'].browse(vals['stage_id']).not_hired_stage:
+                    self.last_valuable_stage_id = vals['stage_id']
         return res
 
     @api.model
@@ -77,6 +81,8 @@ class Applicant(models.Model):
         res = super(Applicant, self).create(vals)
         if res.ref_user_id and res.stage_id:
             res._update_points(res.stage_id.id, False)
+            if not res.stage_id.not_hired_stage:
+                res.last_valuable_stage_id = res.stage_id
         return res
 
     def archive_applicant(self):
@@ -104,8 +110,13 @@ class Applicant(models.Model):
         if not self.company_id:
             raise UserError(_("Applicant must have a company."))
         new_state = self.env['hr.recruitment.stage'].browse(new_state_id)
-        if old_state_id:
-            old_state_sequence = self.env['hr.recruitment.stage'].browse(old_state_id).sequence
+        if new_state.not_hired_stage:
+            return
+        old_state = self.env['hr.recruitment.stage'].browse(old_state_id)
+        if old_state and not old_state.not_hired_stage:
+            old_state_sequence = old_state.sequence
+        elif old_state:
+            old_state_sequence = self.last_valuable_stage_id.sequence or -1
         else:
             old_state_sequence = -1
         point_stage = []
@@ -130,6 +141,7 @@ class Applicant(models.Model):
         # Increase stage sequence
         elif new_state.sequence > old_state_sequence:
             stages_to_add = self.env['hr.recruitment.stage'].search([
+                ('not_hired_stage', '=', False),
                 ('sequence', '>', old_state_sequence), ('sequence', '<=', new_state.sequence),
                 '|', ('job_ids', '=', False), ('job_ids', '=', self.job_id.id)])
             for stage in stages_to_add:
@@ -142,7 +154,7 @@ class Applicant(models.Model):
                     'company_id': self.company_id.id
                 })
             future_stage = self.env['hr.recruitment.stage'].search_count([
-                ('sequence', '>', new_state.sequence),
+                ('not_hired_stage', '=', False), ('sequence', '>', new_state.sequence),
                 '|', ('job_ids', '=', False), ('job_ids', '=', self.job_id.id)])
             if not future_stage:
                 self.referral_state = 'hired'
@@ -279,3 +291,4 @@ class RecruitmentStage(models.Model):
     _inherit = "hr.recruitment.stage"
 
     points = fields.Integer('Points', help="Amount of points that the referent will receive when the applicant will reach this stage")
+    not_hired_stage = fields.Boolean('Not Hired Stage', help="This option is used in app 'Referrals'. If checked, the stage is not displayed in 'Referrals Dashboard' and no points are given to the employee.")

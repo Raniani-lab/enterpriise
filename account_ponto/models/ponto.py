@@ -324,7 +324,7 @@ class OnlineAccount(models.Model):
                 # transaction where the correct date should be of 2019-01-02
                 # This is not the best fix as we should instead convert to the time of the country where the bank is located
                 # but since ponto only support bank in belgium/france/nl for now this is acceptable.
-                tr_date = dateutil.parser.parse(transaction.get('attributes', {}).get('valueDate'))
+                tr_date = dateutil.parser.parse(transaction.get('attributes', {}).get('executionDate'))
                 tr_date = tr_date.astimezone(GMT_BELGIUM)
                 tr_date = fields.Date.to_date(tr_date)
                 if paging_forward and tr_date < last_sync:

@@ -2,6 +2,7 @@ odoo.define('web_enterprise.SwipeItemMixin', function () {
 
 const SNAP_THRESHOLD = 46; // Correspond to o_menu_toggle "width"
 const ANIMATION_SWIPE_DURATION = 250;
+const SWIPE_ACTIVATION_THRESHOLD = 15;
 
 const SwipeItemMixin = {
     events: {
@@ -206,14 +207,11 @@ const SwipeItemMixin = {
     _onTouchStart(ev) {
         const $target = $(ev.currentTarget);
 
-        // apply a style to add radius on current target (like gmail)
-        $target.addClass('o_swipe_current');
-        $target.parent().addClass('overflow-hidden');
-        this._addSwipeNode($target);
         $target.data('swipe_item', {
             touchStart: this._getTouchPosition(ev),
             startLeft: $target.css('left') === 'auto' ? 0 : parseInt($target.css('left'), 10),
             swipeDirection: false,
+            swipeAxes: false,
         });
     },
 
@@ -230,6 +228,26 @@ const SwipeItemMixin = {
         const touchDelta = this._getTouchDelta(touch, data);
         const swipeDirection = this._getSwipeDirection(touchDelta);
 
+        if (data.swipeAxes === false) {
+            if (Math.abs(touchDelta.yDelta) > SWIPE_ACTIVATION_THRESHOLD) {
+                data.swipeAxes = 'vertical';
+            } else if (Math.abs(touchDelta.xDelta) > SWIPE_ACTIVATION_THRESHOLD) {
+                data.swipeAxes = 'horizontal';
+            }
+            $target.data('swipe_item', data);
+        }
+
+        if (data.swipeAxes !== 'horizontal') {
+            return;
+        }
+        ev.preventDefault();
+
+        if (!$target.hasClass('o_swipe_current')) {
+            // apply a style to add radius on current target (like gmail)
+            $target.addClass('o_swipe_current');
+            $target.parent().addClass('overflow-hidden');
+            this._addSwipeNode($target);
+        }
         // Check for action to allow based on action and delta
         if(this.allowSwipe && !this._allowAction(ev, swipeDirection, touchDelta.xDelta)) {
             // update the swipe position to 0
@@ -271,12 +289,18 @@ const SwipeItemMixin = {
         this._moveLeft($(ev.currentTarget), 0, true);
         $(ev.currentTarget).find('.o_swipe_action, .o_swipe_separator').remove();
 
+        if (data.swipeAxes !== 'horizontal') {
+            return;
+        }
+        ev.preventDefault();
+
         if(this.allowSwipe && !this._allowAction(ev, swipeDirection, touchDelta.xDelta)) {
             return;
         }
 
         // reset the direction
         data.swipeDirection = false;
+        data.swipeAxes = false;
         $target.data('swipe_item', data);
 
         const swipeDirectionWithThresholdReach = this._isThresholdReach(touchDelta, swipeDirection);

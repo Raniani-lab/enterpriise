@@ -12,6 +12,7 @@
                     </div>
                     <div class="o_setting_right_pane">
                         <label for="six_payment_terminal" string="SIX"/>
+                        <a href="https://www.odoo.com/documentation/user/13.0/point_of_sale/payment/six.html" title="Documentation" class="o_doc_link fa fa-lg fa-book" target="_blank"></a>
                         <div class="text-muted">
                             Accept payments with a SIX payment terminal
                         </div>
@@ -23,6 +24,7 @@
                     </div>
                     <div class="o_setting_right_pane">
                         <label for="ingenico_payment_terminal" string="Ingenico (BENELUX)"/>
+                        <a href="https://www.odoo.com/documentation/user/13.0/point_of_sale/payment/ingenico.html" title="Documentation" class="o_doc_link fa fa-lg fa-book" target="_blank"></a>
                         <div class="text-muted">
                             Accept payments with an Ingenico payment terminal
                         </div>

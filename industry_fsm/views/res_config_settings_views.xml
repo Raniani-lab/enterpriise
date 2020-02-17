@@ -16,6 +16,8 @@
                             </div>
                             <div class="o_setting_right_pane">
                                 <label for="module_industry_fsm_sale"/>
+                                <a href="https://www.odoo.com/documentation/user/13.0/fsm/overview/invoicing_time.html" title="Documentation" class="o_doc_link fa fa-lg fa-book" target="_blank"></a>
+                                <a href="https://www.odoo.com/documentation/user/13.0/fsm/overview/keep_track.html" title="Documentation" class="o_doc_link fa fa-lg fa-book" target="_blank"></a>
                                 <div class="text-muted">
                                     Keep track of the products used during your interventions and invoice your time and material
                                 </div>
@@ -27,6 +29,7 @@
                             </div>
                             <div class="o_setting_right_pane">
                                 <label for="module_industry_fsm_report"/>
+                                <a href="https://www.odoo.com/documentation/user/13.0/fsm/worksheets/customize_worksheets.html" title="Documentation" class="o_doc_link fa fa-lg fa-book" target="_blank"></a>
                                 <div class="text-muted">
                                     Provide worksheet reports with custom fields to be signed off by customers
                                 </div>

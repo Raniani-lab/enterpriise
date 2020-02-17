@@ -268,6 +268,8 @@ class WebStudioController(http.Controller):
             # create a new model
             (model, extra_models) = request.env['ir.model'].studio_model_create(menu_name, options=model_options)
             _logger.info('created new model %s with the following options: %s', model.model, ','.join(model_options))
+        elif model_choice == 'parent':
+            (model, extra_models) = (None, None)
         else:
             _logger.error('inconsistent parameters: model_choice is %s, model_id is %s and menu_name(model) is %s', model_choice, model_id, menu_name)
             raise UserError(_("If you don't want to create a new model, an existing model should be selected."))

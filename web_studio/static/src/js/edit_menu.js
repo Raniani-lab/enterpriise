@@ -337,7 +337,7 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             {
                 name: 'model_choice',
                 type: 'selection',
-                selection: [['new', _t('New Model')], ['existing', _t('Existing Model')]],
+                selection: [['new', _t('New Model')], ['existing', _t('Existing Model')], ['parent', _t('Parent Menu')]],
                 value: 'new',
             }
         ]).then(function (recordID) {
@@ -401,7 +401,7 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             text: _t("Cancel"),
             close: true
         }])
-        this.$('.model_chooser').toggle(!new_model);
+        this.$('.model_chooser').toggle(this.model_choice.value === 'existing');
     },
 
     /**

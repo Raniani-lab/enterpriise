@@ -2354,6 +2354,13 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/js/edit_menu.js:0
+#, python-format
+msgid "Parent Menu"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0

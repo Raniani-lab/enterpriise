@@ -148,7 +148,7 @@ class DHLProvider():
         piece.PieceID = str(1)
         piece.PackageTypeCode = packaging.shipper_package_code
         piece.Height = packaging.height
-        piece.Depth = packaging.length
+        piece.Depth = packaging.packaging_length
         piece.Width = packaging.width
         piece.Weight = carrier._dhl_convert_weight(weight, carrier.dhl_package_weight_unit)
         bkg_details.Pieces = {'Piece': [piece]}
@@ -177,7 +177,7 @@ class DHLProvider():
             piece.PieceID = index
             piece.PackageTypeCode = packaging.shipper_package_code
             piece.Height = packaging.height
-            piece.Depth = packaging.length
+            piece.Depth = packaging.packaging_length
             piece.Width = packaging.width
             piece.Weight = picking.carrier_id._dhl_convert_weight(package.shipping_weight, picking.carrier_id.dhl_package_weight_unit)
             pieces.append(piece)
@@ -188,7 +188,7 @@ class DHLProvider():
             piece.PieceID = index
             piece.PackageTypeCode = packaging.shipper_package_code
             piece.Height = packaging.height
-            piece.Depth = packaging.length
+            piece.Depth = packaging.packaging_length
             piece.Width = packaging.width
             piece.Weight = picking.carrier_id._dhl_convert_weight(picking.weight_bulk, picking.carrier_id.dhl_package_weight_unit)
             pieces.append(piece)
@@ -212,7 +212,7 @@ class DHLProvider():
             piece.PackageTypeCode = packaging.shipper_package_code or None
             piece.Width = packaging.width
             piece.Height = packaging.height
-            piece.Depth = packaging.length
+            piece.Depth = packaging.packaging_length
             piece.PieceContents = package.name
             pieces.append(piece)
         if picking.weight_bulk or picking.is_return_picking:
@@ -221,7 +221,7 @@ class DHLProvider():
             piece.PackageTypeCode = packaging.shipper_package_code or None
             piece.Width = packaging.width
             piece.Height = packaging.height
-            piece.Depth = packaging.length
+            piece.Depth = packaging.packaging_length
             piece.PieceContents = "Bulk Content"
             pieces.append(piece)
         shipment_details.Pieces = self.factory.Pieces(pieces)

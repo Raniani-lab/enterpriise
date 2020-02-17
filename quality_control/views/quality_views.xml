@@ -900,7 +900,7 @@
             </xpath>
             <xpath expr="//page[@name='instructions']" position="after">
                 <page string="Message If Failure" name="message_if_failure"
-                    attrs="{'invisible': [('test_type', 'in', ['picture', 'text', 'register_consumed_materials', 'print_label'])]}">
+                    attrs="{'invisible': [('test_type', 'in', ['picture', 'instructions', 'register_consumed_materials', 'print_label'])]}">
                     <field name="failure_message"/>
                 </page>
             </xpath>

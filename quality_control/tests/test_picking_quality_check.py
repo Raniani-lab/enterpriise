@@ -55,14 +55,14 @@ class TestQualityCheck(TestQualityCommon):
 
     def test_01_picking_quality_check_type_text(self):
 
-        """ Test a Quality Check on a picking with 'Text'
+        """ Test a Quality Check on a picking with 'Instruction'
         as test type.
         """
-        # Create Quality Point for incoming shipment with 'Take Picture' as test type
+        # Create Quality Point for incoming shipment with 'Instructions' as test type
         self.qality_point_test = self.env['quality.point'].create({
             'product_ids': [(4, self.product.id)],
             'picking_type_ids': [(4, self.picking_type_id)],
-            'test_type_id': self.env.ref('quality.test_type_text').id
+            'test_type_id': self.env.ref('quality.test_type_instructions').id
         })
 
         # Check that quality point created.
@@ -94,8 +94,8 @@ class TestQualityCheck(TestQualityCommon):
         self.assertEqual(len(self.picking_in.check_ids), 1)
         self.assertEqual(self.picking_in.check_ids.quality_state, 'none')
 
-        # Check that the Quality Check on the picking has 'picture' as test_type
-        self.assertEqual(self.picking_in.check_ids[0].test_type, 'text')
+        # Check that the Quality Check on the picking has 'instruction' as test_type
+        self.assertEqual(self.picking_in.check_ids[0].test_type, 'instructions')
 
     def test_02_picking_quality_check_type_picture(self):
 

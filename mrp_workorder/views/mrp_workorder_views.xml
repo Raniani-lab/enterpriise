@@ -137,7 +137,7 @@
                                 name="action_next"
                                 type="object"
                                 class="btn-primary"
-                                attrs="{'invisible': ['|', ('is_user_working', '=', False),'|', ('is_last_step', '=', True), '&amp;', '|', ('quality_state', '=', 'none'), ('test_type', '!=', 'passfail'), ('test_type', '!=', 'text')]}"
+                                attrs="{'invisible': ['|', ('is_user_working', '=', False),'|', ('is_last_step', '=', True), '&amp;', '|', ('quality_state', '=', 'none'), ('test_type', '!=', 'passfail'), ('test_type', '!=', 'instructions')]}"
                                 barcode_trigger="next"
                                 string="Next"/>
                             <button

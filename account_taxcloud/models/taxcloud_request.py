@@ -41,6 +41,7 @@ class TaxCloudRequest(object):
         res = requests.post("https://api.taxcloud.com/1.0/TaxCloud/VerifyAddress", data=address_to_verify).json()
         if int(res.get('ErrNumber', False)):
             # If VerifyAddress fails, use Lookup with the initial address
+            _logger.info('Could not verify address for partner #%s using taxcloud; using unverified address instead', partner.id)
             res.update(address_to_verify)
         return res
 
@@ -105,13 +106,16 @@ class TaxCloudRequest(object):
         return cart_items
 
     def get_all_taxes_values(self):
+        customer_id = hasattr(self, 'customer_id') and self.customer_id or 'NoCustomerID'
+        cart_id = hasattr(self, 'cart_id') and self.cart_id or 'NoCartID'
+        _logger.info('fetching tax values for cart %s (customer: %s)', cart_id, customer_id)
         formatted_response = {}
         try:
             response = self.client.service.Lookup(
                 self.api_login_id,
                 self.api_key,
-                hasattr(self, 'customer_id') and self.customer_id or 'NoCustomerID',
-                hasattr(self, 'cart_id') and self.cart_id or 'NoCartID',
+                customer_id,
+                cart_id,
                 self.cart_items,
                 self.origin,
                 self.destination,

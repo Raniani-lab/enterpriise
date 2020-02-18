@@ -1,4 +1,4 @@
-odoo.define('mail_push.fcm', function (require) {
+odoo.define('mail_mobile.ocn', function (require) {
 "use strict";
 
 var mobile = require('web_mobile.rpc');

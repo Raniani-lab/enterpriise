@@ -502,9 +502,9 @@ file_filter = mrp_workorder_iot/i18n/<lang>.po
 source_file = mrp_workorder_iot/i18n/mrp_workorder_iot.pot
 source_lang = en
 
-[odoo-master.ocn_client]
-file_filter = ocn_client/i18n/<lang>.po
-source_file = ocn_client/i18n/ocn_client.pot
+[odoo-master.mail_mobile]
+file_filter = mail_mobile/i18n/<lang>.po
+source_file = mail_mobile/i18n/mail_mobile.pot
 source_lang = en
 
 [odoo-master.payment_sepa_direct_debit]

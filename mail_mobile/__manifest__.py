@@ -2,13 +2,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Odoo Cloud Notification Client (OCN)',
+    'name': 'Mail Mobile',
     'version': '1.0',
     'category': 'Tools',
     'summary': 'Allow push notification to devices',
     'description': """
-Odoo Cloud Notifications (OCN)
-===============================
+Mail Mobile
+===========
 
 This module enables push notifications to registered devices for direct messages,
 chatter messages and channel.

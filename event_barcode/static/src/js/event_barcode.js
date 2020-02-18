@@ -178,7 +178,7 @@ var EventScanView = AbstractAction.extend({
             res_id: this.action.context.active_id,
             views: [[false, 'form']],
             view_mode: 'form',
-            target: 'current',
+            target: 'main',
         });
     },
 });

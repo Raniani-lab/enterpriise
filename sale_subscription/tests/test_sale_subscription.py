@@ -75,7 +75,7 @@ class TestSubscription(TestSubscriptionCommon):
     # Avoid account_id is False when creating the invoice
     def _mock_prepare_invoice_data(self):
         invoice = self.original_prepare_invoice_data()
-        invoice['invoice_partner_bank_id'] = False
+        invoice['partner_bank_id'] = False
         return invoice
 
     # Mocking for 'test_auto_payment_with_token'

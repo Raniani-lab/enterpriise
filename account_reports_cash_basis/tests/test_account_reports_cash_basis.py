@@ -22,7 +22,10 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      4,              5,              6],
             [
                 # Accounts.
-                ('101401 Bank',                          800.00,        1750.00,     -950.00),
+                ('101401 Bank',                          200.00,        1250.00,     -1050.00),
+                ('101402 Outstanding Receipts',          800.00,         100.00,      700.00),
+                ('101403 Outstanding Payments',         1250.00,        1750.00,     -500.00),
+                ('101702 Bank Suspense Account',           0.00,         100.00,     -100.00),
                 ('121000 Account Receivable',            800.00,         800.00,        0.00),
                 ('131000 Tax Paid',                      228.26,           0.00,      228.26),
                 ('211000 Account Payable',              1750.00,        1750.00,        0.00),
@@ -31,16 +34,17 @@ class TestAccountReports(TestAccountReportsCommon):
                 ('600000 Expenses',                      478.26,           0.00,      478.26),
                 ('999999 Undistributed Profits/Losses', 1043.48,           0.00,     1043.48),
                 # Report Total.
-                ('Total',                               5100.00,        5100.00,        0.00),
+                ('Total',                               6550.00,        6550.00,        0.00),
             ],
         )
 
         # Mark the '101200 Account Receivable' line to be unfolded.
-        line_id = lines[1]['id']
+        line_id = lines[4]['id']
         options['unfolded_lines'] = [line_id]
         options['cash_basis'] = False  # Because we are in the same transaction, the table temp_account_move_line still exists
         report = report.with_context(report._set_context(options))
         lines = report._get_lines(options, line_id=line_id)
+
         self.assertLinesValues(
             lines,
             #   Name                                    Date            Partner         Debit           Credit          Balance
@@ -74,7 +78,10 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,              2,              3,              4,              5,              6],
             [
                 # Accounts.
-                ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
+                ('101401 Bank',                         '',             1150.00,        100.00,         '',             '',             1050.00),
+                ('101402 Outstanding Receipts',         600.00,         '',             100.00,         '',             700.00,         ''),
+                ('101403 Outstanding Payments',         '',             200.00,         '',             300.00,         '',             500.00),
+                ('101702 Bank Suspense Account',        '',             '',             '',             100.00,         '',             100.00),
                 ('121000 Account Receivable',           '',             '',             100.00,         100.00,         '',             ''),
                 ('131000 Tax Paid',                     189.13,         '',             39.13,          '',             228.26,         ''),
                 ('211000 Account Payable',              '',             '',             300.00,         300.00,         '',             ''),
@@ -83,7 +90,7 @@ class TestAccountReports(TestAccountReportsCommon):
                 ('600000 Expenses',                     217.39,         '',             260.87,         '',             478.26,         ''),
                 ('999999 Undistributed Profits/Losses', 1043.48,        '',             '',             '',             1043.48,        ''),
                 # Report Total.
-                ('Total',                               1450.00,        1450.00,        800.00,         800.00,         1750.00,        1750.00),
+                ('Total',                               2050.00,        2050.00,        900.00,         900.00,         2450.00,        2450.00),
             ],
         )
 
@@ -103,9 +110,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [
                 ('ASSETS',                                      -721.74),
                 ('Current Assets',                              -721.74),
-                ('Bank and Cash Accounts',                      -950.00),
+                ('Bank and Cash Accounts',                      -1050.00),
                 ('Receivables',                                 0.00),
-                ('Current Assets',                              228.26),
+                ('Current Assets',                              328.26),
                 ('Prepayments',                                 0.00),
                 ('Total Current Assets',                        -721.74),
                 ('Plus Fixed Assets',                           0.00),

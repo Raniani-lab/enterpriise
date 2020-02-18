@@ -341,14 +341,14 @@ class OnlineAccount(models.Model):
                 trans = {
                     'online_identifier': transaction.get('id'),
                     'date': tr_date,
-                    'name': name,
+                    'payment_ref': name,
                     'amount': transaction.get('attributes', {}).get('amount'),
                     'account_number': account_number,
                 }
                 if account_number:
                     partner_bank = self.env['res.partner.bank'].search([('sanitized_acc_number', '=', sanitize_account_number(account_number))], limit=1)
                     if partner_bank:
-                        trans['bank_account_id'] = partner_bank.id
+                        trans['partner_bank_id'] = partner_bank.id
                         trans['partner_id'] = partner_bank.partner_id.id
                 if not trans.get('partner_id') and transaction.get('attributes', {}).get('counterpartName'):
                     trans['online_partner_vendor_name'] = transaction['attributes']['counterpartName']
@@ -366,7 +366,6 @@ class OnlineAccountWizard(models.TransientModel):
     def _get_journal_values(self, account, create=False):
         vals = super(OnlineAccountWizard, self)._get_journal_values(account=account, create=create)
         if account.online_account_id.account_online_provider_id.provider_type == 'ponto':
-            vals['post_at'] = 'bank_rec'
             vals['name'] = account.account_number
             # create bank account in Odoo if not already exists
             company = account.journal_id and account.journal_id.company_id or self.env.company

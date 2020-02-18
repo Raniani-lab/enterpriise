@@ -48,7 +48,7 @@ class TestBatchPayment(AccountTestCommon):
             'journal_id': cls.journal.id,
             'payment_method_id': cls.batch_deposit.id,
             'payment_type': 'inbound',
-            'payment_date': time.strftime('%Y') + '-07-15',
+            'date': time.strftime('%Y') + '-07-15',
             'amount': amount,
             'partner_id': partner.id,
             'partner_type': 'customer',
@@ -63,7 +63,7 @@ class TestBatchPayment(AccountTestCommon):
         })
         batch.validate_batch()
         error_action = batch.print_batch_payment()
-        self.assertTrue(all(payment.state == 'sent' for payment in self.payments))
+        self.assertTrue(all(payment.is_move_sent for payment in self.payments))
         self.assertTrue(batch.state == 'sent')
         # Create a bank statement
         bank_statement = self.env['account.bank.statement'].create({
@@ -77,18 +77,19 @@ class TestBatchPayment(AccountTestCommon):
         bank_statement_line = self.env['account.bank.statement.line'].create({
             'amount': 800,
             'date': time.strftime('%Y') + '-07-18',
-            'name': 'DEPOSIT',
+            'payment_ref': 'DEPOSIT',
             'statement_id': bank_statement.id,
         })
+        bank_statement.button_post()
         # Simulate the process of reconciling the statement line using the batch deposit
         deposits_reconciliation_data = self.env['account.reconciliation.widget'].get_batch_payments_data(bank_statement.ids)
         self.assertTrue(len(deposits_reconciliation_data), 1)
         self.assertTrue(deposits_reconciliation_data[0]['id'], batch.id)
         deposit_reconciliation_lines = self.env['account.reconciliation.widget'].get_move_lines_by_batch_payment(bank_statement_line.id, batch.id)
         self.assertTrue(len(deposit_reconciliation_lines), 3)
-        move_line_ids = [line['id'] for line in deposit_reconciliation_lines]
-        self.env['account.reconciliation.widget'].process_bank_statement_line(bank_statement_line.ids, [{"payment_aml_ids": move_line_ids}])
-        self.assertTrue(all(payment.state == 'reconciled' for payment in self.payments))
+        lines_vals_list = [{'id': line['id']} for line in deposit_reconciliation_lines]
+        self.env['account.reconciliation.widget'].process_bank_statement_line(bank_statement_line.ids, [{'lines_vals_list': lines_vals_list}])
+        self.assertTrue(all(payment.state == 'posted' for payment in self.payments))
         self.assertTrue(batch.state == 'reconciled')
 
     def test_zero_amount_payment(self):

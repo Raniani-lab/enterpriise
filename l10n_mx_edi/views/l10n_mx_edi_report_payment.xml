@@ -122,7 +122,7 @@
                     </thead>
                     <tbody>
                         <tr t-foreach="docs_related" t-as="inv">
-                            <td><span t-esc="o.invoice_ids.filtered(lambda i: i.l10n_mx_edi_cfdi_uuid == inv.get('IdDocumento')).name or ''"/></td>
+                            <td><span t-esc="o.move_id._get_reconciled_invoices().filtered(lambda i: i.l10n_mx_edi_cfdi_uuid == inv.get('IdDocumento')).name or ''"/></td>
                             <td><span t-esc="inv.get('IdDocumento')"/></td>
                             <td class="text-right"><span t-esc="inv.get('NumParcialidad', '')"/></td>
                             <td class="text-right"><span t-esc="inv.get('ImpSaldoAnt', '')"/></td>
@@ -145,7 +145,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr t-foreach="o.invoice_ids" t-as="inv">
+                        <tr t-foreach="o.move_id._get_reconciled_invoices()" t-as="inv">
                             <td><span t-field="inv.invoice_date"/></td>
                             <td><span t-field="inv.name"/></td>
                             <td class="text-right"><span t-field="inv.amount_total"/></td>

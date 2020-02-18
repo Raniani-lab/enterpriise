@@ -46,12 +46,14 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             'name': 'payment %s' % invoice.name,
         })
 
-        bank_stmt_line = self.acc_bank_stmt_line_model.create({'name': 'payment',
+        bank_stmt_line = self.acc_bank_stmt_line_model.create({
+            'payment_ref': 'payment',
             'statement_id': bank_stmt.id,
             'partner_id': self.partner_agrolait_id,
             'amount': 50,
             'date': time.strftime('%Y-07-15'),
         })
+        bank_stmt.button_post()
 
         result = self.env['account.reconciliation.widget'].get_bank_statement_line_data(bank_stmt_line.ids)
         self.assertEqual(result['lines'][0]['reconciliation_proposition'][0]['amount_str'], '$ 50.00')
@@ -72,7 +74,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         })
 
         bank_stmt_line = self.acc_bank_stmt_line_model.create({
-            'name': 'testLine',
+            'payment_ref': 'testLine',
             'statement_id': bank_stmt.id,
             'amount': 100,
             'date': time.strftime('%Y-07-15'),
@@ -96,7 +98,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             bank_stmt_line.id,
             partner_id=partner.id,
             excluded_ids=[],
-            search_str=inv1.invoice_payment_ref,
+            search_str=inv1.payment_reference,
             mode="rp",
         )
         mv_lines_ids = [l['id'] for l in mv_lines_rec]
@@ -149,7 +151,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         })
 
         bank_stmt_line = self.acc_bank_stmt_line_model.create({
-            'name': 'testLine',
+            'payment_ref': 'testLine',
             'statement_id': bank_stmt.id,
             'amount': 100,
             'date': time.strftime('%Y-07-15'),
@@ -223,6 +225,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
                 'currency_id': self.currency_usd_id,
             }
         ])
+        move_payment.action_post()
         move_product.post()
 
         # We are reconciling a move line in currency A with a move line in currency B and putting
@@ -273,11 +276,11 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             'journal_id': self.bank_journal_euro.id,
             'company_id': company.id,
         })
-        payment.post()
+        payment.action_post()
 
         inv1_receivable = inv1.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
         inv2_receivable = inv2.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
-        pay_receivable = payment.move_line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
+        pay_receivable = payment.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
 
         data_for_reconciliation = [
             {
@@ -305,5 +308,5 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         self.assertTrue(all(l.reconciled for l in inv1_receivable))
         self.assertTrue(all(l.reconciled for l in inv2_receivable))
 
-        self.assertEqual(inv1.payment_state, 'paid')
+        self.assertEqual(inv1.payment_state, 'in_payment')
         self.assertEqual(inv2.payment_state, 'paid')

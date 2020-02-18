@@ -61,7 +61,7 @@ class AccountBankStatementImport(models.TransientModel):
             raise UserError(_('Could not decipher the QIF file.'))
 
         transactions = []
-        vals_line = {'name': []}
+        vals_line = {'payment_ref': []}
         total = 0.0
         # Identified header types of the QIF format that we support.
         # Other types might need to be added. Here are the possible values
@@ -85,22 +85,22 @@ class AccountBankStatementImport(models.TransientModel):
                     vals_line['ref'] = data.decode('utf-8')
                 elif line[:1] == PAYEE:
                     name = data.decode('utf-8')
-                    vals_line['name'].append(name)
+                    vals_line['payment_ref'].append(name)
                     # Since QIF doesn't provide account numbers, we'll have to find res.partner and res.partner.bank here
                     # (normal behavious is to provide 'account_number', which the generic module uses to find partner/bank)
                     partner_bank = self.env['res.partner.bank'].search([('partner_id.name', '=', name)], limit=1)
                     if partner_bank:
-                        vals_line['bank_account_id'] = partner_bank.id
+                        vals_line['partner_bank_id'] = partner_bank.id
                         vals_line['partner_id'] = partner_bank.partner_id.id
                 elif line[:1] == MEMO:
-                    vals_line['name'].append(data.decode('utf-8'))
+                    vals_line['payment_ref'].append(data.decode('utf-8'))
                 elif line[:1] == END_OF_ITEM:
-                    if vals_line['name']:
-                        vals_line['name'] = u': '.join(vals_line['name'])
+                    if vals_line['payment_ref']:
+                        vals_line['payment_ref'] = u': '.join(vals_line['payment_ref'])
                     else:
-                        del vals_line['name']
+                        del vals_line['payment_ref']
                     transactions.append(vals_line)
-                    vals_line = {'name': []}
+                    vals_line = {'payment_ref': []}
                 elif line[:1] == b'\n':
                     transactions = []
         else:

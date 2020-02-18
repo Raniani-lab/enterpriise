@@ -46,7 +46,7 @@ class TestOfxFile(TransactionCase):
 
         # Check an imported bank statement line
         line = bank_st_record.line_ids.filtered(lambda r: r.unique_import_id == '123456-'+str(bank_journal.id)+'-219378')
-        self.assertEqual(line.name, 'Norbert Brant')
+        self.assertEqual(line.payment_ref, 'Norbert Brant')
         self.assertEqual(line.amount, -80)
         self.assertEqual(line.partner_id.id, partner_norbert.id)
-        self.assertEqual(line.bank_account_id.id, partner_bank_norbert.id)
+        self.assertEqual(line.partner_bank_id.id, partner_bank_norbert.id)

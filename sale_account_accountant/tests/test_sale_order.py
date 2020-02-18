@@ -45,21 +45,21 @@ class TestSaleOrder(TestCommonSaleNoChart):
         # Create bank statement
         statement = self.env['account.bank.statement'].create({
             'name': 'Test',
-            'journal_id': self.journal_purchase.id,
+            'journal_id': self.journal_bank.id,
             'user_id': self.user_employee.id,
         })
         st_line1 = self.env['account.bank.statement.line'].create({
-            'name': 'should not find anything',
+            'payment_ref': 'should not find anything',
             'amount': 15,
             'statement_id': statement.id
         })
         st_line2 = self.env['account.bank.statement.line'].create({
-            'name': 'Payment for SO/01/01',
+            'payment_ref': 'Payment for SO/01/01',
             'amount': 15,
             'statement_id': statement.id
         })
         st_line3 = self.env['account.bank.statement.line'].create({
-            'name': 'Payment for Petit suisse',
+            'payment_ref': 'Payment for Petit suisse',
             'amount': 15,
             'statement_id': statement.id
         })

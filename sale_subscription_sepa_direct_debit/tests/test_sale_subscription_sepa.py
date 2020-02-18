@@ -28,7 +28,6 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
             'name': 'Bank SEPA',
             'type': 'bank',
             'code': 'BNKSEPA',
-            'post_at': 'bank_rec',
             'inbound_payment_method_ids': [(4, cls.env.ref('account_sepa_direct_debit.payment_method_sdd').id)],
             'bank_account_id': bank_account.id,
         })
@@ -120,24 +119,25 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
                 bank_journal = payment.journal_id
                 bank_stmt = self.env['account.bank.statement'].create({
                     'journal_id': bank_journal.id,
-                    'date': payment.payment_date,
+                    'date': payment.date,
                     'name': payment.name,
                 })
                 bank_stmt_line = self.env['account.bank.statement.line'].create({
                     'statement_id': bank_stmt.id,
                     'partner_id': self.user_portal.partner_id.id,
                     'amount': payment.amount,
-                    'date': payment.payment_date,
-                    'name': payment.name,
+                    'date': payment.date,
+                    'payment_ref': payment.name,
                 })
-                move_line = payment.move_line_ids.filtered(lambda aml: aml.account_id in bank_journal.default_debit_account_id + bank_journal.default_credit_account_id)
-                bank_stmt_line.process_reconciliation(payment_aml_rec=move_line)
+                bank_stmt.button_post()
+                move_line = payment.line_ids.filtered(lambda aml: aml.account_id.internal_type not in ('receivable', 'payable'))
+                bank_stmt_line.reconcile([{'id': move_line.id}])
 
                 # check success mail is sent
                 assertEqual(self.send_success_count, 1, 'success mail should have been sent, now that the payment is reconciled')
 
                 # check post-reconciliation states
-                assertEqual(payment.state, 'reconciled', 'payment should be reconciled')
+                assertEqual(payment.is_matched, True, 'payment should be reconciled')
                 assertEqual(tx.state, 'done', 'transaction should be done')
                 assertEqual(invoice.state, 'posted', 'invoice should be posted')
                 assertEqual(invoice.payment_state, 'paid', 'invoice should be paid')

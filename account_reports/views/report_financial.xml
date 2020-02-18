@@ -34,7 +34,7 @@
       <a role="menuitem" tabindex="-1" t-att-data-account_id="line['account_id']" t-att-data-currency_id="line['currency_id']" action="toggle_provision" class="dropdown-item" t-if="line.get('included') == 1">Exclude from adjustment/provisions entries</a>
       <a role="menuitem" tabindex="-1" t-att-data-account_id="line['account_id']" t-att-data-currency_id="line['currency_id']" action="toggle_provision" class="dropdown-item" t-if="line.get('included') == 0">Include in adjustment/provisions entries</a>
     </li>
-    <li t-if="line['caret_options'] == 'account.bank.statement.line'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" data-object="account.bank.statement" action="open_document" class="dropdown-item">View Bank Statement</a></li>
+    <li t-if="line['caret_options'] == 'account.bank.statement'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" data-object="account.bank.statement" action="open_document" class="dropdown-item">View Bank Statement</a></li>
     <li t-if="line['caret_options'] == 'account.analytic.account'">
         <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_analytic_entries" class="dropdown-item">Analytic Entries</a>
     </li>
@@ -296,7 +296,10 @@
     <xpath expr="//div[hasclass('print_only')]" position="after">
         <div class="o_reports_filter_input_wrapper no_print">
             <span class="searchIcon"><i class="fa fa-search" role="img" aria-label="Search" title="Search"></i></span>
-            <input class="o_account_reports_filter_input" type="text" placeholder="Search account" />
+            <input class="o_account_reports_filter_input"
+                   type="text"
+                   placeholder="Search account"
+                   t-att-value="options.get('filter_accounts') or ''"/>
         </div>
     </xpath>
 </template>
@@ -305,6 +308,27 @@
     <xpath expr="//input[hasclass('o_account_reports_filter_input')]" position="attributes">
         <attribute name="placeholder">Search partner</attribute>
     </xpath>
+</template>
+
+<!-- Bank Reconciliation Report Templates -->
+
+<!-- Custom template to add a warning on top about unconsistent bank statements -->
+<template id="bank_reconciliation_report_main_template" inherit_id="account_reports.main_template" primary="True">
+    <xpath expr="//div[hasclass('o_account_reports_body')][1]" position="before">
+        <div class="alert alert-warning text-center mb-0 no_print" t-if="options.get('unconsistent_statement_ids')">
+            <span>There are some <a action="open_unconsistent_statements">statements</a> having a starting balance different than the previous ending balance</span>
+        </div>
+    </xpath>
+</template>
+
+<!-- Custom cell_template to get a clickable link to the last bank statement -->
+<template id="bank_reconciliation_report_cell_template_link_last_statement">
+    Last Statement: <a action="action_redirect_to_bank_statement_form" href="#" t-att-data-statement_id="cell['last_statement_id']"><t t-esc="cell['last_statement_name']"/></a>
+</template>
+
+<!-- Custom cell_template to render the unexplained difference in the balance line -->
+<template id="bank_reconciliation_report_cell_template_unexplained_difference">
+    <span class="fa fa-warning" t-att-title="cell['title']"/>&amp;nbsp;<t t-esc="cell['name']"/>
 </template>
 
 <!-- Aged partner balance templates -->

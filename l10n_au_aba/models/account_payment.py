@@ -21,7 +21,7 @@ class AccountPayment(models.Model):
         return res
 
     @api.constrains('payment_method_id', 'journal_id', 'currency_id')
-    def _check_bank_account(self):
+    def _l10n_au_aba_check_bank_account(self):
         for rec in self:
             if rec.payment_method_id == self.env.ref('l10n_au_aba.account_payment_method_aba_ct'):
                 bank_acc = rec.journal_id.bank_account_id
@@ -36,9 +36,9 @@ class AccountPayment(models.Model):
                     raise ValidationError(_("Please fill in the ABA data of account %s (journal %s) before using it to generate ABA payments.")
                         % (bank_acc.acc_number, rec.journal_id.name))
 
-    @api.constrains('payment_method_id', 'partner_bank_account_id')
+    @api.constrains('payment_method_id', 'partner_bank_id')
     def _check_partner_bank_account(self):
         for rec in self:
             if rec.payment_method_id == self.env.ref('l10n_au_aba.account_payment_method_aba_ct'):
-                if rec.partner_bank_account_id.acc_type != 'aba' or not rec.partner_bank_account_id.aba_bsb:
+                if rec.partner_bank_id.acc_type != 'aba' or not rec.partner_bank_id.aba_bsb:
                     raise ValidationError(_("The partner requires a bank account with a valid BSB and account number. Please configure it first."))

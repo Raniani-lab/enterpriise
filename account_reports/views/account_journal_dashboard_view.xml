@@ -19,6 +19,20 @@
                 </div>
             </xpath>
 
+            <!-- Replace the displayed amount by an action opening the General Ledger report -->
+            <xpath expr="//div[@id='dashboard_bank_cash_balance']" position="replace">
+                <div id="dashboard_bank_cash_balance" class="col overflow-hidden text-left">
+                    <a type="object" name="action_open_bank_balance_in_gl">Balance in GL</a>
+                </div>
+            </xpath>
+
+            <!-- Replace the displayed amount by an action opening the Bank Reconciliation report -->
+            <xpath expr="//div[@id='dashboard_bank_cash_outstanding_balance']" position="replace">
+                <div id="dashboard_bank_cash_outstanding_balance" class="col overflow-hidden text-left">
+                    <a type="action" name="%(action_account_report_bank_reconciliation_with_journal)d">Outstanding Payments/Receipts</a>
+                </div>
+            </xpath>
+
         </field>
     </record>
 

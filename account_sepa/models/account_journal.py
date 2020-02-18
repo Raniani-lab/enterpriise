@@ -329,18 +329,18 @@ class AccountJournal(models.Model):
         return CdtrAcct
 
     def _get_RmtInf(self, payment):
-        if not payment['communication']:
+        if not payment['ref']:
             return False
         RmtInf = etree.Element("RmtInf")
 
         # In Switzerland, postal accounts always require a structured communication with the ISR reference
         if self._get_local_instrument(payment) == 'CH01':
-            ref = payment['communication'].replace(' ', '')
+            ref = payment['ref'].replace(' ', '')
             ref = ref.rjust(27, '0')
             create_xml_node_chain(RmtInf, ['Strd', 'CdtrRefInf', 'Ref'], ref)
         else:
             Ustrd = etree.SubElement(RmtInf, "Ustrd")
-            Ustrd.text = sanitize_communication(payment['communication'])
+            Ustrd.text = sanitize_communication(payment['ref'])
         return RmtInf
 
     def _has_isr_ref(self, payment_comm):
@@ -364,6 +364,6 @@ class AccountJournal(models.Model):
         variant, such as in Switzerland.
         """
         partner_bank_ids = self.env['res.partner'].browse(payment['partner_id']).bank_ids
-        if partner_bank_ids and partner_bank_ids[0].acc_type == 'postal' and self._has_isr_ref(payment['communication']):
+        if partner_bank_ids and partner_bank_ids[0].acc_type == 'postal' and self._has_isr_ref(payment['ref']):
             return 'CH01'
         return None

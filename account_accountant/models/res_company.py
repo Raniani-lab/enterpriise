@@ -54,24 +54,6 @@ class ResCompany(models.Model):
                         where state = 'posted'
                         and date < %(switch_threshold)s
                         and company_id = %(company_id)s;
-
-                        update account_payment
-                        set state = state_before_switch,
-                            state_before_switch = null
-                        from account_journal
-                        where state = 'invoicing_legacy'
-                        and payment_date >= %(switch_threshold)s
-                        and account_journal.id = journal_id
-                        and account_journal.company_id = %(company_id)s;
-
-                        update account_payment
-                        set state_before_switch = state,
-                            state = 'invoicing_legacy'
-                        from account_journal
-                        where state = 'posted'
-                        and payment_date < %(switch_threshold)s
-                        and account_journal.id = journal_id
-                        and account_journal.company_id = %(company_id)s;
                     """, {'company_id': record.id, 'switch_threshold': record.invoicing_switch_threshold})
                 else:
                     # If the threshold date has been emptied, we re-post all the
@@ -90,14 +72,6 @@ class ResCompany(models.Model):
                             payment_state_before_switch = null
                         where payment_state = 'invoicing_legacy'
                         and company_id = %(company_id)s;
-
-                        update account_payment
-                        set state = state_before_switch,
-                            state_before_switch = null
-                        from account_journal
-                        where state = 'invoicing_legacy'
-                        and account_journal.id = journal_id
-                        and account_journal.company_id = %(company_id)s;
                     """, {'company_id': record.id})
 
                 self.env['account.move'].invalidate_cache(fnames=['state'])

@@ -10,8 +10,13 @@ class AccountReconcileModel(models.Model):
     def get_reconciliation_dict_for_widget(self, model_id, st_line, residual_balance):
         st_line = self.env['account.bank.statement.line'].browse(st_line)
         model = self.env['account.reconcile.model'].browse(model_id)
-        new_aml_dicts = model._get_write_off_move_lines_dict(st_line, residual_balance=residual_balance)
+        new_aml_dicts = model._get_write_off_move_lines_dict(st_line, residual_balance)
         for line in new_aml_dicts:
+            balance = line.get('balance', 0.0)
+            line.update({
+                'debit': balance if balance > 0.0 else 0.0,
+                'credit': -balance if balance < 0.0 else 0.0,
+            })
             for m2o_name in ('account_id', 'journal_id', 'partner_id', 'analytic_account_id'):
                 if line.get(m2o_name) and not isinstance(line[m2o_name], dict):
                     m2o_record = self.env[self.env['account.move.line']._fields[m2o_name].comodel_name].browse(line[m2o_name])

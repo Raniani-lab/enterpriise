@@ -268,7 +268,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         bank_journal = self.env['account.journal'].search([
             ('type', '=', 'bank')], limit=1)
         payment_register = Form(self.env['account.payment'].with_context(active_model='account.move', active_ids=invoice.ids))
-        payment_register.payment_date = invoice.date
+        payment_register.date = invoice.date
         payment_register.l10n_mx_edi_payment_method_id = self.env.ref(
                 'l10n_mx_edi.payment_method_efectivo')
         payment_register.payment_method_id = self.env.ref(
@@ -307,7 +307,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped("body"))
         payment_register = Form(self.env['account.payment'].with_context(active_model='account.move', active_ids=invoice.ids))
-        payment_register.payment_date = today.date() - timedelta(days=5)
+        payment_register.date = today.date() - timedelta(days=5)
         payment_register.l10n_mx_edi_payment_method_id = self.payment_method_cash
         payment_register.payment_method_id = self.payment_method_manual_out
         payment_register.journal_id = journal

@@ -227,18 +227,18 @@ class AccountPayment(models.Model):
         required = (
             self.payment_type == 'inbound' and
             self.company_id.country_id == self.env.ref('base.mx') and
-            not self.invoice_ids.filtered(lambda i: i.move_type != 'out_invoice'))
+            not self.move_id._get_reconciled_invoices().filtered(lambda i: i.move_type != 'out_invoice'))
         if not required:
             return required
         if self.l10n_mx_edi_pac_status != 'none':
             return True
-        if self.invoice_ids and False in self.invoice_ids.mapped('l10n_mx_edi_cfdi_uuid'):
+        if self.move_id._get_reconciled_invoices() and False in self.move_id._get_reconciled_invoices().mapped('l10n_mx_edi_cfdi_uuid'):
             raise UserError(_(
                 'Some of the invoices that will be paid with this record '
                 'are not signed, and the UUID is required to indicate '
                 'the invoices that are paid with this CFDI'))
         messages = []
-        if not self.invoice_ids:
+        if not self.move_id._get_reconciled_invoices():
             messages.append(_(
                 '<b>This payment <b>has not</b> invoices related.'
                 '</b><br/><br/>'
@@ -260,7 +260,7 @@ class AccountPayment(models.Model):
         categ_force = self._l10n_mx_edi_get_force_rep_category()
         force = self._context.get('force_ref') or (
             categ_force and categ_force in self.partner_id.category_id)
-        if self.invoice_ids and not self.invoice_ids.filtered(
+        if self.move_id._get_reconciled_invoices() and not self.move_id._get_reconciled_invoices().filtered(
                 lambda i: i.l10n_mx_edi_get_payment_method_cfdi() == 'PPD') and not force:
             messages.append(_(
                 '<b>The invoices related with this payment have the payment '
@@ -458,7 +458,7 @@ class AccountPayment(models.Model):
         and makes the l10n_mx_edi_payment_data method more inheritable"""
         self.ensure_one()
         total_paid = total_curr = total_currency = 0
-        for invoice in self.invoice_ids:
+        for invoice in self.move_id._get_reconciled_invoices():
             amount = [p for p in invoice._get_reconciled_info_JSON_values() if (
                 p.get('account_payment_id', False) == self.id or not p.get(
                     'account_payment_id') and (not p.get('invoice_id') or p.get(
@@ -467,9 +467,9 @@ class AccountPayment(models.Model):
             total_paid += amount_payment if invoice.currency_id != self.currency_id else 0
             total_currency += amount_payment if invoice.currency_id == self.currency_id else 0
             total_curr += invoice.currency_id.with_context(
-                date=self.payment_date)._convert(
+                date=self.date)._convert(
                     amount_payment, self.currency_id, self.company_id,
-                    self.payment_date)
+                    self.date)
         return dict(
             total_paid=total_paid,
             total_curr=total_curr,
@@ -480,14 +480,14 @@ class AccountPayment(models.Model):
         # Based on "En caso de no contar con la hora se debe registrar 12:00:00"
         mxn = self.env.ref('base.MXN')
         date = datetime.combine(
-            fields.Datetime.from_string(self.payment_date),
+            fields.Datetime.from_string(self.date),
             datetime.strptime('12:00:00', '%H:%M:%S').time()).strftime('%Y-%m-%dT%H:%M:%S')
         res = self._l10n_mx_edi_invoice_payment_data()
         total_paid = res.get('total_paid', 0)
         total_curr = res.get('total_curr', 0)
         total_currency = res.get('total_currency', 0)
         precision = self.env['decimal.precision'].precision_get('Account')
-        if not self.move_reconciled and float_compare(
+        if not self.is_reconciled and float_compare(
                 self.amount, total_curr, precision_digits=precision) > 0:
             return {'error': _(
                 '<b>The amount paid is bigger than the sum of the invoices.'
@@ -508,9 +508,9 @@ class AccountPayment(models.Model):
                 '<a href="http://omawww.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/Complementoscfdi/Guia_comple_pagos.pdf">'
                 ' this SAT reference </a>, Pag. 22</blockquote>')
             }
-        ctx = dict(company_id=self.company_id.id, date=self.payment_date)
+        ctx = dict(company_id=self.company_id.id, date=self.date)
         rate = ('%.6f' % (self.currency_id.with_context(**ctx)._convert(
-            1, mxn, self.company_id, self.payment_date, round=False))) if self.currency_id.name != 'MXN' else False
+            1, mxn, self.company_id, self.date, round=False))) if self.currency_id.name != 'MXN' else False
         partner_bank = self.l10n_mx_edi_partner_bank_id.bank_id
         company_bank = self.journal_id.bank_account_id
         payment_code = self.l10n_mx_edi_payment_method_id.code
@@ -613,11 +613,12 @@ class AccountPayment(models.Model):
 
     def _l10n_mx_edi_get_payment_write_off(self):
         self.ensure_one()
-        writeoff_move_line = self.move_line_ids.filtered(lambda l: l.account_id == self.writeoff_account_id and l.name == self.writeoff_label)
+        liquidity_lines, counterpart_lines, writeoff_move_line = self._seek_for_lines()
+
         res = {}
-        if writeoff_move_line and self.invoice_ids:
+        if writeoff_move_line and self.move_id._get_reconciled_invoices():
             # get the writeoff value in invoice currency
-            last_invoice = self.invoice_ids[-1]
+            last_invoice = self.move_id._get_reconciled_invoices()[-1]
             # if the invoice has the same currency as the company, use the balance
             if last_invoice.currency_id == last_invoice.company_currency_id:
                 write_off_invoice_currency = writeoff_move_line.balance
@@ -906,25 +907,3 @@ class AccountPayment(models.Model):
         self.l10n_mx_edi_partner_bank_id = False
         if len(self.partner_id.commercial_partner_id.bank_ids) == 1:
             self.l10n_mx_edi_partner_bank_id = self.partner_id.commercial_partner_id.bank_ids  # noqa
-
-
-class AccountPaymentRegister(models.TransientModel):
-    _inherit = 'account.payment.register'
-
-    l10n_mx_edi_payment_method_id = fields.Many2one(
-        'l10n_mx_edi.payment.method',
-        string='Payment Way',
-        help='Indicates the way the payment was/will be received, where the '
-        'options could be: Cash, Nominal Check, Credit Card, etc.')
-    l10n_mx_edi_partner_bank_id = fields.Many2one(
-        'res.partner.bank', 'Partner Bank', help='If the payment was made '
-        'with a financial institution define the bank account used in this '
-        'payment.')
-
-    def _prepare_payment_vals(self, invoice):
-        res = super(AccountPaymentRegister, self)._prepare_payment_vals(invoice)
-        res.update({
-            'l10n_mx_edi_payment_method_id': self.l10n_mx_edi_payment_method_id.id,
-            'l10n_mx_edi_partner_bank_id': self.l10n_mx_edi_partner_bank_id.id,
-        })
-        return res

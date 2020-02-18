@@ -54,7 +54,7 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped("body"))
         payment_register = Form(self.env['account.payment'].with_context(active_model='account.move', active_ids=invoice.ids))
-        payment_register.payment_date = invoice.date
+        payment_register.date = invoice.date
         payment_register.l10n_mx_edi_payment_method_id = self.transfer
         payment_register.payment_method_id = self.payment_method_manual_out
         payment_register.journal_id = journal
@@ -100,17 +100,9 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
                 'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
             })],
         })
-        values = []
         lines = invoices.mapped('move_id.line_ids').filtered(
             lambda l: l.account_id.user_type_id.type == 'receivable')
-        for line in lines:
-            values.append({
-                'credit': line.debit,
-                'debit': 0,
-                'name': line.name,
-                'move_line': line,
-            })
-        bank_statement.line_ids.process_reconciliation(values)
+        bank_statement.line_ids.reconcile({'id': line.id} for line in lines)
         self.assertEqual(
             invoices.mapped('payment_ids').l10n_mx_edi_pac_status, 'signed',
             'The payment was not signed')

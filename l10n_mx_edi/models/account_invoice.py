@@ -1093,7 +1093,7 @@ class AccountMove(models.Model):
                     subtype_xmlid='account.mt_invoice_validated')
                 continue
 
-            move.l10n_mx_edi_cfdi_name = ('%s-%s-MX-Invoice-%s.xml' % (move.journal_id.code, move.invoice_payment_ref, version)).replace('/', '')
+            move.l10n_mx_edi_cfdi_name = ('%s-%s-MX-Invoice-%s.xml' % (move.journal_id.code, move.payment_reference, version)).replace('/', '')
             subscription = 'subscription_id' in move.invoice_line_ids._fields and move.invoice_line_ids.filtered('subscription_id')
             if subscription or (trans_field and move.mapped('transaction_ids.payment_id')):
                 move = move.with_context(disable_after_commit=True)

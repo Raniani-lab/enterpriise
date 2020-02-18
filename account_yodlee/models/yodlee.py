@@ -414,7 +414,7 @@ class YodleeAccount(models.Model):
                     vals = {
                         'online_identifier': str(tr.get('id')) + ':' + tr.get('CONTAINER'),
                         'date': date,
-                        'name': tr.get('description',{}).get('original', 'No description'),
+                        'payment_ref': tr.get('description',{}).get('original', 'No description'),
                         'amount': amount * -1 if tr.get('baseType') == 'DEBIT' else amount,
                     }
                     if tr.get('accountId'):

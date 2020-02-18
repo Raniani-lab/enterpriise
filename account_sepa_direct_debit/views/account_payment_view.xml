@@ -7,9 +7,9 @@
             <field name="inherit_id" ref="account.view_account_payment_tree"/>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='partner_type']" position="after">
-                    <field name="sdd_mandate_id"/>
-                </xpath>
+                <tree position="inside">
+                    <field name="sdd_mandate_id" string="Originating SEPA mandate"/>
+                </tree>
             </field>
         </record>
 
@@ -18,8 +18,10 @@
             <field name="model">account.payment</field>
             <field name="inherit_id" ref="account.view_account_payment_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='communication']" position="after">
-                    <field name="sdd_mandate_id" attrs="{'invisible':[('sdd_mandate_id', '=', False)]}"/>
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="sdd_mandate_id"
+                           string="Originating SEPA mandate"
+                           attrs="{'invisible':[('sdd_mandate_id', '=', False)]}"/>
                 </xpath>
                 <xpath expr="//div[hasclass('oe_title')]" position="before">
                     <field name="sdd_mandate_usable" invisible="1"/>

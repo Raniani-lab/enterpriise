@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from unittest.mock import patch
-from odoo.exceptions import UserError
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -61,16 +60,17 @@ class TestYodleeApi(AccountTestInvoicingCommon):
             'balance_start': 5103.0,
             'balance_end_real': 9944.87,
             'line_ids': [
-                (0, 0, {'name': 'line1', 'amount': 750.0}),
-                (0, 0, {'name': 'line2', 'amount': 1275.0}),
-                (0, 0, {'name': 'line3', 'amount': -32.58}),
-                (0, 0, {'name': 'line4', 'amount': 650.0}),
-                (0, 0, {'name': 'line5', 'amount': 2000.0}),
-                (0, 0, {'name': 'line6', 'amount': 102.78}),
-                (0, 0, {'name': 'line7', 'amount': 96.67}),
+                (0, 0, {'payment_ref': 'line1', 'amount': 750.0}),
+                (0, 0, {'payment_ref': 'line2', 'amount': 1275.0}),
+                (0, 0, {'payment_ref': 'line3', 'amount': -32.58}),
+                (0, 0, {'payment_ref': 'line4', 'amount': 650.0}),
+                (0, 0, {'payment_ref': 'line5', 'amount': 2000.0}),
+                (0, 0, {'payment_ref': 'line6', 'amount': 102.78}),
+                (0, 0, {'payment_ref': 'line7', 'amount': 96.67}),
             ],
         })
-    
+        initial_statement.button_post()
+
     def setUp(self):
         super().setUp()
         patcher_post = patch('odoo.addons.account_yodlee.models.yodlee.requests.post', side_effect=self.yodlee_post)
@@ -333,7 +333,7 @@ class TestYodleeApi(AccountTestInvoicingCommon):
         self.assertEqual(len(bank_stmt), 1, 'There should be at least one bank statement created')
         self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 1 lines')
         self.assertEqual(bank_stmt.state, 'open')
-        self.assertEqual(bank_stmt.line_ids.name, '0150 Amazon  Santa Ana CA 55.73USD')
+        self.assertEqual(bank_stmt.line_ids.payment_ref, '0150 Amazon  Santa Ana CA 55.73USD')
         self.assertEqual(bank_stmt.line_ids.amount, -12345.12)
         self.assertEqual(bank_stmt.line_ids.online_identifier, "2829798:bank")
         self.assertEqual(bank_stmt.line_ids.partner_id, self.env['res.partner']) #No partner defined on line
@@ -362,8 +362,7 @@ class TestYodleeApi(AccountTestInvoicingCommon):
         bank_stmt = self.env['account.bank.statement'].search([('journal_id', '=', self.bank_journal.id)], limit=1)
         self.assertEqual(len(bank_stmt.line_ids), 1, 'The statement should have 1 lines')
         self.assertEqual(bank_stmt.state, 'open')
-        self.assertEqual(bank_stmt.journal_id.id, self.bank_journal.id)
-        self.assertEqual(bank_stmt.line_ids.name, '0150 Amazon  Santa Ana CA 55.73USD')
+        self.assertEqual(bank_stmt.line_ids.payment_ref, '0150 Amazon  Santa Ana CA 55.73USD')
         self.assertEqual(bank_stmt.line_ids.amount, -12345.12)
         self.assertEqual(bank_stmt.line_ids.online_identifier, "2829798:bank")
         self.assertEqual(acc_online_provider.account_online_journal_ids.last_sync, fields.Date.today())
@@ -389,6 +388,8 @@ class TestYodleeApi(AccountTestInvoicingCommon):
         self.assertEqual(bank_stmt.line_ids.amount, -12345.12)
         self.assertEqual(bank_stmt.line_ids.online_identifier, "2829798:bank")
         self.assertEqual(bank_stmt.line_ids.partner_id, agrolait)
+        bank_stmt.button_reopen()
+        bank_stmt.line_ids.write({'name': '/'})
         bank_stmt.unlink()
 
         # Check that partner assignation also work with vendor name
@@ -403,6 +404,8 @@ class TestYodleeApi(AccountTestInvoicingCommon):
         self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 1 lines')
         self.assertTrue(bank_stmt.line_ids.online_identifier.startswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjf"))
         self.assertEqual(bank_stmt.line_ids.partner_id, ASUSTeK)
+        bank_stmt.button_reopen()
+        bank_stmt.line_ids.write({'name': '/'})
         bank_stmt.unlink()
 
         # Check that if we have both partner with same info, no partner is displayed
@@ -414,6 +417,8 @@ class TestYodleeApi(AccountTestInvoicingCommon):
         self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 1 lines')
         self.assertTrue(bank_stmt.line_ids.online_identifier.startswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDja"))
         self.assertEqual(bank_stmt.line_ids.partner_id, self.env['res.partner'])
+        bank_stmt.button_reopen()
+        bank_stmt.line_ids.write({'name': '/'})
         bank_stmt.unlink()
 
         # Check that bank account number take precedence over vendor name

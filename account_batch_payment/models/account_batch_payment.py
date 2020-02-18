@@ -12,20 +12,67 @@ class AccountBatchPayment(models.Model):
 
     name = fields.Char(required=True, copy=False, string='Reference', readonly=True, states={'draft': [('readonly', False)]})
     date = fields.Date(required=True, copy=False, default=fields.Date.context_today, readonly=True, states={'draft': [('readonly', False)]})
-    state = fields.Selection([('draft', 'New'), ('sent', 'Sent'), ('reconciled', 'Reconciled')], readonly=True, default='draft', copy=False)
+    state = fields.Selection([
+        ('draft', 'New'),
+        ('sent', 'Sent'),
+        ('reconciled', 'Reconciled'),
+    ], store=True, compute='_compute_state')
     journal_id = fields.Many2one('account.journal', string='Bank', domain=[('type', '=', 'bank')], required=True, readonly=True, states={'draft': [('readonly', False)]})
     payment_ids = fields.One2many('account.payment', 'batch_payment_id', string="Payments", required=True, readonly=True, states={'draft': [('readonly', False)]})
     amount = fields.Monetary(compute='_compute_amount', store=True, readonly=True)
     currency_id = fields.Many2one('res.currency', compute='_compute_currency', store=True, readonly=True)
     batch_type = fields.Selection(selection=[('inbound', 'Inbound'), ('outbound', 'Outbound')], required=True, readonly=True, states={'draft': [('readonly', False)]}, default='inbound')
-    payment_method_id = fields.Many2one(comodel_name='account.payment.method', string='Payment Method', required=True, readonly=True, states={'draft': [('readonly', False)]}, help="The payment method used by the payments in this batch.")
+    payment_method_id = fields.Many2one(
+        comodel_name='account.payment.method',
+        string='Payment Method', store=True, readonly=False,
+        compute='_compute_payment_method_id',
+        domain="[('id', 'in', available_payment_method_ids)]",
+        help="The payment method used by the payments in this batch.")
+    available_payment_method_ids = fields.Many2many('account.payment.method',
+        compute='_compute_available_payment_method_ids')
     payment_method_code = fields.Char(related='payment_method_id.code', readonly=False)
     export_file_create_date = fields.Date(string='Generation Date', default=fields.Date.today, readonly=True, help="Creation date of the related export file.")
     export_file = fields.Binary(string='File', readonly=True, help="Export file related to this batch")
     export_filename = fields.Char(string='File Name', help="Name of the export file generated for this batch", store=True)
 
-    available_payment_method_ids = fields.One2many(comodel_name='account.payment', compute='_compute_available_payment_method_ids')
     file_generation_enabled = fields.Boolean(help="Whether or not this batch payment should display the 'Generate File' button instead of 'Print' in form view.", compute='_compute_file_generation_enabled')
+
+    @api.depends('batch_type', 'journal_id')
+    def _compute_payment_method_id(self):
+        ''' Compute the 'payment_method_id' field.
+        This field is not computed in '_compute_available_payment_method_ids' because it's a stored editable one.
+        '''
+        for batch in self:
+            if batch.batch_type == 'inbound':
+                available_payment_methods = batch.journal_id.inbound_payment_method_ids
+            else:
+                available_payment_methods = batch.journal_id.outbound_payment_method_ids
+
+            # Select the first available one by default.
+            if available_payment_methods:
+                batch.payment_method_id = available_payment_methods[0]._origin
+            else:
+                batch.payment_method_id = False
+
+    @api.depends('batch_type',
+                 'journal_id.inbound_payment_method_ids',
+                 'journal_id.outbound_payment_method_ids')
+    def _compute_available_payment_method_ids(self):
+        for batch in self:
+            if batch.batch_type == 'inbound':
+                batch.available_payment_method_ids = batch.journal_id.inbound_payment_method_ids
+            else:
+                batch.available_payment_method_ids = batch.journal_id.outbound_payment_method_ids
+
+    @api.depends('payment_ids.move_id.is_move_sent', 'payment_ids.is_matched')
+    def _compute_state(self):
+        for batch in self:
+            if batch.payment_ids and all(pay.is_matched for pay in batch.payment_ids):
+                batch.state = 'reconciled'
+            elif batch.payment_ids and all(pay.is_move_sent for pay in batch.payment_ids):
+                batch.state = 'sent'
+            else:
+                batch.state = 'draft'
 
     @api.depends('payment_method_id')
     def _compute_file_generation_enabled(self):
@@ -38,11 +85,6 @@ class AccountBatchPayment(models.Model):
         payments form when it gets selected and an 'Export file' appear instead.
         """
         return []
-
-    @api.depends('journal_id', 'batch_type')
-    def _compute_available_payment_method_ids(self):
-        for record in self:
-            record.available_payment_method_ids = record.batch_type == 'inbound' and record.journal_id.inbound_payment_method_ids.ids or record.journal_id.outbound_payment_method_ids.ids
 
     @api.depends('journal_id')
     def _compute_currency(self):
@@ -147,7 +189,7 @@ class AccountBatchPayment(models.Model):
 
         self.ensure_one()
         if self.payment_ids:
-            self.payment_ids.write({'state':'sent', 'payment_reference': self.name})
+            self.payment_ids.write({'is_move_sent': True, 'payment_reference': self.name})
             self.state = 'sent'
 
             if self.file_generation_enabled:
@@ -208,7 +250,7 @@ class AccountBatchPayment(models.Model):
         exceptions_mapping = {}
         for payment in draft_payments:
             try:
-                payment.post()
+                payment.action_post()
             except UserError as e:
                 name = e.args[0]
                 if name in exceptions_mapping:

@@ -5,10 +5,8 @@ from odoo.tests.common import Form
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, date_utils
 from unittest.mock import patch
 import datetime
-import copy
 import logging
 
-from dateutil.relativedelta import relativedelta
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 
 _logger = logging.getLogger(__name__)
@@ -30,25 +28,28 @@ class TestAccountReports(TestAccountReportsCommon):
         lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
-            #   Name                                    Debit           Credit          Balance
-            [   0,                                      4,              5,              6],
+            #   Name                                        Debit           Credit          Balance
+            [   0,                                          4,              5,              6],
             [
                 # Accounts.
-                ('101401 Bank',                         800.00,         1750.00,        -950.00),
-                ('121000 Account Receivable',           2875.00,        800.00,         2075.00),
-                ('131000 Tax Paid',                     705.00,         0.00,           705.00),
-                ('211000 Account Payable',              1750.00,        5405.00,        -3655.00),
-                ('251000 Tax Received',                 0.00,           375.00,         -375.00),
-                ('400000 Product Sales',                0.00,           1300.00,        -1300.00),
-                ('600000 Expenses',                     1100.00,        0.00,           1100.00),
-                ('999999 Undistributed Profits/Losses', 3600.00,        1200.00,        2400.00),
+                ('101401 Bank',                             200.00,         1250.00,        -1050.00),
+                ('101402 Outstanding Receipts',             800.00,         100.00,         700.00),
+                ('101403 Outstanding Payments',             1250.00,        1750.00,        -500.00),
+                ('101702 Bank Suspense Account',            0.00,           100.00,         -100.00),
+                ('121000 Account Receivable',               2875.00,        800.00,         2075.00),
+                ('131000 Tax Paid',                         705.00,         0.00,           705.00),
+                ('211000 Account Payable',                  1750.00,        5405.00,        -3655.00),
+                ('251000 Tax Received',                     0.00,           375.00,         -375.00),
+                ('400000 Product Sales',                    0.00,           1300.00,        -1300.00),
+                ('600000 Expenses',                         1100.00,        0.00,           1100.00),
+                ('999999 Undistributed Profits/Losses',     3600.00,        1200.00,        2400.00),
                 # Report Total.
-                ('Total',                               10830.00,       10830.00,       0.00),
+                ('Total',                                   12280.00,       12280.00,       0.00),
             ],
         )
 
         # Mark the '121000 Account Receivable' line to be unfolded.
-        line_id = lines[1]['id']
+        line_id = lines[4]['id']
         options['unfolded_lines'] = [line_id]
 
         self.assertLinesValues(
@@ -71,7 +72,7 @@ class TestAccountReports(TestAccountReportsCommon):
 
         # Mark the '400000 Product Sales' line to be unfolded.
         # Note: this account has user_type_id.include_initial_balance = False.
-        line_id = lines[5]['id']
+        line_id = lines[8]['id']
         options['unfolded_lines'] = [line_id]
 
         self.assertLinesValues(
@@ -101,33 +102,39 @@ class TestAccountReports(TestAccountReportsCommon):
         lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
-            #   Name                                    Debit           Credit          Balance
-            [   0,                                      4,              5,              6],
+            #   Name                                        Debit           Credit          Balance
+            [   0,                                          4,              5,              6],
             [
                 # Accounts.
-                ('101401 Bank',                         800.00,         1750.00,        -950.00),
-                ('101401 Bank',                         800.00,         1750.00,        -950.00),
-                ('121000 Account Receivable',           2875.00,        800.00,         2075.00),
-                ('121000 Account Receivable',           2875.00,        800.00,         2075.00),
-                ('131000 Tax Paid',                     705.00,         0.00,           705.00),
-                ('131000 Tax Paid',                     705.00,         0.00,           705.00),
-                ('211000 Account Payable',              1750.00,        5405.00,        -3655.00),
-                ('211000 Account Payable',              1750.00,        5405.00,        -3655.00),
-                ('251000 Tax Received',                 0.00,           375.00,         -375.00),
-                ('251000 Tax Received',                 0.00,           375.00,         -375.00),
-                ('400000 Product Sales',                0.00,           1300.00,        -1300.00),
-                ('400000 Product Sales',                0.00,           1300.00,        -1300.00),
-                ('600000 Expenses',                     1100.00,        0.00,           1100.00),
-                ('600000 Expenses',                     1100.00,        0.00,           1100.00),
-                ('999999 Undistributed Profits/Losses', 3600.00,        1200.00,        2400.00),
-                ('999999 Undistributed Profits/Losses', 3600.00,        1200.00,        2400.00),
+                ('101401 Bank',                             200.00,         1250.00,        -1050.00),
+                ('101401 Bank',                             200.00,         1250.00,        -1050.00),
+                ('101402 Outstanding Receipts',             800.00,         100.00,         700.00),
+                ('101402 Outstanding Receipts',             800.00,         100.00,         700.00),
+                ('101403 Outstanding Payments',             1250.00,        1750.00,        -500.00),
+                ('101403 Outstanding Payments',             1250.00,        1750.00,        -500.00),
+                ('101702 Bank Suspense Account',            0.00,           100.00,         -100.00),
+                ('101702 Bank Suspense Account',            0.00,           100.00,         -100.00),
+                ('121000 Account Receivable',               2875.00,        800.00,         2075.00),
+                ('121000 Account Receivable',               2875.00,        800.00,         2075.00),
+                ('131000 Tax Paid',                         705.00,         0.00,           705.00),
+                ('131000 Tax Paid',                         705.00,         0.00,           705.00),
+                ('211000 Account Payable',                  1750.00,        5405.00,        -3655.00),
+                ('211000 Account Payable',                  1750.00,        5405.00,        -3655.00),
+                ('251000 Tax Received',                     0.00,           375.00,         -375.00),
+                ('251000 Tax Received',                     0.00,           375.00,         -375.00),
+                ('400000 Product Sales',                    0.00,           1300.00,        -1300.00),
+                ('400000 Product Sales',                    0.00,           1300.00,        -1300.00),
+                ('600000 Expenses',                         1100.00,        0.00,           1100.00),
+                ('600000 Expenses',                         1100.00,        0.00,           1100.00),
+                ('999999 Undistributed Profits/Losses',     3600.00,        1200.00,        2400.00),
+                ('999999 Undistributed Profits/Losses',     3600.00,        1200.00,        2400.00),
                 # Report Total.
-                ('Total',                               21660.00,       21660.00,       0.00),
+                ('Total',                                   24560.00,       24560.00,       0.00),
             ],
         )
 
         # Mark the '121000 Account Receivable' line (for the company_child_eur company) to be unfolded.
-        line_id = lines[3]['id']
+        line_id = lines[8]['id']
         options['unfolded_lines'] = [line_id]
 
         self.assertLinesValues(
@@ -799,21 +806,24 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            #                                           [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
-            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
-            [   0,                                      1,              2,              3,              4,              5,              6],
+            #                                               [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
+            #   Name                                        Debit           Credit          Debit           Credit          Debit           Credit
+            [   0,                                          1,              2,              3,              4,              5,              6],
             [
                 # Accounts.
-                ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
-                ('121000 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
-                ('131000 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
-                ('211000 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
-                ('251000 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
-                ('400000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
-                ('600000 Expenses',                     500.00,         '',             600,            '',             1100.00,        ''),
-                ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
+                ('101401 Bank',                             '',             1150.00,        100.00,         '',             '',             1050.00),
+                ('101402 Outstanding Receipts',             600.00,         '',             100.00,         '',             700.0,          ''),
+                ('101403 Outstanding Payments',             '',             200.00,         '',             300.00,         '',             500.00),
+                ('101702 Bank Suspense Account',            '',             '',             '',             100.00,         '',             100.00),
+                ('121000 Account Receivable',               1485.00,        '',             690.00,         100.00,         2075.00,        ''),
+                ('131000 Tax Paid',                         615.00,         '',             90.00,          '',             705.00,         ''),
+                ('211000 Account Payable',                  '',             3265.00,        300.00,         690.00,         '',             3655.00),
+                ('251000 Tax Received',                     '',             285.00,         '',             90.00,          '',             375.00),
+                ('400000 Product Sales',                    '',             700.00,         '',             600.00,         '',             1300.00),
+                ('600000 Expenses',                         500.00,         '',             600,            '',             1100.00,        ''),
+                ('999999 Undistributed Profits/Losses',     2400.00,        '',             '',             '',             2400.00,        ''),
                 # Report Total.
-                ('Total',                               5000.00,        5000.00,        1780.00,        1780.00,        6280.00,        6280.00),
+                ('Total',                                   5600.00,        5600.00,        1880.00,        1880.00,        6980.00,        6980.00),
             ],
         )
 
@@ -826,29 +836,35 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            #                                           [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
-            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
-            [   0,                                      1,              2,              3,              4,              5,              6],
+            #                                               [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
+            #   Name                                        Debit           Credit          Debit           Credit          Debit           Credit
+            [   0,                                          1,              2,              3,              4,              5,              6],
             [
                 # Accounts.
-                ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
-                ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
-                ('121000 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
-                ('121000 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
-                ('131000 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
-                ('131000 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
-                ('211000 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
-                ('211000 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
-                ('251000 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
-                ('251000 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
-                ('400000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
-                ('400000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
-                ('600000 Expenses',                     500.00,         '',             600.00,         '',             1100.00,        ''),
-                ('600000 Expenses',                     500.00,         '',             600.00,         '',             1100.00,        ''),
-                ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
-                ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
+                ('101401 Bank',                             '',             1150.00,        100.00,         '',             '',             1050.00),
+                ('101401 Bank',                             '',             1150.00,        100.00,         '',             '',             1050.00),
+                ('101402 Outstanding Receipts',             600.00,         '',             100.00,         '',             700.0,          ''),
+                ('101402 Outstanding Receipts',             600.00,         '',             100.00,         '',             700.0,          ''),
+                ('101403 Outstanding Payments',             '',             200.00,         '',             300.00,         '',             500.00),
+                ('101403 Outstanding Payments',             '',             200.00,         '',             300.00,         '',             500.00),
+                ('101702 Bank Suspense Account',            '',             '',             '',             100.00,         '',             100.00),
+                ('101702 Bank Suspense Account',            '',             '',             '',             100.00,         '',             100.00),
+                ('121000 Account Receivable',               1485.00,        '',             690.00,         100.00,         2075.00,        ''),
+                ('121000 Account Receivable',               1485.00,        '',             690.00,         100.00,         2075.00,        ''),
+                ('131000 Tax Paid',                         615.00,         '',             90.00,          '',             705.00,         ''),
+                ('131000 Tax Paid',                         615.00,         '',             90.00,          '',             705.00,         ''),
+                ('211000 Account Payable',                  '',             3265.00,        300.00,         690.00,         '',             3655.00),
+                ('211000 Account Payable',                  '',             3265.00,        300.00,         690.00,         '',             3655.00),
+                ('251000 Tax Received',                     '',             285.00,         '',             90.00,          '',             375.00),
+                ('251000 Tax Received',                     '',             285.00,         '',             90.00,          '',             375.00),
+                ('400000 Product Sales',                    '',             700.00,         '',             600.00,         '',             1300.00),
+                ('400000 Product Sales',                    '',             700.00,         '',             600.00,         '',             1300.00),
+                ('600000 Expenses',                         500.00,         '',             600.00,         '',             1100.00,        ''),
+                ('600000 Expenses',                         500.00,         '',             600.00,         '',             1100.00,        ''),
+                ('999999 Undistributed Profits/Losses',     2400.00,        '',             '',             '',             2400.00,        ''),
+                ('999999 Undistributed Profits/Losses',     2400.00,        '',             '',             '',             2400.00,        ''),
                 # Report Total.
-                ('Total',                               10000.00,       10000.00,       3560.00,        3560.00,        12560.00,       12560.00),
+                ('Total',                                   11200.00,       11200.00,       3760.00,        3760.00,        13960.00,       13960.00),
             ],
         )
 
@@ -886,21 +902,24 @@ class TestAccountReports(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            #                                           [  Initial Balance   ]          [ Month Balance - 1  ]          [   Month Balance    ]          [       Total        ]
-            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit          Debit           Credit
-            [   0,                                      1,              2,              3,              4,              5,              6,              7,              8],
+            #                                               [  Initial Balance   ]          [ Month Balance - 1  ]          [   Month Balance    ]          [       Total        ]
+            #   Name                                        Debit           Credit          Debit           Credit          Debit           Credit          Debit           Credit
+            [   0,                                          1,              2,              3,              4,              5,              6,              7,              8],
             [
                 # Accounts.
-                ('101401 Bank',                         '',             500.00,         '',             250.00,         100.00,         300.00,         '',             950.00),
-                ('121000 Account Receivable',           1025.00,        '',             460.00,         '',             690.00,         100.00,         2075.00,        ''),
-                ('131000 Tax Paid',                     555.00,         '',             60.00,         '',              90.00,          '',             705.00,         ''),
-                ('211000 Account Payable',              '',             3055.00,        250.00,         460.00,         300.00,         690.00,         '',             3655.00),
-                ('251000 Tax Received',                 '',             225.00,         '',             60.00,          '',             90.00,          '',             375.00),
-                ('400000 Product Sales',                '',             300.00,         '',             400.00,         '',             600.00,         '',             1300.00),
-                ('600000 Expenses',                     100.00,         '',             400.00,         '',             600.00,         '',             1100.00,        ''),
-                ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             '',             '',             2400.00,        ''),
+                ('101401 Bank',                             '',             1100.00,        '',             50.00,          100.00,         '',             '',             1050.00),
+                ('101402 Outstanding Receipts',             600.00,         '',             '',             '',             100.00,         '',             700.00,         '',             200.0,          ''),
+                ('101403 Outstanding Payments',             '',             '',             50.00,          250.00,         '',             300.00,         '',             500.00),
+                ('101702 Bank Suspense Account',            '',             '',             '',             '',             '',             100.00,         '',             100.0),
+                ('121000 Account Receivable',               1025.00,        '',             460.00,         '',             690.00,         100.00,         2075.00,        ''),
+                ('131000 Tax Paid',                         555.00,         '',             60.00,          '',             90.00,          '',             705.00,         ''),
+                ('211000 Account Payable',                  '',             3055.00,        250.00,         460.00,         300.00,         690.00,         '',             3655.00),
+                ('251000 Tax Received',                     '',             225.00,         '',             60.00,          '',             90.00,          '',             375.00),
+                ('400000 Product Sales',                    '',             300.00,         '',             400.00,         '',             600.00,         '',             1300.00),
+                ('600000 Expenses',                         100.00,         '',             400.00,         '',             600.00,         '',             1100.00,        ''),
+                ('999999 Undistributed Profits/Losses',     2400.00,        '',             '',             '',             '',             '',             2400.00,        ''),
                 # Report Total.
-                ('Total',                               4080.00,        4080.00,        1170.00,        1170.00,        1780.00,        1780.00,        6280.00,        6280.00),
+                ('Total',                                   4680.00,        4680.00,        1220.00,        1220.00,        1880.00,        1880.00,        6980.00,        6980.00),
             ],
         )
 
@@ -951,9 +970,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [
                 ('ASSETS',                                      1830.00),
                 ('Current Assets',                              1830.00),
-                ('Bank and Cash Accounts',                      -950.00),
+                ('Bank and Cash Accounts',                      -1050.00),
                 ('Receivables',                                 2075.00),
-                ('Current Assets',                              705.00),
+                ('Current Assets',                              805.00),
                 ('Prepayments',                                 0.00),
                 ('Plus Fixed Assets',                           0.00),
                 ('Plus Non-current Assets',                     0.00),
@@ -1006,9 +1025,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [
                 ('ASSETS',                                      1830.00),
                 ('Current Assets',                              1830.00),
-                ('Bank and Cash Accounts',                      -950.00),
+                ('Bank and Cash Accounts',                      -1050.00),
                 ('Receivables',                                 2075.00),
-                ('Current Assets',                              705.00),
+                ('Current Assets',                              805.00),
                 ('Prepayments',                                 0.00),
                 ('Total Current Assets',                        1830.00),
                 ('Plus Fixed Assets',                           0.00),
@@ -1072,9 +1091,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [
                 ('ASSETS',                                      3660.00),
                 ('Current Assets',                              3660.00),
-                ('Bank and Cash Accounts',                      -1900.00),
+                ('Bank and Cash Accounts',                      -2100.00),
                 ('Receivables',                                 4150.00),
-                ('Current Assets',                              1410.00),
+                ('Current Assets',                              1610.00),
                 ('Prepayments',                                 0.00),
                 ('Total Current Assets',                        3660.00),
                 ('Plus Fixed Assets',                           0.00),
@@ -1136,9 +1155,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [
                 ('ASSETS',                                      3660.00,    2700.00,    '35.6%'),
                 ('Current Assets',                              3660.00,    2700.00,    '35.6%'),
-                ('Bank and Cash Accounts',                      -1900.00,   -1500.00,   '26.7%'),
+                ('Bank and Cash Accounts',                      -2100.00,   -2300.00,   '-8.7%'),
                 ('Receivables',                                 4150.00,    2970.00,    '39.7%'),
-                ('Current Assets',                              1410.00,    1230.00,    '14.6%'),
+                ('Current Assets',                              1610.00,    2030.00,    '-20.7%'),
                 ('Prepayments',                                 0.00,       0.00,       'n/a'),
                 ('Total Current Assets',                        3660.00,    2700.00,    '35.6%'),
                 ('Plus Fixed Assets',                           0.00,       0.00,       'n/a'),
@@ -1200,9 +1219,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [
                 ('ASSETS',                                      2540.00,    3050.00,    '-16.7%'),
                 ('Current Assets',                              2540.00,    3050.00,    '-16.7%'),
-                ('Bank and Cash Accounts',                      600.00,     1200.00,    '-50.0%'),
+                ('Bank and Cash Accounts',                      0.00,       0.00,       'n/a'),
                 ('Receivables',                                 1790.00,    1790.00,    '0.0%'),
-                ('Current Assets',                              150.00,     60.00,      '150.0%'),
+                ('Current Assets',                              750.00,     1260.00,    '-40.5%'),
                 ('Prepayments',                                 0.00,       0.00,       'n/a'),
                 ('Total Current Assets',                        2540.00,    3050.00,    '-16.7%'),
                 ('Plus Fixed Assets',                           0.00,       0.00,       'n/a'),
@@ -1268,9 +1287,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [
                 ('ASSETS',                                      1270.00,                    1270.00,                1525.00,                    1525.00),
                 ('Current Assets',                              1270.00,                    1270.00,                1525.00,                    1525.00),
-                ('Bank and Cash Accounts',                      300.00,                     300.00,                 600.00,                     600.00),
+                ('Bank and Cash Accounts',                      0.00,                       0.00,                   0.00,                       0.00),
                 ('Receivables',                                 895.00,                     895.00,                 895.00,                     895.00),
-                ('Current Assets',                              75.00,                      75.00,                  30.00,                      30.00),
+                ('Current Assets',                              375.00,                     375.00,                 630.00,                     630.00),
                 ('Prepayments',                                 0.00,                       0.00,                   0.00,                       0.00),
                 ('Total Current Assets',                        1270.00,                    1270.00,                1525.00,                    1525.00),
                 ('Plus Fixed Assets',                           0.00,                       0.00,                   0.00,                       0.00),
@@ -1336,9 +1355,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [
                 ('ASSETS',                                      -300.00,                    0.00),
                 ('Current Assets',                              -300.00,                    0.00),
-                ('Bank and Cash Accounts',                      300.00,                     600.00),
+                ('Bank and Cash Accounts',                      0.00,                       0.00),
                 ('Receivables',                                 -600.00,                    -600.00),
-                ('Current Assets',                              0.00,                       0.00),
+                ('Current Assets',                              300.00,                     600.00),
                 ('Prepayments',                                 0.00,                       0.00),
                 ('Total Current Assets',                        -300.00,                    0.00),
                 ('Plus Fixed Assets',                           0.00,                       0.00),
@@ -1405,6 +1424,9 @@ class TestAccountReports(TestAccountReportsCommon):
         other_account_2 = receivable_account_1.copy(default={'user_type_id': self.env.ref('account.data_account_type_current_assets').id, 'reconcile': True})
         other_account_2.name = 'Other account 2'
         other_account_2.tag_ids |= self.env.ref('account.account_tag_financing')
+        other_account_3 = receivable_account_1.copy(default={'user_type_id': self.env.ref('account.data_account_type_current_assets').id, 'reconcile': True})
+        other_account_3.name = 'account_operating'
+        other_account_3.tag_ids |= self.env.ref('account.account_tag_operating')
 
         def assertCashFlowValues(lines, expected_lines):
             folded_lines = []
@@ -1481,12 +1503,34 @@ class TestAccountReports(TestAccountReportsCommon):
         # ===================================================================================================
 
         # Init invoice.
-        # self.partner_a.property_payment_term_id = self.env.ref('account.account_payment_term_advance')
-        invoice = self._create_invoice(self.env, 1000, self.partner_a, 'out_invoice', '2015-01-01')
+        self.partner_a.property_payment_term_id = self.env.ref('account.account_payment_term_advance')
+        invoice = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2015-01-01',
+            'line_ids': [
+                (0, 0, {'debit': 345.0,     'credit': 0.0,      'account_id': receivable_account_1.id}),
+                (0, 0, {'debit': 805.0,     'credit': 0.0,      'account_id': receivable_account_1.id}),
+                (0, 0, {'debit': 0.0,       'credit': 150.0,    'account_id': other_account_1.id}),
+                (0, 0, {'debit': 0.0,       'credit': 1000.0,   'account_id': other_account_3.id}),
+            ],
+        })
+        invoice.post()
 
         # First payment.
         # The tricky part is there is two receivable lines on the invoice.
-        self._create_payment(self.env, fields.Date.from_string('2015-01-15'), invoice, amount=230)
+        payment_1 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2015-01-15',
+            'line_ids': [
+                (0, 0, {'debit': 0.0,       'credit': 230.0,    'account_id': receivable_account_1.id}),
+                (0, 0, {'debit': 230.0,     'credit': 0.0,      'account_id': liquidity_account.id}),
+            ],
+        })
+        payment_1.action_post()
+
+        (invoice + payment_1).line_ids\
+            .filtered(lambda line: line.account_id == receivable_account_1 and not line.reconciled)\
+            .reconcile()
 
         options['date']['date_to'] = '2015-01-15'
         expected_lines[1][1] += 230.0               # Net increase in cash and cash equivalents         230.0
@@ -1499,7 +1543,19 @@ class TestAccountReports(TestAccountReportsCommon):
 
         # Second payment.
         # The tricky part is two partials will be generated, one for each receivable line.
-        self._create_payment(self.env, fields.Date.from_string('2015-02-01'), invoice, amount=230)
+        payment_2 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2015-02-01',
+            'line_ids': [
+                (0, 0, {'debit': 0.0,       'credit': 230.0,    'account_id': receivable_account_1.id}),
+                (0, 0, {'debit': 230.0,     'credit': 0.0,      'account_id': liquidity_account.id}),
+            ],
+        })
+        payment_2.action_post()
+
+        (invoice + payment_2).line_ids\
+            .filtered(lambda line: line.account_id == receivable_account_1 and not line.reconciled)\
+            .reconcile()
 
         options['date']['date_to'] = '2015-02-01'
         expected_lines[1][1] += 230.0               # Net increase in cash and cash equivalents         460.0
@@ -1512,7 +1568,19 @@ class TestAccountReports(TestAccountReportsCommon):
 
         # Third payment.
         # The tricky part is this payment will generate an advance in payments.
-        third_payment = self._create_payment(self.env, fields.Date.from_string('2015-02-15'), invoice, amount=1690)
+        payment_3 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2015-02-15',
+            'line_ids': [
+                (0, 0, {'debit': 0.0,       'credit': 1690.0,   'account_id': receivable_account_1.id}),
+                (0, 0, {'debit': 1690.0,    'credit': 0.0,      'account_id': liquidity_account.id}),
+            ],
+        })
+        payment_3.action_post()
+
+        (invoice + payment_3).line_ids\
+            .filtered(lambda line: line.account_id == receivable_account_1 and not line.reconciled)\
+            .reconcile()
 
         options['date']['date_to'] = '2015-02-15'
         expected_lines[1][1] += 1690.0              # Net increase in cash and cash equivalents         2150.0
@@ -1528,10 +1596,18 @@ class TestAccountReports(TestAccountReportsCommon):
         # As the report date is unchanged, this reconciliation must not affect the report.
         # It ensures the residual amounts is computed dynamically depending of the report date.
         # Then, when including the invoice to the report, the advance payments must become a cash received.
-        second_invoice = self._create_invoice(self.env, 1000, self.partner_a, 'out_invoice', '2015-03-01', clear_taxes=True)
+        invoice_2 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2015-03-01',
+            'line_ids': [
+                (0, 0, {'debit': 1000.0,    'credit': 0.0,      'account_id': receivable_account_1.id}),
+                (0, 0, {'debit': 0.0,       'credit': 1000.0,   'account_id': other_account_3.id}),
+            ],
+        })
+        invoice_2.post()
 
-        (second_invoice.line_ids + third_payment.move_line_ids)\
-            .filtered(lambda line: line.account_internal_type == 'receivable')\
+        (invoice_2 + payment_3).line_ids\
+            .filtered(lambda line: line.account_id == receivable_account_1 and not line.reconciled)\
             .reconcile()
 
         assertCashFlowValues(report._get_lines(options), expected_lines)
@@ -1613,7 +1689,7 @@ class TestAccountReports(TestAccountReportsCommon):
         misc_move.post()
 
         (liquidity_move_1.line_ids + misc_move.line_ids)\
-            .filtered(lambda line: line.account_id == receivable_account_1)\
+            .filtered(lambda line: line.account_id == receivable_account_1 and not line.reconciled)\
             .reconcile()
 
         options['date']['date_to'] = '2015-04-02'
@@ -1674,7 +1750,7 @@ class TestAccountReports(TestAccountReportsCommon):
             ['121020 Account Receivable 3',                                         50.0],
             ['Total Advance Payments received from customers',                      -150.0],
             ['Cash received from operating activities',                             2000.0],
-            ['400000 Product Sales',                                                2000.0],
+            ['121050 account_operating',                                            2000.0],
             ['Total Cash received from operating activities',                       2000.0],
             ['Advance payments made to suppliers',                                  0.0],
             ['Cash paid for operating activities',                                  0.0],
@@ -1690,8 +1766,7 @@ class TestAccountReports(TestAccountReportsCommon):
             ['Total Cash out',                                                      -4275.0],
             ['Cash flows from unclassified activities',                             875.0],
             ['Cash in',                                                             875.0],
-            ['251000 Tax Received',                                                 150.0],
-            ['121030 Other account 1',                                              725.0],
+            ['121030 Other account 1',                                              875.0],
             ['Total Cash in',                                                       875.0],
             ['Cash out',                                                            0.0],
             ['Cash and cash equivalents, closing balance',                          -1150.0],
@@ -2235,24 +2310,45 @@ class TestAccountReports(TestAccountReportsCommon):
     def test_cash_flow_statement_2_multi_company_currency(self):
         # Init report / options.
         report = self.env['account.cash.flow.report'].with_context(allowed_company_ids=(self.company_parent + self.company_child_eur).ids)
-        options = self._init_options(report, *date_utils.get_month(fields.Date.from_string('2015-01-01')))
+        options = self._init_options(report, *date_utils.get_month(fields.Date.from_string('2016-01-01')))
 
-        invoice = self._create_invoice(self.env, 1000, self.partner_a, 'out_invoice', '2015-01-01')
-        self._create_payment(self.env, fields.Date.from_string('2015-01-15'), invoice, amount=1035)
-        self.env.user.company_id = self.company_child_eur
-        invoice = self._create_invoice(self.env, 1000, self.partner_a, 'out_invoice', '2015-01-01')
-        self._create_payment(self.env, fields.Date.from_string('2015-01-15'), invoice, amount=1035)
-        self.env.user.company_id = self.company_parent
+        journal_bank = self.env['account.journal'].search([('type', '=', 'bank'), ('company_id', '=', self.company_child_eur.id)], limit=1)
+        account_receivable = self.env['account.account'].search([('user_type_id.type', '=', 'receivable'), ('company_id', '=', self.company_child_eur.id)], limit=1)
+        account_revenue = self.env['account.account'].search([('user_type_id', '=', self.env.ref('account.data_account_type_revenue').id), ('company_id', '=', self.company_child_eur.id)], limit=1)
+
+        invoice = self.env['account.move'].with_company(self.company_child_eur).create({
+            'move_type': 'entry',
+            'date': '2016-01-01',
+            'line_ids': [
+                (0, 0, {'debit': 1150.0,    'credit': 0.0,      'account_id': account_receivable.id}),
+                (0, 0, {'debit': 0.0,       'credit': 1150.0,   'account_id': account_revenue.id}),
+            ],
+        })
+        invoice.post()
+
+        payment = self.env['account.move'].with_company(self.company_child_eur).create({
+            'move_type': 'entry',
+            'date': '2016-01-01',
+            'journal_id': journal_bank.id,
+            'line_ids': [
+                (0, 0, {'debit': 0.0,       'credit': 230.0,    'account_id': account_receivable.id}),
+                (0, 0, {'debit': 230.0,     'credit': 0.0,      'account_id': journal_bank.default_credit_account_id.id}),
+            ],
+        })
+        payment.post()
+
+        (invoice + payment).line_ids\
+            .filtered(lambda line: line.account_id == account_receivable)\
+            .reconcile()
 
         self.assertLinesValues(report._get_lines(options), [0, 1], [
             ['Cash and cash equivalents, beginning of period',                      0.0],
-            ['Net increase in cash and cash equivalents',                           2070.0],
-            ['Cash flows from operating activities',                                1800.0],
+            ['Net increase in cash and cash equivalents',                           115.0],
+            ['Cash flows from operating activities',                                115.0],
             ['Advance Payments received from customers',                            0.0],
-            ['Cash received from operating activities',                             1800.0],
-            ['400000 Product Sales',                                                900.0],
-            ['400000 Product Sales',                                                900.0],
-            ['Total Cash received from operating activities',                       1800.0],
+            ['Cash received from operating activities',                             115.0],
+            ['400000 Product Sales',                                                115.0],
+            ['Total Cash received from operating activities',                       115.0],
             ['Advance payments made to suppliers',                                  0.0],
             ['Cash paid for operating activities',                                  0.0],
             ['Cash flows from investing & extraordinary activities',                0.0],
@@ -2261,16 +2357,12 @@ class TestAccountReports(TestAccountReportsCommon):
             ['Cash flows from financing activities',                                0.0],
             ['Cash in',                                                             0.0],
             ['Cash out',                                                            0.0],
-            ['Cash flows from unclassified activities',                             270.0],
-            ['Cash in',                                                             270.0],
-            ['251000 Tax Received',                                                 135.0],
-            ['251000 Tax Received',                                                 135.0],
-            ['Total Cash in',                                                       270.0],
+            ['Cash flows from unclassified activities',                             0.0],
+            ['Cash in',                                                             0.0],
             ['Cash out',                                                            0.0],
-            ['Cash and cash equivalents, closing balance',                          2070.0],
-            ['101401 Bank',                                                         1035.0],
-            ['101401 Bank',                                                         1035.0],
-            ['Total Cash and cash equivalents, closing balance',                    2070.0],
+            ['Cash and cash equivalents, closing balance',                          115.0],
+            ['101401 Bank',                                                         115.0],
+            ['Total Cash and cash equivalents, closing balance',                    115.0],
         ])
 
     # -------------------------------------------------------------------------
@@ -2329,105 +2421,288 @@ class TestAccountReports(TestAccountReportsCommon):
     # TESTS: Reconciliation Report
     # -------------------------------------------------------------------------
 
-    def test_reconciliation_report_initial_state(self):
-        ''' Test the lines of the initial state. '''
-        bank_journal = self.env['account.journal'].search([('company_id', '=', self.company_parent.id), ('type', '=', 'bank')])
+    def test_reconciliation_report_single_currency(self):
+        ''' Tests the impact of positive/negative payments/statements on the reconciliation report in a single-currency
+        environment.
+        '''
 
-        # Init options.
+        bank_journal = self.env['account.journal'].create({
+            'name': 'Bank',
+            'code': 'BNKKK',
+            'type': 'bank',
+            'company_id': self.company_parent.id,
+        })
+
+        # ==== Statements ====
+
+        statement_1 = self.env['account.bank.statement'].create({
+            'name': 'statement_1',
+            'date': '2014-12-31',
+            'balance_start': 0.0,
+            'balance_end_real': 100.0,
+            'journal_id': bank_journal.id,
+            'line_ids': [
+                (0, 0, {'payment_ref': 'line_1',    'amount': 600.0,    'date': '2014-12-31'}),
+                (0, 0, {'payment_ref': 'line_2',    'amount': -500.0,   'date': '2014-12-31'}),
+            ],
+        })
+
+        statement_2 = self.env['account.bank.statement'].create({
+            'name': 'statement_2',
+            'date': '2015-01-05',
+            'balance_start': 200.0, # create an unexplained difference of 100.0.
+            'balance_end_real': -200.0,
+            'journal_id': bank_journal.id,
+            'line_ids': [
+                (0, 0, {'payment_ref': 'line_1',    'amount': 100.0,    'date': '2015-01-01',   'partner_id': self.partner_a.id}),
+                (0, 0, {'payment_ref': 'line_2',    'amount': 200.0,    'date': '2015-01-02'}),
+                (0, 0, {'payment_ref': 'line_3',    'amount': -300.0,   'date': '2015-01-03',   'partner_id': self.partner_a.id}),
+                (0, 0, {'payment_ref': 'line_4',    'amount': -400.0,   'date': '2015-01-04'}),
+            ],
+        })
+
+        (statement_1 + statement_2).button_post()
+
+        # ==== Payments ====
+
+        payment_1 = self.env['account.payment'].create({
+            'amount': 150.0,
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'date': '2015-01-01',
+            'journal_id': bank_journal.id,
+            'partner_id': self.partner_a.id,
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+        })
+
+        payment_2 = self.env['account.payment'].create({
+            'amount': 250.0,
+            'payment_type': 'outbound',
+            'partner_type': 'supplier',
+            'date': '2015-01-02',
+            'journal_id': bank_journal.id,
+            'partner_id': self.partner_a.id,
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
+        })
+
+        payment_3 = self.env['account.payment'].create({
+            'amount': 350.0,
+            'payment_type': 'outbound',
+            'partner_type': 'customer',
+            'date': '2015-01-03',
+            'journal_id': bank_journal.id,
+            'partner_id': self.partner_a.id,
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+        })
+
+        payment_4 = self.env['account.payment'].create({
+            'amount': 450.0,
+            'payment_type': 'inbound',
+            'partner_type': 'supplier',
+            'date': '2015-01-04',
+            'journal_id': bank_journal.id,
+            'partner_id': self.partner_a.id,
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
+        })
+
+        (payment_1 + payment_2 + payment_3 + payment_4).action_post()
+
+        # ==== Reconciliation ====
+        self.partner_a.property_account_receivable_id = self.env['account.account'].search([
+            ('company_id', '=', self.company_parent.id), ('user_type_id.type', '=', 'receivable')
+        ], limit=1)
+        self.partner_a.property_account_payable_id = self.env['account.account'].search([
+            ('company_id', '=', self.company_parent.id), ('user_type_id.type', '=', 'payable')
+        ], limit=1)
+
+        st_line = statement_2.line_ids.filtered(lambda line: line.payment_ref == 'line_1')
+        payment_line = payment_1.line_ids.filtered(lambda line: line.account_id == bank_journal.payment_debit_account_id)
+        st_line.reconcile([{'id': payment_line.id}])
+
+        st_line = statement_2.line_ids.filtered(lambda line: line.payment_ref == 'line_3')
+        payment_line = payment_2.line_ids.filtered(lambda line: line.account_id == bank_journal.payment_credit_account_id)
+        st_line.reconcile([{'id': payment_line.id}])
+
+        # ==== Report ====
+
+        with self.mocked_today('2016-01-02'):
+
+            report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
+            options = report._get_options(None)
+
+            self.assertLinesValues(
+                report._get_lines(options),
+                #   Name                                                            Date            Amount
+                [   0,                                                              1,              3],
+                [
+                    ('Balance of 101404 Bank',                                      '01/02/2016',   -300.0),
+
+                    ('Including Unreconciled Bank Statement Receipts',              '',             800.0),
+                    ('BNKKK/2015/01/0002',                                          '01/02/2015',   200.0),
+                    ('BNKKK/2014/12/0001',                                          '12/31/2014',   600.0),
+                    ('Total Including Unreconciled Bank Statement Receipts',        '',             800.0),
+
+                    ('Including Unreconciled Bank Statement Payments',              '',             -900.0),
+                    ('BNKKK/2015/01/0004',                                          '01/04/2015',   -400.0),
+                    ('BNKKK/2014/12/0002',                                          '12/31/2014',   -500.0),
+                    ('Total Including Unreconciled Bank Statement Payments',        '',             -900.0),
+
+                    ('Total Balance of 101404 Bank',                                '01/02/2016',   -300.0),
+
+                    ('Outstanding Payments/Receipts',                               '',             100.0),
+
+                    ('(+) Outstanding Receipts',                                    '',             450.0),
+                    ('BNKKK/2015/01/0008',                                          '01/04/2015',   450.0),
+                    ('Total (+) Outstanding Receipts',                              '',             450.0),
+
+                    ('(-) Outstanding Payments',                                    '',             -350.0),
+                    ('BNKKK/2015/01/0007',                                          '01/03/2015',   -350.0),
+                    ('Total (-) Outstanding Payments',                              '',             -350.0),
+
+                    ('Total Outstanding Payments/Receipts',                         '',             100.0),
+                ],
+                currency_map={3: {'currency': bank_journal.currency_id}},
+            )
+
+    def test_reconciliation_report_multi_currencies(self):
+        ''' Tests the management of multi-currencies in the reconciliation report. '''
+        self.env.user.groups_id |= self.env.ref('base.group_multi_currency')
+
+        foreign_currency_1 = self.company_child_eur.currency_id
+
+        foreign_currency_2 = self.env['res.currency'].create({
+            'name': 'Dark Chocolate Coin',
+            'symbol': '🍫',
+            'currency_unit_label': 'Dark Choco',
+            'currency_subunit_label': 'Dark Cacao Powder',
+        })
+
+        self.env['res.currency.rate'].create({
+            'name': '2016-01-01',
+            'rate': 10.0,
+            'currency_id': foreign_currency_2.id,
+            'company_id': self.company_parent.id,
+        })
+
+        # ==== Journal with a foreign currency ====
+
+        bank_journal = self.env['account.journal'].create({
+            'name': 'Bank',
+            'code': 'BNKKK',
+            'type': 'bank',
+            'company_id': self.company_parent.id,
+            'currency_id': foreign_currency_1.id
+        })
+
+        # ==== Statement ====
+
+        statement = self.env['account.bank.statement'].create({
+            'name': 'statement',
+            'date': '2016-01-01',
+            'journal_id': bank_journal.id,
+            'line_ids': [
+
+                # Transaction in the company currency.
+                (0, 0, {
+                    'payment_ref': 'line_1',
+                    'amount': 100.0,
+                    'amount_currency': 50.01,
+                    'foreign_currency_id': self.company_parent.currency_id.id,
+                }),
+
+                # Transaction in a third currency.
+                (0, 0, {
+                    'payment_ref': 'line_3',
+                    'amount': 100.0,
+                    'amount_currency': 999.99,
+                    'foreign_currency_id': foreign_currency_2.id,
+                }),
+
+            ],
+        })
+        statement.button_post()
+
+        # ==== Payments ====
+
+        # Payment in the company's currency.
+        payment_1 = self.env['account.payment'].create({
+            'amount': 1000.0,
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'date': '2016-01-01',
+            'journal_id': bank_journal.id,
+            'partner_id': self.partner_a.id,
+            'currency_id': self.company_parent.currency_id.id,
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+        })
+        payment_1.action_post()
+
+        # Payment in the same foreign currency as the journal.
+        payment_2 = self.env['account.payment'].create({
+            'amount': 2000.0,
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'date': '2016-01-01',
+            'journal_id': bank_journal.id,
+            'partner_id': self.partner_a.id,
+            'currency_id': foreign_currency_1.id,
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+        })
+        payment_2.action_post()
+
+        # Payment in a third foreign currency.
+        payment_3 = self.env['account.payment'].create({
+            'amount': 3000.0,
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'date': '2016-01-01',
+            'journal_id': bank_journal.id,
+            'partner_id': self.partner_a.id,
+            'currency_id': foreign_currency_2.id,
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+        })
+        payment_3.action_post()
+
+        # ==== Report ====
+
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
 
-        self.assertLinesValues(
-            report._get_lines(options),
-            #   Name                                                            Date            Amount
-            [   0,                                                              1,              3],
-            [
-                ('Virtual GL Balance',                                          '',             ''),
-                ('Current balance of account 101401',                           '03/31/2017',   -950.00),
-                ('Operations to Process',                                       '',             -100),
-                ('Unreconciled Bank Statement Lines',                           '',             ''),
-                ('CUST.IN/2017/0003',                                           '03/01/2017',   100.00),
-                ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
-                ('SUPP.OUT/2017/0003',                                          '03/01/2017',   300.00),
-                ('CUST.IN/2017/0003',                                           '03/01/2017',   -100.00),
-                ('SUPP.OUT/2017/0002',                                          '02/01/2017',   200.00),
-                ('CUST.IN/2017/0001',                                           '01/01/2017',   -600.00),
-                ('Total Virtual GL Balance',                                    '',             -1050.00),
-                ('Last Bank Statement Ending Balance',                          '03/01/2017',   -1050.00),
-                ('Unexplained Difference',                                      '',             0),
-            ],
-        )
+        with self.mocked_today('2016-01-02'), self.debug_mode(report):
 
-    def test_reconciliation_report_multi_company_currency(self):
-        ''' Test the lines in a multi-company/multi-currency environment. '''
-        bank_journal = self.env['account.journal'].search([('company_id', '=', self.company_child_eur.id), ('type', '=', 'bank')])
+            options = report._get_options(None)
+            lines = report._get_lines(options)
 
-        # Init options.
-        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id).with_company(self.company_child_eur)
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
-        self.assertLinesValues(
-            report._get_lines(options),
-            #   Name                                                            Date            Amount
-            [   0,                                                              1,              3],
-            [
-                ('Virtual GL Balance',                                          '',             ''),
-                ('Current balance of account 101401',                           '03/31/2017',   -1900.00),
-                ('Operations to Process',                                       '',             -200),
-                ('Unreconciled Bank Statement Lines',                           '',             ''),
-                ('CUST.IN/2017/0007',                                           '03/01/2017',   200.00),
-                ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
-                ('SUPP.OUT/2017/0006',                                          '03/01/2017',   600.00),
-                ('CUST.IN/2017/0007',                                           '03/01/2017',   -200.00),
-                ('SUPP.OUT/2017/0005',                                          '02/01/2017',   400.00),
-                ('CUST.IN/2017/0005',                                           '01/01/2017',   -1200.00),
-                ('Total Virtual GL Balance',                                    '',             -2100.00),
-                ('Last Bank Statement Ending Balance',                          '03/01/2017',   -2100.00),
-                ('Unexplained Difference',                                      '',             0),
-            ],
-            currency=self.company_child_eur.currency_id,
-        )
+            choco_code = foreign_currency_2.name
+            comp_code = self.company_parent.currency_id.name
+            self.assertLinesValues(
+                lines,
+                #   Name                                                            Date            Amount  Currency    Amount
+                [   0,                                                              1,              3,      4,          5],
+                [
+                    ('Balance of 101404 Bank',                                      '01/02/2016',   '',     '',         200.0),
 
-    def test_reconciliation_report_journal_foreign_currency(self):
-        ''' Test the lines with a foreign currency on the journal. '''
-        bank_journal = self.env['account.journal'].search([('company_id', '=', self.company_parent.id), ('type', '=', 'bank')])
-        foreign_currency = self.env.ref('base.EUR')
+                    ('Including Unreconciled Bank Statement Receipts',              '',             '',     '',         200.0),
+                    ('BNKKK/2016/01/0002',                                          '01/01/2016',   999.99, choco_code, 100.0),
+                    ('BNKKK/2016/01/0001',                                          '01/01/2016',   50.01,  comp_code,  100.0),
+                    ('Total Including Unreconciled Bank Statement Receipts',        '',             '',     '',         200.0),
 
-        # Set up the foreign currency.
-        bank_journal_eur = bank_journal.copy()
-        account = bank_journal.default_debit_account_id.copy()
-        account.currency_id = foreign_currency
-        bank_journal_eur.default_debit_account_id = bank_journal_eur.default_credit_account_id = account
-        bank_journal_eur.currency_id = foreign_currency
+                    ('Total Balance of 101404 Bank',                                '01/02/2016',   '',     '',         200.0),
 
-        invoice = self._create_invoice(self.env, 1000.0, self.partner_a, 'out_invoice', self.mar_year_minus_1)
-        payment = self._create_payment(self.env, self.mar_year_minus_1, invoice, journal=bank_journal_eur)
-        self._create_bank_statement(self.env, payment, amount=2300.00, reconcile=False)
+                    ('Outstanding Payments/Receipts',                               '',             '',     '',         4600.0),
 
-        # Init options.
-        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal_eur.id)
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
+                    ('(+) Outstanding Receipts',                                    '',             '',     '',         4600.0),
+                    ('BNKKK/2016/01/0005',                                          '01/01/2016',   3000.0, choco_code, 600.0),
+                    ('BNKKK/2016/01/0004',                                          '01/01/2016',   '',     '',         2000.0),
+                    ('BNKKK/2016/01/0003',                                          '01/01/2016',   1000.0, comp_code,  2000.0),
+                    ('Total (+) Outstanding Receipts',                              '',             '',     '',         4600.0),
 
-        self.assertLinesValues(
-            report._get_lines(options),
-            #   Name                                                            Date            Amount
-            [   0,                                                              1,              3],
-            [
-                ('Virtual GL Balance',                                          '',             ''),
-                ('Current balance of account 101411',                           '03/31/2017',   2300.00),
-                ('Operations to Process',                                       '',             0),
-                ('Unreconciled Bank Statement Lines',                           '',             ''),
-                ('CUST.IN/2017/0009',                                           '03/01/2017',   2300.00),
-                ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
-                ('CUST.IN/2017/0009',                                           '03/01/2017',   -2300.00),
-                ('Total Virtual GL Balance',                                    '',             2300.00),
-                ('Last Bank Statement Ending Balance',                          '03/01/2017',   2300.00),
-                ('Unexplained Difference',                                      '',             0),
-            ],
-            currency=foreign_currency,
-        )
+                    ('Total Outstanding Payments/Receipts',                         '',             '',     '',         4600.0),
+                ],
+                currency_map={
+                    3: {'currency_code_index': 4},
+                    5: {'currency': bank_journal.currency_id},
+                },
+            )
 
     # -------------------------------------------------------------------------
     # TESTS: Consolidated Journals
@@ -2448,13 +2723,13 @@ class TestAccountReports(TestAccountReportsCommon):
             [
                 ('Customer Invoices (INV)',             1495.00,        1495.00,        0.00),
                 ('Vendor Bills (BILL)',                 1265.00,        1265.00,        0.00),
-                ('Bank (BNK1)',                         1350.00,        1350.00,        0.00),
-                ('Total',                               4110.00,        4110.00,        0.00),
+                ('Bank (BNK1)',                         1600.00,        1600.00,        0.00),
+                ('Total',                               4360.00,        4360.00,        0.00),
                 ('',                                    '',             '',             ''),
                 ('Details per month',                   '',             '',             ''),
-                ('Jan 2017',                            1160.00,        1160.00,        0.00),
-                ('Feb 2017',                            1170.00,        1170.00,        0.00),
-                ('Mar 2017',                            1780.00,        1780.00,        0.00),
+                ('Jan 2017',                            1260.00,        1260.00,        0.00),
+                ('Feb 2017',                            1220.00,        1220.00,        0.00),
+                ('Mar 2017',                            1880.00,        1880.00,        0.00),
             ],
         )
 
@@ -2508,13 +2783,13 @@ class TestAccountReports(TestAccountReportsCommon):
             #   Name                                    Debit           Credit          Balance
             [   0,                                      1,              2,              3],
             [
-                ('Bank (BNK1)',                         1350.00,        1350.00,        0.00),
-                ('Total',                               1350.00,        1350.00,        0.00),
+                ('Bank (BNK1)',                         1600.00,        1600.00,        0.00),
+                ('Total',                               1600.00,        1600.00,        0.00),
                 ('',                                    '',             '',             ''),
                 ('Details per month',                   '',             '',             ''),
-                ('Jan 2017',                            700.00,         700.00,         0.00),
-                ('Feb 2017',                            250.00,         250.00,         0.00),
-                ('Mar 2017',                            400.00,         400.00,         0.00),
+                ('Jan 2017',                            800.00,         800.00,         0.00),
+                ('Feb 2017',                            300.00,         300.00,         0.00),
+                ('Mar 2017',                            500.00,         500.00,         0.00),
             ],
         )
 
@@ -2526,18 +2801,21 @@ class TestAccountReports(TestAccountReportsCommon):
         lines = report._get_lines(options, line_id=line_id)
         self.assertLinesValues(
             lines,
-            #   Name                                    Debit           Credit          Balance
-            [   0,                                      1,              2,              3],
+            #   Name                                        Debit           Credit          Balance
+            [   0,                                          1,              2,              3],
             [
-                ('Bank (BNK1)',                         1350.00,        1350.00,        0.00),
-                ('101401 Bank',                         800.00,         550.00,         250.00),
-                ('121000 Account Receivable',           0.00,           800.00,         -800.00),
-                ('211000 Account Payable',              550.00,         0.00,           550.00),
+                ('Bank (BNK1)',                             1600.00,        1600.00,        0.00),
+                ('101401 Bank',                             200.00,         50.00,          150.00),
+                ('101402 Outstanding Receipts',             800.00,         100.00,         700.00),
+                ('101403 Outstanding Payments',             50.00,          550.00,         -500.00),
+                ('101702 Bank Suspense Account',            0.00,           100.00,         -100.00),
+                ('121000 Account Receivable',               0.00,           800.00,         -800.00),
+                ('211000 Account Payable',                  550.00,         0.00,           550.00),
             ],
         )
 
         # Mark the '121000 Account Receivable' line to be unfolded.
-        line_id = lines[2]['id']
+        line_id = lines[3]['id']
         options['unfolded_lines'] = [line_id]
         report = report.with_context(report._set_context(options))
 
@@ -2546,8 +2824,8 @@ class TestAccountReports(TestAccountReportsCommon):
             #   Name                                    Debit           Credit          Balance
             [   0,                                      1,              2,              3],
             [
-                ('Jan 2017',                            0.00,           700.00,         -700.00),
-                ('Mar 2017',                            0.00,           100.00,         -100.00),
+                ('Feb 2017',                            50.00,          250.00,         -200.00),
+                ('Mar 2017',                            0.00,           300.00,         -300.00),
             ],
         )
 

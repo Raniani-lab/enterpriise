@@ -54,7 +54,7 @@ class AccountBatchPayment(models.Model):
             if payment.company_id.country_id.code == 'CH':
                 #we need swiss payments as generic, but we should not give warnings (4eabbf1042d38f6c93c99c6a490f37af55303399)
                 continue
-            if payment.partner_bank_account_id.acc_type != 'iban':
+            if payment.partner_bank_id.acc_type != 'iban':
                 no_iban_payments += payment
             if payment.currency_id.name != 'EUR' and (self.journal_id.currency_id or self.journal_id.company_id.currency_id).name == 'EUR':
                 no_eur_payments += payment
@@ -91,7 +91,7 @@ class AccountBatchPayment(models.Model):
         too_big_payments = self.env['account.payment']
 
         for payment in self.payment_ids.filtered(lambda x: x.state == 'posted'):
-            if not payment.partner_bank_account_id:
+            if not payment.partner_bank_id:
                 no_bank_acc_payments += payment
 
             max_digits = payment.currency_id.name == 'EUR' and 11 or 15
@@ -125,20 +125,20 @@ class AccountBatchPayment(models.Model):
     def _generate_payment_template(self, payments):
         payment_dicts = []
         for payment in payments:
-            if not payment.partner_bank_account_id:
+            if not payment.partner_bank_id:
                 raise UserError(_('A bank account is not defined.'))
 
             payment_dict = {
                 'id' : payment.id,
-                'name': payment.communication or 'SCT-' + self.journal_id.code + '-' + str(fields.Date.today()),
-                'payment_date' : payment.payment_date,
+                'name': payment.ref or 'SCT-' + self.journal_id.code + '-' + str(fields.Date.today()),
+                'payment_date' : payment.date,
                 'amount' : payment.amount,
                 'journal_id' : self.journal_id.id,
                 'currency_id' : payment.currency_id.id,
                 'payment_type' : payment.payment_type,
-                'communication' : payment.communication,
+                'ref' : payment.ref,
                 'partner_id' : payment.partner_id.id,
-                'partner_bank_id': payment.partner_bank_account_id.id,
+                'partner_bank_id': payment.partner_bank_id.id,
             }
 
             payment_dicts.append(payment_dict)

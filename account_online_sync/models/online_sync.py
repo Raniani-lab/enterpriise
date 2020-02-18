@@ -410,8 +410,8 @@ class AccountJournal(models.Model):
 class AccountBankStatement(models.Model):
     _inherit = "account.bank.statement"
 
-    def button_confirm_bank(self):
-        super(AccountBankStatement, self).button_confirm_bank()
+    def button_validate(self):
+        res = super().button_validate()
         for statement in self:
             for line in statement.line_ids:
                 if line.partner_id and (line.online_partner_vendor_name or line.online_partner_bank_account):
@@ -422,6 +422,7 @@ class AccountBankStatement(models.Model):
                     value_merchant = value_merchant if value_merchant == line.online_partner_vendor_name else False
                     line.partner_id.online_partner_vendor_name = value_merchant
                     line.partner_id.online_partner_bank_account = value_acc
+        return res
 
     @api.model
     def online_sync_bank_statement(self, transactions, journal, ending_balance):
@@ -472,16 +473,17 @@ class AccountBankStatement(models.Model):
         if all_statement == 0 and not float_is_zero(ending_balance - total, precision_rounding=digits_rounding_precision):
             opening_transaction = [(0, 0, {
                 'date': date_utils.subtract(min_date, days=1),
-                'name': _("Opening statement: first synchronization"),
+                'payment_ref': _("Opening statement: first synchronization"),
                 'amount': ending_balance - total,
             })]
-            self.create({
+            statement = self.create({
                 'name': _('Opening statement'),
                 'date': date_utils.subtract(min_date, days=1),
                 'line_ids': opening_transaction,
                 'journal_id': journal.id,
                 'balance_end_real': ending_balance - total,
             })
+            statement.button_post()
 
         transactions_in_statements = []
         statement_to_reset_to_draft = self.env['account.bank.statement']
@@ -531,8 +533,19 @@ class AccountBankStatement(models.Model):
             for st in statement_to_reset_to_draft:
                 if st.state == 'confirm':
                     st.message_post(body=_('Statement has been reset to draft because some transactions from online synchronization were added to it.'))
-            statement_to_reset_to_draft.write({'state': 'open'})
-            self.env['account.bank.statement.line'].create(transactions_in_statements)
+                    st.state = 'posted'
+
+            posted_statements = statement_to_reset_to_draft.filtered(lambda st: st.state == 'posted')
+            posted_statements.state = 'open'
+            statement_lines = self.env['account.bank.statement.line'].create(transactions_in_statements)
+            posted_statements.state = 'posted'
+
+            # Post only the newly created statement lines if the related statement is already posted.
+            statement_lines.filtered(lambda line: line.statement_id.state == 'posted')\
+                .mapped('move_id')\
+                .with_context(skip_account_move_synchronization=True)\
+                .post()
+
             # Recompute the balance_end_real of the first statement where we added line
             # because adding line don't trigger a recompute and balance_end_real is not updated.
             # We only trigger the recompute on the first element of the list as it is the one
@@ -541,6 +554,7 @@ class AccountBankStatement(models.Model):
             statement_to_reset_to_draft[0]._compute_ending_balance()
 
         # Create lines inside new bank statements
+        st_vals_list = []
         for date, lines in transactions_to_create.items():
             # balance_start and balance_end_real will be computed automatically
             name = _('Online synchronization of %s') % (date,)
@@ -557,12 +571,14 @@ class AccountBankStatement(models.Model):
                     else:
                         end_date = date_utils.end_of(date, 'month')
                 name = name % (date, end_date)
-            self.env['account.bank.statement'].create({
+            st_vals_list.append({
                 'name': name,
                 'date': date,
                 'line_ids': lines,
                 'journal_id': journal.id
             })
+        statements = self.env['account.bank.statement'].create(st_vals_list)
+        statements.button_post()
             
         # write account balance on the last statement of the journal
         # That way if there are missing transactions, it will show in the last statement
@@ -570,6 +586,8 @@ class AccountBankStatement(models.Model):
         last_bnk_stmt = self.search([('journal_id', '=', journal.id)], limit=1)
         if last_bnk_stmt:
             last_bnk_stmt.balance_end_real = ending_balance
+            if last_bnk_stmt.state == 'posted' and last_bnk_stmt.balance_end != last_bnk_stmt.balance_end_real:
+                last_bnk_stmt.button_reopen()
         # Set last sync date as the last transaction date
         journal.account_online_journal_id.sudo().write({'last_sync': max_date})
         return number_added

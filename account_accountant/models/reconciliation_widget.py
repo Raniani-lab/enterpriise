@@ -27,27 +27,14 @@ class AccountReconciliation(models.AbstractModel):
             :returns dict: used as a hook to add additional keys.
         """
         st_lines = self.env['account.bank.statement.line'].browse(st_line_ids)
-        AccountMoveLine = self.env['account.move.line']
         ctx = dict(self._context, force_price_include=False)
 
-        processed_moves = self.env['account.move']
         for st_line, datum in zip(st_lines, data):
-            payment_aml_rec = AccountMoveLine.browse(datum.get('payment_aml_ids', []))
-
-            for aml_dict in datum.get('counterpart_aml_dicts', []):
-                aml_dict['move_line'] = AccountMoveLine.browse(aml_dict['counterpart_aml_id'])
-                del aml_dict['counterpart_aml_id']
-
             if datum.get('partner_id') is not None:
                 st_line.write({'partner_id': datum['partner_id']})
 
-            ctx['default_to_check'] = datum.get('to_check')
-            moves = st_line.with_context(ctx).process_reconciliation(
-                datum.get('counterpart_aml_dicts', []),
-                payment_aml_rec,
-                datum.get('new_aml_dicts', []))
-            processed_moves = (processed_moves | moves)
-        return {'moves': processed_moves.ids, 'statement_line_ids': processed_moves.mapped('line_ids.statement_line_id').ids}
+            st_line.with_context(ctx).reconcile(datum.get('lines_vals_list', []), to_check=datum.get('to_check', False))
+        return {'statement_line_ids': st_lines}
 
     @api.model
     def get_move_lines_for_bank_statement_line(self, st_line_id, partner_id=None, excluded_ids=None, search_str=False, offset=0, limit=None, mode=None):
@@ -65,46 +52,34 @@ class AccountReconciliation(models.AbstractModel):
             :param limit: number of the result to search
             :param mode: 'rp' for receivable/payable or 'other'
         """
-        st_line = self.env['account.bank.statement.line'].browse(st_line_id)
+        statement_line = self.env['account.bank.statement.line'].browse(st_line_id)
 
-        # Blue lines = payment on bank account not assigned to a statement yet
-        aml_accounts = [
-            st_line.journal_id.default_credit_account_id.id,
-            st_line.journal_id.default_debit_account_id.id
-        ]
+        if search_str:
+            domain = self._get_search_domain(search_str=search_str)
+        else:
+            domain = []
 
-        if partner_id is None:
-            partner_id = st_line.partner_id.id
+        partner_id = partner_id or statement_line.partner_id.id
+        if partner_id:
+            domain.append(('partner_id', '=', partner_id))
 
-        domain = self._domain_move_lines_for_reconciliation(st_line, aml_accounts, partner_id, excluded_ids=excluded_ids, search_str=search_str, mode=mode)
-        recs_count = self.env['account.move.line'].search_count(domain)
+        if excluded_ids:
+            domain.append(('id', 'not in', tuple(excluded_ids)))
 
-        from_clause, where_clause, where_clause_params = self.env['account.move.line']._where_calc(domain).get_sql()
-        query_str = '''
-            SELECT "account_move_line".id FROM {from_clause}
-            {where_str}
-            ORDER BY ("account_move_line".debit - "account_move_line".credit) = {amount} DESC,
-                "account_move_line".date_maturity ASC,
-                "account_move_line".id ASC
-            {limit_str}
-            {offset_str}
-        '''.format(
-            from_clause=from_clause,
-            where_str=where_clause and (" WHERE %s" % where_clause) or '',
-            amount=st_line.amount,
-            limit_str=limit and ' LIMIT %s' or '',
-            offset_str=offset and ' OFFSET %s' or '',
-        )
-        params = where_clause_params + (limit and [limit] or []) + (offset and [offset] or [])
-        self.env['account.move'].flush()
-        self.env['account.move.line'].flush()
-        self.env['account.bank.statement'].flush()
-        self._cr.execute(query_str, params)
-        res = self._cr.fetchall()
+        if mode == 'rp':
+            query, params = self._get_query_reconciliation_widget_customer_vendor_matching_lines(statement_line, domain=domain)
+        else:
+            query, params = self._get_query_reconciliation_widget_miscellaneous_matching_lines(statement_line, domain=domain)
 
-        aml_recs = self.env['account.move.line'].browse([i[0] for i in res])
-        target_currency = st_line.currency_id or st_line.journal_id.currency_id or st_line.journal_id.company_id.currency_id
-        return self._prepare_move_lines(aml_recs, target_currency=target_currency, target_date=st_line.date, recs_count=recs_count)
+        trailing_query, trailing_params = self._get_trailing_query(statement_line, limit=limit, offset=offset)
+
+        self._cr.execute(query + trailing_query, params + trailing_params)
+        move_lines = self.env['account.move.line'].browse(res['id'] for res in self._cr.dictfetchall())
+
+        js_vals_list = []
+        for line in move_lines:
+            js_vals_list.append(self._prepare_js_reconciliation_widget_move_line(statement_line, line))
+        return js_vals_list
 
     @api.model
     def _get_bank_statement_line_partners(self, st_lines):
@@ -137,14 +112,16 @@ class AccountReconciliation(models.AbstractModel):
                 st_line.id                          AS id,
                 COALESCE(p1.id,p2.id,p3.id)         AS partner_id
             FROM account_bank_statement_line st_line
+            JOIN account_move move ON move.id = st_line.move_id
+            LEFT JOIN res_partner_bank bank ON
+                bank.id = move.partner_bank_id
+                OR
+                bank.sanitized_acc_number ILIKE regexp_replace(st_line.account_number, '\W+', '', 'g') ''' + where_bank + '''
+            LEFT JOIN res_partner p1 ON st_line.partner_id = p1.id
+            LEFT JOIN res_partner p2 ON bank.partner_id = p2.id
+            LEFT JOIN res_partner p3 ON p3.name ILIKE st_line.partner_name ''' + where_partner + ''' AND p3.parent_id is NULL
+            WHERE st_line.id IN %s
         '''
-        query += "LEFT JOIN res_partner_bank bank ON bank.id = st_line.bank_account_id OR bank.sanitized_acc_number ILIKE regexp_replace(st_line.account_number, '\W+', '', 'g') %s\n" % (where_bank)
-        query += 'LEFT JOIN res_partner p1 ON st_line.partner_id=p1.id \n'
-        query += 'LEFT JOIN res_partner p2 ON bank.partner_id=p2.id \n'
-        # By definition the commercial partner_id doesn't have a parent_id set
-        query += 'LEFT JOIN res_partner p3 ON p3.name ILIKE st_line.partner_name %s AND p3.parent_id is NULL \n' % (where_partner)
-        query += 'WHERE st_line.id IN %s'
-
         params += [tuple(st_lines.ids)]
 
         self._cr.execute(query, params)
@@ -195,12 +172,11 @@ class AccountReconciliation(models.AbstractModel):
             else:
                 aml_ids = matching_amls[line.id]['aml_ids']
                 bank_statements_left += line.statement_id
-                target_currency = line.currency_id or line.journal_id.currency_id or line.journal_id.company_id.currency_id
 
                 amls = aml_ids and self.env['account.move.line'].browse(aml_ids)
                 line_vals = {
                     'st_line': self._get_statement_line(line),
-                    'reconciliation_proposition': aml_ids and self._prepare_move_lines(amls, target_currency=target_currency, target_date=line.date) or [],
+                    'reconciliation_proposition': [self._prepare_js_reconciliation_widget_move_line(line, aml) for aml in amls],
                     'model_id': matching_amls[line.id].get('model') and matching_amls[line.id]['model'].id,
                     'write_off': matching_amls[line.id].get('status') == 'write_off',
                 }
@@ -226,25 +202,10 @@ class AccountReconciliation(models.AbstractModel):
         """
         if not bank_statement_line_ids:
             return {}
-        suspense_moves_mode = self._context.get('suspense_moves_mode')
-        bank_statements = self.env['account.bank.statement.line'].browse(bank_statement_line_ids).mapped('statement_id')
 
-        query = '''
-             SELECT line.id
-             FROM account_bank_statement_line line
-             LEFT JOIN res_partner p on p.id = line.partner_id
-             WHERE line.account_id IS NULL
-             AND line.amount != 0.0
-             AND line.id IN %(ids)s
-             {cond}
-             GROUP BY line.id
-        '''.format(
-            cond=not suspense_moves_mode and "AND NOT EXISTS (SELECT 1 from account_move_line aml WHERE aml.statement_line_id = line.id)" or "",
-        )
-        self.env.cr.execute(query, {'ids': tuple(bank_statement_line_ids)})
-
-        domain = [['id', 'in', [line.get('id') for line in self.env.cr.dictfetchall()]]] + srch_domain
+        domain = [['id', 'in', tuple(bank_statement_line_ids)], ('is_reconciled', '=', False)] + srch_domain
         bank_statement_lines = self.env['account.bank.statement.line'].search(domain)
+        bank_statements = bank_statement_lines.mapped('statement_id')
 
         results = self.get_bank_statement_line_data(bank_statement_lines.ids)
         bank_statement_lines_left = self.env['account.bank.statement.line'].browse([line['st_line']['id'] for line in results['lines']])
@@ -252,6 +213,7 @@ class AccountReconciliation(models.AbstractModel):
 
         results.update({
             'statement_name': len(bank_statements_left) == 1 and bank_statements_left.name or False,
+            'statement_id': len(bank_statements_left) == 1 and bank_statements_left.id or False,
             'journal_id': bank_statements and bank_statements[0].journal_id.id or False,
             'notifications': []
         })
@@ -362,7 +324,7 @@ class AccountReconciliation(models.AbstractModel):
                 WHERE l.account_id = a.id
                 {inner_where}
                 AND l.amount_residual != 0
-                AND (move.state = 'posted' OR (move.state = 'draft' AND journal.post_at = 'bank_rec'))
+                AND move.state = 'posted'
             )
         """.format(inner_where=is_partner and 'AND l.partner_id = p.id' or ' ')
         only_dual_entries_query = """
@@ -374,7 +336,7 @@ class AccountReconciliation(models.AbstractModel):
                 WHERE l.account_id = a.id
                 {inner_where}
                 AND l.amount_residual > 0
-                AND (move.state = 'posted' OR (move.state = 'draft' AND journal.post_at = 'bank_rec'))
+                AND move.state = 'posted'
             )
             AND EXISTS (
                 SELECT NULL
@@ -384,7 +346,7 @@ class AccountReconciliation(models.AbstractModel):
                 WHERE l.account_id = a.id
                 {inner_where}
                 AND l.amount_residual < 0
-                AND (move.state = 'posted' OR (move.state = 'draft' AND journal.post_at = 'bank_rec'))
+                AND move.state = 'posted'
             )
         """.format(inner_where=is_partner and 'AND l.partner_id = p.id' or ' ')
         query = ("""
@@ -472,16 +434,12 @@ class AccountReconciliation(models.AbstractModel):
                 - 'mv_line_ids': ids of existing account.move.line to reconcile
                 - 'new_mv_line_dicts': list of dicts containing values suitable for account_move_line.create()
         """
-
-        Partner = self.env['res.partner']
-        Account = self.env['account.account']
-
         for datum in data:
             if len(datum['mv_line_ids']) >= 1 or len(datum['mv_line_ids']) + len(datum['new_mv_line_dicts']) >= 2:
                 self._process_move_lines(datum['mv_line_ids'], datum['new_mv_line_dicts'])
 
             if datum['type'] == 'partner':
-                partners = Partner.browse(datum['id'])
+                partners = self.env['res.partner'].browse(datum['id'])
                 partners.mark_as_reconciled()
 
     ####################################################
@@ -498,12 +456,16 @@ class AccountReconciliation(models.AbstractModel):
         ]
 
     @api.model
-    def _domain_move_lines(self, search_str):
-        """ Returns the domain from the search_str search
-            :param search_str: search string
-        """
+    def _get_search_domain(self, search_str=''):
+        ''' Get the domain to be applied on the account.move.line when the user is typing
+        something on the search bar.
+        :param search_str:  The search bar content as a string.
+        :return:            A applicable domain on the account.move.line model.
+        '''
+        search_str = search_str.strip()
         if not search_str:
             return []
+
         str_domain = self._str_domain_for_mv_line(search_str)
         if search_str[0] in ['-', '+']:
             try:
@@ -533,107 +495,220 @@ class AccountReconciliation(models.AbstractModel):
                 str_domain = expression.OR([str_domain, amount_domain])
             except:
                 pass
-        return str_domain
+
+        return expression.OR([str_domain, [('partner_id.name', 'ilike', search_str)]])
 
     @api.model
-    def _domain_move_lines_for_reconciliation(self, st_line, aml_accounts, partner_id, excluded_ids=[], search_str=False, mode='rp'):
-        """ Return the domain for account.move.line records which can be used for bank statement reconciliation.
-
-            :param aml_accounts:
-            :param partner_id:
-            :param excluded_ids:
-            :param search_str:
-            :param mode: 'rp' for receivable/payable or 'other'
-        """
-        AccountMoveLine = self.env['account.move.line']
-
-        #Always exclude the journal items that have been marked as 'to be checked' in a former bank statement reconciliation
-        to_check_excluded = AccountMoveLine.search(AccountMoveLine._get_suspense_moves_domain()).ids
-        excluded_ids.extend(to_check_excluded)
-
-        domain_reconciliation = [
-            '&', '&', '&',
-            ('statement_line_id', '=', False),
-            ('account_id', 'in', aml_accounts),
-            ('payment_id', '<>', False),
-            ('balance', '!=', 0.0),
-        ]
-
-        # default domain matching
-        domain_matching = [
-            '&', '&',
+    def _prepare_reconciliation_widget_query(self, statement_line, domain=[]):
+        domain = domain + [
+            ('display_type', 'not in', ('line_section', 'line_note')),
+            ('move_id.state', '=', 'posted'),
             ('reconciled', '=', False),
             ('account_id.reconcile', '=', True),
+            ('company_id', '=', statement_line.company_id.id),
             ('balance', '!=', 0.0),
         ]
 
-        domain = expression.OR([domain_reconciliation, domain_matching])
-        if partner_id:
-            domain = expression.AND([domain, [('partner_id', '=', partner_id)]])
-        if mode == 'rp':
-            domain = expression.AND([domain,
-            [('account_id.internal_type', 'in', ['receivable', 'payable', 'liquidity'])]
-            ])
-        else:
-            domain = expression.AND([domain,
-            [('account_id.internal_type', 'not in', ['receivable', 'payable', 'liquidity'])]
-            ])
+        AccountMoveLine = self.env['account.move.line']
+        AccountMoveLine.check_access_rights('read')
+        query = AccountMoveLine._where_calc(domain)
 
-        # Domain factorized for all reconciliation use cases
-        if search_str:
-            str_domain = self._domain_move_lines(search_str=search_str)
-            str_domain = expression.OR([
-                str_domain,
-                [('partner_id.name', 'ilike', search_str)]
-            ])
-            domain = expression.AND([
-                domain,
-                str_domain
-            ])
+        # Wrap the query with 'company_id IN (...)' to avoid bypassing company access rights.
+        AccountMoveLine._apply_ir_rules(query)
 
-        if excluded_ids:
-            domain = expression.AND([
-                [('id', 'not in', excluded_ids)],
-                domain
-            ])
-        # filter on account.move.line having the same company as the statement line
-        domain = expression.AND([domain, [('company_id', '=', st_line.company_id.id)]])
-
-        # take only moves in valid state. Draft is accepted only when "Post At" is set
-        # to "Bank Reconciliation" in the associated journal
-        domain_post_at = [
-            '|', '&',
-            ('move_id.state', '=', 'draft'),
-            ('journal_id.post_at', '=', 'bank_rec'),
-            ('move_id.state', 'not in', ['draft', 'cancel']),
-        ]
-        domain = expression.AND([domain, domain_post_at])
-
-        if st_line.company_id.account_bank_reconciliation_start:
-            domain = expression.AND([domain, [('date', '>=', st_line.company_id.account_bank_reconciliation_start)]])
-        return domain
+        return query.get_sql()
 
     @api.model
-    def _domain_move_lines_for_manual_reconciliation(self, account_id, partner_id=False, excluded_ids=None, search_str=False):
+    def _get_trailing_query(self, statement_line, limit=None, offset=None):
+        liquidity_lines, suspense_lines, other_lines = statement_line._seek_for_lines()
+        assert len(liquidity_lines) == 1
+
+        if liquidity_lines.currency_id:
+            amount_matching_order_by_clause = '''
+                account_move_line.balance = %s OR (
+                    account_move_line.currency_id IS NOT NULL
+                    AND 
+                    account_move_line.amount_currency = %s
+                )
+            '''
+            params = [liquidity_lines.balance, liquidity_lines.amount_currency]
+        else:
+            amount_matching_order_by_clause = '''account_move_line.balance = %s'''
+            params = [liquidity_lines.balance]
+
+        trailing_query = '''
+            ORDER BY 
+                ''' + amount_matching_order_by_clause + ''' DESC,
+                account_move_line.date_maturity ASC,
+                account_move_line.id ASC
+        '''
+        if limit:
+            trailing_query += ' LIMIT %s'
+            params.append(limit)
+        if offset:
+            trailing_query += ' OFFSET %s'
+            params.append(offset)
+        return trailing_query, params
+
+    @api.model
+    def _get_query_select_clause(self):
+        return '''
+            account_move_line.id,
+            account_move_line.balance,
+            account_move_line.amount_currency,
+            account_move_line.date_maturity,
+            account_move_line.currency_id
+        '''
+
+    @api.model
+    def _get_query_reconciliation_widget_liquidity_lines(self, statement_line, domain=[]):
+        domain = domain + [('journal_id', '=', statement_line.journal_id.id)]
+        tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
+
+        query = '''
+            SELECT ''' + self._get_query_select_clause() + '''
+            FROM ''' + tables + '''
+            JOIN account_account account ON account.id = account_move_line.account_id
+            LEFT JOIN res_partner partner ON partner.id = account_move_line.partner_id
+            JOIN account_journal journal ON journal.id = account_move_line.journal_id
+            WHERE ''' + where_clause + '''
+            AND
+            (
+                journal.payment_debit_account_id = account_move_line.account_id
+                OR
+                journal.payment_credit_account_id = account_move_line.account_id
+            )
+        '''
+        return query, where_params
+
+    @api.model
+    def _get_query_reconciliation_widget_receivable_payable_lines(self, statement_line, domain=[]):
+        domain = domain + [
+            ('account_id.internal_type', 'in', ('receivable', 'payable')),
+            ('journal_id.type', 'not in', ('bank', 'cash')),
+        ]
+        tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
+
+        query = '''
+            SELECT ''' + self._get_query_select_clause() + '''
+            FROM ''' + tables + '''
+            WHERE ''' + where_clause + '''
+        '''
+        return query, where_params
+
+    @api.model
+    def _get_query_reconciliation_widget_customer_vendor_matching_lines(self, statement_line, domain=[]):
+        query_1, params_1 = self._get_query_reconciliation_widget_liquidity_lines(statement_line, domain=domain)
+        query_2, params_2 = self._get_query_reconciliation_widget_receivable_payable_lines(statement_line, domain=domain)
+
+        query = '''
+            SELECT *
+            FROM (
+                ''' + query_1 + '''
+                
+                UNION ALL
+                
+                ''' + query_2 + '''
+            ) AS account_move_line
+        '''
+        return query, params_1 + params_2
+
+    @api.model
+    def _get_query_reconciliation_widget_miscellaneous_matching_lines(self, statement_line, domain=[]):
+        ''' Create the query to retrieve the account.move.lines to be displayed in the
+        reconciliation widget in the 'Miscellaneous Matching' tab.
+
+        /!\ Entries displayed on this tab must not be there in the 'Customer/Vendor Matching' tab.
+
+        :param statement_line:  An account.bank.statement.line record.
+        :param domain:          A applicable domain on the account.move.line model.
+        :return:                (query, params)
+        '''
+        domain += [
+            ('account_id.internal_type', 'not in', ('receivable', 'payable')),
+            ('journal_id.type', 'not in', ('bank', 'cash')),
+        ]
+        tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
+
+        query = '''
+            SELECT ''' + self._get_query_select_clause() + '''
+            FROM ''' + tables + '''
+            JOIN account_account account ON account.id = account_move_line.account_id 
+            LEFT JOIN res_partner partner ON partner.id = account_move_line.partner_id
+            WHERE ''' + where_clause + '''
+        '''
+        return query, where_params
+
+    @api.model
+    def _prepare_js_reconciliation_widget_move_line(self, statement_line, line):
+        def format_name(line):
+            if (line.name or '/') == '/':
+                line_name = line.move_id.name
+            else:
+                line_name = line.name
+                if line_name != line.move_id.name:
+                    line_name = '%s: %s' % (line.move_id.name, line_name)
+            return line_name
+
+        # Full amounts.
+        rec_vals = statement_line._prepare_counterpart_move_line_vals({
+            'balance': -line.amount_currency if line.currency_id else -line.balance,
+        }, move_line=line)
+        # Residual amounts.
+        rec_vals_residual = statement_line._prepare_counterpart_move_line_vals({}, move_line=line)
+        if rec_vals_residual['currency_id']:
+            currency = self.env['res.currency'].browse(rec_vals_residual['currency_id'])
+            amount_currency = rec_vals_residual['debit'] - rec_vals_residual['credit']
+            balance = rec_vals_residual['amount_currency']
+            amount_str = formatLang(self.env, abs(balance), currency_obj=currency)
+            amount_currency_str = formatLang(self.env, abs(amount_currency), currency_obj=line.company_currency_id)
+            total_amount_currency_str = formatLang(self.env, abs(rec_vals['debit'] - rec_vals['credit']), currency_obj=line.company_currency_id)
+            total_amount_str = formatLang(self.env, abs(rec_vals['amount_currency']), currency_obj=line.company_currency_id)
+        else:
+            balance = rec_vals_residual['debit'] - rec_vals_residual['credit']
+            amount_currency = 0.0
+            amount_str = formatLang(self.env, abs(balance), currency_obj=line.company_currency_id)
+            amount_currency_str = ''
+            total_amount_currency_str = ''
+            total_amount_str = formatLang(self.env, abs(rec_vals['debit'] - rec_vals['credit']), currency_obj=line.company_currency_id)
+
+        js_vals = {
+            'id': line.id,
+            'name': format_name(line),
+            'ref': line.ref or '',
+            'date': format_date(self.env, line.date),
+            'date_maturity': format_date(self.env, line.date_maturity),
+            'account_id': [line.account_id.id, line.account_id.display_name],
+            'account_code': line.account_id.code,
+            'account_name': line.account_id.name,
+            'account_type': line.account_id.internal_type,
+            'journal_id': [line.journal_id.id, line.journal_id.display_name],
+            'partner_id': line.partner_id.id,
+            'partner_name': line.partner_id.name,
+            'is_liquidity_line': bool(line.payment_id),
+
+            'currency_id': rec_vals_residual['currency_id'],
+            'debit': -balance if balance < 0.0 else 0.0,
+            'credit': balance if balance > 0.0 else 0.0,
+            'amount_str': amount_str,
+            'amount_currency': -amount_currency,
+            'amount_currency_str': amount_currency_str,
+            'total_amount_currency_str': total_amount_currency_str,
+            'total_amount_str': total_amount_str,
+        }
+
+        return js_vals
+
+    @api.model
+    def _domain_move_lines_for_manual_reconciliation(self, account_id, partner_id=False, excluded_ids=None, search_str=''):
         """ Create domain criteria that are relevant to manual reconciliation. """
-        domain = [
-            '&',
-                '&',
-                    ('reconciled', '=', False),
-                    ('account_id', '=', account_id),
-                '|',
-                    ('move_id.state', '=', 'posted'),
-                    '&',
-                        ('move_id.state', '=', 'draft'),
-                        ('move_id.journal_id.post_at', '=', 'bank_rec'),
-            ]
-        domain = expression.AND([domain, [('balance', '!=', 0.0)]])
+        domain = ['&', '&', ('reconciled', '=', False), ('account_id', '=', account_id), ('move_id.state', '=', 'posted')]
         if partner_id:
             domain = expression.AND([domain, [('partner_id', '=', partner_id)]])
         if excluded_ids:
             domain = expression.AND([[('id', 'not in', excluded_ids)], domain])
         if search_str:
-            str_domain = self._domain_move_lines(search_str=search_str)
+            str_domain = self._get_search_domain(search_str=search_str)
             domain = expression.AND([domain, str_domain])
         # filter on account.move.line having the same company as the given account
         account = self.env['account.account'].browse(account_id)
@@ -643,12 +718,10 @@ class AccountReconciliation(models.AbstractModel):
     @api.model
     def _prepare_move_lines(self, move_lines, target_currency=False, target_date=False, recs_count=0):
         """ Returns move lines formatted for the manual/bank reconciliation widget
-
             :param move_line_ids:
             :param target_currency: currency (browse) you want the move line debit/credit converted into
             :param target_date: date to use for the monetary conversion
         """
-        context = dict(self._context or {})
         ret = []
 
         for line in move_lines:
@@ -661,7 +734,7 @@ class AccountReconciliation(models.AbstractModel):
                 # For reconciliation between statement transactions and already registered payments (eg. checks)
                 # NB : we don't use the 'reconciled' field because the line we're selecting is not the one that gets reconciled
                 'account_id': [line.account_id.id, line.account_id.display_name],
-                'already_paid': line.account_id.internal_type == 'liquidity',
+                'is_liquidity_line': line.account_id.internal_type == 'liquidity',
                 'account_code': line.account_id.code,
                 'account_name': line.account_id.name,
                 'account_type': line.account_id.internal_type,
@@ -744,27 +817,25 @@ class AccountReconciliation(models.AbstractModel):
     @api.model
     def _get_statement_line(self, st_line):
         """ Returns the data required by the bank statement reconciliation widget to display a statement line """
-
-        statement_currency = st_line.journal_id.currency_id or st_line.journal_id.company_id.currency_id
-        if st_line.amount_currency and st_line.currency_id:
+        if st_line.foreign_currency_id:
             amount = st_line.amount_currency
             amount_currency = st_line.amount
-            amount_currency_str = formatLang(self.env, abs(amount_currency), currency_obj=statement_currency)
+            amount_currency_str = formatLang(self.env, abs(amount_currency), currency_obj=st_line.currency_id)
         else:
             amount = st_line.amount
             amount_currency = amount
             amount_currency_str = ""
-        amount_str = formatLang(self.env, abs(amount), currency_obj=st_line.currency_id or statement_currency)
+        amount_str = formatLang(self.env, abs(amount), currency_obj=st_line.foreign_currency_id or st_line.currency_id)
 
         data = {
             'id': st_line.id,
             'ref': st_line.ref,
-            'note': st_line.note or "",
-            'name': st_line.name,
+            'note': st_line.narration or "",
+            'name': st_line.payment_ref,
             'date': format_date(self.env, st_line.date),
             'amount': amount,
             'amount_str': amount_str,  # Amount in the statement line currency
-            'currency_id': st_line.currency_id.id or statement_currency.id,
+            'currency_id': st_line.foreign_currency_id.id or st_line.currency_id.id,
             'partner_id': st_line.partner_id.id,
             'journal_id': st_line.journal_id.id,
             'statement_id': st_line.statement_id.id,
@@ -802,11 +873,11 @@ class AccountReconciliation(models.AbstractModel):
                  account_journal journal_a, account_journal journal_b
             WHERE a.id != b.id
             AND move_a.id = a.move_id
-            AND (move_a.state = 'posted' OR (move_a.state = 'draft' AND journal_a.post_at = 'bank_rec'))
+            AND move_a.state = 'posted'
             AND move_a.journal_id = journal_a.id
             AND move_b.id = b.move_id
             AND move_b.journal_id = journal_b.id
-            AND (move_b.state = 'posted' OR (move_b.state = 'draft' AND journal_b.post_at = 'bank_rec'))
+            AND move_b.state = 'posted'
             AND a.amount_residual = -b.amount_residual
             AND a.balance != 0.0
             AND b.balance != 0.0

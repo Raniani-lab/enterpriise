@@ -17,7 +17,7 @@
             <div class="o-watermark">VOID</div>
         </t>
         <div class="sequence_number" t-if="page['sequence_number']" t-esc="page['sequence_number']" />
-        <div class="ckus_date" t-esc="page['payment_date']"/>
+        <div class="ckus_date" t-esc="page['date']"/>
         <div class="ckus_payee_name" t-esc="page['partner_name']"/>
         <div class="ckus_amount">
             <t t-esc="page['amount'].replace(o.currency_id.symbol, '')"/>
@@ -35,7 +35,7 @@
                 <span t-esc="page['partner_name']"/>
             </div>
             <div class="col-xs-4 text-middle">
-                <span t-esc="page['payment_date']"/>
+                <span t-esc="page['date']"/>
             </div>
             <div class="col-xs-4 text-right sequence_number">
                 <span t-if="page['sequence_number']" t-esc="page['sequence_number']"/>

@@ -9,7 +9,6 @@ class TestBankStatementReconciliation(AccountTestCommon):
     def setUpClass(cls):
         super(TestBankStatementReconciliation, cls).setUpClass()
         cls.reconciliation_widget = cls.env['account.reconciliation.widget']
-        cls.bs_model = cls.env['account.bank.statement']
         cls.partner = cls.env['res.partner'].create({'name': 'test'})
 
     def test_reconciliation_proposition(self):
@@ -25,11 +24,10 @@ class TestBankStatementReconciliation(AccountTestCommon):
         move.post()
         rcv_mv_line = move.line_ids.filtered(lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
 
-        journal = self.bs_model.with_context(journal_type='bank')._default_journal()
-        st_line = self.bs_model.create({
-            'journal_id': journal.id,
+        st_line = self.env['account.bank.statement'].create({
+            'journal_id': self.bank_journal.id,
             'line_ids': [(0, 0, {
-                'name': '_',
+                'payment_ref': '_',
                 'partner_id': self.partner.id,
                 'amount': 100,
             })],

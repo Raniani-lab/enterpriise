@@ -33,7 +33,8 @@ if records:
                             <field name="journal_id" domain="[('type', '=', 'bank')]" widget="selection"/>
                             <field name="currency_id" invisible="1"/>
                             <field name="available_payment_method_ids" invisible="1"/>
-                            <field name="payment_method_id" domain="[('id','in',available_payment_method_ids)]"/>
+                            <field name="payment_method_id" required="1"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="payment_method_code" invisible="1"/> <!--For use in modules depending on this one-->
                         </group><group>
                             <field name="date"/>
@@ -45,43 +46,44 @@ if records:
                         <page string="Batch Content" name="batch_content">
                             <field name="payment_ids"
                                    widget="many2many"
-                                   domain="[('batch_payment_id', '=', False), ('state', 'not in', ['reconciled', 'cancelled']), ('payment_method_id', '=', payment_method_id), ('journal_id', '=', journal_id), ('payment_type','=',batch_type)]"
+                                   domain="[('batch_payment_id', '=', False), ('state', '!=', 'cancelled'), ('is_move_sent', '=', False), ('payment_method_id', '=', payment_method_id), ('journal_id', '=', journal_id), ('payment_type','=',batch_type)]"
                                    context="{'default_payment_type': batch_type, 'default_journal_id': journal_id, 'default_payment_method_id': payment_method_id}">
                                 <tree string="Payments" decoration-muted="state == 'draft'">
                                     <field name="name"/>
-                                    <field name="payment_date"/>
+                                    <field name="date"/>
                                     <field name="partner_id"/>
-                                    <field name="communication"/>
+                                    <field name="ref"/>
                                     <field name="amount" sum="Total"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="state" invisible="1"/>
                                 </tree>
-                                <form string="Register Payment"><group>
+                                <form string="Register Payment">
                                     <group>
-                                        <field name="company_id" invisible="1"/>
-                                        <field name="payment_type" invisible="1"/>
-                                        <field name="_suitable_journal_ids" invisible="1"/>
-                                        <field name="journal_id" invisible="1"/>
-                                        <field name="_payment_methods" invisible="1"/>
-                                        <field name="payment_method_id" invisible="1"/>
-                                        <field name="state" invisible="1"/>
+                                        <group>
+                                            <field name="company_id" invisible="1"/>
+                                            <field name="payment_type" invisible="1"/>
+                                            <field name="journal_id" invisible="1"/>
+                                            <field name="suitable_journal_ids" invisible="1"/>
+                                            <field name="available_payment_method_ids" invisible="1"/>
+                                            <field name="payment_method_id" invisible="1"/>
+                                            <field name="state" invisible="1"/>
 
-                                        <field name="partner_type" widget="selection" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        <field name="partner_id" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        <label for="amount"/>
-                                        <div>
-                                            <field name="amount" class="oe_inline" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                            <field name="currency_id" options="{'no_create': True}" groups="base.group_multi_currency" class="oe_inline" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>
+                                            <field name="partner_type" widget="selection" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                            <field name="partner_id" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                            <label for="amount"/>
+                                            <div>
+                                                <field name="amount" class="oe_inline" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                <field name="currency_id" options="{'no_create': True}" groups="base.group_multi_currency" class="oe_inline" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                            </div>
+                                        </group>
+                                        <group>
+                                            <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                            <field name="ref" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                            <field name="partner_bank_id" attrs="{'invisible': [('show_partner_bank_account', '!=', True)], 'required': [('show_partner_bank_account', '=', True)]}" context="{'default_partner_id': partner_id}"/>
+                                            <field name="show_partner_bank_account" invisible="1"/>
+                                        </group>
                                     </group>
-                                    <group>
-                                        <field name="payment_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        <field name="communication" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        <field name="possible_bank_partner_ids" invisible="1"/>
-                                        <field name="partner_bank_account_id" attrs="{'invisible': [('show_partner_bank_account', '!=', True)], 'required': [('show_partner_bank_account', '=', True)]}" context="{'default_partner_id': partner_id}"/>
-                                        <field name="show_partner_bank_account" invisible="1"/>
-                                    </group>
-                                </group></form>
+                                </form>
                             </field>
                         </page>
 

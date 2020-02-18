@@ -226,8 +226,8 @@ class TestAccountFollowup(AccountTestInvoicingCommon):
         # register a payment for the older invoice
         self.env['account.payment.register'].with_context(active_model='account.move', active_ids=forty_days_ago_invoice.ids).create({
             'payment_date': today,
-            'journal_id': self.company_data['default_journal_sale'].id,
-        }).create_payments()
+            'journal_id': self.company_data['default_journal_bank'].id,
+        })._create_payments()
 
         # nothing more to see as the first invoice was earlier than the delay
         self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_level'], None)

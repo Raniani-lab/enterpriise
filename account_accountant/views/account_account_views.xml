@@ -20,9 +20,11 @@
         <field name="model">account.bank.statement</field>
         <field name="inherit_id" ref="account.view_bank_statement_form"/>
         <field name="arch" type="xml">
-            <field name="all_lines_reconciled" position="after">
-                <button name="action_bank_reconcile_bank_statements" string="Reconcile" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('all_lines_reconciled','=',True),('line_ids','=',[]),('state', '!=', 'open')]}"/>
-            </field>
+            <button name="button_post" position="before">
+                <button string="Reconcile" class="oe_highlight"
+                        name="action_bank_reconcile_bank_statements" type="object"
+                        attrs="{'invisible': ['|', '|', ('all_lines_reconciled', '=', True), ('line_ids', '=', []), ('state', '!=', 'posted')]}"/>
+            </button>
         </field>
     </record>
 </odoo>

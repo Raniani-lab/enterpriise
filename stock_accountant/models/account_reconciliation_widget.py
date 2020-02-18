@@ -8,30 +8,24 @@ class AccountReconciliation(models.AbstractModel):
     _inherit = "account.reconciliation.widget"
 
     @api.model
-    def _domain_move_lines_for_reconciliation(self, st_line, aml_accounts, partner_id, excluded_ids=None, search_str=False, mode='rp'):
-        def to_int(val):
-            try:
-                return int(val)
-            except (ValueError, TypeError):
-                return None
+    def _get_query_reconciliation_widget_miscellaneous_matching_lines(self, statement_line, domain=[]):
+        # OVERRIDE
+        account_properties = (
+            'property_stock_account_input',
+            'property_stock_account_output',
+            'property_stock_account_input_categ_id',
+            'property_stock_account_output_categ_id',
+        )
+        value_references = self.env['ir.property'].sudo()\
+            .search([('name', 'in', account_properties), ('value_reference', '!=', False)])\
+            .mapped('value_reference')
 
-        domain = super()._domain_move_lines_for_reconciliation(
-            st_line, aml_accounts, partner_id, excluded_ids=excluded_ids, search_str=search_str, mode=mode
-        )
-        acc_props = (
-            "property_stock_account_input",
-            "property_stock_account_output",
-            "property_stock_account_input_categ_id",
-            "property_stock_account_output_categ_id",
-        )
-        acc_ids = [
-            (acc["value_reference"] or "").split(",")[-1]
-            for acc in self.env["ir.property"]
-            .sudo()
-            .search([("name", "in", acc_props), ("value_reference", "!=", False)])
-            .read(["value_reference"])
-            if to_int((acc["value_reference"] or "").split(",")[-1])
-        ]
-        if acc_ids:
-            domain = expression.AND([domain, [("account_id.id", "not in", acc_ids)]])
-        return domain
+        account_ids = []
+        for value_reference in value_references:
+            try:
+                account_ids.append(int(value_reference.split(',')[-1]))
+            except:
+                pass
+        if account_ids:
+            domain.append(('account_id', 'not in', tuple(account_ids)))
+        return super()._get_query_reconciliation_widget_miscellaneous_matching_lines(statement_line, domain=domain)

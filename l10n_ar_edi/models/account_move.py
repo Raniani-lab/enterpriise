@@ -490,8 +490,8 @@ class AccountMove(models.Model):
     def _get_optionals_data(self):
         optionals = []
         # We add CBU to electronic credit invoice
-        if self._is_mipyme_fce() and self.invoice_partner_bank_id.acc_type == 'cbu':
-            optionals.append({'Id': 2101, 'Valor': self.invoice_partner_bank_id.acc_number})
+        if self._is_mipyme_fce() and self.partner_bank_id.acc_type == 'cbu':
+            optionals.append({'Id': 2101, 'Valor': self.partner_bank_id.acc_number})
         # We add FCE Is cancellation value only for refund documents
         if self._is_mipyme_fce_refund():
             optionals.append({'Id': 22, 'Valor': self.l10n_ar_afip_fce_is_cancellation and 'S' or 'N'})

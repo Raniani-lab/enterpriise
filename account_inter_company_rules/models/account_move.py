@@ -74,7 +74,7 @@ class AccountMove(models.Model):
             'auto_generated': True,
             'auto_invoice_id': self.id,
             'invoice_date': self.invoice_date,
-            'invoice_payment_ref': self.invoice_payment_ref,
+            'payment_reference': self.payment_reference,
             'invoice_origin': _('%s Invoice: %s') % (self.company_id.name, self.name),
             'fiscal_position_id': new_fiscal_position_id,
         }

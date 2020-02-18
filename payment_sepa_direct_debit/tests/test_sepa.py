@@ -29,7 +29,6 @@ class SepaDirectDebitCommon(PaymentAcquirerCommon):
             'name': 'Bank SEPA',
             'type': 'bank',
             'code': 'BNKSEPA',
-            'post_at': 'bank_rec',
             'inbound_payment_method_ids': [(4, self.env.ref('account_sepa_direct_debit.payment_method_sdd').id)],
             'bank_account_id': self.sepa_bank_account.id,
         })
@@ -60,22 +59,26 @@ class SepaDirectDebitCommon(PaymentAcquirerCommon):
 
     def reconcile(self, payment):
         bank_journal = payment.journal_id
+        move_line = payment.line_ids.filtered(lambda aml: aml.account_id == bank_journal.payment_debit_account_id)
+
         bank_stmt = self.env['account.bank.statement'].create({
             'journal_id': bank_journal.id,
-            'date': payment.payment_date,
+            'date': payment.date,
             'name': payment.name,
         })
         bank_stmt_line = self.env['account.bank.statement.line'].create({
             'statement_id': bank_stmt.id,
             'partner_id': self.buyer_id,
-            'amount': payment.amount,
-            'date': payment.payment_date,
-            'name': payment.name,
+            'foreign_currency_id': move_line.currency_id.id,
+            'amount_currency': abs(move_line.amount_currency),
+            'amount': abs(move_line.balance),
+            'date': payment.date,
+            'payment_ref': payment.name,
         })
-        move_line = payment.move_line_ids.filtered(lambda aml: aml.account_id in bank_journal.default_debit_account_id + bank_journal.default_credit_account_id)
-        bank_stmt_line.process_reconciliation(payment_aml_rec=move_line)
+        bank_stmt.button_post()
+        bank_stmt_line.reconcile([{'id': move_line.id}])
 
-        self.assertEqual(payment.state, 'reconciled', 'payment should be reconciled')
+        self.assertTrue(payment.is_matched, 'payment should be reconciled')
 
 
 @odoo.tests.tagged('post_install', '-at_install')

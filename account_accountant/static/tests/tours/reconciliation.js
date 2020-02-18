@@ -92,7 +92,7 @@ Tour.register('bank_statement_reconciliation', {
         // Be done
         {
             content: "check the number off validate lines",
-            trigger: '.o_control_panel .progress-reconciliation:contains(3 / 6)'
+            trigger: '.o_control_panel .progress-reconciliation:contains(2 / 7)'
         },
     ]
 );

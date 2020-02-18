@@ -30,11 +30,8 @@ class TestSEPACreditTransfer(AccountTestCommon):
             'type': 'bank',
             'bank_acc_number': 'BE48363523682327',
             'bank_id': bank.id,
+            'currency_id': cls.env.ref('base.EUR').id,
         })
-        if cls.bank_journal.company_id.currency_id != cls.env.ref("base.EUR"):
-            cls.bank_journal.default_credit_account_id.write({'currency_id': cls.env.ref("base.EUR").id})
-            cls.bank_journal.default_debit_account_id.write({'currency_id': cls.env.ref("base.EUR").id})
-            cls.bank_journal.write({'currency_id': cls.env.ref("base.EUR").id})
 
         cls.bank_bnp = cls.env['res.bank'].create({'name': 'BNP Paribas', 'bic': 'GEBABEBB'})
 
@@ -68,10 +65,10 @@ class TestSEPACreditTransfer(AccountTestCommon):
         """ Create a SEPA credit transfer payment """
         return cls.env['account.payment'].create({
             'journal_id': cls.bank_journal.id,
-            'partner_bank_account_id': partner.bank_ids[0].id,
+            'partner_bank_id': partner.bank_ids[0].id,
             'payment_method_id': cls.sepa_ct.id,
             'payment_type': 'outbound',
-            'payment_date': '2015-04-28',
+            'date': '2015-04-28',
             'amount': amount,
             'currency_id': cls.env.ref("base.EUR").id,
             'partner_id': partner.id,
@@ -81,9 +78,9 @@ class TestSEPACreditTransfer(AccountTestCommon):
     def testStandardSEPA(self):
         for bic in ["BBRUBEBB", False]:
             payment_1 = self.createPayment(self.asustek_sup, 500)
-            payment_1.post()
+            payment_1.action_post()
             payment_2 = self.createPayment(self.asustek_sup, 600)
-            payment_2.post()
+            payment_2.action_post()
 
             self.bank_journal.bank_id.bic = bic
             batch = self.env['account.batch.payment'].create({
@@ -102,15 +99,15 @@ class TestSEPACreditTransfer(AccountTestCommon):
             download_wizard = self.env['account.batch.download.wizard'].browse(batch.export_batch_payment()['res_id'])
             sct_doc = etree.fromstring(base64.b64decode(download_wizard.export_file))
             self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
-            self.assertEqual(payment_1.state, 'sent')
-            self.assertEqual(payment_2.state, 'sent')
+            self.assertTrue(payment_1.is_move_sent)
+            self.assertTrue(payment_2.is_move_sent)
 
     def testGenericSEPA(self):
         for bic in ["BBRUBEBB", False]:
             payment_1 = self.createPayment(self.supplier, 500)
-            payment_1.post()
+            payment_1.action_post()
             payment_2 = self.createPayment(self.supplier, 700)
-            payment_2.post()
+            payment_2.action_post()
 
             self.bank_journal.bank_id.bic = bic
             batch = self.env['account.batch.payment'].create({
@@ -133,5 +130,5 @@ class TestSEPACreditTransfer(AccountTestCommon):
             download_wizard = self.env['account.batch.download.wizard'].browse(error_wizard.proceed_with_validation()['res_id'])
             sct_doc = etree.fromstring(base64.b64decode(download_wizard.export_file))
             self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
-            self.assertEqual(payment_1.state, 'sent')
-            self.assertEqual(payment_2.state, 'sent')
+            self.assertTrue(payment_1.is_move_sent)
+            self.assertTrue(payment_2.is_move_sent)

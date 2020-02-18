@@ -315,5 +315,18 @@
         </div>
     </template>
 
+    <!-- Bank reconciliation report: Custom templates to get a not-editable date filter -->
+    <template id="bank_reconciliation_report_search_template_date_filter">
+        <t t-esc="options['date']['string']"/>
+    </template>
+
+    <template id="bank_reconciliation_report_search_template" inherit_id="account_reports.search_template" primary="True">
+        <xpath expr="//div[hasclass('o_account_reports_filter_date')]" position="replace">
+            <div class="btn-group o_account_reports_filter_date text-muted">
+                <t t-call="account_reports.bank_reconciliation_report_search_template_date_filter"/>
+            </div>
+        </xpath>
+    </template>
+
     </data>
 </odoo>

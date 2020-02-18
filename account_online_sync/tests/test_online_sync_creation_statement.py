@@ -35,7 +35,7 @@ class TestSynchStatementCreation(AccountTestCommon):
             transactions.append({
                 'online_identifier': self.transaction_id,
                 'date': fields.Date.from_string(date),
-                'name': 'transaction_' + str(self.transaction_id),
+                'payment_ref': 'transaction_' + str(self.transaction_id),
                 'amount': 10,
             })
             self.transaction_id += 1
@@ -46,7 +46,7 @@ class TestSynchStatementCreation(AccountTestCommon):
         tr = {
             'online_identifier': self.transaction_id,
             'date': fields.Date.from_string(date),
-            'name': 'transaction_p',
+            'payment_ref': 'transaction_p',
             'amount': 50,
         }
         if partner_id:
@@ -66,15 +66,15 @@ class TestSynchStatementCreation(AccountTestCommon):
         self.assertEqual(date1, date2)
 
     def confirm_bank_statement(self, statement):
-        
         for line in statement.line_ids:
-            line.process_reconciliation(new_aml_dicts=[{
-                'credit': line.amount,
-                'debit': 0,
+            liquidity_lines, suspense_lines, other_lines = line._seek_for_lines()
+            line.reconcile([{
                 'name': 'toto',
                 'account_id': self.account.id,
+                'balance': sum(suspense_lines.mapped('balance')),
+                'currency_id': False,
             }])
-        statement.button_confirm_bank()
+        statement.button_validate()
         return statement
 
 
@@ -217,7 +217,7 @@ class TestSynchStatementCreation(AccountTestCommon):
         self.bnk_stmt.online_sync_bank_statement(transactions, self.bank_journal, 80)
         created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
         self.assertEqual(len(created_bnk_stmt[0].line_ids), 4, '4 lines should have been added to first statement')
-        self.assertEqual(created_bnk_stmt[0].state, 'open', 'Statement should be reset to draft')
+        self.assertEqual(created_bnk_stmt[0].state, 'posted', 'Statement should be reset to draft')
 
 
     def test_creation_every_week(self):

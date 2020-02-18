@@ -459,7 +459,7 @@ class AccountReport(models.AbstractModel):
 
     @api.model
     def _get_options_all_entries_domain(self, options):
-        if options.get('all_entries') is False:
+        if not options.get('all_entries'):
             return [('move_id.state', '=', 'posted')]
         else:
             return [('move_id.state', '!=', 'cancel')]
@@ -759,17 +759,23 @@ class AccountReport(models.AbstractModel):
         :param document:    The target model of the redirection.
         :return: The target record.
         '''
+        if model == document:
+            return self.env[model].browse(res_id)
+
         if model == 'account.move':
             if document == 'res.partner':
                 return self.env[model].browse(res_id).partner_id.commercial_partner_id
-        if model == 'account.bank.statement.line' and document == 'account.bank.statement':
-            return self.env[model].browse(res_id).statement_id
+        elif model == 'account.bank.statement.line':
+            if document == 'account.bank.statement':
+                return self.env[model].browse(res_id).statement_id
 
         # model == 'account.move.line' by default.
         if document == 'account.move':
             return self.env[model].browse(res_id).move_id
         if document == 'account.payment':
             return self.env[model].browse(res_id).payment_id
+        if document == 'account.bank.statement':
+            return self.env[model].browse(res_id).statement_id
 
         return self.env[model].browse(res_id)
 
@@ -1086,7 +1092,10 @@ class AccountReport(models.AbstractModel):
         '''
         return a dictionary of informations that will be needed by the js widget, manager_id, footnotes, html of report and searchview, ...
         '''
-        options = self._get_options(options)
+        options = {
+            **self._context.get('default_options', {}),
+            **self._get_options(options),
+        }
 
         searchview_dict = {'options': options, 'context': self.env.context}
         # Check if report needs analytic
@@ -1223,7 +1232,6 @@ class AccountReport(models.AbstractModel):
             'views': [[view_id, 'form']],
             'context': new_context,
         }
-
 
     @api.model
     def get_export_mime_type(self, file_type):

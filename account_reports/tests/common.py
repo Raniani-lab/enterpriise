@@ -2,10 +2,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import time
 
+from odoo import fields
 from odoo.tests import common
 from odoo.tests.common import Form, SavepointCase
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.tools.misc import formatLang
+from unittest.mock import patch
 import datetime
 import copy
 
@@ -71,7 +73,7 @@ class TestAccountReportsCommon(SavepointCase):
         user = cls.env['res.users'].create({
             'name': 'Because I am reportman!',
             'login': 'reportman',
-            'groups_id': [(6, 0, cls.env.user.groups_id.ids)],
+            'groups_id': [(6, 0, cls.env.user.groups_id.ids), (4, cls.env.ref('account.group_account_user').id)],
             'company_id': cls.company_parent.id,
             'company_ids': [(6, 0, (cls.company_parent + cls.company_child_eur).ids)],
         })
@@ -175,7 +177,8 @@ class TestAccountReportsCommon(SavepointCase):
         inv_feb_6 = cls._create_invoice(cls.env, 400.0, cls.partner_b, 'out_invoice', cls.feb_year_minus_1)
         inv_feb_7 = cls._create_invoice(cls.env, 400.0, cls.partner_c, 'out_invoice', cls.feb_year_minus_1)
         pay_inv_feb_7 = cls._create_payment(cls.env, cls.mar_year_minus_1, inv_feb_7, 200.0)
-        cls._create_bank_statement(cls.env, pay_inv_feb_7, reconcile=False)
+        cls.t1 = pay_inv_feb_7
+        cls.t2 = cls._create_bank_statement(cls.env, pay_inv_feb_7, reconcile=False)
         inv_feb_8 = cls._create_invoice(cls.env, 400.0, cls.partner_d, 'in_invoice', cls.feb_year_minus_1)
         cls._create_payment(cls.env, cls.feb_year_minus_1, inv_feb_8, 400.0)
 
@@ -234,6 +237,52 @@ class TestAccountReportsCommon(SavepointCase):
         })
 
     @staticmethod
+    def mocked_today(forced_today):
+        ''' Helper to create a context manager mocking the "today" date.
+        :param forced_today:    The expected "today" date as a str or Date object.
+        :return:                A new context manager.
+        '''
+
+        if isinstance(forced_today, str):
+            forced_today = fields.Date.from_string(forced_today)
+
+        class WithToday:
+            def __init__(self):
+
+                self.patchers = (
+                    patch.object(fields.Date, 'today', lambda *args, **kwargs: forced_today),
+                    patch.object(fields.Date, 'context_today', lambda *args, **kwargs: forced_today),
+                )
+
+            def __enter__(self):
+                for patcher in self.patchers:
+                    patcher.start()
+
+            def __exit__(self, type, value, traceback):
+                for patcher in self.patchers:
+                    patcher.stop()
+
+        return WithToday()
+
+    def debug_mode(self, report):
+        def user_has_groups(groups):
+            if groups == 'base.group_no_one':
+                return True
+            return self.env.user.user_has_groups(groups)
+
+        class WithDebugMode:
+            def __init__(self):
+                self.patcher = patch.object(report, 'user_has_groups', lambda *args, **kwargs: user_has_groups(*args, **kwargs))
+
+            def __enter__(self):
+                self.patcher.start()
+
+            def __exit__(self, type, value, traceback):
+                self.patcher.stop()
+
+        return WithDebugMode()
+
+    @staticmethod
     def _create_invoice(env, amount, partner, invoice_type, date, clear_taxes=False):
         ''' Helper to create an account.move on the fly with only one line.
         N.B: The taxes are also applied.
@@ -262,16 +311,16 @@ class TestAccountReportsCommon(SavepointCase):
         :param amount:      The payment amount.
         :return:            An account.payment record.
         '''
-        self_ctx = env['account.payment'].with_context(active_model='account.move', active_ids=invoices.ids)
-        payment_form = Form(self_ctx)
-        payment_form.payment_date = date
-        if journal:
-            payment_form.journal_id = journal
+        vals = {'payment_date': date}
         if amount:
-            payment_form.amount = amount
-        register_payment = payment_form.save()
-        register_payment.post()
-        return register_payment
+            vals['amount'] = amount
+        if journal:
+            vals['journal_id'] = journal.id
+
+        return env['account.payment.register']\
+            .with_context(active_model='account.move', active_ids=invoices.ids)\
+            .create(vals)\
+            ._create_payments()
 
     @staticmethod
     def _create_bank_statement(env, payment, amount=None, reconcile=True):
@@ -281,23 +330,25 @@ class TestAccountReportsCommon(SavepointCase):
         :param reconcile:   Reconcile the newly created statement line with the payment.
         :return:            An account.bank.statement record.
         '''
-        bank_journal = payment.journal_id
         amount = amount or (payment.payment_type == 'inbound' and payment.amount or -payment.amount)
-        statement_form = Form(env['account.bank.statement'])
-        statement_form.journal_id = bank_journal
-        statement_form.date = payment.payment_date
-        statement_form.name = payment.name
-        with statement_form.line_ids.new() as statement_line_form:
-            statement_line_form.date = payment.payment_date
-            statement_line_form.name = payment.name
-            statement_line_form.partner_id = payment.partner_id
-            statement_line_form.amount = amount
-        statement_form.balance_end_real = statement_form.balance_end
-        statement = statement_form.save()
+
+        statement = env['account.bank.statement'].create({
+            'name': payment.name,
+            'date': payment.date,
+            'journal_id': payment.journal_id.id,
+            'line_ids': [
+                (0, 0, {
+                    'amount': amount,
+                    'payment_ref': payment.name,
+                    'partner_id': payment.partner_id.id,
+                }),
+            ],
+        })
+        statement.balance_end_real = statement.balance_end
+        statement.button_post()
         if reconcile:
-            move_line = payment.move_line_ids.filtered(
-                lambda aml: aml.account_id in bank_journal.default_debit_account_id + bank_journal.default_credit_account_id)
-            statement.line_ids[0].process_reconciliation(payment_aml_rec=move_line)
+            move_line = payment.line_ids.filtered(lambda aml: aml.account_id.internal_type not in ('receivable', 'payable'))
+            statement.line_ids[0].reconcile([{'id': move_line.id}])
         return statement
 
     # -------------------------------------------------------------------------
@@ -369,20 +420,23 @@ class TestAccountReportsCommon(SavepointCase):
                 # Check colspan.
                 self.assertEqual(column.get('colspan', 1), expected_header[i][1])
 
-    def assertLinesValues(self, lines, columns, expected_values, currency=None):
+    def assertLinesValues(self, lines, columns, expected_values, currency_map={}):
         ''' Helper to compare the lines returned by the _get_lines method
         with some expected results.
         :param lines:               See _get_lines.
-        :params columns:            The columns index.
+        :param columns:             The columns index.
         :param expected_values:     A list of iterables.
+        :param currency_map:        A map mapping each column_index to some extra options to test the lines:
+            - currency:             The currency to be applied on the column.
+            - currency_code_index:  The index of the column containing the currency code.
         '''
-        used_currency = currency or self.env.company.currency_id
 
         # Compare the table length to see if any line is missing
         self.assertEqual(len(lines), len(expected_values))
 
         # Compare cell by cell the current value with the expected one.
         i = 0
+        to_compare_list = []
         for line in lines:
             j = 0
             compared_values = [[], []]
@@ -399,6 +453,18 @@ class TestAccountReportsCommon(SavepointCase):
                     else:
                         current_value = line['columns'][line_index].get('name', '')
 
+                currency_data = currency_map.get(index, {})
+                used_currency = None
+                if 'currency' in currency_data:
+                    used_currency = currency_data['currency']
+                elif 'currency_code_index' in currency_data:
+                    currency_code = line['columns'][currency_data['currency_code_index'] - 1].get('name', '')
+                    if currency_code:
+                        used_currency = self.env['res.currency'].search([('name', '=', currency_code)], limit=1)
+                        assert used_currency, "Currency having name=%s not found." % currency_code
+                if not used_currency:
+                    used_currency = self.env.company.currency_id
+
                 if type(expected_value) in (int, float) and type(current_value) == str:
                     expected_value = formatLang(self.env, expected_value, currency_obj=used_currency)
 
@@ -406,5 +472,16 @@ class TestAccountReportsCommon(SavepointCase):
                 compared_values[1].append(expected_value)
 
                 j += 1
-            self.assertEqual(compared_values[0], compared_values[1])
+            to_compare_list.append(compared_values)
             i += 1
+
+        errors = []
+        for i, to_compare in enumerate(to_compare_list):
+            if to_compare[0] != to_compare[1]:
+                errors += [
+                    "\n==== Differences at index %s ====" % str(i),
+                    "Current Values:  %s" % str(to_compare[0]),
+                    "Expected Values: %s" % str(to_compare[1]),
+                ]
+        if errors:
+            self.fail('\n'.join(errors))

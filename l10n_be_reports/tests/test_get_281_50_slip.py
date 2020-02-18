@@ -10,7 +10,7 @@ class TestResPartner(AccountTestInvoicingCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestResPartner, cls).setUpClass()
+        super(TestResPartner, cls).setUpClass(chart_template_ref='l10n_be.l10nbe_chart_template')
 
         cls.invoice = cls.init_invoice('in_invoice')
 
@@ -99,12 +99,6 @@ class TestResPartner(AccountTestInvoicingCommon):
         cls.tag_281_50_fees = cls.env.ref('l10n_be_reports.account_tag_281_50_fees')
         cls.tag_281_50_atn = cls.env.ref('l10n_be_reports.account_tag_281_50_atn')
         cls.tag_281_50_exposed_expenses = cls.env.ref('l10n_be_reports.account_tag_281_50_exposed_expenses')
-        cls.bank_journal_euro = cls.env['account.journal'].create({
-            'name': 'Bank',
-            'type': 'bank',
-            'code': 'BNK67',
-            'post_at': 'pay_val'
-        })
 
     def test_res_partner_get_paid_amount(self):
         '''Checking of the paid total value for a specific partner.'''
@@ -127,19 +121,18 @@ class TestResPartner(AccountTestInvoicingCommon):
                 'payment_type': 'outbound',
                 'amount': 500,
                 'currency_id': self.currency_data['currency'].id,
-                'journal_id': self.bank_journal_euro.id,
-                'company_id': self.env.user.company_id.id,
-                'payment_date': fields.Date.from_string('200%s-05-12' % i),
+                'journal_id': self.company_data['default_journal_bank'].id,
+                'date': fields.Date.from_string('200%s-05-12' % i),
                 'partner_id': self.partner_a.id,
                 'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
                 'partner_type': 'supplier'
             })
 
         payments = self.env['account.payment'].create(payment_dicts)
-        payments.post()
+        payments.action_post()
 
         payable_move_lines = move.mapped('line_ids').filtered(lambda x: x.account_internal_type == 'payable')
-        payable_move_lines += payments.mapped('move_line_ids').filtered(lambda x: x.account_internal_type == 'payable')
+        payable_move_lines += payments.line_ids.filtered(lambda x: x.account_internal_type == 'payable')
         payable_move_lines.reconcile()
 
         move.flush()
@@ -175,17 +168,16 @@ class TestResPartner(AccountTestInvoicingCommon):
             'payment_type': 'outbound',
             'amount': 1000,
             'currency_id': self.currency_data['currency'].id,
-            'journal_id': self.bank_journal_euro.id,
-            'company_id': self.env.user.company_id.id,
-            'payment_date': fields.Date.from_string('2000-05-12'),
+            'journal_id': self.company_data['default_journal_bank'].id,
+            'date': fields.Date.from_string('2000-05-12'),
             'partner_id': self.partner_a.id,
             'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
             'partner_type': 'supplier'
         })
-        payment.post()
+        payment.action_post()
 
         payable_move_lines = move.mapped('line_ids').filtered(lambda x: x.account_internal_type == 'payable')
-        payable_move_lines += payment.mapped('move_line_ids').filtered(lambda x: x.account_internal_type == 'payable')
+        payable_move_lines += payment.line_ids.filtered(lambda x: x.account_internal_type == 'payable')
         payable_move_lines.reconcile()
 
         move.flush()

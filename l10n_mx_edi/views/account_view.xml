@@ -35,12 +35,9 @@
             <field name="model">account.bank.statement</field>
             <field name="inherit_id" ref="account.view_bank_statement_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='bank_account_id']" position="after">
+                <xpath expr="//field[@name='amount']" position="after">
+                    <field name="partner_bank_id" context="{'default_partner_id': partner_id}"/>
                     <field name="l10n_mx_edi_payment_method_id"/>
-                </xpath>
-                <xpath expr="//field[@name='bank_account_id']" position="attributes">
-                    <attribute name="invisible">0</attribute>
-                    <attribute name="context">{'default_partner_id': partner_id}</attribute>
                 </xpath>
             </field>
         </record>

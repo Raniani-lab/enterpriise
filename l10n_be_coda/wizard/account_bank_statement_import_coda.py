@@ -679,9 +679,9 @@ class AccountBankStatementImport(models.TransientModel):
             }
             for line in statement['lines']:
                 if line['type'] == 'information' and statement_line:
-                    statement_line[-1]['note'] = "\n".join([statement_line[-1]['note'], line['type'].title() + ' with Ref. ' + str(line['ref']), 'Date: ' + str(line['entryDate'])])
+                    statement_line[-1]['narration'] = "\n".join([statement_line[-1]['narration'], line['type'].title() + ' with Ref. ' + str(line['ref']), 'Date: ' + str(line['entryDate'])])
                     if line['communication_struct']:
-                        statement_line[-1]['note'] = "\n".join([statement_line[-1]['note'], 'Communication: '] + parse_structured_communication(line['communication_type'], line['communication'])[1])
+                        statement_line[-1]['narration'] = "\n".join([statement_line[-1]['narration'], 'Communication: '] + parse_structured_communication(line['communication_type'], line['communication'])[1])
                 elif line['type'] == 'communication':
                     statement['coda_note'] = "\n".join([statement['coda_note'], line['type'].title() + ' with Ref. ' + str(line['ref']), 'Ref: ', 'Communication: ' + line['communication'], ''])
                 elif line['type'] == 'normal'\
@@ -713,11 +713,11 @@ class AccountBankStatementImport(models.TransientModel):
                         note.append(_('Communication') + ': ' + rmspaces(line['communication']))
                     if not self.split_transactions and statement_line and line['ref_move'] == statement_line[-1]['ref']:
                         statement_line[-1]['amount'] += line['amount']
-                        statement_line[-1]['note'] += "\n" + "\n".join(note)
+                        statement_line[-1]['narration'] += "\n" + "\n".join(note)
                     else:
                         line_data = {
-                            'name': structured_com or (line.get('communication', '') != '' and line['communication'] or '/'),
-                            'note': "\n".join(note),
+                            'payment_ref': structured_com or (line.get('communication', '') != '' and line['communication'] or '/'),
+                            'narration': "\n".join(note),
                             'transaction_type': parse_operation(line['transaction_type'], line['transaction_family'], line['transaction_code'], line['transaction_category']),
                             'date': line['entryDate'],
                             'amount': line['amount'],

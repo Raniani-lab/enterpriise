@@ -657,7 +657,7 @@ class AccountBankStatementImport(models.TransientModel):
                         'sequence': sequence,
                         'date': date,
                         'amount': _get_signed_amount(entry_details, entry, namespaces=ns),
-                        'name': _get_transaction_name(entry_details, namespaces=ns),
+                        'payment_ref': _get_transaction_name(entry_details, namespaces=ns),
                         'partner_name': partner_name,
                         'account_number': _get_account_number(entry_details, placeholder=counter_party, namespaces=ns),
                         'ref': _get_ref(entry_details, counter_party=counter_party, prefix='', namespaces=ns),
@@ -688,7 +688,7 @@ class AccountBankStatementImport(models.TransientModel):
                         notes.append(_('Counter Party: ') + partner_name)
                     if partner_address:
                         notes.append(_('Address:\n') + partner_address)
-                    entry_vals['note'] = "\n".join(notes)
+                    entry_vals['narration'] = "\n".join(notes)
 
                     unique_import_set.add(entry_vals['unique_import_id'])
                     transactions.append(entry_vals)

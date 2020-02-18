@@ -3,7 +3,7 @@
     <data>
         <template id="sdd_report_invoice_document" inherit_id="account.report_invoice_document">
             <xpath expr="//p[@t-if='o.narration']" position="before">
-                <p t-if="o.sdd_paying_mandate_id">
+                <p t-if="o.sdd_mandate_id">
                     <span>
                       <p>
                         This invoice will be paid using direct debit and is only

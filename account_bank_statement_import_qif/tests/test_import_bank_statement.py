@@ -24,5 +24,5 @@ class TestQifFile(TransactionCase):
             'name': 'test file',
             'datas': qif_file,
         })]}).import_file()
-        line = self.BankStatementLine.search([('name', '=', 'YOUR LOCAL SUPERMARKET')], limit=1)
+        line = self.BankStatementLine.search([('payment_ref', '=', 'YOUR LOCAL SUPERMARKET')], limit=1)
         self.assertAlmostEqual(line.statement_id.balance_end_real, -1896.09)

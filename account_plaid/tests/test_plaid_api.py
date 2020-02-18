@@ -60,15 +60,16 @@ class TestPlaidApi(AccountTestInvoicingCommon):
             'balance_start': 5103.0,
             'balance_end_real': 9944.87,
             'line_ids': [
-                (0, 0, {'name': 'line1', 'amount': 750.0}),
-                (0, 0, {'name': 'line2', 'amount': 1275.0}),
-                (0, 0, {'name': 'line3', 'amount': -32.58}),
-                (0, 0, {'name': 'line4', 'amount': 650.0}),
-                (0, 0, {'name': 'line5', 'amount': 2000.0}),
-                (0, 0, {'name': 'line6', 'amount': 102.78}),
-                (0, 0, {'name': 'line7', 'amount': 96.67}),
+                (0, 0, {'payment_ref': 'line1', 'amount': 750.0}),
+                (0, 0, {'payment_ref': 'line2', 'amount': 1275.0}),
+                (0, 0, {'payment_ref': 'line3', 'amount': -32.58}),
+                (0, 0, {'payment_ref': 'line4', 'amount': 650.0}),
+                (0, 0, {'payment_ref': 'line5', 'amount': 2000.0}),
+                (0, 0, {'payment_ref': 'line6', 'amount': 102.78}),
+                (0, 0, {'payment_ref': 'line7', 'amount': 96.67}),
             ],
         })
+        initial_statement.button_post()
 
     def create_account_provider(self):
         return self.env['account.online.provider'].create({
@@ -258,7 +259,7 @@ class TestPlaidApi(AccountTestInvoicingCommon):
         self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 4 lines')
         self.assertEqual(bank_stmt.state, 'open')
         for i in range(0, 3):
-            self.assertEqual(bank_stmt.line_ids[i].name, 'Damdoum Store')
+            self.assertEqual(bank_stmt.line_ids[i].payment_ref, 'Damdoum Store')
             self.assertEqual(bank_stmt.line_ids[i].amount, -2307.21)
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDje"))
             self.assertEqual(bank_stmt.line_ids[i].partner_id, self.env['res.partner']) #No partner defined on line
@@ -350,6 +351,8 @@ class TestPlaidApi(AccountTestInvoicingCommon):
         for i in range(0, 3):
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDje"))
             self.assertEqual(bank_stmt.line_ids[i].partner_id, agrolait)
+        bank_stmt.button_reopen()
+        bank_stmt.line_ids.write({'name': '/'})
         bank_stmt.unlink()
 
         # Check that partner assignation also work with location
@@ -368,6 +371,8 @@ class TestPlaidApi(AccountTestInvoicingCommon):
         for i in range(0,3):
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjf"))
             self.assertEqual(bank_stmt.line_ids[i].partner_id, ASUSTeK)
+        bank_stmt.button_reopen()
+        bank_stmt.line_ids.write({'name': '/'})
         bank_stmt.unlink()
 
         # Check that if we have both partner with same info, no partner is displayed
@@ -381,6 +386,8 @@ class TestPlaidApi(AccountTestInvoicingCommon):
         for i in range(0,3):
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDja"))
             self.assertEqual(bank_stmt.line_ids[i].partner_id, self.env['res.partner'])
+        bank_stmt.button_reopen()
+        bank_stmt.line_ids.write({'name': '/'})
         bank_stmt.unlink()
 
         # Check that vendor name take precedence over location

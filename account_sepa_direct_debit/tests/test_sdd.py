@@ -48,7 +48,7 @@ class SDDTest(AccountTestCommon):
         invoice = self.env['account.move'].with_context(default_move_type='out_invoice', uid=current_uid).create({
             'partner_id': partner.id,
             'currency_id': self.env.ref('base.EUR'),
-            'invoice_payment_ref': 'invoice to client',
+            'payment_reference': 'invoice to client',
             'move_type': 'out_invoice',
             'invoice_line_ids': [(0, 0, {
                 'product_id': self.env['product.product'].create({'name': 'A Test Product'}),
@@ -59,6 +59,13 @@ class SDDTest(AccountTestCommon):
         })
         invoice.post()
         return invoice
+
+    def pay_with_mandate(self, invoice, mandate):
+        self.env['account.payment.register'].with_context(active_model='account.move', active_ids=invoice.ids).create({
+            'payment_date': invoice.invoice_date_due or invoice.invoice_date,
+            'journal_id': mandate.payment_journal_id.id,
+            'payment_method_id': self.env.ref('account_sepa_direct_debit.payment_method_sdd').id,
+        })._create_payments()
 
     def test_sdd(self):
         # We generate the user whose the test will simulate the actions.
@@ -96,17 +103,17 @@ class SDDTest(AccountTestCommon):
         invoice_no_bic = self.create_invoice(partner_no_bic, user.id, company.currency_id)
 
         # Pay the invoices with mandates
-        invoice_agrolait._sdd_pay_with_mandate(mandate_agrolait)
-        invoice_china_export._sdd_pay_with_mandate(mandate_china_export)
-        invoice_no_bic._sdd_pay_with_mandate(mandate_no_bic)
+        self.pay_with_mandate(invoice_agrolait, mandate_agrolait)
+        self.pay_with_mandate(invoice_china_export, mandate_china_export)
+        self.pay_with_mandate(invoice_no_bic, mandate_no_bic)
 
         # These invoice should have been paid thanks to the mandate
-        self.assertEqual(invoice_agrolait.payment_state, 'paid', 'This invoice should have been paid thanks to the mandate')
-        self.assertEqual(invoice_agrolait.sdd_paying_mandate_id, mandate_agrolait)
-        self.assertEqual(invoice_china_export.payment_state, 'paid', 'This invoice should have been paid thanks to the mandate')
-        self.assertEqual(invoice_china_export.sdd_paying_mandate_id, mandate_china_export)
-        self.assertEqual(invoice_no_bic.payment_state, 'paid', 'This invoice should have been paid thanks to the mandate')
-        self.assertEqual(invoice_no_bic.sdd_paying_mandate_id, mandate_no_bic)
+        self.assertEqual(invoice_agrolait.payment_state, 'in_payment', 'This invoice should have been paid thanks to the mandate')
+        self.assertEqual(invoice_agrolait.sdd_mandate_id, mandate_agrolait)
+        self.assertEqual(invoice_china_export.payment_state, 'in_payment', 'This invoice should have been paid thanks to the mandate')
+        self.assertEqual(invoice_china_export.sdd_mandate_id, mandate_china_export)
+        self.assertEqual(invoice_no_bic.payment_state, 'in_payment', 'This invoice should have been paid thanks to the mandate')
+        self.assertEqual(invoice_no_bic.sdd_mandate_id, mandate_no_bic)
 
         #The 'one-off' mandate should now be closed
         self.assertEqual(mandate_agrolait.state, 'active', 'A recurrent mandate should stay confirmed after accepting a payment')

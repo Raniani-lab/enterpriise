@@ -236,7 +236,7 @@ class PlaidAccount(models.Model):
                     trans = {
                         'online_identifier': transaction.get('transaction_id'),
                         'date': fields.Date.from_string(transaction.get('date')),
-                        'name': transaction.get('name'),
+                        'payment_ref': transaction.get('name'),
                         'amount': -1 * transaction.get('amount'), #https://plaid.com/docs/api/#transactions amount positive if purchase
                     }
                     if transaction.get('payment_meta') and transaction['payment_meta'].get('payee_name', False) and transaction.get('amount') > 0:

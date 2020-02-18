@@ -38,7 +38,7 @@ class TestCSVFile(TransactionCase):
             'float_thousand_separator': ',',
             'float_decimal_separator': '.',
             'advanced': False}
-        fields = ['date', False, 'name', 'amount', 'balance']
+        fields = ['date', False, 'payment_ref', 'amount', 'balance']
         import_wizard.with_context(journal_id=bank_journal_id).do(fields, [], options, dryrun=False)
 
         # Check the imported bank statement
@@ -47,6 +47,6 @@ class TestCSVFile(TransactionCase):
         self.assertEqual(bank_st_record.balance_end_real, 23462.55)
 
         # Check an imported bank statement line
-        line = bank_st_record.line_ids.filtered(lambda r: r.name == 'ACH CREDIT"CHECKFLUID INC -013015')
+        line = bank_st_record.line_ids.filtered(lambda r: r.payment_ref == 'ACH CREDIT"CHECKFLUID INC -013015')
         self.assertEqual(str(line.date), '2015-02-03')
         self.assertEqual(line.amount, 2500.00)

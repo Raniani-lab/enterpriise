@@ -131,11 +131,11 @@ class AccountBankStatementImport(models.TransientModel):
                     partner_id = partner_bank.partner_id.id
                 vals_line = {
                     'date': transaction.date,
-                    'name': transaction.payee + (transaction.memo and ': ' + transaction.memo or ''),
+                    'payment_ref': transaction.payee + (transaction.memo and ': ' + transaction.memo or ''),
                     'ref': transaction.id,
-                    'amount': transaction.amount,
+                    'amount': float(transaction.amount),
                     'unique_import_id': transaction.id,
-                    'bank_account_id': bank_account_id,
+                    'partner_bank_id': bank_account_id,
                     'partner_id': partner_id,
                     'sequence': len(transactions) + 1,
                 }

@@ -1,33 +1,31 @@
 # -*- coding: utf-8 -*-
-
 from odoo import models, fields, _
 from odoo.exceptions import UserError
 
 
-class account_payment(models.Model):
+class AccountPayment(models.Model):
     _inherit = "account.payment"
 
-    state_before_switch = fields.Char(string="State Before Switch", copy=False,
-                                      help="Technical field to keep the state when switching from invoicing to accounting "\
-                                           "(using invoicing_switch_threshold setting field). It allows keeping the former state, so that "\
-                                           "we can restore it if the user misconfigured the switch date and wants to change it.")
+    def action_open_manual_reconciliation_widget(self):
+        ''' Open the manual reconciliation widget for the current payment.
+        :return: A dictionary representing an action.
+        '''
+        self.ensure_one()
 
-    def open_payment_matching_screen(self):
-        # Open reconciliation view for customers/suppliers
-        move_line_id = False
-        for move_line in self.move_line_ids:
-            if move_line.account_id.reconcile:
-                move_line_id = move_line.id
-                break
         if not self.partner_id:
             raise UserError(_("Payments without a customer can't be matched"))
-        action_context = {'company_ids': [self.company_id.id], 'partner_ids': [self.partner_id.commercial_partner_id.id]}
+
+        liquidity_lines, counterpart_lines, writeoff_lines = self._seek_for_lines()
+
+        action_context = {'company_ids': self.company_id.ids, 'partner_ids': self.partner_id.ids}
         if self.partner_type == 'customer':
             action_context.update({'mode': 'customers'})
         elif self.partner_type == 'supplier':
             action_context.update({'mode': 'suppliers'})
-        if move_line_id:
-            action_context.update({'move_line_id': move_line_id})
+
+        if counterpart_lines:
+            action_context.update({'move_line_id': counterpart_lines[0].id})
+
         return {
             'type': 'ir.actions.client',
             'tag': 'manual_reconciliation_view',

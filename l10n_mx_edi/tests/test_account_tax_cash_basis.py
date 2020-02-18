@@ -128,12 +128,12 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
 
         default_dict = self.payment_model.with_context(active_model='account.move', active_ids=invoice.id).default_get(self.payment_model.fields_get_keys())
         payments = self.payment_model.new({**default_dict, **{
-            'payment_date': date,
+            'date': date,
             'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
             'payment_method_id': payment_method_id,
             'journal_id': journal.id,
             'currency_id': currency_id.id,
-            'communication': invoice.name,
+            'ref': invoice.name,
             'amount': amount,
         }})
 

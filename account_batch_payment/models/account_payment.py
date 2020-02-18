@@ -10,23 +10,6 @@ class AccountPayment(models.Model):
 
     batch_payment_id = fields.Many2one('account.batch.payment', ondelete='set null', copy=False)
 
-    def unreconcile(self):
-        for payment in self:
-            if payment.batch_payment_id and payment.batch_payment_id.state == 'reconciled':
-                # removing the link between a payment and a statement line means that the batch
-                # payment the payment was in, is not reconciled anymore.
-                payment.batch_payment_id.write({'state': 'sent'})
-        return super(AccountPayment, self).unreconcile()
-
-    def write(self, vals):
-        result = super(AccountPayment, self).write(vals)
-        # Mark a batch payment as reconciled if all its payments are reconciled
-        for rec in self:
-            if rec.batch_payment_id:
-                if all(payment.state == 'reconciled' for payment in rec.batch_payment_id.payment_ids):
-                    rec.batch_payment_id.state = 'reconciled'
-        return result
-
     @api.model
     def create_batch_payment(self):
         # We use self[0] to create the batch; the constrains on the model ensure
@@ -43,4 +26,19 @@ class AccountPayment(models.Model):
             "res_model": "account.batch.payment",
             "views": [[False, "form"]],
             "res_id": batch.id,
+        }
+
+    def button_open_batch_payment(self):
+        ''' Redirect the user to the batch payments containing this payment.
+        :return:    An action on account.batch.payment.
+        '''
+        self.ensure_one()
+
+        return {
+            'name': _("Paid Invoices"),
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'context': {'create': False},
+            'view_mode': 'form',
+            'res_id': self.batch_payment_id.id,
         }

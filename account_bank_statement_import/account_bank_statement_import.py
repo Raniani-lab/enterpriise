@@ -196,14 +196,14 @@ class AccountBankStatementImport(models.TransientModel):
                     sanitized_account_number = sanitize_account_number(account_number)
                     line_vals['unique_import_id'] = (sanitized_account_number and sanitized_account_number + '-' or '') + str(journal.id) + '-' + unique_import_id
 
-                if not line_vals.get('bank_account_id'):
+                if not line_vals.get('partner_bank_id'):
                     # Find the partner and his bank account or create the bank account. The partner selected during the
                     # reconciliation process will be linked to the bank when the statement is closed.
                     identifying_string = line_vals.get('account_number')
                     if identifying_string:
                         partner_bank = self.env['res.partner.bank'].search([('acc_number', '=', identifying_string)], limit=1)
                         if partner_bank:
-                            line_vals['bank_account_id'] = partner_bank.id
+                            line_vals['partner_bank_id'] = partner_bank.id
                             line_vals['partner_id'] = partner_bank.partner_id.id
         return stmts_vals
 
@@ -232,7 +232,8 @@ class AccountBankStatementImport(models.TransientModel):
                 st_vals.pop('transactions', None)
                 # Create the statement
                 st_vals['line_ids'] = [[0, False, line] for line in filtered_st_lines]
-                statement_line_ids.extend(BankStatement.create(st_vals).line_ids.ids)
+                statement = BankStatement.create(st_vals)
+                statement_line_ids.extend(statement.line_ids.ids)
         if len(statement_line_ids) == 0:
             raise UserError(_('You already have imported that file.'))
 

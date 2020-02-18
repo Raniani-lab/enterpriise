@@ -82,7 +82,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertEqual(invoice.ref, 'INV0001')
         self.assertEqual(invoice.invoice_date, fields.Date.from_string('2019-04-12'))
         self.assertEqual(invoice.invoice_date_due, fields.Date.from_string('2019-04-19'))
-        self.assertEqual(invoice.invoice_payment_ref, "+++123/1234/12345+++")
+        self.assertEqual(invoice.payment_reference, "+++123/1234/12345+++")
 
         self.assertEqual(len(invoice.invoice_line_ids), 3)
         for i, invoice_line in enumerate(invoice.invoice_line_ids):
@@ -391,7 +391,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertEqual(invoice.get_validation('supplier')['content'], invoice.partner_id.name)
         self.assertEqual(invoice.get_validation('VAT_Number')['content'], invoice.partner_id.vat)
         self.assertEqual(invoice.get_validation('currency')['content'], invoice.currency_id.name)
-        self.assertEqual(invoice.get_validation('payment_ref')['content'], invoice.invoice_payment_ref)
+        self.assertEqual(invoice.get_validation('payment_ref')['content'], invoice.payment_reference)
         validation_invoice_lines = invoice.get_validation('invoice_lines')['lines']
         for i, il in enumerate(invoice.invoice_line_ids):
             self.assertDictEqual(validation_invoice_lines[i], {
@@ -477,14 +477,14 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         with self.mock_iap_extract(extract_response, {'company_data': {'name': 'Partner', 'country_code': 'BE', 'vat': 'BE0477472701', 'partner_gid': False, 'city': 'Namur', 'bank_ids': [], 'zip': '2110', 'street': 'OCR street'}}):
             invoice._check_status()
 
-        self.assertEqual(invoice.invoice_partner_bank_id.acc_number, 'BE01234567890123')
+        self.assertEqual(invoice.partner_bank_id.acc_number, 'BE01234567890123')
 
         # test that it uses the existing bank account if it exists
-        created_bank_account = invoice.invoice_partner_bank_id
+        created_bank_account = invoice.partner_bank_id
         invoice = self.init_invoice()
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {}):
             invoice._check_status()
 
-        self.assertEqual(invoice.invoice_partner_bank_id, created_bank_account)
+        self.assertEqual(invoice.partner_bank_id, created_bank_account)

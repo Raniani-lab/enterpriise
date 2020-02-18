@@ -184,20 +184,10 @@ class PaymentTxSepaDirectDebit(models.Model):
         self._notify_debit(mandate)
 
         # create associated account payment and make it a one2one with the transaction.
-        payment_vals = self._prepare_account_payment_vals()
-        payment_vals.update({
+        payment = self._create_payment(add_payment_vals={
             'sdd_mandate_id': mandate.id,
-            # we have to use this payment method to allow easy export of these payments
-            # through the accounting dashboard
             'payment_method_id': self.env.ref('account_sepa_direct_debit.payment_method_sdd').id,
         })
-        payment = self.env['account.payment'].create(payment_vals)
-
-        # invoices should be posted before payment
-        invoices = self.mapped('invoice_ids').filtered(lambda i: i.state == 'draft')
-        invoices.post()
-
-        payment.post()
 
         vals = {
             'date': fields.datetime.now(),
@@ -239,43 +229,6 @@ class PaymentTxSepaDirectDebit(models.Model):
         })
 
         template.with_context(ctx).send_mail(self.id)
-
-
-class AccountPayment(models.Model):
-    _inherit = "account.payment"
-
-    def write(self, vals):
-        # when a payment is renconciled, its transaction's status transitions from pending to done.
-        # the post processing is called subsequently, it will confirm and invoice the sale order.
-        res = super(AccountPayment, self).write(vals)
-
-        tx = self.env['payment.transaction'].search([
-            ('state', '=', 'pending'),
-            ('acquirer_id.provider', '=', 'sepa_direct_debit'),
-            ('payment_id', 'in', self.filtered(lambda x: x.state == 'reconciled').ids),
-        ])
-        tx._set_transaction_done()
-        tx.execute_callback()
-        tx._post_process_after_done()
-
-        return res
-
-    def post(self):
-        # because payments are generated in advance, they have already been posted and reconciled
-        # when transactions are post-processed. Avoid posting them again as it will raise errors
-        posted = self.filtered(lambda p: p.sdd_mandate_id and p.payment_transaction_id and p.state != 'draft')
-        return super(AccountPayment, self - posted).post()
-
-    def get_usable_mandate(self):
-        # when a payment is posted, it will be registered on the first available mandate for a
-        # given partner. A partner could have several active mandates leading the payment to be
-        # linked to another mandate that the one used during the checkout process. We should make
-        # sure the same mandate is re-used here.
-        self.ensure_one()
-        if self.payment_method_code == 'sdd' and self.sdd_mandate_id:
-            return self.sdd_mandate_id
-        else:
-            return super(AccountPayment, self).get_usable_mandate()
 
 
 class PaymentToken(models.Model):

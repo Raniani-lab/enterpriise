@@ -248,9 +248,9 @@ class AccountMove(models.Model):
         elif field == "currency":
             text_to_send["content"] = self.currency_id.name
         elif field == "payment_ref":
-            text_to_send["content"] = self.invoice_payment_ref
+            text_to_send["content"] = self.payment_reference
         elif field == "iban":
-            text_to_send["content"] = self.invoice_partner_bank_id.acc_number if self.invoice_partner_bank_id else False
+            text_to_send["content"] = self.partner_bank_id.acc_number if self.partner_bank_id else False
         elif field == "invoice_lines":
             text_to_send = {'lines': []}
             for il in self.invoice_line_ids:
@@ -663,13 +663,13 @@ class AccountMove(models.Model):
                     created_supplier = self._create_supplier_from_vat(vat_number_ocr)
                     if created_supplier:
                         move_form.partner_id = created_supplier
-                        if iban_ocr and not move_form.invoice_partner_bank_id:
+                        if iban_ocr and not move_form.partner_bank_id:
                             bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr)])
                             if bank_account.exists():
                                 if bank_account.partner_id == move_form.partner_id.id:
-                                    move_form.invoice_partner_bank_id = bank_account
+                                    move_form.partner_bank_id = bank_account
                             else:
-                                move_form.invoice_partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create({
+                                move_form.partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create({
                                     'partner_id': move_form.partner_id.id,
                                     'acc_number': iban_ocr,
                                 })
@@ -689,8 +689,8 @@ class AccountMove(models.Model):
                 if currency:
                     move_form.currency_id = currency
 
-            if payment_ref_ocr and not move_form.invoice_payment_ref:
-                move_form.invoice_payment_ref = payment_ref_ocr
+            if payment_ref_ocr and not move_form.payment_reference:
+                move_form.payment_reference = payment_ref_ocr
 
             if not move_form.invoice_line_ids:
                 for line_val in vals_invoice_lines:

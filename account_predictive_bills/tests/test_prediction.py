@@ -50,11 +50,6 @@ class TestBillsPrediction(AccountTestCommon):
         return rslt
 
     def test_account_prediction_flow(self):
-        self.env.cr.execute('''
-            DELETE FROM account_move_line;
-            DELETE FROM account_move;
-        ''')
-
         vendors = self._create_test_partners(7)
         accounts = self._create_test_accounts([('test1', 'Test Maintenance and Repair'),
                                                ('test2', 'Test Purchase of services, studies and preparatory work'),

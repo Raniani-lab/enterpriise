@@ -150,6 +150,9 @@ class HrEmployee(models.Model):
         if not all(emp.identification_id for emp in self):
             raise UserError(_('Some employee has no identification id.'))
 
+        if not all(emp.language_code for emp in self):
+            raise UserError(_('Some employee has no language.'))
+
     def _get_employee_281_10_values(self, basic_info):
         result = {}
         year = basic_info['year']

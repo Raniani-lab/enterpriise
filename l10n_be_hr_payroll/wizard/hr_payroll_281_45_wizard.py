@@ -98,3 +98,6 @@ class HrPayroll28145Wizard(models.TransientModel):
 
         if not all(emp.identification_id for emp in employees):
             raise UserError(_('Some employee has no identification id.'))
+
+        if not all(emp.language_code for emp in employees):
+            raise UserError(_('Some employee has no language.'))

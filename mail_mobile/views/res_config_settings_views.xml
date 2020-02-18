@@ -20,6 +20,17 @@
                             </div>
                         </div>
                     </div>
+                     <div class="col-xs-12 col-md-6 o_setting_box" groups="base.group_no_one">
+                         <div class="o_setting_left_pane">
+                             <field name="disable_redirect_firebase_dynamic_link"/>
+                         </div>
+                         <div class="o_setting_right_pane">
+                             <label for="disable_redirect_firebase_dynamic_link"/>
+                             <div class="text-muted">
+                                 If disabled, you won't be able to open external URL's in the Android/iOS mobile app (e.g. "View Task" button in email).
+                             </div>
+                         </div>
+                     </div>
                 </div>
             </div>
         </field>

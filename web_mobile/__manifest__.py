@@ -10,13 +10,12 @@
         This module provides the core of the Odoo Mobile App.
         """,
     'depends': [
-        'base_setup',
+        'web_enterprise',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'data': [
         'views/mobile_template.xml',
         'views/views.xml',
-        'views/res_config_settings_views.xml',
     ],
     'installable': True,
     'auto_install': True,

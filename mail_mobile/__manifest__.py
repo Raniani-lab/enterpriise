@@ -5,13 +5,14 @@
     'name': 'Mail Mobile',
     'version': '1.0',
     'category': 'Tools',
-    'summary': 'Allow push notification to devices',
+    'summary': 'Provides push notification and redirection to the mobile app.',
     'description': """
 Mail Mobile
 ===========
+This module modifies the mail addon to provide:
 
-This module enables push notifications to registered devices for direct messages,
-chatter messages and channel.
+* Push notifications to registered devices for direct messages, chatter messages and channel.
+* Redirection to the Android/iOS mobile app when you click on an Odoo URL.
     """,
     'depends': [
         'iap',

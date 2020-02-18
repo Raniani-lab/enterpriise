@@ -15,6 +15,15 @@ DEFAULT_ENDPOINT = 'https://ocn.odoo.com'
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
+    disable_redirect_firebase_dynamic_link = fields.Boolean(
+        "Disable link redirection to mobile app",
+        help="Check this if dynamic mobile-app detection links cause problems "
+             "for your installation. This will stop the automatic wrapping of "
+             "links inside outbound emails. The links will always open in a "
+             "normal browser, even for users who have the Android/iOS app installed.",
+        config_parameter='mail_mobile.disable_redirect_firebase_dynamic_link'
+    )
+
     enable_ocn = fields.Boolean('Push Notifications', config_parameter='mail_mobile.enable_ocn')
 
     def _get_endpoint(self):

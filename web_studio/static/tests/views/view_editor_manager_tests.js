@@ -4401,7 +4401,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('edit one2many list view', async function (assert) {
-        assert.expect(9);
+        assert.expect(10);
 
         // the 'More' button is only available in debug mode
         var initialDebugMode = odoo.debug;
@@ -4481,6 +4481,9 @@ QUnit.module('ViewEditorManager', {
             },
         });
         await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_one2many'));
+        const blockOverlayZindex = vem.el.querySelector('.o_web_studio_view_renderer .o_field_one2many .blockOverlay').style['z-index'];
+        assert.strictEqual(blockOverlayZindex, '1000',
+            "z-index of blockOverlay should be 1000");
         assert.verifySteps(['coucou']);
         await testUtils.dom.click($(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
         assert.containsOnce(vem, '.o_web_studio_view_renderer thead tr [data-node-id]',

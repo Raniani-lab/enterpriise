@@ -1378,6 +1378,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 // create the subviews
                 var message = $(QWeb.render('web_studio.X2ManyEdit'));
                 var options = {
+                    baseZ: 1000, // reset z-index to 1000 from 1100 for element blocking else dialog hides behind it
                     message: message,
                     css: {
                         cursor: 'auto',

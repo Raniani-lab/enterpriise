@@ -11,9 +11,9 @@ class CalendarEvent(models.Model):
     @api.model
     def create(self, vals):
         result = super(CalendarEvent, self).create(vals)
-        if self.env.context.get('active_model') == 'hr.appraisal':
-            appraisal = self.env['hr.appraisal'].browse(self.env.context.get('active_id'))
-            if appraisal:
+        if result.res_model == 'hr.appraisal':
+            appraisal = self.env['hr.appraisal'].browse(result.res_id)
+            if appraisal.exists():
                 appraisal.write({
                     'meeting_id': result.id,
                     'date_final_interview': result.start_date if result.allday else result.start_datetime

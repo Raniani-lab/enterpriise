@@ -20,5 +20,9 @@
             <field name="key">hr_appraisal.appraisal_max_period</field>
             <field name="value">18</field>
         </record>
+        <record forcecreate="True" id="appraisal_create_in_advance_days" model="ir.config_parameter">
+            <field name="key">hr_appraisal.appraisal_create_in_advance_days</field>
+            <field name="value">8</field>
+        </record>
     </data>
 </odoo>

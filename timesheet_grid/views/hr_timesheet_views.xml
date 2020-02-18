@@ -98,7 +98,7 @@
                             </group>
                         </group>
                         <group>
-                            <field name="name" string="Describe Your Activity" required="False"/>
+                            <field name="name" placeholder="Describe your activity" widget="text" required="0" nolabel="1"/>
                         </group>
                     </sheet>
                 </form>

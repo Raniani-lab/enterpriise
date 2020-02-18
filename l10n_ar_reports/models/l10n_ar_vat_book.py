@@ -12,6 +12,18 @@ class L10nARVatBook(models.AbstractModel):
     filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_month'}
     filter_all_entries = False
 
+    def print_pdf(self, options):
+        options.update({
+            'journal_type': self.env.context.get('journal_type')
+        })
+        return super(L10nARVatBook, self).print_pdf(options)
+
+    def print_xlsx(self, options):
+        options.update({
+            'journal_type': self.env.context.get('journal_type')
+        })
+        return super(L10nARVatBook, self).print_xlsx(options)
+
     def _get_columns_name(self, options):
         return [
             {'name': _("Date"), 'class': 'date'},
@@ -39,7 +51,7 @@ class L10nARVatBook(models.AbstractModel):
     @api.model
     def _get_lines(self, options, line_id=None):
         context = self.env.context
-        journal_type = context.get('journal_type', 'sale')
+        journal_type = context.get('journal_type') or options.get('journal_type', 'sale')
 
         lines = []
         line_id = 0

@@ -75,8 +75,8 @@
                     <vatCode t-foreach="tax_ids" t-as="t">
                         <vatID t-esc="t.id"/>
                         <vatDesc t-esc="t.name"/>
-                        <vatToPayAccID t-esc="t.refund_account_id.code"/>
-                        <vatToClaimAccID t-esc="t.account_id.code"/>
+                        <vatToPayAccID t-esc="t.refund_repartition_line_ids[:1].account_id.code"/>
+                        <vatToClaimAccID t-esc="t.invoice_repartition_line_ids[:1].account_id.code"/>
                     </vatCode>
                 </vatCodes>
                 <periods>
@@ -101,7 +101,7 @@
                             <desc t-esc="m.name"/>
                             <periodNumber t-esc="compute_period_number(m.date)"/>
                             <trDt t-esc="m.date"/>
-                            <amnt t-esc="round(m.amount, 2)"/>
+                            <amnt t-esc="round(m.amount_total, 2)"/>
                             <trLine t-foreach="m.line_ids" t-as="l">
                                 <nr t-esc="l.id"/>
                                 <accID t-esc="l.account_id.code"/>
@@ -112,7 +112,7 @@
                                 <amntTp t-esc="amnt_tp(l)"/>
                                 <recRef t-if="l.full_reconcile_id" t-esc="l.full_reconcile_id.name"/>
                                 <custSupID t-if="l.partner_id" t-esc="l.partner_id.id"/>
-                                <invRef t-if="l.invoice_id" t-esc="l.invoice_id.number"/>
+                                <invRef t-if="l.move_id.is_invoice(include_receipts=True)" t-esc="l.move_name"/>
                                 <currency t-if="l.currency_id and round(l.amount_currency, 2)">
                                     <curCode t-esc="l.currency_id.name"/>
                                     <curAmnt t-esc="round(l.amount_currency, 2)"/>

@@ -24,13 +24,11 @@ class ReportAccountGeneralLedger(models.AbstractModel):
 
     def get_xaf(self, options):
         def cust_sup_tp(partner_id):
-            so_count = partner_id.sale_order_count
-            po_count = partner_id.purchase_order_count
-            if so_count and po_count:
+            if partner_id.supplier_rank and partner_id.customer_rank:
                 return 'B'
-            if so_count:
+            if partner_id.supplier_rank:
                 return 'C'
-            if po_count:
+            if partner_id.customer_rank:
                 return 'S'
             return 'O'
 

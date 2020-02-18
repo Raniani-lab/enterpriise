@@ -265,7 +265,7 @@ class PdfManager extends owl.Component {
      *        pdf.numPages {number}
      */
     async _getPdf(url) {
-        return window.pdfjsLib.getDocument(url);
+        return window.pdfjsLib.getDocument(url).promise;
     }
     /**
      * To be overwritten in tests.
@@ -371,7 +371,7 @@ class PdfManager extends owl.Component {
      * @return {DomElement} canvas
      */
     async _renderCanvas(page, { width, height }) {
-        const viewPort = page.getViewport(1);
+        const viewPort = page.getViewport({ scale: 1 });
         const canvas = document.createElement("canvas");
         canvas.className = "o_documents_pdf_canvas";
         canvas.width = width;
@@ -379,8 +379,8 @@ class PdfManager extends owl.Component {
         const scale = Math.min(canvas.width / viewPort.width, canvas.height / viewPort.height);
         await page.render({
             canvasContext: canvas.getContext("2d"),
-            viewport: page.getViewport(scale),
-        });
+            viewport: page.getViewport({ scale }),
+        }).promise;
         return canvas;
     }
     /**

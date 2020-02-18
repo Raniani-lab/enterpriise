@@ -53,9 +53,9 @@ class GenerateSimulationLink(models.TransientModel):
     employee_contract_id = fields.Many2one('hr.contract')
     employee_contract_employee_id = fields.Many2one(related='employee_contract_id.employee_id', string="contract employee")
     employee_id = fields.Many2one('hr.employee')
-    final_yearly_costs = fields.Float(string="Employee Budget", store=True, required=True)
+    final_yearly_costs = fields.Float(string="Employee Budget", compute='_compute_from_contract_id', readonly=False, store=True, required=True)
     applicant_id = fields.Many2one('hr.applicant')
-    job_title = fields.Char("Job Title")
+    job_title = fields.Char("Job Title", compute='_compute_from_contract_id', store=True, readonly=False)
 
     email_to = fields.Char('Email To', compute='_compute_email_to', store=True, readonly=False)
     url = fields.Char('Simulation link', compute='_compute_url')
@@ -86,12 +86,11 @@ class GenerateSimulationLink(models.TransientModel):
                 url = url + url_encode(params)
             wizard.url = url
 
-    @api.onchange('contract_id')
-    def _onchange_contract_id(self):
-        self.final_yearly_costs = self.contract_id.final_yearly_costs
-        self.job_title = self.contract_id.employee_id.job_title or self.contract_id.job_id.name
-        self.contract_type = self.contract_id.contract_type
-        # return {'domain': {'contract_id': self.get_contract_domain()}}
+    @api.depends('contract_id')
+    def _compute_from_contract_id(self):
+        for wizard in self:
+            wizard.final_yearly_costs = wizard.contract_id.final_yearly_costs
+            wizard.job_title = wizard.contract_id.employee_id.job_title or wizard.contract_id.job_id.name
 
     def send_offer(self):
         try:

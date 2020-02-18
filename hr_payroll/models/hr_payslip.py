@@ -50,7 +50,7 @@ class HrPayslip(models.Model):
                 \n* If the payslip is under verification, the status is \'Waiting\'.
                 \n* If the payslip is confirmed then status is set to \'Done\'.
                 \n* When user cancel payslip the status is \'Rejected\'.""")
-    line_ids = fields.One2many('hr.payslip.line', 'slip_id', string='Payslip Lines', readonly=True,
+    line_ids = fields.One2many('hr.payslip.line', 'slip_id', compute='_compute_line_ids', store=True, string='Payslip Lines', readonly=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     company_id = fields.Many2one('res.company', string='Company', readonly=True, copy=False, required=True,
         default=lambda self: self.env.company,
@@ -79,11 +79,10 @@ class HrPayslip(models.Model):
     currency_id = fields.Many2one(related='contract_id.currency_id')
     warning_message = fields.Char(readonly=True)
 
-    @api.onchange('worked_days_line_ids', 'input_line_ids')
-    def _onchange_worked_days_inputs(self):
-        if self.line_ids and self.state in ['draft', 'verify']:
-            values = [(5, 0, 0)] + [(0, 0, line_vals) for line_vals in self._get_payslip_lines()]
-            self.update({'line_ids': values})
+    @api.depends('worked_days_line_ids', 'input_line_ids')
+    def _compute_line_ids(self):
+        for payslip in self.filtered(lambda p: p.line_ids and p.state in ['draft', 'verify']):
+            payslip.line_ids = [(5, 0, 0)] + [(0, 0, line_vals) for line_vals in payslip._get_payslip_lines()]
 
     def _compute_basic_net(self):
         for payslip in self:

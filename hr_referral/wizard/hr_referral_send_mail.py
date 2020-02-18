@@ -21,7 +21,7 @@ class HrReferralSendMail(models.TransientModel):
     url = fields.Char("url", compute='_compute_url', readonly=True)
     email_to = fields.Char(string="Email", required=True)
     subject = fields.Char('Subject', default="Job for you")
-    body_html = fields.Html('Body')
+    body_html = fields.Html('Body', compute='_compute_body_html', store=True, readonly=False)
 
     @api.depends('job_id')
     def _compute_url(self):
@@ -31,12 +31,13 @@ class HrReferralSendMail(models.TransientModel):
             'channel': 'direct',
         }).url
 
-    @api.onchange('job_id', 'url')
-    def _onchange_body_html(self):
-        if not self.job_id:
-            self.body_html = _('Hello,<br><br>There are some amazing job offers in my company! Have a look, they  can be interesting for you<br><a href="%s">See Job Offers</a>') % (self.url)
-        else:
-            self.body_html = _('Hello,<br><br>There is an amazing job offer for %s in my company! It will be a fit for you<br><a href="%s">See Job Offer</a>') % (self.job_id.name, self.url)
+    @api.depends('job_id', 'url')
+    def _compute_body_html(self):
+        for wizard in self:
+            if not wizard.job_id:
+                wizard.body_html = _('Hello,<br><br>There are some amazing job offers in my company! Have a look, they  can be interesting for you<br><a href="%s">See Job Offers</a>') % (wizard.url)
+            else:
+                wizard.body_html = _('Hello,<br><br>There is an amazing job offer for %s in my company! It will be a fit for you<br><a href="%s">See Job Offer</a>') % (wizard.job_id.name, wizard.url)
 
     def send_mail_referral(self):
         if not self.env.user.has_group('hr_referral.group_hr_recruitment_referral_user'):

@@ -97,7 +97,7 @@ class TestExamples(common.SavepointCase):
                     'request_unit_hours': True,
                 })
                 holiday = self.env['hr.leave'].new(holiday_values)
-                holiday._onchange_request_unit_hours()
+                holiday._compute_date_from_to()
                 holidays |= self.env['hr.leave'].create(holiday._convert_to_write(holiday._cache))
         holidays.action_validate()
         self.env['hr.work.entry'].search([('leave_id', 'in', holidays.ids)]).action_validate()

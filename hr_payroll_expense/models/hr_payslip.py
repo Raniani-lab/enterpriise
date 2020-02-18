@@ -7,6 +7,8 @@ from odoo import api, fields, models, _
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
+    input_line_ids = fields.One2many(compute='_compute_input_line_ids', store=True, readonly=False,
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
     expense_sheet_ids = fields.One2many(
         'hr.expense.sheet', 'payslip_id', string='Expenses',
         help="Expenses to reimburse to employee.",
@@ -34,26 +36,23 @@ class HrPayslip(models.Model):
                 ('payment_mode', '=', 'own_account'),
                 ('refund_in_payslip', '=', True),
                 ('payslip_id', '=', False)])
-            self._onchange_expense_sheet_ids()
         return res
 
-    @api.onchange('expense_sheet_ids')
-    def _onchange_expense_sheet_ids(self):
+    @api.depends('expense_sheet_ids')
+    def _compute_input_line_ids(self):
         expense_type = self.env.ref('hr_payroll_expense.expense_other_input', raise_if_not_found=False)
-        if not expense_type:
-            return
-
-        total = sum(sheet.total_amount for sheet in self.expense_sheet_ids)
-        if not total:
-            return
-
-        lines_to_keep = self.input_line_ids.filtered(lambda x: x.input_type_id != expense_type)
-        input_lines_vals = [(5, 0, 0)] + [(4, line.id, False) for line in lines_to_keep]
-        input_lines_vals.append((0, 0, {
-            'amount': total,
-            'input_type_id': expense_type
-        }))
-        self.update({'input_line_ids': input_lines_vals})
+        for payslip in self:
+            total = sum(payslip.expense_sheet_ids.mapped('total_amount'))
+            if not total or not expense_type:
+                payslip.input_line_ids = payslip.input_line_ids
+                continue
+            lines_to_keep = payslip.input_line_ids.filtered(lambda x: x.input_type_id != expense_type)
+            input_lines_vals = [(5, 0, 0)] + [(4, line.id, False) for line in lines_to_keep]
+            input_lines_vals.append((0, 0, {
+                'amount': total,
+                'input_type_id': expense_type
+            }))
+            payslip.update({'input_line_ids': input_lines_vals})
 
     def action_payslip_done(self):
         res = super(HrPayslip, self).action_payslip_done()

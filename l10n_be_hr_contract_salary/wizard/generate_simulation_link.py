@@ -6,7 +6,7 @@ from odoo import api, fields, models, _
 class GenerateSimulationLink(models.TransientModel):
     _inherit = 'generate.simulation.link'
 
-    car_id = fields.Many2one('fleet.vehicle', store=True)
+    car_id = fields.Many2one('fleet.vehicle', compute='_compute_car_id', store=True, readonly=False)
     new_car = fields.Boolean('Can request a new car')
     contract_type = fields.Selection([
         ('PFI', 'PFI'),
@@ -18,8 +18,7 @@ class GenerateSimulationLink(models.TransientModel):
         res = super()._get_url_triggers()
         return res + ['car_id', 'customer_relation', 'contract_type', 'new_car']
 
-    @api.onchange('contract_id')
-    def _onchange_contract_id(self):
-        super()._onchange_contract_id()
-        if self.contract_id.car_id:
-            self.car_id = self.contract_id.car_id
+    @api.depends('contract_id')
+    def _compute_car_id(self):
+        for wizard in self.filtered('contract_id.car_id'):
+            wizard.car_id = wizard.contract_id.car_id

@@ -69,13 +69,18 @@ class HrPayrollStructure(models.Model):
         ('weekly', 'Weekly'),
         ('bi-weekly', 'Bi-weekly'),
         ('bi-monthly', 'Bi-monthly'),
-    ], string='Scheduled Pay', index=True, default='monthly', help="Defines the frequency of the wage payment.")
+    ], compute='_compute_schedule_pay', store=True, readonly=False,
+    string='Scheduled Pay', index=True,
+    help="Defines the frequency of the wage payment.")
     input_line_type_ids = fields.Many2many('hr.payslip.input.type', string='Other Input Line')
 
-    @api.onchange('type_id')
-    def onchange_type_id(self):
-        if not self.schedule_pay:
-            self.schedule_pay = self.type_id.default_schedule_pay
+    @api.depends('type_id')
+    def _compute_schedule_pay(self):
+        for structure in self:
+            if not structure.type_id:
+                structure.schedule_pay = 'monthly'
+            elif not structure.schedule_pay:
+                structure.schedule_pay = structure.type_id.default_schedule_pay
 
 
 class HrPayrollStructureType(models.Model):

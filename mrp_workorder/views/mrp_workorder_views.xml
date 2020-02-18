@@ -333,6 +333,7 @@
         <field name="arch" type="xml">
             <search string="Quality Point Steps">
                 <field name="routing_id" string="Routing"/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
             </search>
         </field>
     </record>

@@ -92,6 +92,18 @@
             </field>
         </record>
 
+        <record id="data_merge_model_view_search" model="ir.ui.view">
+            <field name="name">data_merge.model.search</field>
+            <field name="model">data_merge.model</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <separator/>
+                    <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
         <record model="ir.actions.act_window" id="action_data_merge_config">
             <field name="name">Deduplication Rules</field>
             <field name="res_model">data_merge.model</field>

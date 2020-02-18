@@ -31,6 +31,19 @@
         </field>
     </record>
 
+    <record id="approval_category_view_search" model="ir.ui.view">
+        <field name="name">approval.category.search</field>
+        <field name="model">approval.category</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <separator/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
     <record id="approval_category_view_form" model="ir.ui.view">
         <field name="name">approval.category.view.form</field>
         <field name="model">approval.category</field>

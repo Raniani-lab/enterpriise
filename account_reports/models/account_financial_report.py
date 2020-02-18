@@ -167,6 +167,26 @@ class ReportAccountFinancialReport(models.Model):
     # -------------------------------------------------------------------------
 
     @api.model
+    def _format_cell_value(self, financial_line, amount, currency=False, blank_if_zero=False):
+        ''' Format the value to display inside a cell depending the 'figure_type' field in the financial report line.
+        :param financial_line:  An account.financial.html.report.line record.
+        :param amount:          A number.
+        :param currency:        An optional res.currency record.
+        :param blank_if_zero:   An optional flag forcing the string to be empty if amount is zero.
+        :return:
+        '''
+        if self._context.get('no_format'):
+            return amount
+
+        if financial_line.figure_type == 'float':
+            return super().format_value(amount, currency=currency, blank_if_zero=blank_if_zero)
+        elif financial_line.figure_type == 'percents':
+            return str(round(amount * 100, 1)) + '%'
+        elif financial_line.figure_type == 'no_unit':
+            return round(amount, 1)
+        return amount
+
+    @api.model
     def _compute_growth_comparison_column(self, options, value1, value2, green_on_positive=True):
         ''' Helper to get the additional columns due to the growth comparison feature. When only one comparison is
         requested, an additional column is there to show the percentage of growth based on the compared period.
@@ -228,7 +248,7 @@ class ReportAccountFinancialReport(models.Model):
                     'code': financial_line.code or '',
                     'formula': solver.get_formula_popup(financial_line),
                     'formula_with_values': solver.get_formula_string(financial_line),
-                    'formula_balance': self.format_value(sum(results['formula'].values())),
+                    'formula_balance': self._format_cell_value(financial_line, sum(results['formula'].values())),
                     'domain': str(financial_line.domain) if solver.is_leaf(financial_line) and financial_line.domain else '',
                     'display_button': solver.has_move_lines(financial_line),
                 }),
@@ -586,8 +606,8 @@ class ReportAccountFinancialReport(models.Model):
         # Standard columns.
         columns = []
         for key in groupby_keys:
-            balance = results.get(key, 0.0)
-            columns.append({'name': self.format_value(balance), 'no_format': balance, 'class': 'number'})
+            amount = results.get(key, 0.0)
+            columns.append({'name': self._format_cell_value(financial_line, amount), 'no_format': amount, 'class': 'number'})
 
         # Growth comparison column.
         if self._display_growth_comparison(options):
@@ -633,8 +653,8 @@ class ReportAccountFinancialReport(models.Model):
         # Standard columns.
         columns = []
         for key in groupby_keys:
-            balance = results.get(key, 0.0)
-            columns.append({'name': self.format_value(balance), 'no_format': balance, 'class': 'number'})
+            amount = results.get(key, 0.0)
+            columns.append({'name': self._format_cell_value(financial_line, amount), 'no_format': amount, 'class': 'number'})
 
         # Growth comparison column.
         if self._display_growth_comparison(options):

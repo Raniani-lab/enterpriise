@@ -31,14 +31,29 @@ msgid "Email Thread"
 msgstr ""
 
 #. module: mail_mobile
+#: model_terms:ir.ui.view,arch_db:mail_mobile.res_config_settings_view_form
+msgid "Get notifications on Android and iOS application"
+msgstr ""
+
+#. module: mail_mobile
 #: model:ir.model,name:mail_mobile.model_ir_http
 msgid "HTTP Routing"
+msgstr ""
+
+#. module: mail_mobile
+#: model_terms:ir.ui.view,arch_db:mail_mobile.res_config_settings_view_form
+msgid "Mobile"
 msgstr ""
 
 #. module: mail_mobile
 #: model:ir.model.fields,field_description:mail_mobile.field_res_partner__ocn_token
 #: model:ir.model.fields,field_description:mail_mobile.field_res_users__ocn_token
 msgid "OCN Token"
+msgstr ""
+
+#. module: mail_mobile
+#: model:ir.model.fields,field_description:mail_mobile.field_res_config_settings__enable_ocn
+msgid "Push Notifications"
 msgstr ""
 
 #. module: mail_mobile

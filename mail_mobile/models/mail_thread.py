@@ -19,7 +19,9 @@ class MailThread(models.AbstractModel):
         """
         rdata = super(MailThread, self)._notify_compute_recipients(message, msg_vals)
 
-        if not self.env['ir.config_parameter'].sudo().get_param('odoo_ocn.project_id'):
+        icp_sudo = self.env['ir.config_parameter'].sudo()
+        # Avoid to send notification if this feature is disabled or if no user use the mobile app.
+        if not icp_sudo.get_param('odoo_ocn.project_id') or not icp_sudo.get_param('mail_mobile.enable_ocn'):
             return rdata
 
         notif_pids = []

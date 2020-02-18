@@ -3,7 +3,7 @@
 import uuid
 
 import odoo
-from odoo import models, api
+from odoo import fields, models, api
 from odoo.addons.iap import jsonrpc
 
 import logging as logger
@@ -15,12 +15,16 @@ DEFAULT_ENDPOINT = 'https://ocn.odoo.com'
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
+    enable_ocn = fields.Boolean('Push Notifications', config_parameter='mail_mobile.enable_ocn')
+
     def _get_endpoint(self):
         return self.env['ir.config_parameter'].sudo().get_param('odoo_ocn.endpoint', DEFAULT_ENDPOINT)
 
     @api.model
     def get_fcm_project_id(self):
         ir_params_sudo = self.env['ir.config_parameter'].sudo()
+        if not ir_params_sudo.get_param('mail_mobile.enable_ocn'):
+            return
         project_id = ir_params_sudo.get_param('odoo_ocn.project_id')
         if not project_id:
             params = {

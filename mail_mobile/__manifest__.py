@@ -15,12 +15,15 @@ chatter messages and channel.
     """,
     'depends': [
         'iap',
-        'mail',
+        'mail_enterprise',
         'web_mobile',
+        'base_setup',
     ],
     'data': [
-        'views/ocn_assets.xml'
+        'views/ocn_assets.xml',
+        'views/res_config_settings_views.xml',
     ],
     'installable': True,
+    'auto_install': ['web_mobile', 'mail_enterprise'],
     'license': 'OEEL-1',
 }

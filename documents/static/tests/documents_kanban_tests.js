@@ -1294,6 +1294,9 @@ QUnit.module('DocumentsViews', {
             "should display the correct owner");
 
         await testUtils.dom.click($firstRecord);
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.hasClass($firstRecord, 'o_record_selected');
 
         // change m2o value
@@ -1301,6 +1304,9 @@ QUnit.module('DocumentsViews', {
         await testUtils.nextTick();
 
         $firstRecord = kanban.$('.o_kanban_record:first');
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.strictEqual($firstRecord.text(), 'yopDe Bruyne',
             "should have updated the owner");
         assert.hasClass($firstRecord, 'o_record_selected',
@@ -1334,6 +1340,9 @@ QUnit.module('DocumentsViews', {
         var $gnap = kanban.$('.o_kanban_record:contains(gnap)');
         await testUtils.dom.click($blip);
         await testUtils.dom.click($gnap.find('.o_record_selector'));
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         assert.hasClass($blip, 'o_record_selected',
             "blip record should be selected");
         assert.hasClass($gnap, 'o_record_selected',

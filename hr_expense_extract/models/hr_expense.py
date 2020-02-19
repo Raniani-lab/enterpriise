@@ -119,31 +119,30 @@ class HrExpense(models.Model):
         elif field == "exp_bill_reference":
             text_to_send["content"] = self.reference
         return text_to_send
-    
-    
+
     def action_submit_expenses(self, **kwargs):
         """Send user corrected values to the ocr"""
         res = super(HrExpense, self).action_submit_expenses(**kwargs)
 
-        if self.extract_state == 'waiting_validation':
+        for expense in self.filtered(lambda x: x.extract_state == 'waiting_validation'):
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
             'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/expense_extract/validate'
 
             values = {
-                'exp_total': self.get_validation('exp_total'),
-                'exp_date': self.get_validation('exp_date'),
-                'exp_description': self.get_validation('exp_description'),
-                'exp_currency': self.get_validation('exp_currency'),
-                'exp_bill_reference': self.get_validation('exp_bill_reference')
+                'exp_total': expense.get_validation('exp_total'),
+                'exp_date': expense.get_validation('exp_date'),
+                'exp_description': expense.get_validation('exp_description'),
+                'exp_currency': expense.get_validation('exp_currency'),
+                'exp_bill_reference': expense.get_validation('exp_bill_reference')
             }
             params = {
-                    'document_id': self.extract_remote_id,
-                    'version': CLIENT_OCR_VERSION,
-                    'values': values
-                }
+                'document_id': expense.extract_remote_id,
+                'version': CLIENT_OCR_VERSION,
+                'values': values
+            }
             try:
                 jsonrpc(endpoint, params=params)
-                self.extract_state = 'done'
+                expense.extract_state = 'done'
             except AccessError:
                 pass
         return res

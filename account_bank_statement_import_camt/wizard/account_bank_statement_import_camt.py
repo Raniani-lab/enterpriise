@@ -495,7 +495,7 @@ def _generic_get(*nodes, xpath, namespaces, placeholder=None):
     return False
 
 _get_amount = partial(_generic_get,
-    xpath='ns:Amt/text()')
+    xpath='ns:Amt/text() | ns:AmtDtls/ns:TxAmt/ns:Amt/text()')
 
 _get_credit_debit_indicator = partial(_generic_get,
     xpath='ns:CdtDbtInd/text()')

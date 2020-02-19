@@ -371,6 +371,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         }
         if ($("input[name='transport_mode_private_car']")[0].checked){
             $(".mobility-options#private_car").removeClass('d-none');
+            $("input[name='private_car_km_home_work']").trigger('change');
         }
     },
 

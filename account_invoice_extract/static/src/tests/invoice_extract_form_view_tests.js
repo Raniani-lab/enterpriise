@@ -364,6 +364,79 @@ QUnit.module('FormView', {
         form.destroy();
     });
 
+    QUnit.test('always keep one box layer per page on enabling OCR boxes visualisation', async function (assert) {
+        assert.expect(3);
+
+        const form = await testUtils.createView({
+            View: FormView,
+            model: 'account.move',
+            data: this.data,
+            arch: `<form string="Account Invoice">
+                    <div class="o_success_ocr"/>
+                    <div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread" options="{'display_log_button': True}"/>
+                    </div>
+                </form>`,
+            res_id: 2,
+            services: mailTestUtils.getMailServices(),
+            config: {
+                device: {
+                    size_class: config.device.SIZES.XXL,
+                },
+            },
+            async mockRPC(route, args) {
+                if (args.method === 'get_boxes') {
+                    return invoiceExtractTestUtils.createBoxesData();
+                } else if (args.method === 'search_read') {
+                    return [this.data['mail.message'].records[0].attachment_ids[0]];
+                } else if (args.method === 'register_as_main_attachment') {
+                    return true;
+                } else if (args.method === 'message_post') {
+                    return [5];
+                } else if (args.method === 'message_format') {
+                    return [{
+                        attachment_ids: [{
+                            filename: 'invoice.pdf',
+                            id: 2,
+                            mimetype: 'application/pdf',
+                            name: 'INV007/2018',
+                            url: '/web/content/1?download=true',
+                        }],
+                        body: 'Blah"',
+                        date: "2016-12-20 10:35:40",
+                        id: 5,
+                        model: 'partner',
+                        res_id: 2,
+                    }];
+                }
+                return this._super(...arguments);
+            },
+        });
+
+        // Need to load form view before going to edit mode, otherwise
+        // 'o_success_ocr' is not loaded.
+        await testUtils.dom.click($('.o_form_button_edit'));
+        let $attachmentPreview = form.$('.o_attachment_preview_img');
+        // check presence of attachment, buttons, box layer, boxes
+        assert.strictEqual($attachmentPreview.length, 1,
+            "should display attachment preview");
+        assert.strictEqual($attachmentPreview.find('.boxLayer').length, 1,
+            "should contain a box layer on attachment");
+
+        // Send a new message to trigger a rerender (which will trigger a new boxlayer creation)
+        await testUtils.dom.click($('.o_chatter_button_log_note'));
+        form.$('.oe_chatter .o_composer_text_field:first()').val("Blah");
+        await testUtils.dom.click($('.o_composer_button_send'));
+
+        $attachmentPreview = form.$('.o_attachment_preview_img');
+        // check presence of attachment, buttons, box layer, boxes
+        assert.strictEqual($attachmentPreview.find('.boxLayer').length, 1,
+            "should contain only one box layer on attachment");
+        // Need to wait a little while so that the attachmentPreview finished its rendering
+        await testUtils.nextTick();
+        form.destroy();
+    });
 });
 });
 });

@@ -161,6 +161,12 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         var proms = [];
         //in case of img
         if ($page.hasClass('img-fluid')) {
+            // Delete previous box layer(s)
+            if (this._invoiceExtractBoxLayers.length > 0) {
+                for (const oldBoxLayer of this._invoiceExtractBoxLayers) {
+                    oldBoxLayer.destroy();
+                }
+            }
             boxLayer = new InvoiceExtractBoxLayer(this, {
                 boxesData: this._invoiceExtractBoxData,
                 mode: 'img',

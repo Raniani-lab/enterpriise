@@ -1025,6 +1025,9 @@ class SaleSubscriptionLine(models.Model):
             )
             self.price_unit = product.price
 
+            if subscription.pricelist_id.discount_policy == 'without_discount':
+                self.price_unit = product.list_price
+                self.discount = (self.price_unit - product.price) / self.price_unit * 100
             if not self.uom_id or product.uom_id.category_id.id != self.uom_id.category_id.id:
                 self.uom_id = product.uom_id.id
             if self.uom_id.id != product.uom_id.id:

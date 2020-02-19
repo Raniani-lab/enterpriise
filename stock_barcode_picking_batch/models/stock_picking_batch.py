@@ -7,6 +7,8 @@ from odoo import api, fields, models, _
 class StockPickingBatch(models.Model):
     _inherit = 'stock.picking.batch'
 
+    picking_type_code = fields.Selection(related='picking_type_id.code')
+
     def action_client_action(self):
         """ Open the mobile view specialized in handling barcodes on mobile devices.
         """
@@ -101,5 +103,6 @@ class StockPickingBatch(models.Model):
             'name',
             'picking_ids',
             'picking_type_id',
+            'picking_type_code',
             'state',
         ]

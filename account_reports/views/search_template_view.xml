@@ -287,7 +287,7 @@
                 </t>
             </a>
             <div class="dropdown-menu o_filters_menu" role="menu">
-                <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" title="Global Summary" data-filter="tax_report" t-att-data-id="None" groups="account.group_account_readonly">Global Summary</a>
+                <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" title="Global Summary" data-filter="tax_report" data-id="0" groups="account.group_account_readonly">Global Summary</a>
                 <t t-foreach="options['available_tax_reports']" t-as="report">
                     <a tole="menuitem" class="dropdown-item js_account_reports_one_choice_filter" t-att-title="report['name']" t-att-data-id="report['id']" data-filter="tax_report">
                         <t t-esc="report['name']"/>

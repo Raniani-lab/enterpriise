@@ -31,9 +31,9 @@ class generic_tax_report(models.AbstractModel):
                 'name': report.name,
             })
 
-        options['tax_report'] = previous_options and previous_options.get('tax_report', None) or None
+        options['tax_report'] = (previous_options or {}).get('tax_report', None)
 
-        if not options['tax_report'] or options['tax_report'] not in available_reports.ids:
+        if options['tax_report'] != 0 and options['tax_report'] not in available_reports.ids:
             default_report = self.env.company.get_default_selected_tax_report()
             options['tax_report'] = default_report and default_report.id or None
 

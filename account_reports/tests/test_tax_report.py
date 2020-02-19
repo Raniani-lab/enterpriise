@@ -4,6 +4,7 @@ from unittest.mock import patch
 from .common import TestAccountReportsCommon
 from odoo import fields
 from odoo.tests import tagged
+from odoo.exceptions import UserError
 
 
 @tagged('post_install', '-at_install')
@@ -21,8 +22,8 @@ class TestTaxReport(TestAccountReportsCommon):
         cls.company_data['company'].account_tax_periodicity = 'trimester'
 
         cls.tax_account = cls.env['account.account'].create({
-            'name': 'tax_account',
-            'code': 'taxtax',
+            'name': 'Tax Account',
+            'code': '250000',
             'user_type_id': cls.env.ref('account.data_account_type_current_liabilities').id,
             'company_id': cls.company_data['company'].id,
         })
@@ -207,12 +208,12 @@ class TestTaxReport(TestAccountReportsCommon):
             #   Name                                        NET             TAX
             [   0,                                          1,              2],
             [
-                ('Sales',                                   '',             ''),
+                ('Sales',                                   2200.0,         320.0),
 
                 ('sale_tax_percentage_incl_1 (20.0)',       1000.0,         200.0),
                 ('sale_tax_percentage_excl (10.0)',         1200.0,         120.0),
 
-                ('Purchases',                               '',             ''),
+                ('Purchases',                               2000.0,         1120.0),
 
                 ('purchase_tax_group',                      2000.0,         1120.0),
             ],
@@ -243,6 +244,58 @@ class TestTaxReport(TestAccountReportsCommon):
             [
                 ('Sales',                                   10000.0,        1000.0,         1000.0,         100.0,          100.0,          10.0),
                 ('sale_tax_percentage_excl (10.0)',         10000.0,        1000.0,         1000.0,         100.0,          100.0,          10.0),
+            ],
+        )
+
+    def test_generic_tax_report_by_account_tax(self):
+        report = self.env['account.generic.tax.report']
+        options = self._init_options(report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
+        options['tax_report'] = 'account_tax'
+        options['group_by'] = 'account_tax'
+        with self.assertRaises(UserError):
+            report._get_lines(options)
+
+        # Remove the move using a tax with 'amount_type': 'group'
+        self.move_purchase.button_draft()
+        self.move_purchase.posted_before = False
+        self.move_purchase.unlink()
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                        NET             TAX
+            [   0,                                               1,             2],
+            [
+                ('Sales',                                   2200.0,         320.0),
+                ('400000 Product Sales',                    2000.0,         300.0),
+                ('sale_tax_percentage_incl_1 (20.0)',       1000.0,         200.0),
+                ('sale_tax_percentage_excl (10.0)',         1000.0,         100.0),
+                ('250000 Tax Account',                       200.0,          20.0),
+                ('sale_tax_percentage_excl (10.0)',          200.0,          20.0),
+            ],
+        )
+
+    def test_generic_tax_report_by_tax_account(self):
+        report = self.env['account.generic.tax.report']
+        options = self._init_options(report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
+        options['tax_report'] = 'tax_account'
+        options['group_by'] = 'tax_account'
+        with self.assertRaises(UserError):
+            report._get_lines(options)
+
+        # Remove the move using a tax with 'amount_type': 'group'
+        self.move_purchase.button_draft()
+        self.move_purchase.posted_before = False
+        self.move_purchase.unlink()
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                        NET             TAX
+            [   0,                                               1,             2],
+            [
+                ('Sales',                                   2200.0,         320.0),
+                ('sale_tax_percentage_incl_1 (20.0)',       1000.0,         200.0),
+                ('400000 Product Sales',                    1000.0,         200.0),
+                ('sale_tax_percentage_excl (10.0)',         1200.0,         120.0),
+                ('250000 Tax Account',                       200.0,          20.0),
+                ('400000 Product Sales',                    1000.0,         100.0),
             ],
         )
 

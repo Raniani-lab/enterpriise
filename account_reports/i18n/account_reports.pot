@@ -2646,6 +2646,13 @@ msgid "Tax report"
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid ""
+"Tax report groupped by account is not available for taxes of type Group"
+msgstr ""
+
+#. module: account_reports
 #: code:addons/account_reports/models/res_company.py:0
 #: code:addons/account_reports/models/res_company.py:0
 #: code:addons/account_reports/models/res_company.py:0

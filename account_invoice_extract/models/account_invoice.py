@@ -553,9 +553,10 @@ class AccountMove(models.Model):
     def check_all_status(self):
         for record in self.search([('state', '=', 'draft'), ('extract_state', 'in', ['waiting_extraction', 'extract_not_ready'])]):
             try:
-                record._check_status()
-            except:
-                pass
+                with self.env.cr.savepoint():
+                    record._check_status()
+            except Exception as e:
+                _logger.error("Couldn't check status of account.move with id %d: %s", record.id, str(e))
 
     def check_status(self):
         """contact iap to get the actual status of the ocr requests"""
@@ -569,9 +570,10 @@ class AccountMove(models.Model):
             records_to_preupdate = self.search([('extract_state', 'in', ['waiting_extraction', 'extract_not_ready']), ('id', 'not in', records_to_update.ids), ('state', '=', 'draft')], limit=limit)
             for record in records_to_preupdate:
                 try:
-                    record._check_status()
-                except:
-                    pass
+                    with self.env.cr.savepoint():
+                        record._check_status()
+                except Exception as e:
+                    _logger.error("Couldn't check status of account.move with id %d: %s", record.id, str(e))
 
     def _check_status(self):
         self.ensure_one()

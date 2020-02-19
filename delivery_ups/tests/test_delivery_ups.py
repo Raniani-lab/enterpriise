@@ -54,7 +54,7 @@ class TestDeliveryUPS(TransactionCase):
                        'ups_package_dimension_unit': 'IN'})
         carrier.ups_default_packaging_id.write({'height': '3',
                                                 'width': '3',
-                                                'length': '3'})
+                                                'packaging_length': '3'})
 
         so_vals = {'partner_id': self.agrolait.id,
                    'order_line': [(0, None, sol_vals)]}
@@ -98,7 +98,7 @@ class TestDeliveryUPS(TransactionCase):
                        'ups_package_dimension_unit': 'IN'})
         carrier.ups_default_packaging_id.write({'height': '3',
                                                 'width': '3',
-                                                'length': '3'})
+                                                'packaging_length': '3'})
 
         sol_1_vals = {'product_id': self.iPadMini.id,
                       'name': "[A1232] Large Cabinet",
@@ -163,7 +163,7 @@ class TestDeliveryUPS(TransactionCase):
                        'ups_package_dimension_unit': 'IN'})
         carrier.ups_default_packaging_id.write({'height': '3',
                                                 'width': '3',
-                                                'length': '3'})
+                                                'packaging_length': '3'})
 
         StockPicking = self.env['stock.picking']
 

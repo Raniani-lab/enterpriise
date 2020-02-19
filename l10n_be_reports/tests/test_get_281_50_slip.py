@@ -132,7 +132,6 @@ class TestResPartner(AccountTestInvoicingCommon):
                 'payment_date': fields.Date.from_string('200%s-05-12' % i),
                 'partner_id': self.partner_a.id,
                 'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
-                'destination_journal_id': move.journal_id.id,
                 'partner_type': 'supplier'
             })
 
@@ -181,7 +180,6 @@ class TestResPartner(AccountTestInvoicingCommon):
             'payment_date': fields.Date.from_string('2000-05-12'),
             'partner_id': self.partner_a.id,
             'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
-            'destination_journal_id': move.journal_id.id,
             'partner_type': 'supplier'
         })
         payment.post()

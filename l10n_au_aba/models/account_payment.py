@@ -42,12 +42,3 @@ class AccountPayment(models.Model):
             if rec.payment_method_id == self.env.ref('l10n_au_aba.account_payment_method_aba_ct'):
                 if rec.partner_bank_account_id.acc_type != 'aba' or not rec.partner_bank_account_id.aba_bsb:
                     raise ValidationError(_("The partner requires a bank account with a valid BSB and account number. Please configure it first."))
-
-    @api.onchange('destination_journal_id')
-    def _onchange_destination_journal_id(self):
-        if hasattr(super(AccountPayment, self), '_onchange_destination_journal_id'):
-            super(AccountPayment, self)._onchange_destination_journal_id()
-        if self.destination_journal_id:
-            bank_account = self.destination_journal_id.bank_account_id
-            self.partner_id = bank_account.company_id.partner_id
-            self.partner_bank_account_id = bank_account

@@ -62,16 +62,6 @@ class AccountPayment(models.Model):
                 if not rec.journal_id.bank_account_id or not rec.journal_id.bank_account_id.acc_type == 'iban':
                     raise ValidationError(_("The journal '%s' requires a proper IBAN account to pay via SEPA. Please configure it first.") % rec.journal_id.name)
 
-    @api.onchange('destination_journal_id')
-    def _onchange_destination_journal_id(self):
-        if hasattr(super(AccountPayment, self), '_onchange_destination_journal_id'):
-            super(AccountPayment, self)._onchange_destination_journal_id()
-        if self.destination_journal_id:
-            bank_account = self.destination_journal_id.bank_account_id
-            self.partner_id = bank_account.company_id.partner_id
-            self.partner_bank_account_id = bank_account
-
-
 class AccountPaymentRegister(models.TransientModel):
     _inherit = "account.payment.register"
 

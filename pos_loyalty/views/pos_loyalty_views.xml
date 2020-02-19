@@ -33,6 +33,8 @@
             <field name="arch" type="xml">
                 <form string="Loyalty Program">
                     <sheet>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                        <field name="active" invisible="1"/>
                         <div class="oe_title">
                             <label class="oe_edit_only" for="name" string="Loyalty Program Name"/>
                             <h1><field name="name"/></h1>
@@ -70,6 +72,17 @@
 
                     </sheet>
                 </form>
+            </field>
+        </record>
+
+        <record id="view_loyalty_program_search" model="ir.ui.view">
+            <field name="name">loyalty.program.search</field>
+            <field name="model">loyalty.program</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <filter string="Archived" name="active" domain="[('active', '=', False)]"/>
+                </search>
             </field>
         </record>
 

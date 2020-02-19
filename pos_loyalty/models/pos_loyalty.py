@@ -15,6 +15,7 @@ class LoyaltyProgram(models.Model):
     points = fields.Float(string='Point per $ spent', help="How many loyalty points are given to the customer by sold currency")
     rule_ids = fields.One2many('loyalty.rule', 'loyalty_program_id', string='Rules')
     reward_ids = fields.One2many('loyalty.reward', 'loyalty_program_id', string='Rewards')
+    active = fields.Boolean(default=True)
 
 
 class LoyaltyRule(models.Model):

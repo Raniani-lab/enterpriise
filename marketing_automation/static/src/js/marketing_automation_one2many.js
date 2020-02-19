@@ -171,7 +171,7 @@ var HierarchyKanbanRenderer = KanbanRenderer.extend({
 var HierarchyKanbanRecord = KanbanRecord.extend({
     events: _.extend({}, KanbanRecord.prototype.events, {
         'click .o_ma_switch span': '_onClickSwitch',
-        'click .o_add_child': '_onKanbanActionClicked',
+        'click .o_add_child_activity': '_onAddChildActivity',
     }),
 
     //--------------------------------------------------------------------------
@@ -203,7 +203,7 @@ var HierarchyKanbanRecord = KanbanRecord.extend({
 
     /**
      * Displays dialog if user try to delete record having children.
-     * Triggers custom actions related to add child activities.
+     * Triggers actions (DELETE, EDIT...)
      *
      * @private
      * @override
@@ -229,19 +229,34 @@ var HierarchyKanbanRecord = KanbanRecord.extend({
                     html: _t("This Activity has a dependant child activity. 'DELETE ALL' will delete all child activities."),
                 }),
             }).open();
-        } else if (_.indexOf(['act', 'mail_open', 'mail_not_open', 'mail_reply', 'mail_not_reply', 'mail_click', 'mail_not_click', 'mail_bounce'], type) !== -1) {
-            // If we are in edit mode and we create a new kanban record,
-            // we cannot add a child activity for this record before saving.
-            if (this.id) {
-                this.trigger_up('add_child_act', {
-                    'default_parent_id': this.id,
-                    'default_trigger_type': type
-                });
-            } else {
-                this.do_warn(_t('Please save the campaign to add a child activity'));
-            }
         } else {
             this._super.apply(this, arguments);
+        }
+    },
+
+    /**
+     * Handles clicking on a button "Add a child activity".
+     *
+     * The dom element can have an attribute ``data-trigger_type`` with the default trigger type
+     *
+     * @private
+     * @param {Event} event
+     */
+    _onAddChildActivity: function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+        var triggerType = $(event.currentTarget).data('triggerType');
+        if (this.id) {
+            this.trigger_up('add_child_act', {
+                'default_parent_id': this.id,
+                'default_trigger_type': triggerType
+            });
+        } else {
+            this.displayNotification({
+                type: 'warning',
+                title: _t('Please save the campaign'),
+                message: _t('Please save the campaign to add a child activity'),
+            });
         }
     },
 

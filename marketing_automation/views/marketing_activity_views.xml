@@ -51,8 +51,9 @@
                             </div>
                             <label for="parent_id" attrs="{'invisible': [('trigger_type', '=', 'begin')]}"/>
                             <div>
+                                <field name="allowed_parent_ids" invisible="1"/>
                                 <field name="parent_id"
-                                    domain="[('id', 'in', parent.marketing_activity_ids), ('id', '!=', id)]"
+                                    domain="[('id', 'in', allowed_parent_ids)]"
                                     attrs="{'required': [('trigger_type', '!=', 'begin')], 'invisible': [('trigger_type', '=', 'begin')]}"
                                     options="{'no_create_edit': True, 'no_create': True}"/>
                             </div>

@@ -67,7 +67,7 @@ for record in records:
             'parent_id': act_0.id,
             'activity_type': 'action',
             'server_action_id': server_action.id,
-            'trigger_type': 'act',
+            'trigger_type': 'activity',
             'interval_number': '1',
             'interval_type': 'hours',
         })
@@ -293,7 +293,7 @@ for record in records:
             'activity_type': 'email',
             'mass_mailing_id': mass_mailing.id,
             'parent_id': act_0.id,
-            'trigger_type': 'act',
+            'trigger_type': 'activity',
             'interval_number': '1',
             'interval_type': 'hours',
         })

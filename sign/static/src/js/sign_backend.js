@@ -684,17 +684,9 @@ odoo.define('sign.template', function(require) {
             this.rolesToChoose = {};
 
             var self = this;
-            
-            var $closeButton = $('<button/>', {html: _t("Close"), type: "button"})
-                .addClass('btn btn-secondary')
-                .on('click', function () {
-                    return self.do_action('sign.sign_template_action', {
-                        clear_breadcrumbs: true
-                       });
 
-                });
             var $sendButton = $('<button/>', {html: _t("Send"), type: "button"})
-                .addClass('btn btn-secondary')
+                .addClass('btn btn-primary')
                 .on('click', function () {
                     self.do_action('sign.action_sign_send_request', {
                         additional_context: {
@@ -704,7 +696,7 @@ odoo.define('sign.template', function(require) {
                     });
                 });
             var $signNowButton = $('<button/>', {html: _t("Sign Now"), type: "button"})
-                .addClass('btn btn-secondary')
+                .addClass('btn btn-primary')
                 .on('click', function () {
                     self.do_action('sign.action_sign_send_request', {
                         additional_context: {
@@ -722,14 +714,20 @@ odoo.define('sign.template', function(require) {
                         },
                     });
                 });
-            
-            // If context: sign_template_edit: primary button: Close
+            var $closeButton = $('<button/>', {html: _t("Close"), type: "button"})
+                .addClass('btn btn-secondary')
+                .on('click', function () {
+                    return self.do_action('sign.sign_template_action', {
+                        clear_breadcrumbs: true
+                       });
+                });
+
             // if context : sign_send_request: primary button: Send a request
             // if context : sign_sign_now: primary button: Sign Now (send a request renamed)
 
             if (! options.context.sign_edit_call || options.context.sign_edit_call === 'sign_template_edit') {
-                $closeButton.switchClass('btn-secondary', 'btn-primary');
-                this.cp_content = {$buttons: $closeButton.add($sendButton).add($signNowButton).add($shareButton)};
+                $sendButton.addClass('mr-2');
+                this.cp_content = {$buttons: $sendButton.add($signNowButton).add($shareButton).add($closeButton)};
             } else if (options.context.sign_edit_call === 'sign_sign_now') {
                 $signNowButton.switchClass('btn-secondary', 'btn-primary');
                 this.cp_content = {$buttons: $signNowButton.add($sendButton).add($shareButton).add($closeButton)};

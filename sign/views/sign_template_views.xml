@@ -13,6 +13,8 @@
                 <field name="favorited_ids"/>
                 <field name="responsible_count"/>
                 <field name="create_uid"/>
+                <field name="signed_count"/>
+                <field name="in_progress_count"/>
 
                 <templates>
                     <div t-name="kanban-box" t-attf-class="oe_kanban_global_click {{kanban_color(record.color.raw_value)}}">
@@ -45,6 +47,9 @@
                         </div>
                         <div class="o_kanban_record_body">
                             <em><field name="create_date"/></em>
+                            <div title="[P] Number of documents in progress for this template. [S] Number of documents signed for this template.">
+                                <span>[P] <field name="in_progress_count"/> [S] <field name="signed_count"/></span>
+                            </div>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </div>
                         <div class="o_kanban_record_bottom">

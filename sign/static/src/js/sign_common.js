@@ -1425,6 +1425,7 @@ odoo.define('sign.document_signing', function (require) {
                         } else {
                             var nameAndSignatureOptions = {
                                 defaultName: self.getParent().signerName || "",
+                                fontColor: 'DarkBlue',
                                 signatureType: type['item_type'],
                                 displaySignatureRatio: parseFloat($signatureItem.css('width')) / parseFloat($signatureItem.css('height')),
                             };
@@ -1647,7 +1648,10 @@ odoo.define('sign.document_signing', function (require) {
 
         signDocument: function (e) {
             var self = this;
-            var nameAndSignatureOptions = {defaultName: this.signerName};
+            var nameAndSignatureOptions = {
+                fontColor: 'DarkBlue',
+                defaultName: this.signerName
+            };
             var options = {nameAndSignatureOptions: nameAndSignatureOptions};
             var signDialog = new SignatureDialog(this, options, self.requestID, self.accessToken);
 

@@ -23,7 +23,10 @@ class SignSendRequest(models.TransientModel):
             'partner_id': False,
         }) for role in roles]
         if self.env.context.get('sign_directly_without_mail'):
-            res['signer_id'] = self.env.user.partner_id.id
+            if roles:
+                res['signer_ids'][0][2]['partner_id'] = self.env.user.partner_id.id
+            else:
+                res['signer_id'] = self.env.user.partner_id.id
         return res
 
     template_id = fields.Many2one('sign.template', required=True, ondelete='cascade')

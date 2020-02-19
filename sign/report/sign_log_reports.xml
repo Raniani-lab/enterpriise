@@ -62,6 +62,9 @@
                                         <t t-if="log.sign_request_item_id.access_via_link">
                                             <span t-esc="log.sign_request_item_id.signer_email"/>
                                         </t>
+                                        <t t-elif="log.user_id != False and log.user_id in log.sign_request_item_id.partner_id.user_ids">
+                                            <span class="text-muted text-nowrap"><i class="fa fa-user"/> <t t-esc="log.sign_request_item_id.partner_id.user_ids[0].email"/></span>
+                                        </t>
                                         <t t-elif="log.action == 'sign'">
                                             <span class="text-muted"><i class="fa fa-times"/> No email Validation</span>
                                         </t>

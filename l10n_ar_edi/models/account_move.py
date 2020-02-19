@@ -64,9 +64,9 @@ class AccountMove(models.Model):
         for rec in self:
             barcode = False
             if rec.l10n_ar_afip_auth_code:
-                cae_due = ''.join([c for c in str(rec.l10n_ar_afip_auth_code_due or '') if c.isdigit()])
+                cae_due = rec.l10n_ar_afip_auth_code_due.strftime('%Y%m%d')
                 barcode = ''.join([str(rec.company_id.partner_id.l10n_ar_vat), "%03d" % int(rec.l10n_latam_document_type_id.code),
-                                   "%54d" % rec.journal_id.l10n_ar_afip_pos_number, rec.l10n_ar_afip_auth_code, cae_due])
+                                   "%05d" % rec.journal_id.l10n_ar_afip_pos_number, rec.l10n_ar_afip_auth_code, cae_due])
             rec.l10n_ar_afip_barcode = barcode
 
     @api.depends('l10n_latam_document_type_id', 'company_id')

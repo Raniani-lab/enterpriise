@@ -94,8 +94,19 @@ class TestFe(common.TestEdi):
         iibb_tax = self._search_tax('percepcion_iibb')
         iibb_tax.active = True
 
-        invoice = self._create_invoice()
-        invoice.invoice_line_ids.filtered(lambda x: x.tax_ids).tax_ids = [(4, iibb_tax.id)]
+        product_27 = self.env.ref('l10n_ar.product_product_telefonia_product_template')
+        product_no_gravado = self.env.ref('l10n_ar.product_product_no_gravado')
+        product_exento = self.env.ref('l10n_ar.product_product_exento')
+
+        invoice = self._create_invoice(data={
+            'lines': [{'product': product_27, 'price_unit': 100.0, 'quantity': 8},
+                      {'product': product_no_gravado, 'price_unit': 750.0, 'quantity': 1},
+                      {'product': product_exento, 'price_unit': 40.0, 'quantity': 20}]})
+
+        # Add perceptions taxes
+        invoice.invoice_line_ids.filtered(lambda x: x.product_id == product_27).tax_ids = [(4, iibb_tax.id)]
+        invoice.invoice_line_ids.filtered(lambda x: x.product_id == product_exento).tax_ids = [(4, iibb_tax.id)]
+
         self.assertIn(iibb_tax.name, invoice.invoice_line_ids.mapped('tax_ids').mapped('name'))
         self._edi_validate_and_review(invoice)
 

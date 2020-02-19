@@ -332,11 +332,15 @@ class AccountMove(models.Model):
         self.ensure_one()
         tax_lines = self.line_ids.filtered('tax_line_id')
         vat_taxes = tax_lines.filtered(lambda r: r.tax_line_id.tax_group_id.l10n_ar_vat_afip_code)
+
+        vat_taxable = self.env['account.move.line']
+        for line in self.invoice_line_ids:
+            if any(tax.tax_group_id.l10n_ar_vat_afip_code and tax.tax_group_id.l10n_ar_vat_afip_code not in ['0', '1', '2'] for tax in line.tax_ids):
+                vat_taxable |= line
+
         return {'vat_amount': sum(vat_taxes.mapped('price_subtotal')),
-                # [0, 1, 2] = VAT Exempt, VAT Untaxed and VAT Not applicable
                 # For invoices of letter C should not pass VAT
-                'vat_taxable_amount': sum(self.invoice_line_ids.filtered(lambda x: x.tax_ids.filtered(
-                    lambda y: y.tax_group_id.l10n_ar_vat_afip_code not in ['0', '1', '2'])).mapped('price_subtotal'))
+                'vat_taxable_amount': sum(vat_taxable.mapped('price_subtotal'))
                 if self.l10n_latam_document_type_id.l10n_ar_letter != 'C' else self.amount_untaxed,
                 'vat_exempt_base_amount': sum(self.invoice_line_ids.filtered(lambda x: x.tax_ids.filtered(lambda y: y.tax_group_id.l10n_ar_vat_afip_code == '2')).mapped('price_subtotal')),
                 'vat_untaxed_base_amount': sum(self.invoice_line_ids.filtered(lambda x: x.tax_ids.filtered(lambda y: y.tax_group_id.l10n_ar_vat_afip_code == '1')).mapped('price_subtotal')),

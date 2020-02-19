@@ -402,7 +402,10 @@ class AccountMove(models.Model):
     def _get_vat(self):
         """ Applies on wsfe web service """
         res = []
-        vat_taxable = self.line_ids.filtered('tax_line_id').filtered(lambda x: x.tax_group_id.l10n_ar_vat_afip_code and x.tax_group_id.l10n_ar_vat_afip_code not in ['0', '1', '2'] and x.price_subtotal)
+        vat_taxable = self.env['account.move.line']
+        for line in self.line_ids:
+            if any(tax.tax_group_id.l10n_ar_vat_afip_code and tax.tax_group_id.l10n_ar_vat_afip_code not in ['0', '1', '2'] for tax in line.tax_line_id) and line.price_subtotal:
+                vat_taxable |= line
         for vat in vat_taxable:
             base_imp = sum(self.invoice_line_ids.filtered(lambda x: x.tax_ids.filtered(lambda y: y.tax_group_id.l10n_ar_vat_afip_code == vat.tax_line_id.tax_group_id.l10n_ar_vat_afip_code)).mapped('price_subtotal'))
             res += [{'Id': vat.tax_line_id.tax_group_id.l10n_ar_vat_afip_code,

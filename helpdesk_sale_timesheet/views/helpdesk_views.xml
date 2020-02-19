@@ -21,8 +21,14 @@
         <field name="inherit_id" ref="helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet"/>
         <field name="arch" type="xml">
             <button name="assign_ticket_to_self" position="after">
-                <field name="is_so_button_visible" invisible="1"/>
-                <button name="create_sale_order" string="Create Sales Order" type="object" class="btn btn-secondary" attrs="{'invisible': [('is_so_button_visible', '=', False)]}"/>
+                <field name="display_create_so_button_primary" invisible="1"/>
+                <field name="display_create_so_button_secondary" invisible="1"/>
+                <field name="display_create_invoice_primary" invisible="1"/>
+                <field name="display_create_invoice_secondary" invisible="1"/>
+                <button name="create_sale_order" string="Create Sales Order" type="object" class="btn btn-primary" attrs="{'invisible': [('display_create_so_button_primary', '=', False)]}" groups="sales_team.group_sale_salesman"/>
+                <button name="create_sale_order" string="Create Sales Order" type="object" class="btn btn-secondary" attrs="{'invisible': [('display_create_so_button_secondary', '=', False)]}" groups="sales_team.group_sale_salesman"/>
+                <button name="action_helpdesk_create_invoice" string="Create Invoice" type="object" class="btn btn-secondary" attrs="{'invisible': [('display_create_invoice_secondary', '=', False)]}" groups="sales_team.group_sale_salesman"/>
+                <button name="action_helpdesk_create_invoice" string="Create Invoice" type="object" class="btn btn-primary" attrs="{'invisible': [('display_create_invoice_primary', '=', False)]}" groups="sales_team.group_sale_salesman"/>
             </button>
             <xpath expr="//field[@name='timesheet_ids']/tree" position="attributes">
                 <attribute name="decoration-muted">timesheet_invoice_id != False</attribute>
@@ -65,7 +71,7 @@
         <field name="state">code</field>
         <field name="code">
             if records:
-                action = records._action_helpdesk_create_invoice()
+                action = records.action_helpdesk_create_invoice()
         </field>
     </record>
 

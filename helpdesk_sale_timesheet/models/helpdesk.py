@@ -3,8 +3,6 @@
 
 from ast import literal_eval
 from odoo import api, fields, models, _
-from odoo.osv import expression
-from odoo.exceptions import UserError
 
 from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_TIMESHEET
 
@@ -22,8 +20,11 @@ class HelpdeskTicket(models.Model):
 
     use_helpdesk_sale_timesheet = fields.Boolean('Reinvoicing Timesheet activated on Team', related='team_id.use_helpdesk_sale_timesheet', readonly=True)
     invoice_status = fields.Selection(related='sale_order_id.invoice_status')
-    is_so_button_visible = fields.Boolean('Button visible', compute="_compute_sale_order_button_visibility")
-    sale_order_id = fields.Many2one('sale.order', compute="_compute_helpdesk_sale_order", store=True, readonly=False)
+    display_create_so_button_primary = fields.Boolean(compute="_compute_sale_order_button_visibility", compute_sudo=True)
+    display_create_so_button_secondary = fields.Boolean(compute="_compute_sale_order_button_visibility", compute_sudo=True)
+    display_create_invoice_primary = fields.Boolean(compute='_compute_display_create_invoice_buttons', compute_sudo=True)
+    display_create_invoice_secondary = fields.Boolean(compute='_compute_display_create_invoice_buttons', compute_sudo=True)
+    sale_order_id = fields.Many2one('sale.order', compute="_compute_helpdesk_sale_order", compute_sudo=True, store=True, readonly=False)
 
     @api.depends('project_id', 'use_helpdesk_sale_timesheet', 'partner_id.commercial_partner_id')
     def _compute_related_task_ids(self):
@@ -36,20 +37,42 @@ class HelpdeskTicket(models.Model):
             ])._origin
         super(HelpdeskTicket, self - reinvoiced)._compute_related_task_ids()
 
-    @api.depends('use_helpdesk_sale_timesheet', 'project_id.allow_billable', 'project_id.sale_order_id', 'task_id.sale_line_id')
+    @api.depends('use_helpdesk_sale_timesheet', 'project_id.allow_billable', 'project_id.sale_order_id', 'task_id.sale_line_id', 'total_hours_spent')
     def _compute_sale_order_button_visibility(self):
-        is_salesman = self.env.user.has_group('sales_team.group_sale_salesman')
         for ticket in self:
-            if not is_salesman or not ticket.use_helpdesk_sale_timesheet:
-                ticket.is_so_button_visible = False
-            elif ticket.project_id and not ticket.project_id.allow_billable and \
-                    not ticket.project_id.sale_order_id:
-                ticket.is_so_button_visible = True
-            elif ticket.project_id and ticket.project_id.allow_billable and \
-                    ticket.task_id and not ticket.task_id.sale_line_id:
-                ticket.is_so_button_visible = True
+            primary, secondary = False, False
+            if ticket.use_helpdesk_sale_timesheet:
+                if ticket.project_id and not ticket.project_id.allow_billable and \
+                        not ticket.project_id.sale_order_id:
+                    if ticket.total_hours_spent > 0:
+                        primary = True
+                    else:
+                        secondary = True
+                elif ticket.project_id and ticket.project_id.allow_billable and \
+                        ticket.task_id and not ticket.task_id.sale_line_id:
+                    if ticket.total_hours_spent > 0:
+                        primary = True
+                    else:
+                        secondary = True
+            ticket.display_create_so_button_primary = primary
+            ticket.display_create_so_button_secondary = secondary
+
+    @api.depends('sale_order_id.invoice_status')
+    def _compute_display_create_invoice_buttons(self):
+        for ticket in self:
+            primary, secondary = True, True
+            if not ticket.sale_order_id or ticket.sale_order_id.invoice_status == 'invoiced' or \
+                    ticket.sale_order_id.state in ['cancel']:
+                primary, secondary = False, False
             else:
-                ticket.is_so_button_visible = False
+                if ticket.sale_order_id.invoice_status in ['upselling', 'to invoice']:
+                    secondary = False
+                else:  # Means invoice status is 'Nothing to Invoice'
+                    primary = False
+            ticket.write({
+                'display_create_invoice_primary': primary,
+                'display_create_invoice_secondary': secondary,
+            })
 
     def create_sale_order(self):
         self.ensure_one()
@@ -94,25 +117,20 @@ class HelpdeskTicket(models.Model):
             },
         }
 
-    def _action_helpdesk_create_invoice(self):
+    def action_helpdesk_create_invoice(self):
         # ensure the SO exists before invoicing, then confirm it
         so_to_confirm = self.filtered(
             lambda ticket: ticket.sale_order_id and ticket.sale_order_id.state in ['draft', 'sent']
         ).mapped('sale_order_id')
         so_to_confirm.action_confirm()
 
-        tickets = self.search([
-            ('sale_order_id', '!=', False),
-            ('invoice_status', 'in', ['to invoice', 'upselling'])])
-        if not tickets:
-            raise UserError(_('There are no sales orders to invoice.'))
-
         action = self.env.ref('sale.action_view_sale_advance_payment_inv').read()[0]
         context = literal_eval(action.get('context', "{}"))
         context.update({
-            'active_id': tickets.sale_order_id.id if len(tickets) == 1 else False,
-            'active_ids': tickets.mapped('sale_order_id').ids,
+            'active_id': self.sale_order_id.id if len(self) == 1 else False,
+            'active_ids': self.mapped('sale_order_id').ids,
             'default_company_id': self.company_id.id,
+            'default_advance_payment_method': 'percentage' if len(self) == 1 and self.display_create_invoice_secondary else 'delivered'
         })
         action['context'] = context
         return action

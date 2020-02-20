@@ -61,6 +61,14 @@ odoo.define('sign.views_custo', function(require) {
             } else {
                 this._super.apply(this, arguments);
             }
+        },
+        async _render() {
+            await this._super(...arguments);
+            if (config.device.isMobile &&
+                (this.modelName === "sign.template" || this.modelName === "sign.request")) {
+                this.$('.o_kanban_record_bottom .oe_kanban_bottom_left button:not(.o_kanban_sign_directly)')
+                    .attr('data-mobile', '{"fullscreen": true}');
+            }
         }
     });
 

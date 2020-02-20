@@ -1,6 +1,7 @@
 odoo.define('sign.views_custo', function(require) {
     'use strict';
 
+    var config = require('web.config');
     var core = require('web.core');
     var KanbanController = require("web.KanbanController");
     var KanbanColumn = require("web.KanbanColumn");
@@ -38,6 +39,10 @@ odoo.define('sign.views_custo', function(require) {
         _openRecord: function () {
             var self = this;
             if (this.modelName === 'sign.template' && this.$el.parents('.o_kanban_dashboard').length) {
+                // don't allow edit on mobile
+                if (config.device.isMobile) {
+                    return;
+                }
                 self._rpc({
                     model: 'sign.template',
                     method: 'go_to_custom_template',
@@ -84,6 +89,11 @@ odoo.define('sign.views_custo', function(require) {
                     e.stopImmediatePropagation();
                     _sign_upload_file.call(self, true, false, 'sign_send_request');
                 });
+                // don't allow template creation on mobile devices
+                if (config.device.isMobile) {
+                    this.$buttons.find(selector_button).hide();
+                    return;
+                }
                 this.$buttons.find(selector_button).after(
                     $('<button class="btn btn-primary o-kanban-button-new o-direct ml8" type="button">'+ _t('Sign Now') + '</button>')
                     .off('click')

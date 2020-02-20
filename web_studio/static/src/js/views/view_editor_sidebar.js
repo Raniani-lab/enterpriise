@@ -45,6 +45,7 @@ var OPTIONS_BY_WIDGET = {
         {name: 'no_open', type: 'boolean', string: _lt("Disable opening"), leaveEmpty: 'unchecked'},
     ],
     many2many_tags: [
+        { name: 'no_create', type: 'boolean', string: _lt("Disable creation"), leaveEmpty: 'unchecked' },
         {name: 'color_field', type: 'boolean', string: _lt("Use colors"), leaveEmpty: 'unchecked'},
     ],
     radio: [

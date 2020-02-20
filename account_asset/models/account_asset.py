@@ -182,7 +182,7 @@ class AccountAsset(models.Model):
         The field account_asset_id is required but invisible in the Deferred Revenue Model form.
         Therefore, set it when account_depreciation_id changes.
         """
-        if not self.account_asset_id and self.asset_type in ('sale', 'expense') and self.state == 'model':
+        if self.asset_type in ('sale', 'expense') and self.state == 'model':
             self.account_asset_id = self.account_depreciation_id
 
     @api.onchange('account_asset_id')

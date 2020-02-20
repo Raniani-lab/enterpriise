@@ -18,7 +18,7 @@ MessagingMenu.include(Object.assign({}, SwipeItemMixin, {
             allowSwipe: (ev, action) => {
                 return action === 'right' && this._allowRightSwipe(ev);
             },
-            onRightSwipe: ev => {
+            onRightSwipe: (ev, restore) => {
                 const $preview = this._getPreviewFromSwipe(ev);
                 this._toggleUnReadPreviewDisplay(ev);
                 const isNotificationNotDiscuss = isNaN($preview.data('preview-id'));
@@ -34,6 +34,7 @@ MessagingMenu.include(Object.assign({}, SwipeItemMixin, {
                 if (isNotificationNotDiscuss) {
                     const $target = $(ev.currentTarget);
                     params.onActionClick = () => {
+                        restore();
                         this._toggleUnReadPreviewDisplay(ev);
                         $target.slideDown('fast');
                     };
@@ -42,6 +43,10 @@ MessagingMenu.include(Object.assign({}, SwipeItemMixin, {
                     new SnackBar(this, params).show();
                 }
             },
+            avoidRestorePositionElement: (swipeDirection, $target, ev) => {
+                const $preview = this._getPreviewFromSwipe(ev);
+                return isNaN($preview.data('preview-id'));
+            },
             selectorTarget: '.o_mail_preview',
         });
         return this._super(...arguments);
@@ -49,7 +54,11 @@ MessagingMenu.include(Object.assign({}, SwipeItemMixin, {
     _allowRightSwipe(ev) {
         const $preview = this._getPreviewFromSwipe(ev);
         const previewID = $preview.data('preview-id');
-        if ('mailbox_inbox' === previewID || 'mail_failure' === previewID) {
+        if (previewID === 'mail_failure' || previewID === 'sms_failure') {
+            // FIXME show modal in mobile for failure
+            return false;
+        }
+        if (previewID === 'mailbox_inbox') {
             return true;
         } else {
             return $preview.data('unread-counter') > 0;

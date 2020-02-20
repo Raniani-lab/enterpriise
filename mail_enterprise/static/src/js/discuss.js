@@ -37,28 +37,34 @@ Discuss.include(Object.assign({}, SwipeItemMixin, {
             allowSwipe: (ev, action) => {
                 return action === 'right' && this._allowRightSwipe(ev);
             },
-            onRightSwipe: ev => {
+            onRightSwipe: (ev, restore) => {
                 const thread = this._getThreadFromSwipe(ev);
-                this._toggleUnReadPreviewDisplay(ev);
+                this._toggleUnReadPreviewDisplay(ev, false);
                 let params = {
                     message: _t('Marked as read'),
                     delay: 3000,
                     onComplete: () => this._processPreviewMarkAsRead(ev),
                     actionText: _t('UNDO'),
-                    onActionClick: () => {
-                        this._toggleUnReadPreviewDisplay(ev);
-                    }
                 };
                 if (thread && thread.getType() !== 'mailbox') {
+                    const hasUnreadMessage = this._getPreviewFromSwipe(ev).data('unread-counter') > 0;
+                    params.onActionClick = () => {
+                        this._toggleUnReadPreviewDisplay(ev, hasUnreadMessage);
+                    };
                     new SnackBar(this, params).show();
                 } else {
                     const $target = $(ev.currentTarget);
                     params.onActionClick = () => {
-                        this._toggleUnReadPreviewDisplay(ev);
+                        restore();
+                        this._toggleUnReadPreviewDisplay(ev, true);
                         $target.slideDown('fast');
                     };
                     $target.slideUp('fast', () => new SnackBar(this, params).show());
                 }
+            },
+            avoidRestorePositionElement: (swipeDirection, $target, ev) => {
+                const thread = this._getThreadFromSwipe(ev);
+                return thread && thread.getType() === 'mailbox';
             },
             selectorTarget: '.o_mail_preview',
         });
@@ -151,15 +157,6 @@ Discuss.include(Object.assign({}, SwipeItemMixin, {
         }
     },
     /**
-     *
-     * @param ev
-     * @private
-     */
-    _processToggleStar(ev) {
-        const messageId = $(ev.currentTarget).find('.o_thread_message').data('message-id');
-        this.trigger('toggle_star_status', messageId);
-    },
-    /**
      * @override
      * @private
      */
@@ -224,19 +221,9 @@ Discuss.include(Object.assign({}, SwipeItemMixin, {
      * @param ev
      * @private
      */
-    _toggleStarDisplay(ev) {
-        $(ev.currentTarget).find('.o_thread_message_star')
-            .toggleClass('fa-star-o')
-            .toggleClass('fa-star');
-    },
-    /**
-     *
-     * @param ev
-     * @private
-     */
-    _toggleUnReadPreviewDisplay(ev) {
+    _toggleUnReadPreviewDisplay(ev, state) {
         this._getPreviewFromSwipe(ev)
-            .toggleClass('o_preview_unread');
+            .toggleClass('o_preview_unread', state);
     },
 
     /**

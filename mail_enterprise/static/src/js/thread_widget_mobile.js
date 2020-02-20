@@ -16,32 +16,28 @@ ThreadWidget.include(Object.assign({}, SwipeItemMixin, {
     init() {
         SwipeItemMixin.init.call(this, {
             allowSwipe: (ev, action) => {
-                return action === 'left' && this._allowLeftSwipe(ev);
+                return action === 'right' && this._allowRightSwipe(ev);
             },
-            onLeftSwipe: ev => {
-                this._toggleStarDisplay(ev);
-                let params = {
-                    message: _t('Toggle star'),
-                    delay: 3000,
-                    onComplete: () => this.trigger('toggle_star_status', this._retrieveMessageId(ev)),
-                    actionText: _t('UNDO'),
-                    onActionClick: () => {
-                        this._toggleStarDisplay(ev);
-                    },
-                };
-                // the message is only remove on mailbox starred thread
-                if ('mailbox_starred' === this._currentThreadID) {
-                    const $target = $(ev.currentTarget);
-                    params.message = _t('Unstar message');
-                    params.onActionClick = () => {
-                        this._toggleStarDisplay(ev);
-                        $target.slideDown('fast');
+            onRightSwipe: (ev, restore) => {
+                const $threadMessageElement = this._getThreadMessageElement(ev);
+                const messageId = $threadMessageElement.data('message-id');
+                if (this._currentThreadID === 'mailbox_inbox' && messageId) {
+                    let params = {
+                        message: _t('Marked as read'),
+                        delay: 3000,
+                        onComplete: () => {
+                            this.trigger('mark_as_read', messageId);
+                        },
+                        actionText: _t('UNDO'),
+                        onActionClick: () => {
+                            $threadMessageElement.slideDown('fast');
+                            restore();
+                        },
                     };
-                    $target.slideUp('fast', () => new SnackBar(this, params).show());
-                } else {
-                    new SnackBar(this, params).show();
+                    $threadMessageElement.slideUp('fast', () => new SnackBar(this, params).show());
                 }
             },
+            avoidRestorePositionElement: () => true,
             selectorTarget: '.o_thread_message',
         });
         return this._super(...arguments);
@@ -54,19 +50,11 @@ ThreadWidget.include(Object.assign({}, SwipeItemMixin, {
         SwipeItemMixin.addClassesToTarget.call(this);
         return renderResult;
     },
-    _allowLeftSwipe(ev) {
-        return this._getThreadMessageStar(ev).length > 0;
+    _allowRightSwipe(ev) {
+        return this._currentThreadID === 'mailbox_inbox';
     },
-    _getThreadMessageStar(ev) {
-        return $(ev.currentTarget).find('.o_thread_message_star');
-    },
-    _retrieveMessageId(ev) {
-        return $(ev.currentTarget).data('message-id');
-    },
-    _toggleStarDisplay(ev) {
-        this._getThreadMessageStar(ev)
-            .toggleClass('fa-star-o')
-            .toggleClass('fa-star');
+    _getThreadMessageElement(ev) {
+        return $(ev.currentTarget);
     },
 }));
 

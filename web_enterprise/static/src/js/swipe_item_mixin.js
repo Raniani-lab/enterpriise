@@ -26,12 +26,14 @@ const SwipeItemMixin = {
      * {
      *    allowSwipe: handler call when item is moving, it's return true if the swipe event is allow
      *    onLeftSwipe: callback when swipe Right to Left
-     *    onLeftSwipe: callback when swipe Left to Right
+     *    onRightSwipe: callback when swipe Left to Right
+     *    avoidRestorePositionElement: callback at ending of swipe to avoid to restore the position if true
      *    selectorTarget: a query selector to find the target where swipe must be applied
      * }
      */
     init(options) {
         this.leftAction = options.onLeftSwipe;
+        this.avoidRestorePositionElement = options.avoidRestorePositionElement;
         this.rightAction = options.onRightSwipe;
         this.allowSwipe = options.allowSwipe;
         this.selectorTarget = options.selectorTarget;
@@ -51,9 +53,6 @@ const SwipeItemMixin = {
         $('<div class="o_swipe_separator"/></div>').prependTo($target);
         if (this.rightAction) {
             $('<div class="o_swipe_action right" data-key="read"><i class="fa fa-check-circle fa-2x text-white"/></div>').prependTo($target);
-        }
-        if (this.leftAction) {
-            $('<div class="o_swipe_action left" data-key="star"><i class="fa fa-star fa-2x text-white"/></div>').prependTo($target);
         }
     },
 
@@ -127,20 +126,31 @@ const SwipeItemMixin = {
 
     /**
      * Apply a left css property to the node
-     * 
+     *
      * @private
      * @param {JQuery} $node
-     * @param {String} left
-     * @param {Boolean} animate
+     * @param {String|Number} left
      */
-    _moveLeft($node, left, animate) {
-        if (animate) {
-            $node.animate({
-                left: left
-            }, ANIMATION_SWIPE_DURATION);
-        } else {
-            $node.css('left', left);
-        }
+    _moveLeft($node, left) {
+        $node.css('left', left);
+    },
+
+    /**
+     * Apply a left css property to the node with animation
+     *
+     * @private
+     * @param {JQuery} $node
+     * @param {String|Number} left
+     * @param {{}} customOptions
+     * @return {Promise}
+     */
+    _moveLeftWithAnimation($node, left, customOptions = {}) {
+        return $node
+            .animate({
+                left: left,
+            }, Object.assign({}, {
+                duration: ANIMATION_SWIPE_DURATION,
+            }, customOptions)).promise();
     },
 
     /**
@@ -155,14 +165,11 @@ const SwipeItemMixin = {
         // we add here the background to swipe item
         if(action === 'right') {
             $(ev.currentTarget).children('.o_swipe_action.right').addClass('bg-success');
-        } else if(action === 'left') {
-            $(ev.currentTarget).children('.o_swipe_action.left').addClass('bg-warning');
         } else {
             $(ev.currentTarget)
             .children('.o_swipe_action')
             .removeClass([
                 'bg-success',
-                'bg-warning',
             ])
         }
     },
@@ -173,10 +180,25 @@ const SwipeItemMixin = {
      * @private
      * @param {TouchEvent} ev
      * @param {false | Function} callback
+     * @param {Function} restore callback to restore position
      */
-    _performSwipeEndAction(ev, callback) {
+    _performSwipeEndAction(ev, callback, restore = () => {}) {
         if (callback) {
-            callback(ev);
+            callback(ev, restore);
+        }
+    },
+    /**
+     * Update the view of action swipe at the correct position if swipeDirection is valid
+     *
+     * @private
+     * @param {JQuery} $target
+     * @param {false | 'left' | 'right'} swipeDirection
+     * @param {Number} left
+     * @param {String, 'px', '%'} unit
+     */
+    _updateSwipeActionPosition: function ($target, swipeDirection, left, unit = 'px') {
+        if (swipeDirection) {
+            this._moveLeft($target.find(`.o_swipe_action.${swipeDirection}`), `${left}${unit}`);
         }
     },
 
@@ -189,10 +211,12 @@ const SwipeItemMixin = {
      * @param {Number} left 
      */
     _updateSwipePosition($target, swipeDirection, left) {
-        this._moveLeft($target, left + 'px');
-        if (swipeDirection) {
-            this._moveLeft($target.find('.o_swipe_action.' + swipeDirection), -left + 'px');
-        }
+        this._moveLeft($target, `${left}px`);
+        this._updateSwipeActionPosition($target, swipeDirection, -left);
+    },
+
+    _isCorrectTarget($target) {
+        return $target.is(this.selectorTarget);
     },
 
     //--------------------------------------------------------------------------
@@ -206,6 +230,9 @@ const SwipeItemMixin = {
      */
     _onTouchStart(ev) {
         const $target = $(ev.currentTarget);
+        if (!this._isCorrectTarget($target)) {
+            return;
+        }
 
         $target.data('swipe_item', {
             touchStart: this._getTouchPosition(ev),
@@ -222,6 +249,9 @@ const SwipeItemMixin = {
      */
     _onTouchMove(ev) {
         const $target = $(ev.currentTarget);
+        if (!this._isCorrectTarget($target)) {
+            return;
+        }
 
         const data = $target.data('swipe_item');
         const touch = this._getTouchPosition(ev);
@@ -242,14 +272,16 @@ const SwipeItemMixin = {
         }
         ev.preventDefault();
 
-        if (!$target.hasClass('o_swipe_current')) {
+        const allowAction = this._allowAction(ev, swipeDirection, touchDelta.xDelta);
+
+        if (!$target.hasClass('o_swipe_current') && allowAction) {
             // apply a style to add radius on current target (like gmail)
             $target.addClass('o_swipe_current');
             $target.parent().addClass('overflow-hidden');
             this._addSwipeNode($target);
         }
         // Check for action to allow based on action and delta
-        if(this.allowSwipe && !this._allowAction(ev, swipeDirection, touchDelta.xDelta)) {
+        if(this.allowSwipe && !allowAction) {
             // update the swipe position to 0
             if (!data.swipeDirection || data.swipeDirection !== swipeDirection) {
                 this._updateSwipePosition($target, swipeDirection, 0);
@@ -269,39 +301,29 @@ const SwipeItemMixin = {
     },
 
     /**
-     * 
+     *
      * @private
-     * @param {TouchEvent} ev 
+     * @param {TouchEvent} ev
      */
-    _onTouchEnd(ev) {
+    _onTouchEnd: async function (ev) {
         const $target = $(ev.currentTarget);
-
-        // remove the radius on current target (like gmail)
-        $target.removeClass('o_swipe_current');
-        $target.parent().removeClass('overflow-hidden');
+        if (!this._isCorrectTarget($target)) {
+            return;
+        }
 
         const data = $target.data('swipe_item');
         const touch = this._getTouchPosition(ev);
         const touchDelta = this._getTouchDelta(touch, data);
         const swipeDirection = this._getSwipeDirection(touchDelta);
 
-        this._moveLeft($(ev.currentTarget).find('.o_swipe_action'), 0, true);
-        this._moveLeft($(ev.currentTarget), 0, true);
-        $(ev.currentTarget).find('.o_swipe_action, .o_swipe_separator').remove();
-
         if (data.swipeAxes !== 'horizontal') {
             return;
         }
         ev.preventDefault();
 
-        if(this.allowSwipe && !this._allowAction(ev, swipeDirection, touchDelta.xDelta)) {
+        if (this.allowSwipe && !this._allowAction(ev, swipeDirection, touchDelta.xDelta)) {
             return;
         }
-
-        // reset the direction
-        data.swipeDirection = false;
-        data.swipeAxes = false;
-        $target.data('swipe_item', data);
 
         const swipeDirectionWithThresholdReach = this._isThresholdReach(touchDelta, swipeDirection);
 
@@ -311,7 +333,33 @@ const SwipeItemMixin = {
         } else if (swipeDirectionWithThresholdReach === 'left' && this.leftAction) {
             action = this.leftAction;
         }
-        this._performSwipeEndAction(ev, action);
+
+
+        if (action) {
+            if (swipeDirectionWithThresholdReach === 'right') {
+                await this._moveLeftWithAnimation($target, '100%', {
+                    step: (now) => this._updateSwipeActionPosition($target, swipeDirectionWithThresholdReach, -now, '%')
+                });
+            } else if (swipeDirectionWithThresholdReach === 'left') {
+                await this._moveLeftWithAnimation($target, '-100%',{
+                    step: (now) => this._updateSwipeActionPosition($target, swipeDirectionWithThresholdReach, -now, '%')
+                });
+            }
+            if (!(typeof this.avoidRestorePositionElement === 'function' && this.avoidRestorePositionElement(swipeDirection, $target, ev))) {
+                await this._moveLeftWithAnimation($target, 0, {
+                    step: (now) => this._updateSwipeActionPosition($target, swipeDirectionWithThresholdReach, -now)
+                });
+            }
+            this._performSwipeEndAction(ev, action, () => this._moveLeft($target, 0));
+        } else {
+            await this._moveLeftWithAnimation($target, 0);
+        }
+
+        // restore the DOM like before swipe
+        this._moveLeftWithAnimation($target.find('.o_swipe_action'), 0);
+        $target.find('.o_swipe_action, .o_swipe_separator').remove();
+        $target.removeClass('o_swipe_current');
+        $target.parent().removeClass('overflow-hidden');
     },
 };
 

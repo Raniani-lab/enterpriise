@@ -912,12 +912,20 @@ odoo.define('sign.document_signing', function (require) {
                 return;
             }
             this._scrollToSignItemPromise($item).then(function () {
+                const type = self.types[$item.data('type')];
                 if($item.val() === "" && !$item.data('signature')) {
-                    self.setTip(self.types[$item.data('type')].tip);
+                    self.setTip(type.tip);
                 }
 
                 self.getParent().refreshSignItems();
                 $item.focus();
+                if (['signature', 'initial'].indexOf(type.item_type) > -1) {
+                    if($item.data("has-focus")) {
+                        $item.click();
+                    } else {
+                        $item.data("has-focus", true);
+                    }
+                }
                 self.isScrolling = false;
             });
 

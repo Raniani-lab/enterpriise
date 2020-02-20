@@ -1631,7 +1631,7 @@ var ManualModel = StatementModel.extend({
                 if (line.reconciled) {
                     return;
                 }
-                line.filter = "";
+                line.filter_match = "";
                 line.offset = 0;
                 defs.push(self._performMoveLine(handle, 'match').then(function () {
                     if(!line.mv_lines_match.length) {
@@ -1725,7 +1725,7 @@ var ManualModel = StatementModel.extend({
             mode: 'inactive',
             offset: 0,
             limitMoveLines: this.limitMoveLines,
-            filter: "",
+            filter_match: "",
             reconcileModels: this.reconcileModels,
             account_id: this._formatNameGet([data.account_id, data.account_name]),
             st_line: data,
@@ -1805,7 +1805,7 @@ var ManualModel = StatementModel.extend({
         var excluded_ids = _.map(line.reconciliation_proposition, function (prop) {
             return _.isNumber(prop.id) ? prop.id : null;
         }).filter(id => id != null);
-        var filter = line.filter || "";
+        var filter = line.filter_match || "";
         var limit = this.limitMoveLines;
         var offset = line.offset;
         if (line.limit_override) {
@@ -1845,7 +1845,7 @@ var ManualModel = StatementModel.extend({
         }
         this._formatLineProposition(line, mv_lines);
 
-        if (line.mode !== 'create' && !line.mv_lines_match.length && !line.filter.length) {
+        if (line.mode !== 'create' && !line.mv_lines_match.length && !line.filter_match.length) {
             line.mode = this.avoidCreate || !line.balance.amount ? 'inactive' : 'create';
             if (line.mode === 'create') {
                 return this._computeLine(line).then(function () {

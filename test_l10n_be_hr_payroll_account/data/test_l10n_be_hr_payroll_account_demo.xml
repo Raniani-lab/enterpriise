@@ -885,8 +885,6 @@
     <record id="employee_admin" model="hr.employee">
         <field name="name" eval="obj(ref('base.partner_admin')).name" model="res.partner"/>
         <field name="user_id" ref="base.user_admin"/>
-        <field name="address_id" ref="base.partner_admin"/>
-        <field name="address_home_id" ref="base.partner_admin"/>
         <field name="image_1920" eval="obj(ref('base.partner_admin')).image_1920" model="res.partner"/>
         <field name="work_location">Building 1, Second Floor</field>
         <field name="work_phone">(237)-125-2389</field>
@@ -897,8 +895,8 @@
         <field name="job_title">Chief Executive Officer</field>
         <field name="department_id" ref="hr_department_1"/>
         <field name="identification_id">10793589456</field>
-        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_admin"/>
+        <field name="address_id" ref="base.partner_admin"/>
+        <field name="address_home_id" ref="hr.res_partner_admin_private_address"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_admin"/>
     </record>
 
@@ -906,6 +904,7 @@
         <field name="name">Marian Weaver</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_al" model="res.partner.bank">
@@ -937,6 +936,7 @@
         <field name="name">Bernice Jensen</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_mit" model="res.partner.bank">
@@ -970,6 +970,7 @@
         <field name="name">Ramona Franklin</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_niv" model="res.partner.bank">
@@ -1002,6 +1003,7 @@
         <field name="name">Jack Mccoy</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_stw" model="res.partner.bank">
@@ -1034,6 +1036,7 @@
         <field name="name">Mario Lambert</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_chs" model="res.partner.bank">
@@ -1066,6 +1069,7 @@
         <field name="name">Marc Demo</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_qdp" model="res.partner.bank">
@@ -1099,6 +1103,7 @@
         <field name="name">Michael Crawford</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_fme" model="res.partner.bank">
@@ -1131,6 +1136,7 @@
         <field name="name">Rene Chapman</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_fpi" model="res.partner.bank">
@@ -1163,6 +1169,7 @@
         <field name="name">Manuel Shelton</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_jth" model="res.partner.bank">
@@ -1195,6 +1202,7 @@
         <field name="name">Rebecca Morrison</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_ngh" model="res.partner.bank">
@@ -1227,6 +1235,7 @@
         <field name="name">Sarah Meyer</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_vad" model="res.partner.bank">
@@ -1259,6 +1268,7 @@
         <field name="name">Eduardo Kelley</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_han" model="res.partner.bank">
@@ -1289,6 +1299,7 @@
         <field name="name">Michael Lambert</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_jve" model="res.partner.bank">
@@ -1319,6 +1330,7 @@
         <field name="name">Dwight Snyder</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_jep" model="res.partner.bank">
@@ -1349,6 +1361,7 @@
         <field name="name">Minnie Burns</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_jod" model="res.partner.bank">
@@ -1379,6 +1392,7 @@
         <field name="name">Andrew Hunt</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_jog" model="res.partner.bank">
@@ -1409,6 +1423,7 @@
         <field name="name">Fred Bilson</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_jgo" model="res.partner.bank">
@@ -1439,6 +1454,7 @@
         <field name="name">Jerry Barnes</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_lur" model="res.partner.bank">
@@ -1469,6 +1485,7 @@
         <field name="name">Travis Moreno</field>
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_employee_hne" model="res.partner.bank">

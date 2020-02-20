@@ -1475,7 +1475,11 @@ odoo.define('sign.document_signing', function (require) {
                     var next_signatory = _.str.sprintf(_t("Validate & the next signatory is %s"), next_name_signatory);
                     this.$validateBanner.find('.o_validate_button').prop('textContent', next_signatory);
                 }
-                this.$validateBanner.show().animate({'opacity': 1}, 500);
+                this.$validateBanner.show().animate({'opacity': 1}, 500, () => {
+                    if (config.device.isMobile) {
+                        this.$validateBanner[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+                    }
+                });
             },
 
             'click .o_sign_validate_banner button': 'signItemDocument',

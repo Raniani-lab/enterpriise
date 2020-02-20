@@ -105,6 +105,7 @@ tour.register('web_studio_new_app_tour', {
     trigger: '.o_web_studio_form_view_editor .oe_chatter',
     content: _t("Click to edit messaging features on your model."),
     position: 'top',
+    timeout: 15000, // this can take some time on 'slow' builds (coverage, etc.)
 }, {
     trigger: '.o_web_studio_sidebar .o_display_chatter input[name="email_alias"]',
     content: _t("Set an <b>email alias</b>. Then, try to send an email to this address; it will create a document automatically for you. Pretty cool, huh?"),

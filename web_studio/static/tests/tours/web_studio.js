@@ -44,6 +44,7 @@ tour.register('web_studio_tests_tour', {
     timeout: 15000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.o_menu_toggle.fa-th',
+    timeout: 15000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
 }, {

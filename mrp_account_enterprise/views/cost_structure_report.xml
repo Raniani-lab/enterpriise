@@ -50,7 +50,7 @@
                                 <td class="text-right">
                                     <span t-esc="m['qty'] if m['qty'] else m['extra_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
                                     <t t-if="m['extra_qty'] &lt; 0 and m['qty']">
-                                        (-<t t-esc="m['extra_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>)
+                                        (-<t t-esc="-m['extra_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>)
                                     </t>
                                     <t t-if="m['extra_qty'] &gt; 0 and m['qty']">
                                         (+<t t-esc="m['extra_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>)

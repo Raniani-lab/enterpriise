@@ -6,7 +6,7 @@
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
             <tree string="Shift List" multi_edit="1">
-                <field name="employee_id"/>
+                <field name="employee_id" groups="planning.group_planning_user"/>
                 <field name="role_id"/>
                 <field name="start_datetime" readonly="1"/>
                 <field name="end_datetime" readonly="1"/>
@@ -168,13 +168,13 @@
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
             <search>
-                <field name="role_id"/>
-                <field name="department_id"/>
-                <field name="employee_id"/>
-                <field name="manager_id"/>
-                <filter name="open_shifts" string="Open Shifts" domain="[('employee_id', '=', False)]"/>
-                <filter name="my_shifts" string="My Shifts" domain="[('user_id', '=', uid)]"/>
-                <filter name="my_team_shifts" string="My Team" domain="[('manager_id.user_id', '=', uid)]" help="Shifts of Your Team Member"/>
+                <field name="role_id" groups="planning.group_planning_user"/>
+                <field name="department_id" groups="planning.group_planning_user"/>
+                <field name="employee_id" groups="planning.group_planning_user"/>
+                <field name="manager_id" groups="planning.group_planning_user"/>
+                <filter name="open_shifts" string="Open Shifts" domain="[('employee_id', '=', False)]" groups="planning.group_planning_user"/>
+                <filter name="my_shifts" string="My Shifts" domain="[('user_id', '=', uid)]" groups="planning.group_planning_user"/>
+                <filter name="my_team_shifts" string="My Team" domain="[('manager_id.user_id', '=', uid)]" help="Shifts of Your Team Member" groups="planning.group_planning_user"/>
                 <separator/>
                 <filter name="published_shifts" string="Published" domain="[('is_published', '=', True)]" groups="planning.group_planning_manager"/>
                 <filter name="unpublished_shifts" string="Unpublished" domain="[('is_published', '=', False)]" groups="planning.group_planning_manager"/>
@@ -182,8 +182,8 @@
                 <filter name="future" string="Future" domain="[('start_datetime', '>=', time.strftime('%%Y-%%m-%%d 00:00:00'))]" />
                 <filter name="past" string="Past" domain="[('start_datetime', '&lt;=', time.strftime('%%Y-%%m-%%d 23:59:59'))]" />
                 <group string="Group By">
-                    <filter name="group_by_department" string="Department" context="{'group_by': 'department_id'}"/>
-                    <filter name="group_by_employee" string="Employee" context="{'group_by': 'employee_id'}"/>
+                    <filter name="group_by_department" string="Department" context="{'group_by': 'department_id'}" groups="planning.group_planning_user"/>
+                    <filter name="group_by_employee" string="Employee" context="{'group_by': 'employee_id'}" groups="planning.group_planning_user"/>
                     <filter name="group_by_role" string="Role" context="{'group_by': 'role_id'}"/>
                     <filter name="group_by_start_datetime" string="Start Date" context="{'group_by':'start_datetime:day'}"/>
                 </group>
@@ -434,7 +434,7 @@
         id="planning_menu_root"
         name="Planning"
         sequence="25"
-        groups="planning.group_planning_user"
+        groups="base.group_user"
         web_icon="planning,static/description/icon.png"/>
 
     <menuitem

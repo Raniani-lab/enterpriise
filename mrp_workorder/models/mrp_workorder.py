@@ -549,7 +549,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def open_tablet_view(self):
         self.ensure_one()
-        if not self.is_user_working and self.working_state != 'blocked':
+        if not self.is_user_working and self.working_state != 'blocked' and self.state in ('ready', 'progress'):
             self.button_start()
         return {
             'type': 'ir.actions.act_window',

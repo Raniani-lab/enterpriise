@@ -155,6 +155,8 @@ class Task(models.Model):
         if not self.partner_id:
             raise UserError(_('A customer should be set on the task to generate a worksheet.'))
 
+        self = self.with_company(self.company_id)
+
         domain = [('sale_ok', '=', True), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
         if self.project_id and self.project_id.timesheet_product_id:
             domain = expression.AND([domain, [('id', '!=', self.project_id.timesheet_product_id.id)]])
@@ -173,7 +175,7 @@ class Task(models.Model):
                 'fsm_mode': True,
                 'create': self.env['product.template'].check_access_rights('create', raise_exception=False),
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
-                'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
+                'pricelist': self.partner_id.property_product_pricelist.id,
                 'search_default_consumable': 1,
                 'hide_qty_buttons': self.fsm_done or self.sale_order_id.state == 'done'
             },

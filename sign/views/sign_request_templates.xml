@@ -116,8 +116,10 @@
     <template id="sign.doc_sign" name="Document Sign">
         <t t-call="web.layout">
             <t t-set="head">
+                <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
                 <t t-call-assets="web.assets_common" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
                 <t t-call-assets="web.assets_common" t-css="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
                 <t t-call="web.conditional_assets_tests"/>
@@ -167,8 +169,10 @@
     <template id="sign.encrypted_ask_password" name="PDF Encrypted Password Request">
         <t t-call="web.layout">
             <t t-set="head">
+                <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
                 <t t-call-assets="web.assets_common" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
                 <t t-call-assets="web.assets_common" t-css="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
             </t>
@@ -194,8 +198,10 @@
     <template id="sign.deleted_sign_request" name="Missing Signature Request">
         <t t-call="web.layout">
             <t t-set="head">
+                <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
                 <t t-call-assets="web.assets_common" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
                 <t t-call-assets="web.assets_common" t-css="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
             </t>

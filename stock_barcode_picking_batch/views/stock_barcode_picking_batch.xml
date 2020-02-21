@@ -7,10 +7,23 @@
         <field name="arch" type="xml">
             <form>
                 <group>
+                    <field name="allowed_picking_ids" invisible="1"/>
                     <field name="user_id" attrs="{'invisible': [('user_id', '=', False)]}" />
                     <field name="picking_type_id" attrs="{'invisible': [('picking_type_id', '=', False)]}" />
                     <field name="state"/>
                     <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="picking_ids" attrs="{'invisible': [('picking_ids', '=', False)]}">
+                        <tree decoration-danger="state != 'assigned'">
+                            <button name="action_unbatch"
+                                title="Unbatch Transfer" string="Unbatch Transfer"
+                                icon="fa-chain-broken" type="object"
+                                attrs="{'invisible': [('state', '=', 'assigned')]}"/>
+                            <field name="name"/>
+                            <field name="scheduled_date"/>
+                            <field name="location_id"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
                     <field name="move_ids" attrs="{'invisible': [('move_ids', '=', False)]}">
                         <tree>
                             <field name="product_id"/>

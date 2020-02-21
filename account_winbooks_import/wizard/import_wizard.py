@@ -479,7 +479,7 @@ class WinbooksImportWizard(models.TransientModel):
                 move.message_post(attachments=attachment_ids)
         _logger.info("Reconcile")
         for matching_number in reconcile_number_set:
-            lines = self.env['account.move.line'].search([('winbooks_matching_number', '=', matching_number)])
+            lines = self.env['account.move.line'].search([('winbooks_matching_number', '=', matching_number), ('reconciled', '=', False)])
             try:
                 lines.with_context(no_exchange_difference=True).reconcile()
             except UserError as ue:
@@ -577,8 +577,10 @@ class WinbooksImportWizard(models.TransientModel):
                 if not rec.get('USRCODE1'):
                     continue
                 tax_name = " ".join([treelib[x] for x in [rec.get('TREELEVEL')[:i] for i in range(2, len(rec.get('TREELEVEL')) + 1, 2)]])
-                tax = AccountTax.search([('company_id', '=', self.env.company.id), ('name', '=', tax_name), ('amount', '=', rec.get('RATE') or 0.0 if rec.get('TAXFORM') else 0.0),
+                tax = AccountTax.search([('company_id', '=', self.env.company.id), ('name', '=', tax_name),
                                          ('type_tax_use', '=', 'sale' if rec.get('CODE')[0] == '2' else 'purchase')], limit=1)
+                if tax.amount != rec.get('RATE') if rec.get('TAXFORM') else 0.0:
+                    tax.amount = rec.get('RATE') if rec.get('TAXFORM') else 0.0
                 if tax:
                     vatcode_data[rec.get('CODE')] = tax.id
                 else:

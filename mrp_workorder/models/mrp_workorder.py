@@ -293,9 +293,9 @@ class MrpProductionWorkcenterLine(models.Model):
                 raise UserError(_('Please enter a positive quantity.'))
 
             # Get the move lines associated with our component
-            self.component_remaining_qty -= float_round(self.qty_done, precision_rounding=self.workorder_line_id.product_uom_id.rounding)
+            self.component_remaining_qty -= float_round(self.qty_done, precision_rounding=self.workorder_line_id.product_uom_id.rounding or rounding)
             # Write the lot and qty to the move line
-            self.workorder_line_id.write({'lot_id': self.lot_id.id, 'qty_done': float_round(self.qty_done, precision_rounding=self.workorder_line_id.product_uom_id.rounding)})
+            self.workorder_line_id.write({'lot_id': self.lot_id.id, 'qty_done': float_round(self.qty_done, precision_rounding=self.workorder_line_id.product_uom_id.rounding or rounding)})
 
             if continue_production:
                 self._create_subsequent_checks()

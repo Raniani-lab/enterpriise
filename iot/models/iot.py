@@ -57,6 +57,7 @@ class IotDevice(models.Model):
         ('payment', 'Payment Terminal'),
         ('scale', 'Scale'),
         ('display', 'Display'),
+        ('fiscal_data_module', 'Fiscal Data Module'),
         ], readonly=True, default='device', string='Type',
         help="Type of device.")
     manufacturer = fields.Char(string='Manufacturer', readonly=True)

@@ -110,6 +110,13 @@ class IoTController(http.Controller):
                             'manufacturer': data_device['manufacturer'],
                             'connection': data_device['connection'],
                         })
+                    elif device and device.type != data_device.get('type'):
+                        device.write({
+                        'name': data_device.get('name'),
+                        'type': data_device.get('type'),
+                        'manufacturer': data_device.get('manufacturer')
+                        })
+
                     connected_iot_devices |= device
             # Mark the received devices as connected, disconnect the others.
             connected_iot_devices.write({'connected': True})

@@ -4,10 +4,10 @@
         <record id="res_users_form_view" model="ir.ui.view">
             <field name="name">res.users.form.view</field>
             <field name="model">res.users</field>
-            <field name="inherit_id" ref="point_of_sale.res_users_view_form" />
+            <field name="inherit_id" ref="base.view_users_form_simple_modif" />
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='pos_security_pin']" position="after">
-                    <field name="insz_or_bis_number" />
+                <xpath expr="//field[@name='email']" position="after">
+                    <field name="insz_or_bis_number"/>
                 </xpath>
             </field>
         </record>
@@ -119,7 +119,7 @@
                                         <field name="qty"/>
                                         <field name="price_unit" widget="monetary"/>
                                         <field name="discount" widget="monetary"/>
-                                        <field name="tax_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                        <field name="tax_ids" widget="many2many_tags"/>
                                         <field name="price_subtotal" widget="monetary"/>
                                         <field name="price_subtotal_incl" widget="monetary"/>
                                     </tree>
@@ -267,27 +267,12 @@
                     </div>
                 </xpath>
 
-                <!-- module_pos_discount -->
-                <xpath expr="//div[hasclass('o_settings_container')][5]/div[hasclass('o_setting_box')][2]" position="attributes">
-                    <attribute name="invisible">1</attribute>
+                <xpath expr="//div[@name='row_scale']" position="after">
+                    <div class="row">
+                        <label string="Fiscal Data Module" for="iface_fiscal_data_module" class="col-lg-4 o_light_label"/>
+                        <field name="iface_fiscal_data_module"/>
+                    </div>
                 </xpath>
-                <!-- module_pos_loyalty -->
-                <xpath expr="//div[hasclass('o_settings_container')][5]/div[hasclass('o_setting_box')][4]" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <!-- restrict_price_control -->
-                <xpath expr="//div[hasclass('o_settings_container')][5]/div[hasclass('o_setting_box')][5]" position="attributes">
-                    <attribute name="attrs">{'invisible': [('blackbox_pos_production_id', '!=', False)]}</attribute>
-                </xpath>
-                <!-- reprint -->
-                <xpath expr="//div[@id='receipt']/div[hasclass('o_setting_box')][4]" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <!-- iface_splitbill -->
-                <xpath expr="//div[@id='receipt']/div[hasclass('o_setting_box')][6]" position="attributes">
-                    <attribute name="attrs">{'invisible': ['|', ('blackbox_pos_production_id', '!=', False), ('module_pos_restaurant', '=', False)]}</attribute>
-                </xpath>
-
             </field>
         </record>
 
@@ -640,6 +625,7 @@
         <template id="fdm_source">
 SIGNATURES:
 --------------------------------------------------------------------
+GLOBAL HASH: <t t-esc="main_hash" />
             <t t-foreach="files" t-as="current_file">
 <t t-raw="current_file['name']"/>: <t t-raw="current_file['hash']"/> (size in bytes: <t t-raw="current_file['size_in_bytes']"/>)
             </t>

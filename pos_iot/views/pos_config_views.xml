@@ -40,7 +40,7 @@
                         <label string="Barcode Scanners/Card Readers" for="iface_scanner_ids" class="col-lg-4 o_light_label"/>
                         <field name="iface_scanner_ids" widget="many2many_tags"/>
                     </div>
-                    <div class="row">
+                    <div class="row" name="row_scale">
                         <label string="Electronic Scale" for="iface_scale_id" class="col-lg-4 o_light_label"/>
                         <field name="iface_scale_id"/>
                     </div>

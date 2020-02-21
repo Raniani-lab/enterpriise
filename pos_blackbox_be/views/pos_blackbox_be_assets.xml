@@ -9,7 +9,7 @@
                     <script type="text/javascript" src="/pos_blackbox_be/static/src/js/pos_blackbox_be.js"></script>
                 </t>
             </xpath>
-            <xpath expr="//t[contains(@t-call-assets, 'web.assets_backend')]" position="before">
+            <xpath expr="//t[contains(@t-call-assets, 'point_of_sale.pos_assets_backend')]" position="before">
                 <t t-if="not blackbox">
                     <script type="text/javascript" id="no_qweb" t-raw="init">
                         odoo.define('pos_blackbox_be.no_qweb', function (require) {

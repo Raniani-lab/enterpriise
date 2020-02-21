@@ -37,6 +37,7 @@ models.load_models([{
                 case 'scale':
                     self.iot_device_proxies[iot_device.type] = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier, manual_measurement: iot_device.manual_measurement});
                     break;
+                case 'fiscal_data_module':
                 case 'display':
                     self.iot_device_proxies[iot_device.type] = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier});
                     break;

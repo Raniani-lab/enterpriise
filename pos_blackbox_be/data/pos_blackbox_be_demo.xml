@@ -7,28 +7,14 @@
 
         <!-- test accounts admin/1, demo/2, minfin/3 -->
         <record id="base.user_root" model="res.users">
-            <field name="password">1</field>
+            <field name="password">12345678</field>
         </record>
         <record id="base.user_demo" model="res.users">
-            <field name="password">12</field>
+            <field name="password">12345678</field>
             <field name="insz_or_bis_number">00000000097</field>
         </record>
         <record id="fdm_minfin_user" model="res.users">
             <field name="active" eval="True"/>
-        </record>
-
-        <!-- disable all products to only show the test ones -->
-        <record id="point_of_sale.boni_orange" model="product.product">
-            <field name="active" eval="False"/>
-        </record>
-        <record id="point_of_sale.papillon_orange" model="product.product">
-            <field name="active" eval="0"/>
-        </record>
-        <record id="point_of_sale.citron" model="product.product">
-            <field name="active" eval="False"/>
-        </record>
-        <record id="point_of_sale.limon" model="product.product">
-            <field name="active" eval="False"/>
         </record>
 
         <!-- only below products should appear in certification demonstration -->

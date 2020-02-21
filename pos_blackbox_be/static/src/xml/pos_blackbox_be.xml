@@ -74,7 +74,7 @@
         <span class="pos-receipt-center-align">
             <div>Ticket signature:</div>
             <br/>
-            <div><t t-esc="order.blackbox_signature"/></div>
+            <div><small><t t-esc="order.blackbox_signature"/></small></div>
         </span>
     </t>
 
@@ -91,7 +91,12 @@
 
     <t t-extend="OrderReceipt">
         <t t-jquery=".pos-receipt" t-operation="prepend">
-            <div class="pos-receipt-header"><bold>VAT TICKET</bold></div>
+            <t t-if="order.blackbox_signature == false">
+                <div class="pos-receipt-header"><bold>THIS IS NOT A VALID TICKET</bold></div>
+            </t>
+            <t t-else="">
+                <div class="pos-receipt-header"><bold>VAT TICKET</bold></div>
+            </t>
         </t>
         <t t-jquery="t[t-if='receipt.company.contact_address']" t-operation="after">
             <div><t t-esc="receipt.company.street"/></div>

@@ -62,8 +62,8 @@ class Sign(http.Controller):
                     'longitude': request.session['geoip'].get('longitude') if 'geoip' in request.session else 0,
                 })
 
-        sr_values = http.request.env['sign.request.item.value'].sudo().search([('sign_request_id', '=', sign_request.id)])
         item_values = {}
+        sr_values = http.request.env['sign.request.item.value'].sudo().search([('sign_request_id', '=', sign_request.id), '|', ('sign_request_item_id', '=', current_request_item.id), ('sign_request_item_id.state', '=', 'completed')])
         for value in sr_values:
             item_values[value.sign_item_id.id] = value.value
 
@@ -295,6 +295,21 @@ class Sign(http.Controller):
         vals = Log._update_vals_with_http_request(vals)
         Log.create(vals)
         request_item.action_completed()
+        return True
+
+    @http.route(['/sign/save/<int:id>/<token>'], type='json', auth='public')
+    def sign_save(self, id, token, sms_token=False, signature=None):
+        request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
+        if not request_item:
+            return False
+        if not request_item.save_sign(signature):
+            return False
+        Log = request.env['sign.log'].sudo()
+        vals = Log._prepare_vals_from_item(request_item)
+        vals['action'] = 'save'
+        vals['token'] = token
+        vals = Log._update_vals_with_http_request(vals)
+        Log.create(vals)
         return True
 
     @http.route(['/sign/password/<int:sign_request_id>'], type='json', auth='public')

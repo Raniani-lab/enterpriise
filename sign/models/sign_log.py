@@ -42,6 +42,7 @@ class SignLog(models.Model):
         selection=[
             ('create', 'Creation'),
             ('open', 'View/Download'),
+            ('save', 'Save'),
             ('sign', 'Signature'),
         ], required=True,
     )

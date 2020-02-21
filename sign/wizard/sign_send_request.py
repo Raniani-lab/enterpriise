@@ -23,9 +23,9 @@ class SignSendRequest(models.TransientModel):
             'partner_id': False,
         }) for role in roles]
         if self.env.context.get('sign_directly_without_mail'):
-            if roles:
+            if len(roles) == 1:
                 res['signer_ids'][0][2]['partner_id'] = self.env.user.partner_id.id
-            else:
+            elif not roles:
                 res['signer_id'] = self.env.user.partner_id.id
         return res
 

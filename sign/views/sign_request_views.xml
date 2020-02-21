@@ -38,7 +38,7 @@
                                class="fa fa-lg fa-star favorite_sign_button_enabled favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) == 0"/>
                             <a type="object" name="toggle_favorited" title="Not in favorites, add it" aria-label="Not in favorites, add it"
                                class="fa fa-lg fa-star-o favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0"/>
-                            <span><field name="reference"/></span>
+                            <span class="o_text_overflow"><field name="reference"/></span>
                         </div>
                         <div class="o_signers">
                             <span t-foreach="record.request_item_infos.raw_value" t-as="request_item_info" t-att-class="(request_item_info.state === 'completed')? 'o_sign_completed' : 'o_sign_waiting'"><t t-esc="request_item_info.partner_name"/></span>

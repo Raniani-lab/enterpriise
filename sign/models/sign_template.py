@@ -6,9 +6,11 @@ import base64
 import io
 
 from PyPDF2 import PdfFileReader
+from collections import defaultdict
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from odoo.tools import pdf
 
 
 class SignTemplate(models.Model):
@@ -143,6 +145,16 @@ class SignTemplate(models.Model):
             template.share_link = None
 
         return template.id
+
+    @api.model
+    def rotate_pdf(self, template_id=None):
+        template = self.browse(template_id)
+        if len(template.sign_request_ids) > 0:
+            return False
+
+        template.datas = base64.b64encode(pdf.rotate_pdf(base64.b64decode(template.datas)))
+
+        return True
 
     @api.model
     def add_option(self, value):

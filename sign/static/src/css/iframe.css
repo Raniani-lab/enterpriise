@@ -447,3 +447,19 @@ textarea.o_sign_sign_item {
     text-shadow: 0 1px 0 #FFFFFF;
     opacity: .5;
   }
+
+.o_sign_save {
+    width: auto;
+    background: #A4498C;
+}
+
+.o_sign_save:hover {
+    width: auto;
+    background: #A4498C;
+    opacity: .8;
+    cursor: pointer;
+}
+
+.toolbarButton.rotateCw::before {
+    content: url(../../img/secondaryToolbarButton-rotateCw.png);
+}

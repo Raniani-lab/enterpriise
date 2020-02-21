@@ -50,7 +50,7 @@
                                 <tr>
                                     <td>
                                         <span t-field="log.action"/>
-                                        <img t-if="log.sign_request_item_id.signature" class="text-left" t-att-src="image_data_uri(log.sign_request_item_id.signature)" style="max-height: 40px"/>
+                                        <img t-if="log.action != 'save' and log.sign_request_item_id.signature" class="text-left" t-att-src="image_data_uri(log.sign_request_item_id.signature)" style="max-height: 40px"/>
                                     </td>
                                     <td> <span t-field="log.partner_id"/>
                                     <t t-if="log.partner_id.email">
@@ -59,11 +59,11 @@
                                     </td>
                                     <td> <span t-field="log.log_date"/> </td>
                                     <td>
-                                        <t t-if="log.sign_request_item_id.access_via_link">
-                                            <span t-esc="log.sign_request_item_id.signer_email"/>
-                                        </t>
-                                        <t t-elif="log.user_id != False and log.user_id in log.sign_request_item_id.partner_id.user_ids">
+                                        <t t-if="log.user_id != False and log.user_id in log.sign_request_item_id.partner_id.user_ids">
                                             <span class="text-muted text-nowrap"><i class="fa fa-user"/> <t t-esc="log.sign_request_item_id.partner_id.user_ids[0].email"/></span>
+                                        </t>
+                                        <t t-elif="log.sign_request_item_id.access_via_link">
+                                            <span t-esc="log.sign_request_item_id.signer_email"/>
                                         </t>
                                         <t t-elif="log.action == 'sign'">
                                             <span class="text-muted"><i class="fa fa-times"/> No email Validation</span>

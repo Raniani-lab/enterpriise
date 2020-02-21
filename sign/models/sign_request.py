@@ -668,12 +668,37 @@ class SignRequestItem(models.Model):
                 if not item_value:
                     item_value = SignItemValue.create({'sign_item_id': int(itemId), 'sign_request_id': request.id,
                                                        'value': signature[itemId], 'sign_request_item_id': self.id})
-                    if item_value.sign_item_id.type_id.item_type == 'signature':
-                        self.signature = signature[itemId][signature[itemId].find(',')+1:]
-                        if user:
-                            user.sign_signature = self.signature
-                    if item_value.sign_item_id.type_id.item_type == 'initial' and user:
-                        user.sign_initials = signature[itemId][signature[itemId].find(',')+1:]
+                else:
+                    item_value.write({'value': signature[itemId]})
+                if item_value.sign_item_id.type_id.item_type == 'signature':
+                    self.signature = signature[itemId][signature[itemId].find(',')+1:]
+                    if user:
+                        user.sign_signature = self.signature
+                if item_value.sign_item_id.type_id.item_type == 'initial' and user:
+                    user.sign_initials = signature[itemId][signature[itemId].find(',')+1:]
+
+        return True
+
+    def save_sign(self, signature):
+        self.ensure_one()
+        if isinstance(signature, dict) and self.state == 'sent':
+            SignItemValue = self.env['sign.request.item.value']
+            request = self.sign_request_id
+
+            signerItems = request.template_id.sign_item_ids.filtered(lambda r: not r.responsible_id or r.responsible_id.id == self.role_id.id)
+            autorizedIDs = set(signerItems.mapped('id'))
+
+            itemIDs = {int(k) for k in signature}
+            if not (itemIDs <= autorizedIDs):  # Security check
+                return False
+
+            for itemId in signature:
+                item_value = SignItemValue.search([('sign_item_id', '=', int(itemId)), ('sign_request_id', '=', request.id)])
+                if not item_value:
+                    item_value = SignItemValue.create({'sign_item_id': int(itemId), 'sign_request_id': request.id,
+                                                       'value': signature[itemId], 'sign_request_item_id': self.id})
+                else:
+                    item_value.write({'value': signature[itemId]})
 
         return True
 

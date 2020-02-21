@@ -391,6 +391,14 @@ odoo.define('sign.template', function(require) {
                             return false;
                         });
                     } else {
+                        var rotateText = _t("Rotate Clockwise");
+                        var rotateButton = $("<button id='rotateCw' class='toolbarButton o_sign_rotate rotateCw' title='" + rotateText + "'/>");
+                        rotateButton.insertBefore(self.$('#print'));
+                        rotateButton.on('click', function(e) {
+                            rotateButton.prepend('<i class="fa fa-spin fa-spinner"/>');
+                            rotateButton.attr('disabled', true);
+                            self._rotateDocument();
+                        });
                         self.$hBarTop = $('<div/>');
                         self.$hBarBottom = $('<div/>');
                         self.$hBarTop.add(self.$hBarBottom).css({
@@ -632,6 +640,29 @@ odoo.define('sign.template', function(require) {
                 this.display_select_options($options_display, this.select_options, option_ids);
             }
         },
+
+        _rotateDocument: function () {
+            var self = this;
+            this._rpc({
+                model: 'sign.template',
+                method: 'rotate_pdf',
+                args: [this.getParent().templateID],
+            })
+            .then(function (response) {
+                if (response) {
+                    self.$('#pageRotateCw').click();
+                    self.$('#rotateCw').text('');
+                    self.$('#rotateCw').attr('disabled', false);
+                    self.refreshSignItems();
+                } else {
+                    Dialog.alert(self, _t('Somebody is already filling a document which uses this template'), {
+                        confirm_callback: function () {
+                            self.getParent().go_back_to_kanban();
+                        },
+                    });
+                }
+            });
+        },
     });
 
     var Template = AbstractAction.extend({
@@ -730,9 +761,11 @@ odoo.define('sign.template', function(require) {
                 this.cp_content = {$buttons: $sendButton.add($signNowButton).add($shareButton).add($closeButton)};
             } else if (options.context.sign_edit_call === 'sign_sign_now') {
                 $signNowButton.switchClass('btn-secondary', 'btn-primary');
+                $signNowButton.addClass('mr-2');
                 this.cp_content = {$buttons: $signNowButton.add($sendButton).add($shareButton).add($closeButton)};
             } else if (options.context.sign_edit_call === 'sign_send_request') {
                 $sendButton.switchClass('btn-secondary', 'btn-primary');
+                $sendButton.addClass('mr-2');
                 this.cp_content = {$buttons: $sendButton.add($signNowButton).add($shareButton).add($closeButton)};
             }
         },
@@ -861,6 +894,7 @@ odoo.define('sign.template', function(require) {
         },
 
         initialize_content: function() {
+            this.$('.o_content').empty();
             this.$('.o_content').append(core.qweb.render('sign.template', {widget: this}));
 
             this.$('iframe,.o_sign_template_name_input').prop('disabled', this.has_sign_requests);

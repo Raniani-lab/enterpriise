@@ -179,7 +179,7 @@ odoo.define('sign.PDFIframe', function (require) {
             var self = this;
             this.setElement(this.$iframe.contents().find('html'));
 
-            this.$('#openFile, #pageRotateCw, #pageRotateCcw, #pageRotateCcw, #viewBookmark').add(this.$('#lastPage').next()).hide();
+            this.$('#openFile, #pageRotateCw, #pageRotateCcw, #pageRotateCcw, #presentationMode, #viewBookmark').add(this.$('#lastPage').next()).hide();
             this.$('button#print').prop('title', _t("Print original document"));
             this.$('button#download').prop('title', _t("Download original document"));
             if (this.readonlyFields && !this.editMode) {
@@ -302,6 +302,8 @@ odoo.define('sign.PDFIframe', function (require) {
             });
 
             if (active_option) {
+                $container.parent().val(active_option);
+                $container.parent().trigger('input');
                 select_option($container, active_option);
             }
             function select_option($container, option_id) {
@@ -339,7 +341,7 @@ odoo.define('sign.PDFIframe', function (require) {
         },
 
         createSignItem: function (type, required, responsible, posX, posY, width, height, value, option_ids, name) {
-            var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
+            var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role);
             var selected_options = option_ids || [];
 
             var $signatureItem = $(core.qweb.render('sign.sign_item', {
@@ -389,7 +391,7 @@ odoo.define('sign.PDFIframe', function (require) {
 
             var resp = $signatureItem.data('responsible');
             $signatureItem.toggleClass('o_sign_sign_item_required', ($signatureItem.data('required') && (this.editMode || resp <= 0 || resp === this.role)))
-                          .toggleClass('o_sign_sign_item_pdfview', (this.pdfView || !!$signatureItem.data('hasValue') || (resp !== this.role && resp > 0 && !this.editMode)));
+                          .toggleClass('o_sign_sign_item_pdfview', (this.pdfView || (resp !== this.role && resp > 0 && !this.editMode)));
         },
 
         disableItems: function() {
@@ -1401,7 +1403,7 @@ odoo.define('sign.document_signing', function (require) {
         createSignItem: function(type, required, responsible, posX, posY, width, height, value, options, name) {
             var self = this;
             var $signatureItem = this._super.apply(this, arguments);
-            var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
+            var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role);
             if(!readonly) {
                 // Do not display the placeholder of Text and Multiline Text if the name of the item is the default one.
                 if ( type['name'].includes('Text') && type['placeholder'] === $signatureItem.prop('placeholder')) {
@@ -1530,6 +1532,21 @@ odoo.define('sign.document_signing', function (require) {
                 parent.$('div.container-fluid .col-lg-4').first().after('<div class="col-lg-4"><div class="o_sign_request_from text-center"><h2>'+this.current_name+'</h2></div></div>')
                 parent.$('div.container-fluid .col-lg-6').first().removeClass('col-lg-6').addClass('col-lg-4')
             }
+            this._save_debounce = _.throttle(this.saveItemDocument, 3000);
+        },
+        start: async function () {
+            var self = this;
+            await this._super();
+            if (!this.iframeWidget.readonlyFields && this.items.length > 0) {
+                var save_text = _t('Save');
+                var saveButton = $("<button class='toolbarButton o_sign_save'>" + save_text + "</button>");
+                saveButton.appendTo(this.iframeWidget.$('div#toolbarViewerLeft'));
+                saveButton.on('click', function(e) {
+                    saveButton.prepend('<i class="fa fa-spin fa-spinner" />');
+                    saveButton.attr('disabled', true);
+                    self._save_debounce(save_text);
+                });
+            }
         },
         get_pdfiframe_class: function () {
             return SignablePDFIframe;
@@ -1541,6 +1558,51 @@ odoo.define('sign.document_signing', function (require) {
 
         get_nextdirectsigndialog_class: function () {
             return NextDirectSignDialog;
+        },
+
+        saveItemDocument: function(init_btn_text) {
+            var $btn = this.iframeWidget.$('.o_sign_save');
+            var signatureValues = {};
+            for(var page in this.iframeWidget.configuration) {
+                for(var i = 0 ; i < this.iframeWidget.configuration[page].length ; i++) {
+                    var $elem = this.iframeWidget.configuration[page][i];
+                    var resp = parseInt($elem.data('responsible')) || 0;
+                    if(resp > 0 && resp !== this.iframeWidget.role) {
+                        continue;
+                    }
+                    var value = ($elem.val() && $elem.val().trim())? $elem.val() : false;
+                    if($elem.data('signature')) {
+                        value = $elem.data('signature');
+                    }
+                    if($elem[0].type === 'checkbox') {
+                        value = false ;
+                        if ($elem[0].checked) {
+                            value = 'on';
+                        } else {
+                            value = 'off';
+                        }
+                    }
+                    signatureValues[parseInt($elem.data('item-id'))] = value;
+                }
+            }
+            var route = '/sign/save/' + this.requestID + '/' + this.accessToken;
+            var params = {
+                signature: signatureValues
+            };
+            var self = this;
+            session.rpc(route, params).then(function(response) {
+                $btn.text(init_btn_text);
+                $btn.removeAttr('disabled', true);
+                if (!response) {
+                    var text = $("<span class='toolbarLabel'>An error occured</span>")
+                    text.appendTo(self.iframeWidget.$('div#toolbarViewerLeft'))
+                    text.delay(3200).fadeOut(300);
+                } else {
+                    var text = $("<span class='toolbarLabel'>Saved</span>")
+                    text.appendTo(self.iframeWidget.$('div#toolbarViewerLeft'))
+                    text.delay(3200).fadeOut(300);
+                }
+            });
         },
 
         signItemDocument: function(e) {

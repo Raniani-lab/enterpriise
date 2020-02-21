@@ -23,13 +23,12 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         :param date_to:         A datetime object.
         :return:                The newly created options.
         '''
-        report.filter_date = {
+        return report._get_options({'date': {
             'date_from': date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
             'date_to': date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
             'filter': 'custom',
             'mode': report.filter_date.get('mode', 'range'),
-        }
-        return report._get_options(None)
+        }})
 
     def _update_comparison_filter(self, options, report, comparison_type, number_period, date_from=None, date_to=None):
         ''' Modify the existing options to set a new filter_comparison.
@@ -41,15 +40,13 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         :param date_to:         A datetime object the 'custom' comparison_type.
         :return:                The newly created options.
         '''
-        report.filter_comparison = {
+        report._init_filter_comparison(options, {**options, 'comparison': {
             'date_from': date_from and date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
             'date_to': date_to and date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
             'filter': comparison_type,
             'number_period': number_period,
-        }
-        new_options = copy.deepcopy(options)
-        report._init_filter_comparison(new_options)
-        return new_options
+        }})
+        return options
 
     def _update_multi_selector_filter(self, options, option_key, selected_ids):
         ''' Modify a selector in the options to select .

@@ -100,7 +100,6 @@ class TestFinancialReport(TestAccountReportsCommon):
 
         cls.report = cls.env.ref('account_reports.account_financial_report_balancesheet0')
         cls.report.applicable_filters_ids |= cls.filter
-        cls.report._with_correct_filters()
 
     def test_financial_report_single_company(self):
         line_id = self.env.ref('account_reports.account_financial_report_bank_view0').id

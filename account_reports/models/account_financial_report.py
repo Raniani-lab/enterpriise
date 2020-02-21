@@ -15,6 +15,56 @@ class ReportAccountFinancialReport(models.Model):
     _description = "Account Report (HTML)"
     _inherit = "account.report"
 
+    filter_all_entries = False
+    filter_hierarchy = True
+
+    @property
+    def filter_date(self):
+        if self.date_range:
+            return {'mode': 'range', 'filter': 'this_year'}
+        else:
+            return {'mode': 'single', 'filter': 'today'}
+
+    @property
+    def filter_comparison(self):
+        if self.comparison:
+            return {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
+        return super().filter_comparison
+
+    @property
+    def filter_unfold_all(self):
+        if self.unfold_all_filter:
+            return False
+        return super().filter_unfold_all
+
+    @property
+    def filter_journals(self):
+        if self.show_journal_filter:
+            return True
+        return super().filter_journals
+
+    @property
+    def filter_analytic(self):
+        return self.analytic or None
+
+    @property
+    def filter_analytic_accounts(self):
+        return [] if self.analytic and self.env.user.id in self.env.ref('analytic.group_analytic_accounting').users.ids else None
+
+    @property
+    def filter_analytic_tags(self):
+        return [] if self.analytic and self.env.user.id in self.env.ref('analytic.group_analytic_tags').users.ids else None
+
+    @property
+    def filter_analytic(self):
+        if self.analytic and self.filter_analytic_accounts is None and self.filter_analytic_tags is None:
+            return None
+        return super().filter_analytic
+
+    @property
+    def filter_ir_filters(self):
+        return self.applicable_filters_ids or None
+
     name = fields.Char(translate=True)
     line_ids = fields.One2many('account.financial.html.report.line', 'financial_report_id', string='Lines')
     date_range = fields.Boolean('Based on date ranges', default=True, help='specify if the report use date_range or single date')
@@ -115,35 +165,6 @@ class ReportAccountFinancialReport(models.Model):
     # OPTIONS
     # -------------------------------------------------------------------------
 
-    def _with_correct_filters(self):
-        ''' As the financial report is both a record and a report, we need this method to apply the record values to
-        the static report context to get custom filters based on the current record.
-        :return:    self.
-        '''
-        if self.date_range:
-            self.filter_date = {'mode': 'range', 'filter': 'this_year'}
-            if self.comparison:
-                self.filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
-        else:
-            self.filter_date = {'mode': 'single', 'filter': 'today'}
-            if self.comparison:
-                self.filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
-        if self.unfold_all_filter:
-            self.filter_unfold_all = False
-        if self.show_journal_filter:
-            self.filter_journals = True
-        self.filter_all_entries = False
-        self.filter_analytic = self.analytic or None
-        if self.analytic:
-            self.filter_analytic_accounts = [] if self.env.user.id in self.env.ref('analytic.group_analytic_accounting').users.ids else None
-            self.filter_analytic_tags = [] if self.env.user.id in self.env.ref('analytic.group_analytic_tags').users.ids else None
-            #don't display the analytic filtering options if no option would be shown
-            if self.filter_analytic_accounts is None and self.filter_analytic_tags is None:
-                self.filter_analytic = None
-        self.filter_hierarchy = True
-        self.filter_ir_filters = self.applicable_filters_ids or None
-        return self
-
     @api.model
     def _get_options(self, previous_options=None):
         # OVERRIDE
@@ -157,10 +178,6 @@ class ReportAccountFinancialReport(models.Model):
             options['financial_report_line_values'] = self.env.context['financial_report_line_values']
 
         return options
-
-    def get_report_informations(self, options):
-        # OVERRIDE: The filters depends of the current report. Update them before collecting the needed data to render.
-        return super(ReportAccountFinancialReport, self._with_correct_filters()).get_report_informations(options)
 
     # -------------------------------------------------------------------------
     # HELPERS
@@ -552,7 +569,6 @@ class ReportAccountFinancialReport(models.Model):
         # /!\ As '_get_table' is overrided, this method is called only when a line is unfolded.
         # Then, line_id will never be None.
         self.ensure_one()
-        self = self._with_correct_filters()
         options_list = self._get_options_periods_list(options)
         financial_line = self.env['account.financial.html.report.line'].browse(line_id)
         formula_solver = FormulaSolver(options_list, self)
@@ -566,7 +582,6 @@ class ReportAccountFinancialReport(models.Model):
         # OVERRIDE of the _get_table in account.report because the columns are dependent of the data due to the
         # group by feature.
         self.ensure_one()
-        self = self._with_correct_filters()
 
         options_list = self._get_options_periods_list(options)
         formula_solver = FormulaSolver(options_list, self)
@@ -912,7 +927,7 @@ class AccountFinancialReportLine(models.Model):
             if not line.parent_id:
                 break
             line = line.parent_id
-        return financial_report._with_correct_filters()
+        return financial_report
 
     def _get_domain(self, options, financial_report):
         ''' Get the domain to be applied on the current line.

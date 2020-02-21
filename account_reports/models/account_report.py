@@ -270,21 +270,13 @@ class AccountReport(models.AbstractModel):
         if self.filter_date is None:
             return
 
-        # Default values.
-        mode = self.filter_date.get('mode', 'range')
-        options_filter = self.filter_date.get('filter') or ('today' if mode == 'single' else 'fiscalyear')
-        date_from = self.filter_date.get('date_from') and fields.Date.from_string(self.filter_date['date_from'])
-        date_to = self.filter_date.get('date_to') and fields.Date.from_string(self.filter_date['date_to'])
-        # Handle previous_options.
-        if previous_options and previous_options.get('date') and previous_options['date'].get('filter') \
-                and not (previous_options['date']['filter'] == 'today' and mode == 'range'):
+        previous_date = (previous_options or {}).get('date', {})
 
-            options_filter = previous_options['date']['filter']
-            if options_filter == 'custom':
-                if previous_options['date']['date_from'] and mode == 'range':
-                    date_from = fields.Date.from_string(previous_options['date']['date_from'])
-                if previous_options['date']['date_to']:
-                    date_to = fields.Date.from_string(previous_options['date']['date_to'])
+        # Default values.
+        mode = previous_date.get('mode') or self.filter_date.get('mode', 'range')
+        options_filter = previous_date.get('filter') or self.filter_date.get('filter') or ('today' if mode == 'single' else 'fiscalyear')
+        date_from = fields.Date.to_date(previous_date.get('date_from') or self.filter_date.get('date_from'))
+        date_to = fields.Date.to_date(previous_date.get('date_to') or self.filter_date.get('date_to'))
 
         # Create date option for each company.
         period_type = False
@@ -323,16 +315,13 @@ class AccountReport(models.AbstractModel):
         # Copy value from previous_options.
         previous_value = previous_options and previous_options.get('comparison')
         if previous_value:
-            # Copy the filter.
-            if previous_value.get('filter'):
-                cmp_filter = previous_value['filter']
-
-                # Copy dates if filter is custom.
-                if cmp_filter == 'custom':
-                    if previous_value['date_from'] is not None:
-                        date_from = previous_value['date_from']
-                    if previous_value['date_to'] is not None:
-                        date_to = previous_value['date_to']
+            cmp_filter = previous_value.get('filter') or cmp_filter
+            # Copy dates if filter is custom.
+            if cmp_filter == 'custom':
+                if previous_value['date_from'] is not None:
+                    date_from = previous_value['date_from']
+                if previous_value['date_to'] is not None:
+                    date_to = previous_value['date_to']
 
             # Copy the number of periods.
             if previous_value.get('number_period') and previous_value['number_period'] > 1:

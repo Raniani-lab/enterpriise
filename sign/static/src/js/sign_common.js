@@ -108,6 +108,25 @@ odoo.define('sign.PDFIframe', function (require) {
             this.fullyLoaded.reject = _rej;
         },
 
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
+        _appendDownloadCompleteButton() {
+            const cloneDownloadButton = $button => $button.clone()
+                .attr('id', $button.attr('id') + '_completed')
+                .prop('title', _t("Download Document"))
+                .on('click', () => window.location = this.attachmentLocation.replace('origin', 'completed'));
+            // inside toolbar
+            const $buttonDownloadPrimary = this.$('button#download');
+            $buttonDownloadPrimary.after(cloneDownloadButton($buttonDownloadPrimary));
+            // inside the more button on the toolbar
+            const $buttonDownloadSecondary = this.$('button#secondaryDownload');
+            const $buttonDownloadSecond = cloneDownloadButton($buttonDownloadSecondary);
+            if ($buttonDownloadSecond.hasClass('secondaryToolbarButton')) {
+                $buttonDownloadSecond.find('span').text(_t("Download Document"));
+            }
+            $buttonDownloadSecondary.after($buttonDownloadSecond);
+        },
         _set_data: function(dataName, data) {
             this[dataName] = {};
             if(data instanceof jQuery) {
@@ -163,6 +182,9 @@ odoo.define('sign.PDFIframe', function (require) {
             this.$('#openFile, #pageRotateCw, #pageRotateCcw, #pageRotateCcw, #viewBookmark').add(this.$('#lastPage').next()).hide();
             this.$('button#print').prop('title', _t("Print original document"));
             this.$('button#download').prop('title', _t("Download original document"));
+            if (this.readonlyFields && !this.editMode) {
+                this._appendDownloadCompleteButton();
+            }
             if (config.device.isMobile) {
                 this.$('button#zoomIn').click();
             } else {

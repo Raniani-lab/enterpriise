@@ -250,8 +250,8 @@ var GridController = AbstractController.extend({
 
         ctx['default_'+state.colField] = column_value;
 
-        ctx['create'] = !cell.readonly
-        ctx['edit'] = !cell.readonly
+        ctx['create'] = this.canCreate && !cell.readonly;
+        ctx['edit'] = this.activeActions.edit && !cell.readonly;
         this.do_action({
             type: 'ir.actions.act_window',
             name: label,

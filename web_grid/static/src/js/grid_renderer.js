@@ -253,14 +253,24 @@ return AbstractRenderer.extend({
      * @returns {snabbdom}
      */
     _renderCellContent: function (cell_value, isReadonly, classmap, path) {
+        const cell_size = utils.into(this.state, path).size;
         return h('div', { class: classmap, attrs: {'data-path': path}}, [
-            h('i.fa.fa-search-plus.o_grid_cell_information', {
-                attrs: {
-                    title: _t("See all the records aggregated in this cell")
-                }
-            }, []),
+            this._renderCellInformationButton(cell_size, isReadonly),
             this._renderCellInner(cell_value, isReadonly, path)
         ]);
+    },
+    /**
+     * @private
+     * @param {int} cell_size
+     * @param {boolean} isReadonly
+     * @returns {snabbdom}
+     */
+    _renderCellInformationButton: function (cell_size, isReadonly) {
+        if (!cell_size && isReadonly) {
+            return '';
+        } else {
+            return h('i.fa.fa-search-plus.o_grid_cell_information', {attrs: {title: _t("See all the records aggregated in this cell")}}, []);
+        }
     },
     /**
      * @private

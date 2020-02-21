@@ -1367,5 +1367,42 @@ QUnit.module('Views', {
         assert.strictEqual($button2.text(), '0.50');
         grid.destroy();
     });
+
+    QUnit.test('create/edit disabled for readonly grid view', async function (assert) {
+        assert.expect(4);
+        this.data['analytic.line'].fields.validated = {string: "Validation", type: "boolean"};
+        this.data['analytic.line'].records.push({id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4, employee_id: 101, validated: true});
+
+        var grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid" create="false" edit="false">' +
+                    '<field name="validated" type="readonly"/>' +
+                    '<field name="project_id" type="row"/>' +
+                    '<field name="task_id" type="row"/>' +
+                    '<field name="date" type="col">' +
+                        '<range name="week" string="Week" span="week" step="day"/>' +
+                        '<range name="month" string="Month" span="month" step="day"/>' +
+                    '</field>' +
+                    '<field name="unit_amount" type="measure" widget="float_time"/>' +
+                '</grid>',
+            currentDate: "2017-01-25",
+        });
+
+        assert.containsNone(grid, '.o_grid_cell_container[data-path="grid.0.3"]:not(.o_grid_cell_empty) .fa-search-plus',
+            "should not have magnifying glass icon");
+        assert.containsOnce(grid, '.o_grid_cell_container[data-path="grid.0.2"]:not(.o_grid_cell_empty) .fa-search-plus',
+            "should have magnifying glass icon to move on tree view");
+
+        testUtils.mock.intercept(grid, 'do_action', function (event) {
+            const action = event.data.action;
+            assert.strictEqual(action.context.create, false, "It should not be createable");
+            assert.strictEqual(action.context.edit, false, "It should not be editable");
+        });
+        await testUtils.dom.click(grid.$('div.o_grid_cell_container[data-path="grid.0.2"] .o_grid_cell_information'));
+
+        grid.destroy();
+    });
 });
 });

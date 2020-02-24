@@ -17,7 +17,7 @@ class TestCaseDocumentsBridgeHR(TestPayslipBase):
         folder = self.env['documents.folder'].create({'name': 'Contract folder test'})
         company = self.env.user.company_id
         company.documents_hr_settings = True
-        company.documents_hr_folder = folder.id
+        company.documents_payroll_folder_id = folder.id
         self.richard_emp.user_id = documents_user
         contract = self.richard_emp.contract_ids[0]
         contract.state = 'open'
@@ -35,3 +35,4 @@ class TestCaseDocumentsBridgeHR(TestPayslipBase):
         document = self.env['documents.document'].search([('attachment_id', '=', attachment.id)])
         self.assertTrue(document, "There should be a new document created from the attachment")
         self.assertEqual(document.owner_id, documents_user, "The owner_id should be the document user")
+        self.assertEqual(document.folder_id, folder, "The document should have been created in the configured folder")

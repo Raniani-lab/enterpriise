@@ -23,7 +23,7 @@
                                     Centralize your employees' documents (contracts, payslips, etc.)
                                 </div>
                             </div>
-                            <div class="content-group" attrs="{'invisible' : [('documents_hr_settings', '=', False)]}">
+                            <div name="documents_hr_folder" class="content-group" attrs="{'invisible' : [('documents_hr_settings', '=', False)]}">
                                 <div class="row mt16">
                                     <label class="o_form_label col-lg-3" for="documents_hr_folder" string="Workspace"/>
                                    <field name="documents_hr_folder" attrs="{'required' : [('documents_hr_settings', '=', True)]}"/>

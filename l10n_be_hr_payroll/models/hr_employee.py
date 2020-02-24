@@ -117,25 +117,24 @@ class HrEmployee(models.Model):
             3. It will create the file names.
             4. It calls the method to create the XML file.
             5. It calls the method to create the PDF file.
+        :return: dict {file_type: list of tuple (employee, filename, data)}
         """
         self._check_valid_281_10_configuration()
         employees_data = self._get_employee_281_10_values(basic_info)
 
+        attachments = {'pdf': [], 'xml': []}
         for employee in self:
             employee_data = employees_data[employee.id]
-            attachments = []
 
             if 'xml' in file_types:
                 employee_data.update({'F2019': employee._get_marital_status('xml')})
-                attachments.append(employee._generate_281_10_form_xml(employee_data))
+                attachments['xml'].append((employee, *employee._generate_281_10_form_xml(employee_data)))
 
             if 'pdf' in file_types:
                 employee_data.update({'F2019': employee._get_marital_status('pdf')})
-                attachments.append(employee._generate_281_10_form_pdf(employee_data))
+                attachments['pdf'].append((employee, *employee._generate_281_10_form_pdf(employee_data)))
 
-            employee.message_post(
-                body=_("The 281.10 sheet has been generated"),
-                attachments=attachments)
+        return attachments
 
     def _check_valid_281_10_configuration(self):
         if not all(emp.company_id and emp.company_id.street and emp.company_id.zip and emp.company_id.city and emp.company_id.phone and emp.company_id.vat for emp in self):
@@ -363,7 +362,6 @@ class HrEmployee(models.Model):
         add_elements(Verzending, elements)
 
         export_281_sheet_xml = etree.tostring(Verzendingen, xml_declaration=True, encoding='utf-8')
-
         return export_281_sheet_filename_xml, export_281_sheet_xml
 
     def _get_fiche_281_10_xml(self, employee_data):

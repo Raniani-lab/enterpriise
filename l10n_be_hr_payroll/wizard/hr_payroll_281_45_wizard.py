@@ -11,17 +11,14 @@ from odoo.exceptions import UserError
 class HrPayroll28145Wizard(models.TransientModel):
     _name = 'hr.payroll.281.45.wizard'
     _description = 'HR Payroll 281.45 Wizard'
-
-    @api.model
-    def default_get(self, field_list=None):
-        if self.env.company.country_id != self.env.ref('base.be'):
-            raise UserError(_('You must be logged in a Belgian company to use this feature'))
-        return super().default_get(field_list)
+    _inherit = 'hr.payroll.281.base.wizard'
 
     year = fields.Integer(default=lambda self: date.today().year)
+    pdf_file = fields.Binary('File', readonly=True, attachment=False)
+    pdf_filename = fields.Char()
 
     def action_generate_file_281_45(self):
-        employees = self.env['hr.employee'].browse(self.env.context.get('active_ids'))
+        employees = self.employee_ids
         self._check_valid_281_45_configuration(employees)
         # Each fiche has a number (starting at 1).
         # Order employees as follows:
@@ -43,11 +40,26 @@ class HrPayroll28145Wizard(models.TransientModel):
 
         employees_data = self._get_employee_281_45_values(employees, self.year)
 
+        pdfs = []
         for employee in employees:
             filename = '281.45-%s.pdf' % employee.name
             data = dict(employees_data[employee], employee=employee)
-            pdf, ext = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_45').render_qweb_pdf(employee.ids, data)
-            employee.message_post(body=_("The 281.45 sheet has been generated"), attachments=[(filename, pdf)])
+            pdf_data, ext = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_45').render_qweb_pdf(employee.ids, data)
+            pdfs += [(employee, filename, pdf_data)]
+
+        filename, binary = self._process_files(pdfs, default_filename='281.45 - %s.zip' % fields.Date.today())
+        self.pdf_file = binary
+        self.pdf_filename = filename
+        self.state = 'get'
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'view_mode': 'form',
+            'res_id': self.id,
+            'views': [(False, 'form')],
+            'target': 'new',
+        }
 
     @api.model
     def _get_employee_281_45_values(self, employees, year):

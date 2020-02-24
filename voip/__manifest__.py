@@ -31,5 +31,4 @@ Allows to make call from next activities or with click-to-dial.
     'qweb': ['static/src/xml/*.xml'],
     'application': True,
     'license': 'OEEL-1',
-    'uninstall_hook': "uninstall_hook",
 }

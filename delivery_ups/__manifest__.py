@@ -15,5 +15,4 @@
         'views/res_partner_views.xml',
     ],
     'license': 'OEEL-1',
-    'uninstall_hook': 'uninstall_hook',
 }

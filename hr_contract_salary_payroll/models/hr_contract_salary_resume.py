@@ -7,4 +7,6 @@ from odoo import fields, models
 class HrContractSalaryResume(models.Model):
     _inherit = 'hr.contract.salary.resume'
 
-    value_type = fields.Selection(selection_add=[('payslip', 'Payslip Value')])
+    value_type = fields.Selection(selection_add=[
+        ('payslip', 'Payslip Value')
+    ], ondelete={'payslip': 'set default'})

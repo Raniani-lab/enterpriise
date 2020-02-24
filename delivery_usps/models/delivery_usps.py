@@ -11,7 +11,9 @@ import math
 class ProviderUSPS(models.Model):
     _inherit = 'delivery.carrier'
 
-    delivery_type = fields.Selection(selection_add=[('usps', "USPS")])
+    delivery_type = fields.Selection(selection_add=[
+        ('usps', "USPS")
+    ], ondelete={'usps': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
     # Fields required to configure
     usps_username = fields.Char(string='USPS User ID', groups="base.group_system")
     usps_account_validated = fields.Boolean(string="Account Validated", help="Check this box if your account is validated by USPS")

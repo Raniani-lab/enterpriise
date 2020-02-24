@@ -13,12 +13,19 @@ _logger = logging.getLogger(__name__)
 class MarketingActivity(models.Model):
     _inherit = ['marketing.activity']
 
-    activity_type = fields.Selection(selection_add=[('sms', 'SMS')])
+    activity_type = fields.Selection(selection_add=[
+        ('sms', 'SMS')
+    ], ondelete={'sms': 'cascade'})
     mass_mailing_id_mailing_type = fields.Selection(selection_add=[('sms', 'SMS')])
     trigger_type = fields.Selection(selection_add=[
         ('sms_click', 'SMS: clicked'),
         ('sms_not_click', 'SMS: not clicked'),
-        ('sms_bounce', 'SMS: bounced')])
+        ('sms_bounce', 'SMS: bounced')
+    ], ondelete={
+        'sms_click': 'cascade',
+        'sms_not_click': 'cascade',
+        'sms_bounce': 'cascade',
+    })
     trigger_category = fields.Selection(selection_add=[('sms', 'SMS')], compute='_compute_trigger_category')
 
     @api.depends('activity_type')

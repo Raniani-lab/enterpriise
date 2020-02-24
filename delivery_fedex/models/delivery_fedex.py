@@ -55,7 +55,9 @@ FEDEX_STOCK_TYPE = [
 class ProviderFedex(models.Model):
     _inherit = 'delivery.carrier'
 
-    delivery_type = fields.Selection(selection_add=[('fedex', "FedEx")])
+    delivery_type = fields.Selection(selection_add=[
+        ('fedex', "FedEx")
+    ], ondelete={'fedex': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
 
     fedex_developer_key = fields.Char(string="Developer Key", groups="base.group_system")
     fedex_developer_password = fields.Char(string="Password", groups="base.group_system")

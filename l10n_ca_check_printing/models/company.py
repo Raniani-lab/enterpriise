@@ -13,4 +13,8 @@ class Company(models.Model):
         ('l10n_ca_check_printing.action_print_check_top', 'Print Check (Top) - CA'),
         ('l10n_ca_check_printing.action_print_check_middle', 'Print Check (Middle) - CA'),
         ('l10n_ca_check_printing.action_print_check_bottom', 'Print Check (Bottom) - CA'),
-    ])
+    ], ondelete={
+        'l10n_ca_check_printing.action_print_check_top': 'set default',
+        'l10n_ca_check_printing.action_print_check_middle': 'set default',
+        'l10n_ca_check_printing.action_print_check_bottom': 'set default',
+    })

@@ -11,7 +11,9 @@ from .bpost_request import BpostRequest
 class ProviderBpost(models.Model):
     _inherit = 'delivery.carrier'
 
-    delivery_type = fields.Selection(selection_add=[('bpost', 'bpost')])
+    delivery_type = fields.Selection(selection_add=[
+        ('bpost', 'bpost')
+    ], ondelete={'bpost': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
     # Fields required to configure
     bpost_account_number = fields.Char(string="Bpost Account Number", groups="base.group_system")
     bpost_developer_password = fields.Char(string="Passphrase", groups="base.group_system")

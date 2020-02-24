@@ -13,5 +13,4 @@
         'views/res_config_settings_views.xml',
     ],
     'license': 'OEEL-1',
-    'uninstall_hook': 'uninstall_hook',
 }

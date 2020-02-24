@@ -27,7 +27,9 @@ class ProviderUPS(models.Model):
             ('96', 'UPS Worldwide Express Freight')
         ]
 
-    delivery_type = fields.Selection(selection_add=[('ups', "UPS")])
+    delivery_type = fields.Selection(selection_add=[
+        ('ups', "UPS")
+    ], ondelete={'ups': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
 
     ups_username = fields.Char(string='UPS Username', groups="base.group_system")
     ups_passwd = fields.Char(string='UPS Password', groups="base.group_system")

@@ -13,7 +13,9 @@ from .easypost_request import EasypostRequest
 class DeliverCarrier(models.Model):
     _inherit = 'delivery.carrier'
 
-    delivery_type = fields.Selection(selection_add=[('easypost', 'Easypost')])
+    delivery_type = fields.Selection(selection_add=[
+        ('easypost', 'Easypost')
+    ], ondelete={'easypost': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
     easypost_test_api_key = fields.Char("Test API Key", groups="base.group_system", help="Enter your API test key from Easypost account.")
     easypost_production_api_key = fields.Char("Production API Key", groups="base.group_system", help="Enter your API production key from Easypost account")
     easypost_delivery_type = fields.Char('Easypost Carrier Type')

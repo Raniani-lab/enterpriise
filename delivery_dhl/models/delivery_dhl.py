@@ -8,7 +8,9 @@ from odoo.tools import float_repr
 class Providerdhl(models.Model):
     _inherit = 'delivery.carrier'
 
-    delivery_type = fields.Selection(selection_add=[('dhl', "DHL")])
+    delivery_type = fields.Selection(selection_add=[
+        ('dhl', "DHL")
+    ], ondelete={'dhl': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
 
     dhl_SiteID = fields.Char(string="DHL SiteID", groups="base.group_system")
     dhl_password = fields.Char(string="DHL Password", groups="base.group_system")

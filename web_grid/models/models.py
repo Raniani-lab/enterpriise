@@ -14,8 +14,6 @@ from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.tools.misc import format_date, get_lang
 
-_GRID_TUP = [('grid', "Grid")]
-
 
 class Base(models.AbstractModel):
     _inherit = 'base'

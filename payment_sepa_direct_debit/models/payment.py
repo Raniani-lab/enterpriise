@@ -16,7 +16,9 @@ _logger = logging.getLogger(__name__)
 class PaymentAcquirerSepaDirectDebit(models.Model):
     _inherit = 'payment.acquirer'
 
-    provider = fields.Selection(selection_add=[('sepa_direct_debit', 'SEPA Direct Debit')])
+    provider = fields.Selection(selection_add=[
+        ('sepa_direct_debit', 'SEPA Direct Debit')
+    ], ondelete={'sepa_direct_debit': 'set default'})
     sepa_direct_debit_sms_enabled = fields.Boolean('SMS Authentication', default=False, help='A verification code is sent by SMS to the customer.')
     sepa_direct_debit_sign_enabled = fields.Boolean('Online Signature', default=False, help='Ask your customer to include their signature during the payment process.')
     iap_sms_credits = fields.Monetary('SMS Credits', compute='_compute_iap_credits', store=False)

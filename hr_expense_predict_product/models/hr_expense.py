@@ -69,7 +69,7 @@ class HrExpense(models.Model):
 
     @api.onchange('name')
     def _onchange_predict_product(self):
-        if self.name:
+        if self.name and not self.product_id:
             predicted_product_id = self._predict_product(self.name)
             self.product_id = predicted_product_id if predicted_product_id else self.env['product.product'].search([('default_code', '=', 'EXP_GEN')])
 

@@ -29,7 +29,7 @@ class HrAppraisal(models.Model):
         ('pending', 'Appraisal Sent'),
         ('done', 'Done'),
         ('cancel', "Cancelled"),
-    ], string='Status', tracking=True, required=True, copy=False, default='new', index=True)
+    ], string='Status', tracking=True, required=True, copy=False, default='new', index=True, group_expand='_group_expand_states')
     manager_appraisal = fields.Boolean(string='Appraisal by Manager', help="This employee will be appraised by his managers")
     manager_ids = fields.Many2many('hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     manager_body_html = fields.Html(string="Manager's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_manager_body_html)
@@ -41,6 +41,9 @@ class HrAppraisal(models.Model):
     meeting_id = fields.Many2one('calendar.event', string='Meeting')
     date_final_interview = fields.Date(string="Final Interview", index=True, tracking=True)
     is_autorized_to_send = fields.Boolean('Autorized Employee to Start Appraisal', compute='_compute_authorization')
+
+    def _group_expand_states(self, states, domain, order):
+        return [key for key, val in self._fields['state'].selection]
 
     def _compute_authorization(self):
         user = self.env.user
@@ -71,6 +74,7 @@ class HrAppraisal(models.Model):
         """
         Subscribes the employee and his manager to the appraisal thread.
         Also subscribes other employees designed as manager for this appraisal, and the manager of the employee's department if he's different from the employee's direct manager.
+        Deprecated but public method: Should be remove in next version
         """
         for appraisal in self:
             partner_ids = [emp.related_partner_id.id for emp in appraisal.manager_ids if emp.related_partner_id]
@@ -222,10 +226,6 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
         if vals.get('state') and vals['state'] == 'pending':
             self.send_appraisal()
 
-        date_final_interview = vals.get('date_final_interview')
-        if date_final_interview:
-            # creating employee meeting and interview date
-            result.schedule_final_meeting(date_final_interview)
         result.employee_id.sudo().write({
             'next_appraisal_date': result.date_close,
             'periodic_appraisal_created': True,
@@ -240,46 +240,15 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
             if vals['state'] == 'pending':
                 self.send_appraisal()
         result = super(HrAppraisal, self).write(vals)
-        date_final_interview = vals.get('date_final_interview')
         if vals.get('date_close'):
             self.mapped('employee_id').write({'next_appraisal_date': vals.get('date_close'), 'last_duration_reminder_send': 0})
             self.activity_reschedule(['hr_appraisal.mail_act_appraisal_form'], date_deadline=vals['date_close'])
-        if date_final_interview:
-            # creating employee meeting and interview date
-            self.schedule_final_meeting(date_final_interview)
         return result
 
     def unlink(self):
         if any(appraisal.state not in ['new', 'cancel'] for appraisal in self):
             raise UserError(_("You cannot delete appraisal which is not in draft or canceled state"))
         return super(HrAppraisal, self).unlink()
-
-    @api.model
-    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
-        """ Override read_group to always display all states and order them appropriatly. """
-        if groupby and groupby[0] == "state":
-            states = [('new', _('To Start')), ('pending', _('Appraisal Sent')), ('done', _('Done')), ('cancel', _('Cancelled'))]
-            read_group_all_states = [{
-                '__context': {'group_by': groupby[1:]},
-                '__domain': domain + [('state', '=', state_value)],
-                'state': state_value,
-                'state_count': 0,
-            } for state_value, state_name in states]
-            # Get standard results
-            read_group_res = super(HrAppraisal, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby)
-            # Update standard results with default results
-            result = []
-            for state_value, state_name in states:
-                res = [x for x in read_group_res if x['state'] == state_value]
-                if not res:
-                    res = [x for x in read_group_all_states if x['state'] == state_value]
-                res[0]['state'] = state_value
-                if res[0]['state'][0] == 'done' or res[0]['state'][0] == 'cancel':
-                    res[0]['__fold'] = True
-                result.append(res[0])
-            return result
-        else:
-            return super(HrAppraisal, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby)
 
     def action_calendar_event(self):
         """ Link to open calendar view for creating employee interview/meeting"""
@@ -300,10 +269,13 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
         self.activity_feedback(['hr_appraisal.mail_act_appraisal_send'])
 
     def button_done_appraisal(self):
-        appraisal_max_period = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_max_period'))
         current_date = datetime.date.today()
         self.write({'state': 'done'})
-        self.mapped('employee_id').write({'last_appraisal_date': current_date, 'last_duration_reminder_send': 0, 'next_appraisal_date': current_date + relativedelta(months=appraisal_max_period), 'periodic_appraisal_created': False})
+        self.mapped('employee_id').write({
+            'last_appraisal_date': current_date,
+            'last_duration_reminder_send': 0,
+            'next_appraisal_date': False,
+            'periodic_appraisal_created': False})
         self.activity_feedback(['mail.mail_activity_data_meeting', 'hr_appraisal.mail_act_appraisal_form'])
 
     def button_cancel_appraisal(self):

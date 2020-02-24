@@ -87,7 +87,7 @@
         </div>
     </summary>
     <div class="o_search_panel_current_selection o_searchview">
-        <t t-if="emptySelection">Filters...</t>
+        <t t-if="emptySelection">Select...</t>
         <t t-if="!emptySelection">
             <div class="o_searchview_input_container">
                 <div t-foreach="categories" t-as="category" class="o_search_panel_category o_searchview_facet">

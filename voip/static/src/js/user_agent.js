@@ -641,17 +641,38 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             inviteSession.reject();
             return;
         }
+
+        function sanitizedPhone(prefix, number) {
+            if (number.startsWith("0")) {
+                return "+" + prefix + number.substr(1, number.length);
+            }
+        }
+
         let name = inviteSession.remoteIdentity.displayName;
         const number = inviteSession.remoteIdentity.uri.user;
+        let numberSanitized = sanitizedPhone(inviteSession.remoteIdentity.uri.type, number);
         this._currentInviteSession = inviteSession;
-        const contacts = await this._rpc({
-            model: 'res.partner',
-            method: 'search_read',
-            domain: [
+        let domain;
+        if (numberSanitized) {
+            domain = [
+                '|', '|',
+                ['sanitized_phone', 'ilike', number],
+                ['sanitized_mobile', 'ilike', number],
+                '|',
+                ['sanitized_phone', 'ilike', numberSanitized],
+                ['sanitized_mobile', 'ilike', numberSanitized],
+            ];
+        } else {
+            domain = [
                 '|',
                 ['sanitized_phone', 'ilike', number],
                 ['sanitized_mobile', 'ilike', number],
-            ],
+            ];
+        }
+        const contacts = await this._rpc({
+            model: 'res.partner',
+            method: 'search_read',
+            domain: domain,
             fields: ['id', 'display_name'],
             limit: 1,
         });

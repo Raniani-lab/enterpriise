@@ -545,15 +545,22 @@ class Planning(models.Model):
     # ----------------------------------------------------
 
     @api.model
-    def action_copy_previous_week(self, date_start_week):
+    def action_copy_previous_week(self, date_start_week, view_domain):
         date_end_copy = datetime.strptime(date_start_week, DEFAULT_SERVER_DATETIME_FORMAT)
         date_start_copy = date_end_copy - relativedelta(days=7)
         domain = [
-            ('start_datetime', '>=', date_start_copy),
-            ('end_datetime', '<=', date_end_copy),
             ('recurrency_id', '=', False),
             ('was_copied', '=', False)
         ]
+        for dom in view_domain:
+            if dom in ['|', '&', '!']:
+                domain.append(dom)
+            elif dom[0] == 'start_datetime':
+                domain.append(('start_datetime', '>=', date_start_copy))
+            elif dom[0] == 'end_datetime':
+                domain.append(('end_datetime', '<=', date_end_copy))
+            else:
+                domain.append(tuple(dom))
         slots_to_copy = self.search(domain)
 
         new_slot_values = []

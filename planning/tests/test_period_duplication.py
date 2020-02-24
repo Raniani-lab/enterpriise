@@ -47,7 +47,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
 
         self.assertEqual(len(self.get_by_employee(employee)), 3)
 
-        self.env['planning.slot'].action_copy_previous_week(date(2019, 6, 9))
+        self.env['planning.slot'].action_copy_previous_week(date(2019, 6, 9), [['start_datetime', '<=', '2020-04-04 21:59:59'], ['end_datetime', '>=', '2020-03-28 23:00:00']])
 
         self.assertEqual(len(self.get_by_employee(employee)), 5, 'duplicate has only duplicated slots that fit entirely in the period')
 

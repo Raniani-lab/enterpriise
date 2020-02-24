@@ -91,6 +91,7 @@ var PlanningGanttController = GanttController.extend({
             method: 'action_copy_previous_week',
             args: [
                 self.model.convertToServerTime(state.startDate),
+                this.model._getDomain(),
             ],
             context: _.extend({}, self.context || {}),
         })

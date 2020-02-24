@@ -291,6 +291,8 @@ class ResCompany(models.Model):
         today = date_mx.strftime(BANXICO_DATE_FORMAT)
         yesterday = (date_mx - datetime.timedelta(days=1)).strftime(BANXICO_DATE_FORMAT)
         for index, currency in foreigns.items():
+            if not series.get(index, False):
+                return False
             if currency not in available_currency_names:
                 continue
 

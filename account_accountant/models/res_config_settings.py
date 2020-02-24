@@ -24,6 +24,7 @@ class ResConfigSettings(models.TransientModel):
         domain=lambda self: [('reconcile', '=', True), ('user_type_id.id', '=', self.env.ref('account.data_account_type_current_assets').id)],
         help="Intermediary account used when moving money from a liquidity account to another")
     invoicing_switch_threshold = fields.Date(string="Invoicing Switch Threshold", related='company_id.invoicing_switch_threshold', readonly=False)
+    group_fiscal_year = fields.Boolean(string='Fiscal Years', implied_group='account_accountant.group_fiscal_year')
 
     @api.constrains('fiscalyear_last_day', 'fiscalyear_last_month')
     def _check_fiscalyear(self):

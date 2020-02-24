@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-        <menuitem id="menu_product_product_categories"
-        action="product.product_category_action_form"
-        parent="account.account_management_menu" sequence="7"/>
-
-        <menuitem id="account_tag_menu" parent="account.account_account_menu" sequence="8" action="account.account_tag_action" groups="base.group_no_one"/>
-        <menuitem id="menu_account_group" parent="account.account_account_menu" sequence="6" action="account.action_account_group_tree" groups="base.group_no_one"/>
-        <menuitem id="menu_account_fiscal_year" parent="account.account_account_menu" action="account.actions_account_fiscal_year" groups="account.group_fiscal_year"/>
-
         <record id="res_partner_view_form" model="ir.ui.view">
             <field name="name">res.partner.form</field>
             <field name="model">res.partner</field>

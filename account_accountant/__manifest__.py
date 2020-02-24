@@ -23,6 +23,7 @@ It assigns manager and user access rights to the Administrator for the accountin
         'views/account_accountant_templates.xml',
         'views/account_account_views.xml',
         'views/account_bank_statement_views.xml',
+        'views/account_fiscal_year_view.xml',
         'views/account_journal_dashboard_views.xml',
         'views/account_move_views.xml',
         'views/account_payment_views.xml',

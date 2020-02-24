@@ -838,11 +838,14 @@ class AccountReport(models.AbstractModel):
         ctx = self.env.context.copy()
         ctx.update({'search_default_account': 1, 'search_default_groupby_date': 1})
 
-        action = self.env.ref('account.action_move_line_select_tax_audit').read()[0]
-        action = clean_action(action)
-        action['domain'] = domain
-        action['context'] = ctx
-        return action
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Journal Items for Tax Audit'),
+            'res_model': 'account.move.line',
+            'views': [[self.env.ref('account.view_move_line_tax_audit_tree').id, 'list'], [False, 'form']],
+            'domain': domain,
+            'context': ctx,
+        }
 
     def open_tax(self, options, params=None):
         active_id = int(str(params.get('id')).split('_')[0])
@@ -865,25 +868,6 @@ class AccountReport(models.AbstractModel):
         domain = ast.literal_eval(line.domain)
         action = self.open_action(options, domain)
         action['display_name'] = _('Journal Items (%s)') % line.name
-        return action
-
-    def view_too_many(self, options, params=None):
-        model, active_id = params.get('actionId').split(',')
-        ctx = self.env.context.copy()
-        if model == 'account':
-            action = self.env.ref('account.action_move_line_select').read()[0]
-            ctx.update({
-                'search_default_account_id': [int(active_id)],
-                'active_id': int(active_id),
-                })
-        if model == 'partner':
-            action = self.env.ref('account.action_move_line_select_by_partner').read()[0]
-            ctx.update({
-                'search_default_partner_id': [int(active_id)],
-                'active_id': int(active_id),
-                })
-        action = clean_action(action)
-        action['context'] = ctx
         return action
 
     def open_general_ledger(self, options, params=None):

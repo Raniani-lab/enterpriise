@@ -39,7 +39,8 @@ class CustomerPortal(CustomerPortal):
 
         searchbar_sortings = {
             'date': {'label': _('Newest'), 'order': 'create_date desc, id desc'},
-            'name': {'label': _('Name'), 'order': 'name asc, id asc'}
+            'name': {'label': _('Name'), 'order': 'name asc, id asc'},
+            'stage_id': {'label': _('Status'), 'order': 'stage_id asc, to_renew desc, id desc'}
         }
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
@@ -50,7 +51,7 @@ class CustomerPortal(CustomerPortal):
 
         # default sort by value
         if not sortby:
-            sortby = 'date'
+            sortby = 'stage_id'
         order = searchbar_sortings[sortby]['order']
         # default filter by value
         if not filterby:

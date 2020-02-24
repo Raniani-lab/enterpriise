@@ -1095,7 +1095,7 @@ class SaleSubscriptionTemplate(models.Model):
 
     active = fields.Boolean(default=True)
     name = fields.Char(required=True)
-    code = fields.Char()
+    code = fields.Char(help="Code is added automatically in the display name of every subscription.")
     description = fields.Text(translate=True, string="Terms and Conditions")
     recurring_rule_type = fields.Selection([('daily', 'Days'), ('weekly', 'Weeks'),
                                             ('monthly', 'Months'), ('yearly', 'Years'), ],

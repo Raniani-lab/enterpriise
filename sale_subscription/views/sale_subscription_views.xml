@@ -534,6 +534,7 @@
                                         <field name="tag_ids" string="Group of Subscription" widget="many2many_tags" options="{'color_field': 'color'}" />
                                         <field name="journal_id" string="Journal" options="{'no_create': True}" groups="account.group_account_manager"/>
                                         <field name="company_id" groups="base.group_multi_company"/>
+                                        <field name="code" string="Code"/>
                                     </group>
                             </group>
                             </group>

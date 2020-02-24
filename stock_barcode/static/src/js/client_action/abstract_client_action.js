@@ -962,11 +962,12 @@ var ClientAction = AbstractAction.extend({
      * @private
      * @returns {Promise}
      */
-    _validate: function () {
+    _validate: function (context) {
         return this._save().then(() => {
             return this._rpc({
                 model: this.actionParams.model,
                 method: this.methods.validate,
+                context: context || {},
                 args: [[this.currentState.id]],
             });
         });

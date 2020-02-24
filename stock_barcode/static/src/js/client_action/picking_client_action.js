@@ -264,7 +264,7 @@ var PickingClientAction = ClientAction.extend({
      *
      * @override
      */
-    _validate: function () {
+    _validate: function (context) {
         const self = this;
         const superValidate = this._super.bind(this);
         this.mutex.exec(function () {
@@ -283,7 +283,7 @@ var PickingClientAction = ClientAction.extend({
                 core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);
             };
 
-            return superValidate().then((res) => {
+            return superValidate(context).then((res) => {
                 if (_.isObject(res)) {
                     const options = {
                         on_close: exitCallback,

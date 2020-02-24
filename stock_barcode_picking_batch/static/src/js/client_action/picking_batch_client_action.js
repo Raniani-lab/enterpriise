@@ -115,6 +115,13 @@ const BatchPickingClientAction = PickingClientAction.extend({
         });
     },
 
+    /**
+     * @override
+     */
+    _validate: function () {
+        this._super({ barcode_view: true });
+    },
+
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------

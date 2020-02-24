@@ -68,7 +68,7 @@ class SignRequest(models.Model):
     nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
     progress = fields.Char(string="Progress", compute="_compute_count", compute_sudo=True)
     start_sign = fields.Boolean(string="Signature Started", help="At least one signer has signed the document.", compute="_compute_count", compute_sudo=True)
-    integrity = fields.Boolean(string="Integrity of the Sign request", compute='_compute_hashes')
+    integrity = fields.Boolean(string="Integrity of the Sign request", compute='_compute_hashes', compute_sudo=True)
 
     active = fields.Boolean(default=True, string="Active")
     favorited_ids = fields.Many2many('res.users', string="Favorite of")

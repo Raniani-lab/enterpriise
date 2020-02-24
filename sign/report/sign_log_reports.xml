@@ -105,7 +105,7 @@
                     <div t-else="" class="small text-right text-muted">
                         <p><i class="fa fa-exclamation-circle"/> The document's integrity could not be verified.</p>
                     </div>
-                    <div class="small">
+                    <div class="small" t-if="o.state == 'signed'">
                         <p>The final document and this completion history have been sent by email on&amp;nbsp; <span t-field="o.completion_date"/> to: <t t-esc="', '.join(o._get_final_recipients())"/>.</p>
                     </div>
                     <h5>Access Logs</h5>

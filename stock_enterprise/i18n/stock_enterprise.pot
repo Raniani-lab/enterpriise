@@ -115,6 +115,13 @@ msgid "Done Transfers"
 msgstr ""
 
 #. module: stock_enterprise
+#. openerp-web
+#: code:addons/stock_enterprise/static/src/js/report_grid_controller.js:0
+#, python-format
+msgid "Error: Only grouping by product is supported."
+msgstr ""
+
+#. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__scheduled_date
 msgid "Expected Date"
 msgstr ""

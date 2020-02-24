@@ -3,6 +3,8 @@ odoo.define('stock_enterprise.ReportGridController', function (require) {
 
 var GridController = require('web_grid.GridController');
 var utils = require('web.utils');
+var core = require('web.core');
+var _t = core._t;
 
 var ReportGridController = GridController.extend({
     /**
@@ -21,6 +23,10 @@ var ReportGridController = GridController.extend({
         var row = utils.into(state, rowPath);
         var colPath = cellPath.slice(0, -3).concat(['cols'], cellPath.slice(-1));
         var col = utils.into(state, colPath);
+        if (!row.values.product_id) {
+            this.do_warn(_t("Error: Only grouping by product is supported."));
+            return;
+        }
         return this._rpc({
             model: 'report.stock.quantity',
             method: 'action_open_moves',

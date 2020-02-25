@@ -201,7 +201,8 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
                 title: 'play',
                 'aria-label': 'start',
                 'aria-pressed': false,
-                type: 'button'
+                type: 'button',
+                tabindex: -1,
             };
 
             const propsIcon = {

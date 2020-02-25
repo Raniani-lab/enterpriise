@@ -22,6 +22,7 @@
         'l10n_es', 'account_reports',
     ],
     'data': [
+        'security/ir.model.access.csv',
         'views/account_financial_report_views.xml',
         'views/tax_report_views.xml',
         'views/account_invoice_views.xml',

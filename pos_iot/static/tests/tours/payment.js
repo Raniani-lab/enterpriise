@@ -43,15 +43,6 @@ var TerminalProxy = DeviceProxy.extend({
                     });
                 });
                 break;
-            case 'Reversal':
-                this.transaction = false;
-                setTimeout(function () {
-                    self.listener({
-                        Response: 'Reversed',
-                        cid: data.cid,
-                    });
-                });
-                break;
         }
         return Promise.resolve({
             result: true
@@ -127,19 +118,6 @@ tour.register('payment_terminals_tour', {
         content: "Check that the payment is confirmed",
         trigger: '.button.next.highlight',
         run: function () {}, // it's a check
-    }, {
-        content: "Reverse payment",
-        trigger: '.button.send_payment_reversal',
-    }, {
-        content: "Check that the payment is reversed",
-        trigger: '.button.next:not(.highlight)',
-        run: function () {}, // it's a check
-    }, {
-        content: "Pay with payment terminal",
-        trigger: '.paymentmethod:contains("Terminal")',
-    }, {
-        content: "Send payment to terminal",
-        trigger: '.button.send_payment_request.highlight',
     }, {
         content: "Validate payment",
         trigger: '.button.next.highlight:contains("Validate")',

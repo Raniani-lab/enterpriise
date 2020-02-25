@@ -24,13 +24,6 @@
         </div>
     </t>
 
-    <t t-name="CloseSession">
-        <button t-att-attrs="widget.attrs.attrs" t-att-states="widget.attrs.states"
-                class="btn btn-primary">
-            <span t-esc="widget.attrs.string"/>
-        </button>
-    </t>
-
     <t t-extend="ScaleScreenWidget">
         <t t-jquery=".buy-product" t-operation="before">
             <div class="read-weight" t-if="widget.manual_measurement">

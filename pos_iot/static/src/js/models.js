@@ -8,7 +8,6 @@ var PrinterProxy = require('pos_iot.Printer');
 
 models.load_fields("res.users", "lang");
 models.load_fields("pos.payment.method", "iot_device_id");
-models.register_payment_method('six', PaymentIOT);
 models.register_payment_method('ingenico', PaymentIOT);
 
 models.load_models([{
@@ -70,31 +69,7 @@ models.load_models([{
     }
 }]);
 
-var posmodel_super = models.PosModel.prototype;
 models.PosModel = models.PosModel.extend({
-    /**
-     * Opens the shift on the payment terminal
-     *
-     * @override
-     */
-    after_load_server_data: function () {
-        var self = this;
-        var res = posmodel_super.after_load_server_data.apply(this, arguments);
-        if (this.useIoTPaymentTerminal()) {
-            res.then(function () {
-                self.payment_methods.forEach(function (payment_method) {
-                    if (payment_method.terminal_proxy) {
-                        payment_method.terminal_proxy.action({
-                            messageType: 'OpenShift',
-                            language: self.user.lang.split('_')[0],
-                        });
-                    }
-                });
-            });
-        }
-        return res;
-    },
-
     useIoTPaymentTerminal: function () {
         return this.config && this.config.use_proxy
             && this.payment_methods.some(function(payment_method) {

@@ -11,7 +11,7 @@ class TestUi(TestPointOfSaleHttpCommon):
     def test_01_pos_iot_payment_terminal(self):
         env = self.env(user=self.env.ref('base.user_admin'))
 
-        self.env['ir.config_parameter'].sudo().set_param('pos_iot.six_payment_terminal', True)
+        self.env['ir.config_parameter'].sudo().set_param('pos_iot.ingenico_payment_terminal', True)
 
         # Create IoT Box
         iotbox_id = env['iot.box'].sudo().create({
@@ -34,7 +34,7 @@ class TestUi(TestPointOfSaleHttpCommon):
             'payment_method_ids': [(0, 0, {
                 'name': 'Terminal',
                 'is_cash_count': False,
-                'use_payment_terminal': 'six',
+                'use_payment_terminal': 'ingenico',
                 'iot_device_id': payment_terminal_device.id,
             })],
         })

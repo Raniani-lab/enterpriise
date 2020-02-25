@@ -10,8 +10,6 @@ class PoSPaymentMethod(models.Model):
 
     def _get_payment_terminal_selection(self):
         selection_list = super(PoSPaymentMethod, self)._get_payment_terminal_selection()
-        if self.env['ir.config_parameter'].sudo().get_param('pos_iot.six_payment_terminal'):
-            selection_list.append(('six', 'SIX'))
         if self.env['ir.config_parameter'].sudo().get_param('pos_iot.ingenico_payment_terminal'):
             selection_list.append(('ingenico', 'Ingenico'))
         return selection_list
@@ -25,8 +23,6 @@ class PoSPaymentMethod(models.Model):
     def _compute_payment_terminal_ids(self):
         for payment_method in self:
             domain = [('type', '=', 'payment')]
-            if payment_method.use_payment_terminal == 'six':
-                domain.append(('manufacturer', '=', 'Six'))
-            elif payment_method.use_payment_terminal == 'ingenico':
+            if payment_method.use_payment_terminal == 'ingenico':
                 domain.append(('manufacturer', '=', 'Ingenico'))
             payment_method.payment_terminal_ids = self.env['iot.device'].search(domain)

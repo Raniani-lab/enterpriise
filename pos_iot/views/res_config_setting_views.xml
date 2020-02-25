@@ -6,18 +6,6 @@
         <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <div id="o_settings_use_payment_terminals" position="inside">
-                <div class="col-12 col-lg-6 o_setting_box" title="The transactions are processed by Six. Set your Six device on the related payment method.">
-                    <div class="o_setting_left_pane">
-                        <field name="six_payment_terminal"/>
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label for="six_payment_terminal" string="SIX"/>
-                        <a href="https://www.odoo.com/documentation/user/13.0/point_of_sale/payment/six.html" title="Documentation" class="o_doc_link" target="_blank"></a>
-                        <div class="text-muted">
-                            Accept payments with a SIX payment terminal
-                        </div>
-                    </div>
-                </div>
                 <div class="col-12 col-lg-6 o_setting_box" title="The transactions are processed by Ingenico. Set your Ingenico device on the related payment method.">
                     <div class="o_setting_left_pane">
                         <field name="ingenico_payment_terminal"/>

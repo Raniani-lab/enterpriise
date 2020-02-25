@@ -24,14 +24,11 @@ var PaymentIOT = PaymentInterface.extend({
             TransactionID: parseInt(this.pos.get_order().uid.replace(/-/g, '')),
             cid: cid,
             amount: Math.round(paymentline.amount*100),
-            currency: this.pos.currency.name,
-            language: this.pos.user.lang.split('_')[0],
         };
         return new Promise(function (resolve) {
             self._waitingResponse = self._waitingPayment;
             self.terminal.add_listener(self._onValueChange.bind(self, resolve, self.pos.get_order()));
             self._send_request(data);
-            self._query_terminal();
         });
     },
     send_payment_cancel: function (order, cid) {
@@ -50,36 +47,8 @@ var PaymentIOT = PaymentInterface.extend({
         }
         return Promise.reject();
     },
-    send_payment_reversal: function (cid) {
-        var self = this;
-        this._super.apply(this, this.arguments);
-        var data = {
-            messageType: 'Reversal',
-            TransactionID: parseInt(this.pos.get_order().uid.replace(/-/g, '')),
-            cid: cid,
-            amount: Math.round(this.pos.get_order().get_paymentline(cid).amount*100),
-            currency: this.pos.currency.name,
-        };
-        return new Promise(function (resolve) {
-            self._waitingResponse = self._waitingReverse;
-            self.terminal.add_listener(self._onValueChange.bind(self, resolve, self.pos.get_order()));
-            self._send_request(data);
-        });
-
-    },
 
     // extra private methods
-    /**
-     * Queries the status of the current payment after 3 seconds if no update
-     * has been received. If an update has been received, the time should be
-     * reset.
-     */
-    _query_terminal: function () {
-        var self = this;
-        this.payment_update = setTimeout(function () {
-            self.terminal.action({messageType: 'QueryStatus'});
-        }, 3000);
-    },
     _send_request: function (data) {
         var self = this;
         this.terminal.action(data)
@@ -124,14 +93,6 @@ var PaymentIOT = PaymentInterface.extend({
             this.terminal.remove_listener();
             resolve(false);
         } else if (data.Response === 'Approved') {
-            clearTimeout(this.payment_timer);
-            if (data.Card) {
-                line.card_type = data.Card;
-                line.transaction_id = data.PaymentTransactionID;
-            }
-            if (data.Reversal) {
-                this.enable_reversals();
-            }
             this.terminal.remove_listener();
             resolve(true);
         } else if (['WaitingForCard', 'WaitingForPin'].includes(data.Stage)) {
@@ -150,20 +111,6 @@ var PaymentIOT = PaymentInterface.extend({
         }
     },
 
-    _waitingReverse: function (resolve, data) {
-        if (data.Response === 'Reversed') {
-            this.terminal.remove_listener();
-            resolve(true);
-        } else if (data.Error) {
-            this.pos.gui.show_popup('error',{
-                'title': _t('Payment terminal error'),
-                'body':  _t(data.Error),
-            });
-            this.terminal.remove_listener();
-            resolve(false);
-        }
-    },
-
     /**
      * Function ran when Device status changes.
      *
@@ -176,19 +123,12 @@ var PaymentIOT = PaymentInterface.extend({
      * @param {Object} data.value
      */
     _onValueChange: function (resolve, order, data) {
-        clearTimeout(this.payment_update);
         var line = order.get_paymentline(data.cid);
         var terminal_proxy = this.pos.payment_methods_by_id[line.payment_method.id].terminal_proxy;
         if (line && terminal_proxy && (!data.owner || data.owner === terminal_proxy._iot_longpolling._session_id)) {
             this._waitingResponse(resolve, data, line);
-            if (data.processing) {
-                this._query_terminal();
-            }
             if (data.Ticket) {
                 line.set_receipt_info(data.Ticket.replace(/\n/g, "<br />"));
-            }
-            if (data.TicketMerchant && this.pos.proxy.printer) {
-                this.pos.proxy.printer.print_receipt("<div class='pos-receipt'><div class='pos-payment-terminal-receipt'>" + data.TicketMerchant.replace(/\n/g, "<br />") + "</div></div>");
             }
         }
     },

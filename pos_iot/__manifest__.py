@@ -13,7 +13,6 @@ It links the module
 """,
     'data': [
         'views/pos_config_views.xml',
-        'views/pos_session_views.xml',
         'views/point_of_sale_assets.xml',
         'views/res_config_setting_views.xml',
         'views/pos_payment_method_views.xml',

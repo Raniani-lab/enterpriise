@@ -70,14 +70,17 @@
             </xpath>
             <field name="partner_id" position="attributes">
                 <attribute name="options">{'always_reload': True}</attribute>
-                <attribute name="context">{'show_address': [('is_fsm', '=', True)]}</attribute>
+                <attribute name="context">{'show_address': context.get('show_address')}</attribute>
                 <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
             </field>
             <field name="partner_id" position="after">
                 <field name="has_complete_partner_address" invisible="1"/>
                 <label class="oe_read_only" for="has_complete_partner_address" invisible="1"/>
                 <div class="oe_read_only">
-                    <button name="action_fsm_navigate" type="object" class="btn btn-link pl-0 pt-0 pb-2" icon="fa-arrow-right" string="Navigate To" colspan="2" attrs="{'invisible': [('has_complete_partner_address', '=', False)]}"/>
+                    <button
+                        name="action_fsm_navigate" type="object" class="btn btn-link pl-0 pt-0 pb-2"
+                        icon="fa-arrow-right" string="Navigate To" colspan="2"
+                        attrs="{'invisible': ['|', ('has_complete_partner_address', '=', False), ('is_fsm', '=', False)]}"/>
                 </div>
             </field>
             <field name="project_id" position="attributes">

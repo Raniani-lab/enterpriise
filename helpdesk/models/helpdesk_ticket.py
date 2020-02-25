@@ -461,7 +461,7 @@ class HelpdeskTicket(models.Model):
                 try:
                     vals['partner_id'] = self.env['res.partner'].find_or_create(
                         tools.formataddr((vals['partner_name'], vals['partner_email']))
-                    )
+                    ).id
                 except UnicodeEncodeError:
                     # 'formataddr' doesn't support non-ascii characters in email. Therefore, we fall
                     # back on a simple partner creation.

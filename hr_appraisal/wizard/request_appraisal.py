@@ -63,8 +63,7 @@ class RequestAppraisal(models.TransientModel):
         for employee in employees - employees_with_user:
             if employee.work_email:
                 name_email = tools.formataddr((employee.name, employee.work_email))
-                partner_id = self.env['res.partner'].sudo().find_or_create(name_email)
-                partners |= self.env['res.partner'].browse(partner_id)
+                partners |= self.env['res.partner'].sudo().find_or_create(name_email)
         return partners
 
     subject = fields.Char('Subject')

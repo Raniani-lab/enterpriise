@@ -12,6 +12,14 @@ class HelpdeskTeam(models.Model):
     project_id = fields.Many2one("project.project", string="Project", ondelete="restrict", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]",
         help="Project to which the tickets (and the timesheets) will be linked by default.")
     timesheet_timer = fields.Boolean('Timesheet Timer', default=True)
+    # Used to hide "timesheet_timer" feature in form view.
+    display_timesheet_timer = fields.Char(compute='_compute_display_timesheet_timer')
+
+    @api.depends('use_helpdesk_timesheet')
+    def _compute_display_timesheet_timer(self):
+        is_uom_hour = self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_hour')
+        for team in self:
+            team.display_timesheet_timer = team.use_helpdesk_timesheet and is_uom_hour
 
     @api.depends('use_helpdesk_timesheet')
     def _compute_timesheet_timer(self):

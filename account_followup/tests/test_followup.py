@@ -5,59 +5,59 @@ from odoo.tests import tagged, common
 from odoo.tools.misc import formatLang
 import time
 from odoo import fields
-from odoo.addons.account_reports.tests.common import TestAccountReportsCommon, TestAccountReportsCommon2
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from dateutil.relativedelta import relativedelta
 
 
-class TestAccountFollowup(TestAccountReportsCommon2):
+@tagged('post_install', '-at_install')
+class TestAccountFollowup(AccountTestInvoicingCommon):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.company_data_2 = cls.setup_company_data('company_2_data')
+        cls.env.user.company_id = cls.company_data['company']
+
+        mock_date = time.strftime('%Y') + '-06-26'
+        cls.minimal_options = {
+            'date': {
+                'date_from': mock_date,
+                'date_to': mock_date,
+            },
+        }
 
     def test_05_followup_multicompany(self):
-        date_sale = fields.Date.today()
+        options = dict(self.minimal_options)
+        options['partner_id'] = self.partner_a.id
 
-        # Company 0
-        invoice_move = self.env['account.move'].with_context(default_move_type='out_invoice').create({
-            'partner_id': self.partner_timmy_thomas.id,
-            'date': date_sale,
-            'journal_id': self.sale_journal.id,
+        # Default company
+        invoice_comp_1 = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'journal_id': self.company_data['default_journal_sale'].id,
             'invoice_line_ids': [
                 (0, 0, {'quantity': 1, 'price_unit': 30}),
             ],
         })
+        invoice_comp_1.post()
 
-        # Company 1
-        company1 = self.env['res.company'].create({'name': 'company1'})
-        self.env.user.write({
-            'company_ids': [(4, company1.id, False)],
-        })
+        # Second company
+        self.partner_a.with_company(self.company_data_2['company']).property_account_receivable_id = self.company_data_2['default_account_receivable']
 
-        account_sale1 = self.account_sale.copy({'company_id': company1.id})
-        account_rec1 = self.account_rec.copy({'company_id': company1.id})
-        sale_journal1 = self.sale_journal.copy({
-            'company_id': company1.id,
-            'default_debit_account_id': account_sale1.id,
-            'default_credit_account_id': account_sale1.id,
-        })
-        self.partner_timmy_thomas.with_company(company1.id).property_account_receivable_id = account_rec1
-
-        invoice_move1 = self.env['account.move'].with_context(default_move_type='out_invoice').create({
-            'partner_id': self.partner_timmy_thomas.id,
-            'date': date_sale,
-            'journal_id': sale_journal1.id,
+        invoice_comp_2 = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'journal_id': self.company_data_2['default_journal_sale'].id,
             'invoice_line_ids': [
                 (0, 0, {'quantity': 1, 'price_unit': 60}),
             ],
         })
+        invoice_comp_2.post()
 
-        invoice_move.post()
-        invoice_move1.post()
+        # === Check values for default company ===
 
-        # For company 0
-        self.env.user.company_id = self.company
-        currency = self.company.currency_id
-        self.assertEqual(self.partner_timmy_thomas.credit, 30.0)
-
-        options = dict(self.minimal_options)
-        options['partner_id'] = self.partner_timmy_thomas.id
+        self.assertEqual(self.partner_a.credit, 30.0)
 
         lines = self.env['account.followup.report']._get_lines(options)
 
@@ -67,15 +67,13 @@ class TestAccountFollowup(TestAccountReportsCommon2):
         self.assertEqual(len(lines[1]['columns']), 7)
 
         self.assertEqual(lines[1]['columns'][5]['name'], 'Total Due')
-        self.assertEqual(lines[1]['columns'][6]['name'], formatLang(self.env, 30.00, currency_obj=currency))
+        self.assertEqual(lines[1]['columns'][6]['name'], formatLang(self.env, 30.00, currency_obj=self.company_data['currency']))
 
-        # For company 1
-        self.env.user.company_id = company1
-        currency = company1.currency_id
-        self.env.cache.invalidate()
-        self.assertEqual(self.partner_timmy_thomas.credit, 60.0)
+        # === Check values for second company ===
 
-        lines = self.env['account.followup.report']._get_lines(options)
+        self.assertEqual(self.partner_a.with_company(self.company_data_2['company']).credit, 60.0)
+
+        lines = self.env['account.followup.report'].with_company(self.company_data_2['company'])._get_lines(options)
 
         # Title line + actual business line
         self.assertEqual(len(lines), 2)
@@ -83,7 +81,7 @@ class TestAccountFollowup(TestAccountReportsCommon2):
         self.assertEqual(len(lines[1]['columns']), 7)
 
         self.assertEqual(lines[1]['columns'][5]['name'], 'Total Due')
-        self.assertEqual(lines[1]['columns'][6]['name'], formatLang(self.env, 60.00, currency_obj=currency))
+        self.assertEqual(lines[1]['columns'][6]['name'], formatLang(self.env, 60.00, currency_obj=self.company_data_2['currency']))
 
     def test_followup_mail_attachments(self):
         '''Test that join_invoices options is working: sending attachment from multiple invoices'''
@@ -96,24 +94,20 @@ class TestAccountFollowup(TestAccountReportsCommon2):
             'join_invoices': True,
         })
 
-        test_partner = self.env['res.partner'].create({
-            'name': 'Pinco Pallino',
-            'email': 'test@example.com',
-        })
-        test_partner.property_account_receivable_id = self.account_rec
+        self.partner_a.email = 'test@example.com'
 
         today = fields.Date.today()
 
         # generating invoices
         invoices = self.env['account.move'].create([
             {
-                'partner_id': test_partner.id,
+                'partner_id': self.partner_a.id,
                 'invoice_date': today + relativedelta(days=-10),
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 40})],
             },
             {
-                'partner_id': test_partner.id,
+                'partner_id': self.partner_a.id,
                 'invoice_date': today + relativedelta(days=-11),
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [(0, 0, {'quantity': 2, 'price_unit': 40})],
@@ -136,19 +130,17 @@ class TestAccountFollowup(TestAccountReportsCommon2):
             inv._message_set_main_attachment_id([(4, att_id.id)])
 
         # triggering followup report notice
-        test_partner._compute_unpaid_invoices()
+        self.partner_a._compute_unpaid_invoices()
         options = dict(self.minimal_options)
-        options['partner_id'] = test_partner.id
+        options['partner_id'] = self.partner_a.id
 
         # sending email with attachments
         self.env['account.followup.report'].send_email(options)
 
         # retrieving attachments from the last sent mail
-        sent_attachments = self.env['mail.message'].search([('partner_ids', '=', test_partner.id)]).attachment_ids
+        sent_attachments = self.env['mail.message'].search([('partner_ids', '=', self.partner_a.id)]).attachment_ids
 
         self.assertEqual(some_attachments, sent_attachments)
-
-class TestAccountReportsCommon2(TestAccountReportsCommon2):
 
     def test_followup_level_and_status(self):
         self.env['account_followup.followup.line'].search([]).unlink()
@@ -168,31 +160,27 @@ class TestAccountReportsCommon2(TestAccountReportsCommon2):
                 'print_letter': False,
             },
         ])
-        test_partner = self.env['res.partner'].create({
-            'name': 'Mr Bluesky',
-        })
-        test_partner.property_account_receivable_id = self.account_rec
 
         today = fields.Date.today()
         tomorrow = today + relativedelta(days=1)
         ten_days_ago = today + relativedelta(days=-10)
         forty_days_ago = today + relativedelta(days=-40)
 
-        self.assertNotIn(test_partner.id, test_partner._query_followup_level())
+        self.assertNotIn(self.partner_a.id, self.partner_a._query_followup_level())
         today_invoice = self.env['account.move'].create({
-            'partner_id': test_partner.id,
-            'invoice_date': tomorrow,
             'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': tomorrow,
             'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 40})]
         })
         today_invoice.post()
 
         # only a recent invoice, nothing to do
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_level'], None)
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_status'], 'no_action_needed')
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_level'], None)
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_status'], 'no_action_needed')
 
         ten_days_ago_invoice = self.env['account.move'].create({
-            'partner_id': test_partner.id,
+            'partner_id': self.partner_a.id,
             'invoice_date': ten_days_ago,
             'move_type': 'out_invoice',
             'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 30})]
@@ -200,11 +188,11 @@ class TestAccountReportsCommon2(TestAccountReportsCommon2):
         ten_days_ago_invoice.post()
 
         # there is an overdue invoice, but it is not taken in the delay
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_level'], None)
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_status'], 'with_overdue_invoices')
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_level'], None)
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_status'], 'with_overdue_invoices')
 
         forty_days_ago_invoice = self.env['account.move'].create({
-            'partner_id': test_partner.id,
+            'partner_id': self.partner_a.id,
             'invoice_date': forty_days_ago,
             'move_type': 'out_invoice',
             'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 20})]
@@ -212,38 +200,38 @@ class TestAccountReportsCommon2(TestAccountReportsCommon2):
         forty_days_ago_invoice.post()
 
         # the last invoice was due for longer than the delay
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_level'], first_followup_level.id)
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_status'], 'in_need_of_action')
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_level'], first_followup_level.id)
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_status'], 'in_need_of_action')
 
         # execute followup needed
-        test_partner._execute_followup_partner()
+        self.partner_a._execute_followup_partner()
 
         # no action needed because the date for next followup is in the future
-        self.assertEqual(test_partner.payment_next_action_date, today + relativedelta(days=10))
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_level'], second_followup_level.id)
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_status'], 'with_overdue_invoices')
+        self.assertEqual(self.partner_a.payment_next_action_date, today + relativedelta(days=10))
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_level'], second_followup_level.id)
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_status'], 'with_overdue_invoices')
 
         # no action needed because followup of level 1 has already been done for all the lines
-        test_partner.payment_next_action_date = today + relativedelta(days=-1)
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_level'], second_followup_level.id)
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_status'], 'in_need_of_action')
+        self.partner_a.payment_next_action_date = today + relativedelta(days=-1)
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_level'], second_followup_level.id)
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_status'], 'in_need_of_action')
 
         # execute followup needed
-        test_partner._execute_followup_partner()
+        self.partner_a._execute_followup_partner()
 
         # stay on level 2, but the date should be set to later
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_level'], second_followup_level.id)
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_status'], 'with_overdue_invoices')
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_level'], second_followup_level.id)
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_status'], 'with_overdue_invoices')
 
         # register a payment for the older invoice
         self.env['account.payment.register'].with_context(active_model='account.move', active_ids=forty_days_ago_invoice.ids).create({
             'payment_date': today,
-            'journal_id': self.sale_journal.id,
+            'journal_id': self.company_data['default_journal_sale'].id,
         }).create_payments()
 
         # nothing more to see as the first invoice was earlier than the delay
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_level'], None)
-        self.assertEqual(test_partner._query_followup_level()[test_partner.id]['followup_status'], 'with_overdue_invoices')
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_level'], None)
+        self.assertEqual(self.partner_a._query_followup_level()[self.partner_a.id]['followup_status'], 'with_overdue_invoices')
 
 
 @tagged('post_install', '-at_install')

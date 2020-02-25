@@ -13,50 +13,6 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-
-class TestAccountReportsCommon2(common.TransactionCase):
-
-    def setUp(self):
-        super().setUp()
-        self.company = self.env.company
-        self.partner_timmy_thomas = self.env['res.partner'].create({
-            'name': 'Timmy Thomas',
-        })
-        # Accounts
-        self.account_sale = self.env['account.account'].create({
-            'name': 'SALE',
-            'code': '002',
-            'user_type_id': self.env.ref('account.data_account_type_revenue').id,
-            'reconcile': False,
-            'company_id': self.company.id,
-        })
-        self.account_rec = self.env['account.account'].create({
-            'name': 'RECEIVABLE',
-            'code': '003',
-            'user_type_id': self.env.ref('account.data_account_type_receivable').id,
-            'reconcile': True,
-            'company_id': self.company.id,
-        })
-        self.partner_timmy_thomas.property_account_receivable_id = self.account_rec
-
-        self.sale_journal = self.env['account.journal'].create({
-            'name': 'sale',
-            'code': 'SALE',
-            'type': 'sale',
-            'company_id': self.company.id,
-            'default_debit_account_id': self.account_sale.id,
-            'default_credit_account_id': self.account_sale.id,
-        })
-        mock_date = time.strftime('%Y') + '-06-26'
-        self.minimal_options = {
-            'date': {
-                'date_from': mock_date,
-                'date_to': mock_date,
-            },
-            'ir_filters': [],
-        }
-
-
 def _init_options(report, date_from, date_to):
     ''' Create new options at a certain date.
     :param report:          The report.

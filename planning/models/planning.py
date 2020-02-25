@@ -187,9 +187,9 @@ class Planning(models.Model):
     def _get_domain_template_slots(self):
         domain = ['|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
         if self.role_id:
-            domain += [('role_id', '=', self.role_id.id)]
+            domain += ['|', ('role_id', '=', self.role_id.id), ('role_id', '=', False)]
         elif self.employee_id and self.employee_id.sudo().planning_role_ids:
-            domain += [('role_id', 'in', self.employee_id.sudo().planning_role_ids.ids)]
+            domain += ['|', ('role_id', 'in', self.employee_id.sudo().planning_role_ids.ids), ('role_id', '=', False)]
         return domain
 
     @api.depends('role_id', 'employee_id')

@@ -193,6 +193,8 @@ class Task(models.Model):
         """
         super().action_fsm_validate()
         for task in self.filtered(lambda task: task.allow_billable and (task.allow_timesheets or task.allow_material)):
+            if not task.sale_line_id and not task.timesheet_ids: # Prevent creating a SO if there are no products and no timesheets
+                continue
             task._fsm_ensure_sale_order()
             if task.sudo().sale_order_id.state in ['draft', 'sent']:
                 task.sudo().sale_order_id.action_confirm()

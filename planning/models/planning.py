@@ -660,7 +660,7 @@ class Planning(models.Model):
 
     def _read_group_employee_id(self, employees, domain, order):
         if self._context.get('planning_expand_employee'):
-            start_date = datetime.strptime([dom[2] for dom in domain if dom[0] == 'start_datetime'][0], '%Y-%m-%d %H:%M:%S') or datetime.now()
+            start_date = datetime.strptime([dom[2] for dom in domain if dom[0] == 'start_datetime'][-1], '%Y-%m-%d %H:%M:%S') or datetime.now()
             min_date = start_date - timedelta(days=30)
             max_date = start_date + timedelta(days=30)
             return self.env['planning.slot'].search([('start_datetime', '>=', min_date), ('start_datetime', '<=', max_date)]).mapped('employee_id')

@@ -629,7 +629,12 @@ class HrContractSalary(http.Controller):
         if not new_contract.hr_responsible_id:
             return {'error': 1, 'error_msg': _('No HR responsible defined on the job position. Please contact an administrator.')}
 
-        res = request.env['sign.request'].with_user(SUPERUSER_ID).initialize_new(
+        if not request.env.user.email_formatted:
+            sign_request = request.env['sign.request'].with_user(SUPERUSER_ID)
+        else:
+            sign_request = request.env['sign.request'].sudo()
+
+        res = sign_request.initialize_new(
             sign_template.id,
             [
                 {'role': request.env.ref('sign.sign_item_role_employee').id, 'partner_id': new_contract.employee_id.address_home_id.id},

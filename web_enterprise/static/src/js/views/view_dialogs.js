@@ -47,15 +47,19 @@ view_dialogs.SelectCreateDialog.include({
      */
     _prepareButtons: function () {
         this._super.apply(this, arguments);
-        if (this.options.selectionMode) {
-            this.headerButtons.push({
-                text: _t("Clear"),
-                classes: 'btn-secondary o_clear_button',
-                close: true,
-                click: function () {
-                    this.on_clear();
-                },
-            });
+        if (this.options.disable_multiple_selection) {
+            if (this.options.selectionMode) {
+                this.headerButtons.push({
+                    text: _t("Clear"),
+                    classes: 'btn-secondary o_clear_button',
+                    close: true,
+                    click: function () {
+                        this.on_clear();
+                    },
+                });
+            }
+        } else {
+            this.__buttons = this.__buttons.filter(button => !button.classes.split(' ').includes('o_select_button'));
         }
     },
 });

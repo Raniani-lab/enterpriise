@@ -676,10 +676,10 @@ class AccountMove(models.Model):
                         '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
                         ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
 
-            if not move_form.invoice_payment_ref:
+            if payment_ref_ocr and not move_form.invoice_payment_ref:
                 move_form.invoice_payment_ref = payment_ref_ocr
 
-            if not move_form.invoice_partner_bank_id and move_form.partner_id:
+            if iban_ocr and not move_form.invoice_partner_bank_id and move_form.partner_id:
                 bank_account = self.env['res.partner.bank'].search([('partner_id', '=', move_form.partner_id.id), ('acc_number', '=ilike', iban_ocr)])
                 if bank_account.exists():
                     move_form.invoice_partner_bank_id = bank_account

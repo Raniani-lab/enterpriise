@@ -569,6 +569,13 @@ msgid "Available Rules"
 msgstr ""
 
 #. module: documents
+#: model_terms:documents.folder,description:documents.documents_finance_folder
+msgid ""
+"Automate your inbox using scanned documents or emails sent to <strong>inbox-"
+"financial</strong> email alias."
+msgstr ""
+
+#. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_bill
 msgid "Bill"
 msgstr ""
@@ -592,6 +599,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "Cancel"
+msgstr ""
+
+#. module: documents
+#: model_terms:documents.folder,description:documents.documents_internal_folder
+msgid "Categorize, share and keep track of all your internal documents."
 msgstr ""
 
 #. module: documents

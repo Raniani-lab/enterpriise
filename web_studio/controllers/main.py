@@ -495,7 +495,7 @@ class WebStudioController(http.Controller):
 
     def _return_view(self, view, studio_view):
         ViewModel = request.env[view.model]
-        fields_view = ViewModel.with_context({'studio': True}).fields_view_get(view.id, view.type)
+        fields_view = ViewModel.with_context(studio=True).fields_view_get(view.id, view.type)
         view_type = 'list' if view.type == 'tree' else view.type
 
         return {
@@ -684,7 +684,7 @@ class WebStudioController(http.Controller):
             view.write({'arch': view_arch})
             ViewModel = request.env[view.model]
             try:
-                fields_view = ViewModel.with_context({'studio': True}).fields_view_get(view.id, view.type)
+                fields_view = ViewModel.with_context(studio=True).fields_view_get(view.id, view.type)
                 view_type = 'list' if view.type == 'tree' else view.type
                 return {
                     'fields_views': {

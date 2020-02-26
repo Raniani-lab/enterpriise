@@ -196,7 +196,7 @@ class SaleSubscription(models.Model):
             'product_uom_qty': option_line.quantity,
             'product_uom': option_line.uom_id.id,
             'discount': _discount,
-            'price_unit': self.pricelist_id.with_context({'uom': option_line.uom_id.id}).get_product_price(option_line.product_id, 1, False),
+            'price_unit': self.pricelist_id.with_context(uom=option_line.uom_id.id).get_product_price(option_line.product_id, 1, False),
             'name': option_line.name,
             'tax_id': [(6, 0, taxes.ids)]
         }

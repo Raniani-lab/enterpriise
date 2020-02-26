@@ -691,7 +691,7 @@ class AmazonAccount(models.Model):
         :param _fiscal_pos: the fiscal position only used in overrides of this method
         """
         total = subtotal + tax_amount
-        taxes_res = taxes.with_context({'force_price_include': True}).compute_all(
+        taxes_res = taxes.with_context(force_price_include=True).compute_all(
             total, currency=currency)
         subtotal = taxes_res['total_excluded']
         for tax_res in taxes_res['taxes']:
@@ -732,7 +732,7 @@ class AmazonAccount(models.Model):
         else:
             responsible_emails = {user.email for user in filter(None, (
                 self.user_id, self.env.ref('base.user_admin', raise_if_not_found=False)))}
-            mail_template.with_context({
+            mail_template.with_context(**{
                 'email_to': ','.join(responsible_emails),
                 'amazon_order_ref': amazon_order_ref,
             }).send_mail(self.env.user.id)

@@ -196,7 +196,7 @@ class CalendarAppointmentType(models.Model):
 
         # With context will be used in resource.calendar to force the referential user
         # for work interval computing to the *user linked to the employee*
-        available_employees = [emp.with_context({'tz': emp.user_id.tz}) for emp in (employee or self.employee_ids)]
+        available_employees = [emp.with_context(tz=emp.user_id.tz) for emp in (employee or self.employee_ids)]
         random.shuffle(available_employees)
         for slot in slots:
             for emp_pos, emp in enumerate(available_employees):

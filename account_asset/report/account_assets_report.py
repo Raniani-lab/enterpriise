@@ -37,14 +37,14 @@ class assets_report(models.AbstractModel):
         return [
             [
                 {'name': ''},
-                {'name': _('Caracteristics'), 'colspan': 4},
+                {'name': _('Characteristics'), 'colspan': 4},
                 {'name': _('Assets'), 'colspan': 4},
                 {'name': _('Depreciation'), 'colspan': 4},
                 {'name': _('Book Value')},
             ],
             [
                 {'name': ''},  # Description
-                {'name': _('Acquisition Date'), 'class': 'text-center'},  # Caracteristics
+                {'name': _('Acquisition Date'), 'class': 'text-center'},  # Characteristics
                 {'name': _('First Depreciation'), 'class': 'text-center'},
                 {'name': _('Method'), 'class': 'text-center'},
                 {'name': _('Rate'), 'class': 'number', 'title': _('In percent.<br>For a linear method, the depreciation rate is computed per year.<br>For a degressive method, it is the degressive factor'), 'data-toggle': 'tooltip'},
@@ -155,7 +155,7 @@ class assets_report(models.AbstractModel):
                 'level': 1,
                 'name': name if len(name) < MAX_NAME_LENGTH else name[:MAX_NAME_LENGTH - 2] + '...',
                 'columns': [
-                    {'name': al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '', 'no_format_name': ''},  # Caracteristics
+                    {'name': al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '', 'no_format_name': ''},  # Characteristics
                     {'name': al['asset_date'] and format_date(self.env, al['asset_date']) or '', 'no_format_name': ''},
                     {'name': (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Degressive')) or _('Accelerated'), 'no_format_name': ''},
                     {'name': asset_depreciation_rate, 'no_format_name': ''},
@@ -182,7 +182,7 @@ class assets_report(models.AbstractModel):
             'level': 0,
             'name': _('Total'),
             'columns': [
-                {'name': ''},  # Caracteristics
+                {'name': ''},  # Characteristics
                 {'name': ''},
                 {'name': ''},
                 {'name': ''},

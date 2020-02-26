@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 # YTI FIXME: This module should be named timesheet_enterprise
 {
-    'name': "Timesheets - Enterprise",
+    'name': "Timesheets",
     'summary': "Timesheet Validation and Grid View",
     'description': """
 * Timesheet submission and validation

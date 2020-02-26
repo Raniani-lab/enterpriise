@@ -45,7 +45,6 @@ var EventScanView = AbstractAction.extend({
      */
     start: function() {
         core.bus.on('barcode_scanned', this, this._onBarcodeScanned);
-        this._onBarcodeScanned('15840799540571210623');
     },
     /**
      * @override

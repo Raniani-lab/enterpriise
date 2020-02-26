@@ -176,7 +176,8 @@ class AccountInvoice(models.Model):
                                                    'tax': tax['amount'],
                                                    'code': tax_rec.l10n_co_edi_type.code,
                                                    'retention': tax_rec.l10n_co_edi_type.retention,
-                                                   'rate': tax_rec.amount})
+                                                   'rate': tax_rec.amount,
+                                                   'amount_type': tax_rec.amount_type})
 
         # The rate should indicate how many pesos is one foreign currency
         currency_rate = "%.2f" % (self.currency_id._convert(1.0, self.company_id.currency_id, self.company_id,

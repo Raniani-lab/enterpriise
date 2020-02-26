@@ -243,8 +243,6 @@ class Planning(models.Model):
         employee = self.env.user.employee_id
         if self.employee_id:
             employee = self.employee_id
-        if 'default_role_id' not in self.env.context:
-            self.role_id = False
 
         start = self.start_datetime or datetime.combine(fields.Datetime.now(), datetime.min.time())
         end = self.end_datetime or datetime.combine(fields.Datetime.now(), datetime.max.time())

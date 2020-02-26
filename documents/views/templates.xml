@@ -151,7 +151,7 @@
                         </form>
                     </div>
                     <div>
-                        <a t-if="all_button" t-att-href="zip_URL" title="Downlaod all files" t-attf-class="btn  #{upload and 'o_docs_btn' or 'btn-primary'}"><i class="fa fa-download fa-fw"/>  Download All</a>
+                        <a t-if="all_button" t-att-href="zip_URL" title="Download all files" t-attf-class="btn  #{upload and 'o_docs_btn' or 'btn-primary'}"><i class="fa fa-download fa-fw"/>  Download All</a>
                     </div>
                 </div>
             </div>

@@ -97,12 +97,13 @@ class Planning(models.Model):
         ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'You cannot have negative shift'),
     ]
 
-    @api.depends('employee_id')
+    @api.depends('employee_id.company_id')
     def _compute_planning_slot_company_id(self):
-        if self.employee_id:
-            self.company_id = self.employee_id.company_id.id
-        if not self.company_id.id:
-            self.company_id = self.env.company
+        for slot in self:
+            if slot.employee_id:
+                slot.company_id = slot.employee_id.company_id.id
+            if not slot.company_id.id:
+                slot.company_id = slot.env.company
 
     @api.depends('start_datetime')
     def _compute_past_shift(self):

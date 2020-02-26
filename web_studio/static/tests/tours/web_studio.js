@@ -41,10 +41,10 @@ tour.register('web_studio_tests_tour', {
     // toggle the home menu outside of studio and come back in studio
     extra_trigger: '.o_menu_toggle.fa-th',
     trigger: '.o_web_studio_leave',
-    timeout: 15000, /* previous step reloads registry, etc. - could take a long time */
+    timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.o_menu_toggle.fa-th',
-    timeout: 15000, /* previous step reloads registry, etc. - could take a long time */
+    timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
 }, {
@@ -384,7 +384,7 @@ tour.register('web_studio_hide_fields_tour', {
     // check that the Studio menu is still there
     extra_trigger: '.o_web_studio_menu',
     trigger: '.o_web_studio_leave',
-    timeout: 15000, /* previous step reloads registry, etc. - could take a long time */
+    timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.oe_title input',
     run: 'text Test',

@@ -34,7 +34,13 @@ tour.register('web_studio_tests_tour', {
     trigger: 'input[name="use_mail"]',
 }, {
     // disable company if visible, otherwise it might make the test uncertain
-    trigger: 'input[name="use_company"]',
+    trigger: 'body',
+    run: () => {
+        const $input = $('input[name="use_company"]');
+        if ($input) {
+            $input.click();
+        }
+    }
 }, {
     trigger: '.o_web_studio_model_configurator_next',
 }, {

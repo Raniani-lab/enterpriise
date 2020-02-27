@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="project_task_type_view_form_inherit_helpdesk_project" model="ir.ui.view">
-        <field name="name">project.task.type.form.inherit.helpdesk.timesheet</field>
-        <field name="model">project.task.type</field>
-        <field name="inherit_id" ref="project.task_type_edit"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='fold']" position="after">
-                <field name="is_closed" groups="base.group_no_one"/>
-            </xpath>
-        </field>
-    </record>
-
     <record id="project_project_action_view_helpdesk_tickets" model="ir.actions.act_window">
         <field name="name">Project Tickets</field>
         <field name="res_model">helpdesk.ticket</field>

@@ -42,6 +42,8 @@
                     <field name="display_timer_stop" invisible="1"/>
                     <field name="display_timer_pause" invisible="1"/>
                     <field name="display_timer_resume" invisible="1"/>
+                    <field name="is_closed" invisible="1"/>
+                    <field name="is_task_active" invisible="1"/>
                     <button class="btn-primary" name="action_timer_start" type="object" string="Start"
                         attrs="{'invisible': [('display_timer_start_primary', '=', False)]}" groups="helpdesk.group_helpdesk_user"/>
                     <button class="btn-secondary" name="action_timer_start" type="object" string="Start"
@@ -59,13 +61,6 @@
                 <xpath expr="//field[@name='stage_id']" position="before">
                     <field name="timer_start" widget="timer_timer" class="text-danger ml-auto h2 ml-4 font-weight-bold" groups="helpdesk.group_helpdesk_user"/>
                 </xpath>
-            <xpath expr="//header" position="after">
-                <field name="is_closed" invisible="1"/>
-                <field name="is_task_active" invisible="1"/>
-                <div class="alert alert-warning" role="alert" style="margin-bottom:0px;" attrs="{'invisible': ['|', ('task_id', '=', False), '&amp;', ('is_closed', '=', False), ('is_task_active', '=', True)]}">
-                    Customer's task is closed. <button class="oe_link" type="object" name="action_view_ticket_task" string="View task." style="padding: 0;"/>
-                </div>
-            </xpath>
             <xpath expr="//field[@name='email_cc']" position="after">
                 <field name="use_helpdesk_timesheet" invisible="1"/>
                 <field name="project_id" invisible="1"/>

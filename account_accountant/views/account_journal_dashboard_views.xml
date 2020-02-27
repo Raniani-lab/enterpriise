@@ -17,10 +17,10 @@
             <xpath expr="//t[@id='journal_body_bank_cash_right']" position="after">
                 <t t-if="dashboard.number_to_check > 0">
                     <div class="row">
-                        <div class="col-7 text-left">
+                        <div class="col overflow-hidden text-left">
                             <a type="object" name="action_open_to_check"><t t-esc="dashboard.number_to_check"/> to check</a>
                         </div>
-                        <div class="col-5 text-right">
+                        <div class="col-auto text-right">
                             <span><t t-esc="dashboard.to_check_balance"/></span>
                         </div>
                     </div>

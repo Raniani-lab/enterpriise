@@ -870,6 +870,12 @@ var ClientAction = AbstractAction.extend({
                 ) {
                 if (this._isPickingRelated()) {
                     line.qty_done += params.product.qty || 1;
+                    if (params.package_id) {
+                        line.package_id = params.package_id;
+                    }
+                    if (params.result_package_id) {
+                        line.result_package_id = params.result_package_id;
+                    }
                 } else if (this.actionParams.model === 'stock.inventory') {
                     line.product_qty += params.product.qty || 1;
                 }

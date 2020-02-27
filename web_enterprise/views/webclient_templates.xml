@@ -124,6 +124,7 @@
             <script type="text/javascript" src="/web_enterprise/static/tests/test_utils.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/action_manager_mobile_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/control_panel_mobile_tests.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/tests/mobile_company_switcher_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/form_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/mobile_menu_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/relational_fields_mobile_tests.js"></script>

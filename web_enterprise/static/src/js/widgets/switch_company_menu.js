@@ -9,6 +9,10 @@ odoo.define('web_enterprise.SwitchCompanyMenu', function(require) {
  */
 
 var config = require('web.config');
+if (!config.device.isMobile) {
+    return;
+}
+
 var SwitchCompanyMenu = require('web.SwitchCompanyMenu');
 var SystrayMenu = require('web.SystrayMenu');
 
@@ -18,5 +22,17 @@ if (config.device.isMobile) {
         SystrayMenu.Items.splice(index, 1);
     }
 }
+
+const SwitchCompanyMenuMobile = SwitchCompanyMenu.extend({
+    template: 'MobileCompanySwitcher',
+    events: Object.assign({}, SwitchCompanyMenu.prototype.events, {
+        'click .log_into': '_onSwitchCompanyClick',
+        'click .toggle_company': '_onToggleCompanyClick',
+    }),
+});
+
+return {
+    SwitchCompanyMenuMobile: SwitchCompanyMenuMobile,
+};
 
 });

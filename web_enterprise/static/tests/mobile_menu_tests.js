@@ -14,6 +14,14 @@ QUnit.module('web_enterprise mobile_menu_tests', {
         testUtils.mock.patch(Menu, {
             animationDuration: 0
         });
+        // LUL TODO adapt the company switcher widget to handle empty session
+        this.session = {
+            user_companies: {
+                allowed_companies: [[1, "Company 1"]],
+                current_company: [1, "Company 1"],
+            },
+            user_context: { allowed_company_ids: "1" },
+        };
         this.data = {
             all_menu_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             name: "root",
@@ -67,7 +75,10 @@ QUnit.module('web_enterprise mobile_menu_tests', {
     QUnit.test('Burger Menu on home menu', async function (assert) {
         assert.expect(3);
 
-        var mobileMenu = await testUtilsEnterprise.createMenu({ menuData: this.data });
+        const mobileMenu = await testUtilsEnterprise.createMenu({
+            menuData: this.data,
+            session: this.session,
+        });
 
         if (mobileMenu.$burgerMenu.length) {
             var menuInMobileMenu = mobileMenu.$burgerMenu[0].querySelector('.o_burger_menu_user');
@@ -89,7 +100,10 @@ QUnit.module('web_enterprise mobile_menu_tests', {
     QUnit.test('Burger Menu on an App', async function (assert) {
         assert.expect(4);
 
-        var mobileMenu = await testUtilsEnterprise.createMenu({ menuData: this.data });
+        const mobileMenu = await testUtilsEnterprise.createMenu({
+            menuData: this.data,
+            session: this.session,
+        });
 
         mobileMenu.change_menu_section(3);
         mobileMenu.toggle_mode(false);
@@ -119,6 +133,7 @@ QUnit.module('web_enterprise mobile_menu_tests', {
 
         const mobileMenu = await testUtilsEnterprise.createMenu({
             menuData: this.data,
+            session: this.session,
             intercepts: {
                 do_action: function (ev) {
                     ev.data.on_success();

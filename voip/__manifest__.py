@@ -25,7 +25,6 @@ Allows to make call from next activities or with click-to-dial.
         'views/res_users_views.xml',
         'views/voip_phonecall_views.xml',
         'views/voip_templates.xml',
-        'wizard/voip_phonecall_transfer_wizard_views.xml',
         'data/mail_activity_data.xml',
     ],
     'qweb': [

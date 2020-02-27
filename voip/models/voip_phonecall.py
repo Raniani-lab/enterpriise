@@ -157,6 +157,19 @@ class VoipPhonecall(models.Model):
         return self.search(domain, offset=offset, limit=limit, order='call_date desc')._get_info()
 
     @api.model
+    def get_missed_call_info(self):
+        domain = [
+            ('user_id', '=', self.env.user.id),
+            ('call_date', '!=', False),
+            ('in_queue', '=', True),
+            ('state', '=', 'missed'),
+        ]
+        last_seen_phone_call = self.env.user.last_seen_phone_call
+        if last_seen_phone_call:
+            domain += [('id', '>', last_seen_phone_call.id)]
+        return (self.search_count(domain), last_seen_phone_call.call_date)
+
+    @api.model
     def _create_and_init(self, vals):
         phonecall = self.create(vals)
         phonecall.init_call()
@@ -233,7 +246,7 @@ class VoipPhonecall(models.Model):
     @api.model
     def create_from_incoming_call(self, number, partner_id=False):
         if partner_id:
-            name = _('Incoming call from %s', self.env)['res.partner'].browse([partner_id]).display_name
+            name = _('Incoming call from %s', self.env['res.partner'].browse([partner_id]).display_name)
         else:
             name = _('Incoming call from %s', number)
         vals = {

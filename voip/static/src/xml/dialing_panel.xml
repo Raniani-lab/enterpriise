@@ -40,7 +40,7 @@
             class="o_dial_searchbar">
             <input
                 class="o_dial_search_input"
-                placeholder="Search Phone Calls..."/>
+                placeholder="Search"/>
             <span
                 aria-label="Refresh the Panel"
                 class="fa fa-search"
@@ -248,27 +248,6 @@
                     fa
                     fa-phone"/></button>
     </div>
-    <div
-        class="o_dial_incoming_buttons">
-        <button
-            aria-label="Take call"
-            class="
-                col-6
-                o_dial_accept_button"
-            title="Accept"><i
-                class="
-                    fa
-                    fa-phone"/></button>
-        <button
-            aria-label="Reject call"
-            class="
-                col-6
-                o_dial_reject_button"
-            title="Reject"><i
-                class="
-                    fa
-                    fa-phone"/></button>
-    </div>
 </div>
 
 <!--
@@ -278,33 +257,11 @@
   @param {string} title
 -->
 <t t-name="voip.DialingPanel.HeaderContent">
-    <i
-        class="
-            fa
-            fa-fw
-            fa-phone"
-        role="img"/>
-    <div
-        class="o_dial_text">
-            <t t-esc="title"/>
+    <i class="fa fa-fw fa-phone" role="img"/>
+    <div class="o_dial_text">
+        <t t-esc="title"/>
     </div>
-    <a
-        aria-label="Close"
-        class="
-            fa
-            fa-close
-            o_dial_window_close"
-        href="#"
-        title="Close"/>
-    <i
-        aria-label="Unfold"
-        class="
-            fa
-            fa-2x
-            fa-angle-up
-            o_dial_unfold fa_mt"
-        role="img"
-        title="Unfold"/>
+    <a aria-label="Close" class="fa fa-close o_dial_window_close" href="#" title="Close"/>
 </t>
 
 </templates>

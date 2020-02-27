@@ -474,7 +474,7 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
         dialingPanel
             .$(`
                 .o_phonecall_details
-                .o_dial_phonecall_partner_name
+                .o_phonecall_info_name
                 span`)
             .html(),
         'Call to 123456789',
@@ -585,7 +585,7 @@ QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
     await testUtils.nextTick();
 
     assert.verifySteps(['create_from_number']);
-    assert.strictEqual(dialingPanel.$('.o_phonecall_details .o_dial_phonecall_partner_name').text(),
+    assert.strictEqual(dialingPanel.$('.o_phonecall_details .o_phonecall_info_name').text().trim(),
         'Call to 987654321', 'Details should have been shown');
     assert.ok(dialingPanel._isInCall, 'should be in call on pressing ENTER after dialing a phone number');
 

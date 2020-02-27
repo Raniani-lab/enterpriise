@@ -18,7 +18,6 @@
             <script type="text/javascript" src="/voip/static/src/js/phone_call_tab.js"></script>
             <script type="text/javascript" src="/voip/static/src/js/phone_field.js"></script>
             <script type="text/javascript" src="/voip/static/src/js/systray_voip_menu.js"></script>
-            <script type="text/javascript" src="/voip/static/src/js/transfer_call_action.js"></script>
             <script type="text/javascript" src="/voip/static/src/js/user_agent.js"></script>
             <script type="text/javascript" src="/voip/static/src/js/web_client.js"></script>
             <script type="text/javascript" src="/voip/static/src/models/activity/activity.js"/>

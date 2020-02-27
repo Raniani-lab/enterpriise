@@ -13,7 +13,7 @@
                             <field name="sip_always_transfer" class="oe_inline" readonly="0"/>
                             <field name="sip_password" class="oe_inline" password="True" readonly="0"/>
                             <field name="sip_ignore_incoming" class="oe_inline" readonly="0"/>
-                            <field name="mobile_call_method" class="oe_inline" readonly="0"/>
+                            <field name="mobile_call_method" widget="radio"/>
                         </group>
                     </group>
                 </data>
@@ -28,7 +28,7 @@
                 <data>
                     <field name="signature" position="before">
                         <group name="voip_config">
-                            <field name="mobile_call_method" />
+                            <field name="mobile_call_method" widget="radio"/>
                         </group>
                     </field>
                 </data>

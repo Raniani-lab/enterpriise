@@ -133,8 +133,11 @@ const PhoneCallRecentTab = PhoneCallTab.extend({
             method: 'get_recent_list',
             args: [search, this._offset, this._limit],
         });
-        if (!phoneCallsData.length) {
+        if (phoneCallsData.length < this._limit) {
             this._isLazyLoadFinished = true;
+        }
+        for (const phoneCallData of phoneCallsData) {
+            phoneCallData.isRecent = true;
         }
         const promises = phoneCallsData.map(phoneCallData =>
             this._displayInQueue(phoneCallData));

@@ -39,6 +39,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @constructor
      */
     init(parent) {
+        var self = this;
         mixins.EventDispatcherMixin.init.call(this);
         this.setParent(parent);
         this._audioDialRingtone = undefined;
@@ -46,7 +47,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._audioRingbackTone = undefined;
         this._updateCallState(CALL_STATE.NO_CALL);
         this._currentNumber = undefined;
-        this._dialog = undefined;
         this._currentCallParams = false;
         this._currentInviteSession = false;
         this._isOutgoing = false;
@@ -63,6 +63,12 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             args: [],
             kwargs: {},
         }).then(result => this._initUserAgent(result));
+
+        window.onbeforeunload = function (event) {
+            if (self._callState !== CALL_STATE.NO_CALL) {
+                return _t("Are you sure that you want to close this website? There's a call ongoing.");
+            }
+        };
     },
 
     //--------------------------------------------------------------------------
@@ -197,6 +203,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     transfer(number) {
         if (this._mode === 'demo') {
+            this._onBye();
             return;
         }
         if (this._callState !== CALL_STATE.ONGOING_CALL) {
@@ -297,6 +304,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._audioDialRingtone = document.createElement('audio');
         this._audioDialRingtone.loop = 'true';
         this._audioDialRingtone.src = '/voip/static/src/sounds/dialtone.mp3';
+        this._audioDialRingtone.volume = 0.7;
         $('html').append(this._audioDialRingtone);
     },
     /**
@@ -655,15 +663,11 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {Object} inviteSession
      */
     _onCurrentInviteSessionRejected(inviteSession) {
+        this._audioIncomingRingtone.pause();
         if (this._notification) {
             this._notification.removeEventListener('close', this._rejectInvite, inviteSession);
             this._notification.close();
             this._notification = undefined;
-            this._audioIncomingRingtone.pause();
-        }
-        if ((typeof this._dialog !== 'undefined') && (this._dialog.$el.is(":visible"))) {
-            this._dialog.close();
-            this._audioIncomingRingtone.pause();
         }
         if (this._callState === CALL_STATE.REJECTING_CALL) {
             this.trigger_up('sip_rejected', this._currentCallParams);
@@ -737,10 +741,19 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         let contacts = await this._rpc({
             model: 'res.partner',
             method: 'search_read',
-            domain: domain,
+            domain: [['user_ids', '!=', false]].concat(domain),
             fields: ['id', 'display_name'],
             limit: 1,
         });
+        if (!contacts.length) {
+            contacts = await this._rpc({
+                model: 'res.partner',
+                method: 'search_read',
+                domain: domain,
+                fields: ['id', 'display_name'],
+                limit: 1,
+            });
+        }
         /* Fallback if inviteSession.remoteIdentity.uri.type didn't give the correct country prefix
         */
         if (!contacts.length) {
@@ -925,19 +938,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 };
                 this._notification.removeEventListener('close', this._rejectInvite, inviteSession);
             }
-        } else {
-            this._dialog = Dialog.confirm(this, content, {
-                confirm_callback: () => this._answerCall(),
-                cancel_callback: () => {
-                    try {
-                        this.rejectIncomingCall();
-                    } catch (err) {
-                        console.error(
-                            _.str.sprintf(_t("Reject failed: %s"), err));
-                    }
-                    this._audioIncomingRingtone.pause();
-                },
-            });
         }
     },
 });

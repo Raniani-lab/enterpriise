@@ -6,4 +6,3 @@ access_voip_phonecall_user,voip_phonecall_user,model_voip_phonecall,base.group_u
 access_voip_phonecall_report_manager,voip_phonecall_report_manager,model_voip_phonecall_report,base.group_system,1,1,1,1
 access_voip_phonecall_report_user,voip_phonecall_report_user,model_voip_phonecall_report,base.group_user,1,0,0,0
 access_voip_phonecall_log_wizard,access.voip.phonecall.log.wizard,model_voip_phonecall_log_wizard,base.group_user,1,1,1,0
-access_voip_phonecall_transfer_wizard,access.voip.phonecall.transfer.wizard,model_voip_phonecall_transfer_wizard,base.group_user,1,1,1,0

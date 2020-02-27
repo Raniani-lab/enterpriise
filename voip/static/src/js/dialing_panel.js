@@ -39,8 +39,10 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
     },
     custom_events: {
         'changeStatus': '_onChangeStatus',
+        'fold_panel': '_onFoldPanel',
         'incomingCall': '_onIncomingCall',
         'muteCall': '_onMuteCall',
+        'resetMissedCalls': '_resetMissedCalls',
         'showHangupButton': '_onShowHangupButton',
         'sip_accepted': '_onSipAccepted',
         'sip_bye': '_onSipBye',
@@ -63,6 +65,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         this.title = _t("VOIP");
 
         this._isFolded = false;
+        this._isFoldedBeforeCall = false;
         this._isInCall = false;
         this._isPostpone = false;
         this._isShow = false;
@@ -74,6 +77,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
             recent: new PhoneCallRecentTab(this),
         };
         this._userAgent = new UserAgent(this);
+        this._missedCounter = 0; // amount of missed call
     },
     /**
      * We override destroy() to be able to call on_detach_callback at the very
@@ -111,6 +115,8 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         this._$tabsPanel = this.$('.o_dial_panel');
         this._$tabs = this.$('.o_dial_tabs');
 
+        this._fetchMissedCallFromServer();
+
         this._activeTab = this._tabs.nextActivities;
         await this._tabs.contacts.appendTo(this.$('.o_dial_contacts'));
         await this._tabs.nextActivities.appendTo(this.$('.o_dial_next_activities'));
@@ -122,7 +128,10 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         this._$keypad.hide();
 
         core.bus.on('transfer_call', this, this._onTransferCall);
-        core.bus.on('voip_onToggleDisplay', this, this._onToggleDisplay);
+        core.bus.on('voip_onToggleDisplay', this,  function () {
+            this._resetMissedCalls();
+            this._onToggleDisplay();
+        });
 
         this.call('bus_service', 'onNotification', this, this._onLongpollingNotifications);
 
@@ -220,6 +229,8 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
      * @private
      */
     _cancelCall() {
+        $('.o_dial_transfer_button').popover('hide');
+        this.$el.css('zIndex', '');
         this._isInCall = false;
         this._isPostpone = false;
         this._hidePostponeButton();
@@ -229,21 +240,22 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
     /**
      * @private
      */
-    _fold() {
-        this.$el.animate({
-            height: this._isFolded ? HEIGHT_FOLDED : HEIGHT_OPEN,
-        });
+    _fold(animate = true) {
+        $('.o_dial_transfer_button').popover('hide');
+        if (animate) {
+            this.$el.animate({
+                height: this._isFolded ? HEIGHT_FOLDED : HEIGHT_OPEN,
+            });
+        } else {
+            this.$el.height(this._isFolded ? HEIGHT_FOLDED : HEIGHT_OPEN);
+        }
         if (this._isFolded) {
-            this.$('.o_dial_fold').css("bottom", "25px");
-            this.$('.o_dial_window_close').hide();
+            this.$('.o_dial_fold').css("bottom", "23px");
             this.$('.o_dial_main_buttons').hide();
             this.$('.o_dial_incoming_buttons').hide();
-            this.$('.o_dial_unfold').show();
         } else {
             this.$('.o_dial_fold').css("bottom", 0);
-            this.$('.o_dial_window_close').show();
             this.$('.o_dial_main_buttons').show();
-            this.$('.o_dial_unfold').hide();
         }
     },
     /**
@@ -311,6 +323,36 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         }
     },
     /**
+     * @private
+     */
+    async _fetchMissedCallFromServer() {
+        const missedCalls = await this._rpc({
+            model: 'voip.phonecall',
+            method: 'get_missed_call_info'
+        });
+        this._missedCounter = missedCalls[0];
+        this._refreshMissedCalls();
+        if (this._missedCounter > 0) {
+            this._showWidgetFolded();
+            this.$('.o_dial_tab.active, .tab-pane.active').removeClass('active');
+            this.$('.o_dial_recent_tab .o_dial_tab, .tab-pane.o_dial_recent').addClass('active');
+            this._activeTab = this._tabs.recent;
+        }
+    },
+    /**
+     * Refresh the header with amount of missed calls
+     *
+     * @private
+     */
+    _refreshMissedCalls() {
+        if (this._missedCounter === 0) {
+            this.title = _t("VOIP");
+        } else {
+            this.title = this._missedCounter + " " + _t("missed call(s)");
+        }
+        $('.o_dial_text').text(this.title);
+    },
+    /**
      * Refreshes the phonecall list of the active tab.
      *
      * @private
@@ -330,12 +372,29 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         this._$incomingCallButtons.hide();
     },
     /**
+     * Reset to 0 amount of missed calls
+     *
+     * @private
+     */
+    _resetMissedCalls(data={'data': {'forceReset': false}}) {
+        if (this._missedCounter > 0 && (data['data']['forceReset'] || (this._isFolded && this._isShow))) {
+            this._missedCounter = 0;
+            this._rpc({
+                model: 'res.users',
+                method: 'reset_last_seen_phone_call',
+            });
+            this._refreshMissedCalls();
+        }
+    },
+    /**
      * @private
      */
     _showCallButton() {
         this._resetMainButton();
         this._$callButton.addClass('o_dial_call_button');
         this._$callButton.removeClass('o_dial_hangup_button');
+        this._$callButton[0].setAttribute('aria-label', _t('Call'));
+        this._$callButton[0].title = _t('Call');
     },
     /**
      * @private
@@ -344,6 +403,8 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         this._resetMainButton();
         this._$callButton.removeClass('o_dial_call_button');
         this._$callButton.addClass('o_dial_hangup_button');
+        this._$callButton[0].setAttribute('aria-label', _t('End Call'));
+        this._$callButton[0].title = _t('End Call');
     },
     /**
      * Shows the search input and the tabs.
@@ -381,7 +442,20 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
      * @private
      * @return {Promise}
      */
+    async _showWidgetFolded() {
+        if (!this._isShow) {
+            this.$el.show();
+            this._isShow = true;
+            this._isFolded = true;
+            this._fold(false);
+        }
+    },
+    /**
+     * @private
+     * @return {Promise}
+     */
     async _toggleDisplay() {
+        $('.o_dial_transfer_button').popover('hide');
         if (this._isShow) {
             if (!this._isFolded) {
                 this.$el.hide();
@@ -392,6 +466,9 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         } else {
             this.$el.show();
             this._isShow = true;
+            if (this._isFolded) {
+                await this._toggleFold();
+            }
             this._isFolded = false;
             if (this._isWebRTCSupport) {
                 this._$searchInput.focus();
@@ -501,7 +578,6 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
-
     /**
      * Bind directly the DialingPanel#_onClickWindowClose method to the
      * 'backbutton' event.
@@ -589,6 +665,9 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
      * @return {Promise}
      */
     async _onClickFold() {
+        if (this._isFolded) {
+            this._resetMissedCalls();
+        }
         return this._toggleFold();
     },
     /**
@@ -620,6 +699,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
      * @private
      */
     _onClickRejectButton() {
+        this.$el.css('zIndex', '');
         this._userAgent.rejectIncomingCall();
     },
     /**
@@ -639,7 +719,9 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
     _onClickWindowClose(ev) {
         ev.preventDefault();
         ev.stopPropagation();
-        this._onToggleDisplay();
+        $('.o_dial_transfer_button').popover('hide');
+        this.$el.hide();
+        this._isShow = false;
     },
     /**
      * @private
@@ -650,7 +732,10 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
      * @return {Promise}
      */
     async _onIncomingCall(ev) {
+        this._isFoldedBeforeCall = this._isShow ? this._isFolded : true;
         await this._showWidget();
+        this._$keypad.hide();
+        this._$tabsPanel.show();
         this.$(`
             .o_dial_tab.active,
             .tab-pane.active`
@@ -659,10 +744,19 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
             .o_dial_recent_tab .o_dial_tab,
             .tab-pane.o_dial_recent`
         ).addClass('active');
+        this.$el.css('zIndex', 1051);
         this._activeTab = this._tabs.recent;
         await this._activeTab.onIncomingCall(ev.data);
         this._$mainButtons.hide();
         this._$incomingCallButtons.show();
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     * @return {Promise}
+     */
+    _onFoldPanel(ev) {
+        return this._toggleFold();
     },
     /**
      * @private
@@ -738,6 +832,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         this._hidePostponeButton();
         const isDone = !this._isPostpone;
         this._isPostpone = false;
+        this.$el.css('zIndex', '');
         return this._activeTab.hangupPhonecall(isDone);
     },
     /**
@@ -751,10 +846,23 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
     _onSipCancelIncoming(ev) {
         this._isInCall = false;
         this._isPostpone = false;
-        this._hidePostponeButton();
-        this._showCallButton();
-        this._resetMainButton();
-        return this._activeTab.onMissedCall(ev.data);
+        this._missedCounter = this._missedCounter + 1;
+        this._refreshMissedCalls();
+        this.$el.css('zIndex', '');
+
+        if (this._isFoldedBeforeCall) {
+            this._activeTab.onMissedCall(ev.data);
+            this.$('.o_dial_tab.active, .tab-pane.active').removeClass('active');
+            this.$('.o_dial_recent_tab .o_dial_tab, .tab-pane.o_dial_recent').addClass('active');
+            this._activeTab = this._tabs.recent;
+            this._isFolded = true;
+            this._fold();
+        } else {
+            this._hidePostponeButton();
+            this._showCallButton();
+            this._resetMainButton();
+            return this._activeTab.onMissedCall(ev.data, true);
+        }
     },
     /**
      * @private
@@ -822,6 +930,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
             .o_dial_recent_tab .o_dial_tab,
             .tab-pane.o_dial_recent`
         ).addClass('active');
+        this.$el.css('zIndex', 1051);
         this._activeTab = this._tabs.recent;
         await this._activeTab.onIncomingCallAccepted(ev.data);
         this._showHangupButton();
@@ -856,6 +965,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
      * @private
      */
     _onToggleKeypad() {
+        $('.o_dial_transfer_button').popover('hide');
         if (this._$tabsPanel.is(":visible")) {
             this._$tabsPanel.hide();
             this._$keypad.show();

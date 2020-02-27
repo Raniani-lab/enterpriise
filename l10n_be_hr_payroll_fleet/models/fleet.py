@@ -23,6 +23,12 @@ class FleetVehicle(models.Model):
     acquisition_date = fields.Date(required=True)
     tax_deduction = fields.Float(compute='_compute_tax_deduction')
 
+    def _from_be(self):
+        if self:
+            return self.company_id.country_id == self.env.ref('base.be')
+        else:
+            return self.env.company.country_id == self.env.ref('base.be')
+
     @api.depends('co2_fee', 'log_contracts', 'log_contracts.state', 'log_contracts.recurring_cost_amount_depreciated')
     def _compute_total_depreciated_cost(self):
         for car in self:
@@ -69,7 +75,7 @@ class FleetVehicle(models.Model):
             vehicle.tax_deduction = deduction
 
     def _get_co2_fee(self, co2, fuel_type):
-        if self.company_id.country_id != self.env.ref('base.be'):
+        if not self._from_be():
             return 0
         fuel_coefficient = self.env['hr.rule.parameter']._get_parameter_from_code('fuel_coefficient')
         co2_fee_min = self.env['hr.rule.parameter']._get_parameter_from_code('co2_fee_min')
@@ -126,7 +132,7 @@ class FleetVehicle(models.Model):
 
     @api.model
     def _get_car_atn_from_values(self, acquisition_date, car_value, fuel_type, co2, date=None):
-        if self.company_id.country_id != self.env.ref('base.be'):
+        if not self._from_be():
             return 0
         # Compute the correction coefficient from the age of the car
         date = date or Date.today()

@@ -382,6 +382,9 @@ class WebStudioController(http.Controller):
         if values.get('selection'):
             values['selection'] = ustr(values['selection'])
 
+        if values.get('ttype') == 'many2many':
+            # check for existing relation to avoid re-use
+            values['relation_table'] = request.env['ir.model.fields']._get_next_relation(model_name, values.get('relation'))
         # Optional default value at creation
         default_value = values.pop('default_value', False)
 

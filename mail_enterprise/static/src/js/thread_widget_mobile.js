@@ -15,29 +15,33 @@ ThreadWidget.include(Object.assign({}, SwipeItemMixin, {
     events: Object.assign({}, SwipeItemMixin.events, ThreadWidget.prototype.events),
     init() {
         SwipeItemMixin.init.call(this, {
-            allowSwipe: (ev, action) => {
-                return action === 'right' && this._allowRightSwipe(ev);
+            actions: {
+                right: {
+                    classesImage: ['fa-check-circle', 'fa', 'fa-2x', 'text-white'],
+                    backgroundClassColor: 'bg-success',
+                    allowSwipe: ev => this._allowRightSwipe(ev),
+                    actionCallback: (ev, restore) => {
+                        const $threadMessageElement = this._getThreadMessageElement(ev);
+                        const messageId = $threadMessageElement.data('message-id');
+                        if (this._currentThreadID === 'mailbox_inbox' && messageId) {
+                            let params = {
+                                message: _t('Marked as read'),
+                                delay: 3000,
+                                onComplete: () => {
+                                    this.trigger('mark_as_read', messageId);
+                                },
+                                actionText: _t('UNDO'),
+                                onActionClick: () => {
+                                    $threadMessageElement.slideDown('fast');
+                                    restore();
+                                },
+                            };
+                            $threadMessageElement.slideUp('fast', () => new SnackBar(this, params).show());
+                        }
+                    },
+                    avoidRestorePositionElement: () => true,
+                },
             },
-            onRightSwipe: (ev, restore) => {
-                const $threadMessageElement = this._getThreadMessageElement(ev);
-                const messageId = $threadMessageElement.data('message-id');
-                if (this._currentThreadID === 'mailbox_inbox' && messageId) {
-                    let params = {
-                        message: _t('Marked as read'),
-                        delay: 3000,
-                        onComplete: () => {
-                            this.trigger('mark_as_read', messageId);
-                        },
-                        actionText: _t('UNDO'),
-                        onActionClick: () => {
-                            $threadMessageElement.slideDown('fast');
-                            restore();
-                        },
-                    };
-                    $threadMessageElement.slideUp('fast', () => new SnackBar(this, params).show());
-                }
-            },
-            avoidRestorePositionElement: () => true,
             selectorTarget: '.o_thread_message',
         });
         return this._super(...arguments);

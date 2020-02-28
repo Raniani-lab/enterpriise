@@ -34,37 +34,41 @@ Discuss.include(Object.assign({}, SwipeItemMixin, {
         this._super.apply(this, arguments);
         this._currentState = this._defaultThreadID;
         SwipeItemMixin.init.call(this, {
-            allowSwipe: (ev, action) => {
-                return action === 'right' && this._allowRightSwipe(ev);
-            },
-            onRightSwipe: (ev, restore) => {
-                const thread = this._getThreadFromSwipe(ev);
-                this._toggleUnReadPreviewDisplay(ev, false);
-                let params = {
-                    message: _t('Marked as read'),
-                    delay: 3000,
-                    onComplete: () => this._processPreviewMarkAsRead(ev),
-                    actionText: _t('UNDO'),
-                };
-                if (thread && thread.getType() !== 'mailbox') {
-                    const hasUnreadMessage = this._getPreviewFromSwipe(ev).data('unread-counter') > 0;
-                    params.onActionClick = () => {
-                        this._toggleUnReadPreviewDisplay(ev, hasUnreadMessage);
-                    };
-                    new SnackBar(this, params).show();
-                } else {
-                    const $target = $(ev.currentTarget);
-                    params.onActionClick = () => {
-                        restore();
-                        this._toggleUnReadPreviewDisplay(ev, true);
-                        $target.slideDown('fast');
-                    };
-                    $target.slideUp('fast', () => new SnackBar(this, params).show());
-                }
-            },
-            avoidRestorePositionElement: (swipeDirection, $target, ev) => {
-                const thread = this._getThreadFromSwipe(ev);
-                return thread && thread.getType() === 'mailbox';
+            actions: {
+                right: {
+                    classesImage: ['fa-check-circle', 'fa', 'fa-2x', 'text-white'],
+                    backgroundClassColor: 'bg-success',
+                    allowSwipe: ev => this._allowRightSwipe(ev),
+                    actionCallback: (ev, restore) => {
+                        const thread = this._getThreadFromSwipe(ev);
+                        this._toggleUnReadPreviewDisplay(ev, false);
+                        let params = {
+                            message: _t('Marked as read'),
+                            delay: 3000,
+                            onComplete: () => this._processPreviewMarkAsRead(ev),
+                            actionText: _t('UNDO'),
+                        };
+                        if (thread && thread.getType() !== 'mailbox') {
+                            const hasUnreadMessage = this._getPreviewFromSwipe(ev).data('unread-counter') > 0;
+                            params.onActionClick = () => {
+                                this._toggleUnReadPreviewDisplay(ev, hasUnreadMessage);
+                            };
+                            new SnackBar(this, params).show();
+                        } else {
+                            const $target = $(ev.currentTarget);
+                            params.onActionClick = () => {
+                                restore();
+                                this._toggleUnReadPreviewDisplay(ev, true);
+                                $target.slideDown('fast');
+                            };
+                            $target.slideUp('fast', () => new SnackBar(this, params).show());
+                        }
+                    },
+                    avoidRestorePositionElement: ev => {
+                        const thread = this._getThreadFromSwipe(ev);
+                        return thread && thread.getType() === 'mailbox';
+                    },
+                },
             },
             selectorTarget: '.o_mail_preview',
         });

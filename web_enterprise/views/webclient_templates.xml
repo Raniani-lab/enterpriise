@@ -110,8 +110,10 @@
             <script type="text/javascript" src="/web_enterprise/static/tests/test_utils.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/home_menu_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/expiration_panel_tests.js"></script>
-            <script type="text/javascript" src="/web_enterprise/static/tests/menu_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/upgrade_fields_tests.js"></script>
+        </xpath>
+        <xpath expr="//script[@src='/web/static/tests/chrome/menu_tests.js']" position="replace">
+            <script type="text/javascript" src="/web_enterprise/static/tests/menu_tests.js"></script>
         </xpath>
     </template>
 

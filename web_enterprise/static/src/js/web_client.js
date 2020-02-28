@@ -343,7 +343,10 @@ return AbstractWebClient.extend({
         const menu = new Menu(this, menuData);
         await menu.appendTo(document.createDocumentFragment());
         menu.toggle_mode(this.homeMenuManagerDisplayed, false);
-        menu.$el.prependTo(this.$el);
+        dom.prepend(this.$el, menu.$el, {
+            callbacks: [{ widget: menu }],
+            in_DOM: true,
+        });
         return menu;
     },
     /**

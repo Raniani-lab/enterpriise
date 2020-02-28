@@ -120,6 +120,9 @@ var Menu = Widget.extend({
 
         core.bus.trigger('resize');
     },
+    on_attach_callback() {
+        this.systray_menu.on_attach_callback();
+    },
     _trigger_menu_clicked: function(menu_id, action_id) {
         this.trigger_up('menu_clicked', {
             id: menu_id,

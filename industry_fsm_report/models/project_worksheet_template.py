@@ -323,7 +323,7 @@ class ProjectWorksheetTemplate(models.Model):
                     'name': report_name
                 })
                 self.env['ir.model.data'].create({
-                    'name': 'industry_fsm_report._custom_%s' % (report_name,),
+                    'name': 'report_custom_%s' % (report_name,),
                     'module': 'industry_fsm_report',
                     'res_id': report_view.id,
                     'model': 'ir.ui.view',

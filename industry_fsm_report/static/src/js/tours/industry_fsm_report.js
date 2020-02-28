@@ -19,8 +19,9 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     position: 'bottom',
 }, {
     trigger: ".o_form_button_save",
-    content: _t('Save the worksheet.'),
+    content: _t('Save your worksheet once it is complete.<br/><i>Note that this form can be entirely customized to fit your specific needs.<br/>You will also be able to create multiple worksheet templates for each kind of intervention you may have.</i>'),
     extra_trigger: '.o_fsm_worksheet_form',
+    position: 'bottom'
 }, {
     trigger: ".breadcrumb-item:not(.active):last",
     extra_trigger: '.o_fsm_worksheet_form',
@@ -41,32 +42,32 @@ tour.tours.industry_fsm_tour.steps.splice(fsmSaveTimesheetStepIndex + 1, 0, {
 }, {
     trigger: 'a[data-target="#modalaccept"]',
     extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
-    content: _t('Make the client sign the worksheet.'),
-    position: 'bottom',
+    content: _t('Invite your customer to validate and to sign your worksheet report.'),
+    position: 'right',
 }, {
     trigger: '.o_web_sign_auto_button',
     extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
-    content: _t('The client may click Auto or draw it manually.'),
+    content: _t('Generate a signature automatically or draw it by hand.'),
     position: 'right',
 }, {
     trigger: '.o_portal_sign_submit:enabled',
     extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
     content: _t('Validate the signature.'),
-    position: 'right',
+    position: 'left',
 }, {
     trigger: 'a:contains(Back to edit mode)',
     extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
-    content: _t('Get back to the task in backend.'),
+    content: _t('Go back to your Field Service task.'),
     position: 'right',
 }, {
     trigger: 'button[name="action_send_report"]',
     extra_trigger: '.o_form_project_tasks ',
-    content: _t('Send the report to your customer by email.'),
+    content: _t('Send the report of your intervention to your customer.'),
     position: 'bottom',
 }, {
     trigger: 'button[name="action_send_mail"]',
     extra_trigger: '.o_form_project_tasks ',
-    content: _t('<b>Click the send button</b> to send the report.'),
+    content: _t('Send the report of your intervention to your customer.'),
     position: 'bottom',
 });
 

@@ -11,9 +11,10 @@
         <field name="name">event.event.view.form.inherit.barcode</field>
         <field name="inherit_id" ref="event.view_event_form"/>
         <field name="model">event.event</field>
+        <field name="priority" eval="4"/>
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
-                <button name="%(event_barcode_action_main_view)d" type="action" class="oe_stat_button" icon="fa-barcode" string="Barcode Interface"/>
+                <button name="%(event_barcode_action_main_view)d" type="action" class="oe_stat_button" icon="fa-sign-in" string="Registration Desk"/>
             </div>
         </field>
     </record>

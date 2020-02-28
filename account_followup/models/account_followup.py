@@ -17,16 +17,16 @@ class FollowupLine(models.Model):
     delay = fields.Integer('Due Days', required=True,
                            help="The number of days after the due date of the invoice to wait before sending the reminder.  Could be negative if you want to send a polite alert beforehand.")
     company_id = fields.Many2one('res.company', 'Company', required=True, default=lambda self: self.env.company)
-    sms_description = fields.Char('SMS Text Message', translate=True, default="Dear %(partner_name)s, it seems that some of your payments stay unpaid")
-    description = fields.Text('Printed Message', translate=True, default="""
-        Dear %(partner_name)s,
+    sms_description = fields.Char('SMS Text Message', translate=True, default=lambda s: _("Dear %(partner_name)s, it seems that some of your payments stay unpaid"))
+    description = fields.Text('Printed Message', translate=True, default=lambda s: _("""
+Dear %(partner_name)s,
 
 Exception made if there was a mistake of ours, it seems that the following amount stays unpaid. Please, take appropriate measures in order to carry out this payment in the next 8 days.
 
 Would your payment have been carried out after this mail was sent, please ignore this message. Do not hesitate to contact our accounting department.
 
 Best Regards,
-""")
+            """))
     send_email = fields.Boolean('Send an Email', help="When processing, it will send an email", default=True)
     print_letter = fields.Boolean('Print a Letter', help="When processing, it will print a PDF", default=True)
     send_sms = fields.Boolean('Send an SMS Message', help="When processing, it will send an sms text message", default=False)

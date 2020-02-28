@@ -301,7 +301,7 @@
                    <field name="code"/>
                    <field name="sequence"/>
                    <field name="struct_id"/>
-                   <field name="active"/>
+                   <field name="active" widget="boolean_toggle"/>
                    <field name="appears_on_payslip"/>
                 </group>
                 <notebook colspan="6">

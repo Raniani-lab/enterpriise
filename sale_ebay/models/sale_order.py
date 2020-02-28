@@ -141,7 +141,7 @@ class SaleOrder(models.Model):
                 ('type_tax_use', '=', 'sale')], limit=1)
             if not tax:
                 tax = self.env['account.tax'].sudo().create({
-                    'name': 'Tax %.3f %%' % rate,
+                    'name': 'Tax %.4f %%' % rate,
                     'amount': rate,
                     'amount_type': 'percent',
                     'type_tax_use': 'sale',

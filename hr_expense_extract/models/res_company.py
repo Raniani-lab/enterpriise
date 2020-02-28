@@ -11,4 +11,4 @@ class ResCompany(models.Model):
         ('no_send', 'Do not digitalize'),
         ('manual_send', "Digitalize on demand only"),
         ('auto_send', 'Digitalize automatically')], string="Send mode on expense attachments",
-        required=True, default='auto_send')
+        required=False, default='auto_send')

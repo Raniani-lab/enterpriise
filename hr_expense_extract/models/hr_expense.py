@@ -56,7 +56,7 @@ class HrExpense(models.Model):
 
     def _compute_can_show_send_resend(self, record):
         can_show = True
-        if self.env.company.expense_extract_show_ocr_option_selection == 'no_send':
+        if not self.env.company.expense_extract_show_ocr_option_selection or self.env.company.expense_extract_show_ocr_option_selection == 'no_send':
             can_show = False
         if record.state != 'draft':
             can_show = False
@@ -240,7 +240,7 @@ class HrExpense(models.Model):
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""
-        if self.env.company.expense_extract_show_ocr_option_selection == 'no_send':
+        if not self.env.company.expense_extract_show_ocr_option_selection or self.env.company.expense_extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
         if attachments and attachments.exists() and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:

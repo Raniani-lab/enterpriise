@@ -103,7 +103,7 @@
         <link rel="stylesheet" type="text/scss" href="/web_studio/static/src/scss/xml_editor.scss"/>
     </template>
 
-    <template id="web_studio.compiled_assets_studio" name="Web Studio Bundle">
+    <template id="web_studio.compiled_assets_studio" name="Web Studio Bundle" groups="base.group_system">
         <t t-call-assets="web_studio.studio_assets"/>
     </template>
 

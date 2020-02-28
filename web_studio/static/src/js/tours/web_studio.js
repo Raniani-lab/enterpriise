@@ -66,7 +66,7 @@ tour.register('web_studio_new_app_tour', {
     content: _t('Nicely done! Let’s build your screen now; <b>drag</b> a <i>text field</i> and <b>drop</b> it in your view, on the right.'),
     position: 'bottom',
     run: 'drag_and_drop .o_web_studio_form_view_editor .o_inner_group',
-    timeout: 15000, /* previous step reloads registry, etc. - could take a long time */
+    timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.o_web_studio_form_view_editor td.o_td_label',
     content: _t('To <b>customize a field</b>, click on its <i>label</i>.'),

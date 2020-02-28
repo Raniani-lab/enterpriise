@@ -902,7 +902,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                     structure: 'restore',
                 });
             },
-            dialogClass: 'o_web_studio_restore_default_view_dialog'
+            dialogClass: 'o_web_studio_preserve_space'
         });
     },
     /**

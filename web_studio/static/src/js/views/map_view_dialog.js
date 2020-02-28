@@ -68,7 +68,7 @@ var MapViewDialog = Dialog.extend({
                 const message = _t("A contact field is required to use the Map view.\r\nCreate a many2one field to the Contacts model before activating it.");
                 Dialog.alert(null, message, {
                     title: _t("Contact Field Required"),
-                    dialogClass: 'o_web_studio_map_view_alert'
+                    dialogClass: 'o_web_studio_preserve_space'
                 }).opened(() => {
                     this.close();
                 });

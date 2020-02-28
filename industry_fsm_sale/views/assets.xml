@@ -3,6 +3,7 @@
     <template id="assets_backend" name="fsm assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
         <script type="text/javascript" src="/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js"></script>
+        <script type="text/javascript" src="/industry_fsm_sale/static/src/js/fsm_product_quantity.js"></script>
         </xpath>
     </template>
 </odoo>

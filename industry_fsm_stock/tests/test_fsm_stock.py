@@ -97,6 +97,27 @@ class TestFsmFlowStock(TestFsmFlowSale):
 
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done', 'done'], "Pickings should be set as done")
 
+    def test_fsm_flow_with_default_warehouses(self):
+        '''
+            When the multi warehouses feature is activated, a default warehouse can be set 
+            on users. 
+            The user set on a task should be propagated from the task to the sales order
+            and his default warehouse set as the warehouse of the SO.
+            If the customer has a salesperson assigned to him, the creation of a SO
+            from a task overrides this to set the user assigned on the task.
+        '''
+        warehouse_A = self.env['stock.warehouse'].create({'name': 'WH A', 'code': 'WHA', 'company_id': self.env.company.id, 'partner_id': self.env.company.partner_id.id})
+        self.partner_1.write({'user_id': self.uid})
+
+        self.project_user.write({'property_warehouse_id': warehouse_A.id})
+
+        self.task.write({'partner_id': self.partner_1.id})
+        self.task.with_user(self.project_user)._fsm_ensure_sale_order()
+
+        self.assertEqual(self.project_user.property_warehouse_id.id, self.task.sale_order_id.warehouse_id.id)
+        self.assertEqual(self.project_user.id, self.task.sale_order_id.user_id.id)
+        
+
     def test_fsm_stock_already_validated_picking(self):
         '''
             1 delivery step

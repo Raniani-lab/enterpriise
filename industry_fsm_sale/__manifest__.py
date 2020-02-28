@@ -9,6 +9,9 @@ Create Sales order with timesheets and products from tasks
     'category': 'Operations/Field Service',
     'version': '1.0',
     'depends': ['industry_fsm', 'sale_timesheet_enterprise'],
+    'qweb': [
+        "static/src/xml/fsm_quantity.xml"
+    ],
     'data': [
         'data/industry_fsm_data.xml',
         'security/industry_fsm_sale_security.xml',

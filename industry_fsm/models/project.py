@@ -14,7 +14,6 @@ class Project(models.Model):
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
     allow_timesheets = fields.Boolean(default=False, compute='_compute_allow_timesheets', store=True, readonly=False)
-    allow_timesheet_timer = fields.Boolean(default=False)
 
     @api.depends('is_fsm')
     def _compute_allow_timesheets(self):

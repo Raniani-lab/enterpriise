@@ -10,7 +10,6 @@ class Project(models.Model):
     ticket_count = fields.Integer('# Tickets', compute='_compute_ticket_count')
 
     helpdesk_team = fields.One2many('helpdesk.team', 'project_id')
-    allow_timesheet_timer = fields.Boolean(compute = '_compute_allow_timesheet_timer', store = True, readonly = False)
 
     @api.depends('ticket_ids.project_id')
     def _compute_ticket_count(self):
@@ -26,5 +25,7 @@ class Project(models.Model):
 
     @api.depends('helpdesk_team.timesheet_timer')
     def _compute_allow_timesheet_timer(self):
-        for team in self:
-            team.allow_timesheet_timer = team.helpdesk_team.timesheet_timer
+        super(Project, self)._compute_allow_timesheet_timer()
+
+        for project in self:
+            project.allow_timesheet_timer = project.allow_timesheet_timer or project.helpdesk_team.timesheet_timer

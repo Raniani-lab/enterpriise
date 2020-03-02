@@ -651,17 +651,18 @@ class AccountMove(models.Model):
             self_ctx = self_ctx.with_context(default_journal_id=self_ctx._get_default_journal().id)
         with Form(self_ctx) as move_form:
             if not move_form.partner_id:
-                partner_id = self.find_partner_id_with_name(supplier_ocr)
-                if partner_id != 0:
-                    move_form.partner_id = self.env["res.partner"].browse(partner_id)
-                else:
+                if vat_number_ocr:
                     partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr)], limit=1)
                     if partner_vat.exists():
                         move_form.partner_id = partner_vat
-                    elif vat_number_ocr:
-                        created_supplier = self._create_supplier_from_vat(vat_number_ocr)
-                        if created_supplier:
-                            move_form.partner_id = created_supplier
+                if not move_form.partner_id:
+                    partner_id = self.find_partner_id_with_name(supplier_ocr)
+                    if partner_id != 0:
+                        move_form.partner_id = self.env["res.partner"].browse(partner_id)
+                if not move_form.partner_id and vat_number_ocr:
+                    created_supplier = self._create_supplier_from_vat(vat_number_ocr)
+                    if created_supplier:
+                        move_form.partner_id = created_supplier
 
             due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
             if date_ocr and move_form.invoice_date == str(self._get_default_invoice_date()):

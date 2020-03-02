@@ -333,6 +333,7 @@ class website_hr_contract_salary(http.Controller):
             if advantages['new_car']:
                 new_contract.new_car = True
                 new_contract.new_car_model_id = advantages['car_id']
+                new_contract.car_id = False
             else:
                 new_contract.new_car = False
                 new_contract.car_id = advantages['car_id']

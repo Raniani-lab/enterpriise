@@ -22,14 +22,6 @@ class Project(models.Model):
             if not project._origin:
                 project.allow_timesheets = not project.is_fsm
 
-    @api.depends('allow_timesheets', 'is_fsm')
-    def _compute_allow_timesheet_timer(self):
-        for project in self:
-            if not project._origin:
-                project.allow_timesheet_timer = not project.is_fsm
-            else:
-                project.allow_timesheet_timer = project.allow_timesheets
-
     @api.depends('is_fsm')
     def _compute_allow_subtasks(self):
         subtask_enabled = self.user_has_groups('project.group_subtask_project')

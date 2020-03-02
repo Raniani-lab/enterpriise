@@ -135,7 +135,7 @@
             <field name="code">
                 if records:
                     for rec in records:
-                        if rec.type == 'in_invoice' :
+                        if rec.move_type == 'in_invoice' :
                             action = rec.retry_ocr()
                         else :
                             raise Warning("This action is only possible for Vendor Bills and Vendor Credit Notes")

@@ -122,7 +122,7 @@ class IntrastatReport(models.AbstractModel):
                 comp_transport.code AS company_transport,
                 CASE WHEN inv_line.intrastat_transaction_id IS NULL THEN '1' ELSE transaction.code END AS trans_code,
                 CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN 'Arrival' ELSE 'Dispatch' END AS type,
-                prodt.weight * inv_line.quantity * (
+                prod.weight * inv_line.quantity * (
                     CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
                     THEN 1 ELSE inv_line_uom.factor END
                 ) AS weight,

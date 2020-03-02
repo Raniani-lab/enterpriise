@@ -15,6 +15,8 @@
                             <aggregate name="price_subtotal_all_orders" string="Untaxed Total" field="untaxed_total" widget="monetary"/>
                             <aggregate name="purchase_orders" string="Orders" field="order_id"/>
                             <formula name="typetotal" string="Average Order" value="record.price_subtotal_confirmed_orders / record.purchase_orders" widget="monetary"/>
+                            <aggregate name="avg_days_to_purchase" string="Average Days to Purchase" field="avg_days_to_purchase" group_operator="avg" value_label="days"
+                                domain="[('date_approve', '!=', False)]" domain_label="purchase orders"  clickable="False"/>
                         </group>
                     </group>
                     <view type="pivot" ref="purchase.view_purchase_order_pivot"/>

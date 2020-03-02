@@ -183,7 +183,7 @@
                     <field name="start_notice_period" groups="base.group_no_one"/>
                     <field name="end_notice_period" groups="base.group_no_one"/>
                 </xpath>
-                <xpath expr="//field[@name='user_id']" position="after">
+                <xpath expr="//field[@name='job_id']" position="after">
                     <field name="language_code"/>
                     <field name="nif_country_code" required="True"/>
                 </xpath>

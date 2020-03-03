@@ -25,6 +25,7 @@ class AccountPayment(models.Model):
                                      comodel_name='sdd.mandate',
                                      readonly=True,
                                      help="The mandate used to generate this payment, if any.")
+    sdd_mandate_scheme = fields.Selection(related='sdd_mandate_id.sdd_scheme', readonly=True) 
     sdd_mandate_usable = fields.Boolean(string="Could a SDD mandate be used?",
         help="Technical field used to inform the end user there is a SDD mandate that could be used to register that payment",
         compute='_compute_usable_mandate',)
@@ -130,7 +131,7 @@ class AccountPayment(models.Model):
         create_xml_node(PmtInf, 'CtrlSum', float_repr(sum(x.amount for x in self), precision_digits=2))  # This sum ignores the currency, it is used as a checksum (see SEPA rulebook)
 
         PmtTpInf = create_xml_node_chain(PmtInf, ['PmtTpInf','SvcLvl','Cd'], 'SEPA')[0]
-        create_xml_node_chain(PmtTpInf, ['LclInstrm','Cd'], 'CORE')
+        create_xml_node_chain(PmtTpInf, ['LclInstrm','Cd'], self.sdd_mandate_scheme)
         create_xml_node(PmtTpInf, 'SeqTp', 'FRST')
         #Note: FRST refers to the COLLECTION of payments, not the type of mandate used
         #This value is only used for informatory purpose.

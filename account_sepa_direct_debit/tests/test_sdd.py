@@ -16,6 +16,7 @@ from odoo.tests import tagged
 @tagged('post_install', '-at_install')
 class SDDTest(AccountTestCommon):
 
+
     def create_user(self):
         return self.env['res.users'].create({
             'company_id': self.env.ref("base.main_company").id,
@@ -35,7 +36,6 @@ class SDDTest(AccountTestCommon):
     def create_mandate(self,partner, partner_bank, one_off, company, current_uid, payment_journal):
         return self.env['sdd.mandate'].with_context({'uid': current_uid}).create({
             'name': 'mandate ' + (partner.name or ''),
-            'original_doc': '42',
             'partner_bank_id': partner_bank.id,
             'one_off': one_off,
             'start_date': fields.Date.today(),
@@ -47,7 +47,7 @@ class SDDTest(AccountTestCommon):
     def create_invoice(self, partner, current_uid, currency):
         invoice = self.env['account.move'].with_context(default_move_type='out_invoice', uid=current_uid).create({
             'partner_id': partner.id,
-            'currency_id': currency.id,
+            'currency_id': self.env.ref('base.EUR'),
             'invoice_payment_ref': 'invoice to client',
             'move_type': 'out_invoice',
             'invoice_line_ids': [(0, 0, {
@@ -114,10 +114,22 @@ class SDDTest(AccountTestCommon):
         self.assertEqual(mandate_no_bic.state, 'closed', 'A one-off mandate should be closed after accepting a payment')
 
         #Let us check the conformity of XML generation :
-        payment = invoice_agrolait.line_ids.mapped('matched_credit_ids.credit_move_id.payment_id')
-        xml_file = etree.fromstring(payment.generate_xml(company, fields.Date.today(), True))
-
         schema_file_path = get_module_resource('account_sepa_direct_debit', 'schemas', 'pain.008.001.02.xsd')
-        xml_schema = etree.XMLSchema(etree.parse(open(schema_file_path)))
 
-        self.assertTrue(xml_schema.validate(xml_file), xml_schema.error_log.last_error)
+        for invoice in (invoice_agrolait, invoice_china_export, invoice_no_bic):
+            payment = invoice.line_ids.mapped('matched_credit_ids.credit_move_id.payment_id')
+            xml_file = etree.fromstring(payment.generate_xml(company, fields.Date.today(), True))
+            xml_schema = etree.XMLSchema(etree.parse(open(schema_file_path)))
+            self.assertTrue(xml_schema.validate(xml_file), xml_schema.error_log.last_error)
+
+        # Test B2B sdd scheme
+        schema_file_path = get_module_resource('account_sepa_direct_debit', 'schemas', 'EPC131-08_2019_V1.0_pain.008.001.02.xsd')
+        mandate_agrolait.sdd_scheme = 'B2B'
+        mandate_china_export.sdd_scheme = 'B2B'
+        mandate_no_bic.sdd_scheme = 'B2B'
+
+        for invoice in (invoice_agrolait, invoice_china_export, invoice_no_bic):
+            payment = invoice.line_ids.mapped('matched_credit_ids.credit_move_id.payment_id')
+            xml_file = etree.fromstring(payment.generate_xml(company, fields.Date.today(), True))
+            xml_schema = etree.XMLSchema(etree.parse(open(schema_file_path)))
+            self.assertTrue(xml_schema.validate(xml_file), xml_schema.error_log.last_error)

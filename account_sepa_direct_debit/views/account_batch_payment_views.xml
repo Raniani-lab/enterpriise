@@ -10,7 +10,13 @@
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="sdd_required_collection_date" attrs="{'required': [('payment_method_code','=','sdd')], 'invisible': [('payment_method_code','!=','sdd')]}"/>
                     <field name="sdd_batch_booking" string="Batch Booking" attrs="{'invisible': [('payment_method_code','!=','sdd')]}"/>
+                    <field name="sdd_scheme" attrs="{'invisible': [('payment_method_code','!=','sdd')], 'required': [('payment_method_code','==','sdd')]}"/>
                 </xpath>
+                <field name="payment_ids" position="attributes">
+                    <attribute name="domain">
+                ['|', ('payment_method_id.code', '!=', 'sdd'), ('sdd_mandate_scheme', '=', sdd_scheme), ('batch_payment_id', '=', False), ('state', 'not in', ['reconciled', 'cancelled']), ('payment_method_id', '=', payment_method_id), ('journal_id', '=', journal_id), ('payment_type','=',batch_type)]
+                    </attribute>
+                </field>
             </field>
         </record>
 

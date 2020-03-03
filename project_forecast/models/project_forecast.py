@@ -60,16 +60,24 @@ class PlanningShift(models.Model):
             if slot.task_id:
                 slot.project_id = slot.task_id.project_id
 
-            if slot.template_id.project_id:
-                slot.project_id = slot.template_id.project_id
+            if slot.template_id:
+                slot.previous_template_id = slot.template_id
+                if slot.template_id.project_id:
+                    slot.project_id = slot.template_id.project_id
+            elif slot.previous_template_id and not slot.template_id and slot.previous_template_id.project_id == slot.project_id:
+                slot.project_id = False
 
     @api.depends('project_id', 'template_id.project_id')
     def _compute_task_id(self):
         for slot in self:
             if slot.project_id != slot.task_id.project_id:
                 slot.task_id = False
-            if slot.template_id.task_id:
-                slot.task_id = slot.template_id.task_id
+            if slot.template_id:
+                slot.previous_template_id = slot.template_id
+                if slot.template_id.task_id:
+                    slot.task_id = slot.template_id.task_id
+            elif slot.previous_template_id and not slot.template_id and slot.previous_template_id.task_id == slot.task_id:
+                slot.task_id = False
 
     @api.constrains('task_id', 'project_id')
     def _check_task_in_project(self):
@@ -111,17 +119,30 @@ class PlanningShift(models.Model):
             **result
         }
 
+    @api.model
+    def _get_template_fields(self):
+        values = super(PlanningShift, self)._get_template_fields()
+        return {'project_id': 'project_id', 'task_id': 'task_id', **values}
+
     def _get_domain_template_slots(self):
         domain = super(PlanningShift, self)._get_domain_template_slots()
         if self.task_id:
-            domain += [('task_id', '=', self.task_id.id)]
+            domain += ['|', ('task_id', '=', self.task_id.id), ('project_id', '=', False)]
         elif self.project_id:
-            domain += [('project_id', '=', self.project_id.id)]
+            domain += ['|', ('project_id', '=', self.project_id.id), ('project_id', '=', False)]
         return domain
 
     @api.depends('role_id', 'employee_id', 'project_id', 'task_id')
     def _compute_template_autocomplete_ids(self):
         super(PlanningShift, self)._compute_template_autocomplete_ids()
+
+    @api.depends('role_id', 'employee_id', 'project_id', 'task_id', 'start_datetime', 'allocated_hours')
+    def _compute_template_id(self):
+        super(PlanningShift, self)._compute_template_id()
+
+    @api.depends('template_id', 'role_id', 'allocated_hours', 'project_id', 'task_id')
+    def _compute_allow_template_creation(self):
+        super(PlanningShift, self)._compute_allow_template_creation()
 
     @api.model_create_multi
     def create(self, vals_list):

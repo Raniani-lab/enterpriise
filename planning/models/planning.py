@@ -87,7 +87,10 @@ class Planning(models.Model):
         help="If checked, it means that the shift contains has changed since its last publish.")
     # template dummy fields (only for UI purpose)
     template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
-    template_id = fields.Many2one('planning.slot.template', string='Shift Templates')
+    template_id = fields.Many2one('planning.slot.template', string='Shift Templates', compute='_compute_template_id', readonly=False, store=True)
+    template_reset = fields.Boolean()
+    previous_template_id = fields.Many2one('planning.slot.template')
+    allow_template_creation = fields.Boolean(string='Allow Template Creation', compute='_compute_allow_template_creation')
 
     # Recurring (`repeat_` fields are none stored, only used for UI purpose)
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
@@ -142,8 +145,12 @@ class Planning(models.Model):
                 else:
                     slot.role_id = False
 
-            if slot.template_id.role_id:
-                slot.role_id = slot.template_id.role_id
+            if slot.template_id:
+                slot.previous_template_id = slot.template_id
+                if slot.template_id.role_id:
+                    slot.role_id = slot.template_id.role_id
+            elif slot.previous_template_id and not slot.template_id and slot.previous_template_id.role_id == slot.role_id:
+                slot.role_id = False
 
     @api.depends('user_id')
     def _compute_is_assigned_to_me(self):
@@ -231,12 +238,43 @@ class Planning(models.Model):
 
     @api.depends('role_id', 'employee_id')
     def _compute_template_autocomplete_ids(self):
-        if self.template_id:
-            self.template_autocomplete_ids = False
-        else:
-            domain = self._get_domain_template_slots()
-            templates = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
-            self.template_autocomplete_ids = templates
+        domain = self._get_domain_template_slots()
+        templates = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
+        self.template_autocomplete_ids = templates + self.template_id
+
+    @api.depends('employee_id', 'role_id', 'start_datetime', 'allocated_hours')
+    def _compute_template_id(self):
+        for slot in self.filtered(lambda s: s.template_id):
+            slot.previous_template_id = slot.template_id
+            slot.template_reset = False
+            if slot._different_than_template():
+                slot.template_id = False
+                slot.previous_template_id = False
+                slot.template_reset = True
+
+    def _different_than_template(self, check_empty=True):
+        self.ensure_one()
+        template_fields = self._get_template_fields().items()
+        for template_field, slot_field in template_fields:
+            if self.template_id[template_field] or not check_empty:
+                if template_field == 'start_time':
+                    h = int(self.template_id.start_time)
+                    m = round(modf(self.template_id.start_time)[0] * 60.0)
+                    slot_time = self[slot_field].astimezone(pytz.timezone(self.env.user.tz or 'UTC'))
+                    if slot_time.hour != h or slot_time.minute != m:
+                        return True
+                else:
+                    if self[slot_field] != self.template_id[template_field]:
+                        return True
+        return False
+
+    @api.depends('template_id', 'role_id', 'allocated_hours')
+    def _compute_allow_template_creation(self):
+        for slot in self:
+            values = self._prepare_template_values()
+            domain = [(x, '=', values[x]) for x in values.keys()]
+            existing_templates = self.env['planning.slot.template'].search(domain, limit=1)
+            slot.allow_template_creation = not existing_templates and slot._different_than_template(check_empty=False)
 
     @api.depends('recurrency_id')
     def _compute_repeat(self):
@@ -285,10 +323,11 @@ class Planning(models.Model):
             work_interval = employee._adjust_to_calendar(start, end)
             start_datetime, end_datetime = work_interval[employee] if employee and employee.tz == slot.env.user.tz else (start, end)
 
-            if start_datetime:
-                slot.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-            if end_datetime:
-                slot.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
+            if not slot.previous_template_id and not slot.template_reset:
+                if start_datetime:
+                    slot.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
+                if end_datetime:
+                    slot.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
 
             if slot.template_id and slot.start_datetime:
                 h = int(slot.template_id.start_time)
@@ -473,15 +512,14 @@ class Planning(models.Model):
         existing_templates = self.env['planning.slot.template'].search(domain, limit=1)
         if not existing_templates:
             template = self.env['planning.slot.template'].create(values)
-            self.write({'template_id': template.id})
-            title = _("Template Saved")
+            self.write({'template_id': template.id, 'previous_template_id': template.id})
             message = _("Your template was successfully saved.")
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
-                    'title': title,
                     'message': message,
+                    'type': 'success',
                     'sticky': False,
                 }
             }
@@ -649,6 +687,12 @@ class Planning(models.Model):
             'employee_id',
             'role_id',
         ]
+
+    @api.model
+    def _get_template_fields(self):
+        # key -> field from template
+        # value -> field from slot
+        return {'role_id': 'role_id', 'start_time': 'start_datetime'}
 
     def _get_overlap_domain(self):
         """ get overlapping domain for current shifts

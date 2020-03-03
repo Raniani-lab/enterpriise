@@ -24,6 +24,8 @@
         <field name="arch" type="xml">
             <form>
                 <field name="work_email" invisible="1" />
+                <field name="previous_template_id" invisible="1" />
+                <field name="template_reset" invisible="1" />
                 <div role="alert" class="alert-warning p-3 text-center" attrs="{'invisible': [('overlap_slot_count', '=', 0)]}">
                     <button name="action_see_overlaping_slots" type="object" class="btn-link">
                         <field name="overlap_slot_count"/> other shift(s)
@@ -34,7 +36,7 @@
                 <sheet string="Shift">
                     <field name="is_assigned_to_me" invisible="1"/>
                     <field name="allow_self_unassign" invisible="1"/>
-                    <group attrs="{'invisible': ['|', ('template_autocomplete_ids', '=', []), ('template_id', '!=', False)]}" groups="planning.group_planning_manager">
+                    <group attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}" groups="planning.group_planning_manager" name="shift_templates">
                         <label for="template_id" class="oe_edit_only"/>
                         <field name="template_id" nolabel="1" class="text-break flex-wrap"
                             domain="[['id', 'in', template_autocomplete_ids]]"
@@ -145,6 +147,19 @@
         <field name="inherit_id" ref="planning_view_form"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
+            <xpath expr="//group[@name='shift_templates']" position="replace">
+                <group>
+                    <field name="allow_template_creation" invisible="1" />
+                    <label for="template_id" class="oe_edit_only"/>
+                    <div class="o_row">
+                        <field name="template_id" nolabel="1" class="text-break flex-wrap"
+                            domain="[['id', 'in', template_autocomplete_ids]]"
+                            widget="selection_badge" options="{'horizontal': true}"
+                        />
+                        <button name="action_create_template" class="btn btn-secondary o_planning_save_template" type="object" string="Save as Template" icon="fa-floppy-o" attrs="{'invisible': [('allow_template_creation', '=', False)]}" groups="planning.group_planning_manager"/>
+                    </div>
+                </group>
+            </xpath>
             <xpath expr="//sheet" position="after">
                 <footer>
                     <field name="publication_warning" invisible="1"/>
@@ -161,7 +176,6 @@
 
                     <button name="action_self_assign" class="btn btn-primary float-right" type="object" string="I Take It" attrs="{'invisible': ['|', ('employee_id', '!=', False), ('is_past', '=', True)]}" close="1"/>
                     <button name="action_self_unassign" class="btn btn-secondary float-right" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True)]}" close="1"/>
-                    <button name="action_create_template" class="btn btn-secondary float-right" type="object" string="Save as Template" icon="fa-floppy-o" attrs="{'invisible': [('template_id', '!=', False)]}" groups="planning.group_planning_manager"/>
                 </footer>
             </xpath>
         </field>

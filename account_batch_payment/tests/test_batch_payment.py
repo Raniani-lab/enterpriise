@@ -16,7 +16,7 @@ class TestBatchPayment(AccountTestCommon):
         super(TestBatchPayment, cls).setUpClass()
 
         # Get some records
-        cls.customers = cls.env['res.partner'].search([])
+        cls.customers = cls.env['res.partner'].search([('company_id', 'in', [False, cls.env.user.company_id.id])])
         cls.batch_deposit = cls.env.ref('account_batch_payment.account_payment_method_batch_deposit')
 
         # Create a bank journal
@@ -31,7 +31,7 @@ class TestBatchPayment(AccountTestCommon):
             'type': 'bank',
             'default_debit_account_id': journal_account.id,
             'default_credit_account_id': journal_account.id,
-            'company_id': cls.env.ref('base.main_company').id
+            'company_id': cls.env.user.company_id.id
         })
 
         # Create some payments
@@ -72,7 +72,7 @@ class TestBatchPayment(AccountTestCommon):
             'balance_end_real': 800.0,
             'date': time.strftime('%Y') + '-08-01',
             'journal_id': self.journal.id,
-            'company_id': self.env.ref('base.main_company').id,
+            'company_id': self.env.user.company_id.id,
         })
         bank_statement_line = self.env['account.bank.statement.line'].create({
             'amount': 800,

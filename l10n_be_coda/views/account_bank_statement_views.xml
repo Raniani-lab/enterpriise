@@ -24,6 +24,7 @@
 					<field name="name"/>
 					<field name="ref" readonly="0"/>
 					<field name="partner_id"/>
+					<field name="company_id" invisible="1"/>
 					<field name="amount"/>
 					<field name="sequence" readonly="0"/>
 				</group>
@@ -47,6 +48,7 @@
                     <field name="partner_id"/>
                     <field name="amount"/>
                     <field name="note"/>
+                    <field name="company_id" invisible="1"/>
                 </tree>
             </field>
         </record>

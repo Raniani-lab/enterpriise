@@ -209,6 +209,7 @@
                 <tree decoration-danger="parent_state == 'draft'" editable="bottom" string="Partner entries">
                     <field name="parent_state" invisible="1"/>
                     <field name="date"/>
+                    <field name="company_id" invisible="1"/>
                     <field name="move_id"/>
                     <field name="ref"/>
                     <field name="name"/>

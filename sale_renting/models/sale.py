@@ -107,7 +107,6 @@ class RentalOrderLine(models.Model):
     is_rental = fields.Boolean(default=False)  # change to compute if pickup_date and return_date set?
 
     qty_returned = fields.Float("Returned", default=0.0, copy=False)
-    # returned_quantity = qty_delivered
 
     pickup_date = fields.Datetime(string="Pickup")
     return_date = fields.Datetime(string="Return")

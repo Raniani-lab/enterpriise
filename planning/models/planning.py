@@ -409,6 +409,8 @@ class Planning(models.Model):
         if is_calendar and self.env.context.get('planning_hide_employee', False):
             field_list.remove('employee_id')
 
+        # Sudo as a planning manager is not able to read private project if he is not project manager.
+        self = self.sudo()
         result = []
         for slot in self:
             # label part, depending on context `groupby`
@@ -843,6 +845,10 @@ class Planning(models.Model):
             'is_published': True,
             'publication_warning': False,
         })
+
+    def _filter_slots_front_end(self, employee):
+        # Is overridden to filter slots for the front end.
+        return self
 
 
 class PlanningRole(models.Model):

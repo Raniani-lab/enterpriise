@@ -35,6 +35,7 @@ class PlanningShift(models.Model):
     allow_forecast = fields.Boolean(related="project_id.allow_forecast")
     forecast_hours = fields.Float("Forecast Hours", compute='_compute_forecast_hours', help="Number of hours already forecast for this task (and its sub-tasks).")
     parent_id = fields.Many2one('project.task', related='task_id.parent_id', store=True)  # store for group by
+    is_private_project = fields.Boolean(compute='_compute_is_private_project', compute_sudo=True)
 
     _sql_constraints = [
         ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "If the planning is linked to a task, the project must be set too."),
@@ -78,6 +79,19 @@ class PlanningShift(models.Model):
                     slot.task_id = slot.template_id.task_id
             elif slot.previous_template_id and not slot.template_id and slot.previous_template_id.task_id == slot.task_id:
                 slot.task_id = False
+
+    @api.depends('employee_id', 'project_id')
+    def _compute_is_private_project(self):
+        for slot in self:
+            if not slot.employee_id or not slot.project_id:
+                slot.is_private_project = False
+            elif slot.project_id.privacy_visibility == 'followers' and not (slot.employee_id.user_id and slot.employee_id.user_id.has_group('project.group_project_manager')):
+                if slot.task_id:
+                    slot.is_private_project = not slot.employee_id.user_id or slot.employee_id.user_id not in slot.task_id.allowed_user_ids
+                else:
+                    slot.is_private_project = not slot.employee_id.user_id or slot.employee_id.user_id not in slot.project_id.allowed_user_ids
+            else:
+                slot.is_private_project = False
 
     @api.constrains('task_id', 'project_id')
     def _check_task_in_project(self):
@@ -155,3 +169,13 @@ class PlanningShift(models.Model):
         if 'task_id' in values and values['task_id'] and 'project_id' not in values:
             values['project_id'] = self.env['project.task'].browse(values['task_id']).project_id.id
         return super(PlanningShift, self).write(values)
+
+    def _filter_slots_front_end(self, employee):
+        planning_slots = super(PlanningShift, self)._filter_slots_front_end(employee)
+        if not employee.user_id or not employee.user_id.has_group('project.group_project_manager'):
+            planning_slots = planning_slots.filtered(lambda s:
+                not s.project_id
+                or s.project_id.privacy_visibility != 'followers'
+                or employee.user_id in s.project_id.allowed_user_ids
+                or employee.user_id in s.task_id.allowed_user_ids)
+        return planning_slots

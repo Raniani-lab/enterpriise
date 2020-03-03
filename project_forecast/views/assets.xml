@@ -4,6 +4,9 @@
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/project_forecast/static/src/js/forecast_gantt.js"/>
         </xpath>
+        <xpath expr="link[last()]" position="after">
+            <link rel="stylesheet" type="text/scss" href="/project_forecast/static/src/scss/planning_view.scss"/>
+        </xpath>
     </template>
 
     <template id="assets_frontend" name="Planning Own Assets Frontend" inherit_id="planning.assets_frontend">

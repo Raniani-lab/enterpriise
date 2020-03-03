@@ -59,6 +59,7 @@ class TestUserAccess(TransactionCase):
             'repeat_type': 'until',
             'repeat_until': datetime(2022, 6, 27, 17, 0, 0),
             'repeat_interval': 1,
+            'is_published': True,
         })
 
         self.env['planning.slot'].create({

@@ -50,7 +50,7 @@ class AccountMove(models.Model):
         def _filter_outgoing_sml(ml):
             # Rental moves send the products (& lots) to an internal location
             # independent of any warehouse (but still in the company to count for the assets).
-            if ml.state == 'done' and ml.lot_id and not ml.location_dest_id == ml.company_id.rental_loc_id :
+            if ml.state == 'done' and ml.lot_id and ml.location_dest_id == ml.company_id.rental_loc_id :
                 if last_invoice_datetime:
                     return last_invoice_datetime <= ml.date <= self_datetime
                 else:

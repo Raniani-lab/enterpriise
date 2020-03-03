@@ -687,7 +687,7 @@ class AccountMove(models.Model):
                 if bank_account.exists():
                     move_form.invoice_partner_bank_id = bank_account
                 else:
-                    move_form.invoice_partner_bank_id = self.env['res.partner.bank'].create({
+                    move_form.invoice_partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create({
                         'partner_id': move_form.partner_id.id,
                         'acc_number': iban_ocr,
                     })

@@ -53,7 +53,7 @@
                 </div>
                 <div class="custom-control custom-checkbox">
                    <input type="checkbox" id="multi_edit" name="multi_edit" class="custom-control-input" t-att-checked="widget.isTrue(widget.state.attrs.multi_edit or 'false') ? 'checked' : undefined"/>
-                   <label for="multi_edit" class="custom-control-label">Enable Mass Edition</label>
+                   <label for="multi_edit" class="custom-control-label">Enable Mass Editing</label>
                 </div>
             </t>
             <!-- Kanban view settings -->

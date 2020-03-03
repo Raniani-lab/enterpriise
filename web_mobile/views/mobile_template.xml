@@ -15,7 +15,6 @@
             <script type="text/javascript" src="/web_mobile/static/src/js/datepicker.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/form_renderer.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/form_view.js"></script>
-            <script type="text/javascript" src="/web_mobile/static/src/js/notification_manager.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/pivot_renderer.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/user_menu.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/user_preferences_form_view.js"></script>

@@ -13,6 +13,7 @@ from odoo.exceptions import AccessError
 from odoo.http import request, content_disposition
 from odoo.tools.translate import _
 from odoo.tools import image_process
+from odoo.tools.mimetypes import neuter_mimetype
 
 logger = logging.getLogger(__name__)
 
@@ -20,12 +21,6 @@ logger = logging.getLogger(__name__)
 class ShareRoute(http.Controller):
 
     # util methods #################################################################################
-
-    def _neuter_mimetype(self, mimetype, user):
-        wrong_type = 'ht' in mimetype or 'xml' in mimetype or 'svg' in mimetype
-        if wrong_type and not user._is_system():
-            return 'text/plain'
-        return mimetype
 
     def binary_content(self, id, env=None, field='datas', share_id=None, share_token=None,
                        download=False, unique=False, filename_field='name'):
@@ -119,7 +114,7 @@ class ShareRoute(http.Controller):
             ufile = files[0]
             try:
                 data = base64.encodebytes(ufile.read())
-                mimetype = self._neuter_mimetype(ufile.content_type, http.request.env.user)
+                mimetype = neuter_mimetype(ufile.content_type, http.request.env.user)
                 document.write({
                     'name': ufile.filename,
                     'datas': data,
@@ -132,7 +127,7 @@ class ShareRoute(http.Controller):
             vals_list = []
             for ufile in files:
                 try:
-                    mimetype = self._neuter_mimetype(ufile.content_type, http.request.env.user)
+                    mimetype = neuter_mimetype(ufile.content_type, http.request.env.user)
                     datas = base64.encodebytes(ufile.read())
                     vals = {
                         'name': ufile.filename,
@@ -358,7 +353,7 @@ class ShareRoute(http.Controller):
             try:
                 file = request.httprequest.files.getlist('requestFile')[0]
                 data = file.read()
-                mimetype = self._neuter_mimetype(file.content_type, http.request.env.user)
+                mimetype = neuter_mimetype(file.content_type, http.request.env.user)
                 write_vals = {
                     'mimetype': mimetype,
                     'name': file.filename,
@@ -374,7 +369,7 @@ class ShareRoute(http.Controller):
             try:
                 for file in request.httprequest.files.getlist('files'):
                     data = file.read()
-                    mimetype = self._neuter_mimetype(file.content_type, http.request.env.user)
+                    mimetype = neuter_mimetype(file.content_type, http.request.env.user)
                     document_dict = {
                         'mimetype': mimetype,
                         'name': file.filename,

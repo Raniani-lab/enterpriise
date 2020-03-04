@@ -33,7 +33,7 @@
                             </div>
                             <div class="o_setting_right_pane">
                                 <label for="use_fsm"/>
-                                <a href="https://www.odoo.com/documentation/user/13.0/fsm/helpdesk/plan_onsite.html" title="Documentation" class="o_doc_link fa fa-lg fa-book" target="_blank"></a>
+                                <a href="https://www.odoo.com/documentation/user/13.0/fsm/helpdesk/plan_onsite.html" title="Documentation" class="o_doc_link" target="_blank"></a>
                                 <div class="text-muted">
                                     Plan Field Service tasks from tickets
                                 </div>

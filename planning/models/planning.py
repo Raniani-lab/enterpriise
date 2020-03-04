@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from ast import literal_eval
-from datetime import datetime, timedelta, time
+from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY
 import json
@@ -670,7 +670,8 @@ class Planning(models.Model):
         all_employees = self.env['hr.employee'].search([])
         if len(all_employees) >= 20:
             start_date_list = [dom[2] for dom in domain if dom[0] == 'start_datetime']
-            start_date = datetime.strptime(start_date_list[-1], '%Y-%m-%d %H:%M:%S') if start_date_list else datetime.now()
+            start_date = start_date_list[-1] if start_date_list else datetime.now()
+            start_date = start_date if isinstance(start_date, date) else datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S')
             min_date = start_date - timedelta(days=30)
             max_date = start_date + timedelta(days=30)
             return self.env['planning.slot'].search([('start_datetime', '>=', min_date), ('start_datetime', '<=', max_date)]).mapped('employee_id')

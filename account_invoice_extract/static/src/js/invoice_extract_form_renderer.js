@@ -278,6 +278,8 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         this.$attachmentPreview.find('iframe').on("load", function () { // wait for iframe to load
             var $iframe = self.$attachmentPreview.find('iframe');
             var $iframeDoc = self.$attachmentPreview.find('iframe').contents();
+            // To get pagerendered trigger_up from pdf.js, we needed to change pdf.js default option and set
+            // eventBusDispatchToDOM to True
             $iframeDoc[0].addEventListener('pagerendered', function () {
                 self._startInvoiceExtract($iframe);
             });

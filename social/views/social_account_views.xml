@@ -37,6 +37,7 @@
                     </div>
                     <group>
                         <group name="social_account_global">
+                            <field name="active" invisible="1"/>
                             <field name="name" string="Name"/>
                             <field name="media_id" options="{'no_open': True}" />
                         </group>

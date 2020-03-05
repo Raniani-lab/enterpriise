@@ -672,9 +672,11 @@ class AccountMove(models.Model):
                 move_form.ref = invoice_id_ocr
 
             if self.user_has_groups('base.group_multi_currency') and move_form.currency_id == self._get_default_currency():
-                move_form.currency_id = self.env["res.currency"].search([
+                currency = self.env["res.currency"].search([
                         '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
                         ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+                if currency:
+                    move_form.currency_id = currency
 
             if payment_ref_ocr and not move_form.invoice_payment_ref:
                 move_form.invoice_payment_ref = payment_ref_ocr

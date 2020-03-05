@@ -16,6 +16,21 @@ odoo.define('planning.PlanningGanttModel', function (require) {
 
             return this._super(handle, params);
         },
+        /* Overrides the load method to inject
+         * a context which will be sent to
+         * rpc requests.
+         *
+         * It allows to check if we want to do
+         * the custom read_group in planning.py
+         *
+         * @override
+         * @param {Object} params
+         * @returns {Promise}
+         */
+        load: function (params) {
+            params.context['prepend_open_shifts'] = true;
+            return this._super.apply(this, arguments);
+        },
         /**
          * @private
          * @override

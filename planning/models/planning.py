@@ -307,8 +307,8 @@ class Planning(models.Model):
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
         result = super(Planning, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
-        view_type = self.env.context.get('view_type')
-        if 'employee_id' in groupby and view_type == 'gantt':
+        prepend_open_shifts = self.env.context.get('prepend_open_shifts')
+        if 'employee_id' in groupby and prepend_open_shifts:
             # Always prepend 'Undefined Employees' (will be printed 'Open Shifts' when called by the frontend)
             d = {}
             for field in fields:

@@ -26,20 +26,21 @@ class ResConfigSettings(models.TransientModel):
     @api.model
     def _update_account_tax_periodicity_reminder_day(self):
         company = self.company_id or self.env.company
-        move_id = self._create_edit_tax_reminder()
-        move_to_delete = self.env['account.move'].search([
-            ('id', '!=', move_id.id),
-            ('state', '=', 'draft'),
-            ('activity_ids.activity_type_id', '=', company.account_tax_next_activity_type.id),
-            ('company_id', '=', company.id)
-        ])
-        if len(move_to_delete):
-            journal_to_reset = [a.journal_id.id for a in move_to_delete]
-            move_to_delete.unlink()
-            self.env['account.journal'].browse(journal_to_reset).write({'show_on_dashboard': False})
+        move_id = self._create_edit_tax_reminder({'company_id': company})
+        if move_id:
+            move_to_delete = self.env['account.move'].search([
+                ('id', '!=', move_id.id),
+                ('state', '=', 'draft'),
+                ('activity_ids.activity_type_id', '=', company.account_tax_next_activity_type.id),
+                ('company_id', '=', company.id)
+            ])
+            if len(move_to_delete):
+                journal_to_reset = [a.journal_id.id for a in move_to_delete]
+                move_to_delete.unlink()
+                self.env['account.journal'].browse(journal_to_reset).write({'show_on_dashboard': False})
 
-        # Finally, add the journal visible in the dashboard
-        company.account_tax_periodicity_journal_id.show_on_dashboard = True
+            # Finally, add the journal visible in the dashboard
+            company.account_tax_periodicity_journal_id.show_on_dashboard = True
 
     def _create_edit_tax_reminder(self, values=None):
         # Create/Edit activity type if needed
@@ -48,6 +49,8 @@ class ResConfigSettings(models.TransientModel):
         if not values:
             values = {}
         company = values.get('company_id', False) or self.company_id or self.env.company
+        if not self.env['account.tax.group']._any_is_configured(company):
+            return False
         move_res_model_id = self.env['ir.model'].search([('model', '=', 'account.move')], limit=1).id
         activity_type = company.account_tax_next_activity_type or False
         vals = {

@@ -85,7 +85,7 @@
                             <field name="account_analytic_id" groups="analytic.group_analytic_accounting" />
                             <field name="analytic_tag_ids" groups="analytic.group_analytic_accounting" widget="many2many_tags"/>
                         </group>
-                        <group string="Imported Asset" groups="base.group_no_one">
+                        <group string="Existing Depreciation Schedule" groups="base.group_no_one">
                             <field name="already_depreciated_amount_import" string="Depreciated Amount"/>
                             <field name="depreciation_number_import" string="Existing Depreciations"/>
                             <field name="first_depreciation_date_import" string="First Depreciation Date"/>
@@ -269,7 +269,7 @@
     </record>
 
     <menuitem parent="account.menu_finance_entries_management" id="menu_action_account_asset_form" action="action_account_asset_form" sequence="101" groups="account.group_account_readonly"/>
-    <menuitem parent="account.account_account_menu" id="menu_action_account_asset_model_form" action="action_account_asset_model_form" groups="account.group_account_manager"/>
+    <menuitem parent="account.account_management_menu" sequence="1" id="menu_action_account_asset_model_form" action="action_account_asset_model_form" groups="account.group_account_manager"/>
 
 
     <!-- Configuration -->

@@ -107,7 +107,7 @@
                 </tree>
             </field>
         </record>
-        <menuitem id="menu_account_financial_reports_tree" name="Financial Reports" parent="account.account_management_menu" action="account_reports.action_account_financial_report_tree" groups="base.group_no_one"/>
+        <menuitem id="menu_account_financial_reports_tree" name="Financial Reports" sequence="6" parent="account.account_management_menu" action="account_reports.action_account_financial_report_tree" groups="base.group_no_one"/>
 
     </data>
 </odoo>

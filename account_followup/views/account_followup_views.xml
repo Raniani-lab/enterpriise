@@ -199,7 +199,7 @@
           </field>
         </record>
 
-        <menuitem action="action_account_followup_line_definition_form" id="account_followup_menu" parent="account.account_invoicing_menu" name="Follow-up Levels" groups="account.group_account_manager" sequence="6"/>
+        <menuitem action="action_account_followup_line_definition_form" id="account_followup_menu" parent="account.account_invoicing_menu" name="Follow-up Levels" groups="account.group_account_manager" sequence="2"/>
 
         <record id="account_move_line_partner_tree" model="ir.ui.view">
             <field name="name">account.move.line.partner.tree</field>

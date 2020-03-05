@@ -205,10 +205,10 @@
 
     <menuitem
             name="Online Synchronization"
-            parent="account.account_account_menu"
+            parent="account.account_banks_menu"
             action="action_online_provider_account"
             id="menu_action_online_provider_account"
-            sequence="9"
+            sequence="3"
             groups="base.group_no_one"/>
 
     <!-- Cron to synchronize transaction -->

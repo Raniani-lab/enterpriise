@@ -139,5 +139,5 @@
     </record>
 
     <menuitem parent="account.menu_finance_entries_management" id="menu_action_account_expense_recognition" action="action_account_expense_form" sequence="104" groups="account.group_account_readonly"/>
-    <menuitem parent="account.account_account_menu" id="menu_action_account_expense_model_recognition" action="action_account_expense_model_form" groups="account.group_account_manager"/>
+    <menuitem parent="account.account_management_menu" sequence="3" id="menu_action_account_expense_model_recognition" action="action_account_expense_model_form" groups="account.group_account_manager"/>
 </odoo>

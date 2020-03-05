@@ -154,5 +154,5 @@
     </record>
 
     <menuitem parent="account.menu_finance_entries_management" id="menu_action_account_revenue_recognition" action="action_account_revenue_form" sequence="103" groups="account.group_account_readonly"/>
-    <menuitem parent="account.account_account_menu" id="menu_action_account_revenue_model_recognition" action="action_account_revenue_model_form" groups="account.group_account_manager"/>
+    <menuitem parent="account.account_management_menu" sequence="2" id="menu_action_account_revenue_model_recognition" action="action_account_revenue_model_form" groups="account.group_account_manager"/>
 </odoo>

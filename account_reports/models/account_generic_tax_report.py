@@ -185,12 +185,19 @@ class generic_tax_report(models.AbstractModel):
          tax receivable/payable account). Create a move line that balance each tax account and add the differene in
          the correct receivable/payable account. Also takes into account amount already paid via advance tax payment account.
         """
+        on_empty_msg = _('It seems that you have no entries to post, are you sure you correctly configured the accounts on your tax groups?')
+
+
         # make the preliminary checks
         if options.get('multi_company', False):
             # Ensure that we only have one company selected
             raise UserError(_("You can only post tax entries for one company at a time"))
 
         company = self.env.company
+        if not self.env['account.tax.group']._any_is_configured(company):
+            if raise_on_empty:
+                raise UserError(_(on_empty_msg))
+            return False
 
         start_date = fields.Date.from_string(options.get('date').get('date_from'))
         end_date = fields.Date.from_string(options.get('date').get('date_to'))
@@ -214,8 +221,7 @@ class generic_tax_report(models.AbstractModel):
         else:
             if raise_on_empty:
                 action = self.env.ref('account.action_tax_group')
-                msg = _('It seems that you have no entries to post, are you sure you correctly configured the accounts on your tax groups?')
-                raise RedirectWarning(msg, action.id, _('Configure your TAX accounts'))
+                raise RedirectWarning(on_empty_msg, action.id, _('Configure your TAX accounts'))
         move_vals['tax_report_control_error'] = bool(options.get('tax_report_control_error'))
         if options.get('tax_report_control_error'):
             move.message_post(body=options.get('tax_report_control_error'))

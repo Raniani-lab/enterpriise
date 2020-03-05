@@ -910,7 +910,7 @@ class AccountReport(models.AbstractModel):
         ctx = self._set_context(options)
         ctx['strict_range'] = True
         self = self.with_context(ctx)
-        move = self.env['account.generic.tax.report']._generate_tax_closing_entry(options)
+        move = self.env['account.generic.tax.report']._generate_tax_closing_entry(options, raise_on_empty=True)
         action = self.env.ref('account.action_move_journal_line').read()[0]
         action = clean_action(action)
         action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]

@@ -1,5 +1,5 @@
 $o-dms-inspector-width: 320px;
-$o-dms-chatter-width: 450px;
+$o-dms-chatter-width: 525px;
 
 $o-dms-p: $o-horizontal-padding;
 $o-dms-p-small: $o-horizontal-padding*0.5;
@@ -520,7 +520,7 @@ $o-dms-progress-bar-height: 15px;
     .o_chatter_topbar {
 
         .o_topbar_right_area {
-            right: 60px; // at least 40px to prevent overlapping with 'close' button (see .o_documents_close_chatter)
+            margin-right: 60px; // at least 40px to prevent overlapping with 'close' button (see .o_documents_close_chatter)
             display: flex;
 
             .o_chatter_button_attachment {

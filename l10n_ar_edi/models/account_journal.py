@@ -33,31 +33,6 @@ class AccountJournal(models.Model):
         for rec in self:
             rec.l10n_ar_afip_ws = type_mapping.get(rec.l10n_ar_afip_pos_system, False)
 
-    def _l10n_ar_create_document_sequences(self):
-        """ After creating the document sequences we try to sync document next numbers with the last numbers in AFIP """
-        res = super()._l10n_ar_create_document_sequences()
-        if self.l10n_ar_afip_ws:
-            self.company_id.sudo()._get_key_and_certificate()
-            try:
-                self.l10n_ar_sync_next_number_with_afip()
-            except Exception as error:
-                _logger.info(_('Could not synchronize next number with the AFIP last numbers %s'), repr(error))
-        return res
-
-    def l10n_ar_sync_next_number_with_afip(self):
-        """ In order to generate invoices and report them to AFIP they need to match with the AFIP number: if not the
-        invoices will be rejected by AFIP.
-
-        This method avoid the user to manually set all the next numbers of the documents they use in the journal and
-        also avoid the error message given to the user that is trying to inform to AFIP an invoice that does not have
-        the proper number """
-        self.ensure_one()
-        if not self.l10n_ar_afip_ws:
-            return True
-        for sequence in self.l10n_ar_sequence_ids:
-            last = self._l10n_ar_get_afip_last_invoice_number(sequence.l10n_latam_document_type_id)
-            sequence.sudo().number_next_actual = last + 1
-
     def l10n_ar_check_afip_pos_number(self):
         """ Return information about the AFIP POS numbers related to the given AFIP WS """
         self.ensure_one()

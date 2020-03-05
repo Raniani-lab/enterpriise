@@ -156,7 +156,7 @@ class L10nArAfipwsConnection(models.Model):
                 'testing': "https://wsaahomo.afip.gov.ar/ws/services/LoginCms?WSDL"}.get(environment_type)
 
         try:
-            _logger.info('Connect to AFIP to get token')
+            _logger.info('Connect to AFIP to get token: %s %s %s' % (afip_ws, company.l10n_ar_afip_ws_crt_fname, company.name))
             transport = ARTransport(operation_timeout=60, timeout=60)
             client = zeep.Client(wsdl, transport=transport)
             response = client.service.loginCms(base64.b64encode(signed_request).decode())

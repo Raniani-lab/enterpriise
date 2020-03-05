@@ -1,12 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields
 from odoo.exceptions import UserError
-from odoo.tests.common import Form
-from odoo.tests.common import SingleTransactionCase
+from odoo.tests.common import Form, SingleTransactionCase
 from odoo.modules.module import get_module_resource
 import base64
 import random
 import logging
+import uuid
 
 _logger = logging.getLogger(__name__)
 
@@ -47,7 +47,45 @@ class TestEdi(SingleTransactionCase):
         cls.tax_21 = cls._search_tax(cls, 'iva_21')
         cls.tax_27 = cls._search_tax(cls, 'iva_27')
 
+        # Force user to be loggin in "Reponsable Inscripto" Argentinian Company
+        context = dict(cls.env.context, allowed_company_ids=[cls.company_ri.id])
+        cls.env = cls.env(context=context)
+        cls._create_afip_connections(cls, cls.company_ri)
+
     # Initialition
+
+    def _create_afip_connections(self, company):
+        """ Method used to create afip connections and commit then to re use this connections in all the test.
+        If a connection can not be set because another instance is already using the certificate then we assign a
+        random certificate and try again to create the connections. """
+        # In order to connect AFIP we need to create a token which depend on the configured AFIP certificate.
+        # If the certificate is been used by another testing instance will raise an error telling us that the token
+        # can not be used and need to wait 10 minuts or change with another certificate.
+        # To avoid this and always run the unit tests we randonly change the certificate and try to create the
+        # connection until there is not token error.
+        checked_certificate_token = False
+        while not checked_certificate_token:
+            try:
+                company._l10n_ar_get_connection('wsfe')
+                company._l10n_ar_get_connection('wsfex')
+                company._l10n_ar_get_connection('wsbfe')
+                company._l10n_ar_get_connection('wscdc')
+                checked_certificate_token = True
+                self.cr.commit()
+            except Exception as error:
+                if 'El CEE ya posee un TA valido para el acceso al WSN solicitado' in repr(error):
+                    _logger.log(25, 'Connection Failed')
+                elif 'Missing certificate' in repr(error):
+                    _logger.log(25, 'Not certificate configured yet')
+                else:
+                    raise error
+
+                # Set testing certificate
+                cert_file = get_module_resource('l10n_ar_edi', 'tests', 'test_cert%d.crt' % random.randint(1, 3))
+                old = company.l10n_ar_afip_ws_crt_fname or 'NOT DEFINED'
+                company.l10n_ar_afip_ws_crt = base64.b64encode(open(cert_file, 'rb').read())
+                _logger.log(25, 'Setting demo certificate from %s to %s in %s company' % (
+                    old, company.l10n_ar_afip_ws_crt_fname, company.name))
 
     def _set_today_rate(self, currency, value):
         rate_obj = self.env['res.currency.rate']
@@ -76,7 +114,6 @@ class TestEdi(SingleTransactionCase):
         """ Review that the connection is made and all the documents are syncronized"""
         with self.assertRaisesRegex(UserError, '"Check Available AFIP PoS" is not implemented in testing mode for webservice'):
             self.journal.l10n_ar_check_afip_pos_number()
-        self.assertFalse(self.journal.l10n_ar_sync_next_number_with_afip(), 'Sync Next Numbers with AFIP fails')
 
     def _test_consult_invoice(self, expected_result=None):
         invoice = self._create_invoice_product()
@@ -125,6 +162,13 @@ class TestEdi(SingleTransactionCase):
         self._edi_validate_and_review(refund, expected_result=expected_result)
         return refund
 
+    def _test_case_debit_note(self, document_type, invoice, data=None, expected_result='A'):
+        debit_note = self._create_debit_note(invoice, data=data)
+        expected_document = self.document_type[document_type]
+        self.assertEqual(debit_note.l10n_latam_document_type_id.display_name, expected_document.display_name, 'The document should be %s' % expected_document.display_name)
+        self._edi_validate_and_review(debit_note, expected_result=expected_result)
+        return debit_note
+
     def _test_demo_cases(self, cases):
         for xml_id, test_case in cases.items():
             _logger.info('  * running test %s: %s' % (xml_id, test_case))
@@ -152,26 +196,13 @@ class TestEdi(SingleTransactionCase):
                   'l10n_ar_afip_pos_partner_id': self.partner_ri.id}
         values.update(data)
 
-        # When we create the journal we are syncronizing document types sequeces with the ones we have in AFIP. In order to connection AFIP we need to
-        # to create a token which depend on the configured AFIP certificate . If the certificate is been used by another testing instance will raise an error
-        # telling us that the token can not be used and need to wait 10 minutos or change with another certificate. To avoid this and always run the unit
-        # tests we randonly change the certificate and try to create the journal (connect to AFIP) until there is not token error.
-        journal = False
-        while not journal:
-            try:
-                journal = self.env['account.journal'].create(values)
-                journal.l10n_ar_sync_next_number_with_afip()
-                _logger.info('Using certificate %s for %s company' % (self.env.company.l10n_ar_afip_ws_crt_fname, self.env.company.name))
-                _logger.info('Created journal %s for company %s' % (journal.name, self.env.company.name))
-            except Exception:
-                old = self.env.company.l10n_ar_afip_ws_crt_fname or 'NOT DEFINED'
-                self.env.company.l10n_ar_afip_ws_crt = base64.b64encode(open(get_module_resource('l10n_ar_edi', 'tests', 'test_cert%d.crt' % random.randint(1, 3)), 'rb').read())
-                _logger.log(25, 'Certificate %s already in use. Change to certificate %s for %s company' % (old, self.env.company.l10n_ar_afip_ws_crt_fname, self.env.company.name))
+        journal = self.env['account.journal'].create(values)
+        _logger.info('Created journal %s for company %s' % (journal.name, self.env.company.name))
         return journal
 
     def _create_invoice(self, data=None, invoice_type='out_invoice'):
         data = data or {}
-        with Form(self.env['account.move'].with_context(default_type=invoice_type)) as invoice_form:
+        with Form(self.env['account.move'].with_context(default_move_type=invoice_type)) as invoice_form:
             invoice_form.partner_id = data.pop('partner', self.partner)
             if 'in_' not in invoice_type:
                 invoice_form.journal_id = data.pop('journal', self.journal)
@@ -218,9 +249,7 @@ class TestEdi(SingleTransactionCase):
         data = data or {}
         refund_wizard = self.env['account.move.reversal'].with_context({'active_ids': [invoice.id], 'active_model': 'account.move'}).create({
             'reason': data.get('reason', 'Mercadería defectuosa'),
-            'refund_method': data.get('refund_method', 'refund'),
-            'move_id': invoice.id})
-        refund_wizard._onchange_move_id()
+            'refund_method': data.get('refund_method', 'refund')})
 
         forced_document_type = data.get('document_type')
         if forced_document_type:
@@ -230,12 +259,13 @@ class TestEdi(SingleTransactionCase):
         refund = self.env['account.move'].browse(res['res_id'])
         return refund
 
-    def _create_debit_note(self, document_type, invoice, expected_result='A'):
-        expected_document = self.document_type[document_type]
-        debit_note = self._test_case(document_type, 'product_service', {'document_type': expected_document})
-        debit_note.invoice_origin = invoice.l10n_latam_document_number
-        self.assertEqual(debit_note.l10n_latam_document_type_id.display_name, expected_document.display_name, 'The document should be %s' % expected_document.display_name)
-        self._edi_validate_and_review(debit_note, expected_result=expected_result)
+    def _create_debit_note(self, invoice, data=None):
+        data = data or {}
+        debit_note_wizard = self.env['account.debit.note'].with_context(
+            {'active_ids': [invoice.id], 'active_model': 'account.move', 'default_copy_lines': True}).create({
+                'reason': data.get('reason', 'Mercadería defectuosa')})
+        res = debit_note_wizard.create_debit()
+        debit_note = self.env['account.move'].browse(res['res_id'])
         return debit_note
 
     def _search_tax(self, tax_type):
@@ -254,11 +284,26 @@ class TestEdi(SingleTransactionCase):
         invoice._onchange_partner_id()
         return invoice
 
+    def _post(self, invoice):
+        name = uuid.uuid1().hex
+        self.env.cr.execute('SAVEPOINT "%s"' % name)
+        try:
+            invoice.post()
+        except Exception as error:
+            error_msg = repr(error)
+            if 'Code 500' in error_msg or 'Code 501' in error_msg or 'Code 502' in error_msg:
+                self.env.cr.execute('ROLLBACK TO SAVEPOINT "%s"' % name)
+                self.env.cr.execute('RELEASE SAVEPOINT "%s"' % name)
+                self.skipTest("We receive an internal error from AFIP so skip this test")
+            else:
+                self.env.cr.execute('RELEASE SAVEPOINT "%s"' % name)
+                raise error
+
     def _edi_validate_and_review(self, invoice, expected_result=None, error_msg=None):
         """ Validate electronic invoice and review that the invoice has been proper validated. """
         expected_result = expected_result or 'A'
         error_msg = error_msg or 'This test return a result different from the expteced (%s)' % expected_result
-        invoice.post()
+        self._post(invoice)
 
         self.assertEqual(invoice.state, 'posted', error_msg)
         self.assertEqual(invoice.l10n_ar_afip_auth_mode, 'CAE', error_msg)
@@ -277,9 +322,6 @@ class TestFex(TestEdi):
     @classmethod
     def setUpClass(cls):
         super(TestFex, cls).setUpClass()
-
-        context = dict(cls.env.context, allowed_company_ids=[cls.company_ri.id])
-        cls.env = cls.env(context=context)
 
         cls.partner = cls.partner_ex
         cls.incoterm = cls.env.ref('account.incoterm_EXW')

@@ -14,6 +14,7 @@ class TestMono(common.TestEdi):
         super(TestMono, cls).setUpClass()
         cls.company_mono = cls.env.ref('l10n_ar.company_mono')
         context = dict(cls.env.context, allowed_company_ids=[cls.company_mono.id])
+        cls._create_afip_connections(cls, cls.company_mono)
         cls.env = cls.env(context=context)
 
 
@@ -48,15 +49,15 @@ class TestFE(TestMono):
 
     def test_05_debit_note_c_product(self):
         invoice = self._test_case('invoice_c', 'product')
-        self._create_debit_note('debit_note_c', invoice)
+        self._test_case_debit_note('debit_note_c', invoice)
 
     def test_06_debit_note_c_service(self):
         invoice = self._test_case('invoice_c', 'service')
-        self._create_debit_note('debit_note_c', invoice)
+        self._test_case_debit_note('debit_note_c', invoice)
 
     def test_06_debit_note_c_product_service(self):
         invoice = self._test_case('invoice_c', 'product_service')
-        self._create_debit_note('debit_note_c', invoice)
+        self._test_case_debit_note('debit_note_c', invoice)
 
     def test_07_credit_note_c_product(self):
         invoice = self._test_case('invoice_c', 'product')

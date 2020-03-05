@@ -63,6 +63,7 @@ def _hint_msg(error_code, afipws):
         '18': obs_detail % 'SI EL TIPO DE COMPROBANTE QUE ESTÁ AUTORIZANDO ES MIPYMES (FCE), EL RECEPTOR DEL COMPROBANTE DEBE TENER HABILITADO EL DOMICILIO FISCAL ELECTRONCO',
     })
     data.update({'17;;': data.get('17')})
+    data.update({'11;13': data.get('11') + '\n' + data.get('13')})
 
     # Common errors
     data.update({'reprocess': _('The invoice is trying to be reprocessed'),

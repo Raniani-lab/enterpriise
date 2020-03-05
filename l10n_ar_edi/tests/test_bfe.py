@@ -13,11 +13,6 @@ class TestBfe(common.TestEdi):
     @classmethod
     def setUpClass(cls):
         super(TestBfe, cls).setUpClass()
-
-        # Force user to be loggin in "Reponsable Inscripto" Argentinian Company
-        context = dict(cls.env.context, allowed_company_ids=[cls.company_ri.id])
-        cls.env = cls.env(context=context)
-
         cls.partner = cls.partner_ri
         cls.journal = cls._create_journal(cls, 'wsbfe')
         cls.product_iva_21.l10n_ar_ncm_code = '8421.12.10'

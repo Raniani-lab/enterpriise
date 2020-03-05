@@ -8,11 +8,6 @@ class TestManual(common.TestEdi):
     @classmethod
     def setUpClass(cls):
         super(TestManual, cls).setUpClass()
-
-        # Force user to be loggin in "Reponsable Inscripto" Argentinian Company
-        context = dict(cls.env.context, allowed_company_ids=[cls.company_ri.id])
-        cls.env = cls.env(context=context)
-
         cls.journal = cls._create_journal(cls, 'preprinted')
         cls.partner = cls.partner_ri
 
@@ -28,7 +23,7 @@ class TestManual(common.TestEdi):
         self.assertEqual(invoice.amount_tax, 21, 'invoice taxes are not properly set')
         self.assertEqual(invoice.amount_total, 121.0, 'invoice taxes has not been applied to the total')
         self.assertEqual(invoice.l10n_latam_document_type_id, self.document_type['invoice_a'], 'selected document type should be Factura A')
-        invoice.post()
+        self._post(invoice)
         self.assertEqual(invoice.state, 'posted', 'invoice has not been validate in Odoo')
         self.assertEqual(invoice.name, 'FA-A %05d-00000001' % self.journal.l10n_ar_afip_pos_number, 'Invoice number is wrong')
 

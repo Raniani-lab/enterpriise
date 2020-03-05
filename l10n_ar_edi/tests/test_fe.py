@@ -12,11 +12,6 @@ class TestFe(common.TestEdi):
     @classmethod
     def setUpClass(cls):
         super(TestFe, cls).setUpClass()
-
-        # Force user to be loggin in "Reponsable Inscripto" Argentinian Company
-        context = dict(cls.env.context, allowed_company_ids=[cls.company_ri.id])
-        cls.env = cls.env(context=context)
-
         cls.partner = cls.partner_ri
         cls.journal = cls._create_journal(cls, 'wsfe')
 
@@ -94,7 +89,7 @@ class TestFe(common.TestEdi):
         iibb_tax = self._search_tax('percepcion_iibb')
         iibb_tax.active = True
 
-        product_27 = self.env.ref('l10n_ar.product_product_telefonia_product_template')
+        product_27 = self.env.ref('l10n_ar.product_product_telefonia')
         product_no_gravado = self.env.ref('l10n_ar.product_product_no_gravado')
         product_exento = self.env.ref('l10n_ar.product_product_exento')
 
@@ -127,11 +122,6 @@ class TestVendorBill(common.TestEdi):
     @classmethod
     def setUpClass(cls):
         super(TestVendorBill, cls).setUpClass()
-
-        # Force user to be loggin in "Reponsable Inscripto" Argentinian Company
-        context = dict(cls.env.context, allowed_company_ids=[cls.company_ri.id])
-        cls.env = cls.env(context=context)
-
         cls.partner = cls.partner_ri
         cls.journal = cls._create_journal(cls, 'wsfe')
 
@@ -144,6 +134,7 @@ class TestVendorBill(common.TestEdi):
         # Login in "Monotributista" Company
         context = dict(self.env.context, allowed_company_ids=[mono_company.id])
         self.env = self.env(context=context)
+        self._create_afip_connections(mono_company)
 
         # Create a vendor bill with the same values of "Responsable Inscripto"
         bill = self._create_invoice({

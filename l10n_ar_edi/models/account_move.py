@@ -87,7 +87,7 @@ class AccountMove(models.Model):
         """ After validate the invoice we then validate in AFIP. The last thing we do is request the cae because if an
         error occurs after CAE requested, the invoice has been already validated on AFIP """
         ar_invoices = self.filtered(lambda x: x.is_invoice() and x.company_id.country_id == self.env.ref('base.ar'))
-        sale_ar_invoices = ar_invoices.filtered(lambda x: x.type in ['out_invoice', 'out_refund'])
+        sale_ar_invoices = ar_invoices.filtered(lambda x: x.move_type in ['out_invoice', 'out_refund'])
         sale_ar_edi_invoices = sale_ar_invoices.filtered(lambda x: x.journal_id.l10n_ar_afip_ws)
 
         # Verify only Vendor bills (only when verification is configured as 'required')
@@ -143,7 +143,7 @@ class AccountMove(models.Model):
 
             # get Issuer and Receptor depending on the document type
             issuer, receptor = (inv.commercial_partner_id, inv.company_id.partner_id) \
-                if inv.type in ['in_invoice', 'in_refund'] else (inv.company_id.partner_id, inv.commercial_partner_id)
+                if inv.move_type in ['in_invoice', 'in_refund'] else (inv.company_id.partner_id, inv.commercial_partner_id)
             issuer_vat = issuer.ensure_vat()
 
             receptor_identification_code = receptor.l10n_latam_identification_type_id.l10n_ar_afip_code or '99'
@@ -312,7 +312,7 @@ class AccountMove(models.Model):
         with the post of the bill, if not then will raise an expection that will stop the post.
         """
         verification_missing = self.filtered(
-            lambda x: x.type in ['in_invoice', 'in_refund'] and x.l10n_ar_afip_verification_type == 'required' and
+            lambda x: x.move_type in ['in_invoice', 'in_refund'] and x.l10n_ar_afip_verification_type == 'required' and
             x.l10n_latam_document_type_id.country_id == self.env.ref('base.ar') and
             x.l10n_ar_afip_verification_result not in ['A', 'O'])
         try:
@@ -680,3 +680,12 @@ class AccountMove(models.Model):
                 ArrayOfOpcional = client.get_type('ns0:ArrayOfOpcional')
                 res.update({'Opcionales': ArrayOfOpcional(optionals)})
         return res
+
+    def _get_starting_sequence(self):
+        """ If journal is an electronic type will consult last number in AFIP and create the sequence from there """
+        if self.journal_id.l10n_latam_use_documents and self.env.company.country_id == self.env.ref('base.ar') and self.journal_id.l10n_ar_afip_ws:
+            if self.l10n_latam_document_type_id:
+                last_number = self.journal_id._l10n_ar_get_afip_last_invoice_number(self.l10n_latam_document_type_id)
+                return "%s %05d-%08d" % (self.l10n_latam_document_type_id.doc_code_prefix, self.journal_id.l10n_ar_afip_pos_number, last_number)
+            return ""
+        return super()._get_starting_sequence()

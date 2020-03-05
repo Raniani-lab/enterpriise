@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0+e\n"
+"Project-Id-Version: Odoo Server 13.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-14 13:24+0000\n"
-"PO-Revision-Date: 2020-02-14 13:24+0000\n"
+"POT-Creation-Date: 2020-03-30 18:35+0000\n"
+"PO-Revision-Date: 2020-03-30 18:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -171,7 +171,6 @@ msgid "AFIP Help Page"
 msgstr "Página de Ayuda AFIP"
 
 #. module: l10n_ar_edi
-#: model:ir.model.fields,field_description:l10n_ar_edi.field_account_move__l10n_ar_afip_verification_type
 #: model:ir.model.fields,field_description:l10n_ar_edi.field_res_company__l10n_ar_afip_verification_type
 #: model:ir.model.fields,field_description:l10n_ar_edi.field_res_config_settings__l10n_ar_afip_verification_type
 msgid "AFIP Invoice Verification"
@@ -334,6 +333,7 @@ msgid "Authorization Code"
 msgstr "Cídigo de autorización"
 
 #. module: l10n_ar_edi
+#: model:ir.model.fields.selection,name:l10n_ar_edi.selection__account_move__l10n_ar_afip_verification_type__available
 #: model:ir.model.fields.selection,name:l10n_ar_edi.selection__res_company__l10n_ar_afip_verification_type__available
 msgid "Available"
 msgstr "Disponible"
@@ -461,18 +461,6 @@ msgstr ""
 #: model:ir.ui.menu,name:l10n_ar_edi.menu_l10n_ar_afip_ws_consult
 msgid "Consult invoice in AFIP"
 msgstr "Consultar factura en AFIP"
-
-#. module: l10n_ar_edi
-#: code:addons/l10n_ar_edi/models/account_journal.py:0
-#, python-format
-msgid "Could not synchronize next number with the AFIP last numbers %s"
-msgstr ""
-"No pudimos sincronizar el próximo número con los últimos números en AFIP %s"
-
-#. module: l10n_ar_edi
-#: model:ir.model.fields,field_description:l10n_ar_edi.field_res_config_settings__l10n_ar_country_code
-msgid "Country Code"
-msgstr "Código País"
 
 #. module: l10n_ar_edi
 #: model:ir.model.fields,field_description:l10n_ar_edi.field_l10n_ar_afip_ws_consult__create_uid
@@ -679,7 +667,7 @@ msgstr "Como obtener un certificado para producción?"
 #: model:ir.model.fields,field_description:l10n_ar_edi.field_l10n_ar_afip_ws_consult__id
 #: model:ir.model.fields,field_description:l10n_ar_edi.field_l10n_ar_afipws_connection__id
 msgid "ID"
-msgstr ""
+msgstr "ID (identificación)"
 
 #. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/afip_errors.py:0
@@ -747,7 +735,6 @@ msgstr ""
 "anulación\""
 
 #. module: l10n_ar_edi
-#: model:ir.model.fields,help:l10n_ar_edi.field_account_move__l10n_ar_afip_verification_type
 #: model:ir.model.fields,help:l10n_ar_edi.field_res_company__l10n_ar_afip_verification_type
 #: model:ir.model.fields,help:l10n_ar_edi.field_res_config_settings__l10n_ar_afip_verification_type
 msgid ""
@@ -803,6 +790,11 @@ msgstr "Diario"
 #: model:ir.model,name:l10n_ar_edi.model_account_move
 msgid "Journal Entries"
 msgstr "Asientos contables"
+
+#. module: l10n_ar_edi
+#: model:ir.model.fields,field_description:l10n_ar_edi.field_account_move__l10n_ar_afip_verification_type
+msgid "L10N Ar Afip Verification Type"
+msgstr ""
 
 #. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/res_currency.py:0
@@ -885,6 +877,7 @@ msgid "No rate for ARS (is the base currency for AFIP)"
 msgstr "No hay cotización para PESOS (es la moneda base para AFIP)"
 
 #. module: l10n_ar_edi
+#: model:ir.model.fields.selection,name:l10n_ar_edi.selection__account_move__l10n_ar_afip_verification_type__not_available
 #: model:ir.model.fields.selection,name:l10n_ar_edi.selection__res_company__l10n_ar_afip_verification_type__not_available
 msgid "Not Available"
 msgstr "No Disponible"
@@ -967,6 +960,7 @@ msgid "Rejected"
 msgstr "Rechazado"
 
 #. module: l10n_ar_edi
+#: model:ir.model.fields.selection,name:l10n_ar_edi.selection__account_move__l10n_ar_afip_verification_type__required
 #: model:ir.model.fields.selection,name:l10n_ar_edi.selection__res_company__l10n_ar_afip_verification_type__required
 msgid "Required"
 msgstr "Requerido"
@@ -1013,11 +1007,6 @@ msgid "Specific Invoice Number"
 msgstr "Número de Factura específico"
 
 #. module: l10n_ar_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ar_edi.view_account_journal_form
-msgid "Sync documents next number in Odoo against last numbers in AFIP"
-msgstr "Sincronizar el próximo número en Odoo con los últimos numeros en AFIP"
-
-#. module: l10n_ar_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ar_edi.report_invoice_document
 msgid ""
 "THE PURCHASER ASSUMES THE COMMITMENT, IN THE NATURE OF AN AFFECTED "
@@ -1053,15 +1042,6 @@ msgstr "El certificado AFIP esta expirado, por favor renovarlo para continuar"
 #: model:ir.model.fields,help:l10n_ar_edi.field_account_move__l10n_ar_afip_auth_code_due
 msgid "The Due Date of the Invoice given by AFIP"
 msgstr "La Fecha de Vencimiento de la factura dada por AFIP"
-
-#. module: l10n_ar_edi
-#: model:ir.model.fields,help:l10n_ar_edi.field_res_config_settings__l10n_ar_country_code
-msgid ""
-"The ISO country code in two chars. \n"
-"You can use this field for quick search."
-msgstr ""
-"El código ISO de aís es de dos caracteres. \n"
-"Puedes usar este campo para búsqueda rápida."
 
 #. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/afip_errors.py:0
@@ -1293,18 +1273,6 @@ msgid "Unique ID"
 msgstr "ID Único"
 
 #. module: l10n_ar_edi
-#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
-#, python-format
-msgid ""
-"Unknown error.\n"
-"X509 return this message:\n"
-" %s"
-msgstr ""
-"Error desconocido.\n"
-"X509 retorna este mensaje:\n"
-" %s"
-
-#. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/l10n_ar_afipws_connection.py:0
 #, python-format
 msgid "Verification of Invoices (WSCDC)"
@@ -1314,17 +1282,6 @@ msgstr "Verificación de Facturas (WSCDC)"
 #: model_terms:ir.ui.view,arch_db:l10n_ar_edi.res_config_settings_view_form
 msgid "Verify Vendor Bills validity in AFIP"
 msgstr "Verificar la validez de las facturas de proveedor en AFIP"
-
-#. module: l10n_ar_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ar_edi.view_account_journal_form
-msgid ""
-"Warning! This is normally used only when you start to use Odoo to sync the "
-"last numbers of each document. It shouldn't be needed to use it again. "
-"Please double check before confirming."
-msgstr ""
-"¡Cuidado! Esto es normalmente usado cuando comienzas a usar Odoo para "
-"sincronizar los últimos números de cada documento. No sería necesario usarlo"
-" nuevamente. Por favor revise antes de confirmar."
 
 #. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/account_move.py:0
@@ -1490,11 +1447,6 @@ msgstr "⇒ Configurar otro certificado de demo"
 #: model_terms:ir.ui.view,arch_db:l10n_ar_edi.view_currency_form
 msgid "⇒ Show latest AFIP Rate"
 msgstr "⇒ Mostrar Última Tasa AFIP"
-
-#. module: l10n_ar_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ar_edi.view_account_journal_form
-msgid "⇒ Sync Next Numbers with AFIP"
-msgstr "⇒ Sincronizar los próximos números con AFIP"
 
 #. module: l10n_ar_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ar_edi.view_move_form

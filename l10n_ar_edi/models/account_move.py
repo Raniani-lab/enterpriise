@@ -45,7 +45,9 @@ class AccountMove(models.Model):
     l10n_ar_afip_ws = fields.Selection(related="journal_id.l10n_ar_afip_ws")
 
     # fields used to check invoice is valid on AFIP
-    l10n_ar_afip_verification_type = fields.Selection(related='company_id.l10n_ar_afip_verification_type')
+    l10n_ar_afip_verification_type = fields.Selection(
+        [('not_available', 'Not Available'), ('available', 'Available'), ('required', 'Required')],
+        compute='_compute_l10n_ar_afip_verification_type')
     l10n_ar_afip_verification_result = fields.Selection([('A', 'Approved'), ('O', 'Observed'), ('R', 'Rejected')], string='AFIP Verification result', copy=False,
         readonly=True)
 
@@ -66,6 +68,18 @@ class AccountMove(models.Model):
                 barcode = ''.join([str(rec.company_id.partner_id.l10n_ar_vat), "%03d" % int(rec.l10n_latam_document_type_id.code),
                                    "%54d" % rec.journal_id.l10n_ar_afip_pos_number, rec.l10n_ar_afip_auth_code, cae_due])
             rec.l10n_ar_afip_barcode = barcode
+
+    @api.depends('l10n_latam_document_type_id', 'company_id')
+    def _compute_l10n_ar_afip_verification_type(self):
+        """ Method that generates the barcode with the electronic invoice info """
+        verify_codes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "15", "19", "20", "21",
+                        "49", "51", "52", "53", "54", "60", "61", "63", "64"]
+        available_to_verify = self.filtered(
+            lambda x: x.l10n_latam_document_type_id and x.l10n_latam_document_type_id.code in verify_codes)
+        for rec in available_to_verify:
+            rec.l10n_ar_afip_verification_type = rec.company_id.l10n_ar_afip_verification_type
+        remaining = self - available_to_verify
+        remaining.l10n_ar_afip_verification_type = 'not_available'
 
     # Buttons
 
@@ -297,12 +311,10 @@ class AccountMove(models.Model):
         If the invoice is sucessfully verified in AFIP (result is Approved or Observations) then will let to continue
         with the post of the bill, if not then will raise an expection that will stop the post.
         """
-        verify_codes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "15", "19", "20", "21",
-                        "49", "51", "52", "53", "54", "60", "61", "63", "64"]
         verification_missing = self.filtered(
             lambda x: x.type in ['in_invoice', 'in_refund'] and x.l10n_ar_afip_verification_type == 'required' and
             x.l10n_latam_document_type_id.country_id == self.env.ref('base.ar') and
-            (x.l10n_latam_document_type_id and x.l10n_latam_document_type_id.code in verify_codes) and x.l10n_ar_afip_verification_result not in ['A', 'O'])
+            x.l10n_ar_afip_verification_result not in ['A', 'O'])
         try:
             verification_missing.l10n_ar_verify_on_afip()
         except Exception as error:

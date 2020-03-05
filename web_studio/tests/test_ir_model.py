@@ -18,6 +18,19 @@ class TestStudioIrModel(SavepointCase):
             'name': 'Elon Tusk',  # 🐗
             'email': 'elon@spacex.com',
         })
+        # custom m2m field between two models which don't have one yet
+        cls.source_model = cls.env["ir.model"].search([("model", "=", "res.currency")])
+        cls.destination_model = cls.env["ir.model"].search(
+            [("model", "=", "res.country.state")]
+        )
+        cls.m2m = cls.env["ir.model.fields"].create(
+            {
+                "ttype": "many2many",
+                "model_id": cls.source_model.id,
+                "relation": cls.destination_model.model,
+                "name": "x_state_ids",
+            }
+        )
 
     
     def test_00_model_creation(self):
@@ -86,7 +99,7 @@ class TestStudioIrModel(SavepointCase):
         self.assertTrue(resp_field.tracking, 'the x_studio_user_id field should be tracked')
 
     def test_05_model_option_partner(self):
-        """Test that the `responsible` behaviour is set up correctly."""
+        """Test that the `partner` behaviour is set up correctly."""
         model_options = ['use_partner', 'use_mail']
         (model, extra_models) = self.env['ir.model'].studio_model_create('Rockets', options=model_options)
         self.assertEqual(len(extra_models), 0, 'no extra model should have been created')
@@ -116,7 +129,7 @@ class TestStudioIrModel(SavepointCase):
         self.assertEqual(default, main_company.id, 'the default value for the x_studio_company_id should be set')
         new_company = self.env['res.company'].create({'name': 'SpaceY'})
         new_default = self.env['ir.default'].get(model.model, 'x_studio_company_id', company_id=new_company.id)
-        self.assertEqual(new_default, new_company.id, 'default values for new companies should be create with the company')
+        self.assertEqual(new_default, new_company.id, 'default values for new companies should be created with the company')
 
     def test_07_model_option_notes(self):
         """Test that the `notes` behaviour is set up correctly."""
@@ -124,7 +137,7 @@ class TestStudioIrModel(SavepointCase):
         (model, extra_models) = self.env['ir.model'].studio_model_create('Rockets', options=model_options)
         self.assertEqual(len(extra_models), 0, 'no extra model should have been created')
         fields = self.env[model.model]._fields
-        self.assertIn('x_studio_notes', fields, 'a custom company field should be set up')
+        self.assertIn('x_studio_notes', fields, 'a custom notes field should be set up')
 
     def test_08_model_option_date(self):
         """Test that the `date` behaviour is set up correctly."""
@@ -137,7 +150,7 @@ class TestStudioIrModel(SavepointCase):
         self.assertFalse(date_field.tracking, 'the x_studio_date field should not be tracked')
 
     def test_09_model_option_double_dates(self):
-        """Test that the `date` behaviour is set up correctly."""
+        """Test that the `double date` behaviour is set up correctly."""
         model_options = ['use_double_dates', 'use_mail']
         (model, extra_models) = self.env['ir.model'].studio_model_create('Rockets', options=model_options)
         self.assertEqual(len(extra_models), 0, 'no extra model should have been created')
@@ -226,7 +239,6 @@ class TestStudioIrModel(SavepointCase):
         self.assertTrue(acl_user.perm_write, 'user should have write access on custom models')
         self.assertTrue(acl_user.perm_create, 'user should have create access on custom models')
         self.assertFalse(acl_user.perm_unlink, 'user should not have unlink access on custom models')
-
 
     def test_16_next_relation(self):
         """Check that creating the same m2m will result in a new relation table."""

@@ -37,7 +37,5 @@ class ResCompany(models.Model):
                     (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
                     (0, 0, {'name': 'Friday Afternoon', 'dayofweek': '4', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'})
                 ],
-                'hours_per_day': 7.6,
-                'full_time_required_hours': 38.0,
             }).id
         super(ResCompany, self - be_companies)._create_resource_calendar()

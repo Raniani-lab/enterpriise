@@ -19,10 +19,13 @@ class HrWorkEntry(models.Model):
     contract_id = fields.Many2one('hr.contract', string="Contract", required=True)
     employee_id = fields.Many2one(domain=[('contract_ids.state', 'in', ('open', 'pending'))])
 
+    def _get_duration_is_valid(self):
+        return self.work_entry_type_id and self.work_entry_type_id.is_leave
+
     def _get_duration(self, date_start, date_stop):
         if not date_start or not date_stop:
             return 0
-        if self.work_entry_type_id and self.work_entry_type_id.is_leave:
+        if self._get_duration_is_valid():
             calendar = self.contract_id.resource_calendar_id
             contract_data = self.contract_id.employee_id._get_work_days_data(date_start, date_stop, compute_leaves=False, calendar=calendar)
             return contract_data.get('hours', 0)
@@ -54,13 +57,16 @@ class HrWorkEntry(models.Model):
         outside_calendar = self._mark_leaves_outside_schedule()
         return res or outside_calendar
 
+    def _get_leaves_entries_outside_schedule(self):
+        return self.filtered(lambda w: w.work_entry_type_id.is_leave and w.state not in ('validated', 'cancelled'))
+
     def _mark_leaves_outside_schedule(self):
         """
         Check leave work entries in `self` which are completely outside
         the contract's theoretical calendar schedule. Mark them as conflicting.
         :return: leave work entries completely outside the contract's calendar
         """
-        work_entries = self.filtered(lambda w: w.work_entry_type_id.is_leave and w.state not in ('validated', 'cancelled'))
+        work_entries = self._get_leaves_entries_outside_schedule()
         entries_by_calendar = defaultdict(lambda: self.env['hr.work.entry'])
         for work_entry in work_entries:
             calendar = work_entry.contract_id.resource_calendar_id

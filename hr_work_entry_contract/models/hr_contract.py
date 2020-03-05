@@ -26,7 +26,7 @@ class HrContract(models.Model):
     def _get_more_vals_leave(self, leave):
         return []
 
-    def _get_contract_work_entries_values(self, date_start, date_stop, default_work_entry_type):
+    def _get_contract_presence_entries_values(self, date_start, date_stop, default_work_entry_type):
         contract_vals = []
         employee = self.employee_id
         calendar = self.resource_calendar_id
@@ -82,16 +82,20 @@ class HrContract(models.Model):
             ] + self._get_more_vals_leave(leave))]
         return contract_vals
 
+    def _get_contract_work_entries_values(self, date_start, date_stop):
+        self.ensure_one()
+        contract_vals = self._get_contract_presence_entries_values(date_start, date_stop, self._get_default_work_entry_type())
+        contract_vals += self._get_contract_leave_entries_values(date_start, date_stop)
+        return contract_vals
+
     def _get_work_entries_values(self, date_start, date_stop):
         """
         Generate a work_entries list between date_start and date_stop for one contract.
         :return: list of dictionnary.
         """
         vals_list = []
-
         for contract in self:
-            contract_vals = contract._get_contract_work_entries_values(date_start, date_stop, contract._get_default_work_entry_type())
-            contract_vals += contract._get_contract_leave_entries_values(date_start, date_stop)
+            contract_vals = contract._get_contract_work_entries_values(date_start, date_stop)
 
             # If we generate work_entries which exceeds date_start or date_stop, we change boundaries on contract
             if contract_vals:
@@ -119,7 +123,6 @@ class HrContract(models.Model):
             contract_stop = datetime.combine(fields.Datetime.to_datetime(contract.date_end or datetime.max.date()), datetime.max.time())
             last_generated_from = min(contract.date_generated_from, contract_stop)
             date_start_work_entries = max(date_start, contract_start)
-
             if last_generated_from > date_start_work_entries:
                 contract.date_generated_from = date_start_work_entries
                 vals_list.extend(contract._get_work_entries_values(date_start_work_entries, last_generated_from))

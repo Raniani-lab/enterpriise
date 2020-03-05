@@ -7,7 +7,7 @@ from datetime import timedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
-WORK_RATE = [('0.5', '1/2'), ('0.8', '4/5'), ('0.9', '9/10')]
+WORK_RATE = [('0', 'Set To Full Time'), ('0.5', '1/2'), ('0.8', '4/5'), ('0.9', '9/10')]
 
 class L10nBeHrPayrollCreditTime(models.TransientModel):
     _name = 'l10n_be.hr.payroll.credit.time.wizard'
@@ -27,15 +27,19 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
     resource_calendar_id = fields.Many2one(
         'resource.calendar', 'New Working Schedule', required=True,
         default=lambda self: self.env.company.resource_calendar_id.id)
-    wage = fields.Monetary('New Wage', digits=(16, 2), required=True, help="Employee's monthly gross wage in credit time.")
+    wage = fields.Monetary(
+        compute='_compute_wage', store=True, readonly=False,
+        string='New Wage', digits=(16, 2), required=True,
+        help="Employee's monthly gross wage in credit time.")
     currency_id = fields.Many2one(string="Currency", related='contract_id.company_id.currency_id', readonly=True)
 
     work_time = fields.Selection(WORK_RATE, string='Work Time Rate',
         required=True, help='Work time rate versus full time working schedule.')
 
-    @api.onchange('work_time')
-    def _onchange_work_time(self):
-        self.wage = self.contract_id.wage_with_holidays * float(self.work_time)
+    @api.depends('work_time')
+    def _compute_wage(self):
+        for wizard in self:
+            wizard.wage = wizard.contract_id.wage_with_holidays * float(wizard.work_time)
 
     def validate_credit_time(self):
         if self.date_start > self.date_end:
@@ -51,6 +55,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
             'date_end': self.date_end,
             'wage_with_holidays': self.wage,
             'resource_calendar_id': self.resource_calendar_id.id,
+            'standard_calendar_id': self.contract_id.resource_calendar_id.id,
             'time_credit' : True,
             'work_time_rate' : self.work_time,
             'state': 'draft',
@@ -110,7 +115,7 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
             'resource_calendar_id': self.resource_calendar_id.id,
             'time_credit' : False,
             'state': 'draft',
-            })
+        })
 
         return {
             'name': _('Full time contract'),

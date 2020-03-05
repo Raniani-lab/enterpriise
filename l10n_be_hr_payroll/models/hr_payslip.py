@@ -43,6 +43,12 @@ class Payslip(models.Model):
             self.update({'input_line_ids': input_line_vals})
         return res
 
+    @api.depends('worked_days_line_ids.number_of_hours', 'worked_days_line_ids.is_paid', 'worked_days_line_ids.is_credit_time')
+    def _compute_worked_hours(self):
+        super()._compute_worked_hours()
+        for payslip in self:
+            payslip.sum_worked_hours -= sum([line.number_of_hours for line in payslip.worked_days_line_ids if line.is_credit_time])
+
     @api.depends(
         'contract_id.attachment_salary_ids.date_from', 'contract_id.attachment_salary_ids.date_from',
         'date_from', 'date_to')
@@ -66,8 +72,45 @@ class Payslip(models.Model):
                 ('day', '<=', max(self.mapped('date_to'))),
                 ('day', '>=', min(self.mapped('date_from')))])
             for payslip in self:
+                date_from = max(payslip.date_from, payslip.contract_id.date_start)
+                date_to = min(payslip.date_to, payslip.contract_id.date_end or payslip.date_to)
                 payslip.meal_voucher_count = len(vouchers.filtered(
-                    lambda v: payslip.date_from <= v.day <= payslip.date_to and payslip.employee_id == v.employee_id))
+                    lambda v: date_from <= v.day <= date_to and payslip.employee_id == v.employee_id))
+
+    def _get_worked_day_lines_hours_per_day(self):
+        self.ensure_one()
+        if self.contract_id.time_credit:
+            return self.contract_id.standard_calendar_id.hours_per_day
+        return super()._get_worked_day_lines_hours_per_day()
+
+    def _get_credit_time_lines(self):
+        lines_vals = self._get_worked_day_lines(domain=[('is_credit_time', '=', True)], check_out_of_contract=False)
+        for line_vals in lines_vals:
+            line_vals['is_credit_time'] = True
+        return lines_vals
+
+    def _get_out_of_contract_calendar(self):
+        self.ensure_one()
+        if self.contract_id.time_credit:
+            return self.contract_id.standard_calendar_id
+        return super()._get_out_of_contract_calendar()
+
+    def _get_new_worked_days_lines(self):
+        if not self.contract_id.time_credit:
+            return super()._get_new_worked_days_lines()
+        if self.struct_id.use_worked_day_lines:
+            worked_days_lines = self.env['hr.payslip.worked_days']
+            worked_days_line_values = self._get_worked_day_lines(domain=[('is_credit_time', '=', False)])
+            for vals in worked_days_line_values:
+                vals['is_credit_time'] = False
+            credit_time_line_values = self._get_credit_time_lines()
+            for r in worked_days_line_values + credit_time_line_values:
+                r['payslip_id'] = self.id
+                worked_days_lines |= worked_days_lines.new(r)
+            return worked_days_lines
+        else:
+            return [(5, False, False)]
+
 
     def _get_base_local_dict(self):
         res = super()._get_base_local_dict()
@@ -154,14 +197,14 @@ class Payslip(models.Model):
         self.ensure_one()
         contract = self.contract_id
         hours_per_day = (self.contract_id.resource_calendar_id or self.employee_id.resource_calendar_id).hours_per_day
-        mapped_data = contract._get_work_hours(self.date_from, self.date_to)
-        unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
+        mapped_data = {wd.work_entry_type_id.id: wd.number_of_hours for wd in self.worked_days_line_ids}
+        unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids + self.env.ref('hr_payroll.hr_work_entry_type_out_of_contract')
         unpaid_hours = sum(mapped_data.get(entry_type.id, 0) for entry_type in unpaid_work_entry_types)
-        unpaid_days = unpaid_hours / hours_per_day
+        unpaid_days = unpaid_hours / hours_per_day if hours_per_day else 0
         paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
         paid_hours = sum(mapped_data.get(entry_type.id, 0) for entry_type in paid_work_entry_types)
-        paid_days = paid_hours / hours_per_day
-        return paid_days / (paid_days + unpaid_days)
+        paid_days = paid_hours / hours_per_day if hours_per_day else 0
+        return paid_days / (paid_days + unpaid_days) if paid_days + unpaid_days else 0
 
 def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 
@@ -256,6 +299,8 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 def compute_special_social_cotisations(payslip, categories, worked_days, inputs):
     employee = payslip.contract_id.employee_id
     wage = categories.BASIC
+    if not wage:
+        return 0
     if employee.resident_bool:
         result = 0.0
     elif employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status=='without income'):
@@ -308,8 +353,11 @@ def compute_employment_bonus_employees(payslip, categories, worked_days, inputs)
     if payslip.worked_days_line_ids:
         rc = payslip.contract_id.resource_calendar_id
         worked_hours = sum(payslip.worked_days_line_ids.mapped('number_of_hours'))
-        full_time_hours = sum(payslip.worked_days_line_ids.mapped('number_of_days')) * rc.full_time_required_hours / (rc.full_time_required_hours / rc.hours_per_day)
-        ratio = worked_hours / full_time_hours
+        if not rc.full_time_required_hours or not rc.hours_per_day:
+            ratio = 0
+        else:
+            full_time_hours = sum(payslip.worked_days_line_ids.mapped('number_of_days')) * rc.full_time_required_hours / (rc.full_time_required_hours / rc.hours_per_day)
+            ratio = worked_hours / full_time_hours
 
     salary = categories.BRUT * ratio
 
@@ -318,6 +366,8 @@ def compute_employment_bonus_employees(payslip, categories, worked_days, inputs)
     elif salary <= payslip.rule_parameter('work_bonus_reference_wage_high'):
         coeff = payslip.rule_parameter('work_bonus_coeff')
         result = bonus_basic_amount - (coeff * (salary - wage_lower_bound))
+    else:
+        return -categories.ONSS * ratio
     return min(result, -categories.ONSS) * ratio
 
 def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, inputs):

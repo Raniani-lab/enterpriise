@@ -1,10 +1,12 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import pytz
+
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
-
+from odoo.osv import expression
 from odoo.exceptions import ValidationError
 
 EMPLOYER_ONSS = 0.2714
@@ -76,8 +78,14 @@ class HrContract(models.Model):
     ip = fields.Boolean(default=False, tracking=True)
     ip_wage_rate = fields.Float(string="IP percentage", help="Should be between 0 and 100 %")
     time_credit = fields.Boolean('Credit time', readonly=True, help='This is a credit time contract.')
-    work_time_rate = fields.Selection([('0.5', '1/2'), ('0.8', '4/5'), ('0.9', '9/10')], string='Work time rate',
-        readonly=True, help='Work time rate versus full time working schedule.')
+    work_time_rate = fields.Selection([
+        ('0', 'Set To Full Time'),
+        ('0.5', '1/2'),
+        ('0.8', '4/5'),
+        ('0.9', '9/10')
+        ], string='Work time rate', readonly=True,
+        help='Work time rate versus full time working schedule.')
+    standard_calendar_id = fields.Many2one('resource.calendar', default=lambda self: self.env.company.resource_calendar_id)
     fiscal_voluntarism = fields.Boolean(
         string="Fiscal Voluntarism", default=False, tracking=True,
         help="Voluntarily increase withholding tax rate.")
@@ -258,3 +266,47 @@ class HrContract(models.Model):
                 user_id=contract.hr_responsible_id.id)
 
         return super(HrContract, self).update_state()
+
+    def _get_contract_credit_time_values(self, date_start, date_stop):
+        self.ensure_one()
+        contract_vals = []
+        if not self.time_credit:
+            return contract_vals
+
+        employee = self.employee_id
+        resource = employee.resource_id
+        calendar = self.resource_calendar_id
+        standard_calendar = self.standard_calendar_id
+
+        standard_attendances = standard_calendar._work_intervals(
+            pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
+            pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
+            resource=resource)
+
+        attendances = calendar._work_intervals(
+            pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
+            pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
+            resource=resource)
+
+        credit_time_intervals = standard_attendances - attendances
+
+        for interval in credit_time_intervals:
+            work_entry_type_id = self.structure_type_id.time_credit_type_id
+            contract_vals += [{
+                'name': "%s: %s" % (work_entry_type_id.name, employee.name),
+                'date_start': interval[0].astimezone(pytz.utc).replace(tzinfo=None),
+                'date_stop': interval[1].astimezone(pytz.utc).replace(tzinfo=None),
+                'work_entry_type_id': work_entry_type_id.id,
+                'is_credit_time': True,
+                'employee_id': employee.id,
+                'contract_id': self.id,
+                'company_id': self.company_id.id,
+                'state': 'draft',
+            }]
+        return contract_vals
+
+    def _get_contract_work_entries_values(self, date_start, date_stop):
+        self.ensure_one()
+        contract_vals = super()._get_contract_work_entries_values(date_start, date_stop)
+        contract_vals += self._get_contract_credit_time_values(date_start, date_stop)
+        return contract_vals

@@ -26,8 +26,12 @@ class TestPayslipMultiContract(TestPayslipContractBase):
             'struct_id': self.developer_pay_structure.id,
         })
         payslip._onchange_employee()
-        self.assertEqual(payslip.worked_days_line_ids.number_of_hours, 80, "It should be 80 hours of work this month for this contract")
-        self.assertEqual(payslip.worked_days_line_ids.number_of_days, 10, "It should be 10 days of work this month for this contract")
+        attendance_line = payslip.worked_days_line_ids[0] 
+        self.assertEqual(attendance_line.number_of_hours, 80)
+        self.assertEqual(attendance_line.number_of_days, 10)
+        out_of_contract_line = payslip.worked_days_line_ids[1] 
+        self.assertEqual(out_of_contract_line.number_of_hours, 88)
+        self.assertEqual(out_of_contract_line.number_of_days, 11)
 
         # Second contract: 35h, end of the month
         payslip = self.env['hr.payslip'].create({
@@ -39,5 +43,9 @@ class TestPayslipMultiContract(TestPayslipContractBase):
             'struct_id': self.developer_pay_structure.id,
         })
         payslip._onchange_employee()
-        self.assertEqual(payslip.worked_days_line_ids.number_of_hours, 77, "It should be 77 hours of work this month for this contract")
-        self.assertEqual(payslip.worked_days_line_ids.number_of_days, 11, "It should be 11 days of work this month for this contract")
+        attendance_line = payslip.worked_days_line_ids[0]
+        self.assertEqual(attendance_line.number_of_hours, 77)
+        self.assertEqual(attendance_line.number_of_days, 11)
+        out_of_contract_line = payslip.worked_days_line_ids[1]
+        self.assertEqual(out_of_contract_line.number_of_hours, 70)
+        self.assertEqual(out_of_contract_line.number_of_days, 10)

@@ -29,7 +29,12 @@
             <field name="condition_select">python</field>
             <field name="condition_python">result = bool(contract.internet)</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = 5.0</field>
+            <field name="amount_python_compute">
+if not categories.BASIC:
+    result = 0
+else:
+    result = 5.0
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
@@ -42,9 +47,11 @@
             <field name="condition_python">result = bool(contract.mobile)</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if contract.mobile and not contract.internet:
+if not categories.BASIC:
+    result = 0
+elif contract.mobile and not contract.internet:
     result = 4.0 + 5.0
-if contract.mobile and contract.internet:
+elif contract.mobile and contract.internet:
     result = 4.0
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
@@ -58,7 +65,12 @@ if contract.mobile and contract.internet:
             <field name="condition_select">python</field>
             <field name="condition_python">result = bool(contract.has_laptop)</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = 7.0</field>
+            <field name="amount_python_compute">
+if not categories.BASIC:
+    result = 0
+else:
+    result = 7.0
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
@@ -71,12 +83,13 @@ if contract.mobile and contract.internet:
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
 result = categories.BASIC
-if contract.internet:
-    result += 5.0
-if contract.mobile and not contract.internet:
-    result += 4.0 + 5.0
-if contract.mobile and contract.internet:
-    result += 4.0
+if categories.BASIC:
+    if contract.internet:
+        result += 5.0
+    if contract.mobile and not contract.internet:
+        result += 4.0 + 5.0
+    if contract.mobile and contract.internet:
+        result += 4.0
             </field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
@@ -127,7 +140,12 @@ if contract.mobile and contract.internet:
             <field name="condition_select">python</field>
             <field name="condition_python">result = bool(contract.transport_mode_car and contract.car_atn)</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = contract.car_atn</field>
+            <field name="amount_python_compute">
+if not categories.BASIC:
+    result = 0
+else:
+    result = contract.car_atn
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
@@ -195,7 +213,12 @@ if contract.mobile and contract.internet:
             <field name="condition_select">python</field>
             <field name="condition_python">result = bool(contract.transport_mode_car and contract.car_atn)</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = -contract.car_atn</field>
+            <field name="amount_python_compute">
+if not categories.BASIC:
+    result = 0
+else:
+    result = -contract.car_atn
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
@@ -207,7 +230,12 @@ if contract.mobile and contract.internet:
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.internet</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = -5.0</field>
+            <field name="amount_python_compute">
+if not categories.BASIC:
+    result = 0
+else:
+    result = -5.0
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
@@ -219,7 +247,12 @@ if contract.mobile and contract.internet:
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.has_laptop</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = -7.0</field>
+            <field name="amount_python_compute">
+if not categories.BASIC:
+    result = 0
+else:
+    result = -7.0
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
@@ -260,9 +293,11 @@ if contract.mobile and contract.internet:
             <field name="condition_python">result = contract.mobile</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if contract.mobile and not contract.internet:
+if not categories.BASIC:
+    result = 0
+elif contract.mobile and not contract.internet:
     result = -4.0 - 5.0
-if contract.mobile and contract.internet:
+elif contract.mobile and contract.internet:
     result = -4.0
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
@@ -276,7 +311,12 @@ if contract.mobile and contract.internet:
             <field name="sequence">169</field>
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.transport_mode_public or contract.transport_mode_train</field>
-            <field name="amount_python_compute">result = contract.public_transport_reimbursed_amount + contract.train_transport_reimbursed_amount</field>
+            <field name="amount_python_compute">
+if not categories.BASIC:
+    result = 0
+else:
+    result = contract.public_transport_reimbursed_amount + contract.train_transport_reimbursed_amount
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
@@ -288,7 +328,12 @@ if contract.mobile and contract.internet:
             <field name="sequence">170</field>
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.transport_mode_private_car</field>
-            <field name="amount_python_compute">result = contract.private_car_reimbursed_amount</field>
+            <field name="amount_python_compute">
+if not categories.BASIC:
+    result = 0
+else:
+    result = contract.private_car_reimbursed_amount
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
@@ -300,7 +345,12 @@ if contract.mobile and contract.internet:
             <field name="sequence">171</field>
             <field name="condition_select">python</field>
             <field name="condition_python">result = bool(contract.representation_fees)</field>
-            <field name="amount_python_compute">result = contract.representation_fees</field>
+            <field name="amount_python_compute">
+if not categories.BASIC:
+    result = 0
+else:
+    result = contract.representation_fees
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 

@@ -14,3 +14,17 @@ class HrWorkEntryType(models.Model):
     leave_right = fields.Boolean(
         string="Keep Time Off Right", default=False,
         help="Work entries counts for time off right for next year.")
+
+
+class HrWorkEntry(models.Model):
+    _inherit = 'hr.work.entry'
+
+    is_credit_time = fields.Boolean(
+        string='Credit time', readonly=True,
+        help="This is a credit time work entry.")
+
+    def _get_leaves_entries_outside_schedule(self):
+        return super()._get_leaves_entries_outside_schedule().filtered(lambda w: not w.is_credit_time)
+
+    def _get_duration_is_valid(self):
+        return super()._get_duration_is_valid() and not self.is_credit_time

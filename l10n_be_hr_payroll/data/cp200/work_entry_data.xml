@@ -26,6 +26,12 @@
             <field name="dmfa_code">1</field>
         </record>
 
+        <record id="hr_payroll.hr_work_entry_type_out_of_contract" model="hr.work.entry.type">
+            <field name="meal_voucher" eval="False"/>
+            <field name="leave_right" eval="False"/>
+            <field name="is_unforeseen" eval="False"/>
+        </record>
+
         <record id="work_entry_type_small_unemployment" model="hr.work.entry.type">
             <field name="name">Small Unemployment (Brief Holiday)</field>
             <field name="code">LEAVE205</field>
@@ -202,5 +208,24 @@
             <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_european"></field>
         </record>
+
+        <record id="work_entry_type_credit_time" model="hr.work.entry.type">
+            <field name="name">Credit Time</field>
+            <field name="code">LEAVE300</field>
+            <field name="is_leave">True</field>
+            <field name="color">8</field>
+        </record>
+        <record id="holiday_type_credit_time" model="hr.leave.type">
+            <field name="name">Credit Time</field>
+            <field name="allocation_type">no</field> 
+            <field name="request_unit">half_day</field>
+            <field name="color_name">lavender</field>
+            <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
+            <field name="work_entry_type_id" ref="work_entry_type_credit_time"></field>
+        </record>
+        <record id="l10n_be_hr_payroll.structure_type_employee_cp200" model="hr.payroll.structure.type">
+            <field name="time_credit_type_id" ref="l10n_be_hr_payroll.work_entry_type_credit_time"/>
+        </record>
+
     </data>
 </odoo>

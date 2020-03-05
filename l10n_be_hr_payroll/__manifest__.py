@@ -32,6 +32,7 @@ Belgian Payroll Rules.
         'wizard/hr_payroll_allocating_paid_time_off_views.xml',
         'views/l10n_be_hr_payroll_view.xml',
         'views/hr_work_entry_views.xml',
+        'views/hr_payroll_structure_type_views.xml',
         'views/hr_payslip_views.xml',
         'views/l10n_be_attachment_salary_views.xml',
         'views/report_termination_fees.xml',

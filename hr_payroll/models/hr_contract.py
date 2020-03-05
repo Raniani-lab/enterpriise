@@ -5,6 +5,7 @@ from datetime import datetime
 from collections import defaultdict
 from odoo import api, fields, models
 from odoo.tools import date_utils
+from odoo.osv import expression
 
 
 class HrContract(models.Model):
@@ -45,7 +46,34 @@ class HrContract(models.Model):
         action['context'] = repr(self.env.context)
         return action
 
-    def _get_work_hours(self, date_from, date_to):
+    def _get_work_hours_domain(self, date_from, date_to, domain=None, inside=True):
+        if domain is None:
+            domain = []
+        domain = expression.AND([domain, [
+            ('state', 'in', ['validated', 'draft']),
+            ('contract_id', 'in', self.ids),
+        ]])
+        if inside:
+            domain = expression.AND([domain, [
+                ('date_start', '>=', date_from),
+                ('date_stop', '<=', date_to)]])
+        else:
+            domain = expression.AND([domain, [
+                '|', '|',
+                '&', '&',
+                    ('date_start', '>=', date_from),
+                    ('date_start', '<', date_to),
+                    ('date_stop', '>', date_to),
+                '&', '&',
+                    ('date_start', '<', date_from),
+                    ('date_stop', '<=', date_to),
+                    ('date_stop', '>', date_from),
+                '&',
+                    ('date_start', '<', date_from),
+                    ('date_stop', '>', date_to)]])
+        return domain
+
+    def _get_work_hours(self, date_from, date_to, domain=None):
         """
         Returns the amount (expressed in hours) of work
         for a contract between two dates.
@@ -63,36 +91,14 @@ class HrContract(models.Model):
 
         # First, found work entry that didn't exceed interval.
         work_entries = self.env['hr.work.entry'].read_group(
-            [
-                ('state', 'in', ['validated', 'draft']),
-                ('date_start', '>=', date_from),
-                ('date_stop', '<=', date_to),
-                ('contract_id', 'in', self.ids),
-            ],
+            self._get_work_hours_domain(date_from, date_to, domain=domain, inside=True),
             ['hours:sum(duration)'],
             ['work_entry_type_id']
         )
         work_data.update({data['work_entry_type_id'][0] if data['work_entry_type_id'] else False: data['hours'] for data in work_entries})
 
         # Second, found work entry that exceed interval and compute right duration.
-        work_entries = self.env['hr.work.entry'].search(
-            [
-                '&', '&',
-                ('state', 'in', ['validated', 'draft']),
-                ('contract_id', 'in', self.ids),
-                '|', '|', '&', '&',
-                ('date_start', '>=', date_from),
-                ('date_start', '<', date_to),
-                ('date_stop', '>', date_to),
-                '&', '&',
-                ('date_start', '<', date_from),
-                ('date_stop', '<=', date_to),
-                ('date_stop', '>', date_from),
-                '&',
-                ('date_start', '<', date_from),
-                ('date_stop', '>', date_to),
-            ]
-        )
+        work_entries = self.env['hr.work.entry'].search(self._get_work_hours_domain(date_from, date_to, domain=domain, inside=False))
 
         for work_entry in work_entries:
             date_start = max(date_from, work_entry.date_start)

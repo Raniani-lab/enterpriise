@@ -97,6 +97,14 @@ QUnit.module('ReportEditorManager', {
             'model.test.child': {
                 fields: {
                     name: { string: "Name", type: "char"},
+                    grandchild: {string: "Grandchild", type: 'many2one', relation: 'model.test.grandchild', searchable: true},
+
+                },
+                records: [],
+            },
+            'model.test.grandchild': {
+                fields: {
+                    name: { string: "Name", type: "char"},
                 },
                 records: [],
             },
@@ -1772,7 +1780,7 @@ QUnit.module('ReportEditorManager', {
                         return Promise.reject();
                     }
                     assert.deepEqual(operation.inheritance, [{
-                        content: '<attribute name="t-value">o.child_bis</attribute>',
+                        content: '<attribute name="t-value">o.child.grandchild</attribute>',
                         position: "attributes",
                         view_id: 55,
                         xpath: "/t/div/div/table//t[@t-set='total_currency_id']"
@@ -1796,7 +1804,7 @@ QUnit.module('ReportEditorManager', {
 
             rem.$('.o_web_studio_report_currency_id .o_field_selector').trigger('focusin');
             await testUtils.nextTick();
-            await testUtils.dom.click(rem.$('.o_web_studio_report_currency_id .o_field_selector_item[data-name="child_bis"]'));
+            await testUtils.dom.click(rem.$('.o_web_studio_report_currency_id .o_field_selector_item[data-name="grandchild"]'));
             await testUtils.dom.click(rem.$('.o_web_studio_report_currency_id .o_field_selector_close'));
 
             rem.destroy();

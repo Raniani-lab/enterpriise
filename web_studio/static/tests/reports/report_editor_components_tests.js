@@ -239,6 +239,18 @@ QUnit.module('ReportComponents', {
                 },
                 records: [],
             },
+            'res.company': {
+                fields: {
+                    name: { string: "Name", type: "char" },
+                },
+                records: [],
+            },
+            'res.currency': {
+                fields: {
+                    name: { string: "Name", type: "char" },
+                },
+                records: [],
+            },
         });
         studioTestUtils.patch();
     },

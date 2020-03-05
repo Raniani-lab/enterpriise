@@ -8,7 +8,7 @@ var _t = core._t;
 
 tour.register('timesheet_tour', {
     url: "/web",
-}, [tour.STEPS.SHOW_APPS_MENU_ITEM, {
+}, [tour.stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="hr_timesheet.timesheet_menu_root"]',
     content: _t('Track the time spent on your projects. <i>It starts here.</i>'),
     position: 'bottom',

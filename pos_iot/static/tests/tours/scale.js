@@ -19,7 +19,7 @@ var PosScaleDummy = DeviceProxy.extend({
 Tour.register('pos_iot_scale_tour', {
     url: '/web',
     test: true
-    }, [Tour.STEPS.SHOW_APPS_MENU_ITEM,
+    }, [Tour.stepUtils.showAppsMenuItem(),
     {
         trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
     }, {

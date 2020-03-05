@@ -8,7 +8,7 @@ var _t = core._t;
 
 tour.register('rental_tour', {
     url: "/web",
-}, [tour.STEPS.SHOW_APPS_MENU_ITEM, {
+}, [tour.stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sale_renting.rental_menu_root"]',
     content: _t("Want to <b>rent products</b>? \n Let's discover Odoo Rental App."),
     position: 'bottom',

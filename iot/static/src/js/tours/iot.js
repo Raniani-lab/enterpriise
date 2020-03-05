@@ -8,7 +8,7 @@ var _t = core._t;
 
 tour.register('iot_token_tour', {
     url: "/web",
-}, [tour.STEPS.SHOW_APPS_MENU_ITEM, {
+}, [tour.stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="iot.iot_menu_root"]',
     content: _t('Click on iot App.'),
     position: 'right'

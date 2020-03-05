@@ -10,7 +10,7 @@ odoo.define('sign_widgets_tour', function (require) {
         test: true,
         url: "/web",
         },
-         [tour.STEPS.SHOW_APPS_MENU_ITEM,
+         [tour.stepUtils.showAppsMenuItem(),
             {
                 content: "Settings",
                 trigger: 'a[data-menu-xmlid="base.menu_administration"]',

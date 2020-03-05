@@ -197,6 +197,7 @@ class AmazonAccount(models.Model):
     def action_check_credentials(
             self, seller_key=None, access_key=None, secret_key=None):
         """ Check the credentials validity. Use that of the account if not passed in arguments. """
+        self.check_access_rights('write')
         for account in self:
             error_message = _("An error was encountered when preparing the connection to Amazon.")
             sellers_api = mwsc.get_api_connector(

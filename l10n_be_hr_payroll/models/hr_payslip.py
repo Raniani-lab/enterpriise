@@ -194,6 +194,9 @@ class Payslip(models.Model):
         return super()._get_paid_amount()
 
     def _get_paid_unpaid_ratio(self):
+        if self.env.context.get('salary_simulation'):
+            return 1
+
         self.ensure_one()
         contract = self.contract_id
         hours_per_day = (self.contract_id.resource_calendar_id or self.employee_id.resource_calendar_id).hours_per_day

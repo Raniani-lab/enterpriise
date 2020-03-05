@@ -54,5 +54,5 @@ class AccountMove(models.Model):
     def create(self, vals):
         res = super(AccountMove, self).create(vals)
         if not res.l10n_es_reports_mod349_invoice_type:
-            res.l10n_es_reports_mod349_invoice_type = res.with_context(type=res.type)._default_mod_349_invoice_type()
+            res.l10n_es_reports_mod349_invoice_type = res.with_context(move_type=res.move_type)._default_mod_349_invoice_type()
         return res

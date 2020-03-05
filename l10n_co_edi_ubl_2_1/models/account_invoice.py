@@ -57,11 +57,11 @@ class AccountInvoice(models.Model):
         for rec in self:
             rec.l10n_co_edi_is_direct_payment = (rec.date == rec.invoice_date_due) and rec.company_id.country_id.code == 'CO'
 
-    @api.onchange('type', 'reversed_entry_id', 'l10n_co_edi_invoice_status', 'l10n_co_edi_cufe_cude_ref')
+    @api.onchange('move_type', 'reversed_entry_id', 'l10n_co_edi_invoice_status', 'l10n_co_edi_cufe_cude_ref')
     def _onchange_type(self):
         for rec in self:
             operation_type = False
-            if rec.type == 'out_refund':
+            if rec.move_type == 'out_refund':
                 if rec.reversed_entry_id:
                     operation_type = '20'
                 else:
@@ -87,22 +87,22 @@ class AccountInvoice(models.Model):
         return '2'
 
     def _l10n_co_edi_get_edi_type(self):
-        if self.type == 'out_refund':
+        if self.move_type == 'out_refund':
             return "91"
-        elif self.type == 'out_invoice' and self.l10n_co_edi_debit_note:
+        elif self.move_type == 'out_invoice' and self.l10n_co_edi_debit_note:
             return "92"
         return "{0:0=2d}".format(int(self.l10n_co_edi_type))
 
     def _l10n_co_edi_get_edi_description(self):
-        if self.type == 'out_refund':
+        if self.move_type == 'out_refund':
             return dict(DESCRIPTION_CREDIT_CODE).get(self.l10n_co_edi_description_code_credit)
-        if self.type == 'out_invoice' and self.l10n_co_edi_debit_note:
+        if self.move_type == 'out_invoice' and self.l10n_co_edi_debit_note:
             return dict(DESCRIPTION_DEBIT_CODE).get(self.l10n_co_edi_description_code_debit)
 
     def _l10n_co_edi_get_edi_description_code(self):
-        if self.type == 'out_refund':
+        if self.move_type == 'out_refund':
             return self.l10n_co_edi_description_code_credit
-        if self.type == 'out_invoice' and self.l10n_co_edi_debit_note:
+        if self.move_type == 'out_invoice' and self.l10n_co_edi_debit_note:
             return self.l10n_co_edi_description_code_debit
 
     def _l10n_co_edi_get_validation_time_new_format(self):
@@ -115,7 +115,7 @@ class AccountInvoice(models.Model):
         return validation_time.strftime(DEFAULT_SERVER_TIME_FORMAT) + "-05:00"
 
     def _l10n_co_edi_get_electronic_invoice_type(self):
-        if self.type == 'out_invoice':
+        if self.move_type == 'out_invoice':
             return 'ND' if self.l10n_co_edi_debit_note else 'INVOIC'
         return 'NC'
 
@@ -206,7 +206,7 @@ class AccountInvoice(models.Model):
         """ Method called by the user to download the response from the processing of the invoice by the DIAN
         and also get the CUFE signature out of that file
         """
-        if self.type in ['in_refund', 'in_invoice']:
+        if self.move_type in ['in_refund', 'in_invoice']:
             raise UserError(_('You can not Download Electronic Invoice for Vendor Bill and Vendor Credit Note.'))
         invoice_download_msg, attachments = super(AccountInvoice, self).l10n_co_edi_download_electronic_invoice()
         if attachments:

@@ -1,6 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_social_facebook_social_user,social.event.user,model_social_facebook_event,social.group_social_user,1,0,0,0
-access_social_facebook_social_manager,social.event.manager,model_social_facebook_event,social.group_social_manager,1,0,0,1
-access_social_facebook_event_user,social.event.event_user,model_social_facebook_event,event.group_event_user,1,0,0,0
-access_social_facebook_event_manager,social.event.event_manager,model_social_facebook_event,event.group_event_manager,1,0,0,1
-access_social_facebook_system,social.event.system,model_social_facebook_event,base.group_system,1,1,1,1

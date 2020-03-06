@@ -12,6 +12,8 @@ import ast
 import timeit
 import logging
 
+from odoo.osv.expression import get_unaccent_wrapper
+
 _logger = logging.getLogger(__name__)
 
 # Merge list of list based on their common element
@@ -178,6 +180,7 @@ class DataMergeModel(models.Model):
 
             return (field_name, join)
 
+        unaccent = get_unaccent_wrapper(self.env.cr)
         self.flush()
         for dm_model in self:
             t1 = timeit.default_timer()
@@ -188,7 +191,7 @@ class DataMergeModel(models.Model):
                 field_name, join = field_join(rule.field_id, table, dm_model.res_model_name, self.env)
 
                 if rule.match_mode == 'accent':
-                    field_name = 'unaccent(%s)' % field_name
+                    field_name = unaccent(field_name)
 
                 domain = ast.literal_eval(dm_model.domain or '[]')
                 tables, where_clause, where_clause_params = self.env[dm_model.res_model_name]._where_calc(domain).get_sql()

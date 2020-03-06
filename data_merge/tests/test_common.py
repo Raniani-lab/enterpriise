@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import unittest
 
 from odoo.tests.common import TransactionCase
 
@@ -39,6 +40,8 @@ class TestCommon(TransactionCase):
         return self.env[model].create(kwargs)
 
     def _create_rule(self, field_name, mode):
+        if mode == 'accent' and not self.registry.has_unaccent:
+            raise unittest.SkipTest("Unaccent rules require unaccent to be enabled")
         self.DMRule.create({
             'model_id': self.MyModel.id,
             'field_id': self.env['ir.model.fields']._get('x_dm_test_model', field_name).id,

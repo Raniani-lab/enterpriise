@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, fields
+from odoo import _, models, fields, api
 
 class DataMergeRule(models.Model):
     _name = 'data_merge.rule'
@@ -13,11 +13,18 @@ class DataMergeRule(models.Model):
     field_id = fields.Many2one('ir.model.fields', string='Unique ID Field',
         domain="[('model_id', '=', res_model_id), ('ttype', 'in', ('char', 'text', 'many2one')), ('store', '=', True)]",
         required=True, ondelete='cascade')
-    match_mode = fields.Selection([
-        ('exact', 'Exact Match'),
-        ('accent', 'Case/Accent Insensitive Match')], default='exact', string='Merge If', required=True)
+    match_mode = fields.Selection(
+        lambda self: self._available_match_modes(),
+        default='exact', string='Merge If', required=True)
     sequence = fields.Integer(string='Sequence', default=1)
 
     _sql_constraints = [
         ('uniq_model_id_field_id', 'unique(model_id, field_id)', 'A field can only appear once!'),
     ]
+
+    def _available_match_modes(self):
+        modes = [('exact', _("Exact Match"))]
+        # can't conditionally set demo data...
+        if self.env.context.get('install_mode') or self.env.registry.has_unaccent:
+            modes.append(('accent', _("Case/Accent Insensitive Match")))
+        return modes

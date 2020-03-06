@@ -3,7 +3,7 @@
 
 {
     'name': 'Data Cleaning',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Productivity/Data Cleaning',
     'summary': 'Find duplicate records and merge them',
     'description': """Find duplicate records and merge them""",

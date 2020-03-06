@@ -401,6 +401,7 @@ class AmazonAccount(models.Model):
             currency_code = mwsc.get_currency_value(order_data, 'OrderTotal')
             purchase_date = mwsc.get_date_value(order_data, 'PurchaseDate')
             shipping_code = mwsc.get_string_value(order_data, 'ShipServiceLevel')
+            marketplace_api_ref = mwsc.get_string_value(order_data, 'MarketplaceId')
 
             # The order is created in state 'sale' to generate a picking if fulfilled by merchant
             # and in state 'done' to generate no picking if fulfilled by Amazon
@@ -414,7 +415,8 @@ class AmazonAccount(models.Model):
                 contact_partner.id, delivery_partner.id)
 
             order_lines_vals = self._process_order_lines(
-                order_data, items_data, shipping_code, shipping_product, currency, fiscal_position)
+                items_data, shipping_code, shipping_product, currency, fiscal_position,
+                marketplace_api_ref)
             order = self.env['sale.order'].with_context(mail_create_nosubscribe=True).create({
                 'origin': 'Amazon Order %s' % amazon_order_ref,
                 'state': state,
@@ -436,7 +438,8 @@ class AmazonAccount(models.Model):
         return order, order_found, status
 
     def _process_order_lines(
-            self, order_data, items_data, shipping_code, shipping_product, currency, fiscal_pos):
+            self, items_data, shipping_code, shipping_product, currency, fiscal_pos,
+            marketplace_api_ref):
         """ Return a list of sale order line vals based on Amazon order items data. """
         
         def _get_order_line_vals(**kwargs):
@@ -462,13 +465,16 @@ class AmazonAccount(models.Model):
             main_condition = mwsc.get_string_value(item_data, 'ConditionId')
             sub_condition = mwsc.get_string_value(item_data, 'ConditionSubtypeId')
             quantity = mwsc.get_integer_value(item_data, 'QuantityOrdered')
-            subtotal = mwsc.get_amount_value(item_data, 'ItemPrice')
+            sales_price = mwsc.get_amount_value(item_data, 'ItemPrice')
             tax_amount = mwsc.get_amount_value(item_data, 'ItemTax')
-            
-            offer = self._get_offer(order_data, sku)
+
+            marketplace = self.active_marketplace_ids.filtered(
+                lambda m: m.api_ref == marketplace_api_ref)
+            offer = self._get_offer(sku, marketplace)
             product_taxes = offer.product_id.taxes_id.filtered(
                 lambda t: t.company_id.id == self.company_id.id)
             taxes = fiscal_pos.map_tax(product_taxes)
+            subtotal = sales_price - tax_amount if marketplace.tax_included else sales_price
             subtotal = self._recompute_subtotal(subtotal, tax_amount, taxes, currency, fiscal_pos)
             
             description_template = "[%s] %s" \
@@ -497,13 +503,16 @@ class AmazonAccount(models.Model):
                         lambda t: t.company_id.id == self.company_id.id)
                     gift_wrap_taxes = fiscal_pos.map_tax(gift_wrap_product_taxes)
                     gift_wrap_tax_amount = mwsc.get_amount_value(item_data, 'GiftWrapTax')
-                    gift_wrap_price = self._recompute_subtotal(
-                        gift_wrap_price, gift_wrap_tax_amount, gift_wrap_taxes, currency, fiscal_pos)
+                    gift_wrap_subtotal = gift_wrap_price - gift_wrap_tax_amount \
+                        if marketplace.tax_included else gift_wrap_price
+                    gift_wrap_subtotal = self._recompute_subtotal(
+                        gift_wrap_subtotal, gift_wrap_tax_amount, gift_wrap_taxes, currency,
+                        fiscal_pos)
                     new_order_lines_vals.append(_get_order_line_vals(
                         product_id=gift_wrap_product.id,
                         description=_("[%s] Gift Wrapping Charges for %s") % (
                             gift_wrap_code, offer.product_id.name),
-                        subtotal=gift_wrap_price,
+                        subtotal=gift_wrap_subtotal,
                         tax_ids=gift_wrap_taxes.ids))
                 gift_message = mwsc.get_string_value(item_data, 'GiftMessageText')
                 if gift_message:
@@ -518,13 +527,15 @@ class AmazonAccount(models.Model):
                     lambda t: t.company_id.id == self.company_id.id)
                 shipping_taxes = fiscal_pos.map_tax(shipping_product_taxes)
                 shipping_tax_amount = mwsc.get_amount_value(item_data, 'ShippingTax')
-                shipping_price = self._recompute_subtotal(
-                    shipping_price, shipping_tax_amount, shipping_taxes, currency, fiscal_pos)
+                shipping_subtotal = shipping_price - shipping_tax_amount \
+                    if marketplace.tax_included else shipping_price
+                shipping_subtotal = self._recompute_subtotal(
+                    shipping_subtotal, shipping_tax_amount, shipping_taxes, currency, fiscal_pos)
                 new_order_lines_vals.append(_get_order_line_vals(
                     product_id=shipping_product.id,
                     description=_("[%s] Delivery Charges for %s") % (
                         shipping_code, offer.product_id.name),
-                    subtotal=shipping_price,
+                    subtotal=shipping_subtotal,
                     tax_ids=shipping_taxes.ids,
                     discount=mwsc.get_amount_value(item_data, 'ShippingDiscount')))
 
@@ -648,16 +659,13 @@ class AmazonAccount(models.Model):
             })
         return contact, delivery
 
-    def _get_offer(self, order_data, sku):
-        """ Find or create an amazon offer from Amazon data. """
+    def _get_offer(self, sku, marketplace):
+        """ Find or create an amazon offer from the SKU. """
         self.ensure_one()
-        marketplace_api_ref = mwsc.get_string_value(order_data, 'MarketplaceId')
         
         offer = self.env['amazon.offer'].search(
             [('sku', '=', sku), ('account_id', '=', self.id)], limit=1)
         if not offer:
-            marketplace = self.active_marketplace_ids.filtered(
-                lambda m: m.api_ref == marketplace_api_ref)
             offer = self.env['amazon.offer'].with_context(tracking_disable=True).create({
                 'account_id': self.id,
                 'marketplace_id': marketplace.id,

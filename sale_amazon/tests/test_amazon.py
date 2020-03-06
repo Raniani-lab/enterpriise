@@ -299,6 +299,70 @@ class TestAmazon(TransactionCase):
                                                         "per product that is not a service")
 
     @mute_logger('odoo.addons.sale_amazon.models.amazon_account')
+    def test_sync_orders_europe(self):
+        """ Test the orders synchronization with a European marketplace. """
+
+        def _get_orders_data_mock(*_args, **_kwargs):
+            """ Return a one-order batch of test order data without calling MWS API. """
+            return [dict(BASE_ORDER_DATA, MarketplaceId={'value': 'A13V1IB3VIYZZH'})],\
+                   datetime(2020, 1, 1), None, False
+
+        def _get_items_data_mock(*_args, **_kwargs):
+            """ Return a one-item batch of test order line data without calling MWS API. """
+            return [dict(
+                BASE_ITEM_DATA,
+                ItemTax={'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '20.00'}},
+                ShippingTax={'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '2.50'}},
+                GiftWrapTax={'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '1.33'}},
+                QuantityOrdered={'value': '1'})], None, False
+
+        def _recompute_subtotal(_self, _subtotal, _tax_amount, _taxes, _currency, _fiscal_pos=None):
+            """ Return the subtotal without recomputing it. """
+            return _subtotal
+
+        def _get_product_mock(_self, _product_code, _default_xmlid, _default_name, _default_type):
+            """ Return a product created on-the-fly with the product code as internal reference. """
+            _product = self.env['product.product'].create({
+                'name': _default_name,
+                'type': _default_type,
+                'list_price': 0.0,
+                'sale_ok': False,
+                'purchase_ok': False,
+                'default_code': _product_code,
+            })
+            _product.product_tmpl_id.taxes_id = False
+            return _product
+
+        with patch('odoo.addons.sale_amazon.models.mws_connector.get_api_connector',
+                   new=lambda *args, **kwargs: None), \
+             patch('odoo.addons.sale_amazon.models.mws_connector.get_orders_data',
+                   new=_get_orders_data_mock), \
+             patch('odoo.addons.sale_amazon.models.mws_connector.get_items_data',
+                   new=_get_items_data_mock), \
+             patch('odoo.addons.sale_amazon.models.amazon_account.AmazonAccount._recompute_subtotal',
+                   new=_recompute_subtotal), \
+             patch('odoo.addons.sale_amazon.models.amazon_account.AmazonAccount._get_product',
+                   new=_get_product_mock):
+            self.account._sync_orders(auto_commit=False)
+
+            order_lines = self.env['sale.order.line'].search(
+                [('order_id.amazon_order_ref', '=', '123456789')])
+            product_line = order_lines.filtered(lambda l: l.product_id.default_code == 'SKU')
+            shipping_line = order_lines.filtered(
+                lambda l: l.product_id.default_code == 'SHIPPING-CODE')
+            gift_wrapping_line = order_lines.filtered(
+                lambda l: l.product_id.default_code == 'WRAP-CODE')
+            self.assertEqual(
+                product_line.price_unit, 80,  # 100 - 20
+                "tax amount should be deducted from the item price for European marketplaces")
+            self.assertEqual(
+                shipping_line.price_unit, 10,  # 12.50 - 2.50
+                "tax amount should be deducted from the shipping price for European marketplaces")
+            self.assertEqual(
+                gift_wrapping_line.price_unit, 2,  # 3.33 - 1.33
+                "tax amount should be deducted from the gift wrap price for European marketplaces")
+
+    @mute_logger('odoo.addons.sale_amazon.models.amazon_account')
     def test_sync_orders_cancel(self):
         """ Test the orders synchronization with cancellation from Amazon. """
 
@@ -581,13 +645,14 @@ class TestAmazon(TransactionCase):
             'sku': 'SKU',
         })
         offers_count = self.env['amazon.offer'].search_count([])
-        self.assertTrue(self.account._get_offer(BASE_ORDER_DATA, 'SKU'))
+        self.assertTrue(self.account._get_offer('SKU', marketplace))
         self.assertEqual(self.env['amazon.offer'].search_count([]), offers_count)
 
     def test_get_amazon_offer_creation(self):
         """ Test the offer creation. """
         offers_count = self.env['amazon.offer'].search_count([])
-        offer = self.account._get_offer(BASE_ORDER_DATA, 'SKU')
+        marketplace = self.env['amazon.marketplace'].search([('api_ref', '=', 'ATVPDKIKX0DER')])
+        offer = self.account._get_offer('SKU', marketplace)
         self.assertEqual(self.env['amazon.offer'].search_count([]), offers_count + 1)
         self.assertEqual(offer.account_id.id, self.account.id)
         self.assertEqual(offer.company_id.id, self.account.company_id.id)

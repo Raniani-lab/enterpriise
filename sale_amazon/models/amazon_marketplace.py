@@ -14,6 +14,8 @@ class AmazonMarketplace(models.Model):
         "Domain", help="The domain name associated with the marketplace", required=True)
     api_ref = fields.Char(
         "API Identifier", help="The Amazon-defined marketplace reference", required=True)
+    tax_included = fields.Boolean(
+        "Tax Included", help="The price includes the tax amount")
 
     _sql_constraints = [(
         'unique_api_ref',

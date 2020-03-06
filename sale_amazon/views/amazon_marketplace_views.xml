@@ -28,6 +28,7 @@
                             <field name="code"/>
                             <field name="domain"/>
                             <field name="api_ref"/>
+                            <field name="tax_included" groups="base.group_no_one"/>
                         </group>
                     </group>
                 </sheet>

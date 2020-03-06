@@ -43,6 +43,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
                       JOIN account_account_tag tag ON tag.id = aml_tag.account_account_tag_id
                       JOIN account_tax_report_line_tags_rel ON account_tax_report_line_tags_rel.account_account_tag_id = tag.id
                       WHERE account_tax_report_line_tags_rel.account_tax_report_line_id IN %s
+                       AND l.parent_state = 'posted'
                        AND l.date >= %s
                        AND l.date <= %s
                        AND l.company_id IN %s

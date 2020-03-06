@@ -18,7 +18,8 @@ class AmazonAccount(models.Model):
         """ Override to let TaxCloud set the right taxes on newly created orders. """
         order, order_found, status = super(AmazonAccount, self)._get_order(
             order_data, items_data, amazon_order_ref)
-        if order and not order_found:  # Order has just been created
+        # Order has just been created and has a TaxCloud fiscal position
+        if order and not order_found and order.fiscal_position_id.is_taxcloud:
             was_locked = order.state == 'done'
             if was_locked:
                 order.with_context(mail_notrack=True).write({'state': 'sale'})

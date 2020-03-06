@@ -5,7 +5,7 @@ from odoo import models
 from odoo.osv import expression
 
 
-class SocialPostYoutube(models.Model):
+class SocialPostTemplateYoutube(models.Model):
     _inherit = 'social.post.template'
 
     def _get_default_accounts_domain(self):
@@ -15,6 +15,6 @@ class SocialPostYoutube(models.Model):
         """
         youtube_media = self.env.ref('social_youtube.social_media_youtube')
         return expression.AND([
-            super(SocialPostYoutube, self)._get_default_accounts_domain(),
+            super(SocialPostTemplateYoutube, self)._get_default_accounts_domain(),
             [('media_id', '!=', youtube_media.id)]
         ])

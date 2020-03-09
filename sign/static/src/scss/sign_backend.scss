@@ -43,6 +43,9 @@
         .o_field_one2many.o_sign_flat_o2m {
             // Ajust this value to match the standard components below
             padding-right: 42px;
+            @include media-breakpoint-down(sm) {
+                padding-right: 0;
+            }
             table {
                 padding: 0 42px 0 0;
                 border-collapse: collapse;

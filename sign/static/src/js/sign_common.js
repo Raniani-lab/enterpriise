@@ -1,16 +1,87 @@
 odoo.define('sign.PDFIframe', function (require) {
     'use strict';
 
+    var config = require('web.config');
     var core = require('web.core');
     var Dialog = require('web.Dialog');
     var Widget = require('web.Widget');
 
     var _t = core._t;
 
-    var PDFIframe = Widget.extend({
+    const PinchItemMixin = {
+
+        events: {
+            'touchstart .o_pinch_item': '_onResetPinchCache',
+            'touchmove .o_pinch_item': '_onPinchMove',
+            'touchend .o_pinch_item': '_onResetPinchCache',
+        },
+
+        /**
+         * @param {Object} options
+         * @param {jQuery} options.$target
+         *        Element used as target where the pinch must be applied
+         * @param {function} [options.increaseDistanceHandler]
+         *        Handler called when the distance pinched between the 2 pointer is decreased
+         * @param {function} [options.decreaseDistanceHandler]
+         *        Handler called when the distance pinched between the 2 pointer is increased
+         * }
+         */
+        init(options) {
+            this.prevDiff = null;
+            this.$target = options.$target;
+            this.$target.addClass('o_pinch_item');
+            this.increaseDistanceHandler = options.increaseDistanceHandler ? options.increaseDistanceHandler : () => {};
+            this.decreaseDistanceHandler = options.decreaseDistanceHandler ? options.decreaseDistanceHandler : () => {};
+        },
+
+        //--------------------------------------------------------------------------
+        // Handlers
+        //--------------------------------------------------------------------------
+
+        /**
+         * This function implements a 2-pointer horizontal pinch/zoom gesture.
+         *
+         * If the distance between the two pointers has increased (zoom in),
+         * distance is decreasing (zoom out)
+         *
+         * This function sets the target element's border to "dashed" to visually
+         * indicate the pointer's target received a move event.
+         * @param ev
+         * @private
+         */
+        _onPinchMove(ev) {
+            const touches = ev.touches;
+            // If two pointers are down, check for pinch gestures
+            if (touches.length === 2) {
+                // Calculate the current distance between the 2 fingers
+                const deltaX = touches[0].pageX - touches[1].pageX;
+                const deltaY = touches[0].pageY - touches[1].pageY;
+                const curDiff = Math.hypot(deltaX, deltaY);
+                if (this.prevDiff == null) {
+                    this.prevDiff = curDiff;
+                }
+                const scale = this.prevDiff / curDiff;
+                if (scale < 1) {
+                    this.decreaseDistanceHandler(ev);
+                } else if (scale > 1) {
+                    this.increaseDistanceHandler(ev);
+                }
+            }
+        },
+
+        /**
+         *
+         * @private
+         */
+        _onResetPinchCache() {
+            this.prevDiff = null;
+        },
+    };
+
+    var PDFIframe = Widget.extend(Object.assign({}, PinchItemMixin, {
         init: function(parent, attachmentLocation, editMode, datas, role) {
             this._super(parent);
-
+            var self = this;
             this.attachmentLocation = attachmentLocation;
             this.editMode = editMode;
             for(var dataName in datas) {
@@ -24,11 +95,38 @@ odoo.define('sign.PDFIframe', function (require) {
             this.fullyLoaded = new Promise(function(resolve, reject) {
                 _res = resolve;
                 _rej = reject;
+            }).then(function() {
+                // Init pinch event only after have the pdf loaded
+                PinchItemMixin.init.call(self, {
+                    $target: self.$el.find('#viewerContainer #viewer'),
+                    decreaseDistanceHandler: () => self.$('button#zoomIn').click(),
+                    increaseDistanceHandler: () => self.$('button#zoomOut').click()
+                });
+                return arguments;
             });
             this.fullyLoaded.resolve = _res;
             this.fullyLoaded.reject = _rej;
         },
 
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
+        _appendDownloadCompleteButton() {
+            const cloneDownloadButton = $button => $button.clone()
+                .attr('id', $button.attr('id') + '_completed')
+                .prop('title', _t("Download Document"))
+                .on('click', () => window.location = this.attachmentLocation.replace('origin', 'completed'));
+            // inside toolbar
+            const $buttonDownloadPrimary = this.$('button#download');
+            $buttonDownloadPrimary.after(cloneDownloadButton($buttonDownloadPrimary));
+            // inside the more button on the toolbar
+            const $buttonDownloadSecondary = this.$('button#secondaryDownload');
+            const $buttonDownloadSecond = cloneDownloadButton($buttonDownloadSecondary);
+            if ($buttonDownloadSecond.hasClass('secondaryToolbarButton')) {
+                $buttonDownloadSecond.find('span').text(_t("Download Document"));
+            }
+            $buttonDownloadSecondary.after($buttonDownloadSecond);
+        },
         _set_data: function(dataName, data) {
             this[dataName] = {};
             if(data instanceof jQuery) {
@@ -50,7 +148,8 @@ odoo.define('sign.PDFIframe', function (require) {
             this.readonlyFields = this.pdfView || this.editMode;
 
             var viewerURL = "/web/static/lib/pdfjs/web/viewer.html?file=";
-            viewerURL += encodeURIComponent(this.attachmentLocation).replace(/'/g,"%27").replace(/"/g,"%22") + "#page=1&zoom=page-width";
+            viewerURL += encodeURIComponent(this.attachmentLocation).replace(/'/g,"%27").replace(/"/g,"%22") + "#page=1";
+            viewerURL += config.device.isMobile ? "&zoom=page-fit" : "&zoom=page-width";
             this.$iframe.ready(function () {
                 self.waitForPDF();
             });
@@ -83,8 +182,14 @@ odoo.define('sign.PDFIframe', function (require) {
             this.$('#openFile, #pageRotateCw, #pageRotateCcw, #pageRotateCcw, #viewBookmark').add(this.$('#lastPage').next()).hide();
             this.$('button#print').prop('title', _t("Print original document"));
             this.$('button#download').prop('title', _t("Download original document"));
-            this.$('button#zoomOut').click().click();
-
+            if (this.readonlyFields && !this.editMode) {
+                this._appendDownloadCompleteButton();
+            }
+            if (config.device.isMobile) {
+                this.$('button#zoomIn').click();
+            } else {
+                this.$('button#zoomOut').click().click();
+            }
             for(var i = 1 ; i <= this.nbPages ; i++) {
                 this.configuration[i] = [];
             }
@@ -295,7 +400,7 @@ odoo.define('sign.PDFIframe', function (require) {
             clearTimeout(this.refresh_timer);
             this._super.apply(this, arguments);
         },
-    });
+    }));
 
     return PDFIframe;
 });
@@ -541,6 +646,7 @@ odoo.define('sign.document_signing', function (require) {
     'use strict';
 
     var ajax = require('web.ajax');
+    var config = require('web.config');
     var core = require('web.core');
     var Dialog = require('web.Dialog');
     var Document = require('sign.Document');
@@ -646,6 +752,10 @@ odoo.define('sign.document_signing', function (require) {
             options.title = options.title || _t("Adopt Your Signature");
             options.size = options.size || 'medium';
             options.technical = false;
+            if (config.device.isMobile) {
+                options.technical = true;
+                options.fullscreen = true;
+            }
 
             if (!options.buttons) {
                 options.buttons = [];
@@ -823,6 +933,36 @@ odoo.define('sign.document_signing', function (require) {
             if(!this.started) {
                 return;
             }
+            this._scrollToSignItemPromise($item).then(function () {
+                const type = self.types[$item.data('type')];
+                if($item.val() === "" && !$item.data('signature')) {
+                    self.setTip(type.tip);
+                }
+
+                self.getParent().refreshSignItems();
+                $item.focus();
+                if (['signature', 'initial'].indexOf(type.item_type) > -1) {
+                    if($item.data("has-focus")) {
+                        $item.click();
+                    } else {
+                        $item.data("has-focus", true);
+                    }
+                }
+                self.isScrolling = false;
+            });
+
+            this.getParent().$('.ui-selected').removeClass('ui-selected');
+            $item.addClass('ui-selected').focus();
+        },
+
+        _scrollToSignItemPromise($item) {
+            if (config.device.isMobile) {
+                return new Promise(resolve => {
+                    this.isScrolling = true;
+                    $item[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+                    resolve();
+                });
+            }
 
             var $container = this.getParent().$('#viewerContainer');
             var $viewer = $container.find('#viewer');
@@ -856,18 +996,7 @@ odoo.define('sign.document_signing', function (require) {
                     resolve();
                 });
             });
-            Promise.all([def1, def2]).then(function() {
-                if($item.val() === "" && !$item.data('signature')) {
-                    self.setTip(self.types[$item.data('type')].tip);
-                }
-
-                self.getParent().refreshSignItems();
-                $item.focus();
-                self.isScrolling = false;
-            });
-
-            this.getParent().$('.ui-selected').removeClass('ui-selected');
-            $item.addClass('ui-selected').focus();
+            return Promise.all([def1, def2]);
         },
     });
 
@@ -881,6 +1010,11 @@ odoo.define('sign.document_signing', function (require) {
             options.title = options.title || _t("Final Validation");
             options.size = options.size || "medium";
             options.technical = false;
+
+            if (config.device.isMobile) {
+                options.technical = true;
+                options.fullscreen = true;
+            }
 
             if(!options.buttons) {
                 options.buttons = [];
@@ -995,6 +1129,9 @@ odoo.define('sign.document_signing', function (require) {
 
         init: function(parent, requestID, requestToken, signature, signerPhone, RedirectURL, options) {
             options = (options || {});
+            if (config.device.isMobile) {
+                options.fullscreen = true;
+            }
             options.title = options.title || _t("Final Validation");
             options.size = options.size || "medium";
             if(!options.buttons) {
@@ -1042,6 +1179,9 @@ odoo.define('sign.document_signing', function (require) {
 
         init: function(parent, requestID, options) {
             options = (options || {});
+            if (config.device.isMobile) {
+                options.fullscreen = true;
+            }
             options.title = options.title || _t("PDF is encrypted");
             options.size = options.size || "medium";
             if(!options.buttons) {
@@ -1174,6 +1314,10 @@ odoo.define('sign.document_signing', function (require) {
             options.subtitle = options.subtitle || _t("Your signature has been saved.") + " " +_.str.sprintf(_t("Next signatory is %s"), this.name_list[0]);
             options.size = options.size || "medium";
             options.technical = false;
+            if (config.device.isMobile) {
+                options.technical = true;
+                options.fullscreen = true;
+            }
             options.buttons = [{text: _.str.sprintf(_t("Next signatory (%s)"), this.name_list[0]), click: this.on_click_next}],
             this.options = options;
             this.RedirectURL = "RedirectURL";
@@ -1353,7 +1497,11 @@ odoo.define('sign.document_signing', function (require) {
                     var next_signatory = _.str.sprintf(_t("Validate & the next signatory is %s"), next_name_signatory);
                     this.$validateBanner.find('.o_validate_button').prop('textContent', next_signatory);
                 }
-                this.$validateBanner.show().animate({'opacity': 1}, 500);
+                this.$validateBanner.show().animate({'opacity': 1}, 500, () => {
+                    if (config.device.isMobile) {
+                        this.$validateBanner[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+                    }
+                });
             },
 
             'click .o_sign_validate_banner button': 'signItemDocument',

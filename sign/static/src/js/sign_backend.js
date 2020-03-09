@@ -1,6 +1,7 @@
 odoo.define('sign.views_custo', function(require) {
     'use strict';
 
+    var config = require('web.config');
     var core = require('web.core');
     var KanbanController = require("web.KanbanController");
     var KanbanColumn = require("web.KanbanColumn");
@@ -38,6 +39,10 @@ odoo.define('sign.views_custo', function(require) {
         _openRecord: function () {
             var self = this;
             if (this.modelName === 'sign.template' && this.$el.parents('.o_kanban_dashboard').length) {
+                // don't allow edit on mobile
+                if (config.device.isMobile) {
+                    return;
+                }
                 self._rpc({
                     model: 'sign.template',
                     method: 'go_to_custom_template',
@@ -55,6 +60,14 @@ odoo.define('sign.views_custo', function(require) {
                 });
             } else {
                 this._super.apply(this, arguments);
+            }
+        },
+        async _render() {
+            await this._super(...arguments);
+            if (config.device.isMobile &&
+                (this.modelName === "sign.template" || this.modelName === "sign.request")) {
+                this.$('.o_kanban_record_bottom .oe_kanban_bottom_left button:not(.o_kanban_sign_directly)')
+                    .attr('data-mobile', '{"fullscreen": true}');
             }
         }
     });
@@ -84,6 +97,11 @@ odoo.define('sign.views_custo', function(require) {
                     e.stopImmediatePropagation();
                     _sign_upload_file.call(self, true, false, 'sign_send_request');
                 });
+                // don't allow template creation on mobile devices
+                if (config.device.isMobile) {
+                    this.$buttons.find(selector_button).hide();
+                    return;
+                }
                 this.$buttons.find(selector_button).after(
                     $('<button class="btn btn-primary o-kanban-button-new o-direct ml8" type="button">'+ _t('Sign Now') + '</button>')
                     .off('click')
@@ -116,7 +134,7 @@ odoo.define('sign.views_custo', function(require) {
     function _sign_upload_file(inactive, sign_directly_without_mail, sign_edit_context) {
         var self = this;
         var sign_directly_without_mail =  sign_directly_without_mail || false;
-        var $upload_input = $('<input type="file" name="files[]" accept=".pdf"/>');
+        var $upload_input = $('<input type="file" name="files[]" accept="application/pdf, application/x-pdf, application/vnd.cups-pdf"/>');
         $upload_input.on('change', function (e) {
             var f = e.target.files[0];
             utils.getDataURLFromFile(f).then(function (result) {

@@ -1,6 +1,6 @@
 @include media-breakpoint-down(sm) {
 
-    .modal.o_technical_modal {
+    .modal {
         .modal-content {
             .modal-body.o_act_window .o_group.o_inner_group > tbody > tr > td:not(.o_td_label) {
                 width: 100% !important;

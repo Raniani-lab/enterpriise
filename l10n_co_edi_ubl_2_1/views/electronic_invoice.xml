@@ -147,9 +147,9 @@
                 </GTA>
             </ADQ>
             <TOT>
-                <TOT_1 t-esc="invoice.amount_untaxed"/>
+                <TOT_1 t-esc="'%.2f' % invoice.amount_untaxed"/>
                 <TOT_2 t-esc="invoice.currency_id.name"/>
-                <TOT_3 t-esc="invoice.amount_untaxed"/>
+                <TOT_3 t-esc="'%.2f' % invoice.amount_untaxed"/>
                 <TOT_4 t-esc="invoice.currency_id.name"/>
                 <TOT_5 t-esc="withholding_amount"/>
                 <TOT_6 t-esc="invoice.currency_id.name"/>
@@ -182,7 +182,7 @@
                 <DRF_6 t-esc="invoice.journal_id.l10n_co_edi_max_range_number"/>
             </DRF>
             <ITD>
-                <ITD_5 t-esc="invoice.amount_total"/>
+                <ITD_5 t-esc="'%.2f' % invoice.amount_total"/>
                 <ITD_6 t-esc="invoice.currency_id.name"/>
             </ITD>
 
@@ -242,9 +242,9 @@
             <FE1>
                 <t t-if="invoice.l10n_co_edi_type == '02'">
                     <FE1_2 t-esc="invoice.currency_id.name"/>
-                    <FE1_3 t-esc="invoice.amount_untaxed"/>
-                    <FE1_4 t-esc="invoice.amount_tax"/>
-                    <FE1_5 t-esc="invoice.amount_total"/>
+                    <FE1_3 t-esc="'%.2f' % invoice.amount_untaxed"/>
+                    <FE1_4 t-esc="'%.2f' % invoice.amount_tax"/>
+                    <FE1_5 t-esc="'%.2f' % invoice.amount_total"/>
 
                     <t t-set="ft1_counter" t-value="1"/>
                     <FT1 t-foreach="invoice.invoice_line_ids" t-as="line">
@@ -262,16 +262,16 @@
                     <ITE_2/>
                     <ITE_3 t-esc="line.quantity"/>
                     <ITE_4 t-esc="line.product_uom_id.l10n_co_edi_ubl or '94'"/>
-                    <ITE_5 t-esc="line.price_subtotal"/>
+                    <ITE_5 t-esc="'%.2f' % line.price_subtotal"/>
                     <ITE_6 t-esc="invoice.currency_id.name"/>
-                    <ITE_7 t-esc="line.price_unit"/>
+                    <ITE_7 t-esc="'%.2f' % line.price_unit"/>
                     <ITE_8 t-esc="invoice.currency_id.name"/>
                     <ITE_10/>
                     <ITE_11 t-esc="(line.name or '')[:150]"/>
                     <ITE_18 t-esc="line.product_id.product_tmpl_id.default_code"/>
-                    <ITE_19 t-esc="line.price_subtotal"/>
+                    <ITE_19 t-esc="'%.2f' % line.price_subtotal"/>
                     <ITE_20 t-esc="invoice.currency_id.name"/>
-                    <ITE_21 t-esc="line.price_subtotal"/>
+                    <ITE_21 t-esc="'%.2f' % line.price_subtotal"/>
                     <ITE_22 t-esc="invoice.currency_id.name"/>
                     <ITE_27 t-esc="line.quantity"/>
                     <ITE_28 t-esc="line.product_uom_id.l10n_co_edi_ubl or '94'"/>
@@ -304,7 +304,7 @@
                             <IIM_1 t-esc="tax['code']"/>
                             <IIM_2 t-esc="'%.2f' % abs(tax['tax'])"/>
                             <IIM_3 t-esc="invoice.currency_id.name"/>
-                            <IIM_4 t-esc="'%.2f' % abs(tax['tax'] * 100 / 15) if tax['code'] == '05' else line.price_subtotal"/>
+                            <IIM_4 t-esc="'%.2f' % (abs(tax['tax'] * 100 / 15) if tax['code'] == '05' else line.price_subtotal)"/>
                             <IIM_5 t-esc="invoice.currency_id.name"/>
                             <IIM_6 t-esc="'15' if tax['code'] == '05' else abs(tax['rate'])"/>
                             <IIM_7/>

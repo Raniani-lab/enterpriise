@@ -122,21 +122,16 @@ class AccountInvoice(models.Model):
     def l10n_co_edi_upload_electronic_invoice(self):
         """Some checks already before sending the electronic invoice to Carvajal"""
         to_process = self.filtered(lambda move: move._l10n_co_edi_is_l10n_co_edi_required())
-        now = fields.Datetime.now()
-        oldest_date = now - timedelta(days=5)
-        newest_date = now + timedelta(days=10)
         if to_process:
             if to_process.filtered(lambda m: not m.partner_id.vat):
                 raise UserError(_('You can not validate an invoice that has a partner without VAT number'))
-            if to_process.filtered(lambda m: m.invoice_date and not (oldest_date <= fields.Datetime.to_datetime(m.invoice_date) <= newest_date)):
-                raise UserError(_('You can not validate an invoice that is older than 5 days or newer than 10.'))
             if to_process.filtered(lambda m: not m.partner_id.l10n_co_edi_obligation_type_ids):
                 raise UserError(_('All the information on the Customer Fiscal Data section needs to be set'))
             for inv in to_process:
                 if (inv.l10n_co_edi_type == '2' and any(l.product_id and not l.product_id.l10n_co_edi_customs_code for l in inv.invoice_line_ids)) or (
                     any(l.product_id and not l.product_id.default_code and not l.product_id.barcode and not l.product_id.unspsc_code_id for l in inv.invoice_line_ids)):
                     raise UserError(_('Every product on a line should at least have a product code (barcode, unspsc, internal) set. '))
-            to_process.write({'l10n_co_edi_datetime_invoice': now})
+            to_process.write({'l10n_co_edi_datetime_invoice': fields.Datetime.now()})
         return super(AccountInvoice, self).l10n_co_edi_upload_electronic_invoice()
 
     def _l10n_co_edi_generate_xml(self):
@@ -221,6 +216,13 @@ class AccountInvoice(models.Model):
                     if element:
                         self.l10n_co_edi_cufe_cude_ref = element[0].childNodes[0].nodeValue
         return (invoice_download_msg, attachments)
+
+    def _l10n_co_edi_get_notas(self):
+        # Need to update the element in array on index with number 4.
+        notas = super(AccountInvoice, self)._l10n_co_edi_get_notas()
+        notas.pop(4)
+        notas.insert(4, '7.- %s' % (self.company_id.website))
+        return notas
 
 
 class AccountInvoiceLine(models.Model):

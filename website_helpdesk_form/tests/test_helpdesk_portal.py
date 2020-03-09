@@ -31,6 +31,7 @@ class HelpDeskPortal(HttpCase):
 
     def test_portal_ticket_submission(self):
         """ Public user should be able to submit a ticket"""
+        self.authenticate(None, None)
         ticket_data = {
             'name': "Broken product",
             'partner_name': 'Jean Michel',

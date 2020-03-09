@@ -52,7 +52,7 @@ QUnit.module('Views', {
     },
 }, function () {
     QUnit.test('kanban with searchpanel: rendering in mobile', async function (assert) {
-        assert.expect(29);
+        assert.expect(30);
 
         const kanban = await createView({
             View: KanbanView,
@@ -102,7 +102,8 @@ QUnit.module('Views', {
 
         assert.ok($searchPanel.find('> summary ~ *').is(':visible'),
             "content of the SearchPanel should be visible");
-        assert.containsOnce($searchPanel, '> .o_search_panel_current_selection');
+        assert.containsOnce($searchPanel, '.o_search_panel_current_selection');
+        assert.isVisible($searchPanel.find('> summary > div > .o_search_panel_mobile_close'));
         assert.containsN($searchPanel, '.o_search_panel_section', 2);
 
         // looking for 'category' sample section
@@ -112,7 +113,7 @@ QUnit.module('Views', {
 
         // select category
         await dom.click($productSection.find('.o_search_panel_category_value:contains(hello) label'));
-        assert.containsOnce($searchPanel.find('> .o_search_panel_current_selection'), '.o_search_panel_category:contains(hello)');
+        assert.containsOnce($searchPanel.find('.o_search_panel_current_selection'), '.o_search_panel_category:contains(hello)');
         assert.verifySteps([
             'search_panel_select_multi_range',
             '/web/dataset/search_read',
@@ -125,7 +126,7 @@ QUnit.module('Views', {
 
         // select filter
         await dom.click($stateSection.find('.o_search_panel_filter_value:contains(DEF) input'));
-        assert.containsOnce($searchPanel.find('> .o_search_panel_current_selection'), '.o_search_panel_filter:contains(DEF)');
+        assert.containsOnce($searchPanel.find('.o_search_panel_current_selection'), '.o_search_panel_filter:contains(DEF)');
         assert.verifySteps([
             'search_panel_select_multi_range',
             '/web/dataset/search_read',

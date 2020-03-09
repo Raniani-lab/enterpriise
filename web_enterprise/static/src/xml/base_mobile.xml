@@ -71,8 +71,9 @@
         <div class="d-flex align-items-center h-100">
             <i class="o_search_panel_mobile_close fa fa-fw fa-arrow-left"/>
             <i class="o_search_panel_mobile_collapsed_only fa fa-fw fa-filter"/>
+            <span class="o_search_panel_mobile_title ml-3">Filters</span>
             <div class="o_search_panel_current_selection o_search_panel_mobile_collapsed_only text-truncate ml-2 mr-auto">
-                <t t-if="emptySelection">Filters...</t>
+                <t t-if="emptySelection">All</t>
                 <t t-if="!emptySelection">
                     <span t-foreach="categories" t-as="category" class="o_search_panel_category mr-1">
                         <i t-if="category.icon" t-attf-class="o_search_panel_section_icon fa #{category.icon}" t-attf-style="#{category.color ? ('color: ' + category.color) : undefined}"/>
@@ -86,25 +87,6 @@
             </div>
         </div>
     </summary>
-    <div class="o_search_panel_current_selection o_searchview">
-        <t t-if="emptySelection">Select...</t>
-        <t t-if="!emptySelection">
-            <div class="o_searchview_input_container">
-                <div t-foreach="categories" t-as="category" class="o_search_panel_category o_searchview_facet">
-                    <i t-if="category.icon" t-attf-class="o_searchview_facet_label o_search_panel_section_icon fa #{category.icon}" t-attf-style="#{category.color ? ('background-color: ' + category.color) : undefined}"/>
-                    <div class="o_facet_values">
-                        <span t-esc="category.values.join('/')"/>
-                    </div>
-                </div>
-                <div t-foreach="filters" t-as="filter" class="o_search_panel_filter o_searchview_facet">
-                    <i t-if="filter.icon" t-attf-class="o_searchview_facet_label o_search_panel_section_icon fa #{filter.icon}" t-attf-style="#{filter.color ? ('background-color: ' + filter.color) : undefined}"/>
-                    <div class="o_facet_values">
-                        <span t-esc="filter.values.join(', ')"/>
-                    </div>
-                </div>
-            </div>
-        </t>
-    </div>
     <button class="o_search_panel_mobile_bottom_close btn btn-primary w-100 fixed-bottom">See result</button>
 </t>
 

@@ -51,6 +51,9 @@
                     <field name="l10n_mx_edi_qty_umt" attrs="{'column_invisible': [('parent.l10n_mx_edi_external_trade', '=', False)]}"/>
                     <field name="l10n_mx_edi_umt_aduana_id" attrs="{'column_invisible': [('parent.l10n_mx_edi_external_trade', '=', False)]}"/>
                 </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='price_subtotal']" position="after">
+                    <field name="l10n_mx_edi_qty_umt" invisible="1"/>
+                </xpath>
             </field>
         </record>
 

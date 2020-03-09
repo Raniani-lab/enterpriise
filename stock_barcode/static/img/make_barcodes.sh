@@ -92,32 +92,32 @@ cat > barcodes_demo_header.ps << HEADER
 HEADER
 
 barcode -t 3x10+20+20 -m 25x15 -p "210x297mm" -e code128b -n > barcodes_demo_barcode_chicago.ps  << BARCODES
-CHIC-STOCK
-CHIC-DELIVERY
-CHIC-RECEIPTS
-CHIC-INTERNAL
-CHIC-PICK
-CHIC-PACK
-MYCO-DELIVERY
-MYCO-RECEIPTS
-MYCO-INTERNAL
-MYCO-PICK
-MYCO-PACK
+CHIC1-STOCK
+CHIC1-DELIVERY
+CHIC1-RECEIPTS
+CHIC1-INTERNAL
+CHIC1-PICK
+CHIC1-PACK
+CHIC2-DELIVERY
+CHIC2-RECEIPTS
+CHIC2-INTERNAL
+CHIC2-PICK
+CHIC2-PACK
 BARCODES
 
 cat > barcodes_demo_header_chicago.ps << HEADER
 /showTitle { /Helvetica findfont 11 scalefont setfont moveto show } def
 (Chick/Stock) 45 807 showTitle
-(Chicago Delivery) 230 807 showTitle
-(Chicago Receipts) 415 807 showTitle
-(Chicago Internal) 45 727 showTitle
-(Chicago Pick) 230 727 showTitle
-(Chicago Pack) 415 727 showTitle
-(My Company, Chicago Delivery) 45 647 showTitle
-(My Company, Chicago Receipts) 230 647 showTitle
-(My Company, Chicago Internal) 415 647 showTitle
-(My Company, Chicago Pick) 45 567 showTitle
-(My Company, Chicago Pack) 230 567 showTitle
+(Chicago 1 Delivery) 230 807 showTitle
+(Chicago 1 Receipts) 415 807 showTitle
+(Chicago 1 Internal) 45 727 showTitle
+(Chicago 1 Pick) 230 727 showTitle
+(Chicago 1 Pack) 415 727 showTitle
+(Chicago 2 Delivery) 45 647 showTitle
+(Chicago 2 Receipts) 230 647 showTitle
+(Chicago 2 Internal) 415 647 showTitle
+(Chicago 2 Pick) 45 567 showTitle
+(Chicago 2 Pack) 230 567 showTitle
 HEADER
 
 cat barcodes_demo_header.ps barcodes_demo_barcode.ps barcodes_demo_header_chicago.ps barcodes_demo_barcode_chicago.ps | ps2pdf - - > barcodes_demo.pdf

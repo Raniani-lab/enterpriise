@@ -35,22 +35,22 @@ class TestBarcodeClientAction(HttpCase):
         self.customer_location = self.env.ref('stock.stock_location_customers')
         self.pack_location = self.env.ref('stock.location_pack_zone')
         self.shelf1 = self.env["stock.location"].create({
-            'name': 'Shelf 1',
+            'name': 'Section 1',
             'location_id': self.env.ref('stock.warehouse0').lot_stock_id.id,
             'barcode': 'LOC-01-01-00',
         })
         self.shelf2 = self.env['stock.location'].create({
-            'name': 'Shelf 2',
+            'name': 'Section 2',
             'location_id': self.env.ref('stock.warehouse0').lot_stock_id.id,
             'barcode': 'LOC-01-02-00',
         })
         self.shelf3 = self.env['stock.location'].create({
-            'name': 'Shelf 3',
+            'name': 'Section 3',
             'location_id': self.stock_location.id,
             'barcode': 'shelf3',
         })
         self.shelf4 = self.env['stock.location'].create({
-            'name': 'Shelf 4',
+            'name': 'Section 4',
             'location_id': self.stock_location.id,
             'barcode': 'shelf4',
         })
@@ -796,8 +796,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(lines[2].lot_name, 'lot2')
         self.assertEqual(lines[1].qty_done, 2)
         self.assertEqual(lines[2].qty_done, 2)
-        self.assertEqual(lines[1].location_dest_id.name, 'Shelf 2')
-        self.assertEqual(lines[2].location_dest_id.name, 'Shelf 1')
+        self.assertEqual(lines[1].location_dest_id.name, 'Section 2')
+        self.assertEqual(lines[2].location_dest_id.name, 'Section 1')
 
     def test_pack_multiple_scan(self):
         """ Simulate a picking where a package is scanned two times.

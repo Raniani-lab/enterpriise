@@ -379,7 +379,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
             currentViewState = updateState(defaultViewState, {
                 linesCount: 3,
                 pager: '1/4',
-                pageSummary: 'From WH/Stock/Shelf 1',
+                pageSummary: 'From WH/Stock/Section 1',
                 next: {
                     isEnabled: true,
                     isVisible: true,
@@ -427,7 +427,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
     {
         trigger: '.o_next_page:not(.btn-primary)',
         run: function () {
-            currentViewState.pageSummary = 'From WH/Stock/Shelf 2';
+            currentViewState.pageSummary = 'From WH/Stock/Section 2';
             currentViewState.linesCount = 1;
             currentViewState.next.isHighlighted = false;
             currentViewState.pager = '2/4';
@@ -462,7 +462,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
     {
         trigger: '.o_next_page:not(.btn-primary)',
         run: function () {
-            currentViewState.pageSummary = 'From WH/Stock/Shelf 3';
+            currentViewState.pageSummary = 'From WH/Stock/Section 3';
             currentViewState.linesCount = 2;
             currentViewState.next.isHighlighted = false;
             currentViewState.pager = '3/4';
@@ -501,7 +501,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
     {
         trigger: '.o_validate_page',
         run: function () {
-            currentViewState.pageSummary = 'From WH/Stock/Shelf 4';
+            currentViewState.pageSummary = 'From WH/Stock/Section 4';
             currentViewState.linesCount = 1;
             currentViewState.next.isEnabled = false;
             currentViewState.next.isHighlighted = false;

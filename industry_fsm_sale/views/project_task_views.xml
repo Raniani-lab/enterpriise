@@ -138,7 +138,7 @@
                     {'invisible': ['|', ('is_fsm', '=', True), ('partner_id', '=', False)]}
                 </attribute>
             </xpath>
-            <xpath expr="//group[@name='sales_order_group']//field[@name='sale_order_id']" position="attributes">
+            <xpath expr="//field[@name='sale_order_id']" position="attributes">
                 <attribute name="attrs">
                     {'invisible': ['|', ('is_fsm', '=', False), ('partner_id', '=', False)], 'readonly': ['|', ('material_line_product_count', '!=', 0), ('effective_hours', '!=', 0)]}
                 </attribute>

@@ -42,10 +42,10 @@ barcode -t 3x10+20+20 -m 25x15 -p "210x297mm" -e code128b -n > barcodes_demo_bar
 601647855640
 601647855644
 601647855638
-LOC-01-00-00
-LOC-01-01-00
-LOC-01-01-01
-LOC-01-02-00
+WH-STOCK
+2601892
+2601985
+WH-SHELF-REF
 PACK0000001
 WH/OUT/00005
 WH/IN/00003
@@ -66,8 +66,8 @@ cat > barcodes_demo_header.ps << HEADER
 (Desk Stand with Screen) 45 727 showTitle
 (WH/Stock) 230 727 showTitle
 (WH/Stock/Shelf 1) 415 727 showTitle
-(WH/Stock/Shelf 1/Small Refrigerator) 45 647 showTitle
-(WH/Stock/Shelf 2) 230 647 showTitle
+(WH/Stock/Shelf 2) 45 647 showTitle
+(WH/Stock/Shelf 2/Small Refrigerator) 230 647 showTitle
 (PACK0000001) 415 647 showTitle
 (WH/OUT/00005) 45 567 showTitle
 (WH/IN/00003) 230 567 showTitle
@@ -81,7 +81,7 @@ cat > barcodes_demo_header.ps << HEADER
 HEADER
 
 barcode -t 3x10+20+20 -m 25x15 -p "210x297mm" -e code128b -n > barcodes_demo_barcode_chicago.ps  << BARCODES
-LOC-02-00-00
+CHIC-STOCK
 CHIC-DELIVERY
 CHIC-RECEIPTS
 CHIC-INTERNAL

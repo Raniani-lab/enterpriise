@@ -46,27 +46,16 @@ LOC-01-00-00
 LOC-01-01-00
 LOC-01-01-01
 LOC-01-02-00
-LOC-02-00-00
 PACK0000001
 WH/OUT/00005
 WH/IN/00003
 LOT-000001
 LOT-000002
-CHIC-DELIVERY
-CHIC-RECEIPTS
-CHIC-INTERNAL
-CHIC-PICK
-CHIC-PACK
 WH-DELIVERY
 WH-RECEIPTS
 WH-INTERNAL
 WH-PICK
 WH-PACK
-MYCO-DELIVERY
-MYCO-RECEIPTS
-MYCO-INTERNAL
-MYCO-PICK
-MYCO-PACK
 BARCODES
 
 cat > barcodes_demo_header.ps << HEADER
@@ -79,28 +68,47 @@ cat > barcodes_demo_header.ps << HEADER
 (WH/Stock/Shelf 1) 415 727 showTitle
 (WH/Stock/Shelf 1/Small Refrigerator) 45 647 showTitle
 (WH/Stock/Shelf 2) 230 647 showTitle
-(Chick/Stock) 415 647 showTitle
-(PACK0000001) 45 567 showTitle
-(WH/OUT/00005) 230 567 showTitle
-(WH/IN/00003) 415 567 showTitle
-(LOT-000001) 45 487 showTitle
-(LOT-000002) 230 487 showTitle
-(Chicago delivery) 415 487 showTitle
-(Chicago receipts) 45 407 showTitle
-(Chicago internal) 230 407 showTitle
-(Chicago pick) 415 407 showTitle
-(Chicago pack) 45 327 showTitle
-(YourCompany delivery) 230 327 showTitle
-(YourCompany receipts) 415 327 showTitle
-(YourCompany internal) 45 247 showTitle
-(YourCompany pick) 230 247 showTitle
-(YourCompany pack) 415 247 showTitle
-(My Company, Chicago delivery) 45 167 showTitle
-(My Company, Chicago receipts) 230 167 showTitle
-(My Company, Chicago internal) 415 167 showTitle
-(My Company, Chicago pick) 45 87 showTitle
-(My Company, Chicago pack) 230 87 showTitle
+(PACK0000001) 415 647 showTitle
+(WH/OUT/00005) 45 567 showTitle
+(WH/IN/00003) 230 567 showTitle
+(LOT-000001) 415 567 showTitle
+(LOT-000002) 45 487 showTitle
+(YourCompany delivery) 230 487 showTitle
+(YourCompany receipts) 415 487 showTitle
+(YourCompany internal) 45 407 showTitle
+(YourCompany pick) 230 407 showTitle
+(YourCompany pack) 415 407 showTitle
 HEADER
 
-cat barcodes_demo_header.ps barcodes_demo_barcode.ps | ps2pdf - - > barcodes_demo.pdf
+barcode -t 3x10+20+20 -m 25x15 -p "210x297mm" -e code128b -n > barcodes_demo_barcode_chicago.ps  << BARCODES
+LOC-02-00-00
+CHIC-DELIVERY
+CHIC-RECEIPTS
+CHIC-INTERNAL
+CHIC-PICK
+CHIC-PACK
+MYCO-DELIVERY
+MYCO-RECEIPTS
+MYCO-INTERNAL
+MYCO-PICK
+MYCO-PACK
+BARCODES
+
+cat > barcodes_demo_header_chicago.ps << HEADER
+/showTitle { /Helvetica findfont 11 scalefont setfont moveto show } def
+(Chick/Stock) 45 807 showTitle
+(Chicago Delivery) 230 807 showTitle
+(Chicago Receipts) 415 807 showTitle
+(Chicago Internal) 45 727 showTitle
+(Chicago Pick) 230 727 showTitle
+(Chicago Pack) 415 727 showTitle
+(My Company, Chicago Delivery) 45 647 showTitle
+(My Company, Chicago Receipts) 230 647 showTitle
+(My Company, Chicago Internal) 415 647 showTitle
+(My Company, Chicago Pick) 45 567 showTitle
+(My Company, Chicago Pack) 230 567 showTitle
+HEADER
+
+cat barcodes_demo_header.ps barcodes_demo_barcode.ps barcodes_demo_header_chicago.ps barcodes_demo_barcode_chicago.ps | ps2pdf - - > barcodes_demo.pdf
 rm barcodes_demo_header.ps barcodes_demo_barcode.ps
+rm barcodes_demo_header_chicago.ps barcodes_demo_barcode_chicago.ps

@@ -162,7 +162,7 @@ class AccountInvoice(models.Model):
             'out_invoice': 'IV',
             'out_refund': 'NC',
         }
-        tax_types = move_lines_with_tax_type.mapped('tax_line_id.l10n_co_edi_type')
+        tax_types = self.mapped('line_ids.tax_ids.l10n_co_edi_type')
 
         taxes_amount_dict = {}
         for line in self.invoice_line_ids:

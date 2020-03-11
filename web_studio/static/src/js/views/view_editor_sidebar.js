@@ -126,6 +126,13 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         this.renamingAllowedFields = params.renamingAllowedFields;
 
         this.fields = params.fields;
+        this.fieldsInfo = params.fieldsInfo;
+        if (params.defaultOrder) {
+            if (params.defaultOrder.includes(',')) {
+                params.defaultOrder = params.defaultOrder.split(',')[0];
+            }
+            this.defaultOrder = params.defaultOrder.split(' ');
+        }
         this.orderered_fields = _.sortBy(this.fields, function (field) {
             return field.string.toLowerCase();
         });
@@ -1002,6 +1009,20 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 new_attrs: {
                     precision: JSON.stringify(newPrecision),
                 },
+            });
+        } else if (this.view_type === 'list' && ['sort_field', 'sort_order'].includes(attribute)) {
+            const new_attrs = {};
+            if (attribute === 'sort_field' && !$input.val()) {
+                this.$('#sort_order_div').addClass('d-none');
+                if (!this.defaultOrder) return;
+                new_attrs['default_order'] = '';
+            } else {
+                new_attrs ['default_order'] = this.$("#sort_field").val() + ' ' + this.$("#sort_order").val();
+            }
+            this.trigger_up('view_change', {
+                type: 'attributes',
+                structure: 'view_attribute',
+                new_attrs: new_attrs,
             });
         } else if (this.view_type === 'map' && attribute === 'routing') {
             // Remove Sort By(default_order) value when routing is disabled

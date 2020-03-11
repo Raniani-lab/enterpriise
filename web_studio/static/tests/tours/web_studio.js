@@ -290,6 +290,23 @@ tour.register('web_studio_tests_tour', {
     // re-open studio
     trigger: '.o_web_studio_navbar_item',
 }, {
+    // modify the list view
+    trigger: '.o_web_studio_sidebar .o_web_studio_view'
+}, {
+    //select field you want to sort and based on that sorting will be applied on List view
+    trigger: '.o_web_studio_sidebar .o_web_studio_sidebar_select #sort_field',
+    run: function () {
+        $('#sort_field option:eq(1)').attr('selected', 'selected');
+        $('#sort_field option:eq(1)').change();
+    }
+}, {
+    //change order of sorting, Select order and change it
+    trigger: '.o_web_studio_sidebar .o_web_studio_sidebar_select #sort_order',
+    run: function () {
+        $('#sort_order option:eq(1)').attr('selected', 'selected');
+        $('#sort_order option:eq(1)').change();
+    }
+}, {
     // edit action
     trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {

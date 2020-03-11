@@ -989,6 +989,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
             isEditingX2m: !!this.x2mField,
             // In case of a search view, the editor doesn't have state
             editorData: this.editor.state && this.editor.state.data || {},
+            fieldsInfo: this.view.fieldsInfo ? this.view.fieldsInfo[this.view_type] : false,
+            defaultOrder: this.view.arch.attrs.default_order || false,
         };
 
         if (_.contains(['list', 'form', 'kanban'], this.view_type)) {

@@ -348,6 +348,80 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('sortby and orderby field in sidebar', async function (assert) {
+        assert.expect(8);
+
+        let fieldsView;
+        let editViewCount = 0;
+
+        this.data.coucou.fields.display_name.store = true;
+        this.data.coucou.fields.char_field.store = true;
+
+        let arch = `
+            <tree default_order='char_field desc, display_name asc'>
+                <field name='display_name'/>
+                <field name='char_field'/>
+                <field name="start"/>
+            </tree>`;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            mockRPC(route, args) {
+                if (route === '/web_studio/edit_view') {
+                    editViewCount++;
+                    if (editViewCount === 1) {
+                        fieldsView.arch = `
+                            <tree default_order='display_name asc'>
+                                <field name='display_name'/>
+                                <field name='char_field'/>
+                                <field name="start"/>
+                            </tree>`;
+                    } else if (editViewCount === 2) {
+                        fieldsView.arch = `
+                            <tree default_order='display_name desc'>
+                                <field name='display_name'/>
+                                <field name='char_field'/>
+                                <field name="start"/>
+                            </tree>`;
+                    } else if (editViewCount === 3) {
+                        fieldsView.arch = `
+                            <tree>
+                                <field name='display_name'/>
+                                <field name='char_field'/>
+                                <field name="start"/>
+                            </tree>`;
+                    }
+                    return Promise.resolve({
+                        fields_views: {list: fieldsView},
+                        fields: fieldsView.fields,
+                    });
+                }
+                return this._super(...arguments);
+            },
+        });
+
+        fieldsView = JSON.parse(JSON.stringify(vem.fields_view));
+        await testUtils.dom.click(document.querySelector(".o_web_studio_sidebar .o_web_studio_view"));
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_view select#sort_field', 'Sortby select box should be exist in slidebar.');
+        assert.containsN(vem, 'select#sort_field  option[value]', 2, 'Sortby select box should contains 2 fields.');
+        assert.strictEqual(vem.$('select#sort_field').val(), 'char_field', 'First field shoud be selected from multiple fields when multiple sorting fields applied on view.');
+        assert.strictEqual(vem.$('select#sort_order').val(), 'desc', 'Default order mustbe as per first field selected.');
+
+        await testUtils.fields.editSelect(vem.$('select#sort_field'), 'display_name');
+        assert.strictEqual(vem.$('select#sort_order').val(), 'asc', 'Default order should be in ascending order.');
+        assert.doesNotHaveClass(vem.$('#sort_order_div'), 'd-none', 'Orderby field must be visible.');
+
+        await testUtils.fields.editSelect(vem.$('select#sort_order'), 'desc');
+        assert.strictEqual(vem.$('select#sort_order').val(), 'desc', 'Default order should be in descending order.');
+
+        await testUtils.fields.editSelect(vem.$('select#sort_field'), '');
+        assert.hasClass(vem.$('#sort_order_div'), 'd-none', 'Orderby field must be invisible.');
+
+        vem.destroy();
+    });
+
     QUnit.test('widget dropdown in list editor sidebar', async function (assert) {
         assert.expect(7);
 

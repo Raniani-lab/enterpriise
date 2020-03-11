@@ -55,6 +55,27 @@
                    <input type="checkbox" id="multi_edit" name="multi_edit" class="custom-control-input" t-att-checked="widget.isTrue(widget.state.attrs.multi_edit or 'false') ? 'checked' : undefined"/>
                    <label for="multi_edit" class="custom-control-label">Enable Mass Editing</label>
                 </div>
+                <div class="o_web_studio_sidebar_select">
+                    <label for="sort_field">Sort By</label>
+                    <select id="sort_field" name="sort_field">
+                        <option></option>
+                        <t t-foreach="widget.fields_in_view" t-as="field">
+                            <t t-set="fieldInfo" t-value="widget.fieldsInfo[field]"/>
+                            <t t-if="fieldInfo.optional !== 'hide' and fieldInfo.invisible !== true and field_value.store === true">
+                                <option t-att-value='field' t-att-selected="widget.defaultOrder and field ===  widget.defaultOrder[0] ? widget.defaultOrder[0] : undefined">
+                                    <t t-esc="field_value.string"/> <span t-if="widget.debug">(<t t-esc="field_value.name"/>)</span>
+                                </option>
+                            </t>
+                        </t>
+                    </select>
+                </div>
+                <div id="sort_order_div" t-att-class="'o_web_studio_sidebar_select' + (!widget.defaultOrder ? ' d-none' : '')">
+                    <label for="sort_order">Order</label>
+                    <select id="sort_order" name="sort_order">
+                            <option value="asc" t-att-selected="widget.defaultOrder and widget.defaultOrder[1] === 'asc' ? widget.defaultOrder[1] : 'asc'">Ascending</option>
+                            <option value="desc" t-att-selected="widget.defaultOrder and 'desc' ===  widget.defaultOrder[1] ? widget.defaultOrder[1] : undefined">Descending</option>
+                    </select>
+                </div>
             </t>
             <!-- Kanban view settings -->
             <t t-if="widget.view_type === 'kanban'">

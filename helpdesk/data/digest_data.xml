@@ -8,6 +8,7 @@
 
     <data>
         <record id="digest_tip_helpdesk_0" model="digest.tip">
+            <field name="name">Helpdesk: try mailgateway</field>
             <field name="sequence">3</field>
             <field name="tip_description" type="html">
 <div>

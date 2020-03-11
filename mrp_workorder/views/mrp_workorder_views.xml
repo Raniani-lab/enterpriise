@@ -206,7 +206,7 @@
                         <div class="o_workorder_field">
                             <div attrs="{'invisible': [('test_type', '=', 'register_byproducts')]}" class="o_form_label">Component</div>
                             <div attrs="{'invisible': [('test_type', '=', 'register_consumed_materials')]}" class="o_form_label">By-product</div>
-                            <field name="component_id" readonly="1"/>
+                            <field name="component_id" options="{'no_open': True}" readonly="1"/>
                         </div>
                         <div class="o_workorder_field">
                             <div class="o_workorder_lot">

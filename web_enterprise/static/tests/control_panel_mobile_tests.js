@@ -3,8 +3,8 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
 
     const testUtils = require('web.test_utils');
 
+    const cpHelpers = testUtils.controlPanel;
     const createActionManager = testUtils.createActionManager;
-    const { getHelpers: getCPHelpers } = testUtils.controlPanel;
 
     QUnit.module('Control Panel', {
         beforeEach: function () {
@@ -90,10 +90,9 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
 
             searchRPCFlag = true;
 
-            // use quick search input
-            const cpHelpers = getCPHelpers(actionManager.el);
-            await cpHelpers.editSearch("A");
-            await cpHelpers.validateSearch();
+            // use quick search input (search view is directly put in the body)
+            await cpHelpers.editSearch(document.body, "A");
+            await cpHelpers.validateSearch(document.body);
 
             // close quick search
             await testUtils.dom.click(document.querySelector('button.o_enable_searchview.fa-close'));
@@ -126,9 +125,8 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
 
             assert.containsOnce(document.body, '.o_mobile_search');
 
-            const cpHelpers = getCPHelpers(document.body, ".o_mobile_search");
-            await cpHelpers.toggleFilterMenu();
-            await cpHelpers.toggleMenuItem("Active");
+            await cpHelpers.toggleFilterMenu(document.body);
+            await cpHelpers.toggleMenuItem(document.body, "Active");
 
             // closing search view
             await testUtils.dom.click(

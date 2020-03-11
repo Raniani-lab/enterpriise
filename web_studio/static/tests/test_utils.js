@@ -173,18 +173,18 @@ function createSidebar(params) {
  * Create a ViewEditorManager widget.
  *
  * @param {Object} params
- * @return {Promise<ViewEditorManager>}
+ * @return {ViewEditorManager}
  */
-function createViewEditorManager(params) {
-    var parent = new StudioEnvironment();
+async function createViewEditorManager(params) {
+    const parent = new StudioEnvironment();
     weTestUtils.patch();
     params.data = weTestUtils.wysiwygData(params.data);
-    var mockServer = testUtils.mock.addMockEnvironment(parent, params);
-    var fieldsView = testUtils.mock.fieldsViewGet(mockServer, params);
+    const mockServer = await testUtils.mock.addMockEnvironment(parent, params);
+    const fieldsView = testUtils.mock.fieldsViewGet(mockServer, params);
     if (params.viewID) {
         fieldsView.view_id = params.viewID;
     }
-    var vem = new ViewEditorManager(parent, {
+    const vem = new ViewEditorManager(parent, {
         action: {
             context: params.context || {},
             domain: params.domain || [],
@@ -201,27 +201,21 @@ function createViewEditorManager(params) {
     });
 
     // also destroy to parent widget to avoid memory leak
-    var originalDestroy = ViewEditorManager.prototype.destroy;
+    const originalDestroy = ViewEditorManager.prototype.destroy;
     vem.destroy = function () {
         vem.destroy = originalDestroy;
         parent.destroy();
         weTestUtils.unpatch();
     };
 
-    var fragment = document.createDocumentFragment();
-    var selector = params.debug ? 'body' : '#qunit-fixture';
-    if (params.debug) {
-        $('body').addClass('debug');
-    }
-    return parent.prependTo(selector).then(function () {
-        return vem.appendTo(fragment).then(function () {
-            dom.append(parent.$('.o_web_studio_client_action'), fragment, {
-                callbacks: [{widget: vem}],
-                in_DOM: true,
-            });
-            return vem;
-        });
+    const fragment = document.createDocumentFragment();
+    await parent.prependTo(testUtils.prepareTarget(params.debug));
+    await vem.appendTo(fragment);
+    dom.append(parent.$('.o_web_studio_client_action'), fragment, {
+        callbacks: [{widget: vem}],
+        in_DOM: true,
     });
+    return vem;
 }
 
 /**

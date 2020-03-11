@@ -4,6 +4,7 @@ odoo.define('web_cohort.cohort_tests', function (require) {
 var CohortView = require('web_cohort.CohortView');
 var testUtils = require('web.test_utils');
 
+const cpHelpers = testUtils.controlPanel;
 var createView = testUtils.createView;
 var createActionManager = testUtils.createActionManager;
 var patchDate = testUtils.mock.patchDate;
@@ -154,7 +155,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('correctly sort measure items', async function (assert) {
-        assert.expect(3);
+        assert.expect(1);
 
         var data = this.data;
         // It's important to compare capitalized and lowercased words
@@ -170,9 +171,12 @@ QUnit.module('Views', {
             arch: '<cohort string="Subscription" date_start="start" date_stop="stop"/>',
         });
 
-        assert.strictEqual( $('.o_cohort_measures_list>button:first-child').html().trim(), 'Abc', 'should begin with the first alphabetical value');
-        assert.strictEqual( $('.o_cohort_measures_list>button:nth-child(4)').html().trim(), 'Zoo', 'should end with the last alphabetical value');
-        assert.strictEqual( $('.o_cohort_measures_list>button:last-child').html(), 'Count', '\'Count\' should be always the last item');
+        const buttonsEls = cpHelpers.getButtons(cohort);
+        const measureButtonEls = buttonsEls[0].querySelectorAll('.o_cohort_measures_list > button');
+        assert.deepEqual(
+            [...measureButtonEls].map(e => e.innerText.trim()),
+            ["Abc", "add", "Recurring Price", "Zoo", "Count"]
+        );
 
         cohort.destroy();
     });
@@ -289,7 +293,6 @@ QUnit.module('Views', {
 
         // Going back to cohort view
         await testUtils.dom.click(actionManager.$('.o_back_button'));
-
         // Going to the list view
         await testUtils.dom.click(actionManager.$('td div.o_cohort_value:first'));
         assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
@@ -464,52 +467,50 @@ QUnit.module('Views', {
             });
         }
 
+
         // with no comparison, with data (no filter)
         verifyContents([3]);
         assert.containsNone(actionManager, '.o_cohort_no_data');
         assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with no comparison with no data (filter on 'last_year')
-        await testUtils.dom.click($('.o_time_range_menu_button'));
-        $('.o_time_range_selector').val('last_year');
-        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+        await cpHelpers.toggleTimeRangeMenu(actionManager);
+        await cpHelpers.selectRange(actionManager, 'last_year');
+        await cpHelpers.applyTimeRange(actionManager);
 
         verifyContents([]);
         assert.containsNone(actionManager, '.o_cohort_no_data');
         assert.containsOnce(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
-        await testUtils.dom.click($('.o_time_range_menu_button'));
-        await testUtils.dom.click($('.o_time_range_menu .o_comparison_checkbox'));
-        $('.o_time_range_selector').val('this_month');
-        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+
+        await cpHelpers.toggleTimeRangeMenuBox(actionManager);
+        await cpHelpers.selectRange(actionManager, 'this_month');
+        await cpHelpers.applyTimeRange(actionManager);
 
         verifyContents(['This Month', 2, 'Previous Period', 1]);
         assert.containsNone(actionManager, '.o_cohort_no_data');
         assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
-        await testUtils.dom.click($('.o_time_range_menu_button'));
-        $('.o_time_range_selector').val('this_year');
-        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+        await cpHelpers.selectRange(actionManager, 'this_year');
+        await cpHelpers.applyTimeRange(actionManager);
 
         verifyContents(['This Year', 3, 'Previous Period']);
         assert.containsOnce(actionManager, '.o_cohort_no_data');
         assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, no data, comparisonData (filter on 'today' + 'previous_period')
-        await testUtils.dom.click($('.o_time_range_menu_button'));
-        $('.o_time_range_selector').val('today');
-        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+        await cpHelpers.selectRange(actionManager, 'today');
+        await cpHelpers.applyTimeRange(actionManager);
 
         verifyContents(['Today', 'Previous Period', 1]);
         assert.containsOnce(actionManager, '.o_cohort_no_data');
         assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')
-        await testUtils.dom.click($('.o_time_range_menu_button'));
-        $('.o_time_range_selector').val('last_year');
-        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+        await cpHelpers.selectRange(actionManager, 'last_year');
+        await cpHelpers.applyTimeRange(actionManager);
 
         verifyContents([]);
         assert.containsNone(actionManager, '.o_cohort_no_data');

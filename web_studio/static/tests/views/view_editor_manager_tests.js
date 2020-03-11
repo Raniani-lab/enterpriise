@@ -758,7 +758,6 @@ QUnit.module('ViewEditorManager', {
         var vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
             model: 'partner',
-            debug: true,
             arch: arch,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_view') {
@@ -1637,7 +1636,6 @@ QUnit.module('ViewEditorManager', {
 
         var vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
-            debug: true,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
@@ -1660,7 +1658,6 @@ QUnit.module('ViewEditorManager', {
 
         var vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
-            debug: true,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +

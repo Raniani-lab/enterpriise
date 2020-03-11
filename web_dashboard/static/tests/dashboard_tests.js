@@ -8,6 +8,7 @@ var testUtils = require('web.test_utils');
 var Widget = require('web.Widget');
 var widgetRegistry = require('web.widget_registry');
 
+const cpHelpers = testUtils.controlPanel;
 var createActionManager = testUtils.createActionManager;
 var createView = testUtils.createView;
 var patchDate = testUtils.mock.patchDate;
@@ -42,8 +43,8 @@ QUnit.module('Views', {
                     categ_id: {string: "categ_id", type: 'many2one', relation: 'test_report'},
                     sold: {string: "Sold", type: 'float', store: true, group_operator: 'sum'},
                     untaxed: {string: "Untaxed", type: 'float', group_operator: 'sum', store: true},
-                    date: {string: "Date", type: 'date', sortable: true},
-                    transformation_date: {string: "Transformation Date", type: 'datetime', sortable: true},
+                    date: {string: "Date", type: 'date', store: true, sortable: true},
+                    transformation_date: {string: "Transformation Date", type: 'datetime', store: true, sortable: true},
                 },
                 records: [{
                     display_name: "First",
@@ -885,10 +886,10 @@ QUnit.module('Views', {
                 return this._super.apply(this, arguments);
             },
         });
-
-        assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item[data-field=sold]'), 'selected',
+        await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
+        assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Sold)'), 'selected',
             "sold measure should be active in graph view");
-        assert.doesNotHaveClass(dashboard.$('.o_graph_measures_list .dropdown-item[data-field=untaxed]'), 'selected',
+        assert.doesNotHaveClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Untaxed)'), 'selected',
             "untaxed measure should not be active in graph view");
         assert.hasClass(dashboard.$('.o_pivot_measures_list .dropdown-item[data-field=sold]'), 'selected',
             "sold measure should be active in pivot view");
@@ -897,10 +898,10 @@ QUnit.module('Views', {
 
         // click on the 'untaxed' field: it should activate the 'untaxed' measure in both subviews
         await testUtils.dom.click(dashboard.$('.o_aggregate[name=untaxed]'));
-
-        assert.doesNotHaveClass(dashboard.$('.o_graph_measures_list .dropdown-item[data-field=sold]'), 'selected',
+        await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
+        assert.doesNotHaveClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Sold)'), 'selected',
             "sold measure should not be active in graph view");
-        assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item[data-field=untaxed]'), 'selected',
+        assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Untaxed)'), 'selected',
             "untaxed measure should be active in graph view");
         assert.doesNotHaveClass(dashboard.$('.o_pivot_measures_list .dropdown-item[data-field=sold]'), 'selected',
             "sold measure should not be active in pivot view");
@@ -1121,17 +1122,17 @@ QUnit.module('Views', {
         assert.strictEqual($('.o_control_panel .breadcrumb-item').text(), 'Dashboard',
             "'Dashboard' should be displayed in the breadcrumbs");
 
+
         // activate 'Category 1' filter
-        await testUtils.dom.click($('.o_dropdown_toggler_btn:contains(Filter)'));
-        await testUtils.dom.click($('.o_control_panel .o_filters_menu a:contains(Category 1)'));
-        assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Category 1',
-            "the filter should appear in the search view");
+        await cpHelpers.toggleFilterMenu(actionManager);
+        await cpHelpers.toggleMenuItem(actionManager, 0);
+        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), ['Category 1']);
 
         // open graph in fullscreen
         await testUtils.dom.click(actionManager.$('.o_graph_buttons .o_button_switch'));
         assert.strictEqual($('.o_control_panel .breadcrumb-item:nth(1)').text(), 'Graph Analysis',
             "'Graph Analysis' should have been stacked in the breadcrumbs");
-        assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Category 1',
+        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), ['Category 1'],
             "the filter should have been kept");
 
         // go back using the breadcrumbs
@@ -1193,21 +1194,20 @@ QUnit.module('Views', {
             views: [[false, 'dashboard']],
         });
 
+
         assert.strictEqual($('.o_control_panel .breadcrumb li').text(), 'Dashboard',
             "'Dashboard' should be displayed in the breadcrumbs");
 
         // activate 'Category 1' filter
-        await testUtils.dom.click($('.o_dropdown_toggler_btn:contains(Filter)'));
-        await testUtils.dom.click($('.o_control_panel .o_filters_menu a:contains(Category 1)'));
-        assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Category 1',
-            "the filter should appear in the search view");
+        await cpHelpers.toggleFilterMenu(actionManager);
+        await cpHelpers.toggleMenuItem(actionManager, 0);
+        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), ['Category 1']);
 
-        // open graph in fullscreen
+        // open cohort in fullscreen
         await testUtils.dom.click(actionManager.$('.o_cohort_buttons .o_button_switch'));
         assert.strictEqual($('.o_control_panel .breadcrumb li:nth(1)').text(), 'Cohort Analysis',
             "'Cohort Analysis' should have been stacked in the breadcrumbs");
-        assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Category 1',
-            "the filter should have been kept");
+        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), ['Category 1']);
 
         // go back using the breadcrumbs
         await testUtils.dom.click($('.o_control_panel .breadcrumb a'));
@@ -1274,11 +1274,11 @@ QUnit.module('Views', {
 
         // select 'untaxed' as measure
         activeMeasure = 'untaxed';
-        assert.containsOnce(dashboard, '.o_graph_buttons .dropdown-item[data-field=untaxed]',
+        await testUtils.dom.click($('.o_graph_buttons button:contains(Measures)'));
+        assert.containsOnce(dashboard, '.o_graph_buttons .dropdown-item:contains(Untaxed)',
             "should have 'untaxed' in the list of measures");
 
-        await testUtils.dom.click($('button.dropdown-toggle:contains(Measures)'));
-        await testUtils.dom.click(dashboard.$('.o_graph_buttons .dropdown-item[data-field=untaxed]'));
+        await testUtils.dom.click(dashboard.$('.o_graph_buttons .dropdown-item:contains(Untaxed)'));
 
         // open graph in fullscreen
         await testUtils.dom.click(dashboard.$('.o_graph_buttons .o_button_switch'));
@@ -1338,7 +1338,7 @@ QUnit.module('Views', {
         activeMeasure = 'untaxed';
         assert.containsOnce(dashboard, '.o_cohort_buttons [data-field=untaxed]',
         "should have 'untaxed' in the list of measures");
-        testUtils.dom.click($('button.dropdown-toggle:contains(Measures)'));
+        testUtils.dom.click($('button:contains(Measures)'));
         testUtils.dom.click(dashboard.$('.o_cohort_buttons [data-field=untaxed]'));
 
         // open cohort in fullscreen
@@ -1398,7 +1398,9 @@ QUnit.module('Views', {
             },
         });
 
-        assert.containsOnce(dashboard, '.o_graph_buttons .dropdown-item[data-field=product_id]',
+        await testUtils.dom.click($('.o_graph_buttons button:contains(Measures)'));
+
+        assert.containsOnce(dashboard, '.o_graph_buttons .dropdown-item:contains(Product)',
             "should have 'Product' as a measure in the graph view");
         assert.containsOnce(dashboard, '.o_pivot_measures_list .dropdown-item[data-field=product_id]',
             "should have 'Product' as measure in the pivot view");
@@ -1453,11 +1455,11 @@ QUnit.module('Views', {
         });
 
         // select 'untaxed' as measure in graph view
-        await testUtils.dom.click($('.o_graph_buttons button.dropdown-toggle:contains(Measures)'));
-        await testUtils.dom.click(actionManager.$('.o_graph_buttons .dropdown-item[data-field=untaxed]'));
+        await testUtils.dom.click($('.o_graph_buttons button:contains(Measures)'));
+        await testUtils.dom.click(actionManager.$('.o_graph_buttons .dropdown-item:contains(Untaxed)'));
 
         // select 'untaxed' as additional measure in pivot view
-        await testUtils.dom.click($('.o_pivot_buttons button.dropdown-toggle:contains(Measures)'));
+        await testUtils.dom.click($('.o_pivot_buttons button:contains(Measures)'));
         await testUtils.dom.click(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'));
 
         // open graph in fullscreen
@@ -1489,7 +1491,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('open subview fullscreen, update domain and come back', async function (assert) {
-        assert.expect(7);
+        assert.expect(8);
 
         var actionManager = await createActionManager({
             data: this.data,
@@ -1503,6 +1505,7 @@ QUnit.module('Views', {
                     '</graph>',
                 'test_report,false,search': '<search>' +
                        '<filter name="sold" help="Sold" domain="[(\'sold\', \'=\', 10)]"/>' +
+                       '<filter name="buy" help="Buy" domain="[(\'sold\', \'=\', -10)]"/>' +
                     '</search>',
             },
             mockRPC: function (route, args) {
@@ -1525,25 +1528,28 @@ QUnit.module('Views', {
             views: [[false, 'dashboard']],
         });
 
+
         // open graph in fullscreen
         await testUtils.dom.click(actionManager.$('.o_graph_buttons .o_button_switch'));
 
         // filter on bar
-        await testUtils.dom.click($('.o_dropdown_toggler_btn:contains(Filter)'));
-        await testUtils.dom.click($('.o_control_panel .o_filters_menu a:contains(Sold)'));
-        assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Sold',
-            "should correctly display the filter in the search view");
+        await cpHelpers.toggleFilterMenu(actionManager);
+        await cpHelpers.toggleMenuItem(actionManager, 0);
+        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), ['Sold']);
 
         // go back using the breadcrumbs
         await testUtils.dom.click($('.o_control_panel .breadcrumb a'));
-        assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), '',
-            "should not display the filter in the search view");
+        assert.deepEqual(cpHelpers.getFacetTexts(actionManager), []);
+
+        await cpHelpers.toggleFilterMenu(actionManager);
+        await cpHelpers.toggleMenuItem(actionManager, 1);
 
         assert.verifySteps([
             ' ', // graph in dashboard
             ' ', // graph full screen
-            'sold=10', // graph full screen with filter applied
+            'sold=10', // graph full screen with first filter applied
             ' ', // graph in dashboard after coming back
+            'sold=-10', // graph in dashboard with second filter applied
         ]);
 
         actionManager.destroy();
@@ -1621,8 +1627,8 @@ QUnit.module('Views', {
             graph_groupbys: ['categ_id'],
         }, "context should be correct");
 
-        await testUtils.dom.click(dashboard.$('.dropdown-toggle:contains(Measures)'));
-        await testUtils.dom.click(dashboard.$('.dropdown-item[data-field="sold"]'));
+        await testUtils.dom.click(dashboard.$('button:contains(Measures)'));
+        await testUtils.dom.click(dashboard.$('.dropdown-item:contains(Sold)'));
         await testUtils.dom.click(dashboard.$('button[data-mode="line"]'));
 
         assert.deepEqual(dashboard.getOwnedQueryParams().context.graph, {
@@ -1948,12 +1954,15 @@ QUnit.module('Views', {
             },
         });
 
+
         await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
         await testUtils.dom.click(dashboard.$('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1));
         assert.hasClass(dashboard.$('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
-        await testUtils.dom.click(dashboard.$('.o_search_options button span.fa-filter'));
-        await testUtils.dom.click(dashboard.$('.o_filters_menu .o_menu_item a:first'));
+
+        await cpHelpers.toggleFilterMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 0);
+        await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
         assert.hasClass(dashboard.$('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
 
@@ -1989,7 +1998,8 @@ QUnit.module('Views', {
 
         // click on aggregate to activate count measure
         await testUtils.dom.click(dashboard.$('.o_aggregate:first .o_value'));
-        assert.hasClass(dashboard.$('.o_graph_measures_list [data-field=\'__count__\']'), 'selected',
+        await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
+        assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Count)'), 'selected',
             'count measure should be selected in graph view');
         assert.hasClass(dashboard.$('.o_pivot_measures_list [data-field=\'__count\']'), 'selected',
             'count measure should be selected in pivot view');
@@ -2026,7 +2036,8 @@ QUnit.module('Views', {
 
         // click on aggregate to activate untaxed measure
         await testUtils.dom.click(dashboard.$('.o_aggregate:nth(1) .o_value'));
-        assert.hasClass(dashboard.$('.o_graph_measures_list [data-field=\'untaxed\']'), 'selected',
+        await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
+        assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Untaxed)'), 'selected',
             'untaxed measure should be selected in graph view');
         assert.hasClass(dashboard.$('.o_pivot_measures_list [data-field=\'untaxed\']'), 'selected',
             'untaxed measure should be selected in pivot view');
@@ -2061,11 +2072,14 @@ QUnit.module('Views', {
             },
         });
 
+
         await testUtils.dom.click(dashboard.$('.o_cohort_buttons button:first'));
         await testUtils.dom.click(dashboard.$('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1));
         assert.hasClass(dashboard.$('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
-        await testUtils.dom.click(dashboard.$('.o_search_options button span.fa-filter'));
+
+        await cpHelpers.toggleFilterMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 0);
         assert.hasClass(dashboard.$('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
 
@@ -2103,7 +2117,8 @@ QUnit.module('Views', {
                     "Clickable = false aggregate should not be clickable");
 
         await testUtils.dom.click(dashboard.$('div[name="c"]'));
-        assert.hasClass(dashboard.$('.o_graph_measures_list [data-field="sold"]'), 'selected',
+        await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
+        assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Sold)'), 'selected',
                     "Measure on graph should not have changed");
 
         dashboard.destroy();
@@ -2210,18 +2225,18 @@ QUnit.module('Views', {
             },
         });
 
+
         assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply time range with today
-        await testUtils.dom.click(dashboard.$('button.o_time_range_menu_button'));
-        dashboard.$('.o_time_range_selector').val('today');
-        await testUtils.dom.click(dashboard.$('.o_apply_range'));
+        await cpHelpers.toggleTimeRangeMenu(dashboard);
+        await cpHelpers.selectRange(dashboard, 'today');
+        await cpHelpers.applyTimeRange(dashboard);
         assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply range with today and comparison with previous period
-        await testUtils.dom.click(dashboard.$('button.o_time_range_menu_button'));
-        await testUtils.dom.click(dashboard.$('.o_comparison_checkbox'));
-        await testUtils.dom.click(dashboard.$('.o_apply_range'));
+        await cpHelpers.toggleTimeRangeMenuBox(dashboard);
+        await cpHelpers.applyTimeRange(dashboard);
         assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "300%");
         assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "The value is 16.00 vs The value is 4.00");
 
@@ -2247,9 +2262,10 @@ QUnit.module('Views', {
             },
         });
 
-        await testUtils.dom.click(dashboard.$('.o_time_range_menu_button'));
-        await testUtils.dom.click(dashboard.$('.o_time_range_menu .o_comparison_checkbox'));
-        await testUtils.dom.click(dashboard.$('.o_time_range_menu .o_apply_range'));
+
+        await cpHelpers.toggleTimeRangeMenu(dashboard);
+        await cpHelpers.toggleTimeRangeMenuBox(dashboard);
+        await cpHelpers.applyTimeRange(dashboard);
 
         // The test should be modified and extended.
         assert.strictEqual(dashboard.$('.o_cohort_view div.o_view_nocontent').length, 1);
@@ -2312,28 +2328,27 @@ QUnit.module('Views', {
             },
         });
 
+
         assert.strictEqual(dashboard.$('.o_aggregate .o_value').text().trim(), "8.00");
 
         // Apply time range with today
-        await testUtils.dom.click(dashboard.$('button.o_time_range_menu_button'));
-        dashboard.$('.o_time_range_selector').val('today');
-        await testUtils.dom.click(dashboard.$('.o_apply_range'));
+        await cpHelpers.toggleTimeRangeMenu(dashboard);
+        await cpHelpers.selectRange(dashboard, 'today');
+        await cpHelpers.applyTimeRange(dashboard);
         assert.strictEqual(dashboard.$('.o_aggregate .o_value').text().trim(), "16.00");
         assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply range with today and comparison with previous period
-        await testUtils.dom.click(dashboard.$('button.o_time_range_menu_button'));
-        await testUtils.dom.click(dashboard.$('.o_comparison_checkbox'));
-        await testUtils.dom.click(dashboard.$('.o_apply_range'));
+        await cpHelpers.toggleTimeRangeMenuBox(dashboard);
+        await cpHelpers.applyTimeRange(dashboard);
         assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "300%");
         assert.hasClass(dashboard.$('.o_aggregate'), 'border-success');
         assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "16.00 vs 4.00");
 
         // Apply range with last week and comparison with last year
-        await testUtils.dom.click(dashboard.$('button.o_time_range_menu_button'));
-        dashboard.$('.o_time_range_selector').val('last_week');
-        dashboard.$('.o_comparison_time_range_selector').val('previous_year');
-        await testUtils.dom.click(dashboard.$('.o_apply_range'));
+        await cpHelpers.selectRange(dashboard, 'last_week');
+        await cpHelpers.selectComparisonRange(dashboard, 'previous_year');
+        await cpHelpers.applyTimeRange(dashboard);
         assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "-75%");
         assert.hasClass(dashboard.$('.o_aggregate'), 'border-danger');
         assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "4.00 vs 16.00");
@@ -2425,6 +2440,107 @@ QUnit.module('Views', {
 
         // There should a unique do_action triggered.
         assert.verifySteps(['do_action']);
+
+        dashboard.destroy();
+    });
+
+    QUnit.test('groupby selected within graph subview are not deleted when modifying search view content', async function (assert) {
+        assert.expect(2);
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_time_range',
+            data: this.data,
+            arch: '<dashboard>' +
+                        '<view type="graph" ref="some_xmlid"/>' +
+                    '</dashboard>',
+            archs: {
+                'test_time_range,some_xmlid,graph': `<graph>
+                        <field name="transformation_date" type="row" interval="day"/>
+                        <field name="sold" type="measure"/>
+                    </graph>`,
+                'test_time_range,false,search': `
+                    <search>
+                        <filter string="float" name="positive" domain="[['sold', '>=', 2]]"/>
+                    </search>`,
+            },
+        });
+        const el = dashboard.el;
+
+        await testUtils.dom.click(el.querySelectorAll('.o_graph_buttons button')[1]);
+        await testUtils.dom.click(el.querySelectorAll('.o_graph_buttons .o_menu_item > a')[1]);
+        await testUtils.dom.click(el.querySelectorAll('.o_graph_buttons .o_menu_item .o_item_option > a')[4]);
+        assert.doesNotHaveClass(el.querySelectorAll('.o_graph_buttons .o_menu_item > a')[1], 'selected',
+            'groupby should be unselected');
+        await cpHelpers.toggleFilterMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 0);
+
+        await testUtils.dom.click(el.querySelectorAll('.o_graph_buttons button')[1]);
+        assert.doesNotHaveClass(el.querySelectorAll('.o_graph_buttons .o_menu_item > a')[1], 'selected',
+            'groupby should be still unselected');
+        dashboard.destroy();
+    });
+
+    QUnit.test('groupbys in "Group By" menu of graph subviews', async function (assert) {
+        assert.expect(16);
+
+        this.data.test_time_range.fields.categ_id.store = true;
+        this.data.test_time_range.fields.categ_id.sortable = true;
+
+        const groupBys = [
+            [],
+            ['categ_id'],
+            ['categ_id', 'date:day'],
+            ['categ_id', 'date:day'], //graph view keeps only finer option when fetching data
+            ['date:day'],
+            ['date:quarter'],
+        ]
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_time_range',
+            data: this.data,
+            arch: '<dashboard><view type="graph" ref="some_xmlid"/></dashboard>',
+            archs: {
+                'test_time_range,some_xmlid,graph': '<graph>' +
+                        '<field name="sold" type="measure"/>' +
+                    '</graph>',
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'read_group') {
+                    assert.deepEqual(args.kwargs.groupby, groupBys.shift(),
+                        "should group by the correct field");
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        assert.containsOnce(dashboard, '.o_subview .o_graph_buttons',
+            "should have rendered the graph view's buttons");
+
+        await cpHelpers.toggleGroupByMenu(dashboard);
+
+        await cpHelpers.toggleMenuItem(dashboard, 'categ_id');
+        assert.ok(cpHelpers.isItemSelected(dashboard, 'categ_id'));
+
+        await cpHelpers.toggleMenuItem(dashboard, 'Date');
+        assert.notOk(cpHelpers.isItemSelected(dashboard, 'Date'));
+
+        await cpHelpers.toggleMenuItemOption(dashboard, 'Date', 'Day');
+        assert.ok(cpHelpers.isItemSelected(dashboard, 'Date'));
+        assert.ok(cpHelpers.isOptionSelected(dashboard, 'Date', 'Day'));
+
+        await cpHelpers.toggleMenuItemOption(dashboard, 'Date', 'Quarter');
+        assert.ok(cpHelpers.isOptionSelected(dashboard, 'Date', 'Day'));
+        assert.ok(cpHelpers.isOptionSelected(dashboard, 'Date', 'Quarter'));
+
+        await cpHelpers.toggleMenuItem(dashboard, 'categ_id');
+        await cpHelpers.toggleMenuItem(dashboard, 'Date'); // re-open the 'Date' section
+        assert.notOk(cpHelpers.isItemSelected(dashboard, 'categ_id'));
+
+        await cpHelpers.toggleMenuItemOption(dashboard, 'Date', 'Day');
+        assert.notOk(cpHelpers.isOptionSelected(dashboard, 'Date', 'Day'));
+        assert.ok(cpHelpers.isOptionSelected(dashboard, 'Date', 'Quarter'));
 
         dashboard.destroy();
     });

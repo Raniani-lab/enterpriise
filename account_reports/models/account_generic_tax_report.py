@@ -61,8 +61,9 @@ class generic_tax_report(models.AbstractModel):
                     tax.tax_group_id as tax_group_id,
                     tax.name as tax_name,
                     "account_move_line".account_id, COALESCE(SUM("account_move_line".debit-"account_move_line".credit), 0) as amount
-                    FROM account_tax tax, %s
-                    WHERE %s AND tax.id = "account_move_line".tax_line_id AND "account_move_line".tax_exigible
+                    FROM account_tax tax, account_tax_repartition_line repartition, %s
+                    WHERE %s AND tax.id = "account_move_line".tax_line_id AND repartition.id = "account_move_line".tax_repartition_line_id
+                          AND "account_move_line".tax_exigible AND repartition.use_in_tax_closing
                     GROUP BY tax.tax_group_id, "account_move_line".tax_line_id, tax.name, "account_move_line".account_id
                 """
         tables, where_clause, where_params = self.env['account.move.line']._query_get()

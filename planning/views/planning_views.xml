@@ -56,10 +56,9 @@
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>
-                            <label for="start_datetime" string="Date"/>
-                            <div class="o_row">
-                                <field name="start_datetime" widget="daterange" options='{"related_end_date": "end_datetime"}'/>
+                            <field name="start_datetime" string="Date" widget="daterange" options='{"related_end_date": "end_datetime"}'/>
                                 <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                            <div class="o_row">
                                 <field name="end_datetime" widget="daterange" options='{"related_start_date": "start_datetime"}'/>
                             </div>
                             <field name="allocated_percentage" groups="planning.group_planning_show_percentage"/>

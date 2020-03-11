@@ -25,10 +25,27 @@ class PlanningShift(models.Model):
 
     project_id = fields.Many2one('project.project', string="Project", domain="[('company_id', '=', company_id), ('allow_forecast', '=', True)]", check_company=True, group_expand='_read_group_project_id')
     task_id = fields.Many2one('project.task', string="Task", domain="[('company_id', '=', company_id), ('project_id', '=?', project_id)]", check_company=True)
+    planned_hours = fields.Float("Initially Planned Hours", related="task_id.planned_hours")
+    allow_forecast = fields.Boolean(related="project_id.allow_forecast")
+    forecast_hours = fields.Float("Forecast Hours", compute='_compute_forecast_hours', help="Number of hours already forecast for this task (and its sub-tasks).")
 
     _sql_constraints = [
         ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "If the planning is linked to a task, the project must be set too."),
     ]
+
+    @api.depends('task_id', 'allocated_hours', 'project_id')
+    def _compute_forecast_hours(self):
+        for slot in self:
+            # Compare with _origin because the number of hours of the task is not yet modified.
+            if not slot.task_id:
+                slot.forecast_hours = 0
+            elif slot._origin.allocated_hours != slot.allocated_hours:
+                if slot._origin.task_id == slot.task_id:
+                    slot.forecast_hours = slot.task_id.forecast_hours - slot._origin.allocated_hours + slot.allocated_hours
+                else:
+                    slot.forecast_hours = slot.task_id.forecast_hours + slot.allocated_hours
+            else:
+                slot.forecast_hours = slot.task_id.forecast_hours
 
     @api.onchange('task_id')
     def _onchange_task_id(self):

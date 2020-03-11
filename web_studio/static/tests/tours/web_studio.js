@@ -743,4 +743,77 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     trigger: '.o_web_studio_leave',
 }]);
 
+tour.register('web_studio_approval_tour', {
+    url: "/web",
+    test: true,
+}, [{
+    // go to Apps menu
+    trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
+}, {
+    // open studio
+    trigger: '.o_main_navbar .o_web_studio_navbar_item',
+    extra_trigger: '.o_cp_switch_buttons',
+}, {
+    // switch to form view editor
+    trigger: '.o_web_studio_views_icons a[data-name="form"]',
+}, {
+    // click on first button it finds that has a node id
+    trigger: '.o_web_studio_form_view_editor button[data-node-id]',
+}, {
+    // enable approvals for the button
+    trigger: '.o_web_studio_sidebar label[for="studio_approval"]',
+}, {
+    // set approval message
+    trigger: '.o_web_studio_sidebar_approval input[name*="approval_message"]',
+    run: 'text nope',
+}, {
+    // add approval rule
+    trigger: '.o_web_studio_sidebar_approval .o_approval_new',
+    extra_trigger: '.o_web_studio_snackbar .fa-check',
+}, {
+    // set domain on first rule
+    trigger: '.o_web_studio_sidebar_approval .o_approval_domain',
+    extra_trigger: '.o_web_studio_snackbar .fa-check',
+}, {
+    // set stupid domain that is always truthy
+    trigger: '.o_domain_debug_container input',
+    run: function () {
+        this.$anchor.focusIn();
+        this.$anchor.val('[["id", "!=", False]]');
+        this.$anchor.change();
+    }
+}, {
+    // save domain and close modal
+    trigger:' .modal-footer .btn-primary',
+    extra_trigger: '.o_domain_leaf_edition',
+}, {
+    // add second approval rule when the first is set
+    trigger: '.o_web_studio_sidebar_approval .o_approval_new',
+    extra_trigger: '.o_web_studio_snackbar .fa-check',
+}, {
+    // enable 'force different users' for one rule (doesn't matter which)
+    trigger: '.o_web_studio_sidebar label[for*="exclusive_user"]',
+    extra_trigger: '.o_web_studio_snackbar .fa-check',
+}, {
+    // leave studio
+    trigger: '.o_web_studio_leave',
+    extra_trigger: '.o_web_studio_snackbar .fa-check',
+}, {
+    // go back to kanban
+    trigger: '.o_menu_brand',
+    extra_trigger: '.o_web_client:not(.o_in_studio)'
+}, {
+    // open first record (should be the one that was used, so the button should be there)
+    trigger: '.o_kanban_view .o_kanban_record .o_dropdown_kanban .dropdown-toggle',
+}, {
+    trigger: '.dropdown-menu.show .dropdown-item',
+},{
+    // try to do the action
+    trigger: 'button[studio_approval]',
+}, {
+    // there should be a warning
+    trigger: '.o_notification.bg-warning'
+}
+]);
+
 });

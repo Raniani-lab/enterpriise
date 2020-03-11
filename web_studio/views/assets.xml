@@ -6,6 +6,11 @@
     <template id="assets_backend" name="Web Studio Assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/web_studio/static/src/js/background_image.js"></script>
+            <!-- can not be in the lazy load bundle because this is a global behaviour -->
+            <script type="text/javascript" src="/web_studio/static/src/js/approval_component.js"></script>
+            <link rel="stylesheet" type="text/scss" href="/web_studio/static/src/scss/approval_component.scss"/>
+            <script type="text/javascript" src="/web_studio/static/src/js/views/renderers/form_renderer.js"></script>
+            <script type="text/javascript" src="/web_studio/static/src/js/views/controllers/form_controller.js"></script>
         </xpath>
     </template>
 
@@ -167,6 +172,7 @@
             <script type="text/javascript" src="/web_studio/static/tests/reports/report_editor_components_tests.js"></script>
 
             <script type="text/javascript" src="/web_studio/static/tests/views/view_editor_manager_tests.js"></script>
+            <script type="text/javascript" src="/web_studio/static/tests/views/form_tests.js"></script>
         </xpath>
     </template>
 </data>

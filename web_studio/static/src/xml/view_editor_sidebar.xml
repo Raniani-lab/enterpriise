@@ -388,10 +388,10 @@
                         <t t-call="web_studio.Sidebar.XMLEditor"/>
                     </t>
                     <t t-if="_.contains(['list', 'form'], widget.view_type)">
-                        <button class="btn btn-secondary o_web_studio_defaults">Default Values</button>
+                        <button class="btn btn-secondary btn-lg o_web_studio_defaults">Default Values</button>
                     </t>
                 </div>
-                <button class="btn btn-danger float-right o_web_studio_restore">Restore Default View</button>
+                <button class="btn btn-danger btn-lg float-right o_web_studio_restore">Restore Default View</button>
             </t>
         </t>
     </div>
@@ -423,6 +423,9 @@
         </t>
         <div t-if="widget.state.node.tag === 'img'" class="o_web_studio_sidebar_content o_display_img">
             <t t-call="web_studio.ViewEditorSidebar.img"/>
+        </div>
+        <div t-if="widget.state.node.tag === 'button'" class="o_web_studio_sidebar_content o_web_studio_sidebar_approval">
+            <t t-call="web_studio.ViewEditorSidebar.approval"/>
         </div>
         <div t-if="widget.state.node.tag === 'button'" class="o_web_studio_sidebar_content o_display_button">
             <t t-call="web_studio.ViewEditorSidebar.button"/>
@@ -720,14 +723,46 @@
     </t>
 </t>
 
+<!-- ApprovalEditor -->
+<t t-name="web_studio.ViewEditorSidebar.approval">
+    <h3>Approvals</h3>
+    <t t-set="studio_approval" t-value="widget.state.attrs.studio_approval &amp;&amp; widget.isTrue(widget.state.attrs.studio_approval)"/>
+    <div class="o_web_studio_sidebar_checkbox">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox"
+                   id="studio_approval"
+                   name="studio_approval"
+                   class="custom-control-input"
+                   t-att-checked="studio_approval ? 'checked' : undefined"
+                   data-leave-empty='unchecked'
+            />
+            <label for="studio_approval" class="custom-control-label">Set approval rules</label>
+        </div>
+    </div>
+    <t t-if="studio_approval">
+        <t t-set="has_approval_rules" t-value="!!widget.state.approvalData.rules"/>
+        <t t-if="has_approval_rules">
+            <t t-foreach="widget.state.approvalData.rules" t-as="rule">
+                <t t-call="web_studio.ViewEditorSidebar.ApprovalRule"/>
+            </t>
+        </t>
+        <div>
+            <a href="#" role="button" class="o_web_studio_sidebar_btn_link o_approval_new">Add an approval rule</a>
+        </div>
+        <hr/>
+    </t>
+</t>
+
 <!-- ButtonEditor -->
 <t t-name="web_studio.ViewEditorSidebar.button">
+    <!-- Stat button customization section -->
     <div t-if="widget.is_stat_btn" class="o_web_studio_sidebar_text o_web_studio_sidebar_iscode">
         <label>Icon</label>
         <input name="icon" type="text"
             t-att-value="widget.state.attrs.icon"/>
     </div>
-    <t t-else="">
+    <!-- Rainbow man section -->
+    <t t-if="widget.showRainbowMan">
         <h3>Rainbow Man</h3>
         <t t-set="rainbow" t-value="widget.state.attrs.effect"/>
         <div class="o_web_studio_sidebar_checkbox">
@@ -757,8 +792,8 @@
                 </div>
             </div>
             <div class="text-center">
-                <button class="btn btn-secondary o_img_upload"><i class="fa fa-upload"/> Change Image</button>
-                <button t-if="rainbow.img_url" class="btn btn-secondary o_img_reset"><i class="fa fa-undo"/>Reset Image</button>
+                <button class="btn btn-secondary btn-lg o_img_upload"><i class="fa fa-upload"/> Change Image</button>
+                <button t-if="rainbow.img_url" class="btn btn-secondary btn-lg o_img_reset"><i class="fa fa-undo"/>Reset Image</button>
             </div>
             <span class="d-none">
                 <t t-call="HiddenInputFile">
@@ -831,6 +866,47 @@
         </div>
     </div>
 </t>
+
+<!-- ApprovalRule-->
+<div t-name="web_studio.ViewEditorSidebar.ApprovalRule" class="o_studio_sidebar_approval_rule">
+    <div>
+        <label t-attf-for="rule_group_{{rule.id}}" title="Only members of this group will be able to approve or reject the rule.">Approval Group</label>
+        <div class="o_approval_group" t-att-data-rule-id="rule.id" t-att-data-group-id="rule.group_id[0]">
+            <button
+                t-attf-class="btn btn-sm btn-dark o_approval_domain {{rule.domain?'':'inactive'}}"
+                t-att-data-rule-id="rule.id"
+                t-att-title="rule.domain?'Edit rule condition':'Set condition on rule'">
+                <i class="fa fa-fw fa-filter"/>
+            </button>
+            <button
+                class="btn btn-sm btn-dark inactive o_approval_archive"
+                t-att-data-rule-id="rule.id"
+                title="Remove rule">
+                <i class="fa fa-fw fa-trash"/>
+            </button>
+        </div>
+    </div>
+    <div class="o_web_studio_sidebar_text">
+        <input t-attf-id="approval_message_{{rule.id}}" t-att-data-rule-id="rule.id" t-attf-name="approval_message_{{rule.id}}" type="text"
+            t-att-value="rule.message || null" placeholder="Add a description..."/>
+    </div>
+    <div class="o_web_studio_sidebar_checkbox mt4">
+        <div class="custom-control custom-checkbox">
+            <input
+                type="checkbox"
+                t-attf-id="exclusive_user_{{rule.id}}"
+                t-attf-name="exclusive_user_{{rule.id}}"
+                class="custom-control-input"
+                t-att-data-rule-id="rule.id"
+                t-att-checked="rule.exclusive_user ? 'checked' : undefined"/>
+            <label t-attf-for="exclusive_user_{{rule.id}}"
+                    class="custom-control-label"
+                    title="The user who approves this rule will not be able to approve other rules for the same record.">
+                Limit approver to this rule
+            </label>
+        </div>
+    </div>
+</div>
 
 <div t-name="web_studio.ExistingFieldsInputSearch">
     <input type="text" class="o_web_studio_sidebar_search_input" placeholder="Search..." />

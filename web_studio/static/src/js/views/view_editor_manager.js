@@ -42,6 +42,11 @@ var Editors = {
 
 var ViewEditorManager = AbstractEditorManager.extend({
     custom_events: _.extend({}, AbstractEditorManager.prototype.custom_events, {
+        approval_archive: '_onApprovalArchive',
+        approval_change: '_onApprovalChange',
+        approval_condition: '_onApprovalCondition',
+        approval_group_change: '_onApprovalGroupChange',
+        approval_new_rule: '_onApprovalNewRule',
         default_value_change: '_onDefaultValueChange',
         email_alias_change: '_onEmailAliasChange',
         field_edition: '_onFieldEdition',
@@ -177,6 +182,25 @@ var ViewEditorManager = AbstractEditorManager.extend({
             type: 'avatar_image',
             field: data.field,
         });
+    },
+    /**
+     * Enable approval for a <button> node as well as all other nodes of the
+     * same type and the same name in the view; this is done server-side.
+     * @private
+     * @param {Object} data 
+     */
+    _addApproval: async function (data) {
+        const attrs = data.node.attrs;
+        // enabling approval on node
+        // need to enable it on all similar nodes silently in a single op
+        await this._do({
+            type: 'enable_approval',
+            model: this.model_name,
+            btn_type: attrs.type,
+            btn_name: attrs.name,
+            view_id: this.view_id,
+            enable: data.enable,
+        })
     },
     /**
      * @private
@@ -793,6 +817,25 @@ var ViewEditorManager = AbstractEditorManager.extend({
         });
     },
     /**
+     * Fetch the full spec of the approval rules for a specific
+     * action on the model. This is used by the sidebar to display the
+     * approval rules on a <button> node.
+     * @private
+     * @param {String} model_name
+     * @param {String} method
+     * @param {String} action
+     * @returns {Promise}
+     */
+    _getApprovalSpec: async function (model_name, method, action) {
+        const spec = await this._rpc({
+            model: 'studio.approval.rule',
+            method: 'get_approval_spec',
+            args: [model_name, method, action],
+            kwargs: { res_id: false },
+        });
+        return {approvalData: spec};
+    },
+    /**
      * @private
      * @param {String} model_name
      * @param {String} field_name
@@ -870,6 +913,15 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 }
                 if (node.tag === 'div' && node.attrs.class === 'oe_chatter') {
                     def = this._getEmailAlias(modelName);
+                }
+                if (node.tag === 'button' && node.attrs.studio_approval && node.attrs.studio_approval !== 'False') {
+                    let method, action;
+                    if (node.attrs.type === 'object') {
+                        method = node.attrs.name;
+                    } else if (node.attrs.type === 'action') {
+                        action = parseInt(node.attrs.name);
+                    }
+                    def = this._getApprovalSpec(modelName, method, action);
                 }
                 break;
         }
@@ -1318,6 +1370,104 @@ var ViewEditorManager = AbstractEditorManager.extend({
     //--------------------------------------------------------------------------
 
     /**
+    * Handler for 'Remove rule' button.
+    * @private
+    * @param {OdooEvent} ev
+    */
+    _onApprovalArchive: async function (ev) {
+        bus.trigger("toggle_snack_bar", "saving");
+        await this._rpc({
+            model: "studio.approval.rule",
+            method: "write",
+            args: [[ev.data.ruleId], { active: false }],
+        });
+        await this._updateSidebar(this.sidebar.state.mode, {
+            node: this.sidebar.state.node,
+        });
+        bus.trigger("toggle_snack_bar", "saved");
+        this.updateEditor();
+    },
+    /**
+     * Handler for generic edition of approval rule.
+     * @private
+     * @param {OdooEvent} ev 
+     */
+    _onApprovalChange: async function(ev) {
+        const node = ev.data.node;
+        // modifying approval spec, everything done server-side
+        // and widgets will fetch their spec on re-render
+        const isMethod = node.attrs.type === 'object';
+        bus.trigger('toggle_snack_bar', 'saving');
+        const result = await this._rpc({
+            route: '/web_studio/edit_approval',
+            params: {
+                model: this.model_name,
+                method: isMethod?node.attrs.name:false,
+                action: isMethod?false:node.attrs.name,
+                operations: [[ev.data.type, ev.data.ruleId, ev.data.payload]],
+            }
+        });
+        bus.trigger('toggle_snack_bar', 'saved');
+    },
+    /**
+    * Handler for writing the domain on an approval rule (when the domain
+    * selection dialog is closed).
+    * @private
+    * @param {OdooEvent} ev
+    */
+   _onApprovalCondition: async function (ev) {
+        bus.trigger("toggle_snack_bar", "saving");
+        await this._rpc({
+            model: "studio.approval.rule",
+            method: "write",
+            args: [[ev.data.ruleId], { domain: ev.data.domain }],
+        });
+        bus.trigger("toggle_snack_bar", "saved");
+        this._updateSidebar(this.sidebar.state.mode, {
+            node: this.sidebar.state.node,
+        });
+    },
+    /**
+    * Handler for changes on the 'group_id' field of an approval rule.
+    * @private
+    * @param {OdooEvent} ev
+    */
+    _onApprovalGroupChange: async function (ev) {
+        bus.trigger("toggle_snack_bar", "saving");
+        await this._rpc({
+            model: "studio.approval.rule",
+            method: "write",
+            args: [[ev.data.ruleId], { group_id: ev.data.groupId }],
+        });
+        bus.trigger("toggle_snack_bar", "saved");
+        this._updateSidebar(this.sidebar.state.mode, {
+            node: this.sidebar.state.node,
+        });
+    },
+    /**
+    * Handler for 'add approval rule' button.
+    * @private
+    * @param {OdooEvent} ev
+    */
+    _onApprovalNewRule: async function (ev) {
+        bus.trigger("toggle_snack_bar", "saving");
+        await this._rpc({
+            model: "studio.approval.rule",
+            method: "create_rule",
+            args: [],
+            kwargs: {
+                model: ev.data.model,
+                method: ev.data.method,
+                action_id: parseInt(ev.data.action),
+            },
+        });
+        await this._updateSidebar(this.sidebar.state.mode, {
+            node: this.sidebar.state.node,
+        });
+        bus.trigger("toggle_snack_bar", "saved");
+        this.updateEditor();
+    },
+    /**
      * @override
      */
     _onCloseXMLEditor: function () {
@@ -1589,6 +1739,10 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 break;
             case 'avatar_image':
                 this._addAvatarImage(event.data);
+                break;
+            case 'enable_approval':
+                this._addApproval(event.data);
+                break;
         }
     },
 });

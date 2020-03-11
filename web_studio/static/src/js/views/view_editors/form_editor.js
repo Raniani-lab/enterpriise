@@ -133,6 +133,35 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
     //--------------------------------------------------------------------------
 
     /**
+     * Add Studio handler for button clicks; will parse the `effect` attribute
+     * on the node to pre-populate the 'rainbow man' section with the current
+     * settings for the button as well as the generic node clicked handler that
+     * enable edition of the node in the sidebar.
+     * @private
+     * @param {Object} node
+     * @param {jQueryElement} $button
+     */
+    _addButtonHandler: function (node, $button) {
+        this.setSelectable($button);
+        const nodeID = this.node_id++;
+        $button.attr('data-node-id', nodeID);
+        if (node.attrs.type === 'object') {
+            if (node.attrs.effect) {
+                node.attrs.effect = _.defaults(pyUtils.py_eval(node.attrs.effect), {
+                    fadeout: 'medium'
+                });
+            }
+            $button.click((event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.selected_node_id = nodeID;
+                this.trigger_up('node_clicked', {node: node});
+            });
+        }
+        return $button;
+    },
+    
+    /**
      * @override
      * @private
      */
@@ -388,20 +417,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
     _renderHeaderButton: function (node) {
         var self = this;
         var $button = this._super.apply(this, arguments);
-        var nodeID = this.node_id++;
-        if (node.attrs.type === 'object') {
-            $button.attr('data-node-id', nodeID);
-            this.setSelectable($button);
-            if (node.attrs.effect) {
-                node.attrs.effect = _.defaults(pyUtils.py_eval(node.attrs.effect), {
-                    fadeout: 'medium'
-                });
-            }
-            $button.click(function () {
-                self.selected_node_id = nodeID;
-                self.trigger_up('node_clicked', {node: node});
-            });
-        }
+        $button = this._addButtonHandler(node, $button);
         return $button;
     },
     /**
@@ -470,6 +486,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
         }
         return $result;
     },
+
     /**
      * @override
      * @private
@@ -533,6 +550,17 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
         this.defs.push(formEditorHook.insertAfter($result));
         return $result;
     },
+
+    /**
+     * @override
+     * @private
+     */
+    _renderTagButton: function (node) {
+        let $result = this._super.apply(this, arguments);
+        $result = this._addButtonHandler(node, $result);
+        return $result;
+    },
+
     /**
      * @override
      * @private

@@ -20,6 +20,7 @@ var form_component_widget_registry = view_components.registry;
 var _lt = core._lt;
 var _t = core._t;
 var Many2ManyTags = relational_fields.FieldMany2ManyTags;
+const Many2One = relational_fields.FieldMany2One;
 
 
 /**
@@ -92,6 +93,10 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         'change .o_display_group input':                     '_onElementChanged',
         'change .o_display_button input':                    '_onElementChanged',
         'change .o_display_button select':                   '_onElementChanged',
+        'click .o_web_studio_sidebar_approval .o_approval_archive':  '_onApprovalArchive',
+        'change .o_web_studio_sidebar_approval':                     '_onApprovalChange',
+        'click .o_web_studio_sidebar_approval .o_approval_domain':   '_onApprovalDomain',
+        'click .o_web_studio_sidebar_approval .o_approval_new':      '_onApprovalNewRule',
         'click .o_display_button .o_img_upload':             '_onUploadRainbowImage',
         'click .o_display_button .o_img_reset':              '_onRainbowImageReset',
         'change .o_display_filter input':                    '_onElementChanged',
@@ -117,6 +122,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         this._super.apply(this, arguments);
         StandaloneFieldManagerMixin.init.call(this);
         var self = this;
+        this.accepted_file_extensions = 'image/*';
         this.debug = config.isDebug();
 
         this.view_type = params.view_type;
@@ -238,8 +244,10 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         }
         // Upload image related stuff
         if (this.state.node && this.state.node.tag === 'button') {
-            this.is_stat_btn = this.state.node.attrs.class === 'oe_stat_button';
-            if (!this.is_stat_btn) {
+            const isStatBtn = this.state.node.attrs.class === 'oe_stat_button';
+            const isMethodBtn = this.state.node.attrs.type == 'object';
+            this.showRainbowMan = !isStatBtn && isMethodBtn
+            if (this.showRainbowMan) {
                 this.state.node.widget = "image";
                 this.user_id = session.uid;
                 this.fileupload_id = _.uniqueId('o_fileupload');
@@ -320,6 +328,20 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * Called by _onFieldChanged when the field changed is the M2O of an approval
+     * rule for its res.groups field. Update the according rule server-side.
+     * @private
+     */
+    _changeApprovalGroup: function (approvalField) {
+        const record = this.model.get(this.approvalHandle);
+        const groupId = record.data[approvalField].res_id;
+        const ruleId = parseInt(/rule_group_(\d+)/.exec(approvalField)[1]);
+        this.trigger_up('approval_group_change', {
+            ruleId,
+            groupId,
+        });
+    },
     /**
      * @private
      */
@@ -427,9 +449,8 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      * @returns {Promise}
      */
     _render: function () {
-        var self = this;
+        this.defs = [];
         if (this.state.mode === 'new') {
-            this.defs = [];
             if (!this._isSearchValueActive) {
                 if (_.contains(['form', 'search'], this.view_type)) {
                     this._renderComponentsSection();
@@ -439,19 +460,23 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 }
             }
             this._renderExistingFieldsSection();
-            var defs = this.defs;
-            delete this.defs;
-            return Promise.all(defs).then(function () {
-                self.$('.o_web_studio_component').on("drag", _.throttle(function (event, ui) {
-                    self.trigger_up('drag_component', {position: {pageX: event.pageX, pageY: event.pageY}, $helper: ui.helper});
+            return Promise.all(this.defs).then(() => {
+                delete(this.defs);
+                this.$('.o_web_studio_component').on("drag", _.throttle((event, ui) => {
+                    this.trigger_up('drag_component', {position: {pageX: event.pageX, pageY: event.pageY}, $helper: ui.helper});
                 }, 200));
             });
         } else if (this.state.mode === 'properties') {
             if (this.$('.o_groups').length) {
-                return this._renderWidgetsM2MGroups();
+                this.defs.push(this._renderWidgetsM2MGroups());
             }
+            if (this.el.querySelectorAll('.o_studio_sidebar_approval_rule').length) {
+                this.defs.push(this._renderWidgetsApprovalRules());
+            }
+            return Promise.all(this.defs).then(() => delete(this.defs));
         }
         if (this.view_type === 'map' && this.$('.o_map_popup_fields').length) {
+            delete(this.defs);
             return this._renderWidgetsMapPopupFields();
         }
     },
@@ -543,6 +568,45 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         return $components_container;
     },
     /**
+     * Render and attach group widget for each approval rule.
+     * @private
+     * @returns {Promise}
+     */
+    _renderWidgetsApprovalRules: async function () {
+        const groupTargets = this.el.querySelectorAll('.o_approval_group');
+        const fields = [];
+        groupTargets.forEach((node) => {
+            fields.push({
+                name: 'rule_group_' + node.dataset.ruleId,
+                fields: [{
+                    name: 'id',
+                    type: 'integer',
+                }, {
+                    name: 'display_name',
+                    type: 'char',
+                }],
+                relation: 'res.groups',
+                type: 'many2one',
+                value: parseInt(node.dataset.groupId),
+            })
+        });
+        this.approvalHandle  = await this.model.makeRecord('ir.model.fields', fields);
+        const record = this.model.get(this.approvalHandle);
+        const defs = [];
+        groupTargets.forEach((node, index) => {
+            const options = {
+                idForLabel: 'group',
+                mode: 'edit',
+                noOpen: true,
+            };
+            const fieldName = fields[index].name;
+            const many2one = new Many2One(this, fieldName, record, options);
+            this._registerWidget(this.approvalHandle, 'group', many2one);
+            defs.push(many2one.prependTo($(node)));
+        });
+        return Promise.all(defs);
+    },
+    /**
      * @private
      * @returns {Promise}
      */
@@ -613,6 +677,109 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     // Handlers
     //--------------------------------------------------------------------------
 
+    /**
+     * Handle a click on 'remove rule' for approvals; dispatch to view editor
+     * manager.
+     * @private
+     * @param {DOMEvent} ev
+     */
+    _onApprovalArchive: function (ev) {
+        const ruleId = parseInt(ev.currentTarget.dataset.ruleId);
+        this.trigger_up('approval_archive', {
+            ruleId,
+        });
+    },
+    /**
+     * Handle a click on 'add approval rule'; dispatch to view editor
+     * manager.
+     * @private
+     * @param {DOMEvent} ev
+     */
+    _onApprovalNewRule: function (ev) {
+        const model = this.model_name;
+        const isMethod = this.state.node.attrs.type === 'object';
+        const method = isMethod?this.state.node.attrs.name:false
+        const action = isMethod?false:this.state.node.attrs.name;
+        this.trigger_up('approval_new_rule', {
+            model,
+            method,
+            action,
+        });
+    },
+    /**
+     * Handler for the 'set condition' button of approval rules; instanciate
+     * a domain selector dialog that will dispatch an event to the view editor
+     * manager upon submission.
+     * @private
+     * @param {DOMEvent} ev
+     */
+    _onApprovalDomain: function(ev) {
+        const ruleId = parseInt(ev.currentTarget.dataset.ruleId);
+        const rule = this.state.approvalData.rules.find(r => r.id === ruleId);
+        const dialog = new DomainSelectorDialog(this, this.model_name, rule.domain||[], {
+            title: _('Condition'),
+            readonly: false,
+            fields: this.fields,
+            size: 'medium',
+            operators: ["=", "!=", "<", ">", "<=", ">=", "in", "not in", "set", "not set"],
+            followRelations: true,
+            debugMode: config.isDebug(),
+            $content: $(
+                _t("<div><p>The approval rule is only applied to records matching the following condition:</p></div>")
+            ),
+        }).open();
+        dialog.on("domain_selected", this, function (e) {
+            this.trigger_up('approval_condition', {
+                ruleId: ruleId,
+                domain: e.data.domain,
+            });
+        });
+    },
+    /**
+     * Generic handlers for other operations on approvals; dispatch the correct event
+     * to the view editor manager.
+     * @private
+     * @param {DOMEvent} ev
+     */
+    _onApprovalChange: function(ev) {
+        let type, payload;
+        // input name for approval rules are formatted as `input`_`rule_id`
+        const inputName = ev.target.name;
+        const parsedInput = /([a-zA-Z_]*)_(\d+)/.exec(inputName);
+        let input, ruleId;
+        if (parsedInput) {
+            input = parsedInput[1];
+            ruleId = parseInt(parsedInput[2]);
+        } else {
+            input = inputName;
+        }
+        switch (input) {
+            case 'studio_approval':
+                // special case: this is the one that actually edits the view
+                return this.trigger_up('view_change', {
+                    structure: 'enable_approval',
+                    node: this.state.node,
+                    enable: ev.target.checked,
+                });
+            case 'approval_message':
+                type = 'operation_approval_message';
+                payload = ev.target.value;
+                break;
+            case 'exclusive_user':
+                type = 'operation_different_users';
+                payload = ev.target.checked;
+                break;
+            default:
+                console.debug('unsupported operation for approval modification', ev.target.name);
+                return false;
+        }
+        this.trigger_up('approval_change', {
+            type: type,
+            payload: payload,
+            ruleId: parseInt(ruleId),
+            node: this.state.node,
+        });
+    },
     /**
      * @private
      */
@@ -806,15 +973,21 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      * @override
      * @private
      */
-    _onFieldChanged: function (ev) {
+    _onFieldChanged: async function (ev) {
+        const approvalChanges = Object.keys(ev.data.changes).filter(f => f.startsWith('rule_group_'));
+        const isApprovalChange = approvalChanges.length;
+        const isMapChange = Object.keys(ev.data.changes).filter(f => f === 'map_popup').length;
+        const approvalField = isApprovalChange && approvalChanges[0];
         const oldMapPopupField = this.mapPopupFieldHandle && this.model.get(this.mapPopupFieldHandle).data.map_popup;
-        return StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments).then(() => {
-            if (ev.data.changes.map_popup) {
-                this._changeMapPopupFields(ev, oldMapPopupField);
-            } else {
-                this._changeFieldGroup();
-            }
-        });
+        const result = await StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
+        if (isMapChange) {
+            this._changeMapPopupFields(ev, oldMapPopupField);
+        } else if (isApprovalChange) {
+            this._changeApprovalGroup(approvalField);
+        } else {
+            this._changeFieldGroup();
+        }
+        return result;
     },
     /**
      * Renames the field after confirmation from user.

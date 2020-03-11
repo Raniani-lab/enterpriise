@@ -9,15 +9,15 @@
 </t>
 
 <t t-name="web_studio.Sidebar.Parameters" t-if="widget.debug">
-    <button class="btn btn-secondary o_web_studio_parameters"><i class="fa fa-cog"/> More</button>
+    <button class="btn btn-secondary btn-lg o_web_studio_parameters"><i class="fa fa-cog"/> More</button>
 </t>
 
 <t t-name="web_studio.Sidebar.Remove">
-    <button class="btn btn-danger float-right o_web_studio_remove">Remove from View</button>
+    <button class="btn btn-danger btn-lg float-right o_web_studio_remove">Remove from View</button>
 </t>
 
 <t t-name="web_studio.Sidebar.XMLEditor" t-if="widget.debug">
-    <button class="btn btn-secondary o_web_studio_xml_editor ml-1 mr-1"><i class="fa fa-code"/> XML</button>
+    <button class="btn btn-secondary btn-lg o_web_studio_xml_editor ml-1 mr-1"><i class="fa fa-code"/> XML</button>
 </t>
 
 <div t-name="web_studio.Sidebar.Warning.Groups" class="o_web_studio_remove_warning_groups">

@@ -21,7 +21,6 @@
         > input {
             &:not(:checked) + label:before {
                 border: 1px solid $unchecked-border;
-                background-color: $unchecked-color;
             }
             &:checked + label:after {
                 background-image: url('/web_studio/static/src/img/ui/checkbox_active.svg');
@@ -75,9 +74,7 @@
 }
 
 @mixin o-web-studio-btn {
-    border: 1px solid;
     font-size: 0.8em;
-    padding: 7px 15px;
     color: $o-web-studio-bg-light;
     text-transform: uppercase;
 
@@ -92,6 +89,9 @@
     }
     &.btn-warning {
         @include o-web-studio-btn-variation($o-web-studio-color-warning, darken($o-web-studio-color-warning, 5%));
+    }
+    &.btn-dark {
+        @include o-web-studio-btn-variation($o-web-studio-bg-medium, darken($o-web-studio-bg-medium, 5%));
     }
 }
 

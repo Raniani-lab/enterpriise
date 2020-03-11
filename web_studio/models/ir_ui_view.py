@@ -1144,3 +1144,12 @@ class View(models.Model):
         })
 
         return new
+
+    # validation stuff
+    def _validate_tag_button(self, node, name_manager, node_info):
+        super()._validate_tag_button(node, name_manager, node_info)
+        studio_approval = node.get('studio_approval')
+        if studio_approval and self.type != 'form':
+            self.handle_view_error(_("studio_approval attribute can only be set in form views"))
+        if studio_approval and studio_approval not in ['True', 'False']:
+            self.handle_view_error(_("Invalid studio_approval %s in button") % studio_approval)

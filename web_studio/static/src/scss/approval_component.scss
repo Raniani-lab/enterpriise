@@ -1,0 +1,60 @@
+/* stat button override */
+.oe_stat_button[studio_approval] {
+    position: relative;  // needed to position the validation widget on the border
+    .o_web_studio_approval {
+       position: absolute;
+       top: 0;
+       right: 0;
+       margin-left: 0;
+   }
+}
+
+/* approval component (avatars inside buttons) */
+.o_web_studio_approval {
+    margin-left: 8px;
+    display: inline;  // Popover has a div tag by default
+
+    .o_web_studio_approval_avatar {
+        margin-left: 2px;
+    }
+
+    .o_web_studio_approval_more {
+        width: 16px;
+        height: 16px;
+        font-size: 9px;
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+        margin-left: 2px;
+        line-height: 16px;
+    }
+
+}
+
+/* popover content */
+.o_web_studio_approval_info {
+    max-width: 320px;
+    .o_web_studio_approval_no_entry, .o_web_studio_approval_has_entry {
+        display: flex;
+        flex-direction: row;
+        .o_web_studio_approval_button {
+            margin-left: 3px;
+        }
+        .o_web_studio_approval_avatar {
+            margin-right: 6px;
+        }
+        .o_web_studio_approval_description {
+            flex-grow: 1;
+        }
+    }
+}
+
+img.o_web_studio_approval_avatar {
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+    &.border {
+        border-width: 2px !important;
+    }
+
+}

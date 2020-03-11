@@ -52,7 +52,7 @@
             <field name="res_model">sale.report</field>
             <field name="view_mode">dashboard,pivot,graph</field>
             <field name="search_view_id" ref="sale.view_order_product_search"/>
-            <field name="context" eval="{'search_default_Sales': 1, 'time_ranges': {'field':'date_order', 'range':'last_30_days'}}"/>
+            <field name="context" eval="{'search_default_Sales': 1, 'time_ranges': {'field':'date', 'range':'last_30_days'}}"/>
         </record>
 
         <record id="sale_report_action_dashboard_dashboard" model="ir.actions.act_window.view">

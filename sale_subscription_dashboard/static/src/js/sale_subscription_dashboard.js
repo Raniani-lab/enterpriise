@@ -1291,15 +1291,15 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
 
         self.$searchview.on('click', '.o_update_options', this.on_update_options);
         self.set_up_datetimepickers();
-        self.updateControlPanel({
-           cp_content: {
-               $searchview: this.$searchview,
-               $buttons: this.$exportButton,
-           },
+        this.updateControlPanel({
+            cp_content: {
+                $searchview: this.$searchview,
+                $buttons: this.$exportButton,
+            }
         });
         // We need the many2many widget to limit the available users to the ones returned by the `fetch_salesmen` RPC call.
         var domainList = [];
-        // The available users in the dropdown are synched with the available salesman_ids. 
+        // The available users in the dropdown are synched with the available salesman_ids.
         // Note: self.salesman may already contains the current user (default salesman) when the dashboard is launched.
         if (self.many2manytags) {
             var values = [];

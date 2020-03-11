@@ -93,7 +93,9 @@ var OnlineSyncAccountInstitutionSelector = AbstractAction.extend({
         this.$('.institution_no_result').find('.js_configure_manually').click(function(){
             return self.configure_manually()
         });
-        this.$buttons.appendTo($node);
+        if ($node) {
+            this.$buttons.appendTo($node);
+        }
     },
 
     configure_manually: function(){

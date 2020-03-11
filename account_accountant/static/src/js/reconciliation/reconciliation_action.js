@@ -33,7 +33,6 @@ var StatementAction = AbstractAction.extend({
         close_statement: '_onCloseStatement',
         load_more: '_onLoadMore',
         reload: 'reload',
-        search: '_onSearch',
         navigation_move:'_onNavigationMove',
     },
     config: _.extend({}, AbstractAction.prototype.config, {
@@ -83,7 +82,8 @@ var StatementAction = AbstractAction.extend({
         this._super.apply(this, arguments);
         this.action_manager = parent;
         this.params = params;
-        this.controlPanelParams.modelName = 'account.bank.statement.line';
+        this.controlPanelModelConfig.modelName = 'account.bank.statement.line';
+        this.controlPanelProps.cp_content = {};
         this.model = new this.config.Model(this, {
             modelName: "account.reconciliation.widget",
             defaultDisplayQty: params.params && params.params.defaultDisplayQty || this.config.defaultDisplayQty,
@@ -129,7 +129,7 @@ var StatementAction = AbstractAction.extend({
                 }
                 return promise.then(function (result) {
                         var title = result && result[0] ? result[0]['display_name'] : self.params.display_name || ''
-                        self._setTitle(title);
+                        self.controlPanelProps.title = title;
                         self.renderer = new self.config.ActionRenderer(self, self.model, {
                             'bank_statement_line_id': self.model.bank_statement_line_id,
                             'valuenow': self.model.valuenow,
@@ -141,7 +141,7 @@ var StatementAction = AbstractAction.extend({
             });
     },
 
-    reload: function() {
+    reload: async function() {
         // On reload destroy all rendered line widget, reload data and then rerender widget
         var self = this;
 
@@ -151,9 +151,9 @@ var StatementAction = AbstractAction.extend({
         });
         this.widgets = [];
         self.$('.o_reconciliation_lines').removeClass('d-none');
-        return this.model.reload().then(function() {
-            return self._renderLinesOrRainbow();
-        });
+        await this.model.reload();
+        await this._renderLinesOrRainbow();
+        this.updateControlPanel();
     },
 
     _renderLinesOrRainbow: function() {
@@ -167,7 +167,10 @@ var StatementAction = AbstractAction.extend({
                 initialState.valuenow = valuenow;
                 initialState.context = self.model.getContext();
                 self.renderer.showRainbowMan(initialState);
-                self.remove_cp();
+                self.controlPanelProps.cp_content = {
+                    $buttons: $(),
+                    $pager: $(),
+                };
             }else{
                 // Create a notification if some lines have been reconciled automatically.
                 if(initialState.valuenow > 0)
@@ -206,21 +209,13 @@ var StatementAction = AbstractAction.extend({
         this._super.apply(this, arguments);
         if (this.action_manager) {
             this.$pager = $(QWeb.render('reconciliation.control.pager', {widget: this.renderer}));
-            this.updateControlPanel({
-                clear: true,
-                cp_content: {
-                    $pager: this.$pager,
-                },
-            });
+            this.controlPanelProps.cp_content = {
+                $buttons: $(),
+                $pager: this.$pager,
+            };
             this.renderer.$progress = this.$pager;
             $(this.renderer.$progress).parent().css('width', '100%').css('padding-left', '0');
         }
-    },
-
-    remove_cp: function() {
-        this.updateControlPanel({
-            clear: true,
-        });
     },
 
     //--------------------------------------------------------------------------
@@ -342,12 +337,11 @@ var StatementAction = AbstractAction.extend({
 
     /**
      * @private
-     * @param {OdooEvent} ev
+     * @param {Object} searchQuery
      */
-    _onSearch: function (ev) {
+    _onSearch: function (searchQuery) {
         var self = this;
-        ev.stopPropagation();
-        this.model.domain = ev.data.domain;
+        this.model.domain = searchQuery.domain;
         this.model.display_context = 'search';
         self.reload().then(function() {
             self.renderer._updateProgressBar({

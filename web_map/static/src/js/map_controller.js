@@ -4,13 +4,13 @@ odoo.define('web_map.MapController', function (require) {
 const AbstractController = require('web.AbstractController');
 const core = require('web.core');
 const qweb = core.qweb;
-const Pager = require('web.Pager');
 
 const MapController = AbstractController.extend({
     custom_events: _.extend({}, AbstractController.prototype.custom_events, {
         'pin_clicked': '_onPinClick',
         'get_itinerary_clicked': '_onGetItineraryClicked',
         'open_clicked': '_onOpenClicked',
+        'pager_changed': '_onPagerChanged',
     }),
 
     /**
@@ -27,9 +27,8 @@ const MapController = AbstractController.extend({
 
     /**
      * @override
-     * @param {JqueryElement} $node
+     * @param {jQuery} [$node]
      */
-
     renderButtons: function ($node) {
         let url = 'https://www.google.com/maps/dir/?api=1';
         if (this.model.data.records.length) {
@@ -38,32 +37,18 @@ const MapController = AbstractController.extend({
                 .map(record => record.partner.partner_latitude + ',' + record.partner.partner_longitude);
             url += `&waypoints=${_.uniq(coordinates).join('|')}`;
         }
-        const $buttons = $(qweb.render("MapView.buttons"), { widget: this });
-        $buttons.find('a').attr('href', url);
-        $buttons.appendTo($node);
-    },
-
-    /**
-     * @override
-     * @param {JqueryElement} $node
-     */
-    renderPager: function ($node) {
-        const params = this._getPagerParams();
-        this.pager = new Pager(this, params.size, params.current_min, params.limit);
-        this.pager.on('pager_changed', this, newState => {
-            this.pager.disable();
-            this.reload({ limit: newState.limit, offset: newState.current_min - 1 })
-                .then(this.pager.enable.bind(this.pager));
-        });
-        return this.pager.appendTo($node);
+        this.$buttons = $(qweb.render("MapView.buttons"), { widget: this });
+        this.$buttons.find('a').attr('href', url);
+        if ($node) {
+            this.$buttons.appendTo($node);
+        }
     },
     /**
      * @override
      */
-    update: function () {
-        return this._super.apply(this, arguments).then(() => {
-            this._updatePager();
-        });
+    update: async function () {
+        await this._super(...arguments);
+        this._updatePaging();
     },
 
     //--------------------------------------------------------------------------
@@ -71,29 +56,19 @@ const MapController = AbstractController.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * Return the params (current_min, limit and size) to pass to the pager,
+     * Return the params (currentMinimum, limit and size) to pass to the pager,
      * according to the current state.
      *
      * @private
      * @returns {Object}
      */
-    _getPagerParams: function () {
+    _getPagingInfo: function () {
         const state = this.model.get();
         return {
-            current_min: state.offset + 1,
+            currentMinimum: state.offset + 1,
             limit: state.limit,
             size: state.count,
         };
-    },
-    /**
-     * Update the pager with the current state.
-     *
-     * @private
-     */
-    _updatePager: function () {
-        if (this.pager) {
-            this.pager.updateState(this._getPagerParams());
-        }
     },
 
     //--------------------------------------------------------------------------
@@ -132,7 +107,15 @@ const MapController = AbstractController.extend({
                 model: this.modelName
             });
         }
-    }
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     */
+    async _onPagerChanged(ev) {
+        const { currentMinimum, limit } = ev.data;
+        await this.reload({ limit, offset: currentMinimum - 1 });
+    },
 });
 
 return MapController;

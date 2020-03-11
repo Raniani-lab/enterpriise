@@ -6,9 +6,9 @@ odoo.define('web_studio.AppCreator', function (require) {
     const { COLORS, BG_COLORS, ICONS } = require('web_studio.utils');
     const { FieldMany2One } = require('web.relational_fields');
     const IconCreator = require('web_studio.IconCreator');
-    const StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
-    const { useFocusOnUpdate } = require('web.custom_hooks');
     const { ModelConfigurator } = require('web_studio.ModelConfigurator');
+    const StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
+    const { useAutofocus } = require('web.custom_hooks');
 
     const { ComponentAdapter, ComponentWrapper, WidgetAdapterMixin } = require('web.OwlCompatibility');
     const { Component, hooks, useState } = owl;
@@ -88,11 +88,11 @@ odoo.define('web_studio.AppCreator', function (require) {
                     type: 'custom_icon',
                 },
             });
-            this.debug = Boolean(AppCreator.env.isDebug()),
+            this.debug = Boolean(AppCreator.env.isDebug());
 
             this.FieldMany2One = FieldMany2One;
 
-            this.focusOnUpdate = useFocusOnUpdate();
+            useAutofocus();
             this.invalid = useState({
                 appName: false,
                 menuName: false,
@@ -149,7 +149,6 @@ odoo.define('web_studio.AppCreator', function (require) {
             for (const key in this.invalid) {
                 this.invalid[key] = false;
             }
-            this.focusOnUpdate();
         }
 
         /**
@@ -253,7 +252,7 @@ odoo.define('web_studio.AppCreator', function (require) {
 
         /**
          * Handle the confirmation of options in the modelconfigurator
-         * @param {OdooEvent} ev 
+         * @param {OwlEvent} ev
          */
         _onConfirmOptions(ev) {
             const options = ev.detail;

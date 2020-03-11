@@ -58,18 +58,18 @@ var GanttController = AbstractController.extend({
 
     /**
      * @override
-     * @param {jQueryElement} $node to which the buttons will be appended
+     * @param {jQuery} [$node] to which the buttons will be appended
      */
     renderButtons: function ($node) {
+        var state = this.model.get();
+        this.$buttons = $(QWeb.render('GanttView.buttons', {
+            groupedBy: state.groupedBy,
+            widget: this,
+            SCALES: this.SCALES,
+            activateScale: state.scale,
+            allowedScales: this.allowedScales,
+        }));
         if ($node) {
-            var state = this.model.get();
-            this.$buttons = $(QWeb.render('GanttView.buttons', {
-                groupedBy: state.groupedBy,
-                widget: this,
-                SCALES: this.SCALES,
-                activateScale: state.scale,
-                allowedScales: this.allowedScales,
-            }));
             this.$buttons.appendTo($node);
         }
     },

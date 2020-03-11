@@ -27,6 +27,7 @@ var DashboardModel = BasicModel.extend({
      */
      get: function () {
         var record = this._super.apply(this, arguments);
+        record.timeRanges = this.dataPoint.timeRanges;
         record.timeRange = this.dataPoint.timeRange;
         record.comparisonTimeRange = this.dataPoint.comparisonTimeRange;
         record.compare = this.dataPoint.compare;
@@ -50,20 +51,8 @@ var DashboardModel = BasicModel.extend({
         if (options.domain !== undefined) {
             this.dataPoint.domain = options.domain;
         }
-        if (options.context !== undefined) {
-            var timeRangeMenuData = options.context.timeRangeMenuData;
-            if (timeRangeMenuData) {
-                this.dataPoint.timeRange = timeRangeMenuData.timeRange || [];
-                this.dataPoint.comparisonTimeRange = timeRangeMenuData.comparisonTimeRange || [];
-                this.dataPoint.compare = this.dataPoint.comparisonTimeRange.length > 0;
-                // the following step has to be done since we instantiate subviews using the context in particular
-                this.dataPoint.context.timeRangeMenuData = timeRangeMenuData;
-            } else {
-                this.dataPoint.timeRange = [];
-                this.dataPoint.comparisonTimeRange = [];
-                this.dataPoint.compare = false;
-                this.dataPoint.context = _.omit(this.dataPoint.context, 'timeRangeMenuData');
-            }
+        if ('timeRanges' in options) {
+            this._processTimeRanges(this.dataPoint, options.timeRanges);
         }
         return this._load(this.dataPoint);
     },
@@ -180,11 +169,9 @@ var DashboardModel = BasicModel.extend({
         var dataPoint = this._super.apply(this, arguments);
         dataPoint.aggregates = params.aggregates;
         dataPoint.formulas = params.formulas;
-        dataPoint.timeRange = params.timeRange;
-        dataPoint.comparisonTimeRange = params.comparisonTimeRange;
-        dataPoint.compare = params.compare;
         dataPoint.comparisonData = {};
         dataPoint.variationData = {};
+        this._processTimeRanges(dataPoint, params.timeRanges);
         return dataPoint;
     },
     /**
@@ -206,7 +193,14 @@ var DashboardModel = BasicModel.extend({
                 return value || 0;
             });
         });
-    }
+    },
+    _processTimeRanges: function (dataPoint, timeRanges) {
+        const { range, comparisonRange } = timeRanges;
+        dataPoint.timeRanges = timeRanges;
+        dataPoint.timeRange = range || [];
+        dataPoint.comparisonTimeRange = comparisonRange || [];
+        dataPoint.compare = Boolean(dataPoint.comparisonTimeRange.length);
+    },
 });
 
 return DashboardModel;

@@ -127,6 +127,7 @@ var accountReportsWidget = AbstractAction.extend({
         'click .o_account_reports_load_more span': 'load_more',
         'click .o_account_reports_table thead th': 'selected_column',
         'click .o_change_expected_date': '_onChangeExpectedDate',
+        'click .o_search_options .dropdown-menu': '_onClickDropDownMenu',
     },
 
     custom_events: {
@@ -162,20 +163,26 @@ var accountReportsWidget = AbstractAction.extend({
         }
         return this._super.apply(this, arguments);
     },
-    start: function() {
-        var self = this;
-        var extra_info = this._rpc({
-                model: self.report_model,
-                method: 'get_report_informations',
-                args: [self.financial_id, self.report_options],
-                context: self.odoo_context,
-            })
-            .then(function(result){
-                return self.parse_reports_informations(result);
-            });
-        return Promise.all([extra_info, this._super.apply(this, arguments)]).then(function() {
-            self.render();
-        });
+    willStart: async function () {
+        const reportsInfoPromise = this._rpc({
+            model: this.report_model,
+            method: 'get_report_informations',
+            args: [this.financial_id, this.report_options],
+            context: this.odoo_context,
+        }).then(res => this.parse_reports_informations(res));
+        const parentPromise = this._super(...arguments);
+        return Promise.all([reportsInfoPromise, parentPromise]);
+    },
+    start: async function() {
+        this.renderButtons();
+        this.controlPanelProps.cp_content = {
+            $buttons: this.$buttons,
+            $searchview_buttons: this.$searchview_buttons,
+            $pager: this.$pager,
+            $searchview: this.$searchview,
+        };
+        await this._super(...arguments);
+        this.render();
     },
     parse_reports_informations: function(values) {
         this.report_options = values.options;
@@ -212,7 +219,7 @@ var accountReportsWidget = AbstractAction.extend({
                 $searchview: this.$searchview,
             },
         };
-        return this.updateControlPanel(status, {clear: true});
+        return this.updateControlPanel(status);
     },
     reload: function() {
         var self = this;
@@ -224,7 +231,8 @@ var accountReportsWidget = AbstractAction.extend({
             })
             .then(function(result){
                 self.parse_reports_informations(result);
-                return self.render();
+                self.render();
+                return self.update_cp();
             });
     },
     render: function() {
@@ -232,7 +240,6 @@ var accountReportsWidget = AbstractAction.extend({
         this.render_template();
         this.render_footnotes();
         this.render_searchview_buttons();
-        this.update_cp();
         this.$('.js_account_report_foldable').each(function() {
             if(!$(this).data('unfolded')) {
                 self.fold($(this));
@@ -316,7 +323,7 @@ var accountReportsWidget = AbstractAction.extend({
                     return $content;
                 }
             });
-            
+
             // Triggered when the popup is closed without mouseleave event.
             $(popup).on("hidden.bs.popover", function(element){
                 self.$('.js_popup_formula').removeClass('o_financial_report_hover_popup');
@@ -911,6 +918,21 @@ var accountReportsWidget = AbstractAction.extend({
                     return self.do_action(result);
                 });
         }
+    },
+
+    //-------------------------------------------------------------------------
+    // Handlers
+    //-------------------------------------------------------------------------
+
+    /**
+     * When clicking inside a dropdown to modify search options
+     * prevents the bootstrap dropdown to close on itself
+     *
+     * @private
+     * @param {$.Event} ev
+     */
+    _onClickDropDownMenu: function (ev) {
+        ev.stopPropagation();
     },
 });
 

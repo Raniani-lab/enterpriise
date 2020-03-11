@@ -49,7 +49,7 @@ odoo.define('timesheet_grid.GridController', function (require) {
 
             const state = await this.model.actionTimer(this.model.get());
             await this.renderer.updateState(state, {});
-            this._updateButtons(state);
+            this.updateButtons(state);
         }
     });
 

@@ -43,7 +43,7 @@ var GridController = AbstractController.extend({
 
     /**
      * @override
-     * @param {jQueryElement} $node
+     * @param {jQuery} [$node]
      */
     renderButtons: function ($node) {
         this.$buttons = $(qweb.render('grid.GridArrows', { widget: {
@@ -53,14 +53,30 @@ var GridController = AbstractController.extend({
         },
             isMobile: config.device.isMobile
         }));
-        this.$buttons.appendTo($node);
-        this._updateButtons();
         this.$buttons.on('click', '.o_grid_button_add', this._onAddLine.bind(this));
         this.$buttons.on('click', '.grid_arrow_previous', this._onPaginationChange.bind(this, 'prev'));
         this.$buttons.on('click', '.grid_button_initial', this._onPaginationChange.bind(this, 'initial'));
         this.$buttons.on('click', '.grid_arrow_next', this._onPaginationChange.bind(this, 'next'));
         this.$buttons.on('click', '.grid_arrow_range', this._onRangeChange.bind(this));
         this.$buttons.on('click', '.grid_arrow_button', this._onButtonClicked.bind(this));
+        this.updateButtons();
+        if ($node) {
+            this.$buttons.appendTo($node);
+        }
+    },
+    /**
+     * @override
+     */
+    updateButtons: function () {
+        if (!this.$buttons) {
+            return;
+        }
+        var state = this.model.get();
+        this.$buttons.find('.grid_arrow_previous').toggleClass('d-none', !state.prev);
+        this.$buttons.find('.grid_arrow_next').toggleClass('d-none', !state.next);
+        this.$buttons.find('.grid_button_initial').toggleClass('d-none', !state.initial);
+        this.$buttons.find('.grid_arrow_range').removeClass('active');
+        this.$buttons.find('.grid_arrow_range[data-name=' + this.currentRange + ']').addClass('active');
     },
 
     //--------------------------------------------------------------------------
@@ -104,7 +120,7 @@ var GridController = AbstractController.extend({
                 var state = self.model.get();
                 return self.renderer.updateState(state, {});
             }).then(function () {
-                self._updateButtons(state);
+                self.updateButtons(state);
             });
         });
     },
@@ -115,20 +131,7 @@ var GridController = AbstractController.extend({
      */
     _update: function () {
         return this._super.apply(this, arguments)
-            .then(this._updateButtons.bind(this));
-    },
-    /**
-     * @private
-     */
-    _updateButtons: function () {
-        if (this.$buttons) {
-            var state = this.model.get();
-            this.$buttons.find('.grid_arrow_previous').toggleClass('d-none', !state.prev);
-            this.$buttons.find('.grid_arrow_next').toggleClass('d-none', !state.next);
-            this.$buttons.find('.grid_button_initial').toggleClass('d-none', !state.initial);
-            this.$buttons.find('.grid_arrow_range').removeClass('active');
-            this.$buttons.find('.grid_arrow_range[data-name=' + this.currentRange + ']').addClass('active');
-        }
+            .then(this.updateButtons.bind(this));
     },
 
     //--------------------------------------------------------------------------

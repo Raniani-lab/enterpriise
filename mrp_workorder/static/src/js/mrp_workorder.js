@@ -59,11 +59,13 @@ function tabletRenderButtons($node) {
         this.$buttons.on('click', function () {
             self.do_action('mrp.mrp_workcenter_kanban_action', {clear_breadcrumbs: true});
         });
-        this.$buttons.appendTo($node);
+        if ($node) {
+            this.$buttons.appendTo($node);
+        }
 }
 
 var TabletKanbanController = KanbanController.extend({
-    renderButtons: function ($node) {
+    renderButtons: function () {
         return tabletRenderButtons.apply(this, arguments);
     },
 });
@@ -75,7 +77,7 @@ var TabletKanbanView = KanbanView.extend({
 });
 
 var TabletListController = ListController.extend({
-    renderButtons: function ($node) {
+    renderButtons: function () {
         return tabletRenderButtons.apply(this, arguments);
     },
 });

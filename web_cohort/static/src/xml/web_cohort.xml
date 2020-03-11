@@ -41,7 +41,7 @@
         <div t-if="_hasContent()">
             <div t-if="props.comparisonReport &amp;&amp; (props.comparisonReport.rows.length || props.report.rows.length)" class="table-responsive">
                 <t t-call="CohortView.tableTitle">
-                    <t t-set="title" t-value="props.timeRangeDescription"/>
+                    <t t-set="title" t-value="props.rangeDescription"/>
                 </t>
             </div>
             <div t-if="props.report.rows.length" class="table-responsive">
@@ -57,7 +57,7 @@
             <br/>
             <div t-if="props.comparisonReport &amp;&amp; (props.report.rows.length || props.comparisonReport.rows.length)" class="table-responsive">
                 <t t-call="CohortView.tableTitle">
-                    <t t-set="title" t-value="props.comparisonTimeRangeDescription"/>
+                    <t t-set="title" t-value="props.comparisonRangeDescription"/>
                 </t>
             </div>
             <div t-if="props.comparisonReport &amp;&amp; props.comparisonReport.rows.length" class="table-responsive">

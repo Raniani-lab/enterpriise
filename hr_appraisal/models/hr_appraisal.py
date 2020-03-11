@@ -152,7 +152,7 @@ class HrAppraisal(models.Model):
         notif_layout = self.env.ref('mail.mail_notification_light')
         notif_values = {'model_description': header_text, 'company': company_id}
         body_html = notif_layout.render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
-        body_html = self.env['mail.thread']._replace_local_links(body_html)
+        body_html = self.env['mail.render.mixin']._replace_local_links(body_html)
         email = self.env.user.work_email or self.env.user.email
 
         if not email:

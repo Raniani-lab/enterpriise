@@ -465,6 +465,15 @@
         <field name="arch" type="xml">
             <form class="o_share_form">
                 <sheet class="o_share_sheet">
+                    <group>
+                        <label string="Shared" for="folder_id"/>
+                        <div class="o_documents_content d-flex align-items-baseline">
+                            <i class="fa fa fa-folder o_documents_folder_color mr-2" title="Workspace"/>
+                            <field name="folder_id" readonly="1" options="{'no_open': True}"/>
+                            <i class="fa fa-tag o_documents_tag_color ml-2" attrs="{'invisible': [('tag_ids', '=', [])]}" title="Tags"/>
+                            <field name="tag_ids" readonly="1" widget="many2many_tags"/>
+                        </div>
+                    </group>
                     <group class="o_url_group">
                         <field name="full_url" widget="CopyClipboardChar" readonly="1"/>
                     </group>
@@ -492,7 +501,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <field name="folder_id" readonly="1" attrs="{'invisible' : [('type', 'in', ['ids'])], 'required' : [('type', 'in', ['domain'])] }"/>
                         </group>
                     </group>
                     <group string="Default values for uploaded documents" attrs="{'invisible' : [('action', 'in', ['download'])] }">
@@ -501,7 +509,6 @@
                             <field name="partner_id"/>
                         </group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" string="Tags"/>
                             <field name="activity_option"/>
                         </group>
                     </group>

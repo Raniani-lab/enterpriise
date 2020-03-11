@@ -89,6 +89,7 @@ class HrPayslip(models.Model):
                                 line_id for line_id in line_ids if
                                 line_id['name'] == line.name
                                 and line_id['account_id'] == debit_account_id
+                                and line_id['analytic_account_id'] == (line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id)
                                 and ((line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0)))
                             debit_line = next(existing_debit_lines, False)
 
@@ -115,6 +116,7 @@ class HrPayslip(models.Model):
                                 line_id for line_id in line_ids if
                                 line_id['name'] == line.name
                                 and line_id['account_id'] == credit_account_id
+                                and line_id['analytic_account_id'] == (line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id)
                                 and ((line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0))
                             )
                             credit_line = next(existing_credit_line, False)

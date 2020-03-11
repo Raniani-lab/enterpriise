@@ -31,18 +31,20 @@
 
     <t t-name="stock_barcode_lines_widget">
         <div class="o_barcode_message d-flex flex-column justify-content-center align-items-center bg-800">
-            <div class="o_barcode_pic position-relative text-center mt-4 mb-1">
-                <span class="o_stock_barcode_laser"/>
-                <i class="fa fa-5x mx-auto fa-exclamation-triangle text-white"/>
+            <div class="o_barcode_pic position-relative text-center mt-2 mb-1">
+                <i class="fa fa-5x mx-auto fa-exclamation-triangle text-white d-none"/>
+                <img class="o_barcode_icon" src="/stock_barcode/static/img/barcode.svg" alt="Barcode" height="40px"/>
             </div>
-            <span class="o_hidden o_scan_message o_scan_message_scan_products">Scan products</span>
-            <span class="o_hidden o_scan_message o_scan_message_scan_more_dest">Scan more products, or scan the destination location</span>
-            <span class="o_hidden o_scan_message o_scan_message_scan_more_src">Scan more products, or scan a new source location</span>
-            <span class="o_hidden o_scan_message o_scan_message_scan_lot">Scan the serial or lot number of the product</span>
-            <span class="o_hidden o_scan_message o_scan_message_scan_src">Scan the source location</span>
-            <span class="o_hidden o_scan_message o_scan_message_picking_already_done"><span class="fa fa-exclamation-triangle"/> This picking is already done</span>
-            <span class="o_hidden o_scan_message o_scan_message_picking_already_cancelled"><span class="fa fa-exclamation-triangle"/> This picking is already cancelled</span>
-            <span class="o_hidden o_scan_message o_scan_message_inv_already_done"><span class="fa fa-exclamation-triangle"/> This inventory adjustment is already done</span>
+            <div class="mb-3">
+                <span class="o_hidden o_scan_message o_scan_message_scan_products">Scan products</span>
+                <span class="o_hidden o_scan_message o_scan_message_scan_more_dest">Scan more products, or scan the destination location</span>
+                <span class="o_hidden o_scan_message o_scan_message_scan_more_src">Scan more products, or scan a new source location</span>
+                <span class="o_hidden o_scan_message o_scan_message_scan_lot">Scan the serial or lot number of the product</span>
+                <span class="o_hidden o_scan_message o_scan_message_scan_src">Scan the source location</span>
+                <span class="o_hidden o_scan_message o_scan_message_picking_already_done"><span class="fa fa-exclamation-triangle"/> This picking is already done</span>
+                <span class="o_hidden o_scan_message o_scan_message_picking_already_cancelled"><span class="fa fa-exclamation-triangle"/> This picking is already cancelled</span>
+                <span class="o_hidden o_scan_message o_scan_message_inv_already_done"><span class="fa fa-exclamation-triangle"/> This inventory adjustment is already done</span>
+            </div>
         </div>
         <div class="o_barcode_lines_header alert mb-0 bg-beta text-white"></div>
         <div class="o_barcode_lines list-group flex-grow-1 d-block position-relative"></div>

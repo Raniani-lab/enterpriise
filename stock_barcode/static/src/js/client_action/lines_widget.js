@@ -376,10 +376,9 @@ var LinesWidget = Widget.extend({
     _toggleScanMessage: function (message) {
         this.$('.o_scan_message').toggleClass('o_hidden', true);
         this.$('.o_scan_message_' + message).toggleClass('o_hidden', false);
-        this.$('.o_barcode_pic').toggleClass(
-            'o_js_has_warning_msg',
-            _.indexOf(this._getErrorName(), message) > -1
-        );
+        if (_.indexOf(this._getErrorName(), message) > -1) {
+            this.$('.o_barcode_pic > .fa, .o_barcode_icon').toggleClass('d-none');
+        }
     },
 
     _isReservationProcessedLine: function ($line) {

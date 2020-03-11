@@ -30,6 +30,8 @@ QUnit.module('Barcode', {
         this.mockRPC = function (route, args) {
             if (route === '/stock_barcode/get_set_barcode_view_state') {
                 return Promise.resolve(self.clientData.currentState);
+            } else if (route === '/stock_barcode/static/img/barcode.svg') {
+                return Promise.resolve();
             } else if (args.method === "get_all_products_by_barcode") {
                 return Promise.resolve({});
             } else if (args.method === "get_all_locations_by_barcode") {

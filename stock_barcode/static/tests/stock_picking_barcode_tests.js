@@ -32,6 +32,8 @@ QUnit.module('Barcode', {
         this.mockRPC = function (route, args) {
             if (route === '/stock_barcode/get_set_barcode_view_state') {
                 return Promise.resolve(self.clientData.currentState);
+            } else if (route === '/stock_barcode/static/img/barcode.svg') {
+                return Promise.resolve();
             } else if (args.method === "get_all_products_by_barcode") {
                 return Promise.resolve({});
             } else if (args.method === "get_all_locations_by_barcode") {
@@ -272,7 +274,7 @@ QUnit.test('exclamation-triangle when picking is done', async function (assert) 
         mockRPC: this.mockRPC,
     });
     await actionManager.doAction(this.clientData.action);
-    assert.containsOnce(actionManager, '.o_js_has_warning_msg', "Should have warning icon");
+    assert.containsOnce(actionManager, '.fa-5x.fa-exclamation-triangle:not(.d-none)', "Should have warning icon");
     actionManager.destroy();
 });
 

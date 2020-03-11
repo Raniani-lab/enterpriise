@@ -74,7 +74,7 @@ var TerminalProxy = DeviceProxy.extend({
 tour.register('payment_terminals_tour', {
     test: true,
     url: '/web',
-}, [tour.STEPS.SHOW_APPS_MENU_ITEM,
+}, [tour.stepUtils.showAppsMenuItem(),
     {
         content: 'Select PoS app',
         trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',

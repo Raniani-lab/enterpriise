@@ -95,7 +95,7 @@ class TestDeliveryBpost(TransactionCase):
         try:
             picking._action_done()
         except UserError as exc:
-            if exc.name == "The BPost shipping service is unresponsive, please retry later.":
+            if exc.args[0] == "The BPost shipping service is unresponsive, please retry later.":
                 _logger.warning("BPost test aborted, service is unresponsive.")
                 return
             raise
@@ -137,7 +137,7 @@ class TestDeliveryBpost(TransactionCase):
         try:
             picking._action_done()
         except UserError as exc:
-            if exc.name == "The BPost shipping service is unresponsive, please retry later.":
+            if exc.args[0] == "The BPost shipping service is unresponsive, please retry later.":
                 _logger.warning("BPost test aborted, service is unresponsive.")
                 return
             raise
@@ -184,7 +184,7 @@ class TestDeliveryBpost(TransactionCase):
         try:
             picking._action_done()
         except UserError as exc:
-            if exc.name == "The BPost shipping service is unresponsive, please retry later.":
+            if exc.args[0] == "The BPost shipping service is unresponsive, please retry later.":
                 _logger.warning("BPost test aborted, service is unresponsive.")
                 return
             raise
@@ -231,7 +231,7 @@ class TestDeliveryBpost(TransactionCase):
         try:
             delivery_order.button_validate()
         except UserError as exc:
-            if exc.name == "The BPost shipping service is unresponsive, please retry later.":
+            if exc.args[0] == "The BPost shipping service is unresponsive, please retry later.":
                 _logger.warning("BPost test aborted, service is unresponsive.")
                 return
             raise

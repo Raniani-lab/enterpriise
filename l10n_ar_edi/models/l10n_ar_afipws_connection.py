@@ -83,10 +83,8 @@ class L10nArAfipwsConnection(models.Model):
     @api.model
     def _l10n_ar_process_connection_error(self, error, env_type, afip_ws):
         """ Review the type of exception received and show a useful message """
-        if hasattr(error, 'name'):
-            error_name = error.name
-        elif hasattr(error, 'message'):
-            error_name = error.message
+        if getattr(error, 'args', ()):
+            error_name = error.args[0]
         else:
             error_name = repr(error)
 

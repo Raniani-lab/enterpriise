@@ -78,7 +78,7 @@ class TestDeliveryUSPS(TransactionCase):
         try:
             choose_delivery_carrier.update_price()
         except UserError as exc:
-            m = country_unavailable_re.search(exc.name)
+            m = country_unavailable_re.search(exc.args[0])
             if m:
                 _logger.warning(country_unavailable_msg, m.group(1))
                 return
@@ -126,7 +126,7 @@ class TestDeliveryUSPS(TransactionCase):
         try:
             choose_delivery_carrier.update_price()
         except UserError as exc:
-            m = country_unavailable_re.search(exc.name)
+            m = country_unavailable_re.search(exc.args[0])
             if m:
                 _logger.warning(country_unavailable_msg, m.group(1))
                 return
@@ -173,7 +173,7 @@ class TestDeliveryUSPS(TransactionCase):
         try:
             choose_delivery_carrier.update_price()
         except UserError as exc:
-            m = country_unavailable_re.search(exc.name)
+            m = country_unavailable_re.search(exc.args[0])
             if m:
                 _logger.warning(country_unavailable_msg, m.group(1))
                 return
@@ -236,7 +236,7 @@ class TestDeliveryUSPS(TransactionCase):
         try:
             delivery_order.button_validate()
         except UserError as exc:
-            m = country_unavailable_re.search(exc.name)
+            m = country_unavailable_re.search(exc.args[0])
             if m:
                 _logger.warning(country_unavailable_msg, m.group(1))
                 return

@@ -363,7 +363,7 @@ class AccountJournal(models.Model):
             starred_inst = self.env['account.online.provider']._get_favorite_institutions(country.code).get('result', [])
 
         except UserError as err:
-            sync_error_message = err.name
+            sync_error_message = err.args[0]
 
         return {
             'type': 'ir.actions.client',

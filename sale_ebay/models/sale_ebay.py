@@ -140,7 +140,7 @@ class EbayCategory(models.Model):
             response = self.env['product.template'].ebay_execute('GetStore')
         except UserError as e:
             # If the user is not using a store we don't fetch the store categories
-            if '13003' in e.name:
+            if '13003' in e.args[0]:
                 return
             raise e
         categories = response.dict()['Store']['CustomCategories']['CustomCategory']

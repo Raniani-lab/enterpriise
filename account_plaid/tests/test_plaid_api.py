@@ -279,20 +279,20 @@ class TestPlaidApi(AccountTestInvoicingCommon):
 
         with self.assertRaises(UserError) as e:
             self.env['account.online.provider'].plaid_fetch('/error_plaid', {})
-        self.assertEqual(e.exception.name, 'There was en error with Plaid Services!\n{message: Explained error text,\nerror code: INTERNAL_SERVER_ERROR,\nerror type: API_ERROR,\nrequest id: 12345}')
+        self.assertEqual(e.exception.args[0], 'There was en error with Plaid Services!\n{message: Explained error text,\nerror code: INTERNAL_SERVER_ERROR,\nerror type: API_ERROR,\nrequest id: 12345}')
 
         with self.assertRaises(UserError) as e:
             self.env['account.online.provider'].plaid_fetch('/error_plaid2', {})
-        self.assertEqual(e.exception.name, 'There was en error with Plaid Services!\n{message: Site is down,\nerror code: INSTITUTION_DOWN,\nerror type: INSTITUTION_ERROR,\nrequest id: 12345}')
+        self.assertEqual(e.exception.args[0], 'There was en error with Plaid Services!\n{message: Site is down,\nerror code: INSTITUTION_DOWN,\nerror type: INSTITUTION_ERROR,\nrequest id: 12345}')
 
         with self.assertRaises(UserError) as e:
             self.env['account.online.provider'].plaid_fetch('/no_contract', {})
-        self.assertEqual(e.exception.name, 'No valid Odoo Enterprise contract found for this database')
+        self.assertEqual(e.exception.args[0], 'No valid Odoo Enterprise contract found for this database')
 
         with self.assertRaises(UserError) as e:
             self.env['account.online.provider'].plaid_fetch('/pokemon', {})
         exc_msg = 'Get %s status code for call to %s. Content message: %s' % (432, self.url+'/pokemon', 'A wild error has happened, do you want to catch it?')
-        self.assertEqual(e.exception.name, exc_msg)
+        self.assertEqual(e.exception.args[0], exc_msg)
 
         # Test errors with a provider existing and check that the status has changed to 'FAILED'
         acc_online_provider = self.create_account_provider().with_context(no_post_message=True)

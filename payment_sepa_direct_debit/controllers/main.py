@@ -3,7 +3,7 @@ import logging
 
 from odoo import http, _
 from odoo.http import request
-from odoo.exceptions import ValidationError, except_orm
+from odoo.exceptions import ValidationError, UserError
 from odoo.addons.base_iban.models.res_partner_bank import validate_iban
 from odoo.addons.iap import InsufficientCreditError
 from odoo.addons.phone_validation.tools.phone_validation import phone_sanitize_numbers
@@ -40,10 +40,10 @@ class SepaDirectDebitController(http.Controller):
                 mandate._send_verification_code(phone)
             except InsufficientCreditError:
                 raise ValidationError(_('SMS could not be sent due to insufficient credit.'))
-        except except_orm as e:
+        except UserError as e:
             return {
                 'mandate_id': mandate_id,
-                'error': e.name,
+                'error': e.args[0],
             }
         return {
             'mandate_id': mandate.id
@@ -71,9 +71,9 @@ class SepaDirectDebitController(http.Controller):
             mandate._sign(signature=signature, signer=signer)
             mandate._confirm(code=validation_code, phone=phone)
             mandate_id = mandate.id
-        except except_orm as e:
+        except UserError as e:
             return {
-                'error': e.name,
+                'error': e.args[0],
                 'mandate_id': mandate_id
             }
         return {

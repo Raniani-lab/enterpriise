@@ -61,7 +61,7 @@ class ProviderBpost(models.Model):
         except UserError as e:
             return {'success': False,
                     'price': 0.0,
-                    'error_message': e.name,
+                    'error_message': e.args[0],
                     'warning_message': False}
         if order.currency_id.name != 'EUR':
             quote_currency = self.env['res.currency'].search([('name', '=', 'EUR')], limit=1)

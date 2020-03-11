@@ -210,10 +210,11 @@ class AccountBatchPayment(models.Model):
             try:
                 payment.post()
             except UserError as e:
-                if e.name in exceptions_mapping:
-                    exceptions_mapping[e.name] += payment
+                name = e.args[0]
+                if name in exceptions_mapping:
+                    exceptions_mapping[name] += payment
                 else:
-                    exceptions_mapping[e.name] = payment
+                    exceptions_mapping[name] = payment
 
         return [{'title': error, 'records': pmts} for error, pmts in exceptions_mapping.items()]
 

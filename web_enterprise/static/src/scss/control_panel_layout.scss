@@ -1,7 +1,7 @@
 @include media-breakpoint-up(sm) {
     .o_control_panel {
         .o_cp_left {
-            .o_cp_sidebar {
+            .o_cp_action_menus {
                 display: flex;
                 padding-right: 25px;
 
@@ -76,10 +76,6 @@
         .o_cp_left, .o_cp_right {
             width: auto; // override desktop rule width: 50%
             flex: 1 1 auto;
-        }
-
-        .o_cp_sidebar {
-            display: none;
         }
 
         .o_cp_switch_buttons {

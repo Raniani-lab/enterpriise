@@ -183,7 +183,7 @@ class AccountMove(models.Model):
             'analytic_account_id': account_analytic_id.id if asset.asset_type == 'sale' else False,
             'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type == 'sale' else False,
             'currency_id': company_currency != current_currency and current_currency.id or False,
-            'amount_currency': company_currency != current_currency and - 1.0 * vals['amount_total'] or 0.0,
+            'amount_currency': company_currency != current_currency and - 1.0 * vals['amount'] or 0.0,
         }
         move_line_2 = {
             'name': asset.name,
@@ -193,7 +193,7 @@ class AccountMove(models.Model):
             'analytic_account_id': account_analytic_id.id if asset.asset_type in ('purchase', 'expense') else False,
             'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type in ('purchase', 'expense') else False,
             'currency_id': company_currency != current_currency and current_currency.id or False,
-            'amount_currency': company_currency != current_currency and vals['amount_total'] or 0.0,
+            'amount_currency': company_currency != current_currency and vals['amount'] or 0.0,
         }
         move_vals = {
             'ref': vals['move_ref'],
@@ -208,6 +208,7 @@ class AccountMove(models.Model):
             'name': '/',
             'asset_value_change': vals.get('asset_value_change', False),
             'move_type': 'entry',
+            'currency_id': current_currency.id,
         }
         return move_vals
 

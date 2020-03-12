@@ -25,7 +25,6 @@ class TestMrpMaintenance(common.TransactionCase):
             'name': 'Monitors - Test',
             'technician_user_id': self.env.ref('base.user_admin').id,
             'color': 3,
-            'alias_id': self.env.ref('maintenance.mail_alias_equipment').id,
         })
 
         # Create user

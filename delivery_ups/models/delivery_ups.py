@@ -189,7 +189,7 @@ class ProviderUPS(models.Model):
                 cod_info=cod_info)
             result = srm.process_shipment()
             if result.get('error_message'):
-                raise UserError(result['error_message'])
+                raise UserError(result['error_message'].__str__())
 
             order = picking.sale_id
             company = order.company_id or picking.company_id or self.env.company
@@ -285,7 +285,7 @@ class ProviderUPS(models.Model):
         srm.return_label()
         result = srm.process_shipment()
         if result.get('error_message'):
-            raise UserError(result['error_message'])
+            raise UserError(result['error_message'].__str__())
 
         order = picking.sale_id
         company = order.company_id or picking.company_id or self.env.company
@@ -333,7 +333,7 @@ class ProviderUPS(models.Model):
         result = srm.cancel_shipment(tracking_ref.partition('+')[0])
 
         if result.get('error_message'):
-            raise UserError(result['error_message'])
+            raise UserError(result['error_message'].__str__())
         else:
             picking.message_post(body=_(u'Shipment N° %s has been cancelled' % picking.carrier_tracking_ref))
             picking.write({'carrier_tracking_ref': '',

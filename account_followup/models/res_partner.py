@@ -60,8 +60,8 @@ class ResPartner(models.Model):
                     amount = aml.amount_residual
                     total_due += amount
                     is_overdue = today > aml.date_maturity if aml.date_maturity else today > aml.date
-                    if is_overdue:
-                        total_overdue += not aml.blocked and amount or 0
+                    if is_overdue and not aml.blocked:
+                        total_overdue += amount
             record.total_due = total_due
             record.total_overdue = total_overdue
             if record.id in followup_data:
@@ -172,10 +172,10 @@ class ResPartner(models.Model):
     def _query_followup_level(self, all_partners=False):
         # Allow mocking the current day for testing purpose.
         today = fields.Date.context_today(self)
-        
+
         sql = """
             WITH unreconciled_aml AS (
-                SELECT aml.id, aml.partner_id, aml.followup_line_id, aml.date, aml.date_maturity FROM account_move_line aml
+                SELECT aml.id, aml.partner_id, aml.followup_line_id, aml.date, aml.date_maturity, aml.balance FROM account_move_line aml
                 JOIN account_account account ON account.id = aml.account_id
                                             AND account.deprecated = False
                                             AND account.internal_type = 'receivable'
@@ -187,7 +187,8 @@ class ResPartner(models.Model):
             )
             SELECT partner.id as partner_id,
                    current_followup_level.id as followup_level,
-                   CASE WHEN in_need_of_action_aml.id IS NOT NULL AND (prop_date.value_datetime IS NULL OR prop_date.value_datetime::date <= %(current_date)s) THEN 'in_need_of_action'
+                   CASE WHEN (SELECT SUM(balance) FROM unreconciled_aml ua WHERE ua.partner_id = partner.id GROUP BY partner.id) <= 0 THEN 'no_action_needed'
+                        WHEN in_need_of_action_aml.id IS NOT NULL AND (prop_date.value_datetime IS NULL OR prop_date.value_datetime::date <= %(current_date)s) THEN 'in_need_of_action'
                         WHEN exceeded_unreconciled_aml.id IS NOT NULL THEN 'with_overdue_invoices'
                         ELSE 'no_action_needed' END as followup_status
             FROM res_partner partner
@@ -204,6 +205,7 @@ class ResPartner(models.Model):
                     LIMIT 1
                 )
                 WHERE aml.partner_id = partner.id
+                  AND aml.balance > 0
                 ORDER BY COALESCE(next_ful.delay, ful.delay, 0) DESC
                 LIMIT 1
             )
@@ -212,6 +214,7 @@ class ResPartner(models.Model):
                 SELECT aml.id FROM unreconciled_aml aml
                 LEFT OUTER JOIN account_followup_followup_line ful ON ful.id = aml.followup_line_id
                 WHERE aml.partner_id = partner.id
+                  AND aml.balance > 0
                   AND COALESCE(ful.delay, 0) < current_followup_level.delay
                   AND COALESCE(aml.date_maturity, aml.date) + COALESCE(ful.delay, 0) <= %(current_date)s
                 LIMIT 1
@@ -219,6 +222,7 @@ class ResPartner(models.Model):
             LEFT OUTER JOIN account_move_line exceeded_unreconciled_aml ON exceeded_unreconciled_aml.id = (
                 SELECT aml.id FROM unreconciled_aml aml
                 WHERE aml.partner_id = partner.id
+                  AND aml.balance > 0
                   AND COALESCE(aml.date_maturity, aml.date) <= %(current_date)s
                 LIMIT 1
             )

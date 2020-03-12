@@ -277,6 +277,7 @@
             <pivot string="Helpdesk Tickets">
                 <field name="create_date" type="row" interval="day"/>
                 <field name="stage_id" type="col"/>
+                <field name="color" invisible="1"/>
             </pivot>
         </field>
     </record>
@@ -307,6 +308,7 @@
             <pivot string="Helpdesk Ticket Analysis">
                 <field name="team_id" type="row"/>
                 <field name="stage_id" type="col"/>
+                <field name="color" invisible="1"/>
             </pivot>
         </field>
     </record>
@@ -889,6 +891,7 @@
                 <field name="stage_id" type="col"/>
                 <field name="name"/>
                 <field name="close_hours" type="measure"/>
+                <field name="color" invisible="1"/>
             </pivot>
         </field>
     </record>

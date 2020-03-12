@@ -665,14 +665,14 @@ class AccountMove(models.Model):
                         move_form.partner_id = created_supplier
 
             due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
-            if date_ocr and move_form.invoice_date == str(self._get_default_invoice_date()):
+            if date_ocr and (not move_form.invoice_date or move_form.invoice_date == str(self._get_default_invoice_date())):
                 move_form.invoice_date = date_ocr
-            if due_date_ocr and due_date_move_form == str(self._get_default_invoice_date()):
+            if due_date_ocr and (not move_form.invoice_date_due or due_date_move_form == str(self._get_default_invoice_date())):
                 move_form.invoice_date_due = due_date_ocr
             if not move_form.ref and not no_ref:
                 move_form.ref = invoice_id_ocr
 
-            if self.user_has_groups('base.group_multi_currency') and move_form.currency_id == self._get_default_currency():
+            if self.user_has_groups('base.group_multi_currency') and (not move_form.currency_id or move_form.currency_id == self._get_default_currency()):
                 currency = self.env["res.currency"].search([
                         '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
                         ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)

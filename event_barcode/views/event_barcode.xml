@@ -3,7 +3,7 @@
 
     <record id="event_barcode_action_main_view" model="ir.actions.client">
         <field name="name">Barcode Interface</field>
-        <field name="tag">even_barcode.scan_view</field>
+        <field name="tag">even_barcode.event_barcode_scan_view</field>
         <field name="target">fullscreen</field>
     </record>
 
@@ -14,7 +14,12 @@
         <field name="priority" eval="4"/>
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
-                <button name="%(event_barcode_action_main_view)d" type="action" class="oe_stat_button" icon="fa-sign-in" string="Registration Desk"/>
+                <button name="%(event_barcode_action_main_view)d"
+                    string="Registration Desk"
+                    type="action"
+                    class="oe_stat_button"
+                    icon="fa-sign-in"
+                    context="{'default_event_id': active_id}"/>
             </div>
         </field>
     </record>
@@ -30,11 +35,12 @@
         </field>
     </record>
 
-    <record id="act_event_registration_from_barcode" model="ir.actions.act_window">
-        <field name="res_model">event.registration</field>
-        <field name="name">Attendees</field>
-        <field name="view_mode">tree,kanban,form</field>
-        <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id, 'search_default_unconfirmed': True, 'search_default_confirmed': True}</field>
-    </record>
+    <!-- EVENT.EVENT HEADER: REGISTRATION DESK MENU -->
+    <menuitem name="Registration Desk"
+        id="menu_event_registration_desk"
+        sequence="30"
+        action="event_barcode.event_barcode_action_main_view"
+        parent="event.event_main_menu"
+        groups="event.group_event_user"/>
 
 </odoo>

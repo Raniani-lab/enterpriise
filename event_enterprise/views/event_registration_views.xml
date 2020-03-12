@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="event.action_registration" model="ir.actions.act_window">
-        <field name="view_mode">pivot,graph,tree,form,cohort</field>
+        <field name="view_mode">pivot,graph,kanban,tree,form,cohort</field>
     </record>
 
     <record id="event.act_event_registration_from_event" model="ir.actions.act_window">

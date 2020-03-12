@@ -2,6 +2,10 @@
     .o_event_barcode_mobile_container{
         position:  relative;
         display: inline-block;
+        img {
+            width: 115px;
+            height: 60px;
+        }
         .o_event_barcode_mobile{
             width: 100%;
             bottom: 0px;

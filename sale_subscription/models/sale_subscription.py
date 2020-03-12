@@ -25,6 +25,8 @@ INTERVAL_FACTOR = {
     'yearly': 1.0 / 12.0,
 }
 
+PERIODS = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
+
 class SaleSubscription(models.Model):
     _name = "sale.subscription"
     _description = "Subscription"
@@ -68,7 +70,7 @@ class SaleSubscription(models.Model):
     template_id = fields.Many2one(
         'sale.subscription.template', string='Subscription Template',
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", required=True,
-        default=lambda self: self.env['sale.subscription.template'].search([], limit=1), tracking=True, check_company=True)
+        help="The subscription template defines the invoice policy and the payment terms.", tracking=True, check_company=True)
     subscription_log_ids = fields.One2many('sale.subscription.log', 'subscription_id', string='Subscription Logs', readonly=True)
     payment_mode = fields.Selection(related='template_id.payment_mode', readonly=False)
     description = fields.Text()
@@ -209,8 +211,7 @@ class SaleSubscription(models.Model):
             date = fields.Date.from_string(date_from)
         else:
             date = datetime.date.today()
-        periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-        invoicing_period = relativedelta(**{periods[self.recurring_rule_type]: self.recurring_interval})
+        invoicing_period = relativedelta(**{PERIODS[self.recurring_rule_type]: self.recurring_interval})
         recurring_next_invoice = fields.Date.from_string(self.recurring_next_date)
         recurring_last_invoice = recurring_next_invoice - invoicing_period
         time_to_invoice = recurring_next_invoice - date
@@ -289,9 +290,8 @@ class SaleSubscription(models.Model):
     @api.onchange('date_start', 'template_id')
     def onchange_date_start(self):
         if self.date_start and self.recurring_rule_boundary == 'limited':
-            periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
             self.date = fields.Date.from_string(self.date_start) + relativedelta(**{
-                periods[self.recurring_rule_type]: self.template_id.recurring_rule_count * self.template_id.recurring_interval})
+                PERIODS[self.recurring_rule_type]: self.template_id.recurring_rule_count * self.template_id.recurring_interval})
         else:
             self.date = False
 
@@ -585,8 +585,7 @@ class SaleSubscription(models.Model):
         :params recurring_invoice_day: day on which next invoice is to be generated in future
         :returns: date on which invoice will be generated
         """
-        periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-        interval_type = periods[interval_type]
+        interval_type = PERIODS[interval_type]
         recurring_next_date = fields.Date.from_string(current_date) + relativedelta(**{interval_type: interval})
         if interval_type == 'months':
             last_day_of_month = recurring_next_date + relativedelta(day=31)
@@ -622,8 +621,7 @@ class SaleSubscription(models.Model):
     def _prepare_invoice_lines(self, fiscal_position):
         self.ensure_one()
         revenue_date_start = self.recurring_next_date
-        periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-        revenue_date_stop = revenue_date_start + relativedelta(**{periods[self.recurring_rule_type]: self.recurring_interval}) - relativedelta(days=1)
+        revenue_date_stop = revenue_date_start + relativedelta(**{PERIODS[self.recurring_rule_type]: self.recurring_interval}) - relativedelta(days=1)
         return [(0, 0, self._prepare_invoice_line(line, fiscal_position, revenue_date_start, revenue_date_stop)) for line in self.recurring_invoice_line_ids]
 
     def _prepare_invoice(self):
@@ -631,9 +629,16 @@ class SaleSubscription(models.Model):
         invoice['invoice_line_ids'] = self._prepare_invoice_lines(invoice['fiscal_position_id'])
         return invoice
 
-    def recurring_invoice(self):
-        self._recurring_create_invoice()
-        return self.action_subscription_invoice()
+    def generate_recurring_invoice(self):
+        res = self._recurring_create_invoice()
+        if res:
+            return self.action_subscription_invoice()
+        else:
+            warning = """ Please check the selected subscription template:
+    - Is there a fixed duration which is reached?
+    - Do you configure your invoice method as "send & try to charge" or "Send after successful payment"?           
+            """
+            raise UserError(warning)
 
     def _prepare_renewal_order_values(self):
         res = dict()
@@ -692,14 +697,17 @@ class SaleSubscription(models.Model):
         self.stage_id = next_stage_in_progress
         return True
 
-    def increment_period(self):
+    def increment_period(self, renew=False):
         for subscription in self:
             current_date = subscription.recurring_next_date or self.default_get(['recurring_next_date'])['recurring_next_date']
             new_date = subscription._get_recurring_next_date(subscription.recurring_rule_type, subscription.recurring_interval, current_date, subscription.recurring_invoice_day)
-            data = {'recurring_next_date': new_date}
-            if subscription.date:
-                data['date'] = new_date
-            subscription.write(data)
+            new_values = {'recurring_next_date': new_date}
+            if subscription.date and renew:
+                new_values['date'] = subscription.date + relativedelta(**{
+                    PERIODS[subscription.recurring_rule_type]:
+                        subscription.template_id.recurring_rule_count * subscription.template_id.recurring_interval
+                })
+            subscription.write(new_values)
 
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
@@ -903,20 +911,25 @@ class SaleSubscription(models.Model):
                     # invoice only
                     elif subscription.template_id.payment_mode in ['draft_invoice', 'manual', 'validate_send']:
                         try:
-                            invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
-                            new_invoice = Invoice.create(invoice_values)
-                            new_invoice.message_post_with_view(
-                                'mail.message_origin_link',
-                                values={'self': new_invoice, 'origin': subscription},
-                                subtype_id=self.env.ref('mail.mt_note').id)
-                            invoices += new_invoice
-                            # When `recurring_next_date` is updated by cron or by `Generate Invoice` action button,
-                            # write() will skip resetting `recurring_invoice_day` value based on this context value
-                            subscription.with_context(skip_update_recurring_invoice_day=True).increment_period()
-                            if subscription.template_id.payment_mode == 'validate_send':
-                                subscription.validate_and_send_invoice(new_invoice)
-                            if automatic and auto_commit:
-                                cr.commit()
+                            # We don't allow to create invoice past the end date of the contract.
+                            # The subscription must be renewed in that case
+                            if subscription.date and subscription.recurring_next_date >= subscription.date:
+                                return
+                            else:
+                                invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
+                                new_invoice = Invoice.create(invoice_values)
+                                new_invoice.message_post_with_view(
+                                    'mail.message_origin_link',
+                                    values={'self': new_invoice, 'origin': subscription},
+                                    subtype_id=self.env.ref('mail.mt_note').id)
+                                invoices += new_invoice
+                                # When `recurring_next_date` is updated by cron or by `Generate Invoice` action button,
+                                # write() will skip resetting `recurring_invoice_day` value based on this context value
+                                subscription.with_context(skip_update_recurring_invoice_day=True).increment_period()
+                                if subscription.template_id.payment_mode == 'validate_send':
+                                    subscription.validate_and_send_invoice(new_invoice)
+                                if automatic and auto_commit:
+                                    cr.commit()
                         except Exception:
                             if automatic and auto_commit:
                                 cr.rollback()

@@ -38,6 +38,10 @@ Any complaints about services or sellers may be sent to our support team: suppor
         </record>
     
         <record id="yearly_subscription" model="sale.subscription.template">
+            <field name="payment_mode">draft_invoice</field>
+            <field name="recurring_rule_boundary">limited</field>
+            <field name="recurring_rule_type">yearly</field>
+            <field name="recurring_rule_count">5</field>
             <field name="description">
 Payment
 All payments are due upon receipt. If a payment is not received or payment method is declined, the buyer forfeits the ownership of any service purchased.

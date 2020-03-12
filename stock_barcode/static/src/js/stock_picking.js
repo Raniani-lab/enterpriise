@@ -7,13 +7,13 @@ KanbanRecord.include({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
-    
+
     /**
      * @override
      * @private
      */
     _openRecord: function () {
-        if (this.modelName === 'stock.picking') {
+        if (this.modelName === 'stock.picking' && $('.modal-dialog').length === 0) {
             this.$('button').first().click();
         } else {
             this._super.apply(this, arguments);

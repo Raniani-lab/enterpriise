@@ -115,6 +115,7 @@ class HrEmployee(models.Model):
         # for this period has not been created yet:
         employees_to_appraise = self._get_employees_to_appraise(months)
         appraisal_values = [{
+            'company_id': employee.company_id.id,
             'employee_id': employee.id,
             'company_id': employee.company_id.id,
             'date_close': fields.Date.to_string(current_date + relativedelta(days=days)),

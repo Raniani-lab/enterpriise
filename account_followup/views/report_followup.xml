@@ -18,6 +18,7 @@
                 <t t-set="company" t-value="docs.env.company"/>
                 <t t-foreach="docs" t-as="partner">
                     <t t-call="web.external_layout">
+                        <t t-set="fallback_address" t-value="partner.browse(partner.address_get(['invoice'])['invoice']) or partner"/>
                         <t t-call-assets="account_followup.assets_followup_report" />
                         <div class="page">
                             <span t-raw="partner.get_followup_html()"></span>
@@ -43,7 +44,7 @@
         <t t-else="" t-set="partner_addr" t-value="partner"></t>
         <t t-if="context.get('snailmail_layout')" t-set="contact_widget_fields" t-value="['address', 'name']"/>
         <t t-else="" t-set="contact_widget_fields" t-value="['address', 'name', 'phone']"/>
-                <div class="row">
+                <div class="row fallback_header">
                     <div class="col-5 offset-7" style='margin-top: 15px;'>
                         <div t-field="partner_addr.self"
                             t-options='{"widget": "contact", "fields": contact_widget_fields, "no_marker": True}'/>

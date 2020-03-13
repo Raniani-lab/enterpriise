@@ -18,6 +18,7 @@ This module allow to generate the GST Return (F5) and the IRAS Audit File.
         'l10n_sg', 'account_reports'
     ],
     'data': [
+        'security/ir.model.access.csv',
         'data/account_iras_audit_file_data.xml',
         'views/iaf_template.xml'
     ],

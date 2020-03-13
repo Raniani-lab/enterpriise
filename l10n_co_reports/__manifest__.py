@@ -19,6 +19,7 @@ Accounting reports for Colombia
     'category': 'Accounting/Accounting',
     'depends': ['l10n_co', 'account_reports'],
     'data': [
+        'security/ir.model.access.csv',
         'data/l10n_co_reports.xml',
         'wizard/retention_report_views.xml',
         'report/certification_report_templates.xml',

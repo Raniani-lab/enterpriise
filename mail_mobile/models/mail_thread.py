@@ -242,7 +242,7 @@ class MailThread(models.AbstractModel):
     def _notify_get_action_link(self, link_type, **kwargs):
         original_link = super(MailThread, self)._notify_get_action_link(link_type, **kwargs)
         # BLACK_LIST_PARAM to avoid leak of token (3rd party: Firebase)
-        if link_type is not 'view' or BLACK_LIST_PARAM.intersection(set(kwargs)):
+        if link_type != 'view' or BLACK_LIST_PARAM.intersection(kwargs.keys()):
             return original_link
 
         # Check if feature is enable to avoid request and computation

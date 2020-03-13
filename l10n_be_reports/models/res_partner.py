@@ -277,7 +277,7 @@ class ResPartner(models.Model):
             ON line.partner_id = partner_category.partner_id
             WHERE line.partner_id in %s
             AND partner_category.category_id = %s
-            AND line.account_id = %s
+            AND line.account_id IN %s
             AND line.date BETWEEN %s AND %s
             AND line.parent_state = 'posted'
             AND line.company_id = %s

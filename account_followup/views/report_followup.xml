@@ -191,7 +191,7 @@
                         With Overdue Invoices
                     </t>
                 </a>
-                <div class="dropdown-menu o_filters_menu" role="menu">
+                <div class="dropdown-menu o_filter_menu" role="menu">
                     <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" title="In Need of Action" data-filter="type_followup" data-id="action">In Need of Action</a>
                     <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" title="With Overdue Invoices" data-filter="type_followup" data-id="all">With Overdue Invoices</a>
                 </div>

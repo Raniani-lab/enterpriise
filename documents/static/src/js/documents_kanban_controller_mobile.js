@@ -25,7 +25,7 @@ DocumentsKanbanController.include({
         const $buttons = this.$buttons.find('button');
         const $dropdownButton = $(qweb.render('documents.ControlPanelButtonsMobile'));
         $buttons.addClass('dropdown-item').appendTo($dropdownButton.find('.dropdown-menu'));
-        $dropdownButton.replaceAll(this.$buttons);
+        this.$buttons = $dropdownButton;
     },
 
     //--------------------------------------------------------------------------

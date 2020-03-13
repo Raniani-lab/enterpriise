@@ -753,6 +753,7 @@ odoo.define('sign.template', function(require) {
                        });
                 });
 
+            // If context: sign_template_edit: primary button: Close
             // if context : sign_send_request: primary button: Send a request
             // if context : sign_sign_now: primary button: Sign Now (send a request renamed)
 

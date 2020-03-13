@@ -195,19 +195,12 @@ QUnit.module('web_mobile', {
     });
 
     QUnit.test("control panel appears at top on scroll event", async function (assert) {
-        assert.expect(11);
+        assert.expect(12);
 
-        const Q_UNIT_FIXTURE_SELECTOR = '#qunit-fixture';
-        const MOBILE_STICK_CLASS = 'o_mobile_sticky';
-        const MAX_HEIGHT = 400;
-        const MIDLE_HEIGHT = 200;
+        const MAX_HEIGHT = 800;
+        const MIDDLE_HEIGHT = 400;
         const DELTA_TEST = 20;
-        const scrollEvent = new UIEvent('scroll');
-
-        function scrollAtHeight(height) {
-            window.scrollTo(0, height);
-            document.dispatchEvent(scrollEvent);
-        }
+        const viewPort = testUtils.prepareTarget();
 
         const form = await createView({
             View: FormView,
@@ -222,56 +215,48 @@ QUnit.module('web_mobile', {
             res_id: 11,
         });
 
-        const controlPanelElement = document.querySelector('.o_cp_controller');
-        const controlPanelHeight = controlPanelElement.clientHeight;
+        const controlPanelEl = document.querySelector('.o_control_panel');
+        const controlPanelHeight = controlPanelEl.getBoundingClientRect().height;
 
         // Force viewport to have a scrollbar
-        document.querySelector(Q_UNIT_FIXTURE_SELECTOR).style.position = 'initial';
+        viewPort.style.position = 'initial';
 
-        assert.strictEqual(controlPanelElement.style.top, '0px',
-            'Top must be 0px (start position)');
-        assert.notOk(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
-            'Must not have class o_mobile_sticky (start position)');
+        async function scrollAndAssert(targetHeight, expectedTopValue, hasStickyClass) {
+            if (targetHeight !== null) {
+                window.scrollTo(0, targetHeight);
+                await testUtils.nextTick();
+            }
+            const expectedPixelValue = `${expectedTopValue}px`;
+            assert.strictEqual(controlPanelEl.style.top, expectedPixelValue,
+                `Top must be ${expectedPixelValue} (after scroll to ${targetHeight})`);
 
-        scrollAtHeight(MAX_HEIGHT);
+            if (hasStickyClass) {
+                assert.hasClass(controlPanelEl, 'o_mobile_sticky');
+            } else {
+                assert.doesNotHaveClass(controlPanelEl, 'o_mobile_sticky');
+            }
+        }
 
-        const valueExpected = -controlPanelHeight;
-        assert.strictEqual(controlPanelElement.style.top, valueExpected + 'px',
-            'Top must be ' + valueExpected + 'px (after scroll to MAX_HEIGHT)');
-        assert.ok(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
-            'Must have class o_mobile_sticky (after scroll to MAX_HEIGHT)');
+        // Initial position (scrollTop: 0)
+        await scrollAndAssert(null, 0, false);
 
-        scrollAtHeight(MAX_HEIGHT - DELTA_TEST);
+        // Scroll down 400px (scrollTop: 400)
+        await scrollAndAssert(MAX_HEIGHT, -controlPanelHeight, true);
 
-        const valueExpectedWithDelta = -(controlPanelHeight - DELTA_TEST);
-        assert.strictEqual(controlPanelElement.style.top, valueExpectedWithDelta + 'px',
-            'Top must be ' + valueExpectedWithDelta + 'px (after scroll to MAX_HEIGHT - DELTA_TEST)');
-        assert.ok(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
-            'Must have class o_mobile_sticky (after scroll to MAX_HEIGHT - DELTA_TEST)');
+        // Scoll up 20px (scrollTop: 380)
+        await scrollAndAssert(MAX_HEIGHT - DELTA_TEST, -(controlPanelHeight - DELTA_TEST), true);
 
-        scrollAtHeight(MIDLE_HEIGHT);
+        // Scroll up 180px (scrollTop: 200)
+        await scrollAndAssert(MIDDLE_HEIGHT, 0, true);
 
-        assert.strictEqual(controlPanelElement.style.top, '0px',
-            'Top must be 0px (after scroll to MIDLE_HEIGHT)');
-        assert.ok(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
-            'Must have class o_mobile_sticky (after scroll to MIDLE_HEIGHT)');
+        // Scroll down 200px (scrollTop: 400)
+        await scrollAndAssert(MAX_HEIGHT, -controlPanelHeight, true);
 
-        scrollAtHeight(MAX_HEIGHT);
-
-        assert.strictEqual(controlPanelElement.style.top, (-controlPanelHeight) + 'px',
-            'Top must be ' + (-controlPanelHeight) + 'px (after scroll to MAX_HEIGHT again)');
-        assert.ok(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
-            'Must have class o_mobile_sticky (after scroll to MAX_HEIGHT again)');
-
-        scrollAtHeight(0);
-
-        assert.notOk(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
-            'Must not have class o_mobile_sticky (after return to start position)');
+        // Scroll up 400px (scrollTop: 0)
+        await scrollAndAssert(0, -controlPanelHeight, false);
 
         form.destroy();
-
-        // Reset viewport position attribute
-        document.querySelector(Q_UNIT_FIXTURE_SELECTOR).style.position = '';
+        viewPort.style.position = '';
     });
 
     QUnit.module('BackButtonEventMixin');

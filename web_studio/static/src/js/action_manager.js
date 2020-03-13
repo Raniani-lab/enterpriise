@@ -208,7 +208,7 @@ ActionManager.include({
             var indexFrom = this.studioControllerIndex + 1;
             var indexTo = this.controllerStack.length - 1;
             var breadcrumbs = this._getBreadcrumbs(this.controllerStack.slice(indexFrom, indexTo));
-            controller.widget.updateControlPanel({breadcrumbs: breadcrumbs}, {clear: false});
+            controller.widget.updateControlPanel({ breadcrumbs });
         }
     },
     /**

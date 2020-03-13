@@ -15,6 +15,7 @@ const relationalFields = require('web.relational_fields');
 const testUtils = require('web.test_utils');
 const { str_to_datetime } = require('web.time');
 
+const cpHelpers = testUtils.controlPanel;
 const createView = testUtils.createView;
 
 function autocompleteLength() {
@@ -842,7 +843,6 @@ QUnit.module('DocumentsViews', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
-
         await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
@@ -853,7 +853,7 @@ QUnit.module('DocumentsViews', {
         assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show 1 document preview in the DocumentsInspector");
 
-        await testUtils.dom.click(kanban.pager.$('.o_pager_next'));
+        await cpHelpers.pagerNext(kanban);
         await testUtils.nextTick();
 
         assert.containsNone(kanban, '.o_record_selected',
@@ -861,7 +861,7 @@ QUnit.module('DocumentsViews', {
         assert.containsNone(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show no document preview in the DocumentsInspector");
 
-        await testUtils.dom.click(kanban.pager.$('.o_pager_previous'));
+        await cpHelpers.pagerPrevious(kanban);
         await testUtils.nextTick();
 
         assert.containsNone(kanban, '.o_record_selected',

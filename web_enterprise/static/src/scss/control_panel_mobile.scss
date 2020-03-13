@@ -1,0 +1,129 @@
+.o_mobile_search {
+    background-color: white;
+    bottom: 0;
+    flex-direction: column;
+    left: 0;
+    overflow: auto;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: $zindex-modal;
+
+    .o_mobile_search_header {
+        background-color: $o-brand-odoo;
+        display: flex;
+        min-height: 46px;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        width: 100%;
+
+        .o_mobile_search_button {
+            color: white;
+
+            &:active {
+                background-color: darken($o-brand-primary, 10%);
+            }
+        }
+    }
+
+    .o_searchview_input_container {
+        display: flex;
+        padding: 15px 20px 0 20px;
+        position: relative;
+
+        .o_searchview_input {
+            border-bottom: 1px solid $o-brand-secondary;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .o_searchview_facet {
+            border-radius: 10px;
+            display: inline-flex;
+            order:1;
+
+            .o_searchview_facet_label {
+                border-radius: 2em 0em 0em 2em;
+            }
+        }
+
+        .o_searchview_autocomplete {
+            top:100%;
+
+            > li {
+                margin: 5px 0px;
+            }
+        }
+    }
+
+    .o_mobile_search_filter {
+        margin: 8px 16px;
+        padding-bottom: 15%;
+
+        .o_dropdown {
+            border: solid 1px darken(gray('200'), 20%);
+            margin: 15px 5px 0px 5px;
+            width: 100%;
+
+        }
+
+        .o_dropdown_toggler_btn {
+            text-align: left;
+            width: 100%;
+
+            &:after {
+                display: none;
+            }
+        }
+
+        // We disable the backdrop in this case because it prevents any
+        // interaction outside of a dropdown while it is open.
+        .dropdown-backdrop {
+            z-index: -1;
+        }
+
+        .dropdown-menu {
+            // Here we use !important because of popper js adding custom style
+            // to element so to override it use !important
+            border: none;
+            box-shadow: none;
+            color: gray('600');
+            position: relative !important;
+            transform: translate3d(0, 0, 0) !important;
+            width: 100% !important;
+
+            .divider {
+                margin: 0px;
+            }
+        }
+    }
+
+    .o_mobile_search_show_result {
+        font-size: 17px;
+        padding: 15px;
+        width: 100%;
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .o_control_panel {
+        .o_cp_today_button {
+            margin-left: auto;
+        }
+        .o_calendar_button_today {
+            font-size: 0.7em;
+            line-height: 1.9em;
+            > .o_calendar_text {
+                margin-top: 3px;
+            }
+        }
+    }
+
+    .o_calendar_view {
+        .fc-day-header {
+            word-spacing: 1000px; // force line break in week mode
+        }
+    }
+
+}

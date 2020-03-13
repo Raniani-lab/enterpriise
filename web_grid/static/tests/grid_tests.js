@@ -644,7 +644,7 @@ QUnit.module('Views', {
             currentDate: "2017-02-25",
         });
 
-        return concurrency.delay(0).then(function () {
+        return testUtils.nextTick().then(async function () {
             assert.strictEqual(grid.$('thead th:not(.o_grid_title_header)').length, 8,
                 "should have 8 columns (1 for each day + 1 for total)");
             assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'),'active',
@@ -652,11 +652,8 @@ QUnit.module('Views', {
             assert.doesNotHaveClass(grid.$buttons.find('button.grid_arrow_range[data-name="month"]'), 'active',
                 "month range is not active");
 
-            testUtils.dom.click(grid.$buttons.find('button[data-name=month]'));
-
-            return concurrency.delay(0);
+            await testUtils.dom.click(grid.$buttons.find('button[data-name=month]'));
         }).then(function () {
-
             assert.strictEqual(grid.$('thead th:not(.o_grid_title_header)').length, 29,
                 "should have 29 columns (1 for each day + 1 for total)");
             assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="month"]'),'active',
@@ -705,7 +702,7 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
-    QUnit.test('editing a value', async function (assert) {
+    QUnit.test('editing a value [REQUIRE FOCUS]', async function (assert) {
         assert.expect(13);
 
         var grid = await createView({
@@ -1223,7 +1220,6 @@ QUnit.module('Views', {
                 }
                 return this._super.apply(this, arguments);
             },
-            debug: true,
         });
 
         await testUtils.nextTick();

@@ -54,7 +54,6 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
 
             const { wrapper, appCreator } = await createAppCreator({
                 env: {
-                    isDebug: () => false,
                     services: {
                         blockUI: () => assert.step('UI blocked'),
                         httpRequest: (route, params) => {
@@ -308,7 +307,6 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
 
             const { wrapper, appCreator } = await createAppCreator({
                 env: {
-                    isDebug: () => false,
                     services: {
                         blockUI: () => assert.step('UI blocked'),
                         unblockUI: () => assert.step('UI unblocked'),

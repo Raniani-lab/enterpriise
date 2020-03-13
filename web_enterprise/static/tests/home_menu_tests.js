@@ -17,78 +17,30 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
         }
     }
 
-    const url = "/web_enterprise/static/src/img/default_icon_app.png";
-
     QUnit.module("web_enterprise", {
         beforeEach: function () {
             this.props = {
                 apps: [
-                    {
-                        action: "121",
-                        id: 1,
-                        label: "Discuss",
-                        parents: "",
-                        webIcon: null,
-                        webIconData: url,
-                        xmlid: null,
-                    },
-                    {
-                        id: 2,
-                        label: "Calendar",
-                        parents: "",
-                        webIconData: url,
-                    },
-                    {
-                        id: 3,
-                        label: "Contacts",
-                        parents: "",
-                        webIconData: url,
-                    },
+                    { action: "121", id: 1, label: "Discuss", parents: "", webIcon: false, xmlid: "app.1" },
+                    { action: "122", id: 2, label: "Calendar", parents: "", webIcon: false, xmlid: "app.2" },
+                    { action: "123", id: 3, label: "Contacts", parents: "", webIcon: false, xmlid: "app.3" },
                 ],
                 menuItems: [
-                    {
-                        id: 4,
-                        label: "Contacts",
-                        parents: "Contacts",
-                        webIconData: url,
-                    },
-                    {
-                        id: 5,
-                        label: "Configuration",
-                        parents: "Contacts",
-                        webIconData: url,
-                    },
-                    {
-                        id: 6,
-                        label: "Contact Tags",
-                        parents: "Contacts / Configuration",
-                        webIconData: url,
-                    },
-                    {
-                        id: 7,
-                        label: "Contact Titles",
-                        parents: "Contacts / Configuration",
-                        webIconData: url,
-                    },
-                    {
-                        id: 8,
-                        label: "Localization",
-                        parents: "Contacts / Configuration",
-                        webIconData: url,
-                    },
-                    {
-                        id: 9,
-                        label: "Countries",
-                        parents: "Contacts / Configuration / Localization",
-                        webIconData: url,
-                    },
-                    {
-                        id: 10,
-                        label: "Fed. States",
-                        parents: "Contacts / Configuration / Localization",
-                        webIconData: url,
-                    },
-                ]
+                    { action: "124", id: 4, label: "Contacts", menu_id: 4, parents: "Contacts",
+                        webIcon: false, xmlid: "menu.4" },
+                    { action: "125", id: 5, label: "Configuration", menu_id: 5, parents: "Contacts",
+                        webIcon: false, xmlid: "menu.5" },
+                    { action: "126", id: 6, label: "Contact Tags", menu_id: 6, parents: "Contacts / Configuration",
+                        webIcon: false, xmlid: "menu.6" },
+                    { action: "127", id: 7, label: "Contact Titles", menu_id: 7, parents: "Contacts / Configuration",
+                        webIcon: false, xmlid: "menu.7" },
+                    { action: "128", id: 8, label: "Localization", menu_id: 8, parents: "Contacts / Configuration",
+                        webIcon: false, xmlid: "menu.8" },
+                    { action: "129", id: 9, label: "Countries", menu_id: 9, parents: "Contacts / Configuration / Localization",
+                        webIcon: false, xmlid: "menu.9" },
+                    { action: "130", id: 10, label: "Fed. States", menu_id: 10, parents: "Contacts / Configuration / Localization",
+                        webIcon: false, xmlid: "menu.10" },
+                ],
             };
         }
     }, function () {
@@ -179,7 +131,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 // Handlers
                 _onAppClicked(ev) {
                     assert.step('app-clicked');
-                    assert.deepEqual(ev.detail, { action_id: undefined, menu_id: 2 });
+                    assert.deepEqual(ev.detail, { action_id: "122", menu_id: 2 });
                 }
             }
             Parent.components = { HomeMenu };
@@ -276,7 +228,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 // Handlers
                 _onMenuClicked(ev) {
                     assert.step('menu-clicked');
-                    assert.deepEqual(ev.detail, { action_id: undefined, menu_id: 8 });
+                    assert.deepEqual(ev.detail, { action_id: "128", menu_id: 8 });
                 }
             }
             Parent.components = { HomeMenu };
@@ -353,10 +305,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 // Handlers
                 _onMenuClicked(ev) {
                     assert.step('menu-clicked');
-                    assert.deepEqual(ev.detail, {
-                        action_id: undefined,
-                        menu_id: 4
-                    });
+                    assert.deepEqual(ev.detail, { action_id: "124", menu_id: 4 });
                 }
             }
             Parent.components = { HomeMenu };
@@ -452,14 +401,19 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
 
         QUnit.test("Navigation (only apps, only one line)", async function (assert) {
             assert.expect(9);
-            const homeMenuData = {
-                apps: [
-                    { label: "00", webIconData: url },
-                    { label: "01", webIconData: url},
-                    { label: "02", webIconData: url }
-                ],
-                menuItems: []
-            };
+
+            this.props.apps = new Array(3).fill().map((x, i) => {
+                return {
+                    action: `12${i}`,
+                    id: i + 1,
+                    label: `0${i}`,
+                    parents: "",
+                    webIcon: false,
+                    xmlid: `app.${i}`,
+                };
+            });
+            this.props.menuItems = [];
+            const homeMenuData = this.props;
             class Parent extends Component {
                 constructor() {
                     super();
@@ -513,19 +467,19 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
 
         QUnit.test("Navigation (only apps, two line one incomplete)", async function (assert) {
             assert.expect(19);
-            const homeMenuData = {
-                apps: [
-                    { label: "00", webIconData: url },
-                    { label: "01", webIconData: url },
-                    { label: "02", webIconData: url },
-                    { label: "03", webIconData: url },
-                    { label: "04", webIconData: url },
-                    { label: "05", webIconData: url },
-                    { label: "06", webIconData: url },
-                    { label: "07", webIconData: url },
-                ],
-                menuItems: []
-            };
+
+            this.props.apps = new Array(8).fill().map((x, i) => {
+                return {
+                    action: "121",
+                    id: i + 1,
+                    label: `0${i}`,
+                    parents: "",
+                    webIcon: false,
+                    xmlid: `app.${i}`,
+                };
+            });
+            this.props.menuItems = [];
+            const homeMenuData = this.props;
             class Parent extends Component {
                 constructor() {
                     super();
@@ -582,19 +536,19 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
 
         QUnit.test("Navigation (only apps, two line one incomplete, no searchbar)", async function (assert) {
             assert.expect(19);
-            const homeMenuData = {
-                apps: [
-                    { label: "00", webIconData: url },
-                    { label: "01", webIconData: url },
-                    { label: "02", webIconData: url },
-                    { label: "03", webIconData: url },
-                    { label: "04", webIconData: url },
-                    { label: "05", webIconData: url },
-                    { label: "06", webIconData: url },
-                    { label: "07", webIconData: url },
-                ],
-                menuItems: []
-            };
+
+            this.props.apps = new Array(8).fill().map((x, i) => {
+                return {
+                    action: "121",
+                    id: i + 1,
+                    label: `0${i}`,
+                    parents: "",
+                    webIcon: false,
+                    xmlid: `app.${i}`,
+                };
+            });
+            this.props.menuItems = [];
+            const homeMenuData = this.props;
             class Parent extends Component {
                 constructor() {
                     super();
@@ -652,14 +606,20 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
 
         QUnit.test("Navigation (only 3 menuItems)", async function (assert) {
             assert.expect(10);
-            const homeMenuData = {
-                apps: [],
-                menuItems: [
-                    { label: "00", parent: "0", webIconData: url },
-                    { label: "01", parent: "0", webIconData: url },
-                    { label: "02", parent: "0", webIconData: url },
-                ]
-            };
+
+            this.props.apps = [];
+            this.props.menuItems = new Array(3).fill().map((x, i) => {
+                return {
+                    action: `12${i}`,
+                    id: i + 1,
+                    label: `0${i}`,
+                    menu_id: i,
+                    parents: "0",
+                    webIcon: false,
+                    xmlid: `menu_${i}`,
+                };
+            });
+            const homeMenuData = this.props;
             class Parent extends Component {
                 constructor() {
                     super();
@@ -713,17 +673,29 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
 
         QUnit.test("Navigation (one line of 3 apps and 2 menuItems)", async function (assert) {
             assert.expect(13);
-            const homeMenuData = {
-                apps: [
-                    { label: "00", webIconData: url },
-                    { label: "01", webIconData: url },
-                    { label: "02", webIconData: url },
-                ],
-                menuItems: [
-                    { label: "03", webIconData: url },
-                    { label: "04", webIconData: url },
-                ]
-            };
+
+            this.props.apps = new Array(3).fill().map((x, i) => {
+                return {
+                    action: `12${i}`,
+                    id: i + 1,
+                    label: `0${i}`,
+                    parents: "",
+                    webIcon: false,
+                    xmlid: `app.${i}`,
+                };
+            });
+            this.props.menuItems = new Array(2).fill().map((x, i) => {
+                return {
+                    action: `12${i}`,
+                    id: i + 3,
+                    label: `0${i}`,
+                    menu_id: i,
+                    parents: "",
+                    webIcon: false,
+                    xmlid: `menu_${i}`,
+                };
+            });
+            const homeMenuData = this.props;
             class Parent extends Component {
                 constructor() {
                     super();

@@ -4,6 +4,8 @@ odoo.define('web_map.view_view_tests', function (require) {
 const MapView = require('web_map.MapView');
 const MapModel = require('web_map.MapModel');
 const testUtils = require('web.test_utils');
+
+const cpHelpers = testUtils.controlPanel;
 const createView = testUtils.createAsyncView;
 
 QUnit.module('mapView', {
@@ -1731,16 +1733,15 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-
-        assert.isVisible(map.pager);
-        assert.strictEqual(map.pager.$('.o_pager_value').text(), "1-80",
+        assert.containsOnce(map, '.o_pager');
+        assert.strictEqual(cpHelpers.getPagerValue(map), "1-80",
             "current pager value should be 1-20");
-        assert.strictEqual(map.pager.$('.o_pager_limit').text(), "101",
+        assert.strictEqual(cpHelpers.getPagerSize(map), "101",
             "current pager limit should be 21");
 
-        await testUtils.dom.click(map.pager.$('.o_pager_next'));
+        await cpHelpers.pagerNext(map);
 
-        assert.strictEqual(map.pager.$('.o_pager_value').text(), "81-101",
+        assert.strictEqual(cpHelpers.getPagerValue(map), "81-101",
             "pager value should be 21-40");
 
         map.destroy();

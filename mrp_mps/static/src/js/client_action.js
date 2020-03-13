@@ -31,9 +31,6 @@ var ClientAction = AbstractAction.extend({
         'mouseover .o_mrp_mps_procurement': '_onMouseOverReplenish',
         'mouseout .o_mrp_mps_procurement': '_onMouseOutReplenish',
     },
-    custom_events: {
-        search: '_onSearch',
-    },
 
     init: function (parent, action) {
         this._super.apply(this, arguments);
@@ -49,10 +46,10 @@ var ClientAction = AbstractAction.extend({
         this.manufacturingPeriod = false;
         this.manufacturingPeriods = [];
         this.state = false;
-    
+
         this.mutex = new concurrency.Mutex();
-    
-        this.controlPanelParams.modelName = 'mrp.production.schedule';
+
+        this.controlPanelModelConfig.modelName = 'mrp.production.schedule';
     },
 
     willStart: function () {
@@ -69,7 +66,7 @@ var ClientAction = AbstractAction.extend({
             kwargs: {context: session.user_context},
         })
         .then(function (viewId) {
-            self.controlPanelParams.viewId = viewId[1];
+            self.viewId = viewId[1];
         });
 
         return Promise.all([def_content, def_control_panel]).then(function () {
@@ -679,11 +676,10 @@ var ClientAction = AbstractAction.extend({
      * content with the new domain.
      *
      * @private
-     * @param {jQuery.Event} ev
+     * @param {Object} searchQuery
      */
-    _onSearch: function (event) {
-        event.stopPropagation();
-        this.domain = event.data.domain;
+    _onSearch: function (searchQuery) {
+        this.domain = searchQuery.domain;
         this._reloadContent();
     },
 });

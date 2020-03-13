@@ -10,11 +10,12 @@ var session = require('web.session');
 var ReportEditorSidebar = require('web_studio.ReportEditorSidebar');
 var ReportEditor = require('web_studio.ReportEditor');
 var AbstractEditorManager = require('web_studio.AbstractEditorManager');
+const { ComponentWrapper, WidgetAdapterMixin } = require('web.OwlCompatibility');
 
 var qweb = core.qweb;
 var _t = core._t;
 
-var ReportEditorManager = AbstractEditorManager.extend({
+var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
     className: AbstractEditorManager.prototype.className + ' o_web_studio_report_editor_manager',
     custom_events: _.extend({}, AbstractEditorManager.prototype.custom_events, {
         editor_clicked: '_onEditorClick',
@@ -26,6 +27,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
         iframe_ready: '_onIframeReady',
         begin_preview_drag_component: '_onBeginPreviewDragComponent',
         end_preview_drag_component: '_onEndPreviewDragComponent',
+        pager_changed: '_onPagerChanged',
     }),
     events: _.extend({}, AbstractEditorManager.prototype.events, {
         'click .o_web_studio_report_print': '_onPrintReport',
@@ -67,16 +69,48 @@ var ReportEditorManager = AbstractEditorManager.extend({
         }).then(function () {
             self.editorIframeResolved = true;
         });
+        const currentMinimum = 1;
+        const size = this.env.ids.length;
+        const limit = 1;
+        this.withPager = size > 1;
+        if (this.withPager) {
+            // only display the pager if useful
+            this.pager = new ComponentWrapper(this, Pager, { currentMinimum, limit, size });
+        }
     },
     /**
      * @override
      */
-    start: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            self._renderActionsSection();
-            self._setPaperFormat();
-        });
+    start: async function () {
+        const promises = [this._super(...arguments)];
+        if (this.withPager) {
+            const pagerPromise = this.pager.mount(document.createDocumentFragment());
+            promises.push(pagerPromise);
+        }
+        await Promise.all(promises);
+        this._renderActionsSection();
+        this._setPaperFormat();
+    },
+    /**
+     * @override
+     */
+    destroy: function () {
+        WidgetAdapterMixin.destroy.apply(this, arguments);
+        return this._super.apply(this, arguments);
+    },
+    /**
+     * @override
+     */
+    on_attach_callback: function () {
+        this._super.apply(this, arguments);
+        WidgetAdapterMixin.on_attach_callback.apply(this, arguments);
+    },
+    /**
+     * @override
+     */
+    on_detach_callback: function () {
+        this._super.apply(this, arguments);
+        WidgetAdapterMixin.on_detach_callback.apply(this, arguments);
     },
 
     //--------------------------------------------------------------------------
@@ -251,49 +285,20 @@ var ReportEditorManager = AbstractEditorManager.extend({
      *
      * @private
      */
-    _renderActionsSection: function () {
-        var $actionsSection = $('<div>', {
-            class: 'o_web_studio_report_actions',
+    _renderActionsSection: async function () {
+        const actionsSection = Object.assign(document.createElement('div'), {
+            className: 'o_web_studio_report_actions',
+            innerHTML: qweb.render('web_studio.PrintSection'),
         });
-        $actionsSection.appendTo(this.$el);
+        this.el.appendChild(actionsSection);
 
-        var $printSection = $(qweb.render('web_studio.PrintSection'));
-        $printSection.appendTo($actionsSection);
-
-        var $pager = this._renderPager();
-        if (this.pager.state.size > 1) {
-            // only display the pager if useful
-            $pager.appendTo($actionsSection);
-        }
-    },
-    /**
-     * @override
-     * @returns {jQuery} the pager node
-     */
-    _renderPager: function () {
-        var self = this;
-        this.pager = new Pager(this, this.env.ids.length, 1, 1);
-        this.pager.on('pager_changed', this, function (newState) {
-            this._cleanOperationsStack();
-            this.env.currentId = this.env.ids[newState.current_min - 1];
-            // TODO: maybe we should trigger_up and the action should handle
-            // this? But the pager will be reinstantiate and useless RPCs will
-            // be done (see willStart)
-            // OR should we put _getReportViews of report_editor_action here?
-            // But then it should be mocked in tests?
-            this._getReportViews().then(function (result) {
-                self.reportHTML = result.report_html;
-                self.reportViews = result.views;
-                self.updateEditor();
+        if (this.withPager) {
+            const pagerContainer = Object.assign(document.createElement('div'), {
+                className: 'o_web_studio_report_pager',
             });
-        });
-        var $pager = $('<div>', {
-            class: 'o_web_studio_report_pager',
-        });
-        this.pager.appendTo($pager).then(function () {
-            self.pager.enable();
-        });
-        return $pager;
+            pagerContainer.appendChild(this.pager.el);
+            actionsSection.append(pagerContainer);
+        }
     },
     /**
      * @private
@@ -450,6 +455,24 @@ var ReportEditorManager = AbstractEditorManager.extend({
         // TODO: this should probably not be done like that (setting state on
         // sidebar) but pass paramaters to _updateSidebar instead.
         this._updateSidebar();
+    },
+    /**
+     * @private
+     */
+    _onPagerChanged: async function (ev) {
+        const { currentMinimum, limit } = ev.data;
+        this._cleanOperationsStack();
+        this.env.currentId = this.env.ids[currentMinimum - 1];
+        // TODO: maybe we should trigger_up and the action should handle
+        // this? But the pager will be reinstantiate and useless RPCs will
+        // be done (see willStart)
+        // OR should we put _getReportViews of report_editor_action here?
+        // But then it should be mocked in tests?
+        const result = await this._getReportViews();
+        this.pager.update({ currentMinimum, limit });
+        this.reportHTML = result.report_html;
+        this.reportViews = result.views;
+        this.updateEditor();
     },
     /**
      * @private

@@ -102,12 +102,14 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         this._searchPanel.setUploadingFolderIds(folderIds);
     },
     /**
-     * @param {jQueryElement} $node
+     * @param {jQuery} [$node]
      */
     renderButtons($node) {
         this.$buttons = $(qweb.render('DocumentsViews.buttons'));
-        this.$buttons.appendTo($node);
-        this._updateButtons();
+        if ($node) {
+            this.$buttons.appendTo($node);
+        }
+        this.updateButtons();
     },
 
     //--------------------------------------------------------------------------
@@ -368,7 +370,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      *
      * @private
      */
-    _updateButtons() {
+    updateButtons() {
         const selectedFolderId = this._searchPanel.getSelectedFolderId();
         this.$buttons.find('.o_documents_kanban_upload').prop('disabled', !selectedFolderId);
         this.$buttons.find('.o_documents_kanban_url').prop('disabled', !selectedFolderId);
@@ -456,7 +458,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
                 default_folder_id: this._searchPanel.getSelectedFolderId(),
                 default_tag_ids: [[6, 0, this._searchPanel.getSelectedTagIds()]],
             },
-            on_close: async () => await this.reload(),
+            on_close: () => this.reload(),
         });
     },
     /**

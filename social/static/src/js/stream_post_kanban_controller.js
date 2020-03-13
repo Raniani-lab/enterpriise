@@ -55,17 +55,19 @@ var StreamPostKanbanController = KanbanController.extend({
 
     /**
      * @override
-     * @param {jQueryElement} $node
+     * @param {jQuery} [$node]
      */
     renderButtons: function ($node) {
         this.$buttons = $(QWeb.render('StreamPostKanbanView.buttons', {
             hasAccounts: this.hasAccounts
         }));
-        this.$buttons.appendTo($node);
         this.$buttons.on('click', '.o_stream_post_kanban_new_post', this._onNewPost.bind(this));
         this.$buttons.on('click', '.o_stream_post_kanban_new_stream', this._onNewStream.bind(this));
         this.$buttons.on('click', '.o_stream_post_kanban_refresh_now', this._onRefreshNow.bind(this));
-        this._updateButtons();
+        this.updateButtons();
+        if ($node) {
+            this.$buttons.appendTo($node);
+        }
     },
 
     //--------------------------------------------------------------------------

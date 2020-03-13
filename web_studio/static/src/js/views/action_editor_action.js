@@ -39,7 +39,9 @@ var ActionEditorAction = AbstractAction.extend({
         this._super.apply(this, arguments);
 
         this._title = _t('Studio');
-        this.controlPanelParams.title = this._title;
+        if (this.controlPanelProps) {
+            this.controlPanelProps.title = this._title;
+        }
         this.options = options;
         this.action = options.action;
 

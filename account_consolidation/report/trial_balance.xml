@@ -83,7 +83,7 @@
                         All
                     </t>
                 </a>
-                <div class="dropdown-menu o_filters_menu" role="menu">
+                <div class="dropdown-menu o_filter_menu" role="menu">
                     <t t-foreach="options['consolidation_journals']" t-as="j">
                         <a role="menuitem" t-att-title="j.get('name')"
                            data-filter="consolidation_journals" t-att-data-id="j.get('id')"
@@ -107,7 +107,7 @@
                         <t t-esc="selected_periods"/>
                     </t>
                 </a>
-                <div class="dropdown-menu o_filters_menu" role="menu">
+                <div class="dropdown-menu o_filter_menu" role="menu">
                     <t t-foreach="options['periods']" t-as="p">
                         <a role="menuitem" t-att-title="p.get('name')"
                            data-filter="periods" t-att-data-id="p.get('id')"
@@ -120,7 +120,7 @@
         </template>
         <!-- Extra options template to add "show zero balance accounts" option -->
         <template id="search_template_conso_extra_options" inherit_id="account_reports.search_template_extra_options">
-            <xpath expr="//div[hasclass('o_filters_menu')]" position="inside">
+            <xpath expr="//div[hasclass('o_filter_menu')]" position="inside">
                 <a role="menuitem" class="dropdown-item js_account_report_bool_filter"
                    t-if="options.get('show_zero_balance_accounts') != None"
                    title="Show Zero Balance Accounts" data-filter="show_zero_balance_accounts">

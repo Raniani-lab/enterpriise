@@ -14,12 +14,14 @@ var WebsiteSaleDashboardController = DashboardController.extend({
 
     /**
      * @override
-     * @param {jQueryElement} $node
+     * @param {jQuery} [$node]
      */
     renderButtons: function ($node) {
         this.$buttons = $('<div>');
         this.$buttons.append(qweb.render("website.GoToButtons", {widget: this}));
-        this.$buttons.appendTo($node);
+        if ($node) {
+            this.$buttons.appendTo($node);
+        }
     },
 
 });

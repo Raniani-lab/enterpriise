@@ -50,7 +50,7 @@ tour.register('account_reports_widgets', {
         },
         {
             content: "change date filter",
-            trigger: ".o_account_reports_filter_date > a",
+            trigger: ".o_account_reports_filter_date > button",
         },
         {
             content: "change date filter",
@@ -63,7 +63,7 @@ tour.register('account_reports_widgets', {
         },
         {
             content: "change comparison filter",
-            trigger: ".o_account_reports_filter_date_cmp > a"
+            trigger: ".o_account_reports_filter_date_cmp > button"
         },
         {
             content: "change comparison filter",
@@ -80,7 +80,7 @@ tour.register('account_reports_widgets', {
         },
         {
             content: "change boolean filter",
-            trigger: ".o_account_reports_filter_bool > a",
+            trigger: ".o_account_reports_filter_bool > button",
         },
         {
             title: "export xlsx",

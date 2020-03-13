@@ -13,7 +13,7 @@
                 <t t-esc="type_value"/>
                 <span class="caret"/>
             </a>
-            <div class="dropdown-menu o_filters_menu" role="menu">
+            <div class="dropdown-menu o_filter_menu" role="menu">
                 <t t-foreach="options['intrastat_type']" t-as="c">
                     <a t-att-title="c.get('name')"
                         data-filter="intrastat_type"
@@ -31,14 +31,14 @@
                 <t t-if="not options['intrastat_extended']">Standard</t>
                 <span class="caret"/>
             </a>
-            <div class="dropdown-menu o_filters_menu" role="menu">
+            <div class="dropdown-menu o_filter_menu" role="menu">
                 <a role="menuitem" title="Extended" data-filter="intrastat_extended"
                     class="dropdown-item js_account_report_bool_filter">
                     Extended Mode
                 </a>
             </div>
         </template>
-        
+
         <template id="search_template_vat">
             <a type="button" class="dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-filter"/> Partners:
@@ -46,7 +46,7 @@
                 <t t-if="not options['with_vat']">All</t>
                 <span class="caret"/>
             </a>
-            <div class="dropdown-menu o_filters_menu" role="menu">
+            <div class="dropdown-menu o_filter_menu" role="menu">
                 <a role="menuitem" title="Include VAT" data-filter="with_vat"
                     class="dropdown-item js_account_report_bool_filter">
                     Only with VAT numbers
@@ -64,7 +64,7 @@
                      t-if="options.get('intrastat_extended') != None">
                     <t t-call="account_intrastat.search_template_intrastat_extended"/>
                 </div>
-                <div class="btn-group o_dropdown o_account_reports_filter_vat" 
+                <div class="btn-group o_dropdown o_account_reports_filter_vat"
                      t-if="options.get('with_vat') != None">
                     <t t-call="account_intrastat.search_template_vat"/>
                 </div>

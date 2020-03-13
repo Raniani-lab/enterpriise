@@ -20,7 +20,7 @@ odoo.define('web_cohort.CohortRenderer', function (require) {
         }
         /**
          * @param {integer} value
-         * @returns {Array} first integers from 0 to value-1 
+         * @returns {Array} first integers from 0 to value-1
          */
         _range(value) {
             return _.range(value);

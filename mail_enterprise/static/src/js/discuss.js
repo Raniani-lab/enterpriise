@@ -78,13 +78,13 @@ Discuss.include(Object.assign({}, SwipeItemMixin, {
      */
     start: function () {
         this._$mainContent = this.$('.o_mail_discuss_content');
-        return this._super.apply(this, arguments)
-            .then(this._updateControlPanel.bind(this));
+        return this._super.apply(this, arguments);
     },
     /**
      * @override
      */
     on_attach_callback: function () {
+        this._super();
         if (this._thread && this._isInInboxTab()) {
             this._threadWidget.scrollToPosition(this._threadsScrolltop[this._thread.getID()]);
         }
@@ -93,6 +93,7 @@ Discuss.include(Object.assign({}, SwipeItemMixin, {
      * @override
      */
     on_detach_callback: function () {
+        this._super();
         if (this._isInInboxTab()) {
             this._threadsScrolltop[this._thread.getID()] = this._threadWidget.getScrolltop();
         }

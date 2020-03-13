@@ -64,20 +64,52 @@ var CohortController = AbstractController.extend({
 
     /**
      * @override
-     * @param {jQueryElement} $node
+     * @param {jQuery} [$node]
      */
     renderButtons: function ($node) {
+        this.$buttons = $(qweb.render('CohortView.buttons', {
+            measures: _.sortBy(_.pairs(this.measures), function(x){ return x[1].toLowerCase(); }),
+            intervals: this.intervals,
+            isMobile: config.device.isMobile
+        }));
+        this.$measureList = this.$buttons.find('.o_cohort_measures_list');
+        this.$buttons.on('click', 'button', this._onButtonClick.bind(this));
         if ($node) {
-            this.$buttons = $(qweb.render('CohortView.buttons', {
-                measures: _.sortBy(_.pairs(this.measures), function(x){ return x[1].toLowerCase(); }),
-                intervals: this.intervals,
-                isMobile: config.device.isMobile
-            }));
-            this.$measureList = this.$buttons.find('.o_cohort_measures_list');
             this.$buttons.appendTo($node);
-            this._updateButtons();
-            this.$buttons.on('click', 'button', this._onButtonClick.bind(this));
         }
+    },
+    /**
+     * Makes sure that the buttons in the control panel matches the current
+     * state (so, correct active buttons and stuff like that);
+     *
+     * @override
+     */
+    updateButtons: function () {
+        if (!this.$buttons) {
+            return;
+        }
+        var data = this.model.get();
+        // Hide download button if no cohort data
+        var noData = !data.report.rows.length &&
+                    (!data.comparisonReport ||
+                    !data.comparisonReport.rows.length);
+        this.$buttons.find('.o_cohort_download_button').toggleClass(
+            'd-none',
+            noData
+        );
+        if (config.device.isMobile) {
+            var $activeInterval = this.$buttons
+                .find('.o_cohort_interval_button[data-interval="' + data.interval + '"]');
+            this.$buttons.find('.dropdown_cohort_content').text($activeInterval.text());
+        }
+        this.$buttons.find('.o_cohort_interval_button').removeClass('active');
+        this.$buttons
+            .find('.o_cohort_interval_button[data-interval="' + data.interval + '"]')
+            .addClass('active');
+        _.each(this.$measureList.find('.dropdown-item'), function (el) {
+            var $el = $(el);
+            $el.toggleClass('selected', $el.data('field') === data.measure);
+        });
     },
 
     //--------------------------------------------------------------------------
@@ -127,41 +159,8 @@ var CohortController = AbstractController.extend({
      * @returns {Promise}
      */
     _update: function () {
-      this._updateButtons();
+      this.updateButtons();
       return this._super.apply(this, arguments);
-    },
-    /**
-     * makes sure that the buttons in the control panel matches the current
-     * state (so, correct active buttons and stuff like that)
-     *
-     * @private
-     */
-    _updateButtons: function () {
-        if (!this.$buttons) {
-            return;
-        }
-        var data = this.model.get();
-        // Hide download button if no cohort data
-        var noData = !data.report.rows.length &&
-                    (!data.comparisonReport ||
-                    !data.comparisonReport.rows.length);
-        this.$buttons.find('.o_cohort_download_button').toggleClass(
-            'd-none',
-            noData
-        );
-        if (config.device.isMobile) {
-            var $activeInterval = this.$buttons
-                .find('.o_cohort_interval_button[data-interval="' + data.interval + '"]');
-            this.$buttons.find('.dropdown_cohort_content').text($activeInterval.text());
-        }
-        this.$buttons.find('.o_cohort_interval_button').removeClass('active');
-        this.$buttons
-            .find('.o_cohort_interval_button[data-interval="' + data.interval + '"]')
-            .addClass('active');
-        _.each(this.$measureList.find('.dropdown-item'), function (el) {
-            var $el = $(el);
-            $el.toggleClass('selected', $el.data('field') === data.measure);
-        });
     },
 
     //--------------------------------------------------------------------------

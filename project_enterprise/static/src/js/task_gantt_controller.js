@@ -8,19 +8,19 @@ odoo.define('project_enterprise.TaskGanttController', function (require) {
     var PlanningGanttController = GanttController.extend({
         /**
          * @override
-         * @param {jQueryElement} $node to which the buttons will be appended
+         * @param {jQuery} [$node] to which the buttons will be appended
          */
         renderButtons: function ($node) {
+            var state = this.model.get();
+            this.$buttons = $(QWeb.render('TaskGanttView.buttons', {
+                groupedBy: state.groupedBy,
+                widget: this,
+                SCALES: this.SCALES,
+                activateScale: state.scale,
+                allowedScales: this.allowedScales,
+                activeActions: this.activeActions,
+            }));
             if ($node) {
-                var state = this.model.get();
-                this.$buttons = $(QWeb.render('TaskGanttView.buttons', {
-                    groupedBy: state.groupedBy,
-                    widget: this,
-                    SCALES: this.SCALES,
-                    activateScale: state.scale,
-                    allowedScales: this.allowedScales,
-                    activeActions: this.activeActions,
-                }));
                 this.$buttons.appendTo($node);
             }
         },

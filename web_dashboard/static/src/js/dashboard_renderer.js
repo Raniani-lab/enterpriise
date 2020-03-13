@@ -261,6 +261,8 @@ var DashboardRenderer = FormRenderer.extend({
         $buttons.find('.fa.fa-bars').removeClass('fa fa-bars');
 
         $buttons.prependTo($el);
+
+        controller.updateButtons();
     },
     /**
      * @private
@@ -315,10 +317,12 @@ var DashboardRenderer = FormRenderer.extend({
             context: _.extend({}, this.state.context, controllerContext),
             domain: this.state.domain,
             groupBy: [],
+            timeRanges: this.state.timeRanges,
         };
         var subViewParams = {
             modelName: this.state.model,
             withControlPanel: false,
+            withSearchPanel: false,
             hasSwitchButton: true,
             isEmbedded: true,
             additionalMeasures: this.additionalMeasures,

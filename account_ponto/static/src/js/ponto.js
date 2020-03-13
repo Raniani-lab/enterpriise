@@ -39,7 +39,9 @@ var PontoAccountConfigurationWidget = AbstractAction.extend({
         this.$buttons.find('.js_cancel').click(function(e) {
             self.do_action({type: 'ir.actions.act_window_close'});
         });
-        this.$buttons.appendTo($node);
+        if ($node) {
+            this.$buttons.appendTo($node);
+        }
     },
 
 });

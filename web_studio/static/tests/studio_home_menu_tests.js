@@ -8,42 +8,37 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
     const { Component, tags, useState } = owl;
     const { xml } = tags;
 
-    let studioHomeMenuProps;
-
     QUnit.module("web_studio", {
         beforeEach() {
-            studioHomeMenuProps = {
-                apps: [
-                    {
-                        action: "121",
-                        id: 1,
-                        label: "Discuss",
-                        parents: "",
-                        webIcon: 'mail,static/description/icon.png',
-                        webIconData:
-                            "/web_enterprise/static/src/img/default_icon_app.png",
-                        xmlid: 'app.1',
+            this.props = {
+                apps: [{
+                    action: "121",
+                    id: 1,
+                    label: "Discuss",
+                    parents: "",
+                    webIcon: 'mail,static/description/icon.png',
+                    webIconData: "/web_enterprise/static/src/img/default_icon_app.png",
+                    xmlid: 'app.1',
+                }, {
+                    action: "122",
+                    id: 2,
+                    label: "Calendar",
+                    parents: "",
+                    webIcon: {
+                        backgroundColor: "#C6572A",
+                        color: "#FFFFFF",
+                        iconClass: "fa fa-diamond",
                     },
-                    {
-                        id: 2,
-                        label: "Calendar",
-                        parents: "",
-                        webIcon: {
-                            backgroundColor: "#C6572A",
-                            color: "#FFFFFF",
-                            iconClass: "fa fa-diamond",
-                        },
-                        xmlid: 'app.2',
-                    },
-                    {
-                        id: 3,
-                        label: "Contacts",
-                        parents: "",
-                        webIconData:
-                            "/web_enterprise/static/src/img/default_icon_app.png",
-                        xmlid: 'app.3',
-                    },
-                ]
+                    xmlid: 'app.2',
+                }, {
+                    action: "123",
+                    id: 3,
+                    label: "Contacts",
+                    parents: "",
+                    webIcon: false,
+                    webIconData: "/web_enterprise/static/src/img/default_icon_app.png",
+                    xmlid: 'app.3',
+                }],
             };
         }
     }, function () {
@@ -52,6 +47,7 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
         QUnit.test("simple rendering", async function (assert) {
             assert.expect(21);
 
+            const studioHomeMenuProps = this.props;
             class Parent extends Component {
                 constructor() {
                     super(...arguments);
@@ -115,6 +111,7 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
         QUnit.test("Click on a normal App", async function (assert) {
             assert.expect(3);
 
+            const studioHomeMenuProps = this.props;
             class Parent extends Component {
                 constructor() {
                     super(...arguments);
@@ -141,6 +138,7 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
         QUnit.test("Click on new App", async function (assert) {
             assert.expect(2);
 
+            const studioHomeMenuProps = this.props;
             class Parent extends Component {
                 constructor() {
                     super(...arguments);
@@ -167,6 +165,7 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
         QUnit.test("Click on edit icon button", async function (assert) {
             assert.expect(11);
 
+            const studioHomeMenuProps = this.props;
             class Parent extends Component {
                 constructor() {
                     super(...arguments);

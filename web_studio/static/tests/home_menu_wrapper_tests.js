@@ -15,7 +15,6 @@ odoo.define("web_studio.home_menu_wrapper_tests", function (require) {
                     apps: [],
                     menuItems: [],
                 },
-                studioMode: false,
             });
             const target = testUtils.prepareTarget();
             await homeMenuManager.mount(target);
@@ -35,9 +34,11 @@ odoo.define("web_studio.home_menu_wrapper_tests", function (require) {
 
             // Check new app pushed
             homeMenuManager.state.apps.push({
+                action: '121',
                 id: 1,
                 label: "MyApp",
                 parents: "",
+                webIcon: false,
                 webIconData: "/web_enterprise/static/src/img/default_icon_app.png",
                 xmlid: 'my.app',
             });

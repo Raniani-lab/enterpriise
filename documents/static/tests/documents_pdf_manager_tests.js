@@ -3,49 +3,47 @@ odoo.define('documents.documents_pdf_manager_tests', function (require) {
 
 const PdfManager = require('documents.component.PdfManager');
 const testUtils = require('web.test_utils');
+const utils = require('web.utils');
+
+const { createComponent } = testUtils;
 
 QUnit.module('DocumentsPdfManager', {
     beforeEach() {
-        this.ORIGINAL_GET_PDF = PdfManager.prototype._getPdf;
-        this.ORIGINAL_RENDER_CANVAS = PdfManager.prototype._renderCanvas;
-        this.ORIGINAL_LOAD_ASSETS = PdfManager.prototype._loadAssets;
-        PdfManager.prototype._loadAssets = async () => {};
-        PdfManager.prototype._getPdf = async () => {
-            return {
-                getPage: number => {
-                    return { number };
-                },
-                numPages: 6,
-            };
-        };
-        PdfManager.prototype._renderCanvas = async (page, { width, height }) => {
-            const canvas = document.createElement("canvas");
-            canvas.width = width;
-            canvas.height = height;
-            return canvas;
-        };
+        utils.patch(PdfManager, 'documents_pdf_manager_tests', {
+            async _loadAssets() { },
+            async _getPdf() {
+                return {
+                    getPage: number => ({ number }),
+                    numPages: 6,
+                };
+            },
+            async _renderCanvas(page, { width, height }) {
+                const canvas = document.createElement("canvas");
+                canvas.width = width;
+                canvas.height = height;
+                return canvas;
+            },
+        });
     },
     afterEach() {
-        PdfManager.prototype._loadAssets = this.ORIGINAL_LOAD_ASSETS;
-        PdfManager.prototype._getPdf = this.ORIGINAL_GET_PDF;
-        PdfManager.prototype._renderCanvas = this.ORIGINAL_RENDER_CANVAS;
+        utils.unpatch(PdfManager, 'documents_pdf_manager_tests');
     },
 }, () => {
     QUnit.test('Pdf Manager basic rendering', async function (assert) {
         assert.expect(9);
 
-        const pdfManager = new PdfManager(null, {
-            documents: [
-                { id: 1, name: 'yop', mimetype: 'application/pdf', available_rule_ids: [1, 2] },
-                { id: 2, name: 'blip', mimetype: 'application/pdf', available_rule_ids: [1] },
-            ],
-            rules: [
-                { id: 1, display_name: 'rule1', note: 'note1', limited_to_single_record: false },
-                { id: 2, display_name: 'rule2', limited_to_single_record: false },
-            ],
-            processDocuments: ({ documentIds, ruleId, exit } = {}) => {},
+        const pdfManager = await createComponent(PdfManager, {
+            props: {
+                documents: [
+                    { id: 1, name: 'yop', mimetype: 'application/pdf', available_rule_ids: [1, 2] },
+                    { id: 2, name: 'blip', mimetype: 'application/pdf', available_rule_ids: [1] },
+                ],
+                rules: [
+                    { id: 1, display_name: 'rule1', note: 'note1', limited_to_single_record: false },
+                    { id: 2, display_name: 'rule2', limited_to_single_record: false },
+                ],
+            },
         });
-        await pdfManager.mount($('#qunit-fixture')[0]);
         await testUtils.nextTick();
 
         assert.containsOnce($(pdfManager.el), '.o_documents_pdf_manager_top_bar',
@@ -76,15 +74,15 @@ QUnit.module('DocumentsPdfManager', {
     QUnit.test('Pdf Manager: page interactions', async function (assert) {
         assert.expect(3);
 
-        const pdfManager = new PdfManager(null, {
-            documents: [
-                { id: 1, name: 'yop', mimetype: 'application/pdf', available_rule_ids: [1, 2] },
-                { id: 2, name: 'blip', mimetype: 'application/pdf', available_rule_ids: [1] },
-            ],
-            rules: [],
-            processDocuments: ({ documentIds, ruleId, exit } = {}) => {},
+        const pdfManager = await createComponent(PdfManager, {
+            props: {
+                documents: [
+                    { id: 1, name: 'yop', mimetype: 'application/pdf', available_rule_ids: [1, 2] },
+                    { id: 2, name: 'blip', mimetype: 'application/pdf', available_rule_ids: [1] },
+                ],
+                rules: [],
+            },
         });
-        await pdfManager.mount($('body')[0]);
         await testUtils.nextTick();
 
         assert.containsOnce($(pdfManager.el), '.o_pdf_separator_activated',
@@ -107,14 +105,14 @@ QUnit.module('DocumentsPdfManager', {
     QUnit.test('Pdf Manager: drag & drop', async function (assert) {
         assert.expect(4);
 
-        const pdfManager = new PdfManager(null, {
-            documents: [
-                { id: 1, name: 'yop', mimetype: 'application/pdf', available_rule_ids: [1, 2] },
-            ],
-            rules: [],
-            processDocuments: ({ documentIds, ruleId, exit } = {}) => {},
+        const pdfManager = await createComponent(PdfManager, {
+            props: {
+                documents: [
+                    { id: 1, name: 'yop', mimetype: 'application/pdf', available_rule_ids: [1, 2] },
+                ],
+                rules: [],
+            },
         });
-        await pdfManager.mount($('body')[0]);
         await testUtils.nextTick();
 
         assert.containsN($(pdfManager.el), '.o_pdf_separator_activated', 5,

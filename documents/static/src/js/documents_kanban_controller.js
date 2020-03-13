@@ -55,9 +55,9 @@ var DocumentsKanbanController = KanbanController.extend(DocumentsControllerMixin
      * @override
      * @private
      */
-    _updateButtons() {
+    updateButtons() {
         this._super(...arguments);
-        DocumentsControllerMixin._updateButtons.apply(this, arguments);
+        DocumentsControllerMixin.updateButtons.apply(this, arguments);
     },
 });
 

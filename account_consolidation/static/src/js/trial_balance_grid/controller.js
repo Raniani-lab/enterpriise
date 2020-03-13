@@ -13,17 +13,17 @@ odoo.define('account_consolidation.GridController', function (require) {
             self.add_column_label = _t('Add a column');
             self.view_report_label = _t('Consolidated balance');
         },
-        renderButtons: function ($node) {
+        renderButtons: function () {
             this._super.apply(this, arguments);
-            if (!!this.context.default_period_id) {
+            if (this.context.default_period_id) {
                 this.view_report_btn = $('<button class="btn btn-secondary o_grid_button_view_report" type="button" role="button"/>');
                 this.view_report_btn.text(self.view_report_label);
                 this.view_report_btn.on('click', this._onViewReport.bind(this));
-                $node.prepend(this.view_report_btn);
+                this.$buttons.prepend(this.view_report_btn);
                 this.add_col_btn = $('<button class="btn btn-primary o_grid_button_add" type="button" role="button"/>');
                 this.add_col_btn.text(self.add_column_label);
                 this.add_col_btn.on('click', this._onAddColumn.bind(this));
-                $node.prepend(this.add_col_btn);
+                this.$buttons.prepend(this.add_col_btn);
             }
         },
         _onAddColumn: function (e) {

@@ -28,7 +28,9 @@ var YodleeAccountConfigurationWidget = AbstractAction.extend({
             this.$buttons.find('.js_yodlee_continue').click(function (e) {
                 self.$('#yodleeForm').submit();
             });
-            this.$buttons.appendTo($node);
+            if ($node) {
+                this.$buttons.appendTo($node);
+            }
         }
     },
 

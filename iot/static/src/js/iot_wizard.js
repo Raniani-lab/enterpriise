@@ -13,16 +13,17 @@ function boxRenderButtons($node) {
     this.$buttons = $('<button/>', {class: ['btn btn-primary']})
                     .text(_('CONNECT'))
                     .on('click', function () {
-                        self.do_action('iot.action_add_iot_box');})
-                    .appendTo($node);
+                        self.do_action('iot.action_add_iot_box');});
+    if ($node) {
+        this.$buttons.appendTo($node);
+    }
 }
 
 var BoxKanbanController = KanbanController.extend({
     /**
-    * @param $node
-    * @override
-    */
-    renderButtons: function ($node) {
+     * @override
+     */
+    renderButtons: function () {
         this._super.apply(this, arguments);
         return boxRenderButtons.apply(this, arguments);
     },
@@ -36,10 +37,9 @@ var BoxKanbanView = KanbanView.extend({
 
 var BoxListController = ListController.extend({
     /**
-    * @param $node
-    * @override
-    */
-    renderButtons: function ($node) {
+     * @override
+     */
+    renderButtons: function () {
         this._super.apply(this, arguments);
         return boxRenderButtons.apply(this, arguments);
     },

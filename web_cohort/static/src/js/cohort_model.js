@@ -13,7 +13,8 @@ var CohortModel = AbstractModel.extend({
     * @returns {Object}
     */
     get: function () {
-        return this.data;
+        const { rangeDescription, comparisonRangeDescription } = this.timeRanges;
+        return Object.assign(this.data, { rangeDescription, comparisonRangeDescription });
     },
     /**
      * @override
@@ -26,6 +27,7 @@ var CohortModel = AbstractModel.extend({
      * @param {Array[]} params.domain
      * @param {string} params.mode
      * @param {string} params.timeline
+     * @param {Object} params.timeRanges
      * @returns {Promise}
      */
     load: function (params) {
@@ -35,9 +37,6 @@ var CohortModel = AbstractModel.extend({
         this.measure = params.measure;
         this.interval = params.interval;
         this.domain = params.domain;
-        this.timeRange = params.timeRange || [];
-        this.comparisonTimeRange = params.comparisonTimeRange || [];
-        this.compare =  params.compare;
         this.mode = params.mode;
         this.timeline = params.timeline;
         this.data = {
@@ -45,6 +44,7 @@ var CohortModel = AbstractModel.extend({
             interval: this.interval,
         };
         this.context = params.context;
+        this.timeRanges = params.timeRanges;
         return this._fetchData();
     },
     /**
@@ -52,29 +52,13 @@ var CohortModel = AbstractModel.extend({
      *
      * @param {any} handle
      * @param {Object} params
-     * @param {string} params.measure
-     * @param {string} params.interval
-     * @param {Array[]} params.domain
-     * @param {Object} params.timeRangeMenuData
+     * @param {string} [params.measure]
+     * @param {string} [params.interval]
+     * @param {Array[]} [params.domain]
+     * @param {Object} [params.timeRanges]
      * @returns {Promise}
      */
     reload: function (handle, params) {
-        if (params.context !== undefined) {
-            var timeRangeMenuData = params.context.timeRangeMenuData;
-            if (timeRangeMenuData) {
-                this.timeRange = timeRangeMenuData.timeRange || [];
-                this.comparisonTimeRange = timeRangeMenuData.comparisonTimeRange || [];
-                this.compare = this.comparisonTimeRange.length > 0;
-                this.data.timeRangeDescription = timeRangeMenuData.timeRangeDescription;
-                this.data.comparisonTimeRangeDescription = timeRangeMenuData.comparisonTimeRangeDescription;
-            } else {
-                this.timeRange = [];
-                this.comparisonTimeRange = [];
-                this.compare = false;
-                this.data.timeRangeDescription = "";
-                this.data.comparisonTimeRangeDescription = "";
-            }
-        }
         if ('measure' in params) {
             this.data.measure = params.measure;
         }
@@ -83,6 +67,9 @@ var CohortModel = AbstractModel.extend({
         }
         if ('domain' in params) {
             this.domain = params.domain;
+        }
+        if ('timeRanges' in params) {
+            this.timeRanges = params.timeRanges;
         }
         return this._fetchData();
     },
@@ -98,9 +85,9 @@ var CohortModel = AbstractModel.extend({
      * @returns {Promise}
      */
     _fetchData: function () {
-        var self = this;
-        var defs = [
-            this._rpc({
+        const domains = this._getDomains();
+        const proms = domains.map(domain => {
+            return this._rpc({
                 model: this.modelName,
                 method: 'get_cohort_data',
                 kwargs: {
@@ -108,37 +95,31 @@ var CohortModel = AbstractModel.extend({
                     date_stop: this.dateStop,
                     measure: this.data.measure,
                     interval: this.data.interval,
-                    domain: this.domain.concat(this.timeRange),
+                    domain: domain,
                     mode: this.mode,
                     timeline: this.timeline,
-                    context: this.context,
+                    context: this.context
                 }
-            })];
-        if (this.compare) {
-            defs.push(this._rpc({
-                    model: this.modelName,
-                    method: 'get_cohort_data',
-                    kwargs: {
-                        date_start: this.dateStart,
-                        date_stop: this.dateStop,
-                        measure: this.data.measure,
-                        interval: this.data.interval,
-                        domain: this.domain.concat(this.comparisonTimeRange),
-                        mode: this.mode,
-                        timeline: this.timeline,
-                    }
-                })
-            );
-        }
-        return Promise.all(defs).then(function () {
-            var results = Array.prototype.slice.call(arguments[0]);
-            self.data.report = results[0];
-            if (self.compare) {
-                self.data.comparisonReport = results[1];
-            } else {
-                self.data.comparisonReport = undefined;
-            }
+            });
         });
+        return Promise.all(proms).then(([report, comparisonReport]) => {
+            this.data.report = report;
+            this.data.comparisonReport = comparisonReport;
+        });
+    },
+
+    _getDomains: function () {
+        const { range, comparisonRange } = this.timeRanges;
+        let domains = [];
+        if (range) {
+            domains.push(this.domain.concat(range));
+            if (comparisonRange) {
+                domains.push(this.domain.concat(comparisonRange));
+            }
+        } else {
+            domains.push(this.domain);
+        }
+        return domains;
     },
 });
 

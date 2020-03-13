@@ -176,9 +176,8 @@
             margin-left: 8px;
         }
 
-        .o_dropdown {
+        .o_dropdown:not(:first-child) {
             margin-left: 8px;
-            display: flex;
             align-items: center;
         }
     }

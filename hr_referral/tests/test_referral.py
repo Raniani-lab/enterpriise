@@ -11,11 +11,11 @@ class TestHrReferral(TestHrReferralBase):
     def test_referral_share_is_new(self):
         self.job_dev = self.job_dev.with_user(self.richard_user.id)
 
-        self.env['hr.referral.link.to.share'].with_user(self.richard_user.id).create({'job_id': self.job_dev.id})._compute_url()
+        self.env['hr.referral.link.to.share'].with_user(self.richard_user.id).create({'job_id': self.job_dev.id}).url
         links = self.env['link.tracker'].search([('campaign_id', '=', self.job_dev.utm_campaign_id.id)])
         self.assertEqual(len(links), 1, "It should have created only one link tracker")
 
-        self.env['hr.referral.link.to.share'].with_user(self.steve_user.id).create({'job_id': self.job_dev.id})._compute_url()
+        self.env['hr.referral.link.to.share'].with_user(self.steve_user.id).create({'job_id': self.job_dev.id}).url
         links = self.env['link.tracker'].search([('campaign_id', '=', self.job_dev.utm_campaign_id.id)])
         self.assertEqual(len(links), 2, "It should have created 2 different links tracker (one for each user)")
 
@@ -63,7 +63,7 @@ class TestHrReferral(TestHrReferralBase):
 
     def test_referral_multi_company(self):
         self.job_dev = self.job_dev.with_user(self.richard_user.id)
-        self.env['hr.referral.link.to.share'].with_user(self.richard_user.id).create({'job_id': self.job_dev.id})._compute_url()
+        self.env['hr.referral.link.to.share'].with_user(self.richard_user.id).create({'job_id': self.job_dev.id}).url
 
         job_applicant = self.env['hr.applicant'].create({
             'name': 'Technical worker',

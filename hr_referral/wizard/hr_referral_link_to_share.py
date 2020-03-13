@@ -23,7 +23,7 @@ class HrReferralLinkToShare(models.TransientModel):
         ('facebook', 'Facebook'),
         ('twitter', 'Twitter'),
         ('linkedin', 'Linkedin')], default='direct')
-    url = fields.Char(readonly=True, compute='_compute_url')
+    url = fields.Char(readonly=True, compute='_compute_url', compute_sudo=True)
 
     @api.depends('channel')
     def _compute_url(self):
@@ -31,13 +31,12 @@ class HrReferralLinkToShare(models.TransientModel):
 
         if not self.env.user.utm_source_id:
             utm_name = ('%s-%s') % (self.env.user.name, str(uuid.uuid4())[:6])
-            self.env.user.utm_source_id = self.env['utm.source'].sudo().create({'name': utm_name}).id
+            self.env.user.utm_source_id = self.env['utm.source'].create({'name': utm_name}).id
 
         if self.job_id and not self.job_id.utm_campaign_id:
-            # Use sudo: a normal user can't write on job
-            self.sudo().job_id.utm_campaign_id = self.env['utm.campaign'].sudo().create({'name': self.job_id.name}).id
+            self.job_id.utm_campaign_id = self.env['utm.campaign'].create({'name': self.job_id.name}).id
 
-        link_tracker = self.env['link.tracker'].sudo().create({
+        link_tracker = self.env['link.tracker'].create({
             'url': self.job_id.website_url or '/jobs',
             'campaign_id': self.job_id.utm_campaign_id.id,
             'source_id': self.env.user.utm_source_id.id,

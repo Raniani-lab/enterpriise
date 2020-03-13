@@ -10,7 +10,7 @@ class ResUsers(models.Model):
     _inherit = 'res.users'
 
     hr_referral_level_id = fields.Many2one('hr.referral.level', groups="hr.group_hr_user")
-    hr_referral_onboarding_page = fields.Boolean(default=False, groups="hr.group_hr_user")
+    hr_referral_onboarding_page = fields.Boolean(groups="hr.group_hr_user")
     referral_point_ids = fields.One2many('hr.referral.points', 'ref_user_id')
     utm_source_id = fields.Many2one('utm.source', 'Source', ondelete='cascade', groups="hr.group_hr_user")
 

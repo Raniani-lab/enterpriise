@@ -34,4 +34,5 @@
     'demo': ['data/hr_referral_demo.xml'],
     'installable': True,
     'application': True,
+    'post_init_hook': '_update_stage',
 }

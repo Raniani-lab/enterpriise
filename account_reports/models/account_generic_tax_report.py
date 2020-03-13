@@ -535,7 +535,7 @@ class generic_tax_report(models.AbstractModel):
 
             eval_dict = self._get_total_line_eval_dict(period_balances_by_code, period_date_from, period_date_to, options)
             period_total = safe_eval(report_line.formula, eval_dict)
-            columns.append({'name': self.format_value(period_total), 'style': 'white-space:nowrap;', 'balance': period_total})
+            columns.append({'name': '' if period_total is None else self.format_value(period_total), 'style': 'white-space:nowrap;', 'balance': period_total or 0.0})
 
         return {
             'id': 'total_' + str(report_line.id),

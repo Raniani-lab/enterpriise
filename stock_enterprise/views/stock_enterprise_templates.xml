@@ -4,7 +4,6 @@
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/stock_enterprise/static/src/js/report_grid_controller.js"></script>
             <script type="text/javascript" src="/stock_enterprise/static/src/js/report_grid_view.js"></script>
-            <link rel="stylesheet" type="text/scss" href="/stock_enterprise/static/src/scss/report_stock_quantity.scss"/>
         </xpath>
     </template>
 </odoo>

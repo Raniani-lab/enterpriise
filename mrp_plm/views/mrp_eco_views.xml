@@ -468,7 +468,7 @@
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>
-                            <field name="user_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="user_id" attrs="{'readonly': [('state', '=', 'done')]}" domain="[('share', '=', False)]"/>
                             <field name="effectivity" widget="radio" attrs="{'readonly': [('state', '=', 'done')]}" required="1"/>
                             <field name="effectivity_date" attrs="{'invisible': [('effectivity', '=', 'asap')], 'readonly': [('state', '=', 'done')]}"/>
                             <field name="state" invisible="1"/>

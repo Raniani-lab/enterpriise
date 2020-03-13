@@ -86,7 +86,7 @@ Budgets
                     </div>
                     <group>
                         <group>
-                            <field name="user_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="user_id" attrs="{'readonly':[('state','!=','draft')]}" domain="[('share', '=', False)]"/>
                         </group>
                         <group>
                             <label for="date_from" string="Period"/>

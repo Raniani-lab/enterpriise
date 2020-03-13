@@ -53,7 +53,7 @@
                         <form>
                             <sheet>
                                 <h1>
-                                    <field name="user_id"/>
+                                    <field name="user_id" domain="[('share', '=', False)]"/>
                                     <field name="leads_count" invisible="1"/>
                                 </h1>
                                 <group>

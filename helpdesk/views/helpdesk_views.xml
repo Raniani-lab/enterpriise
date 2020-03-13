@@ -540,7 +540,7 @@
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="team_id"/>
-                            <field name="user_id" class="field_user_id" domain="[('id', 'in', domain_user_ids)]"/>
+                            <field name="user_id" class="field_user_id" domain="['&amp;', ('id', 'in', domain_user_ids), ('share', '=', False)]"/>
                             <field name="domain_user_ids" invisible="1"/>
                             <field name="ticket_type_id"/>
                             <field name="priority" widget="priority"/>

@@ -109,7 +109,7 @@
                     </div>
                     <group>
                         <group name="request_main">
-                            <field name="request_owner_id" groups="approvals.group_approval_user"/>
+                            <field name="request_owner_id" groups="approvals.group_approval_user" domain="[('share', '=', False)]"/>
                             <field name="category_id" groups="approvals.group_approval_user" attrs="{'readonly':[('request_status','!=','new')]}" force_save="1"/>
                             <field name="date_confirmed" groups="base.group_no_one" readonly="1"/>
                             <label for="date" string="Date" attrs="{'invisible':[('has_date','==','no')]}"/>

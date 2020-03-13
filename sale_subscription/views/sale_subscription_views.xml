@@ -236,7 +236,7 @@
                         </group>
                         <group>
                             <field name="template_id"/>
-                            <field name="user_id"/>
+                            <field name="user_id" domain="[('share', '=', False)]"/>
                             <field name="team_id" kanban_view_ref="%(sales_team.crm_team_view_kanban)s"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="currency_id" invisible="1"/>

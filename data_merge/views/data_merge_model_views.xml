@@ -46,7 +46,7 @@
                                 <field name="merge_mode" widget="radio" options="{'horizontal': true}" />
 
                                 <!-- Manual merge -->
-                                <field name="notify_user_ids" widget="many2many_tags" attrs="{'invisible': [('merge_mode', '=', 'automatic')]}" options="{'no_create': True, 'no_edit': True}" />
+                                <field name="notify_user_ids" widget="many2many_tags" attrs="{'invisible': [('merge_mode', '=', 'automatic')]}" options="{'no_create': True, 'no_edit': True}" domain="[('share', '=', False)]" />
                                 
                                 <label for="notify_frequency" invisible="1" />
                                 <div class="o_row" attrs="{'invisible': ['|', ('merge_mode', '=', 'automatic'), ('notify_user_ids', '=', [])]}">

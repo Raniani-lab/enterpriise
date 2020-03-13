@@ -3290,4 +3290,180 @@ tour.register('test_inventory_owner_scan_package', {test: true}, [
         trigger: '.o_notification_title:contains("Success")',
     },
 ]);
+
+tour.register('test_inventory_using_buttons', {test: true}, [
+    {
+        trigger: '.button_inventory',
+    },
+    {
+        trigger: '.o-kanban-button-new',
+    },
+
+    // Scans product 1: must have 1 quantity and buttons +1/-1 must be visible.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.o_barcode_client_action .o_barcode_line',
+        run: function () {
+            helper.assertLinesCount(1);
+            const $line = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '1');
+            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'remove_unit');
+        }
+    },
+    // Clicks on -1 button: must have 0 quantity, -1 must be hidden now.
+    {
+        trigger: '.o_remove_unit',
+    },
+    {
+        trigger: '.o_barcode_line:contains("0")',
+        run: function () {
+            helper.assertLinesCount(1);
+            const $line = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '0');
+            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsNotVisible($line, 'remove_unit');
+        }
+    },
+    // Clicks on +1 button: must have 1 quantity, -1 must be visible now.
+    {
+        trigger: '.o_add_unit',
+    },
+    {
+        trigger: '.o_barcode_line:contains("1")',
+        run: function () {
+            helper.assertLinesCount(1);
+            const $line = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '1');
+            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'remove_unit');
+        }
+    },
+
+    // Scans productserial1: must have 0 quantity, buttons must be hidden (a
+    // line for a tracked product can't have buttons if it has no lot).
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1',
+    },
+    {
+        trigger: '.o_barcode_client_action .o_barcode_line:nth-child(2)',
+        run: function () {
+            helper.assertLinesCount(2);
+            const $line = helper.getLine({barcode: 'productserial1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '0');
+            helper.assertButtonIsNotVisible($line, 'add_unit');
+            helper.assertButtonIsNotVisible($line, 'remove_unit');
+        }
+    },
+    // Scans a serial number: must have 1 quantity, button -1 must be visible.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan BNG-118',
+    },
+    {
+        trigger: '.o_barcode_line:contains("BNG-118")',
+        run: function () {
+            helper.assertLinesCount(2);
+            const $line = helper.getLine({barcode: 'productserial1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '1');
+            helper.assertButtonIsNotVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'remove_unit');
+        }
+    },
+    // Clicks on -1 button: must have 0 quantity, button +1 must be visible.
+    {
+        trigger: '.o_barcode_line:contains("productserial1") .o_remove_unit'
+    },
+    {
+        trigger: '.o_barcode_line:contains("BNG-118")',
+        run: function () {
+            helper.assertLinesCount(2);
+            const $line = helper.getLine({barcode: 'productserial1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '0');
+            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsNotVisible($line, 'remove_unit');
+        }
+    },
+
+    // Scans productlot1: must have 0 quantity, buttons must be hidden.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productlot1',
+    },
+    {
+        trigger: '.o_barcode_client_action .o_barcode_line:nth-child(3)',
+        run: function () {
+            helper.assertLinesCount(3);
+            const $line = helper.getLine({barcode: 'productlot1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '0');
+            helper.assertButtonIsNotVisible($line, 'add_unit');
+            helper.assertButtonIsNotVisible($line, 'remove_unit');
+        }
+    },
+    // Scans a lot number: must have 1 quantity, buttons must be visible.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan toto-42',
+    },
+    {
+        trigger: '.o_barcode_line:contains("toto-42")',
+        run: function () {
+            helper.assertLinesCount(3);
+            const $line = helper.getLine({barcode: 'productlot1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '1');
+            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'remove_unit');
+        }
+    },
+    // Clicks on -1 button: must have 0 quantity, button +1 must be visible.
+    {
+        trigger: '.o_barcode_line:contains("productlot1") .o_remove_unit'
+    },
+    {
+        trigger: '.o_barcode_line:contains("toto-42")',
+        run: function () {
+            helper.assertLinesCount(3);
+            const $line = helper.getLine({barcode: 'productlot1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '0');
+            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsNotVisible($line, 'remove_unit');
+        }
+    },
+    // Clicks on +1 button: must have 1 quantity, buttons must be visible.
+    {
+        trigger: '.o_barcode_line:contains("productlot1") .o_add_unit'
+    },
+    {
+        trigger: '.o_barcode_line:contains("toto-42")',
+        run: function () {
+            helper.assertLinesCount(3);
+            const $line = helper.getLine({barcode: 'productlot1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '1');
+            helper.assertButtonIsVisible($line, 'add_unit');
+            helper.assertButtonIsVisible($line, 'remove_unit');
+        }
+    },
+
+    // Validates the inventory.
+    {
+        trigger: '.o_validate_page'
+    },
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    }
+]);
 });

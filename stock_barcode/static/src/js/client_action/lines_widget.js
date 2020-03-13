@@ -19,6 +19,7 @@ var LinesWidget = Widget.extend({
         'click .o_next_page': '_onClickNextPage',
         'click .o_previous_page': '_onClickPreviousPage',
         'click .o_put_in_pack': '_onPutInPack',
+        'click .o_remove_unit': '_onClickRemoveUnit',
         'click .o_source_locations': '_onClickChangeSourceLocation',
     },
 
@@ -99,6 +100,7 @@ var LinesWidget = Widget.extend({
         $body.prepend($line);
         $line.on('click', '.o_edit', this._onClickEditLine.bind(this));
         $line.on('click', '.o_package_content', this._onClickTruckLine.bind(this));
+        this._updateIncrementButtons($line);
         this._highlightLine($line, doNotClearLineHighlight);
 
         this._handleControlButtons();
@@ -514,19 +516,28 @@ var LinesWidget = Widget.extend({
         const id = $line.data('id');
         const qtyDone = parseFloat($line.find('.qty-done').text());
         const line = this.page.lines.find(l => id === (l.id || l.virtual_id));
-        if (line.product_uom_qty === 0) {
-            // Does nothing it the line has no reserved quantity.
-            return;
-        }
-        if (qtyDone < line.product_uom_qty) {
-            // Updates the remaining quantities...
-            const $button = $line.find('.o_add_reserved');
-            const qty = line.product_uom_qty - qtyDone;
-            $button.data('reserved', qty);
-            $button.text(`+ ${qty}`);
+        if (this.model === 'stock.inventory') {
+            const hideAddButton = Boolean(
+                (line.product_id.tracking === 'serial' && (!line.prod_lot_id || line.product_qty > 0)) ||
+                (line.product_id.tracking === 'lot' && !line.prod_lot_id));
+            const hideRemoveButton = (line.product_qty < 1);
+            $line.find('.o_add_unit') .toggleClass('d-none', hideAddButton);
+            $line.find('.o_remove_unit') .toggleClass('d-none', hideRemoveButton);
         } else {
-            // ...or hides the buttons if they are now useless.
-            $line.find('.o_line_button').hide();
+            if (line.product_uom_qty === 0) {
+                // Does nothing it the line has no reserved quantity.
+                return;
+            }
+            if (qtyDone < line.product_uom_qty) {
+                // Updates the remaining quantities...
+                const $button = $line.find('.o_add_reserved');
+                const qty = line.product_uom_qty - qtyDone;
+                $button.data('reserved', qty);
+                $button.text(`+ ${qty}`);
+            } else {
+                // ...or hides the buttons if they are now useless.
+                $line.find('.o_line_button').hide();
+            }
         }
     },
 
@@ -694,6 +705,23 @@ var LinesWidget = Widget.extend({
     _onClickPreviousPage: function (ev) {
         ev.stopPropagation();
         this.trigger_up('previous_page');
+    },
+
+    /**
+     * Handles the click on the "Remove Unit" button. This will trigger up
+     * `abstract_client_action` `_incrementLines` method but with negative value.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onClickRemoveUnit: function (ev) {
+        ev.preventDefault();
+        const $line = $(ev.target).parents('.o_barcode_line');
+        const id = $line.data('id');
+        this.trigger_up('increment_line', {
+            id: id,
+            qty: -1,
+        });
     },
 
     /**

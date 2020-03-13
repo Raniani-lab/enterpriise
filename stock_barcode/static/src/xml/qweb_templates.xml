@@ -139,11 +139,14 @@
                     <div t-if="line.partner_id">
                         <i class="fa fa-fw fa-user-o"/> <t t-esc="line.partner_id[1]"/>
                     </div>
-                    <div t-if="isPickingRelated &amp;&amp; (line.product_id.tracking == 'none' || (line.product_id.tracking == 'lot' &amp;&amp; (line.lot_id || line.lot_name)))"
+                    <div t-if="!isPickingRelated || (line.product_id.tracking !== 'serial')"
                         class="o_line_button o_add_unit btn btn-primary ml-2 ml-sm-4">
                         + 1
                     </div>
-                    <div t-if="isPickingRelated &amp;&amp; line.product_uom_qty &amp;&amp; (line.product_id.tracking == 'none' || (line.product_id.tracking == 'lot' &amp;&amp; (line.lot_id || line.lot_name)))"
+                    <div t-if="model == 'stock.inventory'" class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4">
+                        - 1
+                    </div>
+                    <div t-if="isPickingRelated &amp;&amp; line.product_uom_qty &amp;&amp; line.product_id.tracking != 'serial'"
                         class="o_line_button o_add_reserved btn btn-primary ml-2 ml-sm-4"
                         t-att-data-reserved="(line.product_uom_qty - line.qty_done)">
                         <t t-esc="'+ ' + (line.product_uom_qty - line.qty_done)"/>

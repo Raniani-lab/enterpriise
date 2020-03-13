@@ -33,6 +33,31 @@ function assert (current, expected, info) {
 }
 
 /**
+ * Checks if a button on the given line is visible.
+ *
+ * @param {jQuerryElement} $line the line where we test the button visibility.
+ * @param {string} buttonName could be 'add_unit', 'remove_unit' or 'add_reserved'.
+ * @param {boolean} [isVisible=true]
+ */
+function assertButtonIsVisible ($line, buttonName, isVisible=true) {
+    const $button = $line.find(`.o_${buttonName}`);
+    assert(
+        $button.css('display'), isVisible ? 'block' : 'none',
+        `Buttons must be ${(isVisible ? 'visible' : 'hidden')}`
+    );
+}
+
+/**
+ * Checks if a button on the given line is invisible.
+ *
+ * @param {jQuerryElement} $line the line where we test the button visibility.
+ * @param {string} buttonName could be 'add_unit', 'remove_unit' or 'add_reserved'.
+ */
+function assertButtonIsNotVisible ($line, buttonName) {
+    assertButtonIsVisible($line, buttonName, false);
+}
+
+/**
  * Checks if both "Add unit" and "Add reserved remaining quantity" buttons are
  * displayed or not on the given line.
  *
@@ -149,7 +174,7 @@ function assertLineIsHighlighted ($line, expected) {
 }
 
 function assertLineQty($line, qty) {
-    assert($line.find('.qty-done').text(), qty, 'line quantity is wrong');
+    assert($line.find('.qty-done,.product_qty').text(), qty, 'line quantity is wrong');
 }
 
 /**
@@ -198,6 +223,8 @@ function assertQuantsCount(expected) {
 
 return {
     assert: assert,
+    assertButtonIsVisible: assertButtonIsVisible,
+    assertButtonIsNotVisible: assertButtonIsNotVisible,
     assertLineButtonsAreVisible: assertLineButtonsAreVisible,
     assertDestinationLocationHighlight: assertDestinationLocationHighlight,
     assertErrorMessage: assertErrorMessage,

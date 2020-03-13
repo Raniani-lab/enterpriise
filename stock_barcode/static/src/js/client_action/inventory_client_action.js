@@ -118,6 +118,13 @@ var InventoryClientAction = ClientAction.extend({
     /**
      * @override
      */
+    _getQuantityField: function () {
+        return 'product_qty';
+    },
+
+    /**
+     * @override
+     */
     _instantiateViewsWidget: function (defaultValues, params) {
         return new ViewsWidget(
             this,

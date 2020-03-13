@@ -24,6 +24,7 @@ var ClientAction = AbstractAction.extend({
         show_settings: '_onShowSettings',
         exit: '_onExit',
         edit_line: '_onEditLine',
+        increment_line: '_onIncrementLine',
         add_line: '_onAddLine',
         next_page: '_onNextPage',
         previous_page: '_onPreviousPage',
@@ -357,6 +358,17 @@ var ClientAction = AbstractAction.extend({
      */
     _getLinesField: function () {
         throw new Error(_t('_getLinesField is an abstract method. You need to implement it.'));
+    },
+
+    /**
+     * Return the name of the field used by the model's line.
+     *
+     * @abstract
+     * @private
+     * @returns {string}
+     */
+    _getQuantityField: function () {
+        throw new Error(_t('_getQuantityField is an abstract method. You need to implement it.'));
     },
 
     /**
@@ -1703,6 +1715,27 @@ var ClientAction = AbstractAction.extend({
                 return self.ViewsWidget.appendTo(self.$('.o_content'));
             });
         });
+    },
+
+    /**
+     * Handles the 'increment_line' OdooEvent. From a line (`LinesWidget`), it
+     * will increase the quantity of the corresponding line.
+     *
+     * @abstract
+     * @param {OdooEvent} ev
+     * @param {integer} ev.data.id id on the line to increment
+     * @param {integer} [ev.data.qty] quantity to increase (1 by default)
+     */
+    _onIncrementLine: function (ev) {
+        ev.stopPropagation();
+        const id = ev.data.id;
+        const qty = ev.data.qty || 1;
+        const line = this._getLines(this.currentState).find(l => id === (l.id || l.virtual_id));
+        line[this._getQuantityField()] += qty;
+        // Add the line like if user scanned it to be able to find it if user
+        // will scan the same product after.
+        this.scannedLines.push(id);
+        this.linesWidget.incrementProduct(id, qty, this.actionParams.model, true);
     },
 
     /**

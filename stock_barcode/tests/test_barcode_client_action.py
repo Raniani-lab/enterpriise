@@ -1399,3 +1399,28 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
 
         line_owner = inventory_line.partner_id
         self.assertEqual(line_owner.id, self.owner.id)
+
+    def test_inventory_using_buttons(self):
+        """ Creates an inventory from scratch, then scans products and verifies
+        the buttons behavior is right.
+        """
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.start_tour(url, 'test_inventory_using_buttons', login='admin', timeout=180)
+        product1_quant = self.env['stock.quant'].search([
+            ('product_id', '=', self.product1.id),
+            ('quantity', '>', 0)
+        ])
+        self.assertEqual(len(product1_quant), 1)
+        self.assertEqual(product1_quant.quantity, 1.0)
+        self.assertEqual(product1_quant.location_id.id, self.stock_location.id)
+
+        productlot1_quant = self.env['stock.quant'].search([
+            ('product_id', '=', self.productlot1.id),
+            ('quantity', '>', 0)
+        ])
+        self.assertEqual(len(product1_quant), 1)
+        self.assertEqual(productlot1_quant.quantity, 1.0)
+        self.assertEqual(productlot1_quant.lot_id.name, 'toto-42')
+        self.assertEqual(productlot1_quant.location_id.id, self.stock_location.id)

@@ -1435,7 +1435,7 @@ var ClientAction = AbstractAction.extend({
                 linesActions.push([self.linesWidget.addProduct, [res.lineDescription, self.actionParams.model]]);
             } else {
                 if (self.scannedLines.indexOf(res.lineDescription.id) === -1) {
-                    self.scannedLines.push(res.lineDescription.id);
+                    self.scannedLines.push(res.lineDescription.id || res.lineDescription.virtual_id);
                 }
                 linesActions.push([self.linesWidget.incrementProduct, [res.id || res.virtualId, 1, self.actionParams.model]]);
                 linesActions.push([self.linesWidget.setLotName, [res.id || res.virtualId, barcode]]);

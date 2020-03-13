@@ -358,6 +358,30 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(receipt_picking.move_line_ids.mapped('lot_name'), ['lot1', 'lot2'])
         self.assertEqual(receipt_picking.move_line_ids.mapped('qty_done'), [2, 2])
 
+    def test_receipt_from_scratch_with_lots_3(self):
+        """ Scans a non tracked product, then scans a tracked by lots product, then scans a
+        production lot twice and checks the tracked product quantity was rightly increased.
+        """
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        grp_lot = self.env.ref('stock.group_production_lot')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
+
+        receipt_picking = self.env['stock.picking'].create({
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_in.id,
+        })
+        url = self._get_client_action_url(receipt_picking.id)
+        self.start_tour(url, 'test_receipt_from_scratch_with_lots_3', login='admin', timeout=180)
+        move_lines = receipt_picking.move_line_ids
+        self.assertEqual(move_lines[0].product_id.id, self.product1.id)
+        self.assertEqual(move_lines[0].qty_done, 1.0)
+        self.assertEqual(move_lines[1].product_id.id, self.productlot1.id)
+        self.assertEqual(move_lines[1].qty_done, 2.0)
+        self.assertEqual(move_lines[1].lot_name, 'lot1')
+
     def test_receipt_reserved_1(self):
         """ Open a receipt. Move a unit of `self.product1` into shelf1, shelf2, shelf3 and shelf 4.
         Move a unit of `self.product2` into shelf1, shelf2, shelf3 and shelf4 too.

@@ -1770,6 +1770,76 @@ tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
     },
 ]);
 
+tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertPageSummary('To WH/Stock');
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+
+    {
+        trigger: '.o_barcode_line',
+        run: function() {
+            helper.assertLinesCount(1);
+            const $line = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, "1");
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productlot1'
+    },
+
+    {
+        trigger: '.o_barcode_line:nth-child(2)',
+        run: function() {
+            helper.assertLinesCount(2);
+            const $line1 = helper.getLine({barcode: 'product1'});
+            const $line2 = helper.getLine({barcode: 'productlot1'});
+            helper.assertLineIsHighlighted($line1, false);
+            helper.assertLineQty($line1, "1");
+            helper.assertLineIsHighlighted($line2, true);
+            helper.assertLineQty($line2, "0");
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot1',
+    },
+
+    {
+        trigger: '.qty-done:contains(2)',
+        run: function() {
+            helper.assertLinesCount(2);
+            const $line1 = helper.getLine({barcode: 'product1'});
+            const $line2 = helper.getLine({barcode: 'productlot1'});
+            helper.assertLineIsHighlighted($line1, false);
+            helper.assertLineQty($line1, "1");
+            helper.assertLineIsHighlighted($line2, true);
+            helper.assertLineQty($line2, "2");
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate'
+    },
+]);
+
 tour.register('test_delivery_from_scratch_with_lots_1', {test: true}, [
 
     {

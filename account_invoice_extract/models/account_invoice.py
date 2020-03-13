@@ -663,6 +663,16 @@ class AccountMove(models.Model):
                     created_supplier = self._create_supplier_from_vat(vat_number_ocr)
                     if created_supplier:
                         move_form.partner_id = created_supplier
+                        if iban_ocr and not move_form.invoice_partner_bank_id:
+                            bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr)])
+                            if bank_account.exists():
+                                if bank_account.partner_id == move_form.partner_id.id:
+                                    move_form.invoice_partner_bank_id = bank_account
+                            else:
+                                move_form.invoice_partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create({
+                                    'partner_id': move_form.partner_id.id,
+                                    'acc_number': iban_ocr,
+                                })
 
             due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
             if date_ocr and (not move_form.invoice_date or move_form.invoice_date == str(self._get_default_invoice_date())):
@@ -681,16 +691,6 @@ class AccountMove(models.Model):
 
             if payment_ref_ocr and not move_form.invoice_payment_ref:
                 move_form.invoice_payment_ref = payment_ref_ocr
-
-            if iban_ocr and not move_form.invoice_partner_bank_id and move_form.partner_id:
-                bank_account = self.env['res.partner.bank'].search([('partner_id', '=', move_form.partner_id.id), ('acc_number', '=ilike', iban_ocr)])
-                if bank_account.exists():
-                    move_form.invoice_partner_bank_id = bank_account
-                else:
-                    move_form.invoice_partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create({
-                        'partner_id': move_form.partner_id.id,
-                        'acc_number': iban_ocr,
-                    })
 
             if not move_form.invoice_line_ids:
                 for line_val in vals_invoice_lines:

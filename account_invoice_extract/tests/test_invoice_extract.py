@@ -473,9 +473,8 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         # test that an account is created if no existing matches the account number
         invoice = self.init_invoice()
         extract_response = self.get_default_extract_response()
-        partner = self.env['res.partner'].create({'name': 'Test'})
 
-        with self.mock_iap_extract(extract_response, {}):
+        with self.mock_iap_extract(extract_response, {'company_data': {'name': 'Partner', 'country_code': 'BE', 'vat': 'BE0477472701', 'partner_gid': False, 'city': 'Namur', 'bank_ids': [], 'zip': '2110', 'street': 'OCR street'}}):
             invoice._check_status()
 
         self.assertEqual(invoice.invoice_partner_bank_id.acc_number, 'BE01234567890123')

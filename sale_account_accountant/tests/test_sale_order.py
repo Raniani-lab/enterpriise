@@ -42,8 +42,6 @@ class TestSaleOrder(TestCommonSaleNoChart):
         })
         # Mark SO as sent otherwise we won't find any match
         so.write({'state': 'sent'})
-        # Compute the amount of the SO because those with a null amount in DB are ignored
-        so._amount_all()
         # Create bank statement
         statement = self.env['account.bank.statement'].create({
             'name': 'Test',

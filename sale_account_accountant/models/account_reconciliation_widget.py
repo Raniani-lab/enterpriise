@@ -11,7 +11,8 @@ class AccountReconciliation(models.AbstractModel):
         if not stl_ids:
             return res
         # Search if we can find a sale order line that match the statement reference
-        self.env['sale.order'].flush(['name', 'reference', 'invoice_status', 'company_id', 'state', 'partner_id'])
+        self.env['sale.order'].flush(['name', 'reference', 'invoice_status', 'company_id',
+                                      'state', 'partner_id', 'amount_total'])
         self.env['account.bank.statement.line'].flush(['name', 'partner_id'])
         sql_query = """
             SELECT stl.id, array_agg(o.id) AS order_id, stl.partner_id, array_agg(o.partner_id) as order_partner
@@ -42,5 +43,7 @@ class AccountReconciliation(models.AbstractModel):
     @api.model
     def get_bank_statement_line_data(self, st_line_ids, excluded_ids=None):
         res = super(AccountReconciliation, self).get_bank_statement_line_data(st_line_ids=st_line_ids, excluded_ids=excluded_ids)
-        res = self._get_sales_order(res)
+        inject_orders = self.env['ir.config_parameter'].sudo().get_param('sale.reconciliation_with_so')
+        if inject_orders != 'no':
+            res = self._get_sales_order(res)
         return res

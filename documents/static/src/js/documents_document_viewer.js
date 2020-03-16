@@ -52,7 +52,7 @@ const DocumentsDocumentViewer = DocumentViewer.extend(WidgetAdapterMixin, {
     },
 
     destroy() {
-        if (this._newDocumentIds) {
+        if (this._newDocumentIds.length) {
             this.trigger_up('document_viewer_attachment_changed', { documentIds: this._newDocumentIds });
         }
         this._pdfManager && this._pdfManager.destroy();

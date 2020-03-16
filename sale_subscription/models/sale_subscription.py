@@ -559,7 +559,7 @@ class SaleSubscription(models.Model):
         end_date = fields.Date.from_string(recurring_next_date) - relativedelta(days=1)     # remove 1 day as normal people thinks in term of inclusive ranges.
         addr = self.partner_id.address_get(['delivery', 'invoice'])
 
-        return {
+        res = {
             'move_type': 'out_invoice',
             'partner_id': addr['invoice'],
             'partner_shipping_id': addr['delivery'],
@@ -571,6 +571,9 @@ class SaleSubscription(models.Model):
             'narration': _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date)),
             'invoice_user_id': self.user_id.id,
         }
+        if self.team_id:
+            res['team_id'] = self.team_id.id
+        return res
 
     @api.model
     def _get_recurring_next_date(self, interval_type, interval, current_date, recurring_invoice_day):

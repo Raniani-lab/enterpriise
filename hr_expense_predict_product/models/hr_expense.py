@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import api, fields, models, _
 
 import re
@@ -5,7 +8,7 @@ import re
 class HrExpense(models.Model):
     _inherit = ['hr.expense']
 
-    # Description is the expense name from which we would find the product
+    # Description is the field from which we would find the product
     # Limit_parameter should be the limit of expenses to analyse ( 10000 seems to be the best )
 
     def _get_predict_postgres_dictionary(self):
@@ -71,5 +74,6 @@ class HrExpense(models.Model):
     def _onchange_predict_product(self):
         if self.name and not self.product_id:
             predicted_product_id = self._predict_product(self.name)
-            self.product_id = predicted_product_id if predicted_product_id else self.env['product.product'].search([('default_code', '=', 'EXP_GEN')])
-
+            default_product = self.env['product.product'].search([('can_be_expensed', '=', True)])
+            default_product = default_product.filtered(lambda p: p.default_code == "EXP_GEN") or default_product[1]
+            self.product_id = predicted_product_id if predicted_product_id else default_product

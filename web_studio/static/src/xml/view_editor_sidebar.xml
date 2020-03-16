@@ -643,7 +643,7 @@
 <!-- GroupEditor -->
 <t t-name="web_studio.ViewEditorSidebar.group">
     <div class="o_web_studio_sidebar_text">
-        <label for="string">Label Text</label>
+        <label for="string">Column Title</label>
         <input id="string" name="string" type="text"
             t-att-value="widget.state.attrs.string"/>
     </div>

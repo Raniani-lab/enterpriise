@@ -804,7 +804,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         # Take a xml_node and put columns on it:
         # If the xml_node is not a group, this function will create a group node
         # to add two columns on it.
-        def add_columns(xml_node, title=False):
+        def add_columns(xml_node):
             # Get the random key generated is JS.
             # Expected value: 'studio_<tag_name>_<random_key>
             name = 'studio_group_' + xml_node.get('name').split('_')[2]
@@ -816,9 +816,6 @@ Are you sure you want to remove the selection values of those records?""") % len
 
             xml_node_page_left = etree.SubElement(xml_node_group, 'group', {'name': name + '_left'})
             xml_node_page_right = etree.SubElement(xml_node_group, 'group', {'name': name + '_right'})
-            if title:
-                xml_node_page_left.attrib['string'] = _('Left Title')
-                xml_node_page_right.attrib['string'] = _('Right Title')
 
         # Create the actual node inside the xpath. It needs to be the first
         # child of the xpath to respect the order in which they were added.
@@ -832,7 +829,7 @@ Are you sure you want to remove the selection values of those records?""") % len
             add_columns(xml_node)
         elif node['tag'] == 'group':
             if 'empty' not in operation:
-                add_columns(xml_node, title=True)
+                add_columns(xml_node)
         elif node['tag'] == 'button':
             # To create a stat button, we need
             #   - a many2one field (1) that points to this model

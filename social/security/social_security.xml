@@ -13,6 +13,8 @@
         <field name="implied_ids" eval="[(4, ref('group_social_user'))]"/>
     </record>
 
+    <data noupdate="1">
+
     <record id="social_post_rule_social_manager" model="ir.rule">
         <field name="name">Social: manager: all</field>
         <field name="model_id" ref="social.model_social_post"/>
@@ -56,4 +58,5 @@
         <field name="perm_read" eval="0"/>
         <field name="perm_create" eval="1"/>
     </record>
+    </data>
 </odoo>

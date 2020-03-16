@@ -1,5 +1,4 @@
 <odoo>
-    <data noupdate="0">
 
         <record id="module_category_documents_management" model="ir.module.category">
             <field name="name">Documents</field>
@@ -21,6 +20,7 @@
         </record>
 
         <!-- folder rules -->
+        <data noupdate="1">
 
         <record id="documents_folder_global_rule" model="ir.rule">
             <field name="name">Documents.folder: company</field>

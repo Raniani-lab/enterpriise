@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
 
         <record id="group_sign_employee" model="res.groups">
             <field name="name">Employee</field>
@@ -15,6 +14,8 @@
         <record id="hr_contract.group_hr_contract_manager" model="res.groups">
           <field name="implied_ids" eval="[(4, ref('sign.group_sign_manager'))]"/>
         </record>
+
+        <data noupdate="1">
 
         <record id="ir_rule_sign_request_group_sign_employee" model="ir.rule">
             <field name="name">sign.request: group_sign_employee: Read my requests</field>

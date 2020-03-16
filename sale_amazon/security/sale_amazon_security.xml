@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<data noupdate="1">
+<odoo noupdate="1">
 
     <record model="ir.rule" id="amazon_account_comp_rule">
         <field name="name">Amazon Account multi-company</field>
@@ -15,4 +15,4 @@
             ('company_id', 'in', company_ids)]</field>
     </record>
 
-</data>
+</odoo>

@@ -2779,11 +2779,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_l10n_mx_edi_product_sat_code__code
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_l10n_mx_edi_res_locality__code
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_l10n_mx_edi_tariff_fraction__code
-#: model:ir.model.fields,field_description:l10n_mx_edi.field_res_city__l10n_mx_edi_code
 msgid "Code"
 msgstr ""
 
 #. module: l10n_mx_edi
+#: model:ir.model.fields,field_description:l10n_mx_edi.field_res_city__l10n_mx_edi_code
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_res_country__l10n_mx_edi_code
 msgid "Code MX"
 msgstr ""

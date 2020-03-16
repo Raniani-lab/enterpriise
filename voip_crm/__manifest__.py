@@ -15,7 +15,7 @@ Adds the lead partner to phonecall list
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'crm', 'voip'],
-    'auto-install': True,
+    'auto_install': True,
     # always loaded
     'data': [
         'views/crm_lead_views.xml'

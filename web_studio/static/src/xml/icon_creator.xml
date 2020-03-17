@@ -81,6 +81,7 @@
                 id="env.session.uid"
                 model="'res.users'"
                 t-on-uploaded.stop.prevent="_onFileUploaded"
+                accepted_file_extensions="'image/*'"
                 >
                 <a href="#">
                     <t t-if="props.type === 'base64'">upload one</t>

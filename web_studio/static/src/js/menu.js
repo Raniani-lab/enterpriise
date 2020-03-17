@@ -29,6 +29,7 @@ Menu.include({
         bus.on('studio_toggled', this, this.switchMode);
         bus.on('studio_main', this, this._onStudioMain);
         this.widget = "image";
+        this.accepted_file_extensions = 'image/*';
         this.company_id = session.company_id;
         this.fileupload_id = _.uniqueId('o_fileupload');
         $(window).on(this.fileupload_id, this._onBackgroundLoaded.bind(this));

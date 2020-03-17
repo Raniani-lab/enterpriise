@@ -29,6 +29,16 @@ class AccountPayment(models.Model):
         help="Technical field used to inform the end user there is a SDD mandate that could be used to register that payment",
         compute='_compute_usable_mandate',)
 
+    @api.model
+    def split_node(self, string_node, max_size):
+        # Split a string node according to its max_size in byte
+        byte_node = string_node.encode()
+        if len(byte_node) <= max_size:
+            return string_node, ''
+        while byte_node[max_size] >= 0x80 and byte_node[max_size] < 0xc0:
+            max_size -= 1
+        return byte_node[0:max_size].decode(), byte_node[max_size:].decode()
+
     @api.depends('payment_date', 'partner_id', 'company_id')
     def _compute_usable_mandate(self):
         """ returns the first mandate found that can be used for this payment,
@@ -47,7 +57,7 @@ class AccountPayment(models.Model):
                 - it is maximum 140 characters long
             (these are the SEPA compliance criteria)
         """
-        communication = communication[:140]
+        communication = self.split_node(communication, 140)[0]
         while '//' in communication:
             communication = communication.replace('//', '/')
         if communication.startswith('/'):
@@ -106,7 +116,7 @@ class AccountPayment(models.Model):
         create_xml_node(GrpHdr, 'NbOfTxs', str(len(self)))
         create_xml_node(GrpHdr, 'CtrlSum', float_repr(sum(x.amount for x in self), precision_digits=2))  # This sum ignores the currency, it is used as a checksum (see SEPA rulebook)
         InitgPty = create_xml_node(GrpHdr, 'InitgPty')
-        create_xml_node(InitgPty, 'Nm', company_id.name[:140])
+        create_xml_node(InitgPty, 'Nm', self.split_node(company_id.name, 140)[0])
         create_xml_node_chain(InitgPty, ['Id','OrgId','Othr','Id'], company_id.sdd_creditor_identifier)
 
     def _sdd_xml_gen_payment_group(self, company_id, required_collection_date, askBatchBooking, payment_info_counter, journal, CstmrDrctDbtInitn):
@@ -126,7 +136,7 @@ class AccountPayment(models.Model):
         #This value is only used for informatory purpose.
 
         create_xml_node(PmtInf, 'ReqdColltnDt', fields.Date.from_string(required_collection_date).strftime("%Y-%m-%d"))
-        create_xml_node_chain(PmtInf, ['Cdtr','Nm'], company_id.name[:70])  # SEPA regulation gives a maximum size of 70 characters for this field
+        create_xml_node_chain(PmtInf, ['Cdtr','Nm'], self.split_node(company_id.name, 70)[0])  # SEPA regulation gives a maximum size of 70 characters for this field
         create_xml_node_chain(PmtInf, ['CdtrAcct','Id','IBAN'], journal.bank_account_id.sanitized_acc_number)
         if journal.bank_id and journal.bank_id.bic:
             create_xml_node_chain(PmtInf, ['CdtrAgt', 'FinInstnId', 'BIC'], journal.bank_id.bic.replace(' ', '').upper())
@@ -137,7 +147,7 @@ class AccountPayment(models.Model):
         create_xml_node_chain(CdtrSchmeId_Othr, ['SchmeNm','Prtry'], 'SEPA')
 
         for payment in self:
-            payment.sdd_xml_gen_payment(company_id, payment.partner_id, payment.name[:35], PmtInf)
+            payment.sdd_xml_gen_payment(company_id, payment.partner_id, self.split_node(payment.name, 35)[0], PmtInf)
 
     def sdd_xml_gen_payment(self,company_id, partner, end2end_name, PmtInf):
         """ Appends to a SDD XML file being generated all the data related to the
@@ -171,8 +181,8 @@ class AccountPayment(models.Model):
             n_line = 0
             contact_address = partner.contact_address.replace('\n', ' ').strip()
             while contact_address and n_line < 2:
-                create_xml_node(PstlAdr, 'AdrLine', contact_address[:70])
-                contact_address = contact_address[70:]
+                create_xml_node(PstlAdr, 'AdrLine', self.split_node(contact_address, 70)[0])
+                contact_address = self.split_node(contact_address, 70)[1]
                 n_line = n_line + 1
 
         if self.sdd_mandate_id.debtor_id_code:

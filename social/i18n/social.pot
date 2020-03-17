@@ -1392,6 +1392,12 @@ msgid "UTM Source"
 msgstr ""
 
 #. module: social
+#: code:addons/social/models/social_post.py:0
+#, python-format
+msgid "Unknown error"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_unread
 #: model:ir.model.fields,field_description:social.field_social_post__message_unread
 msgid "Unread Messages"

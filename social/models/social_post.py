@@ -262,7 +262,17 @@ class SocialPost(models.Model):
                     for live_post in post._prepare_live_post_values()]
             })
 
-            post.live_post_ids._post()
+            # send the live posts
+            failed_posts = self.env['social.live.post']
+            for live_post in post.live_post_ids:
+                try:
+                    live_post._post()
+                except Exception:
+                    failed_posts |= live_post
+            failed_posts.write({
+                'state': 'failed',
+                'failure_reason': _('Unknown error')
+            })
 
     def _prepare_live_post_values(self):
         self.ensure_one()

@@ -39,6 +39,12 @@ class FollowupSend(models.TransientModel):
             wizard.snailmail_cost = len(wizard.partner_ids.ids)
 
     def snailmail_send_action(self):
+        if self.env['snailmail.confirm.followup'].show_warning():
+            wizard = self.env['snailmail.confirm.followup'].create({'model_name': _('follow-up report'), 'followup_id': self.id})
+            return wizard.action_open()
+        return self._snailmail_send()
+
+    def _snailmail_send(self):
         for wizard in self:
             if wizard.invalid_addresses and len(wizard.partner_ids) > 1:
                 wizard.notify_invalid_addresses()

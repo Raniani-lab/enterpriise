@@ -23,6 +23,6 @@
         'views/res_config_settings_views.xml',
         'views/electronic_invoice.xml',
     ],
-    'installable': False,
+    'installable': True,
     'license': 'OEEL-1',
 }

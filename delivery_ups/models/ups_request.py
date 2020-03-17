@@ -11,6 +11,7 @@ import re
 
 from zeep import Client, Plugin
 from zeep.exceptions import Fault
+from zeep.wsdl.utils import etree_to_string
 
 from odoo import _, _lt
 
@@ -108,11 +109,11 @@ class LogPlugin(Plugin):
         self.debug_logger = debug_logger
 
     def egress(self, envelope, http_headers, operation, binding_options):
-        self.debug_logger(envelope, 'ups_request')
+        self.debug_logger(etree_to_string(envelope).decode(), 'ups_request')
         return envelope, http_headers
 
     def ingress(self, envelope, http_headers, operation):
-        self.debug_logger(envelope, 'ups_response')
+        self.debug_logger(etree_to_string(envelope).decode(), 'ups_response')
         return envelope, http_headers
 
 

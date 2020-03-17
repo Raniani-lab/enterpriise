@@ -29,16 +29,16 @@
             <field name="match_mode">accent</field>
         </record>
 
-        <!-- crm.lead.tag -->
-        <record model="data_merge.model" id="data_merge_model_crm_lead_tag">
-            <field name="name">Lead Tag</field>
-            <field name="res_model_id" ref="crm.model_crm_lead_tag"/>
+        <!-- crm.tag -->
+        <record model="data_merge.model" id="data_merge_model_crm_tag">
+            <field name="name">CRM Tag</field>
+            <field name="res_model_id" ref="sales_team.model_crm_tag"/>
             <field name="notify_user_ids" eval="[(4, ref('base.user_admin'))]"/>
         </record>
 
-        <record model="data_merge.rule" id="data_merge_field_crm_lead_tag_name">
-            <field name="model_id" ref="data_merge_model_crm_lead_tag"/>
-            <field name="field_id" ref="crm.field_crm_lead_tag__name"/>
+        <record model="data_merge.rule" id="data_merge_field_crm_tag_name">
+            <field name="model_id" ref="data_merge_model_crm_tag"/>
+            <field name="field_id" ref="sales_team.field_crm_tag__name"/>
             <field name="match_mode">accent</field>
         </record>
  

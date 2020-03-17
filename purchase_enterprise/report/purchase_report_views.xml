@@ -30,7 +30,7 @@
             <field name="context" eval="{'search_default_orders': 1, 'time_ranges': {'field':'date_approve', 'range':'last_30_days'}}"/>
         </record>
 
-        <record id="purchase.menu_report_purchase" model="ir.ui.menu">
+        <record id="purchase.purchase_report" model="ir.ui.menu">
             <field name="action" ref="purchase_report_action_dashboard"/>
         </record>
     </data>

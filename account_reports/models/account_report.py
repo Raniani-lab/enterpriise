@@ -522,7 +522,7 @@ class AccountReport(models.AbstractModel):
                 'unfolded': hierarchy_parent in options.get('unfolded_lines') or unfold_all,
                 'level': level,
                 'parent_id': parent_id,
-                'columns': [{'name': self.format_value(c) if not isinstance(c, str) else c, 'no_format_name': c} for c in val_dict['totals']],
+                'columns': [{'name': self.format_value(c) if isinstance(c, (int, float)) else c, 'no_format_name': c} for c in val_dict['totals']],
             })
             # add every direct child group recursively
             for child in val_dict['children_codes']:
@@ -535,7 +535,7 @@ class AccountReport(models.AbstractModel):
 
         def compute_hierarchy(lines, level, parent_id, hierarchy_parent):
             # put every line in each of its parents (from less global to more global) and compute the totals
-            hierarchy = defaultdict(lambda: {'totals': [0] * len(lines[0]['columns']), 'lines': [], 'children_codes': set(), 'name': '', 'parent_id': None, 'id': ''})
+            hierarchy = defaultdict(lambda: {'totals': [None] * len(lines[0]['columns']), 'lines': [], 'children_codes': set(), 'name': '', 'parent_id': None, 'id': ''})
             for line in lines:
                 account = self.env['account.account'].browse(line.get('account_id', line.get('id')))
                 codes = self.get_account_codes(account)  # id, name
@@ -544,6 +544,8 @@ class AccountReport(models.AbstractModel):
                     hierarchy[code[0]]['name'] = code[1]
                     for i, column in enumerate(line['columns']):
                         if isinstance(column.get('no_format_name', 0), (int, float)):
+                            if hierarchy[code[0]]['totals'][i] is None:
+                                hierarchy[code[0]]['totals'][i] = 0
                             hierarchy[code[0]]['totals'][i] += column.get('no_format_name', 0)
                 for code, child in zip(codes[:-1], codes[1:]):
                     hierarchy[code[0]]['children_codes'].add(child[0])

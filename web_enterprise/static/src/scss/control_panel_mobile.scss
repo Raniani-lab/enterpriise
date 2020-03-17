@@ -108,6 +108,10 @@
 
 @include media-breakpoint-down(sm) {
     .o_control_panel {
+        &.o_mobile_sticky {
+            @include o-position-sticky();
+            z-index: 2;
+        }
         .o_cp_today_button {
             margin-left: auto;
         }

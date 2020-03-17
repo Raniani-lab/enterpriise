@@ -1,10 +1,11 @@
 odoo.define('web.control_panel_mobile_tests', function (require) {
     "use strict";
 
+    const FormView = require('web.FormView');
     const testUtils = require('web.test_utils');
 
     const cpHelpers = testUtils.controlPanel;
-    const createActionManager = testUtils.createActionManager;
+    const {createActionManager, createView} = testUtils;
 
     QUnit.module('Control Panel', {
         beforeEach: function () {
@@ -53,6 +54,71 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
                 "should display a button to toggle the searchview");
 
             actionManager.destroy();
+        });
+
+        QUnit.test("control panel appears at top on scroll event", async function (assert) {
+            assert.expect(12);
+
+            const MAX_HEIGHT = 800;
+            const MIDDLE_HEIGHT = 400;
+            const DELTA_TEST = 20;
+            const viewPort = testUtils.prepareTarget();
+
+            const form = await createView({
+                View: FormView,
+                arch:
+                    '<form>' +
+                        '<sheet>' +
+                            '<div style="height: 1000px"></div>' +
+                        '</sheet>' +
+                    '</form>',
+                data: this.data,
+                model: 'partner',
+                res_id: 1,
+            });
+
+            const controlPanelEl = document.querySelector('.o_control_panel');
+            const controlPanelHeight = controlPanelEl.getBoundingClientRect().height;
+
+            // Force viewport to have a scrollbar
+            viewPort.style.position = 'initial';
+
+            async function scrollAndAssert(targetHeight, expectedTopValue, hasStickyClass) {
+                if (targetHeight !== null) {
+                    window.scrollTo(0, targetHeight);
+                    await testUtils.nextTick();
+                }
+                const expectedPixelValue = `${expectedTopValue}px`;
+                assert.strictEqual(controlPanelEl.style.top, expectedPixelValue,
+                    `Top must be ${expectedPixelValue} (after scroll to ${targetHeight})`);
+
+                if (hasStickyClass) {
+                    assert.hasClass(controlPanelEl, 'o_mobile_sticky');
+                } else {
+                    assert.doesNotHaveClass(controlPanelEl, 'o_mobile_sticky');
+                }
+            }
+
+            // Initial position (scrollTop: 0)
+            await scrollAndAssert(null, 0, false);
+
+            // Scroll down 400px (scrollTop: 400)
+            await scrollAndAssert(MAX_HEIGHT, -controlPanelHeight, true);
+
+            // Scoll up 20px (scrollTop: 380)
+            await scrollAndAssert(MAX_HEIGHT - DELTA_TEST, -(controlPanelHeight - DELTA_TEST), true);
+
+            // Scroll up 180px (scrollTop: 200)
+            await scrollAndAssert(MIDDLE_HEIGHT, 0, true);
+
+            // Scroll down 200px (scrollTop: 400)
+            await scrollAndAssert(MAX_HEIGHT, -controlPanelHeight, true);
+
+            // Scroll up 400px (scrollTop: 0)
+            await scrollAndAssert(0, -controlPanelHeight, false);
+
+            form.destroy();
+            viewPort.style.position = '';
         });
 
         QUnit.test('mobile search: activate a filter through quick search', async function (assert) {

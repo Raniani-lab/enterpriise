@@ -83,24 +83,6 @@ QUnit.test('mobile basic rendering', async function (assert) {
     discuss.destroy();
 });
 
-QUnit.test('on_{attach/detach}_callback', async function (assert) {
-    assert.expect(2);
-
-    var discuss = await createDiscuss({
-        id: 1,
-        context: {},
-        params: {},
-        data: this.data,
-        services: this.services,
-    });
-
-    discuss.on_attach_callback();
-    assert.ok(true, 'should not crash on attach callback');
-    discuss.on_detach_callback();
-    assert.ok(true, 'should not crash on detach callback');
-    discuss.destroy();
-});
-
 QUnit.test('extended composer in mass mailing channel', async function (assert) {
     assert.expect(4);
 

@@ -565,7 +565,6 @@ class generic_tax_report(models.AbstractModel):
             'line_code': report_line.code
         }
 
-
     def _build_tax_section_line(self, section, hierarchy_level):
         """ Returns the report line dictionary corresponding to a given section,
         when grouping the report by tax grid.

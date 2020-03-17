@@ -4,3 +4,4 @@
 from . import account
 from . import datev_export_csv
 from . import partner_vat_intra
+from . import account_generic_tax_report

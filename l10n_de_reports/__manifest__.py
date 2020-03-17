@@ -18,6 +18,7 @@
         'data/profit_and_loss.xml',
         'data/ir_config_param.xml',
         'views/l10n_de_report_views.xml',
+        'data/report_export_template.xml',
     ],
     'installable': True,
     'auto_install': True,

@@ -22,11 +22,41 @@ class HrWorkEntry(models.Model):
     def _get_duration_is_valid(self):
         return self.work_entry_type_id and self.work_entry_type_id.is_leave
 
+    @api.onchange('employee_id', 'date_start', 'date_stop')
+    def _onchange_contract_id(self):
+        vals = {
+            'employee_id': self.employee_id.id,
+            'date_start': self.date_start,
+            'date_stop': self.date_stop,
+        }
+        try:
+            res = self._set_current_contract(vals)
+        except ValidationError:
+            return
+        if res.get('contract_id'):
+            self.contract_id = res.get('contract_id')
+
+    @api.depends('work_entry_type_id', 'contract_id')
+    def _compute_duration(self):
+        super(HrWorkEntry, self)._compute_duration()
+
+    def _inverse_duration(self):
+        for work_entry in self:
+            if self._get_duration_is_valid():
+                calendar = work_entry.contract_id.resource_calendar_id
+                if not calendar:
+                    continue
+                work_entry.date_stop = calendar.plan_hours(self.duration, self.date_start, compute_leaves=True)
+                continue
+            super(HrWorkEntry, work_entry)._inverse_duration()
+
     def _get_duration(self, date_start, date_stop):
         if not date_start or not date_stop:
             return 0
         if self._get_duration_is_valid():
             calendar = self.contract_id.resource_calendar_id
+            if not calendar:
+                return 0
             contract_data = self.contract_id.employee_id._get_work_days_data(date_start, date_stop, compute_leaves=False, calendar=calendar)
             return contract_data.get('hours', 0)
         return super()._get_duration(date_start, date_stop)

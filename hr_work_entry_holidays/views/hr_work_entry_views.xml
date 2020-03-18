@@ -24,6 +24,7 @@
             </xpath>
             <xpath expr="//field[@name='work_entry_type_id']" position="after">
                 <field name="leave_id" attrs="{'invisible': [('leave_id', '=', False)]}"/>
+                <field name="contract_id" invisible="1"/>
             </xpath>
         </field>
     </record>

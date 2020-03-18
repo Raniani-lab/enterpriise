@@ -318,11 +318,18 @@ const PhoneCallDetails = Widget.extend({
         ev.preventDefault();
         let resId = this.partnerId;
         if (!this.partnerId) {
-            const domain = [
-                '|',
-                ['phone', '=', this.phoneNumber],
-                ['mobile', '=', this.mobileNumber]
-            ];
+            let domain = [];
+            if (this.phoneNumber && this.mobileNumber) {
+                domain = ['|',
+                    ['phone', '=', this.phoneNumber],
+                    ['mobile', '=', this.mobileNumber]];
+            } else if (this.phoneNumber) {
+                domain = ['|',
+                    ['phone', '=', this.phoneNumber],
+                    ['mobile', '=', this.phoneNumber]];
+            } else if (this.mobileNumber) {
+                domain = [['mobile', '=', this.mobileNumber]];
+            }
             const ids = await this._rpc({
                 method: 'search_read',
                 model: "res.partner",

@@ -643,7 +643,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
 
         function sanitizedPhone(prefix, number) {
-            if (number.startsWith("0")) {
+            if (number.startsWith("00")){
+                return "+" + number.substr(2, number.length);
+            }
+            else if (number.startsWith("0")) {
                 return "+" + prefix + number.substr(1, number.length);
             }
         }

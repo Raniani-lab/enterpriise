@@ -33,6 +33,10 @@ CalendarRenderer.include({
         this.isSidePanelVisible = false;
         this.filtersMobile = [];
     },
+    on_attach_callback: function () {
+        this.$el.height($(window).height() - this.$el.offset().top);
+        this._super(...arguments);
+    },
     /**
      * @override
      * @returns {Promise}

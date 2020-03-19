@@ -22,7 +22,7 @@ class HelpdeskTicketCreateTimesheet(models.TransientModel):
             result['description'] = ticket_id.name
         return result
 
-    time_spent = fields.Float('Time', precision_digits=2)
+    time_spent = fields.Float('Time', digits=(16, 2))
     description = fields.Char('Description')
     ticket_id = fields.Many2one('helpdesk.ticket', "Ticket", help="Ticket for which we are creating a sales order", required=True)
 

@@ -46,6 +46,7 @@ class WebStudioReportController(main.WebStudioController):
                     <t t-call="%(layout)s">
                         <t t-foreach="docs" t-as="doc">
                             <t t-call="%(document)s_document"/>
+                            <p style="page-break-after: always;"/>
                         </t>
                     </t>
                 </t>

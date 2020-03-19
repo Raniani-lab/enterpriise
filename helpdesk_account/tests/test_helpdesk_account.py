@@ -19,6 +19,7 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
         product = self.env['product.product'].create({
             'name': 'product 1',
             'type': 'consu',
+            'invoice_policy': 'order',
         })
         so = self.env['sale.order'].create({
             'partner_id': partner.id,

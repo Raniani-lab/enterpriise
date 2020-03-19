@@ -16,7 +16,7 @@ class HrPayrollIndex(models.TransientModel):
         res['contract_ids'] = self.env.context.get('active_ids', [])
         return res
 
-    percentage = fields.Float("Percentage", widget='percentage')
+    percentage = fields.Float("Percentage")
     description = fields.Char("Description", default=lambda self: _("Wage indexed on %s") % format_date(self.env, fields.Date.today()),
         help="Will be used as the message specifying why the wage on the contract has been modified")
     contract_ids = fields.Many2many('hr.contract', string="Contracts")

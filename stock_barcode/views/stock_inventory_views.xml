@@ -84,7 +84,7 @@
                         <i class="fa fa-fw fa-lg fa-map-marker mr-3" title="Location"/>
                         <field name="location_id" placeholder="Location"
                             attrs="{'readonly': ['|', ('is_editable', '=', False), ('state', '!=', 'confirm')]}"
-                            options="{'no_create': True}"/>
+                            options="{'no_create': True}" force_save="1"/>
                     </div>
                 </div>
                 <div class="row" groups="stock.group_production_lot">

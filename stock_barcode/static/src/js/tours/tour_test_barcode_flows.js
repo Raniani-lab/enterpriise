@@ -2571,12 +2571,39 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
         run: 'scan serial3',
     },
 
+    // Edit a line to trigger a save.
     {
         trigger: '.o_add_line',
     },
 
     {
         trigger: '.o_field_widget[name="product_id"]',
+    },
+    {
+        trigger: '.o_discard',
+    },
+
+    // Scan tracked by lots product, then scan new lots.
+    {
+        extra_trigger: '.o_barcode_message',
+        trigger: '.o_barcode_client_action',
+        run: 'scan productlot1',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot2',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot3',
+    },
+
+    // Must have 6 lines (lot1, serial1, serial2, serial3, lot2, lot3).
+    {
+        trigger: '.o_barcode_line:nth-child(6)',
+        run: function () {
+            helper.assertLinesCount(6);
+        }
     },
 ]);
 

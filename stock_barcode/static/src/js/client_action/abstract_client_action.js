@@ -1282,12 +1282,12 @@ var ClientAction = AbstractAction.extend({
                     return line.virtual_id === idOrVirtualId || line.id === idOrVirtualId;
                 });
                 if (line) {
-                    var product = self.productsByBarcode[line.product_barcode];
+                    var product = self.productsByBarcode[line.product_barcode || line.product_id.barcode];
                     // Product was added by lot or package
                     if (!product) {
                         return false;
                     }
-                    product.barcode = line.product_barcode;
+                    product.barcode = line.product_barcode || line.product_id.barcode;
                     return product;
                 }
             }

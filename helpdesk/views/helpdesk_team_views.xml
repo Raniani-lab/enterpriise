@@ -139,7 +139,7 @@
                                         <i class="fa fa-lightbulb-o" role='img'/> Enable the External Email Servers feature in the General Settings and indicate an alias domain
                                     </p>
                                     <p attrs="{'invisible': [('alias_domain', '!=', False)]}">
-                                        <button name="%(base_setup.action_general_configuration)d" type="action" string="Configure domain name" icon="fa-arrow-right" class="btn-link"/>
+                                        <button name="%(base_setup.action_general_configuration)d" type="action" string="Configure a custom domain" icon="fa-arrow-right" class="btn-link"/>
                                     </p>
                                 </div>
                             </div>

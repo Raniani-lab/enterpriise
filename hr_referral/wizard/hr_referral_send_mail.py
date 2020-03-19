@@ -19,7 +19,7 @@ class HrReferralSendMail(models.TransientModel):
 
     job_id = fields.Many2one('hr.job', readonly=True)
     url = fields.Char("url", compute='_compute_url', readonly=True)
-    email_to = fields.Char(type="char", string="Email", required=True)
+    email_to = fields.Char(string="Email", required=True)
     subject = fields.Char('Subject', default="Job for you")
     body_html = fields.Html('Body')
 

@@ -71,7 +71,7 @@
 
                                 <div>
                                     <t t-if="record.points_missing.raw_value &lt; 1">
-                                        <button name="buy" type="object" class="btn btn-primary w-100 " confirm="Do you want to confirm this purchase? After confirmation, somebody from HR will contact you.">
+                                        <button name="buy" type="object" class="btn btn-primary w-100 " confirm="Do you want to confirm this reward? After confirmation an HR will contact you.">
                                             <span title='Buy'><i class='fa fa-shopping-basket mr-3' role="img" aria-label="Buy"/>Buy</span>
                                         </button>
                                     </t>

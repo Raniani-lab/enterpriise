@@ -27,6 +27,7 @@ class HelpdeskTeam(models.Model):
             ],
             'allow_timesheets': True,
             'allow_timesheet_timer': True,
+            'allow_billable': allow_billable,
             **other,
         })
 

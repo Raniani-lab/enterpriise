@@ -56,8 +56,8 @@ class AccountAsset(models.Model):
     # Values
     original_value = fields.Monetary(string="Original Value", compute='_compute_value', store=True, readonly=True, states={'draft': [('readonly', False)]})
     book_value = fields.Monetary(string='Book Value', readonly=True, compute='_compute_book_value', store=True, help="Sum of the depreciable value, the salvage value and the book value of all value increase items")
-    value_residual = fields.Monetary(string='Depreciable Value', digits=0, compute='_compute_value_residual')
-    salvage_value = fields.Monetary(string='Not Depreciable Value', digits=0, readonly=True, states={'draft': [('readonly', False)]},
+    value_residual = fields.Monetary(string='Depreciable Value', compute='_compute_value_residual')
+    salvage_value = fields.Monetary(string='Not Depreciable Value', readonly=True, states={'draft': [('readonly', False)]},
                                     help="It is the amount you plan to have that you cannot depreciate.")
     gross_increase_value = fields.Monetary(string="Gross Increase Value", compute="_compute_book_value", compute_sudo=True)
 

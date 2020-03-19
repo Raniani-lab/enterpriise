@@ -19,7 +19,7 @@ class HrContract(models.Model):
     full_time_required_hours = fields.Float(related='resource_calendar_id.full_time_required_hours')
     is_fulltime = fields.Boolean(related='resource_calendar_id.is_fulltime')
     wage_type = fields.Selection(related='structure_type_id.wage_type')
-    hourly_wage = fields.Monetary('Hourly Wage', digits=(16, 2), default=0, required=True, tracking=True, help="Employee's hourly gross wage.")
+    hourly_wage = fields.Monetary('Hourly Wage', default=0, required=True, tracking=True, help="Employee's hourly gross wage.")
 
     def _index_contracts(self):
         action = self.env.ref('hr_payroll.action_hr_payroll_index').read()[0]

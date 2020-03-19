@@ -29,7 +29,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
         default=lambda self: self.env.company.resource_calendar_id.id)
     wage = fields.Monetary(
         compute='_compute_wage', store=True, readonly=False,
-        string='New Wage', digits=(16, 2), required=True,
+        string='New Wage', required=True,
         help="Employee's monthly gross wage in credit time.")
     currency_id = fields.Many2one(string="Currency", related='contract_id.company_id.currency_id', readonly=True)
 
@@ -99,7 +99,7 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
 
     resource_calendar_id = fields.Many2one(
         'resource.calendar', 'New Working Schedule', required=True)
-    wage = fields.Monetary('New Wage', digits=(16, 2), required=True, help="Employee's monthly gross wage.")
+    wage = fields.Monetary('New Wage', required=True, help="Employee's monthly gross wage.")
     currency_id = fields.Many2one(string="Currency", related='contract_id.company_id.currency_id', readonly=True)
 
     def validate_full_time(self):

@@ -15,7 +15,7 @@ class ApprovalProductLine(models.Model):
     description = fields.Char("Description", required=True)
     company_id = fields.Many2one(
         string='Company', related='approval_request_id.company_id',
-        required=True, stored=True, readonly=True, index=True)
+        store=True, readonly=True, index=True)
     product_id = fields.Many2one('product.product', string="Products", check_company=True)
     product_uom_id = fields.Many2one('uom.uom', string="Unit of Measure",
         domain="[('category_id', '=', product_uom_category_id)]")

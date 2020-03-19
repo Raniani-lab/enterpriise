@@ -23,7 +23,7 @@ class ApprovalRequest(models.Model):
     approver_ids = fields.One2many('approval.approver', 'request_id', string="Approvers", check_company=True)
     company_id = fields.Many2one(
         string='Company', related='category_id.company_id',
-        required=True, stored=True, readonly=True, index=True)
+        store=True, readonly=True, index=True)
     date = fields.Datetime(string="Date")
     date_start = fields.Datetime(string="Date start")
     date_end = fields.Datetime(string="Date end")
@@ -222,7 +222,7 @@ class ApprovalApprover(models.Model):
         ondelete='cascade', check_company=True)
     company_id = fields.Many2one(
         string='Company', related='request_id.company_id',
-        required=True, stored=True, readonly=True, index=True)
+        store=True, readonly=True, index=True)
 
     def action_approve(self):
         self.request_id.action_approve(self)

@@ -39,7 +39,7 @@ class HrContract(models.Model):
         help="Employee's company car.",
         groups='fleet.fleet_group_manager')
     car_atn = fields.Float(compute='_compute_car_atn_and_costs', string='Benefit in Kind (Company Car)', store=True, compute_sudo=True)
-    wishlist_car_total_depreciated_cost = fields.Float(compute_='_compute_car_atn_and_costs', compute_sudo=True)
+    wishlist_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
     company_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
     available_cars_amount = fields.Integer(compute='_compute_available_cars_amount', string='Number of available cars')
     new_car = fields.Boolean('Request a new car')
@@ -61,6 +61,7 @@ class HrContract(models.Model):
     def _compute_car_atn_and_costs(self):
         self.car_atn = False
         self.company_car_total_depreciated_cost = False
+        self.wishlist_car_total_depreciated_cost = False
         for contract in self:
             if not contract.new_car and contract.car_id:
                 contract.car_atn = contract.car_id.atn

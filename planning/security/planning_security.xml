@@ -64,28 +64,24 @@
         <field name="name">Planning Shift multi-company</field>
         <field name="model_id" ref="planning.model_planning_slot"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="global" eval="True"/>
     </record>
 
     <record id="planning_recurrency_rule_multi_company" model="ir.rule">
         <field name="name">Planning Recurrence multi-company</field>
         <field name="model_id" ref="planning.model_planning_recurrency"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="global" eval="True"/>
     </record>
 
     <record id="planning_planning_rule_multi_company" model="ir.rule">
         <field name="name">Planning Planning multi-company</field>
         <field name="model_id" ref="planning.model_planning_planning"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="global" eval="True"/>
     </record>
 
     <record id="planning_planning_rule_multi_company" model="ir.rule">
         <field name="name">Planning Analysis multi-company</field>
         <field name="model_id" ref="planning.model_planning_slot_report_analysis"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="global" eval="True"/>
     </record>
 
 </data>

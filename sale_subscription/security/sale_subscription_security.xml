@@ -29,21 +29,18 @@
     <record model="ir.rule" id="sale_subscription_multicompany">
         <field name="name">Subscription multi-company</field>
         <field name="model_id" ref="model_sale_subscription"/>
-        <field name="global" eval="True"/>
         <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
     </record>
 
     <record model="ir.rule" id="sale_subscription_template_multicompany">
         <field name="name">Subscription template multi-company</field>
         <field name="model_id" ref="model_sale_subscription_template"/>
-        <field name="global" eval="True"/>
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
 
     <record model="ir.rule" id="sale_subscription_line_multicompany">
         <field name="name">Subscription line multi-company</field>
         <field name="model_id" ref="model_sale_subscription_line"/>
-        <field name="global" eval="True"/>
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
 
@@ -51,7 +48,6 @@
     <record model="ir.rule" id="sale_subscription_report_comp_rule">
         <field name="name">Subscription Analysis multi-company</field>
         <field name="model_id" ref="model_sale_subscription_report"/>
-        <field name="global" eval="True"/>
         <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
     </record>
 

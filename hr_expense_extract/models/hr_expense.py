@@ -192,13 +192,14 @@ class HrExpense(models.Model):
             currency_ocr = ocr_results['exp_currency']['selected_value']['content'] if 'exp_currency' in ocr_results else ""
             bill_reference_ocr =  ocr_results['exp_bill_reference']['selected_value']['content'] if 'exp_bill_reference' in ocr_results else ""
 
-            predicted_product_id = self._predict_product(description_ocr)
-            self.product_id = predicted_product_id if predicted_product_id else self.env['product.product'].search([('default_code', '=', 'EXP_GEN')])
-
             self.name = description_ocr
             self.date = date_ocr
             self.unit_amount = total_ocr
             self.reference = bill_reference_ocr
+            self.predicted_category = description_ocr
+
+            predicted_product_id = self._predict_product(description_ocr, category = True)
+            self.product_id = predicted_product_id if predicted_product_id else self.product_id
 
             if self.user_has_groups('base.group_multi_currency'):
                 self.currency_id = self.env["res.currency"].search([

@@ -453,7 +453,6 @@ class AccountPayment(models.Model):
             'related': [u.strip() for u in uuids],
             }
 
-    @api.multi
     def _l10n_mx_edi_invoice_payment_data(self):
         """Provide a single method to fetch the Totals paid in the Payment
         and makes the l10n_mx_edi_payment_data method more inheritable"""
@@ -476,7 +475,6 @@ class AccountPayment(models.Model):
             total_curr=total_curr,
             total_currency=total_currency)
 
-    @api.multi
     def l10n_mx_edi_payment_data(self):
         self.ensure_one()
         # Based on "En caso de no contar con la hora se debe registrar 12:00:00"

@@ -1,4 +1,8 @@
 table > tbody.o_grid_section > tr {
+    > .o_grid_current.o_cell_highlighted:not(.o_grid_total) {
+        background-color: rgba(0, 160, 157, 0.17);
+    }
+
     > th {
         width: 30rem !important;
 

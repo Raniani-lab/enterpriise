@@ -43,7 +43,9 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
 
             // render the virtual elements in the DOM
             this._super.apply(this, arguments);
-
+            if (this.runningTimesheet) {
+                this._highlightCell(this.runningTimesheet);
+            }
             if (this.time) { // if a timer exists then we launch the timer
                 this._startTimerCounter();
             }
@@ -86,6 +88,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
                             // add the virtual element contains the display of timer as children
                             // of virtual element that it contains the name of a task as children.
                             element.children.push(this._renderTimer());
+                            this.runningTimesheet = timesheet;
                         }
                         // add the virtual timer button into the virtual element found
                         element.children.push(vButton);
@@ -222,10 +225,6 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
                 propsIcon.class += ' fa-play-circle o-timer-play-button';
             }
 
-            if(!project.allow_timesheet_timer){
-                propsButton.class += ' d-none';
-            }
-
             const button = document.createElement('button');
             const icon = document.createElement('i');
 
@@ -241,6 +240,59 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
 
             return button;
         },
+
+        _highlightCell(timesheet) {
+            const $highlightedCells = this.$('.o_cell_highlighted');
+            $highlightedCells.removeClass('o_cell_highlighted');
+            const $cell = this._getCell(timesheet);
+            $cell.addClass('o_cell_highlighted');
+        },
+
+        _getCell(timesheet) {
+            const [projectIndex, taskIndex, dayIndex] = this._getTimesheetIndexes(timesheet);
+            const $cell = this.$(`[data-path="${projectIndex}.grid.${taskIndex}.${dayIndex}"]`);
+            return $cell.parent();
+        },
+
+        /**
+         * Get cell indexes of the timesheet in the grid
+         * @param {Object} timesheet
+         * @returns {number[]} triple
+         */
+        _getTimesheetIndexes(timesheet) {
+            const state = this.state;
+
+            // Finding the cell indexes with the value linked to the timesheet
+            // This is not beautiful, but it's the best we can do given the grid state structure
+            const projectId = timesheet.project_id[0];
+            const taskId = timesheet.task_id[0];
+            let projectIndex;
+            let taskIndex;
+            let dayIndex;
+            for (let i = 0; i < state.length; i++) {
+                const projectRows = state[i];
+                if (!projectRows.__label) {
+                    projectIndex = 0;
+                }
+                else if (projectRows.__label[0] === projectId) {
+                    projectIndex = i;
+                }
+            }
+            const projectRows = state[projectIndex].rows;
+            for (let i = 0; i < projectRows.length; i++) {
+                if (projectRows[i].values.task_id[0] === taskId) {
+                    taskIndex = i;
+                }
+            }
+            const projectCols = state[projectIndex].cols;
+            for (let i = 0; i < projectCols.length; i++) {
+                if (projectCols[i].is_current) {
+                    dayIndex = i;
+                }
+            }
+            return [projectIndex, taskIndex, dayIndex];
+        },
+
         /**
          * @override
          */

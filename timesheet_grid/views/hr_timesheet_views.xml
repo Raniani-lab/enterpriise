@@ -253,6 +253,27 @@
                 'search_default_groupby_project': 1,
                 'search_default_groupby_task': 2
             }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Record a new activity
+                </p><p>
+                    You can register and track your workings hours by project every
+                    day. Every time spent on a project will become a cost and can be re-invoiced to
+                    customers if required.
+                </p>
+                <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
+                <div>
+                    <a href="http://www.odoo.com/page/timesheet?platform=chrome" target="_blank">
+                        <img alt="Google Chrome Store" class="img img-fluid h-100" src="project/static/src/img/chrome_store.png"/>
+                    </a>
+                    <a href="http://www.odoo.com/page/timesheet?platform=ios" target="_blank">
+                        <img alt="Apple App Store" class="img img-fluid h-100" src="project/static/src/img/app_store.png"/>
+                    </a>
+                    <a href="http://www.odoo.com/page/timesheet?platform=android" target="_blank">
+                        <img alt="Google Play Store" class="img img-fluid h-100" src="project/static/src/img/play_store.png"/>
+                    </a>
+                </div>
+            </field>
         </record>
 
         <record id="timesheet_action_view_grid" model="ir.actions.act_window.view">
@@ -276,6 +297,27 @@
                 'search_default_groupby_employee': 1,
                 'search_default_groupby_project': 2
             }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Record a new activity
+                </p><p>
+                    You can register and track your workings hours by project every
+                    day. Every time spent on a project will become a cost and can be re-invoiced to
+                    customers if required.
+                </p>
+                <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
+                <div>
+                    <a href="http://www.odoo.com/page/timesheet?platform=chrome" target="_blank">
+                        <img alt="Google Chrome Store" class="img img-fluid h-100" src="project/static/src/img/chrome_store.png"/>
+                    </a>
+                    <a href="http://www.odoo.com/page/timesheet?platform=ios" target="_blank">
+                        <img alt="Apple App Store" class="img img-fluid h-100" src="project/static/src/img/app_store.png"/>
+                    </a>
+                    <a href="http://www.odoo.com/page/timesheet?platform=android" target="_blank">
+                        <img alt="Google Play Store" class="img img-fluid h-100" src="project/static/src/img/play_store.png"/>
+                    </a>
+                </div>
+            </field>
         </record>
 
         <record id="timesheet_action_view_all_grid" model="ir.actions.act_window.view">

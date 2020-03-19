@@ -9,8 +9,7 @@ class RequestWizard(models.TransientModel):
     _description = "Document Request"
 
     name = fields.Char(required=True)
-    owner_id = fields.Many2one('res.users', required=True, string="Owner",
-                               tracking=True)
+    owner_id = fields.Many2one('res.users', required=True, string="Owner")
     partner_id = fields.Many2one('res.partner', string="Contact")
 
     activity_type_id = fields.Many2one('mail.activity.type',

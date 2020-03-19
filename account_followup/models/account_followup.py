@@ -32,7 +32,7 @@ Best Regards,
     send_sms = fields.Boolean('Send an SMS Message', help="When processing, it will send an sms text message", default=False)
     join_invoices = fields.Boolean('Join open Invoices')
     manual_action = fields.Boolean('Manual Action', help="When processing, it will set the manual action to be taken for that customer. ", default=False)
-    manual_action_note = fields.Text('Action To Do', placeholder="e.g. Give a phone call, check with others , ...")
+    manual_action_note = fields.Text('Action To Do')
     manual_action_type_id = fields.Many2one('mail.activity.type', 'Manual Action Type', default=False)
     manual_action_responsible_id = fields.Many2one('res.users', 'Assign a Responsible', ondelete='set null')
 

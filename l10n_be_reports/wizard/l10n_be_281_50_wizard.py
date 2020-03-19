@@ -12,7 +12,7 @@ class L10nBe28150Wizard(models.Model):
         return super().default_get(field_list)
 
     reference_year = fields.Char(string='Reference Year', required=True, readonly=False,
-                                default=lambda x: str(fields.Date.today().year - 1), placeholder="e.g. 2018")
+                                default=lambda x: str(fields.Date.today().year - 1))
     is_test = fields.Boolean(string="Is It a test ?")
     type_sending = fields.Selection([
         ('0', 'Original send'),

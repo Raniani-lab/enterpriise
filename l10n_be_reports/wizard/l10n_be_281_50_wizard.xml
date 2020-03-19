@@ -9,7 +9,7 @@
                     Form 281.50 is generated only for partners with accounting entries on accounts with the tag "281.50".
                 </div>
                 <group>
-                    <field name="reference_year"/>
+                    <field name="reference_year" placeholder="e.g. 2018"/>
                     <field name="is_test" groups="base.group_no_one"/>
                     <field name="type_sending"/>
                     <field name="type_treatment"/>

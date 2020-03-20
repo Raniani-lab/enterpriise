@@ -52,11 +52,6 @@ class ProjectWorksheetTemplate(models.Model):
             'name': template.name,
             'model': name,
             'field_id': [
-                (0, 0, {  # needed for proper model creation from demo data
-                    'name': 'x_name',
-                    'field_description': 'Name',
-                    'ttype': 'char',
-                }),
                 (0, 0, {
                     'name': 'x_task_id',
                     'field_description': 'Task',
@@ -72,6 +67,14 @@ class ProjectWorksheetTemplate(models.Model):
                 }),
             ]
         })
+        model.write({'field_id': [
+            (0, 0, {
+                'name': 'x_name',
+                'field_description': 'Name',
+                'ttype': 'char',
+                'related': 'x_task_id.name',
+            }),
+        ]})
         # create access rights and rules
         self.env['ir.model.access'].sudo().create({
             'name': name + '_access',
@@ -103,9 +106,6 @@ class ProjectWorksheetTemplate(models.Model):
             'domain_force': [(1, '=', 1)],
             'groups': [(6, 0, [self.env.ref('project.group_project_manager').id])]
         })
-        # make the name field related to the task, so we keep consistence with task name
-        x_name_field = self.env['ir.model.fields'].search([('model_id', '=', model.id), ('name', '=', 'x_name')])
-        x_name_field.sudo().write({'related': 'x_task_id.name'})  # possible only after target field have been created
 
         # create the view to extend by 'studio' and add the user custom fields
         form_view = self.env['ir.ui.view'].sudo().create({

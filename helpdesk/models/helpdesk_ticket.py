@@ -220,7 +220,7 @@ class HelpdeskTicket(models.Model):
         return stages.search(search_domain, order=order)
 
     name = fields.Char(string='Subject', required=True, index=True)
-    team_id = fields.Many2one('helpdesk.team', string='Helpdesk Team', default=_default_team_id, index=True, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    team_id = fields.Many2one('helpdesk.team', string='Helpdesk Team', default=_default_team_id, index=True)
     description = fields.Text()
     active = fields.Boolean(default=True)
     ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Ticket Type")

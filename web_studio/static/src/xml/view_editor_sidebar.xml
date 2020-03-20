@@ -155,6 +155,19 @@
                         <label for="quick_add" class="custom-control-label">Quick Create</label>
                     </div>
                 </div>
+                <div
+                    class="o_web_studio_sidebar_select"
+                    t-if="widget.debug &amp;&amp; widget.isTrue(widget.state.attrs.quick_add)"
+                    title="This field will be used when creating records directly from the calendar view."
+                    >
+                    <label for="create_name_field">Quick Create Field</label>
+                    <select id="create_name_field" name="create_name_field">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store &amp;&amp; field.type === 'char'" t-att-selected="widget.state.attrs.create_name_field ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                            <t t-esc="field.string"/> <span>(<t t-esc="field.name"/>)</span>
+                        </option>
+                    </select>
+                </div>
+
                 <div class="o_web_studio_sidebar_select">
                     <label for="date_start">Start Date Field</label>
                     <select id="date_start" name="date_start">

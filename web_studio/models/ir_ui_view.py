@@ -261,7 +261,7 @@ class View(models.Model):
         model = self.env[res_model]
         if not 'x_studio_date' in model._fields:
             return self
-        calendar = E.calendar(date_start='x_studio_date')
+        calendar = E.calendar(date_start='x_studio_date', create_name_field='x_name')
         arch = etree.tostring(calendar, encoding='unicode', pretty_print=True)
 
         return self.create({

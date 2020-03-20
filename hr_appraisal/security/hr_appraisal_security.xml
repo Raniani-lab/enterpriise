@@ -18,6 +18,8 @@
         <field name="groups_id" eval="[(4,ref('hr_appraisal.group_hr_appraisal_manager'))]"/>
     </record>
 
+    <data noupdate="1">
+
     <record id="hr_appraisal_all_rule" model="ir.rule">
         <field name="name">All Appraisal</field>
         <field name="model_id" ref="model_hr_appraisal"/>
@@ -52,14 +54,13 @@
     <record model="ir.rule" id="hr_appraisal_comp_rule">
         <field name="name">Appraisal multi-company</field>
         <field name="model_id" ref="model_hr_appraisal"/>
-        <field name="global" eval="True"/>
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
 
     <record model="ir.rule" id="hr_appraisal_reminder_comp_rule">
         <field name="name">Appraisal Reminder multi-company</field>
         <field name="model_id" ref="model_hr_appraisal_reminder"/>
-        <field name="global" eval="True"/>
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
+    </data>
 </odoo>

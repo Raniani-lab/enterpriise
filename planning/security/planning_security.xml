@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<data noupdate="0">
 
     <record id="group_planning_user" model="res.groups">
         <field name="name">User</field>
@@ -19,8 +18,6 @@
         <field name="name">Show Allocated Percentage</field>
         <field name="category_id" ref="base.module_category_hidden"/>
     </record>
-
-</data>
 
 <data noupdate="1">
     <record id="base.default_user" model="res.users">
@@ -75,28 +72,24 @@
         <field name="name">Planning Shift multi-company</field>
         <field name="model_id" ref="planning.model_planning_slot"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="global" eval="True"/>
     </record>
 
     <record id="planning_recurrency_rule_multi_company" model="ir.rule">
         <field name="name">Planning Recurrence multi-company</field>
         <field name="model_id" ref="planning.model_planning_recurrency"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="global" eval="True"/>
     </record>
 
     <record id="planning_planning_rule_multi_company" model="ir.rule">
         <field name="name">Planning Planning multi-company</field>
         <field name="model_id" ref="planning.model_planning_planning"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="global" eval="True"/>
     </record>
 
     <record id="planning_planning_rule_multi_company" model="ir.rule">
         <field name="name">Planning Analysis multi-company</field>
         <field name="model_id" ref="planning.model_planning_slot_report_analysis"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="global" eval="True"/>
     </record>
 
 </data>

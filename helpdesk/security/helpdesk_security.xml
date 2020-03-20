@@ -53,7 +53,6 @@
         <record id="helpdesk_ticket_company_rule" model="ir.rule">
             <field name="name">Project: multi-company</field>
             <field name="model_id" ref="model_helpdesk_ticket"/>
-            <field name="global" eval="True"/>
             <field name="domain_force">['|',
                                             ('company_id', '=', False),
                                             ('company_id', 'in', company_ids),
@@ -62,7 +61,6 @@
         <record model="ir.rule">
             <field name="name">Project: multi-company</field>
             <field name="model_id" ref="model_helpdesk_team"/>
-            <field name="global" eval="True"/>
             <field name="domain_force">['|',
                                             ('company_id', '=', False),
                                             ('company_id', 'in', company_ids),
@@ -71,7 +69,6 @@
         <record id="helpdesk_sla_company_rule" model="ir.rule">
             <field name="name">Project: multi-company</field>
             <field name="model_id" ref="model_helpdesk_sla"/>
-            <field name="global" eval="True"/>
             <field name="domain_force">['|',
                                             ('company_id', '=', False),
                                             ('company_id', 'in', company_ids),
@@ -91,7 +88,6 @@
         <record id="helpdesk_sla_report_analysis_rule_manager" model="ir.rule">
             <field name="name">Helpdesk SLA Report: multi-company</field>
             <field name="model_id" ref="model_helpdesk_sla_report_analysis"/>
-            <field name="global" eval="True"/>
             <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]</field>
         </record>
 

@@ -15,6 +15,8 @@
         <field name="groups_id" eval="[(4,ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
     </record>
 
+    <data noupdate="1">
+
     <record id="hr_referral_points_emp_rule" model="ir.rule">
         <field name="name">Employee Referral Points</field>
         <field name="model_id" ref="model_hr_referral_points"/>
@@ -32,21 +34,19 @@
     <record model="ir.rule" id="hr_referral_alert_comp_rule">
         <field name="name">Referral Alerts multi-company</field>
         <field name="model_id" ref="model_hr_referral_alert"/>
-        <field name="global" eval="True"/>
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
 
     <record model="ir.rule" id="hr_referral_reward_comp_rule">
         <field name="name">Referral Reward multi-company</field>
         <field name="model_id" ref="model_hr_referral_reward"/>
-        <field name="global" eval="True"/>
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
 
     <record model="ir.rule" id="hr_hr_referral_onboarding_comp_rule">
         <field name="name">Referral Onboarding multi-company</field>
         <field name="model_id" ref="model_hr_referral_onboarding"/>
-        <field name="global" eval="True"/>
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
+    </data>
 </odoo>

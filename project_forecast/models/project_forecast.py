@@ -92,3 +92,15 @@ class PlanningShift(models.Model):
     @api.depends('role_id', 'employee_id', 'project_id', 'task_id')
     def _compute_template_autocomplete_ids(self):
         super(PlanningShift, self)._compute_template_autocomplete_ids()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('task_id'):
+                vals['project_id'] = self.env['project.task'].browse(vals.get('task_id')).project_id.id
+        return super().create(vals_list)
+
+    def write(self, values):
+        if 'task_id' in values and values['task_id'] and 'project_id' not in values:
+            values['project_id'] = self.env['project.task'].browse(values['task_id']).project_id.id
+        return super(PlanningShift, self).write(values)

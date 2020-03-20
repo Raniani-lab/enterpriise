@@ -64,7 +64,5 @@ class TestForecastCreationAndEditing(TestCommonForecast):
             'start_datetime': datetime(2019, 6, 2, 8, 0, 0),
             'end_datetime': datetime(2019, 6, 2, 17, 0, 0)
         }
-        with self.assertRaises(ValidationError, msg="""it should not be possible to create a planning_shift
-                                                    linked to a task that is in another project
-                                                    than the one linked to the planning_shift"""):
-            self.env['planning.slot'].create(values)
+        slot = self.env['planning.slot'].create(values)
+        self.assertEqual(slot.project_id, self.project_horizon, 'If we put a task when creation, we take the project of this task for this new slot.')

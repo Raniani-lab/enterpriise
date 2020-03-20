@@ -1,6 +1,6 @@
 odoo.define('forecast.ForecastGanttView', function (require) {
     'use strict';
-    
+
     var GanttView = require('web_gantt.GanttView');
     var PlanningGanttModel = require('planning.PlanningGanttModel');
     var PlanningGanttView = require('planning.PlanningGanttView');
@@ -18,15 +18,15 @@ odoo.define('forecast.ForecastGanttView', function (require) {
             return this._super(handle, params);
         }
     });
-    
+
     var ForecastGanttView = PlanningGanttView.extend({
         config: _.extend({}, GanttView.prototype.config, {
             Model: ForecastGanttModel,
         }),
     });
-    
+
     view_registry.add('forecast_gantt', ForecastGanttView);
-    
+
     return ForecastGanttView;
-    
+
 });

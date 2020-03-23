@@ -103,14 +103,12 @@ $gantt-unavailability-bg: $gray-200;
         }
     }
 
-    &.o_copying {
-        .o_dragged_pill {
-            outline: 1px solid theme-color('primary');
-        }
+    .o_dragged_pill {
+        outline: 1px solid theme-color('primary');
+    }
 
-        .ui-draggable-dragging {
-            opacity: .8;
-        }
+    .ui-draggable-dragging {
+        opacity: .8;
     }
 
     // ===============  Header  ==============

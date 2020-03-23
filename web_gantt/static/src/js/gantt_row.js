@@ -735,8 +735,6 @@ var GanttRow = Widget.extend({
 
                     self.$el.removeClass('o_gantt_dragging');
                     self.$('.o_gantt_pill').popover('enable');
-
-                    $pill.draggable().data().uiDraggable.cancelHelperRemoval = true;
                 },
                 helper: 'clone',
             });

@@ -1626,7 +1626,7 @@ QUnit.module('Views', {
         assert.containsNone(gantt, '.o_gantt_pill.ui-resizable',
             "the pill should not be resizable after initial rendering");
 
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
 
         assert.containsOnce(gantt, '.o_gantt_pill.ui-resizable',
             "the pill should be resizable after mouse enter");
@@ -2117,6 +2117,60 @@ QUnit.module('Views', {
 
         gantt.destroy();
 
+    });
+
+    QUnit.test('cancelled drag and tooltip', async function (assert) {
+        assert.expect(6);
+
+        var POPOVER_DELAY = GanttRow.prototype.POPOVER_DELAY;
+        GanttRow.prototype.POPOVER_DELAY = 0;
+
+        this.data.tasks.records[1].start = '2018-12-16 03:00:00';
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt default_scale="week" date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form/>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'write') {
+                    throw new Error('Should not do a write RPC');
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        assert.containsN(gantt, '.o_gantt_pill', 4);
+        const $secondPill = gantt.$('.o_gantt_pill:nth(1)');
+
+        // enable the drag feature
+        await testUtils.dom.triggerMouseEvent($secondPill, 'mouseover');
+        assert.hasClass($secondPill, 'ui-draggable', "the pill should be draggable after mouse enter");
+        assert.containsOnce(document.body, 'div.popover');
+
+        // move the pill of a few px (not enough for it to actually move to another cell)
+        await testUtils.dom.dragAndDrop($secondPill, $secondPill, {
+            position: { left: 0, top: 4 },
+            withTrailingClick: true,
+        });
+
+        // check popover
+        await testUtils.dom.triggerEvents($secondPill, ['mouseover']);
+        assert.containsOnce(document.body, 'div.popover');
+
+        // edit pill
+        await testUtils.dom.triggerEvents($secondPill, ['click']);
+        assert.containsOnce(document.body, '.modal .o_form_view');
+
+        gantt.destroy();
+        assert.containsNone(gantt, 'div.popover', 'should not have a popover anymore');
+        GanttRow.prototype.POPOVER_DELAY = POPOVER_DELAY;
     });
 
     // ATTRIBUTES TESTS

@@ -377,8 +377,6 @@ var GanttRenderer = AbstractRenderer.extend({
     _onKeydown: function (ev) {
         this.action = this._getAction(ev);
         if (this.$draggedPill && this.action === 'copy') {
-            this.$draggedPill.addClass('o_dragged_pill');
-            this.$draggedPill.removeClass('o_hidden');
             this.$el.addClass('o_copying');
             this.$el.removeClass('o_grabbing');
         }
@@ -389,8 +387,6 @@ var GanttRenderer = AbstractRenderer.extend({
     _onKeyup: function (ev) {
         this.action = this._getAction(ev);
         if (this.$draggedPill && this.action === 'reschedule') {
-            this.$draggedPill.removeClass( 'o_dragged_pill');
-            this.$draggedPill.addClass('o_hidden');
             this.$el.addClass('o_grabbing');
             this.$el.removeClass('o_copying');
         }
@@ -401,12 +397,11 @@ var GanttRenderer = AbstractRenderer.extend({
      */
     _onStartDragging: function (event) {
         this.$draggedPill = event.data.$draggedPill;
+        this.$draggedPill.addClass('o_dragged_pill');
         if (this.action === 'copy') {
             this.$el.addClass('o_copying');
-            this.$draggedPill.addClass('o_dragged_pill');
         } else {
-            this.$el.addClass('o_grabbing')
-            this.$draggedPill.addClass('o_hidden');
+            this.$el.addClass('o_grabbing');
         }
     },
     /**
@@ -420,6 +415,7 @@ var GanttRenderer = AbstractRenderer.extend({
      * @private
      */
     _onStopDragging: function () {
+        this.$draggedPill.removeClass('o_dragged_pill');
         this.$draggedPill = null;
         this.$draggedPillClone = null;
         this.$el.removeClass('o_grabbing');

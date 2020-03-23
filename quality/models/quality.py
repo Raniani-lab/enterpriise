@@ -257,7 +257,7 @@ class QualityCheck(models.Model):
     @api.onchange('point_id')
     def _onchange_point_id(self):
         if self.point_id:
-            self.product_id = self.point_id.product_id
+            self.product_id = self.point_id.product_ids[:1]
             self.team_id = self.point_id.team_id.id
 
     @api.model

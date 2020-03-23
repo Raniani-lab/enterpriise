@@ -38,7 +38,7 @@ class Base(models.AbstractModel):
         total_value = 0
         initial_churn_value = 0
         measure_is_many2one = self._fields.get(measure) and self._fields.get(measure).type == 'many2one'
-        for group in self.with_context(tz=False)._read_group_raw(domain=domain, fields=[date_start], groupby=date_start + ':' + interval):
+        for group in self._read_group_raw(domain=domain, fields=[date_start], groupby=date_start + ':' + interval):
             dates = group['%s:%s' % (date_start, interval)]
             if not dates:
                 continue

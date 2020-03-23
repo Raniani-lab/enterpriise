@@ -58,6 +58,7 @@ tour.register('rental_tour', {
     in_modal: false,
 }, {
     trigger: "a:contains('Add a product')",
+    extra_trigger: ".o_field_many2one[name='partner_id'] .o_external_button",
     content: _t("Click here to start filling the quotation."),
     position: 'bottom',
 }, {

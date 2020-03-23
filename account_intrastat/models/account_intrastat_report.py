@@ -3,6 +3,15 @@
 
 from odoo import models, fields, api, _, _lt
 
+_merchandise_export_code = {
+    'BE': '29',
+    'FR': '21'
+}
+
+_merchandise_import_code = {
+    'BE': '19',
+    'FR': '11'
+}
 
 class IntrastatReport(models.AbstractModel):
     _name = 'account.intrastat.report'
@@ -106,7 +115,7 @@ class IntrastatReport(models.AbstractModel):
         # accordingly to specs (https://www.nbb.be/doc/dq/f_pdf_ex/intra2017fr.pdf (§ 4.x))
         select = '''
                 row_number() over () AS sequence,
-                CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN 19 ELSE 29 END AS system,
+                CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN %(import_merchandise_code)s ELSE %(export_merchandise_code)s END AS system,
                 country.code AS country_code,
                 company_country.code AS comp_country_code,
                 CASE WHEN inv_line.intrastat_transaction_id IS NULL THEN '1' ELSE transaction.code END AS transaction_code,
@@ -180,6 +189,8 @@ class IntrastatReport(models.AbstractModel):
         order = 'inv.invoice_date DESC'
         params = {
             'company_id': self.env.company.id,
+            'import_merchandise_code': _merchandise_import_code.get(self.env.company.country_id.code, '29'),
+            'export_merchandise_code': _merchandise_export_code.get(self.env.company.country_id.code, '19'),
             'date_from': date_from,
             'date_to': date_to,
             'journal_ids': tuple(journal_ids),

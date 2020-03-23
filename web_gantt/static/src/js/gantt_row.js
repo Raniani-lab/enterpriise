@@ -820,9 +820,15 @@ var GanttRow = Widget.extend({
                     self._updateResizeBadge($pill, diff, ui);
                 },
                 stop: function (event, ui) {
-                    self.trigger_up('updating_pill_stopped');
-                    self.$el.removeClass('o_gantt_dragging');
-                    self.$('.o_gantt_pill').popover('enable');
+                    // 'stop' is triggered by the mouseup event. Right after, the click is event is
+                    // triggered. As we also listen to this event (to open a dialog to edit the pill),
+                    // we have to delay a bit the moment where we mark the pill as no longer being
+                    // updated, to prevent the dialog from opening when the user ends its resize
+                    setTimeout(() => {
+                        self.trigger_up('updating_pill_stopped');
+                        self.$el.removeClass('o_gantt_dragging');
+                        self.$('.o_gantt_pill').popover('enable');
+                    });
                     var diff = Math.round((ui.size.width - ui.originalSize.width) / resizeSnappingWidth * self.viewInfo.activeScaleInfo.interval);
                     var direction = ui.position.left ? 'left' : 'right';
                     if (diff) { // do not perform write if nothing change

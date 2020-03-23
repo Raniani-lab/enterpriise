@@ -1591,6 +1591,68 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('resize a pill (2)', async function (assert) {
+        // This test checks a tricky situation where the user resizes a pill, and
+        // triggers the mouseup (i.e. release the mouse) over the pill. In this
+        // case, the click should not be considered as a click on the pill to
+        // edit it.
+        assert.expect(6);
+
+        const def = testUtils.makeTestPromise();
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form/>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            domain: [['id', '=', 2]],
+            mockRPC: async function (route, args) {
+                const result = this._super(...arguments);
+                if (args.method === 'write') {
+                    assert.deepEqual(args.args[1], { stop: "2018-12-23 06:29:59" });
+                    await def;
+                }
+                return result;
+            },
+        });
+
+        assert.containsOnce(gantt, '.o_gantt_pill',
+            "there should be one pill (Task 1)");
+        assert.containsNone(gantt, '.o_gantt_pill.ui-resizable',
+            "the pill should not be resizable after initial rendering");
+
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+
+        assert.containsOnce(gantt, '.o_gantt_pill.ui-resizable',
+            "the pill should be resizable after mouse enter");
+        assert.containsOnce(gantt, '.ui-resizable-e',
+            "there should be one right resizer for task 2");
+
+        // resize to one cell larger, but do the mouseup over the pill
+        const $resize = gantt.$('.ui-resizable-e');
+        const cellWidth = gantt.$('.o_gantt_cell:first').width();
+        const options = {
+            position: {
+                left: 0.9 * cellWidth, // do the mouseup over the pill
+                top: 10,
+            },
+            withTrailingClick: true,
+            mouseupTarget: gantt.$('.o_gantt_pill'),
+        };
+        await testUtils.dom.dragAndDrop($resize, $resize, options);
+
+        def.resolve();
+        assert.containsNone(document.body, '.modal',
+            'shoud not have opened the dialog to edit the pill');
+
+        gantt.destroy();
+    });
+
     QUnit.test('create a task maintains the domain', async function (assert) {
         assert.expect(2);
 

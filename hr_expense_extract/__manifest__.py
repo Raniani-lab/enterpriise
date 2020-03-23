@@ -11,6 +11,7 @@
         'security/ir.model.access.csv',
         'data/config_parameter_endpoint.xml',
         'views/hr_expense_views.xml',
+        'views/res_config_settings_views.xml',
         'data/update_status_cron.xml',
     ],
     'auto_install': True,

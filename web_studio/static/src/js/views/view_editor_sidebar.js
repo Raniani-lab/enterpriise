@@ -738,6 +738,9 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                     var newModifiers = _.extend({}, this.state.modifiers);
                     newModifiers[attribute] = $input.is(':checked');
                     new_attrs = this._getNewAttrsFromModifiers(newModifiers);
+                    if (attribute === 'readonly' && $input.is(':checked')) {
+                        new_attrs.force_save = 'True';
+                    }
                 }
             } else if (attribute === 'aggregate') {
                 var aggregate = $input.find('option:selected').attr('name');

@@ -352,8 +352,8 @@ class MarketingActivity(models.Model):
     model_name = fields.Char(related='model_id.model', string='Model Name', readonly=True)
     # Related to parent activity
     parent_id = fields.Many2one(
-        'marketing.activity', string='Activity',
-        index=True, ondelete='cascade')
+        'marketing.activity', string='Activity', compute='_compute_parent_id',
+        index=True, readonly=False, store=True, ondelete='cascade')
     allowed_parent_ids = fields.Many2many('marketing.activity', string='Allowed parents', help='All activities which can be the parent of this one', compute='_compute_allowed_parent_ids')
     child_ids = fields.One2many('marketing.activity', 'parent_id', string='Child Activities')
     trigger_type = fields.Selection([
@@ -430,15 +430,21 @@ class MarketingActivity(models.Model):
         for activity in self:
             activity.interval_standardized = activity.interval_number * factors[activity.interval_type]
 
+    @api.depends('trigger_type')
+    def _compute_parent_id(self):
+        for activity in self:
+            if not activity.parent_id or (activity.parent_id and activity.trigger_type == 'begin'):
+                activity.parent_id = False
+
     @api.depends('trigger_type', 'campaign_id.marketing_activity_ids')
     def _compute_allowed_parent_ids(self):
         for activity in self:
             if activity.trigger_type == 'activity':
                 activity.allowed_parent_ids = activity.campaign_id.marketing_activity_ids.filtered(
-                    lambda parent_id: parent_id.id != activity.id)
+                    lambda parent_id: parent_id.ids != activity.ids)
             elif activity.trigger_category:
                 activity.allowed_parent_ids = activity.campaign_id.marketing_activity_ids.filtered(
-                    lambda parent_id: parent_id.id != activity.id and parent_id.activity_type == activity.trigger_category)
+                    lambda parent_id: parent_id.ids != activity.ids and parent_id.activity_type == activity.trigger_category)
             else:
                 activity.allowed_parent_ids = False
 

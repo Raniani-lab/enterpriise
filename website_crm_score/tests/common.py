@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+
 from odoo.tests import common
 
-from mock import Mock
+from unittest.mock import Mock
 
 
 class TestScoringCommon(common.TransactionCase):

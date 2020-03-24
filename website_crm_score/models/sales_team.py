@@ -9,6 +9,7 @@ from random import randint, shuffle
 import datetime
 import logging
 import math
+import threading
 
 _logger = logging.getLogger(__name__)
 
@@ -22,16 +23,7 @@ class crm_team(models.Model):
     _name = 'crm.team'
     _inherit = ['crm.team', 'mail.thread']
 
-    ratio = fields.Float(string='Ratio')
-    score_team_domain = fields.Char('Domain', tracking=True)
-    leads_count = fields.Integer(compute='_count_leads')
-    assigned_leads_count = fields.Integer(compute='_assigned_leads_count')
-    capacity = fields.Integer(compute='_capacity')
-    team_user_ids = fields.One2many('team.user', 'team_id', string='Salesman')
-    min_for_assign = fields.Integer("Minimum score", help="Minimum score to be automatically assign (>=)", default=0, required=True, tracking=True)
-
     @api.model
-    @api.returns('self', lambda value: value.id if value else False)
     def _get_default_team_id(self, user_id=None, domain=None):
         if user_id is None:
             user_id = self.env.user.id
@@ -40,25 +32,14 @@ class crm_team(models.Model):
             team_id = super(crm_team, self)._get_default_team_id(user_id=user_id, domain=domain)
         return team_id
 
-    def _count_leads(self):
-        for rec in self:
-            if rec.id:
-                rec.leads_count = self.env['crm.lead'].search_count([('team_id', '=', rec.id)])
-            else:
-                rec.leads_count = 0
+    score_team_domain = fields.Char('Domain', tracking=True)
+    lead_capacity = fields.Integer(compute='_compute_lead_capacity')
+    team_user_ids = fields.One2many('team.user', 'team_id', string='Salesman')
+    min_for_assign = fields.Integer("Minimum score", help="Minimum score to be automatically assign (>=)", default=0, required=True, tracking=True)
 
-    def _assigned_leads_count(self):
+    def _compute_lead_capacity(self):
         for rec in self:
-            limit_date = datetime.datetime.now() - datetime.timedelta(days=30)
-            domain = [('assign_date', '>=', fields.Datetime.to_string(limit_date)),
-                      ('team_id', '=', rec.id),
-                      ('user_id', '!=', False)
-                      ]
-            rec.assigned_leads_count = self.env['crm.lead'].search_count(domain)
-
-    def _capacity(self):
-        for rec in self:
-            rec.capacity = sum(s.maximum_user_leads for s in rec.team_user_ids)
+            rec.lead_capacity = sum(s.maximum_user_leads for s in rec.team_user_ids)
 
     @api.constrains('score_team_domain')
     def _assert_valid_domain(self):
@@ -113,27 +94,33 @@ class crm_team(models.Model):
 
                 for lead in leads:
                     if lead.id not in leads_done:
-                        leads_duplicated = lead.get_duplicated_leads(False)
+                        leads_duplicated = lead._get_lead_duplicates(email=lead.email_from)
                         if len(leads_duplicated) > 1:
                             merged = leads_duplicated.with_context(assign_leads_to_salesteams=True).merge_opportunity(False, False)
                             _logger.debug('Lead [%s] merged of [%s]' % (merged, leads_duplicated))
                             leads_merged.add(merged.id)
                         leads_done.update(leads_duplicated.ids)
-                    self._cr.commit()
+                    # auto-commit except in testing mode
+                    auto_commit = not getattr(threading.currentThread(), 'testing', False)
+                    if auto_commit:
+                        self._cr.commit()
                 if leads_merged:
                     self.env['website.crm.score'].assign_scores_to_leads(lead_ids=list(leads_merged))
-                self._cr.commit()
+                # auto-commit except in testing mode
+                auto_commit = not getattr(threading.currentThread(), 'testing', False)
+                if auto_commit:
+                    self._cr.commit()
 
     @api.model
     def assign_leads_to_salesmen(self, all_team_users):
         users = []
         for su in all_team_users:
-            if (su.maximum_user_leads - su.leads_count) <= 0:
+            if (su.maximum_user_leads - su.lead_month_count) <= 0:
                 continue
             domain = safe_eval(su.team_user_domain or '[]', evaluation_context)
             domain.extend([
                 ('user_id', '=', False),
-                ('assign_date', '=', False),
+                ('date_open', '=', False),
                 ('score', '>=', su.team_id.min_for_assign)
             ])
 
@@ -145,7 +132,7 @@ class crm_team(models.Model):
             leads = self.env["crm.lead"].search(domain, order='score desc', limit=limit * len(su.team_id.team_user_ids))
             users.append({
                 "su": su,
-                "nbr": min(su.maximum_user_leads - su.leads_count, limit),
+                "nbr": min(su.maximum_user_leads - su.lead_month_count, limit),
                 "leads": leads
             })
 
@@ -178,7 +165,10 @@ class crm_team(models.Model):
             # ToDo in master/saas-14: add option mail_auto_subscribe_no_notify on the saleman/saleteam
             lead.with_context(mail_auto_subscribe_no_notify=True).write(data)
             lead.convert_opportunity(lead.partner_id and lead.partner_id.id or None)
-            self._cr.commit()
+            # auto-commit except in testing mode
+            auto_commit = not getattr(threading.currentThread(), 'testing', False)
+            if auto_commit:
+                self._cr.commit()
 
             user['nbr'] -= 1
             if not user['nbr']:

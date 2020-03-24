@@ -59,7 +59,7 @@
                             <button class="oe_stat_button" type="action"
                                 name="%(score_leads)d" icon="fa-tags"
                                 >
-                                <field string="Leads" name="leads_count" widget="statinfo"/>
+                                <field string="Leads" name="lead_all_count" widget="statinfo"/>
                             </button>
                         </div>
                         <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
@@ -91,7 +91,7 @@
             <field name="arch" type="xml">
                 <kanban class="o_kanban_mobile">
                     <field name="name"/>
-                    <field name="leads_count"/>
+                    <field name="lead_all_count"/>
                     <field name="rule_type"/>
                     <field name="domain"/>
                     <templates>
@@ -105,7 +105,7 @@
                                         <strong><span><field name="value"/></span></strong>
                                     </div>
                                     <div class="col-4 text-right">
-                                        <strong><i class="fa fa-fw fa-tags" aria-label="Number of leads" title="Number of leads" role="img"></i><field name="leads_count"/> leads</strong>
+                                        <strong><i class="fa fa-fw fa-tags" aria-label="Number of leads" title="Number of leads" role="img"></i><field name="lead_all_count"/> leads</strong>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -135,7 +135,7 @@
                     <field name="name"/>
                     <field name="rule_type"/>
                     <field name="value"/>
-                    <field name="leads_count"/>
+                    <field name="lead_all_count"/>
                     <field name="domain" readonly="1"/>
                     <field name="active"/>
                 </tree>
@@ -177,7 +177,7 @@
                     <sheet>
                         <h1>
                             <field name="user_id"/>
-                            <field name="leads_count" invisible="1"/>
+                            <field name="lead_month_count" invisible="1"/>
                         </h1>
                         <group>
                             <field name="team_id" kanban_view_ref="%(sales_team.crm_team_view_kanban)s" readonly="context.get('ro_team', False)"/>
@@ -204,7 +204,7 @@
                     <field name="team_id"/>
                     <field name="user_id"/>
                     <field name="maximum_user_leads"/>
-                    <field name="leads_count"/>
+                    <field name="lead_month_count"/>
                 </tree>
             </field>
         </record>
@@ -239,7 +239,7 @@
                                     </ul>
                                     <div class="o_assignation_leads_count">
                                         <field name="maximum_user_leads" invisible="1"/>
-                                        <field name="leads_count" widget="gauge"
+                                        <field name="lead_month_count" widget="gauge"
                                                options="{'max_field': 'maximum_user_leads'}"/>
                                     </div>
                                 </div>

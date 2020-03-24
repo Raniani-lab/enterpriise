@@ -7,10 +7,10 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='right']" position="inside">
                 <field name="score_team_domain" widget="domain" options="{'model': 'crm.lead', 'in_dialog': True}"/>
-                <label for="assigned_leads_count"/>
+                <label for="lead_all_assigned_month_count" string="Assigned Leads Count"/>
                 <div>
-                    <field name="assigned_leads_count" class="oe_inline"/> /
-                    <field name="capacity" class="oe_inline"/>
+                    <field name="lead_all_assigned_month_count" class="oe_inline"/> /
+                    <field name="lead_capacity" class="oe_inline"/>
                 </div>
                 <field name="min_for_assign" class="oe_inline"/>
             </xpath>
@@ -42,7 +42,7 @@
                                             </ul>
                                             <div class="o_assignation_leads_count">
                                                 <field name="maximum_user_leads" invisible="1"/>
-                                                <field name="leads_count" widget="gauge"
+                                                <field name="lead_month_count" widget="gauge"
                                                        options="{'max_field': 'maximum_user_leads'}"/>
                                             </div>
                                         </div>
@@ -54,7 +54,7 @@
                             <sheet>
                                 <h1>
                                     <field name="user_id" domain="[('share', '=', False)]"/>
-                                    <field name="leads_count" invisible="1"/>
+                                    <field name="lead_month_count" invisible="1"/>
                                 </h1>
                                 <group>
                                     <label for="maximum_user_leads" string="Maximum Leads / 30 days"/>

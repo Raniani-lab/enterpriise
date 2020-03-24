@@ -23,10 +23,11 @@ class team_user(models.Model):
     active = fields.Boolean(string='Running', default=True)
     team_user_domain = fields.Char('Domain', tracking=True)
     maximum_user_leads = fields.Integer('Leads Per Month')
-    leads_count = fields.Integer('Assigned Leads', compute='_count_leads', help='Assigned Leads this last month')
-    percentage_leads = fields.Float(compute='_get_percentage', string='Percentage leads')
+    lead_month_count = fields.Integer(
+        'Assigned Leads', compute='_compute_lead_month_count',
+        help='Lead assigned to this member those last 30 days')
 
-    def _count_leads(self):
+    def _compute_lead_month_count(self):
         for rec in self:
             if rec.id:
                 limit_date = datetime.datetime.now() - datetime.timedelta(days=30)
@@ -34,16 +35,9 @@ class team_user(models.Model):
                           ('team_id', '=', rec.team_id.id),
                           ('date_open', '>', fields.Datetime.to_string(limit_date))
                           ]
-                rec.leads_count = self.env['crm.lead'].search_count(domain)
+                rec.lead_month_count = self.env['crm.lead'].search_count(domain)
             else:
-                rec.leads_count = 0
-
-    def _get_percentage(self):
-        for rec in self:
-            try:
-                rec.percentage_leads = round(100 * rec.leads_count / float(rec.maximum_user_leads), 2)
-            except ZeroDivisionError:
-                rec.percentage_leads = 0.0
+                rec.lead_month_count = 0
 
     @api.constrains('team_user_domain')
     def _assert_valid_domain(self):

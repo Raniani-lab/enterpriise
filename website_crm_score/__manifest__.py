@@ -17,7 +17,7 @@ This module allows you to:
 * Assign leads to specific salespersons in the sales team.
 """,
     'data': [
-        'views/website_crm_score.xml',
+        'views/assets.xml',
         'views/crm_lead_views.xml',
         'views/crm_team_views.xml',
         'views/marketing.xml',

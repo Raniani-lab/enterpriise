@@ -39,10 +39,10 @@ class website_crm_score(models.Model):
         default=False, tracking=True
     )
     active = fields.Boolean(default=True, tracking=True)
-    leads_count = fields.Integer(compute='_count_leads')
+    lead_all_count = fields.Integer('# Leads', compute='_compute_lead_all_count')
     last_run = fields.Datetime('Last run', help='Date from the last scoring on all leads.')
 
-    def _count_leads(self):
+    def _compute_lead_all_count(self):
         for rec in self:
             if rec.id:
                 self._cr.execute("""
@@ -50,9 +50,9 @@ class website_crm_score(models.Model):
                      FROM crm_lead_score_rel
                      WHERE score_id = %s
                      """, (rec.id,))
-                rec.leads_count = rec._cr.fetchone()[0]
+                rec.lead_all_count = rec._cr.fetchone()[0]
             else:
-                rec.leads_count = 0
+                rec.lead_all_count = 0
 
     @api.constrains('domain')
     def _assert_valid_domain(self):

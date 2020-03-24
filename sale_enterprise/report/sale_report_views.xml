@@ -28,8 +28,7 @@
                             <aggregate name="price_subtotal_all_orders" string="Untaxed Total" field="price_subtotal" widget="monetary"/>
                             <aggregate name="order_id_confirmed_orders" field="order_id" string="Orders"/>
                             <formula name="total" string="Average Order" value="record.price_subtotal_confirmed_orders / record.order_id_confirmed_orders" widget="monetary"/>
-                            <aggregate name="days_to_confirm" string="Days to Confirm" field="days_to_confirm" group_operator="avg"
-                        value_label="days"/>
+                            <aggregate name="avg_days_to_confirm" string="Average Days to Confirm" field="avg_days_to_confirm" group_operator="avg" value_label="days" clickable="False"/>
                             <aggregate name="customers" string="# Customers" field="partner_id"/>
                             <aggregate name="lines" string="# Lines" field="nbr"/>
                         </group>

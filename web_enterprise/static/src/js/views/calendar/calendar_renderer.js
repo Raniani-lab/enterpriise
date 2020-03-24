@@ -102,6 +102,8 @@ CalendarRenderer.include({
     _getFullCalendarOptions: function () {
         const oldOptions = this._super(...arguments);
         oldOptions.views.dayGridMonth.columnHeaderFormat = 'ddd';
+        oldOptions.weekNumbersWithinDays = false;
+        oldOptions.views.dayGridMonth.weekLabel = '';
         return oldOptions;
     },
     /**

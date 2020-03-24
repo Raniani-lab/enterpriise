@@ -15,11 +15,6 @@
                 <button name="%(exit_credit_time_wizard_action)d" string="Full Time" attrs="{'invisible': ['|', ('employee_id', '=', False), ('time_credit', '=', False)]}" type="action" groups="hr_contract.group_hr_contract_manager"/>
             </xpath>
             <xpath expr="//div[@name='wage']" position="after">
-                <label for="wage_with_holidays" attrs="{'invisible': [('holidays', '=', 0.0)]}"/>
-                <div class="o_row" attrs="{'invisible': [('holidays', '=', 0.0)]}">
-                    <field name="wage_with_holidays" nolabel="1"/>
-                    <span>/ month</span>
-                </div>
                 <label for="fuel_card"/>
                 <div class="o_row">
                     <field name="fuel_card" nolabel="1"/>
@@ -52,7 +47,7 @@
                     <span>%</span>
                 </div>
             </xpath>
-            <xpath expr="//group[@name='salary_and_advantages']" position="after">
+            <xpath expr="//group[@name='yearly_advantages']" position="before">
                 <group string="Monthly Benefit in Kind" name="monthly_benefits">
                     <field name="warrants_cost" invisible="1"/>
                     <field name="yearly_commission_cost" invisible="1"/>
@@ -107,18 +102,13 @@
                     </div>
                     <field name="has_laptop"/>
                 </group>
-                <group string="Yearly Advantages" name="yearly_advantages">
-                    <label for="eco_checks"/>
-                    <div class="o_row">
-                        <field name="eco_checks" nolabel="1"/>
-                        <span>/ year</span>
-                    </div>
-                    <label for="holidays"/>
-                    <div class="o_row">
-                        <field name="holidays" nolabel="1"/>
-                        <span>/ year</span>
-                    </div>
-                </group>
+            </xpath>
+            <xpath expr="//group[@name='yearly_advantages']" position="inside">
+                <label for="eco_checks"/>
+                <div class="o_row">
+                    <field name="eco_checks" nolabel="1"/>
+                    <span>/ year</span>
+                </div>
             </xpath>
             <page name="information" position="after">
                 <page string="Attachment of Salary" name="salary_attachment">

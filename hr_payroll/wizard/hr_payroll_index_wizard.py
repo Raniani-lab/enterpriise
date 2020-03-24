@@ -29,7 +29,9 @@ class HrPayrollIndex(models.TransientModel):
             index.display_warning = any(contract.state != 'open' for contract in contracts)
 
     def _index_wage(self, contract):
-        contract.write({'wage': contract.wage + contract.wage * self.percentage / 100})
+        wage_field = contract._get_contract_wage_field()
+        wage = contract[wage_field]
+        contract.write({wage_field: wage * (1 + 1 * self.percentage / 100)})
 
     def action_confirm(self):
         self.ensure_one()

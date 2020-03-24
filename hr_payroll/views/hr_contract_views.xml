@@ -29,7 +29,6 @@
                                 <field name="hourly_wage" nolabel="1"/>
                                 <span>/ hour</span>
                             </div>
-                            <field name="advantages" nolabel="1" placeholder="Advantages..." colspan="2" invisible="1"/>
                         </group>
                     </group>
                 </page>

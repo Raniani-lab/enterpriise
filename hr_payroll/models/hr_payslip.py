@@ -373,7 +373,7 @@ class HrPayslip(models.Model):
 
     def _get_contract_wage(self):
         self.ensure_one()
-        return self.contract_id.wage
+        return self.contract_id._get_contract_wage()
 
     def _get_paid_amount(self):
         self.ensure_one()

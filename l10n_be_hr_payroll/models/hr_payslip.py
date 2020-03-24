@@ -173,14 +173,8 @@ class Payslip(models.Model):
         unpaid_hours = sum(v for k, v in hours.items() if k in unpaid_work_entry_types.ids)
 
         presence_prorata = paid_hours / (paid_hours + unpaid_hours) if paid_hours or unpaid_hours else 0
-        basic = self.contract_id.wage_with_holidays
+        basic = self.contract_id._get_contract_wage()
         return basic * n_months / 12 * presence_prorata
-
-    def _get_contract_wage(self):
-        self.ensure_one()
-        if self.struct_id.country_id == self.env.ref('base.be'):
-            return self.contract_id.wage_with_holidays
-        return super()._get_contract_wage()
 
     def _get_paid_amount(self):
         self.ensure_one()
@@ -190,7 +184,7 @@ class Payslip(models.Model):
                 return self._get_paid_amount_13th_month()
             if self.worked_days_line_ids:
                 ratio = self._get_paid_unpaid_ratio()
-                return self.contract_id.wage_with_holidays * ratio
+                return self.contract_id._get_contract_wage() * ratio
         return super()._get_paid_amount()
 
     def _get_paid_unpaid_ratio(self):
@@ -334,7 +328,7 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
 
 def compute_ip(payslip, categories, worked_days, inputs):
     contract = payslip.contract_id
-    basic_ip = contract.wage_with_holidays * contract.ip_wage_rate / 100.0
+    basic_ip = contract._get_contract_wage() * contract.ip_wage_rate / 100.0
     ratio = payslip.dict._get_paid_unpaid_ratio()
     return basic_ip * ratio
 

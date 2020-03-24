@@ -39,7 +39,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
     @api.depends('work_time')
     def _compute_wage(self):
         for wizard in self:
-            wizard.wage = wizard.contract_id.wage_with_holidays * float(wizard.work_time)
+            wizard.wage = wizard.contract_id._get_contract_wage() * float(wizard.work_time)
 
     def validate_credit_time(self):
         if self.date_start > self.date_end:
@@ -53,7 +53,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
             'name': _('%s - Credit Time %s') % (self.contract_id.name, dict(WORK_RATE)[self.work_time]),
             'date_start': self.date_start,
             'date_end': self.date_end,
-            'wage_with_holidays': self.wage,
+            self.contract_id._get_contract_wage_field(): self.wage,
             'resource_calendar_id': self.resource_calendar_id.id,
             'standard_calendar_id': self.contract_id.resource_calendar_id.id,
             'time_credit' : True,
@@ -111,7 +111,7 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
         full_time_contract = self.contract_id.copy({
             'date_start': self.date_start,
             'date_end': self.date_end,
-            'wage_with_holidays': self.wage,
+            self.contract_id._get_contract_wage_field(): self.wage,
             'resource_calendar_id': self.resource_calendar_id.id,
             'time_credit' : False,
             'state': 'draft',

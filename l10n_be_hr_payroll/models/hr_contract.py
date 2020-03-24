@@ -58,11 +58,6 @@ class HrContract(models.Model):
     meal_voucher_amount = fields.Monetary(string="Meal Vouchers",
         tracking=True,
         help="Amount the employee receives in the form of meal vouchers per worked day.")
-    # YTI FIXME: holidays and wage_with_holidays are defined twice...
-    holidays = fields.Float(string='Paid Time Off',
-        help="Number of days of paid leaves the employee gets per year.")
-    wage_with_holidays = fields.Monetary(compute='_compute_wage_with_holidays', inverse='_inverse_wage_with_holidays',
-        tracking=True, string="Wage update with holidays retenues")
     eco_checks = fields.Monetary("Eco Vouchers",
         help="Yearly amount the employee receives in the form of eco vouchers.")
     ip = fields.Boolean(default=False, tracking=True)
@@ -92,25 +87,6 @@ class HrContract(models.Model):
     def _compute_ip_value(self):
         for contract in self:
             contract.ip_value = contract.ip_wage_rate if contract.ip else 0
-
-    @api.depends('holidays', 'wage', 'final_yearly_costs')
-    def _compute_wage_with_holidays(self):
-        for contract in self:
-            if contract.holidays:
-                yearly_cost = contract.final_yearly_costs * (1.0 - contract.holidays / 231.0)
-                contract.wage_with_holidays = contract._get_gross_from_employer_costs(yearly_cost)
-            else:
-                contract.wage_with_holidays = contract.wage
-
-    def _inverse_wage_with_holidays(self):
-        for contract in self:
-            if contract.holidays:
-                yearly_cost = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.wage_with_holidays
-                # YTI TODO: The number of working days per year could be a setting on the company
-                contract.final_yearly_costs = yearly_cost / (1.0 - contract.holidays / 231.0)
-                contract.wage = contract._get_gross_from_employer_costs(contract.final_yearly_costs)
-            else:
-                contract.wage = contract.wage_with_holidays
 
     @api.depends('commission_on_target')
     def _compute_commission_cost(self):

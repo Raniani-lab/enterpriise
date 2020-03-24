@@ -27,4 +27,6 @@
     'auto_install': True,
     'application': True,
     'license': 'OEEL-1',
+    'pre_init_hook': 'pre_init_hook',
+    'uninstall_hook': 'uninstall_hook',
 }

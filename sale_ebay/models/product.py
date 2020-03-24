@@ -143,7 +143,7 @@ class ProductTemplate(models.Model):
             }
         }
         if self.ebay_description and self.ebay_template_id:
-            description = self.ebay_template_id._render_template(self.ebay_template_id.body_html, 'product.template', self.id)
+            description = self.ebay_template_id._render_field('body_html', self.ids)[self.id]
             item['Item']['Description'] = '<![CDATA['+description+']]>'
         if self.ebay_subtitle:
             item['Item']['SubTitle'] = self._ebay_encode(self.ebay_subtitle)

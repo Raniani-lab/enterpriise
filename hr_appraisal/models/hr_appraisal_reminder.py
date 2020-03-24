@@ -58,7 +58,7 @@ class HrAppraisalReminder(models.Model):
 
         template_data = {
             'record': recipient,
-            'subject': self.env['mail.template']._render_template(reminder.subject, 'hr.employee', employee.id, post_process=True),
+            'subject': self.env['mail.render.mixin']._render_template(reminder.subject, 'hr.employee', employee.ids, post_process=True)[employee.id],
             'body': reminder.body_html if reminder.body_html != '<p><br></p>' else False,
         }
 

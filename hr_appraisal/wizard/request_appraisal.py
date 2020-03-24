@@ -63,8 +63,7 @@ class RequestAppraisal(models.TransientModel):
         for employee in employees - employees_with_user:
             if employee.work_email:
                 name_email = tools.formataddr((employee.name, employee.work_email))
-                partner_id = self.env['res.partner'].sudo().find_or_create(name_email)
-                partners |= self.env['res.partner'].browse(partner_id)
+                partners |= self.env['res.partner'].sudo().find_or_create(name_email)
         return partners
 
     subject = fields.Char('Subject')
@@ -91,8 +90,8 @@ class RequestAppraisal(models.TransientModel):
                     'author_name': wizard.author_id.name,
                     'url': "${ctx['url']}",
                 }
-                wizard.subject = self.env['mail.template'].with_context(ctx)._render_template(wizard.template_id.subject, 'res.users', self.env.user.id, post_process=True)
-                wizard.body = self.env['mail.template'].with_context(ctx)._render_template(wizard.template_id.body_html, 'res.users', self.env.user.id, post_process=False)
+                wizard.subject = self.env['mail.render.mixin'].with_context(ctx)._render_template(wizard.template_id.subject, 'res.users', self.env.user.ids, post_process=True)[self.env.user.id]
+                wizard.body = self.env['mail.render.mixin'].with_context(ctx)._render_template(wizard.template_id.body_html, 'res.users', self.env.user.ids, post_process=False)[self.env.user.id]
             elif not wizard.body:
                 wizard.body = ''
 
@@ -112,7 +111,7 @@ class RequestAppraisal(models.TransientModel):
         appraisal.colleagues_ids |= self.recipient_ids.user_ids.employee_ids - involved_employees
 
         ctx = {'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id)}
-        body = self.env['mail.template'].with_context(ctx)._render_template(self.body, 'hr.appraisal', appraisal.id, post_process=True)
+        body = self.env['mail.render.mixin'].with_context(ctx)._render_template(self.body, 'hr.appraisal', appraisal.ids, post_process=True)[appraisal.id]
 
         for user in self.recipient_ids.user_ids or self.env.user:
             appraisal.with_context(mail_activity_quick_update=True).activity_schedule(

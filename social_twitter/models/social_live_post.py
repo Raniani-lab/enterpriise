@@ -71,7 +71,7 @@ class SocialLivePostTwitter(models.Model):
             post = live_post.post_id
 
             params = {
-                'status': self.env['link.tracker'].sudo()._convert_links_text(post.message, live_post._get_utm_values()),
+                'status': self.env['mail.render.mixin'].sudo()._shorten_links_text(post.message, live_post._get_utm_values()),
             }
 
             images_attachments_ids = account._format_attachments_to_images_twitter(post.image_ids)

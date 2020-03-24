@@ -62,7 +62,7 @@ class SocialLivePostFacebook(models.Model):
 
         post = self.post_id
 
-        message_with_shortened_urls = self.env['link.tracker'].sudo()._convert_links_text(post.message, self._get_utm_values())
+        message_with_shortened_urls = self.env['mail.render.mixin'].sudo()._shorten_links_text(post.message, self._get_utm_values())
 
         params = {
             'message': message_with_shortened_urls,

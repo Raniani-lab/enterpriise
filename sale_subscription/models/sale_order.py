@@ -163,14 +163,14 @@ class SaleOrderLine(models.Model):
 
     subscription_id = fields.Many2one('sale.subscription', 'Subscription', copy=False, check_company=True)
 
-    def _prepare_invoice_line(self):
+    def _prepare_invoice_line(self, **optional_values):
         """
         Override to add subscription-specific behaviours.
 
         Display the invoicing period in the invoice line description, link the invoice line to the
         correct subscription and to the subscription's analytic account if present, add revenue dates.
         """
-        res = super(SaleOrderLine, self)._prepare_invoice_line()  # <-- ensure_one()
+        res = super(SaleOrderLine, self)._prepare_invoice_line(**optional_values)  # <-- ensure_one()
         if self.subscription_id:
             res.update(subscription_id=self.subscription_id.id)
             periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}

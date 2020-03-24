@@ -70,8 +70,8 @@ class SaleOrderLine(models.Model):
         self.ensure_one()
         return self.price_taxcloud
 
-    def _prepare_invoice_line(self):
-        res = super(SaleOrderLine, self)._prepare_invoice_line()
+    def _prepare_invoice_line(self, **optional_values):
+        res = super(SaleOrderLine, self)._prepare_invoice_line(**optional_values)
         res.update({'coupon_program_id': self.coupon_program_id.id})
         return res
 

@@ -6,9 +6,19 @@ from odoo import fields, models
 class RentalSchedule(models.Model):
     _inherit = "sale.rental.schedule"
 
+    is_available = fields.Boolean(compute='_compute_is_available', readonly=True)
+
     lot_id = fields.Many2one('stock.production.lot', 'Serial Number', readonly=True)
     warehouse_id = fields.Many2one('stock.warehouse', 'Warehouse', readonly=True)
     # TODO color depending on report_line_status
+
+    def _compute_is_available(self):
+        for rental in self:
+            if rental.rental_status not in ['return', 'returned', 'cancel'] and rental.return_date > fields.Datetime.now() and rental.product_id.type == 'product':
+                sol = rental.order_line_id
+                rental.is_available = sol.virtual_available_at_date - sol.product_uom_qty >= 0
+            else:
+                rental.is_available = True
 
     def _get_product_name(self):
         return """COALESCE(lot_info.name, t.name) as product_name"""

@@ -38,6 +38,10 @@
     cursor: pointer;
 }
 
+.o_sign_sign_item.o_readonly_mode {
+    border:none;
+}
+
 .o_sign_sign_item .o_placeholder {
     font-size: 12pt !important;
     vertical-align: middle;
@@ -407,20 +411,12 @@ textarea.o_sign_sign_item {
 }
 
 .o_sign_field_type_toolbar {
-    width: 100%;
-    position: fixed;
-    z-index: 105;
-
-    background-color: #F8F8F8;
-    border-bottom: 1px solid #E7E7E7;
-    text-align: center;
-
-    opacity: 0.0;
-    transition: opacity ease 500ms;
-}
-
-#viewerContainer:hover .o_sign_field_type_toolbar { /* PDFJS Viewer */
-    opacity: 1.0;
+    width: 14rem;
+    z-index: 1030;
+    height: 100%;
+    position: absolute;
+    background-color: #404040;
+    background-image: url(../../img/texture.png);
 }
 
 .o_sign_field_type_button {
@@ -429,13 +425,13 @@ textarea.o_sign_sign_item {
     box-sizing: border-box;
 
     border: none;
-    border-right: 1px solid #E7E7E7;
 
     background-color: #875A7B;
     color: white;
 
     height: 30px;
     padding: 0px 20px 0px 20px;
+    margin: 0.5rem;
 }
 
 .o_sign_close_button {
@@ -462,4 +458,34 @@ textarea.o_sign_sign_item {
 
 .toolbarButton.rotateCw::before {
     content: url(../../img/secondaryToolbarButton-rotateCw.png);
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.1), screen and (min-resolution: 1.1dppx) {
+    .toolbarButton.rotateCw::before {
+        content: url(../../img/secondaryToolbarButton-rotateCw@2x.png);
+    }
+}
+
+.o_sign_field_type_toolbar_title {
+    height: 32px;
+    color: white;
+    font-size: 12px;
+    background-color: #474747;
+    background-image: url(../../img/texture.png), -webkit-gradient(linear, left top, left bottom, from(hsla(0,0%,32%,.99)), to(hsla(0,0%,27%,.95)));
+    box-shadow: inset 0 1px 1px hsla(0,0%,0%,.15), inset 0 -1px 0 hsla(0,0%,100%,.05), 0 1px 0 hsla(0,0%,0%,.15), 0 1px 1px hsla(0,0%,0%,.1);
+    padding: 1rem;
+}
+
+#outerContainer.o_sign_field_type_toolbar_visible {
+    margin-left: 14rem;
+    width: auto;
+}
+
+#outerContainer.o_sign_field_type_toolbar_visible #thumbnailView {
+    width: auto;
+}
+
+.o_tooltip > .o_tooltip_content {
+    font-size: 12px !important;
+    box-sizing: border-box;
 }

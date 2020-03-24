@@ -85,6 +85,7 @@ class SignRequest(models.Model):
     completion_date = fields.Date(string="Completion Date", compute="_compute_count", compute_sudo=True)
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
+    template_tags = fields.Many2many('sign.template.tag', string='Template Tags', related='template_id.tag_ids')
 
     @api.depends('request_item_ids.state')
     def _compute_count(self):
@@ -110,14 +111,13 @@ class SignRequest(models.Model):
 
     @api.depends('request_item_ids.state', 'request_item_ids.partner_id.name')
     def _compute_request_item_infos(self):
-        for rec in self:
-            infos = []
-            for item in rec.request_item_ids:
-                infos.append({
-                    'partner_name': item.partner_id.sudo().name if item.partner_id else 'Public User',
-                    'state': item.state,
-                })
-            rec.request_item_infos = infos
+        for request in self:
+            request.request_item_infos = [{
+                'id': item.id,
+                'partner_name': item.partner_id.name or _('Public User'),
+                'state': item.state,
+                'signing_date': item.signing_date or ''
+            } for item in request.request_item_ids]
 
     def _check_after_compute(self):
         for rec in self:
@@ -139,7 +139,7 @@ class SignRequest(models.Model):
         self.ensure_one()
         request_item = self.request_item_ids.filtered(lambda r: r.partner_id and r.partner_id.id == self.env.user.partner_id.id)[:1]
         return {
-            'name': "Document \"%(name)s\"" % {'name': self.reference},
+            'name': self.reference,
             'type': 'ir.actions.client',
             'tag': 'sign.Document',
             'context': {
@@ -191,7 +191,7 @@ class SignRequest(models.Model):
 
     def toggle_favorited(self):
         self.ensure_one()
-        self.write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})
+        self.write({'favorited_ids': [(3 if self.env.user in self.favorited_ids else 4, self.env.user.id)]})
 
     def action_resend(self):
         self.action_draft()
@@ -549,7 +549,7 @@ class SignRequest(models.Model):
     @api.model
     def initialize_new(self, id, signers, followers, reference, subject, message, send=True, without_mail=False):
         sign_users = self.env['res.users'].search([('partner_id', 'in', [signer['partner_id'] for signer in signers])]).filtered(lambda u: u.has_group('sign.group_sign_user'))
-        sign_request = self.create({'template_id': id, 'reference': reference, 'favorited_ids': [(4, item) for item in (sign_users | self.env.user).ids]})
+        sign_request = self.create({'template_id': id, 'reference': reference})
         sign_request.message_subscribe(partner_ids=followers)
         sign_request.activity_update(sign_users)
         sign_request.set_signers(signers)
@@ -697,29 +697,6 @@ class SignRequestItem(models.Model):
                         user.sign_signature = self.signature
                 if item_value.sign_item_id.type_id.item_type == 'initial' and user:
                     user.sign_initials = signature[itemId][signature[itemId].find(',')+1:]
-
-        return True
-
-    def save_sign(self, signature):
-        self.ensure_one()
-        if isinstance(signature, dict) and self.state == 'sent':
-            SignItemValue = self.env['sign.request.item.value']
-            request = self.sign_request_id
-
-            signerItems = request.template_id.sign_item_ids.filtered(lambda r: not r.responsible_id or r.responsible_id.id == self.role_id.id)
-            autorizedIDs = set(signerItems.mapped('id'))
-
-            itemIDs = {int(k) for k in signature}
-            if not (itemIDs <= autorizedIDs):  # Security check
-                return False
-
-            for itemId in signature:
-                item_value = SignItemValue.search([('sign_item_id', '=', int(itemId)), ('sign_request_id', '=', request.id)])
-                if not item_value:
-                    item_value = SignItemValue.create({'sign_item_id': int(itemId), 'sign_request_id': request.id,
-                                                       'value': signature[itemId], 'sign_request_item_id': self.id})
-                else:
-                    item_value.write({'value': signature[itemId]})
 
         return True
 

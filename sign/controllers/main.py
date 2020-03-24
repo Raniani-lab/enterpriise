@@ -127,7 +127,7 @@ class Sign(http.Controller):
             pdfhttpheaders = [
                 ('Content-Type', 'application/pdf'),
                 ('Content-Length', len(pdf_content)),
-                ('Content-Disposition', 'attachment; filename=' + "Activity Logs.pdf;")
+                ('Content-Disposition', 'attachment; filename=' + "Certificate.pdf;")
             ]
             return request.make_response(pdf_content, headers=pdfhttpheaders)
         elif download_type == "origin":
@@ -297,21 +297,6 @@ class Sign(http.Controller):
         request_item.action_completed()
         return True
 
-    @http.route(['/sign/save/<int:id>/<token>'], type='json', auth='public')
-    def sign_save(self, id, token, sms_token=False, signature=None):
-        request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
-        if not request_item:
-            return False
-        if not request_item.save_sign(signature):
-            return False
-        Log = request.env['sign.log'].sudo()
-        vals = Log._prepare_vals_from_item(request_item)
-        vals['action'] = 'save'
-        vals['token'] = token
-        vals = Log._update_vals_with_http_request(vals)
-        Log.create(vals)
-        return True
-
     @http.route(['/sign/password/<int:sign_request_id>'], type='json', auth='public')
     def check_password(self, sign_request_id, password=None):
         request_item = http.request.env['sign.request.item'].sudo().search([
@@ -348,3 +333,8 @@ class Sign(http.Controller):
     def save_location(self, id, token, latitude=0, longitude=0):
         sign_request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', id), ('access_token', '=', token)], limit=1)
         sign_request_item.write({'latitude': latitude, 'longitude': longitude})
+
+    @http.route("/sign/render_assets_pdf_iframe", type="json", auth="public")
+    def render_assets_pdf_iframe(self, **kw):
+        context = {'debug': kw.get('debug')} if 'debug' in kw else {}
+        return request.env['ir.ui.view'].sudo().render_template('sign.compiled_assets_pdf_iframe', context)

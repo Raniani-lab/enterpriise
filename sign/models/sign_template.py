@@ -179,6 +179,7 @@ class SignTemplateTag(models.Model):
 
     _name = "sign.template.tag"
     _description = "Sign Template Tag"
+    _order = "name"
 
     name = fields.Char('Tag Name', required=True, translate=True)
     color = fields.Integer('Color Index')

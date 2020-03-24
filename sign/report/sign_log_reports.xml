@@ -10,11 +10,13 @@
                 <t t-set="view_logs" t-value="o.sudo().sign_log_ids.filtered(lambda l: l.action == 'open')"/>
                 <t t-set="change_logs" t-value="o.sudo().sign_log_ids - view_logs"/>
                 <t t-set="creation_log" t-value="o.sudo().sign_log_ids.filtered(lambda l: l.action == 'create')"/>
-                <t t-call="web.external_layout"><br/>
+                <t t-call="web.external_layout">
                     <h2 class="mt16">
-                        Completion History<br/>
-                        <strong t-field="o.reference"/>
+                        Certificate of Completion<br/>
                     </h2>
+                    <h4>
+                        <strong t-field="o.reference"/>
+                    </h4>
                     <div class="text-muted small">Printed on <t t-esc="print_date"/> UTC</div>
                     <h5 class="mt16">Document Details</h5>
 

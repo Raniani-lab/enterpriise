@@ -1,6 +1,7 @@
 .o_web_client {
     .o_content {
         .favorite_sign_button {
+            position: absolute;
             color: $o-brand-secondary;
             &:hover {
                 color: orange;
@@ -13,21 +14,9 @@
                 }
             }
         }
-
-        .o_signers > span {
-            &.o_sign_waiting {
-                color: theme-color('danger');
-            }
+       .o_signers > div {
             &.o_sign_completed {
                 color: theme-color('success');
-            }
-
-            &:before {
-                content: ', ';
-                color: $o-main-text-color;
-            }
-            &:first-child:before {
-                content: '';
             }
         }
         .o_form_view {
@@ -128,7 +117,6 @@
             width: auto;
             display: inline-block;
             border: 1px dashed white;
-            margin: 6px;
             &:focus {
                 border: 1px solid silver;
             }
@@ -139,7 +127,6 @@
         }
 
         .alert.o_sign_template_saved_info {
-            margin: 0;
             padding: 5px;
             opacity: 0;
         }
@@ -185,5 +172,47 @@
     .o_popover_offset {
         top: 159px !important;
         left: 4px !important;
+    }
+}
+
+.o_kanban_view {
+    .o_kanban_record {
+        .o_kanban_record_body {
+            .o_signers {
+                max-height: 6.3rem;
+                overflow: auto;
+            }
+        }
+
+        &.o_sign_sticky_bottom {
+            .o_kanban_record_body {
+                margin-bottom: 2rem;
+            }
+
+            .o_kanban_record_bottom {
+                position: absolute;
+                bottom: 0.5rem;
+                width: 100%;
+                @extend .pr-4;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .o_kanban_view {
+        .o_kanban_record {
+            &.o_sign_sticky_bottom {
+                .o_kanban_record_body {
+                    margin-bottom: 3rem;
+                }
+                .o_kanban_record_bottom {
+                    position: absolute;
+                    bottom: 0.5rem;
+                    width: 100%;
+                    padding-right: 32px !important;
+                }
+            }
+        }
     }
 }

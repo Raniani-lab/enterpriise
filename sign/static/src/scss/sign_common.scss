@@ -10,11 +10,29 @@
 .o_sign_request_reference_title {
     text-align: left;
 }
-.o_sign_signer_status.clearfix {
-    text-align: right;
+.o_sign_signer_status_wrapper{
+    max-height: 76px;
+    overflow: auto;
+}
+.o_sign_signer_status {
+    line-height: 32px;
+    div {
+        line-height: $o-line-height-base;
+    }
+    &.clearfix {
+        text-align: right;
+    }
+    img {
+        height: 32px;
+    }
 }
 .o_sign_request_from {
     text-align: left;
+}
+.o_sign_request_signer {
+    line-height: 38px;
+    font-size: 1.15rem;
+    margin: 0;
 }
 .o_sign_breadcrumb {
     font-size: 1.25rem !important;
@@ -44,7 +62,6 @@
     > .container-fluid {
         flex: 0 0 auto;
         margin: 0;
-        padding: 0 $o-horizontal-padding 10px;
     }
 
     > .container {
@@ -66,10 +83,6 @@
         > .o_sign_sign_document_button {
             margin: 0 $o-horizontal-padding;
         }
-    }
-
-    .o_sign_signer_status > img {
-        height: 32px;
     }
 }
 

@@ -12,8 +12,6 @@ odoo.define('sign.views_custo', function(require) {
     var _t = core._t;
 
     KanbanController.include(_make_custo("button.o-kanban-button-new"));
-    ListController.include(_make_custo(".o_list_button_add"));
-
     KanbanColumn.include({
         /**
          * @override
@@ -25,7 +23,6 @@ odoo.define('sign.views_custo', function(require) {
             }
         },
     });
-
     KanbanRecord.include({
         //--------------------------------------------------------------------------
         // Private
@@ -38,7 +35,7 @@ odoo.define('sign.views_custo', function(require) {
          */
         _openRecord: function () {
             var self = this;
-            if (this.modelName === 'sign.template' && this.$el.parents('.o_kanban_dashboard').length) {
+            if (this.modelName === 'sign.template' && this.$el.parents('.o_sign_template_kanban').length) {
                 // don't allow edit on mobile
                 if (config.device.isMobile) {
                     return;
@@ -72,6 +69,8 @@ odoo.define('sign.views_custo', function(require) {
         }
     });
 
+    ListController.include(_make_custo(".o_list_button_add"));
+
     function _make_custo(selector_button) {
         return {
             renderButtons: function () {
@@ -92,9 +91,9 @@ odoo.define('sign.views_custo', function(require) {
 
             _sign_upload_file_button: function () {
                 var self = this;
-                this.$buttons.find(selector_button).text(_t("Send a Request")).off("click").on("click", function (e) {
+                this.$buttons.find(selector_button).text(_t('UPLOAD A PDF TO SIGN')).off("click").on("click", function (e) {
                     e.preventDefault();
-                    e.stopImmediatePropagation();
+                    e.stopPropagation();
                     _sign_upload_file.call(self, true, false, 'sign_send_request');
                 });
                 // don't allow template creation on mobile devices
@@ -103,29 +102,21 @@ odoo.define('sign.views_custo', function(require) {
                     return;
                 }
                 this.$buttons.find(selector_button).after(
-                    $('<button class="btn btn-primary o-kanban-button-new o-direct ml8" type="button">'+ _t('Sign Now') + '</button>')
-                    .off('click')
-                    .on('click', function (e) {
-                        e.preventDefault();
-                        e.stopImmediatePropagation();
-                        _sign_upload_file.call(self, true, true, 'sign_sign_now');
-                    }));
-                    this.$buttons.find(selector_button+'.o-direct').after(
                     $('<button class="btn btn-link o-kanban-button-new ml8" type="button">'+ _t('UPLOAD A PDF TEMPLATE') +'</button>')
                     .off('click')
                     .on('click', function (e) {
                         e.preventDefault();
-                        e.stopImmediatePropagation();
+                        e.stopPropagation();
                         _sign_upload_file.call(self, false, false, 'sign_template_edit');
                 }));
             },
 
             _sign_create_request_button: function () {
                 var self = this;
-                this.$buttons.find(selector_button).text(_t("Request a Signature")).off("click").on("click", function (e) {
+                this.$buttons.find(selector_button).text(_t('UPLOAD A PDF TO SIGN')).off("click").on("click", function (e) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
-                    _sign_create_request.call(self);
+                    _sign_upload_file.call(self, true, false, 'sign_send_request');
                 });
             },
         };
@@ -175,9 +166,6 @@ odoo.define('sign.views_custo', function(require) {
         $upload_input.click();
     }
 
-    function _sign_create_request() {
-        this.do_action("sign.sign_template_action");
-    }
 });
 
 odoo.define('sign.template', function(require) {
@@ -192,6 +180,8 @@ odoo.define('sign.template', function(require) {
     var Widget = require('web.Widget');
     var PDFIframe = require('sign.PDFIframe');
     var sign_utils = require('sign.utils');
+    var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
+    var FormFieldMany2ManyTags = require('web.relational_fields').FormFieldMany2ManyTags;
 
     var _t = core._t;
 
@@ -422,9 +412,10 @@ odoo.define('sign.template', function(require) {
 
                         var typesArr = _.toArray(self.types);
                         var $fieldTypeButtons = $(core.qweb.render('sign.type_buttons', {sign_item_types: typesArr}));
-                        self.$fieldTypeToolbar = $('<div/>').addClass('o_sign_field_type_toolbar');
-                        self.$fieldTypeToolbar.prependTo(self.$('#viewerContainer'));
-                        $fieldTypeButtons.appendTo(self.$fieldTypeToolbar).draggable({
+                        self.$fieldTypeToolbar = $('<div/>').addClass('o_sign_field_type_toolbar d-flex flex-column');
+                        self.$fieldTypeToolbar.prependTo(self.$('body'));
+                        self.$('#outerContainer').addClass('o_sign_field_type_toolbar_visible');
+                        $fieldTypeButtons.appendTo(self.$fieldTypeToolbar).filter('button').draggable({
                             cancel: false,
                             helper: function(e) {
                                 var type = self.types[$(this).data('item-type-id')];
@@ -665,7 +656,7 @@ odoo.define('sign.template', function(require) {
         },
     });
 
-    var Template = AbstractAction.extend({
+    var Template = AbstractAction.extend(StandaloneFieldManagerMixin, {
         hasControlPanel: true,
         events: {
             'click .fa-pencil': function(e) {
@@ -673,7 +664,7 @@ odoo.define('sign.template', function(require) {
             },
 
             'input .o_sign_template_name_input': function(e) {
-                this.$templateNameInput.attr('size', this.$templateNameInput.val().length);
+                this.$templateNameInput.attr('size', this.$templateNameInput.val().length + 1);
             },
 
             'change .o_sign_template_name_input': function(e) {
@@ -693,10 +684,47 @@ odoo.define('sign.template', function(require) {
                 this.saveTemplate();
             },
 
-            'click .o_sign_duplicate_sign_template': function(e) {
+            'click .o_sign_template_send' : function (e) {
+                this.do_action('sign.action_sign_send_request', {
+                    additional_context: {
+                        'active_id': this.templateID,
+                        'sign_directly_without_mail': false,
+                    },
+                });
+            },
+
+            'click .o_sign_template_sign_now' : function (e) {
+                this.do_action('sign.action_sign_send_request', {
+                    additional_context: {
+                        'active_id': this.templateID,
+                        'sign_directly_without_mail': true,
+                    },
+                });
+            },
+
+            'click .o_sign_template_share' : function (e) {
+                this.do_action('sign.action_sign_template_share', {
+                    additional_context: {
+                        active_id: this.templateID,
+                    },
+                });
+            },
+
+            'click .o_sign_template_save' : function (e) {
+                return this.do_action('sign.sign_template_action', {
+                    clear_breadcrumbs: true
+                });
+            },
+
+            'click .o_sign_template_duplicate' : function (e) {
                 this.saveTemplate(true);
             },
+
         },
+        custom_events: Object.assign({}, StandaloneFieldManagerMixin.custom_events, {
+            field_changed: '_onFieldChanged',
+        }),
+
 
         go_back_to_kanban: function() {
             return this.do_action("sign.sign_template_action", {
@@ -706,69 +734,20 @@ odoo.define('sign.template', function(require) {
 
         init: function(parent, options) {
             this._super.apply(this, arguments);
+            StandaloneFieldManagerMixin.init.call(this);
 
             if (options.context.id === undefined) {
                 return;
             }
 
             this.templateID = options.context.id;
+            this.actionType = options.context.sign_edit_call ? options.context.sign_edit_call : '';
             this.rolesToChoose = {};
 
-            var self = this;
+        },
 
-            var $sendButton = $('<button/>', {html: _t("Send"), type: "button"})
-                .addClass('btn btn-primary')
-                .on('click', function () {
-                    self.do_action('sign.action_sign_send_request', {
-                        additional_context: {
-                            'active_id': self.templateID,
-                            'sign_directly_without_mail': false,
-                        },
-                    });
-                });
-            var $signNowButton = $('<button/>', {html: _t("Sign Now"), type: "button"})
-                .addClass('btn btn-primary')
-                .on('click', function () {
-                    self.do_action('sign.action_sign_send_request', {
-                        additional_context: {
-                            'active_id': self.templateID,
-                            'sign_directly_without_mail': true,
-                        },
-                    });
-                });
-            var $shareButton = $('<button/>', {html: _t("Share"), type: "button"})
-                .addClass('btn btn-secondary')
-                .on('click', function() {
-                    self.do_action('sign.action_sign_template_share', {
-                        additional_context: {
-                            active_id: self.templateID,
-                        },
-                    });
-                });
-            var $closeButton = $('<button/>', {html: _t("Close"), type: "button"})
-                .addClass('btn btn-secondary')
-                .on('click', function () {
-                    return self.do_action('sign.sign_template_action', {
-                        clear_breadcrumbs: true
-                       });
-                });
-
-            // If context: sign_template_edit: primary button: Close
-            // if context : sign_send_request: primary button: Send a request
-            // if context : sign_sign_now: primary button: Sign Now (send a request renamed)
-
-            if (! options.context.sign_edit_call || options.context.sign_edit_call === 'sign_template_edit') {
-                $sendButton.addClass('mr-2');
-                this.cp_content = {$buttons: $sendButton.add($signNowButton).add($shareButton).add($closeButton)};
-            } else if (options.context.sign_edit_call === 'sign_sign_now') {
-                $signNowButton.switchClass('btn-secondary', 'btn-primary');
-                $signNowButton.addClass('mr-2');
-                this.cp_content = {$buttons: $signNowButton.add($sendButton).add($shareButton).add($closeButton)};
-            } else if (options.context.sign_edit_call === 'sign_send_request') {
-                $sendButton.switchClass('btn-secondary', 'btn-primary');
-                $sendButton.addClass('mr-2');
-                this.cp_content = {$buttons: $sendButton.add($signNowButton).add($shareButton).add($closeButton)};
-            }
+        renderButtons: function () {
+            this.$buttons = $(core.qweb.render("sign.template_cp_buttons", {'widget':this, 'action_type':this.actionType}));
         },
 
         willStart: function() {
@@ -776,6 +755,103 @@ odoo.define('sign.template', function(require) {
                 return this._super.apply(this, arguments);
             }
             return Promise.all([this._super(), this.perform_rpc()]);
+        },
+
+        createTemplateTagsField: function () {
+            var self = this;
+            var params = {
+                modelName: 'sign.template',
+                res_id: self.templateID,
+                fields : {
+                    id: {
+                        type: 'integer',
+                    },
+                    name: {
+                        type: 'char',
+                    },
+                    tag_ids: {
+                        relation: 'sign.template.tag',
+                        type: 'many2many',
+                        relatedFields: {
+                                id : {
+                                    type: 'integer',
+                                },
+                                display_name : {
+                                    type: 'char',
+                                },
+                                color : {
+                                    type: 'integer',
+                                }
+                        },
+                        fields: {
+                            id: {
+                                type: 'integer',
+                            },
+                            display_name: {
+                                type: 'char',
+                            },
+                            color: {
+                                type: 'integer',
+                            }
+                        },
+                    }
+                },
+                fieldsInfo : {
+                    default : {
+                        id : {
+                            type: 'integer',
+                        },
+                        name : {
+                            type: 'char',
+                        },
+                        tag_ids : {
+                            relatedFields: {
+                                    id : {
+                                        type: 'integer',
+                                    },
+                                    display_name : {
+                                        type: 'char',
+                                    },
+                                    color : {
+                                        type: 'integer',
+                                    }
+                            },
+                            fieldsInfo : {
+                                default : {
+                                    id : {
+                                        type: 'integer',
+                                    },
+                                    display_name : {
+                                        type: 'char',
+                                    },
+                                    color : {
+                                        type: 'integer',
+                                    }
+                                }
+                            },
+                            viewType: 'default'
+                        }
+                    },
+                },
+            };
+            return this.model.load(params).then(function (recordId) {
+                self.handleRecordId = recordId;
+                self.record = self.model.get(self.handleRecordId);
+                self.tag_idsMany2Many = new FormFieldMany2ManyTags(self, 'tag_ids', self.record, {mode: 'edit', create: true, attrs: {options:{color_field: 'color'}}});
+                self._registerWidget(self.handleRecordId, 'tag_ids', self.tag_idsMany2Many);
+                self.tag_idsMany2Many.appendTo(self.$('.o_sign_template_tags'));
+            });
+        },
+
+        _onFieldChanged: function (event) {
+            var self = this;
+            var $majInfo = this.$('.o_sign_template_saved_info').first();
+            StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
+            this.model.save(this.handleRecordId, {reload:true}).then(function (fieldNames) {
+                self.record = self.model.get(self.handleRecordId);
+                self.tag_idsMany2Many.reset(self.record);
+                $majInfo.stop().css('opacity', 1).animate({'opacity': 0}, 1500);
+            });
         },
 
         perform_rpc: function() {
@@ -858,7 +934,13 @@ odoo.define('sign.template', function(require) {
                 return this.go_back_to_kanban();
             }
             return this._super().then(function () {
+                self.renderButtons();
+                var status = {
+                    cp_content: {$buttons: self.$buttons},
+                };
+                self.updateControlPanel(status);
                 self.initialize_content();
+                self.createTemplateTagsField();
                 if(self.$('iframe').length) {
                     core.bus.on('DOM_updated', self, init_iframe);
                 }
@@ -903,8 +985,6 @@ odoo.define('sign.template', function(require) {
             this.$templateNameInput = this.$('.o_sign_template_name_input').first();
             this.$templateNameInput.trigger('input');
             this.initialTemplateName = this.$templateNameInput.val();
-
-            this.refresh_cp();
         },
 
         do_show: function() {
@@ -920,12 +1000,6 @@ odoo.define('sign.template', function(require) {
                 }
                 self.$('iframe').remove();
                 self.initialize_content();
-            });
-        },
-
-        refresh_cp: function() {
-            this.updateControlPanel({
-                cp_content: this.cp_content,
             });
         },
 
@@ -1029,10 +1103,7 @@ odoo.define('sign.DocumentBackend', function (require) {
             this.current_name = context.current_signor_name;
             this.token_list = context.token_list;
             this.name_list = context.name_list;
-
-            this.$downloadButton = $('<a/>', {html: _t("Download Document")}).addClass('btn btn-primary o_hidden');
-            this.$downloadLogButton = $('<a/>', {html: _t("Activity Logs")}).addClass('btn btn-secondary o_hidden');
-            this.cp_content = {$buttons: this.$downloadButton.add(this.$downloadLogButton)};
+            this.cp_content = {};
         },
 
         start: function () {
@@ -1044,16 +1115,38 @@ odoo.define('sign.DocumentBackend', function (require) {
                 route: '/sign/get_document/' + this.documentID + '/' + this.token,
                 params: {message: this.message}
             }).then(function(html) {
-                self.$('.o_content').append($(html.trim()));
+
+                var $html = $(html.trim());
+                var $signDocumentButton = $html.find('.o_sign_sign_document_button').detach();
+
+                self.$('.o_content').append($html);
                 self.$('.o_content').addClass('o_sign_document');
 
-                var $cols = self.$('.col-lg-4').toggleClass('col-lg-6 col-lg-4');
+                var $cols = self.$('.col-lg-4');
                 var $buttonsContainer = $cols.first().remove();
+                $cols.eq(1).toggleClass( 'col-lg-3 col-lg-4');
+                $cols.eq(2).toggleClass( 'col-lg-9 col-lg-4');
 
                 var url = $buttonsContainer.find('.o_sign_download_document_button').attr('href');
-                self.$downloadButton.attr('href', url).toggleClass('o_hidden', !url);
                 var logUrl = $buttonsContainer.find('.o_sign_download_log_button').attr('href');
-                self.$downloadLogButton.attr('href', logUrl).toggleClass('o_hidden', !logUrl);
+                self.$buttons = (self.cp_content && self.cp_content.$buttons && self.cp_content.$buttons.length) ? self.cp_content.$buttons : $('');
+                if (url) {
+                    self.$downloadButton = $('<a/>', {html: _t("Download Document")}).addClass('btn btn-primary mr-2');
+                    self.$downloadButton.attr('href', url);
+                    self.$buttons = self.$buttons.add(self.$downloadButton);
+                }
+                if (logUrl) {
+                    self.$downloadLogButton = $('<a/>', {html: _t("Certificate")}).addClass(url ? 'btn btn-secondary' : 'btn btn-primary');
+                    self.$downloadLogButton.attr('href', logUrl);
+                    self.$buttons = self.$buttons.add(self.$downloadLogButton);
+                }
+                if ($signDocumentButton)
+                    self.$buttons = $signDocumentButton.add(self.$buttons);
+
+                if (self.$buttons.length){
+                    self.cp_content = {$buttons: self.$buttons};
+                }
+
                 var init_page = function() {
                     if(self.$el.parents('html').length) {
                         self.refresh_cp();
@@ -1120,7 +1213,7 @@ odoo.define('sign.document_edition', function(require) {
             this.is_sent = (this.state === 'sent');
 
             if (action && action.context && action.context.sign_token) {
-                var $signButton = $('<button/>', {html: _t("Sign Document"), type: "button", 'class': 'btn btn-primary'});
+                var $signButton = $('<button/>', {html: _t("Sign Document"), type: "button", 'class': 'btn btn-primary mr-2'});
                 $signButton.on('click', function () {
                     self.do_action({
                         type: "ir.actions.client",
@@ -1132,7 +1225,9 @@ odoo.define('sign.document_edition', function(require) {
                         }),
                     });
                 });
-                this.cp_content.$buttons = $signButton.add(this.cp_content.$buttons);
+                if (this.cp_content) {
+                    this.cp_content.$buttons = $signButton.add(this.cp_content.$buttons);
+                }
             }
         },
 
@@ -1140,12 +1235,12 @@ odoo.define('sign.document_edition', function(require) {
             var self = this;
             return this._super.apply(this, arguments).then(function () {
                 if(self.is_author && self.is_sent) {
-                    self.$('.o_sign_signer_status').each(function(i, el) {
+                    self.$('.o_sign_signer_status').not('.o_sign_signer_signed').each(function(i, el) {
                         $(el).append($('<button/>', {
                             type: 'button',
                             title: _t("Resend the invitation"),
                             text: _t('Resend'),
-                            class: 'o_sign_resend_access_button btn btn-link ml8',
+                            class: 'o_sign_resend_access_button btn btn-link ml-2 mr-2',
                             style: 'vertical-align: baseline;',
                         }));
                     });

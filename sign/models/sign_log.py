@@ -48,8 +48,8 @@ class SignLog(models.Model):
     )
 
     request_state = fields.Selection([
-        ("sent", "Signatures in Progress"),
-        ("signed", "Fully Signed"),
+        ("sent", "Before Signature"),
+        ("signed", "After Signature"),
         ("canceled", "Canceled")
     ], required=True, string="State of the request on action log", groups="sign.group_sign_manager")
 

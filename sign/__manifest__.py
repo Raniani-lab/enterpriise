@@ -14,28 +14,21 @@ Let your customers follow the signature process easily.
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
-
+        'data/sign_data.xml',
         'views/sign_template_views_mobile.xml',
-
         'wizard/sign_send_request_views.xml',
         'wizard/sign_template_share_views.xml',
         'wizard/sign_request_send_copy_views.xml',
-
         'views/sign_request_templates.xml',
         'views/sign_template_templates.xml',
-
         'views/sign_request_views.xml',
         'views/sign_template_views.xml',
         'views/sign_log_views.xml',
-
         'views/sign_portal_templates.xml',
-
         'views/res_users_views.xml',
         'views/res_partner_views.xml',
-
+        'views/sign_pdf_iframe_templates.xml',
         'report/sign_log_reports.xml',
-
-        'data/sign_data.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'demo': [

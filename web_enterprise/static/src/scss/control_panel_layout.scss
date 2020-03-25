@@ -68,6 +68,10 @@
                     }
                     > .o_enable_searchview {
                         margin: 0;
+                        padding-left: 0;
+                        &, &:hover {
+                            color: $gray-600;
+                        }
                     }
                 }
             }

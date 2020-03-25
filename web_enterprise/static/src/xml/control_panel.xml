@@ -56,21 +56,22 @@
                     <li class="breadcrumb-item active" t-esc="props.title"/>
                 </ol>
                 <!-- Additional content: searchview (legacy) -->
-                <div class="o_cp_searchview" t-att-class="{ o_searchview_quick: state.showSearchBar }" role="search"
-                    t-ref="searchView"
-                    >
+                <div class="o_cp_searchview" t-att-class="{ o_searchview_quick: state.showSearchBar or !props.withBreadcrumbs }"
+                     role="search" t-ref="searchView"
+                >
                     <div t-if="props.withSearchBar" class="o_searchview" role="search" aria-autocomplete="list">
                         <t t-if="!state.showMobileSearch">
-                            <t t-if="state.showSearchBar">
+                            <button type="button" class="o_enable_searchview btn btn-link fa"
+                                t-if="props.withBreadcrumbs"
+                                t-att-class="state.showSearchBar ? 'fa-arrow-left' : 'fa-search'"
+                                t-on-click.stop="state.showSearchBar = !state.showSearchBar"
+                            />
+                            <t t-if="state.showSearchBar or !props.withBreadcrumbs">
                                 <SearchBar t-if="props.withSearchBar" fields="fields"/>
                                 <button type="button" class="o_toggle_searchview_full btn fa fa-filter"
                                     t-on-click.stop="state.showMobileSearch = !state.showMobileSearch"
                                 />
                             </t>
-                            <button type="button" class="o_enable_searchview btn btn-link fa"
-                                t-att-class="state.showSearchBar ? 'fa-close' : 'fa-search'"
-                                t-on-click.stop="state.showSearchBar = !state.showSearchBar"
-                            />
                         </t>
                     </div>
                 </div>

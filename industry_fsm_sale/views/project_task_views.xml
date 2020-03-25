@@ -20,6 +20,18 @@
         </field>
     </record>
 
+    <record id="project_task_view_search_fsm_inherit_sale" model="ir.ui.view">
+        <field name="name">project.task.view.search</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_search_fsm"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='todo']" position='after'>
+                <filter string="To Invoice" domain="[('invoice_status', '=', 'to invoice')]" name="to_invoice"/>
+                <field name="invoice_status"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_task_action_to_invoice_fsm_view_list" model="ir.actions.act_window.view">
         <field name="sequence" eval="5"/>
         <field name="view_mode">tree</field>

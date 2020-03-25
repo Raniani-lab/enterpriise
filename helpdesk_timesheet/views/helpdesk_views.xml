@@ -33,7 +33,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
         <field name="arch" type="xml">
-                <xpath expr="//header" position='inside'>
+                <button name="assign_ticket_to_self" position="after">
                     <field name="company_id" invisible="1"/>
                     <field name="display_timesheet_timer" invisible="1"/>
                     <field name="timer_pause" invisible="1" />
@@ -52,7 +52,7 @@
                         attrs="{'invisible': [('display_timer_pause', '=', False)]}" groups="helpdesk.group_helpdesk_user"/>
                     <button class="btn-primary btn-info" name="action_timer_resume" type="object" string="Resume"
                         attrs="{'invisible': [('display_timer_resume', '=', False)]}" groups="helpdesk.group_helpdesk_user"/>
-                </xpath>
+                </button>
                 <xpath expr="//field[@name='stage_id']" position="attributes">
                     <attribute name="class">ml-2</attribute>
                 </xpath>

@@ -33,7 +33,7 @@
                 <field name="active"/>
                 <filter string="My Tasks" name="my_tasks" domain="[('user_id', '=', uid)]"/>
                 <separator />
-                <filter string="To schedule" name="schedule" domain="[
+                <filter string="To Schedule" name="schedule" domain="[
                     '|',
                     ('user_id', '=', False),
                     '&amp;',

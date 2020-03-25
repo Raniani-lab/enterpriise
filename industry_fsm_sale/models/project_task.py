@@ -19,6 +19,7 @@ class Task(models.Model):
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
     display_create_invoice_primary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
     display_create_invoice_secondary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
+    invoice_status = fields.Selection(related='sale_order_id.invoice_status')
 
     @api.depends('allow_material', 'material_line_product_count')
     def _compute_display_conditions_count(self):
@@ -55,16 +56,16 @@ class Task(models.Model):
 
     @api.depends(
         'is_fsm', 'fsm_done', 'allow_billable', 'timer_start',
-        'task_to_invoice', 'sale_order_id.invoice_status')
+        'task_to_invoice', 'invoice_status')
     def _compute_display_create_invoice_buttons(self):
         for task in self:
             primary, secondary = True, True
             if not task.is_fsm or not task.fsm_done or not task.allow_billable or task.timer_start or \
-                    not task.sale_order_id or task.sale_order_id.invoice_status == 'invoiced' or \
+                    not task.sale_order_id or task.invoice_status == 'invoiced' or \
                     task.sale_order_id.state in ['cancel']:
                 primary, secondary = False, False
             else:
-                if task.sale_order_id.invoice_status in ['upselling', 'to invoice']:
+                if task.invoice_status in ['upselling', 'to invoice']:
                     secondary = False
                 else:  # Means invoice status is 'Nothing to Invoice'
                     primary = False
@@ -72,6 +73,11 @@ class Task(models.Model):
                 'display_create_invoice_primary': primary,
                 'display_create_invoice_secondary': secondary,
             })
+
+    @api.depends('is_fsm')
+    def _compute_display_create_order(self):
+        super()._compute_display_create_order()
+        self.filtered('is_fsm').display_create_order = False
 
     def action_view_invoices(self):
         invoices = self.mapped('sale_order_id.invoice_ids')

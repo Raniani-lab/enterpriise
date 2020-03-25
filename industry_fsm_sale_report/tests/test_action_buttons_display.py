@@ -373,12 +373,12 @@ class TestTimerButtons(SavepointCase):
         self.assertTrue(self.project.display_create_order)
 
     def test_create_sale_order_02(self):
-        # If allow_billable is true, "create sales order' should be visible on tasks
-        # but not on the project. This is related to the task rate
+        # If allow_billable is true, "create sales order' should not be visible on tasks and project
+        # as it's a fsm project.
         self.project.allow_billable = True
         # self.assertTrue(self.project.billable_type != 'no')
         self.assertFalse(self.project.display_create_order)
-        self.assertTrue(self.task.display_create_order)
+        self.assertFalse(self.task.display_create_order)
 
         # If allow_billable is false, "create sales order' should be visible on project
         # but no on the tasks. There we could be on project rate, on employee rate

@@ -122,9 +122,10 @@ class HelpdeskTicket(models.Model):
         if self.project_id != self.task_id.project_id:
             # reset task when changing project
             self.task_id = False
+
     @api.onchange('task_id')
     def _onchange_task_id(self):
-        if self.timesheet_ids:
+        if self._get_timesheet():
             if self.task_id:
                 msg = _("All timesheet hours will be assigned to the selected task on save. Discard to avoid the change.")
             else:
@@ -148,6 +149,11 @@ class HelpdeskTicket(models.Model):
             if ticket.task_id:
                 if ticket.task_id.project_id != ticket.project_id:
                     raise ValidationError(_("The task must be in ticket's project."))
+
+    def _get_timesheet(self):
+        # return not invoiced timesheet
+        timesheet_ids = self.timesheet_ids
+        return timesheet_ids.filtered(lambda t: (not t.timesheet_invoice_id or t.timesheet_invoice_id.state == 'cancel'))
 
     @api.model_create_multi
     def create(self, value_list):
@@ -173,7 +179,7 @@ class HelpdeskTicket(models.Model):
             if fname in values:
                 timesheet_vals[fname] = values[fname]
         if timesheet_vals:
-            self.sudo().mapped('timesheet_ids').write(timesheet_vals)  # sudo since helpdesk user can change task
+            self.sudo()._get_timesheet().write(timesheet_vals)  # sudo since helpdesk user can change task
         return result
 
     @api.model

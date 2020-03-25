@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from dateutil.relativedelta import relativedelta
 import logging
@@ -57,7 +57,9 @@ class PlanningShift(models.Model):
 
     def _read_group_project_id(self, projects, domain, order):
         if self._context.get('planning_expand_project'):
-            start_date = datetime.strptime([dom[2] for dom in domain if dom[0] == 'start_datetime'][0], '%Y-%m-%d %H:%M:%S') or datetime.now()
+            start_date_list = [dom[2] for dom in domain if dom[0] == 'start_datetime']
+            start_date = start_date_list[-1] if start_date_list else datetime.now()
+            start_date = start_date if isinstance(start_date, date) else datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S')
             min_date = start_date - timedelta(days=30)
             max_date = start_date + timedelta(days=30)
             return self.env['planning.slot'].search([('start_datetime', '>=', min_date), ('start_datetime', '<=', max_date)]).mapped('project_id')

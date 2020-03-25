@@ -12,6 +12,7 @@
                 <field name="end_datetime" readonly="1"/>
                 <field name="allocated_hours" widget="float_time" readonly="1"/>
                 <field name="allocated_percentage" groups="planning.group_planning_show_percentage" readonly="1"/>
+                <field name="name" optional="hide" />
                 <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
             </tree>
         </field>
@@ -315,7 +316,7 @@
         <field name="name">planning.role.tree</field>
         <field name="model">planning.role</field>
         <field name="arch" type="xml">
-            <tree string="Planning Role List">
+            <tree string="Planning Role List" editable="bottom">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="color" widget="color_picker"/>

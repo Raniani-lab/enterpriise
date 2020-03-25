@@ -173,7 +173,7 @@ class HrPayslip(models.Model):
         return super(HrPayslip, self).unlink()
 
     def compute_sheet(self):
-        for payslip in self.filtered(lambda slip: slip.state not in ['cancel', 'done']):
+        for payslip in self.filtered(lambda slip: slip.state in ['draft', 'verify']):
             number = payslip.number or self.env['ir.sequence'].next_by_code('salary.slip')
             # delete old payslip lines
             payslip.line_ids.unlink()

@@ -503,6 +503,17 @@
         binding_views="form"
         id="act_contribution_reg_payslip_lines"/>
 
+    <record model="ir.actions.server" id="action_hr_payroll_compute_payroll">
+        <field name="name">Compute Sheet</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            records.compute_sheet()
+        </field>
+    </record>
+
     <record model="ir.actions.server" id="action_hr_payroll_confirm_payroll">
         <field name="name">Confirm</field>
         <field name="model_id" ref="hr_payroll.model_hr_payslip"/>

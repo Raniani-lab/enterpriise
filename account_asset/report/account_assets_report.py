@@ -208,6 +208,13 @@ class assets_report(models.AbstractModel):
             where_account_move += " AND state = 'posted'"
 
         sql = """
+                -- remove all the moves that have been reversed from the search
+                WITH account_move AS (
+                    SELECT move.date, move.state, move.id, move.asset_depreciated_value, move.asset_remaining_value, move.amount_total, move.asset_value_change, move.asset_id
+                    FROM account_move move
+                    LEFT JOIN account_move reversal ON reversal.reversed_entry_id = move.id
+                    WHERE reversal.id IS NULL AND move.asset_id IS NOT NULL AND move.company_id in %(company_ids)s
+                )
                 SELECT asset.id as asset_id,
                        asset.parent_id as parent_id,
                        asset.name as asset_name,

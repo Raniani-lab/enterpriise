@@ -163,16 +163,18 @@ class AccountAsset(models.Model):
         cumulated_depreciation = 0
         for m in self.depreciation_move_ids.sorted(lambda x: x.date):
             seq += 1
-            asset_remaining_value -= m.amount_total
-            cumulated_depreciation += m.amount_total
+            if not m.reversal_move_id:
+                asset_remaining_value -= m.amount_total
+                cumulated_depreciation += m.amount_total
             if not m.asset_manually_modified:
                 continue
             m.asset_manually_modified = False
             m.asset_remaining_value = asset_remaining_value
             m.asset_depreciated_value = cumulated_depreciation
             for older_move in self.depreciation_move_ids.sorted(lambda x: x.date)[seq:]:
-                asset_remaining_value -= older_move.amount_total
-                cumulated_depreciation += older_move.amount_total
+                if not older_move.reversal_move_id:
+                    asset_remaining_value -= older_move.amount_total
+                    cumulated_depreciation += older_move.amount_total
                 older_move.asset_remaining_value = asset_remaining_value
                 older_move.asset_depreciated_value = cumulated_depreciation
 
@@ -262,8 +264,8 @@ class AccountAsset(models.Model):
 
     def compute_depreciation_board(self):
         self.ensure_one()
-        amount_change_ids = self.depreciation_move_ids.filtered(lambda x: x.asset_value_change).sorted(key=lambda l: l.date)
-        posted_depreciation_move_ids = self.depreciation_move_ids.filtered(lambda x: x.state == 'posted' and not x.asset_value_change).sorted(key=lambda l: l.date)
+        amount_change_ids = self.depreciation_move_ids.filtered(lambda x: x.asset_value_change and not x.reversal_move_id).sorted(key=lambda l: l.date)
+        posted_depreciation_move_ids = self.depreciation_move_ids.filtered(lambda x: x.state == 'posted' and not x.asset_value_change and not x.reversal_move_id).sorted(key=lambda l: l.date)
         already_depreciated_amount = sum([m.amount_total for m in posted_depreciation_move_ids])
         depreciation_number = self.method_number
         if self.prorata:
@@ -297,9 +299,10 @@ class AccountAsset(models.Model):
         if amount_to_depreciate != 0.0:
             for asset_sequence in range(starting_sequence + 1, depreciation_number + 1):
                 while amount_change_ids and amount_change_ids[0].date <= depreciation_date:
-                    residual_amount -= amount_change_ids[0].amount_total
-                    amount_to_depreciate -= amount_change_ids[0].amount_total
-                    already_depreciated_amount += amount_change_ids[0].amount_total
+                    if not amount_change_ids[0].reversal_move_id:
+                        residual_amount -= amount_change_ids[0].amount_total
+                        amount_to_depreciate -= amount_change_ids[0].amount_total
+                        already_depreciated_amount += amount_change_ids[0].amount_total
                     amount_change_ids[0].write({
                         'asset_remaining_value': float_round(residual_amount, precision_rounding=self.currency_id.rounding),
                         'asset_depreciated_value': amount_to_depreciate - residual_amount + already_depreciated_amount,

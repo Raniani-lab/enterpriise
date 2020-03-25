@@ -7,6 +7,7 @@ var tour = require('web_tour.tour');
 var _t = core._t;
 
 tour.register('timesheet_tour', {
+    sequence: 20,
     url: "/web",
 }, [tour.stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="hr_timesheet.timesheet_menu_root"]',

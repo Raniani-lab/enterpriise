@@ -7,6 +7,7 @@ var tour = require('web_tour.tour');
 var _t = core._t;
 
 tour.register('industry_fsm_tour', {
+    sequence: 10,
     url: "/web",
 }, [{
     trigger: '.o_app[data-menu-xmlid="industry_fsm.fsm_menu_root"]',

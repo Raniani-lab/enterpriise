@@ -526,6 +526,55 @@ QUnit.module('Views', {
         dashboard.destroy();
     });
 
+    QUnit.test('rendering of an aggregate with widget monetary in multi-company', async function (assert) {
+        assert.expect(1);
+
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: '<dashboard>' +
+                        '<group><aggregate name="sold" field="sold" widget="monetary"/></group>' +
+                    '</dashboard>',
+            session: {
+                companies_currency_id : {
+                    1: 11,
+                    2: 22,
+                    3: 33,
+                },
+                currencies: {
+                    11: {
+                        digits: [69, 2],
+                        position: "before",
+                        symbol: "$",
+                    },
+                    22: {
+                        digits: [69, 2],
+                        position: "after",
+                        symbol: "€",
+                    },
+                    33: {
+                        digits: [69, 2],
+                        position: "before",
+                        symbol: "£",
+                    },
+                },
+                user_companies: {
+                    current_company: [1, "Company 1"],
+                    allowed_companies: [[1, "Company 1"], [2, "Company 2"], [3, "Company 3"]],
+                },
+                user_context: {
+                    allowed_company_ids: [3, 1],
+                },
+            },
+        });
+
+        assert.strictEqual(dashboard.$('.o_value').text(), '£\u00a08.00',
+            "should format the amount with the correct currency");
+
+        dashboard.destroy();
+    });
+
     QUnit.test('rendering of an aggregate with value label', async function (assert) {
         assert.expect(2);
 

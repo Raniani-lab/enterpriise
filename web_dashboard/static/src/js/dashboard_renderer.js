@@ -36,10 +36,15 @@ var DashboardRenderer = FormRenderer.extend({
         this.subControllers = {};
         this.subControllersContext = _.pick(state.context || {}, 'pivot', 'graph', 'cohort');
         this.subcontrollersNextMeasures = {pivot: {}, graph: {}, cohort: {}};
+        var session = this.getSession();
+        var currency_id = session.company_currency_id;
+        if (session.companies_currency_id && session.user_context.allowed_company_ids) {
+            currency_id = session.companies_currency_id[session.user_context.allowed_company_ids[0]];
+        }
         this.formatOptions = {
             // in the dashboard view, all monetary values are displayed in the
             // currency of the current company of the user
-            currency_id: this.getSession().company_currency_id,
+            currency_id: currency_id,
             // allow to decide if utils.human_number should be used
             humanReadable: function (value) {
                 return Math.abs(value) >= 1000;

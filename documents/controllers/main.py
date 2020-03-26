@@ -211,9 +211,10 @@ class ShareRoute(http.Controller):
     @http.route(['/documents/image/<int:id>',
                  '/documents/image/<int:id>/<int:width>x<int:height>',
                  ], type='http', auth="public")
-    def content_image(self, id=None, field='datas', share_id=None, width=0, height=0, crop=False, share_token=None, **kwargs):
+    def content_image(self, id=None, field='datas', share_id=None, width=0, height=0, crop=False, share_token=None,
+                      unique=False, **kwargs):
         status, headers, image_base64 = self.binary_content(
-            id=id, field=field, share_id=share_id, share_token=share_token)
+            id=id, field=field, share_id=share_id, share_token=share_token, unique=unique)
         if status != 200:
             return request.env['ir.http']._response_by_status(status, headers, image_base64)
 

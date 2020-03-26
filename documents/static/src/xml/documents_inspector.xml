@@ -40,11 +40,14 @@
                      class="o_preview_available"
                      t-attf-src="https://img.youtube.com/vi/#{recordData.youtubeToken}/0.jpg"
                      alt="Youtube Video"/>
-                <img t-else=""
-                     class="o_preview_available o_documents_image_background"
-                     t-attf-src="/documents/image/#{record.res_id}/#{size}?signature=#{record.data.checksum}"
-                     t-att-data-id="record.res_id"
-                     t-att-title="record.data.name"/>
+                <t t-else="">
+                    <t t-set="unique" t-value="record.data.checksum ? record.data.checksum.slice(-8) : ''"/>
+                    <img class="o_preview_available o_documents_image_background"
+                         t-attf-src="/documents/image/#{record.res_id}/#{size}?unique=#{unique}"
+                         t-att-data-id="record.res_id"
+                         t-att-title="record.data.name"/>
+                </t>
+
             </t>
             <div t-elif="record.data.url"
                  class="o_image o_mimetype_icon"

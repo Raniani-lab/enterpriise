@@ -66,50 +66,6 @@
             <field name="groups_id" eval="[(5,)]"/>
         </record>
 
-
-        <!-- Assigning salesmen to salesteams -->
-        <!-- Team 0 -->
-        <record id="website_crm_score_team_user_0" model="team.user">
-            <field name="user_id" ref="website_crm_score_user_0"/>
-            <field name="team_id" ref="sales_team.team_sales_department"/>
-            <field name="maximum_user_leads">2</field>
-            <field name="team_user_domain">['|', ['country_id', '=', 'Belgium'], ['country_id', '=', 'France']]</field>
-        </record>
-        <record id="website_crm_score_team_user_1" model="team.user">
-            <field name="user_id" ref="website_crm_score_user_2"/>
-            <field name="team_id" ref="sales_team.team_sales_department"/>
-            <field name="maximum_user_leads">1</field>
-            <field name="team_user_domain">[['country_id', '!=', 'Belgium']]</field>
-        </record>
-
-        <!-- Team 1 -->
-        <record id="website_crm_score_team_user_3" model="team.user">
-            <field name="user_id" ref="website_crm_score_user_1"/>
-            <field name="team_id" ref="sales_team.salesteam_website_sales"/>
-            <field name="maximum_user_leads">1</field>
-        </record>
-        <record id="website_crm_score_team_user_4" model="team.user">
-            <field name="user_id" ref="website_crm_score_user_3"/>
-            <field name="team_id" ref="sales_team.salesteam_website_sales"/>
-            <field name="maximum_user_leads">2</field>
-            <field name="team_user_domain">['&amp;', ['lang_id', '=', 'English'], ['country_id', '=', 'Belgium']]</field>
-        </record>
-
-        <!-- Team 3 -->
-        <record id="website_crm_score_team_user_6" model="team.user">
-            <field name="user_id" ref="website_crm_score_user_3"/>
-            <field name="team_id" ref="sales_team.crm_team_1"/>
-            <field name="maximum_user_leads">1</field>
-        </record>
-
-        <!-- Team 4 -->
-        <record id="website_crm_score_team_user_7" model="team.user">
-            <field name="user_id" ref="website_crm_score_user_2"/>
-            <field name="team_id" ref="sales_team.crm_team_1"/>
-            <field name="maximum_user_leads">3</field>
-            <field name="team_user_domain">[['country_id', '=', 'France']]</field>
-        </record>
-
         <!-- Scores -->
          <record id="website_crm_score_score_0" model="website.crm.score">
             <field name="name">Belgium Score</field>

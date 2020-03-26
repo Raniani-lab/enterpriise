@@ -17,7 +17,7 @@ class TestScoringCommon(common.TransactionCase):
                 UPDATE res_partner SET team_id=NULL;
         """)
         self.env.cr.execute("""
-                TRUNCATE TABLE team_user;
+                TRUNCATE TABLE crm_team_member;
         """)
         self.env.cr.execute("""
                 DELETE FROM crm_team;
@@ -34,7 +34,7 @@ class TestScoringCommon(common.TransactionCase):
         self.website_crm_score = self.env['website.crm.score']
         self.team = self.env['crm.team']
         self.res_users = self.env['res.users']
-        self.team_user = self.env['team.user']
+        self.team_user = self.env['crm.team.member']
         self.country = self.env['res.country']
         self.crm_stage = self.env['crm.stage']
 
@@ -120,19 +120,19 @@ class TestScoringCommon(common.TransactionCase):
         # team_user
         self.team_user0 = self.team_user.create({
             'user_id': self.salesmen0,
-            'team_id': self.team0,
+            'crm_team_id': self.team0,
             'maximum_user_leads': 1,
             'team_user_domain': [('country_id', '=', 'Belgium')],
         }).id
         self.team_user1 = self.team_user.create({
             'user_id': self.salesmen1,
-            'team_id': self.team0,
+            'crm_team_id': self.team0,
             'maximum_user_leads': 0,
             'team_user_domain': [('country_id', '=', 'France')],
         }).id
         self.team_user2 = self.team_user.create({
             'user_id': self.salesmen1,
-            'team_id': self.team1,
+            'crm_team_id': self.team1,
             'maximum_user_leads': 1,
         }).id
 

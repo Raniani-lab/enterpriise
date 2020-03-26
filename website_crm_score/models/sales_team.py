@@ -23,26 +23,13 @@ class crm_team(models.Model):
     _name = 'crm.team'
     _inherit = ['crm.team', 'mail.thread']
 
-    @api.model
-    def _get_default_team_id(self, user_id=None, domain=None):
-        if user_id is None:
-            user_id = self.env.user.id
-        team_id = self.sudo().search([
-            ('team_user_ids.user_id', '=', user_id),
-            '|', ('company_id', '=', False), ('company_id', '=', self.env.company.id)
-        ], limit=1)
-        if not team_id:
-            team_id = super(crm_team, self)._get_default_team_id(user_id=user_id, domain=domain)
-        return team_id
-
     score_team_domain = fields.Char('Domain', tracking=True)
     lead_capacity = fields.Integer(compute='_compute_lead_capacity')
-    team_user_ids = fields.One2many('team.user', 'team_id', string='Salesman')
     min_for_assign = fields.Integer("Minimum score", help="Minimum score to be automatically assign (>=)", default=0, required=True, tracking=True)
 
     def _compute_lead_capacity(self):
         for rec in self:
-            rec.lead_capacity = sum(s.maximum_user_leads for s in rec.team_user_ids)
+            rec.lead_capacity = sum(s.maximum_user_leads for s in rec.crm_team_member_ids)
 
     @api.constrains('score_team_domain')
     def _assert_valid_domain(self):
@@ -124,15 +111,15 @@ class crm_team(models.Model):
             domain.extend([
                 ('user_id', '=', False),
                 ('date_open', '=', False),
-                ('score', '>=', su.team_id.min_for_assign)
+                ('score', '>=', su.crm_team_id.min_for_assign)
             ])
 
             # assignation rythm: 2 days of leads if a lot of leads should be assigned
             limit = int(math.ceil(su.maximum_user_leads / 15.0))
 
-            domain.append(('team_id', '=', su.team_id.id))
+            domain.append(('team_id', '=', su.crm_team_id.id))
 
-            leads = self.env["crm.lead"].search(domain, order='score desc', limit=limit * len(su.team_id.team_user_ids))
+            leads = self.env["crm.lead"].search(domain, order='score desc', limit=limit * len(su.crm_team_id.crm_team_member_ids))
             users.append({
                 "su": su,
                 "nbr": min(su.maximum_user_leads - su.lead_month_count, limit),
@@ -183,7 +170,7 @@ class crm_team(models.Model):
 
         all_salesteams = self.search_read(fields=['score_team_domain'], domain=[('score_team_domain', '!=', False)])
 
-        all_team_users = self.env['team.user'].search([])
+        all_team_users = self.env['crm.team.member'].search([])
 
         _logger.info('Starting assign_scores_to_leads')
 

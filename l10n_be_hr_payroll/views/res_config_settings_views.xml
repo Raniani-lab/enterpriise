@@ -47,11 +47,6 @@
                                     <field name="default_mobile" nolabel="1"/>
                                     <span>€ / month</span>
                                 </div>
-                                <label for="default_internet"/>
-                                <div>
-                                    <field name="default_internet" nolabel="1"/>
-                                    <span>€ / month</span>
-                                </div>
                                 <label for="default_meal_voucher_amount"/>
                                 <div>
                                     <field name="default_meal_voucher_amount" nolabel="1"/>

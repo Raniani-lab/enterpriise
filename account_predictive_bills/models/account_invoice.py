@@ -57,7 +57,7 @@ class AccountMoveLine(models.Model):
 
     def _predict_field(self, sql_query, description):
         psql_lang = self._get_predict_postgres_dictionary()
-        parsed_description = re.sub("[*&()|!':]+", " ", description)
+        parsed_description = re.sub(r"[*&()|!':<>=%/~@,.;$\[\]]+", " ", description)
         parsed_description = ' | '.join(parsed_description.split())
         limit_parameter = self.env["ir.config_parameter"].sudo().get_param("account.bill.predict.history.limit", '10000')
         params = {

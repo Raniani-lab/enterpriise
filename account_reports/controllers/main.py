@@ -81,7 +81,7 @@ class FinancialReportController(http.Controller):
                     ]
                 )
             if output_format == 'zip':
-                content = report_obj.get_zip(options)
+                content = report_obj._get_zip(options)
                 response = request.make_response(
                     content,
                     headers=[

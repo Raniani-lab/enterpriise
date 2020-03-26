@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Main template -->
-    <template id="IntrastatLuXMLReport">
+    <template id="EcSalesLuXMLReport">
         <eCDFDeclarations xmlns="http://www.ctie.etat.lu/2011/ecdf">
             <FileReference><t t-esc="file_ref"/></FileReference>
             <eCDFFileVersion>2.0</eCDFFileVersion>
@@ -16,8 +16,8 @@
                     <MatrNbr><t t-esc="matr_number"/></MatrNbr>
                     <RCSNbr><t t-esc="rcs_number"/></RCSNbr>
                     <VATNbr><t t-esc="company_vat"/></VATNbr>
-                    <t t-if="l_lines or t_lines" t-call="l10n_lu_reports_electronic.LTCodeNode"/>
-                    <t t-if="s_lines" t-call="l10n_lu_reports_electronic.SCodeNode"/>
+                    <t t-if="l_lines or t_lines" t-call="l10n_lu_reports.LTCodeNode"/>
+                    <t t-if="s_lines" t-call="l10n_lu_reports.SCodeNode"/>
                 </Declarer>
             </Declarations>
         </eCDFDeclarations>

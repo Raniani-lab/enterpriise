@@ -213,9 +213,7 @@ var accountReportsWidget = AbstractAction.extend({
     },
     // Updates the control panel and render the elements that have yet to be rendered
     update_cp: function() {
-        if (!this.$buttons) {
-            this.renderButtons();
-        }
+        this.renderButtons();
         var status = {
             cp_content: {
                 $buttons: this.$buttons,

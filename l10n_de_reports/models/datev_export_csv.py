@@ -116,7 +116,7 @@ class DatevExportCSV(models.AbstractModel):
                      }
         }
 
-    def get_zip(self, options):
+    def _get_zip(self, options):
         # Check ir_attachment for method _get_path
         # create a sha and replace 2 first letters by something not hexadecimal
         # Return full_path as 2nd args, use it as name for Zipfile

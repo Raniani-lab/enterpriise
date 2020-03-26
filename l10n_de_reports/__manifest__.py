@@ -17,6 +17,7 @@
         'data/balance_sheet.xml',
         'data/profit_and_loss.xml',
         'data/ir_config_param.xml',
+        'data/ec_sales_list_report.xml',
         'views/l10n_de_report_views.xml',
         'data/report_export_template.xml',
     ],

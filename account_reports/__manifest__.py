@@ -23,6 +23,7 @@ Accounting Reports
         'wizard/report_export_wizard.xml',
         'wizard/fiscal_year.xml',
         'views/account_activity.xml',
+        'views/account_sales_report_view.xml',
     ],
     'qweb': [
         'static/src/xml/account_report_template.xml',

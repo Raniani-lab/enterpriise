@@ -24,3 +24,5 @@ from . import account_activity
 from . import ir_module_module
 from . import account_journal_dashboard
 from . import ir_actions
+from . import account_sales_report
+from . import account_sales_report_generic

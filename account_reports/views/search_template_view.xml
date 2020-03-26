@@ -252,6 +252,30 @@
         </div>
     </template>
 
+    <!-- ec sales report goods, triangular & services filter -->
+    <template id="search_template_ec_sale_code">
+        <button type="button" class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-filter"/>
+            Codes:
+            <t t-set="code_value">All</t>
+            <t t-set="selected_codes" t-value="[c['name'] for c in options['ec_sale_code'] if c['selected']]"/>
+            <t t-if="len(selected_codes) > 0">
+                <t t-set="code_value" t-value="', '.join(selected_codes)"/>
+            </t>
+            <t t-esc="code_value"/>
+            <span class="caret"/>
+        </button>
+        <div class="dropdown-menu o_filter_menu" role="menu">
+            <t t-foreach="options['ec_sale_code']" t-as="c">
+                <a t-att-title="c.get('name')"
+                    data-filter="ec_sale_code"
+                    t-att-data-id="c.get('id')"
+                    class="dropdown-item js_account_report_choice_filter">
+                    <t t-esc="c.get('name')"/>
+                </a>
+            </t>
+        </div>
+    </template>
     <template id="search_template">
         <div class="btn-group o_dropdown o_account_reports_filter_date" t-if="options.get('date') != None">
             <t t-call="account_reports.search_template_date_filter"/>
@@ -282,6 +306,10 @@
         </div>
         <div id="extra_options_dropdown" class="btn-group o_dropdown o_account_reports_filter_bool" t-if="options.get('cash_basis') != None or options.get('all_entries') != None or options.get('unfold_all') != None">
             <t t-call="account_reports.search_template_extra_options"/>
+        </div>
+        <div class="btn-group o_dropdown o_account_reports_filter_ec_sale_code"
+                t-if="options.get('ec_sale_code') != None">
+            <t t-call="account_reports.search_template_ec_sale_code"/>
         </div>
     </template>
 

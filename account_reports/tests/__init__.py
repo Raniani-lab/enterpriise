@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from . import common
+from . import account_sales_report_common
 from . import test_account_reports_filters
 from . import test_general_ledger_report
 from . import test_partner_ledger_report

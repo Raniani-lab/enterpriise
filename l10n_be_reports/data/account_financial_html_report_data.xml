@@ -1581,4 +1581,8 @@
             <field name="groupby">account_id</field>
         </record>
 
+        <!-- display ec sales list report menu item -->
+        <record model="ir.ui.menu" id="account_reports.menu_action_account_report_sales">
+            <field name="active" eval="True"/>
+        </record>
 </odoo>

@@ -2,60 +2,67 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import time
-from odoo import api, models, _
-from odoo.tools import html_escape
+from odoo import models, fields, api, _
 from odoo.tools.misc import formatLang
 from odoo.exceptions import UserError
-
-
-class ReportL10nBePartnerVatIntra(models.AbstractModel):
-    _name = "l10n.be.report.partner.vat.intra"
-    _description = "Partner VAT Intra"
-    _inherit = 'account.report'
-
-    filter_date = {'mode': 'range', 'filter': 'this_month'}
+class ECSalesReport(models.AbstractModel):
+    _inherit = 'account.sales.report'
 
     @api.model
-    def _get_lines(self, options, line_id=None, get_xml_data=False):
-        lines = []
-        context = self.env.context
-        seq = amount_sum = 0
-        tag_ids = [
-            self.env.ref('l10n_be.tax_report_line_44').id,
-            self.env.ref('l10n_be.tax_report_line_48s44').id,
-            self.env.ref('l10n_be.tax_report_line_46L').id,
-            self.env.ref('l10n_be.tax_report_line_48s46L').id,
-            self.env.ref('l10n_be.tax_report_line_46T').id,
-            self.env.ref('l10n_be.tax_report_line_48s46T').id,
-        ]
-        if get_xml_data:
-            group_by = 'p.vat, intra_code'
-            select = ''
-        else:
-            group_by = 'p.name, l.partner_id, p.vat, intra_code'
-            select = 'p.name As partner_name, l.partner_id AS partner_id,'
-        query = """
-            SELECT {select} p.vat AS vat,
-                      account_tax_report_line_tags_rel.account_tax_report_line_id AS intra_code,
-                      SUM(-l.balance) AS amount
-                      FROM account_move_line l
-                      LEFT JOIN res_partner p ON l.partner_id = p.id
-                      JOIN account_account_tag_account_move_line_rel aml_tag ON l.id = aml_tag.account_move_line_id
-                      JOIN account_account_tag tag ON tag.id = aml_tag.account_account_tag_id
-                      JOIN account_tax_report_line_tags_rel ON account_tax_report_line_tags_rel.account_account_tag_id = tag.id
-                      WHERE account_tax_report_line_tags_rel.account_tax_report_line_id IN %s
-                       AND l.parent_state = 'posted'
-                       AND l.date >= %s
-                       AND l.date <= %s
-                       AND l.company_id IN %s
-                      GROUP BY {group_by}
-        """
-        params = (tuple(tag_ids), options['date']['date_from'],
-                  options['date']['date_to'], tuple(self.env.companies.ids))
-        self.env.cr.execute(query.format(select=select, group_by=group_by), params)
-        p_count = 0
+    def _get_report_country_code(self):
+        if self.env.company.country_id.code == 'BE':
+            return 'BE'
+        
+        return super(ECSalesReport, self)._get_report_country_code()
 
-        for row in self.env.cr.dictfetchall():
+    def _get_ec_sale_code_options_data(self):
+        if self._get_report_country_code() != 'BE':
+            return super(ECSalesReport, self)._get_ec_sale_code_options_data()
+
+        return {
+            'goods': {
+                'name': 'L (46L)',
+                'tax_report_line_ids': 
+                    self.env.ref('l10n_be.tax_report_line_46L').ids +
+                    self.env.ref('l10n_be.tax_report_line_48s46L').ids,
+                'code': 'L',
+            },
+            'triangular': {
+                'name': 'T (46T)',
+                'tax_report_line_ids': 
+                    self.env.ref('l10n_be.tax_report_line_46T').ids +
+                    self.env.ref('l10n_be.tax_report_line_48s46T').ids,
+                'code': 'T',
+            },
+            'services': {
+                'name': 'S (44)',
+                'tax_report_line_ids':
+                    self.env.ref('l10n_be.tax_report_line_44').ids +
+                    self.env.ref('l10n_be.tax_report_line_48s44').ids,
+                'code': 'S',
+            },
+        }
+
+    def _get_columns_name(self, options):
+        if self._get_report_country_code() != 'BE':
+            return super(ECSalesReport, self)._get_columns_name(options)
+
+        return [
+            {},
+            {'name': _('Country Code')},
+            {'name': _('VAT Number')},
+            {'name': _('Code')},
+            {'name': _('Amount'), 'class': 'number'},
+        ]
+
+    def _process_query_result(self, options, query_result):
+        if self._get_report_country_code() != 'BE':
+            return super(ECSalesReport, self)._process_query_result(options, query_result)
+
+        get_file_data = options.get('get_file_data', False)
+        seq = amount_sum = p_count = 0
+        lines = []
+        for row in query_result:
             if not row['vat']:
                 row['vat'] = ''
                 p_count += 1
@@ -65,41 +72,48 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
                 seq += 1
                 amount_sum += amt
 
-                [intra_code, code] = row['intra_code'] in (tag_ids[0], tag_ids[1])  and ['44', 'S'] or (row['intra_code'] in (tag_ids[2], tag_ids[3]) and ['46L', 'L'] or (row['intra_code'] in (tag_ids[4], tag_ids[5]) and ['46T', 'T'] or ['', '']))
+                for option_code in options['ec_sale_code']:
+                    if row['tax_report_line_id'] in option_code['tax_report_line_ids']:
+                        name = option_code['name']
+                        code = option_code['code']
 
-                columns = [row['vat'].replace(' ', '').upper(), code, intra_code, amt]
-                if not context.get('no_format', False):
+                vat = row['vat'].replace(' ', '').upper()
+
+                if get_file_data:
+                    columns = [vat.replace(' ', '').upper(), code, amt]
+                else:
+                    columns = [vat[:2], vat[2:], name, amt]
+
+                if not self.env.context.get('no_format', False):
                     currency_id = self.env.company.currency_id
                     columns[3] = formatLang(self.env, columns[3], currency_obj=currency_id)
 
                 lines.append({
-                    'id': row['partner_id'] if not get_xml_data else False,
-                    # 'type': 'partner_id',
+                    'id': row['partner_id'] if not get_file_data else False,
                     'caret_options': 'res.partner',
                     'model': 'res.partner',
-                    'name': row['partner_name'] if not get_xml_data else False,
-                    'columns': [{'name': v } for v in columns],
-                    # 'level': 2,
+                    'name': row['partner_name'] if not get_file_data else False,
+                    'columns': [{'name': v} for v in columns],
                     'unfoldable': False,
                     'unfolded': False,
                 })
 
-        if context.get('get_xml_data'):
+        if get_file_data:
             return {'lines': lines, 'clientnbr': str(seq), 'amountsum': round(amount_sum, 2), 'partner_wo_vat': p_count}
         return lines
 
-    def _get_report_name(self):
-        return _('Partner VAT Intra')
-
-    def _get_columns_name(self, options):
-        return [{}, {'name': _('VAT Number')}, {'name': _('Code')}, {'name': _('Intra Code')}, {'name': _('Amount'), 'class': 'number'}]
-
+    @api.model
     def _get_reports_buttons(self):
-        buttons = super(ReportL10nBePartnerVatIntra, self)._get_reports_buttons()
-        buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
-        return buttons
+        if self._get_report_country_code() != 'BE':
+            return super(ECSalesReport, self)._get_reports_buttons()
+
+        return super(ECSalesReport, self)._get_reports_buttons() + [
+            {'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}
+        ]
 
     def get_xml(self, options):
+        if self._get_report_country_code() != 'BE':
+            return super(ECSalesReport, self).get_xml(options)
         # Check
         company = self.env.company
         company_vat = company.partner_id.vat
@@ -117,7 +131,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
         company_vat = company_vat.replace(' ', '').upper()
         issued_by = company_vat[:2]
 
-        seq_declarantnum = self.env['ir.sequence'].get('declarantnum')
+        seq_declarantnum = self.env['ir.sequence'].next_by_code('declarantnum')
         dnum = company_vat[2:] + seq_declarantnum[-4:]
 
         addr = company.partner_id.address_get(['invoice'])
@@ -142,9 +156,8 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
         date_from = options['date'].get('date_from')
         date_to = options['date'].get('date_to')
 
-        ctx = self._set_context(options)
-        ctx.update({'no_format': True, 'date_from': date_from, 'date_to': date_to, 'get_xml_data': True})
-        xml_data = self.with_context(ctx)._get_lines(options, get_xml_data=True)
+        options['get_file_data'] = True
+        xml_data = self.with_context(no_format=True)._get_lines(options)
 
         ctx_date_from = date_from[5:10]
         ctx_date_to = date_to[5:10]
@@ -162,8 +175,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
             month = date_from[5:7]
 
         xml_data.update({
-            # opw-2295963 xml does not accept special characters in company name
-            'company_name': html_escape(company.name),
+            'company_name': company.name,
             'company_vat': company_vat,
             'vatnum': company_vat[2:],
             'sender_date': str(time.strftime('%Y-%m-%d')),
@@ -203,8 +215,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
                 'vatnum': vat[2:].replace(' ', '').upper(),
                 'vat': vat,
                 'country': vat[:2],
-                'amount': line['columns'][3].get('name', 0.0),
-                'intra_code': line['columns'][2].get('name', ''),
+                'amount': line['columns'][2].get('name', 0.0),
                 'code': line['columns'][1].get('name', ''),
                 'seq': seq,
             }

@@ -438,7 +438,7 @@ class PdfManager extends owl.Component {
             const document = this.props.documents[0];
             data.append('vals', JSON.stringify({
                 folder_id: document.folder_id.res_id,
-                tag_ids: [(6, 0, document.tag_ids.res_ids)],
+                tag_ids: document.tag_ids.res_ids,
                 owner_id: document.owner_id.res_id,
                 partner_id: document.partner_id.res_id,
             }));

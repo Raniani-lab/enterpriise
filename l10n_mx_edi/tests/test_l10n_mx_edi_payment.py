@@ -40,9 +40,6 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         self.xml_expected = objectify.fromstring(self.xml_expected_str)
         self.set_currency_rates(mxn_rate=12.21, usd_rate=1)
 
-        self.company.partner_id.write({
-            'property_account_position_id': self.fiscal_position.id,
-        })
         self.bank_journal = self.env['account.journal'].search([
             ('type', '=', 'bank')], limit=1)
 
@@ -149,3 +146,41 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         self.asertEquals(
             payment.l10n_mx_edi_get_payment_etree(cfdi)[0].get('ImpSaldoInsoluto'), '0.00',
             'The invoice was not marked as fully paid in the payment complement.')
+
+    def test_payment_refund(self):
+        invoice = self.create_invoice()
+        invoice.invoice_payment_term_id = self.payment_term
+        invoice.move_name = 'INV/2017/999'
+        invoice.post()
+        invoice.refresh()
+        self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
+                         invoice.message_ids.mapped("body"))
+        ctx = {'active_ids': invoice.ids, 'active_model': 'account.move'}
+        refund = self.env['account.move.reversal'].with_context(ctx).create({
+            'refund_method': 'refund',
+            'reason': 'Refund Test',
+            'date': invoice.invoice_date,
+        })
+        result = refund.reverse_moves()
+        refund_id = result.get('res_id')
+        invoice_refund = self.env['account.move'].browse(refund_id)
+        move_form = Form(invoice_refund)
+        with move_form.invoice_line_ids.edit(0) as line_form:
+            line_form.price_unit = invoice.invoice_line_ids[0].price_unit / 2
+        move_form.save()
+        invoice_refund.refresh()
+        invoice_refund.post()
+        lines = invoice.mapped('line_ids').filtered(
+            lambda l: l.account_id.user_type_id.type == 'receivable')
+        invoice_refund.js_assign_outstanding_line(lines.ids)
+        payment_register = Form(self.env['account.payment'].with_context(ctx))
+        # First payment
+        payment_register.payment_date = invoice.invoice_date
+        payment_register.journal_id = self.bank_journal
+        payment_register.amount = invoice.amount_residual
+        payment_register.l10n_mx_edi_payment_method_id = self.env.ref(
+            'l10n_mx_edi.payment_method_efectivo')
+        payment = payment_register.save()
+        payment.post()
+        self.assertEqual(payment.l10n_mx_edi_pac_status, "signed",
+                         payment.message_ids.mapped('body'))

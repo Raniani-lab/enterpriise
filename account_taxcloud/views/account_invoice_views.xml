@@ -9,8 +9,8 @@
                 <field name="is_taxcloud" invisible="1"/>
                 <field name="is_taxcloud_configured" invisible="1"/>
             </form>
-            <xpath expr="//widget[@name='web_ribbon']" position="after">
-                <div class="alert alert-info" role="alert"
+            <xpath expr="//header" position="after">
+                <div class="alert alert-info text-center" role="alert"
                      attrs="{'invisible': [
                         '|', '|',
                         ('is_taxcloud_configured', '=', True),

@@ -363,3 +363,12 @@ class TestCaseDocuments(TransactionCase):
         document.write({'datas': TEXT, 'mimetype': 'text/plain'})
 
         self.assertEqual(document.mimetype, 'text/plain', "the new mimetype should be the one given on write")
+
+    def test_cascade_delete(self):
+        """
+        Makes sure that documents are unlinked when their attachment is unlinked.
+        """
+        document = self.env['documents.document'].create({'datas': GIF, 'folder_id': self.folder_b.id})
+        self.assertTrue(document.exists(), 'the document should exist')
+        document.attachment_id.unlink()
+        self.assertFalse(document.exists(), 'the document should not exist')

@@ -21,6 +21,7 @@ This module modifies the mail addon to provide:
         'base_setup',
     ],
     'data': [
+        'data/mail_mobile_data.xml',
         'views/ocn_assets.xml',
         'views/res_config_settings_views.xml',
     ],

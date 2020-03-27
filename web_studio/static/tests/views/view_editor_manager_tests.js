@@ -4583,7 +4583,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('blockUI not removed just after rename', async function (assert) {
-        assert.expect(13);
+        assert.expect(15);
         // renaming is only available in debug mode
         var initialDebugMode = odoo.debug;
         odoo.debug = true;
@@ -4635,8 +4635,10 @@ QUnit.module('ViewEditorManager', {
 
         assert.verifySteps([
             '/web/dataset/search_read',
+            'block UI',
             '/web_studio/edit_view',
             '/web/dataset/search_read',
+            'unblock UI',
             '/web_studio/get_default_value',
             'block UI',
             '/web_studio/rename_field',
@@ -4651,6 +4653,61 @@ QUnit.module('ViewEditorManager', {
         framework.blockUI = blockUI;
         framework.unblockUI = unblockUI;
         odoo.debug = initialDebugMode;
+    });
+
+    QUnit.test('blockUI not removed just after field dropped', async function (assert) {
+        assert.expect(6);
+
+        const blockUI = framework.blockUI;
+        const unblockUI = framework.unblockUI;
+        framework.blockUI = function () {
+            assert.step('block UI');
+        };
+        framework.unblockUI = function () {
+            assert.step('unblock UI');
+        };
+
+        let fieldsView;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<tree><field name='display_name'/></tree>",
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.step(route);
+                    const fieldName = args.operations[0].node.field_description.name;
+                    fieldsView.arch = `<tree><field name='${fieldName}'/><field name='display_name'/></tree>`;
+                    fieldsView.fields[fieldName] = {
+                        string: "Coucou",
+                        type: "char"
+                    };
+                    return Promise.resolve({
+                        fields_views: { list: fieldsView },
+                        fields: fieldsView.fields,
+                    });
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        assert.strictEqual(vem.$('thead th[data-node-id]').length, 1, "there should be one field");
+
+        // create a new field before existing one
+        fieldsView = $.extend(true, {}, vem.fields_view);
+        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_web_studio_hook:first'));
+        await testUtils.nextTick();
+        assert.strictEqual(vem.$('thead th[data-node-id]').length, 2, "there should be two fields");
+
+        assert.verifySteps([
+            'block UI',
+            '/web_studio/edit_view',
+            'unblock UI',
+        ]);
+
+        vem.destroy();
+
+        framework.blockUI = blockUI;
+        framework.unblockUI = unblockUI;
     });
 
     QUnit.module('X2Many');

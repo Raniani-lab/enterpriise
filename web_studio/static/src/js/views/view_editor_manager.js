@@ -378,6 +378,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         }
         // When the field values is selected, close the dialog and update the view
         Promise.resolve(def_field_values).then(function (values) {
+            framework.blockUI();
             if (field_description) {
                 self.renamingAllowedFields.push(field_description.name);
             }
@@ -399,10 +400,11 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     field_description: _.extend(field_description, values),
                 },
             }).then(function () {
+                framework.unblockUI();
                 if (self.editor.selectField && field_description) {
                     self.editor.selectField(field_description.name);
                 }
-            });
+            }).guardedCatch(framework.unblockUI);
         }).guardedCatch(function () {
             self.updateEditor();
         });

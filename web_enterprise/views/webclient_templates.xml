@@ -95,6 +95,7 @@
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_renderer_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_tabs_mobile_mixin.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_view.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/views/list_controller.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/relational_fields.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/upgrade_fields.js"></script>
@@ -130,6 +131,7 @@
             <script type="text/javascript" src="/web_enterprise/static/tests/relational_fields_mobile_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/views/calendar_mobile_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/views/kanban_mobile_tests.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/tests/views/list_mobile_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/tests/base_settings_mobile_tests.js"></script>
         </xpath>
     </template>

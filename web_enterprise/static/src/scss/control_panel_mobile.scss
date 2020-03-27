@@ -110,7 +110,7 @@
     .o_control_panel {
         &.o_mobile_sticky {
             @include o-position-sticky();
-            z-index: 2;
+            z-index: 10;
         }
         .o_cp_today_button {
             margin-left: auto;

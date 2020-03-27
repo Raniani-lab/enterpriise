@@ -186,4 +186,22 @@
     .o_view_controller > .o_content > .o_list_view > .table-responsive {
         overflow: auto;
     }
+
+    // Mobile selection banner
+    .o_list_view.o_renderer_selection_banner {
+
+        th.o_list_record_selector > .custom-checkbox {
+            z-index: 2;
+        }
+
+        .o_list_selection_box {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            padding: ceil(($table-cell-padding / 1rem) * $o-root-font-size + 4px) 4px;
+            z-index: 2;
+        }
+    }
+
 }

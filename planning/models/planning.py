@@ -666,6 +666,8 @@ class Planning(models.Model):
         }
 
     def _read_group_employee_id(self, employees, domain, order):
+        if employees == self.env.user.employee_id or not employees:
+            return employees
         all_employees = self.env['hr.employee'].search([])
         if len(all_employees) >= 20:
             start_date_list = [dom[2] for dom in domain if dom[0] == 'start_datetime']

@@ -175,6 +175,7 @@
                 <field name="employee_id" groups="planning.group_planning_user"/>
                 <field name="manager_id" groups="planning.group_planning_user"/>
                 <filter name="open_shifts" string="Open Shifts" domain="[('employee_id', '=', False)]" groups="planning.group_planning_user"/>
+                <filter name="open_shifts_my_role" string="Open Shifts for my Roles" domain="[('employee_id', '=', False), ('role_id.employee_ids.user_id', 'in', [uid])]" groups="planning.group_planning_user"/>
                 <filter name="my_shifts" string="My Shifts" domain="[('user_id', '=', uid)]" groups="planning.group_planning_user"/>
                 <filter name="my_team_shifts" string="My Team" domain="[('manager_id.user_id', '=', uid)]" help="Shifts of Your Team Member" groups="planning.group_planning_user"/>
                 <separator/>
@@ -356,7 +357,7 @@
             (0, 0, {'view_mode': 'calendar', 'view_id': ref('planning_view_my_calendar')}),
             (0, 0, {'view_mode': 'tree'}),
             (0, 0, {'view_mode': 'form'})]"/>
-        <field name="context">{'search_default_my_shifts': 1}</field>
+        <field name="context">{'search_default_my_shifts': 1, 'search_default_open_shifts': 1}</field>
     </record>
 
     <record id="planning_action_my_gantt" model="ir.actions.act_window">

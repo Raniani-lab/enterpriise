@@ -49,25 +49,6 @@ class AccountBatchPayment(models.Model):
 
         return rslt + super(AccountBatchPayment, self)._check_and_post_draft_payments(draft_payments)
 
-
-    def check_payments_for_errors(self):
-        rslt = super(AccountBatchPayment, self).check_payments_for_errors()
-
-        if self.payment_method_code == 'sdd':
-            no_bic_debtor_acc = self.env['account.payment']
-            for payment in self.payment_ids.filtered(lambda x: x.state == 'posted'):
-                if not payment.sdd_mandate_id.partner_bank_id.bank_id.bic:
-                    no_bic_debtor_acc += payment
-
-            if no_bic_debtor_acc:
-                rslt.append({
-                    'title': _("Some debtor accounts don't have any BIC associated with them."),
-                    'records': no_bic_debtor_acc,
-                    'help': _("To fix that, make sure the bank account of each debtor is linked to a bank, and that this bank has a BIC number."),
-                })
-
-        return rslt
-
     def _generate_export_file(self):
         if self.payment_method_code == 'sdd':
             # Constrains on models ensure all the payments can generate SDD data before

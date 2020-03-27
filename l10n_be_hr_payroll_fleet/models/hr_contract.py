@@ -9,17 +9,6 @@ class HrContract(models.Model):
     _inherit = 'hr.contract'
 
     @api.model
-    def default_get(self, field_list):
-        res = super(HrContract, self).default_get(field_list)
-        driver_id = self.env['hr.employee'].search([
-            ('user_id', '=', self.env.uid),
-            ('company_id', '=', self.env.company.id),
-        ])
-        domain = self._get_available_vehicles_domain(driver_id)
-        res['car_id'] = res.get('car_id', self.env['fleet.vehicle'].sudo().search(domain, limit=1).id)
-        return res
-
-    @api.model
     def _get_available_vehicles_domain(self, driver_id=None, vehicle_type='car'):
         return expression.AND([
             [('future_driver_id', '=', False), ('model_id.vehicle_type', '=', vehicle_type)],
@@ -34,7 +23,7 @@ class HrContract(models.Model):
         return [('can_be_requested', '=', True), ('vehicle_type', '=', vehicle_type)]
 
     car_id = fields.Many2one('fleet.vehicle', string='Company Car',
-        tracking=True,
+        tracking=True, compute="_compute_car_id", store=True, readonly=False,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), ('vehicle_type', '=', 'car')]",
         help="Employee's company car.",
         groups='fleet.fleet_group_manager')
@@ -64,6 +53,19 @@ class HrContract(models.Model):
     company_bike_depreciated_cost = fields.Float(compute='_compute_company_bike_depreciated_cost', store=True, compute_sudo=True)
     new_bike_model_id = fields.Many2one(
         'fleet.vehicle.model', string="Bike Model", domain=lambda self: self._get_possible_model_domain(vehicle_type='bike'))
+
+    @api.depends('employee_id')
+    def _compute_car_id(self):
+        employees_partners = self.employee_id.address_home_id
+        cars = self.env['fleet.vehicle'].search([('driver_id', 'in', employees_partners.ids)])
+        dict_car = dict([(car.driver_id.id, car.id) for car in cars])
+        for contract in self:
+            partner_id = contract.employee_id.address_home_id.id
+            if partner_id in dict_car:
+                contract.car_id = dict_car[partner_id]
+                contract.transport_mode_car = True
+            else:
+                contract.car_id = False
 
     @api.depends('car_id', 'new_car', 'new_car_model_id', 'car_id.total_depreciated_cost',
         'car_id.atn', 'new_car_model_id.default_atn', 'new_car_model_id.default_total_depreciated_cost')

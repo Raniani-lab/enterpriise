@@ -8,8 +8,6 @@
             <field name="applicant_id" position="after">
                 <field name="contract_type"/>
                 <field name="customer_relation"/>
-                <field name="new_car"/>
-                <field name="car_id"/>
             </field>
         </field>
     </record>

@@ -162,6 +162,7 @@ class TestUi(odoo.tests.HttpCase):
             'acquisition_date': time.strftime('%Y-01-01'),
             'co2': 88,
             'driver_id': partner_id.id,
+            'plan_to_change_car': True,
             'car_value': 38000,
             'company_id': company_id.id,
         })

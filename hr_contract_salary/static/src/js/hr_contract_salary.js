@@ -31,19 +31,13 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             minimumResultsForSearch: -1
         });
 
-        // YTI Reintroduce this bugfix
-        // // We create a fake event in order to trigger the representation fees onchange. This is
-        // // necessary since the events are not bound yet, therefore
-        // // $("input[name='representation_fees_radio']:checked").change() won't work.
-        // var fake_event = {};
-        // fake_event.target = {};
-        // fake_event.target.value = $("input[name='representation_fees_radio']:checked").val();
-        // this.onchange_representation_fees(fake_event);
-
         $('b[role="presentation"]').hide();
         $('.select2-arrow').append('<i class="fa fa-chevron-down"></i>');
         this.updateGross = _.debounce(this.updateGross, 1000);
         this.initializeUnsetSliders()
+
+        // When user use back button, unfold previously unfolded items.
+        $('#hr_cs_configurator .hr_cs_control input.folded:checked').closest('div').find('.folded_content').removeClass('d-none')
     },
 
     willStart() {
@@ -146,6 +140,8 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                     $(input).trigger('change');
                 }
             });
+        } else {
+            $(foldedContent).find('select').trigger('change');
         }
         checked ? $(foldedContent).removeClass('d-none') : $(foldedContent).addClass('d-none');
     },

@@ -43,14 +43,15 @@ class HrContract(models.Model):
 
     def _get_advantage_values_company_car_total_depreciated_cost(self, contract, advantages):
         has_car = advantages['fold_company_car_total_depreciated_cost']
-        if not has_car:
+        selected_car = advantages['select_company_car_total_depreciated_cost']
+        if not has_car or not selected_car:
             return {
                 'transport_mode_car': False,
                 'new_car': False,
                 'new_car_model_id': False,
                 'car_id': False,
             }
-        car, car_id = advantages['select_company_car_total_depreciated_cost'].split('-')
+        car, car_id = selected_car.split('-')
         new_car = car == 'new'
         if new_car:
             return {
@@ -90,8 +91,8 @@ class HrContract(models.Model):
 
     def _get_advantage_values_wishlist_car_total_depreciated_cost(self, contract, advantages):
         wishlist_car = advantages['fold_wishlist_car_total_depreciated_cost']
-        dummy, model_id = advantages['select_wishlist_car_total_depreciated_cost'].split('-')
         if wishlist_car:
+            dummy, model_id = advantages['select_wishlist_car_total_depreciated_cost'].split('-')
             return {
                 'new_car_model_id': int(model_id),
                 'new_car': True,
@@ -99,13 +100,15 @@ class HrContract(models.Model):
         return {}
 
     def _get_description_company_car_total_depreciated_cost(self, new_value=None):
-        if new_value is None:
-            if self.car_id:
-                new_value = 'old-%s' % self.car_id.id
-            else:
-                new_value = 'new-%s' % self.new_car_model_id.id
         advantage = self.env.ref('l10n_be_hr_contract_salary.l10n_be_transport_company_car')
         description = advantage.description
+        if new_value is None or not new_value:
+            if self.car_id:
+                new_value = 'old-%s' % self.car_id.id
+            elif self.new_car_model_id:
+                new_value = 'new-%s' % self.new_car_model_id.id
+            else:
+                return description
         car_option, vehicle_id = new_value.split('-')
         try:
             vehicle_id = int(vehicle_id)

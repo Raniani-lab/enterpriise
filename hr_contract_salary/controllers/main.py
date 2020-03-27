@@ -141,7 +141,6 @@ class HrContractSalary(http.Controller):
         redirect_to_job = False
         applicant_id = False
         customer_relation = False
-        new_car = False
         contract_type = False
         employee_contract_id = False
         job_title = False
@@ -150,10 +149,7 @@ class HrContractSalary(http.Controller):
 
         for field_name, value in kw.items():
             old_value = contract
-            if field_name == 'car_id':
-                contract.car_id = int(value)
-                contract.new_car = False
-            elif field_name == 'job_id':
+            if field_name == 'job_id':
                 redirect_to_job = value
             elif field_name == 'applicant_id':
                 applicant_id = value
@@ -161,8 +157,6 @@ class HrContractSalary(http.Controller):
                 employee_contract_id = value
             elif field_name == 'customer_relation':
                 customer_relation = value
-            elif field_name == 'new_car':
-                new_car = value
             elif field_name == 'contract_type':
                 contract_type = value
             elif field_name == 'job_title':
@@ -175,7 +169,10 @@ class HrContractSalary(http.Controller):
             if isinstance(old_value, models.BaseModel):
                 old_value = ""
             elif old_value:
-                value = float(value)
+                try:
+                    value = float(value)
+                except:
+                    continue
                 if field_name == "final_yearly_costs":
                     final_yearly_costs = value
                 else:
@@ -191,7 +188,6 @@ class HrContractSalary(http.Controller):
             'applicant_id': applicant_id,
             'employee_contract_id': employee_contract_id,
             'customer_relation': customer_relation,
-            'new_car': new_car,
             'contract_type': contract_type,
             'job_title': job_title,
             'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),

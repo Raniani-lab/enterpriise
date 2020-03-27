@@ -23,12 +23,17 @@
             overflow: hidden;
 
             > li {
-                margin: auto 0;
+                margin: 0;
+
                 &:before {
                     display: none;
                 }
 
                 &.o_back_button {
+                    &, & ~ li {
+                        margin: auto 0;
+                    }
+
                     &:before {
                         font-family: FontAwesome;
                         content: ""; // fa-arrow-left

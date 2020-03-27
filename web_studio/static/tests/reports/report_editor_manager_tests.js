@@ -2048,6 +2048,9 @@ QUnit.module('ReportEditorManager', {
                 if (route === '/web/dataset/call_kw/ir.attachment/search_read') {
                     return Promise.resolve([self.data['ir.attachment'].records[0]]);
                 }
+                if (route.match(/\/web_editor\/attachment\/\d+\/update/)) {
+                    return Promise.resolve(this.data['ir.attachment'].records[0]);
+                }
                 if (route === '/web_studio/edit_report_view') {
                     if (editReportViewCalls === 0) {
                         assert.strictEqual(
@@ -2086,8 +2089,7 @@ QUnit.module('ReportEditorManager', {
             // then only could we use the widget and select an image safely
             defMediaDialogInit.then(async function () {
                 var $modal = $('.o_select_media_dialog');
-                await testUtilsDom.click($modal.find('.o_existing_attachment_cell'));
-                await testUtilsDom.click($modal.find('footer button:contains(Add)'));
+                await testUtilsDom.click($modal.find('.o_existing_attachment_cell').removeClass('d-none'));
 
                 testUtils.mock.unpatch(MediaDialog);
                 done();

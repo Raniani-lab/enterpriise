@@ -10,6 +10,7 @@ from odoo.addons.web.controllers.main import clean_action
 from dateutil.relativedelta import relativedelta
 import json
 import base64
+import re
 
 class generic_tax_report(models.AbstractModel):
     _inherit = 'account.report'
@@ -406,6 +407,7 @@ class generic_tax_report(models.AbstractModel):
         # Fetch the report layout to use
         country = self.env.company.country_id
         report = self.env['account.tax.report'].browse(options['tax_report'])
+        formulas_dict = dict(report.line_ids.filtered(lambda l: l.code and l.formula).mapped(lambda l: (l.code, l.formula)))
 
         # Build the report, line by line
         lines = []
@@ -434,7 +436,7 @@ class generic_tax_report(models.AbstractModel):
             hierarchy_level = self._get_hierarchy_level(total_line)
             # number_period option contains 1 if no comparison, or the number of periods to compare with if there is one.
             total_period_number = 1 + (options['comparison'].get('periods') and options['comparison']['number_period'] or 0)
-            lines[index] = self._build_total_line(total_line, balances_by_code, hierarchy_level, total_period_number, options)
+            lines[index] = self._build_total_line(total_line, balances_by_code, formulas_dict, hierarchy_level, total_period_number, options)
 
         return lines
 
@@ -530,10 +532,16 @@ class generic_tax_report(models.AbstractModel):
         """
         return period_balances_by_code
 
-    def _build_total_line(self, report_line, balances_by_code, hierarchy_level, number_periods, options):
+    def _build_total_line(self, report_line, balances_by_code, formulas_dict, hierarchy_level, number_periods, options):
         """ Returns the report line dictionary corresponding to a given total line,
         computing if from its formula.
         """
+        def expand_formula(formula):
+            for word in re.split(r'\W+', formula):
+                if formulas_dict.get(word):
+                    formula = re.sub(r'\b%s\b' % word, '(%s)' % expand_formula(formulas_dict.get(word)), formula)
+            return formula
+
         columns = []
         for period_index in range(0, number_periods):
             period_balances_by_code = {code: balances[period_index] for code, balances in balances_by_code.items()}
@@ -541,7 +549,7 @@ class generic_tax_report(models.AbstractModel):
             period_date_to = (period_index==0) and options['date']['date_to'] or options['comparison']['periods'][period_index-1]['date_to']
 
             eval_dict = self._get_total_line_eval_dict(period_balances_by_code, period_date_from, period_date_to, options)
-            period_total = safe_eval(report_line.formula, eval_dict)
+            period_total = safe_eval(expand_formula(report_line.formula), eval_dict)
             columns.append({'name': '' if period_total is None else self.format_value(period_total), 'style': 'white-space:nowrap;', 'balance': period_total or 0.0})
 
         return {

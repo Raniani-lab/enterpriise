@@ -25,3 +25,10 @@ class SaleOrderLine(models.Model):
         if project.is_fsm:
             res.update({'partner_id': self.order_id.partner_shipping_id.id})
         return res
+
+    def _timesheet_create_project_prepare_values(self):
+        """Generate project values"""
+        values = super(SaleOrderLine, self)._timesheet_create_project_prepare_values()
+        if self.product_id.project_template_id.is_fsm:
+            values.pop('sale_line_id', False)
+        return values

@@ -9,33 +9,31 @@ odoo.define('web_mobile.PivotRenderer', async function (require) {
 
     const PivotRenderer = require('web.PivotRenderer');
 
-    const utils = require('web.utils');
 
-
-    utils.patch(PivotRenderer, "pivot_mobile", {
+    PivotRenderer.patch("pivot_mobile", T => class extends T {
         /**
          * Do not compute the tooltip on mobile
          * @override 
          */
-        _updateTooltip() { },
+        _updateTooltip() { }
 
         /**
          * @override 
          */
         _getPadding(cell) {
             return 5 + cell.indent * 5;
-        },
+        }
 
         /**
          * @override 
          */
         _onClickMenuGroupBy(field, interval, ev) {
             if (!ev.currentTarget.classList.contains('o_pivot_field_selection')){
-                this._super(...arguments);
+                super._onClickMenuGroupBy(...arguments);
             } else {
                 ev.stopPropagation();
             }
         }
 
-    })
+    });
 });

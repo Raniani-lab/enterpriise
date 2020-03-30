@@ -64,7 +64,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
                 seq += 1
                 amount_sum += amt
 
-                [intra_code, code] = row['intra_code'] == tag_ids[0] and ['44', 'S'] or (row['intra_code'] == tag_ids[1] and ['46L', 'L'] or (row['intra_code'] == tag_ids[2] and ['46T', 'T'] or ['', '']))
+                [intra_code, code] = row['intra_code'] == tag_ids[0] and ['44', 'S'] or (row['intra_code'] == tag_ids[2] and ['46L', 'L'] or (row['intra_code'] == tag_ids[4] and ['46T', 'T'] or ['', '']))
 
                 columns = [row['vat'].replace(' ', '').upper(), code, intra_code, amt]
                 if not context.get('no_format', False):

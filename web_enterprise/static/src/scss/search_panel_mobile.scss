@@ -24,6 +24,10 @@
     .o_controller_with_searchpanel {
         flex-direction: column;
 
+        .o_renderer_with_searchpanel.o_list_view {
+            width: 100%;
+        }
+
         details.o_search_panel {
             flex-basis: auto;
             height: auto;

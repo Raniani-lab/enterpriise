@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import requests
 import werkzeug
 
@@ -77,3 +78,8 @@ class SocialLinkedin(http.Controller):
             raise SocialValidationException(error_description)
 
         return response.get('access_token')
+
+    @http.route(['/social_linkedin/comment'], type='http', auth='user')
+    def add_comment(self, post_id, message=None, comment_id=None, **kwargs):
+        stream_post = request.env['social.stream.post'].browse(int(post_id))
+        return json.dumps(stream_post._add_linkedin_comment(message, comment_id))

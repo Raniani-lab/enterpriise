@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 import hmac
 import hashlib
 import requests
@@ -14,7 +15,20 @@ class SocialMediaLinkedin(models.Model):
 
     _LINKEDIN_ENDPOINT = 'https://api.linkedin.com/v2/'
 
+    # Control the fields returned by the LinkedIn API
+    # https://docs.microsoft.com/en-us/linkedin/shared/api-guide/concepts/decoration
+    _LINKEDIN_ORGANIZATION_PROJECTION = 'localizedName,vanityName,logoV2(original~:playableStreams)'
+    _LINKEDIN_PERSON_PROJECTION = 'id,localizedFirstName,localizedLastName,vanityName,profilePicture(displayImage~:playableStreams)'
+    _LINKEDIN_TAG_PROJECTION = 'start,length,value(com.linkedin.common.MemberAttributedEntity(member~(vanityName)),com.linkedin.common.CompanyAttributedEntity(company~(vanityName)))'
+    _LINKEDIN_COMMENT_PROJECTION = 'id,comments,$URN,content,message(text,attributes*(%s)),likesSummary,created(time, actor~person(%s)~organization(%s)),commentsSummary(totalFirstLevelComments,selectedComments(~comment(id,$URN,created)) )' % (_LINKEDIN_TAG_PROJECTION, _LINKEDIN_PERSON_PROJECTION, _LINKEDIN_ORGANIZATION_PROJECTION)
+    _LINKEDIN_STREAM_POST_PROJECTION = 'id,totalShareStatistics,created(time), author~person(%s)~organization(%s), specificContent(com.linkedin.ugc.ShareContent(shareCommentary(text), media(originalUrl)))' % (_LINKEDIN_PERSON_PROJECTION, _LINKEDIN_ORGANIZATION_PROJECTION)
+
     media_type = fields.Selection(selection_add=[('linkedin', 'LinkedIn')])
+
+    def _compute_linkedin_csrf(self):
+        return hmac.new(
+            self.env['ir.config_parameter'].sudo().get_param('database.secret').encode('utf-8'),
+            str((self.env.cr.dbname, 'social.account', self.id)).encode('utf-8'), hashlib.sha256).hexdigest()
 
     def action_add_account(self):
         self.ensure_one()
@@ -31,18 +45,13 @@ class SocialMediaLinkedin(models.Model):
         else:
             return self._add_linkedin_accounts_from_iap()
 
-    def _compute_linkedin_csrf(self):
-        return hmac.new(
-            self.env['ir.config_parameter'].sudo().get_param('database.secret').encode('utf-8'),
-            str(self.id).encode('utf-8'), hashlib.sha256).hexdigest()
-
     def _add_linkedin_accounts_from_configuration(self, linkedin_app_id):
         params = {
             'response_type': 'code',
             'client_id': linkedin_app_id,
             'redirect_uri': self._get_linkedin_redirect_uri(),
             'state': self._compute_linkedin_csrf(),
-            'scope': 'r_liteprofile r_emailaddress w_member_social'
+            'scope': 'r_liteprofile r_emailaddress w_member_social rw_organization_admin w_organization_social r_organization_social'
         }
 
         return {
@@ -63,7 +72,7 @@ class SocialMediaLinkedin(models.Model):
 
         iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'iap/social_linkedin/add_accounts'), params={
             'state': self._compute_linkedin_csrf(),
-            'scope': 'r_liteprofile r_emailaddress w_member_social',
+            'scope': 'r_liteprofile r_emailaddress w_member_social rw_organization_admin w_organization_social r_organization_social',
             'o_redirect_uri': o_redirect_uri,
             'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
         }).text

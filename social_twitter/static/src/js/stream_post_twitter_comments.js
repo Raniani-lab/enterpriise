@@ -70,7 +70,7 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
             return _.str.sprintf("https://twitter.com/intent/user?user_id=%s", comment.from.id);
         },
 
-        isCommentEditable: function (comment) {
+        isCommentDeletable: function (comment) {
             return comment.from.id === this.twitterUserId;
         },
 
@@ -82,7 +82,7 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
             return 'delete_tweet';
         },
 
-        isCommentDeletable: function () {
+        isCommentEditable: function () {
             return false;
         },
 

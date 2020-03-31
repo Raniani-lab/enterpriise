@@ -43,7 +43,7 @@ class MarketingParticipant(models.Model):
         'marketing.campaign', string='Campaign',
         index=True, ondelete='cascade', required=True)
     model_id = fields.Many2one(
-        'ir.model', string='Object', related='campaign_id.model_id',
+        'ir.model', string='Model', related='campaign_id.model_id',
         index=True, readonly=True, store=True)
     model_name = fields.Char(
         string='Record model', related='campaign_id.model_id.model',

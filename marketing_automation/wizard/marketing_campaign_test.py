@@ -27,7 +27,7 @@ class MarketingCampaignTest(models.TransientModel):
 
     campaign_id = fields.Many2one(
         'marketing.campaign', string='Campaign', required=True)
-    model_id = fields.Many2one('ir.model', string='Object', related='campaign_id.model_id', readonly=True)
+    model_id = fields.Many2one('ir.model', string='Model', related='campaign_id.model_id', readonly=True)
     model_name = fields.Char('Record model', related='campaign_id.model_id.model', readonly=True)
     res_id = fields.Integer(string='Record ID', index=True)
     resource_ref = fields.Reference(

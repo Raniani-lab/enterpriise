@@ -46,7 +46,7 @@
             </xpath>
         </template>
 
-        <template id="qunit_suite" name="pos_blackbox_be qunit" inherit_id="web.qunit_suite">
+        <template id="qunit_suite" name="pos_blackbox_be qunit" inherit_id="web.qunit_suite_tests">
             <xpath expr='//t[@t-set="head"]' position="inside">
                 <!-- todo jov: the issue is that we want to to test
                      point of sale models, which aren't included in

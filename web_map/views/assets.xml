@@ -9,8 +9,8 @@
             <link rel="stylesheet" type="text/scss" href="/web_map/static/src/scss/mapview.scss"/>
         </xpath>
     </template>
-    <template id="qunit_suite" name="web_map_assets" inherit_id="web.qunit_suite">
-        <xpath expr="//t[@t-set='head']" position="inside">
+    <template id="qunit_suite" name="web_map_assets" inherit_id="web.qunit_suite_tests">
+        <xpath expr="." position="inside">
             <script type="text/javascript" src = "/web_map/static/tests/map_view_tests.js"/>
         </xpath>
     </template>

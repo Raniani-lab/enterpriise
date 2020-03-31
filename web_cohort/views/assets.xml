@@ -11,7 +11,7 @@
         </xpath>
     </template>
 
-    <template id="qunit_suite" name="cohort tests" inherit_id="web.qunit_suite">
+    <template id="qunit_suite" name="cohort tests" inherit_id="web.qunit_suite_tests">
         <xpath expr="//script[contains(@src, '/web/static/tests/views/kanban_tests.js')]" position="after">
             <script type="text/javascript" src="/web_cohort/static/tests/cohort_tests.js" />
             <script type="text/javascript" src="/web_cohort/static/tests/mock_server.js" />

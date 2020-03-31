@@ -299,7 +299,7 @@
         </xpath>
     </template>
 
-    <template id="qunit_suite" inherit_id="web.qunit_suite">
+    <template id="qunit_suite" inherit_id="web.qunit_suite_tests">
         <xpath expr="//script[last()]" position="after">
             <script type="text/javascript" src="/mrp_workorder/static/tests/pdf_viewer_widget_tests.js"/>
             <script type="text/javascript" src="/mrp_workorder/static/tests/embed_viewer_widget_tests.js"/>

@@ -1,17 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from unittest.mock import patch
+
 from . import common
-
-
-def patch_TaxCloud(taxcloud_request, response):
-    """Additionally to the taxes, the methods makes request to validate addresses,
-       so we also need to skip these.
-       We only monkey-patch the order from the request, so no need for true mocks.
-    """
-    taxcloud_request.set_location_origin_detail = (lambda address: True)
-    taxcloud_request.set_location_destination_detail = (lambda address: True)
-    taxcloud_request.get_all_taxes_values = (lambda: response)
 
 
 class TestSaleCouponTaxCloudFlow(common.TestSaleCouponTaxCloudCommon):
@@ -28,6 +20,30 @@ class TestSaleCouponTaxCloudFlow(common.TestSaleCouponTaxCloudCommon):
         self.order._get_TaxCloudRequest = lambda x, y: self.TaxCloud
 
 
+        patchers = [
+            patch('odoo.addons.account_taxcloud.models.taxcloud_request.TaxCloudRequest.verify_address', self._verify_address),
+            patch('odoo.addons.account_taxcloud.models.taxcloud_request.TaxCloudRequest.get_all_taxes_values', self._get_all_taxes_values),
+        ]
+        for p in patchers:
+            p.start()
+
+    def _verify_address(self, *args):
+        return {
+        'apiLoginID': '',
+        'apiKey': '',
+        'Address1': '',
+        'Address2': '',
+        'City': '',
+        "State": '',
+        "Zip5": '',
+        "Zip4": '',
+    }
+
+    def _get_all_taxes_values(self):
+        if self.response == 'full':
+            return self.response_full
+        return self.response_discounted
+
     def test_flow(self):
         """We mock the actual requests to TaxCloud, but besides that the test
            covers most points of the flow, that is:
@@ -41,7 +57,7 @@ class TestSaleCouponTaxCloudFlow(common.TestSaleCouponTaxCloudCommon):
         self.assertEqual(self.order.amount_total, 160)
         self.assertEqual(self.order.amount_tax, 0)
 
-        patch_TaxCloud(self.TaxCloud, self.response_full)
+        self.response = 'full'
         self.order.validate_taxes_on_sales_order()
 
         self.assertEqual(self.order.amount_untaxed, 160)
@@ -63,7 +79,7 @@ class TestSaleCouponTaxCloudFlow(common.TestSaleCouponTaxCloudCommon):
         self.assertEqual(discount_line.price_unit, -16)
         self.assertEqual(discount_line.product_uom_qty, 1)
 
-        patch_TaxCloud(self.TaxCloud, self.response_discounted)
+        self.response = 'discounted'
         self.order.validate_taxes_on_sales_order()
 
         self.assertEqual(self.order.amount_untaxed, 144, "Untaxed amount did not change")

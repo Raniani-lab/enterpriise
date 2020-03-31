@@ -2,7 +2,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
-from odoo.tools import float_compare, float_round
+from odoo.tools import float_compare, float_round, ormcache
 
 from .taxcloud_request import TaxCloudRequest
 
@@ -22,6 +22,11 @@ class SaleOrder(models.Model):
     def _get_TaxCloudRequest(self, api_id, api_key):
         return TaxCloudRequest(api_id, api_key)
 
+    @api.model
+    @ormcache('request_hash')
+    def _get_all_taxes_values(self, request, request_hash):
+        return request.get_all_taxes_values()
+
     def validate_taxes_on_sales_order(self):
         company = self.company_id
         shipper = company or self.env.company
@@ -34,7 +39,7 @@ class SaleOrder(models.Model):
 
         request.set_order_items_detail(self)
 
-        response = request.get_all_taxes_values()
+        response = self._get_all_taxes_values(request, request.hash)
 
         if response.get('error_message'):
             raise ValidationError(

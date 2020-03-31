@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import hashlib
 import logging
 import re
 import requests
@@ -8,7 +9,7 @@ import requests
 from zeep import Client
 from zeep.exceptions import Fault
 
-from odoo import modules
+from odoo import modules, fields
 
 _logger = logging.getLogger(__name__)
 
@@ -151,3 +152,21 @@ class TaxCloudRequest(object):
             formatted_response['error_message'] = "TaxCloud Server Not Found"
 
         return formatted_response
+
+    @property
+    def hash(self):
+        # The hash is used as key to cache request responses, to avoid using too much space in the
+        # cache.
+        # The current date is appended to refresh the value every day.
+        return hashlib.sha1(
+            (
+                self.api_login_id
+                + self.api_key
+                + str(hasattr(self, "customer_id") and self.customer_id or "NoCustomerID")
+                + str(hasattr(self, "cart_id") and self.cart_id or "NoCartID")
+                + str(self.cart_items)
+                + str(self.origin)
+                + str(self.destination)
+                + fields.Date.to_string(fields.Date.today())
+            ).encode("utf-8")
+        ).hexdigest()

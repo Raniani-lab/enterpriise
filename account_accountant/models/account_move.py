@@ -77,9 +77,10 @@ class AccountMoveLine(models.Model):
                     max_account = account
                     max_total = account_total
 
-            wizard = self.env['account.transfer.wizard'].create({
+            wizard = self.env['account.automatic.entry.wizard'].create({
                 'move_line_ids': [(6, 0, self.ids)],
                 'destination_account_id': max_account.id,
+                'action': 'transfer'
             })
 
             return {
@@ -87,7 +88,7 @@ class AccountMoveLine(models.Model):
                 'type': 'ir.actions.act_window',
                 'view_type': 'form',
                 'view_mode': 'form',
-                'res_model': 'account.transfer.wizard',
+                'res_model': 'account.automatic.entry.wizard',
                 'res_id': wizard.id,
                 'target': 'new',
                 'context': {'active_ids': self.ids, 'active_model': 'account.move.line'},

@@ -207,10 +207,6 @@ class AnalyticLine(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        for vals in vals_list:
-            # when the name is not provide by the 'Add a line' form from grid view, we set a default one
-            if vals.get('project_id') and not vals.get('name'):
-                vals['name'] = _('/')
         analytic_lines = super(AnalyticLine, self).create(vals_list)
 
         # Check if the user has the correct access to create timesheets

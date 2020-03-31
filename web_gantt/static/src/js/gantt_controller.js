@@ -3,6 +3,7 @@ odoo.define('web_gantt.GanttController', function (require) {
 
 var AbstractController = require('web.AbstractController');
 var core = require('web.core');
+var config = require('web.config');
 var dialogs = require('web.view_dialogs');
 var confirmDialog = require('web.Dialog').confirm;
 
@@ -85,6 +86,7 @@ var GanttController = AbstractController.extend({
             activateScale: state.scale,
             allowedScales: this.allowedScales,
             displayExpandCollapseButtons: displayExpandCollapseButtons,
+            isMobile: config.device.isMobile,
         };
     },
     /**
@@ -499,9 +501,9 @@ var GanttController = AbstractController.extend({
     _onScaleClicked: function (ev) {
         ev.preventDefault();
         var $button = $(ev.currentTarget);
-        this.$buttons.find('.o_gantt_button_scale').removeClass('active');
-        $button.addClass('active');
-        this.$buttons.find('.o_gantt_dropdown_selected_scale').text($button.text());
+        if ($button.hasClass('active')) {
+            return;
+        }
         this.update({ scale: $button.data('value') });
     },
     /**

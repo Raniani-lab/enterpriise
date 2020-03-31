@@ -66,6 +66,7 @@
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/form_view_mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/kanban_view_mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/web_calendar_mobile.scss"/>
 
             <link rel="stylesheet" type="text/scss" href="/web/static/src/scss/navbar_mobile.scss"/>
         </xpath>
@@ -89,6 +90,7 @@
             <script type="text/javascript" src="/web_enterprise/static/src/js/swipe_item_mixin.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/tour_disable_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/core/dialog.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/views/calendar/calendar_controller.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/calendar/calendar_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_column.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_column_quick_create.js"></script>

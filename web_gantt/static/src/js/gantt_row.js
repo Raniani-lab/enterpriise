@@ -690,11 +690,9 @@ var GanttRow = Widget.extend({
         // DRAGGABLE
         if (this.options.canEdit && !pill.disableStartResize && !pill.disableStopResize && !this.isGroup) {
 
-            const resizeSnappingWidth = this._getResizeSnappingWidth()
-            const grid = [resizeSnappingWidth, 1];
+            const resizeSnappingWidth = this._getResizeSnappingWidth();
 
             if ($pill.draggable( "instance")) {
-                $pill.draggable("option", "grid", grid);
                 return;
             }
             if (!this.$containment) {
@@ -702,7 +700,6 @@ var GanttRow = Widget.extend({
             }
             $pill.draggable({
                 containment: this.$containment,
-                grid: grid,
                 start: function (event, ui) {
                     self.trigger_up('updating_pill_started');
 
@@ -728,11 +725,21 @@ var GanttRow = Widget.extend({
                     }
                     var diff = self._getDiff(resizeSnappingWidth, ui.position.left);
                     self._updateResizeBadge(ui.helper, diff, ui);
+
+                    const pointObject = { x: event.pageX, y: event.pageY };
+                    const options = { container: document.body };
+                    const $el = $.nearest(pointObject, '.o_gantt_hoverable', options).first();
+                    if ($el.length) {
+                        // remove ui-drag-hover class from other rows
+                        $('.o_gantt_hoverable').removeClass('ui-drag-hover');
+                        $el.addClass('ui-drag-hover');
+                    }
                 },
                 stop: function () {
                     self.trigger_up('updating_pill_stopped');
                     self.trigger_up('stop_dragging');
 
+                    self.$('.ui-drag-hover').removeClass('ui-drag-hover');
                     self.$el.removeClass('o_gantt_dragging');
                     self.$('.o_gantt_pill').popover('enable');
                 },

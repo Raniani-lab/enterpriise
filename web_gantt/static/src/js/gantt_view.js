@@ -20,6 +20,9 @@ var GanttView = AbstractView.extend({
         Controller: GanttController,
         Renderer: GanttRenderer,
     }),
+    jsLibs: [
+        '/web/static/lib/nearest/jquery.nearest.js',
+    ],
     viewType: 'gantt',
 
     /**

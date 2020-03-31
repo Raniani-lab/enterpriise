@@ -1948,6 +1948,62 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('display closest hook when pill being dragged', async function (assert) {
+        assert.expect(1);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            domain: [['id', 'in', [3, 7]]],
+        });
+
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill:first'), 'mouseover');
+
+        const cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        await testUtils.dom.dragAndDrop(
+            gantt.$('.o_gantt_pill:first'),
+            gantt.$('.o_gantt_pill:first'),
+            { position: { left: cellWidth, top: 0 }, disableDrop: true },
+        );
+        assert.hasClass(gantt.$("div[data-date='2018-12-21 00:00:00']"), 'ui-drag-hover',
+            "the hook should be displayed with dotted border");
+
+        gantt.destroy();
+    });
+
+    QUnit.test('closest hook should be removed on pill drop', async function (assert) {
+        assert.expect(1);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            domain: [['id', '=', 7]],
+        });
+
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseover');
+
+        const cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        await testUtils.dom.dragAndDrop(
+            gantt.$('.o_gantt_pill'),
+            gantt.$('.o_gantt_pill'),
+            { position: { left: cellWidth, top: 0 } },
+        );
+        assert.doesNotHaveClass(gantt.$("div[data-date='2018-12-21 00:00:00']"), 'ui-drag-hover',
+            "the hook should not be displayed with dotted border after drop");
+
+        gantt.destroy();
+    });
+
     QUnit.test('grey pills should not be resizable nor draggable', async function (assert) {
         assert.expect(4);
 

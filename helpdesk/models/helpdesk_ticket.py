@@ -409,7 +409,7 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             if ticket.create_date:  # fix from https://github.com/odoo/enterprise/commit/928fbd1a16e9837190e9c172fa50828fae2a44f7
                 if ticket.close_date:
-                    time_difference = ticket.close_hours - fields.Datetime.from_string(ticket.create_date)
+                    time_difference = ticket.close_date - fields.Datetime.from_string(ticket.create_date)
                 else:
                     time_difference = fields.Datetime.now() - fields.Datetime.from_string(ticket.create_date)
                 ticket.open_hours = (time_difference.seconds) / 3600 + time_difference.days * 24

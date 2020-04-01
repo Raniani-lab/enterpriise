@@ -90,7 +90,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Applicant\'s Name",
             trigger: '.oe_title input[name="partner_name"]',
-            run: 'text Mitchell Admin',
+            run: 'text Mitchell Admin 2',
         },
         {
             content: "Generate Offer Link",
@@ -138,7 +138,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Unchoose a car",
             trigger: 'input[name="fold_company_car_total_depreciated_cost"]',
-            extra_trigger: 'input[name="Gross"][value="2690.51"]',
+            extra_trigger: 'input[name="Gross"][value="2676.12"]',
             run: 'click',
         },
         {
@@ -323,6 +323,11 @@ Tour.register('hr_contract_salary_tour', {
                 $('input[list="fuel_card_range"]').val(0);
                 $('input[list="fuel_card_range"]').trigger('change');
             },
+        },
+        {
+            content: "Name",
+            trigger: 'input[name="name"]',
+            run: 'text Nathalie',
         },
         {
             content: "BirthDate",
@@ -576,8 +581,23 @@ Tour.register('hr_contract_salary_tour', {
             run: 'click',
         },
         {
+            content: "Choose a car",
+            trigger: 'input[name="fold_company_car_total_depreciated_cost"]',
+            extra_trigger: 'input[name="Gross"][value="3000"]',
+            run: 'click',
+        },
+        {
+            content: "Choose a new car",
+            trigger: 'label[for=company_car_total_depreciated_cost]',
+            run: function () {
+                $('select[name="select_company_car_total_depreciated_cost"] option:contains(Opel)').prop('selected', true);
+                $('select[name="select_company_car_total_depreciated_cost"]').trigger('change');
+            },
+        },
+        {
             content: "submit",
             trigger: 'button#hr_cs_submit',
+            extra_trigger: 'input[name="Gross"][value="2690.51"]',
             run: 'click',
         },
         {
@@ -646,29 +666,120 @@ Tour.register('hr_contract_salary_tour', {
             content: "Validate and Sign",
             trigger: ".o_sign_validate_banner button",
             run: 'click',
-        },
-        // Test Employee
+        }
+]);
+Tour.register('hr_contract_salary_tour_hr_sign', {
+    test: true,
+    url: '/web',
+    wait_for: Promise.resolve(odoo.__TipTemplateDef)
+},[
+    {
+        content: "Log into Belgian Company",
+        trigger: '.o_menu_systray .o_switch_company_menu > a',
+        run: 'click',
+    },
+    {
+        content: "Log into Belgian Company",
+        trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item span:contains('My Belgian Company - TEST')",
+        run: 'click',
+    },
+    {
+        content: "Recruitment",
+        trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
+        extra_trigger: ".o_menu_systray .o_switch_company_menu > a > span:contains('My Belgian Company - TEST')",
+        run: 'click',
+    },
+    {
+        content: "Configuration",
+        trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_configuration"]',
+        run: 'click',
+    },
+    {
+        content: "Jobs",
+        trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
+        run: 'click',
+    },
+    {
+        content: 'Select Our Job',
+        trigger: 'table.o_list_table tbody td:contains("Experienced Developer")'
+    },
+    {
+        content: "Open Application Pipe",
+        trigger: "button.oe_stat_button:contains(Applications)",
+        extra_trigger: 'button.o_form_button_edit',
+        run: 'click',
+    },
+    {
+        content: 'Select Our Applicant',
+        trigger: 'div.o_kanban_view b.o_kanban_record_title:contains("Mitchell Admin 2")'
+    },
+    {
+        content: "Open Contracts",
+        trigger: "button.oe_stat_button:contains(Contracts)",
+        extra_trigger: 'button.o_form_button_edit',
+        run: 'click',
+    },
+    {
+        content: 'Select Our Contract',
+        trigger: 'table.o_list_table tbody td:contains("New contract")'
+    },
+    {
+        content: "Open Signature Request",
+        trigger: "button.oe_stat_button:contains(Sign)",
+        extra_trigger: 'button.o_form_button_edit',
+        run: 'click',
+    },
+    {
+        content: "Sign",
+        trigger: "button:contains(Sign Document)",
+        run: 'click',
+    },
+    {
+        content: "Next",
+        trigger: 'iframe .o_sign_sign_item_navigator',
+        run: 'click',
+    },
+    {
+        content: "Click Signature",
+        trigger: 'iframe button.o_sign_sign_item',
+        run: 'click',
+    },
+    {
+        content: "Click Auto",
+        trigger: "a.o_web_sign_auto_button:contains('Auto')",
+        run: 'click',
+    },
+    {
+        content: "Adopt and Sign",
+        trigger: 'footer.modal-footer button.btn-primary:enabled',
+        run: 'click',
+    },
+    {
+        content: "Wait modal closed",
+        trigger: 'iframe body:not(:has(footer.modal-footer button.btn-primary))',
+        run: function () {},
+    },
+    {
+        content: "Validate and Sign",
+        trigger: ".o_sign_validate_banner button",
+        run: 'click',
+    },
+]
+);
+Tour.register('hr_contract_salary_tour_2', {
+        test: true,
+        url: '/web',
+        wait_for: Promise.resolve(odoo.__TipTemplateDef)
+    },[
         {
-            content: "Go on web/login",
-            trigger: 'h1.hr_cs_brand_optional',
-            run: function () {
-                window.location.href = window.location.origin + '/web/login/';
-            },
+            content: "Log into Belgian Company",
+            trigger: '.o_menu_systray .o_switch_company_menu > a',
+            run: 'click',
         },
         {
-            content: "Set login",
-            trigger: 'input[name=login]',
-            run: 'text admin'
-        },
-        {
-            content: "Set password",
-            trigger: 'input[name=password]',
-            run: 'text admin'
-        },
-        {
-            content: "Log in",
-            trigger: 'button[type=submit]',
-            run: 'click'
+            content: "Log into Belgian Company",
+            trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item span:contains('My Belgian Company - TEST')",
+            run: 'click',
         },
         {
             content: "Recruitment",
@@ -710,7 +821,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Applicant\'s Name",
             trigger: '.oe_title input[name="partner_name"]',
-            run: 'text Mitchell Admin',
+            run: 'text Mitchell Admin 2',
         },
         {
             content: "Create Employee",
@@ -720,7 +831,8 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Confirm Employee Creation",
-            trigger: ".btn-primary",
+            trigger: ".btn-primary:contains('Ok')",
+            extra_trigger: 'h4.modal-title:contains("Confirmation")',
             run: 'click'
         },
         {
@@ -874,6 +986,24 @@ Tour.register('hr_contract_salary_tour', {
                 var regex = '/salary_package/simulation/.*';
                 var url = simulation_link.match(regex)[0];
                 window.location.href = window.location.origin + url;
+            },
+        },
+        {
+            content: "Unchoose default car",
+            trigger: 'input[name="fold_company_car_total_depreciated_cost"]',
+            run: 'click',
+        },
+        {
+            content: "Choose to be in waiting list for car",
+            trigger: 'input[name="fold_wishlist_car_total_depreciated_cost"]',
+            run: 'click',
+        },
+        {
+            content: "Choose a new car in waiting list",
+            trigger: 'label[for=wishlist_car_total_depreciated_cost]',
+            run: function () {
+                $('select[name="select_wishlist_car_total_depreciated_cost"] option:contains(a3)').prop('selected', true);
+                $('select[name="select_wishlist_car_total_depreciated_cost"]').trigger('change');
             },
         },
         {

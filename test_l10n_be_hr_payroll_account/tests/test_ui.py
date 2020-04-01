@@ -155,9 +155,12 @@ class TestUi(odoo.tests.HttpCase):
             'default_car_value': 2000,
             'default_recurring_cost_amount_depreciated': 50,
         })
+        model_a3 = self.env.ref("fleet.model_a3")
+        model_a3.default_recurring_cost_amount_depreciated = 450
+        model_a3.can_be_requested = True
 
         self.env['fleet.vehicle'].create({
-            'model_id': self.env.ref("fleet.model_a3").id,
+            'model_id': model_a3.id,
             'license_plate': '1-JFC-095',
             'acquisition_date': time.strftime('%Y-01-01'),
             'co2': 88,
@@ -210,7 +213,44 @@ class TestUi(odoo.tests.HttpCase):
             'internet': 38,
             'mobile': 30,
             'eco_checks': 250,
+            'car_id': False
         })
 
         demo.flush()
         self.start_tour("/", 'hr_contract_salary_tour', login='admin', timeout=300)
+
+        new_contract_id = self.env['hr.contract'].search([('name', 'ilike', 'nathalie')])
+        self.assertTrue(new_contract_id, 'A contract has been created')
+        new_employee_id = new_contract_id.employee_id
+        self.assertTrue(new_employee_id, 'An employee has been created')
+        self.assertFalse(new_employee_id.active, 'Employee is not yet active')
+
+        model_corsa = self.env.ref("fleet.model_corsa")
+        vehicle = self.env['fleet.vehicle'].search([('company_id', '=', company_id.id), ('model_id', '=', model_corsa.id)])
+        self.assertFalse(vehicle, 'A vehicle has not been created')
+
+        self.start_tour("/", 'hr_contract_salary_tour_hr_sign', login='admin', timeout=300)
+
+        # Contract is signed by new employee and HR, the new car must be created
+        vehicle = self.env['fleet.vehicle'].search([('company_id', '=', company_id.id), ('model_id', '=', model_corsa.id)])
+        self.assertTrue(vehicle, 'A vehicle has been created')
+        self.assertEqual(vehicle.future_driver_id, new_employee_id.address_home_id, 'Futur driver is set')
+        self.assertEqual(vehicle.state_id, self.env.ref('fleet.fleet_vehicle_state_new_request'), 'Car created in right state')
+        self.assertEqual(vehicle.company_id, new_contract_id.company_id, 'Vehicle is in the right company')
+        self.assertTrue(new_employee_id.active, 'Employee is now active')
+
+        # they are a new limit to available car: 1. In the new contract, we can choose to be in waiting list.
+        self.env['ir.config_parameter'].sudo().set_param('l10n_be_hr_payroll_fleet.max_unused_cars', 1)
+
+        self.start_tour("/", 'hr_contract_salary_tour_2', login='admin', timeout=300)
+        new_contract_id = self.env['hr.contract'].search([('name', 'ilike', 'Mitchell Admin 2')])
+        self.assertTrue(new_contract_id, 'A contract has been created')
+        new_employee_id = new_contract_id.employee_id
+        self.assertTrue(new_employee_id, 'An employee has been created')
+        self.assertTrue(new_employee_id.active, 'Employee is active')
+
+        vehicle = self.env['fleet.vehicle'].search([('future_driver_id', '=', new_employee_id.address_home_id.id)])
+        self.assertTrue(vehicle, 'A vehicle has been created')
+        self.assertEqual(vehicle.model_id, model_a3, 'Car is right model')
+        self.assertEqual(vehicle.state_id, self.env.ref('fleet.fleet_vehicle_state_waiting_list'), 'Car created in right state')
+        self.assertEqual(vehicle.company_id, new_contract_id.company_id, 'Vehicle is in the right company')

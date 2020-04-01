@@ -19,7 +19,10 @@ class TimesheetForecastReport(models.Model):
     task_id = fields.Many2one('project.task', string='Task', readonly=True)
     project_id = fields.Many2one('project.project', string='Project', readonly=True)
     number_hours = fields.Float('Number of hours', readonly=True)
-    line_type = fields.Selection([('forecast', 'Forecast'), ('timesheet', 'Timesheet')], string='Type', readonly=True)
+    line_type = fields.Selection([('forecast', 'Planning'), ('timesheet', 'Timesheet')], string='Type', readonly=True)
+    effective_hours = fields.Float('Effective Hours', readonly=True)
+    planned_hours = fields.Float('Planned Hours', readonly=True)
+    difference = fields.Float('Difference', readonly=True)
 
     def init(self):
         tools.drop_view_if_exists(self.env.cr, self._table)
@@ -32,6 +35,9 @@ class TimesheetForecastReport(models.Model):
                         F.task_id AS task_id,
                         F.project_id AS project_id,
                         F.allocated_hours / NULLIF(F.working_days_count, 0) AS number_hours,
+                        0.0 AS effective_hours,
+                        F.allocated_hours / NULLIF(F.working_days_count, 0) AS planned_hours,
+                        F.allocated_hours / NULLIF(F.working_days_count, 0) AS difference,
                         'forecast' AS line_type,
                         F.id AS id
                     FROM generate_series(
@@ -39,7 +45,7 @@ class TimesheetForecastReport(models.Model):
                         (SELECT max(end_datetime) FROM planning_slot)::date,
                         '1 day'::interval
                     ) d
-                        LEFT JOIN planning_slot F ON d.date >= F.start_datetime AND d.date <= end_datetime
+                        LEFT JOIN planning_slot F ON d::date >= F.start_datetime::date AND d::date <= F.end_datetime::date
                         LEFT JOIN hr_employee E ON F.employee_id = E.id
                         LEFT JOIN resource_resource R ON E.resource_id = R.id
                     WHERE
@@ -53,6 +59,9 @@ class TimesheetForecastReport(models.Model):
                         A.task_id AS task_id,
                         A.project_id AS project_id,
                         A.unit_amount AS number_hours,
+                        A.unit_amount AS effective_hours,
+                        0.0 AS planned_hours,
+                        -A.unit_amount AS difference,
                         'timesheet' AS line_type,
                         -A.id AS id
                     FROM account_analytic_line A, hr_employee E

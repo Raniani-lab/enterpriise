@@ -258,6 +258,44 @@ class ProjectWorksheetTemplate(models.Model):
             'x_task_id', 'x_name',  # redundants
         ]
 
+    def _add_field_node_to_container(self, field_node, form_view_fields, container_col):
+        field_name = field_node.attrib['name']
+        new_container_col = container_col
+        if field_name not in self._get_qweb_arch_omitted_fields():
+            field_info = form_view_fields[field_name]
+            widget = field_node.attrib.get('widget', False)
+            is_signature = False
+            # adapt the widget syntax
+            if widget:
+                if widget == 'signature':
+                    is_signature = True
+                # no signature widget in qweb
+                field_node.attrib['t-options'] = "{'widget': '%s'}" % (widget if not is_signature else 'image')
+                field_node.attrib.pop('widget')
+            # basic form view -> qweb node transformation
+            if field_info['type'] != 'binary' or widget in ['image', 'signature']:
+                # adapt the field node itself
+                field_name = 'worksheet.' + field_node.attrib['name']
+                field_node.attrib.pop('name')
+                if is_signature:
+                    field_node.tag = 'img'
+                    field_node.attrib['style'] = 'width: 250px;'
+                    field_node.attrib['t-att-src'] = 'image_data_uri(%s)' % field_name
+                    field_node.attrib['t-if'] = field_name
+                else:
+                    field_node.tag = 'div'
+                    field_node.attrib['class'] = 'text-wrap col-8'
+                    field_node.attrib['t-field'] = field_name
+                # generate a description
+                description = etree.Element('div', {'class': 'col-4 font-weight-bold'})
+                description.text = field_info['string']
+                # insert all that in a container
+                container = etree.Element('div', {'class': 'row mb-2', 'style': 'page-break-inside: avoid'})
+                container.append(description)
+                container.append(field_node)
+                new_container_col.append(container)
+        return new_container_col
+
     @api.model
     def _get_qweb_arch(self, ir_model, qweb_template_name, form_view_id=False):
         """ This function generates a qweb arch, from the form view of the given ir.model record.
@@ -270,43 +308,33 @@ class ProjectWorksheetTemplate(models.Model):
         form_view_fields = fields_view_get_result['fields']
 
         qweb_arch = etree.Element("div")
-        for field_node in etree.fromstring(form_view_arch).xpath('//field'):
-            field_name = field_node.attrib['name']
-            if field_name not in self._get_qweb_arch_omitted_fields():
-                field_info = form_view_fields[field_name]
-
-                widget = field_node.attrib.get('widget', False)
-                is_signature = False
-                # adapt the widget syntax
-                if widget:
-                    if widget == 'signature':
-                        is_signature = True
-                    # no signature widget in qweb
-                    field_node.attrib['t-options'] = "{'widget': '%s'}" % (widget if not is_signature else 'image')
-                    field_node.attrib.pop('widget')
-                # basic form view -> qweb node transformation
-                if field_info['type'] != 'binary' or widget in ['image', 'signature']:
-                    # adapt the field node itself
-                    field_name = 'worksheet.' + field_node.attrib['name']
-                    field_node.attrib.pop('name')
-                    if is_signature:
-                        field_node.tag = 'img'
-                        field_node.attrib['style'] = 'width: 250px;'
-                        field_node.attrib['t-att-src'] = 'image_data_uri(%s)' % field_name
-                        field_node.attrib['t-if'] = field_name
-                    else:
-                        field_node.tag = 'div'
-                        field_node.attrib['class'] = 'text-wrap col-9'
-                        field_node.attrib['t-field'] =  field_name
-                    # generate a description
-                    description = etree.Element('div', {'class': 'col-3 font-weight-bold'})
-                    description.text = field_info['string']
-                    # insert all that in a container
-                    container = etree.Element('div', {'class': 'row mb-2', 'style': 'page-break-inside: avoid'})
-                    container.append(description)
-                    container.append(field_node)
-                    qweb_arch.append(container)
-
+        for row_node in etree.fromstring(form_view_arch).xpath('//group[not(ancestor::group)]|//field[not(ancestor::group)]'):
+            container_row = etree.Element('div')
+            container_col = etree.Element('div')
+            # pattern A: field is not in any element group --> field take full width
+            if 'name' in row_node.attrib and row_node.attrib['name'] not in self._get_qweb_arch_omitted_fields() and row_node.attrib['name'] in form_view_fields:
+                field_node = row_node
+                new_container_col = self._add_field_node_to_container(field_node, form_view_fields, container_col)
+                container_row.append(new_container_col)
+                qweb_arch.append(container_row)
+            else:
+                # pattern B: whe have an element group inside an element group --> we split into 2 columns
+                cols = row_node.xpath('./group')
+                if len(cols) > 0:
+                    container_row = etree.Element('div', {'class': 'row', 'style': 'page-break-inside: avoid'})
+                    for col_node in cols:
+                        container_col = etree.Element('div', {'class': 'col-6', 'style': 'page-break-inside: avoid'})
+                        container_row.append(container_col)
+                        for field_node in col_node.xpath('./field'):
+                            new_container_col = self._add_field_node_to_container(field_node, form_view_fields, container_col)
+                        container_row.append(new_container_col)
+                    qweb_arch.append(container_row)
+                # pattern C: whe have a field inside an element group --> field take full width
+                else:
+                    for field_node in row_node.xpath('./field'):
+                        new_container_col = self._add_field_node_to_container(field_node, form_view_fields, container_col)
+                        container_row.append(new_container_col)
+                        qweb_arch.append(container_row)
         t_root = etree.Element('t', {'t-name': qweb_template_name})
         t_root.append(qweb_arch)
         return etree.tostring(t_root)

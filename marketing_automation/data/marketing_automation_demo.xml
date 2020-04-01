@@ -13,7 +13,7 @@
                         <tr>
                             <td class="o_mail_no_resize"></td>
                             <td class="o_mail_no_resize o_mail_wrapper_td oe_structure">
-                                <div class="o_mail_block_header_logo mb16">
+                                <div class="o_mail_block_header_logo mb16" data-snippet="s_mail_block_header_logo">
                                     <div class="o_mail_snippet_general">
                                         <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles o_mail_h_padding">
                                             <tbody>
@@ -30,7 +30,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="o_mail_block_title_text">
+                                <div class="o_mail_block_title_text" data-snippet="s_mail_block_title_text">
                                     <div class="o_mail_snippet_general">
                                         <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                                             <tbody>
@@ -79,7 +79,7 @@
                         <tr>
                             <td class="o_mail_no_resize"></td>
                             <td class="o_mail_no_resize o_mail_wrapper_td oe_structure">
-                                <div class="o_mail_block_header_logo mb16">
+                                <div class="o_mail_block_header_logo mb16" data-snippet="s_mail_block_header_logo">
                                     <div class="o_mail_snippet_general">
                                         <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles o_mail_h_padding">
                                             <tbody>
@@ -96,7 +96,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="o_mail_block_title_text">
+                                <div class="o_mail_block_title_text" data-snippet="s_mail_block_title_text">
                                     <div class="o_mail_snippet_general">
                                         <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                                             <tbody>

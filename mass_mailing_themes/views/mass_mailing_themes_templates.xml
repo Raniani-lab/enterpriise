@@ -43,7 +43,7 @@
 
     <!-- Theme "Newsletter" default template -->
     <template id="theme_newsletter_template">
-        <div class="o_mail_block_header_social">
+        <div class="o_mail_block_header_social" data-snippet="s_mail_block_header_social">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tbody>
@@ -78,7 +78,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_footer_separator">
+        <div class="o_mail_block_footer_separator" data-snippet="s_mail_block_footer_separator">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_full_width_padding">
                     <tbody>
@@ -91,7 +91,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_paragraph">
+        <div class="o_mail_block_paragraph" data-snippet="s_mail_block_paragraph">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tbody>
@@ -107,7 +107,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_event o_mail_no_colorpicker mb32">
+        <div class="o_mail_block_event o_mail_no_colorpicker mb32" data-snippet="s_mail_block_event">
             <div class="o_mail_snippet_general">
                 <table align="center" cellpadding="0" cellspacing="0" class="o_mail_table_styles">
                     <tbody><tr>
@@ -136,7 +136,7 @@
                 </tbody></table>
             </div>
         </div>
-        <div class="o_mail_block_footer_separator">
+        <div class="o_mail_block_footer_separator" data-snippet="s_mail_block_footer_separator">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_full_width_padding">
                     <tbody>
@@ -149,7 +149,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_image_text">
+        <div class="o_mail_block_image_text" data-snippet="s_mail_block_image_text">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -169,7 +169,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_image_text">
+        <div class="o_mail_block_image_text" data-snippet="s_mail_block_image_text">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -189,12 +189,12 @@
                 </table>
             </div>
         </div>
-        <t t-call="mass_mailing.s_mail_block_footer_social_left"/>
+        <t t-snippet-call="mass_mailing.s_mail_block_footer_social_left"/>
     </template>
 
     <!-- Theme "Airmail" default template -->
     <template id="theme_airmail_template">
-        <div class="o_mail_block_header_social">
+        <div class="o_mail_block_header_social" data-snippet="s_mail_block_header_social">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tr>
@@ -226,7 +226,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_banner">
+        <div class="o_mail_block_banner" data-snippet="s_mail_block_banner">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tbody>
@@ -241,7 +241,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_two_cols">
+        <div class="o_mail_block_two_cols" data-snippet="s_mail_block_two_cols">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_v_padding o_mail_col_table">
                     <tbody>
@@ -276,7 +276,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_discount1">
+        <div class="o_mail_block_discount1" data-snippet="s_mail_block_discount1">
             <div class="o_mail_snippet_general">
                 <table align="center" cellpadding="0" cellspacing="0" class="o_mail_table_styles">
                     <tbody>
@@ -310,7 +310,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_three_cols">
+        <div class="o_mail_block_three_cols" data-snippet="s_mail_block_three_cols">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_v_padding o_mail_col_table">
                     <tbody>
@@ -349,12 +349,12 @@
                 </table>
             </div>
         </div>
-        <t t-call="mass_mailing.s_mail_block_footer_social"/>
+        <t t-snippet-call="mass_mailing.s_mail_block_footer_social"/>
     </template>
 
     <!-- Theme "Tech" default template -->
     <template id="theme_tech_template">
-        <div class="o_mail_block_header_social">
+        <div class="o_mail_block_header_social" data-snippet="s_mail_block_header_social">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tr>
@@ -386,7 +386,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_banner">
+        <div class="o_mail_block_banner" data-snippet="s_mail_block_banner">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tbody>
@@ -399,7 +399,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_image_text">
+        <div class="o_mail_block_image_text" data-snippet="s_mail_block_image_text">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -419,7 +419,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_image_text">
+        <div class="o_mail_block_image_text" data-snippet="s_mail_block_image_text">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -439,7 +439,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_image_text">
+        <div class="o_mail_block_image_text" data-snippet="s_mail_block_image_text">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -459,12 +459,12 @@
                 </table>
             </div>
         </div>
-        <t t-call="mass_mailing.s_mail_block_footer_social"/>
+        <t t-snippet-call="mass_mailing.s_mail_block_footer_social"/>
     </template>
 
     <!-- Theme "Resto" default template -->
     <template id="theme_resto_template">
-        <div class="o_mail_block_header_social">
+        <div class="o_mail_block_header_social" data-snippet="s_mail_block_header_social">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tr>
@@ -496,7 +496,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_banner">
+        <div class="o_mail_block_banner" data-snippet="s_mail_block_banner">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tbody>
@@ -511,7 +511,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_steps o_mail_no_colorpicker">
+        <div class="o_mail_block_steps o_mail_no_colorpicker" data-snippet="s_mail_block_steps">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_full_width_padding">
                     <tbody>
@@ -560,7 +560,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_title_sub mt8">
+        <div class="o_mail_block_title_sub mt8" data-snippet="s_mail_block_title_sub">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -573,7 +573,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_three_cols">
+        <div class="o_mail_block_three_cols" data-snippet="s_mail_block_three_cols">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_col_table">
                     <tbody>
@@ -612,7 +612,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_footer_separator">
+        <div class="o_mail_block_footer_separator" data-snippet="s_mail_block_footer_separator">
             <div class="snippet_row">
                 <div class="o_mail_snippet_general">
                     <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_full_width_padding">
@@ -627,7 +627,7 @@
                 </div>
             </div>
         </div>
-        <div class="o_mail_block_title_sub mt16">
+        <div class="o_mail_block_title_sub mt16" data-snippet="s_mail_block_title_sub">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -640,7 +640,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_two_cols">
+        <div class="o_mail_block_two_cols" data-snippet="s_mail_block_two_cols">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_col_table">
                     <tbody>
@@ -669,7 +669,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_footer_separator">
+        <div class="o_mail_block_footer_separator" data-snippet="s_mail_block_footer_separator">
             <div class="snippet_row">
                 <div class="o_mail_snippet_general">
                     <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_full_width_padding">
@@ -684,7 +684,7 @@
                 </div>
             </div>
         </div>
-        <div class="o_mail_block_image_text mt16 mb32">
+        <div class="o_mail_block_image_text mt16 mb32" data-snippet="s_mail_block_image_text">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -704,12 +704,12 @@
                 </table>
             </div>
         </div>
-        <t t-call="mass_mailing.s_mail_block_footer_social_left"/>
+        <t t-snippet-call="mass_mailing.s_mail_block_footer_social_left"/>
     </template>
 
     <!-- Theme "Bold" default template -->
     <template id="theme_bold_template">
-        <div class="o_mail_block_header_logo">
+        <div class="o_mail_block_header_logo" data-snippet="s_mail_block_header_logo">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles o_mail_h_padding">
                     <tr>
@@ -724,7 +724,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_banner">
+        <div class="o_mail_block_banner" data-snippet="s_mail_block_banner">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tbody>
@@ -739,7 +739,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_footer_separator">
+        <div class="o_mail_block_footer_separator" data-snippet="s_mail_block_footer_separator">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_full_width_padding">
                     <tbody>
@@ -752,8 +752,8 @@
                 </table>
             </div>
         </div>
-        <t t-call="mass_mailing.s_mail_block_comparison_table"/>
-        <div class="o_mail_block_paragraph">
+        <t t-snippet-call="mass_mailing.s_mail_block_comparison_table"/>
+        <div class="o_mail_block_paragraph" data-snippet="s_mail_block_paragraph">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tbody>
@@ -769,7 +769,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_footer_separator">
+        <div class="o_mail_block_footer_separator" data-snippet="s_mail_block_footer_separator">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_full_width_padding">
                     <tbody>
@@ -782,12 +782,12 @@
                 </table>
             </div>
         </div>
-        <t t-call="mass_mailing.s_mail_block_footer_social"/>
+        <t t-snippet-call="mass_mailing.s_mail_block_footer_social"/>
     </template>
 
     <!-- Theme "EXPO" default template -->
     <template id="theme_expo_template">
-        <div class="o_mail_block_banner">
+        <div class="o_mail_block_banner" data-snippet="s_mail_block_banner">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tbody>
@@ -802,7 +802,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_title_sub text-center">
+        <div class="o_mail_block_title_sub text-center" data-snippet="s_mail_block_title_sub">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -815,7 +815,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_three_cols">
+        <div class="o_mail_block_three_cols" data-snippet="s_mail_block_three_cols">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_col_table">
                     <tbody>
@@ -848,7 +848,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_image_text bg-beta">
+        <div class="o_mail_block_image_text bg-beta" data-snippet="s_mail_block_image_text">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -868,7 +868,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_title_sub text-center">
+        <div class="o_mail_block_title_sub text-center" data-snippet="s_mail_block_title_sub">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -881,7 +881,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_two_cols">
+        <div class="o_mail_block_two_cols" data-snippet="s_mail_block_two_cols">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_col_table">
                     <tbody>
@@ -912,7 +912,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_event o_mail_no_colorpicker">
+        <div class="o_mail_block_event o_mail_no_colorpicker" data-snippet="s_mail_block_event">
             <div class="o_mail_snippet_general">
                 <table align="center" cellpadding="0" cellspacing="0" class="o_mail_table_styles">
                     <tbody><tr>
@@ -942,12 +942,12 @@
                 </tbody></table>
             </div>
         </div>
-        <t t-call="mass_mailing.s_mail_block_footer_social" />
+        <t t-snippet-call="mass_mailing.s_mail_block_footer_social" />
     </template>
 
     <!-- Theme "solar" default template -->
     <template id="theme_solar_template">
-        <div class="o_mail_block_header_social">
+        <div class="o_mail_block_header_social" data-snippet="s_mail_block_header_social">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tr>
@@ -979,7 +979,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_banner">
+        <div class="o_mail_block_banner" data-snippet="s_mail_block_banner">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" border="0" class="o_mail_table_styles">
                     <tbody>
@@ -994,7 +994,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_discount2">
+        <div class="o_mail_block_discount2" data-snippet="s_mail_block_discount2">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_h_padding">
                     <tbody>
@@ -1030,7 +1030,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_three_cols">
+        <div class="o_mail_block_three_cols" data-snippet="s_mail_block_three_cols">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_v_padding o_mail_col_table">
                     <tbody>
@@ -1069,6 +1069,6 @@
                 </table>
             </div>
         </div>
-        <t t-call="mass_mailing.s_mail_block_footer_social_left" />
+        <t t-snippet-call="mass_mailing.s_mail_block_footer_social_left" />
     </template>
 </odoo>

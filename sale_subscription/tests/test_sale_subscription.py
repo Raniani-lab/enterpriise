@@ -85,7 +85,7 @@ class TestSubscription(TestSubscriptionCommon):
         return line_values
 
     def test_04_auto_payment_with_token(self):
-        from mock import patch
+        from unittest.mock import patch
 
         self.company = self.env.company
         self.company.country_id = self.env.ref('base.us')

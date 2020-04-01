@@ -59,7 +59,7 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
         })
 
     def test_01_recurring_invoice(self):
-        from mock import patch
+        from unittest.mock import patch
 
         self.account_type_receivable = self.env['account.account.type'].create({
             'name': 'receivable',

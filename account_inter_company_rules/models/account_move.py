@@ -42,7 +42,9 @@ class AccountMove(models.Model):
 
             inv_new = inv.with_context(default_move_type=invoice_vals['move_type']).new(invoice_vals)
             for line in inv_new.invoice_line_ids:
-                line.tax_ids = line._get_computed_taxes()
+                price_unit = line.price_unit
+                line._onchange_product_id()
+                line.price_unit = price_unit
             invoice_vals = inv_new._convert_to_write(inv_new._cache)
             invoice_vals.pop('line_ids', None)
 
@@ -61,6 +63,9 @@ class AccountMove(models.Model):
         :return: Python dictionary of values.
         '''
         self.ensure_one()
+        delivery_partner_id = self.company_id.partner_id.address_get(['delivery'])['delivery']
+        new_fiscal_position_id = self.env['account.fiscal.position'].with_company(self.company_id).get_fiscal_position(
+        self.company_id.partner_id.id, delivery_id=delivery_partner_id)
         return {
             'move_type': invoice_type,
             'ref': self.ref,
@@ -71,6 +76,7 @@ class AccountMove(models.Model):
             'invoice_date': self.invoice_date,
             'invoice_payment_ref': self.invoice_payment_ref,
             'invoice_origin': _('%s Invoice: %s') % (self.company_id.name, self.name),
+            'fiscal_position_id': new_fiscal_position_id,
         }
 
 

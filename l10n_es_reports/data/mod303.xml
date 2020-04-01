@@ -33,7 +33,7 @@
             <field name="name">[01] Base imponible 4%</field>
             <field name="code">aeat_mod_303_01</field>
             <field name="parent_id" ref="mod_303_title_2"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_01'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_01'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="3"/>
@@ -45,7 +45,7 @@
             <field name="name">[03] Cuota 4%</field>
             <field name="code">aeat_mod_303_03</field>
             <field name="parent_id" ref="mod_303_title_2"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_03'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_03'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="4"/>
@@ -57,7 +57,7 @@
             <field name="name">[04] Base imponible 10%</field>
             <field name="code">aeat_mod_303_04</field>
             <field name="parent_id" ref="mod_303_title_2"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_04'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_04'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="5"/>
@@ -69,7 +69,7 @@
             <field name="name">[06] Cuota 10%</field>
             <field name="code">aeat_mod_303_06</field>
             <field name="parent_id" ref="mod_303_title_2"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_06'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_06'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="6"/>
@@ -81,7 +81,7 @@
             <field name="name">[07] Base imponible 21%</field>
             <field name="code">aeat_mod_303_07</field>
             <field name="parent_id" ref="mod_303_title_2"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_07'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_07'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="7"/>
@@ -93,7 +93,7 @@
             <field name="name">[09] Cuota 21%</field>
             <field name="code">aeat_mod_303_09</field>
             <field name="parent_id" ref="mod_303_title_2"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_09'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_09'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="8"/>
@@ -113,7 +113,7 @@
             <field name="name">[10] Base imponible</field>
             <field name="code">aeat_mod_303_10</field>
             <field name="parent_id" ref="mod_303_title_3"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_10'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_10'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="10"/>
@@ -125,7 +125,7 @@
             <field name="name">[11] Cuota</field>
             <field name="code">aeat_mod_303_11</field>
             <field name="parent_id" ref="mod_303_title_2"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_11'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_11'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="11"/>
@@ -145,7 +145,7 @@
             <field name="name">[12] Base imponible</field>
             <field name="code">aeat_mod_303_12</field>
             <field name="parent_id" ref="mod_303_title_4"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_12'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_12'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="13"/>
@@ -157,7 +157,7 @@
             <field name="name">[13] Cuota</field>
             <field name="code">aeat_mod_303_13</field>
             <field name="parent_id" ref="mod_303_title_4"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_13'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_13'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="14"/>
@@ -177,7 +177,7 @@
         <record id="mod_303_casilla_14_sale" model="account.financial.html.report.line">
             <field name="name">[14] Base imponible - SALE</field>
             <field name="code">aeat_mod_303_14_sale</field>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_14_sale'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_14_sale'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="16"/>
@@ -189,7 +189,7 @@
         <record id="mod_303_casilla_14_purchase" model="account.financial.html.report.line">
             <field name="name">[14] Base imponible - PURCHASE</field>
             <field name="code">aeat_mod_303_14_purchase</field>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_14_purchase'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_14_purchase'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="17"/>
@@ -210,7 +210,7 @@
             <field name="name">[15] Cuota</field>
             <field name="code">aeat_mod_303_15</field>
             <field name="parent_id" ref="mod_303_title_5"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_15'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_15'))]"/>
             <field name="formulas">-sum</field>
             <field name="sequence" eval="20"/>
             <field name="level" eval="5"/>
@@ -228,7 +228,7 @@
             <field name="name">[16] Base imponible 0.5%</field>
             <field name="code">aeat_mod_303_16</field>
             <field name="parent_id" ref="mod_303_title_6"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_16'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_16'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="22"/>
@@ -240,7 +240,7 @@
             <field name="name">[18] Cuota 0.5%</field>
             <field name="code">aeat_mod_303_18</field>
             <field name="parent_id" ref="mod_303_title_6"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_18'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_18'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="23"/>
@@ -252,7 +252,7 @@
             <field name="name">[19] Base imponible 1.4%</field>
             <field name="code">aeat_mod_303_19</field>
             <field name="parent_id" ref="mod_303_title_6"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_19'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_19'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="24"/>
@@ -264,7 +264,7 @@
             <field name="name">[21] Cuota 1.4%</field>
             <field name="code">aeat_mod_303_21</field>
             <field name="parent_id" ref="mod_303_title_6"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_21'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_21'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="25"/>
@@ -276,7 +276,7 @@
             <field name="name">[22] Base imponible 5.2%</field>
             <field name="code">aeat_mod_303_22</field>
             <field name="parent_id" ref="mod_303_title_6"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_22'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_22'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="26"/>
@@ -288,7 +288,7 @@
             <field name="name">[24] Cuota 5.2%</field>
             <field name="code">aeat_mod_303_24</field>
             <field name="parent_id" ref="mod_303_title_6"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_24'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_24'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="27"/>
@@ -308,7 +308,7 @@
             <field name="name">[25] Base imponible</field>
             <field name="code">aeat_mod_303_25</field>
             <field name="parent_id" ref="mod_303_title_7"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_25'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_25'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="29"/>
@@ -320,7 +320,7 @@
             <field name="name">[26] Cuota</field>
             <field name="code">aeat_mod_303_26</field>
             <field name="parent_id" ref="mod_303_title_7"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_26'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_26'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="30"/>
@@ -358,7 +358,7 @@
             <field name="name">[28] Base</field>
             <field name="code">aeat_mod_303_28</field>
             <field name="parent_id" ref="mod_303_title_9"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_28'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_28'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="34"/>
@@ -370,7 +370,7 @@
             <field name="name">[29] Cuota</field>
             <field name="code">aeat_mod_303_29</field>
             <field name="parent_id" ref="mod_303_title_9"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_29'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_29'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="35"/>
@@ -390,7 +390,7 @@
             <field name="name">[30] Base</field>
             <field name="code">aeat_mod_303_30</field>
             <field name="parent_id" ref="mod_303_title_10"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_30'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_30'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="37"/>
@@ -402,7 +402,7 @@
             <field name="name">[31] Cuota</field>
             <field name="code">aeat_mod_303_31</field>
             <field name="parent_id" ref="mod_303_title_10"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_31'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_31'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="38"/>
@@ -422,7 +422,7 @@
             <field name="name">[32] Base</field>
             <field name="code">aeat_mod_303_32</field>
             <field name="parent_id" ref="mod_303_title_11"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_32'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_32'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="40"/>
@@ -434,7 +434,7 @@
             <field name="name">[33] Cuota</field>
             <field name="code">aeat_mod_303_33</field>
             <field name="parent_id" ref="mod_303_title_11"/>
-            <field name="domain" eval="[('debit', '>', 0.0), ('tag_ids','=',ref('l10n_es.mod_303_33'))]"/>
+            <field name="domain" eval="[('debit', '>', 0.0), ('tax_tag_ids','=',ref('l10n_es.mod_303_33'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="41"/>
@@ -454,7 +454,7 @@
             <field name="name">[34] Base</field>
             <field name="code">aeat_mod_303_34</field>
             <field name="parent_id" ref="mod_303_title_12"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_34'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_34'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="43"/>
@@ -466,7 +466,7 @@
             <field name="name">[35] Cuota</field>
             <field name="code">aeat_mod_303_35</field>
             <field name="parent_id" ref="mod_303_title_12"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_35'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_35'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="44"/>
@@ -486,7 +486,7 @@
             <field name="name">[36] Base</field>
             <field name="code">aeat_mod_303_36</field>
             <field name="parent_id" ref="mod_303_title_13"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_36'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_36'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="46"/>
@@ -498,7 +498,7 @@
             <field name="name">[37] Cuota</field>
             <field name="code">aeat_mod_303_37</field>
             <field name="parent_id" ref="mod_303_title_13"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_37'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_37'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="47"/>
@@ -518,7 +518,7 @@
             <field name="name">[38] Base</field>
             <field name="code">aeat_mod_303_38</field>
             <field name="parent_id" ref="mod_303_title_14"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_38'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_38'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="49"/>
@@ -530,7 +530,7 @@
             <field name="name">[39] Cuota</field>
             <field name="code">aeat_mod_303_39</field>
             <field name="parent_id" ref="mod_303_title_14"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_39'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_39'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="50"/>
@@ -550,7 +550,7 @@
             <field name="name">[40] Base</field>
             <field name="code">aeat_mod_303_40</field>
             <field name="parent_id" ref="mod_303_title_15"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_40'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_40'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="52"/>
@@ -562,7 +562,7 @@
             <field name="name">[41] Cuota</field>
             <field name="code">aeat_mod_303_41</field>
             <field name="parent_id" ref="mod_303_title_15"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_41'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_41'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="53"/>
@@ -574,7 +574,7 @@
             <field name="name">[42] Compensaciones Régimen especial A. G. y P. - Cuota compras</field>
             <field name="code">aeat_mod_303_42</field>
             <field name="parent_id" ref="mod_303_title_8"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_42'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_42'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="54"/>
@@ -634,7 +634,7 @@
             <field name="name">[59] Entregas intracomunitarias de bienes y servicios - Base ventas</field>
             <field name="code">aeat_mod_303_59</field>
             <field name="parent_id" ref="mod_303_title_16"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_59'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_59'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="60"/>
@@ -646,7 +646,7 @@
             <field name="name">[60] Exportaciones y operaciones asimiladas - Base ventas</field>
             <field name="code">aeat_mod_303_60</field>
             <field name="parent_id" ref="mod_303_title_16"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_60'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_60'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="61"/>
@@ -658,7 +658,7 @@
             <field name="name">[61] Operaciones no sujetas o con inversión del sujeto pasivo que originan derecho a dedución - Base ventas</field>
             <field name="code">aeat_mod_303_61</field>
             <field name="parent_id" ref="mod_303_title_16"/>
-            <field name="domain" eval="[('tag_ids','=',ref('l10n_es.mod_303_61'))]"/>
+            <field name="domain" eval="[('tax_tag_ids','=',ref('l10n_es.mod_303_61'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="62"/>

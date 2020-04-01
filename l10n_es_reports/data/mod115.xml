@@ -25,7 +25,7 @@
             <field name="name">[01] Nº de perceptores</field>
             <field name="code">aeat_mod_115_01</field>
             <field name="parent_id" ref='mod_115_title_1'/>
-            <field name="domain" eval="[('tag_ids', 'in', [ref('l10n_es.mod_115_02'), ref('l10n_es.mod_115_03')])]"/>
+            <field name="domain" eval="[('tax_tag_ids', 'in', [ref('l10n_es.mod_115_02'), ref('l10n_es.mod_115_03')])]"/>
             <field name="formulas">count_rows</field>
             <field name="groupby">partner_id</field>
             <field name="figure_type">no_unit</field>
@@ -38,7 +38,7 @@
             <field name="name">[02] Base retenciones</field>
             <field name="code">aeat_mod_115_02</field>
             <field name="parent_id" ref='mod_115_title_1'/>
-            <field name="domain" eval="[('tag_ids', '=', ref('l10n_es.mod_115_02'))]"/>
+            <field name="domain" eval="[('tax_tag_ids', '=', ref('l10n_es.mod_115_02'))]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="3"/>
@@ -50,7 +50,7 @@
             <field name="name">[03] Retenciones</field>
             <field name="code">aeat_mod_115_03</field>
             <field name="parent_id" ref='mod_115_title_1'/>
-            <field name="domain" eval="[('tag_ids', '=', ref('l10n_es.mod_115_03'))]"/>
+            <field name="domain" eval="[('tax_tag_ids', '=', ref('l10n_es.mod_115_03'))]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="4"/>

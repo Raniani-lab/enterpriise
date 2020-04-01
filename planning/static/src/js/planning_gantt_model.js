@@ -16,21 +16,6 @@ odoo.define('planning.PlanningGanttModel', function (require) {
 
             return this._super(handle, params);
         },
-        /* Overrides the load method to inject
-         * a context which will be sent to
-         * rpc requests.
-         *
-         * It allows to check if we want to do
-         * the custom read_group in planning.py
-         *
-         * @override
-         * @param {Object} params
-         * @returns {Promise}
-         */
-        load: function (params) {
-            params.context['prepend_open_shifts'] = true;
-            return this._super.apply(this, arguments);
-        },
         /**
          * @private
          * @override
@@ -38,21 +23,208 @@ odoo.define('planning.PlanningGanttModel', function (require) {
          */
         _generateRows: function (params) {
             var rows = this._super(params);
-            // is the data grouped by?
-            if(params.groupedBy && params.groupedBy.length){
-                // in the last row is the grouped by field is null
-                if(rows && rows.length && rows[rows.length - 1] && !rows[rows.length - 1].resId){
-                    // then make it the first one
-                    rows.unshift(rows.pop());
+            // always move an empty row to the head
+            if (params.groupedBy && params.groupedBy.length && rows.length > 1 && rows[0].resId) {
+                this._reorderEmptyRow(rows)
+            }
+            this._renameOpenShifts(rows);
+            // always prepend an empty row if employee_id is in the group_by
+            if (!params.parentPath && params.groupedBy && params.groupedBy.includes('employee_id')) {
+                this._prependEmptyRow(rows, params.groupedBy);
+            }
+            // generate empty rows for selected associations of group by
+            if (!params.parentPath && params.groupedBy && this._allowedEmptyGroups(params.groupedBy)) {
+                this._startGenerateEmptyRows(rows, params.groupedBy);
+            }
+            return rows;
+        },
+        /**
+         * Recursive function that will generate the empty row for the last group in the groupedBy array.
+         * An empty row is a row that has the value of the model (resId) linked to it equal to false.
+         *
+         * @private
+         * @param {Object} row
+         * @param {string[]} groupedBy
+         * @param {integer} level
+         * @param {Object} parentValues
+         * @param {boolean} prependUndefined
+         */
+        _generateEmptyRows: function (row, groupedBy, level = 0, parentValues = {}, prependUndefined = false) {
+            var levelMax = groupedBy.length - 1;
+            var emptyRowId = row.id + '-empty';
+            var emptyGroupId = row.id + '-empty';
+            var undefinedGroupBy = groupedBy[level + 1];
+            parentValues[row.groupedByField] = row.resId ? [row.resId, row.name] : false;
+
+            if (prependUndefined) {
+                if (!row.rows || !row.rows.length || row.rows[0].resId) {
+                    row.rows.unshift(this._createEmptyRow(emptyRowId, emptyGroupId, undefinedGroupBy, row.path, level < levelMax - 1));
+                    row.childrenRowIds.unshift(emptyRowId);
+
+                    if (level === levelMax - 1) {
+                        this._addGanttEmptyGroup(emptyGroupId, parentValues, undefinedGroupBy);
+                    }
+                }
+                if (level < levelMax - 1) {
+                    this._generateEmptyRows(row.rows[0], groupedBy, level + 1, parentValues, prependUndefined);
+                }
+            } else if (level < levelMax - 1 && row.rows && row.rows.length) {
+                row.rows.forEach((childRow) => this._generateEmptyRows(childRow, groupedBy, level + 1, parentValues));
+            // create empty row for the last group in the groupedBy array
+            // the empty row has to be added to the children list of his parent, so the action takes place in the parent of the last group
+            // the empty row must be the first child, so if the first child has a value, it means there is no empty row yet
+            } else if (level === levelMax - 1 && row.rows && row.rows.length && row.rows[0].resId) {
+                row.rows.unshift(this._createEmptyRow(emptyRowId, emptyGroupId, undefinedGroupBy, row.path));
+                row.childrenRowIds.unshift(emptyRowId);
+                this._addGanttEmptyGroup(emptyGroupId, parentValues, undefinedGroupBy);
+            }
+        },
+        /**
+         * Create and return an empty row.
+         *
+         * @private
+         * @param {string} rowId
+         * @param {string} groupId
+         * @param {string} groupBy
+         * @param {string|null} parentPath
+         * @param {boolean} isGroup
+         * @returns {Object}
+         */
+        _createEmptyRow: function (rowId, groupId, groupBy, parentPath = null, isGroup = false) {
+            return {
+                name: ['employee_id', 'department_id'].includes(groupBy) ? _t('Open Shifts') : this._getFieldFormattedValue(false, this.ganttData.fields[groupBy]),
+                groupId: groupId,
+                groupedBy: [groupBy],
+                groupedByField: groupBy,
+                id: rowId,
+                resId: false,
+                isGroup: isGroup,
+                isOpen: true,
+                path: parentPath ? parentPath + '/false' : 'false',
+                records: [],
+                unavailabilities: [],
+                rows: isGroup ? [] : null,
+                childrenRowIds: isGroup ? [] : null
+            };
+        },
+        /**
+         * Create a Gantt group and add it to the Gantt data.
+         *
+         * @private
+         * @param {string} groupId
+         * @param {Object} parentValues
+         * @param {string} emptyKey
+         */
+        _addGanttEmptyGroup: function (groupId, parentValues, emptyKey) {
+            var group = {id: groupId};
+            Object.keys(parentValues).forEach((key) => group[key] = parentValues[key]);
+            group[emptyKey] = false;
+            this.ganttData.groups.push(group);
+        },
+        /**
+         * Rename 'Undefined Employee' and 'Undefined Department' to 'Open Shifts'.
+         *
+         * @private
+         * @param {Object[]} rows
+         */
+        _renameOpenShifts: function (rows) {
+            rows.filter(row => ['employee_id', 'department_id'].includes(row.groupedByField) && !row.resId)
+                .forEach(row => row.name = _t('Open Shifts'));
+        },
+        /**
+         * Find an empty row and move it at the head of the array.
+         *
+         * @private
+         * @param {Object[]} rows
+         */
+        _reorderEmptyRow: function (rows) {
+            let emptyIndex = null;
+            for (let i = 0; i < rows.length; ++i) {
+                if (!rows[i].resId) {
+                    emptyIndex = i;
+                    break;
                 }
             }
-            // rename 'Undefined Employee' into 'Open Shifts'
-            _.each(rows, function(row){
-                if(row.groupedByField === 'employee_id' && !row.resId){
-                    row.name = _t('Open Shifts');
+            if (emptyIndex) {
+                const emptyRow = rows.splice(emptyIndex, 1)[0];
+                rows.unshift(emptyRow);
+            }
+        },
+        /**
+         * Prepend an empty row if the first one is not an empty one.
+         * Replace the default row by an empty one when there is no data.
+         *
+         * @private
+         * @param {Object[]} rows
+         * @param {string[]} groupedBy
+         */
+        _prependEmptyRow: function (rows, groupedBy) {
+            const prependEmptyRow = (rows.length === 1 && !rows[0].id) || rows[0].resId;
+            if (prependEmptyRow) {
+                // remove the default empty row
+                if (!rows[0].id) {
+                    rows.splice(0, 1);
                 }
-            });
-            return rows;
+                rows.unshift(this._createEmptyRow('empty', 'empty', groupedBy[0], null, groupedBy.length > 1));
+                if (groupedBy.length === 1) {
+                    this._addGanttEmptyGroup('empty', {[groupedBy[0]]: false}, groupedBy[0]);
+                }
+            }
+            if (groupedBy.length > 1) {
+                this._generateEmptyRows(rows[0], groupedBy, 0, {}, true);
+            }
+        },
+        /**
+         * Start the generation of the empty rows for the last group in groupedBy.
+         *
+         * @private
+         * @param {Object[]} rows
+         * @param {string[]} groupedBy
+         */
+        _startGenerateEmptyRows: function (rows, groupedBy) {
+            // for one-level group by, directly create the empty row
+            if (groupedBy.length === 1 && rows.length > 0 && rows[0].resId) {
+                rows.unshift(this._createEmptyRow('empty', 'empty', groupedBy[0],));
+                this._addGanttEmptyGroup('empty', {}, groupedBy[0]);
+            } else if (groupedBy.length > 1) {
+                rows.forEach((row) => this._generateEmptyRows(row, groupedBy));
+            }
+        },
+        /**
+         * Check if the given groupBy is in the list that has to generate undefined lines.
+         *
+         * @private
+         * @param {string[]} groupedBy
+         * @returns {boolean}
+         */
+        _allowedEmptyGroups: function (groupedBy) {
+            return -1 < this._getEmptyGroupsToDisplay().indexOf(groupedBy.join(','));
+        },
+        /**
+         * Return the list of groupBy for which undefined line has to be displayed.
+         * An array of strings is used to ease the comparison.
+         *
+         * @private
+         * @returns {string[]}
+         */
+        _getEmptyGroupsToDisplay: function () {
+            return [
+                'role_id',
+                'role_id,employee_id',
+                'role_id,department_id',
+                'department_id',
+                'department_id,role_id',
+                'project_id',
+                'project_id,department_id',
+                'project_id,employee_id',
+                'project_id,role_id',
+                'project_id,task_id,employee_id',
+                'project_id,task_id,role_id',
+                'task_id',
+                'task_id,department_id',
+                'task_id,employee_id',
+                'task_id,role_id',
+            ];
         },
     });
 

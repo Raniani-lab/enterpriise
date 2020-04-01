@@ -291,7 +291,6 @@ class Planning(models.Model):
         for fname in recurrence_fields:
             self[fname] = default_values.get(fname)
 
-
     # ----------------------------------------------------
     # ORM overrides
     # ----------------------------------------------------
@@ -311,34 +310,6 @@ class Planning(models.Model):
                 WHERE %(column_name)s IS NULL
             """ % {'table_name': self._table, 'column_name': column_name}
             self.env.cr.execute(query)
-
-    @api.model
-    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
-        result = super(Planning, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
-        prepend_open_shifts = self.env.context.get('prepend_open_shifts')
-        if 'employee_id' in groupby and prepend_open_shifts:
-            # Always prepend 'Undefined Employees' (will be printed 'Open Shifts' when called by the frontend)
-            d = {}
-            for field in fields:
-                d.update({field: False})
-            result.insert(0, d)
-
-        # Ensures there's an 'Open Shifts' line for each Role
-        if 'role_id' in groupby and prepend_open_shifts:
-            roles = set()
-            all_roles = set()
-
-            for g in result:
-                all_roles.add(g['role_id'])
-                if not g.get('employee_id', False):
-                    roles.add(g['role_id'])
-
-            for role in all_roles - roles:
-                openshift = {k:False for k in fields}
-                openshift.update({'role_id': role})
-                result.append(openshift)
-
-        return result
 
     def name_get(self):
         group_by = self.env.context.get('group_by', [])

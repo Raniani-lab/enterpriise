@@ -8,17 +8,16 @@
 
     <data>
         <record id="digest_tip_helpdesk_0" model="digest.tip">
-            <field name="name">Helpdesk: try mailgateway</field>
-            <field name="sequence">3</field>
+            <field name="name">Helpdesk: Create tickets from incoming emails</field>
+            <field name="sequence">5</field>
             <field name="tip_description" type="html">
 <div>
-    % set email_alias = object.env['helpdesk.team'].search([('alias_name','!=', False)],limit=1).alias_id.display_name
+    % set email_alias = object.env['helpdesk.team'].search([('alias_name', '!=', False)],limit=1).alias_id.display_name
     % if email_alias
-    <strong style="font-size: 16px;">Try the mail gateway</strong>
-    <div style="font-size: 14px;">Emails sent to <strong>${email_alias}</strong> generate new tickets in your Helpdesk funnel.<br/>
-        <div style="text-align:center;margin-top:5px;margin-bottom:2px;">
-            <a href="mailto:${email_alias}" style="background-color:#56b3b5;padding:2px;color:#FFFFFF;font-weight:bold;text-decoration:none;">Try Now</a>
-        </div>
+    <b class="font-16" style="font-size: 20px;line-height: 30px"> Create tickets from incoming emails</b>
+    <p class="font-12" style="color:#888888;font-size: 15px; line-height: 25px; margin-top: 0">Emails sent to <strong>${email_alias}</strong> generate new tickets in your Helpdesk funnel.</p>
+    <div style="text-align:center;margin-top:5px;margin-bottom:10px;">
+        <a href="mailto:${email_alias}" target="_blank" style="display:inline-block;background-color:#875a7b;line-height:40px;text-decoration: none;color: #ffffff;border-radius: 3px;font-size:13px;font-weight:bold;text-align:center; padding:0 10px;">Try it now</a>
     </div>
     % endif
 </div>

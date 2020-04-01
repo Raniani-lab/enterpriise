@@ -75,7 +75,7 @@ class AccountPayment(models.Model):
             if record.payment_method_code == 'sdd':
                 usable_mandate = record.get_usable_mandate()
                 if not usable_mandate:
-                    raise UserError(_("Unable to post payment '%s' due to no usable mandate being available at date %s for partner '%s'. Please create one before encoding a SEPA Direct Debit payment." % (record.name, str(record.payment_date), record.partner_id.name)))
+                    raise UserError(_("Unable to post payment due to no usable mandate being available at date %s for partner '%s'. Please create one before encoding a SEPA Direct Debit payment." % (str(record.payment_date), record.partner_id.name)))
                 record._register_on_mandate(usable_mandate)
 
         super(AccountPayment, self).post()

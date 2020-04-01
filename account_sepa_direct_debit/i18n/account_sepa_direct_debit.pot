@@ -959,7 +959,7 @@ msgstr ""
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
-"Unable to post payment '%s' due to no usable mandate being available at date"
+"Unable to post payment due to no usable mandate being available at date"
 " %s for partner '%s'. Please create one before encoding a SEPA Direct Debit "
 "payment."
 msgstr ""

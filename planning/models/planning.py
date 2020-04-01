@@ -740,7 +740,8 @@ class Planning(models.Model):
             return all_employees
         elif self._context.get('planning_expand_employee') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
             filters = self._expand_domain_dates(domain)
-            return self.env['planning.slot'].search(filters).mapped('employee_id')
+            employees = self.env['planning.slot'].search(filters).mapped('employee_id')
+            return employees.search([('id', 'in', employees.ids)], order=order)
         return employees
 
     def _read_group_role_id(self, roles, domain, order):

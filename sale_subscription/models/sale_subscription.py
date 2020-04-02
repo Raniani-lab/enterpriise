@@ -107,7 +107,7 @@ class SaleSubscription(models.Model):
     health = fields.Selection([
         ('normal', 'Neutral'),
         ('done', 'Good'),
-        ('bad', 'Bad')], string="Health", copy=False, default='normal', translate=True, help="Show the health status")
+        ('bad', 'Bad')], string="Health", copy=False, default='normal', help="Show the health status")
     stage_category = fields.Selection(related='stage_id.category', store=True)
     to_renew = fields.Boolean(string='To Renew', default=False, copy=False)
     payment_term_id = fields.Many2one('account.payment.term', string='Default Payment Terms', check_company=True, tracking=True, help="These payment terms will be used when generating new invoices and renewal/upsell orders. Note that invoices paid using online payment will use 'Already paid' regardless of this setting.")

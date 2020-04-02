@@ -303,7 +303,7 @@ QUnit.module('Studio Navigation', {
         actionManager.destroy();
     });
 
-    QUnit.test('keep action context when leaving Studio', async function (assert) {
+    QUnit.skip('keep action context when leaving Studio', async function (assert) {
         assert.expect(2);
 
         this.actions[0].context = "{'active_id': 1}";

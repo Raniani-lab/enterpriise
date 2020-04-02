@@ -104,6 +104,8 @@ class TestCreditTime(common.SavepointCase):
         date_start = datetime.date(2020, 3, 1)
         date_stop = datetime.date(2020, 3, 31)
         work_entries = contracts._generate_work_entries(date_start, date_stop)
+        # The work entries are generated until today, so only take those from march
+        work_entries = work_entries.filtered(lambda w: w.date_start.month == 3)
 
         work_entries_1 = work_entries.filtered(lambda w: w.contract_id == self.original_contract)
         work_entries_2 = work_entries - work_entries_1
@@ -197,6 +199,8 @@ class TestCreditTime(common.SavepointCase):
         date_start = datetime.date(2020, 3, 1)
         date_stop = datetime.date(2020, 3, 31)
         work_entries = contracts._generate_work_entries(date_start, date_stop)
+        # The work entries are generated until today, so only take those from march
+        work_entries = work_entries.filtered(lambda w: w.date_start.month == 3)
 
         work_entries_1 = work_entries.filtered(lambda w: w.contract_id == self.original_contract)
         work_entries_2 = work_entries - work_entries_1

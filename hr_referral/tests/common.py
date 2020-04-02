@@ -3,6 +3,11 @@
 
 from odoo.tests.common import TransactionCase
 
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
+
 
 class TestHrReferralBase(TransactionCase):
 
@@ -52,3 +57,10 @@ class TestHrReferralBase(TransactionCase):
         })
 
         self.mug_shop = self.mug_shop.with_user(self.richard_user.id)
+
+        def _get_title_from_url(u):
+            return "Hello"
+
+        patcher = patch('odoo.addons.link_tracker.models.link_tracker.LinkTracker._get_title_from_url', wraps=_get_title_from_url)
+        patcher.start()
+        self.addCleanup(patcher.stop)

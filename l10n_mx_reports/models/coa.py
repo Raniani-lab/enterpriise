@@ -1,7 +1,7 @@
 # coding: utf-8
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, _, fields, tools
+from odoo import models, _, api, fields, tools
 from odoo.exceptions import ValidationError
 from odoo.tools.xml_utils import _check_with_xsd
 
@@ -28,15 +28,9 @@ class MXReportAccountCoa(models.AbstractModel):
     filter_hierarchy = None
     filter_journals = None
 
-    def _get_templates(self):
-        templates = super(MXReportAccountCoa, self)._get_templates()
-        #use the main template instead of the trial balance with 2 header lines
-        templates['main_table_header_template'] = 'account_reports.main_table_header'
-        templates['main_template'] = 'account_reports.main_template'
-        return templates
-
-    def _get_columns_name(self, options):
-        return [{'name': ''}, {'name': _('Nature')}]
+    @api.model
+    def _get_columns(self, options):
+        return [[{'name': ''}, {'name': _('Nature')}]]
 
     def _get_lines(self, options, line_id=None):
         options['coa_only'] = True

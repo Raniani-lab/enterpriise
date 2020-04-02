@@ -109,7 +109,10 @@
         <field name="name">Schedule by Project</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
-        <field name="context">{'search_default_group_by_project': 1, 'planning_expand_project': 1, 'planning_groupby_project': True}</field>
+        <field name="context">{
+            'search_default_group_by_project': 1, 'planning_groupby_project': True,
+            'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1
+        }</field>
     </record>
 
         <record id="planning_action_schedule_by_project_view_gantt" model="ir.actions.act_window.view">
@@ -123,7 +126,10 @@
             <field name="name">Schedule by Employee</field>
             <field name="res_model">planning.slot</field>
             <field name="view_mode">gantt,calendar,tree,form,kanban</field>
-            <field name="context">{'search_default_group_by_employee': 1, 'planning_groupby_employee': True}</field>
+            <field name="context">{
+                'search_default_group_by_employee': 1, 'planning_groupby_employee': True, 'planning_expand_employee': 1, 'planning_expand_role': 1,
+                'planning_expand_project': 1, 'planning_expand_task': 1
+            }</field>
         </record>
 
         <record id="project_forecast_action_schedule_by_employee_view_gantt" model="ir.actions.act_window.view">
@@ -132,6 +138,28 @@
             <field name="view_id" ref="planning_view_gantt_inherit"/>
             <field name="act_window_id" ref="project_forecast_action_schedule_by_employee"/>
         </record>
+
+    <!-- Override action contexts to allow group_expand to apply for project_id and task_id -->
+    <record id="planning.planning_action_my_calendar" model="ir.actions.act_window">
+        <field name="context">{
+            'search_default_my_shifts': 1, 'search_default_open_shifts': 1,
+            'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
+        }</field>
+    </record>
+
+    <record id="planning.planning_action_schedule_by_employee" model="ir.actions.act_window">
+        <field name="context">{
+            'search_default_group_by_employee': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1,
+            'planning_expand_project': 1, 'planning_expand_task': 1,
+        }</field>
+    </record>
+
+    <record id="planning.planning_action_schedule_by_role" model="ir.actions.act_window">
+        <field name="context">{
+            'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True,
+            'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
+        }</field>
+    </record>
 
     <!-- menus -->
     <menuitem

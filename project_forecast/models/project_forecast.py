@@ -29,7 +29,7 @@ class PlanningShift(models.Model):
         domain="[('company_id', '=', company_id),""('allow_forecast', '=', True)]")
     task_id = fields.Many2one(
         'project.task', string="Task", compute='_compute_task_id', store=True, readonly=False,
-        copy=True, check_company=True,
+        copy=True, check_company=True, group_expand='_read_group_task_id',
         domain="[('company_id', '=', company_id),""('project_id', '=?', project_id)]")
     planned_hours = fields.Float("Initially Planned Hours", related="task_id.planned_hours")
     allow_forecast = fields.Boolean(related="project_id.allow_forecast")
@@ -77,14 +77,18 @@ class PlanningShift(models.Model):
                 raise ValidationError(_("Your task is not in the selected project."))
 
     def _read_group_project_id(self, projects, domain, order):
-        if self._context.get('planning_expand_project'):
-            start_date_list = [dom[2] for dom in domain if dom[0] == 'start_datetime']
-            start_date = start_date_list[-1] if start_date_list else datetime.now()
-            start_date = start_date if isinstance(start_date, date) else datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S')
-            min_date = start_date - timedelta(days=30)
-            max_date = start_date + timedelta(days=30)
-            return self.env['planning.slot'].search([('start_datetime', '>=', min_date), ('start_datetime', '<=', max_date)]).mapped('project_id')
+        dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]
+        if self._context.get('planning_expand_project') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
+            filters = self._expand_domain_dates(domain)
+            return self.env['planning.slot'].search(filters).mapped('project_id')
         return projects
+
+    def _read_group_task_id(self, tasks, domain, order):
+        dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]
+        if self._context.get('planning_expand_task') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
+            filters = self._expand_domain_dates(domain)
+            return self.env['planning.slot'].search(filters).mapped('task_id')
+        return tasks
 
     def _get_fields_breaking_publication(self):
         """ Fields list triggering the `publication_warning` to True when updating shifts """

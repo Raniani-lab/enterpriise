@@ -661,12 +661,13 @@ class Planning(models.Model):
         }
 
     def _read_group_employee_id(self, employees, domain, order):
-        employee_ids = self.env.context.get('filter_employee_ids', False)
-        if employee_ids:
-            employee_domain = [('id', 'in', employee_ids)]
-            return self.env['hr.employee'].search(employee_domain)
         dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]
-        if self._context.get('planning_expand_employee') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
+        employee_ids = self.env.context.get('filter_employee_ids', False)
+        employee_domain = [('id', 'in', employee_ids)] if employee_ids else []
+        all_employees = self.env['hr.employee'].search(employee_domain)
+        if employee_ids or len(all_employees) < 20:
+            return all_employees
+        elif self._context.get('planning_expand_employee') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
             filters = self._expand_domain_dates(domain)
             return self.env['planning.slot'].search(filters).mapped('employee_id')
         return employees

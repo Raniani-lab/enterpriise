@@ -43,7 +43,7 @@ class TestAccountReportsCommon(SavepointCase):
         chart_template = cls.env.ref('l10n_generic_coa.configurable_chart_template', raise_if_not_found=False)
         if not chart_template:
             _logger.warning('Reports Tests skipped because l10n_generic_coa is not installed')
-            cls.skipTest("l10n_generic_coa not installed")
+            cls.skipTest(cls, reason="l10n_generic_coa not installed")
 
         # Create companies.
         cls.company_parent = cls.env['res.company'].create({

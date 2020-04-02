@@ -115,5 +115,25 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
 
             list.destroy();
         });
+
+        QUnit.test("export button is properly hidden", async function (assert) {
+            assert.expect(2);
+
+            const list = await createView({
+                arch: `
+                    <tree>
+                        <field name="foo"/>
+                        <field name="bar"/>
+                    </tree>`,
+                data: this.data,
+                model: 'foo',
+                View: ListView,
+            });
+
+            assert.containsN(list, '.o_data_row', 4);
+            assert.isNotVisible(list.$buttons.find('.o_list_export_xlsx'));
+
+            list.destroy();
+        });
     });
 });

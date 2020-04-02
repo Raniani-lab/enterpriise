@@ -214,6 +214,7 @@ tour.register('web_studio_tests_tour', {
 }, {
     // select the m2m to set its properties
     trigger: 'tr:has(.o_field_many2many)',
+    timeout: 15000,  // creating M2M relations can take some time...
 }, {
     // change the `widget` attribute
     trigger: '.o_web_studio_sidebar select[name="widget"]',

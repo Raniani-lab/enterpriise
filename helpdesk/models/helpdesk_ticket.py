@@ -418,17 +418,17 @@ class HelpdeskTicket(models.Model):
 
     @api.model
     def _search_open_hours(self, operator, value):
-        dt = fields.Datetime.now() - relativedelta(hours=value)
+        dt = fields.Datetime.now() - relativedelta.relativedelta(hours=value)
 
         d1, d2 = False, False
         if operator in ['<', '<=', '>', '>=']:
             d1 = ['&', ('close_date', '=', False), ('create_date', expression.TERM_OPERATORS_NEGATION[operator], dt)]
             d2 = ['&', ('close_date', '!=', False), ('close_hours', operator, value)]
         elif operator in ['=', '!=']:
-            subdomain = ['&', ('close_date', expression.TERM_OPERATORS_NEGATION[operator], dt), ('create_date', '>=', dt.replace(minutes=0, seconds=0, microseconds=0)), ('create_date', '<', dt.replace(minutes=59, seconds=59, microseconds=99))]
+            subdomain = ['&', ('create_date', '>=', dt.replace(minute=0, second=0, microsecond=0)), ('create_date', '<=', dt.replace(minute=59, second=59, microsecond=99))]
             if operator in expression.NEGATIVE_TERM_OPERATORS:
                 subdomain = expression.distribute_not(subdomain)
-            d1 = ['&', ('close_date', '=', False), subdomain]
+            d1 = expression.AND([[('close_date', '=', False)], subdomain])
             d2 = ['&', ('close_date', '!=', False), ('close_hours', operator, value)]
         return expression.OR([d1, d2])
 

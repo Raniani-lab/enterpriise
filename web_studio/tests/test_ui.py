@@ -8,11 +8,11 @@ import odoo.tests
 class TestUi(odoo.tests.HttpCase):
 
     def test_new_app_and_report(self):
-        self.start_tour("/web?studio=app_creator", 'web_studio_new_app_tour', login="admin")
+        self.start_tour("/web?studio=app_creator&debug=tests", 'web_studio_new_app_tour', login="admin")
 
         # the report tour is based on the result of the former tour
-        self.start_tour("/web", 'web_studio_new_report_tour', login="admin")
-        self.start_tour("/web", "web_studio_new_report_basic_layout_tour", login="admin")
+        self.start_tour("/web?debug=tests", 'web_studio_new_report_tour', login="admin")
+        self.start_tour("/web?debug=tests", "web_studio_new_report_basic_layout_tour", login="admin")
 
     def test_optional_fields(self):
         self.start_tour("/web", 'web_studio_hide_fields_tour', login="admin")

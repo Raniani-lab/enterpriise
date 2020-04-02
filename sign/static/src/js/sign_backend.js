@@ -853,26 +853,26 @@ odoo.define('sign.template', function(require) {
         },
 
         start: function() {
+            var self = this;
             if(this.templateID === undefined) {
                 return this.go_back_to_kanban();
             }
-            this.initialize_content();
-            if(this.$('iframe').length) {
-                core.bus.on('DOM_updated', this, init_iframe);
-            }
+            return this._super().then(function () {
+                self.initialize_content();
+                if(self.$('iframe').length) {
+                    core.bus.on('DOM_updated', self, init_iframe);
+                }
 
-            $('body').on('click', function (e) {
-                $('div.popover').each(function () {
-                    if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                        $(this).find('.o_sign_validate_field_button').click();
-                    }
+                $('body').on('click', function (e) {
+                    $('div.popover').each(function () {
+                        if (!$(self).is(e.target) && $(self).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                            $(self).find('.o_sign_validate_field_button').click();
+                        }
+                    });
                 });
+
+                self.$('.o_content').addClass('o_sign_template');
             });
-
-            this.$('.o_content').addClass('o_sign_template');
-
-            return this._super();
-
             function init_iframe() {
                 if(this.$el.parents('html').length && !this.$el.parents('html').find('.modal-dialog').length) {
                     var self = this;

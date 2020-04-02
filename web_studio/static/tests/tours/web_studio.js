@@ -185,7 +185,7 @@ tour.register('web_studio_tests_tour', {
 }, {
     // add a monetary field
     trigger: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_monetary',
-    run: 'drag_and_drop .o_web_studio_form_view_editor .o_inner_group',
+    run: 'drag_and_drop (.o_web_studio_form_view_editor .o_inner_group:first .o_web_studio_hook:eq(1))',
 }, {
     // verify that the monetary field is in the view
     extra_trigger: '.o_web_studio_form_view_editor td.o_td_label:eq(1):contains("New Monetary")',

@@ -32,7 +32,7 @@ class HrReferralLinkToShare(models.TransientModel):
         if self.job_id and not self.job_id.utm_campaign_id:
             self.job_id.utm_campaign_id = self.env['utm.campaign'].create({'name': self.job_id.name}).id
 
-        link_tracker = self.env['link.tracker'].create({
+        link_tracker = self.env['link.tracker'].search_or_create({
             'url': self.get_base_url() + (self.job_id.website_url or '/jobs'),
             'campaign_id': self.job_id.utm_campaign_id.id,
             'source_id': self.env.user.utm_source_id.id,

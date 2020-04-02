@@ -37,7 +37,7 @@ class SocialLivePostPushNotifications(models.Model):
             if post.push_notification_target_url:
                 link_tracker_values = live_post._get_utm_values()
                 link_tracker_values['url'] = post.push_notification_target_url
-                link_tracker = self.env['link.tracker'].create(link_tracker_values)
+                link_tracker = self.env['link.tracker'].search_or_create(link_tracker_values)
                 target_link = link_tracker.short_url
 
             if not post.use_visitor_timezone or not post.scheduled_date:

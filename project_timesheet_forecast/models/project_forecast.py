@@ -21,7 +21,7 @@ class Forecast(models.Model):
             else:
                 forecast.percentage_hours = 0
 
-    @api.depends('task_id', 'user_id', 'start_datetime', 'end_datetime', 'project_id.analytic_account_id', 'task_id.timesheet_ids')
+    @api.depends('task_id', 'employee_id', 'start_datetime', 'end_datetime', 'project_id.analytic_account_id', 'task_id.timesheet_ids')
     def _compute_effective_hours(self):
         Timesheet = self.env['account.analytic.line']
         for forecast in self:
@@ -29,7 +29,7 @@ class Forecast(models.Model):
                 forecast.effective_hours = 0
             else:
                 domain = [
-                    ('user_id', '=', forecast.user_id.id),
+                    ('employee_id', '=', forecast.employee_id.id),
                     ('date', '>=', forecast.start_datetime.date()),
                     ('date', '<=', forecast.end_datetime.date())
                 ]

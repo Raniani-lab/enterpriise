@@ -315,7 +315,7 @@ class Planning(models.Model):
             result.insert(0, d)
 
         # Ensures there's an 'Open Shifts' line for each Role
-        if 'role_id' in groupby:
+        if 'role_id' in groupby and prepend_open_shifts:
             roles = set()
             all_roles = set()
 

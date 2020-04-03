@@ -3,6 +3,7 @@
 import base64
 from datetime import datetime
 from itertools import groupby
+import logging
 import requests
 
 from lxml import etree
@@ -18,6 +19,8 @@ from odoo.exceptions import UserError
 from . import account_invoice
 
 from odoo.addons.l10n_mx_edi.tools.run_after_commit import run_after_commit
+
+_logger = logging.getLogger(__name__)
 
 CFDI_TEMPLATE = 'l10n_mx_edi.payment10'
 CFDI_XSLT_CADENA = 'l10n_mx_edi/data/3.3/cadenaoriginal.xslt'
@@ -294,17 +297,19 @@ class AccountPayment(models.Model):
         """Fill the invoice fields from the cfdi values."""
         for rec in self:
             attachment_id = rec.l10n_mx_edi_retrieve_last_attachment()
+            attachment_id = attachment_id[0] if attachment_id else None
+            # At this moment, the attachment contains the file size in its 'datas' field because
+            # to save some memory, the attachment will store its data on the physical disk.
+            # To avoid this problem, we read the 'datas' directly on the disk.
+            datas = attachment_id._file_read(attachment_id.store_fname) if attachment_id else None
             rec.l10n_mx_edi_cfdi_uuid = None
-            if not attachment_id:
+            if not datas:
+                if attachment_id:
+                    _logger.exception('The CFDI attachment cannot be found')
                 rec.l10n_mx_edi_cfdi = None
                 rec.l10n_mx_edi_cfdi_supplier_rfc = None
                 rec.l10n_mx_edi_cfdi_customer_rfc = None
                 continue
-            attachment_id = attachment_id[0]
-            # At this moment, the attachment contains the file size in its 'datas' field because
-            # to save some memory, the attachment will store its data on the physical disk.
-            # To avoid this problem, we read the 'datas' directly on the disk.
-            datas = attachment_id._file_read(attachment_id.store_fname)
             rec.l10n_mx_edi_cfdi = datas
             tree = rec.l10n_mx_edi_get_xml_etree(base64.decodebytes(datas))
             tfd_node = rec.l10n_mx_edi_get_tfd_etree(tree)

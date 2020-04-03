@@ -655,17 +655,19 @@ class AccountMove(models.Model):
         '''
         for inv in self:
             attachment_id = inv.l10n_mx_edi_retrieve_last_attachment()
+            # At this moment, the attachment contains the file size in its 'datas' field because
+            # to save some memory, the attachment will store its data on the physical disk.
+            # To avoid this problem, we read the 'datas' directly on the disk.
+            datas = attachment_id._file_read(attachment_id.store_fname) if attachment_id else None
             inv.l10n_mx_edi_cfdi_uuid = None
-            if not attachment_id:
+            if not datas:
+                if attachment_id:
+                    _logger.error('The CFDI attachment cannot be found')
                 inv.l10n_mx_edi_cfdi = None
                 inv.l10n_mx_edi_cfdi_supplier_rfc = None
                 inv.l10n_mx_edi_cfdi_customer_rfc = None
                 inv.l10n_mx_edi_cfdi_amount = None
                 continue
-            # At this moment, the attachment contains the file size in its 'datas' field because
-            # to save some memory, the attachment will store its data on the physical disk.
-            # To avoid this problem, we read the 'datas' directly on the disk.
-            datas = attachment_id._file_read(attachment_id.store_fname)
             inv.l10n_mx_edi_cfdi = datas
             cfdi = base64.decodebytes(datas).replace(
                 b'xmlns:schemaLocation', b'xsi:schemaLocation')

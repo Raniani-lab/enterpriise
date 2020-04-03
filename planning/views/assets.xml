@@ -2,14 +2,14 @@
 <odoo>
     <template id="assets_backend" name="planning_backend_assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="planning/static/src/js/planning_gantt_controller.js"/>
-            <script type="text/javascript" src="planning/static/src/js/planning_gantt_renderer.js"/>
-            <script type="text/javascript" src="planning/static/src/js/planning_gantt_model.js"/>
-            <script type="text/javascript" src="planning/static/src/js/planning_gantt_view.js"/>
-            <script type="text/javascript" src="planning/static/src/js/planning_calendar.js"/>
+            <script type="text/javascript" src="/planning/static/src/js/planning_gantt_controller.js"/>
+            <script type="text/javascript" src="/planning/static/src/js/planning_gantt_renderer.js"/>
+            <script type="text/javascript" src="/planning/static/src/js/planning_gantt_model.js"/>
+            <script type="text/javascript" src="/planning/static/src/js/planning_gantt_view.js"/>
+            <script type="text/javascript" src="/planning/static/src/js/planning_calendar.js"/>
 
             <link rel="stylesheet" type="text/scss" href="/planning/static/src/scss/planning_gantt.scss"/>
-            <script type="text/javascript" src="planning/static/src/js/tours/planning.js"></script>
+            <script type="text/javascript" src="/planning/static/src/js/tours/planning.js"/>
         </xpath>
     </template>
 

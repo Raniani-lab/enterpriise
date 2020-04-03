@@ -134,7 +134,7 @@
             <script type="text/javascript" src="/web_enterprise/static/tests/views/calendar_mobile_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/views/kanban_mobile_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/views/list_mobile_tests.js"></script>
-            <script type="text/javascript" src="/web_enterprise/static/tests/tests/base_settings_mobile_tests.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/tests/base_settings_mobile_tests.js"></script>
         </xpath>
     </template>
 

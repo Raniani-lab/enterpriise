@@ -22,7 +22,7 @@
     <record id="planning_rule_internal_user_read" model="ir.rule">
         <field name="name">Planning: internal user can read their own shifts only</field>
         <field name="model_id" ref="planning.model_planning_slot"/>
-        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="domain_force">[('user_id', '=', user.id), ('is_published', '=', True)]</field>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>
@@ -33,7 +33,7 @@
     <record id="planning_rule_user_modify" model="ir.rule">
         <field name="name">Planning: user can modify their own shifts</field>
         <field name="model_id" ref="planning.model_planning_slot"/>
-        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="domain_force">[('user_id', '=', user.id), ('is_published', '=', True)]</field>
         <field name="perm_read" eval="False"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>

@@ -19,7 +19,6 @@ This module allows you to:
     'data': [
         'views/assets.xml',
         'views/crm_lead_views.xml',
-        'views/crm_team_views.xml',
         'views/marketing.xml',
         'security/ir.model.access.csv',
         'data/website_crm_score_data.xml',

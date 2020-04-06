@@ -3,6 +3,10 @@
     .o_base_settings {
         flex-flow: column nowrap;
 
+        > .o_control_panel {
+            @include o-webclient-padding($top: 10px, $bottom: 10px);
+        }
+
         .o_setting_container {
             flex-flow: column nowrap;
 
@@ -57,9 +61,6 @@
                 }
             }
         }
-    }
 
-    .o_action .o_control_panel {
-        @include o-webclient-padding($top: 10px, $bottom: 10px);
     }
 }

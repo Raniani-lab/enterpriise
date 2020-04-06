@@ -236,6 +236,43 @@ class StockPicking(models.Model):
             })
         return True
 
+    @api.model
+    def _create_new_picking(self, picking_type):
+        """ Create a new picking for the given picking type.
+
+        :param picking_type:
+        :type picking_type: :class:`~odoo.addons.stock.models.stock_picking.PickingType`
+        :return: a new picking
+        :rtype: :class:`~odoo.addons.stock.models.stock_picking.Picking`
+        """
+        # Find source and destination Locations
+        location_dest_id, location_id = picking_type.warehouse_id._get_partner_locations()
+        if picking_type.default_location_src_id:
+            location_id = picking_type.default_location_src_id
+        if picking_type.default_location_dest_id:
+            location_dest_id = picking_type.default_location_dest_id
+
+        # Create and confirm the picking
+        return self.env['stock.picking'].create({
+            'user_id': False,
+            'picking_type_id': picking_type.id,
+            'location_id': location_id.id,
+            'location_dest_id': location_dest_id.id,
+            'immediate_transfer': True,
+        })
+
+    @api.model
+    def _get_client_action(self, picking_id):
+        action = self.env.ref('stock_barcode.stock_barcode_picking_client_action').read()[0]
+        params = {
+            'model': 'stock.picking',
+            'picking_id': picking_id,
+        }
+        action = dict(action, target='fullscreen', params=params)
+        action['context'] = {'active_id': picking_id}
+        action = {'action': action}
+        return action
+
     def _get_picking_fields_to_read(self):
         """ List of fields on the stock.picking object that are needed by the
         client action. The purpose of this function is to be overriden in order
@@ -345,6 +382,21 @@ class StockPicking(models.Model):
             'title': _('Wrong barcode'),
             'message': _('The barcode "%(barcode)s" doesn\'t correspond to a proper product, package or location.') % {'barcode': barcode}
         }}
+
+    @api.model
+    def open_new_picking(self):
+        """ Creates a new picking of the current picking type and open it.
+
+        :return: the action used to open the picking, or false
+        :rtype: dict
+        """
+        context = self.env.context
+        if context.get('active_model') == 'stock.picking.type':
+            picking_type = self.env['stock.picking.type'].browse(context.get('active_id'))
+            if picking_type.exists():
+                new_picking = self._create_new_picking(picking_type)
+                return self._get_client_action(new_picking.id)
+        return False
 
     def open_picking(self):
         """ method to open the form view of the current record

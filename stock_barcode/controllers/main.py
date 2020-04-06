@@ -35,22 +35,7 @@ class StockBarcodeController(http.Controller):
             ('barcode', '=', barcode),
         ], limit=1)
         if picking_type:
-            # Find source and destination Locations
-            location_dest_id, location_id = picking_type.warehouse_id._get_partner_locations()
-            if picking_type.default_location_src_id:
-                location_id = picking_type.default_location_src_id
-            if picking_type.default_location_dest_id:
-                location_dest_id = picking_type.default_location_dest_id
-
-            # Create and confirm the picking
-            picking = request.env['stock.picking'].create({
-                'user_id': False,
-                'picking_type_id': picking_type.id,
-                'location_id': location_id.id,
-                'location_dest_id': location_dest_id.id,
-                'immediate_transfer': True,
-            })
-
+            picking = request.env['stock.picking']._create_new_picking(picking_type)
             return self.get_action(picking.id)
         return False
 
@@ -115,15 +100,7 @@ class StockBarcodeController(http.Controller):
                 }
             }
         else:
-            action = request.env.ref('stock_barcode.stock_barcode_picking_client_action').read()[0]
-            params = {
-                'model': 'stock.picking',
-                'picking_id': picking_id,
-            }
-            action = dict(action, target='fullscreen', params=params)
-            action['context'] = {'active_id': picking_id}
-            action = {'action': action}
-            return action
+            return request.env['stock.picking']._get_client_action(picking_id)
 
     @http.route('/stock_barcode/rid_of_message_demo_barcodes', type='json', auth='user')
     def rid_of_message_demo_barcodes(self, **kw):

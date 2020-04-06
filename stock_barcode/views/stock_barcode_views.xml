@@ -49,7 +49,8 @@
         <field name="priority">100</field>
         <field name="arch" type="xml">
             <xpath expr="//kanban[hasclass('o_kanban_mobile')]" position="attributes">
-                <attribute name="create">false</attribute>
+                <attribute name="js_class">stock_barcode_list_kanban</attribute>
+                <attribute name="import">false</attribute>
             </xpath>
         </field>
     </record>

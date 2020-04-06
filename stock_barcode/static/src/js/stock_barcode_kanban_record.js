@@ -44,18 +44,24 @@ var StockBarcodeKanbanController = KanbanController.extend({
      * @override
      */
     _onButtonNew: function (ev) {
-        var self = this;
-        var viewType = this.actionViews[0] && this.actionViews[0].type;
-        if (viewType === 'kanban' && this.modelName === 'stock.inventory') {
+        if (this.modelName === 'stock.inventory') {
             this._rpc({
-                    model: 'stock.inventory',
-                    method: 'open_new_inventory',
-                })
-                .then(function (result) {
-                    self.do_action(result);
-                });
+                model: 'stock.inventory',
+                method: 'open_new_inventory',
+            })
+            .then((result) => {
+                this.do_action(result);
+            });
+        } else if (this.modelName === 'stock.picking') {
+            this._rpc({
+                model: 'stock.picking',
+                method: 'open_new_picking',
+                context: this.initialState.context,
+            }).then((result) => {
+                this.do_action(result.action);
+            });
         } else {
-            this._super.apply(this, arguments);
+            this._super(...arguments);
         }
     },
 });

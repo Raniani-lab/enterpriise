@@ -11,7 +11,7 @@
                 <field name="start_datetime" readonly="1"/>
                 <field name="end_datetime" readonly="1"/>
                 <field name="allocated_hours" widget="float_time" readonly="1"/>
-                <field name="allocated_percentage" groups="planning.group_planning_show_percentage" readonly="1"/>
+                <field name="allocated_percentage" readonly="1" optional="show"/>
                 <field name="name" optional="hide" />
                 <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
             </tree>
@@ -61,7 +61,7 @@
                             <div class="o_row">
                                 <field name="end_datetime" widget="daterange" options='{"related_start_date": "start_datetime"}'/>
                             </div>
-                            <field name="allocated_percentage" groups="planning.group_planning_show_percentage"/>
+                            <field name="allocated_percentage"/>
                             <field name="allocated_hours" widget="float_time"/>
                         </group>
                     </group>
@@ -278,7 +278,6 @@
         <field name="name">planning.slot.gantt.inherit</field>
         <field name="model">planning.slot</field>
         <field name="inherit_id" ref="planning.planning_view_gantt"/>
-        <field name="groups_id" eval="[(4,ref('planning.group_planning_show_percentage'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//li[@id='allocated_hours']" position="after">
                 <t t-if="allocated_percentage != 100">

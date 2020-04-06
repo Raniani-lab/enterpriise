@@ -326,7 +326,7 @@ class WebStudioController(http.Controller):
     def set_background_image(self, attachment_id):
         attachment = request.env['ir.attachment'].browse(attachment_id)
         if attachment:
-            request.env.user.with_user(request.uid).company_id.background_image = attachment.datas
+            request.env.company.background_image = attachment.datas
 
     @http.route('/web_studio/reset_background_image', type='json', auth='user')
     def reset_background_image(self):

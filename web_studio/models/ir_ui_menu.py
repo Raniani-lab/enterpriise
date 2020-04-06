@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from ast import literal_eval
 
 from odoo import api, models, fields, _
-
+from odoo.http import request
 
 class IrUiMenu(models.Model):
     _name = 'ir.ui.menu'
@@ -17,10 +18,11 @@ class IrUiMenu(models.Model):
     @api.model
     def load_menus(self, debug):
         menu_root = super(IrUiMenu, self).load_menus(debug)
-
-        if self.env.company.background_image:
-            menu_root['background_image'] = True
-
+        cids = request and request.httprequest.cookies.get('cids')
+        if cids:
+            cids = cids.split(',')
+            self = self.with_company(int(cids[0]))
+        menu_root['background_image'] = bool(self.env.company.background_image)
         return menu_root
 
     @api.model

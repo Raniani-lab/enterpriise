@@ -18,8 +18,9 @@ odoo.define('web_studio.BackgroundImage', function (require) {
         async load_menus() {
             const menuData = await this._super(...arguments);
             if (menuData.background_image) {
+                const company_id = session.user_context.allowed_company_ids[0];
                 const url = session.url('/web/image', {
-                    id: session.company_id,
+                    id: company_id,
                     model: 'res.company',
                     field: 'background_image',
                 });

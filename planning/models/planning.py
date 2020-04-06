@@ -138,11 +138,11 @@ class Planning(models.Model):
         for slot in self:
             if slot.start_datetime and slot.end_datetime and slot.start_datetime != slot.end_datetime:
                 if slot.allocation_type == 'planning':
-                    slot.allocated_percentage = min(100, 360000 * slot.allocated_hours / (slot.end_datetime - slot.start_datetime).total_seconds())
+                    slot.allocated_percentage = 360000 * slot.allocated_hours / (slot.end_datetime - slot.start_datetime).total_seconds()
                 else:
                     if slot.employee_id:
                         work_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours']
-                        slot.allocated_percentage = min(100, 100 * slot.allocated_hours / work_hours) if work_hours else 100
+                        slot.allocated_percentage = 100 * slot.allocated_hours / work_hours if work_hours else 100
                     else:
                         slot.allocated_percentage = 100
 

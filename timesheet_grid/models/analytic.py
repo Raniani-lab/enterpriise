@@ -388,8 +388,6 @@ class AnalyticLine(models.Model):
             'search_default_nonvalidated': True,
             'search_default_my_team_timesheet': True,
             'group_expand': True,
-            'search_default_groupby_employee': 1,
-            'search_default_groupby_project': 2
         }
 
         if oldest_timesheet:  # check if exists a timesheet to validate

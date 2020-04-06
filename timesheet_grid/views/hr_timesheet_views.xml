@@ -259,8 +259,6 @@
                 'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'),
                 'my_timesheet_display_timer': True,
                 'group_expand': True,
-                'search_default_groupby_project': 1,
-                'search_default_groupby_task': 2
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -303,8 +301,6 @@
             <field name="view_mode">grid,tree</field>
             <field name="context">{
                 'group_expand': True,
-                'search_default_groupby_employee': 1,
-                'search_default_groupby_project': 2
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

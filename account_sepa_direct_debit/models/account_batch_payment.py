@@ -16,12 +16,16 @@ class AccountBatchPayment(models.Model):
     sdd_required_collection_date = fields.Date(string='Required collection date', default=fields.Date.today, readonly=True, states={'draft': [('readonly', False)]}, help="Date when the company expects to receive the payments of this batch.")
     sdd_batch_booking = fields.Boolean(string="SDD Batch Booking", default=True, help="Request batch booking from the bank for the related bank statements.")
     sdd_scheme = fields.Selection(string="SDD Scheme", selection=[('CORE', 'CORE'), ('B2B', 'B2B')],
-    default='CORE', help='The B2B scheme is an optional scheme,\noffered exclusively to business payers.\n''Some banks/businesses might not accept B2B SDD.',)
+    help='The B2B scheme is an optional scheme,\noffered exclusively to business payers.\nSome banks/businesses might not accept B2B SDD.',
+    compute='_compute_sdd_scheme', store=True, readonly=False)
 
-    @api.onchange('payment_method_id')
-    def _onchange_payment_method_id(self):
-        if self.payment_method_id.code != 'sdd':
-            self.payment_method_id = None
+    @api.depends('payment_method_id')
+    def _compute_sdd_scheme(self):
+        for batch in self:
+            if batch.payment_method_id.code != 'sdd':
+                batch.sdd_scheme = False
+            else:
+                batch.sdd_scheme = batch.sdd_scheme or 'CORE'
 
     def _get_methods_generating_files(self):
         rslt = super(AccountBatchPayment, self)._get_methods_generating_files()

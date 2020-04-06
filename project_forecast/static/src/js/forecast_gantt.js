@@ -20,7 +20,7 @@ odoo.define('forecast.ForecastGanttView', function (require) {
     });
 
     var ForecastGanttView = PlanningGanttView.extend({
-        config: _.extend({}, GanttView.prototype.config, {
+        config: _.extend({}, PlanningGanttView.prototype.config, {
             Model: ForecastGanttModel,
         }),
     });

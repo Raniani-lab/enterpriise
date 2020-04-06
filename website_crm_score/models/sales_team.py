@@ -29,7 +29,7 @@ class crm_team(models.Model):
 
     def _compute_lead_capacity(self):
         for rec in self:
-            rec.lead_capacity = sum(s.maximum_user_leads for s in rec.crm_team_member_ids)
+            rec.lead_capacity = sum(s.assignment_max for s in rec.crm_team_member_ids)
 
     @api.constrains('score_team_domain')
     def _assert_valid_domain(self):
@@ -105,9 +105,9 @@ class crm_team(models.Model):
     def assign_leads_to_salesmen(self, all_team_users):
         users = []
         for su in all_team_users:
-            if (su.maximum_user_leads - su.lead_month_count) <= 0:
+            if (su.assignment_max - su.lead_month_count) <= 0:
                 continue
-            domain = safe_eval.safe_eval(su.team_user_domain or '[]', evaluation_context)
+            domain = safe_eval.safe_eval(su.assignment_domain or '[]', evaluation_context)
             domain.extend([
                 ('user_id', '=', False),
                 ('date_open', '=', False),
@@ -115,14 +115,14 @@ class crm_team(models.Model):
             ])
 
             # assignation rythm: 2 days of leads if a lot of leads should be assigned
-            limit = int(math.ceil(su.maximum_user_leads / 15.0))
+            limit = int(math.ceil(su.assignment_max / 15.0))
 
             domain.append(('team_id', '=', su.crm_team_id.id))
 
             leads = self.env["crm.lead"].search(domain, order='score desc', limit=limit * len(su.crm_team_id.crm_team_member_ids))
             users.append({
                 "su": su,
-                "nbr": min(su.maximum_user_leads - su.lead_month_count, limit),
+                "nbr": min(su.assignment_max - su.lead_month_count, limit),
                 "leads": leads
             })
 

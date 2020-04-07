@@ -20,7 +20,6 @@ This module enables the barcode scanning feature for the warehouse management sy
         'views/stock_scrap_views.xml',
         'views/stock_location_views.xml',
         'wizard/stock_barcode_cancel_operation.xml',
-        'wizard/stock_barcode_lot_view.xml',
         'data/data.xml',
     ],
     'demo': [

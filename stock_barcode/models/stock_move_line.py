@@ -4,8 +4,7 @@ from odoo import api, fields, models
 
 
 class StockMoveLine(models.Model):
-    _name = 'stock.move.line'
-    _inherit = ['stock.move.line', 'barcodes.barcode_events_mixin']
+    _inherit = 'stock.move.line'
 
     product_barcode = fields.Char(related='product_id.barcode')
     location_processed = fields.Boolean()

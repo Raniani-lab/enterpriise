@@ -4,7 +4,7 @@ from ast import literal_eval
 from lxml import etree
 import time
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, tools, _
 from odoo.exceptions import ValidationError, UserError
 from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 
@@ -176,6 +176,10 @@ class ProjectWorksheetTemplate(models.Model):
         })
         # this must be done after form view creation and filling the 'model_id' field
         template.sudo()._generate_qweb_report_template()
+
+        # Add unique constraint on the x_task_id field since we want one worksheet per task
+        conname = '%s_%s' % (name, 'x_task_id_uniq')
+        tools.add_constraint(self.env.cr, name, conname, 'unique(x_task_id)')
         return template
 
     def unlink(self):

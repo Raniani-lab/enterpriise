@@ -1142,7 +1142,7 @@
                                         '|', ('account_id.code','=like','6%'),
                                         ('account_id.code','=like','7%')]"/>
             <field name="formulas">-sum</field>
-            <field name="special_date_changer">from_fiscalyear</field>
+            <field name="special_date_changer">from_beginning</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="89"/>

@@ -389,8 +389,14 @@ class ReportAccountFinancialReport(models.Model):
                     index += 1
             else:
                 # Sort the keys in a lexicographic order.
+                if groupby_field.name == 'date':
+                    format_func = lambda v: fields.Date.to_string(v)
+                elif groupby_field.name == 'datetime':
+                    format_func = lambda v: fields.Datetime.to_string(v)
+                else:
+                    format_func = lambda v: v
                 for i, v in enumerate(sorted(list(ids_set))):
-                    values_map[v] = (i, v)
+                    values_map[v] = (i, format_func(v))
             sorting_map.append(values_map)
 
         #########################################################################

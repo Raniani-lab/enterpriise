@@ -50,7 +50,7 @@
             </h2>
             <span class="hidden" data-for="helpdesk_ticket_form" t-att-data-values="{'partner_name': default_values.get('name', ''), 'partner_email': default_values.get('email', ''), 'team_id': team and team.id or False}" />
             <div id="helpdesk_section">
-                <section id="forms" class="s_website_form" data-vjs="001" data-vcss="001">
+                <section id="forms" class="s_website_form" data-vcss="001">
                     <div class="container">
                         <form id="helpdesk_ticket_form" action="/website_form/" method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="helpdesk.ticket" data-success-mode="redirect" data-success-page="/your-ticket-has-been-submitted" data-editable-form="false"  hide-change-model="true">
                             <div class="s_website_form_rows row s_col_no_bgcolor">

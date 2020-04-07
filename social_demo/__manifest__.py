@@ -11,6 +11,9 @@
     'depends': ['social', 'social_facebook', 'social_twitter', 'social_linkedin', 'product'],
     'demo': [
         'data/social_demo.xml',
+        'data/social_demo_facebook.xml',
+        'data/social_demo_linkedin.xml',
+        'data/social_demo_twitter.xml',
     ],
     'assets': {
         'web.assets_backend': [

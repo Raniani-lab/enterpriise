@@ -213,21 +213,14 @@ class AccountConsolidationTrialBalanceReport(models.AbstractModel):
         :return: the id of the selected period
         :rtype: int
         """
-        if not hasattr(self, 'selected_period_id'):
-            default_analysis_period = self.env.context.get('default_period_id',
-                                                           self.env.context.get('active_id', None))
-            if default_analysis_period:
-                self.selected_period_id = default_analysis_period
-            else:
-                self.selected_period_id = self._get_default_analysis_period()
-        return self.selected_period_id
+        default_analysis_period = self.env.context.get('default_period_id',
+                                                       self.env.context.get('active_id', None))
+        return default_analysis_period or self._get_default_analysis_period()
 
     def _get_selected_period(self):
         """
         Get the selected period (the base period)
         :return: the recordset containing the selected period
         """
-        if not hasattr(self, 'selected_period'):
-            AnalysisPeriod = self.env['consolidation.period']
-            self.selected_period = AnalysisPeriod.browse(self._get_selected_period_id())
-        return self.selected_period
+        AnalysisPeriod = self.env['consolidation.period']
+        return AnalysisPeriod.browse(self._get_selected_period_id())

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from unittest.mock import patch
+
 from .common import TestAccountReportsCommon
 
 from odoo import fields
@@ -127,7 +129,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
         line_id = 'partner_%s' % self.partner_a.id
         options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
         options['unfolded_lines'] = [line_id]
-        report.MAX_LINES = 2
+        patch.object(type(report), 'MAX_LINES', 2).start()
 
         report_lines = report._get_lines(options, line_id=line_id)
         self.assertLinesValues(

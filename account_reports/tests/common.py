@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from contextlib import contextmanager
+from unittest.mock import patch
+import copy
+
 from odoo import fields
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.tools.misc import formatLang
-from unittest.mock import patch
-import copy
 
 
 class TestAccountReportsCommon(AccountTestInvoicingCommon):
@@ -61,6 +63,7 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
             c['selected'] = c['id'] in selected_ids
         return new_options
 
+    @contextmanager
     def mocked_today(self, forced_today):
         ''' Helper to make easily a python "with statement" mocking the "today" date.
         :param forced_today:    The expected "today" date as a str or Date object.
@@ -70,41 +73,24 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         if isinstance(forced_today, str):
             forced_today = fields.Date.from_string(forced_today)
 
-        class WithToday:
-            def __init__(self):
+        def today(*args, **kwargs):
+            return forced_today
 
-                self.patchers = (
-                    patch.object(fields.Date, 'today', lambda *args, **kwargs: forced_today),
-                    patch.object(fields.Date, 'context_today', lambda *args, **kwargs: forced_today),
-                )
+        with patch.object(fields.Date, 'today', today):
+            with patch.object(fields.Date, 'context_today', today):
+                yield
 
-            def __enter__(self):
-                for patcher in self.patchers:
-                    patcher.start()
-
-            def __exit__(self, type, value, traceback):
-                for patcher in self.patchers:
-                    patcher.stop()
-
-        return WithToday()
-
+    @contextmanager
     def debug_mode(self, report):
-        def user_has_groups(groups):
+        Report_user_has_groups = type(report).user_has_groups
+
+        def user_has_groups(self, groups):
             if groups == 'base.group_no_one':
                 return True
-            return self.env.user.user_has_groups(groups)
+            return Report_user_has_groups(self, groups)
 
-        class WithDebugMode:
-            def __init__(self):
-                self.patcher = patch.object(report, 'user_has_groups', lambda *args, **kwargs: user_has_groups(*args, **kwargs))
-
-            def __enter__(self):
-                self.patcher.start()
-
-            def __exit__(self, type, value, traceback):
-                self.patcher.stop()
-
-        return WithDebugMode()
+        with patch.object(type(report), 'user_has_groups', user_has_groups):
+            yield
 
     def assertHeadersValues(self, headers, expected_headers):
         ''' Helper to compare the headers returned by the _get_table method

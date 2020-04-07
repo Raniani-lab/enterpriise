@@ -63,8 +63,6 @@ class TestHrAppraisalRequest(TransactionCase):
     def test_manager_request_himself(self):
         """ Send appraisal to only manager if HR asks for himself """
         # Employee can request an appraisal for himself from employee form
-        self.employee.groups = [(4, self.env.ref('hr_appraisal.group_hr_appraisal_user'))]
-
         request  = self.request_appraisal_from(self.employee, user=self.employee_user)
         self.assertEqual(request.recipient_ids, self.manager_user.partner_id)
 

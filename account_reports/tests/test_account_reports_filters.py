@@ -20,7 +20,7 @@ class TestAccountReportsFilters(AccountTestCommon):
         :param expected_date_values:    The expected results for the options['date'] as a dict.
         '''
         report = self.env['account.report']
-        report.filter_date = filter_date
+        patch.object(type(report), 'filter_date', filter_date).start()
 
         options = {}
         report._init_filter_date(options)
@@ -36,8 +36,8 @@ class TestAccountReportsFilters(AccountTestCommon):
         :param expected_period_values: The expected results for options['comparison']['periods'] as a list of dicts.
         '''
         report = self.env['account.report']
-        report.filter_date = filter_date
-        report.filter_comparison = filter_comparison
+        patch.object(type(report), 'filter_date', filter_date).start()
+        patch.object(type(report), 'filter_comparison', filter_comparison).start()
 
         options = {}
         report._init_filter_date(options)

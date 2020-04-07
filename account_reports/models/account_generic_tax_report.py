@@ -50,12 +50,13 @@ class generic_tax_report(models.AbstractModel):
             res.append({'name': _('Closing Journal Entry'), 'action': 'periodic_tva_entries', 'sequence': 8})
         return res
 
-    def _compute_vat_closing_entry(self, raise_on_empty):
+    def _compute_vat_closing_entry(self, options, raise_on_empty):
         """ This method returns the one2many commands to balance the tax accounts for the selected period, and
         a dictionnary that will help balance the different accounts set per tax group.
         """
         # first, for each tax group, gather the tax entries per tax and account
         self.env['account.tax'].flush(['name', 'tax_group_id'])
+        self.env['account.tax.repartition.line'].flush(['use_in_tax_closing'])
         self.env['account.move.line'].flush(['account_id', 'debit', 'credit', 'move_id', 'tax_line_id', 'date', 'tax_exigible', 'company_id', 'display_type'])
         self.env['account.move'].flush(['state'])
         sql = """SELECT "account_move_line".tax_line_id as tax_id,
@@ -67,7 +68,7 @@ class generic_tax_report(models.AbstractModel):
                           AND "account_move_line".tax_exigible AND repartition.use_in_tax_closing
                     GROUP BY tax.tax_group_id, "account_move_line".tax_line_id, tax.name, "account_move_line".account_id
                 """
-        tables, where_clause, where_params = self.env['account.move.line']._query_get()
+        tables, where_clause, where_params = self._query_get(options)
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
         results = self.env.cr.dictfetchall()
@@ -210,7 +211,7 @@ class generic_tax_report(models.AbstractModel):
             raise UserError(_("This period is already closed"))
 
         # get tax entries by tax_group for the period defined in options
-        line_ids_vals, tax_group_subtotal = self._compute_vat_closing_entry(raise_on_empty=raise_on_empty)
+        line_ids_vals, tax_group_subtotal = self._compute_vat_closing_entry(options, raise_on_empty=raise_on_empty)
         if len(line_ids_vals):
             line_ids_vals += self._add_tax_group_closing_items(tax_group_subtotal, end_date)
         if move.line_ids:
@@ -701,11 +702,8 @@ class generic_tax_report(models.AbstractModel):
             for period in options['comparison'].get('periods'):
                 rslt[record.id]['periods'].append(empty_data_dict.copy())
 
-        period_number = 0
-        self._compute_from_amls(options, rslt, period_number)
-        for period in options['comparison'].get('periods'):
-            period_number += 1
-            self.with_context(date_from=period.get('date_from'), date_to=period.get('date_to'))._compute_from_amls(options, rslt, period_number)
+        for period_number, period_options in enumerate(self._get_options_periods_list(options)):
+            self._compute_from_amls(period_options, rslt, period_number)
 
         return rslt
 

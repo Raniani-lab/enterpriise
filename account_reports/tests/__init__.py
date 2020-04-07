@@ -5,4 +5,5 @@ from . import common
 from . import test_account_reports_filters
 from . import test_general_ledger_report
 from . import test_partner_ledger_report
+from . import test_aged_report
 from . import test_account_reports

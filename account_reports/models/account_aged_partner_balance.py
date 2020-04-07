@@ -153,7 +153,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
             JOIN account_journal journal ON journal.id = account_move_line.journal_id
             JOIN account_account account ON account.id = account_move_line.account_id
             WHERE ''' + where_clause + '''
-            ORDER BY account_move_line.partner_id, COALESCE(account_move_line.date_maturity, account_move_line.date)
+            ORDER BY account_move_line.partner_id, COALESCE(account_move_line.date_maturity, account_move_line.date), account_move_line.id
         '''
 
         seen_aml_ids = set()

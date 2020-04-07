@@ -221,7 +221,7 @@ class Sign(http.Controller):
         if not sign_request_item:
             return False
 
-        sign_request_user = http.request.env['res.users'].sudo().search([('partner_id', '=', sign_request_item.partner_id.id)])
+        sign_request_user = http.request.env['res.users'].sudo().search([('partner_id', '=', sign_request_item.partner_id.id)], limit=1)
         if sign_request_user and signature_type == 'signature':
             return sign_request_user.sign_signature
         elif sign_request_user and signature_type == 'initial':

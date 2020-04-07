@@ -70,6 +70,51 @@ class TestAccountReportsCommonMethods(SavepointCase):
             c['selected'] = c['id'] in selected_ids
         return new_options
 
+    def mocked_today(self, forced_today):
+        ''' Helper to make easily a python "with statement" mocking the "today" date.
+        :param forced_today:    The expected "today" date as a str or Date object.
+        :return:                An object to be used like 'with self.mocked_today(<today>):'.
+        '''
+
+        if isinstance(forced_today, str):
+            forced_today = fields.Date.from_string(forced_today)
+
+        class WithToday:
+            def __init__(self):
+
+                self.patchers = (
+                    patch.object(fields.Date, 'today', lambda *args, **kwargs: forced_today),
+                    patch.object(fields.Date, 'context_today', lambda *args, **kwargs: forced_today),
+                )
+
+            def __enter__(self):
+                for patcher in self.patchers:
+                    patcher.start()
+
+            def __exit__(self, type, value, traceback):
+                for patcher in self.patchers:
+                    patcher.stop()
+
+        return WithToday()
+
+    def debug_mode(self, report):
+        def user_has_groups(groups):
+            if groups == 'base.group_no_one':
+                return True
+            return self.env.user.user_has_groups(groups)
+
+        class WithDebugMode:
+            def __init__(self):
+                self.patcher = patch.object(report, 'user_has_groups', lambda *args, **kwargs: user_has_groups(*args, **kwargs))
+
+            def __enter__(self):
+                self.patcher.start()
+
+            def __exit__(self, type, value, traceback):
+                self.patcher.stop()
+
+        return WithDebugMode()
+
     def assertHeadersValues(self, headers, expected_headers):
         ''' Helper to compare the headers returned by the _get_table method
         with some expected results.
@@ -370,52 +415,6 @@ class TestAccountReportsCommon(TestAccountReportsCommonMethods):
             'model_id': 'account.move.line',
             'context': str({'group_by': ['company_id', 'partner_id']}),
         })
-
-    @staticmethod
-    def mocked_today(forced_today):
-        ''' Helper to create a context manager mocking the "today" date.
-        :param forced_today:    The expected "today" date as a str or Date object.
-        :return:                A new context manager.
-        '''
-
-        if isinstance(forced_today, str):
-            forced_today = fields.Date.from_string(forced_today)
-
-        class WithToday:
-            def __init__(self):
-
-                self.patchers = (
-                    patch.object(fields.Date, 'today', lambda *args, **kwargs: forced_today),
-                    patch.object(fields.Date, 'context_today', lambda *args, **kwargs: forced_today),
-                )
-
-            def __enter__(self):
-                for patcher in self.patchers:
-                    patcher.start()
-
-            def __exit__(self, type, value, traceback):
-                for patcher in self.patchers:
-                    patcher.stop()
-
-        return WithToday()
-
-    def debug_mode(self, report):
-        def user_has_groups(groups):
-            if groups == 'base.group_no_one':
-                return True
-            return self.env.user.user_has_groups(groups)
-
-        class WithDebugMode:
-            def __init__(self):
-                self.patcher = patch.object(report, 'user_has_groups', lambda *args, **kwargs: user_has_groups(*args, **kwargs))
-
-            def __enter__(self):
-                self.patcher.start()
-
-            def __exit__(self, type, value, traceback):
-                self.patcher.stop()
-
-        return WithDebugMode()
 
     @staticmethod
     def _create_invoice(env, amount, partner, invoice_type, date, clear_taxes=False):

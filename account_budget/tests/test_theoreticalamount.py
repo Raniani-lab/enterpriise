@@ -51,14 +51,14 @@ class TestTheoreticalAmount(TestAccountBudgetCommon):
             'general_budget_id': buget_post.id,
             'date_from': date_from,
             'date_to': date_to,
-            'planned_amount': -364,
+            'planned_amount': -365,
         })
         cls.paid_date_line = crossovered_budget_line_obj.create({
             'crossovered_budget_id': crossovered_budget.id,
             'general_budget_id': buget_post.id,
             'date_from': date_from,
             'date_to': date_to,
-            'planned_amount': -364,
+            'planned_amount': -365,
             'paid_date':  Date.today().replace(day=9, month=9),
         })
 
@@ -70,12 +70,12 @@ class TestTheoreticalAmount(TestAccountBudgetCommon):
 
     def test_theoritical_amount_without_paid_date(self):
         test_list = [
-            (str(datetime.now().year) + '-01-01', 0),
-            (str(datetime.now().year) + '-01-02', -1),
-            (str(datetime.now().year) + '-01-03', -2),
-            (str(datetime.now().year) + '-01-11', -10),
-            (str(datetime.now().year) + '-02-20', -50),
-            (str(self.last_day_of_budget.date()), -364),
+            (str(datetime.now().year) + '-01-01', -1),
+            (str(datetime.now().year) + '-01-02', -2),
+            (str(datetime.now().year) + '-01-03', -3),
+            (str(datetime.now().year) + '-01-11', -11),
+            (str(datetime.now().year) + '-02-20', -51),
+            (str(self.last_day_of_budget.date()), -365),
         ]
         for date, expected_amount in test_list:
             _logger.info("Checking theoritical amount for the date: " + date)
@@ -90,8 +90,8 @@ class TestTheoreticalAmount(TestAccountBudgetCommon):
             (str(datetime.now().year) + '-01-02', 0),
             (str(datetime.now().year) + '-09-08', 0),
             (str(datetime.now().year) + '-09-09', 0),
-            (str(datetime.now().year) + '-09-10', -364),
-            (str(self.last_day_of_budget.date()), -364),
+            (str(datetime.now().year) + '-09-10', -365),
+            (str(self.last_day_of_budget.date()), -365),
         ]
         for date, expected_amount in test_list:
             _logger.info("Checking theoritical amount for the date: " + date)

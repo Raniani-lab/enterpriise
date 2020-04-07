@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import timedelta
+
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
@@ -218,8 +220,10 @@ class CrossoveredBudgetLines(models.Model):
                 else:
                     theo_amt = line.planned_amount
             else:
-                line_timedelta = line.date_to - line.date_from
-                elapsed_timedelta = today - line.date_from
+                # One day is added since we need to include the start and end date in the computation.
+                # For example, between April 1st and April 30th, the timedelta must be 30 days.
+                line_timedelta = line.date_to - line.date_from + timedelta(days=1)
+                elapsed_timedelta = today - line.date_from + timedelta(days=1)
 
                 if elapsed_timedelta.days < 0:
                     # If the budget line has not started yet, theoretical amount should be zero

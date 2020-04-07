@@ -103,6 +103,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
             LEFT JOIN account_bank_statement_line st_line       ON st_line.id = aml.statement_line_id
             LEFT JOIN account_payment payment                   ON payment.id = aml.payment_id
             LEFT JOIN account_journal journal                   ON journal.id = aml.journal_id
+            LEFT JOIN account_move move                         ON move.id = aml.move_id
             WHERE aml.date <= %s
             AND aml.company_id = %s
             AND CASE WHEN journal.type NOT IN ('cash', 'bank')
@@ -113,8 +114,9 @@ class account_bank_reconciliation_report(models.AbstractModel):
             AND full_reconcile_id IS NULL
             AND (aml.statement_line_id IS NULL OR st_line.date > %s)
             AND (company.account_bank_reconciliation_start IS NULL OR aml.date >= company.account_bank_reconciliation_start)
+            AND move.state in %s
             ORDER BY aml.date DESC, aml.id DESC
-        ''', [self._context['date_to'], journal.company_id.id, journal.id, self._context['date_to']])
+        ''', [self._context['date_to'], journal.company_id.id, journal.id, self._context['date_to'], tuple(states)])
         rslt['not_reconciled_payments'] = self._cr.dictfetchall()
 
         # Bank statement lines not reconciled with a payment

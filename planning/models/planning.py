@@ -74,7 +74,9 @@ class Planning(models.Model):
         ('forecast', 'Forecast')
     ], compute='_compute_allocation_type')
     allocated_hours = fields.Float("Allocated Hours", compute='_compute_allocated_hours', store=True, readonly=False)
-    allocated_percentage = fields.Float("Allocated Time (%)", default=100, help="Percentage of time the employee is supposed to work during the shift.")
+    allocated_percentage = fields.Float("Allocated Time (%)", default=100,
+        compute='_compute_allocated_percentage', store=True, readonly=False,
+        help="Percentage of time the employee is supposed to work during the shift.")
     working_days_count = fields.Integer("Number Of Working Days", compute='_compute_working_days_count', store=True)
 
     # publication and sending
@@ -133,8 +135,8 @@ class Planning(models.Model):
             else:
                 slot.allocation_type = 'forecast'
 
-    @api.onchange('allocated_hours')
-    def _onchange_allocated_hours(self):
+    @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id', 'allocated_hours')
+    def _compute_allocated_percentage(self):
         for slot in self:
             if slot.start_datetime and slot.end_datetime and slot.start_datetime != slot.end_datetime:
                 if slot.allocation_type == 'planning':
@@ -148,6 +150,8 @@ class Planning(models.Model):
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id', 'allocated_percentage')
     def _compute_allocated_hours(self):
+        percentage_field = self._fields['allocated_percentage']
+        self.env.remove_to_compute(percentage_field, self)
         for slot in self:
             if slot.start_datetime and slot.end_datetime:
                 percentage = slot.allocated_percentage / 100.0 or 1

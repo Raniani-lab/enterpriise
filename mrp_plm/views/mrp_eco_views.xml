@@ -440,7 +440,7 @@
                     </group>
                     <notebook>
                         <page string="Note" name="note">
-                            <field name="note" attrs="{'readonly': [('state', '=', 'done')]}" placeholder="Description of the change and its reason ..."/>
+                            <field name="note" attrs="{'readonly': [('state', '=', 'done')]}" placeholder="Description of the change and its reason."/>
                         </page>
                         <page string="BoM Changes" name="bom_changes"
                             attrs="{'invisible': ['|', '|', ('state', '=', 'confirmed'), ('type', 'in', ('product','routing')), ('bom_change_ids','=',[])]}"

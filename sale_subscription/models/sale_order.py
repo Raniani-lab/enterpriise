@@ -53,7 +53,9 @@ class SaleOrder(models.Model):
         values = {
             'name': template.name,
             'template_id': template.id,
-            'partner_id': self.partner_invoice_id.id,
+            'partner_id': self.partner_id.id,
+            'partner_invoice_id': self.partner_invoice_id.id,
+            'partner_shipping_id': self.partner_shipping_id.id,
             'user_id': self.user_id.id,
             'team_id': self.team_id.id,
             'payment_term_id': self.payment_term_id.id,

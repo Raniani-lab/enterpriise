@@ -341,15 +341,23 @@
                             </page>
                             <page string="Other Info" id="other_info">
                                 <group>
-                                    <field name="code" attrs="{'required': [('id', '!=', False)]}"/>
-                                    <field name="payment_term_id"/>
-                                    <field name="to_renew"/>
-                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                                    <field name="fiscal_position_id" options="{'no_create': True}"/>
-                                    <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
-                                    <field name="payment_mode" invisible="1"/>
-                                    <field name="commercial_partner_id" invisible="1"/>
-                                    <field name="payment_token_id" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}" options="{'no_create_edit': True}"/>
+                                    <group>
+                                        <field name="code" attrs="{'required': [('id', '!=', False)]}"/>
+                                        <field name="payment_term_id"/>
+                                        <field name="to_renew"/>
+                                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                    </group>
+                                    <group>
+                                        <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address"
+                                   context="{'default_type':'invoice'}" options='{"always_reload": True}'/>
+                                         <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address"
+                                   context="{'default_type':'delivery'}" options='{"always_reload": True}'/>
+                                        <field name="fiscal_position_id" options="{'no_create': True}"/>
+                                        <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
+                                        <field name="payment_mode" invisible="1"/>
+                                        <field name="commercial_partner_id" invisible="1"/>
+                                        <field name="payment_token_id" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}" options="{'no_create_edit': True}"/>
+                                    </group>
                                 </group>
                             </page>
                         </notebook>

@@ -49,6 +49,12 @@ class SaleSubscription(models.Model):
                                           domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", check_company=True)
     company_id = fields.Many2one('res.company', string="Company", default=lambda s: s.env.company, required=True)
     partner_id = fields.Many2one('res.partner', string='Customer', required=True, auto_join=True, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    partner_invoice_id = fields.Many2one(
+        'res.partner', string='Invoice Address',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
+    partner_shipping_id = fields.Many2one(
+        'res.partner', string='Service Address',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", )
     fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position')
     tag_ids = fields.Many2many('account.analytic.tag', string='Tags',
                                domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", check_company=True)
@@ -294,6 +300,9 @@ class SaleSubscription(models.Model):
             self.pricelist_id = self.partner_id.with_company(self.company_id).property_product_pricelist.id
             self.fiscal_position_id = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
             self.payment_term_id = self.partner_id.with_company(self.company_id).property_payment_term_id.id
+            addresses = self.partner_id.address_get(['delivery', 'invoice'])
+            self.partner_shipping_id = addresses['delivery']
+            self.partner_invoice_id = addresses['invoice']
         if self.partner_id.user_id:
             self.user_id = self.partner_id.user_id
 
@@ -576,8 +585,8 @@ class SaleSubscription(models.Model):
 
         res = {
             'move_type': 'out_invoice',
-            'partner_id': addr['invoice'],
-            'partner_shipping_id': addr['delivery'],
+            'partner_id': self.partner_invoice_id.id or addr['invoice'],
+            'partner_shipping_id': self.partner_shipping_id.id or addr['delivery'],
             'currency_id': self.pricelist_id.currency_id.id,
             'journal_id': journal.id,
             'invoice_origin': self.code,
@@ -709,8 +718,8 @@ class SaleSubscription(models.Model):
             res[subscription.id] = {
                 'pricelist_id': subscription.pricelist_id.id,
                 'partner_id': subscription.partner_id.id,
-                'partner_invoice_id': addr['invoice'],
-                'partner_shipping_id': addr['delivery'],
+                'partner_invoice_id': subscription.partner_invoice_id.id or addr['invoice'],
+                'partner_shipping_id': subscription.partner_shipping_id.id or addr['delivery'],
                 'currency_id': subscription.pricelist_id.currency_id.id,
                 'order_line': order_lines,
                 'analytic_account_id': subscription.analytic_account_id.id,

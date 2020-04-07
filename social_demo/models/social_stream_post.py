@@ -29,6 +29,16 @@ class DemoSocialStreamPost(models.Model):
         """ Overridden to bypass third-party API calls. """
         return
 
+    # INSTAGRAM
+
+    def _instagram_comment_add(self, message, object_id, comment_type="comment"):
+        return self._get_new_comment_demo(message)
+
+    def _instagram_comment_fetch(self, next_records_token=False):
+        return {
+            'comments': self._get_demo_comments(),
+        }
+
     # LINKEDIN
 
     def _linkedin_comment_add(self, message, comment_urn=None):

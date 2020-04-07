@@ -105,6 +105,10 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
         return false;
     },
 
+    isCommentManageable: function (comment) {
+        return this.isCommentDeletable(comment) || this.isCommentEditable(comment);
+    },
+
     isCommentLikable: function () {
         return true;
     },
@@ -124,7 +128,6 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
     getDeleteCommentEndpoint: function () {
         return null;
     },
-
 
     canAddImage: function () {
         return true;

@@ -469,7 +469,7 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
             overflow: hidden;
         }
 
-        &.o_social_comment_editable:hover .o_social_manage_comment {
+        &.o_social_comment_manageable:hover .o_social_manage_comment {
             visibility: visible;
         }
     }

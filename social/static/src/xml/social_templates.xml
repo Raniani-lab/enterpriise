@@ -55,7 +55,7 @@
 
             <div class="flex-grow-1">
                 <div class="o_social_comment_content">
-                    <div t-attf-class="o_social_comment_message #{widget.isCommentEditable(comment) || widget.isCommentDeletable(comment) ? 'o_social_comment_editable' : ''}">
+                    <div t-attf-class="o_social_comment_message #{widget.isCommentManageable(comment) ? 'o_social_comment_manageable' : ''}">
                         <a t-att-href="widget.getAuthorLink(comment)"
                             class="o_social_comment_author_name font-weight-bold"
                             t-esc="comment.from.name"

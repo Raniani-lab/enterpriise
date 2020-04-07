@@ -591,10 +591,13 @@ class AccountReport(models.AbstractModel):
 
         # Multi-company is there for security purpose and can't be disabled by a filter.
         if self.filter_multi_company:
-            if 'allowed_company_ids' in self.env.context:
-                companies = self.env.companies
+            if self._context.get('allowed_company_ids'):
+                # Retrieve the companies through the multi-companies widget.
+                companies = self.env['res.company'].browse(self._context['allowed_company_ids'])
             else:
-                companies = self.env.company
+                # When called from testing files, 'allowed_company_ids' is missing.
+                # Then, give access to all user's companies.
+                companies = self.env.companies
             if len(companies) > 1:
                 options['multi_company'] = [
                     {'id': c.id, 'name': c.name} for c in companies

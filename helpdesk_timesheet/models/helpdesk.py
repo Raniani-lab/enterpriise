@@ -223,7 +223,7 @@ class HelpdeskTicket(models.Model):
 
     def _action_open_new_timesheet(self, time_spent):
         return {
-            "name": _("Validate Spent Time"),
+            "name": _("Confirm Time Spent"),
             "type": 'ir.actions.act_window',
             "res_model": 'helpdesk.ticket.create.timesheet',
             "views": [[False, "form"]],

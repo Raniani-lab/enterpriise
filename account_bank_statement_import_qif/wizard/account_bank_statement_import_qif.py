@@ -22,6 +22,8 @@ class AccountBankStatementImport(models.TransientModel):
         help="Accounting journal related to the bank statement you're importing. It has to be manually chosen "
              "for statement formats which doesn't allow automatic journal detection (QIF for example).")
     hide_journal_field = fields.Boolean(string='Hide the journal field in the view', default=_get_hide_journal_field)
+    qif_decimal_point = fields.Char(string="Decimal Separator", default='.',
+        help="Field used to avoid conversion issues.")
 
     show_qif_date_format = fields.Boolean(default=False, store=False,
         help="Technical field used to ask the user for the date format used in the QIF file, as this format is ambiguous.")
@@ -76,7 +78,7 @@ class AccountBankStatementImport(models.TransientModel):
                     dayfirst = self.env.context.get('qif_date_format') == 'day_first'
                     vals_line['date'] = dateutil.parser.parse(data, fuzzy=True, dayfirst=dayfirst).date()
                 elif line[:1] == TOTAL_AMOUNT:
-                    amount = float(data.replace(b',', b''))
+                    amount = float(data.replace(b',', b'.' if self.qif_decimal_point == ',' else b''))
                     total += amount
                     vals_line['amount'] = amount
                 elif line[:1] == CHECK_NUMBER:

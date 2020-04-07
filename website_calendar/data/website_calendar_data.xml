@@ -11,12 +11,5 @@
             <field name="duration">1</field>
             <field name="alarm_type">sms</field>
         </record>
-
-        <record id="menu_appointment" model="website.menu">
-            <field name="name">Appointment</field>
-            <field name="url">/website/calendar</field>
-            <field name="parent_id" ref="website.main_menu"/>
-            <field name="sequence">55</field>
-        </record>
     </data>
 </odoo>

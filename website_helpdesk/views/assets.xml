@@ -5,11 +5,4 @@
             <script type="text/javascript" src="/website_helpdesk/static/src/js/website_helpdesk.menu.js"/>
         </xpath>
     </template>
-
-    <record id="website_menu_helpdesk" model="website.menu">
-        <field name="name">Help</field>
-        <field name="url" eval="'/helpdesk/'"/>
-        <field name="parent_id" ref="website.main_menu"/>
-        <field name="sequence" type="int">50</field>
-    </record>
 </odoo>

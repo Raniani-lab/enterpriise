@@ -4,7 +4,7 @@
 from unittest.mock import patch
 
 from odoo.exceptions import UserError
-from odoo.addons.account.tests.common import AccountTestCommon
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.tests import tagged
@@ -31,11 +31,12 @@ class MockResponse:
 
 
 @tagged('post_install', '-at_install')
-class TestPlaidApi(AccountTestCommon):
+class TestPlaidApi(AccountTestInvoicingCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestPlaidApi, cls).setUpClass()
+        super().setUpClass()
+
         cls.db_name = cls.env.cr.dbname
         cls.db_uid = cls.env['ir.config_parameter'].get_param('database.uuid')
         cls.url = 'https://onlinesync.odoo.com/plaid/api/2'
@@ -43,22 +44,50 @@ class TestPlaidApi(AccountTestCommon):
         cls.online_identifier = "lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDje"
         cls.statement_count = 3
 
+        cls.env.user.groups_id |= cls.env.ref('base.group_system')
+        cls.env.user.groups_id |= cls.env.ref('base.group_user')
+
+        cls.bank_journal = cls.env['account.journal'].create({
+            'name': 'Bank journal - plaid',
+            'code': 'TEST',
+            'type': 'bank',
+        })
+
+        # Create the initial statement.
+        initial_statement = cls.env['account.bank.statement'].create({
+            'journal_id': cls.bank_journal.id,
+            'date': '%s-01-01' % datetime.today().strftime('%Y'),
+            'balance_start': 5103.0,
+            'balance_end_real': 9944.87,
+            'line_ids': [
+                (0, 0, {'name': 'line1', 'amount': 750.0}),
+                (0, 0, {'name': 'line2', 'amount': 1275.0}),
+                (0, 0, {'name': 'line3', 'amount': -32.58}),
+                (0, 0, {'name': 'line4', 'amount': 650.0}),
+                (0, 0, {'name': 'line5', 'amount': 2000.0}),
+                (0, 0, {'name': 'line6', 'amount': 102.78}),
+                (0, 0, {'name': 'line7', 'amount': 96.67}),
+            ],
+        })
+
     def create_account_provider(self):
         return self.env['account.online.provider'].create({
-            'name': 'test', 
-            'provider_type': 'plaid', 
+            'name': 'test',
+            'provider_type': 'plaid',
             'provider_account_identifier': '123',
             'plaid_item_id': 'item123',
             'provider_identifier': 'inst_1',
             'status': 'SUCCESS',
             'status_code': 0,
             'account_online_journal_ids': [
-                (0, 0, {'name': 'myAccount', 
-                    'account_number': '0000', 
-                    'online_identifier': '456', 
-                    'balance': 500.0, 
-                    'last_sync': datetime.today() - relativedelta(days=15)})
-            ]
+                (0, 0, {
+                    'name': 'myAccount',
+                    'account_number': '0000',
+                    'online_identifier': '456',
+                    'balance': 500.0,
+                    'last_sync': datetime.today() - relativedelta(days=15),
+                }),
+            ],
         })
 
     # Method that simulate succesfull requests.post and response .
@@ -175,7 +204,6 @@ class TestPlaidApi(AccountTestCommon):
             return MockResponse(args[0], '', error, 500)
         return MockResponse(args[0], 'A wild error has happened, do you want to catch it?', 'no_json', 432)
 
-
     def test_plaid_create_institution(self):
         """ Test adding a new institution with plaid """
         # Simulate a user that just complete the authentication process with plaid, wa have received a token and a list
@@ -197,7 +225,7 @@ class TestPlaidApi(AccountTestCommon):
             }
         result = self.env['account.online.provider'].link_success('public-sandbox-019e1018-be47-4842-aada-1dea2ee0ab22', metadata)
 
-        acc_online_provider = self.env['account.online.provider'].search([])
+        acc_online_provider = self.env['account.online.provider'].search([('company_id', '=', self.company_data['company'].id)])
         self.assertEqual(len(acc_online_provider), 1, 'An account_online_provider should have been created')
         self.assertEqual(acc_online_provider.name, 'Chase')
         self.assertEqual(acc_online_provider.provider_type, 'plaid')
@@ -214,42 +242,32 @@ class TestPlaidApi(AccountTestCommon):
 
     def test_plaid_fetch_transactions(self):
         """ Test receiving some transactions with plaid """
-        if tools.config["without_demo"]:
-          self.skipTest("Adapt me without demo data")
-
         self.patcher_post = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post)
         self.patcher_post.start()
         self.addCleanup(self.patcher_post.stop)
 
-        # Create fake account.online.provider
-        bank_journal = self.env['account.journal'].search([('type', '=', 'bank')], limit=1) or False
         acc_online_provider = self.create_account_provider()
-        if bank_journal:
-            account_online_journal = self.env['account.online.journal'].search([], limit=1)
-            bank_journal.write({'account_online_journal_id': account_online_journal.id})
-        else:
-            # No localization installed, so skip test
-            self.skipTest("No localization installed")
+        self.bank_journal.account_online_journal_id = acc_online_provider.account_online_journal_ids
 
-        ret = acc_online_provider.manual_sync()
+        acc_online_provider.manual_sync()
         # Check that we've a bank statement with 3 lines (we assumed that the demo data have been loaded and a
         # bank statement has already been created, otherwise the statement should have 4 lines as a new one for
         # opening entry will be created)
-        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
+        bank_stmt = self.env['account.bank.statement'].search([('journal_id', '=', self.bank_journal.id)], limit=1)
+
         self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 4 lines')
         self.assertEqual(bank_stmt.state, 'open')
-        self.assertEqual(bank_stmt.journal_id.id, bank_journal.id)
-        for i in range(0,3):
+        for i in range(0, 3):
             self.assertEqual(bank_stmt.line_ids[i].name, 'Damdoum Store')
             self.assertEqual(bank_stmt.line_ids[i].amount, -2307.21)
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDje"))
             self.assertEqual(bank_stmt.line_ids[i].partner_id, self.env['res.partner']) #No partner defined on line
-        self.assertEqual(account_online_journal.last_sync, fields.Date.today())
+        self.assertEqual(self.bank_journal.account_online_journal_id.last_sync, fields.Date.today())
             
         # Call again and check that we don't have any new transactions
-        account_online_journal.last_sync = fields.Date.today() - relativedelta(days=15)
+        acc_online_provider.account_online_journal_ids.last_sync = fields.Date.today() - relativedelta(days=15)
         acc_online_provider.manual_sync()
-        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
+        bank_stmt = self.env['account.bank.statement'].search([('journal_id', '=', self.bank_journal.id)], limit=1)
         self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The existing statement should still have 4 lines')
 
     def test_plaid_fetch_errors(self):
@@ -277,7 +295,7 @@ class TestPlaidApi(AccountTestCommon):
         self.assertEqual(e.exception.name, exc_msg)
 
         # Test errors with a provider existing and check that the status has changed to 'FAILED'
-        acc_online_provider = self.create_account_provider()
+        acc_online_provider = self.create_account_provider().with_context(no_post_message=True)
         self.assertEqual(acc_online_provider.status, 'SUCCESS', 'state of account online provider should be in SUCCESS')
         self.assertEqual(acc_online_provider.action_required, False, 'account_online_provider should have the flag action_required set to False')
 
@@ -311,36 +329,25 @@ class TestPlaidApi(AccountTestCommon):
 
     def test_assign_partner_automatically(self):
         """ Test receiving some transactions with plaid and assigning partner"""
-        if tools.config["without_demo"]:
-          self.skipTest("Adapt me without demo data")
-
         self.patcher_post = patch('odoo.addons.account_plaid.models.plaid.requests.post', side_effect=self.plaid_post)
         self.patcher_post.start()
         self.addCleanup(self.patcher_post.stop)
 
-        # Create fake account.online.provider
-        bank_journal = self.env['account.journal'].search([('type', '=', 'bank')], limit=1) or False
-        acc_online_provider = self.create_account_provider()
-        if bank_journal:
-            account_online_journal = self.env['account.online.journal'].search([], limit=1)
-            bank_journal.write({'account_online_journal_id': account_online_journal.id})
-        else:
-            # No localization installed, so skip test
-            self.skipTest("No localization installed")
-
         self.payment_meta = {'payee_name': '123'}
 
-        agrolait = self.env['res.partner'].create({'name': 'Deco Addict'})
+        agrolait = self.env['res.partner'].create({
+            'name': 'Deco Addict',
+            'online_partner_vendor_name': '123',
+        })
 
-        # set online data on partner to simulate previous synchronization linked to agrolait
-        agrolait.write({'online_partner_vendor_name': '123'})
+        acc_online_provider = self.create_account_provider()
+        self.bank_journal.account_online_journal_id = acc_online_provider.account_online_journal_ids
 
-        ret = acc_online_provider.manual_sync()
-        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
+        acc_online_provider.manual_sync()
+        bank_stmt = self.env['account.bank.statement'].search([('journal_id', '=', self.bank_journal.id)], limit=1)
         self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 3 lines')
         self.assertEqual(bank_stmt.state, 'open')
-        self.assertEqual(bank_stmt.journal_id.id, bank_journal.id)
-        for i in range(0,3):
+        for i in range(0, 3):
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDje"))
             self.assertEqual(bank_stmt.line_ids[i].partner_id, agrolait)
         bank_stmt.unlink()
@@ -348,11 +355,15 @@ class TestPlaidApi(AccountTestCommon):
         # Check that partner assignation also work with location
         self.payment_meta = False
         self.online_identifier = 'lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjf'
-        ASUSTeK = self.env['res.partner'].create({'name': 'ASUSTek'})
-        ASUSTeK.write({'street': '300 Post St', 'city': 'San Francisco', 'zip': '94108'})
-        acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
-        ret = acc_online_provider.manual_sync()
-        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
+        ASUSTeK = self.env['res.partner'].create({
+            'name': 'ASUSTek',
+            'street': '300 Post St',
+            'city': 'San Francisco',
+            'zip': '94108',
+        })
+        acc_online_provider.account_online_journal_ids.last_sync = datetime.today() - relativedelta(days=15)
+        acc_online_provider.manual_sync()
+        bank_stmt = self.env['account.bank.statement'].search([('journal_id', '=', self.bank_journal.id)], limit=1)
         self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 4 lines')
         for i in range(0,3):
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjf"))
@@ -363,9 +374,9 @@ class TestPlaidApi(AccountTestCommon):
         self.payment_meta = {'payee_name': '123'}
         self.online_identifier = 'lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDja'
         ASUSTeK.write({'online_partner_vendor_name': '123', 'street': False, 'city': False, 'zip': False})
-        acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
-        ret = acc_online_provider.manual_sync()
-        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
+        acc_online_provider.account_online_journal_ids.last_sync = datetime.today() - relativedelta(days=15)
+        acc_online_provider.manual_sync()
+        bank_stmt = self.env['account.bank.statement'].search([('journal_id', '=', self.bank_journal.id)], limit=1)
         self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 4 lines')
         for i in range(0,3):
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDja"))
@@ -375,9 +386,9 @@ class TestPlaidApi(AccountTestCommon):
         # Check that vendor name take precedence over location
         ASUSTeK.write({'street': '300 Post St', 'city': 'San Francisco', 'zip': '94108', 'online_partner_vendor_name': False})
         self.online_identifier = 'lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjb'
-        acc_online_provider.account_online_journal_ids[0].write({'last_sync': datetime.today() - relativedelta(days=15)})
-        ret = acc_online_provider.manual_sync()
-        bank_stmt = self.env['account.bank.statement'].search([], order="create_date desc", limit=1)
+        acc_online_provider.account_online_journal_ids.last_sync = datetime.today() - relativedelta(days=15)
+        acc_online_provider.manual_sync()
+        bank_stmt = self.env['account.bank.statement'].search([('journal_id', '=', self.bank_journal.id)], limit=1)
         self.assertEqual(len(bank_stmt.line_ids), self.statement_count, 'The statement should have 4 lines')
         for i in range(0,3):
             self.assertTrue(bank_stmt.line_ids[i].online_identifier.endswith("lPNjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDjb"))

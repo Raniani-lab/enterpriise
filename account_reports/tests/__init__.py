@@ -8,4 +8,5 @@ from . import test_partner_ledger_report
 from . import test_aged_report
 from . import test_tax_report
 from . import test_cash_flow_report
+from . import test_consolidated_journals_report
 from . import test_account_reports

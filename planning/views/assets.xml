@@ -15,10 +15,15 @@
 
     <template id="assets_frontend_planning" name="Planning Own Assets Frontend" inherit_id="web.assets_common" primary="True">
         <xpath expr="//link[last()]" position="after">
-            <link rel="stylesheet" href="/web/static/lib/fullcalendar/css/fullcalendar.css"/>
             <link rel="stylesheet" type="text/scss" href="/planning/static/src/scss/planning_calendar_report.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web/static/src/scss/form_view.scss"/>
-            <script type="text/javascript" src="/web/static/lib/fullcalendar/js/fullcalendar.js"/>
+            <link rel="stylesheet" href="/web/static/lib/fullcalendar/core/main.css"/>
+            <link rel="stylesheet" href="/web/static/lib/fullcalendar/daygrid/main.css"/>
+            <link rel="stylesheet" href="/web/static/lib/fullcalendar/timegrid/main.css"/>
+            <script type="text/javascript" src="/web/static/lib/fullcalendar/core/main.js"></script>
+            <script type="text/javascript" src="/web/static/lib/fullcalendar/moment/main.js"></script>
+            <script type="text/javascript" src="/web/static/lib/fullcalendar/daygrid/main.js"></script>
+            <script type="text/javascript" src="/web/static/lib/fullcalendar/timegrid/main.js"></script>
         </xpath>
     </template>
 </odoo>

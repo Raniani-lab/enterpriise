@@ -58,7 +58,7 @@ class ShiftController(http.Controller):
             'open_slots_ids': open_slots,
             'planning_slots_ids': planning_slots,
             'planning_planning_id': planning_sudo,
-            'locale': get_lang(request.env).code,
+            'locale': get_lang(request.env).iso_code,
             'employee': employee_sudo,
             'format_datetime': lambda dt, dt_format: tools.format_datetime(request.env, dt, dt_format=dt_format),
             'notification_text': message in ['assign', 'unassign', 'already_assign'],

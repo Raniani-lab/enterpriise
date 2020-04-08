@@ -49,6 +49,7 @@ class WorkflowActionRule(models.Model):
         ('months', 'Months'),
     ], string='Due type', default='days')
     activity_note = fields.Html(string="Activity Note")
+    has_owner_activity = fields.Boolean(string="Set the activity on the document owner")
     activity_user_id = fields.Many2one('res.users', string='Responsible')
 
     @api.onchange('domain_folder_id')

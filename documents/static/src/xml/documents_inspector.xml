@@ -157,7 +157,7 @@
 <!-- Document tags template -->
 <t t-name="documents.DocumentsInspector.tag">
     <div class="o_inspector_tag o_inspector_trigger_hover_target" t-att-data-id="id">
-        <span class="o_tag_prefix" t-att-title="group_name"><t t-esc="group_name"/> &gt;</span>
+        <span class="o_tag_prefix" t-att-title="group_name" t-esc="group_name"/> &gt;
         <span class= "o_documents_tag_name" t-att-title="name" t-esc="display_name"/>
         <span class="o_inspector_tag_remove pull-right o_inspector_trigger_hover fa-fw">&#215;</span>
     </div>
@@ -166,8 +166,8 @@
 <!-- Document rules template -->
 <t t-name="documents.DocumentsInspector.rule">
     <div class="o_inspector_rule o_inspector_trigger_hover_target mb-2" t-att-data-id="id">
-        <span t-att-title="note || ''"><t t-esc="display_name"/></span>
-        <button t-att-title="note || ''" class="btn fa fa-play text-white bg-primary pull-right o_inspector_trigger_rule o_inspector_trigger_hover"/>
+        <button t-att-title="note || ''" class="btn fa fa-play text-white bg-primary o_inspector_trigger_rule"/>
+        <span class="ml-1" t-att-title="note || ''"><t t-esc="display_name"/></span>
     </div>
 </t>
 

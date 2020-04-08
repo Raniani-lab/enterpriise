@@ -6,7 +6,7 @@
         Upload
     </button>
     <button type="button" t-attf-class="btn btn-primary o_documents_kanban_url" disabled="true">
-        Add URL
+        Add a Link
     </button>
     <button type="button" t-attf-class="btn btn-primary o_documents_kanban_request" disabled="true">
         Request Document

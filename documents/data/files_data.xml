@@ -14,5 +14,19 @@
                                                ref('documents.documents_internal_status_validated')])]"/>
         </record>
 
+        <record id="documents_image_multi_pdf_document" model="documents.document">
+            <field name="name">Mails_inbox.pdf</field>
+            <field name="datas" type="base64" file="documents/data/files/Mails_inbox.pdf"/>
+            <field name="folder_id" ref="documents.documents_internal_folder"/>
+            <field name="tag_ids" eval="[(6,0,[ref('documents.documents_internal_status_inbox')])]"/>
+        </record>
+
+        <record id="documents_invoice_png" model="documents.document">
+            <field name="name">invoice.png</field>
+            <field name="datas" type="base64" file="documents/data/files/invoice.png"/>
+            <field name="folder_id" ref="documents.documents_internal_folder"/>
+            <field name="tag_ids" eval="[(6,0,[ref('documents.documents_internal_status_inbox')])]"/>
+        </record>
+
     </data>
 </odoo>

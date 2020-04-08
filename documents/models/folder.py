@@ -64,15 +64,16 @@ class DocumentFolder(models.Model):
             record.action_count = action_count_dict.get(record.id, 0)
 
     def action_see_actions(self):
-        domain = [('domain_folder_id', '=', self.id)]
         return {
             'name': _('Actions'),
-            'domain': domain,
             'res_model': 'documents.workflow.rule',
             'type': 'ir.actions.act_window',
             'views': [(False, 'list'), (False, 'form')],
             'view_mode': 'tree,form',
-            'context': "{'default_domain_folder_id': %s}" % self.id
+            'context': {
+                'default_domain_folder_id': self.id,
+                'search_default_domain_folder_id': self.id,
+            }
         }
 
     def _compute_document_count(self):

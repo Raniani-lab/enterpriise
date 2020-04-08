@@ -154,7 +154,7 @@ $o-dms-progress-bar-height: 15px;
 .o_documents_inspector {
     flex: 0 0 $o-dms-inspector-width;
     overflow: auto;
-    color: $o-dms-inspector-txt-light;
+    color: $o-dms-inspector-txt-lighter;
     background-color: $o-dms-inspector-bg;
 
     .o_documents_inspector_preview {
@@ -295,7 +295,7 @@ $o-dms-progress-bar-height: 15px;
         .o_inspector_table {
             .o_inspector_label {
                 width: 0%;
-                color: $o-dms-inspector-txt-light;
+                color: $o-dms-inspector-txt-lighter;
                 vertical-align: middle;
                 padding-left: 0;
 
@@ -411,26 +411,20 @@ $o-dms-progress-bar-height: 15px;
                     @include o-hover-opacity();
                     display: inline-block;
                 }
-
-                &.o_inspector_hover {
-                    color: white;
-
-                    .o_tag_prefix {
-                        opacity: 1;
-                    }
-                }
             }
         }
 
         .o_inspector_rules {
             .o_inspector_rule {
+                display: flex;
+                align-items: flex-start;
+
                 .o_inspector_trigger_rule {
                     font-size: 10px;
                     padding: 1px 10px;
-                    @include o-hover-opacity();
                 }
 
-                &.o_inspector_hover {
+                &:hover {
                     color: white;
                 }
             }

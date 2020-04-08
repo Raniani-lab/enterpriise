@@ -1,10 +1,10 @@
-odoo.define('documents.tour', function(require) {
+odoo.define('documents_account.tour', function(require) {
 "use strict";
 
 const { _t } = require('web.core');
 const tour = require('web_tour.tour');
 
-tour.register('documents_tour', {
+tour.register('documents_account_tour', {
     url: "/web",
     rainbowManMessage: _t("Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now."),
 }, [{
@@ -26,7 +26,7 @@ tour.register('documents_tour', {
     position: 'left',
 }, { // equivalent to '.o_search_panel_label_title:contains('Inbox')' but language agnostic.
     trigger: '.o_search_panel_filter_value[data-value-id="1"] .o_search_panel_label_title',
-    extra_trigger: '.o_search_panel_label',
+    extra_trigger: '.o_documents_kanban',
     content: _t("Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter documents and structure your process.</i>"),
     position: 'right',
 }, {
@@ -36,7 +36,7 @@ tour.register('documents_tour', {
     position: 'bottom',
 }, { // equivalent to '.o_inspector_rule:contains('Send to Legal') .o_inspector_trigger_rule' but language agnostic.
     trigger: '.o_inspector_rule[data-id="3"] .o_inspector_trigger_rule',
-    extra_trigger: '.o_documents_image_background',
+    extra_trigger: '.o_documents_kanban',
     content: _t("Let's tag this bill as legal<br/> <i>Tips: actions can be tailored to your process, according to the workspace.</i>"),
     position: 'right',
 }, { // the nth(0) ensures that the filter of the preceding step has been applied.
@@ -62,7 +62,7 @@ tour.register('documents_tour', {
 }, { // equivalent to '.o_pdf_rule_buttons:contains(Scan Bill)' but language agnostic.
     trigger: '.o_pdf_rule_buttons:nth(2)',
     extra_trigger: '.o_documents_pdf_manager',
-    content: _t("Let's process these bills: send to Finance workspace, and scan automatically."),
+    content: _t("Let's process these bills: turn them into vendor bills."),
     position: 'bottom',
 }, { // equivalent to '.o_pdf_rule_buttons:contains(Send to Legal)' but language agnostic.
     trigger: '.o_pdf_rule_buttons:nth(1)',

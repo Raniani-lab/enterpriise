@@ -7,6 +7,7 @@ from odoo.tools import image_process
 from ast import literal_eval
 from dateutil.relativedelta import relativedelta
 from collections import OrderedDict
+import re
 
 
 class Document(models.Model):
@@ -102,8 +103,10 @@ class Document(models.Model):
 
     @api.onchange('url')
     def _onchange_url(self):
-        if self.url and not self.name:
-            self.name = self.url.rsplit('/')[-1]
+        if self.url:
+            is_youtube = re.match(r"^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$", self.url)
+            if not self.name and not is_youtube:
+                self.name = self.url.rsplit('/')[-1]
 
     @api.depends('checksum')
     def _compute_thumbnail(self):
@@ -271,26 +274,26 @@ class Document(models.Model):
                     settings_record.activity_user_id
         """
         if settings_record and settings_record.activity_type_id:
-            activity_vals = {
-                'activity_type_id': settings_record.activity_type_id.id,
-                'summary': settings_record.activity_summary or '',
-                'note': settings_record.activity_note or '',
-            }
-            if settings_record.activity_date_deadline_range > 0:
-                activity_vals['date_deadline'] = fields.Date.context_today(settings_record) + relativedelta(
-                    **{settings_record.activity_date_deadline_range_type: settings_record.activity_date_deadline_range})
-
-            if settings_record._fields.get('activity_user_id') and settings_record.activity_user_id:
-                user = settings_record.activity_user_id
-            elif settings_record._fields.get('user_id') and settings_record.user_id:
-                user = settings_record.user_id
-            elif settings_record._fields.get('owner_id') and settings_record.owner_id:
-                user = settings_record.owner_id
-            else:
-                user = self.env.user
-            if user:
-                activity_vals['user_id'] = user.id
-            self.activity_schedule(**activity_vals)
+            for record in self:
+                activity_vals = {
+                    'activity_type_id': settings_record.activity_type_id.id,
+                    'summary': settings_record.activity_summary or '',
+                    'note': settings_record.activity_note or '',
+                }
+                if settings_record.activity_date_deadline_range > 0:
+                    activity_vals['date_deadline'] = fields.Date.context_today(settings_record) + relativedelta(
+                        **{settings_record.activity_date_deadline_range_type: settings_record.activity_date_deadline_range})
+                if settings_record._fields.get('has_owner_activity') and settings_record.has_owner_activity and record.owner_id:
+                    user = record.owner_id
+                elif settings_record._fields.get('activity_user_id') and settings_record.activity_user_id:
+                    user = settings_record.activity_user_id
+                elif settings_record._fields.get('user_id') and settings_record.user_id:
+                    user = settings_record.user_id
+                else:
+                    user = self.env.user
+                if user:
+                    activity_vals['user_id'] = user.id
+                record.activity_schedule(**activity_vals)
 
     def toggle_favorited(self):
         self.ensure_one()

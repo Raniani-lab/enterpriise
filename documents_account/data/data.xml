@@ -35,6 +35,15 @@
             <field name="tag_id" ref="documents.documents_finance_fiscal_year_2018"/>
         </record>
 
+        <!-- Scan bill -->
+
+        <record id="vendor_bill_rule" model="documents.workflow.rule">
+            <field name="sequence">9</field>
+            <field name="name">Scan Bill</field>
+            <field name="remove_activities">True</field>
+            <field name="create_model">account.move.in_invoice</field>
+            <field name="domain_folder_id" ref="documents.documents_internal_folder"/>
+        </record>
         <!-- create vendor refund -->
 
         <record id="credit_note_rule" model="documents.workflow.rule">

@@ -14,14 +14,14 @@
                     </div>
                     <group>
                         <group>
-                            <field name="owner_id" required="1"/>
-                            <field name="partner_id"/>
+                            <field name="owner_id" string="Request To" required="1"/>
+                            <field name="partner_id" groups="base.group_no_one"/>
                             <label for="activity_date_deadline_range"/>
                             <div class="o_row">
                                 <field name="activity_date_deadline_range"/>
                                 <field name="activity_date_deadline_range_type"/>
                             </div>
-                            <field name="activity_type_id"/>
+                            <field name="activity_type_id" groups="base.group_no_one"/>
                             <field name="res_model" readonly="1" groups="base.group_no_one"/>
                             <field name="res_id" readonly="1" groups="base.group_no_one"/>
                         </group>

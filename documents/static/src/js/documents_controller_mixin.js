@@ -136,9 +136,10 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @param {ev} event used for custom behaviour on override.
      */
     async _deferredRenderInspector(ev) {
+        const state = this.model.get(this.handle);
         return new Promise((resolve) => {
             setTimeout(() => {
-                this._renderDocumentsInspector();
+                this._renderDocumentsInspector(state);
                 resolve();
             });
         });
@@ -279,8 +280,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      *
      * @private
      */
-    async _renderDocumentsInspector() {
-        const state = this.model.get(this.handle);
+    async _renderDocumentsInspector(state) {
         let localState;
         if (this._documentsInspector) {
             localState = this._documentsInspector.getLocalState();
@@ -362,7 +362,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         const recordIds = state.data.map(record => record.res_id);
         this._selectedRecordIds = _.intersection(this._selectedRecordIds, recordIds);
         await this._updateChatter();
-        await this._renderDocumentsInspector();
+        await this._renderDocumentsInspector(state);
     },
     /**
      * Disables the control panel buttons if there is no selected folder.
@@ -924,6 +924,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             };
         if (result.error) {
             this.do_notify(_t("Error"), result.error, true);
+        } else if (result.ids && result.ids.length > 0) {
+            this._selectedRecordIds = result.ids;
         }
         fileUploadMixin._onUploadLoad.apply(this, arguments);
     },

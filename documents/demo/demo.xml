@@ -23,14 +23,12 @@
             <field name="name">city.jpg</field>
             <field name="datas" type="base64" file="documents/demo/files/city.jpg"/>
             <field name="folder_id" ref="documents.documents_internal_folder"/>
-            <field name="tag_ids" eval="[(6,0,[ref('documents.documents_internal_status_draft')])]"/>
         </record>
 
         <record id="documents_image_people_document" model="documents.document">
             <field name="name">people.jpg</field>
             <field name="datas" type="base64" file="documents/demo/files/people.jpg"/>
             <field name="folder_id" ref="documents.documents_internal_folder"/>
-            <field name="tag_ids" eval="[(6,0,[ref('documents.documents_internal_status_draft')])]"/>
         </record>
 
 

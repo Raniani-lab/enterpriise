@@ -67,14 +67,14 @@ class MrpCostStructure(models.AbstractModel):
             if not all(m.product_uom_id.id == uom.id for m in mos):
                 uom = product.uom_id
                 for m in mos:
-                    qty = sum(m.move_finished_ids.filtered(lambda mo: mo.state != 'cancel' and mo.product_id == product).mapped('product_qty'))
+                    qty = sum(m.move_finished_ids.filtered(lambda mo: mo.state == 'done' and mo.product_id == product).mapped('product_qty'))
                     if m.product_uom_id.id == uom.id:
                         mo_qty += qty
                     else:
                         mo_qty += m.product_uom_id._compute_quantity(qty, uom)
             else:
                 for m in mos:
-                    mo_qty += sum(m.move_finished_ids.filtered(lambda mo: mo.state != 'cancel' and mo.product_id == product).mapped('product_qty'))
+                    mo_qty += sum(m.move_finished_ids.filtered(lambda mo: mo.state == 'done' and mo.product_id == product).mapped('product_qty'))
             for m in mos:
                 byproduct_moves = m.move_finished_ids.filtered(lambda mo: mo.state != 'cancel' and mo.product_id != product)
             res.append({

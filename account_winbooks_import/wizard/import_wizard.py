@@ -565,7 +565,7 @@ class WinbooksImportWizard(models.TransientModel):
                     tag_id = self.env['account.account.tag'].search([('name', '=', tag_name), ('applicability', '=', 'taxes')])
                     tags_cache['tag_name'] = tag_id
                 if not tag_id:
-                    tag_id = self.env['account.account.tag'].create({'name': tag_name, 'applicability': 'taxes'})
+                    tag_id = self.env['account.account.tag'].create({'name': tag_name, 'applicability': 'taxes', 'country_id': self.env.company.country_id.id})
                 tag_ids += tag_id
             return [(4, id, 0) for id in tag_ids.ids]
 
@@ -645,6 +645,8 @@ class WinbooksImportWizard(models.TransientModel):
         """
         if not DBF:
             raise UserError(_('dbfread library not found, Winbooks Import features disabled. If you plan to use it, please install the dbfread library from https://pypi.org/project/dbfread/'))
+        if not self.env.company.country_id:
+            raise UserError(_('Please define the country on your company.'))
         self = self.with_context(active_test=False)
         with TemporaryDirectory() as file_dir:
             zip_ref = zipfile.ZipFile(io.BytesIO(base64.decodebytes(self.zip_file)))

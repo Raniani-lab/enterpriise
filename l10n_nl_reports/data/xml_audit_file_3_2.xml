@@ -102,7 +102,7 @@
                             <periodNumber t-esc="compute_period_number(m.date)"/>
                             <trDt t-esc="m.date"/>
                             <amnt t-esc="round(m.amount_total, 2)"/>
-                            <trLine t-foreach="m.line_ids" t-as="l">
+                            <trLine t-foreach="m.line_ids" t-as="l" t-if="not l.display_type">
                                 <nr t-esc="l.id"/>
                                 <accID t-esc="l.account_id.code"/>
                                 <docRef t-esc="l.ref or '/'"/>

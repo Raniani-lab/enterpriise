@@ -170,6 +170,9 @@ class ResPartner(models.Model):
         return fups
 
     def _query_followup_level(self, all_partners=False):
+        # Allow mocking the current day for testing purpose.
+        today = fields.Date.context_today(self)
+        
         sql = """
             WITH unreconciled_aml AS (
                 SELECT aml.id, aml.partner_id, aml.followup_line_id, aml.date, aml.date_maturity FROM account_move_line aml
@@ -184,7 +187,7 @@ class ResPartner(models.Model):
             )
             SELECT partner.id as partner_id,
                    current_followup_level.id as followup_level,
-                   CASE WHEN in_need_of_action_aml.id IS NOT NULL AND (prop_date.value_datetime IS NULL OR prop_date.value_datetime::date <= CURRENT_DATE) THEN 'in_need_of_action'
+                   CASE WHEN in_need_of_action_aml.id IS NOT NULL AND (prop_date.value_datetime IS NULL OR prop_date.value_datetime::date <= %(current_date)s) THEN 'in_need_of_action'
                         WHEN exceeded_unreconciled_aml.id IS NOT NULL THEN 'with_overdue_invoices'
                         ELSE 'no_action_needed' END as followup_status
             FROM res_partner partner
@@ -195,7 +198,7 @@ class ResPartner(models.Model):
                 LEFT OUTER JOIN account_followup_followup_line next_ful ON next_ful.id = (
                     SELECT next_ful.id FROM account_followup_followup_line next_ful
                     WHERE next_ful.delay > COALESCE(ful.delay, 0)
-                      AND COALESCE(aml.date_maturity, aml.date) + next_ful.delay <= CURRENT_DATE
+                      AND COALESCE(aml.date_maturity, aml.date) + next_ful.delay <= %(current_date)s
                       AND next_ful.company_id = %(company_id)s
                     ORDER BY next_ful.delay ASC
                     LIMIT 1
@@ -210,13 +213,13 @@ class ResPartner(models.Model):
                 LEFT OUTER JOIN account_followup_followup_line ful ON ful.id = aml.followup_line_id
                 WHERE aml.partner_id = partner.id
                   AND COALESCE(ful.delay, 0) < current_followup_level.delay
-                  AND COALESCE(aml.date_maturity, aml.date) + COALESCE(ful.delay, 0) <= CURRENT_DATE
+                  AND COALESCE(aml.date_maturity, aml.date) + COALESCE(ful.delay, 0) <= %(current_date)s
                 LIMIT 1
             )
             LEFT OUTER JOIN account_move_line exceeded_unreconciled_aml ON exceeded_unreconciled_aml.id = (
                 SELECT aml.id FROM unreconciled_aml aml
                 WHERE aml.partner_id = partner.id
-                  AND COALESCE(aml.date_maturity, aml.date) <= CURRENT_DATE
+                  AND COALESCE(aml.date_maturity, aml.date) <= %(current_date)s
                 LIMIT 1
             )
             LEFT OUTER JOIN ir_property prop_date ON prop_date.res_id = CONCAT('res.partner,', partner.id) AND prop_date.name = 'payment_next_action_date'
@@ -227,6 +230,7 @@ class ResPartner(models.Model):
         params = {
             'company_id': self.env.company.id,
             'partner_ids': tuple(self.ids),
+            'current_date': today,
         }
         self.env['account.move.line'].flush()
         self.env['res.partner'].flush()

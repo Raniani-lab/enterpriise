@@ -22,14 +22,10 @@ class AccountFollowupReport(models.AbstractModel):
 
     filter_partner_id = False
 
-    def _get_options(self, previous_options=None):
-        options = super()._get_options(previous_options)
-        # It doesn't make sense to allow multicompany for these kind of reports
-        # 1. Followup mails need to have the right headers from the right company
-        # 2. Separation of business seems natural: a customer wouldn't know or care that the two companies are related
-        if 'multi_company' in options:
-            del options['multi_company']
-        return options
+    # It doesn't make sense to allow multicompany for these kind of reports
+    # 1. Followup mails need to have the right headers from the right company
+    # 2. Separation of business seems natural: a customer wouldn't know or care that the two companies are related
+    filter_multi_company = None
 
     def _get_columns_name(self, options):
         """

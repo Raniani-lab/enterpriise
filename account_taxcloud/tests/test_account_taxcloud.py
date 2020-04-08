@@ -13,7 +13,7 @@ class TestAccountTaxcloud(TestAccountTaxcloudCommon):
         # Create Invoice
         invoice = self.env["account.move"].create(
             {
-                "type": "out_invoice",
+                "move_type": "out_invoice",
                 "partner_id": self.partner.id,
                 "fiscal_position_id": self.fiscal_position.id,
                 "invoice_line_ids": [

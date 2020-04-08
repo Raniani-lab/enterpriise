@@ -80,4 +80,9 @@ class TestAccountTaxcloudCommon(SavepointCase):
                 "supplier_taxes_id": None,
             }
         )
+
+        # Set invoice policies to ordered, so the products can be invoiced without having to deal with the delivery
+        cls.product.product_tmpl_id.invoice_policy = 'order'
+        cls.product_1.product_tmpl_id.invoice_policy = 'order'
+
         return res

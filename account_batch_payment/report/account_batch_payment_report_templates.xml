@@ -28,10 +28,14 @@
                         <td class="text-left"><t t-esc="payment.communication"/></td>
                         <td class="text-right"><t t-esc="payment.amount" t-options="{'widget': 'monetary', 'display_currency': payment.currency_id}"/></td>
                     </tr>
-                    <tfoot><tr>
-                        <td></td><td></td><td></td>
-                        <td class="text-right"><t t-esc="page['total_amount']" t-options="{'widget': 'monetary', 'display_currency': page['currency']}"/></td>
-                    </tr></tfoot>
+                    <tfoot t-if="page['total_amount']">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right"><t t-esc="page['total_amount']" t-options="{'widget': 'monetary', 'display_currency': page['currency']}"/></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </t>

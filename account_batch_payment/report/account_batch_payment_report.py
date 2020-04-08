@@ -26,9 +26,9 @@ class PrintBatchPayment(models.AbstractModel):
             'journal_name': batch.journal_id.name,
             'payments': payments,
             'currency': batch.currency_id,
-            'total_amount': batch.amount,
+            'total_amount': batch.amount if idx == len(payment_slices) - 1 else 0,
             'footer': batch.journal_id.company_id.report_footer,
-        } for payments in payment_slices]
+        } for idx, payments in enumerate(payment_slices)]
 
     @api.model
     def _get_report_values(self, docids, data=None):

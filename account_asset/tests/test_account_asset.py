@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import math
 import time
@@ -8,9 +7,9 @@ from dateutil.relativedelta import relativedelta
 from odoo import fields
 from odoo.exceptions import UserError, MissingError
 from odoo.tests.common import Form
-from odoo.addons.account_reports.tests.common import _init_options
-from odoo.addons.account.tests.common import AccountTestCommon
+from odoo.addons.account_reports.tests.common import TestAccountReportsCommonNew
 from unittest.mock import patch
+
 
 def today():
     # 31'st of december is a particular date because entries are configured
@@ -21,7 +20,8 @@ def today():
         today += relativedelta(day=30)
     return today
 
-class TestAccountAsset(AccountTestCommon):
+
+class TestAccountAsset(TestAccountReportsCommonNew):
 
     # YTI TODO: Convert this to a classmethod setUpClass
     # But the test test_asset_reverse_depreciation depends on
@@ -31,10 +31,10 @@ class TestAccountAsset(AccountTestCommon):
         super(TestAccountAsset, self).setUp()
         today = fields.Date.today()
         self.truck = self.env['account.asset'].create({
-            'account_asset_id': self.a_expense.id,
-            'account_depreciation_id': self.a_expense.id,
-            'account_depreciation_expense_id': self.cas.id,
-            'journal_id': self.miscellaneous_journal.id,
+            'account_asset_id': self.company_data['default_account_expense'].id,
+            'account_depreciation_id': self.company_data['default_account_expense'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
             'asset_type': 'purchase',
             'name': 'truck',
             'acquisition_date': today + relativedelta(years=-6, month=1, day=1),
@@ -46,7 +46,7 @@ class TestAccountAsset(AccountTestCommon):
         })
         self.truck.validate()
         self.env['account.move']._autopost_draft_entries()
-        self.assert_counterpart_account_id = self.a_sale.id
+        self.assert_counterpart_account_id = self.company_data['default_account_revenue'].id,
 
     def update_form_values(self, asset_form):
         for i in range(len(asset_form.depreciation_move_ids)):
@@ -58,20 +58,20 @@ class TestAccountAsset(AccountTestCommon):
         self.env.context = {**self.env.context, **{'asset_type': 'purchase'}}
 
         account_asset_model_fixedassets_test0 = self.env['account.asset'].create({
-            'account_depreciation_id': self.xfa.id,
-            'account_depreciation_expense_id': self.a_expense.id,
-            'account_asset_id': self.xfa.id,
-            'journal_id': self.expenses_journal.id,
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+            'account_asset_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_purchase'].id,
             'name': 'Hardware - 3 Years',
             'method_number': 3,
             'method_period': '12',
             'state': 'model',
         })
         account_asset_model_fixedassets_test1 = self.env['account.asset'].create({
-            'account_depreciation_id': self.xfa.id,
-            'account_depreciation_expense_id': self.a_expense.id,
-            'account_asset_id': self.xfa.id,
-            'journal_id': self.expenses_journal.id,
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+            'account_asset_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_purchase'].id,
             'name': 'Cars - 5 Years',
             'method_number': 5,
             'method_period': '12',
@@ -143,9 +143,9 @@ class TestAccountAsset(AccountTestCommon):
         """
         self.env.context = {**self.env.context, **{'asset_type': 'purchase'}}
         account_asset_model_sale_test0 = self.env['account.asset'].create({
-            'account_depreciation_id': self.xfa.id,
-            'account_depreciation_expense_id': self.a_sale.id,
-            'journal_id': self.sales_journal.id,
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_revenue'].id,
+            'journal_id': self.company_data['default_journal_sale'].id,
             'name': 'Maintenance Contract - 3 Years',
             'method_number': 3,
             'method_period': '12',
@@ -156,9 +156,9 @@ class TestAccountAsset(AccountTestCommon):
         })
 
         account_asset_model_sale1 = self.env['account.asset'].create({
-            'account_depreciation_id': self.xfa.id,
-            'account_depreciation_expense_id': self.a_sale.id,
-            'journal_id': self.sales_journal.id,
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_revenue'].id,
+            'journal_id': self.company_data['default_journal_sale'].id,
             'name': 'Maintenance Contract - 1 Year',
             'method_period': '12',
             'prorata': True,
@@ -168,9 +168,9 @@ class TestAccountAsset(AccountTestCommon):
         })
 
         account_asset_pc = self.env['account.asset'].create({
-            'account_depreciation_id': self.xfa.id,
-            'account_depreciation_expense_id': self.a_sale.id,
-            'journal_id': self.sales_journal.id,
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_revenue'].id,
+            'journal_id': self.company_data['default_journal_sale'].id,
             'name': 'Car Maintenance',
             'method_period': '12',
             'method_number': 3,
@@ -183,9 +183,9 @@ class TestAccountAsset(AccountTestCommon):
         })
 
         account_asset_ac = self.env['account.asset'].create({
-            'account_depreciation_id': self.xfa.id,
-            'account_depreciation_expense_id': self.a_sale.id,
-            'journal_id': self.sales_journal.id,
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_revenue'].id,
+            'journal_id': self.company_data['default_journal_sale'].id,
             'name': 'Air Conditioner Maintenance Contract',
             'method_period': '12',
             'prorata': True,
@@ -197,15 +197,15 @@ class TestAccountAsset(AccountTestCommon):
         })
 
         # The account needs a default model for the invoice to validate the revenue
-        self.xfa.create_asset = 'validate'
-        self.xfa.asset_model = account_asset_model_sale_test0
+        self.company_data['default_account_assets'].create_asset = 'validate'
+        self.company_data['default_account_assets'].asset_model = account_asset_model_sale_test0
 
         invoice = self.env['account.move'].with_context(asset_type='purchase').create({
             'move_type': 'in_invoice',
             'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
             'invoice_line_ids': [(0, 0, {
                 'name': 'Insurance claim',
-                'account_id': self.xfa.id,
+                'account_id': self.company_data['default_account_assets'].id,
                 'price_unit': 450,
                 'quantity': 1,
             })],
@@ -244,9 +244,9 @@ class TestAccountAsset(AccountTestCommon):
         asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))
         asset_form.name = "Test Asset"
         asset_form.original_value = 10000
-        asset_form.account_depreciation_id = self.xfa
-        asset_form.account_depreciation_expense_id = self.a_expense
-        asset_form.journal_id = self.miscellaneous_journal
+        asset_form.account_depreciation_id = self.company_data['default_account_assets']
+        asset_form.account_depreciation_expense_id = self.company_data['default_account_expense']
+        asset_form.journal_id = self.company_data['default_journal_misc']
         asset = asset_form.save()
         asset.validate()
 
@@ -279,12 +279,12 @@ class TestAccountAsset(AccountTestCommon):
             'ref': 'line1',
             'line_ids': [
                 (0, 0, {
-                    'account_id': self.a_expense.id,
+                    'account_id': self.company_data['default_account_expense'].id,
                     'debit': 300,
                     'name': 'Furniture',
                 }),
                 (0, 0, {
-                    'account_id': self.xfa.id,
+                    'account_id': self.company_data['default_account_assets'].id,
                     'credit': 300,
                 }),
             ]
@@ -292,12 +292,12 @@ class TestAccountAsset(AccountTestCommon):
             'ref': 'line2',
             'line_ids': [
                 (0, 0, {
-                    'account_id': self.a_expense.id,
+                    'account_id': self.company_data['default_account_expense'].id,
                     'debit': 600,
                     'name': 'Furniture too',
                 }),
                 (0, 0, {
-                    'account_id': self.xfa.id,
+                    'account_id': self.company_data['default_account_assets'].id,
                     'credit': 600,
                 }),
             ]
@@ -310,16 +310,16 @@ class TestAccountAsset(AccountTestCommon):
         asset_form = Form(self.env['account.asset'].with_context(default_original_move_line_ids=move_line_ids.ids, asset_type='purchase'))
         asset_form._values['original_move_line_ids'] = [(6, 0, move_line_ids.ids)]
         asset_form._perform_onchange(['original_move_line_ids'])
-        asset_form.account_depreciation_expense_id = self.cas
+        asset_form.account_depreciation_expense_id = self.company_data['default_account_expense']
 
         asset = asset_form.save()
         self.assertEqual(asset.value_residual, 900.0)
         self.assertIn(asset.name, ['Furniture', 'Furniture too'])
         self.assertEqual(asset.journal_id.type, 'general')
         self.assertEqual(asset.asset_type, 'purchase')
-        self.assertEqual(asset.account_asset_id, self.a_expense)
-        self.assertEqual(asset.account_depreciation_id, self.a_expense)
-        self.assertEqual(asset.account_depreciation_expense_id, self.cas)
+        self.assertEqual(asset.account_asset_id, self.company_data['default_account_expense'])
+        self.assertEqual(asset.account_depreciation_id, self.company_data['default_account_expense'])
+        self.assertEqual(asset.account_depreciation_expense_id, self.company_data['default_account_expense'])
 
     def test_asset_modify_depreciation(self):
         """Test the modification of depreciation parameters"""
@@ -431,19 +431,19 @@ class TestAccountAsset(AccountTestCommon):
         report = self.env['account.assets.report']
         # TEST REPORT
         # look at all period, with unposted entries
-        options = _init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([    0.0, 10000.0,     0.0, 10000.0,     0.0,  7500.0,     0.0,  7500.0,  2500.0],
                              [x['no_format_name'] for x in lines[0]['columns'][4:]])
 
         # look at all period, without unposted entries
-        options = _init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': False}})
         self.assertListEqual([    0.0, 10000.0,     0.0, 10000.0,     0.0,  4500.0,     0.0,  4500.0,  5500.0],
                              [x['no_format_name'] for x in lines[0]['columns'][4:]])
 
         # look only at this period
-        options = _init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
+        options = self._init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([10000.0,     0.0,     0.0, 10000.0,  4500.0,   750.0,     0.0,  5250.0,  4750.0],
                              [x['no_format_name'] for x in lines[0]['columns'][4:]])
@@ -473,13 +473,13 @@ class TestAccountAsset(AccountTestCommon):
         self.assertEqual(self.truck.salvage_value + sum(self.truck.children_ids.mapped('salvage_value')), 3000)
 
         # look at all period, with unposted entries
-        options = _init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
                              [x['no_format_name'] for x in lines[0]['columns'][4:]])
 
         # look only at this period
-        options = _init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
+        options = self._init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  1000.0,     0.0,  5500.0,  6000.0],
                              [x['no_format_name'] for x in lines[0]['columns'][4:]])
@@ -505,13 +505,13 @@ class TestAccountAsset(AccountTestCommon):
         self.assertEqual(self.truck.salvage_value + sum(self.truck.children_ids.mapped('salvage_value')), 3000)
 
         # look at all period, with unposted entries
-        options = _init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
                              [x['no_format_name'] for x in lines[0]['columns'][4:]])
 
         # look only at this period
-        options = _init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
+        options = self._init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  3250.0,     0.0,  7750.0,  3750.0],
                              [x['no_format_name'] for x in lines[0]['columns'][4:]])
@@ -551,12 +551,12 @@ class TestAccountAsset(AccountTestCommon):
             'ref': 'line1',
             'line_ids': [
                 (0, 0, {
-                    'account_id': self.a_expense.id,
+                    'account_id': self.company_data['default_account_expense'].id,
                     'debit': 300,
                     'name': 'Furniture',
                 }),
                 (0, 0, {
-                    'account_id': self.xfa.id,
+                    'account_id': self.company_data['default_account_assets'].id,
                     'credit': 300,
                 }),
             ]
@@ -567,7 +567,7 @@ class TestAccountAsset(AccountTestCommon):
         asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))
         asset_form._values['original_move_line_ids'] = [(6, 0, move_line_id.ids)]
         asset_form._perform_onchange(['original_move_line_ids'])
-        asset_form.account_depreciation_expense_id = self.cas
+        asset_form.account_depreciation_expense_id = self.company_data['default_account_expense']
 
         asset = asset_form.save()
 
@@ -601,7 +601,7 @@ class TestAccountAsset(AccountTestCommon):
                     "product_uom_id": self.env.ref('uom.product_uom_unit').id,
                 }),
                 (0, 0, {
-                    'account_id': self.xfa.id,
+                    'account_id': self.company_data['default_account_assets'].id,
                     'credit': 1000.0,
                 }),
             ]
@@ -639,7 +639,7 @@ class TestAccountAsset(AccountTestCommon):
                     "product_uom_id": self.env.ref('uom.product_uom_categ_unit').id,
                 }),
                 (0, 0, {
-                    'account_id': self.xfa.id,
+                    'account_id': self.company_data['default_account_assets'].id,
                     'credit': 1000.0,
                 }),
             ]
@@ -689,7 +689,7 @@ class TestAccountAsset(AccountTestCommon):
                         "product_uom_id": uom.id,
                     }),
                     (0, 0, {
-                        'account_id': self.xfa.id,
+                        'account_id': self.company_data['default_account_assets'].id,
                         'credit': ammount,
                     }),
                 ]

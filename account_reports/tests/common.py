@@ -16,27 +16,23 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-def _init_options(report, date_from, date_to):
-    ''' Create new options at a certain date.
-    :param report:          The report.
-    :param filter:          One of the following values: ('today', 'custom', 'this_month', 'this_quarter', 'this_year', 'last_month', 'last_quarter', 'last_year').
-    :param date_from:       A datetime object or False.
-    :param date_to:         A datetime object.
-    :return:                The newly created options.
-    '''
-    report.filter_date = {
-        'date_from': date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
-        'date_to': date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
-        'filter': 'custom',
-        'mode': report.filter_date.get('mode', 'range'),
-    }
-    return report._get_options(None)
-
-
 class TestAccountReportsCommonMethods(SavepointCase):
 
     def _init_options(self, report, date_from, date_to):
-        return _init_options(report, date_from, date_to)
+        ''' Create new options at a certain date.
+        :param report:          The report.
+        :param filter:          One of the following values: ('today', 'custom', 'this_month', 'this_quarter', 'this_year', 'last_month', 'last_quarter', 'last_year').
+        :param date_from:       A datetime object or False.
+        :param date_to:         A datetime object.
+        :return:                The newly created options.
+        '''
+        report.filter_date = {
+            'date_from': date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
+            'date_to': date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
+            'filter': 'custom',
+            'mode': report.filter_date.get('mode', 'range'),
+        }
+        return report._get_options(None)
 
     def _update_comparison_filter(self, options, report, comparison_type, number_period, date_from=None, date_to=None):
         ''' Modify the existing options to set a new filter_comparison.
@@ -206,8 +202,8 @@ class TestAccountReportsCommonMethods(SavepointCase):
 class TestAccountReportsCommonNew(AccountTestInvoicingCommon, TestAccountReportsCommonMethods):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.company_data_2 = cls.setup_company_data('company_2_data', currency_id=cls.currency_data['currency'].id)
 

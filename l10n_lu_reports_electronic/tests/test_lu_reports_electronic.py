@@ -1,99 +1,99 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.addons.account_reports.tests.common import _init_options
+from odoo.addons.account_reports.tests.common import TestAccountReportsCommonNew
 from odoo.tests import tagged
 from odoo import fields
-from odoo.tools import date_utils
 
 
 @tagged('post_install', '-at_install')
-class LuxembourgElectronicReportTest(AccountTestInvoicingCommon):
+class LuxembourgElectronicReportTest(TestAccountReportsCommonNew):
 
     @classmethod
     def setUpClass(cls):
-        super(LuxembourgElectronicReportTest, cls).setUpClass()
+        super().setUpClass(chart_template_ref='l10n_lu.lu_2011_chart_1')
 
-        cls.env.company.write({
-            'chart_template_id': cls.env.ref('l10n_lu.lu_2011_chart_1').id
-        })
-        cls.company_data = cls.setup_company_data('company_LU_data', country_id=cls.env.ref('base.lu').id, ecdf_prefix='1234AB')
-        cls.company = cls.company_data['company']
+        cls.company_data['company'].ecdf_prefix = '1234AB'
 
-        # ==== Partner ====
-        cls.partner_a = cls.env['res.partner'].create({
-            'name': 'Partner A'
-        })
-        # ==== Products ====
-        cls.product_a = cls.env['product.product'].create({
-            'name': 'product_a',
-            'lst_price': 1000.0,
-            'standard_price': 800.0,
-        })
-        cls.product_b = cls.env['product.product'].create({
-            'name': 'product_b',
-            'lst_price': 200.0,
-            'standard_price': 160.0,
+        cls.out_invoice = cls.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': cls.partner_a.id,
+            'invoice_date': '2017-01-01',
+            'invoice_line_ids': [
+                (0, 0, {
+                    'name': 'line_1',
+                    'price_unit': 1000.0,
+                    'quantity': 1.0,
+                    'account_id': cls.company_data['default_account_revenue'].id,
+                    'tax_ids': [(6, 0, cls.company_data['default_tax_sale'].ids)],
+                }),
+            ],
         })
 
-    def get_report_options(self, report):
-        year_df, year_dt = date_utils.get_fiscal_year(fields.Date.today())
-        report.filter_date = {'mode': 'range', 'filter': 'this_year'}
-        # Generate `options` to feed to financial report
-        options = _init_options(report, year_df, year_dt)
-        # Below method generates `filename` in specific format required for XML report
-        report.get_report_filename(options)
-        return options
+        cls.in_invoice = cls.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': cls.partner_a.id,
+            'invoice_date': '2017-01-01',
+            'invoice_line_ids': [
+                (0, 0, {
+                    'name': 'line_1',
+                    'price_unit': 800.0,
+                    'quantity': 1.0,
+                    'account_id': cls.company_data['default_account_expense'].id,
+                    'tax_ids': [(6, 0, cls.company_data['default_tax_purchase'].ids)],
+                }),
+            ],
+        })
 
-    def get_report_values(self, report, options):
-        report_values = report._get_lu_electronic_report_values(options)
-        values = []
-        # Here, we filtered out zero amount values so that `expected_*_report_values` can have lesser items.
-        for code, value in report_values['forms'][0]['field_values'].items():
-            if value['field_type'] == 'number' and value['value'] != '0,00':
-                values.append((code, value['value']))
-        return values
+        (cls.out_invoice + cls.in_invoice).post()
+    #
+    def _filter_zero_lines(self, lines):
+        filtered_lines = []
+        for line in lines:
+            balance_column = line['columns'][0]
+            if 'no_format' not in balance_column or balance_column['no_format'] != 0.0:
+                filtered_lines.append(line)
+        return filtered_lines
 
-    def test_electronic_reports(self):
-        # Create one invoice and one bill in current year
-        date_today = fields.Date.today()
-        lu_invoice = self.init_invoice('out_invoice')
-        lu_bill = self.init_invoice('in_invoice')
-        # init_invoice() has hardcoded 2019 year's date, we need to reset invoices' dates to current
-        # year's date as BS/PL financial reports needs to have previous year's balance in exported file.
-        (lu_invoice | lu_bill).write({'invoice_date': date_today, 'date': date_today})
-        lu_invoice.post()
-        lu_bill.post()
+    def test_balance_sheet(self):
+        report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_bs')._with_correct_filters()
+        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
 
-        # Below tuples are having code and it's amount respectively which would go to exported Balance Sheet report
-        # if exported with the same invoice and bill as created above
-        expected_bs_report_values = [
-            ('151', '1567,20'), ('163', '1567,20'), ('165', '1404,00'), ('167', '1404,00'), ('183', '163,20'), ('185', '163,20'),
-            ('201', '1567,20'), ('301', '240,00'), ('321', '240,00'), ('435', '1327,20'), ('367', '1123,20'), ('369', '1123,20'),
-            ('451', '204,00'), ('393', '204,00'), ('405', '1567,20')
-        ]
-        bs_report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_bs')
-        bs_report_options = self.get_report_options(bs_report)
-        bs_report_field_values = self.get_report_values(bs_report, bs_report_options)
-        self.assertEqual(expected_bs_report_values, bs_report_field_values, "Wrong values of Luxembourg Balance Sheet report.")
-        # test to see if there is any error in XML generation
-        bs_report.get_xml(bs_report_options)
+        self.assertLinesValues(
+            self._filter_zero_lines(report._get_table(options)[1]),
+            #   Name                                            Balance
+            [   0,                                              1],
+            [
+                ('C. Fixed assets',                             -920.0),
+                ('I. Intangible assets',                        -920.0),
+                ('1. Costs of development',                     -920.0),
+                ('Total I. Intangible assets',                  -920.0),
+                ('Total C. Fixed assets',                       -920.0),
+                ('TOTAL (ASSETS)',                              -920.0),
+                ('A. Capital and reserves',                     -1070.0),
+                ('III. Revaluation reserve',                    -1150.0),
+                ('IV. Reserves',                                -120.0),
+                ('1. Legal reserve',                            -120.0),
+                ('Total IV. Reserves',                          -120.0),
+                ('VI. Profit or loss for the financial year',   200.0),
+                ('Total A. Capital and reserves',               -1070.0),
+                ('TOTAL (CAPITAL, RESERVES AND LIABILITIES)',   -1070.0),
+            ],
+        )
 
-        expected_pl_report_values = [('701', '1200,00'), ('671', '-960,00'), ('601', '-960,00'), ('667', '240,00'), ('669', '240,00')]
-        pl_report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_pl')
-        pl_report_options = self.get_report_options(pl_report)
-        pl_report_field_values = self.get_report_values(pl_report, pl_report_options)
-        self.assertEqual(expected_pl_report_values, pl_report_field_values, "Wrong values of Luxembourg Profit & Loss report.")
-        pl_report.get_xml(pl_report_options)
+    def test_profit_and_loss(self):
+        report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_pl')._with_correct_filters()
+        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
 
-        expected_tax_report_values = [
-            ('037', '1200,00'), ('701', '1200,00'), ('046', '204,00'), ('702', '204,00'), ('076', '204,00'), ('093', '163,20'),
-            ('458', '163,20'), ('102', '163,20'), ('103', '204,00'), ('104', '163,20'), ('105', '40,80')
-        ]
-
-        TaxReport = self.env['account.generic.tax.report']
-        tax_report_options = self.get_report_options(TaxReport)
-        tax_report_field_values = self.get_report_values(TaxReport, tax_report_options)
-        self.assertEqual(expected_tax_report_values, tax_report_field_values, "Wrong values of Luxembourg Tax report.")
-        TaxReport.get_xml(tax_report_options)
+        self.assertLinesValues(
+            self._filter_zero_lines(report._get_table(options)[1]),
+            #   Name                                                                    Balance
+            [   0,                                                                      1],
+            [
+                ('5. Raw materials and consumables and other external expenses',        -800.0),
+                ('a) Raw materials and consumables',                                    -800.0),
+                ('Total 5. Raw materials and consumables and other external expenses',  -800.0),
+                ('16. Profit or loss after taxation',                                   -800.0),
+                ('18. Profit or loss for the financial year',                           -800.0),
+            ],
+        )

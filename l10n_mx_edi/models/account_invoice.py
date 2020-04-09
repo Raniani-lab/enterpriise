@@ -649,7 +649,7 @@ class AccountMove(models.Model):
                 default_values_list[i]['l10n_mx_edi_origin'] = '%s|%s' % ('01', move.l10n_mx_edi_cfdi_uuid)
         return super(AccountMove, self)._reverse_moves(default_values_list, cancel=cancel)
 
-    @api.depends('l10n_mx_edi_cfdi_name')
+    @api.depends('l10n_mx_edi_cfdi_name', 'l10n_mx_edi_pac_status')
     def _compute_cfdi_values(self):
         '''Fill the invoice fields from the cfdi values.
         '''
@@ -1095,7 +1095,7 @@ class AccountMove(models.Model):
 
             move.l10n_mx_edi_cfdi_name = ('%s-%s-MX-Invoice-%s.xml' % (move.journal_id.code, move.payment_reference, version)).replace('/', '')
             subscription = 'subscription_id' in move.invoice_line_ids._fields and move.invoice_line_ids.filtered('subscription_id')
-            if subscription or (trans_field and move.mapped('transaction_ids.payment_id')):
+            if subscription or (trans_field and move.mapped('transaction_ids')):
                 move = move.with_context(disable_after_commit=True)
             move._l10n_mx_edi_retry()
         return result

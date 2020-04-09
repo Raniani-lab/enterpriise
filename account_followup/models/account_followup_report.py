@@ -281,6 +281,7 @@ class AccountFollowupReport(models.AbstractModel):
                 'default_body': self._get_sms_summary(options),
                 'default_res_model': 'res.partner',
                 'default_res_id': options.get('partner_id'),
+                'default_composition_mode': 'comment',
             },
         }
 

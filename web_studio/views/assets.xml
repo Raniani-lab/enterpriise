@@ -132,13 +132,14 @@
     </template>
 
     <!-- Tests -->
-    <template id="js_tests_assets" inherit_id="web.js_tests_assets">
-        <xpath expr="." position="inside">
+    <template id="web_studio.qunit_suite" inherit_id="web.qunit_suite">
+        <xpath expr="//t[@t-call-assets='web.qunit_suite_tests'][@t-js='false']" position="before">
             <t t-call-assets="web_studio.assets"/>
+            <t t-call-assets="web_studio.studio_assets"/>
         </xpath>
     </template>
 
-    <template id="qunit_suite" name="studio_tests" inherit_id="web.qunit_suite_tests">
+    <template id="web_studio.qunit_suite_tests" name="studio_tests" inherit_id="web.qunit_suite_tests">
         <xpath expr="." position="inside">
             <script type="text/javascript">
                 odoo.define('web_studio.WebClient.test', function (require) {
@@ -150,8 +151,6 @@
                     });
                 });
             </script>
-            <t t-call="web_studio.compiled_assets_studio"/>
-
             <script type="text/javascript" src="/web_studio/static/tests/studio_home_menu_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/home_menu_wrapper_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/action_editor_action_tests.js"></script>

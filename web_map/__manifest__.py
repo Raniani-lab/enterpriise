@@ -12,7 +12,7 @@
         "views/res_partner_views.xml",
     ],
     'qweb':[
-        "static/src/xml/templates.xml"
+        "static/src/xml/map.xml"
     ],
     'auto_install': True,
     'license': 'OEEL-1',

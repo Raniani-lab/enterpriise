@@ -6,7 +6,7 @@
             <script type="text/javascript" src="/web_map/static/src/js/map_renderer.js"/>
             <script type="text/javascript" src="/web_map/static/src/js/map_view.js"/>
             <link rel="stylesheet" type="text/css" href="/web_map/static/lib/leaflet/leaflet.css"/>
-            <link rel="stylesheet" type="text/scss" href="/web_map/static/src/scss/mapview.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/web_map/static/src/scss/map_view.scss"/>
         </xpath>
     </template>
     <template id="qunit_suite" name="web_map_assets" inherit_id="web.qunit_suite_tests">

@@ -146,7 +146,7 @@ const MapModel = AbstractModel.extend({
         //case of empty map
         if (!this.resPartnerField) {
             this.data.records = [];
-            this.data.route = { routes: [] };
+            this.data.routeInfo = { routes: [] };
             return;
         }
         const results = await this._fetchRecordData();
@@ -271,11 +271,11 @@ const MapModel = AbstractModel.extend({
         });
         return Promise.all(promises).then(() => {
             this._addPartnerToRecord();
-            this.data.route = { routes: [] };
+            this.data.routeInfo = { routes: [] };
             if (this.numberOfLocatedRecords > 1 && this.routing) {
                 return this._fetchRoute().then(routeResult => {
                     if (routeResult.routes) {
-                        this.data.route = routeResult;
+                        this.data.routeInfo = routeResult;
                     } else {
                         this.data.routingError = this._getErrorMessage(routeResult.message);
                     }

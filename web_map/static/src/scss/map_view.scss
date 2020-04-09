@@ -2,6 +2,7 @@ $map-table-row-padding: 25px;
 $map-table-line-padding: 20px;
 $map-number-color: white;
 $map-number-font-size: 19px;
+$map-marker-color: #2c8397;
 .o_map_view {
     height: 100%;
 
@@ -59,7 +60,7 @@ $map-number-font-size: 19px;
 
             i {
                 color: $o-enterprise-color;
-                margin-right: 0.25rem;
+                margin-right: 0.5rem;
             }
 
             span {
@@ -98,28 +99,22 @@ $map-number-font-size: 19px;
 
     //the height and width correspond to the height and width of the custom icon png file
 
-    .o_numbered_marker {
-        height: 45px !important;
-        width: 28px !important;
-        margin-top: -45px !important;
-        margin-left: -14px !important;
-        background-image: url("../../lib/leaflet/images/marker-icon-numbered.png");
+    .o_map_marker {
+        height: 40px !important;
+        width: 30px !important;
+        margin-top: -40px !important;
+        margin-left: -15px !important;
+        color: $map-marker-color;
     }
 
-    .o_custom_marker {
-        height: 45px !important;
-        width: 28px !important;
-        margin-top: -45px !important;
-        margin-left: -14px !important;
-        background-image: url("../../lib/leaflet/images/marker-icon.png");
-        background-repeat: no-repeat;
-    }
     .o_map_marker_badge {
         @include o-position-absolute($top: -8px, $right: -10px);
         font-size: 12px;
     }
 
     .o_number_icon {
+        position: relative;
+        top: -40px;
         color: $map-number-color;
         font-size: $map-number-font-size;
         text-align: center;
@@ -130,10 +125,13 @@ $map-number-font-size: 19px;
         // used to disabled opening animation for the popups.
         transition: none;
         .leaflet-popup-content-wrapper {
-            border-radius: $border-radius;
+            border-radius: 10px;
             .leaflet-popup-content {
                 margin: 24px 20px 20px 20px;
             }
+        }
+        .leaflet-popup-close-button {
+            color: #666666;
         }
     }
 

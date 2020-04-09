@@ -267,13 +267,13 @@ QUnit.module('mapView', {
         assert.strictEqual(map.model.resPartnerField, 'partner_id',
             'the resPartnerField should be set');
 
-        assert.strictEqual(map.renderer.state.records.length, 0,
+        assert.strictEqual(map.renderer.props.records.length, 0,
             'There should be no records');
-        assert.containsNone(map, 'img.leaflet-marker-icon',
+        assert.containsNone(map, 'div.leaflet-marker-icon',
             'No marker should be on a the map.');
         assert.containsNone(map.$('.leaflet-overlay-pane'), 'path',
             'No route should be shown');
-        assert.strictEqual(map.renderer.leafletMap.getZoom(), 2,
+        assert.strictEqual(map.renderer.componentRef.comp.leafletMap.getZoom(), 2,
             'The map should at its minimum zoom level(2)');
         map.destroy();
     });
@@ -306,13 +306,13 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.strictEqual(map.renderer.state.records.length, 1,
+        assert.strictEqual(map.renderer.props.records.length, 1,
             'There should be no records');
-        assert.containsNone(map, 'img.leaflet-marker-icon',
+        assert.containsNone(map, 'div.leaflet-marker-icon',
             'No marker should be on a the map.');
         assert.containsNone(map.$('.leaflet-overlay-pane'), 'path',
             'No route should be shown');
-        assert.strictEqual(map.renderer.leafletMap.getZoom(), 2,
+        assert.strictEqual(map.renderer.componentRef.comp.leafletMap.getZoom(), 2,
             'The map should at its minimum level of zoom(2)');
         assert.containsOnce(map, '.o_pin_list_container .o_pin_list_details li');
         assert.containsOnce(map, '.o_pin_list_container .o_pin_list_details li span');
@@ -349,7 +349,7 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.strictEqual(map.renderer.state.records.length, 1,
+        assert.strictEqual(map.renderer.props.records.length, 1,
             'There should be one records');
         assert.containsOnce(map, 'div.leaflet-marker-icon',
             'There should be one marker on the map');
@@ -388,8 +388,8 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
-        assert.containsNone(map, 'img.leaflet-marker-icon',
+        assert.strictEqual(map.renderer.props.records.length, 1, 'There should be one records');
+        assert.containsNone(map, 'div.leaflet-marker-icon',
             'There should be np marker on the map');
         assert.containsNone(map.$('.leaflet-overlay-pane'), 'path',
             'There should be no route on the map');
@@ -428,7 +428,7 @@ QUnit.module('mapView', {
                 map_box_token: ''
             },
         });
-        assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
+        assert.strictEqual(map.renderer.props.records.length, 1, 'There should be one records');
         assert.containsNone(map, 'div.leaflet-marker-icon',
             'There should be no marker on the map');
         assert.containsNone(map.$('.leaflet-overlay-pane'), 'path',
@@ -472,7 +472,7 @@ QUnit.module('mapView', {
                 map_box_token: ''
             },
         });
-        assert.strictEqual(map.renderer.state.records.length, 1,
+        assert.strictEqual(map.renderer.props.records.length, 1,
             'There should be one records');
         assert.containsOnce(map, 'div.leaflet-marker-icon',
             'There should be one marker on the map');
@@ -518,7 +518,7 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.strictEqual(map.renderer.state.records.length, 1,
+        assert.strictEqual(map.renderer.props.records.length, 1,
             'There should be one records');
         assert.containsOnce(map, 'div.leaflet-marker-icon',
             'There should be one marker on the map');
@@ -557,13 +557,13 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             }
         });
-        assert.strictEqual(map.renderer.state.records.length, 1,
+        assert.strictEqual(map.renderer.props.records.length, 1,
             'There should be one records');
-        assert.containsNone(map, 'img.leaflet-marker-icon',
+        assert.containsNone(map, 'div.leaflet-marker-icon',
             'No marker should be on a the map.');
         assert.containsNone(map.$('.leaflet-overlay-pane'), 'path',
             'No route should be shown');
-        assert.strictEqual(map.renderer.leafletMap.getZoom(), 2,
+        assert.strictEqual(map.renderer.componentRef.comp.leafletMap.getZoom(), 2,
             'The map should at its minimum zoom level(2)');
 
         map.destroy();
@@ -598,13 +598,13 @@ QUnit.module('mapView', {
                 map_box_token: ''
             }
         });
-        assert.strictEqual(map.renderer.state.records.length, 1,
+        assert.strictEqual(map.renderer.props.records.length, 1,
             'There should be one records');
-        assert.containsNone(map, 'img.leaflet-marker-icon',
+        assert.containsNone(map, 'div.leaflet-marker-icon',
             'No marker should be on a the map.');
         assert.containsNone(map.$('.leaflet-overlay-pane'), 'path',
             'No route should be shown');
-        assert.strictEqual(map.renderer.leafletMap.getZoom(), 2,
+        assert.strictEqual(map.renderer.componentRef.comp.leafletMap.getZoom(), 2,
             'The map should at its minimum zoom level(2)');
 
         map.destroy();
@@ -639,13 +639,13 @@ QUnit.module('mapView', {
                 map_box_token: ''
             }
         });
-        assert.strictEqual(map.renderer.state.records.length, 1,
+        assert.strictEqual(map.renderer.props.records.length, 1,
             'There should be one records');
-        assert.containsNone(map, 'img.leaflet-marker-icon',
+        assert.containsNone(map, 'div.leaflet-marker-icon',
             'No marker should be on a the map.');
         assert.containsNone(map.$('.leaflet-overlay-pane'), 'path',
             'No route should be shown');
-        assert.strictEqual(map.renderer.leafletMap.getZoom(), 2,
+        assert.strictEqual(map.renderer.componentRef.comp.leafletMap.getZoom(), 2,
             'The map should at its minimum zoom level(2)');
 
         map.destroy();
@@ -681,13 +681,13 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             }
         });
-        assert.strictEqual(map.renderer.state.records.length, 1,
+        assert.strictEqual(map.renderer.props.records.length, 1,
             'There should be one records');
-        assert.containsNone(map, 'img.leaflet-marker-icon',
+        assert.containsNone(map, 'div.leaflet-marker-icon',
             'No marker should be on a the map.');
         assert.containsNone(map.$('.leaflet-overlay-pane'), 'path',
             'No route should be shown');
-        assert.strictEqual(map.renderer.leafletMap.getZoom(), 2,
+        assert.strictEqual(map.renderer.componentRef.comp.leafletMap.getZoom(), 2,
             'The map should at its minimum zoom level(2)');
 
         map.destroy();
@@ -722,13 +722,13 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.strictEqual(map.renderer.state.records.length, 2,
+        assert.strictEqual(map.renderer.props.records.length, 2,
             'There should be no records');
         assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2',
             'There should be a marker for two records');
         assert.containsOnce(map.$('.leaflet-overlay-pane'), 'path',
             'There should be one route showing');
-        assert.equal(map.renderer.state.records[0].partner, map.renderer.state.records[1].partner,
+        assert.equal(map.renderer.props.records[0].partner, map.renderer.props.records[1].partner,
             'The records should have the same partner object as a property');
 
         map.destroy();
@@ -765,13 +765,13 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.strictEqual(map.renderer.state.records.length, 2,
+        assert.strictEqual(map.renderer.props.records.length, 2,
             'There should be no records');
         assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2',
             'There should be a marker for two records');
         assert.containsOnce(map.$('.leaflet-overlay-pane'), 'path',
             'There should be one route showing');
-        assert.notEqual(map.renderer.state.records[0].partner, map.renderer.state.records[1].partner,
+        assert.notEqual(map.renderer.props.records[0].partner, map.renderer.props.records[1].partner,
             'The records should have the same partner object as a property');
 
         map.destroy();
@@ -824,7 +824,7 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.strictEqual(map.renderer.state.records.length, 2,
+        assert.strictEqual(map.renderer.props.records.length, 2,
             'There should be two records');
         assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2',
             'There should be a marker for two records');
@@ -859,12 +859,12 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.strictEqual(map.renderer.state.records.length, 3);
-        assert.strictEqual(map.renderer.state.records[0].partner.id, 1,
+        assert.strictEqual(map.renderer.props.records.length, 3);
+        assert.strictEqual(map.renderer.props.records[0].partner.id, 1,
             "The partner's id should be 1");
-        assert.strictEqual(map.renderer.state.records[1].partner.id, 2,
+        assert.strictEqual(map.renderer.props.records[1].partner.id, 2,
             "The partner's id should be 2");
-        assert.strictEqual(map.renderer.state.records[2].partner.id, 1,
+        assert.strictEqual(map.renderer.props.records[2].partner.id, 1,
             "The partner's id should be 1");
 
         map.destroy();
@@ -979,13 +979,14 @@ QUnit.module('mapView', {
             },
         });
 
-        assert.strictEqual(map.renderer.markers.length, 1,
+        const renderer = map.renderer.componentRef.comp;
+        assert.strictEqual(renderer.markers.length, 1,
             'Should have one marker created');
         assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2',
             'There should be a marker for two records');
-        assert.strictEqual(map.renderer.markers[0].getLatLng().lat, 10,
+        assert.strictEqual(renderer.markers[0].getLatLng().lat, 10,
             'The latitude should be the same as the record');
-        assert.strictEqual(map.renderer.markers[0].getLatLng().lng, 10.5,
+        assert.strictEqual(renderer.markers[0].getLatLng().lng, 10.5,
             'The longitude should be the same as the record');
 
         map.destroy();
@@ -996,7 +997,7 @@ QUnit.module('mapView', {
      * Create an empty map
      */
     QUnit.test('Create of a empty map', async function (assert) {
-        assert.expect(10);
+        assert.expect(9);
 
         const map = await createView({
             View: MapView,
@@ -1016,26 +1017,27 @@ QUnit.module('mapView', {
                 map_box_token: ''
             }
         });
+        const renderer = map.renderer.componentRef.comp;
         assert.notOk(map.model.resPartnerField, 'the resPartnerField should not be set');
 
         assert.containsOnce(map, '.o_map_view',
             '1 div should have the class "o_map_view"');
         assert.containsOnce(map, '.leaflet-map-pane',
             "If the map exists this div should exist");
-        assert.ok(map.renderer.leafletMap,
+        assert.ok(renderer.leafletMap,
             'If the map exists this property should be initialized');
-        assert.ok(map.$('.leaflet-pane .leaflet-tile-pane').children().length,
+        assert.ok($('.leaflet-pane .leaflet-tile-pane').children().length,
             'The map tiles should have been happened to the DOM');
-        assert.ok(map.renderer.isInDom,
-            'the map should be in the DOM');
-        assert.ok(map.renderer.mapIsInit,
-            'the map should be initialized');
+        // if element o_map_container has class leaflet-container then
+        // the map is mounted
+        assert.hasClass(map.el.querySelector('.o_map_container'),
+            'leaflet-container', 'the map should be in the DOM');
 
-        assert.strictEqual(map.renderer.polylines.length, 0,
+        assert.strictEqual(renderer.polylines.length, 0,
             'Should have no polylines');
-        assert.strictEqual(map.$('.leaflet-overlay-pane').children().length, 0,
+        assert.strictEqual($('.leaflet-overlay-pane').children().length, 0,
             'Should have no showing route');
-        assert.strictEqual(map.renderer.leafletMap.getZoom(), 2,
+        assert.strictEqual(renderer.leafletMap.getZoom(), 2,
             'The level of zoom should should be at it\'s minimum');
 
         map.destroy();
@@ -1069,7 +1071,7 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.notOk(map.renderer.numbering,
+        assert.notOk(map.renderer.props.numbering,
             'the numbering option should not be enabled');
         assert.notOk(map.model.routing,
             'The routing option should not be enabled');
@@ -1086,7 +1088,7 @@ QUnit.module('mapView', {
 
         await testUtils.dom.click(map.$('div.leaflet-container'));
 
-        assert.notOk(map.renderer.markers[0].isPopupOpen(),
+        assert.notOk(map.renderer.componentRef.comp.markers[0].isPopupOpen(),
             'The marker\'s popup should be close');
 
         map.destroy();
@@ -1122,7 +1124,7 @@ QUnit.module('mapView', {
                 map_box_token: ''
             },
         });
-        assert.ok(map.renderer.numbering === false,
+        assert.ok(map.renderer.props.numbering === false,
             'the numbering option should not be enabled');
         assert.notOk(map.model.routing,
             'The routing option should not be enabled');
@@ -1166,14 +1168,14 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.ok(map.renderer.numbering,
+        assert.ok(map.renderer.props.numbering,
             'The numbering option should be enabled');
         assert.ok(map.model.routing,
             'The routing option should be enabled');
 
         assert.strictEqual(map.model.numberOfLocatedRecords, 2,
             'Should have 2 located Records');
-        assert.strictEqual(map.renderer.state.route.routes.length, 1,
+        assert.strictEqual(map.renderer.props.routeInfo.routes.length, 1,
             'Should have 1 computed route');
         assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2',
             'There should be a marker for two records');
@@ -1181,7 +1183,7 @@ QUnit.module('mapView', {
             'The route should be blue if it has not been clicked');
         assert.strictEqual(map.$('path.leaflet-interactive').attr('stroke-opacity'), '0.3',
             'The opacity of the polyline should be 0.3');
-        map.renderer.polylines[0].fire('click');
+        map.renderer.componentRef.comp.polylines[0].fire('click');
         assert.strictEqual(map.$('path.leaflet-interactive').attr('stroke'), 'darkblue',
             'The route should be darkblue after being clicked');
         assert.strictEqual(map.$('path.leaflet-interactive').attr('stroke-opacity'), '1',
@@ -1197,7 +1199,7 @@ QUnit.module('mapView', {
         testUtils.mock.patch(MapModel, {
             _maxBoxAPI() {
                 this.data.routingError = "this is test warning";
-                this.data.route = { routes: [] };
+                this.data.routeInfo = { routes: [] };
                 return Promise.resolve();
             }
         });
@@ -1252,7 +1254,7 @@ QUnit.module('mapView', {
         });
         assert.ok(map.model.routing,
             'The routing option should be enabled');
-        assert.strictEqual(map.renderer.state.route.routes.length, 0,
+        assert.strictEqual(map.renderer.props.routeInfo.routes.length, 0,
             'Should have no computed route');
 
         map.destroy();
@@ -1284,10 +1286,10 @@ QUnit.module('mapView', {
         });
         assert.strictEqual(map.model.data.mapBoxToken, '',
             'The token should be an empty string');
-        assert.strictEqual(map.renderer.apiTilesRoute,
+        assert.strictEqual(map.renderer.componentRef.comp.apiTilesRoute,
             'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
             'With no token the route for fetching tiles should be "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"');
-        assert.strictEqual(map.renderer.mapBoxToken, '',
+        assert.strictEqual(map.renderer.props.mapBoxToken, '',
             'The token should be an empty string');
 
         map.destroy();
@@ -1320,10 +1322,10 @@ QUnit.module('mapView', {
         });
         assert.strictEqual(map.model.data.mapBoxToken, '',
             'The token should be an empty string');
-        assert.strictEqual(map.renderer.apiTilesRoute,
+        assert.strictEqual(map.renderer.componentRef.comp.apiTilesRoute,
             'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
             'With no token the route for fetching tiles should be "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"');
-        assert.strictEqual(map.renderer.mapBoxToken, '',
+        assert.strictEqual(map.renderer.props.mapBoxToken, '',
             'The token should be an empty string');
 
         map.destroy();
@@ -1355,10 +1357,10 @@ QUnit.module('mapView', {
         });
         assert.strictEqual(map.model.data.mapBoxToken, '',
             'The token should be an empty string');
-        assert.strictEqual(map.renderer.apiTilesRoute,
+        assert.strictEqual(map.renderer.componentRef.comp.apiTilesRoute,
             'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
             'With no token the route for fetching tiles should be "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"');
-        assert.strictEqual(map.renderer.mapBoxToken, '',
+        assert.strictEqual(map.renderer.props.mapBoxToken, '',
             'The token should be an empty string');
 
         map.destroy();
@@ -1391,10 +1393,10 @@ QUnit.module('mapView', {
         });
         assert.strictEqual(map.model.data.mapBoxToken, 'token',
             'The token should be the right token');
-        assert.strictEqual(map.renderer.apiTilesRoute,
+        assert.strictEqual(map.renderer.componentRef.comp.apiTilesRoute,
             'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
             'With no token the route for fetching tiles should be "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}"');
-        assert.strictEqual(map.renderer.mapBoxToken, 'token',
+        assert.strictEqual(map.renderer.props.mapBoxToken, 'token',
             'The token should be the right token');
 
         map.destroy();
@@ -1404,7 +1406,7 @@ QUnit.module('mapView', {
      * data: two located records
      */
     QUnit.test('Click on pin shows popup, click on another shuts the first and open the other', async function (assert) {
-        assert.expect(5);
+        assert.expect(3);
 
         const map = await createView({
             View: MapView,
@@ -1428,20 +1430,16 @@ QUnit.module('mapView', {
             'The popup div should be empty');
 
         await testUtils.dom.click(map.$('div.leaflet-marker-icon'));
-
-        assert.ok(map.renderer.markers[0].isPopupOpen(),
-            'The marker\'s popup should be open');
         assert.strictEqual(map.$('.leaflet-popup-pane').children().length, 1,
             'The popup div should contain one element');
 
         await testUtils.dom.click(map.$el.find('.leaflet-map-pane'));
-
-        assert.notOk(map.renderer.markers[0].isPopupOpen(),
-            'The marker\'s popup should be close');
-
-        await testUtils.dom.click(map.$('div.leaflet-marker-icon'));
-
-        assert.ok(map.renderer.markers[0].isPopupOpen());
+        // wait for the popup's destruction which takes a certain time...
+        for (let i = 0; i < 15; i++) {
+            await testUtils.nextTick();
+        }
+        assert.notOk(map.$('.leaflet-pane .leaflet-popup-pane').children().length,
+            'The popup div should be empty');
 
         map.destroy();
     });
@@ -1514,11 +1512,11 @@ QUnit.module('mapView', {
                 map_box_token: 'token'
             },
         });
-        assert.strictEqual(map.renderer.fieldsMarkerPopup[0].fieldName, "display_name");
+        assert.strictEqual(map.renderer.props.fieldNamesMarkerPopup[0].fieldName, "display_name");
 
         await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0)[0]);
 
-        assert.strictEqual(map.renderer.fieldsMarkerPopup.length, 1,
+        assert.strictEqual(map.renderer.props.fieldNamesMarkerPopup.length, 1,
             'fieldsMarkerPopup should contain one field');
         assert.strictEqual(map.$('tbody').children().children().length, 3,
             'The popup should have one field');
@@ -1781,13 +1779,14 @@ QUnit.module('mapView', {
 
         await map.update({ domain: [['name', '=', 'FooProject']] });
 
+        const renderer = map.renderer.componentRef.comp;
         assert.strictEqual(map.model.data.records.length, 1,
             'There should be 1 record');
-        assert.strictEqual(map.renderer.polylines.length, 0,
+        assert.strictEqual(renderer.polylines.length, 0,
             'There should be no road computed');
         assert.containsNone(map.$('.leaflet-overlay-pane'), 'path',
             'There should be no route on the map');
-        assert.strictEqual(map.renderer.markers.length, 1,
+        assert.strictEqual(renderer.markers.length, 1,
             'There should be 1 marker generated');
         assert.containsOnce(map, 'div.leaflet-marker-icon',
             'There should be 1 marker on the map');
@@ -1796,11 +1795,11 @@ QUnit.module('mapView', {
 
         assert.strictEqual(map.model.data.records.length, 0,
             'There should be no record');
-        assert.strictEqual(map.renderer.polylines.length, 0,
+        assert.strictEqual(renderer.polylines.length, 0,
             'There should be no road computed');
         assert.containsNone(map.$('.leaflet-overlay-pane'), 'path',
             'There should be no route on the map');
-        assert.strictEqual(map.renderer.markers.length, 0,
+        assert.strictEqual(renderer.markers.length, 0,
             'There should be no marker generated');
         assert.containsNone(map, 'div.leaflet-marker-icon',
             'There should be 0 marker on the map');
@@ -1809,11 +1808,11 @@ QUnit.module('mapView', {
 
         assert.strictEqual(map.model.data.records.length, 2,
             'There should be 2 record');
-        assert.strictEqual(map.renderer.polylines.length, 1,
+        assert.strictEqual(renderer.polylines.length, 1,
             'There should be one road computed');
         assert.containsOnce(map.$('.leaflet-overlay-pane'), 'path',
             'There should be 1 route on the map');
-        assert.strictEqual(map.renderer.markers.length, 1,
+        assert.strictEqual(renderer.markers.length, 1,
             'There should be 1 marker generated');
         assert.strictEqual(map.$('div.leaflet-marker-icon .o_map_marker_badge').text(), '2',
             'There should be a marker for two records');
@@ -1897,7 +1896,7 @@ QUnit.module('mapView', {
             },
         });
 
-        await testUtils.dom.click(map.$('img.leaflet-marker-icon').eq(0));
+        await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0));
 
         assert.containsNone(map.$('div.leaflet-popup-pane'), 'button.btn.btn-primary.open',
             'The button should not be present in the dom');
@@ -1953,7 +1952,7 @@ QUnit.module('mapView', {
             },
         });
 
-        await testUtils.dom.click(map.$('img.leaflet-marker-icon').eq(0));
+        await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0));
 
         assert.containsNone(map.$('div.leaflet-popup-pane'), 'button.btn.btn-primary.open',
             'The button should not be present in the dom');

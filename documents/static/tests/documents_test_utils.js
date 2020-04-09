@@ -10,9 +10,9 @@ async function createDocumentsView(params) {
     var searchArch = params.archs[`${params.model},false,search`] || '<search></search>';
     var searchPanelArch = `
         <searchpanel>
-            <field name="folder_id" string="Workspace"/>
-            <field name="tag_ids" select="multi" groupby="facet_id"/>
-            <field name="res_model" select="multi" string="Attached To"/>
+            <field name="folder_id" string="Workspace" enable_counters="1"/>
+            <field name="tag_ids" select="multi" groupby="facet_id" enable_counters="1"/>
+            <field name="res_model" select="multi" string="Attached To" enable_counters="1"/>
         </searchpanel>
     `;
     searchArch = searchArch.split('</search>')[0] + searchPanelArch + '</search>';

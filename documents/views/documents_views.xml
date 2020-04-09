@@ -43,9 +43,9 @@
                     <filter name="creation_month" string="Creation Date" domain="[]" context="{'group_by':'create_date'}"/>
                 </group>
                 <searchpanel>
-                    <field name="folder_id"/>
-                    <field name="tag_ids" select="multi" groupby="facet_id" icon="fa-tag"/>
-                    <field name="res_model" select="multi" string="Attached To" icon="fa-file-text" color="#338FFC"/>
+                    <field name="folder_id" enable_counters="1"/>
+                    <field name="tag_ids" select="multi" groupby="facet_id" icon="fa-tag" enable_counters="1"/>
+                    <field name="res_model" select="multi" string="Attached To" icon="fa-file-text" color="#338FFC" enable_counters="1"/>
                 </searchpanel>
             </search>
         </field>

@@ -436,7 +436,7 @@ class Document(models.Model):
     @api.model
     def search_panel_select_range(self, field_name, **kwargs):
         if field_name == 'folder_id':
-            disable_counters = kwargs.get('disable_counters', False)
+            enable_counters = kwargs.get('enable_counters', False)
             fields = ['display_name', 'description', 'parent_folder_id']
             available_folders = self.env['documents.folder'].search([])
             folder_domain = expression.OR([[('parent_folder_id', 'parent_of', available_folders.ids)], [('id', 'in', available_folders.ids)]])
@@ -445,7 +445,7 @@ class Document(models.Model):
             records = DocumentFolder.search_read(folder_domain, fields)
 
             local_counters = {}
-            if not disable_counters:
+            if enable_counters:
                 local_counters = self.search_panel_local_counters(field_name, **kwargs)
 
             values_range = OrderedDict()
@@ -456,7 +456,7 @@ class Document(models.Model):
                 record['parent_folder_id'] = value and value[0]
                 values_range[record_id] = record
 
-            if not disable_counters:
+            if enable_counters:
                 self.search_panel_global_counters(values_range, 'parent_folder_id')
 
             return {

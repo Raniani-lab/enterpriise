@@ -118,8 +118,8 @@
                 <field name="message" string="Post Message"/>
                 <field name="create_uid" string="Published By"/>
                 <searchpanel>
-                    <field name="state" icon="fa-tasks"/>
-                    <field name="account_ids" select="multi" icon="fa-share-alt"/>
+                    <field name="state" icon="fa-tasks" enable_counters="1"/>
+                    <field name="account_ids" select="multi" icon="fa-share-alt" enable_counters="1"/>
                 </searchpanel>
             </search>
         </field>

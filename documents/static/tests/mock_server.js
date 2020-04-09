@@ -75,7 +75,7 @@ MockServer.include({
             const records = this._mockSearchRead('documents.folder', [[], fields], {});
 
             let localCounters = {};
-            if (!kwargs.disable_counters) {
+            if (kwargs.enable_counters) {
                 localCounters = this._mockSearchPanelLocalCounters(model, fieldName, kwargs);
             }
 
@@ -86,7 +86,7 @@ MockServer.include({
                 record.parent_folder_id = value && value[0];
                 valuesRange.set(record.id, record);
             }
-            if (!kwargs.disable_counters) {
+            if (kwargs.enable_counters) {
                 this._mockSearchPanelGlobalCounters(valuesRange, 'parent_folder_id');
             }
             return {

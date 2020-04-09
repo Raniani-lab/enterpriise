@@ -236,8 +236,8 @@
               <filter string="Customer" name="customer" domain="[]" context="{'group_by': 'partner_id'}"/>
           </group>
           <searchpanel>
-              <field name="rental_status" icon="fa-retweet"/>
-              <field name="invoice_status" icon="fa-retweet"/>
+              <field name="rental_status" icon="fa-retweet" enable_counters="1"/>
+              <field name="invoice_status" icon="fa-retweet" enable_counters="1"/>
           </searchpanel>
         </search>
       </field>

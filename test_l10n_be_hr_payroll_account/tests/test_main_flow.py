@@ -42,7 +42,7 @@ class TestHR(common.TransactionCase):
         self.hr_fleet_manager = self.create_user_employee(login='leh', groups='fleet.fleet_group_manager')
 
         self.hr_contract_manager = self.create_user_employee(login='nfz', groups='hr_contract.group_hr_contract_manager')
-        self.hr_payroll_user = self.create_user_employee(login='ldj', groups='hr_payroll.group_hr_payroll_user')
+        self.hr_payroll_user = self.create_user_employee(login='ldj', groups='hr_payroll.group_hr_payroll_user,hr_holidays.group_hr_holidays_user')
         self.hr_payroll_manager = self.create_user_employee(login='lxt', groups='hr_payroll.group_hr_payroll_manager')
 
     def create_user_employee(self, login, groups):

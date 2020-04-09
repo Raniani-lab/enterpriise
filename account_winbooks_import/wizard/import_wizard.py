@@ -225,7 +225,8 @@ class WinbooksImportWizard(models.TransientModel):
         for key, val in grouped.items():
             if key == '3':  # 3=general account, 9=title account
                 for rec in val:
-                    account = AccountAccount.search([('code', '=', rec.get('NUMBER'))], limit=1)
+                    account = AccountAccount.search(
+                        [('code', '=', rec.get('NUMBER')), ('company_id', '=', self.env.company.id)], limit=1)
                     if account:
                         account_data[rec.get('NUMBER')] = account.id
                         rec['CENTRALID'] and manage_centralid(account, rec['CENTRALID'])
@@ -294,7 +295,8 @@ class WinbooksImportWizard(models.TransientModel):
             for rec in DBF(join(file_dir, file_name), encoding='latin').records:
                 if not rec.get('DBKID'):
                     continue
-                journal = AccountJournal.search([('code', '=', rec.get('DBKID'))], limit=1)
+                journal = AccountJournal.search(
+                    [('code', '=', rec.get('DBKID')), ('company_id', '=', self.env.company.id)], limit=1)
                 if not journal:
                     if rec.get('DBKTYPE') == '4':
                         journal_type = 'bank' if 'IBAN' in rec.get('DBKOPT') else 'cash'
@@ -329,7 +331,6 @@ class WinbooksImportWizard(models.TransientModel):
         suspense_account = self.env['account.account'].search([('code', '=', self.suspense_code)], limit=1)
         if not self.only_open and not suspense_account:
             raise UserError(_("The code for the Suspense Account you entered doesn't match any account"))
-        receivable_payable_types = self.env.ref('account.data_account_type_receivable') + self.env.ref('account.data_account_type_payable')
         counter_part_created = False
         for file_name in scanfiles:
             with zipfile.ZipFile(join(file_dir, file_name), 'r') as scan_zip:
@@ -505,7 +506,8 @@ class WinbooksImportWizard(models.TransientModel):
             for rec in DBF(join(file_dir, file_name), encoding='latin').records:
                 if not rec.get('NUMBER'):
                     continue
-                analytic_account = AccountAnalyticAccount.search([('code', '=', rec.get('NUMBER'))], limit=1)
+                analytic_account = AccountAnalyticAccount.search(
+                    [('code', '=', rec.get('NUMBER')), ('company_id', '=', self.env.company.id)], limit=1)
                 if not analytic_account:
                     data = {
                         'code': rec.get('NUMBER'),
@@ -549,7 +551,6 @@ class WinbooksImportWizard(models.TransientModel):
         vatcode_data = {}
         treelib = {}
         AccountTax = self.env['account.tax']
-        AccountTaxGroup = self.env['account.tax.group']
         tags_cache = {}
 
         def get_tags(string):

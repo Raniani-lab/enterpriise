@@ -24,6 +24,7 @@ class TestWinbooksImport(common.TransactionCase):
         test_company = self.env['res.company'].create({
             'name': 'My Winbooks Company',
             'currency_id': self.env['res.currency'].search([('name', '=', 'EUR')]).id,
+            'country_id': self.env.ref('base.be').id,
         })
         attachment = self.env['ir.attachment'].search([('name', '=', 'PARFILUX_2013.04.08.zip')])
         wizard = self.env['account.winbooks.import.wizard'].with_company(test_company).create({

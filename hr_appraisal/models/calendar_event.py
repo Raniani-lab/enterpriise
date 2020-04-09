@@ -8,14 +8,15 @@ class CalendarEvent(models.Model):
     """ Model for Calendar Event """
     _inherit = 'calendar.event'
 
-    @api.model
-    def create(self, vals):
-        result = super(CalendarEvent, self).create(vals)
-        if result.res_model == 'hr.appraisal':
-            appraisal = self.env['hr.appraisal'].browse(result.res_id)
-            if appraisal.exists():
-                appraisal.write({
-                    'meeting_id': result.id,
-                    'date_final_interview': result.start_date if result.allday else result.start_datetime
-                })
-        return result
+    @api.model_create_multi
+    def create(self, vals_list):
+        events = super().create(vals_list)
+        for event in events:
+            if event.res_model == 'hr.appraisal':
+                appraisal = self.env['hr.appraisal'].browse(event.res_id)
+                if appraisal.exists():
+                    appraisal.write({
+                        'meeting_id': event.id,
+                        'date_final_interview': event.start_date if event.allday else event.start
+                    })
+        return events

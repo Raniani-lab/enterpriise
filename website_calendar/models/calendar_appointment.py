@@ -187,7 +187,7 @@ class CalendarAppointmentType(models.Model):
                     ev_stop_dt = event_tz.localize(ev_stop_dt).astimezone(pytz.UTC).replace(tzinfo=None)
                     if ev_start_dt < end_dt and ev_stop_dt > start_dt:
                         return False
-                elif fields.Datetime.to_datetime(ev.start_datetime) < end_dt and fields.Datetime.to_datetime(ev.stop_datetime) > start_dt:
+                elif fields.Datetime.to_datetime(ev.start) < end_dt and fields.Datetime.to_datetime(ev.stop) > start_dt:
                     return False
             return True
 

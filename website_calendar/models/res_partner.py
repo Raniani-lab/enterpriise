@@ -13,8 +13,8 @@ class Partner(models.Model):
         """
         if bool(self.env['calendar.event'].search_count([
             ('partner_ids', 'in', self.ids),
-            '|', '&', ('start_datetime', '<', fields.Datetime.to_string(date_end)),
-                      ('stop_datetime', '>', fields.Datetime.to_string(date_start)),
+            '|', '&', ('start', '<', fields.Datetime.to_string(date_end)),
+                      ('stop', '>', fields.Datetime.to_string(date_start)),
                  '&', ('allday', '=', True),
                       '|', ('start_date', '=', fields.Date.to_string(date_end)),
                            ('start_date', '=', fields.Date.to_string(date_start))])):

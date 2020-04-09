@@ -250,3 +250,15 @@ class TestPayslipComputation(TestPayslipContractBase):
         hours = self.contract_cdd._get_work_hours(date(2015, 11, 10), date(2015, 11, 10))
         sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_work_entry.work_entry_type_attendance').ids)
         self.assertAlmostEqual(sum_hours, 18, delta=0.01, msg='It should count 18 attendance hours')  # 8h normal day + 7h morning + 3h night
+
+    def test_payslip_without_contract(self):
+        payslip = self.env['hr.payslip'].create({
+            'name': 'Payslip of Richard',
+            'employee_id': self.richard_emp.id,
+            'date_from': date(2016, 1, 1),
+            'date_to': date(2016, 1, 31)
+        })
+        self.assertFalse(payslip.contract_id)
+        self.assertEqual(payslip.normal_wage, 0, "It should have a default wage of 0")
+        self.assertEqual(payslip.basic_wage, 0, "It should have a default wage of 0")
+        self.assertEqual(payslip.net_wage, 0, "It should have a default wage of 0")

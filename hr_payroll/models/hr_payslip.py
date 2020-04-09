@@ -97,7 +97,9 @@ class HrPayslip(models.Model):
 
     @api.depends('contract_id')
     def _compute_normal_wage(self):
-        for payslip in self:
+        with_contract = self.filtered('contract_id')
+        (self - with_contract).normal_wage = 0
+        for payslip in with_contract:
             payslip.normal_wage = payslip._get_contract_wage()
 
     @api.constrains('date_from', 'date_to')

@@ -341,6 +341,10 @@ odoo.define('sign.PDFIframe', function (require) {
         },
 
         createSignItem: function (type, required, responsible, posX, posY, width, height, value, option_ids, name) {
+            // jQuery.data parse 0 as integer, but 0 is not considered falsy for signature item
+            if (value === 0) {
+                value = "0";
+            }
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role);
             var selected_options = option_ids || [];
 

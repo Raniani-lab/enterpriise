@@ -123,7 +123,7 @@ class AccountPayment(models.Model):
         create_xml_node(PmtInf, 'CtrlSum', float_repr(sum(x.amount for x in self), precision_digits=2))  # This sum ignores the currency, it is used as a checksum (see SEPA rulebook)
 
         PmtTpInf = create_xml_node_chain(PmtInf, ['PmtTpInf','SvcLvl','Cd'], 'SEPA')[0]
-        create_xml_node_chain(PmtTpInf, ['LclInstrm','Cd'], self.sdd_mandate_scheme)
+        create_xml_node_chain(PmtTpInf, ['LclInstrm','Cd'], self.sdd_mandate_id.sdd_scheme)
         create_xml_node(PmtTpInf, 'SeqTp', 'FRST')
         #Note: FRST refers to the COLLECTION of payments, not the type of mandate used
         #This value is only used for informatory purpose.

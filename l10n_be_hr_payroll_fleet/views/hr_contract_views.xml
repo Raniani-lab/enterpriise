@@ -15,6 +15,15 @@
                 <field name="new_car"/>
                 <field name="new_car_model_id" attrs="{'invisible': [('new_car', '=', False)]}"/>
             </xpath>
+            <xpath expr="//label[@for='internet']" position="before">
+                <field name="transport_mode_bike"/>
+                <label for="bike_id" string="Company Bike" attrs="{'invisible': [('transport_mode_bike', '=', False)]}" name="bike_id_label" groups="fleet.fleet_group_manager"/>
+                <div attrs="{'invisible': [('transport_mode_bike', '=', False)]}" name="bike_id_div" groups="fleet.fleet_group_manager">
+                    <field name="bike_id" nolabel="1"/>
+                </div>
+                <field name="company_bike_depreciated_cost" invisible="1"/>
+                <field name="new_bike_model_id"/>
+            </xpath>
             <xpath expr="//field[@name='car_atn']" position="after">
                 <field name="company_car_total_depreciated_cost" invisible="1"/>
             </xpath>

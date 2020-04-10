@@ -15,14 +15,14 @@ class HrContract(models.Model):
             ('user_id', '=', self.env.uid),
             ('company_id', '=', self.env.company.id),
         ])
-        domain = self._get_available_cars_domain(driver_id)
+        domain = self._get_available_vehicles_domain(driver_id)
         res['car_id'] = res.get('car_id', self.env['fleet.vehicle'].sudo().search(domain, limit=1).id)
         return res
 
     @api.model
-    def _get_available_cars_domain(self, driver_id=None):
+    def _get_available_vehicles_domain(self, driver_id=None, vehicle_type='car'):
         return expression.AND([
-            [('future_driver_id', '=', False)],
+            [('future_driver_id', '=', False), ('model_id.vehicle_type', '=', vehicle_type)],
             expression.OR([
                 [('driver_id', '=', False)],
                 [('driver_id', '=', driver_id.id if driver_id else False)],
@@ -30,12 +30,12 @@ class HrContract(models.Model):
             ])
         ])
 
-    def _get_possible_model_domain(self):
-        return [('can_be_requested', '=', True)]
+    def _get_possible_model_domain(self, vehicle_type='car'):
+        return [('can_be_requested', '=', True), ('vehicle_type', '=', vehicle_type)]
 
     car_id = fields.Many2one('fleet.vehicle', string='Company Car',
         tracking=True,
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), ('vehicle_type', '=', 'car')]",
         help="Employee's company car.",
         groups='fleet.fleet_group_manager')
     car_atn = fields.Float(compute='_compute_car_atn_and_costs', string='Benefit in Kind (Company Car)', store=True, compute_sudo=True)
@@ -55,6 +55,15 @@ class HrContract(models.Model):
         groups="fleet.fleet_group_manager",
         compute='_compute_recurring_cost_amount_depreciated',
         inverse="_inverse_recurring_cost_amount_depreciated")
+    transport_mode_bike = fields.Boolean('Uses Bike')
+    bike_id = fields.Many2one('fleet.vehicle', string="Company Bike",
+        tracking=True,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), ('vehicle_type', '=', 'bike')]",
+        help="Employee's company bike.",
+        groups='fleet.fleet_group_manager')
+    company_bike_depreciated_cost = fields.Float(compute='_compute_company_bike_depreciated_cost', store=True, compute_sudo=True)
+    new_bike_model_id = fields.Many2one(
+        'fleet.vehicle.model', string="Bike Model", domain=lambda self: self._get_possible_model_domain(vehicle_type='bike'))
 
     @api.depends('car_id', 'new_car', 'new_car_model_id', 'car_id.total_depreciated_cost',
         'car_id.atn', 'new_car_model_id.default_atn', 'new_car_model_id.default_total_depreciated_cost')
@@ -71,6 +80,18 @@ class HrContract(models.Model):
                 contract.car_atn = contract.new_car_model_id.default_atn
                 contract.company_car_total_depreciated_cost = contract.new_car_model_id.default_total_depreciated_cost
                 contract.wishlist_car_total_depreciated_cost = contract.new_car_model_id.default_total_depreciated_cost
+
+
+    @api.depends('bike_id', 'new_bike_model_id', 'bike_id.total_depreciated_cost',
+        'bike_id.co2_fee', 'new_bike_model_id.default_total_depreciated_cost', 'transport_mode_bike')
+    def _compute_company_bike_depreciated_cost(self):
+        for contract in self:
+            contract.company_bike_depreciated_cost = False
+            if contract.transport_mode_bike:
+                if contract.bike_id:
+                    contract.company_bike_depreciated_cost = contract.bike_id.total_depreciated_cost
+                elif contract.new_bike_model_id:
+                    contract.company_bike_depreciated_cost = contract.new_bike_model_id.default_recurring_cost_amount_depreciated
 
     @api.depends('car_id.log_contracts.state')
     def _compute_car_open_contracts_count(self):
@@ -98,7 +119,7 @@ class HrContract(models.Model):
     @api.depends('name')
     def _compute_available_cars_amount(self):
         for contract in self:
-            contract.available_cars_amount = self.env['fleet.vehicle'].sudo().search_count(contract._get_available_cars_domain(contract.employee_id.address_home_id))
+            contract.available_cars_amount = self.env['fleet.vehicle'].sudo().search_count(contract._get_available_vehicles_domain(contract.employee_id.address_home_id))
 
     @api.depends('name')
     def _compute_max_unused_cars(self):

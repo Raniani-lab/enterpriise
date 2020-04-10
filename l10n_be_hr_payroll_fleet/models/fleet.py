@@ -75,7 +75,7 @@ class FleetVehicle(models.Model):
             vehicle.tax_deduction = deduction
 
     def _get_co2_fee(self, co2, fuel_type):
-        if not self._from_be():
+        if not self._from_be() or self.vehicle_type == 'bike':
             return 0
         fuel_coefficient = self.env['hr.rule.parameter']._get_parameter_from_code('fuel_coefficient')
         co2_fee_min = self.env['hr.rule.parameter']._get_parameter_from_code('co2_fee_min')
@@ -198,11 +198,11 @@ class FleetVehicleModel(models.Model):
     _inherit = 'fleet.vehicle.model'
 
     default_recurring_cost_amount_depreciated = fields.Float(string="Cost (Depreciated)",
-        help="Default recurring cost amount that should be applied to a new car from this model")
+        help="Default recurring cost amount that should be applied to a new vehicle from this model")
     default_co2 = fields.Float(string="CO2 emissions")
     default_fuel_type = fields.Selection([('gasoline', 'Gasoline'), ('diesel', 'Diesel'), ('lpg', 'LPG'), ('electric', 'Electric'), ('hybrid', 'Hybrid')], 'Default Fuel Type', default='diesel', help='Fuel Used by the vehicle')
     default_car_value = fields.Float(string="Catalog Value (VAT Incl.)")
-    can_be_requested = fields.Boolean(string="Can be requested", help="Can be requested on a contract as a new car")
+    can_be_requested = fields.Boolean(string="Can be requested", help="Can be requested on a contract as a new vehicle")
     default_atn = fields.Float(compute='_compute_atn', string="ATN")
     default_total_depreciated_cost = fields.Float(compute='_compute_default_total_depreciated_cost', string="Total Cost (Depreciated)")
     co2_fee = fields.Float(compute='_compute_co2_fee', string="CO2 fee")
@@ -221,4 +221,7 @@ class FleetVehicleModel(models.Model):
     @api.depends('default_co2', 'default_fuel_type')
     def _compute_co2_fee(self):
         for model in self:
-            model.co2_fee = self.env['fleet.vehicle']._get_co2_fee(model.default_co2, model.default_fuel_type)
+            if model.vehicle_type == 'bike':
+                model.co2_fee = 0
+            else:
+                model.co2_fee = self.env['fleet.vehicle']._get_co2_fee(model.default_co2, model.default_fuel_type)

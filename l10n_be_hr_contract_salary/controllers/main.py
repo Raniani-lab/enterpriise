@@ -52,15 +52,15 @@ class HrContractSalary(HrContractSalary):
         elif advantage_field == 'ip_value':
             contract = self._check_access_rights(contract_id, token)
             res['new_value'] = contract.ip_wage_rate if int(new_value) else 0
-        elif advantage_field == 'company_car_total_depreciated_cost':
+        elif advantage_field in ['company_car_total_depreciated_cost', 'company_bike_depreciated_cost']:
             car_options, vehicle_id = new_value.split('-')
             if car_options == 'new':
-                res['new_value'] = round(request.env['fleet.vehicle.model'].browse(int(vehicle_id)).default_total_depreciated_cost, 2)
+                res['new_value'] = round(request.env['fleet.vehicle.model'].sudo().browse(int(vehicle_id)).default_total_depreciated_cost, 2)
             else:
-                res['new_value'] = round(request.env['fleet.vehicle'].browse(int(vehicle_id)).total_depreciated_cost, 2)
+                res['new_value'] = round(request.env['fleet.vehicle'].sudo().browse(int(vehicle_id)).total_depreciated_cost, 2)
         elif advantage_field == 'wishlist_car_total_depreciated_cost':
             dummy, vehicle_id = new_value.split('-')
-            res['new_value'] = round(request.env['fleet.vehicle.model'].browse(int(vehicle_id)).default_total_depreciated_cost, 2)
+            res['new_value'] = round(request.env['fleet.vehicle.model'].sudo().browse(int(vehicle_id)).default_total_depreciated_cost, 2)
         return res
 
     def _get_advantages(self, contract):
@@ -73,7 +73,9 @@ class HrContractSalary(HrContractSalary):
         mapped_advantages, advantage_types, dropdown_options, initial_values = super()._get_advantages_values(contract)
 
         available_cars = request.env['fleet.vehicle'].sudo().search(
-            contract._get_available_cars_domain(contract.employee_id.address_home_id)).sorted(key=lambda car: car.total_depreciated_cost)
+            contract._get_available_vehicles_domain(contract.employee_id.address_home_id)).sorted(key=lambda car: car.total_depreciated_cost)
+        available_bikes = request.env['fleet.vehicle'].sudo().search(
+            contract._get_available_vehicles_domain(contract.employee_id.address_home_id, vehicle_type='bike')).sorted(key=lambda car: car.total_depreciated_cost)
         dropdown_options['company_car_total_depreciated_cost'] = [(
             'old-%s' % (car.id),
             '%s/%s/ \u2022 %s € \u2022 %s%s' % (
@@ -84,6 +86,15 @@ class HrContractSalary(HrContractSalary):
                 '\u2022 Available in %s' % car.next_assignation_date.strftime('%B %Y') if car.next_assignation_date else u''
             )
         ) for car in available_cars]
+        dropdown_options['company_bike_depreciated_cost'] = [(
+            'old-%s' % (bike.id),
+            '%s/%s/ \u2022 %s € \u2022 %s' % (
+                bike.model_id.brand_id.name,
+                bike.model_id.name,
+                round(bike.total_depreciated_cost, 2),
+                '\u2022 Available in %s' % bike.next_assignation_date.strftime('%B %Y') if bike.next_assignation_date else u''
+            )
+        ) for bike in available_bikes]
 
         can_be_requested_models = request.env['fleet.vehicle.model'].sudo().search(
         contract._get_possible_model_domain()).sorted(key=lambda model: model.default_total_depreciated_cost)
@@ -94,16 +105,31 @@ class HrContractSalary(HrContractSalary):
                 round(model.default_total_depreciated_cost, 2),
             )
         ) for model in can_be_requested_models]
+        can_be_requested_models = request.env['fleet.vehicle.model'].sudo().search(
+        contract._get_possible_model_domain(vehicle_type='bike')).sorted(key=lambda model: model.default_total_depreciated_cost)
+        new_bike_options = [(
+            'new-%s' % (model.id),
+            '%s \u2022 %s € \u2022 New Bike' % (
+                model.display_name,
+                round(model.default_total_depreciated_cost, 2),
+            )
+        ) for model in can_be_requested_models]
+        dropdown_options['company_bike_depreciated_cost'] += new_bike_options
 
         if contract.available_cars_amount < contract.max_unused_cars:
             dropdown_options['company_car_total_depreciated_cost'] += new_car_options
         else:
             dropdown_options['wishlist_car_total_depreciated_cost'] = new_car_options
 
+
         if contract.car_id:
             initial_values['select_company_car_total_depreciated_cost'] = 'old-%s' % contract.car_id.id
         elif contract.new_car_model_id:
             initial_values['select_company_car_total_depreciated_cost'] = 'new-%s' % contract.new_car_model_id.id
+        if contract.bike_id:
+            initial_values['select_company_bike_depreciated_cost'] = 'old-%s' % contract.bike_id.id
+        elif contract.new_bike_model_id:
+            initial_values['select_company_bike_depreciated_cost'] = 'new-%s' % contract.new_bike_model_id.id
 
         return mapped_advantages, advantage_types, dropdown_options, initial_values
 

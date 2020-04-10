@@ -205,6 +205,36 @@ Tour.register('hr_contract_salary_tour', {
             run: 'click',
         },
         {
+            content: "Choose a Bike",
+            trigger: 'input[name="fold_company_bike_depreciated_cost"]',
+            extra_trigger: 'input[name="Gross"][value="3000"]',
+            run: 'click',
+        },
+        {
+            content: "Choose Bike 2",
+            trigger: 'label[for=company_bike_depreciated_cost]',
+            extra_trigger: 'input[name="Gross"][value="2982.81"]',
+            run: function () {
+                $('select[name=select_company_bike_depreciated_cost] option:contains(Bike 2)').prop('selected', true);
+                $('select[name=select_company_bike_depreciated_cost]').trigger('change');
+            },
+        },
+        {
+            content: "Choose Bike 1",
+            trigger: 'label[for=company_bike_depreciated_cost]',
+            extra_trigger: 'input[name="Gross"][value="2965.61"]',
+            run: function () {
+                $('select[name=select_company_bike_depreciated_cost] option:contains(Bike 1)').prop('selected', true);
+                $('select[name=select_company_bike_depreciated_cost]').trigger('change');
+            },
+        },
+        {
+            content: "Unchoose Bike",
+            trigger: 'input[name="fold_company_bike_depreciated_cost"]',
+            extra_trigger: 'input[name="Gross"][value="2982.81"]',
+            run: 'click',
+        },
+        {
             content: "Unset Internet",
             trigger: 'input[name="internet_manual"]',
             extra_trigger: 'input[name="Gross"][value="3000"]',

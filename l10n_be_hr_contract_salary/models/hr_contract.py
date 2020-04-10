@@ -66,6 +66,28 @@ class HrContract(models.Model):
             'car_id': int(car_id),
         }
 
+    def _get_advantage_values_company_bike_depreciated_cost(self, contract, advantages):
+        has_bike = advantages['fold_company_bike_depreciated_cost']
+        if not has_bike:
+            return {
+                'transport_mode_bike': False,
+                'new_bike_model_id': False,
+                'bike_id': False,
+            }
+        bike, bike_id = advantages['select_company_bike_depreciated_cost'].split('-')
+        new_bike = bike == 'new'
+        if new_bike:
+            return {
+                'transport_mode_bike': True,
+                'new_bike_model_id': int(bike_id),
+                'bike_id': False,
+            }
+        return {
+            'transport_mode_bike': True,
+            'new_bike_model_id': False,
+            'bike_id': int(bike_id),
+        }
+
     def _get_advantage_values_wishlist_car_total_depreciated_cost(self, contract, advantages):
         wishlist_car = advantages['fold_wishlist_car_total_depreciated_cost']
         dummy, model_id = advantages['select_wishlist_car_total_depreciated_cost'].split('-')

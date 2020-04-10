@@ -134,6 +134,28 @@ class TestUi(odoo.tests.HttpCase):
             'company_id': company_id.id,
         })
 
+        bike_brand = self.env['fleet.vehicle.model.brand'].create({
+            'name': 'Bike Brand',
+        })
+
+        self.env['fleet.vehicle.model'].create({
+            'name': 'Bike 1',
+            'brand_id': bike_brand.id,
+            'vehicle_type': 'bike',
+            'can_be_requested': True,
+            'default_car_value': 1000,
+            'default_recurring_cost_amount_depreciated': 25,
+        })
+
+        self.env['fleet.vehicle.model'].create({
+            'name': 'Bike 2',
+            'brand_id': bike_brand.id,
+            'vehicle_type': 'bike',
+            'can_be_requested': True,
+            'default_car_value': 2000,
+            'default_recurring_cost_amount_depreciated': 50,
+        })
+
         self.env['fleet.vehicle'].create({
             'model_id': self.env.ref("fleet.model_a3").id,
             'license_plate': '1-JFC-095',

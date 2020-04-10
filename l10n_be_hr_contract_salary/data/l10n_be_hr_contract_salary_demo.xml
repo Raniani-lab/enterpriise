@@ -107,6 +107,27 @@
         <field name="vehicle_id" ref="fleet_vehicle_audi_a3_laurie_poiret"/>
     </record>
 
+    <record id="fleet_vehicle_brand_eddy_merckx" model="fleet.vehicle.model.brand">
+        <field name="name">Eddy Merckx</field>
+        <field name="image_128" type="base64" file="l10n_be_hr_contract_salary/static/img/brand-eddy-merckx.jpg"/>
+    </record>
+
+    <record id="fleet_vehicle_model_san_remo" model="fleet.vehicle.model">
+        <field name="name">SanRemo76</field>
+        <field name="brand_id" ref="fleet_vehicle_brand_eddy_merckx"/>
+        <field name="vehicle_type">bike</field>
+        <field name="can_be_requested" eval="True"/>
+        <field name="default_car_value">1000</field>
+        <field name="default_recurring_cost_amount_depreciated">25</field>
+    </record>
+
+    <record id="fleet_vehicle_bike_laurie_poiret" model="fleet.vehicle">
+        <field name="model_id" ref="fleet_vehicle_model_san_remo"/>
+        <field name="driver_id" ref="res_partner_laurie_poiret"/>
+        <field name="car_value">1000</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
     <record id="hr_contract_cdi_experienced_developer" model="hr.contract">
         <field name="name">CDI - Experienced Developer</field>
         <field name="department_id" ref="hr.dep_rd"/>
@@ -135,6 +156,8 @@
         <field name="transport_mode_car" eval="True"/>
         <field name="new_car" eval="False"/>
         <field name="car_id" ref="fleet_vehicle_audi_a3_laurie_poiret"/>
+        <field name="transport_mode_bike" eval="True"/>
+        <field name="bike_id" ref="fleet_vehicle_bike_laurie_poiret"/>
         <field name="state">open</field>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>

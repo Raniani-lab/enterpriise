@@ -308,6 +308,43 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('widgets with and without description property in sidebar in debug and non-debug mode', async function (assert) {
+        assert.expect(4);
+
+        const originalOdooDebug = odoo.debug;
+        const FieldChar = fieldRegistry.get('char');
+        // add widget in fieldRegistry with description and without desciption
+        fieldRegistry.add('widgetWithDescription', FieldChar.extend({
+            description: "Test Widget",
+        }));
+        fieldRegistry.add('widgetWithoutDescription', FieldChar.extend({}));
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<tree><field name='display_name'/></tree>",
+        });
+
+        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+
+        assert.containsOnce(vem, '#widget option[value="widgetWithDescription"]',
+            "widget with description should be there");
+        assert.containsNone(vem, '#widget option[value="widgetWithoutDescription"]',
+            "widget without description should not there in non debug mode");
+
+        odoo.debug = true;
+        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+        assert.containsOnce(vem, '#widget option[value="widgetWithDescription"]',
+            "widget with description should be there");
+        assert.containsOnce(vem, '#widget option[value="widgetWithoutDescription"]',
+            "widget without description should be there in debug mode");
+
+        odoo.debug = originalOdooDebug;
+        delete fieldRegistry.map.widgetWithDescription;
+        delete fieldRegistry.map.widgetWithoutDescription;
+        vem.destroy();
+    });
+
     QUnit.test('visible studio hooks in listview', async function (assert) {
         assert.expect(2);
 

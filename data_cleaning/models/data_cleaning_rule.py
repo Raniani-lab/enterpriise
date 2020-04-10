@@ -45,7 +45,7 @@ ACTIONS_SQL = {
     'case_upper': ('<>', 'UPPER({})'),
     'case_lower': ('<>', 'LOWER({})'),
     'phone': (False, 'format_phone'),  # special case, needs to be treated in Python
-    'html': ('~', '<[a-z]+.*>'),
+    'html': ('~', "'<[a-z]+.*>'"),
 }
 
 

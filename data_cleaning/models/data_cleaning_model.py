@@ -124,7 +124,7 @@ class DataCleaningModel(models.Model):
                         FROM
                             %(table)s
                         WHERE
-                            "%(field_name)s" %(operator)s '%(cleaned_field_name)s'
+                            "%(field_name)s" %(operator)s %(cleaned_field_name)s
                             AND NOT EXISTS(
                                 SELECT 1
                                 FROM %(cleaning_record_table)s

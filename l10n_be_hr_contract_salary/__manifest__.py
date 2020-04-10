@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Salary Package Configurator (Belgium)',
+    'name': 'Salary Configurator (Belgium)',
     'category': 'Human Resources',
     'summary': 'Salary Package Configurator',
     'depends': [

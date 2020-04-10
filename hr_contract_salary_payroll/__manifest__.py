@@ -2,9 +2,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'HR Contract Salary - Payroll',
+    'name': 'Salary Configurator - Payroll',
     'category': 'Human Resources',
-    'summary': 'Gross to Net Salary Simulaton',
+    'summary': 'Adds a Gross to Net Salary Simulaton',
     'depends': [
         'hr_contract_salary',
         'hr_payroll',

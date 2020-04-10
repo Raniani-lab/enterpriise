@@ -228,10 +228,11 @@
                         </div>
                     </div>
                 </div>
+                <field name="operation_note" class="py-1 px-3" attrs="{'invisible': ['|', ('worksheet_type', '!=', 'text'), '&amp;', ('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
                 <div class="workorder_pdf">
-                        <field name="worksheet_type" invisible="1"/>
-                        <field name="worksheet" widget="mrp_pdf_viewer_no_reload" attrs="{'invisible': ['|', ('worksheet_type', '=', 'google_slide'), '&amp;', ('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
-                        <field name="worksheet_google_slide" widget="mrp_embed_viewer_no_reload" attrs="{'invisible': ['|', ('worksheet_type', '=', 'pdf'), '&amp;', ('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
+                    <field name="worksheet_type" invisible="1"/>
+                    <field name="worksheet" widget="mrp_pdf_viewer_no_reload" attrs="{'invisible': ['|', ('worksheet_type', '!=', 'pdf'), '&amp;', ('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
+                    <field name="worksheet_google_slide" widget="mrp_embed_viewer_no_reload" attrs="{'invisible': ['|', ('worksheet_type', '!=', 'google_slide'), '&amp;', ('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
                 </div>
                 <field name="_barcode_scanned" widget="barcode_handler"/>
             </form>

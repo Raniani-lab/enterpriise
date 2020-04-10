@@ -31,7 +31,11 @@ Let your customers follow the signature process easily.
         'views/sign_pdf_iframe_templates.xml',
         'report/sign_log_reports.xml',
     ],
-    'qweb': ['static/src/xml/*.xml'],
+    'qweb': [
+        'static/src/xml/*.xml',
+        'static/src/components/activity/activity.xml',
+        'static/src/components/sign_request/sign_request.xml'
+    ],
     'demo': [
         'data/sign_demo.xml',
     ],

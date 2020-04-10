@@ -47,12 +47,29 @@ class SignContract(Sign):
             if contract.applicant_id:
                 contract.applicant_id.access_token = False
                 contract.applicant_id.emp_id = contract.employee_id
+            self._create_activity_advantage(contract, 'running')
         # Both applicant/employee and HR responsible have signed
         if request_item.sign_request_id.nb_closed == 2:
             if contract.employee_id:
                 contract.employee_id.active = True
             if contract.employee_id.address_home_id:
                 contract.employee_id.address_home_id.active = True
+            self._create_activity_advantage(contract, 'countersigned')
+
+    def _create_activity_advantage(self, contract, contract_state):
+        advantages = request.env['hr.contract.salary.advantage'].sudo().search([
+            ('structure_type_id', '=', contract.structure_type_id.id),
+            ('activity_type_id', '!=', False),
+            ('activity_creation', '=', contract_state)])
+        for advantage in advantages:
+            field = advantage.res_field_id.name
+            value = contract[field]
+            if (advantage.activity_creation_type == "onchange" and contract[field] != contract.origin_contract_id[field]) or \
+                    advantage.activity_creation_type == "always" and value:
+                contract.activity_schedule(
+                    activity_type_id=advantage.activity_type_id.id,
+                    note="%s: %s" % (advantage.name or advantage.res_field_id.name, value),
+                    user_id=advantage.activity_responsible_id.id)
 
 
 class HrContractSalary(http.Controller):

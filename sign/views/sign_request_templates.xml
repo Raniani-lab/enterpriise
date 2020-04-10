@@ -13,6 +13,9 @@
         <xpath expr="script[last()]" position="after">
             <script type="text/javascript" src="/sign/static/src/js/sign_backend.js"></script>
             <script type="text/javascript" src="/sign/static/src/js/tours/sign.js"></script>
+            <script type="text/javascript" src="/sign/static/src/js/activity.js"></script>
+            <script type="text/javascript" src="/sign/static/src/components/activity/activity.js"/>
+            <script type="text/javascript" src="/sign/static/src/components/sign_request/sign_request.js"/>
         </xpath>
         <xpath expr="link[last()]" position="after">
             <link rel="stylesheet" type="text/scss" href="/sign/static/src/scss/sign_backend.scss"/>

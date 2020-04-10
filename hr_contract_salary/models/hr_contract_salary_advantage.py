@@ -69,6 +69,11 @@ class HrContractSalaryAdvantage(models.Model):
         ('percent', 'Percent'),
         ('currency', 'Currency')], string="Advantage Unit of Measure", default='currency')
 
+    activity_type_id = fields.Many2one('mail.activity.type', string='Activity Type', help="The type of activity that will be created automatically on the contract if this advantage is chosen by the employee.")
+    activity_creation = fields.Selection([('countersigned', 'Contract is countersigned'), ('running', 'Employee signs his contract')], default='countersigned', help="The benefit is created when the employee signs his contract at the end of the salary configurator or when the HR manager countersigns the contract.")
+    activity_creation_type = fields.Selection([('always', 'When the advantage is set'), ('onchange', 'When the advantage is modified')], default='always', help="Choose whether to create a next activity each time that the advantage is taken by the employee or on modification only.")
+    activity_responsible_id = fields.Many2one('res.users', 'Assigned to')
+
     _sql_constraints = [
         (
             'required_fold_res_field_id',

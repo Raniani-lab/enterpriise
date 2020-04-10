@@ -15,6 +15,7 @@ class SignSendRequest(models.TransientModel):
         if not res.get('template_id'):
             return res
         template = self.env['sign.template'].browse(res['template_id'])
+        res['has_default_template'] = bool(template)
         if 'filename' in fields:
             res['filename'] = template.display_name
         if 'subject' in fields:
@@ -35,6 +36,8 @@ class SignSendRequest(models.TransientModel):
                     res['signer_id'] = self.env.user.partner_id.id
         return res
 
+    activity_id = fields.Many2one('mail.activity', 'Linked Activity', readonly=True)
+    has_default_template = fields.Boolean()
     template_id = fields.Many2one(
         'sign.template', required=True, ondelete='cascade',
         default=lambda self: self.env.context.get('active_id', None),
@@ -49,6 +52,24 @@ class SignSendRequest(models.TransientModel):
     message = fields.Html("Message")
     filename = fields.Char("Filename", required=True)
 
+    @api.onchange('template_id')
+    def _onchange_template_id(self):
+        self.signer_id = False
+        self.filename = self.template_id.display_name
+        self.subject = _("Signature Request - %s") % (self.template_id.attachment_id.name or '')
+        roles = self.template_id.mapped('sign_item_ids.responsible_id')
+        signer_ids = [(0, 0, {
+            'role_id': role.id,
+            'partner_id': False,
+        }) for role in roles]
+        if self.env.context.get('sign_directly_without_mail'):
+            if len(roles) == 1:
+                signer_ids[0][2]['partner_id'] = self.env.user.partner_id.id
+            elif not roles:
+                self.signer_id = self.env.user.partner_id.id
+        self.signer_ids = [(5, 0, 0)] + signer_ids
+        self.signers_count = len(roles)
+
     @api.depends('signer_ids.partner_id', 'signer_id', 'signers_count')
     def _compute_is_user_signer(self):
         if self.signers_count and self.env.user.partner_id in self.signer_ids.mapped('partner_id'):
@@ -57,6 +78,11 @@ class SignSendRequest(models.TransientModel):
             self.is_user_signer = True
         else:
             self.is_user_signer = False
+
+    def _activity_done(self):
+        signatories = self.signer_id.name or ', '.join(self.signer_ids.partner_id.mapped('name'))
+        feedback = _('Signature requested for template: %s\nSignatories: %s') % (self.template_id.name, signatories)
+        self.activity_id._action_done(feedback=feedback)
 
     def create_request(self, send=True, without_mail=False):
         template_id = self.template_id.id
@@ -73,10 +99,15 @@ class SignSendRequest(models.TransientModel):
     def send_request(self):
         res = self.create_request()
         request = self.env['sign.request'].browse(res['id'])
+        if self.activity_id:
+            self._activity_done()
+            return {'type': 'ir.actions.act_window_close'}
         return request.go_to_document()
 
     def sign_directly(self):
         res = self.create_request()
+        if self.activity_id:
+            self._activity_done()
         request = self.env['sign.request'].browse(res['id'])
         user_item = request.request_item_ids.filtered(
             lambda item: item.partner_id == item.env.user.partner_id)[:1]

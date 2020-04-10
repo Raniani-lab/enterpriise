@@ -30,11 +30,6 @@
     .modal-content {
 
         .o_field_one2many.o_sign_flat_o2m {
-            // Ajust this value to match the standard components below
-            padding-right: 42px;
-            @include media-breakpoint-down(sm) {
-                padding-right: 0;
-            }
             table {
                 border-collapse: collapse;
                 border: none;
@@ -66,6 +61,9 @@
             }
             tbody > tr > td:nth-child(1) {
                 width: 150px !important;
+                @include media-breakpoint-down(md) {
+                    width: 100px !important;
+                }
                 color:#666666 !important;
                 font-weight: bold;
                 padding-left: 0px;
@@ -76,6 +74,7 @@
             tbody > tr > td:nth-child(2) {
                 border-right-style: none;
                 &:not([style]) {
+                    padding-right: 0;
                     border: 1px solid #666666;
                     border-top-style: none;
                     border-right-style: none;

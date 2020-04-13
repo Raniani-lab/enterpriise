@@ -51,7 +51,7 @@ AbstractView.include({
             var searchQuery = self.controllerParams.controlPanelModel.getQuery();
             if (options.viewType === 'list') {
                 // reset the group by so lists are not grouped in studio.
-                searchQuery.groupedBy = [];
+                searchQuery.groupBy = [];
             }
             self._updateMVCParams(searchQuery);
             // This override is a hack because when we load the data for a subview in

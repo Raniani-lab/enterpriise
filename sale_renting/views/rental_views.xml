@@ -119,7 +119,7 @@
                     'pricelist': parent.pricelist_id,
                     'uom':product_uom,
                     'company_id': parent.company_id,
-                    'default_lst_price': price_unit,
+                    'default_list_price': price_unit,
                     'default_description_sale': name,
                     'default_rent_ok': 1,
                     'rental_products': True,

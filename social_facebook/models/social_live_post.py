@@ -41,9 +41,9 @@ class SocialLivePostFacebook(models.Model):
             for post in result_posts:
                 existing_live_post = existing_live_posts_by_facebook_post_id.get(post.get('id'))
                 if existing_live_post:
-                    likes_count = post.get('likes').get('summary').get('total_count', 0)
+                    likes_count = post.get('likes', {}).get('summary', {}).get('total_count', 0)
                     shares_count = post.get('shares', {}).get('count', 0)
-                    comments_count = post.get('comments').get('summary').get('total_count', 0)
+                    comments_count = post.get('comments', {}).get('summary', {}).get('total_count', 0)
                     existing_live_post.write({
                         'engagement': likes_count + shares_count + comments_count,
                     })

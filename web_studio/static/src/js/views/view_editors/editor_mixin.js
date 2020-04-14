@@ -3,6 +3,27 @@ odoo.define('web_studio.EditorMixin', function() {
 
 return {
     /**
+     * Find and return the first node found in the view arch
+     * satifying the given node description.
+     * Breadth-first search.
+     * @param {Object} viewArch
+     * @param {Object} nodeDescription
+     * @param {string} nodeDescription.tag
+     * @param {Object} nodeDescription.attrs
+     * @returns {Object}
+     */
+    findNode: function (viewArch, nodeDescription) {
+        // TODO transparently check t-att- attributes ?
+        // TODO support modifiers objects ?
+        const nodesToCheck = [viewArch];
+        while (nodesToCheck.length > 0) {
+            const node = nodesToCheck.shift();
+            const match = this._satisfiesNodeDescription(node, nodeDescription);
+            if (match) return node;
+            nodesToCheck.push(...(node.children || []));
+        }
+    },
+    /**
      * Handles the drag and drop of a jQuery UI element.
      *
      * @param {JQuery} $drag
@@ -78,6 +99,33 @@ return {
         if ($el.find('.blockUI')) {
             $el.find('.blockUI').parent().unblock();
         }
+    },
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * Check if the node satifies the given node description
+     * @param {Object} node
+     * @param {Object} nodeDescription
+     * @param {Object} nodeDescription.attrs
+     * @param {string} nodeDescription.tag
+     * @returns {boolean}
+     */
+    _satisfiesNodeDescription: function (node, nodeDescription) {
+        const attrs = Object.assign({}, nodeDescription);
+        const tag = attrs.tag;
+        delete attrs.tag;
+        const checkAttrs = Object.keys(attrs).length !== 0;
+        if (tag && tag !== node.tag) return false;
+        if (tag && !checkAttrs) return true;
+        const match = (a1, a2) => typeof(a1) === 'string' ? a1.includes(a2) : a1 === a2;
+        const matchedAttrs = Object
+            .entries(attrs)
+            .filter(([attr, value]) => match(node.attrs[attr], value))
+            .map(([attr, value]) => attr);
+        return matchedAttrs.length > 0 && matchedAttrs.length === Object.keys(attrs).length;
     },
 };
 

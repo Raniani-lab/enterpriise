@@ -11,4 +11,10 @@
     </select>
 </div>
 
+<div t-name="web_studio.AvatarPlaceholder" class="oe_kanban_bottom_right">
+    <span class="oe_kanban_avatar">
+        <i class="fa fa-user"/>
+    </span>
+</div>
+
 </templates>

@@ -1136,6 +1136,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         has_br_container = base_tree.xpath('//div[hasclass("oe_kanban_bottom_right")]')
 
         img_elem = """<img
+                t-if="record.{field}.raw_value"
                 t-att-src="kanban_image('{model}', 'image_128', record.{field}.raw_value)"
                 t-att-title="record.{field}.value" t-att-alt="record.{field}.value"
                 class="oe_kanban_avatar o_image_24_cover float-right"

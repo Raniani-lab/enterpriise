@@ -11,6 +11,7 @@ var EditorMixin = require('web_studio.EditorMixin');
 var FieldSelectorDialog = require('web_studio.FieldSelectorDialog');
 
 var _t = core._t;
+const qweb = core.qweb;
 
 var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
     nearest_hook_tolerance: 50,
@@ -133,7 +134,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
         var self = this;
 
         // add the tags hook
-        const tagsWidget =this._findNodeWithWidget({
+        const tagsWidget =this.findNode(this.viewArch, {
             tag: 'field',
             widget: 'many2many_tags',
         });
@@ -179,7 +180,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
         if ($dropdown.length) {
             $dropdown.attr('data-node-id', this.node_id++);
             // find dropdown node from the arch
-            var node = this._findNodeWithClass({
+            var node = this.findNode(this.viewArch, {
                 tag: 'div',
                 class: 'o_dropdown_kanban',
             });
@@ -216,11 +217,11 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
         }
 
         // add the priority hook
-        var priorityWidget = this._findNodeWithWidget({
+        var priorityWidget = this.findNode(this.viewArch, {
             tag: 'field',
             widget: 'priority',
         });
-        const favoriteWidget =this._findNodeWithWidget({
+        const favoriteWidget =this.findNode(this.viewArch, {
             tag: 'field',
             widget: 'boolean_favorite',
         });
@@ -245,21 +246,29 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
             });
         }
 
-        // add the avatr hook
-        var $image = this.$('img.oe_kanban_avatar');
-        if ($image.length) {
-            $image.attr('data-node-id', this.node_id++);
-            // find image node from the arch
-            var imgNode = this._findNodeWithClass({
+        // add the avatar hook
+        const avatarNode = this.findNode(this.viewArch, {
                 tag: 'img',
                 class: 'oe_kanban_avatar',
-            });
+            }
+        );
+        let $hook_attach_node = this.$el.find('.o_kanban_record_bottom');
+        if ($hook_attach_node.length === 0) {
+            $hook_attach_node = this.$el;
+        }
+        var $image = this.$('img.oe_kanban_avatar');
+        if (avatarNode) {
+            if (!$image.length) {
+                $image = $(qweb.render('web_studio.AvatarPlaceholder'));
+                $image.appendTo($hook_attach_node);
+            }
+            $image.attr('data-node-id', this.node_id++);
             // bind handler on image clicked to be able to remove it
             this.setSelectable($image);
             $image.click(function () {
                 self.selected_node_id = $image.data('node-id');
                 self.trigger_up('node_clicked', {
-                    node: imgNode,
+                    node: avatarNode,
                     $node: $image,
                 });
             });
@@ -269,10 +278,6 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                 .append($('<span>', {
                     text: _t('Add an avatar'),
                 }));
-            let $hook_attach_node = this.$el.find('.o_kanban_record_bottom');
-            if ($hook_attach_node.length === 0) {
-                $hook_attach_node = this.$el;
-            }
             $kanban_image_hook.appendTo($hook_attach_node);
             $kanban_image_hook.click(function () {
                 var compatible_fields = _.pick(self.state.fields, function (e) {
@@ -324,42 +329,6 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
         if (invisibleModifier && this._computeDomain(invisibleModifier)) {
             $node.addClass('o_web_studio_show_invisible');
         }
-    },
-    /**
-     * @private
-     * @param {string} [attrs.tag] - node tag
-     * @param {string} [attrs.class] - node class
-     * @returns {Object|undefined} found node in the arch
-     */
-    _findNodeWithClass: function (attrs) {
-        var foundNode;
-         utils.traverse(this.viewArch, function (node) {
-            if (_.isObject(node) && node.tag === attrs.tag) {
-                if (_.str.include(node.attrs.class, attrs.class)) {
-                    foundNode = node;
-                    return false;
-                }
-            }
-            return true;
-        });
-        return foundNode;
-    },
-    /**
-     * @private
-     * @param {string} [attrs.tag] - node tag
-     * @param {string} [attrs.widget] - node widget
-     * @returns {Object|undefined} found node in the arch
-     */
-    _findNodeWithWidget: function (attrs) {
-        var foundNode;
-        utils.traverse(this.viewArch, function(node) {
-            if (_.isObject(node) && node.tag === attrs.tag && node.attrs.widget === attrs.widget) {
-                    foundNode = node;
-                    return false;
-            }
-            return true;
-        });
-        return foundNode;
     },
     /**
      * @private

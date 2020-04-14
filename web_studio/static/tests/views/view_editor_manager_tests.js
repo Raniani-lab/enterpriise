@@ -2476,6 +2476,44 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('kanban editor no avatar button if already in arch', async function (assert) {
+        assert.expect(1);
+        const arch = `
+        <kanban>
+            <templates>
+                <field name="partner_id"/>
+                <t t-name='kanban-box'>
+                    <field name="display_name"/>
+                    <img
+                        t-if="false"
+                        t-att-src="kanban_image('res.partner', 'image', record.partner_id.raw_value)"
+                        class="oe_kanban_avatar"/>
+                </t>
+            </templates>
+        </kanban>
+        `
+        // We have to add relational model specifically named 'res.parter' or
+        // 'res.users' because it is hard-coded in the kanban record editor.
+        this.data['res.partner'] = {
+            fields: {
+                display_name: {type: "char", string: "Display Name"},
+                image: {type: "binary", string: "Image"},
+            },
+            records: [{id: 1, display_name: 'Dustin', image:'D Artagnan'}],
+        };
+
+        this.data.coucou.fields.partner_id = {string: 'Res Partner', type: 'many2one', relation: 'res.partner'};
+        this.data.coucou.records = [{id: 1, display_name:'Eleven', partner_id: 1}];
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+        assert.containsNone(vem, '.o_web_studio_add_kanban_image',
+            "there should be no option to add an avatart");
+        vem.destroy();
+    });
+
     QUnit.test('kanban editor add and remove image', async function (assert) {
         assert.expect(8);
         // We have to add relational model specifically named 'res.parter' or
@@ -4710,6 +4748,184 @@ QUnit.module('ViewEditorManager', {
 
         framework.blockUI = blockUI;
         framework.unblockUI = unblockUI;
+    });
+
+    QUnit.test('Find tag in simple view', async function (assert) {
+        assert.expect(2);
+        const arch = `
+            <form>
+                <field name='display_name'/>
+            </form>
+        `
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+        let node = vem.editor.findNode(vem.view.arch, {tag: 'field'});
+        assert.equal(node.tag, 'field', "It shoudl have found the node");
+        node = vem.editor.findNode(vem.view.arch, {tag: 'field', attrs: {class: 'not-in-dom'}});
+        assert.notOk(node, "It should not have found anything")
+        vem.destroy();
+    });
+
+    QUnit.test('Find with other class', async function (assert) {
+        assert.expect(1);
+        const arch = `
+            <form>
+                <field class="my-class other-class" name='display_name'/>
+            </form>
+        `
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+        let node = vem.editor.findNode(vem.view.arch, {tag: 'field', class: 'my-class'});
+        assert.equal(node.tag, 'field', "It shoudl have found the node");
+        vem.destroy();
+    });
+
+    QUnit.test('Find tag and attr in simple view', async function (assert) {
+        assert.expect(3);
+        const arch = `
+            <form>
+                <field class='my-class' name='display_name'/>
+            </form>
+        `
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+        let node = vem.editor.findNode(vem.view.arch, {tag: 'field', class: 'my-class'});
+        assert.equal(node.tag, 'field', "It should have found the node");
+        assert.equal(node.attrs.class, 'my-class', "It should have found the node");
+        node = vem.editor.findNode(vem.view.arch, {tag: 'field', class: 'other-class'});
+        assert.notOk(node, "It should not have found anything")
+        vem.destroy();
+    });
+
+    QUnit.test('Find first tag', async function (assert) {
+        assert.expect(1);
+        const arch = `
+            <form>
+                <field class='my-class' name='display_name'/>
+            </form>
+        `
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+        const node = vem.editor.findNode(vem.view.arch, {tag: 'form'});
+        assert.equal(node.tag, 'form', "It should have found the node");
+        vem.destroy();
+    });
+
+    QUnit.test('Find first neigbours', async function (assert) {
+        assert.expect(2);
+        const arch = `
+            <form>
+                <field name='display_name' class="first"/>
+                <field name='start' class="second"/>
+            </form>
+        `
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+        const node = vem.editor.findNode(vem.view.arch, {tag: 'field'});
+        assert.equal(node.tag, 'field', "It should have found the node");
+        assert.equal(node.attrs.class, 'first', "It should have found the first node");
+        vem.destroy();
+    });
+
+    QUnit.test('Find nested node', async function (assert) {
+        assert.expect(2);
+        const arch = `
+            <form>
+                <group>
+                    <group>
+                        <field name='display_name' class="nested"/>
+                    </group>
+                </group>
+                <group>
+                    <field name='start' class="not-nested"/>
+                </group>
+            </form>
+        `
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+        const node = vem.editor.findNode(vem.view.arch, {tag: 'field'});
+        assert.equal(node.tag, 'field', "It should have found the node");
+        assert.equal(node.attrs.class, 'not-nested', "It should have found the first node");
+        vem.destroy();
+    });
+
+    QUnit.test('Find invisble', async function (assert) {
+        assert.expect(2);
+        const arch = `
+            <form>
+                <field name='display_name' invisible="0"/>
+                <field name='start' invisible="1"/>
+            </form>
+        `
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+        const node = vem.editor.findNode(vem.view.arch, {tag: 'field', invisible: "1"});
+        assert.equal(node.tag, 'field', "It should have found the node");
+        assert.equal(node.attrs.name, 'start', "It should have found the invisible node");
+        vem.destroy();
+    });
+
+    QUnit.test('Find node with attr only', async function (assert) {
+        assert.expect(1);
+        const arch = `
+            <form>
+                <field name='display_name'/>
+            </form>
+        `
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+        const node = vem.editor.findNode(vem.view.arch, {name: 'display_name'});
+        assert.equal(node.tag, 'field', "It should have found the node");
+        vem.destroy();
+    });
+
+    QUnit.test('Find node with multiple attrs', async function (assert) {
+        assert.expect(2);
+        const arch = `
+            <form>
+                <field name='display_name' class="my-class"/>
+            </form>
+        `
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+        let node = vem.editor.findNode(vem.view.arch, {
+            class: "not-my-class",
+            name: 'display_name',
+        });
+        assert.notOk(node, "It should not have matched the node")
+        node = vem.editor.findNode(vem.view.arch, {
+            class: "my-class",
+            name: 'display_name',
+        });
+        assert.equal(node.tag, 'field', "It should have matched the node");
+        vem.destroy();
     });
 
     QUnit.test("Sidebar should display all field's widgets", async function (assert) {

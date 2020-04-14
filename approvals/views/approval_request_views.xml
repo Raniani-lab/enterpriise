@@ -250,7 +250,11 @@
                                         <field name="activity_ids" widget="kanban_activity"/>
                                     </div>
                                     <div class="oe_kanban_bottom_right">
-                                        <img t-att-src="kanban_image('res.users', 'image_128', record.request_owner_id.raw_value)" t-att-title="record.request_owner_id.value" t-att-alt="record.request_owner_id.value" class="oe_kanban_avatar"/>
+                                        <img t-if="record.request_owner_id.raw_value"
+                                             class="oe_kanban_avatar"
+                                             t-att-title="record.request_owner_id.value"
+                                             t-att-alt="record.request_owner_id.value"
+                                             t-att-src="kanban_image('res.users', 'image_128', record.request_owner_id.raw_value)"/>
                                     </div>
                                 </div>
                             </div>

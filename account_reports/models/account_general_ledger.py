@@ -193,7 +193,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
         # Fetch the next batch of lines.
         amls_query, amls_params = self._get_query_amls(options, expanded_account, offset=offset, limit=load_more_counter)
-        self._cr.execute(amls_query, amls_params)
+        self._cr_execute(options, amls_query, amls_params)
         for aml in self._cr.dictfetchall():
             # Don't show more line than load_more_counter.
             if load_more_counter == 0:
@@ -599,7 +599,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         groupby_companies = {}
         groupby_taxes = {}
 
-        self._cr.execute(query, params)
+        self._cr_execute(options_list[0], query, params)
         for res in self._cr.dictfetchall():
             # No result to aggregate.
             if res['groupby'] is None:
@@ -630,7 +630,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
             if expanded_account or unfold_all or options['unfolded_lines']:
                 query, params = self._get_query_amls(options, expanded_account)
-                self._cr.execute(query, params)
+                self._cr_execute(options, query, params)
                 for res in self._cr.dictfetchall():
                     groupby_accounts[res['account_id']][0].setdefault('lines', [])
                     groupby_accounts[res['account_id']][0]['lines'].append(res)

@@ -646,6 +646,15 @@ class AccountReport(models.AbstractModel):
     # QUERIES
     ####################################################
 
+    def _cr_execute(self, options, query, params=None):
+        ''' Similar to self._cr.execute but allowing some custom behavior like shadowing the account_move_line table
+        to another one like account_reports_cash_basis does.
+        :param options: The report options.
+        :param query:   The query to be executed by the report.
+        :param params:  The optional params of the _cr.execute method.
+        '''
+        return self._cr.execute(query, params)
+
     @api.model
     def _get_query_currency_table(self, options):
         ''' Construct the currency table as a mapping company -> rate to convert the amount to the user's company

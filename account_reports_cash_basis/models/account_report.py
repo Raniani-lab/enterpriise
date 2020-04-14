@@ -3,6 +3,7 @@ from odoo import models, fields, api, _
 
 import re
 
+
 class AccountReport(models.AbstractModel):
     _inherit = 'account.report'
 
@@ -94,22 +95,11 @@ class AccountReport(models.AbstractModel):
             }
             self.env.cr.execute(sql, params)
 
-    def _set_context(self, options):
-        ctx = super()._set_context(options)
+    def _cr_execute(self, options, query, params=None):
         if options.get('cash_basis'):
-            ctx['cash_basis'] = True
-        return ctx
-
-    @api.model
-    def _prepare_query_for_cash_basis(self, query):
-        """Substitute the table account_move_line for cash basis mode.
-
-        This method should be used to alter every SQL query using the table
-        account_move_line for reports in cash basis.
-        """
-        if self.env.context.get('cash_basis'):
             query = re.sub(r'\baccount_move_line\b', 'temp_account_move_line', query)
-        return query
+        return super()._cr_execute(options, query, params=params)
+
 
 class AccountChartOfAccountReport(models.AbstractModel):
     _inherit = "account.coa.report"
@@ -130,14 +120,6 @@ class ReportGeneralLedger(models.AbstractModel):
         self._prepare_lines_for_cash_basis(options)
         return super()._get_lines(options, line_id)
 
-    def _get_query_sums(self, options_list, expanded_account=None):
-        query, params = super()._get_query_sums(options_list, expanded_account)
-        return self._prepare_query_for_cash_basis(query), params
-
-    def _get_query_amls(self, options, expanded_account, offset=None, limit=None):
-        query, params = super()._get_query_amls(options, expanded_account, offset, limit)
-        return self._prepare_query_for_cash_basis(query), params
-
 
 class ReportAccountFinancialReport(models.Model):
     _inherit = "account.financial.html.report"
@@ -155,9 +137,3 @@ class ReportAccountFinancialReport(models.Model):
     def _get_table(self, options):
         self._prepare_lines_for_cash_basis(options)
         return super()._get_table(options)
-
-class AccountFinancialReportLine(models.Model):
-    _inherit = "account.financial.html.report.line"
-
-    def _cr_execute(self, query, params=None):
-        return super()._cr_execute(self.env['account.report']._prepare_query_for_cash_basis(query), params)

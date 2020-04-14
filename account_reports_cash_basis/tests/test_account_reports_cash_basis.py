@@ -2,11 +2,11 @@
 from odoo.tests import tagged
 from odoo import fields
 
-from odoo.addons.account_reports.tests.common import TestAccountReportsCommonNew
+from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 
 
 @tagged('post_install', '-at_install')
-class TestAccountReports(TestAccountReportsCommonNew):
+class TestAccountReports(TestAccountReportsCommon):
 
     @classmethod
     def _reconcile_on(cls, lines, account):

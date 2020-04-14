@@ -2,13 +2,13 @@
 
 from odoo import fields
 from odoo.tests import tagged
-from odoo.addons.account_reports.tests.common import TestAccountReportsCommonNew
+from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 
 from unittest.mock import patch
 
 
 @tagged('post_install', '-at_install')
-class TestAccountFollowupReports(TestAccountReportsCommonNew):
+class TestAccountFollowupReports(TestAccountReportsCommon):
 
     @classmethod
     def setUpClass(cls):

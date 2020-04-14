@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from .common import TestAccountReportsCommonNew
+from .common import TestAccountReportsCommon
 
 from odoo import fields
 
 
-class TestCashFlowReport(TestAccountReportsCommonNew):
+class TestCashFlowReport(TestAccountReportsCommon):
 
     @classmethod
     def setUpClass(cls):

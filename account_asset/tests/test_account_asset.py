@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import fields
 from odoo.exceptions import UserError, MissingError
 from odoo.tests.common import Form
-from odoo.addons.account_reports.tests.common import TestAccountReportsCommonNew
+from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from unittest.mock import patch
 
 
@@ -21,7 +21,7 @@ def today():
     return today
 
 
-class TestAccountAsset(TestAccountReportsCommonNew):
+class TestAccountAsset(TestAccountReportsCommon):
 
     # YTI TODO: Convert this to a classmethod setUpClass
     # But the test test_asset_reverse_depreciation depends on

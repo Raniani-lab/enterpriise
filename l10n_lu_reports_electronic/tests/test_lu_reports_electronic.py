@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.account_reports.tests.common import TestAccountReportsCommonNew
+from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tests import tagged
 from odoo import fields
 
 
 @tagged('post_install', '-at_install')
-class LuxembourgElectronicReportTest(TestAccountReportsCommonNew):
+class LuxembourgElectronicReportTest(TestAccountReportsCommon):
 
     @classmethod
     def setUpClass(cls):

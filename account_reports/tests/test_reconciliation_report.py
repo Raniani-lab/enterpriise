@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from .common import TestAccountReportsCommonNew
+from .common import TestAccountReportsCommon
 
 
-class TestReconciliationReport(TestAccountReportsCommonNew):
+class TestReconciliationReport(TestAccountReportsCommon):
 
     @classmethod
     def setUpClass(cls):

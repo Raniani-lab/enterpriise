@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from unittest.mock import patch
 
-from .common import TestAccountReportsCommonNew
+from .common import TestAccountReportsCommon
 from odoo import fields
 from odoo.tests.common import Form
 
 
-class TestTaxReport(TestAccountReportsCommonNew):
+class TestTaxReport(TestAccountReportsCommon):
 
     @classmethod
     def setUpClass(cls):

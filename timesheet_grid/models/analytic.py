@@ -83,11 +83,17 @@ class AnalyticLine(models.Model):
         # step 3: retrieve data and create correctly the grid and rows in result
         seen = []  # use to not have duplicated rows
         rows = []
+        def read_row_value(row_field, timesheet):
+            field_name = row_field.split(':')[0]  # remove all groupby operator e.g. "date:quarter"
+            return timesheets._fields[field_name].convert_to_read(timesheet[field_name], timesheet)
         for timesheet in timesheets:
             # check uniq project or task, or employee
-            k = tuple(timesheet[f].id for f in row_fields)
+            k = tuple(read_row_value(f, timesheet) for f in row_fields)
             if k not in seen:  # check if it's not a duplicated row
-                record = {f: (timesheet[f].id, timesheet[f].name) if timesheet[f].id else False for f in row_fields}
+                record = {
+                    row_field: read_row_value(row_field, timesheet)
+                    for row_field in row_fields
+                }
                 seen.append(k)
                 if not any(record == row for row in res_rows):
                     rows.append({'values': record, 'domain': [('id', '=', timesheet.id)]})

@@ -235,7 +235,9 @@ class SaleOrderLine(models.Model):
         values = list()
         dict_changes = dict()
         for line in self:
-            sub_line = subscription.recurring_invoice_line_ids.filtered(lambda l: (l.product_id, l.uom_id) == (line.product_id, line.product_uom))
+            sub_line = subscription.recurring_invoice_line_ids.filtered(
+                lambda l: (l.product_id, l.uom_id, l.price_unit) == (line.product_id, line.product_uom, line.price_unit)
+            )
             if sub_line:
                 # We have already a subscription line, we need to modify the product quantity
                 if len(sub_line) > 1:

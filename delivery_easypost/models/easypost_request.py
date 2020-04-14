@@ -218,16 +218,17 @@ class EasypostRequest():
             'order[shipments][%d][options][label_format]' % shipment_id: label_format,
             'order[shipments][%d][options][label_date]' % shipment_id: datetime.datetime.now().isoformat()
         }
-        if package.package_carrier_type == 'easypost' and package.shipper_package_code:
-            shipment.update({
-                'order[shipments][%d][parcel][predefined_package]' % shipment_id: package.shipper_package_code
-            })
-        elif package.package_carrier_type == 'easypost':
-            shipment.update({
-                'order[shipments][%d][parcel][length]' % shipment_id: package.packaging_length,
-                'order[shipments][%d][parcel][width]' % shipment_id: package.width,
-                'order[shipments][%d][parcel][height]' % shipment_id: package.height
-            })
+        if package.package_carrier_type == 'easypost':
+            if package.shipper_package_code:
+                shipment.update({
+                    'order[shipments][%d][parcel][predefined_package]' % shipment_id: package.shipper_package_code
+                })
+            if not package.shipper_package_code or (package.length > 0 and package.width > 0 and package.height > 0):
+                shipment.update({
+                    'order[shipments][%d][parcel][length]' % shipment_id: package.packaging_length,
+                    'order[shipments][%d][parcel][width]' % shipment_id: package.width,
+                    'order[shipments][%d][parcel][height]' % shipment_id: package.height
+                })
         else:
             raise UserError(_('Product packaging used in pack %s is not configured for easypost.') % package.display_name)
         return shipment

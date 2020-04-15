@@ -89,7 +89,7 @@ class FleetVehicle(models.Model):
     @api.depends('co2', 'fuel_type', 'company_id.country_id')
     def _compute_co2_fee(self):
         for car in self:
-            car.co2_fee = self._get_co2_fee(car.co2, car.fuel_type)
+            car.co2_fee = car._get_co2_fee(car.co2, car.fuel_type)
 
     @api.depends('fuel_type', 'car_value', 'acquisition_date', 'co2', 'company_id.country_id')
     def _compute_car_atn(self):

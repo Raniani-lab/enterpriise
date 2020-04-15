@@ -336,7 +336,12 @@ class OnlineAccount(models.Model):
                 description = attributes.get('description') or ''
                 counterpart = attributes.get('counterpartName') or ''
                 remittanceinfo = attributes.get('remittanceInformation') or ''
-                name = ' '.join([description, counterpart, remittanceinfo]) or '/'
+                remittanceinfoType = attributes.get('remittanceInformationType') or ''
+                name = ''
+                if remittanceinfoType == 'structured':
+                    name = remittanceinfo
+                if not name:
+                    name = ' '.join([description, counterpart, remittanceinfo]) or '/'
                 account_number = transaction.get('attributes', {}).get('counterpartReference')
                 trans = {
                     'online_identifier': transaction.get('id'),

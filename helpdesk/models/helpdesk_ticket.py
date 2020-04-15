@@ -355,7 +355,7 @@ class HelpdeskTicket(models.Model):
     def _search_sla_fail(self, operator, value):
         datetime_now = fields.Datetime.now()
         if (value and operator in expression.NEGATIVE_TERM_OPERATORS) or (not value and operator not in expression.NEGATIVE_TERM_OPERATORS):  # is not failed
-            return ['&', ('sla_reached_late', '=', False), ('sla_deadline', '>=', datetime_now)]
+            return ['&', ('sla_reached_late', '=', False), '|', ('sla_deadline', '=', False), ('sla_deadline', '>=', datetime_now)]
         return ['|', ('sla_reached_late', '=', True), ('sla_deadline', '<', datetime_now)]  # is failed
 
     @api.depends('user_id')

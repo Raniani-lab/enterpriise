@@ -176,19 +176,19 @@ class HrSalaryRule(models.Model):
              '(hra, ma, lta, etc.) and the variable basic.')
     condition_python = fields.Text(string='Python Condition', required=True,
         default='''
-                    # Available variables:
-                    #----------------------
-                    # payslip: object containing the payslips
-                    # employee: hr.employee object
-                    # contract: hr.contract object
-                    # rules: object containing the rules code (previously computed)
-                    # categories: object containing the computed salary rule categories (sum of amount of all rules belonging to that category).
-                    # worked_days: object containing the computed worked days
-                    # inputs: object containing the computed inputs.
+# Available variables:
+#----------------------
+# payslip: object containing the payslips
+# employee: hr.employee object
+# contract: hr.contract object
+# rules: object containing the rules code (previously computed)
+# categories: object containing the computed salary rule categories (sum of amount of all rules belonging to that category).
+# worked_days: object containing the computed worked days
+# inputs: object containing the computed inputs.
 
-                    # Note: returned value have to be set in the variable 'result'
+# Note: returned value have to be set in the variable 'result'
 
-                    result = rules.NET > categories.NET * 0.10''',
+result = rules.NET > categories.NET * 0.10''',
         help='Applied this rule for calculation if condition is true. You can specify condition like basic > 1000.')
     condition_range_min = fields.Float(string='Minimum Range', help="The minimum amount, applied for this rule.")
     condition_range_max = fields.Float(string='Maximum Range', help="The maximum amount, applied for this rule.")

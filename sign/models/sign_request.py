@@ -20,7 +20,7 @@ from werkzeug.urls import url_join
 from random import randint
 
 from odoo import api, fields, models, http, _
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, formataddr, config
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, formataddr, config, get_lang
 from odoo.exceptions import UserError
 
 TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "src", "fonts", "sign"))
@@ -291,17 +291,18 @@ class SignRequest(models.Model):
         self.ensure_one()
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         tpl = self.env.ref('sign.sign_template_mail_follower')
-        body = tpl.render({
-            'record': self,
-            'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, self.access_token)),
-            'subject': subject,
-            'body': message,
-        }, engine='ir.qweb', minimal_qcontext=True)
         for follower in followers:
             if not follower.email:
                 continue
             if not self.create_uid.email:
                 raise UserError(_("Please configure the sender's email address"))
+            tpl_follower = tpl.with_context(lang=get_lang(self.env, lang_code=follower.lang).code)
+            body = tpl_follower.render({
+                'record': self,
+                'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, self.access_token)),
+                'subject': subject,
+                'body': message,
+            }, engine='ir.qweb', minimal_qcontext=True)
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
@@ -309,7 +310,8 @@ class SignRequest(models.Model):
                 {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
                  'email_to': follower.email_formatted,
-                 'subject': subject or _('%s : Signature request') % self.reference}
+                 'subject': subject or _('%s : Signature request') % self.reference},
+                 lang=follower.lang,
             )
             self.message_subscribe(partner_ids=follower.ids)
 
@@ -347,11 +349,12 @@ class SignRequest(models.Model):
             'res_model': self._name,
             'res_id': self.id,
         })
+        tpl = self.env.ref('sign.sign_template_mail_completed')
         for signer in self.request_item_ids:
             if not signer.signer_email:
                 continue
-
-            tpl = self.env.ref('sign.sign_template_mail_completed')
+            signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
+            tpl = tpl.with_context(lang=signer_lang)
             body = tpl.render({
                 'record': self,
                 'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, signer.access_token)),
@@ -373,22 +376,24 @@ class SignRequest(models.Model):
                  'email_to': signer.partner_id.email_formatted,
                  'subject': _('%s has been signed') % self.reference,
                  'attachment_ids': [(4, attachment.id), (4, attachment_log.id)]},
-                force_send=True
+                force_send=True,
+                lang=signer_lang,
             )
 
         tpl = self.env.ref('sign.sign_template_mail_completed')
-        body = tpl.render({
-            'record': self,
-            'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, self.access_token)),
-            'subject': '%s signed' % self.reference,
-            'body': '',
-        }, engine='ir.qweb', minimal_qcontext=True)
-
         for follower in self.mapped('message_follower_ids.partner_id') - self.request_item_ids.mapped('partner_id'):
             if not follower.email:
                 continue
             if not self.create_uid.email:
                 raise UserError(_("Please configure the sender's email address"))
+
+            tpl_follower = tpl.with_context(lang=get_lang(self.env, lang_code=follower.lang).code)
+            body = tpl.render({
+                'record': self,
+                'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, self.access_token)),
+                'subject': '%s signed' % self.reference,
+                'body': '',
+            }, engine='ir.qweb', minimal_qcontext=True)
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
@@ -396,7 +401,8 @@ class SignRequest(models.Model):
                 {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
                  'email_to': follower.email_formatted,
-                 'subject': _('%s has been signed') % self.reference}
+                 'subject': _('%s has been signed') % self.reference},
+                lang=follower.lang,
             )
 
         return True
@@ -523,16 +529,19 @@ class SignRequest(models.Model):
     @api.model
     def _message_send_mail(self, body, notif_template_xmlid, message_values, notif_values, mail_values, force_send=False, **kwargs):
         """ Shortcut to send an email. """
+        default_lang = get_lang(self.env, lang_code=kwargs.get('lang')).code
+        lang = kwargs.get('lang', default_lang)
+        sign_request = self.with_context(lang=lang)
+
         # the notif layout wrapping expects a mail.message record, but we don't want
         # to actually create the record
         # See @tde-banana-odoo for details
-        msg = self.env['mail.message'].sudo().new(dict(body=body, **message_values))
-
-        notif_layout = self.env.ref(notif_template_xmlid)
+        msg = sign_request.env['mail.message'].sudo().new(dict(body=body, **message_values))
+        notif_layout = sign_request.env.ref(notif_template_xmlid)
         body_html = notif_layout.render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
-        body_html = self.env['mail.render.mixin']._replace_local_links(body_html)
+        body_html = sign_request.env['mail.render.mixin']._replace_local_links(body_html)
 
-        mail = self.env['mail.mail'].sudo().create(dict(body_html=body_html, state='outgoing', **mail_values))
+        mail = sign_request.env['mail.mail'].sudo().create(dict(body_html=body_html, state='outgoing', **mail_values))
         if force_send:
             mail.send()
         return mail
@@ -629,14 +638,14 @@ class SignRequestItem(models.Model):
 
     def send_signature_accesses(self, subject=None, message=None):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        tpl = self.env.ref('sign.sign_template_mail_request')
         for signer in self:
             if not signer.partner_id or not signer.partner_id.email:
                 continue
             if not signer.create_uid.email:
                 continue
-            tpl = self.env.ref('sign.sign_template_mail_request')
-            if signer.partner_id.lang:
-                tpl = tpl.with_context(lang=signer.partner_id.lang)
+            signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
+            tpl = tpl.with_context(lang=signer_lang)
             body = tpl.render({
                 'record': signer,
                 'link': url_join(base_url, "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
@@ -654,7 +663,8 @@ class SignRequestItem(models.Model):
                  'author_id': signer.create_uid.partner_id.id,
                  'email_to': signer.partner_id.email_formatted,
                  'subject': subject},
-                force_send=True
+                force_send=True,
+                lang=signer_lang,
             )
 
     def sign(self, signature):

@@ -63,7 +63,7 @@ class AccountMoveLine(models.Model):
         params = {
             'lang': psql_lang,
             'description': parsed_description,
-            'company_id': self.company_id.id or self.env.company.id,
+            'company_id': self.move_id.journal_id.company_id.id or self.env.company.id,
             'limit_parameter': int(limit_parameter),
         }
         try:

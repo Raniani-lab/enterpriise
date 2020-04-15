@@ -80,6 +80,7 @@ class SaleOrder(models.Model):
         :return: ids of modified subscriptions
         """
         res = []
+        deleted_product_ids = None
         for order in self:
             subscriptions = order.order_line.mapped('subscription_id').sudo()
             if subscriptions and order.subscription_management != 'renew':
@@ -89,9 +90,18 @@ class SaleOrder(models.Model):
                 subscriptions.increment_period(renew=True)
                 subscriptions.payment_term_id = order.payment_term_id
                 subscriptions.set_open()
+                # Some products of the subscription may be missing from the SO: they can be archived or manually removed from the SO.
+                # we delete the recurring line of these subscriptions
+                deleted_product_ids = subscriptions.mapped(
+                    'recurring_invoice_line_ids.product_id') - order.order_line.mapped('product_id')
             for subscription in subscriptions:
                 subscription_lines = order.order_line.filtered(lambda l: l.subscription_id == subscription and l.product_id.recurring_invoice)
                 line_values = subscription_lines._update_subscription_line_data(subscription, order.subscription_management)
+                if deleted_product_ids:
+                    deleted_line_id = subscription.recurring_invoice_line_ids.mapped(
+                        lambda l: l.id if l.product_id in deleted_product_ids else None)
+                    deleted_line_values = [(2, v) for v in deleted_line_id if v]
+                    line_values += deleted_line_values
                 subscription.write({'recurring_invoice_line_ids': line_values})
         return res
 

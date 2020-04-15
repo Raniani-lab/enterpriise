@@ -91,8 +91,8 @@ class SaleSubscription(models.Model):
             })
         return vals
 
-    def _prepare_renewal_order_values(self):
-        vals = super(SaleSubscription, self)._prepare_renewal_order_values()
+    def _prepare_renewal_order_values(self, discard_product_ids=False, new_lines_ids=False):
+        vals = super(SaleSubscription, self)._prepare_renewal_order_values(discard_product_ids, new_lines_ids)
         for subscription in self.filtered('referrer_id'):
             vals[subscription.id].update({
                 'referrer_id': subscription.referrer_id.id,

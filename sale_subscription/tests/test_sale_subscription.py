@@ -442,3 +442,43 @@ class TestSubscription(TestSubscriptionCommon):
         sub = sub_form.save()
         # MAP tax takes the maximum, it cannot be tax_0
         self.assertEqual(sub.recurring_invoice_line_ids.tax_ids, self.tax_0, 'Fiscal position should have applied its mapping on the product tax in the onchange.')
+
+    def test_17_renew_archived_products(self):
+        """Check behaviour of renewal of archived products."""
+        sub = self.subscription.copy({'date_start': '2020-04-01', 'recurring_next_date': '2020-05-1'})
+        sub.write({'recurring_invoice_line_ids': [(0, 0, {'product_id': self.product.id, 'name': 'TestRecurringLine',
+                                                          'price_unit': 50, 'uom_id': self.product.uom_id.id,
+                                                          'quantity': 5}),
+                                                  (0, 0, {
+                                                      'name': 'TestRecurringLine 2',
+                                                      'product_id': self.product2.id,
+                                                      'price_unit': 150, 'quantity': 42,
+                                                      'uom_id': self.product2.uom_id.id}),
+                                                  ]})
+        # archive one of the product
+        self.product2.write({'active': False})
+        archived_product_ids = sub.with_context(active_test=False).archived_product_ids.ids
+        archived_product_count = sub.archived_product_count
+        self.assertEqual(archived_product_ids, [self.product2.id], 'sale_subscription: Product 2 should be archived and recognized as such')
+        self.assertTrue(archived_product_count == 1, 'sale_subscription: One product should be marked as archived')
+        wiz = self.env['sale.subscription.renew.wizard'].create({
+            'subscription_id': sub.id,
+            'kept_archived_product_ids': [(0, False, {'renew_product': False, 'name': self.product2.name,
+                                                      'product_id': self.product2.id, 'quantity': 42})],
+            'replacement_line_ids': [(0, False, {'product_id': self.product.id, 'name': self.product.name,
+                                                 'quantity': 2, 'uom_id': self.product.uom_id.id}),
+                                     (0, False, {'product_id': self.product3.id, 'name': self.product3.name,
+                                                 'quantity': 10, 'uom_id': self.product3.uom_id.id})
+                                     ]
+        })
+        renewal_so_id = wiz.create_renewal_order()['res_id']
+        renewal_so = self.env['sale.order'].browse(renewal_so_id)
+        lines_renew = [(line.name, line.product_id.id, line.product_uom_qty) for line in renewal_so.mapped('order_line')]
+        self.assertEqual(renewal_so.subscription_management, 'renew',
+                         'sale_subscription: so should be set to "renew" in the renewal process')
+        self.assertEqual(lines_renew[0][1], self.product.id, 'sale_subscription: First product should be TestProduct')
+        self.assertEqual(lines_renew[0][2], 7,
+                         'sale_subscription: Renewal quantity of replacement product already present should be equal to 10.')
+        self.assertEqual(lines_renew[1][1], self.product3.id, 'sale_subscription: First product should be TestProduct')
+        self.assertEqual(lines_renew[1][2], 10,
+                         'sale_subscription: Renewal quantity of new replacement product should be equal to 3.')

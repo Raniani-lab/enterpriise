@@ -58,6 +58,9 @@ class SaleSubscription(models.Model):
                                    string='Pricelist', default=_get_default_pricelist, required=True, check_company=True)
     currency_id = fields.Many2one('res.currency', related='pricelist_id.currency_id', string='Currency', readonly=True)
     recurring_invoice_line_ids = fields.One2many('sale.subscription.line', 'analytic_account_id', string='Subscription Lines', copy=True)
+    archived_product_ids = fields.Many2many('product.product', string='Archived Products',
+                                            compute='_compute_archived')
+    archived_product_count = fields.Integer("Archived Product", compute='_compute_archived')
     recurring_rule_type = fields.Selection(string='Recurrence', help="Invoice automatically repeat at specified interval", related="template_id.recurring_rule_type", readonly=1)
     recurring_interval = fields.Integer(string='Repeat Every', help="Repeat every (Days/Week/Month/Year)", related="template_id.recurring_interval", readonly=1)
     recurring_next_date = fields.Date(string='Date of Next Invoice', default=fields.Date.today, help="The next invoice will be created on this date then the period will be extended.")
@@ -272,6 +275,18 @@ class SaleSubscription(models.Model):
                 'recurring_tax': amount_tax,
                 'recurring_total_incl': amount_untaxed + amount_tax
             })
+
+    @api.depends('recurring_invoice_line_ids.product_id')
+    def _compute_archived(self):
+        # Search which products are archived when reading the subscriptions lines
+        self = self.with_context(active_test=False)
+        for subscription in self:
+            subscription.archived_product_ids = self.env['product.product'].search(
+                [('id', 'in', subscription.recurring_invoice_line_ids.mapped('product_id').ids),
+                 ('recurring_invoice', '=', True),
+                 ('active', '=', False)],
+            )
+            subscription.archived_product_count = len(subscription.archived_product_ids)
 
     @api.onchange('partner_id')
     def onchange_partner_id(self):
@@ -640,19 +655,24 @@ class SaleSubscription(models.Model):
             """
             raise UserError(warning)
 
-    def _prepare_renewal_order_values(self):
+    def _prepare_renewal_order_values(self, discard_product_ids=False, new_lines_ids=False):
         res = dict()
         for subscription in self:
             subscription = subscription.with_company(subscription.company_id)
             order_lines = []
             fpos = subscription.env['account.fiscal.position'].get_fiscal_position(subscription.partner_id.id)
-            for line in subscription.recurring_invoice_line_ids:
-                partner_lang = subscription.partner_id.lang
+            partner_lang = subscription.partner_id.lang
+            if discard_product_ids:
+                # Prevent to add products discarded during the renewal
+                line_ids = subscription.with_context(active_test=False).recurring_invoice_line_ids.filtered(
+                    lambda l: l.product_id.id not in discard_product_ids)
+            else:
+                line_ids = subscription.recurring_invoice_line_ids
+            for line in line_ids:
                 product = line.product_id.with_context(lang=partner_lang) if partner_lang else line.product_id
-
                 order_lines.append((0, 0, {
                     'product_id': product.id,
-                    'name': product.get_product_multiline_description_sale(),
+                    'name': product.with_context(active_test=False).get_product_multiline_description_sale(),
                     'subscription_id': subscription.id,
                     'product_uom': line.uom_id.id,
                     'product_uom_qty': line.quantity,
@@ -660,6 +680,31 @@ class SaleSubscription(models.Model):
                     'discount': line.discount,
                     'tax_id': [(6, 0, line.tax_ids.ids)]
                 }))
+            if new_lines_ids:
+                # Add products during the renewal (sort of upsell)
+                for line in new_lines_ids:
+                    existing_line_ids = subscription.recurring_invoice_line_ids.filtered(
+                        lambda l: l.product_id.id == line.product_id.id)
+                    if existing_line_ids:
+                        # The product already exists in the SO lines, update the quantity
+                        def _update_quantity(so_line):
+                            # Map function to update the quantity of the SO line.
+                            if so_line[2]['product_id'] in existing_line_ids.mapped('product_id').ids:
+                                so_line[2]['product_uom_qty'] = line.quantity + so_line[2]['product_uom_qty']
+                            return so_line
+                        # Update the order lines with the new quantity
+                        order_lines = list(map(_update_quantity, order_lines))
+                    else:
+                        order_lines.append((0, 0, {
+                            'product_id': line.product_id.id,
+                            'name': line.name,
+                            'subscription_id': subscription.id,
+                            'product_uom': line.uom_id.id,
+                            'product_uom_qty': line.quantity,
+                            'price_unit': subscription.pricelist_id.with_context(uom=line.uom_id.id).get_product_price(
+                                line.product_id, line.quantity, subscription.partner_id),
+                            'discount': 0,
+                        }))
             addr = subscription.partner_id.address_get(['delivery', 'invoice'])
             res[subscription.id] = {
                 'pricelist_id': subscription.pricelist_id.id,
@@ -679,9 +724,9 @@ class SaleSubscription(models.Model):
             }
         return res
 
-    def prepare_renewal_order(self):
+    def prepare_renewal_order(self, discard_product_ids=False, new_lines_ids=False):
         self.ensure_one()
-        values = self._prepare_renewal_order_values()
+        values = self._prepare_renewal_order_values(discard_product_ids, new_lines_ids)
         order = self.env['sale.order'].create(values[self.id])
         order.message_post(body=(_("This renewal order has been created from the subscription ") + " <a href=# data-oe-model=sale.subscription data-oe-id=%d>%s</a>" % (self.id, self.display_name)))
         order.order_line._compute_tax_id()

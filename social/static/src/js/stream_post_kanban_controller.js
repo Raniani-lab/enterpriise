@@ -171,6 +171,7 @@ var StreamPostKanbanController = KanbanController.extend({
             },
             disable_multiple_selection: true,
             on_saved: this.reload.bind(this, {}),
+            save_text: _t('Add'),
         }).open();
     },
 

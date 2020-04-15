@@ -272,10 +272,10 @@
     </div>
 
     <div t-name="social.AddStreamModal">
-        <div class="o_social_add_stream_form bg-200 p-4">
+        <div class="o_social_add_stream_form bg-200">
             <t t-if="widget.socialAccounts.length !== 0">
                 <h4>Add a Stream from an existing account</h4>
-                <div class="list-group">
+                <div class="o_social_add_stream_accounts list-group">
                     <button t-foreach="widget.socialAccounts" t-as="socialAccount" class="list-group-item list-group-item-action">
                         <div class="o_social_account_card d-flex align-items-center" t-att-data-media-id="socialAccount.media_id[0]" t-att-data-account-id="socialAccount.id">
                             <img width="24" t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/24x24" class="mr-4"/>

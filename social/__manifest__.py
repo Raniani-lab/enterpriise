@@ -4,9 +4,10 @@
 {
     'name': 'Social Marketing',
     'category': 'Marketing/Social Marketing',
-    'summary': 'Easily manage your social media and website visitors',
+    'summary': 'Manage your social media and website visitors',
     'version': '1.0',
-    'description': """Easily manage your social media and website visitors""",
+    'description': """Manage your social media and website visitors""",
+    'website': 'https://www.odoo.com/page/social-marketing',
     'depends': ['web', 'mail', 'iap', 'link_tracker'],
     'qweb': [
         'static/src/xml/social_templates.xml',

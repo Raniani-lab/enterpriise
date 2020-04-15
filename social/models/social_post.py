@@ -20,6 +20,15 @@ class SocialPost(models.Model):
     _description = 'Social Post'
     _order = 'create_date desc'
 
+    def _get_default_account_ids(self):
+        """
+        If there are less than 3 social accounts available, select them all by default.
+        """
+        all_accounts = self.env['social.account'].search([])
+        if len(all_accounts) <= 3:
+            return all_accounts
+        return False
+
     message = fields.Text("Message", required=True)
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -31,7 +40,8 @@ class SocialPost(models.Model):
     has_post_errors = fields.Boolean("There are post errors on sub-posts", compute='_compute_has_post_errors')
     account_ids = fields.Many2many('social.account', 'social_post_social_account', 'post_id', 'account_id',
                                    string='Social Accounts',
-                                   help="The accounts on which this post will be published.")
+                                   help="The accounts on which this post will be published.",
+                                   default=_get_default_account_ids)
     has_active_accounts = fields.Boolean('Are Accounts Available?', compute='_compute_has_active_accounts')
     media_ids = fields.Many2many('social.media', compute='_compute_media_ids', store=True,
         help="The social medias linked to the selected social accounts.")

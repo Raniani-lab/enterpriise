@@ -8,10 +8,10 @@
         <field name="view_mode">kanban</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-            Add your first stream
+            Add a stream to your feed
           </p>
           <p>
-            <a href="#" class="o_social_js_add_stream">Add your first stream</a> and start posting.
+            <a href="#" class="o_social_js_add_stream">Add a stream</a> to monitor social activities.
           </p>
         </field>
         <field name="context">{'search_default_group_by_stream': 1, 'search_default_search_my_streams': 1}</field>

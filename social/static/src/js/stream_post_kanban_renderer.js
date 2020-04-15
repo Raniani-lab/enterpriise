@@ -153,7 +153,8 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
             }
 
             this.$before.find('[data-toggle="popover"]').popover({
-                trigger: 'hover'
+                trigger: 'hover',
+                delay: { "show": 500, "hide": 0 },
             });
         }
     },

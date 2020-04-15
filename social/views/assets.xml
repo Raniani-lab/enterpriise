@@ -15,6 +15,7 @@
             <script type="text/javascript" src="/social/static/src/js/stream_post_kanban_renderer.js"/>
             <script type="text/javascript" src="/social/static/src/js/stream_post_kanban_controller.js"/>
             <script type="text/javascript" src="/social/static/src/js/stream_post_kanban_view.js"/>
+            <script type="text/javascript" src="/social/static/src/js/tours/social.js"/>
             <link rel="stylesheet" type="text/scss" href="/social/static/src/scss/social.scss"/>
         </xpath>
     </template>

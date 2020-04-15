@@ -281,6 +281,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 // Add a new stream
 .o_social_add_stream_form {
     margin: $modal-inner-padding * -1;
+    padding: ($spacer * 1.5);
+    padding-bottom: ($spacer * 5);
 
     .o_social_media {
         background-color: $list-group-bg;
@@ -457,4 +459,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
     .modal-dialog {
         display: inline-block;
     }
+}
+
+.o_social_media_cards {
+    width: min-content;
 }

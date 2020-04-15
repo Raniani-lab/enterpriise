@@ -20,7 +20,7 @@ class Forecast(models.Model):
             else:
                 forecast.percentage_hours = 0
 
-    @api.depends('task_id', 'employee_id', 'start_datetime', 'end_datetime', 'project_id.analytic_account_id', 'task_id.timesheet_ids')
+    @api.depends('task_id', 'employee_id', 'start_datetime', 'end_datetime', 'project_id.analytic_account_id', 'task_id.timesheet_ids', 'project_id.analytic_account_id.line_ids', 'project_id.analytic_account_id.line_ids.unit_amount')
     def _compute_effective_hours(self):
         Timesheet = self.env['account.analytic.line']
         for forecast in self:

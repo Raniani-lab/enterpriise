@@ -1065,7 +1065,7 @@ msgstr ""
 "Puedes usar este campo para búsqueda rápida."
 
 #. module: l10n_ar_edi
-#: code:addons/l10n_ar_edi/models/res_company.py:0
+#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
 #, python-format
 msgid "The company CUIT must be defined before this action"
 msgstr "El CUIT de la compañía debe ser definido antes de esta acción"

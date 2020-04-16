@@ -1,8 +1,8 @@
-odoo.define('web_mobile.session', function (require) {
+odoo.define('web_mobile.Session', function (require) {
 "use strict";
 
 var core = require('web.core');
-var session = require('web.Session');
+const Session = require('web.Session');
 
 const mobile = require('web_mobile.core');
 
@@ -12,7 +12,7 @@ const mobile = require('web_mobile.core');
     ISSUE: https://code.google.com/p/android/issues/detail?id=1780
 */
 
-session.include({
+Session.include({
 
     //--------------------------------------------------------------------------
     // Public

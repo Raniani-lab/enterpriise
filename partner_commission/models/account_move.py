@@ -132,7 +132,8 @@ class AccountMoveLine(models.Model):
         template = self.subscription_id.template_id
         # check whether the product is part of the subscription template
         template_id = template.id if template and self.product_id.product_tmpl_id in template.product_ids else None
-        pricelist_id = self.sale_line_ids.mapped('order_id.pricelist_id')[:1].id
+        sub_pricelist = self.subscription_id.pricelist_id
+        pricelist_id =  sub_pricelist and sub_pricelist.id or self.sale_line_ids.mapped('order_id.pricelist_id')[:1].id
 
         # a specific commission plan can be set on the subscription, taking predence over the referrer's commission plan
         plan = self.subscription_id.commission_plan_id or self.move_id.referrer_id.commission_plan_id

@@ -23,9 +23,9 @@ class SaleSubscription(models.Model):
 
     # This field is only used to improve the UX; commission_plan_frozen is technically preferred.
     commission_plan_assignation = fields.Selection([
-        ('auto', 'From Referrer'),
-        ('fixed', 'Fixed To')],
-        default='auto', compute='_compute_commission_plan_assignation', inverse='_inverse_commission_plan_assignation')
+        ('auto', 'Based On Referrer'),
+        ('fixed', 'Manual')],
+        default='auto', compute='_compute_commission_plan_assignation', inverse='_inverse_commission_plan_assignation', search='_search_commission_plan_assignation')
 
     @api.depends('commission_plan_frozen')
     def _compute_commission_plan_assignation(self):
@@ -35,6 +35,11 @@ class SaleSubscription(models.Model):
     def _inverse_commission_plan_assignation(self):
         for sub in self:
             sub.commission_plan_frozen = sub.commission_plan_assignation == 'fixed'
+
+    def _search_commission_plan_assignation(self, operator, value):
+        if (operator, value) in [('=', 'auto'), ('!=', 'fixed')]:
+            return [('commission_plan_frozen', '=', False)]
+        return [('commission_plan_frozen', '=', True)]
 
     @api.depends('referrer_id', 'commission_plan_id', 'template_id', 'pricelist_id', 'recurring_invoice_line_ids.price_subtotal')
     def _compute_commission(self):

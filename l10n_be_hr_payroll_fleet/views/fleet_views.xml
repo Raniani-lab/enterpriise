@@ -30,7 +30,7 @@
         <field name="inherit_id" ref="fleet.fleet_vehicle_log_contract_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='cost_generated']/.." position="after">
-                <field name="recurring_cost_amount_depreciated" widget="monetary" attrs="{'readonly': False, 'invisible': [('recurring_cost_amount_depreciated', '=', 0)]}"/>
+                <field name="recurring_cost_amount_depreciated" widget="monetary"/>
             </xpath>
         </field>
     </record>

@@ -179,19 +179,14 @@ class FleetVehicle(models.Model):
 class FleetVehicleLogContract(models.Model):
     _inherit = 'fleet.vehicle.log.contract'
 
-    recurring_cost_amount_depreciated = fields.Float("Depreciated Cost Amount", tracking=True, compute='_compute_recurring_cost_amount_depreciated', store=True)
+    recurring_cost_amount_depreciated = fields.Float("Depreciated Cost Amount", tracking=True)
 
-    def _compute_recurring_cost_amount_depreciated(self):
-        for contract in self:
-            cost = contract.cost_generated
-            if contract.cost_frequency == "daily":
-                cost *= 30.0
-            elif contract.cost_frequency == "weekly":
-                cost *= 4.0
-            elif contract.cost_frequency == "yearly":
-                cost /= 12.0
-
-            contract.recurring_cost_amount_depreciated = float_round(contract.vehicle_id.co2_fee + cost, precision_digits=2)
+    @api.model
+    def create(self, vals):
+        if not vals.get('recurring_cost_amount_depreciated', 0) and vals.get('vehicle_id'):
+            vehicle_id = self.env['fleet.vehicle'].browse(vals['vehicle_id'])
+            vals['recurring_cost_amount_depreciated'] = vehicle_id.model_id.default_recurring_cost_amount_depreciated
+        return super(FleetVehicleLogContract, self).create(vals)
 
 
 class FleetVehicleModel(models.Model):

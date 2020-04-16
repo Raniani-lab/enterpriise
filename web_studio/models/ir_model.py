@@ -524,9 +524,7 @@ class IrModelField(models.Model):
             domain = ['|', '|', '|', ('name', operator, name), ('field_description', operator, name), ('model', operator, name), ('model_id.name', operator, name)]
         else:
             domain = [('field_description', operator, name)]
-        field_ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-        return models.lazy_name_get(self.browse(field_ids).with_user(name_get_uid))
-
+        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
 
     @api.model
     def _get_next_relation(self, model_name, comodel_name):

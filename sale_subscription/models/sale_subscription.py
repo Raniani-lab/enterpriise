@@ -777,8 +777,7 @@ class SaleSubscription(models.Model):
             domain = []
         else:
             domain = ['|', '|', ('code', operator, name), ('name', operator, name), ('partner_id.name', operator, name)]
-        subscription_ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-        return models.lazy_name_get(self.browse(subscription_ids).with_user(name_get_uid))
+        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
 
     def wipe(self):
         """Wipe a subscription clean by deleting all its lines."""
@@ -1272,8 +1271,7 @@ class SaleSubscriptionTemplate(models.Model):
         else:
             connector = '&' if operator in expression.NEGATIVE_TERM_OPERATORS else '|'
             domain = [connector, ('code', operator, name), ('name', operator, name)]
-        subscription_template_ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-        return self.browse(subscription_template_ids).name_get()
+        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
 
     def name_get(self):
         res = []

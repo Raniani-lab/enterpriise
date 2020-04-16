@@ -47,5 +47,4 @@ class ProductCode(models.Model):
             domain = []
         else:
             domain = ['|', ('name', 'ilike', name), ('code', 'ilike', name)]
-        unspsc_code_ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-        return self.browse(unspsc_code_ids).name_get()
+        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)

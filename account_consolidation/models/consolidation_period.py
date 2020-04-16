@@ -140,8 +140,7 @@ class ConsolidationPeriod(models.Model):
         domain = []
         if name:
             domain = [('chart_name', operator, name)]
-        ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-        return self.browse(ids).name_get()
+        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
 
     # ACTIONS
 

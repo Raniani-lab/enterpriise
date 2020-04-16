@@ -241,11 +241,8 @@ class TestTaxReport(TestAccountReportsCommon):
             #   Name                                        NET             TAX             NET             TAX             NET             TAX
             [   0,                                          1,              2,              3,              4,              5,              6],
             [
-                ('Sales',                                   '',             '',             '',             '',             '',             ''),
+                ('Sales',                                   10000.0,        1000.0,         1000.0,         100.0,          100.0,          10.0),
                 ('sale_tax_percentage_excl (10.0)',         10000.0,        1000.0,         1000.0,         100.0,          100.0,          10.0),
-
-                ('Purchases',                               '',             '',             '',             '',             '',             ''),
-                ('purchase_tax_group',                      0.0,            0.0,            0.0,            0.0,            0.0,            0.0),
             ],
         )
 

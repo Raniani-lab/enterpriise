@@ -1,7 +1,7 @@
 odoo.define('mail.thread_window_mobile_tests', function (require) {
 "use strict";
 
-const mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 const mailTestUtils = require('mail.testUtils');
 const { createParent, dom, nextTick, mock } = require('web.test_utils');
 const Widget = require('web.Widget');

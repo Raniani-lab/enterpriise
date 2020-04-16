@@ -3,7 +3,7 @@ odoo.define('web_mobile.datepicker', function (require) {
 
 var web_datepicker = require('web.datepicker');
 
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 /**
  * Override odoo date-picker (bootstrap date-picker) to display mobile native

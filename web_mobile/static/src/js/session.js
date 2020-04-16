@@ -4,7 +4,7 @@ odoo.define('web_mobile.session', function (require) {
 var core = require('web.core');
 var session = require('web.Session');
 
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 /*
     Android webview not supporting post download and odoo is using post method to download

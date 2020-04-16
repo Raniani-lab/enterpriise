@@ -1,7 +1,7 @@
 odoo.define('mail_mobile.ocn', function (require) {
 "use strict";
 
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 var ajax = require('web.ajax');
 
 //Send info only if client is mobile

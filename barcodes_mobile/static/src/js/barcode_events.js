@@ -3,7 +3,7 @@ odoo.define('barcodes_mobile.BarcodeEvents', function (require) {
 
 var BarcodeEvents = require('barcodes.BarcodeEvents');
 
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 
 if (!mobile.methods.closeVirtualKeyboard) {

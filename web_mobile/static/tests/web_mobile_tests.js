@@ -9,7 +9,7 @@ const testUtils = require('web.test_utils');
 const Widget = require('web.Widget');
 
 const mobileMixins = require('web_mobile.mixins');
-const mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 const {createParent, createView} = testUtils;
 

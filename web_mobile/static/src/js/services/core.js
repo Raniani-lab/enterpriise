@@ -1,4 +1,4 @@
-odoo.define('web_mobile.rpc', function () {
+odoo.define('web_mobile.core', function () {
 "use strict";
 
 var available = typeof OdooDeviceUtility !== 'undefined';

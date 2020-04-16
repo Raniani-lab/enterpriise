@@ -2,7 +2,7 @@ odoo.define('web_mobile.ActionManager', function (require) {
 "use strict";
 
 var ActionManager = require('web.ActionManager');
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 /*
     We don't want to open website urls in the Odoo apps (iOS and Android).

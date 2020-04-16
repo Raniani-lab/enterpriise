@@ -3,7 +3,7 @@ odoo.define('web_mobile.ContactSync', function (require) {
 
 var Widget = require('web.Widget');
 
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 var ContactSync = Widget.extend({
     template: 'ContactSync',

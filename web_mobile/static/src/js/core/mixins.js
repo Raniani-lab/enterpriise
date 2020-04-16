@@ -1,7 +1,7 @@
 odoo.define('web_mobile.mixins', function (require) {
 "use strict";
 
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 var backButtonEventListeners = [];
 

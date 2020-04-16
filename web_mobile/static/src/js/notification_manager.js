@@ -2,7 +2,7 @@ odoo.define('web_mobile.notification_manager', function (require) {
 "use strict";
 
 var NotificationService = require('web.NotificationService');
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 NotificationService.include({
 

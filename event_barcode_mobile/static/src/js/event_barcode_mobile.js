@@ -2,7 +2,7 @@ odoo.define('web.event.barcode_mobile', function (require) {
 "use strict";
 
 var EventBarcodeScanView = require('event_barcode.EventScanView');
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 EventBarcodeScanView.include({
     events: _.defaults({

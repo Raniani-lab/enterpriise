@@ -5,7 +5,7 @@ var field_registry = require('web.field_registry');
 require('web._field_registry');
 var relational_fields = require('web.relational_fields');
 
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 /**
  * Override the Many2One to open a dialog in mobile.

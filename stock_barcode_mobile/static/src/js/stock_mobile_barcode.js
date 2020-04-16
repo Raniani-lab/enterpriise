@@ -6,7 +6,7 @@ var BarcodeMainMenu = require('stock_barcode.MainMenu').MainMenu;
 
 var core = require('web.core');
 
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 var _t = core._t;
 

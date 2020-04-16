@@ -5,7 +5,7 @@ var core = require('web.core');
 var UserMenu = require('web.UserMenu');
 var web_client = require('web.web_client');
 
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 var _t = core._t;
 

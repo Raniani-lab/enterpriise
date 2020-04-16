@@ -2,7 +2,7 @@ odoo.define('stock_mobile_barcode.stock_picking_barcode_tests', function (requir
 "use strict";
 
 var testUtils = require('web.test_utils');
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.core');
 
 var createActionManager = testUtils.createActionManager;
 

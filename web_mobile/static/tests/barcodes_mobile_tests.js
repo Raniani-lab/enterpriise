@@ -7,7 +7,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
     var testUtils = require('web.test_utils');
 
     var barcode_fields = require('web_mobile.barcode_fields');
-    var mobile = require('web_mobile.rpc');
+    const mobile = require('web_mobile.core');
 
     var createView = testUtils.createView;
 

@@ -278,7 +278,7 @@ class AnalyticLine(models.Model):
             self.search(row_domain, limit=1).copy({
                 'name': _('Timesheet Adjustment'),
                 column_field: day,
-                cell_field: change
+                cell_field: change,
             })
         return False
 

@@ -112,11 +112,6 @@ class HelpdeskTeam(models.Model):
         if not self.use_rating:
             self.portal_show_rating = False
 
-    @api.onchange('member_ids', 'visibility_member_ids')
-    def _onchange_member_ids(self):
-        if not self.member_ids and not self.visibility_member_ids:
-            self.assign_method = 'manual'
-
     @api.onchange('use_alias', 'name')
     def _onchange_use_alias(self):
         if not self.use_alias:

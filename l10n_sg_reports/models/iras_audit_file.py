@@ -104,9 +104,9 @@ class IrasAuditFile(models.AbstractModel):
                     'PurchaseValueSGD': float_repr(lines.balance, IRAS_DIGITS),
                     'GSTValueSGD': float_repr((lines.price_total - lines.price_subtotal) / (lines.quantity or 1), IRAS_DIGITS),
                     'TaxCode': (lines.tax_ids and lines.tax_ids[0].name or ' ')[:20],
-                    'FCYCode': (lines.currency_id.name if lines.currency_id.name != 'SGD' else 'XXX')[:3],
-                    'PurchaseFCY': float_repr(lines.price_subtotal, IRAS_DIGITS) if lines.currency_id.name != 'SGD' else '0',
-                    'GSTFCY': float_repr(sign * tax_amount_company, IRAS_DIGITS) if lines.currency_id.name != 'SGD' else '0'
+                    'FCYCode': (invoice.currency_id.name if invoice.currency_id.name != 'SGD' else 'XXX')[:3],
+                    'PurchaseFCY': float_repr(lines.price_subtotal, IRAS_DIGITS) if invoice.currency_id.name != 'SGD' else '0',
+                    'GSTFCY': float_repr(sign * tax_amount_company, IRAS_DIGITS) if invoice.currency_id.name != 'SGD' else '0'
                 })
 
         return {
@@ -157,9 +157,9 @@ class IrasAuditFile(models.AbstractModel):
                     'GSTValueSGD': float_repr((lines.price_total - lines.price_subtotal) / (lines.quantity or 1), IRAS_DIGITS),
                     'TaxCode': (lines.tax_ids and lines.tax_ids[0].name or ' ')[:20],
                     'Country': invoice.partner_id.commercial_partner_id.country_id.code if invoice.origin and invoice.partner_id.commercial_partner_id.country_id.code != 'SG' else False,
-                    'FCYCode': (lines.currency_id.name if lines.currency_id.name != 'SGD' else 'XXX')[:3],
-                    'SupplyFCY': float_repr(lines.price_subtotal, IRAS_DIGITS) if lines.currency_id.name != 'SGD' else '0',
-                    'GSTFCY': float_repr(sign * tax_amount_company, IRAS_DIGITS) if lines.currency_id.name != 'SGD' else '0'
+                    'FCYCode': (invoice.currency_id.name if lines.currency_id.name != 'SGD' else 'XXX')[:3],
+                    'SupplyFCY': float_repr(lines.price_subtotal, IRAS_DIGITS) if invoice.currency_id.name != 'SGD' else '0',
+                    'GSTFCY': float_repr(sign * tax_amount_company, IRAS_DIGITS) if invoice.currency_id.name != 'SGD' else '0'
                 })
         return {
             'lines': supply_lines,

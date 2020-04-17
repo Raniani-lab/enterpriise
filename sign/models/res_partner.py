@@ -7,10 +7,10 @@ from odoo import fields, models
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    signature_count = fields.Integer(compute='_compute_signature_count', string="# Signatures", groups='sign.group_sign_user')
+    signature_count = fields.Integer(compute='_compute_signature_count', string="# Signatures")
 
     def _compute_signature_count(self):
-        signature_data = self.env['sign.request.item'].read_group([('partner_id', 'in', self.ids)], ['partner_id'], ['partner_id'])
+        signature_data = self.env['sign.request.item'].sudo().read_group([('partner_id', 'in', self.ids)], ['partner_id'], ['partner_id'])
         signature_data_mapped = dict((data['partner_id'][0], data['partner_id_count']) for data in signature_data)
         for partner in self:
             partner.signature_count = signature_data_mapped.get(partner.id, 0)

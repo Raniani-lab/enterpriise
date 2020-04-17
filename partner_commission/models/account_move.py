@@ -42,7 +42,7 @@ class AccountMove(models.Model):
 
     def _make_commission(self):
         for move in self.filtered(lambda m: m.move_type in ['out_invoice', 'in_invoice']):
-            if move.commission_po_line_id:
+            if move.commission_po_line_id or not move.referrer_id:
                 continue
 
             comm_by_rule = defaultdict(float)
@@ -136,7 +136,9 @@ class AccountMoveLine(models.Model):
         pricelist_id =  sub_pricelist and sub_pricelist.id or self.sale_line_ids.mapped('order_id.pricelist_id')[:1].id
 
         # a specific commission plan can be set on the subscription, taking predence over the referrer's commission plan
-        plan = self.subscription_id.commission_plan_id or self.move_id.referrer_id.commission_plan_id
+        plan = self.move_id.referrer_id.commission_plan_id
+        if self.subscription_id:
+            plan = self.subscription_id.commission_plan_id
 
         if not plan:
             return self.env['commission.rule']

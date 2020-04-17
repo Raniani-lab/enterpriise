@@ -92,3 +92,71 @@ class TestSaleSubscription(TestCommissionsSetup):
         sub = so.order_line.mapped('subscription_id')
 
         self.assertEqual(sub.commission, 180)
+
+    def test_commission_plan_assignation(self):
+        """
+        - When 'fixed' the commission plan set on the susbcription is used regardless of the referrer's commission plan.
+        """
+        self.referrer.commission_plan_id = self.gold_plan
+
+        # Test that it works even when the commission plan is Falsy.
+        form = Form(self.env['sale.subscription'].with_context(tracking_disable=True))
+        form.partner_id = self.customer
+        form.referrer_id = self.referrer
+        form.template_id = self.template_yearly
+        form.commission_plan_assignation = 'fixed'
+        form.commission_plan_id = self.env['commission.plan']
+        form.pricelist_id = self.usd_8
+
+        with form.recurring_invoice_line_ids.new() as line:
+            line.name = self.worker.name
+            line.product_id = self.worker
+            line.quantity = 2
+
+        sub = form.save()
+
+        # renew
+        res = sub.prepare_renewal_order()
+        res_id = res['res_id']
+        renewal_so = self.env['sale.order'].browse(res_id)
+        renewal_so.action_confirm()
+
+        # pay
+        inv = renewal_so._create_invoices()
+        inv.post()
+        self._pay_invoice(inv)
+
+        self.assertFalse(inv.commission_po_line_id)
+
+        # Switch to the greedy plan and renew again.
+        sub.commission_plan_id = self.greedy_plan
+
+        # renew
+        res = sub.prepare_renewal_order()
+        res_id = res['res_id']
+        renewal_so = self.env['sale.order'].browse(res_id)
+        renewal_so.action_confirm()
+
+        # pay
+        inv = renewal_so._create_invoices()
+        inv.post()
+        self._pay_invoice(inv)
+
+        self.assertEqual(inv.commission_po_line_id.price_subtotal, 18, 'Commission is wrong')
+
+        # Switch to 'auto' and check that the gold plan is used.
+        sub.commission_plan_assignation = 'auto'
+        self.assertEqual(sub.commission_plan_id, self.gold_plan)
+
+        # renew
+        res = sub.prepare_renewal_order()
+        res_id = res['res_id']
+        renewal_so = self.env['sale.order'].browse(res_id)
+        renewal_so.action_confirm()
+
+        # pay
+        inv = renewal_so._create_invoices()
+        inv.post()
+        self._pay_invoice(inv)
+
+        self.assertEqual(inv.commission_po_line_id.price_subtotal, 180, 'Commission is wrong')

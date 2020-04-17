@@ -170,6 +170,14 @@ class TestCommissionsSetup(TransactionCase):
             ],
         })
 
+        self.greedy_plan = self.env['commission.plan'].create({
+            'name': 'Greedy Plan',
+            'product_id': self.env.ref('partner_commission.product_commission').id,
+            'commission_rule_ids': [
+                (0, 0, self._make_rule(self.odoo_sh, 100, pricelist=self.usd_8, is_capped=True, max_comm=18)),
+            ],
+        })
+
     def _make_rule(self, category, rate, product=None, template=None, pricelist=None, is_capped=False, max_comm=0):
         return {
             'category_id': category.id,

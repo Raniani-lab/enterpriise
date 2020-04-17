@@ -3,11 +3,15 @@
 
 import base64
 import io
+import os
 import time
 import uuid
 
 from PyPDF2 import PdfFileReader, PdfFileWriter
 from reportlab.lib.utils import ImageReader
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.rl_config import TTFSearchPath
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
@@ -16,8 +20,10 @@ from werkzeug.urls import url_join
 from random import randint
 
 from odoo import api, fields, models, http, _
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, formataddr
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, formataddr, config
 from odoo.exceptions import UserError
+
+TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "src", "fonts", "sign"))
 
 
 def _fix_image_transparency(image):
@@ -396,6 +402,11 @@ class SignRequest(models.Model):
         return True
 
     def _get_font(self):
+        custom_font = self.env["ir.config_parameter"].sudo().get_param("sign.use_custom_font")
+        # The font must be a TTF font. The tool 'otf2ttf' may be useful for conversion.
+        if custom_font:
+            pdfmetrics.registerFont(TTFont(custom_font, custom_font + ".ttf"))
+            return custom_font
         return "Helvetica"
 
     def _get_normal_font_size(self):

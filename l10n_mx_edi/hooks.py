@@ -74,6 +74,8 @@ def _load_xsd_files(cr, registry, url):
     sub_urls = res.xpath('//xs:import', namespaces=namespace)
     for s_url in sub_urls:
         s_url_catch = _load_xsd_files(cr, registry, s_url.get('schemaLocation'))
+        if not s_url_catch:
+            return ''
         s_url.attrib['schemaLocation'] = url_quote(s_url_catch)
     try:
         xsd_string = etree.tostring(res, pretty_print=True)

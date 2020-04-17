@@ -164,29 +164,24 @@ class DocumentShare(models.Model):
                 if diff_time <= 0:
                     record.state = 'expired'
 
-    def get_alias_model_name(self, vals):
-        return vals.get('alias_model', 'documents.document')
-
-    def _compute_alias_domain(self):
-        alias_domain = self.env["ir.config_parameter"].sudo().get_param("mail.catchall.domain")
-        for record in self:
-            record.alias_domain = alias_domain
-
     @api.onchange('access_token')
     def _compute_full_url(self):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         for record in self:
             record.full_url = "%s/document/share/%s/%s" % (base_url, record.id, record.access_token)
 
-    def update_alias_defaults(self):
-        for share in self:
-            values = {
+    def _alias_get_creation_values(self):
+        values = super(DocumentShare, self)._alias_get_creation_values()
+        values['alias_model_id'] = self.env['ir.model']._get('documents.document').id
+        if self.id:
+            values['alias_defaults'] = defaults = literal_eval(self.alias_defaults or "{}")
+            defaults.update({
                 'tag_ids': [(6, 0, self.tag_ids.ids)],
                 'folder_id': self.folder_id.id,
                 'partner_id': self.partner_id.id,
                 'create_share_id': self.id,
-            }
-            share.alias_id.alias_defaults = values
+            })
+        return values
 
     def send_share_by_mail(self, template_xmlid):
         self.ensure_one()
@@ -194,17 +189,11 @@ class DocumentShare(models.Model):
         if request_template:
             request_template.send_mail(self.id)
 
-    def write(self, vals):
-        result = super(DocumentShare, self).write(vals)
-        self.update_alias_defaults()
-        return result
-
     @api.model
     def create(self, vals):
         if not vals.get('owner_id'):
             vals['owner_id'] = self.env.uid
         share = super(DocumentShare, self).create(vals)
-        share.update_alias_defaults()
         return share
 
     @api.model

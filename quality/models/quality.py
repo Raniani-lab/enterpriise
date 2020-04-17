@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
+
 from datetime import datetime
 
 from odoo import api, fields, models, _, SUPERUSER_ID
@@ -154,7 +156,6 @@ class QualityAlertTeam(models.Model):
     check_count = fields.Integer('# Quality Checks', compute='_compute_check_count')
     alert_count = fields.Integer('# Quality Alerts', compute='_compute_alert_count')
     color = fields.Integer('Color', default=1)
-    alias_id = fields.Many2one('mail.alias', 'Alias', ondelete="restrict", required=True)
 
     def _compute_check_count(self):
         check_data = self.env['quality.check'].read_group([('team_id', 'in', self.ids), ('quality_state', '=', 'none')], ['team_id'], ['team_id'])
@@ -176,6 +177,14 @@ class QualityAlertTeam(models.Model):
         else:
             raise UserError(_("No quality team found for this company.\n"
                               "Please go to configuration and create one first."))
+
+    def _alias_get_creation_values(self):
+        values = super(QualityAlertTeam, self)._alias_get_creation_values()
+        values['alias_model_id'] = self.env['ir.model']._get('quality.alert').id
+        if self.id:
+            values['alias_defaults'] = defaults = ast.literal_eval(self.alias_defaults or "{}")
+            defaults['team_id'] = self.id
+        return values
 
 
 class QualityReason(models.Model):

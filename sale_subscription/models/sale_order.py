@@ -86,7 +86,7 @@ class SaleOrder(models.Model):
                 order.subscription_management = 'upsell'
             res.append(subscriptions.ids)
             if order.subscription_management == 'renew':
-                subscriptions.increment_period()
+                subscriptions.increment_period(renew=True)
                 subscriptions.payment_term_id = order.payment_term_id
                 subscriptions.set_open()
             for subscription in subscriptions:

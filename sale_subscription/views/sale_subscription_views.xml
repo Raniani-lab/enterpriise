@@ -172,12 +172,14 @@
         <field name="arch" type="xml">
             <form string="Subscription" class="o_subscription_form">
                 <header>
-                    <button string="Start" name="start_subscription" type="object" attrs="{'invisible': [('stage_category','=', 'progress')]}" class="btn-primary"/>
-                    <button string="Create Invoice" name="recurring_invoice" type="object" attrs="{'invisible': [('payment_mode', '!=', 'manual')]}" class="btn-primary"/>
-                    <button string="Renewal Quotation" name="prepare_renewal_order" type="object" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited'), ('to_renew', '=', False)]}"/>
+                    <button string="Start" name="start_subscription" type="object" attrs="{'invisible': [('stage_category','!=', 'draft')]}" class="btn-primary"/>
+                    <button string="Create Invoice" name="generate_recurring_invoice" type="object" attrs="{'invisible': [('payment_mode', '!=', 'manual')]}" class="btn-primary"/>
+                    <button string="Renewal Quotation" name="prepare_renewal_order" type="object"
+                            attrs="{'invisible': [('recurring_rule_boundary','=','unlimited'), ('stage_category','!=','closed'), ('to_renew', '=', False)]}"/>
+
                     <button string="Upsell" name="%(sale_subscription.wizard_action)d" type="action" attrs="{'invisible': [('stage_category', '!=', 'progress')]}"/>
                     <button string="Close" name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action" attrs="{'invisible': [('stage_category', 'in', ['draft', 'closed'])]}"/>
-                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"/>
+                    <field name="stage_id" widget="statusbar"/>
                     <field name="stage_category" invisible="1"/>
                 </header>
                 <sheet string="Subscription">
@@ -224,7 +226,7 @@
                             <label for="recurring_next_date" string="Date of Next Invoice" attrs="{'invisible': [('stage_category', '!=', 'progress')]}"/>
                             <div attrs="{'invisible': [('stage_category', '!=', 'progress')]}">
                                 <field name="recurring_next_date"/>
-                                <button name="recurring_invoice"
+                                <button name="generate_recurring_invoice"
                                         string="Generate Invoice"
                                         class="oe_link"
                                         icon="fa-long-arrow-right"

@@ -3,9 +3,11 @@ odoo.define('web_studio.ViewEditorManager_tests', function (require) {
 
 var mailTestUtils = require('mail.testUtils');
 
+var AbstractFieldOwl = require('web.AbstractFieldOwl');
 var ace = require('web_editor.ace');
 var concurrency = require('web.concurrency');
 var fieldRegistry = require('web.field_registry');
+var fieldRegistryOwl = require('web.field_registry_owl');
 var framework = require('web.framework');
 var ListRenderer = require('web.ListRenderer');
 var testUtils = require('web.test_utils');
@@ -4708,6 +4710,76 @@ QUnit.module('ViewEditorManager', {
 
         framework.blockUI = blockUI;
         framework.unblockUI = unblockUI;
+    });
+
+    QUnit.test("Sidebar should display all field's widgets", async function (assert) {
+        assert.expect(5);
+
+        const arch = `
+            <form><sheet>
+                <group>
+                    <field name="display_name"/>
+                </group>
+            </sheet></form>`;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+
+        await testUtils.dom.click(vem.$('.o_field_widget'));
+
+        const displayedWidgetNames = Array
+            .from(document.getElementById('widget')
+            .options).map(x => x.label);
+
+        const charWidgetNames = [
+            "Copy to Clipboard",
+            "Email",
+            "Phone",
+            "Text",
+            "URL"
+        ];
+        for (const name of charWidgetNames) {
+            assert.ok(displayedWidgetNames.includes(name));
+        }
+
+        vem.destroy();
+    });
+
+    QUnit.test("Sidebar should display component field's widgets", async function (assert) {
+        assert.expect(1);
+
+        class CompField extends AbstractFieldOwl {}
+        CompField.template = owl.tags.xml`<div></div>`;
+        CompField.description = 'Component Field';
+        CompField.supportedFieldTypes = ['char'];
+
+        fieldRegistryOwl.add('comp_field', CompField);
+
+        const arch = `
+            <form><sheet>
+                <group>
+                    <field name="display_name"/>
+                </group>
+            </sheet></form>`;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+        });
+
+        await testUtils.dom.click(vem.$('.o_field_widget'));
+
+        const displayedWidgetNames = Array
+            .from(document.getElementById('widget')
+            .options).map(x => x.label);
+
+        assert.ok(displayedWidgetNames.includes(CompField.description));
+
+        delete fieldRegistryOwl.map.comp_field;
+
+        vem.destroy();
     });
 
     QUnit.module('X2Many');

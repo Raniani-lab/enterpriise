@@ -7,6 +7,7 @@ var Dialog = require('web.Dialog');
 var DomainSelectorDialog = require("web.DomainSelectorDialog");
 var Domain = require("web.Domain");
 var field_registry = require('web.field_registry');
+var fieldRegistryOwl = require('web.field_registry_owl');
 var pyUtils = require('web.py_utils');
 var relational_fields = require('web.relational_fields');
 var session = require("web.session");
@@ -151,12 +152,15 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             // in this widget and this shouldn't impact it
             var field = jQuery.extend(true, {}, this.fields[this.state.attrs.name]);
 
-            // field_registry contains all widgets but we want to filter these
-            // widgets based on field types (and description for non debug mode)
-            field.field_widgets = _.chain(field_registry.map)
+            // fieldRegistryMap contains all widgets and components but we want to filter
+            // these widgets based on field types (and description for non debug mode)
+            const fieldRegistryMap = Object.assign({}, field_registry.map, fieldRegistryOwl.map);
+            field.field_widgets = _.chain(fieldRegistryMap)
                 .pairs()
                 .filter(function (arr) {
-                    const supportedFieldTypes = self.getFieldInfo(arr[1], 'supportedFieldTypes');
+                    const supportedFieldTypes = utils.isComponent(arr[1]) ?
+                        arr[1].supportedFieldTypes :
+                        arr[1].prototype.supportedFieldTypes;
                     const description = self.getFieldInfo(arr[1], 'description');
                     var isSupported = _.contains(supportedFieldTypes, field.type)
                         && arr[0].indexOf('.') < 0;
@@ -395,7 +399,8 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     _getWidgetKey: function (Widget) {
         var widgetKey = this.state.attrs.widget;
         if (!widgetKey) {
-            _.each(field_registry.map, function (val, key) {
+            const fieldRegistryMap = Object.assign({}, field_registry.map, fieldRegistryOwl.map);
+            _.each(fieldRegistryMap, function (val, key) {
                 if (val === Widget) {
                     widgetKey = key;
                 }

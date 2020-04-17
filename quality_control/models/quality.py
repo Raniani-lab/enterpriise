@@ -4,7 +4,6 @@ from math import sqrt
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
-import ast
 import random
 
 from odoo import api, models, fields, _
@@ -110,18 +109,6 @@ class QualityPoint(models.Model):
             action['context'] = {'group_by': ['name', 'point_id'], 'graph_measure': ['measure'], 'graph_mode': 'line'}
         action['domain'] = [('point_id', '=', self.id), ('quality_state', '!=', 'none')]
         return action
-
-
-class QualityAlertTeam(models.Model):
-    _inherit = "quality.alert.team"
-
-    def _alias_get_creation_values(self):
-        values = super(QualityAlertTeam, self)._alias_get_creation_values()
-        values['alias_model_id'] = self.env['ir.model']._get('quality.alert').id
-        if self.id:
-            values['alias_defaults'] = defaults = ast.literal_eval(self.alias_defaults or "{}")
-            defaults['team_id'] = self.id
-        return values
 
 
 class QualityCheck(models.Model):

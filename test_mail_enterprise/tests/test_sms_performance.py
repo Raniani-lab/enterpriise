@@ -51,7 +51,7 @@ class TestSMSPerformance(BaseMailPerformance, sms_common.MockSMS):
     def test_message_sms_record_1_partner(self):
         record = self.test_record.with_user(self.env.user)
         pids = self.customer.ids
-        with self.mockSMSGateway(), self.assertQueryCount(employee=21):
+        with self.mockSMSGateway(), self.assertQueryCount(employee=25):
             messages = record._message_sms(
                 body='Performance Test',
                 partner_ids=pids,

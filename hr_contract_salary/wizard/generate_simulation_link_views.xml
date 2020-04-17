@@ -8,6 +8,7 @@
                 <group>
                     <field name="contract_id"/>
                     <field name="job_title"/>
+                    <field name="contract_start_date"/>
                     <field name="employee_contract_id" invisible="1"/>
                     <field name="employee_contract_employee_id" invisible="1"/>
                     <field name="employee_id" invisible="1"/>

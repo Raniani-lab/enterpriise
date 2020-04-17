@@ -38,6 +38,8 @@ class GenerateSimulationLink(models.TransientModel):
             result['applicant_id'] = applicant_id
             contract = applicant.job_id.default_contract_id
             result['contract_id'] = applicant.job_id.default_contract_id.id
+            if applicant.job_id:
+                result['job_title'] = applicant.job_id.name
         if not result.get('applicant_id') and not contract.contract_update_template_id or result.get('applicant_id') and not contract.sign_template_id:
             raise ValidationError(_('No signature template defined on the contract.'))
         if not contract.hr_responsible_id:
@@ -58,6 +60,7 @@ class GenerateSimulationLink(models.TransientModel):
     final_yearly_costs = fields.Float(string="Employee Budget", compute='_compute_from_contract_id', readonly=False, store=True, required=True)
     applicant_id = fields.Many2one('hr.applicant')
     job_title = fields.Char("Job Title", compute='_compute_from_contract_id', store=True, readonly=False)
+    contract_start_date = fields.Date("Contract Start Date", default=fields.Date.context_today)
 
     contract_start_date = fields.Date()
 
@@ -86,15 +89,18 @@ class GenerateSimulationLink(models.TransientModel):
                     params[trigger] = wizard[trigger].id if isinstance(wizard[trigger], models.BaseModel) else wizard[trigger]
             if wizard.applicant_id:
                 params['token'] = wizard.applicant_id.access_token
+            if wizard.contract_start_date:
+                params['contract_start_date'] = wizard.contract_start_date
             if params:
                 url = url + url_encode(params)
             wizard.url = url
 
-    @api.depends('contract_id')
+    @api.depends('contract_id', 'applicant_id')
     def _compute_from_contract_id(self):
         for wizard in self:
             wizard.final_yearly_costs = wizard.contract_id.final_yearly_costs
-            wizard.job_title = wizard.contract_id.employee_id.job_title or wizard.contract_id.job_id.name
+            if not wizard.job_title or (wizard.applicant_id and wizard.applicant_id.job_id and wizard.job_title != wizard.applicant_id.job_id.name):
+                wizard.job_title = wizard.contract_id.employee_id.job_title or wizard.contract_id.job_id.name
 
     def send_offer(self):
         try:

@@ -318,16 +318,13 @@
                 t-att-value="initial_values[personal_info.field]"/>
         </t>
         <t t-if="personal_info.display_type == 'document'">
+            <t t-set="document_accept" t-value="'image/*' if personal_info.field == 'image_1920' else 'application/pdf,image/*'"/>
             <input
                 type="file"
                 t-att-name="personal_info.field"
                 t-att-applies-on="personal_info.applies_on"
-                t-att-class="'form-control document personal_info' + (' advantage_input' if personal_info.impacts_net_salary else '')"/>
-            <div class="col-md-6">
-                <t t-set="document_content" t-value="initial_values[personal_info.field]"/>
-                <img t-att-id="personal_info.field + '_img'" t-att-src="document_content" t-att-alt="personal_info.name" width="256" t-att-class="'d-none' if not document_content or document_content[:28] == 'data:application/pdf;base64,' else ''"/>
-                <iframe t-att-id="personal_info.field + '_pdf'" t-att-src="document_content" height="256" width="256" t-att-class="'d-none' if not document_content or document_content[:28] != 'data:application/pdf;base64,' else ''"/>
-            </div>
+                t-att-class="'form-control document personal_info' + (' advantage_input' if personal_info.impacts_net_salary else '')"
+                t-att-accept="document_accept"/>
         </t>
         <t t-if="personal_info.display_type == 'checkbox'">
             <label class="hr_cs_control hr_cs_control_checkbox"><t t-esc="personal_info.name"/>

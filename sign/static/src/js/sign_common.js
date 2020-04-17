@@ -1404,6 +1404,10 @@ odoo.define('sign.document_signing', function (require) {
         },
 
         createSignItem: function(type, required, responsible, posX, posY, width, height, value, options, name) {
+            // jQuery.data parse 0 as integer, but 0 is not considered falsy for signature item
+            if (value === 0) {
+                value = "0";
+            }
             var self = this;
             var $signatureItem = this._super.apply(this, arguments);
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role);

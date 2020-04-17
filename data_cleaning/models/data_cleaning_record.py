@@ -113,10 +113,7 @@ class DataCleaningRecord(models.Model):
             records_per_model[record.res_model_name] = ids
 
         for model, record_ids in records_per_model.items():
-            try:
-                recs = self.env[model].with_context(active_test=False).sudo().browse(record_ids).exists()
-            except:
-                import pdb; pdb.set_trace()
+            recs = self.env[model].with_context(active_test=False).sudo().browse(record_ids).exists()
             records += [r for r in recs]
         return records
 

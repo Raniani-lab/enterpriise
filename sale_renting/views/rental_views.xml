@@ -141,16 +141,16 @@
       <field name="name">rental.order.tree</field>
       <field name="model">sale.order</field>
       <field name="arch" type="xml">
-        <tree decoration-danger="rental_status in ['pickup', 'return'] and has_late_lines" multi_edit="1">
+        <tree multi_edit="1">
           <field name="has_late_lines" invisible="1"/>
-          <field name="name" readonly="1"/>
-          <field name="date_order"/>
-          <field name="next_action_date"/>
+          <field name="name" readonly="1" decoration-bf="1"/>
+          <field name="date_order" widget='date'/>
+          <field name="next_action_date" widget='remaining_days' attrs="{'invisible': ['|', ('rental_status','=','pickup'), ('rental_status','=','returned')]}"/>
           <field name="partner_id" readonly="1"/>
-          <field name="user_id" optional="show"/>
+          <field name="user_id" optional="show" widget='many2one_avatar_user'/>
           <field name="team_id" optional="hide"/>
-          <field name="amount_total" sum="Total Tax Included" widget="monetary"/>
-          <field name="rental_status"/>
+          <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1"/>
+          <field name="rental_status" widget='badge' decoration-info="rental_status == 'draft' or rental_status == 'sent'" decoration-warning="rental_status == 'pickup'" decoration-success="rental_status == 'return'"/>
           <field name="state" invisible="1"/>
         </tree>
       </field>

@@ -23,7 +23,7 @@ class RentalOrder(models.Model):
     has_pickable_lines = fields.Boolean(compute="_compute_rental_status", store=True)
     has_returnable_lines = fields.Boolean(compute="_compute_rental_status", store=True)
     next_action_date = fields.Datetime(
-        string="Rental Next Action Date", compute='_compute_rental_status', store=True)
+        string="Next Action", compute='_compute_rental_status', store=True)
 
     has_late_lines = fields.Boolean(compute="_compute_has_late_lines")
 

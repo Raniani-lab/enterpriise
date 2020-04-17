@@ -154,7 +154,6 @@ class QualityAlertTeam(models.Model):
     check_count = fields.Integer('# Quality Checks', compute='_compute_check_count')
     alert_count = fields.Integer('# Quality Alerts', compute='_compute_alert_count')
     color = fields.Integer('Color', default=1)
-    alias_id = fields.Many2one('mail.alias', 'Alias', ondelete="restrict", required=True)
 
     def _compute_check_count(self):
         check_data = self.env['quality.check'].read_group([('team_id', 'in', self.ids), ('quality_state', '=', 'none')], ['team_id'], ['team_id'])

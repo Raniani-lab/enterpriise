@@ -14,7 +14,6 @@ class MrpEcoType(models.Model):
 
     name = fields.Char('Name', required=True, translate=True)
     sequence = fields.Integer('Sequence')
-    alias_id = fields.Many2one('mail.alias', 'Alias', ondelete='restrict', required=True)
     nb_ecos = fields.Integer('ECOs', compute='_compute_nb')
     nb_approvals = fields.Integer('Waiting Approvals', compute='_compute_nb')
     nb_approvals_my = fields.Integer('Waiting my Approvals', compute='_compute_nb')

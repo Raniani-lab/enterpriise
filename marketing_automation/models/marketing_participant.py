@@ -66,6 +66,8 @@ class MarketingParticipant(models.Model):
         for participant in self:
             if participant.model_name and participant.model_name in self.env:
                 participant.resource_ref = '%s,%s' % (participant.model_name, participant.res_id or 0)
+            else:
+                participant.resource_ref = None
 
     def _set_resource_ref(self):
         for participant in self:

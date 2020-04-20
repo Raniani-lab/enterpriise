@@ -138,6 +138,10 @@ class View(models.Model):
         model = self.env[res_model]
         rec_name = model._rec_name_fallback()
         sheet_content = list()
+        header_content = list()
+        if 'x_studio_stage_id' in model._fields:
+            header_content.append(E.field(name='x_studio_stage_id', widget='statusbar', clickable='1'))
+            sheet_content.append(E.field(name='x_studio_kanban_state', widget='state_selection'))
         if 'x_active' in model._fields:
             sheet_content.append(E.widget(name='web_ribbon', text=_('Archived'), bg_color='bg-danger', attrs="{'invisible': [('x_active', '=', True)]}"))
             sheet_content.append(E.field(name='x_active', invisible='1'))
@@ -146,7 +150,7 @@ class View(models.Model):
         title = etree.fromstring("""
             <div class="oe_title">
                 <h1>
-                    <field name="%(field_name)s" required="1"/>
+                    <field name="%(field_name)s" required="1" placeholder="Name..."/>
                 </h1>
             </div>
         """ % {'field_name': rec_name})
@@ -187,9 +191,6 @@ class View(models.Model):
         sheet_content.append(E.group(left_group, right_group, name=group_name))
         if 'x_studio_notes' in model._fields:
             sheet_content.append(E.group(E.field(name='x_studio_notes', placeholder=_('Type down your notes here...'), nolabel='1')))
-        header_content = list()
-        if 'x_studio_stage_id' in model._fields:
-            header_content.append(E.field(name='x_studio_stage_id', widget='statusbar', clickable='1'))
         form = E.form(E.header(*header_content), E.sheet(*sheet_content, string=model._description))
         chatter_widgets = list()
         if ir_model.is_mail_thread:

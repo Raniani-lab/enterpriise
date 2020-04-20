@@ -59,7 +59,7 @@ class TestStudioIrModel(SavepointCase):
         })
         # ensure the partner is suggested in email and sms communication
         mail_suggested_recipients = bfr._message_get_suggested_recipients()
-        self.assertIn((self.partner_elon.id, '"Elon Tusk" <elon@spacex.com>', 'Partner'),
+        self.assertIn((self.partner_elon.id, '"Elon Tusk" <elon@spacex.com>', 'Contact'),
                       mail_suggested_recipients.get(bfr.id),
                       'custom partner field should be suggested in mail communications')
         sms_suggested_recipients = bfr._sms_get_partner_fields()
@@ -199,7 +199,7 @@ class TestStudioIrModel(SavepointCase):
         self.assertIn('x_studio_kanban_state', fields, 'a custom kanban state field should be set up')
         auto_stage = self.env[extra_model.model].search([])
         default = self.env['ir.default'].get(model.model, 'x_studio_stage_id')
-        self.assertEqual(default, auto_stage.id, 'the default stage should be set')
+        self.assertEqual(default, auto_stage.ids[0], 'the default stage should be set')
         stage_field = self.env['ir.model.fields'].search([('name', '=', 'x_studio_stage_id'), ('model_id', '=', model.id)])
         self.assertTrue(stage_field.tracking, 'the x_studio_stage_id field should be tracked')
 

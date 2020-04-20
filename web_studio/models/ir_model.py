@@ -204,7 +204,7 @@ class IrModel(models.Model):
                 'name': 'x_studio_partner_id',
                 'ttype': 'many2one',
                 'relation': 'res.partner',
-                'field_description': _('Partner'),
+                'field_description': _('Contact'),
                 'model_id': model.id,
                 'tracking': model.is_mail_thread,
                 'copied': True,
@@ -213,7 +213,7 @@ class IrModel(models.Model):
                 'name': 'x_studio_partner_phone',
                 'ttype': 'char',
                 'related': 'x_studio_partner_id.phone',
-                'field_description': _('Phone Number'),
+                'field_description': _('Phone'),
                 'model_id': model.id,
             })
             email_field = self.env['ir.model.fields'].create({
@@ -333,7 +333,7 @@ class IrModel(models.Model):
                 'name': 'x_name',
                 'ttype': 'char',
                 'required': True,
-                'field_description': _('Name'),
+                'field_description': _('Stage Name'),
                 'translate': True,
                 'copied': True,
             }))
@@ -357,8 +357,9 @@ class IrModel(models.Model):
                 'copied': True,
                 'group_expand': True,
             })
-            # create stage 'New' and set as default
+            # create stage 'New','In Progress','Done' and set 'New' as default
             default_stage = self.env[stage_model.model].create({'x_name': _('New')})
+            self.env[stage_model.model].create([{'x_name': _('In Progress')}, {'x_name': _('Done')}])
             self.env['ir.default'].set(model.model, stage_field.name, default_stage.id)
             priority_field = self.env['ir.model.fields'].create({
                 'name': 'x_studio_priority',
@@ -371,9 +372,9 @@ class IrModel(models.Model):
                 'name': 'x_studio_kanban_state',
                 'ttype': 'selection',
                 'selection_ids': [
-                    (0, 0 ,{'value': 'normal', 'name': _('Grey'), 'sequence': 10}),
-                    (0, 0 ,{'value': 'done', 'name': _('Green'), 'sequence': 20}),
-                    (0, 0 ,{'value': 'blocked', 'name': _('Red'), 'sequence': 30})
+                    (0, 0 ,{'value': 'normal', 'name': _('In Progress'), 'sequence': 10}),
+                    (0, 0 ,{'value': 'done', 'name': _('Ready'), 'sequence': 20}),
+                    (0, 0 ,{'value': 'blocked', 'name': _('Blocked'), 'sequence': 30})
                 ],
                 'relation': stage_model.model,
                 'field_description': _('Kanban State'),

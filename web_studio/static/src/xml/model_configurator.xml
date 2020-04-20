@@ -4,17 +4,11 @@
 <t t-name="ModelConfigurator" owl="1">
     <div class="container o_web_studio_model_configurator" t-att-class="{ embed: props.embed }">
         <div class="row" t-if="!props.embed">
-            <h1>Recommended fields for your object:</h1>
+            <h1>Suggested features for your new model</h1>
         </div>
         <div class="row">
             <t t-foreach="state.options" t-as="option_name">
                 <ModelConfiguratorOption t-key="option_name" t-if="!state.options[option_name].debug &amp;&amp; (option_name !== 'use_company' || multiCompany)" name="option_name" option="state.options[option_name]" t-on-opt_change.stop="_onOptionChange"/>
-            </t>
-        </div>
-        <div class="row" t-if="props.debug">
-            <h2>Technical Features</h2>
-            <t t-foreach="state.options" t-as="option_name">
-                <ModelConfiguratorOption t-key="option_name" t-if="state.options[option_name].debug" name="option_name" option="state.options[option_name]" t-on-opt_change.stop="_onOptionChange"/>
             </t>
         </div>
         <div class="o_web_studio_model_configurator_buttons">
@@ -49,9 +43,6 @@
             <input type="checkbox" class="custom-control-input" t-att-id="props.name" t-att-name="props.name" t-model="props.option.value"/>
             <label t-att-for="props.name" class="custom-control-label">
                 <strong t-esc="props.option.label"/>
-                <strong class="text-muted" t-if="props.option.viewType">
-                (<t t-esc="props.option.viewType"/>)
-                </strong>
                 <div class="form-text text-muted" t-esc="props.option.help"/>
             </label>
         </div>

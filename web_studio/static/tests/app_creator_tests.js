@@ -80,7 +80,7 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
                         assert.strictEqual(model_choice, "new",
                             "Model choice should be 'new'");
                         assert.deepEqual(model_options,
-                            ["use_partner", "use_company", "use_active", "use_mail", "use_sequence"],
+                            ["use_partner", "use_sequence", "use_mail", "use_active"],
                             "Model options should include the defaults and 'use_partner'");
                         return Promise.resolve();
                     }
@@ -198,8 +198,8 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
             await testUtils.dom.click(appCreator.el.querySelector('.o_web_studio_app_creator_next'));
             assert.strictEqual(appCreator.state.step, 'model_configuration',
                 "Current step should be model_configuration");
-            assert.containsNone(appCreator, 'input[name="use_active"]',
-                "Debug options should only be visible in debug mode")
+            assert.containsOnce(appCreator, 'input[name="use_active"]',
+                "Debug options should be visible without debug mode")
             // check an option
             await testUtils.dom.click(appCreator.el.querySelector('input[name="use_partner"]'));
             assert.containsOnce(appCreator, 'input[name="use_partner"]:checked',

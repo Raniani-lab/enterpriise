@@ -28,8 +28,8 @@
                     <customerSupplier t-foreach="partner_ids" t-as="p">
                         <custSupID t-esc="p.id"/>
                         <!-- XAF XSD has maximum 50 characters for customer/supplier name -->
-                        <custSupName t-esc="p.name[:50]"/>
-                        <contact t-if="p.is_company and p.child_ids" t-esc="p.child_ids[0].name[:50]"/>
+                        <custSupName t-esc="(p.name or p.commercial_partner_id.name)[:50]"/>
+                        <contact t-if="p.is_company and p.child_ids and p.child_ids[0].name" t-esc="p.child_ids[0].name[:50]"/>
                         <telephone t-esc="p.phone"/>
                         <eMail t-esc="p.email"/>
                         <website t-esc="p.website"/>

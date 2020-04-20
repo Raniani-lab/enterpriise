@@ -34,7 +34,7 @@ class WebsiteCalendar(http.Controller):
         else:
             suggested_appointment_types = appointment_type
         suggested_employees = []
-        if employee_id and int(employee_id) in appointment_type.employee_ids.ids:
+        if employee_id and int(employee_id) in appointment_type.sudo().employee_ids.ids:
             suggested_employees = request.env['hr.employee'].sudo().browse(int(employee_id)).name_get()
         elif appointment_type.assignation_method == 'chosen':
             suggested_employees = appointment_type.sudo().employee_ids.name_get()

@@ -98,11 +98,6 @@ CHIC1-RECEIPTS
 CHIC1-INTERNAL
 CHIC1-PICK
 CHIC1-PACK
-CHIC2-DELIVERY
-CHIC2-RECEIPTS
-CHIC2-INTERNAL
-CHIC2-PICK
-CHIC2-PACK
 BARCODES
 
 cat > barcodes_demo_header_chicago.ps << HEADER
@@ -113,11 +108,6 @@ cat > barcodes_demo_header_chicago.ps << HEADER
 (Chicago 1 Internal) 45 727 showTitle
 (Chicago 1 Pick) 230 727 showTitle
 (Chicago 1 Pack) 415 727 showTitle
-(Chicago 2 Delivery) 45 647 showTitle
-(Chicago 2 Receipts) 230 647 showTitle
-(Chicago 2 Internal) 415 647 showTitle
-(Chicago 2 Pick) 45 567 showTitle
-(Chicago 2 Pack) 230 567 showTitle
 HEADER
 
 cat barcodes_demo_header.ps barcodes_demo_barcode.ps barcodes_demo_header_chicago.ps barcodes_demo_barcode_chicago.ps | ps2pdf - - > barcodes_demo.pdf

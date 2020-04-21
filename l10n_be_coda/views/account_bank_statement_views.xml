@@ -7,9 +7,24 @@
             <field name="arch" type="xml">
             	<page name="statement_line_ids" position="after">
             		<page string="CODA Notes" name="coda_note" groups="base.group_no_one">
-                    	<field name="coda_note"/>
+                    	<field name="coda_note" class="text-monospace"/>
                 	</page>
                 </page>
+            </field>
+        </record>
+
+        <record id="view_bank_statement_line_coda_form_inherit" model="ir.ui.view">
+            <field name="name">account.bank.statement.line.coda.form</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="inherit_id" ref="account.view_bank_statement_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/field[@name='narration']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//group[last()]" position="after">
+                    <separator string="Notes"/>
+                    <field name="narration" class="text-monospace"/>
+                </xpath>
             </field>
         </record>
 

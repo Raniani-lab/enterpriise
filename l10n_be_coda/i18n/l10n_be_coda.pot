@@ -111,7 +111,6 @@ msgstr ""
 
 #. module: l10n_be_coda
 #: model:ir.model.fields,field_description:l10n_be_coda.field_account_bank_statement__coda_note
-#: model_terms:ir.ui.view,arch_db:l10n_be_coda.view_bank_statement_coda_form
 msgid "CODA Notes"
 msgstr ""
 
@@ -290,6 +289,12 @@ msgstr ""
 #: code:addons/l10n_be_coda/wizard/account_bank_statement_import_coda.py:0
 #, python-format
 msgid "Communication"
+msgstr ""
+
+#. module: l10n_be_coda
+#: code:addons/l10n_be_coda/wizard/account_bank_statement_import_coda.py:0
+#, python-format
+msgid "Communication: "
 msgstr ""
 
 #. module: l10n_be_coda

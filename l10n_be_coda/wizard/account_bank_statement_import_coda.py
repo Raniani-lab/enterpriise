@@ -648,7 +648,7 @@ class AccountBankStatementImport(models.TransientModel):
                     else:
                         #Non-structured communication
                         infoLine['communication_struct'] = False
-                        infoLine['communication'] = rmspaces(line[62:115])
+                        infoLine['communication'] = line[40:113]
                     statement['lines'].append(infoLine)
                 elif line[1] == '2':
                     if infoLine['ref'] != rmspaces(line[2:10]):
@@ -663,7 +663,7 @@ class AccountBankStatementImport(models.TransientModel):
                     comm_line['type'] = 'communication'
                     comm_line['sequence'] = len(statement['lines']) + 1
                     comm_line['ref'] = rmspaces(line[2:10])
-                    comm_line['communication'] = rmspaces(line[32:112])
+                    comm_line['communication'] = line[32:112]
                     statement['lines'].append(comm_line)
             elif line[0] == '8':
                 # new balance record
@@ -688,13 +688,16 @@ class AccountBankStatementImport(models.TransientModel):
                 'balance_start': statement['balance_start'],
                 'balance_end_real': statement['balance_end_real'],
             }
+            temp_data = {}
             for line in statement['lines']:
-                if line['type'] == 'information' and statement_line:
-                    statement_line[-1]['narration'] = "\n".join([statement_line[-1]['narration'], line['type'].title() + ' with Ref. ' + str(line['ref']), 'Date: ' + str(line['entryDate'])])
+                to_add = statement_line and statement_line[-1]['ref'] == line.get('ref_move') and statement_line[-1] or temp_data
+                if line['type'] == 'information':
                     if line['communication_struct']:
-                        statement_line[-1]['narration'] = "\n".join([statement_line[-1]['narration'], 'Communication: '] + parse_structured_communication(line['communication_type'], line['communication'])[1])
+                        to_add['narration'] = "\n".join([to_add.get('narration', ''), 'Communication: '] + parse_structured_communication(line['communication_type'], line['communication'])[1])
+                    else:
+                        to_add['narration'] = "\n".join([to_add.get('narration', ''), line['communication']])
                 elif line['type'] == 'communication':
-                    statement['coda_note'] = "\n".join([statement['coda_note'], line['type'].title() + ' with Ref. ' + str(line['ref']), 'Ref: ', 'Communication: ' + line['communication'], ''])
+                    statement['coda_note'] = "%s[%s] %s\n" % (statement['coda_note'], str(line['ref']), line['communication'])
                 elif line['type'] == 'normal'\
                         or (line['type'] == 'globalisation' and line['ref_move'] in statement['globalisation_stack'] and line['transaction_type'] in [1, 2]):
                     note = []
@@ -719,15 +722,14 @@ class AccountBankStatementImport(models.TransientModel):
                     if line['communication_struct']:
                         structured_com, extend_notes = parse_structured_communication(line['communication_type'], line['communication'])
                         note.extend(extend_notes)
-                        line['communication'] = ""  # Structured communication is handled, dont show the coded comm in the notes
-                    if line.get('communication', ''):
+                    elif line.get('communication'):
                         note.append(_('Communication') + ': ' + rmspaces(line['communication']))
                     if not self.split_transactions and statement_line and line['ref_move'] == statement_line[-1]['ref']:
-                        statement_line[-1]['amount'] += line['amount']
-                        statement_line[-1]['narration'] += "\n" + "\n".join(note)
+                        to_add['amount'] = to_add.get('amount', 0) + line['amount']
+                        to_add['narration'] = to_add.get('narration', '') + "\n" + "\n".join(note)
                     else:
                         line_data = {
-                            'payment_ref': structured_com or (line.get('communication', '') != '' and line['communication'] or '/'),
+                            'payment_ref': structured_com or line.get('communication', '') or '/',
                             'narration': "\n".join(note),
                             'transaction_type': parse_operation(line['transaction_type'], line['transaction_family'], line['transaction_code'], line['transaction_category']),
                             'date': line['entryDate'],
@@ -738,10 +740,13 @@ class AccountBankStatementImport(models.TransientModel):
                             'sequence': line['sequence'],
                             'unique_import_id': str(statement['codaSeqNumber']) + '-' + str(statement['date']) + '-' + str(line['ref']),
                         }
-                        if line_data['amount'] != 0:
-                            statement_line.append(line_data)
+                        if temp_data.get('narration'):
+                            line_data['narration'] = temp_data.pop('narration') + '\n' + line_data['narration']
+                        if temp_data.get('amount'):
+                            line_data['amount'] += temp_data.pop('amount')
+                        statement_line.append(line_data)
             if statement['coda_note'] != '':
-                statement_data.update({'coda_note': statement['coda_note']})
+                statement_data.update({'coda_note': _('Communication: ') + '\n' + statement['coda_note']})
             statement_data.update({'transactions': statement_line})
             ret_statements.append(statement_data)
         currency_code = statement['currency']

@@ -297,9 +297,14 @@ class DatevExportCSV(models.AbstractModel):
                     tax_balance_sum = 0
                     for tax in aml.tax_ids:
                         # Find tax line in the move and get it's tax_base_amount
-                        tax_line = m.line_ids.filtered(lambda l: l.tax_line_id == tax and l.partner_id == aml.partner_id)
-                        amount += abs(sum(tax_line.mapped('balance'))) + abs(sum(tax_line.mapped('tax_base_amount')))
-                        tax_balance_sum += sum(tax_line.mapped('balance'))
+                        if tax.amount:
+                            tax_line = m.line_ids.filtered(lambda l: l.tax_line_id == tax and l.partner_id == aml.partner_id)
+                            amount += abs(sum(tax_line.mapped('balance'))) + abs(sum(tax_line.mapped('tax_base_amount')))
+                            tax_balance_sum += sum(tax_line.mapped('balance'))
+                        else:
+                            # 0% tax leave no tax_ids so find manually all lines with such tax
+                            tax_line = m.line_ids.filtered(lambda l: tax in l.tax_ids and l.partner_id == aml.partner_id)
+                            amount += abs(sum(tax_line.mapped('balance')))
                     letter = 's' if tax_balance_sum >= 0 else 'h'
 
                 # account and counterpart account

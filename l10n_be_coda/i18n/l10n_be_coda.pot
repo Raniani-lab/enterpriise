@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-29 15:25+0000\n"
-"PO-Revision-Date: 2020-01-29 15:25+0000\n"
+"PO-Revision-Date: 2020-04-16 07:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1906,6 +1906,12 @@ msgstr ""
 #: code:addons/l10n_be_coda/wizard/account_bank_statement_import_coda.py:0
 #, python-format
 msgid "Writ service fee"
+msgstr ""
+
+#. module: l10n_be_coda
+#: code:addons/l10n_be_coda/wizard/account_bank_statement_import_coda.py:0
+#, python-format
+msgid "Wrong CODA code"
 msgstr ""
 
 #. module: l10n_be_coda

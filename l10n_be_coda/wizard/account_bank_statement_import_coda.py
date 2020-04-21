@@ -9,19 +9,29 @@ import re
 from odoo import models, fields, tools, _
 from odoo.exceptions import UserError
 
+
+class safedict(dict):
+    def __init__(self, *args, return_val=None, **kwargs):
+        self.__return_val = return_val if return_val is not None else _('Wrong CODA code')
+        super().__init__(*args, **kwargs)
+
+    def __getitem__(self, k):
+        return super().__getitem__(k) if k in self else self.__return_val
+
+
 # Mappings for the structured communication formats
-minimum = {'1': _('minimum applicable'), '2': _('minimum not applicable')}
-card_scheme = {'1': _('Bancontact/Mister Cash'), '2': _('Maestro'), '3': _('Private'), '5': _('TINA'), '9': _('Other')}
-transaction_type = {'0': _('cumulative'), '1': _('withdrawal'), '2': _('cumulative on network'), '4': _('reversal of purchases'), '5': _('POS others'), '7': _('distribution sector'), '8': _('teledata'), '9': _('fuel')}
-product_code = {'00': _('unset'), '01': _('premium with lead substitute'), '02': _('europremium'), '03': _('diesel'), '04': _('LPG'), '06': _('premium plus 98 oct'), '07': _('regular unleaded'), '08': _('domestic fuel oil'), '09': _('lubricants'), '10': _('petrol'), '11': _('premium 99+'), '12': _('Avgas'), '16': _('other types')}
-issuing_institution = {'1': 'Mastercard', '2': 'Visa', '3': 'American Express', '4': 'Diners Club', '9': 'Other'}
-type_direct_debit = {'0': _('unspecified'), '1': _('recurrent'), '2': _('one-off'), '3': _('1-st (recurrent)'), '4': _('last (recurrent)')}
-direct_debit_scheme = {'0': _('unspecified'), '1': _('SEPA core'), '2': _('SEPA B2B')}
-payment_reason = {'0': _('paid'), '1': _('technical problem'), '2': _('reason not specified'), '3': _('debtor disagrees'), '4': _('debtor’s account problem')}
-sepa_type = {'0': _('paid'), '1': _('reject'), '2': _('return'), '3': _('refund'), '4': _('reversal'), '5': _('cancellation')}
+minimum = safedict({'1': _('minimum applicable'), '2': _('minimum not applicable')})
+card_scheme = safedict({'1': _('Bancontact/Mister Cash'), '2': _('Maestro'), '3': _('Private'), '5': _('TINA'), '9': _('Other')})
+transaction_type = safedict({'0': _('cumulative'), '1': _('withdrawal'), '2': _('cumulative on network'), '4': _('reversal of purchases'), '5': _('POS others'), '7': _('distribution sector'), '8': _('teledata'), '9': _('fuel')})
+product_code = safedict({'00': _('unset'), '01': _('premium with lead substitute'), '02': _('europremium'), '03': _('diesel'), '04': _('LPG'), '06': _('premium plus 98 oct'), '07': _('regular unleaded'), '08': _('domestic fuel oil'), '09': _('lubricants'), '10': _('petrol'), '11': _('premium 99+'), '12': _('Avgas'), '16': _('other types')})
+issuing_institution = safedict({'1': 'Mastercard', '2': 'Visa', '3': 'American Express', '4': 'Diners Club', '9': 'Other'})
+type_direct_debit = safedict({'0': _('unspecified'), '1': _('recurrent'), '2': _('one-off'), '3': _('1-st (recurrent)'), '4': _('last (recurrent)')})
+direct_debit_scheme = safedict({'0': _('unspecified'), '1': _('SEPA core'), '2': _('SEPA B2B')})
+payment_reason = safedict({'0': _('paid'), '1': _('technical problem'), '2': _('reason not specified'), '3': _('debtor disagrees'), '4': _('debtor’s account problem')})
+sepa_type = safedict({'0': _('paid'), '1': _('reject'), '2': _('return'), '3': _('refund'), '4': _('reversal'), '5': _('cancellation')})
 
 
-sepa_transaction_type = {
+sepa_transaction_type = safedict({
     0: _('Simple amount without detailed data'),
     1: _('Amount as totalised by the customer'),
     2: _('Amount as totalised by the bank'),
@@ -31,16 +41,17 @@ sepa_transaction_type = {
     7: _('Detail of Amount as totalised by the bank'),
     8: _('Detail of Simple amount with detailed data'),
     9: _('Detail of Amount as totalised by the bank'),
-}
+})
 
-default_transaction_code = {
+default_transaction_code = safedict({
     '40': _('Codes proper to each bank'), '41': _('Codes proper to each bank'), '42': _('Codes proper to each bank'), '43': _('Codes proper to each bank'), '44': _('Codes proper to each bank'), '45': _('Codes proper to each bank'), '46': _('Codes proper to each bank'), '47': _('Codes proper to each bank'), '48': _('Codes proper to each bank'),
     '49': _('Cancellation or correction'),
     '87': _('Reimbursement of costs'),
     '90': _('Codes proper to each bank'), '91': _('Codes proper to each bank'), '92': _('Codes proper to each bank'), '93': _('Codes proper to each bank'), '94': _('Codes proper to each bank'), '95': _('Codes proper to each bank'), '96': _('Codes proper to each bank'), '97': _('Codes proper to each bank'), '98': _('Codes proper to each bank'),
     '99': _('Cancellation or correction'),
-}
-transaction_code = {
+})
+transaction_code = safedict(**{
+    'return_val': ('', {}),
     '01': (_('Domestic or local SEPA credit transfers'), {
         '01': _('Individual transfer order'),
         '02': _('Individual transfer order initiated by the bank'),
@@ -299,7 +310,7 @@ transaction_code = {
         '45': _('Documentary credit charges'),
         '47': _('Charging fees for transactions'),
     }),
-}
+})
 
 
 class AccountBankStatementImport(models.TransientModel):

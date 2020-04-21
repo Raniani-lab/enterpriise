@@ -463,6 +463,7 @@ class WinbooksImportWizard(models.TransientModel):
 
         _logger.info("Creating moves")
         move_ids = self.env['account.move'].create(move_data_list)
+        move_ids.post()
         _logger.info("Creating attachments")
         for move, pdf_file in zip(move_ids, pdf_file_list):
             if pdf_file:

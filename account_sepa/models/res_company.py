@@ -15,11 +15,13 @@ class ResCompany(models.Model):
         help="Entity that assigns the identification (eg. KBE-BCO or Finanzamt Muenchen IV).")
     sepa_initiating_party_name = fields.Char('Your Company Name', size=70, copy=False,
         help="Will appear in SEPA payments as the name of the party initiating the payment. Limited to 70 characters.")
-    sepa_pain_version = fields.Selection([('pain.001.001.03', 'Generic'), ('pain.001.001.03.ch.02', 'Swiss Version'), ('pain.001.003.03', 'German Version')],
-                                         string='SEPA Pain Version', help='SEPA may be a generic format, some countries differ from the SEPA recommandations made by the EPC (European Payment Councile) and thus the XML created need some tweakenings.',
+    sepa_pain_version = fields.Selection([('pain.001.001.03', 'Generic'), ('pain.001.001.03.ch.02', 'Swiss Version'), ('pain.001.003.03', 'German Version'), ('pain.001.001.03.se', 'Sweden Version')],
+                                         string='SEPA Pain Version',
                                          required=True,
                                          default='pain.001.001.03',
-                                         compute='_compute_sepa_pain_version')
+                                         compute='_compute_sepa_pain_version',
+                                         help='SEPA may be a generic format, some countries differ from the SEPA recommandations made by the EPC (European Payment Councile) and thus the XML created need some tweakenings.')
+
     @api.model
     def create(self, vals):
         # Overridden in order to set the name of the company as default value
@@ -52,6 +54,8 @@ class ResCompany(models.Model):
                 company.sepa_pain_version = 'pain.001.003.03'
             if company.country_id.code == 'CH':
                 company.sepa_pain_version = 'pain.001.001.03.ch.02'
+            if company.partner_id.country_id.code == 'SE':
+                company.sepa_pain_version = 'pain.001.001.03.se'
             else:
                 company.sepa_pain_version = 'pain.001.001.03'
 

@@ -19,6 +19,8 @@ class TestPayrollSEPACreditTransfer(TestHrPayrollAccountCommon):
     def setUpClass(cls):
         super(TestPayrollSEPACreditTransfer, cls).setUpClass()
 
+        cls.env.user.company_id.sepa_orgid_id = "0468651441"
+
         cls.bank = cls.env['res.bank'].create({
             'name':'BNP',
             'bic': 'GEBABEBB',

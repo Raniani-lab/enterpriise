@@ -79,7 +79,7 @@ class AccountJournal(models.Model):
         NbOfTxs.text = val_NbOfTxs
         CtrlSum = etree.SubElement(GrpHdr, "CtrlSum")
         CtrlSum.text = self._get_CtrlSum(payments)
-        GrpHdr.append(self._get_InitgPty(sct_generic))
+        GrpHdr.append(self._get_InitgPty(pain_version, sct_generic))
 
         # Create one PmtInf XML block per execution date
         payments_date_instr_wise = defaultdict(lambda: [])
@@ -109,10 +109,12 @@ class AccountJournal(models.Model):
 
             ReqdExctnDt = etree.SubElement(PmtInf, "ReqdExctnDt")
             ReqdExctnDt.text = fields.Date.to_string(payment_date)
-            PmtInf.append(self._get_Dbtr(sct_generic))
+            PmtInf.append(self._get_Dbtr(pain_version, sct_generic))
             PmtInf.append(self._get_DbtrAcct())
             DbtrAgt = etree.SubElement(PmtInf, "DbtrAgt")
             FinInstnId = etree.SubElement(DbtrAgt, "FinInstnId")
+            if pain_version == "pain.001.001.03.se" and not self.bank_account_id.bank_bic:
+                raise UserError(_("Bank account %s 's bank does not have any BIC number associated. Please define one.") % self.bank_account_id.sanitized_acc_number)
             if self.bank_account_id.bank_bic:
                 BIC = etree.SubElement(FinInstnId, "BIC")
                 BIC.text = self.bank_account_id.bank_bic.replace(' ', '').upper()
@@ -123,10 +125,9 @@ class AccountJournal(models.Model):
 
             # One CdtTrfTxInf per transaction
             for payment in payments_list:
-                PmtInf.append(self._get_CdtTrfTxInf(PmtInfId, payment, sct_generic, local_instrument))
+                PmtInf.append(self._get_CdtTrfTxInf(PmtInfId, payment, sct_generic, pain_version, local_instrument))
 
         return etree.tostring(Document, pretty_print=True, xml_declaration=True, encoding='utf-8')
-
 
     def _get_document(self, pain_version):
         if pain_version == 'pain.001.001.03.ch.02':
@@ -174,34 +175,44 @@ class AccountJournal(models.Model):
     def _get_CtrlSum(self, payments):
         return float_repr(float_round(sum(payment['amount'] for payment in payments), 2), 2)
 
-    def _get_InitgPty(self, sct_generic=False):
+    def _get_InitgPty(self, pain_version, sct_generic=False):
         InitgPty = etree.Element("InitgPty")
-        InitgPty.extend(self._get_company_PartyIdentification32(sct_generic, org_id=True, postal_address=False))
+        if pain_version == 'pain.001.001.03.se':
+            InitgPty.extend(self._get_company_PartyIdentification32(sct_generic, org_id=True, postal_address=False, issr=False, nm=False, schme_nm='BANK'))
+        else:
+            InitgPty.extend(self._get_company_PartyIdentification32(sct_generic, org_id=True, postal_address=False, issr=True))
         return InitgPty
 
-    def _get_company_PartyIdentification32(self, sct_generic=False, org_id=True, postal_address=True):
+    def _get_company_PartyIdentification32(self, sct_generic=False, org_id=True, postal_address=True, nm=True, issr=True, schme_nm=False):
         """ Returns a PartyIdentification32 element identifying the current journal's company
         """
         ret = []
         company = self.company_id
         name_length = sct_generic and 35 or 70
 
-        Nm = etree.Element("Nm")
-        Nm.text = sanitize_communication(company.sepa_initiating_party_name[:name_length])
-        ret.append(Nm)
+        if nm:
+            Nm = etree.Element("Nm")
+            Nm.text = sanitize_communication(company.sepa_initiating_party_name[:name_length])
+            ret.append(Nm)
 
-        if postal_address and company.partner_id.city and company.partner_id.country_id.code:
+        if postal_address:
             ret.append(self._get_PstlAdr(company.partner_id))
 
-        if org_id and company.sepa_orgid_id:
+        if org_id:
+            if not company.sepa_orgid_id:
+                raise UserError(_("Please first set a SEPA identification number in the accounting settings."))
             Id = etree.Element("Id")
             OrgId = etree.SubElement(Id, "OrgId")
             Othr = etree.SubElement(OrgId, "Othr")
             _Id = etree.SubElement(Othr, "Id")
             _Id.text = sanitize_communication(company.sepa_orgid_id)
-            if company.sepa_orgid_issr:
+            if issr and company.sepa_orgid_issr:
                 Issr = etree.SubElement(Othr, "Issr")
                 Issr.text = sanitize_communication(company.sepa_orgid_issr)
+            if schme_nm:
+                SchmeNm = etree.SubElement(Othr, "SchmeNm")
+                Cd = etree.SubElement(SchmeNm, "Cd")
+                Cd.text = schme_nm
             ret.append(Id)
 
         return ret
@@ -219,9 +230,12 @@ class AccountJournal(models.Model):
 
         return PmtTpInf
 
-    def _get_Dbtr(self, sct_generic=False):
+    def _get_Dbtr(self, pain_version, sct_generic=False):
         Dbtr = etree.Element("Dbtr")
-        Dbtr.extend(self._get_company_PartyIdentification32(sct_generic,org_id=lambda: not sct_generic, postal_address=True))
+        if pain_version == "pain.001.001.03.se":
+            Dbtr.extend(self._get_company_PartyIdentification32(sct_generic, org_id=True, postal_address=True, issr=False, schme_nm="CUST"))
+        else:
+            Dbtr.extend(self._get_company_PartyIdentification32(sct_generic, org_id=not sct_generic, postal_address=True))
         return Dbtr
 
     def _get_DbtrAcct(self):
@@ -246,7 +260,7 @@ class AccountJournal(models.Model):
             AdrLine.text = sanitize_communication((partner_id.zip + " " + partner_id.city)[:70])
         return PstlAdr
 
-    def _get_CdtTrfTxInf(self, PmtInfId, payment, sct_generic, local_instrument=None):
+    def _get_CdtTrfTxInf(self, PmtInfId, payment, sct_generic, pain_version, local_instrument=None):
         CdtTrfTxInf = etree.Element("CdtTrfTxInf")
         PmtId = etree.SubElement(CdtTrfTxInf, "PmtId")
         InstrId = etree.SubElement(PmtId, "InstrId")
@@ -280,7 +294,7 @@ class AccountJournal(models.Model):
         Cdtr = etree.SubElement(CdtTrfTxInf, "Cdtr")
         Nm = etree.SubElement(Cdtr, "Nm")
         Nm.text = sanitize_communication((partner_bank.acc_holder_name or partner.name)[:70])
-        if partner.city and partner.country_id.code:
+        if partner.country_id.code and (partner.city or pain_version == "pain.001.001.03.se"):  # For Sweden, country is enough
             Cdtr.append(self._get_PstlAdr(partner))
 
         CdtTrfTxInf.append(self._get_CdtrAcct(partner_bank, sct_generic))

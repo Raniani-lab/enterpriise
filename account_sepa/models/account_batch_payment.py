@@ -51,8 +51,8 @@ class AccountBatchPayment(models.Model):
         no_eur_payments = self.env['account.payment']
 
         for payment in self.mapped('payment_ids'):
-            if payment.company_id.country_id.code == 'CH':
-                #we need swiss payments as generic, but we should not give warnings (4eabbf1042d38f6c93c99c6a490f37af55303399)
+            if payment.company_id.country_id.code in ['CH', 'SE']:
+                #we need swiss/sweden payments as generic, but we should not give warnings (4eabbf1042d38f6c93c99c6a490f37af55303399)
                 continue
             if payment.partner_bank_id.acc_type != 'iban':
                 no_iban_payments += payment

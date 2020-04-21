@@ -17,6 +17,7 @@ class TestSEPACreditTransfer(AccountTestCommon):
         super(TestSEPACreditTransfer, cls).setUpClass()
 
         cls.env.user.company_id.country_id = cls.env.ref('base.be')
+        cls.env.user.company_id.vat = "BE0477472701"
 
         # Get some records
         cls.asustek_sup = cls.env['res.partner'].create({'name': 'Wood Corner'})

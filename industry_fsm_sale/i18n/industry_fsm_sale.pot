@@ -4,23 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:46+0000\n"
-"PO-Revision-Date: 2020-02-13 08:46+0000\n"
+"POT-Creation-Date: 2020-04-21 10:50+0000\n"
+"PO-Revision-Date: 2020-04-21 10:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
-#, python-format
-msgid "<b>Click the save button</b> to save the time spent."
-msgstr ""
 
 #. module: industry_fsm_sale
 #: code:addons/industry_fsm_sale/models/project_task.py:0
@@ -49,13 +42,6 @@ msgid "Add a product by clicking on it."
 msgstr ""
 
 #. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
-#, python-format
-msgid "Add a task title. <br/><i>(e.g. Boiler replacement)</i>"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.project_task_action_to_invoice_fsm
 msgid "All tasks were invoiced"
 msgstr ""
@@ -66,14 +52,16 @@ msgid "An FSM project must be billed at task rate."
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_billable
-msgid "Bill from Tasks"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "Choose Products"
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
+#, python-format
+msgid "Choose a name for your product <i>(e.g. Bolts, Screws, Boiler...).</i>"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -87,8 +75,10 @@ msgid "Create Invoice"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.actions.server,name:industry_fsm_sale.project_task_server_action_batch_invoice_fsm
-msgid "Create invoice"
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
+#, python-format
+msgid "Create a new product."
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -118,8 +108,8 @@ msgid "Display Create Invoice Secondary"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.fields,help:industry_fsm_sale.field_project_project__allow_timesheets
-msgid "Enable timesheeting on the project."
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.res_config_settings_view_form
+msgid "Documentation"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -130,43 +120,38 @@ msgid "Extra Quotations"
 msgstr ""
 
 #. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/js/fsm_product_quantity.js:0
+#, python-format
+msgid "FSM Product Quantity"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:product.product,name:industry_fsm_sale.field_service_product
 #: model:product.template,name:industry_fsm_sale.field_service_product_product_template
 msgid "Field Service"
 msgstr ""
 
 #. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
-#, python-format
-msgid ""
-"Here is the <b>Field Service app</b>. Click on the icon to start managing "
-"your onsite interventions."
-msgstr ""
-
-#. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
-#, python-format
-msgid ""
-"Here is the view of the users who are on the field. Click CREATE to start "
-"your first task."
-msgstr ""
-
-#. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
-#, python-format
-msgid ""
-"If everything looks good to you, mark the task as done. When doing so, your "
-"stock will automatically be updated and your task will move to te next "
-"stage."
-msgstr ""
-
-#. module: industry_fsm_sale
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "Invoice"
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
+#, python-format
+msgid ""
+"Invoice your time and material to your customer or ask for a down payment "
+"first."
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
+#, python-format
+msgid "Invoice your time and material to your customer."
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -199,11 +184,6 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.project_task_action_to_invoice_fsm
 msgid "No task to Invoice"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__invoice_count
-msgid "Number of invoices"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -263,31 +243,10 @@ msgid "Sales Order Line"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.fields,help:industry_fsm_sale.field_project_project__timesheet_product_id
-msgid ""
-"Select a Service product with which you would like to bill your time spent "
-"on tasks."
-msgstr ""
-
-#. module: industry_fsm_sale
 #. openerp-web
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
-msgid "Select or create a customer."
-msgstr ""
-
-#. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
-#, python-format
-msgid "Start recording your time."
-msgstr ""
-
-#. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
-#, python-format
-msgid "Stop the timer and save your timesheet."
+msgid "Save your product."
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -307,43 +266,9 @@ msgid "The material can be allowed only when the task can be billed."
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_timesheet_product_required_if_billable_and_timesheets
-msgid ""
-"The timesheet product is required when the task can be billed and timesheets"
-" are allowed."
-msgstr ""
-
-#. module: industry_fsm_sale
-#: code:addons/industry_fsm_sale/models/project_task.py:0
-#, python-format
-msgid "This action is only allowed on FSM project."
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__timesheet_product_id
-msgid "Timesheet Product"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_timesheet_timer
-msgid "Timesheet Timer"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_timesheets
-msgid "Timesheets"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model:ir.actions.act_window,name:industry_fsm_sale.project_task_action_to_invoice_fsm
 #: model:ir.ui.menu,name:industry_fsm_sale.fsm_menu_all_tasks_invoice
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search
 msgid "To Invoice"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__fsm_to_invoice
-msgid "To invoice"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -358,8 +283,10 @@ msgid "Units"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.fields,help:industry_fsm_sale.field_project_project__allow_timesheet_timer
-msgid "Use a timer to record timesheets on tasks"
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
+#, python-format
+msgid "Use the breadcrumbs to <b>go back to your products list</b>."
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -367,4 +294,11 @@ msgstr ""
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to <b>go back to your task</b>."
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/js/fsm_product_quantity.js:0
+#, python-format
+msgid "Wrong value entered! Only integers are valid."
 msgstr ""

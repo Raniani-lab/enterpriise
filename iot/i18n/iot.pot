@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:46+0000\n"
-"PO-Revision-Date: 2020-02-13 08:46+0000\n"
+"POT-Creation-Date: 2020-04-21 10:49+0000\n"
+"PO-Revision-Date: 2020-04-21 10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -39,14 +39,6 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "<span class=\"badge badge-success\">Connected</span>"
-msgstr ""
-
-#. module: iot
-#: code:addons/iot/drivers/SixDriver.py:0
-#, python-format
-msgid ""
-"A card is still inserted in the Payment Terminal, please remove it then try "
-"again."
 msgstr ""
 
 #. module: iot
@@ -285,6 +277,11 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:0
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
+msgstr ""
+
+#. module: iot
+#: model:ir.model.fields.selection,name:iot.selection__iot_device__type__fiscal_data_module
+msgid "Fiscal Data Module"
 msgstr ""
 
 #. module: iot
@@ -678,12 +675,6 @@ msgstr ""
 msgid ""
 "When setting a device here, the report will be printed through this device "
 "on the IoT Box"
-msgstr ""
-
-#. module: iot
-#: code:addons/iot/drivers/SixDriver.py:0
-#, python-format
-msgid "You cannot reverse this payment anymore."
 msgstr ""
 
 #. module: iot

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:46+0000\n"
-"PO-Revision-Date: 2020-02-13 08:46+0000\n"
+"POT-Creation-Date: 2020-04-21 10:49+0000\n"
+"PO-Revision-Date: 2020-04-21 10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -198,6 +198,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Activity View"
 msgstr ""
@@ -215,6 +216,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:0
 #, python-format
 msgid "Add Chatter Widget"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:0
+#, python-format
+msgid "Add Picture"
 msgstr ""
 
 #. module: web_studio
@@ -268,6 +276,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Add selection"
@@ -356,6 +365,13 @@ msgstr ""
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Archived"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:0
+#, python-format
+msgid "Are you sure you want to remove the selection values?"
 msgstr ""
 
 #. module: web_studio
@@ -516,6 +532,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Calendar View"
 msgstr ""
@@ -628,6 +645,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
+#: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Clear"
 msgstr ""
@@ -657,6 +675,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Cohort View"
@@ -690,6 +709,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Column"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Column Title"
 msgstr ""
 
 #. module: web_studio
@@ -1025,6 +1051,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/action_editor.xml:0
+#: code:addons/web_studio/static/src/xml/action_editor.xml:0
 #, python-format
 msgid "Default view"
 msgstr ""
@@ -1045,6 +1072,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #, python-format
 msgid "Delete Menu Item"
@@ -1067,6 +1095,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:0
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Disable creation"
@@ -1166,6 +1195,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/action_editor.xml:0
+#: code:addons/web_studio/static/src/xml/action_editor.xml:0
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Dropdown menu"
@@ -1207,6 +1237,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:0
+#: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #, python-format
 msgid "Edit Menu Item"
 msgstr ""
@@ -1227,6 +1258,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Edit selection"
@@ -1280,7 +1312,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
 #, python-format
-msgid "Enable Mass Edition"
+msgid "Enable Mass Editing"
 msgstr ""
 
 #. module: web_studio
@@ -1493,6 +1525,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Form View"
 msgstr ""
@@ -1506,6 +1539,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Gantt View"
@@ -1549,6 +1583,8 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/search_renderer.xml:0
+#: code:addons/web_studio/static/src/xml/search_renderer.xml:0
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Graph View"
@@ -1575,6 +1611,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/search_renderer.xml:0
 #: code:addons/web_studio/static/src/xml/search_renderer.xml:0
 #, python-format
 msgid "Grid View"
@@ -1700,6 +1737,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #, python-format
 msgid "Home"
@@ -1850,6 +1888,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/action_editor.xml:0
+#: code:addons/web_studio/static/src/xml/action_editor.xml:0
 #, python-format
 msgid "Is default view"
 msgstr ""
@@ -1869,6 +1908,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Kanban View"
@@ -1891,13 +1931,6 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
-#, python-format
-msgid "Label Text"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Large"
@@ -1906,12 +1939,6 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin____last_update
 msgid "Last Modified on"
-msgstr ""
-
-#. module: web_studio
-#: code:addons/web_studio/controllers/main.py:0
-#, python-format
-msgid "Left Title"
 msgstr ""
 
 #. module: web_studio
@@ -1933,6 +1960,8 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/search_renderer.xml:0
+#: code:addons/web_studio/static/src/xml/search_renderer.xml:0
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "List View"
@@ -1940,6 +1969,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor.xml:0
 #: code:addons/web_studio/static/src/xml/report_editor.xml:0
 #, python-format
 msgid "Loading..."
@@ -1975,6 +2005,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Map View"
@@ -2023,6 +2054,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/search_renderer.xml:0
 #: code:addons/web_studio/static/src/xml/search_renderer.xml:0
 #, python-format
 msgid "Minus"
@@ -2176,7 +2208,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/edit_menu.xml:0
+#: code:addons/web_studio/static/src/js/edit_menu.js:0
 #, python-format
 msgid "New Menu"
 msgstr ""
@@ -2207,6 +2239,8 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/app_creator.xml:0
 #: code:addons/web_studio/static/src/xml/app_creator.xml:0
+#: code:addons/web_studio/static/src/xml/app_creator.xml:0
+#: code:addons/web_studio/static/src/xml/model_configurator.xml:0
 #: code:addons/web_studio/static/src/xml/model_configurator.xml:0
 #, python-format
 msgid "Next"
@@ -2378,6 +2412,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Pivot View"
 msgstr ""
@@ -2412,6 +2447,8 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/app_creator.xml:0
+#: code:addons/web_studio/static/src/xml/app_creator.xml:0
+#: code:addons/web_studio/static/src/xml/model_configurator.xml:0
 #: code:addons/web_studio/static/src/xml/model_configurator.xml:0
 #, python-format
 msgid "Previous"
@@ -2567,6 +2604,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
+#: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Remove selection"
 msgstr ""
@@ -2658,12 +2696,6 @@ msgid "Retention"
 msgstr ""
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:0
-#, python-format
-msgid "Right Title"
-msgstr ""
-
-#. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_rule
 msgid "Rule"
 msgstr ""
@@ -2691,6 +2723,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/submenu.xml:0
 #: code:addons/web_studio/static/src/xml/submenu.xml:0
 #, python-format
 msgid "Search View"
@@ -2985,6 +3018,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:0
+#: code:addons/web_studio/static/src/xml/edit_menu.xml:0
 #, python-format
 msgid "Submenu label"
 msgstr ""
@@ -3108,6 +3142,7 @@ msgstr ""
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/controllers/main.py:0
+#: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The field %s does not exist."
 msgstr ""
@@ -3125,6 +3160,7 @@ msgid "The icon is not linked to an attachment"
 msgstr ""
 
 #. module: web_studio
+#: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/controllers/main.py:0
@@ -3173,6 +3209,14 @@ msgstr ""
 msgid ""
 "The requested change caused an error in the view. It could be because a "
 "field was deleted, but still used somewhere else."
+msgstr ""
+
+#. module: web_studio
+#: code:addons/web_studio/controllers/main.py:0
+#, python-format
+msgid ""
+"There are %s records using selection values not listed in those you are trying to save.\n"
+"Are you sure you want to remove the selection values of those records?"
 msgstr ""
 
 #. module: web_studio
@@ -3260,6 +3304,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/systray.xml:0
 #: code:addons/web_studio/static/src/xml/systray.xml:0
+#: code:addons/web_studio/static/src/xml/systray.xml:0
 #, python-format
 msgid "Toggle Studio"
 msgstr ""
@@ -3328,6 +3373,8 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
+#: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:0
 #, python-format
@@ -3492,6 +3539,15 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/js/edit_menu.js:0
+#, python-format
+msgid ""
+"You cannot remove all the menu items of an app.\r\n"
+"Try uninstalling the app instead."
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:0
 #, python-format
 msgid "You first need to create a many2many field in the form view."
@@ -3504,14 +3560,6 @@ msgstr ""
 msgid ""
 "You first need to create a many2one field to Partner or User in the form "
 "view."
-msgstr ""
-
-#. module: web_studio
-#: code:addons/web_studio/controllers/main.py:0
-#, python-format
-msgid ""
-"You have %s records that have a selection value different than the ones you "
-"are defining. Please modify those records first."
 msgstr ""
 
 #. module: web_studio

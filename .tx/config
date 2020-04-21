@@ -282,11 +282,6 @@ file_filter = event_enterprise/i18n/<lang>.po
 source_file = event_enterprise/i18n/event_enterprise.pot
 source_lang = en
 
-[odoo-master.event_social_facebook]
-file_filter = event_social_facebook/i18n/<lang>.po
-source_file = event_social_facebook/i18n/event_social_facebook.pot
-source_lang = en
-
 [odoo-master.fleet_dashboard]
 file_filter = fleet_dashboard/i18n/<lang>.po
 source_file = fleet_dashboard/i18n/fleet_dashboard.pot
@@ -350,6 +345,11 @@ source_lang = en
 [odoo-master.hr_contract_salary]
 file_filter = hr_contract_salary/i18n/<lang>.po
 source_file = hr_contract_salary/i18n/hr_contract_salary.pot
+source_lang = en
+
+[odoo-master.hr_contract_salary_payroll]
+file_filter = hr_contract_salary_payroll/i18n/<lang>.po
+source_file = hr_contract_salary_payroll/i18n/hr_contract_salary_payroll.pot
 source_lang = en
 
 [odoo-master.hr_contract_sign]

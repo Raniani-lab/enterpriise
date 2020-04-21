@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:45+0000\n"
-"PO-Revision-Date: 2020-02-13 08:45+0000\n"
+"POT-Creation-Date: 2020-04-21 10:50+0000\n"
+"PO-Revision-Date: 2020-04-21 10:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,24 @@ msgid "Analytic Line"
 msgstr ""
 
 #. module: helpdesk_sale_timesheet
+#: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_sale_timesheet
+msgid "Create Invoice"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: code:addons/helpdesk_sale_timesheet/models/helpdesk.py:0
+#: code:addons/helpdesk_sale_timesheet/models/helpdesk.py:0
+#: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_sale_timesheet
+#, python-format
+msgid "Create Sales Order"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model:ir.actions.server,name:helpdesk_sale_timesheet.project_task_server_action_batch_invoice_helpdesk
+msgid "Create invoice"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Date"
 msgstr ""
@@ -28,6 +46,26 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Description"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__display_create_invoice_primary
+msgid "Display Create Invoice Primary"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__display_create_invoice_secondary
+msgid "Display Create Invoice Secondary"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__display_create_so_button_primary
+msgid "Display Create So Button Primary"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__display_create_so_button_secondary
+msgid "Display Create So Button Secondary"
 msgstr ""
 
 #. module: helpdesk_sale_timesheet
@@ -51,19 +89,21 @@ msgid "Helpdesk Ticket"
 msgstr ""
 
 #. module: helpdesk_sale_timesheet
-#: model:ir.model.fields,help:helpdesk_sale_timesheet.field_helpdesk_ticket__is_overdue
+#: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__invoice_status
+msgid "Invoice Status"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
+msgid "Ref. Sales Order"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model:ir.model.fields,help:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
 msgid ""
-"Indicates more support time has been delivered thant the ordered quantity"
-msgstr ""
-
-#. module: helpdesk_sale_timesheet
-#: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__is_overdue
-msgid "Is overdue"
-msgstr ""
-
-#. module: helpdesk_sale_timesheet
-#: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_sale_timesheet
-msgid "No more remaining hours on customer's task"
+"Reference of the Sales Order to which this ticket refers. Setting this "
+"information aims at easing your After Sales process and only serves "
+"indicative purposes."
 msgstr ""
 
 #. module: helpdesk_sale_timesheet
@@ -79,4 +119,9 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Timesheets"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_tickets_view_search_inherit_helpdesk_sale_timesheet
+msgid "To Invoice"
 msgstr ""

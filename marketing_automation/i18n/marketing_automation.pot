@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:46+0000\n"
-"PO-Revision-Date: 2020-02-13 08:46+0000\n"
+"POT-Creation-Date: 2020-04-21 10:49+0000\n"
+"PO-Revision-Date: 2020-04-21 10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -84,7 +84,7 @@ msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "<i class=\"fa fa-exclamation-circle\"/> Mail bounced after"
+msgid "<i class=\"fa fa-exclamation-circle\"/> Bounced after"
 msgstr ""
 
 #. module: marketing_automation
@@ -120,9 +120,9 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid ""
-"<i data-type=\"act\" class=\"fa fa-code-fork fa-rotate-180 fa-flip-vertical "
-"o_ma_text_processed o_add_child\" title=\"Add Another Activity\" "
-"role=\"img\" aria-label=\"Add Another Activity\"/>"
+"<i data-trigger-type=\"activity\" class=\"fa fa-code-fork fa-rotate-180 fa-"
+"flip-vertical o_ma_text_processed o_add_child_activity\" title=\"Add Another"
+" Activity\" role=\"img\" aria-label=\"Add Another Activity\"/>"
 msgstr ""
 
 #. module: marketing_automation
@@ -232,8 +232,18 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
+#: model:ir.model.fields,help:marketing_automation.field_marketing_activity__allowed_parent_ids
+msgid "All activities which can be the parent of this one"
+msgstr ""
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__social_post_ids
 msgid "All related social media posts"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__allowed_parent_ids
+msgid "Allowed parents"
 msgstr ""
 
 #. module: marketing_automation
@@ -270,7 +280,6 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__bounced
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__bounced
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Bounced"
@@ -299,7 +308,6 @@ msgstr ""
 
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.marketing_campaign_action
-#: model:ir.actions.act_window,name:marketing_automation.marketing_campaign_action_archived
 #: model:ir.ui.menu,name:marketing_automation.marketing_campaign_menu
 msgid "Campaigns"
 msgstr ""
@@ -368,7 +376,6 @@ msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
-#: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action_archived
 msgid "Create a campaign"
 msgstr ""
 
@@ -448,11 +455,6 @@ msgstr ""
 #: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
 msgid "Delete All"
-msgstr ""
-
-#. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__delivered
-msgid "Delivered"
 msgstr ""
 
 #. module: marketing_automation
@@ -543,14 +545,6 @@ msgid "Error! You can't create recursive hierarchy of Activity."
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:0
-#, python-format
-msgid ""
-"Error! You can't define a child activity with a trigger of type \"beginning "
-"of campaign\"."
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__exception
 msgid "Exception"
 msgstr ""
@@ -584,11 +578,6 @@ msgid "Expiry Duration"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__failed
-msgid "Failed"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__domain
 msgid "Filter"
 msgstr ""
@@ -611,11 +600,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__id
 msgid "ID"
-msgstr ""
-
-#. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ignored
-msgid "Ignored"
 msgstr ""
 
 #. module: marketing_automation
@@ -684,6 +668,11 @@ msgid "Link Tracker"
 msgstr ""
 
 #. module: marketing_automation
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_category__email
+msgid "Mail"
+msgstr ""
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_automation
 msgid "Mail Body"
@@ -743,16 +732,6 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__mass_mailing_id_mailing_type
 msgid "Mailing Type"
-msgstr ""
-
-#. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_items
-msgid "Mailings"
-msgstr ""
-
-#. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_clicked
-msgid "Mailings Clicked"
 msgstr ""
 
 #. module: marketing_automation
@@ -954,11 +933,6 @@ msgid "Number of Mass Mailing"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_clicks_ratio
-msgid "Number of clicks"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__click_count
 msgid "Number of clicks generated by the campaign"
 msgstr ""
@@ -976,7 +950,6 @@ msgid "Object"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__opened
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__opened
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Opened"
@@ -1068,6 +1041,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
+msgid "Please save the campaign"
+msgstr ""
+
+#. module: marketing_automation
+#. openerp-web
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
+#, python-format
 msgid "Please save the campaign to add a child activity"
 msgstr ""
 
@@ -1142,7 +1122,6 @@ msgid "Removed means the related record does not exist anymore."
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__replied
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__replied
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Replied"
@@ -1203,7 +1182,6 @@ msgid "Schedule Date"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__scheduled
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__scheduled
 msgid "Scheduled"
 msgstr ""
@@ -1237,11 +1215,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__sent
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Sent"
-msgstr ""
-
-#. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__sent
-msgid "Sent Emails"
 msgstr ""
 
 #. module: marketing_automation
@@ -1394,11 +1367,6 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__total
-msgid "Total"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__total_bounce
 msgid "Total Bounce"
 msgstr ""
@@ -1434,6 +1402,11 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Trigger"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__trigger_category
+msgid "Trigger Category"
 msgstr ""
 
 #. module: marketing_automation
@@ -1512,11 +1485,19 @@ msgstr ""
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
+msgid ""
+"You are trying to set the activity \"%s\" as \"%s\" while its child \"%s\" has the trigger type \"%s\"\n"
+"Please modify one of those activities before saving."
+msgstr ""
+
+#. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
+#, python-format
 msgid "You must set up at least one activity to start this campaign."
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__act
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__activity
 msgid "another activity"
 msgstr ""
 

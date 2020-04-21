@@ -4,16 +4,21 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:46+0000\n"
-"PO-Revision-Date: 2020-02-13 08:46+0000\n"
+"POT-Creation-Date: 2020-04-21 10:50+0000\n"
+"PO-Revision-Date: 2020-04-21 10:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__lead_all_count
+msgid "# Leads"
+msgstr ""
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
@@ -46,23 +51,18 @@ msgid "Archived"
 msgstr ""
 
 #. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-msgid "Assignation"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user__leads_count
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__lead_month_count
 msgid "Assigned Leads"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_team__assigned_leads_count
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Assigned Leads Count"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_team_user__leads_count
-msgid "Assigned Leads this last month"
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+msgid "Assignment"
 msgstr ""
 
 #. module: website_crm_score
@@ -72,19 +72,9 @@ msgid "Attachment Count"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
-msgid "Auto Assign Date"
-msgstr ""
-
-#. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "Avatar"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_team__capacity
-msgid "Capacity"
 msgstr ""
 
 #. module: website_crm_score
@@ -113,7 +103,7 @@ msgstr ""
 #: model:ir.actions.server,name:website_crm_score.ir_cron_lead_assign_ir_actions_server
 #: model:ir.cron,cron_name:website_crm_score.ir_cron_lead_assign
 #: model:ir.cron,name:website_crm_score.ir_cron_lead_assign
-msgid "Crm Score: lead assignation"
+msgid "Crm Score: lead assignment"
 msgstr ""
 
 #. module: website_crm_score
@@ -126,12 +116,6 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__last_run
 msgid "Date from the last scoring on all leads."
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_crm_lead__assign_date
-msgid ""
-"Date when the lead has been assigned via the auto-assignation mechanism"
 msgstr ""
 
 #. module: website_crm_score
@@ -237,6 +221,16 @@ msgid "Last run"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_crm_team__lead_capacity
+msgid "Lead Capacity"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model.fields,help:website_crm_score.field_team_user__lead_month_count
+msgid "Lead assigned to this member those last 30 days"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_crm_lead
 msgid "Lead/Opportunity"
 msgstr ""
@@ -250,13 +244,7 @@ msgstr ""
 
 #. module: website_crm_score
 #: model:ir.ui.menu,name:website_crm_score.team_user
-msgid "Leads Assignation"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_team__leads_count
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__leads_count
-msgid "Leads Count"
+msgid "Leads Assignment"
 msgstr ""
 
 #. module: website_crm_score
@@ -340,16 +328,6 @@ msgstr ""
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_unread_counter
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user__percentage_leads
-msgid "Percentage leads"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_team__ratio
-msgid "Ratio"
 msgstr ""
 
 #. module: website_crm_score
@@ -462,7 +440,7 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.ui.menu,name:website_crm_score.team
-msgid "Teams Assignation"
+msgid "Teams Assignment"
 msgstr ""
 
 #. module: website_crm_score

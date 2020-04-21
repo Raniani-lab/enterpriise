@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:45+0000\n"
-"PO-Revision-Date: 2020-02-13 08:45+0000\n"
+"POT-Creation-Date: 2020-04-21 10:49+0000\n"
+"PO-Revision-Date: 2020-04-21 10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -45,6 +45,12 @@ msgid "Archive"
 msgstr ""
 
 #. module: data_merge
+#: model_terms:ir.ui.view,arch_db:data_merge.data_merge_model_view_search
+#: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_search
+msgid "Archived"
+msgstr ""
+
+#. module: data_merge
 #. openerp-web
 #: code:addons/data_merge/static/src/js/data_merge_list_view.js:0
 #, python-format
@@ -66,7 +72,8 @@ msgid "Automatic"
 msgstr ""
 
 #. module: data_merge
-#: model:ir.model.fields.selection,name:data_merge.selection__data_merge_rule__match_mode__accent
+#: code:addons/data_merge/models/data_merge_rule.py:0
+#, python-format
 msgid "Case/Accent Insensitive Match"
 msgstr ""
 
@@ -244,7 +251,8 @@ msgid ""
 msgstr ""
 
 #. module: data_merge
-#: model:ir.model.fields.selection,name:data_merge.selection__data_merge_rule__match_mode__exact
+#: code:addons/data_merge/models/data_merge_rule.py:0
+#, python-format
 msgid "Exact Match"
 msgstr ""
 
@@ -314,6 +322,13 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__notify_user_ids
 msgid "List of users to notify when there are new records to merge"
+msgstr ""
+
+#. module: data_merge
+#. openerp-web
+#: code:addons/data_merge/static/src/xml/data_merge_list_views.xml:0
+#, python-format
+msgid "Main actions"
 msgstr ""
 
 #. module: data_merge

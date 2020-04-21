@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:45+0000\n"
-"PO-Revision-Date: 2020-02-13 08:45+0000\n"
+"POT-Creation-Date: 2020-04-21 10:49+0000\n"
+"PO-Revision-Date: 2020-04-21 10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,12 +30,38 @@ msgstr ""
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-msgid "Attachment(s)"
+msgid "<span class=\"s_website_form_label_content\">Attachment(s)</span>"
 msgstr ""
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-msgid "Description"
+msgid "<span class=\"s_website_form_label_content\">Description</span>"
+msgstr ""
+
+#. module: website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
+msgid ""
+"<span class=\"s_website_form_label_content\">Subject</span>\n"
+"                                            <span class=\"s_website_form_mark\"> *</span>"
+msgstr ""
+
+#. module: website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
+msgid "<span class=\"s_website_form_label_content\">Team</span>"
+msgstr ""
+
+#. module: website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
+msgid ""
+"<span class=\"s_website_form_label_content\">Your Email</span>\n"
+"                                            <span class=\"s_website_form_mark\"> *</span>"
+msgstr ""
+
+#. module: website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
+msgid ""
+"<span class=\"s_website_form_label_content\">Your Name</span>\n"
+"                                            <span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
 
 #. module: website_helpdesk_form
@@ -49,11 +75,6 @@ msgstr ""
 #: model:ir.model,name:website_helpdesk_form.model_helpdesk_team
 #, python-format
 msgid "Helpdesk Team"
-msgstr ""
-
-#. module: website_helpdesk_form
-#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-msgid "Subject<span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
 
 #. module: website_helpdesk_form
@@ -72,11 +93,6 @@ msgid "Submit an issue using this page:<br/>"
 msgstr ""
 
 #. module: website_helpdesk_form
-#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-msgid "Team"
-msgstr ""
-
-#. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
 #: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Thank you for submitting your issue, our team will get right on it!"
@@ -85,16 +101,6 @@ msgstr ""
 #. module: website_helpdesk_form
 #: model:ir.model.fields,field_description:website_helpdesk_form.field_helpdesk_team__feature_form_url
 msgid "URL to Submit Issue"
-msgstr ""
-
-#. module: website_helpdesk_form
-#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-msgid "Your Email<span class=\"s_website_form_mark\"> *</span>"
-msgstr ""
-
-#. module: website_helpdesk_form
-#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit_form
-msgid "Your Name<span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
 
 #. module: website_helpdesk_form

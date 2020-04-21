@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:46+0000\n"
-"PO-Revision-Date: 2020-02-13 08:46+0000\n"
+"POT-Creation-Date: 2020-04-21 10:49+0000\n"
+"PO-Revision-Date: 2020-04-21 10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -359,8 +359,8 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
 msgid ""
-"Do you want to confirm this purchase? After confirmation, somebody from HR "
-"will contact you."
+"Do you want to confirm this reward? After confirmation an HR will contact "
+"you."
 msgstr ""
 
 #. module: hr_referral
@@ -693,6 +693,11 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: hr_referral
+#: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__last_valuable_stage_id
+msgid "Last Valuable Stage"
+msgstr ""
+
+#. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.action_hr_applicant_employee_referral
 msgid "Let's share a job position."
 msgstr ""
@@ -815,6 +820,11 @@ msgstr ""
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_report__referral_state__closed
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_filter
 msgid "Not Hired"
+msgstr ""
+
+#. module: hr_referral
+#: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_stage__not_hired_stage
+msgid "Not Hired Stage"
 msgstr ""
 
 #. module: hr_referral
@@ -1053,6 +1063,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
 #, python-format
+msgid "Restart Onboarding"
+msgstr ""
+
+#. module: hr_referral
+#. openerp-web
+#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#, python-format
 msgid "Reward"
 msgstr ""
 
@@ -1171,6 +1188,8 @@ msgstr ""
 #. module: hr_referral
 #. openerp-web
 #: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
 #, python-format
 msgid "Start"
 msgstr ""
@@ -1239,6 +1258,13 @@ msgstr ""
 msgid ""
 "This link contains a tracker so that people clicking on it will account to a"
 " referral for you, even if they apply on a position after a few days."
+msgstr ""
+
+#. module: hr_referral
+#: model:ir.model.fields,help:hr_referral.field_hr_recruitment_stage__not_hired_stage
+msgid ""
+"This option is used in app 'Referrals'. If checked, the stage is not "
+"displayed in 'Referrals Dashboard' and no points are given to the employee."
 msgstr ""
 
 #. module: hr_referral
@@ -1376,6 +1402,20 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_alert_form
 msgid "https://www.google.com"
+msgstr ""
+
+#. module: hr_referral
+#. openerp-web
+#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#, python-format
+msgid "reward"
+msgstr ""
+
+#. module: hr_referral
+#. openerp-web
+#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#, python-format
+msgid "share"
 msgstr ""
 
 #. module: hr_referral

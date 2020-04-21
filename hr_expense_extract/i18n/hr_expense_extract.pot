@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:46+0000\n"
-"PO-Revision-Date: 2020-02-13 08:46+0000\n"
+"POT-Creation-Date: 2020-04-21 10:50+0000\n"
+"PO-Revision-Date: 2020-04-21 10:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -50,6 +50,11 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__done
 msgid "Completed flow"
+msgstr ""
+
+#. module: hr_expense_extract
+#: model:ir.model,name:hr_expense_extract.model_res_config_settings
+msgid "Config Settings"
 msgstr ""
 
 #. module: hr_expense_extract
@@ -103,6 +108,11 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields,help:hr_expense_extract.field_hr_expense__extract_remote_id
 msgid "Expense extract id"
+msgstr ""
+
+#. module: hr_expense_extract
+#: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__expense_extract_show_ocr_option_selection
+msgid "Expense processing option"
 msgstr ""
 
 #. module: hr_expense_extract

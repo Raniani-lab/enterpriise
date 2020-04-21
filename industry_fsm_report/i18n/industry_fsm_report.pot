@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:46+0000\n"
-"PO-Revision-Date: 2020-02-13 08:46+0000\n"
+"POT-Creation-Date: 2020-04-21 10:50+0000\n"
+"PO-Revision-Date: 2020-04-21 10:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,13 +34,6 @@ msgstr ""
 #. module: industry_fsm_report
 #: model:ir.actions.report,print_report_name:industry_fsm_report.task_custom_report
 msgid "'Worksheet %s - %s' % (object.name, object.partner_id.name)"
-msgstr ""
-
-#. module: industry_fsm_report
-#. openerp-web
-#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
-#, python-format
-msgid "<b>Click the send button</b> to send the report."
 msgstr ""
 
 #. module: industry_fsm_report
@@ -172,7 +165,7 @@ msgid "Color"
 msgstr ""
 
 #. module: industry_fsm_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_1
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_worksheet_template_1
 msgid "Comments"
 msgstr ""
 
@@ -270,7 +263,14 @@ msgstr ""
 #. openerp-web
 #: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
 #, python-format
-msgid "Get back to the task in backend."
+msgid "Generate a signature automatically or draw it by hand."
+msgstr ""
+
+#. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "Go back to your Field Service task."
 msgstr ""
 
 #. module: industry_fsm_report
@@ -292,6 +292,13 @@ msgid "Invalid signature data."
 msgstr ""
 
 #. module: industry_fsm_report
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#, python-format
+msgid "Invite your customer to validate and to sign your worksheet report."
+msgstr ""
+
+#. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__fsm_is_sent
 msgid "Is Worksheet sent"
 msgstr ""
@@ -310,13 +317,6 @@ msgstr ""
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_worksheet_template__write_date
 msgid "Last Updated on"
-msgstr ""
-
-#. module: industry_fsm_report
-#. openerp-web
-#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
-#, python-format
-msgid "Make the client sign the worksheet."
 msgstr ""
 
 #. module: industry_fsm_report
@@ -375,7 +375,11 @@ msgstr ""
 #. openerp-web
 #: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
 #, python-format
-msgid "Save the worksheet."
+msgid ""
+"Save your worksheet once it is complete.<br/><i>Note that this form can be "
+"entirely customized to fit your specific needs.<br/>You will also be able to"
+" create multiple worksheet templates for each kind of intervention you may "
+"have.</i>"
 msgstr ""
 
 #. module: industry_fsm_report
@@ -386,8 +390,9 @@ msgstr ""
 #. module: industry_fsm_report
 #. openerp-web
 #: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
+#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
 #, python-format
-msgid "Send the report to your customer by email."
+msgid "Send the report of your intervention to your customer."
 msgstr ""
 
 #. module: industry_fsm_report
@@ -450,13 +455,6 @@ msgstr ""
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_worksheet_template_view_list
 msgid "Template name"
-msgstr ""
-
-#. module: industry_fsm_report
-#. openerp-web
-#: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report.js:0
-#, python-format
-msgid "The client may click Auto or draw it manually."
 msgstr ""
 
 #. module: industry_fsm_report

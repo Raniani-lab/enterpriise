@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:46+0000\n"
-"PO-Revision-Date: 2020-02-13 08:46+0000\n"
+"POT-Creation-Date: 2020-04-21 10:49+0000\n"
+"PO-Revision-Date: 2020-04-21 10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -645,12 +645,30 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
+#: code:addons/sale_subscription/models/product.py:0
+#, python-format
+msgid "A 'Storable Product' cannot be a 'Subscription Product' !"
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/product.py:0
+#, python-format
+msgid "A 'Subscription Product' cannot be a 'Storable Product' !"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__website_published
 msgid ""
 "A code server action can be executed from the website, using a dedicated "
 "controller. The address is <base>/website/action/<website_path>. Set this "
 "field as True to allow users to run this action. If it is set to False the "
 "action cannot be run through the website."
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/product.py:0
+#, python-format
+msgid "A subscription product cannot be a storable product."
 msgstr ""
 
 #. module: sale_subscription
@@ -1048,7 +1066,13 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__code
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Code"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__code
+msgid "Code is added automatically in the display name of every subscription."
 msgstr ""
 
 #. module: sale_subscription
@@ -1178,11 +1202,6 @@ msgstr ""
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Create your first subscription product here"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_id
-msgid "Create/Write Target Model"
 msgstr ""
 
 #. module: sale_subscription
@@ -1907,7 +1926,7 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__link_field_id
-msgid "Link using field"
+msgid "Link Field"
 msgstr ""
 
 #. module: sale_subscription
@@ -2306,8 +2325,8 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__link_field_id
 msgid ""
-"Provide the field used to link the newly created record on the record on "
-"used by the server action."
+"Provide the field used to link the newly created record on the record used "
+"by the server action."
 msgstr ""
 
 #. module: sale_subscription
@@ -2578,6 +2597,7 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__team_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__team_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_log__team_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__team_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -2796,7 +2816,9 @@ msgid "Start Date:"
 msgstr ""
 
 #. module: sale_subscription
+#: code:addons/sale_subscription/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
+#, python-format
 msgid "Status"
 msgstr ""
 
@@ -3068,8 +3090,13 @@ msgid "Tags"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_name
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_id
 msgid "Target Model"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_name
+msgid "Target Model Name"
 msgstr ""
 
 #. module: sale_subscription
@@ -3453,6 +3480,13 @@ msgstr ""
 msgid ""
 "Want recurring billing via subscription management ? Get started by clicking"
 " here"
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/product.py:0
+#: code:addons/sale_subscription/models/product.py:0
+#, python-format
+msgid "Warning"
 msgstr ""
 
 #. module: sale_subscription

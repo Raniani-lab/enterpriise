@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:45+0000\n"
-"PO-Revision-Date: 2020-02-13 08:45+0000\n"
+"POT-Creation-Date: 2020-04-21 10:49+0000\n"
+"PO-Revision-Date: 2020-04-21 10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -45,11 +45,6 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_payment__display_qr_code
-msgid "Display Qr Code"
 msgstr ""
 
 #. module: account_sepa
@@ -127,11 +122,6 @@ msgid "Payments to send via SEPA"
 msgstr ""
 
 #. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_payment__qr_code_url
-msgid "Qr Code Url"
-msgstr ""
-
-#. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_payment_register
 msgid "Register Payment"
 msgstr ""
@@ -175,12 +165,6 @@ msgid ""
 "SEPA may be a generic format, some countries differ from the SEPA "
 "recommandations made by the EPC (European Payment Councile) and thus the XML"
 " created need some tweakenings."
-msgstr ""
-
-#. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:0
-#, python-format
-msgid "Scan me with your banking app."
 msgstr ""
 
 #. module: account_sepa
@@ -228,12 +212,6 @@ msgid ""
 "be 'generic' if it cannot be considered as a standard european credit "
 "transfer. That is if the bank journal is not in €, a transaction is not in €"
 " or a payee is not identified by an IBAN account number."
-msgstr ""
-
-#. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:0
-#, python-format
-msgid "The SEPA QR Code information is not set correctly."
 msgstr ""
 
 #. module: account_sepa

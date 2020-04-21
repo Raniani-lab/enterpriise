@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:45+0000\n"
-"PO-Revision-Date: 2020-02-13 08:45+0000\n"
+"POT-Creation-Date: 2020-04-21 10:49+0000\n"
+"PO-Revision-Date: 2020-04-21 10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -456,11 +456,6 @@ msgid "Assign to me"
 msgstr ""
 
 #. module: helpdesk
-#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__assign_method
-msgid "Assignation Method"
-msgstr ""
-
-#. module: helpdesk
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Assigned"
@@ -489,6 +484,11 @@ msgid "Assigning Ticket"
 msgstr ""
 
 #. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__assign_method
+msgid "Assignment Method"
+msgstr ""
+
+#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_stage_view_form
 msgid ""
 "At each stage employees can block or make task/issue ready for next stage.\n"
@@ -512,7 +512,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__assign_method
 msgid ""
-"Automatic assignation method for new tickets:\n"
+"Automatic assignment method for new tickets:\n"
 "\tManually: manual\n"
 "\tRandomly: randomly but everyone gets the same amount\n"
 "\tBalanced: to the person with the least amount of open tickets"
@@ -698,7 +698,7 @@ msgstr ""
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
-msgid "Configure domain name"
+msgid "Configure a custom domain"
 msgstr ""
 
 #. module: helpdesk
@@ -792,6 +792,11 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Current stage of this ticket"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_bounced_content
+msgid "Custom Bounced Message"
 msgstr ""
 
 #. module: helpdesk
@@ -950,8 +955,18 @@ msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
 
 #. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid "Documentation"
+msgstr ""
+
+#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 msgid "Documents"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__domain_user_ids
+msgid "Domain User"
 msgstr ""
 
 #. module: helpdesk
@@ -1018,6 +1033,11 @@ msgid "Excedeed Working Days"
 msgstr ""
 
 #. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__exclude_stage_id
+msgid "Exclude Stage"
+msgstr ""
+
+#. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_report_analysis__sla_status__failed
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_status__status__failed
 msgid "Failed"
@@ -1040,12 +1060,12 @@ msgstr ""
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
-msgid "First Assignation Date"
+msgid "First Assignment Date"
 msgstr ""
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__assign_date
-msgid "First assignation date"
+msgid "First assignment date"
 msgstr ""
 
 #. module: helpdesk
@@ -1236,6 +1256,11 @@ msgid "Helpdesk Tickets"
 msgstr ""
 
 #. module: helpdesk
+#: model:digest.tip,name:helpdesk.digest_tip_helpdesk_0
+msgid "Helpdesk: try mailgateway"
+msgstr ""
+
+#. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #, python-format
@@ -1314,6 +1339,13 @@ msgstr ""
 msgid ""
 "If checked, this means the ticket was closed through the customer portal by "
 "the customer."
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_bounced_content
+msgid ""
+"If set, this content will automatically be sent out to unauthorized users "
+"instead of the default message."
 msgstr ""
 
 #. module: helpdesk
@@ -1840,7 +1872,7 @@ msgstr ""
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
-msgid "Productivity"
+msgid "Productivity &amp; Visibility"
 msgstr ""
 
 #. module: helpdesk
@@ -2488,8 +2520,21 @@ msgid "Team Members"
 msgstr ""
 
 #. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__visibility_member_ids
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid ""
+"Team Members to whom this team will be visible. Keep empty for everyone to "
+"see this team."
+msgstr ""
+
+#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_search
 msgid "Team Search"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__visibility_member_ids
+msgid "Team Visibility"
 msgstr ""
 
 #. module: helpdesk
@@ -2500,6 +2545,13 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.email_template_action_helpdesk
 msgid "Templates"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__exclude_stage_id
+msgid ""
+"The amount of time the ticket spends in this stage will not be taken into "
+"account when evaluating the status of the SLA Policy."
 msgstr ""
 
 #. module: helpdesk
@@ -2612,6 +2664,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
+#: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #, python-format
 msgid "Three stars, maximum score"
@@ -2807,7 +2860,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ticket_assignation_hours
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__assign_hours
-msgid "Time to first assignation (hours)"
+msgid "Time to first assignment (hours)"
 msgstr ""
 
 #. module: helpdesk
@@ -2859,6 +2912,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
+#: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #, python-format
 msgid "Two stars, with a maximum of three"
@@ -3033,6 +3087,7 @@ msgstr ""
 #. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
+#: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #, python-format
 msgid "Welcome"
 msgstr ""
@@ -3086,7 +3141,7 @@ msgstr ""
 #. module: helpdesk
 #: code:addons/helpdesk/models/helpdesk.py:0
 #, python-format
-msgid "You must have team members assigned to change the assignation method."
+msgid "You must have team members assigned to change the assignment method."
 msgstr ""
 
 #. module: helpdesk

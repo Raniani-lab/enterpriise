@@ -4,21 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-04-21 10:49+0000\n"
+"PO-Revision-Date: 2020-04-21 10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: pos_iot
-#: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
-msgid "Accept payments with a SIX payment terminal"
-msgstr ""
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
@@ -92,8 +87,6 @@ msgstr ""
 
 #. module: pos_iot
 #. openerp-web
-#: code:addons/pos_iot/static/src/js/chrome.js:0
-#: code:addons/pos_iot/static/src/js/close_session.js:0
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Connection to terminal failed"
@@ -117,6 +110,11 @@ msgid "Customer Facing Display"
 msgstr ""
 
 #. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
+msgid "Documentation"
+msgstr ""
+
+#. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_electronic_scale
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
 msgid "Electronic Scale"
@@ -133,13 +131,6 @@ msgstr ""
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_electronic_scale
 msgid "Enables Electronic Scale integration."
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/js/close_session.js:0
-#, python-format
-msgid "Error performing balance"
 msgstr ""
 
 #. module: pos_iot
@@ -248,7 +239,6 @@ msgstr ""
 #. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/js/payment.js:0
-#: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Payment terminal error"
 msgstr ""
@@ -263,8 +253,6 @@ msgstr ""
 
 #. module: pos_iot
 #. openerp-web
-#: code:addons/pos_iot/static/src/js/chrome.js:0
-#: code:addons/pos_iot/static/src/js/close_session.js:0
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Please check if the terminal is still connected."
@@ -291,37 +279,13 @@ msgid "Receipt Printer"
 msgstr ""
 
 #. module: pos_iot
-#: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
-msgid "SIX"
-msgstr ""
-
-#. module: pos_iot
-#: model:ir.model.fields,field_description:pos_iot.field_res_config_settings__six_payment_terminal
-msgid "SIX Payment Terminal"
-msgstr ""
-
-#. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_scan_via_proxy
 msgid "Scan via Proxy"
 msgstr ""
 
 #. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/js/chrome.js:0
-#, python-format
-msgid "Send Balance"
-msgstr ""
-
-#. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_customer_facing_display
 msgid "Show checkout to customers with a remotely-connected screen."
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/js/chrome.js:0
-#, python-format
-msgid "Terminal Error"
 msgstr ""
 
 #. module: pos_iot
@@ -336,18 +300,6 @@ msgstr ""
 msgid ""
 "The transactions are processed by Ingenico. Set your Ingenico device on the "
 "related payment method."
-msgstr ""
-
-#. module: pos_iot
-#: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
-msgid ""
-"The transactions are processed by Six. Set your Six device on the related "
-"payment method."
-msgstr ""
-
-#. module: pos_iot
-#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_session_view_form
-msgid "Validate Closing & Post Entries"
 msgstr ""
 
 #. module: pos_iot

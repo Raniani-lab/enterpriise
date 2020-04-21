@@ -90,7 +90,7 @@ class TestSaleAccountTaxCloud(TestAccountTaxcloudCommon):
 
         register_payments = (
             self.env["account.payment.register"]
-            .with_context(active_ids=[invoice.id])
+            .with_context(active_model='account.move', active_ids=[invoice.id])
             .create({"payment_method_id": payment_method_manual_in.id,})
         )
         payment = self.env["account.payment"].browse(

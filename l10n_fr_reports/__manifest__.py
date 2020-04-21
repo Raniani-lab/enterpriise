@@ -13,8 +13,9 @@ Accounting reports for France
     """,
     'category': 'Accounting/Accounting',
     'depends': ['l10n_fr', 'account_reports'],
-    'data':[
-        'data/account_financial_html_report_data.xml'
+    'data': [
+        'data/profit_loss.xml',
+        'data/balance_sheet.xml',
     ],
     'demo': [],
     'auto_install': True,

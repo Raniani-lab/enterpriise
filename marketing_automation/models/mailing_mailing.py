@@ -29,7 +29,7 @@ class MassMailing(models.Model):
                 res[mass_mailing.id] = mass_mailing._shorten_links(
                     mass_mailing.body_html or '',
                     vals,
-                    blacklist=['/unsubscribe_from_list']
+                    blacklist=['/unsubscribe_from_list', '/view']
                 )
                 done |= mass_mailing
         res.update(super(MassMailing, self - done).convert_links())

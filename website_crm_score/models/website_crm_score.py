@@ -89,8 +89,9 @@ class website_crm_score(models.Model):
             domain.extend(['|', ('stage_id.is_won', '=', False), '&', ('probability', '!=', 0), ('probability', '!=', 100)])
 
             e = expression(domain, self.env['crm.lead'])
-            where_clause, where_params = e.to_sql()
+            from_clause, where_clause, where_params = e.query.get_sql()
 
+            assert from_clause == '"crm_lead"'
             where_clause += """ AND (id NOT IN (SELECT lead_id FROM crm_lead_score_rel WHERE score_id = %s)) """
             where_params.append(score.id)
 

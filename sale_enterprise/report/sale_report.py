@@ -58,15 +58,14 @@ class SaleReport(models.Model):
                               SELECT DATE_PART('day', s.date_order::timestamp - s.create_date::timestamp) AS so_days_to_confirm
                               FROM sale_order s
                               WHERE s.id IN (
-                                  SELECT order_id
-                                  FROM sale_report
-                                  WHERE date_order IS NOT NULL
-                                    AND %s )
+                                  SELECT "sale_report"."order_id" FROM %s WHERE %s)
                               ) AS days_to_confirm
                     """
 
-            where, args = expression(domain + [('company_id', '=', self.env.company.id)], self).to_sql()
-            self.env.cr.execute(query % where, args)
+            subdomain = domain + [('company_id', '=', self.env.company.id), ('date_order', '!=', False)]
+            subtables, subwhere, subparams = expression(subdomain, self).query.get_sql()
+
+            self.env.cr.execute(query % (subtables, subwhere), subparams)
             res[0].update({
                 '__count': 1,
                 avg_days_to_confirm.split(':')[0]: self.env.cr.fetchall()[0][0],

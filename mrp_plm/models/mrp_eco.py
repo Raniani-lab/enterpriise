@@ -3,6 +3,8 @@
 
 import ast
 
+from random import randint
+
 from odoo import api, fields, models, tools, SUPERUSER_ID, _
 from odoo.exceptions import UserError
 
@@ -717,8 +719,11 @@ class MrpEcoTag(models.Model):
     _name = "mrp.eco.tag"
     _description = "ECO Tags"
 
+    def _get_default_color(self):
+        return randint(1, 11)
+
     name = fields.Char('Tag Name', required=True)
-    color = fields.Integer('Color Index')
+    color = fields.Integer('Color Index', default=_get_default_color)
 
     _sql_constraints = [
         ('name_uniq', 'unique (name)', "Tag name already exists !"),

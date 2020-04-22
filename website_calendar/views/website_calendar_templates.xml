@@ -47,7 +47,7 @@
                             You can schedule another appointment from here.
                         </p>
                     </div>
-                    <form class="o_website_appoinment_form w-md-50" t-attf-action="/website/calendar/#{ slug(appointment_type) }/appointment" type="post">
+                    <form class="o_website_appoinment_form w-md-50" t-attf-action="/calendar/#{ slug(appointment_type) }/appointment" type="post">
                       <div id="appointment" class="form-group row">
                         <label for="calendarType" class="col-md-3 col-form-label">Appointment</label>
                         <div class="col-md-9">
@@ -129,7 +129,7 @@
                                     </div>
                                     <div class="dropdown-menu" role="menu">
                                         <t t-foreach="day['slots']" t-as="slot">
-                                            <a t-if='slot' role="menuitem" class="dropdown-item" t-attf-href="/website/calendar/#{appointment_type.id}/info?employee_id=#{slot['employee_id']}&amp;date_time=#{slot['datetime']}" t-esc="slot['hours']"/>
+                                            <a t-if='slot' role="menuitem" class="dropdown-item" t-attf-href="/calendar/#{appointment_type.id}/info?employee_id=#{slot['employee_id']}&amp;date_time=#{slot['datetime']}" t-esc="slot['hours']"/>
                                         </t>
                                     </div>
                                 </t>
@@ -154,7 +154,7 @@
             <div id="wrap" class="o_website_calendar">
                 <div class="oe_structure container mb128">
                     <ul class="wizard mt32 float-right">
-                        <li><a t-attf-href="/website/calendar" class="text-success">Appointment</a><span class="chevron"></span></li>
+                        <li><a t-attf-href="/calendar" class="text-success">Appointment</a><span class="chevron"></span></li>
                         <li class="text-primary">Time<span class="chevron"></span></li>
                         <li class="text-muted">Confirmation<span class="chevron"></span></li>
                     </ul>
@@ -197,8 +197,8 @@
             <div id="wrap" class="o_website_calendar">
                 <div class="oe_structure container mb128 o_website_calendar_form">
                     <ul class="wizard mt32 float-right">
-                        <li><a t-attf-href="/website/calendar" class="text-success">Appointment</a><span class="chevron"></span></li>
-                        <li><a t-attf-href="/website/calendar/#{ slug(appointment_type) }/appointment" class="text-success">Time</a><span class="chevron"></span></li>
+                        <li><a t-attf-href="/calendar" class="text-success">Appointment</a><span class="chevron"></span></li>
+                        <li><a t-attf-href="/calendar/#{ slug(appointment_type) }/appointment" class="text-success">Time</a><span class="chevron"></span></li>
                         <li class="text-primary">Confirmation<span class="chevron"></span></li>
                     </ul>
                     <h2 class="o_page_header mt32">Confirm your details</h2>
@@ -206,7 +206,7 @@
                         <span t-field="appointment_type.name"/> on <strong t-esc="datetime_locale"/>
                     </p>
 
-                    <form class="mt32 appointment_submit_form" t-attf-action="/website/calendar/#{ slug(appointment_type) }/submit" method="POST">
+                    <form class="mt32 appointment_submit_form" t-attf-action="/calendar/#{ slug(appointment_type) }/submit" method="POST">
                       <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                       <input type="hidden" name="datetime_str" t-att-value="datetime_str"/>
                       <input type="hidden" name="employee_id" t-att-value="employee_id"/>
@@ -374,7 +374,7 @@
                         </div>
                       </div>
                       <div class="col-md-3">
-                          <a role="button" class="btn btn-block btn-primary" t-attf-href="/website/calendar/ics/#{event.access_token}.ics">
+                          <a role="button" class="btn btn-block btn-primary" t-attf-href="/calendar/ics/#{event.access_token}.ics">
                               <i class="fa fa-fw fa-arrow-right"></i>Add to iCal/Outlook
                           </a>
                           <a role="button" class="btn btn-primary btn-block" t-att-href="google_url">
@@ -383,7 +383,7 @@
                           <t t-if="event.appointment_type_id">
                             <br/>
                             <br/>
-                            <a role="button" class="btn btn-danger btn-block" t-attf-href="/website/calendar/cancel/#{event.access_token}">
+                            <a role="button" class="btn btn-danger btn-block" t-attf-href="/calendar/cancel/#{event.access_token}">
                                 <i class="fa fa-fw fa-times"></i>Cancel / Reschedule
                             </a>
                           </t>

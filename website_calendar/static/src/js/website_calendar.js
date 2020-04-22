@@ -43,10 +43,10 @@ publicWidget.registry.websiteCalendarSelect = publicWidget.Widget.extend({
     _onAppointmentTypeChange: function (ev) {
         var appointmentID = $(ev.target).val();
         var previousSelectedEmployeeID = $(".o_website_appoinment_form select[name='employee_id']").val();
-        var postURL = '/website/calendar/' + appointmentID + '/appointment';
+        var postURL = '/calendar/' + appointmentID + '/appointment';
         $(".o_website_appoinment_form").attr('action', postURL);
         this._rpc({
-            route: "/website/calendar/get_appointment_info",
+            route: "/calendar/get_appointment_info",
             params: {
                 appointment_id: appointmentID,
                 prev_emp: previousSelectedEmployeeID,

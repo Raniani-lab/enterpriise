@@ -18,7 +18,7 @@ QUnit.module('website_calendar', {
                 records: [{
                     id: 1,
                     name: 'Very Interdesting Meeting',
-                    website_url: '/website/calendar/schedule-a-demo-1/appointment',
+                    website_url: '/calendar/schedule-a-demo-1/appointment',
                     employee_ids: [214],
                 }],
             },
@@ -69,7 +69,7 @@ QUnit.module('website_calendar', {
         });
 
         assert.hasAttrValue(form.$('.o_form_uri'), 'href',
-            'http://amazing.odoo.com/website/calendar/schedule-a-demo-1?employee_id=214',
+            'http://amazing.odoo.com/calendar/schedule-a-demo-1?employee_id=214',
             'Wrong employee url copied.');
 
         await testUtils.dom.click(form.$('.o_website_calendar_copy_icon'));

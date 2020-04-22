@@ -16,8 +16,8 @@ from odoo.tools.misc import get_lang
 
 class WebsiteCalendar(http.Controller):
     @http.route([
-        '/website/calendar',
-        '/website/calendar/<model("calendar.appointment.type"):appointment_type>',
+        '/calendar',
+        '/calendar/<model("calendar.appointment.type"):appointment_type>',
     ], type='http', auth="public", website=True, sitemap=True)
     def calendar_appointment_choice(self, appointment_type=None, employee_id=None, message=None, **kwargs):
         if not appointment_type:
@@ -46,7 +46,7 @@ class WebsiteCalendar(http.Controller):
             'suggested_employees': suggested_employees,
         })
 
-    @http.route(['/website/calendar/get_appointment_info'], type='json', auth="public", methods=['POST'], website=True)
+    @http.route(['/calendar/get_appointment_info'], type='json', auth="public", methods=['POST'], website=True)
     def get_appointment_info(self, appointment_id, prev_emp=False, **kwargs):
         Appt = request.env['calendar.appointment.type'].browse(int(appointment_id)).sudo()
         result = {
@@ -62,7 +62,7 @@ class WebsiteCalendar(http.Controller):
             })
         return result
 
-    @http.route(['/website/calendar/<model("calendar.appointment.type"):appointment_type>/appointment'], type='http', auth="public", website=True, sitemap=True)
+    @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/appointment'], type='http', auth="public", website=True, sitemap=True)
     def calendar_appointment(self, appointment_type=None, employee_id=None, timezone=None, failed=False, **kwargs):
         request.session['timezone'] = timezone or appointment_type.appointment_tz
         Employee = request.env['hr.employee'].sudo().browse(int(employee_id)) if employee_id else None
@@ -74,7 +74,7 @@ class WebsiteCalendar(http.Controller):
             'slots': Slots,
         })
 
-    @http.route(['/website/calendar/<model("calendar.appointment.type"):appointment_type>/info'], type='http', auth="public", website=True, sitemap=True)
+    @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/info'], type='http', auth="public", website=True, sitemap=True)
     def calendar_appointment_form(self, appointment_type, employee_id, date_time, **kwargs):
         partner_data = {}
         if request.env.user.partner_id != request.env.ref('base.public_partner'):
@@ -91,7 +91,7 @@ class WebsiteCalendar(http.Controller):
             'countries': request.env['res.country'].search([]),
         })
 
-    @http.route(['/website/calendar/<model("calendar.appointment.type"):appointment_type>/submit'], type='http', auth="public", website=True, method=["POST"])
+    @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/submit'], type='http', auth="public", website=True, method=["POST"])
     def calendar_appointment_submit(self, appointment_type, datetime_str, employee_id, name, phone, email, country_id=False, **kwargs):
         timezone = request.session['timezone']
         tz_session = pytz.timezone(timezone)
@@ -102,14 +102,14 @@ class WebsiteCalendar(http.Controller):
         Employee = request.env['hr.employee'].sudo().browse(int(employee_id))
         if Employee.user_id and Employee.user_id.partner_id:
             if not Employee.user_id.partner_id.calendar_verify_availability(date_start, date_end):
-                return request.redirect('/website/calendar/%s/appointment?failed=employee' % appointment_type.id)
+                return request.redirect('/calendar/%s/appointment?failed=employee' % appointment_type.id)
 
         country_id = int(country_id) if country_id else None
         country_name = country_id and request.env['res.country'].browse(country_id).name or ''
         Partner = request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
         if Partner:
             if not Partner.calendar_verify_availability(date_start, date_end):
-                return request.redirect('/website/calendar/%s/appointment?failed=partner' % appointment_type.id)
+                return request.redirect('/calendar/%s/appointment?failed=partner' % appointment_type.id)
             if not Partner.mobile or len(Partner.mobile) <= 5 and len(phone) > 5:
                 Partner.write({'mobile': phone})
             if not Partner.country_id:
@@ -163,9 +163,9 @@ class WebsiteCalendar(http.Controller):
             'user_id': Employee.user_id.id,
         })
         event.attendee_ids.write({'state': 'accepted'})
-        return request.redirect('/website/calendar/view/' + event.access_token + '?message=new')
+        return request.redirect('/calendar/view/' + event.access_token + '?message=new')
 
-    @http.route(['/website/calendar/view/<string:access_token>'], type='http', auth="public", website=True)
+    @http.route(['/calendar/view/<string:access_token>'], type='http', auth="public", website=True)
     def calendar_appointment_view(self, access_token, edit=False, message=False, **kwargs):
         event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
         if not event:
@@ -208,17 +208,17 @@ class WebsiteCalendar(http.Controller):
             'edit': edit,
         })
 
-    @http.route(['/website/calendar/cancel/<string:access_token>'], type='http', auth="public", website=True)
+    @http.route(['/calendar/cancel/<string:access_token>'], type='http', auth="public", website=True)
     def calendar_appointment_cancel(self, access_token, **kwargs):
         event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
         if not event:
             return request.not_found()
         if fields.Datetime.from_string(event.allday and event.start or event.start_datetime) < datetime.now() + relativedelta(hours=event.appointment_type_id.min_cancellation_hours):
-            return request.redirect('/website/calendar/view/' + access_token + '?message=no-cancel')
+            return request.redirect('/calendar/view/' + access_token + '?message=no-cancel')
         event.unlink()
-        return request.redirect('/website/calendar?message=cancel')
+        return request.redirect('/calendar?message=cancel')
 
-    @http.route(['/website/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)
+    @http.route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)
     def calendar_appointment_ics(self, access_token, **kwargs):
         event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
         if not event or not event.attendee_ids:

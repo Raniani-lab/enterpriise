@@ -2132,4 +2132,10 @@
     <function model="res.config.settings" name="unlink">
         <value model="res.config.settings" eval="obj().search([('documents_hr_settings', '=', True)]).id"/>
     </function>
+
+    <function model="hr.employee" name="generate_work_entries">
+        <value model="hr.employee" eval="obj().search([]).ids"/>
+        <value eval="(DateTime.today() + relativedelta(day=1, months=-1))"/> 
+        <value eval="(DateTime.today() + relativedelta(day=31))"/>
+    </function>
 </odoo>

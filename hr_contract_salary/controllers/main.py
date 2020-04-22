@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import hashlib
+
 from collections import defaultdict
 from odoo import fields, http, models, SUPERUSER_ID, _
 
@@ -38,7 +40,7 @@ class SignContract(Sign):
         # Only the applicant/employee has signed
         if request_item.sign_request_id.nb_closed == 1:
             contract.active = True
-            contract.access_token_consumed = True
+            contract.hash_token = False
             if contract.applicant_id:
                 contract.applicant_id.access_token = False
                 contract.applicant_id.emp_id = contract.employee_id
@@ -54,17 +56,7 @@ class SignContract(Sign):
 
 class HrContractSalary(http.Controller):
 
-    def _check_token_validity(self, token):
-        if token:
-            contract = request.env['hr.contract'].sudo().search([
-                ('access_token', '=', token),
-                ('access_token_end_date', '>=', fields.Date.today()),
-                ('access_token_consumed', '=', False),
-            ], limit=1)
-            return contract
-        return request.env['hr.contract']
-
-    def _check_employee_access_right(self, contract_id):
+    def _check_access_rights(self, contract_id):
         contract_sudo = request.env['hr.contract'].sudo().browse(contract_id)
         if not contract_sudo.employee_id or contract_sudo.employee_id.user_id == request.env.user:
             return contract_sudo
@@ -75,13 +67,6 @@ class HrContractSalary(http.Controller):
             return contract_sudo
         except:
             return request.env['hr.contract']
-
-    def _check_access_rights(self, contract_id, token):
-        if token:
-            contract = self._check_token_validity(token)
-        else:
-            contract = self._check_employee_access_right(contract_id)
-        return contract
 
     @http.route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True)
     def salary_package(self, contract_id=None, **kw):
@@ -122,7 +107,6 @@ class HrContractSalary(http.Controller):
                     and employee_contract.employee_id.user_id != request.env.user:
                 raise NotFound()
 
-        contract.sudo().configure_access_token()
         if not contract.employee_id:
             contract.employee_id = request.env['hr.employee'].sudo().create({
                 'name': 'Enter your name',
@@ -191,7 +175,8 @@ class HrContractSalary(http.Controller):
             'contract_type': contract_type,
             'job_title': job_title,
             'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),
-            'original_link': get_current_url(request.httprequest.environ)})
+            'original_link': get_current_url(request.httprequest.environ),
+            'token': kw.get('token')})
 
         response = request.render("hr_contract_salary.salary_package", values)
         response.flatten()
@@ -433,6 +418,10 @@ class HrContractSalary(http.Controller):
         }
         applicant = request.env['hr.applicant'].sudo().browse(kw.get('applicant_id')).exists()
         employee = kw.get('employee') or contract.employee_id or applicant.emp_id
+        if not employee and applicant:
+            existing_contract = request.env['hr.contract'].sudo().with_context(active_test=False).search([
+                ('applicant_id', '=', applicant.id), ('employee_id', '!=', False)], limit=1)
+            employee = existing_contract.employee_id
         if not employee:
             employee = request.env['hr.employee'].sudo().create({
                 'name': 'Simulation Employee',
@@ -456,9 +445,9 @@ class HrContractSalary(http.Controller):
         return contract
 
     @http.route('/salary_package/update_salary', type="json", auth="public")
-    def update_salary(self, contract_id=None, token=None, advantages=None, **kw):
+    def update_salary(self, contract_id=None, advantages=None, **kw):
         result = {}
-        contract = self._check_access_rights(contract_id, token)
+        contract = self._check_access_rights(contract_id)
 
         new_contract = self.create_new_contract(contract, advantages)
         new_gross = new_contract._get_gross_from_employer_costs(float(advantages['contract']['final_yearly_costs'] or 0.0))
@@ -510,7 +499,7 @@ class HrContractSalary(http.Controller):
         return result
 
     @http.route(['/salary_package/onchange_advantage/'], type='json', auth='public')
-    def onchange_advantage(self, advantage_field, new_value, contract_id, token=None):
+    def onchange_advantage(self, advantage_field, new_value, contract_id):
         # Return a dictionary describing the new advantage configuration:
         # - new_value: The advantage new_value (same by default)
         # - description: The dynamic description corresponding to the advantage new value
@@ -518,7 +507,7 @@ class HrContractSalary(http.Controller):
         #                to the advantage new_value
         # Override this controllers to add customize
         # the returned value for a specific advantage
-        contract = self._check_access_rights(contract_id, token)
+        contract = self._check_access_rights(contract_id)
         advantage = request.env['hr.contract.salary.advantage'].sudo().search([
             ('structure_type_id', '=', contract.structure_type_id.id),
             ('res_field_id.name', '=', advantage_field)])
@@ -603,8 +592,8 @@ class HrContractSalary(http.Controller):
         return contract.id
 
     @http.route(['/salary_package/submit/'], type='json', auth='public')
-    def submit(self, contract_id=None, token=None, advantages=None, **kw):
-        contract = self._check_access_rights(contract_id, token)
+    def submit(self, contract_id=None, advantages=None, **kw):
+        contract = self._check_access_rights(contract_id)
         if kw.get('employee_contract_id', False):
             contract = request.env['hr.contract'].sudo().browse(kw.get('employee_contract_id'))
             if contract.employee_id.user_id == request.env.user:
@@ -612,6 +601,22 @@ class HrContractSalary(http.Controller):
         kw['package_submit'] = True
         new_contract = self.create_new_contract(contract, advantages, no_write=True, **kw)
         self.send_email(new_contract, **kw)
+
+        applicant = request.env['hr.applicant'].sudo().browse(kw.get('applicant_id')).exists()
+        if applicant and kw.get('token', False):
+            hash_token_access = hashlib.sha1(kw.get('token').encode("utf-8")).hexdigest()
+            existing_contract = request.env['hr.contract'].sudo().search([
+                ('applicant_id', '=', applicant.id), ('hash_token', '=', hash_token_access), ('active', '=', False)])
+            existing_contract.sign_request_ids.write({'state': 'canceled', 'active': False})
+            existing_contract.unlink()
+            new_contract.hash_token = hash_token_access
+        elif not applicant and contract.employee_id.user_id and contract.employee_id.user_id == request.env.user and kw.get('original_link', False):
+            hash_token_access = hashlib.sha1(kw.get('original_link').encode("utf-8")).hexdigest()
+            existing_contract = request.env['hr.contract'].sudo().search([
+                ('employee_id', 'in', request.env.user.employee_ids.ids), ('hash_token', '=', hash_token_access), ('active', '=', False)])
+            existing_contract.sign_request_ids.write({'state': 'canceled', 'active': False})
+            existing_contract.unlink()
+            new_contract.hash_token = hash_token_access
 
         if new_contract.id != contract.id:
             new_contract.write({

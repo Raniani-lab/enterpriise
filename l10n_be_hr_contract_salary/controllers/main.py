@@ -38,8 +38,8 @@ class SignContract(Sign):
 class HrContractSalary(HrContractSalary):
 
     @route(['/salary_package/onchange_advantage/'], type='json', auth='public')
-    def onchange_advantage(self, advantage_field, new_value, contract_id, token=None):
-        res = super().onchange_advantage(advantage_field, new_value, contract_id, token=token)
+    def onchange_advantage(self, advantage_field, new_value, contract_id):
+        res = super().onchange_advantage(advantage_field, new_value, contract_id)
         if advantage_field == 'public_transport_reimbursed_amount':
             res['new_value'] = round(request.env['hr.contract'].sudo()._get_public_transport_reimbursed_amount(float(new_value)), 2)
         elif advantage_field == 'train_transport_reimbursed_amount':
@@ -51,7 +51,7 @@ class HrContractSalary(HrContractSalary):
                 res['new_value'] = round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)
                 res['extra_values'] = [('km_home_work', new_value)]
         elif advantage_field == 'ip_value':
-            contract = self._check_access_rights(contract_id, token)
+            contract = self._check_access_rights(contract_id)
             res['new_value'] = contract.ip_wage_rate if int(new_value) else 0
         elif advantage_field in ['company_car_total_depreciated_cost', 'company_bike_depreciated_cost'] and new_value:
             car_options, vehicle_id = new_value.split('-')

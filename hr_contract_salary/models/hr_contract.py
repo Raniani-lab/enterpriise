@@ -2,9 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-import uuid
 
-from datetime import date, timedelta
+from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
@@ -21,9 +20,7 @@ class HrContract(models.Model):
 
     # YTI TODO: Introduce a country_code field to hide country specific advantages fields
     origin_contract_id = fields.Many2one('hr.contract', string="Origin Contract", domain="[('company_id', '=', company_id)]", help="The contract from which this contract has been duplicated.")
-    access_token = fields.Char('Security Token', copy=False)
-    access_token_consumed = fields.Boolean('Consumed Access Token')
-    access_token_end_date = fields.Date('Access Token Validity Date', copy=False)
+    hash_token = fields.Char('Created From Token', copy=False)
     applicant_id = fields.Many2one('hr.applicant', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     contract_reviews_count = fields.Integer(compute="_compute_contract_reviews_count", string="Proposed Contracts Count")
     # Should be moved to l10n_be_hr_contract_salary
@@ -169,16 +166,6 @@ class HrContract(models.Model):
                 except ValueError:
                     pass
 
-    def configure_access_token(self):
-        for contract in self:
-            contract.access_token = uuid.uuid4().hex
-            contract.access_token_end_date = contract._get_access_token_end_date()
-
-    def _get_access_token_end_date(self):
-        today = fields.Date.today()
-        validity = self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.access_token_validity', default=30)
-        return fields.Date.to_string(fields.Date.from_string(today) + timedelta(days=int(validity)))
-
     def action_show_contract_reviews(self):
         return {
             "type": "ir.actions.act_window",
@@ -206,10 +193,7 @@ class HrContract(models.Model):
             except ValueError:
                 compose_form_id = False
             base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-            if self.employee_id.active:
-                path = '/salary_package/contract/' + str(self.id)
-            else:
-                path = '/salary_package/contract/' + str(self.access_token)
+            path = '/salary_package/contract/' + str(self.id)
             ctx = {
                 'default_model': 'hr.contract',
                 'default_res_id': self.ids[0],

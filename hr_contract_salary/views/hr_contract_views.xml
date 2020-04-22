@@ -33,9 +33,6 @@
                 <button name="%(generate_simulation_link_action)d" type="action" string="Generate Simulation Link" attrs="{'invisible': [('employee_id', '=', False)]}"/>
             </xpath>
             <field name="job_id" position="before">
-                <field name="access_token" invisible="1"/>
-                <field name="access_token_consumed" invisible="1"/>
-                <field name="access_token_end_date" invisible="1"/>
                 <field name="sign_request_ids" invisible="1" groups="sign.group_sign_user"/>
             </field>
             <field name="structure_type_id" position="before">

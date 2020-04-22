@@ -32,7 +32,7 @@ class GenerateSimulationLink(models.TransientModel):
             applicant = self.env['hr.applicant'].sudo().browse(applicant_id)
             if not applicant.access_token or applicant.access_token_end_date < Date.today():
                 applicant.access_token = uuid.uuid4().hex
-                applicant.access_token_end_date = self.env['hr.contract']._get_access_token_end_date()
+                applicant.access_token_end_date = self.env['hr.applicant']._get_access_token_end_date()
             result['applicant_id'] = applicant_id
             contract = applicant.job_id.default_contract_id
             result['contract_id'] = applicant.job_id.default_contract_id.id

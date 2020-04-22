@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import timedelta
+
 from odoo import fields, models
 
 
@@ -27,3 +29,8 @@ class HrApplicant(models.Model):
         for applicant in self:
             applicant.proposed_contracts_count = Contracts.with_context(active_test=False).search_count([
                 ('applicant_id', '=', applicant.id)])
+
+    def _get_access_token_end_date(self):
+        today = fields.Date.today()
+        validity = self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.access_token_validity', default=30)
+        return fields.Date.to_string(fields.Date.from_string(today) + timedelta(days=int(validity)))

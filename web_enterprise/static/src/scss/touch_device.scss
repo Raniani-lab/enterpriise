@@ -8,7 +8,7 @@
     .btn {
         &, .btn-sm {
             font-size: $font-size-base;
-            padding: 7px 14px;
+            padding: $o-touch-btn-padding;
         }
 
         &.fa {

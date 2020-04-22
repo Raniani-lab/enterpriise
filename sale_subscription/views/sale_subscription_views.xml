@@ -404,10 +404,10 @@
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img"  t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
                             <div class="o_subscription_kanban_main">
                                 <div class="o_kanban_card_content">
-                                    <strong>
+                                    <div class="o_kanban_record_title">
                                         <t t-if="record.code.value"><t t-esc="record.code.value"/> - </t>
                                         <t t-esc="record.name.value"/>
-                                    </strong>
+                                    </div>
                                     <div>Recurrence:<t t-esc="record.recurring_interval.value"/>&amp;nbsp;
                                         <t t-esc="record.recurring_rule_type.value"/>
                                     </div>
@@ -584,13 +584,11 @@
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                             <div class="oe_kanban_content">
-                                <div>
-                                    <strong>
-                                        <div class="float-right">
-                                            <field name="recurring_total_incl" widget="monetary"/>
-                                        </div>
-                                        <field name="partner_id"/>
-                                    </strong>
+                                <strong class="float-right">
+                                    <field name="recurring_total_incl" widget="monetary"/>
+                                </strong>
+                                <div class="o_kanban_record_title">
+                                    <field name="partner_id"/>
                                 </div>
                                 <div class="o_kanban_record_body">
                                     <div t-if="record.to_renew.raw_value" class="badge badge-warning border-0 float-right mt4">

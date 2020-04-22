@@ -606,9 +606,6 @@
                                         <small><i class="fa fa-envelope-o" role="img" aria-label="Domain alias" title="Domain alias"></i>&amp;nbsp; <field name="alias_id"/></small>
                                     </div>
                                 </div>
-                                <div class="o_kanban_manage_button_section">
-                                    <a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
-                                </div>
                             </div>
                             <div class="container o_kanban_card_content">
                                 <div class="row">
@@ -618,34 +615,22 @@
                                         </button>
                                     </div>
                                     <div class="col-6 o_kanban_primary_right">
-                                        <div class="row">
-                                            <div class="col-9">
-                                                <a class="oe_kanban_stock_picking_type_list" name="%(quality_check_action_team)d" type="action">
-                                                    Checks In Progress
-                                                </a>
-                                            </div>
-                                            <div class="col-3">
-                                                <field name="check_count"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><div class="container o_kanban_card_manage_pane dropdown-menu" role="menu">
-                                <div class="row">
-                                    <div class="col-6 o_kanban_card_manage_section o_kanban_manage_view">
-                                    </div>
-                                    <div class="col-6 o_kanban_card_manage_section o_kanban_manage_new">
-                                    </div>
-                                </div>
-                                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
-                                    <div role="menuitem" aria-haspopup="true" class="col-8">
-                                        <ul role="menu" class="oe_kanban_colorpicker" data-field="color"/>
-                                    </div>
-                                    <div class="col-4 text-right">
-                                        <a type="edit">Settings</a>
+                                         <a class="oe_kanban_stock_picking_type_list" name="%(quality_check_action_team)d" type="action">
+                                            <field name="check_count"/>
+                                            Checks In Progress
+                                        </a>
                                     </div>
                                 </div>
                             </div>
+                            <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                <div t-if="widget.editable" role="menuitem">
+                                    <a class="dropdown-item pl-0" type="edit">Configuration</a>
+                                </div>
+                                <div t-if="widget.editable" role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
+                                    <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
+                                </div>
+                            </div>
+                            <a class="o_kanban_manage_toggle_button o_left" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
                         </div>
                     </t>
                 </templates>

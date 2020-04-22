@@ -131,16 +131,17 @@
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
                             <div class="o_dropdown_kanban dropdown" groups="base.group_user">
                                 <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                    <span class="fa fa-bars fa-lg"/>
+                                    <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
-                                    <t t-if="widget.editable"><a type="edit" class="dropdown-item" role="menuitem">Edit</a></t>
                                     <t t-if="widget.deletable"><a type="delete" class="dropdown-item" role="menuitem">Delete</a></t>
                                     <ul class="oe_kanban_colorpicker" data-field="color"/>
                                 </div>
                             </div>
                             <div class="oe_kanban_content">
-                                <div><strong><field name="employee_id"/></strong></div>
+                                <div class="o_kanban_record_title">
+                                    <field name="employee_id"/>
+                                </div>
                                 <field name="department_id"/>
                                 <div>
                                     <t t-if="! record.date_final_interview.raw_value and record.state.raw_value != 'new' and record.state.raw_value != 'cancel'">
@@ -152,9 +153,9 @@
                                 <div class="o_kanban_record_bottom">
                                     <div class="oe_kanban_bottom_left">
                                         <div class="o_kanban_inline_block">
-                                            <field name="activity_ids" widget="kanban_activity"/>
                                             <t t-if="record.date_close.raw_value and record.date_close.raw_value &lt; (new Date())" t-set="red">oe_kanban_text_red</t>
-                                                Deadline: <span t-attf-class="#{red}"><i><field name="date_close"/></i></span>
+                                                Deadline: <span t-attf-class="#{red}"><field name="date_close"/></span>
+                                            <field name="activity_ids" widget="kanban_activity"/>
                                         </div>
                                     </div>
                                     <div class="oe_kanban_bottom_right">

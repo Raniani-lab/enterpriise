@@ -174,10 +174,7 @@ class EasypostRequest():
             else:
                 weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.qty_done, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines_without_package])
             weight = carrier._easypost_convert_weight(weight)
-            shipment = {
-                'order[shipments][%d][parcel][weight]' % 0: weight,
-                'order[shipments][%d][options][label_format]' % 0: carrier.easypost_label_file_type,
-            }
+            shipment.update(self._prepare_parcel(0, carrier.easypost_default_packaging_id, weight, carrier.easypost_label_file_type))
             # Add customs info for this package.
             shipment.update(self._customs_info(0, move_lines_without_package.filtered(lambda ml: ml.product_id.type in ['product', 'consu'])))
             shipment.update(self._options(0, carrier))

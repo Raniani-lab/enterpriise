@@ -265,7 +265,7 @@ class MrpProductionWorkcenterLine(models.Model):
     def _get_quality_points(self, iterator):
         quality_point_domain = self.env['quality.point']._get_domain(self.product_id, self.production_id.picking_type_id)
         quality_point_domain = AND([quality_point_domain, [
-            ('operation_id', 'in', self.production_id.routing_id.operation_ids.ids),
+            ('operation_id', 'in', self.production_id.bom_id.operation_ids.ids),
             ('test_type', 'in', ('register_byproducts', 'register_consumed_materials')),
             ('component_id', 'in', [values.get('product_id', False) for values in iterator])
         ]])

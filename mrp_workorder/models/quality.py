@@ -21,14 +21,27 @@ class TestType(models.Model):
 
 
 class MrpRouting(models.Model):
-    _inherit = "mrp.routing"
+    _inherit = "mrp.routing.workcenter"
+
+    quality_point_ids = fields.One2many('quality.point', 'operation_id')
+    quality_point_count = fields.Integer('Steps', compute='_compute_quality_point_count')
+
+    @api.depends('quality_point_ids')
+    def _compute_quality_point_count(self):
+        read_group_res = self.env['quality.point'].sudo().read_group(
+            [('id', 'in', self.quality_point_ids.ids)],
+            ['operation_id'], 'operation_id'
+        )
+        data = dict((res['operation_id'][0], res['operation_id_count']) for res in read_group_res)
+        for operation in self:
+            operation.quality_point_count = data.get(operation.id, 0)
 
     def action_mrp_workorder_show_steps(self):
         self.ensure_one()
         picking_type_id = self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id
         action = self.env.ref('mrp_workorder.action_mrp_workorder_show_steps').read()[0]
         ctx = dict(self._context, default_picking_type_id=picking_type_id, default_company_id=self.company_id.id)
-        action.update({'context': ctx})
+        action.update({'context': ctx, 'domain': [('id', 'in', self.quality_point_ids.ids)]})
         return action
 
 
@@ -38,8 +51,7 @@ class QualityPoint(models.Model):
     is_workorder_step = fields.Boolean(compute='_compute_is_workorder_step')
     operation_id = fields.Many2one(
         'mrp.routing.workcenter', 'Step', check_company=True)
-    routing_id = fields.Many2one(related='operation_id.routing_id', readonly=False)
-    routing_ids = fields.One2many('mrp.routing', compute='_compute_routing_ids')
+    bom_id = fields.Many2one(related='operation_id.bom_id', readonly=False)
     component_ids = fields.One2many('product.product', compute='_compute_component_ids')
     test_type_id = fields.Many2one(
         'quality.point.test_type',
@@ -58,7 +70,7 @@ class QualityPoint(models.Model):
         points_for_workorder_step = self.filtered(lambda p: p.is_workorder_step)
         for point in points_for_workorder_step:
             point.available_product_ids = point.available_product_ids.filtered(
-                lambda p: p.variant_bom_ids and p.variant_bom_ids.routing_id
+                lambda p: p.variant_bom_ids and p.variant_bom_ids.operation_ids
             )
 
     @api.depends('product_ids', 'test_type_id')
@@ -95,11 +107,6 @@ class QualityPoint(models.Model):
         for quality_point in self:
             quality_point.is_workorder_step = quality_point.picking_type_ids and\
                 all(pt.code == 'mrp_operation' for pt in quality_point.picking_type_ids)
-
-    @api.depends('product_ids.product_tmpl_id.bom_ids.routing_id')
-    def _compute_routing_ids(self):
-        for point in self:
-            point.routing_ids = point.product_ids.product_tmpl_id.bom_ids.routing_id
 
 
 class QualityAlert(models.Model):

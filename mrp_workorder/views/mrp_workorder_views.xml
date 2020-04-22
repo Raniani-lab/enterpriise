@@ -333,7 +333,7 @@
         <field name="model">quality.point</field>
         <field name="arch" type="xml">
             <search string="Quality Point Steps">
-                <field name="routing_id" string="Routing"/>
+                <field name="active" invisible="1"/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
             </search>
         </field>
@@ -347,17 +347,5 @@
             (0, 0, {'view_mode': 'kanban'}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('step_view_form')})]"/>
         <field name="search_view_id" ref="view_routing_steps_search"/>
-    </record>
-    <record id="mrp_routing_view_form_inherit_quality" model="ir.ui.view">
-        <field name="name">mrp.routing.form.inherit.quality</field>
-        <field name="inherit_id" ref="mrp.mrp_routing_form_view"/>
-        <field name="model">mrp.routing</field>
-        <field name="arch" type="xml">
-            <xpath expr="//button" position="before">
-                <button name="action_mrp_workorder_show_steps" type="object" icon="fa-list-ul" context="{'search_default_routing_id': id}">
-                    Steps
-                </button>
-            </xpath>
-        </field>
     </record>
 </odoo>

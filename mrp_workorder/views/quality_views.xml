@@ -6,7 +6,6 @@
         <field name="inherit_id" ref="quality.quality_point_view_form"/>
         <field name="arch" type="xml">
             <field name="test_type_id" position="after">
-                <field name="routing_ids" invisible="1"/>
                 <field name="component_ids" invisible="1"/>
                 <field name="component_id" attrs="{'required': [('test_type', 'in', ('register_byproducts', 'register_consumed_materials'))], 'invisible': ['|', '|', ('is_workorder_step', '=', False), ('operation_id', '=', False), ('test_type', 'not in', ('register_byproducts', 'register_consumed_materials'))]}" domain="[('id', 'in', component_ids), '|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
                 <field name="test_report_type" widget="selection" attrs="{'invisible': [('test_type','!=','print_label')]}"/>
@@ -16,7 +15,6 @@
                 <field name="is_workorder_step" invisible="1"/>
             </field>
             <field name="user_id" position="after">
-                <field name="routing_ids" invisible="1"/>
                 <field name="worksheet" widget="radio" attrs="{'invisible': ['|', ('is_workorder_step', '=', False), ('operation_id', '=', False)]}"/>
                 <field name="worksheet_page" attrs="{'invisible': ['|', '|', ('is_workorder_step', '=', False), ('operation_id', '=', False), ('worksheet', '!=', 'scroll')]}"/>
             </field>

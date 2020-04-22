@@ -52,7 +52,7 @@ class TestPurchaseOrder(TestCommissionsSetup):
         """Description text on vendor bill should have the following format:
 
         Commission on {{move.name}}, {{move.partner_id.name}}, {{move.amount_untaxed}} €
-        {{subscription.code}}, from {{date_from}} to {{subscription.recurring_next_date}}
+        {{subscription.code}}, from {{date_from}} to {{subscription.recurring_next_date}} ({{number of months}})
         """
         self.referrer.commission_plan_id = self.gold_plan
         self.referrer.grade_id = self.gold
@@ -83,5 +83,5 @@ class TestPurchaseOrder(TestCommissionsSetup):
         date_from = fields.Date.subtract(date_to, years=1)
 
         expected = f"""Commission on INV/12345/0001, Customer, 2,000.00 €
-{sub.code}, from {format_date(self.env, date_from)} to {format_date(self.env, date_to)}"""
+{sub.code}, from {format_date(self.env, date_from)} to {format_date(self.env, date_to)} (12 month(s))"""
         self.assertEqual(inv.commission_po_line_id.name, expected)

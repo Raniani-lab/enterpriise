@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
+from dateutil.relativedelta import relativedelta
 
 from odoo import _, fields, models
 from odoo.tools import formatLang, format_date
@@ -76,6 +77,12 @@ class AccountMove(models.Model):
                 date_to = subscription.recurring_next_date
                 date_from = fields.Date.subtract(date_to, **{periods[subscription.recurring_rule_type]: subscription.recurring_interval})
                 desc += f"\n{subscription.code}, {_('from %s to %s') % (format_date(self.env, date_from), format_date(self.env, date_to))}"
+
+                # extend the description to show the number of months to defer the expense over
+                delta = relativedelta(date_to, date_from)
+                n_months = delta.years * 12 + delta.months + delta.days // 30
+                if n_months:
+                    desc += f" ({_('%d month(s)') % (n_months)})"
 
             purchase = move._get_commission_purchase_order()
 

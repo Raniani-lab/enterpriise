@@ -36,14 +36,10 @@ class MarketingTrace(models.Model):
     # hierarchy
     parent_id = fields.Many2one('marketing.trace', string='Parent', index=True, ondelete='cascade')
     child_ids = fields.One2many('marketing.trace', 'parent_id', string='Direct child traces')
-    # statistics
+    # mailing traces
     mailing_trace_ids = fields.One2many('mailing.trace', 'marketing_trace_id', string='Mass mailing statistics')
-    sent = fields.Datetime(related='mailing_trace_ids.sent', readonly=False)
-    exception = fields.Datetime(related='mailing_trace_ids.exception', readonly=False)
-    opened = fields.Datetime(related='mailing_trace_ids.opened', readonly=False)
-    replied = fields.Datetime(related='mailing_trace_ids.replied', readonly=False)
-    bounced = fields.Datetime(related='mailing_trace_ids.bounced', readonly=False)
-    clicked = fields.Datetime(related='mailing_trace_ids.clicked', readonly=False)
+    mailing_trace_status = fields.Selection(related='mailing_trace_ids.trace_status', readonly=True)
+    links_click_datetime = fields.Datetime(related='mailing_trace_ids.links_click_datetime', readonly=True)
 
     def participant_action_cancel(self):
         self.action_cancel(message=_('Manually'))

@@ -80,7 +80,7 @@ class TestMACommon(TestMailFullCommon):
                     self.assertMailTraces(
                         [{'partner': self.env['res.partner'],  # TDE FIXME: make it generic and check why partner seems unset
                           'email': record.email_normalized,  # TDE FIXME: make it generic and check for aprtner
-                          'state': info['trace_status'],
+                          'trace_status': info['trace_status'],
                           'failure_type': info.get('failure_type', False),
                           'record': record,
                          } for record in info['records']],
@@ -91,7 +91,7 @@ class TestMACommon(TestMailFullCommon):
                     self.assertSMSTraces(
                         [{'partner': record.customer_id,  # TDE FIXME: make it generic
                           'number': record.phone_sanitized,  # TDE FIXME: make it generic
-                          'state': info['trace_status'],
+                          'trace_status': info['trace_status'],
                           'failure_type': info.get('failure_type', False),
                           'record': record,
                           'content': info.get('trace_content')

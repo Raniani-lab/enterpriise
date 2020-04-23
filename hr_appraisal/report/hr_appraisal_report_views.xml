@@ -27,6 +27,8 @@
         <field name="model">hr.appraisal.report</field>
         <field name="arch" type="xml">
             <gantt
+                edit="0"
+                create="0"
                 color="color"
                 date_start="deadline"
                 date_stop="deadline"

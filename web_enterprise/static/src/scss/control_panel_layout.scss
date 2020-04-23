@@ -1,6 +1,6 @@
 @include media-breakpoint-up(sm) {
     .o_control_panel {
-        .o_cp_left {
+        .o_cp_bottom_left {
             .o_cp_action_menus {
                 display: flex;
                 padding-right: 25px;
@@ -82,7 +82,7 @@
             }
         }
 
-        .o_cp_left, .o_cp_right {
+        .o_cp_bottom_left, .o_cp_bottom_right {
             flex: 1 1 auto;
         }
 

@@ -62,7 +62,7 @@ odoo.define('web_enterprise.calendar_mobile_tests', function (require) {
                 "prev button should be hidden");
             assert.containsNone(calendar.$buttons, '.o_calendar_button_next',
                 "next button should be hidden");
-            assert.isVisible(document.querySelector('.o_control_panel .o_cp_right button.o_cp_today_button'),
+            assert.isVisible(document.querySelector('.o_control_panel .o_cp_bottom_right button.o_cp_today_button'),
                 "today button should be visible in the pager area (bottom right corner)");
 
             calendar.destroy();

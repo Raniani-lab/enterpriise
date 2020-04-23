@@ -57,8 +57,8 @@
                 </ol>
                 <!-- Additional content: searchview (legacy) -->
                 <div class="o_cp_searchview" t-att-class="{ o_searchview_quick: state.showSearchBar or !props.withBreadcrumbs }"
-                     role="search" t-ref="searchView"
-                >
+                    role="search" t-ref="searchView"
+                    >
                     <div t-if="props.withSearchBar" class="o_searchview" role="search" aria-autocomplete="list">
                         <t t-if="!state.showMobileSearch">
                             <button type="button" class="o_enable_searchview btn btn-link fa"
@@ -77,13 +77,13 @@
                 </div>
             </div>
             <div class="o_cp_bottom">
-                <div class="o_cp_left">
+                <div class="o_cp_bottom_left">
                     <!-- Additional content: buttons (legacy) -->
                     <div class="o_cp_buttons" role="toolbar" aria-label="Control panel toolbar" t-ref="buttons">
                         <t t-slot="buttons"/>
                     </div>
                 </div>
-                <div class="o_cp_right">
+                <div class="o_cp_bottom_right">
                     <button t-if="env.view and env.view.type === 'calendar'"
                         class="o_cp_today_button btn btn-sm btn-link"
                         t-on-click="trigger('today-button-click')"

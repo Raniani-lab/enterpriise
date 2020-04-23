@@ -33,6 +33,7 @@ KanbanRenderer.include(Object.assign({}, KanbanTabsMobileMixin, {
     init: function () {
         this._super.apply(this, arguments);
         this.activeColumnIndex = 0; // index of the currently displayed column
+        this._lastGroupedByField = null;
         this._scrollPosition = null;
     },
     /**
@@ -54,7 +55,9 @@ KanbanRenderer.include(Object.assign({}, KanbanTabsMobileMixin, {
     /**
      * As this renderer defines its own scrolling area (the column in grouped
      * mode), we override this hook to store the scroll position, so that we can
-     * restore it if the renderer is re-attached to the DOM later.
+     * restore it if the renderer is re-attached to the DOM later. Also, we use
+     * this hook to restore groupedBy column swipe position if groupedBy field
+     * is not changed.
      *
      * @override
      */
@@ -65,6 +68,7 @@ KanbanRenderer.include(Object.assign({}, KanbanTabsMobileMixin, {
                 left: $column.scrollLeft(),
                 top: $column.scrollTop(),
             };
+            this._lastGroupedByField = this.columnOptions.groupedBy;
         } else {
             this._scrollPosition = null;
         }
@@ -286,8 +290,11 @@ KanbanRenderer.include(Object.assign({}, KanbanTabsMobileMixin, {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
             if (self.state.groupedBy.length) {
-                // force first column for kanban view, because the groupedBy can be changed
-                return self._moveToGroup(0);
+                // if the groupedBy is changed, force first column for kanban view
+                if (self._lastGroupedByField !== self.columnOptions.groupedBy) {
+                    self.activeColumnIndex = 0;
+                }
+                return self._moveToGroup(self.activeColumnIndex);
             } else {
                 if(self._canCreateColumn()) {
                     self._onMobileQuickCreateClicked();

@@ -3,7 +3,7 @@ odoo.define('web_enterprise.kanban_mobile_tests', function (require) {
 
 const AbstractStorageService = require('web.AbstractStorageService');
 const KanbanView = require('web.KanbanView');
-const {createView, dom} = require('web.test_utils');
+const {createActionManager, createView, dom} = require('web.test_utils');
 const RamStorage = require('web.RamStorage');
 const {_t} = require('web.core');
 
@@ -409,6 +409,72 @@ QUnit.module('Views', {
         assert.containsNone(kanban.$('.o_column_quick_create'),
             "should not have column quick create tab as we grouped records on integer field");
         kanban.destroy();
+    });
+
+    QUnit.test('mobile kanban view: preserve active column on grouped kanban view', async function (assert) {
+        assert.expect(9);
+
+        const actionManager = await createActionManager({
+            data: this.data,
+            archs: {
+                'partner,false,kanban': '<kanban default_group_by="int_field">' +
+                    '<templates><t t-name="kanban-box">' +
+                    '<div class="oe_kanban_global_click"><field name="foo"/></div>' +
+                    '</t></templates>' +
+                '</kanban>',
+                'partner,form_view,form': '<form string="Partner"><field name="foo"/></form>',
+                'partner,false,search': '<search><filter name="product" string="product" context="{\'group_by\': \'product_id\'}"/></search>',
+            },
+        });
+
+        await actionManager.doAction({
+            name: 'Partner',
+            res_model: 'partner',
+            type: 'ir.actions.act_window',
+            views: [[false, 'kanban'], ['form_view', 'form']],
+        });
+
+        // basic rendering tests
+        assert.containsN(actionManager, '.o_kanban_group', 5, "should have 5 columns");
+        assert.hasClass(actionManager.$('.o_kanban_mobile_tab:first'), 'o_current',
+            "by default, first tab should be active");
+        assert.hasClass(actionManager.$('.o_kanban_group:first'), 'o_current',
+            "by default, first column should be active");
+
+        // move to second column
+        await dom.click(actionManager.$('.o_kanban_mobile_tab:nth(1)'));
+        assert.hasClass(actionManager.$('.o_kanban_mobile_tab:nth(1)'), 'o_current',
+            "second tab should be active");
+        assert.hasClass(actionManager.$('.o_kanban_group:nth(1)'), 'o_current',
+            "second column should be active");
+
+        // open a form view of the first record from active tab
+        await dom.click(actionManager.$('.o_kanban_group.o_current > .o_kanban_record:first'));
+
+        // go back to the kanban view with 'back' arrow button
+        await dom.click(actionManager.$('.o_back_button'));
+
+        // check that second column is still active
+        assert.hasClass(actionManager.$('.o_kanban_mobile_tab:nth(1)'), 'o_current',
+            "second tab should still be active");
+        assert.hasClass(actionManager.$('.o_kanban_group:nth(1)'), 'o_current',
+            "second column should still be active");
+
+        // change the group by on view
+        await dom.click(actionManager.$('.o_enable_searchview')); // click search icon
+        await dom.click(actionManager.$('.o_toggle_searchview_full')); // open full screen search view
+        await dom.click($('.o_group_by_menu > .o_dropdown_toggler_btn')); // open 'group by' drop-down
+        await dom.click($('.o_group_by_menu .o_menu_item .dropdown-item')); // select first drop-down item
+        await dom.click($('.o_mobile_search_show_result')); // click 'See Result' button
+
+        // after the group by is changed, check that preserved active column should be cleared and
+        // first available column should be set to active instead
+        assert.hasClass(actionManager.$('.o_kanban_mobile_tab:first'), 'o_current',
+            "first available tab should be active");
+        assert.hasClass(actionManager.$('.o_kanban_group:first'), 'o_current',
+            "first available column should be active");
+
+        actionManager.destroy();
     });
 });
 });

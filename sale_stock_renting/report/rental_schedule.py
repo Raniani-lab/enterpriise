@@ -103,12 +103,11 @@ class RentalSchedule(models.Model):
                     FROM
                         sale_order_line sol
                             LEFT OUTER JOIN rental_reserved_lot_rel res ON res.sale_order_line_id=sol.id
-                            LEFT OUTER JOIN rental_pickedup_lot_rel pickedup ON pickedup.sale_order_line_id=sol.id
+                            LEFT OUTER JOIN rental_pickedup_lot_rel pickedup ON pickedup.sale_order_line_id=sol.id AND pickedup.stock_production_lot_id = res.stock_production_lot_id
                             LEFT OUTER JOIN rental_returned_lot_rel returned ON returned.sale_order_line_id=sol.id AND returned.stock_production_lot_id = res.stock_production_lot_id,
                         stock_production_lot lot
                     WHERE
                         lot.id = res.stock_production_lot_id
-                        OR lot.id = pickedup.stock_production_lot_id
                 ),
                 sol_id_max (id) AS
                     (SELECT MAX(id) FROM sale_order),

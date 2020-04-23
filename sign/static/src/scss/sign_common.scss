@@ -52,6 +52,11 @@
     }
 
     .row {
+        &.o_sign_page_info {
+            max-height: 33vh;
+            overflow-y: auto;
+        }
+
         > div {
             > .o_page_header, > .alert {
                 margin: 10px 0;

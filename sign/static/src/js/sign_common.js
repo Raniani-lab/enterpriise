@@ -147,7 +147,7 @@ odoo.define('sign.PDFIframe', function (require) {
             this.pdfView = (this.$iframe.attr('readonly') === "readonly");
             this.readonlyFields = this.pdfView || this.editMode;
 
-            var viewerURL = "/web/static/lib/pdfjs/web/viewer.html?file=";
+            var viewerURL = "/web/static/lib/pdfjs/web/viewer.html?unique="+ (+new Date()) +"&file=";
             viewerURL += encodeURIComponent(this.attachmentLocation).replace(/'/g,"%27").replace(/"/g,"%22") + "#page=1";
             viewerURL += config.device.isMobile ? "&zoom=page-fit" : "&zoom=page-width";
             this.$iframe.ready(function () {

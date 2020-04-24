@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
     <t t-name="stock_barcode_header_widget">
-        <div class="o_barcode_header navbar navbar-expand navbar-dark bg-beta">
+        <div class="o_barcode_header navbar navbar-expand navbar-dark">
             <nav class="navbar-nav mr-auto">
                 <a tabindex="" class="nav-link o_exit mr-4"><i class="fa fa-chevron-left"/></a>
                 <span class="o_title navbar-text text-white" t-esc="widget.title"/>
@@ -46,7 +46,7 @@
                 <span class="o_hidden o_scan_message o_scan_message_inv_already_done"><span class="fa fa-exclamation-triangle"/> This inventory adjustment is already done</span>
             </div>
         </div>
-        <div class="o_barcode_lines_header alert mb-0 bg-beta text-white"></div>
+        <div class="o_barcode_lines_header alert mb-0"></div>
         <div class="o_barcode_lines list-group flex-grow-1 d-block position-relative"></div>
 
         <t t-if="widget.displayOptionalButtons" t-name="optional_buttons">

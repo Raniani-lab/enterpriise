@@ -2,12 +2,12 @@
 // Mass Mailing "Solar"
 // ============================
 
-$o-mm-solar-color-alpha: #EAECED;
-$o-mm-solar-color-beta: white;
-$o-mm-solar-color-gamma: #f2d13e;
-$o-mm-solar-color-delta: darken($o-mm-solar-color-gamma, 5%);
-$o-mm-solar-color-epsilon: black;
-$o-mm-solar-color-zeta: #262b36;
+$o-mm-solar-color-1: #EAECED;
+$o-mm-solar-color-2: white;
+$o-mm-solar-color-3: #f2d13e;
+$o-mm-solar-color-4: darken($o-mm-solar-color-3, 5%);
+$o-mm-solar-color-5: black;
+$o-mm-solar-color-6: #262b36;
 
 
 @mixin o-mm-solar-bg-variant-extra($bg, $text) {
@@ -22,26 +22,26 @@ $o-mm-solar-color-zeta: #262b36;
 }
 
 .o_solar_theme {
-    @include bg-variant(".bg-beta", $o-mm-solar-color-gamma);
-    @include text-emphasis-variant(".text-beta", $o-mm-solar-color-gamma);
-    @include bg-variant(".bg-delta", $o-mm-solar-color-zeta);
+    @include bg-variant(".bg-o-color-2", $o-mm-solar-color-3);
+    @include text-emphasis-variant(".text-o-color-2", $o-mm-solar-color-3);
+    @include bg-variant(".bg-o-color-4", $o-mm-solar-color-6);
 
-    .bg-beta {
-        @include o-mm-solar-bg-variant-extra($o-mm-solar-color-gamma, $o-mm-solar-color-beta);
+    .bg-o-color-2 {
+        @include o-mm-solar-bg-variant-extra($o-mm-solar-color-3, $o-mm-solar-color-2);
     }
-    .bg-delta {
-        @include o-mm-solar-bg-variant-extra($o-mm-solar-color-zeta, $o-mm-solar-color-beta);
+    .bg-o-color-4 {
+        @include o-mm-solar-bg-variant-extra($o-mm-solar-color-6, $o-mm-solar-color-2);
 
         .btn.btn-primary {
-            color: $o-mm-solar-color-gamma;
-            background-color: $o-mm-solar-color-beta;
+            color: $o-mm-solar-color-3;
+            background-color: $o-mm-solar-color-2;
             font-weight: bold;
         }
     }
 
     // ===== Layout =====
     &.o_layout {
-        background-color: $o-mm-solar-color-alpha;
+        background-color: $o-mm-solar-color-1;
 
         > .o_mail_wrapper {
             background: rgba(0, 0, 0, 0);
@@ -58,22 +58,22 @@ $o-mm-solar-color-zeta: #262b36;
 
     .o_mail_snippet_general {
         .btn.btn-primary {
-            background-color: $o-mm-solar-color-gamma;
-            color: $o-mm-solar-color-beta;
+            background-color: $o-mm-solar-color-3;
+            color: $o-mm-solar-color-2;
         }
 
         a, .btn.btn-link {
-            color: $o-mm-solar-color-delta;
+            color: $o-mm-solar-color-4;
         }
     }
 
     // ===== Snippets (specific) =====
     [class^="o_mail_block"]:not([class*="bg-"]) {
-        background-color: $o-mm-solar-color-beta;
-        color: $o-mm-solar-color-epsilon;
+        background-color: $o-mm-solar-color-2;
+        color: $o-mm-solar-color-5;
 
         &.o_mail_block_header_social, &.o_mail_block_header_text_social, &.o_mail_block_header_logo {
-            @extend .bg-beta;
+            @extend .bg-o-color-2;
             .o_mail_snippet_general {
                 background: rgba(0,0,0,0);
                 background: transparent;
@@ -88,7 +88,7 @@ $o-mm-solar-color-zeta: #262b36;
             }
         }
         &.o_mail_block_footer_social {
-            @extend .bg-beta;
+            @extend .bg-o-color-2;
         }
     }
 
@@ -101,7 +101,7 @@ $o-mm-solar-color-zeta: #262b36;
     }
 
     .o_mail_block_banner {
-        border-bottom: 5px solid $o-mm-solar-color-gamma;
+        border-bottom: 5px solid $o-mm-solar-color-3;
     }
 
     .o_mail_block_event {
@@ -134,7 +134,7 @@ $o-mm-solar-color-zeta: #262b36;
 
             .separator {
                 height: 3px;
-                background-color: darken($o-mm-solar-color-alpha, 10%);
+                background-color: darken($o-mm-solar-color-1, 10%);
                 border-bottom: 2px solid darken(white, 3%);
             }
         }
@@ -151,9 +151,9 @@ $o-mm-solar-color-zeta: #262b36;
         .o_mail_col_container {
             padding: 0 0 ($tmp-gap*2);
             margin: 0 $tmp-gap;
-            border-top: 1px solid darken($o-mm-solar-color-beta, 10%);
-            border-bottom: 1px solid darken($o-mm-solar-color-alpha, 5%);
-            background-color: $o-mm-solar-color-beta;
+            border-top: 1px solid darken($o-mm-solar-color-2, 10%);
+            border-bottom: 1px solid darken($o-mm-solar-color-1, 5%);
+            background-color: $o-mm-solar-color-2;
 
             > * {
                 padding: 0 ($tmp-gap*2);

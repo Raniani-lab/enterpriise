@@ -2,32 +2,32 @@
 // Mass Mailing "Theme Tech"
 // =========================
 
-$o-mm-tech-color-alpha: #333;
-$o-mm-tech-color-beta: white;
-$o-mm-tech-color-gamma: #59cdcd;
-$o-mm-tech-color-delta: #bdbdbd;
-$o-mm-tech-color-epsilon: black;
-$o-mm-tech-color-zeta: #a17e92;
+$o-mm-tech-color-1: #333;
+$o-mm-tech-color-2: white;
+$o-mm-tech-color-3: #59cdcd;
+$o-mm-tech-color-4: #bdbdbd;
+$o-mm-tech-color-5: black;
+$o-mm-tech-color-6: #a17e92;
 
 .o_tech_theme {
-    @include bg-variant(".bg-beta", $o-mm-tech-color-gamma);
-    @include text-emphasis-variant(".text-beta", $o-mm-tech-color-gamma);
-    @include bg-variant(".bg-delta", $o-mm-tech-color-zeta);
+    @include bg-variant(".bg-o-color-2", $o-mm-tech-color-3);
+    @include text-emphasis-variant(".text-o-color-2", $o-mm-tech-color-3);
+    @include bg-variant(".bg-o-color-4", $o-mm-tech-color-6);
 
-    .bg-beta {
+    .bg-o-color-2 {
         .btn.btn-primary {
-            color: $o-mm-tech-color-gamma;
-            background-color: $o-mm-tech-color-beta;
+            color: $o-mm-tech-color-3;
+            background-color: $o-mm-tech-color-2;
         }
     }
 
     // ===== Layout =====
     &.o_layout {
-        background-color: $o-mm-tech-color-alpha;
+        background-color: $o-mm-tech-color-1;
 
         .o_mail_wrapper_td {
             background-color: transparent;
-            color: $o-mm-tech-color-delta;
+            color: $o-mm-tech-color-4;
             border: none;
         }
     }
@@ -35,8 +35,8 @@ $o-mm-tech-color-zeta: #a17e92;
     // ===== Snippets (general) =====
     .o_mail_snippet_general {
         .btn.btn-primary {
-            color: $o-mm-tech-color-beta;
-            background-color: $o-mm-tech-color-gamma;
+            color: $o-mm-tech-color-2;
+            background-color: $o-mm-tech-color-3;
         }
 
         .o_mail_full_width_padding {
@@ -46,23 +46,23 @@ $o-mm-tech-color-zeta: #a17e92;
 
         a, .btn.btn-link {
             font-weight: normal;
-            color: $o-mm-tech-color-gamma;
+            color: $o-mm-tech-color-3;
         }
 
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-            color: darken($o-mm-tech-color-beta, 10%);
+            color: darken($o-mm-tech-color-2, 10%);
         }
 
-        .bg-beta, .bg-delta {
+        .bg-o-color-2, .bg-o-color-4 {
             h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-                color: $o-mm-tech-color-beta;
+                color: $o-mm-tech-color-2;
             }
         }
 
-        .bg-beta {
+        .bg-o-color-2 {
             .btn.btn-primary {
-                color: $o-mm-tech-color-gamma;
-                background-color: $o-mm-tech-color-beta;
+                color: $o-mm-tech-color-3;
+                background-color: $o-mm-tech-color-2;
             }
         }
     }
@@ -80,7 +80,7 @@ $o-mm-tech-color-zeta: #a17e92;
 
             > table {
                 max-width: 560px;
-                border-bottom: 1px solid darken($o-mm-tech-color-beta, 60%);
+                border-bottom: 1px solid darken($o-mm-tech-color-2, 60%);
             }
         }
 
@@ -91,7 +91,7 @@ $o-mm-tech-color-zeta: #a17e92;
         .o_mail_header_social {
             margin-right: 0px;
             a {
-                color: darken($o-mm-tech-color-beta, 40%);
+                color: darken($o-mm-tech-color-2, 40%);
             }
         }
     }
@@ -99,7 +99,7 @@ $o-mm-tech-color-zeta: #a17e92;
     .o_mail_block_footer_separator {
         .separator {
             height: 1px;
-            background-color: darken($o-mm-tech-color-beta, 60%);
+            background-color: darken($o-mm-tech-color-2, 60%);
         }
     }
 
@@ -108,13 +108,13 @@ $o-mm-tech-color-zeta: #a17e92;
         margin-right: 20px;
 
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-            color: $o-mm-tech-color-alpha;
+            color: $o-mm-tech-color-1;
         }
     }
 
     .o_mail_block_discount2 {
         .o_code {
-            color: $o-mm-tech-color-alpha;
+            color: $o-mm-tech-color-1;
         }
     }
 
@@ -127,12 +127,12 @@ $o-mm-tech-color-zeta: #a17e92;
         background-color: transparent;
 
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-            color: $o-mm-tech-color-alpha;
+            color: $o-mm-tech-color-1;
         }
 
         .o_mail_full_width_padding > tbody > tr  {
-            background-color: $o-mm-tech-color-beta;
-            color: $o-mm-tech-color-alpha;
+            background-color: $o-mm-tech-color-2;
+            color: $o-mm-tech-color-1;
         }
     }
 
@@ -148,18 +148,18 @@ $o-mm-tech-color-zeta: #a17e92;
 
         .o_mail_footer_social {
             a {
-                color: darken($o-mm-tech-color-beta, 40%);
+                color: darken($o-mm-tech-color-2, 40%);
             }
         }
 
         .o_mail_footer_links a {
-            color: darken($o-mm-tech-color-beta, 40%);
+            color: darken($o-mm-tech-color-2, 40%);
         }
 
         .o_mail_footer_copy {
             font-weight: bold;
             font-size: 9px;
-            color: darken($o-mm-tech-color-beta, 30%);
+            color: darken($o-mm-tech-color-2, 30%);
         }
 
         &.o_mail_footer_social_left {

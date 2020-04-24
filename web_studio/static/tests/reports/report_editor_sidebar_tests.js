@@ -434,7 +434,7 @@ QUnit.module('Studio', {}, function () {
                 attrs: {
                     //width: "1",
                     style: "margin-top:2px;width:1px;margin-right:3px;margin-bottom:4px;margin-left:5px;",
-                    class: "o_bold o_italic h3 bg-gamma text-beta o_underline",
+                    class: "o_bold o_italic h3 bg-o-color-3 text-o-color-2 o_underline",
                     'data-oe-id': '99',
                     'data-oe-xpath': '/t/t/div',
                 },
@@ -566,10 +566,10 @@ QUnit.module('Studio', {}, function () {
                     testName: "set the background color to a theme color",
                     nodeToUse: layoutChangeNode,
                     eventToTrigger: "mousedown",
-                    sidebarOperationInputSelector: '.o_web_studio_colors .o_web_studio_background_colorpicker button[data-color="gamma"]',
+                    sidebarOperationInputSelector: '.o_web_studio_colors .o_web_studio_background_colorpicker button[data-color="o-color-3"]',
                     expectedRPC: {
                         inheritance: [{
-                            content: "<attribute name=\"class\" separator=\" \" add=\"bg-gamma\"/>",
+                            content: "<attribute name=\"class\" separator=\" \" add=\"bg-o-color-3\"/>",
                             position: "attributes",
                             view_id: 99,
                             xpath: "/t/t/div"
@@ -593,10 +593,10 @@ QUnit.module('Studio', {}, function () {
                     testName: "set the font color to a theme color",
                     nodeToUse: layoutChangeNode,
                     eventToTrigger: "mousedown",
-                    sidebarOperationInputSelector: '.o_web_studio_colors .o_web_studio_font_colorpicker button[data-color="gamma"]',
+                    sidebarOperationInputSelector: '.o_web_studio_colors .o_web_studio_font_colorpicker button[data-color="o-color-3"]',
                     expectedRPC: {
                         inheritance: [{
-                            content: "<attribute name=\"class\" separator=\" \" add=\"text-gamma\"/>",
+                            content: "<attribute name=\"class\" separator=\" \" add=\"text-o-color-3\"/>",
                             position: "attributes",
                             view_id: 99,
                             xpath: "/t/t/div"
@@ -704,10 +704,10 @@ QUnit.module('Studio', {}, function () {
                     nodeToUse: nodeWithAllLayoutPropertiesSet,
                     eventToTrigger: "change",
                     sidebarOperationInputSelector: '.o_web_studio_classes input',
-                    valueToPut: "o_bold o_italic bg-gamma text-beta o_underline",
+                    valueToPut: "o_bold o_italic bg-o-color-3 text-o-color-2 o_underline",
                     expectedRPC: {
                         new_attrs: {
-                            class: "o_bold o_italic bg-gamma text-beta o_underline"
+                            class: "o_bold o_italic bg-o-color-3 text-o-color-2 o_underline"
                         },
                         type: "attributes",
                     },
@@ -718,7 +718,7 @@ QUnit.module('Studio', {}, function () {
                     sidebarOperationInputSelector: '.o_web_studio_colors .o_web_studio_background_colorpicker .o_web_studio_reset_color',
                     expectedRPC: {
                         inheritance: [{
-                            content: "<attribute name=\"class\" separator=\" \" remove=\"bg-gamma\"/>",
+                            content: "<attribute name=\"class\" separator=\" \" remove=\"bg-o-color-3\"/>",
                             position: "attributes",
                             view_id: 99,
                             xpath: "/t/t/div"
@@ -744,7 +744,7 @@ QUnit.module('Studio', {}, function () {
                     sidebarOperationInputSelector: '.o_web_studio_colors .o_web_studio_font_colorpicker .o_web_studio_reset_color',
                     expectedRPC: {
                         inheritance: [{
-                            content: "<attribute name=\"class\" separator=\" \" remove=\"text-beta\"/>",
+                            content: "<attribute name=\"class\" separator=\" \" remove=\"text-o-color-2\"/>",
                             position: "attributes",
                             view_id: 99,
                             xpath: "/t/t/div"

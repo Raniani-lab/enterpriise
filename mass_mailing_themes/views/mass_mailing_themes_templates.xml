@@ -97,13 +97,13 @@
             <div class="o_mail_snippet_general">
                 <table align="center" cellpadding="0" cellspacing="0" class="o_mail_table_styles">
                     <tbody><tr>
-                        <td style="width:25%;min-height: 150px;vertical-align:middle;" class="bg-beta text-center o_mail_col_mv">
+                        <td style="width:25%;min-height: 150px;vertical-align:middle;" class="bg-o-color-2 text-center o_mail_col_mv">
                             <div class="o_mail_h_padding o_mail_v_padding">
                                 <h3 class="o_mail_no_margin">21 Jul</h3>
                                 <p class="o_mail_no_margin">ALL DAY</p>
                             </div>
                         </td>
-                        <td style="width:25%;min-height: 150px;" class="text-center bg-delta o_mail_col_mv">
+                        <td style="width:25%;min-height: 150px;" class="text-center bg-o-color-4 o_mail_col_mv">
                             <img src="/mass_mailing_themes/static/src/img/theme_newsletter/s_default_image_block_event.jpg" class="d-block mx-auto" alt="Photo"/>
                         </td>
                         <td class="o_mail_h_padding o_mail_v_padding o_mail_col_mv" style="min-height: 150px;">
@@ -258,8 +258,8 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <p class="o_mail_display_coupon text-beta text-center o_mail_no_margin" style="font-weight:800;">20%</p>
-                                                <h4 class="text-beta text-center mt0 mb16" style="font-weight:800;">OFF</h4>
+                                                <p class="o_mail_display_coupon text-o-color-2 text-center o_mail_no_margin" style="font-weight:800;">20%</p>
+                                                <h4 class="text-o-color-2 text-center mt0 mb16" style="font-weight:800;">OFF</h4>
                                             </td>
                                         </tr>
                                         <tr>
@@ -464,7 +464,7 @@
                                 <table align="center">
                                     <tr>
                                         <td rowspan="2" class="text-right">
-                                            <span class="fa fa-compass fa-2x text-delta" aria-label="Choose" title="Choose"></span>
+                                            <span class="fa fa-compass fa-2x text-o-color-4" aria-label="Choose" title="Choose"></span>
                                         </td>
                                         <td style="padding-left:10px;">
                                             <p class="o_mail_no_margin"><small>Step 1:</small></p>
@@ -477,7 +477,7 @@
                                 <table align="center">
                                     <tr>
                                         <td rowspan="2" class="text-right">
-                                            <span class="fa fa-credit-card fa-2x text-delta" aria-label="Order" title="Order"></span>
+                                            <span class="fa fa-credit-card fa-2x text-o-color-4" aria-label="Order" title="Order"></span>
                                         </td>
                                         <td style="padding-left:10px;">
                                             <p class="o_mail_no_margin"><small>Step 2:</small></p>
@@ -490,7 +490,7 @@
                                 <table align="center">
                                     <tr>
                                         <td rowspan="2" class="text-right">
-                                            <span class="fa fa-smile-o fa-2x text-delta" aria-label="Enjoy!" title="Enjoy!"></span>
+                                            <span class="fa fa-smile-o fa-2x text-o-color-4" aria-label="Enjoy!" title="Enjoy!"></span>
                                         </td>
                                         <td style="padding-left:10px;">
                                             <p class="o_mail_no_margin"><small>Step 3:</small></p>
@@ -792,7 +792,7 @@
                 </table>
             </div>
         </div>
-        <div class="o_mail_block_image_text bg-beta" data-snippet="s_mail_block_image_text">
+        <div class="o_mail_block_image_text bg-o-color-2" data-snippet="s_mail_block_image_text">
             <div class="o_mail_snippet_general">
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles">
                     <tbody>
@@ -860,13 +860,13 @@
             <div class="o_mail_snippet_general">
                 <table align="center" cellpadding="0" cellspacing="0" class="o_mail_table_styles">
                     <tbody><tr>
-                        <td style="width:25%;min-height: 150px;vertical-align:middle;" class="bg-beta text-center o_mail_col_mv">
+                        <td style="width:25%;min-height: 150px;vertical-align:middle;" class="bg-o-color-2 text-center o_mail_col_mv">
                             <div class="o_mail_h_padding o_mail_v_padding">
                                 <h3 class="o_mail_no_margin">21 Jul</h3>
                                 <p class="o_mail_no_margin">ALL DAY</p>
                             </div>
                         </td>
-                        <td style="width:25%;min-height: 150px;" class="text-center bg-delta o_mail_col_mv">
+                        <td style="width:25%;min-height: 150px;" class="text-center bg-o-color-4 o_mail_col_mv">
                             <img src="/mass_mailing_themes/static/src/img/theme_expo/s_default_image_block_event.jpg" class="d-block mx-auto" alt="Photo"/>
                         </td>
                         <td class="o_mail_h_padding o_mail_v_padding o_mail_col_mv" style="min-height: 150px;">
@@ -931,7 +931,7 @@
                         <tr>
                             <td class="o_mail_v_padding">
                                 <div class="text-center d-block mx-auto">
-                                    <p class="o_mail_display_coupon o_mail_no_margin text-center text-beta" style="font-weight:800;">
+                                    <p class="o_mail_display_coupon o_mail_no_margin text-center text-o-color-2" style="font-weight:800;">
                                         $20
                                     </p>
                                     <h3 class="o_mail_no_margin">OFF YOUR NEXT ORDER!</h3>

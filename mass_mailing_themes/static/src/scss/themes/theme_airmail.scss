@@ -2,21 +2,21 @@
 // Mass Mailing "Theme Airmail"
 // ============================
 
-$o-mm-airmail-color-alpha: #EAECED;
-$o-mm-airmail-color-beta: white;
-$o-mm-airmail-color-gamma: #FB3C6B;
-$o-mm-airmail-color-delta: darken($o-mm-airmail-color-gamma, 5%);
-$o-mm-airmail-color-epsilon: black;
-$o-mm-airmail-color-zeta: #a17e92;
+$o-mm-airmail-color-1: #EAECED;
+$o-mm-airmail-color-2: white;
+$o-mm-airmail-color-3: #FB3C6B;
+$o-mm-airmail-color-4: darken($o-mm-airmail-color-3, 5%);
+$o-mm-airmail-color-5: black;
+$o-mm-airmail-color-6: #a17e92;
 
 .o_airmail_theme {
-    @include bg-variant(".bg-beta", $o-mm-airmail-color-gamma);
-    @include text-emphasis-variant(".text-beta", $o-mm-airmail-color-gamma);
-    @include bg-variant(".bg-delta", $o-mm-airmail-color-zeta);
+    @include bg-variant(".bg-o-color-2", $o-mm-airmail-color-3);
+    @include text-emphasis-variant(".text-o-color-2", $o-mm-airmail-color-3);
+    @include bg-variant(".bg-o-color-4", $o-mm-airmail-color-6);
 
     // ===== Layout =====
     &.o_layout {
-        background-color: $o-mm-airmail-color-alpha;
+        background-color: $o-mm-airmail-color-color-1;
 
         .o_mail_wrapper_td {
             background: rgba(0, 0, 0, 0);
@@ -31,28 +31,28 @@ $o-mm-airmail-color-zeta: #a17e92;
 
     // ===== Snippets (general) =====
     .o_mail_snippet_general {
-        background-color: $o-mm-airmail-color-beta;
-        color: $o-mm-airmail-color-epsilon;
+        background-color: $o-mm-airmail-color-2;
+        color: $o-mm-airmail-color-5;
 
         .btn.btn-primary {
-            color: $o-mm-airmail-color-beta;
-            background-color: $o-mm-airmail-color-gamma;
+            color: $o-mm-airmail-color-2;
+            background-color: $o-mm-airmail-color-3;
         }
 
         a, .btn.btn-link {
-            color: $o-mm-airmail-color-delta;
+            color: $o-mm-airmail-color-4;
         }
 
-        .bg-beta, .bg-delta {
+        .bg-o-color-2, .bg-o-color-4 {
             h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-                color: $o-mm-airmail-color-beta;
+                color: $o-mm-airmail-color-2;
             }
         }
 
-        .bg-beta {
+        .bg-o-color-2 {
             .btn.btn-primary {
-                color: $o-mm-airmail-color-delta;
-                background-color: $o-mm-airmail-color-beta;
+                color: $o-mm-airmail-color-4;
+                background-color: $o-mm-airmail-color-2;
                 font-weight: bold;
             }
         }
@@ -75,7 +75,7 @@ $o-mm-airmail-color-zeta: #a17e92;
         .o_mail_header_social {
             margin-right: 0px;
             a {
-                color: darken($o-mm-airmail-color-alpha, 40%);
+                color: darken($o-mm-airmail-color-1, 40%);
             }
         }
     }
@@ -110,7 +110,7 @@ $o-mm-airmail-color-zeta: #a17e92;
 
             .separator {
                 height: 3px;
-                background-color: darken($o-mm-airmail-color-alpha, 10%);
+                background-color: darken($o-mm-airmail-color-1, 10%);
                 border-bottom: 2px solid darken(white, 3%);
             }
         }
@@ -141,9 +141,9 @@ $o-mm-airmail-color-zeta: #a17e92;
             margin: 0 $tmp-gap;
 
             div:first-child {
-                border-top: 1px solid darken($o-mm-airmail-color-beta, 10%);
-                border-bottom: 1px solid darken($o-mm-airmail-color-alpha, 5%);
-                background-color: $o-mm-airmail-color-beta;
+                border-top: 1px solid darken($o-mm-airmail-color-2, 10%);
+                border-bottom: 1px solid darken($o-mm-airmail-color-1, 5%);
+                background-color: $o-mm-airmail-color-2;
 
                 > * {
                     padding: 0 ($tmp-gap*2);
@@ -185,24 +185,24 @@ $o-mm-airmail-color-zeta: #a17e92;
             background: rgba(0,0,0,0);
             background: transparent;
             margin-top: 30px;
-            border-top: 1px solid  darken($o-mm-airmail-color-alpha, 10%);
+            border-top: 1px solid  darken($o-mm-airmail-color-1, 10%);
         }
 
         .o_mail_footer_social {
             border: none;
             a {
-                color: darken($o-mm-airmail-color-alpha, 40%);
+                color: darken($o-mm-airmail-color-1, 40%);
             }
         }
 
         .o_mail_footer_links a {
-            color: darken($o-mm-airmail-color-alpha, 40%);
+            color: darken($o-mm-airmail-color-1, 40%);
         }
 
         .o_mail_footer_copy {
             font-weight: bold;
             font-size: 9px;
-            color: darken($o-mm-airmail-color-alpha, 30%);
+            color: darken($o-mm-airmail-color-1, 30%);
         }
 
         &.o_mail_footer_social_left {

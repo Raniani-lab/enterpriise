@@ -247,7 +247,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                 displayName.icon = 'fa-ellipsis-h';
 
                 if (node.attrs.hasOwnProperty('t-foreach')) {
-                    displayName.icon = 'fa-retweet text-alpha';
+                    displayName.icon = 'fa-retweet text-primary';
                 }
 
                 break;

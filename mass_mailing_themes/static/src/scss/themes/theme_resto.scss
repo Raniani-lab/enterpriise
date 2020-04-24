@@ -2,27 +2,27 @@
 // Mass Mailing "Theme Resto"
 // ==========================
 
-$o-mm-resto-color-alpha: #f0ede0;
-$o-mm-resto-color-beta: #ffffff;
-$o-mm-resto-color-gamma: #E96D1F;
-$o-mm-resto-color-delta: #712b22;
-$o-mm-resto-color-epsilon: darken($o-mm-resto-color-gamma, 5%);
-$o-mm-resto-color-zeta: #795745;
+$o-mm-resto-color-1: #f0ede0;
+$o-mm-resto-color-2: #ffffff;
+$o-mm-resto-color-3: #E96D1F;
+$o-mm-resto-color-4: #712b22;
+$o-mm-resto-color-5: darken($o-mm-resto-color-3, 5%);
+$o-mm-resto-color-6: #795745;
 
 .o_resto_theme {
     // ===== Editor =====
     &.o_in_iframe {
-        background-color: $o-mm-resto-color-alpha;
+        background-color: $o-mm-resto-color-1;
     }
 
-    @include bg-variant(".bg-beta", $o-mm-resto-color-zeta);
-    @include text-emphasis-variant(".text-beta", $o-mm-resto-color-zeta);
-    @include bg-variant(".bg-delta", $o-mm-resto-color-gamma);
-    @include text-emphasis-variant(".text-delta", $o-mm-resto-color-epsilon);
+    @include bg-variant(".bg-o-color-2", $o-mm-resto-color-6);
+    @include text-emphasis-variant(".text-o-color-2", $o-mm-resto-color-6);
+    @include bg-variant(".bg-o-color-4", $o-mm-resto-color-3);
+    @include text-emphasis-variant(".text-o-color-4", $o-mm-resto-color-5);
 
     // ===== Layout =====
     &.o_layout {
-        background-color: $o-mm-resto-color-alpha;
+        background-color: $o-mm-resto-color-1;
 
         .o_mail_wrapper_td {
             border: none;
@@ -34,72 +34,72 @@ $o-mm-resto-color-zeta: #795745;
     .o_mail_snippet_general {
         background: rgba(0,0,0,0);
         background: transparent;
-        color: $o-mm-resto-color-delta;
+        color: $o-mm-resto-color-4;
 
         .btn.btn-primary {
-            color: $o-mm-resto-color-beta;
-            background-color: $o-mm-resto-color-gamma;
+            color: $o-mm-resto-color-2;
+            background-color: $o-mm-resto-color-3;
         }
 
         a, .btn.btn-link {
             font-weight: normal;
-            color: $o-mm-resto-color-epsilon;
+            color: $o-mm-resto-color-5;
         }
 
         .separator {
-            background-color: lighten($o-mm-resto-color-zeta, 20%);
+            background-color: lighten($o-mm-resto-color-6, 20%);
         }
 
-        .bg-beta, .bg-delta {
+        .bg-o-color-2, .bg-o-color-4 {
             h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-                color: $o-mm-resto-color-beta;
+                color: $o-mm-resto-color-2;
             }
         }
 
-        .bg-delta {
+        .bg-o-color-4 {
             a, .btn.btn-link {
-                color: $o-mm-resto-color-zeta;
+                color: $o-mm-resto-color-6;
             }
 
             .btn.btn-primary {
-                color: $o-mm-resto-color-beta;
-                background-color: $o-mm-resto-color-zeta;
+                color: $o-mm-resto-color-2;
+                background-color: $o-mm-resto-color-6;
             }
         }
     }
 
     h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-        color: darken($o-mm-resto-color-zeta, 10%);
+        color: darken($o-mm-resto-color-6, 10%);
         font-weight: bold;
     }
 
     // ===== Snippets (specific) =====
     .o_mail_block_header_social, .o_mail_block_header_text_social, .o_mail_block_header_logo {
         table:first-child {
-            border-bottom: 5px solid $o-mm-resto-color-gamma;
+            border-bottom: 5px solid $o-mm-resto-color-3;
         }
 
         .o_mail_header_social {
             a {
-                color: $o-mm-resto-color-gamma;
+                color: $o-mm-resto-color-3;
             }
         }
     }
 
     .o_mail_block_steps {
-        border-top: 2px solid $o-mm-resto-color-gamma;
-        background: $o-mm-resto-color-beta;
+        border-top: 2px solid $o-mm-resto-color-3;
+        background: $o-mm-resto-color-2;
     }
 
     .o_mail_block_event {
         .o_mail_snippet_general{
-            background: darken($o-mm-resto-color-beta, 2%);
+            background: darken($o-mm-resto-color-2, 2%);
         }
     }
 
     .o_mail_block_footer_social {
         .o_mail_table_styles {
-            border-top: 2px solid lighten($o-mm-resto-color-zeta, 20%);
+            border-top: 2px solid lighten($o-mm-resto-color-6, 20%);
             padding-top: 20px;
         }
     }

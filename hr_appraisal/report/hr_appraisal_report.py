@@ -16,8 +16,8 @@ class HrAppraisalReport(models.Model):
     _name = "hr.appraisal.report"
     _description = "Appraisal Statistics"
     _auto = False
-    _rec_name = 'employee_id'
 
+    name = fields.Char(related='employee_id.name')
     create_date = fields.Date(string='Create Date', readonly=True)
     department_id = fields.Many2one('hr.department', string='Department', readonly=True)
     deadline = fields.Date(string="Deadline", readonly=True)

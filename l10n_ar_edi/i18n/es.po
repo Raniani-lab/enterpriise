@@ -88,16 +88,6 @@ msgstr ""
 "* Obtener Última Factura: Se conecta a la AFIP para obtener el último numero de factura y mostrarlo en el campo número"
 
 #. module: l10n_ar_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ar_edi.report_invoice_document
-msgid "- CAE Due Date:"
-msgstr "- Fecha Vto. CAE:"
-
-#. module: l10n_ar_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ar_edi.report_invoice_document
-msgid "<br/><span>Incoterm: </span>"
-msgstr ""
-
-#. module: l10n_ar_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ar_edi.res_config_settings_view_form
 msgid ""
 "<span attrs=\"{'invisible': [('l10n_ar_afip_ws_crt','!=', False)]}\"> "
@@ -121,11 +111,6 @@ msgid ""
 msgstr ""
 "<span class=\"o_form_label\">Servicios Web AFIP</span>\n"
 "                            <span class=\"fa fa-lg fa-building-o\" title=\"Los valores establecidos aquí son específicos de la empresa.\" groups=\"base.group_multi_company\"/>"
-
-#. module: l10n_ar_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ar_edi.report_invoice_document
-msgid "<span>VAT Cond.: </span>"
-msgstr "<span>Cond. IVA: </span>"
 
 #. module: l10n_ar_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ar_edi.view_move_form
@@ -355,6 +340,11 @@ msgstr ""
 
 #. module: l10n_ar_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ar_edi.report_invoice_document
+msgid "CAE Due Date:"
+msgstr "Fecha Vto. CAE:"
+
+#. module: l10n_ar_edi
+#: model_terms:ir.ui.view,arch_db:l10n_ar_edi.report_invoice_document
 msgid "CAE:"
 msgstr ""
 
@@ -401,11 +391,6 @@ msgstr ""
 "AFIP"
 
 #. module: l10n_ar_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ar_edi.report_invoice_document
-msgid "Cod"
-msgstr ""
-
-#. module: l10n_ar_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ar_edi.view_move_form
 msgid "Code"
 msgstr "Código"
@@ -436,6 +421,12 @@ msgstr "Opciones de Configuración"
 #, python-format
 msgid "Connection failed"
 msgstr "Conexión fallida"
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
+#, python-format
+msgid "Connection failed. This is what we get"
+msgstr "Conexión fallida. Esto es lo que obtenemos"
 
 #. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/res_config_settings.py:0
@@ -473,6 +464,28 @@ msgstr ""
 #: model:ir.ui.menu,name:l10n_ar_edi.menu_l10n_ar_afip_ws_consult
 msgid "Consult invoice in AFIP"
 msgstr "Consultar factura en AFIP"
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/afip_errors.py:0
+#, python-format
+msgid ""
+"Could happen that the VAT is calculated without the discount, then it throws"
+" another amount."
+msgstr ""
+"Puede estar pasando que calcula el IVA sin el descuento, entonces arroja "
+"otro monto."
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/account_journal.py:0
+#, python-format
+msgid "Could not synchronize next number with the AFIP last numbers %s"
+msgstr ""
+"No pudimos sincronizar el próximo número con los últimos números en AFIP %s"
+
+#. module: l10n_ar_edi
+#: model:ir.model.fields,field_description:l10n_ar_edi.field_res_config_settings__l10n_ar_country_code
+msgid "Country Code"
+msgstr "Código País"
 
 #. module: l10n_ar_edi
 #: model:ir.model.fields,field_description:l10n_ar_edi.field_l10n_ar_afip_ws_consult__create_uid
@@ -868,7 +881,6 @@ msgstr ""
 
 #. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/account_move.py:0
-#: code:addons/l10n_ar_edi/models/account_move.py:0
 #, python-format
 msgid "No AFIP code in %s UOM"
 msgstr "No hay código AFIP para la unidad de medida %s"
@@ -1035,11 +1047,11 @@ msgstr "Número de Factura específico"
 msgid ""
 "THE PURCHASER ASSUMES THE COMMITMENT, IN THE NATURE OF AN AFFECTED "
 "DECLARATION, OF NOT EXPORTING THE PROPERTY DURING THE TERM OF THREE 3 YEARS "
-"FROM THE ACQUISITION"
+"FROM THE ACQUISITION<br/>"
 msgstr ""
 "EL ADQUIRENTE ASUME EL COMPROMISO, EN CARÁCTER DE DECLARACION JURADA, DE NO "
 "EXPORTAR EL BIEN DURANTE EL PLAZO DE TRES 3 AÑOS CONTADOS A PARTIR DE SU "
-"ADQUISICION"
+"ADQUISICION<br/>"
 
 #. module: l10n_ar_edi
 #: model:ir.model.fields,help:l10n_ar_edi.field_l10n_ar_afip_ws_consult__available_document_type_ids
@@ -1083,7 +1095,7 @@ msgid "The certificate and private key do not match"
 msgstr "El certificado y la private key no coinciden"
 
 #. module: l10n_ar_edi
-#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
+#: code:addons/l10n_ar_edi/models/res_company.py:0
 #, python-format
 msgid "The certificate can not be uploaded!"
 msgstr "El certificado no puede ser cargado!"
@@ -1094,7 +1106,8 @@ msgstr "El certificado no puede ser cargado!"
 msgid ""
 "The certificate is not authorized (delegated) to work with this web service"
 msgstr ""
-"El certificado no está autorizado (delegado) para trabajar con este servicio web"
+"El certificado no está autorizado (delegado) para trabajar con este servicio"
+" web"
 
 #. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/res_config_settings.py:0
@@ -1421,16 +1434,6 @@ msgstr ""
 #, python-format
 msgid "Webservice is down"
 msgstr "El servicio web esta caído"
-
-#. module: l10n_ar_edi
-#: code:addons/l10n_ar_edi/models/afip_errors.py:0
-#, python-format
-msgid ""
-"Could happen that the VAT is calculated without the discount, then it throws "
-"another amount."
-msgstr ""
-"Puede estar pasando que calcula el IVA sin el descuento, entonces arroja otro "
-"monto."
 
 #. module: l10n_ar_edi
 #: model:ir.model.fields,help:l10n_ar_edi.field_account_move__l10n_ar_afip_fce_is_cancellation

@@ -107,7 +107,7 @@ class SocialStreamPostYoutube(models.Model):
         if not response.ok:
             self.account_id.sudo().write({'is_media_disconnected': True})
 
-    def _youtube_comment_fetch(self, next_page_token=False):
+    def _youtube_comment_fetch(self, next_page_token=False, count=20):
         self.ensure_one()
         self.stream_id.account_id._refresh_youtube_token()
 
@@ -116,7 +116,8 @@ class SocialStreamPostYoutube(models.Model):
             'part': 'snippet,replies',
             'textFormat': 'plainText',
             'access_token': self.stream_id.account_id.youtube_access_token,
-            'videoId': self.youtube_video_id
+            'videoId': self.youtube_video_id,
+            'maxResults': count
         }
 
         if next_page_token:

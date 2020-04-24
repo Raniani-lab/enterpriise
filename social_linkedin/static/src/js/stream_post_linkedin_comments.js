@@ -13,6 +13,7 @@ var StreamPostLinkedInComments = StreamPostComments.extend({
             commentName: _t('comment/reply')
         });
 
+        this.commentsCount = options.commentsCount;
         this.postAuthorImage = options.postAuthorImage;
         this.currentUserUrn = options.currentUserUrn;
         this.totalLoadedComments = options.comments.length;
@@ -88,7 +89,8 @@ var StreamPostLinkedInComments = StreamPostComments.extend({
             route: 'social_linkedin/get_comments',
             params: {
                 stream_post_id: this.postId,
-                offset: this.offset
+                offset: this.offset,
+                comments_count: this.commentsCount
             }
         }).then(function (result) {
             var $moreComments = $(QWeb.render("social.StreamPostCommentsWrapper", {
@@ -124,7 +126,8 @@ var StreamPostLinkedInComments = StreamPostComments.extend({
                 route: 'social_linkedin/get_comments',
                 params: {
                     stream_post_id: this.postId,
-                    comment_urn: data.parentUrn
+                    comment_urn: data.parentUrn,
+                    comments_count: this.commentsCount
                 }
             }).then(function (result) {
                 $target.data('innerComments', result.comments);

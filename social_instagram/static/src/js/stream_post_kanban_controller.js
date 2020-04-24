@@ -14,18 +14,21 @@ StreamPostKanbanController.include({
     //--------------------------------------------------------------------------
 
     _onInstagramCommentsClick: function (ev) {
+        var self = this;
         var $target = $(ev.currentTarget);
         var postId = $target.data('postId');
 
         this._rpc({
             route: '/social_instagram/get_comments',
             params: {
-                stream_post_id: postId
+                stream_post_id: postId,
+                comments_count: this.commentsCount
             }
         }).then((result) => {
             new StreamPostInstagramComments(
                 this,
                 {
+                    commentsCount: self.commentsCount,
                     postId: postId,
                     accountId: $target.data('instagramAccountId'),
                     originalPost: $target.data(),

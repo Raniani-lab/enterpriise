@@ -15,7 +15,7 @@ class DemoSocialStreamPost(models.Model):
 
     # FACEBOOK
 
-    def _facebook_comment_fetch(self, next_records_token=False):
+    def _facebook_comment_fetch(self, next_records_token=False, count=20):
         return {
             'comments': self._get_demo_comments(),
             'summary': {'totalCount': 1}
@@ -34,7 +34,7 @@ class DemoSocialStreamPost(models.Model):
     def _instagram_comment_add(self, message, object_id, comment_type="comment"):
         return self._get_new_comment_demo(message)
 
-    def _instagram_comment_fetch(self, next_records_token=False):
+    def _instagram_comment_fetch(self, next_records_token=False, count=20):
         return {
             'comments': self._get_demo_comments(),
         }
@@ -97,7 +97,7 @@ class DemoSocialStreamPost(models.Model):
     def _youtube_comment_add(self, comment_id, message, is_edit=False):
         return self._get_new_comment_demo(message)
 
-    def _youtube_comment_fetch(self, next_page_token=False):
+    def _youtube_comment_fetch(self, next_page_token=False, count=20):
         return {
             'comments': self._get_demo_comments()
         }

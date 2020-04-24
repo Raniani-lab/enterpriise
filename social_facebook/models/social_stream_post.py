@@ -55,7 +55,7 @@ class SocialStreamPostFacebook(models.Model):
 
         return True
 
-    def _facebook_comment_fetch(self, next_records_token=False):
+    def _facebook_comment_fetch(self, next_records_token=False, count=20):
         self.ensure_one()
 
         comments_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/comments" % (self.facebook_post_id))
@@ -63,7 +63,7 @@ class SocialStreamPostFacebook(models.Model):
             'fields': self.FACEBOOK_COMMENT_FIELDS,
             'access_token': self.stream_id.account_id.facebook_access_token,
             'summary': 1,
-            'limit': 20,
+            'limit': count,
             'order': 'reverse_chronological'
         }
         if next_records_token:

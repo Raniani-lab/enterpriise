@@ -96,9 +96,9 @@ class SocialFacebookController(SocialController):
         stream_post._facebook_comment_delete(comment_id)
 
     @http.route('/social_facebook/get_comments', type='json', auth='user')
-    def social_facebook_get_comments(self, stream_post_id, next_records_token=False):
+    def social_facebook_get_comments(self, stream_post_id, next_records_token=False, comments_count=20):
         stream_post = self._get_social_stream_post(stream_post_id, 'facebook')
-        return stream_post._facebook_comment_fetch(next_records_token)
+        return stream_post._facebook_comment_fetch(next_records_token, count=comments_count)
 
     @http.route('/social_facebook/like_comment', type='json', auth='user')
     def social_facebook_like_comment(self, stream_post_id, comment_id, like):

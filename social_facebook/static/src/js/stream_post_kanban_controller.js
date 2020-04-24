@@ -23,11 +23,13 @@ StreamPostKanbanController.include({
             route: '/social_facebook/get_comments',
             params: {
                 stream_post_id: postId,
+                comments_count: this.commentsCount
             }
         }).then(function (result) {
             new StreamPostFacebookComments(
                 self,
                 {
+                    commentsCount: self.commentsCount,
                     postId: postId,
                     accountId: $target.data('facebookPageId'),
                     originalPost: $target.data(),

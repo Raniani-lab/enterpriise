@@ -67,7 +67,7 @@ class SocialStreamPostInstagram(models.Model):
 
         return self._instagram_format_comment(response)
 
-    def _instagram_comment_fetch(self, next_records_token=False):
+    def _instagram_comment_fetch(self, next_records_token=False, count=20):
         """ Returns users comments on an Instagram social.stream.post.
         This method supports pagination through the 'next_records_token' parameter. """
         self.ensure_one()
@@ -80,7 +80,7 @@ class SocialStreamPostInstagram(models.Model):
             'access_token': self.account_id.instagram_access_token,
             'fields': 'id,like_count,text,timestamp,username,replies{like_count,text,timestamp,username},user',
             'summary': 1,
-            'limit': 20
+            'limit': count
         }
         if next_records_token:
             params['after'] = next_records_token

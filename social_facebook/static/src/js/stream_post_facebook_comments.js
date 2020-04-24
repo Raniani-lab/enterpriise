@@ -13,6 +13,7 @@ var StreamPostFacebookComments = StreamPostComments.extend({
             commentName: _t('comment/reply')
         });
 
+        this.commentsCount = options.commentsCount;
         this.accountId = options.accountId;
         this.totalLoadedComments = options.comments.length;
         this.nextRecordsToken = options.nextRecordsToken;
@@ -120,7 +121,8 @@ var StreamPostFacebookComments = StreamPostComments.extend({
             route: '/social_facebook/get_comments',
             params: {
                 stream_post_id: this.postId,
-                next_records_token: this.nextRecordsToken
+                next_records_token: this.nextRecordsToken,
+                comments_count: this.commentsCount
             },
         }).then(function (result) {
             var $moreComments = $(QWeb.render("social.StreamPostCommentsWrapper", {

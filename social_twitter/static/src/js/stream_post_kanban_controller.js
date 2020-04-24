@@ -28,6 +28,7 @@ StreamPostKanbanController.include({
             new StreamPostTwitterComments(
                 self,
                 {
+                    commentsCount: self.commentsCount,
                     postId: postId,
                     originalPost: $target.data(),
                     streamId: $target.data('streamId'),

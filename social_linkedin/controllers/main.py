@@ -66,12 +66,12 @@ class SocialLinkedinController(SocialController):
         return stream_post._linkedin_comment_delete(comment_id)
 
     @http.route('/social_linkedin/get_comments', type='json', auth='user')
-    def social_linkedin_get_comments(self, stream_post_id, comment_urn=None, offset=0, count=20):
+    def social_linkedin_get_comments(self, stream_post_id, comment_urn=None, offset=0, comments_count=20):
         stream_post = self._get_social_stream_post(stream_post_id, 'linkedin')
         return stream_post._linkedin_comment_fetch(
             comment_urn=comment_urn,
             offset=offset,
-            count=count
+            count=comments_count
         )
 
     # ========================================================

@@ -22,12 +22,14 @@ StreamPostKanbanController.include({
         this._rpc({
             route: 'social_linkedin/get_comments',
             params: {
-                stream_post_id: postId
+                stream_post_id: postId,
+                comments_count: this.commentsCount
             }
         }).then(function (result) {
             new StreamPostLinkedInComments(
                 self,
                 {
+                    commentsCount: self.commentsCount,
                     postId: postId,
                     accountId: result.accountId,
                     postAuthorImage: result.postAuthorImage,

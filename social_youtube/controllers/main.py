@@ -103,9 +103,9 @@ class SocialYoutubeController(SocialController):
         return stream_post._youtube_comment_delete(comment_id)
 
     @http.route('/social_youtube/get_comments', type='json', auth='user')
-    def social_youtube_get_comments(self, stream_post_id, next_page_token=False):
+    def social_youtube_get_comments(self, stream_post_id, next_page_token=False, comments_count=20):
         stream_post = self._get_social_stream_post(stream_post_id, 'youtube')
-        return stream_post._youtube_comment_fetch(next_page_token)
+        return stream_post._youtube_comment_fetch(next_page_token, count=comments_count)
 
     # ========================================================
     # MISC / UTILITY

@@ -70,9 +70,9 @@ class SocialInstagramController(SocialController):
         return stream_post._instagram_comment_delete(comment_id)
 
     @http.route('/social_instagram/get_comments', type='json', auth='user')
-    def social_instagram_get_comments(self, stream_post_id, next_records_token=False):
+    def social_instagram_get_comments(self, stream_post_id, next_records_token=False, comments_count=20):
         stream_post = self._get_social_stream_post(stream_post_id, 'instagram')
-        return stream_post._instagram_comment_fetch(next_records_token)
+        return stream_post._instagram_comment_fetch(next_records_token, count=comments_count)
 
     # ========================================================
     # MISC / UTILITY

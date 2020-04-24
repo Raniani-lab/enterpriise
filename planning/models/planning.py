@@ -249,7 +249,7 @@ class Planning(models.Model):
         start = self.start_datetime or datetime.combine(fields.Datetime.now(), datetime.min.time())
         end = self.end_datetime or datetime.combine(fields.Datetime.now(), datetime.max.time())
         work_interval = employee.resource_id._get_work_interval(start, end)
-        start_datetime, end_datetime = work_interval[employee.resource_id.id]
+        start_datetime, end_datetime = work_interval[employee.resource_id.id] if employee.resource_id else (start, end)
         if start_datetime:
             self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
         if end_datetime:
@@ -728,7 +728,7 @@ class Planning(models.Model):
         self.ensure_one()
 
         template = self.env.ref('planning.email_template_slot_single')
-        employee_url_map = {**employee_without_backend._planning_get_url(planning), **employee_with_backend._slot_get_url()}
+        employee_url_map = {**employee_without_backend.sudo()._planning_get_url(planning), **employee_with_backend._slot_get_url()}
 
         view_context = dict(self._context)
         view_context.update({
@@ -740,18 +740,18 @@ class Planning(models.Model):
             employee_ids = self.employee_id
             if self.allow_self_unassign:
                 if employee_ids.filtered(lambda e: e.user_id and e.user_id.has_group('planning.group_planning_user')):
-                    unavailable_link = '/planning/unassign/%s/%s' % (self.employee_id.employee_token, self.id)
+                    unavailable_link = '/planning/unassign/%s/%s' % (self.employee_id.sudo().employee_token, self.id)
                 else:
-                    unavailable_link = '/planning/%s/%s/unassign/%s?message=1' % (planning.access_token, self.employee_id.employee_token, self.id)
+                    unavailable_link = '/planning/%s/%s/unassign/%s?message=1' % (planning.access_token, self.employee_id.sudo().employee_token, self.id)
                 view_context.update({'unavailable_link': unavailable_link})
             view_context.update({'mail_subject': _('Planning: new shift')})
 
         mails_to_send_ids = []
         for employee in employee_ids.filtered(lambda e: e.work_email):
             if not self.employee_id and employee in employee_with_backend:
-                view_context.update({'available_link': '/planning/assign/%s/%s' % (employee.employee_token, self.id)})
+                view_context.update({'available_link': '/planning/assign/%s/%s' % (employee.sudo().employee_token, self.id)})
             elif not self.employee_id:
-                view_context.update({'available_link': '/planning/%s/%s/assign/%s?message=1' % (planning.access_token, employee.employee_token, self.id)})
+                view_context.update({'available_link': '/planning/%s/%s/assign/%s?message=1' % (planning.access_token, employee.sudo().employee_token, self.id)})
             start_datetime, end_datetime = self._format_start_end_datetime(employee.tz, lang_code=employee.user_partner_id.lang)
             # update context to build a link for view in the slot
             view_context.update({

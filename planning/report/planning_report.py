@@ -28,11 +28,11 @@ class PlanningReport(models.Model):
                 (
                     SELECT
                         p.id,
-                        generate_series(start_datetime,end_datetime,'1 day'::interval) entry_date,
+                        p.start_datetime AS entry_date,
                         p.role_id AS role_id,
                         p.company_id AS company_id,
                         p.employee_id AS employee_id,
-                        p.allocated_hours / ((p.end_datetime::date - p.start_datetime::date)+1) AS number_hours
+                        p.allocated_hours AS number_hours
                     FROM
                         planning_slot p
                 )

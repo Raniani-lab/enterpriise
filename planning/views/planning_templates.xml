@@ -49,7 +49,7 @@
                             else {
                                 document.getElementById("dismiss_shift").style.display = "none";
                             }
-                            $("#modal_action_dismiss_shift").attr("action", "/planning/" + planning_token + "/" + employee_token + "/unassign/" + calEvent.slot_id);
+                            $("#modal_action_dismiss_shift").attr("action", "/planning/" + planning_token + "/" + employee_token + "/unassign/" + calEvent.event.extendedProps.slot_id);
                             $("#fc-slot-onclick-modal").modal("show");
                         }
 
@@ -74,8 +74,8 @@
                                 center: false,
                                 right:  false
                             },
-                            eventRender: function (event, element, view) {
-                                $(element).css('font-weight', 'bold');
+                            eventRender: function (info) {
+                                $(info.el).css('font-weight', 'bold');
                             },
 
                             // Data

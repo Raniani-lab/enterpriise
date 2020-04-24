@@ -43,7 +43,7 @@ odoo.define('planning.Calendar', function (require) {
             }
 
             _.each(this.displayFields, function(def, field) {
-                if (!self.event.record[field]) {
+                if (self.event.extendedProps && self.event.extendedProps.record && !self.event.extendedProps.record[field]) {
                     delete self.displayFields[field];
                 } 
             });

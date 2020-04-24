@@ -14,7 +14,7 @@ class SlotPlanningSelectSend(models.TransientModel):
         if 'slot_id' in res and 'employee_ids' not in res:
             slot_id = self.env['planning.slot'].browse(res['slot_id'])
             if slot_id and slot_id.role_id:
-                res['employee_ids'] = self.env['hr.employee'].search([
+                res['employee_ids'] = self.env['hr.employee'].sudo().search([
                     '|', ('planning_role_ids', '=', False), ('planning_role_ids', 'in', slot_id.role_id.id),
                     ('company_id', '=', res['company_id']), ('work_email', '!=', False)
                 ]).ids

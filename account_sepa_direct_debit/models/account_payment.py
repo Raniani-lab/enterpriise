@@ -154,6 +154,9 @@ class AccountPayment(models.Model):
         if self.payment_method_id.code != 'sdd':
             raise UserError(_("Trying to generate a Direct Debit XML for payments coming from another payment method than SEPA Direct Debit."))
 
+        if not self.sdd_mandate_id:
+            raise UserError(_("The payment must be linked to a SEPA Direct Debit mandate in order to generate a Direct Debit XML."))
+
         DrctDbtTxInf = create_xml_node_chain(PmtInf, ['DrctDbtTxInf','PmtId','EndToEndId'], end2end_name)[0]
 
         InstdAmt = create_xml_node(DrctDbtTxInf, 'InstdAmt', float_repr(self.amount, precision_digits=2))

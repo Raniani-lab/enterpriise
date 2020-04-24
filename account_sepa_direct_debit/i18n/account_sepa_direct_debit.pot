@@ -949,6 +949,14 @@ msgstr ""
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
+"The payment must be linked to a SEPA Direct Debit mandate in order to "
+"generate a Direct Debit XML."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:0
+#, python-format
+msgid ""
 "Trying to register a payment on a mandate belonging to a different partner."
 msgstr ""
 

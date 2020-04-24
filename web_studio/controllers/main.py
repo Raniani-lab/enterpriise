@@ -253,14 +253,21 @@ class WebStudioController(http.Controller):
         }
 
     @http.route('/web_studio/create_new_menu', type='json', auth='user')
-    def create_new_menu(self, menu_name=False, model_choice=False, model_id=False, model_options=False, parent_id=None, sequence=10):
+    def create_new_menu(self, menu_name=False, model_choice=False, model_id=False, model_options=False, parent_menu_id=None):
         """ Create a new menu @menu_name, linked to a new action associated to the model_id
             @param model_choice: 'new' for a new model, 'existing' for an existing model selected in the wizard
             @param model_id: the model which will be associated to the action if menu_choice is 'existing'
             @param model_options: dictionary of options for the model to be created to include some behaviours OoB
                 (e.g. archiving, messaging, etc.)
-            @param parent_id: the parent of the new menu.
+            @param parent_menu_id: the parent of the new menu.
         """
+
+        sequence = 10
+        if parent_menu_id:
+            menu = request.env['ir.ui.menu'].search_read([('parent_id', '=', parent_menu_id)], fields=['sequence'], order='sequence desc', limit=1)
+            if menu:
+                sequence = menu[0]['sequence'] + 1
+
         _logger.info('creating new menu "%s"', menu_name)
         if model_choice == 'existing' and model_id:
             model = request.env['ir.model'].browse(model_id)
@@ -288,7 +295,7 @@ class WebStudioController(http.Controller):
         new_menu = request.env['ir.ui.menu'].create({
             'name': menu_name,
             'action': action_ref,
-            'parent_id': parent_id,
+            'parent_id': parent_menu_id,
             'sequence': sequence,
         })
 

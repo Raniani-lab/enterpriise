@@ -9,6 +9,7 @@ var session = require('web.session');
 
 var bus = require('web_studio.bus');
 var EditMenu = require('web_studio.EditMenu');
+var NewModel = require('web_studio.NewModel')
 var SubMenu = require('web_studio.SubMenu');
 
 var qweb = core.qweb;
@@ -91,6 +92,8 @@ Menu.include({
                 if (this.current_primary_menu) {
                     this.edit_menu = new EditMenu.MenuItem(this, this.menu_data, this.current_primary_menu);
                     this.edit_menu.appendTo($main_navbar.find('.o_menu_sections'));
+                    this.newModelItem = new NewModel.NewModelItem(this, this.current_primary_menu);
+                    this.newModelItem.appendTo($main_navbar.find('.o_menu_sections'));
                 }
             } else {
                 // In home menu
@@ -156,6 +159,10 @@ Menu.include({
         if (this.edit_menu) {
             this.edit_menu.destroy();
             this.edit_menu = undefined;
+        }
+        if (this.newModelItem) {
+            this.newModelItem.destroy();
+            this.newModelItem = undefined;
         }
         if (this.$notes) {
             this.$notes.remove();

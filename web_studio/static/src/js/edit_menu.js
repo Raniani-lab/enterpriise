@@ -1,12 +1,12 @@
 odoo.define('web_studio.EditMenu', function (require) {
 "use strict";
 
+const CommonMenuDialog = require('web_studio.CommonMenuDialog');
 var config = require('web.config');
 var core = require('web.core');
 var Dialog = require('web.Dialog');
 var FieldManagerMixin = require('web.FieldManagerMixin');
 var form_common = require('web.view_dialogs');
-const { ModelConfiguratorDialog } = require('web_studio.ModelConfigurator');
 var relational_fields = require('web.relational_fields');
 var session = require('web.session');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
@@ -148,7 +148,7 @@ var EditMenuDialog = Dialog.extend({
         var menu_id = $menu.data('menu-id');
 
         this.to_move[menu_id] = {
-            parent_id: $menu.parents('[data-menu-id]').data('menu-id') || this.current_primary_menu,
+            parent_menu_id: $menu.parents('[data-menu-id]').data('menu-id') || this.current_primary_menu,
             sequence: $menu.index(),
         };
 
@@ -187,11 +187,8 @@ var EditMenuDialog = Dialog.extend({
         ev.preventDefault();
 
         var self = this;
-        // find menu with max sequence from direct childs
-        const maxSequenceMenu = Math.max(...this.roots[0].children.map((menu) => menu.sequence));
         new NewMenuDialog(this, {
-            parent_id: this.current_primary_menu,
-            sequence: maxSequenceMenu + 1,
+            parent_menu_id: this.current_primary_menu,
             on_saved: function () {
                 self._saveChanges().then(function () {
                     self._reloadMenuData(true, true);
@@ -290,44 +287,36 @@ var EditMenuMany2One = Many2One.extend({
     },
 });
 
-var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
+const NewMenuDialog = CommonMenuDialog.extend({
     template: 'web_studio.EditMenu.Dialog.New',
-    custom_events: _.extend({}, Dialog.prototype.custom_events, StandaloneFieldManagerMixin.custom_events, {
-        edit_menu_disable_save: function () {
-            this.$footer.find('.confirm_button').attr("disabled", "disabled");
-        },
-        edit_menu_enable_save: function () {
-            this.$footer.find('.confirm_button').removeAttr("disabled");
-        },
-        confirm_options: '_onConfirmOptions',
-        cancel_options: '_onCancelOptions',
-    }),
 
     /**
      * @constructor
      * @param {Widget} parent
      * @param {Object} params
-     * @param {Integer} params.parent_id - ID of the parent menu
      * @param {function} params.on_saved - callback executed after saving
+     * @param {String} confirmlabel - label of the create menu dialog
      */
     init: function (parent, params) {
-        this.parent_id = params.parent_id;
-        this.sequence = params.sequence;
-        this.on_saved = params.on_saved;
-        var options = {
-            title: _t('Create a new Menu'),
-            size: 'small',
-            buttons: [{
-                text: _t("Confirm"),
-                classes: 'btn-primary confirm_button',
-                click: this._onSave.bind(this)
-            }, {
-                text: _t("Cancel"),
-                close: true
-            }],
-        };
-        this._super(parent, options);
-        StandaloneFieldManagerMixin.init.call(this);
+        this.title = _t('Create a new Menu');
+        this.confirmLabel = _t('Create Menu');
+        this._super(...arguments);
+    },
+    /**
+     * set buttons for the new menu dialog
+     *
+     * @override
+     */
+    async willStart() {
+        await this._super(...arguments);
+        this.set_buttons([{
+            text: _t("Confirm"),
+            classes: 'btn-primary confirm_button',
+            click: this._onSave.bind(this)
+        }, {
+            text: _t("Cancel"),
+            close: true
+        }]);
     },
     /**
      * @override
@@ -373,30 +362,25 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         }));
         return Promise.all(defs);
     },
-
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-
     /**
+     * this method will create new menu and new model
+     *
      * @private
+     * @override
      * @param {String} menu_name
-     * @param {Integer} parent_id
-     * @param {Integer} sequence
-     * @param {Integer} model_id
-     * @returns {Promise}
      */
-    _createNewMenu: function (menu_name, parent_id, sequence, model_id) {
+    _doSave(menuName) {
+        this._super(...arguments);
+        const modelID = this.many2one.value && this.many2one.value.res_id;
         core.bus.trigger('clear_cache');
         return this._rpc({
             route: '/web_studio/create_new_menu',
             params: {
-                menu_name: menu_name,
-                model_id: model_id,
+                menu_name: menuName,
+                model_id: modelID,
                 model_choice: this.model_choice.value,
                 model_options: this.model_options,
-                parent_id: parent_id,
-                sequence: sequence,
+                parent_menu_id: this.parent_menu_id,
                 context: session.user_context,
             },
         });
@@ -418,19 +402,8 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         }, {
             text: _t("Cancel"),
             close: true
-        }])
+        }]);
         this.$('.model_chooser').toggle(this.model_choice.value === 'existing');
-    },
-
-    /**
-     * Open the ModelConfigurator when the user confirm the creation of a new model
-     *
-     * @private
-     */
-    _onConfigureModel: async function () {
-        this.$footer.find('.btn').attr('disabled', '').addClass('disabled');
-        this.modelConfiguratorDialog = new ModelConfiguratorDialog(this, { confirmLabel: _t('Create Menu') });
-        this.modelConfiguratorDialog.open();
     },
 
     //--------------------------------------------------------------------------
@@ -449,22 +422,6 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
     },
 
     /**
-     * Handle the confirmation of the ModelConfigurator, save the selected options
-     * and continue the flow.
-     *
-     * @private
-     * @param {OdooEvent} ev
-     */
-    _onConfirmOptions: async function (ev) {
-        this.model_options = Object.entries(ev.data).filter(opt => opt[1].value).map(opt => opt[0]);
-        return this._onSave().then((res) => {
-            this.modelConfiguratorDialog.close();
-            return res;
-        }).guardedCatch(() =>
-            this.modelConfiguratorDialog.close());
-    },
-
-    /**
      * Override of the 'field_changed' handler; make sure the model selection
      * field's visibility is modified whenever the model selection radio is updated.
      *
@@ -477,28 +434,6 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         this._onChangeModelChoice();
         return res;
     },
-
-    /**
-     * Creates the new menu.
-     *
-     * @private
-     */
-    _onSave: function () {
-        var self = this;
-
-        this.$footer.find('.btn').attr('disabled', '').addClass('disabled');;
-
-        var name = this.$el.find('input').first().val();
-        var model_id = this.many2one.value && this.many2one.value.res_id;
-
-        var def = this._createNewMenu(name, this.parent_id, this.sequence, model_id);
-        return def.then(function () {
-            self.on_saved();
-        }).guardedCatch(function () {
-            self.$footer.find('.btn').removeAttr('disabled').removeClass('disabled');
-        });
-    },
-
 });
 
 return {

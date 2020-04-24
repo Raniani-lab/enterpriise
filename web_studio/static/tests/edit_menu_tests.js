@@ -16,7 +16,6 @@ QUnit.module('Studio', {
                 }, {
                     id: 2,
                     name: 'Menu 2',
-                    sequence: 10,
                 }, {
                     id: 21,
                     name: 'Submenu 1',
@@ -43,14 +42,12 @@ QUnit.module('Studio', {
                             id: 21,
                             name: 'Submenu 1',
                             parent_id: 2,
-                            sequence: 50,
 
                         }, {
                             children: [],
                             id: 21,
                             name: 'Submenu 2',
                             parent_id: 2,
-                            sequence: 100,
                         },
                     ],
                 },
@@ -95,7 +92,7 @@ QUnit.module('Studio', {
     });
 
     QUnit.test('edit menu dialog', async function(assert) {
-        assert.expect(23);
+        assert.expect(22);
 
         var $target = $('#qunit-fixture');
 
@@ -111,12 +108,6 @@ QUnit.module('Studio', {
             mockRPC: function (route, args) {
                 if (route === "/web/dataset/call_kw/ir.ui.menu/customize") {
                     customizeCalls++;
-                    return Promise.reject();
-                }
-                if (route === "/web_studio/create_new_menu") {
-                    // return rejected promise as resovled promise will call customize controller,
-                    // we just want to check sequence here
-                    assert.strictEqual(args.sequence, 101, "should have sequence 101");
                     return Promise.reject();
                 }
                 return this._super(route, args);

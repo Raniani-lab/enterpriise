@@ -232,7 +232,8 @@ return AbstractWebClient.extend({
         // ev.data.action_id is used in case the event is still an odoo event: retrocompatibility
         const action_id = (ev.detail && ev.detail.action_id) || ev.data.action_id;
         const result = await this.menu_dp.add(data_manager.load_action(action_id));
-        await this.action_mutex.exec(() => this._openMenu(result, { clear_breadcrumbs: true }));
+        const options = Object.assign({}, ev.data.options, { clear_breadcrumbs: true });
+        await this.action_mutex.exec(() => this._openMenu(result, options));
         this.el.classList.remove('o_mobile_menu_opened');
     },
     /**

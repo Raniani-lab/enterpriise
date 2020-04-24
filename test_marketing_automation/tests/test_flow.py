@@ -21,6 +21,8 @@ class MarketingCampaignTest(MarketingCampaignTestBase):
         date = Datetime.from_string('2014-08-01 15:02:32')  # so long, little task
         self.mock_datetime.now.return_value = date
         self.mock_datetime2.now.return_value = date
+        self.mock_datetime3.now.return_value = date
+        self.mock_datetime4.now.return_value = date
 
         Campaign = self.env['marketing.campaign'].with_user(self.user_market)
         Activity = self.env['marketing.activity'].with_user(self.user_market)
@@ -120,6 +122,8 @@ for record in records:
         date = Datetime.from_string('2014-08-01 17:02:32')  # wow, a two hour span ! so much incredible !
         self.mock_datetime.now.return_value = date
         self.mock_datetime2.now.return_value = date
+        self.mock_datetime3.now.return_value = date
+        self.mock_datetime4.now.return_value = date
 
         with patch.object(campaign.env.cr, 'commit'):
             campaign.execute_activities()

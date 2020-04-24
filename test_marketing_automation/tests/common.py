@@ -32,11 +32,15 @@ class MarketingCampaignTestBase(common.TransactionCase):
         self.test_rec4 = self.TestModel.create({'name': 'Brol_1', 'email_from': 'brol@example.com'})
 
         self.patcher = patch('odoo.addons.marketing_automation.models.marketing_campaign.Datetime', wraps=Datetime)
-        self.patcher2 = patch('odoo.addons.marketing_automation.models.marketing_participant.Datetime', wraps=Datetime)
+        self.patcher2 = patch('odoo.addons.marketing_automation.models.marketing_activity.Datetime', wraps=Datetime)
+        self.patcher3 = patch('odoo.addons.marketing_automation.models.marketing_participant.Datetime', wraps=Datetime)
+        self.patcher4 = patch('odoo.addons.marketing_automation.models.marketing_trace.Datetime', wraps=Datetime)
 
         self.mock_datetime = self.patcher.start()
         self.mock_datetime2 = self.patcher2.start()
-
-    def tearDown(self):
-        self.patcher.stop()
-        super(MarketingCampaignTestBase, self).tearDown()
+        self.mock_datetime3 = self.patcher3.start()
+        self.mock_datetime4 = self.patcher4.start()
+        self.addCleanup(self.patcher.stop)
+        self.addCleanup(self.patcher2.stop)
+        self.addCleanup(self.patcher3.stop)
+        self.addCleanup(self.patcher4.stop)

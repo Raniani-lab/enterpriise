@@ -86,22 +86,40 @@ class MulticurrencyRevaluationReport(models.AbstractModel):
                 {exclude}
                 AND (account.currency_id IS NOT NULL OR (account.internal_type IN ('receivable', 'payable') AND (aml.currency_id IS NOT NULL)))
 
+
                 UNION ALL
 
                 -- Add the lines without currency, i.e. payment in company currency for invoice in foreign currency
-                SELECT -part.amount_currency,
+                SELECT -part.debit_amount_currency AS amount_currency,
                 -part.amount AS balance,
                 aml.account_id,
-                part.currency_id AS currency_id
+                part.debit_currency_id AS currency_id
                 FROM account_move_line aml
                 JOIN account_move am ON aml.move_id = am.id
                 JOIN account_account account ON aml.account_id = account.id
-                JOIN account_partial_reconcile part ON aml.id = part.credit_move_id OR aml.id = part.debit_move_id
+                JOIN account_partial_reconcile part ON aml.id = part.debit_move_id
                 WHERE part.max_date <= %(date_to)s
                 AND aml.company_id IN %(company_ids)s
                 {all_entries}
                 {exclude}
-                AND (account.currency_id IS NULL AND (account.internal_type IN ('receivable', 'payable') AND (aml.currency_id IS NULL AND part.currency_id IS NOT NULL)))
+                AND (account.currency_id IS NULL AND (account.internal_type IN ('receivable', 'payable') AND aml.currency_id IS NULL))
+
+                UNION ALL
+
+                -- Add the lines without currency, i.e. payment in company currency for invoice in foreign currency
+                SELECT -part.credit_amount_currency AS amount_currency,
+                -part.amount AS balance,
+                aml.account_id,
+                part.credit_currency_id AS currency_id
+                FROM account_move_line aml
+                JOIN account_move am ON aml.move_id = am.id
+                JOIN account_account account ON aml.account_id = account.id
+                JOIN account_partial_reconcile part ON aml.id = part.debit_move_id
+                WHERE part.max_date <= %(date_to)s
+                AND aml.company_id IN %(company_ids)s
+                {all_entries}
+                {exclude}
+                AND (account.currency_id IS NULL AND (account.internal_type IN ('receivable', 'payable') AND aml.currency_id IS NULL))
             ) AS all_lines
             GROUP BY account_id, currency_id
         """.format(

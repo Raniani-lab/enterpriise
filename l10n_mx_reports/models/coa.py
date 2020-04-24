@@ -54,14 +54,12 @@ class MXReportAccountCoa(models.AbstractModel):
             account_ids = account_obj.search(
                 ast.literal_eval(domain or '[]'), order='code')
             accounts.extend(account_ids.ids)
-        basis_account_ids = self.env['account.tax'].search_read(
-            [('cash_basis_base_account_id', '!=', False)], ['cash_basis_base_account_id'])
-        accounts.extend([account['cash_basis_base_account_id'][0] for account in basis_account_ids])
         accounts = account_obj.search([
             ('id', 'not in', list(set(accounts))),
             ('deprecated', '=', False),
             ('company_id', 'in', self.env.companies.ids),
         ])
+        accounts.extend(accounts.company_id.account_cash_basis_base_account_id.ids)
 
         if accounts:
             lines.append({

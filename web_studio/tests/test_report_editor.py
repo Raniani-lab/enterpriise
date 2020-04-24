@@ -142,6 +142,7 @@ class TestReportEditor(TransactionCase):
             'model': 'res.users',
         }).with_context(load_all_views=True)
 
+        self.env.ref('base.lang_fr').active = True
         views = report.env['ir.ui.view']
         views += create_view("a_")
         root = views[-1]
@@ -154,6 +155,12 @@ class TestReportEditor(TransactionCase):
         views += create_view("abb", inherit_id=target.id, mode="primary")
 
         self.env['ir.translation'].insert_missing(views._fields['arch_db'], views)
+        fr_translations = self.env['ir.translation'].search([
+            ('name', '=', 'ir.ui.view,arch_db'), ('res_id', 'in', views.ids), ('lang', '=', 'fr_FR')
+        ])
+        self.assertEqual(len(fr_translations), len(views) + 2)  # +2 for aba
+        for trans in fr_translations:
+            trans.value = "%s in fr" % trans.src
 
         combined_arch = '<div>a_<div>ab</div><div>a_</div>aba<div>ab</div></div>'
         self.assertEqual(target._read_template(target.id), combined_arch)
@@ -167,7 +174,7 @@ class TestReportEditor(TransactionCase):
 
         # translations of combined views have been copied to the new view
         translations = self.env['ir.translation'].search([
-            ('name', '=', 'ir.ui.view,arch_db'), ('res_id', '=', copy_view.id)
+            ('name', '=', 'ir.ui.view,arch_db'), ('res_id', '=', copy_view.id), ('lang', '=', 'fr_FR')
         ])
         self.assertEqual(len(translations), 3)
         self.assertEqual(set(translations.mapped('src')), set(['a_', 'ab', 'aba']))

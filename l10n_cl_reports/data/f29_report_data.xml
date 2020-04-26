@@ -43,7 +43,6 @@
             <field name="green_on_positive" eval="False"/>
             <field name="figure_type">no_unit</field>
             <field name="level" eval="2" />
-            <field name="special_date_changer">strict_range</field>
         </record>
         <record id="account_financial_report_f29_line_0104" model="account.financial.html.report.line">
             <field name="name">Total Ventas</field>
@@ -66,8 +65,9 @@
             <field name="sequence" eval="1"/>
             <field name="parent_id" ref='account_financial_report_f29_line_02'/>
             <field name="domain" eval="['|', ('tax_line_id.invoice_repartition_line_ids.tag_ids.tax_report_line_ids','=',ref('l10n_cl.tax_report_iva_debito_fiscal')), ('tax_line_id.refund_repartition_line_ids.tag_ids.tax_report_line_ids','=',ref('l10n_cl.tax_report_iva_debito_fiscal'))]"/>
-            <field name="formulas">sum</field>
+            <field name="formulas">-sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_03" model="account.financial.html.report.line">
@@ -84,6 +84,7 @@
             <field name="domain" eval="[('account_id.tag_ids', 'in', [ref('l10n_cl.tag_cl_purchase_mnt_neto'), ref('l10n_cl.tag_cl_purchase_tab_puros'),ref('l10n_cl.tag_cl_purchase_tab_cigar'), ref('l10n_cl.tag_cl_purchase_tab_elab')]), ('tax_line_id', '=', False)]"/>
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0302" model="account.financial.html.report.line">
@@ -104,6 +105,7 @@
             <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_purchase_mnt_neto_no_recup')), ('tax_line_id', '=', False)]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0304" model="account.financial.html.report.line">
@@ -114,6 +116,7 @@
             <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_purchase_mnt_neto_supermercado')), ('tax_line_id', '=', False)]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0305" model="account.financial.html.report.line">
@@ -124,6 +127,7 @@
             <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_purchase_mnt_neto_actf')), ('tax_line_id', '=', False)]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0306" model="account.financial.html.report.line">
@@ -134,6 +138,7 @@
             <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_purchase_mnt_exe')), ('tax_line_id', '=', False)]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0307" model="account.financial.html.report.line">
@@ -158,6 +163,7 @@
             <field name="domain" eval="['|', ('tax_line_id.invoice_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_recup')), ('tax_line_id.refund_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_recup'))]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0402" model="account.financial.html.report.line">
@@ -168,6 +174,7 @@
             <field name="domain" eval="['|', ('tax_line_id.invoice_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_uso_comun')), ('tax_line_id.refund_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_uso_comun'))]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0403" model="account.financial.html.report.line">
@@ -178,36 +185,40 @@
             <field name="domain" eval="['|', ('tax_line_id.invoice_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_supermercado')), ('tax_line_id.refund_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_supermercado'))]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0404" model="account.financial.html.report.line">
-            <field name="name">IVA Compras Activo Fijo Destinados Ventas Exentas</field>
+            <field name="name">IVA Compras Activo Fijo Destinados a Ventas Exentas</field>
             <field name="code">CL_IPCOMPAFDVE</field>
             <field name="sequence" eval="4"/>
             <field name="parent_id" ref='account_financial_report_f29_line_04'/>
             <field name="domain" eval="['|', ('tax_line_id.invoice_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_activo_fijo')), ('tax_line_id.refund_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_activo_fijo'))]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0405" model="account.financial.html.report.line">
-            <field name="name">IVA Compras Activo Fijo Ventas Uso Comun</field>
+            <field name="name">IVA Compras Activo Fijo Uso Comun</field>
             <field name="code">CL_IPCOMPAFVUC</field>
             <field name="sequence" eval="5"/>
             <field name="parent_id" ref='account_financial_report_f29_line_04'/>
             <field name="domain" eval="['|', ('tax_line_id.invoice_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_activo_fijo_uso_comun')), ('tax_line_id.refund_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_activo_fijo_uso_comun'))]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0406" model="account.financial.html.report.line">
-            <field name="name">IVA Compras Activo Fijo Ventas No Recuperables</field>
+            <field name="name">IVA Compras Activo Fijo No Recuperables</field>
             <field name="code">CL_IPCOMPAFVNR</field>
             <field name="sequence" eval="6"/>
             <field name="parent_id" ref='account_financial_report_f29_line_04'/>
             <field name="domain" eval="['|', ('tax_line_id.invoice_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_activo_fijo_no_recup')), ('tax_line_id.refund_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_compras_iva_activo_fijo_no_recup'))]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_05" model="account.financial.html.report.line">
@@ -280,7 +291,7 @@
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0602" model="account.financial.html.report.line">
-            <field name="name">IVA a Pagar</field>
+            <field name="name">IVA a Pagar (Negativo: Saldo a Favor de la Compañía)</field>
             <field name="code">CL_IVAP</field>
             <field name="sequence" eval="2"/>
             <field name="parent_id" ref='account_financial_report_f29_line_06'/>
@@ -307,6 +318,7 @@
             <field name="domain" eval="[('account_id.tag_ids', '=', ref('l10n_cl.tag_cl_impuesto_unico_trabajadores')), ('tax_line_id', '=', False)]" />
             <field name="formulas">sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0605" model="account.financial.html.report.line">
@@ -315,8 +327,9 @@
             <field name="sequence" eval="5"/>
             <field name="parent_id" ref='account_financial_report_f29_line_06'/>
             <field name="domain" eval="['|', ('tax_line_id.invoice_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_retencion_segunda_categ')), ('tax_line_id.refund_repartition_line_ids.tag_ids.tax_report_line_ids', '=', ref('l10n_cl.tax_report_retencion_segunda_categ'))]" />
-            <field name="formulas">sum</field>
+            <field name="formulas">-sum</field>
             <field name="green_on_positive" eval="False"/>
+            <field name="special_date_changer">strict_range</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0606" model="account.financial.html.report.line">
@@ -327,7 +340,6 @@
             <field name="formulas">from_context</field>
             <field name="figure_type">no_unit</field>
             <field name="level" eval="2"/>
-            <field name="special_date_changer">strict_range</field>
         </record>
         <record id="account_financial_report_f29_line_0607" model="account.financial.html.report.line">
             <field name="name">PPM</field>
@@ -339,7 +351,7 @@
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_report_f29_line_0608" model="account.financial.html.report.line">
-            <field name="name">Total de Impuesto Periodo</field>
+            <field name="name">Total de Impuesto Periodo (Negativo: Saldo a Favor de la Compañía)</field>
             <field name="sequence" eval="8"/>
             <field name="parent_id" ref='account_financial_report_f29_line_06'/>
             <field name="formulas">CL_IVAP + CL_RCF + CL_IMPT + CL_RETH + CL_PPM</field>

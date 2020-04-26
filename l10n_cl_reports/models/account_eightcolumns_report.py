@@ -7,7 +7,7 @@ from collections import OrderedDict
 class CL8ColumnsReport(models.AbstractModel):
     _name = "account.eightcolumns.report.cl"
     _inherit = "account.report"
-    _description = "Chilian Accounting eight columns report"
+    _description = "Chilean Accounting eight columns report"
 
     filter_date = {'mode': 'range', 'filter': 'this_year'}
     filter_journals = True
@@ -38,15 +38,19 @@ class CL8ColumnsReport(models.AbstractModel):
                    GREATEST(SUM(aml.balance), 0) AS deudor,
                    GREATEST(SUM(-aml.balance), 0) AS acreedor,
                    SUM(CASE aa.internal_group WHEN 'asset' THEN aml.balance ELSE 0 END) AS activo,
-                   SUM(CASE aa.internal_group WHEN 'liability' THEN -aml.balance ELSE 0 END) AS pasivo,
+                   SUM(CASE aa.internal_group WHEN  'equity' THEN -aml.balance ELSE 0 END) +
+                   SUM(CASE aa.internal_group WHEN  'liability' THEN -aml.balance ELSE 0 END) AS pasivo,
                    SUM(CASE aa.internal_group WHEN 'expense' THEN aml.balance ELSE 0 END) AS perdida,
                    SUM(CASE aa.internal_group WHEN 'income' THEN -aml.balance ELSE 0 END) AS ganancia
             FROM account_account AS aa,
-                 account_move_line AS aml
+                 account_move_line AS aml,
+                 (select id, state from account_move) as am
             WHERE aa.company_id = %(company_id)s
               AND aa.id = aml.account_id
               AND aml.date >= %(date_from)s
               AND aml.date <= %(date_to)s
+              AND am.id = aml.move_id
+              AND am.state in %(state)s
               AND aml.journal_id in %(journal_ids)s
             GROUP BY aa.id, aa.code, aa.name
             ORDER BY aa.code
@@ -57,9 +61,15 @@ class CL8ColumnsReport(models.AbstractModel):
             'date_to': self._context['date_to']
         }
         journal_ids = self.env['account.journal'].search([]).ids
+        analytic_ids = self.env['account.analytic.account'].search([]).ids
         if options.get('journals'):
-            journal_ids = [journal_id['id'] for journal_id in options['journals'] if journal_id.get('selected')] or journal_ids
+            journal_ids = [journal_id['id'] for journal_id in options['journals'] if
+                           journal_id.get('selected')] or journal_ids
+        if options.get('analytic') and options.get('analytic_accounts'):
+            analytic_ids = [int(analytic_id) for analytic_id in options['analytic_accounts']] or analytic_ids
+        parameters['state'] = ('draft', 'posted') if options.get('all_entries') else ('posted')
         parameters['journal_ids'] = tuple(journal_ids)
+        parameters['analytic_accounts'] = tuple(analytic_ids)
         return sql_query, parameters
 
     @api.model

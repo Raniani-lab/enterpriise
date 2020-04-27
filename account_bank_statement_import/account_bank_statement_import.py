@@ -233,6 +233,8 @@ class AccountBankStatementImport(models.TransientModel):
                 # Create the statement
                 st_vals['line_ids'] = [[0, False, line] for line in filtered_st_lines]
                 statement = BankStatement.create(st_vals)
+                if statement.balance_end == statement.balance_end_real:
+                    statement.button_post()
                 statement_line_ids.extend(statement.line_ids.ids)
         if len(statement_line_ids) == 0:
             raise UserError(_('You already have imported that file.'))

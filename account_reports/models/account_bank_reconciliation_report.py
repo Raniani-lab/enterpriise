@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
+import ast
 
 from odoo import models, fields, api, _
 from odoo.tools.misc import format_date
@@ -43,6 +44,35 @@ class AccountBankReconciliationReport(models.AbstractModel):
             ('previous_statement_id', '!=', False),
         ])
 
+    @api.model
+    def _get_bank_miscellaneous_move_lines_domain(self, options, journal):
+        ''' Get the domain to be used to retrieve the journal items affecting the bank accounts but not linked to
+        a statement line.
+        :param options: The report options.
+        :param journal: The account.journal from which this report has been opened.
+        :return:        A domain to search on the account.move.line model.
+        '''
+        accounts = journal.default_debit_account_id + journal.default_credit_account_id
+
+        if not accounts:
+            return None
+
+        domain = [
+            ('display_type', 'not in', ('line_section', 'line_note')),
+            ('move_id.state', '!=', 'cancel'),
+            ('account_id', 'in', accounts.ids),
+            ('statement_line_id', '=', False),
+            ('date', '<=', options['date']['date_to']),
+        ]
+
+        if not options['all_entries']:
+            domain.append(('move_id.state', '=', 'posted'))
+
+        if journal.company_id.account_opening_move_id:
+            domain.append(('move_id', '!=', journal.company_id.account_opening_move_id.id))
+
+        return domain
+
     def open_unconsistent_statements(self, options, params=None):
         ''' An action opening the account.bank.statement view (form or list) depending the 'unconsistent_statement_ids'
         key set on the options.
@@ -70,6 +100,44 @@ class AccountBankReconciliationReport(models.AbstractModel):
                 'views': [(False, 'list')],
             })
         return action
+
+    def open_bank_miscellaneous_move_lines(self, options, params):
+        ''' An action opening the account.move.line tree view affecting the bank account balance but not linked to
+        a bank statement line.
+        :param options: The report options.
+        :param params:  -Not used-.
+        :return:        An action redirecting to the tree view of journal items.
+        '''
+        journal = self.env['account.journal'].browse(options['active_id'])
+
+        return {
+            'name': _('Journal Items'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move.line',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'target': 'current',
+            'views': [(self.env.ref('account.view_move_line_tree').id, 'list')],
+            'domain': self._get_bank_miscellaneous_move_lines_domain(options, journal),
+        }
+
+    def action_redirect_to_bank_statement_form(self, options, params):
+        ''' Redirect the user to the last bank statement found.
+        :param options:     The report options.
+        :param params:      The action params containing at least 'statement_id'.
+        :return:            A dictionary representing an ir.actions.act_window.
+        '''
+        last_statement = self.env['account.bank.statement'].browse(params['statement_id'])
+
+        return {
+            'name': last_statement.display_name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.bank.statement',
+            'context': {'create': False},
+            'view_mode': 'form',
+            'views': [(False, 'form')],
+            'res_id': last_statement.id,
+        }
 
     # -------------------------------------------------------------------------
     # REPORT
@@ -99,9 +167,11 @@ class AccountBankReconciliationReport(models.AbstractModel):
 
     @api.model
     def _get_columns_name(self, options):
-        return [{'name': ''}] + self._apply_groups([
+        return [
+            {'name': ''}
+        ] + self._apply_groups([
             {'name': _("Date"), 'class': 'date'},
-            {'name': _("Reference")},
+            {'name': _("Label"), 'class': 'whitespace_print o_account_report_line_ellipsis'},
             {'name': _("Amount Currency"), 'class': 'number'},
             {'name': _("Currency"), 'class': 'number'},
             {'name': _("Amount"), 'class': 'number'},
@@ -184,6 +254,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
                 move.name,
                 move.ref,
                 move.date,
+                st_line.payment_ref,
                 st_line.amount,
                 st_line.amount_currency,
                 st_line.foreign_currency_id,
@@ -251,7 +322,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
                 'name': res['name'],
                 'columns': self._apply_groups([
                     {'name': format_date(self.env, res['date']), 'class': 'date'},
-                    {'name': res['ref']},
+                    {'name': self._format_aml_name(res['payment_ref'], res['ref'], '/')},
                 ] + monetary_columns),
                 'model': 'account.bank.statement.line',
                 'caret_options': 'account.bank.statement',
@@ -476,16 +547,26 @@ class AccountBankReconciliationReport(models.AbstractModel):
         report_currency = journal_currency or company_currency
         accounts = journal.default_debit_account_id + journal.default_credit_account_id
 
+        if journal.default_debit_account_id == journal.default_credit_account_id:
+            accounts = journal.default_debit_account_id
+
         last_statement_domain = [('date', '<=', options['date']['date_to'])]
-        if options['all_entries']:
-            last_statement_domain.append(('move_id.state', '=', ('draft', 'posted')))
-        else:
+        if not options['all_entries']:
             last_statement_domain.append(('move_id.state', '=', 'posted'))
         last_statement = journal._get_last_bank_statement(domain=last_statement_domain)
 
-        # === Warning about unconsistent statements ====
+        # === Warnings ====
 
+        # Unconsistent statements.
         options['unconsistent_statement_ids'] = self._get_unconsistent_statements(options, journal).ids
+
+        # Strange miscellaneous journal items affecting the bank accounts.
+        domain = self._get_bank_miscellaneous_move_lines_domain(options, journal)
+        if domain:
+            options['has_bank_miscellaneous_move_lines'] = bool(self.env['account.move.line'].search_count(domain))
+        else:
+            options['has_bank_miscellaneous_move_lines'] = False
+        options['account_names'] = ', '.join(accounts.mapped('display_name'))
 
         # ==== Build sub-sections about journal items ====
 
@@ -496,9 +577,6 @@ class AccountBankReconciliationReport(models.AbstractModel):
 
         domain = self._get_options_domain(options)
         balance_gl = journal._get_journal_bank_account_balance(domain=domain)[0]
-
-        if journal.default_debit_account_id == journal.default_credit_account_id:
-            accounts = journal.default_debit_account_id
 
         # Compute the 'Reference' cell.
         if last_statement and not print_mode:
@@ -532,7 +610,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
 
         balance_gl_report_line = {
             'id': 'balance_gl_line',
-            'name': _("Balance of %s") % accounts.display_name,
+            'name': _("Balance of %s") % options['account_names'],
             'title_hover': _("The Book balance in Odoo dated today"),
             'columns': self._apply_groups([
                 {'name': format_date(self.env, options['date']['date_to']), 'class': 'date'},
@@ -604,21 +682,3 @@ class AccountBankReconciliationReport(models.AbstractModel):
         # ==== Build trailing section block ====
 
         return section_st_report_lines + section_pay_report_lines
-
-    def action_redirect_to_bank_statement_form(self, options, params):
-        ''' Redirect the user to the last bank statement found.
-        :param options:     The report options.
-        :param params:      The action params containing at least 'statement_id'.
-        :return:            A dictionary representing an ir.actions.act_window.
-        '''
-        last_statement = self.env['account.bank.statement'].browse(params['statement_id'])
-
-        return {
-            'name': last_statement.display_name,
-            'type': 'ir.actions.act_window',
-            'res_model': 'account.bank.statement',
-            'context': {'create': False},
-            'view_mode': 'form',
-            'views': [(False, 'form')],
-            'res_id': last_statement.id,
-        }

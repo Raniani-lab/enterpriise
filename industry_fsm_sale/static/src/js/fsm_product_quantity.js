@@ -63,7 +63,7 @@ var FSMProductQty = FieldInteger.extend({
         }
         $input.on('keyup input', function (e) {
             if (e.which === $.ui.keyCode.ENTER) {
-                self._valueChange(target_name, $input.val());
+                $input.blur();
             }
         });
         $input.on('blur', function () {

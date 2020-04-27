@@ -253,3 +253,11 @@ class TestFsmFlowStock(TestFsmFlowSale):
         self.assertEqual(sum(move.move_line_ids.mapped('qty_done')), 7, "We deliver 7 (4+3)")
 
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done'], "The 2 pickings should be set as done")
+
+    def test_action_quantity_set(self):
+        self.task.partner_id = self.partner_1
+        product = self.product_lot.with_context(fsm_task_id=self.task.id)
+        action = product.fsm_add_quantity()
+        self.assertEqual(product.fsm_quantity, 0)
+        self.assertEqual(action.get('type'), 'ir.actions.act_window', "It should redirect to the tracking wizard")
+        self.assertEqual(action.get('res_model'), 'fsm.stock.tracking', "It should redirect to the tracking wizard")

@@ -6,7 +6,7 @@
     <field name="model">product.product</field>
     <field name="priority">999</field>
     <field name="arch" type="xml">
-        <kanban edit="0" class="o_kanban_mobile o_fsm_material_kanban">
+        <kanban edit="0" class="o_kanban_mobile o_fsm_material_kanban" js_class="fsm_product_kanban">
             <field name="id"/>
             <field name="name"/>
             <field name="product_template_attribute_value_ids"/>
@@ -32,6 +32,7 @@
                                         <field name="currency_id" invisible="True"/>
                                     </ul>
                                 </div>
+                                <!-- CLEAN ME: buttons should be part of the field widget; style should not be inlined -->
                                 <button type="object" class="col-12 h-100" name="fsm_add_quantity" invisible="context.get('hide_qty_buttons')" style="position: absolute;top: 0;left: 0;opacity: 0;"/>
                                 <div class="pull-right h-100 pt-2 flex-shrink-0"
                                     style="z-index:1;">

@@ -167,7 +167,8 @@ class AccountMove(models.Model):
                 result = self._contact_iap_extract('/iap/invoice_extract/parse', params)
                 self.extract_status_code = result['status_code']
                 if result['status_code'] == SUCCESS:
-                    self.env['ir.config_parameter'].sudo().set_param("account_invoice_extract.already_notified", False)
+                    if self.env['ir.config_parameter'].sudo().get_param("account_invoice_extract.already_notified", True):
+                        self.env['ir.config_parameter'].sudo().set_param("account_invoice_extract.already_notified", False)
                     self.extract_state = 'waiting_extraction'
                     self.extract_remote_id = result['document_id']
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:

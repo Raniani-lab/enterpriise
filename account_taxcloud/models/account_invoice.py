@@ -39,7 +39,7 @@ class AccountMove(models.Model):
            in TaxCloud. Returned cancels it for a refund.
            See https://dev.taxcloud.com/taxcloud/guides/5%20Returned%20Orders
         """
-        if self.filtered('fiscal_position_id.is_taxcloud'):
+        if self.filtered(lambda inv: inv.move_type in ['out_invoice', 'out_refund'] and inv.fiscal_position_id.is_taxcloud):
             raise UserError(_("You cannot cancel an invoice sent to TaxCloud.\n"
                               "You need to issue a refund (credit note) for it instead.\n"
                               "This way the tax entries will be cancelled in TaxCloud."))

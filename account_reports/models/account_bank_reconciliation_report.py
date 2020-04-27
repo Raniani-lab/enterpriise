@@ -40,6 +40,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
             ('journal_id', '=', journal.id),
             ('date', '<=', options['date']['date_to']),
             ('is_valid_balance_start', '=', False),
+            ('previous_statement_id', '!=', False),
         ])
 
     def open_unconsistent_statements(self, options, params=None):

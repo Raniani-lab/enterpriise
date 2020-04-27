@@ -183,6 +183,11 @@ var accountReportsWidget = AbstractAction.extend({
         };
         await this._super(...arguments);
         this.render();
+
+        // A default value has been set for the filter accounts.
+        // Apply the filter to take this value into account.
+        if("default_filter_accounts" in (this.odoo_context || {}))
+            this.$('.o_account_reports_filter_input').val(this.odoo_context.default_filter_accounts).trigger("input");
     },
     parse_reports_informations: function(values) {
         this.report_options = values.options;

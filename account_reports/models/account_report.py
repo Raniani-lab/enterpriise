@@ -1093,10 +1093,7 @@ class AccountReport(models.AbstractModel):
         '''
         return a dictionary of informations that will be needed by the js widget, manager_id, footnotes, html of report and searchview, ...
         '''
-        options = {
-            **self._context.get('default_options', {}),
-            **self._get_options(options),
-        }
+        options = self._get_options(options)
 
         searchview_dict = {'options': options, 'context': self.env.context}
         # Check if report needs analytic

@@ -372,6 +372,7 @@ class MarketingActivity(models.Model):
                 'state': 'rejected',
                 'state_msg': _('Rejected by activity filter or record deleted / archived')
             })
+            traces_rejected.mapped('participant_id').check_completed()
 
         return new_traces
 

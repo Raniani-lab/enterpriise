@@ -1039,7 +1039,19 @@ class SaleSubscriptionLine(models.Model):
                 pricelist=subscription.pricelist_id.id,
                 quantity=self.quantity,
             )
-            self.price_unit = product.price
+            if subscription.pricelist_id and subscription.pricelist_id.discount_policy == "without_discount":
+                if subscription.pricelist_id.currency_id != self.product_id.currency_id:
+                    self.price_unit = self.product_id.currency_id._convert(
+                        self.product_id.lst_price,
+                        subscription.pricelist_id.currency_id,
+                        self.product_id.product_tmpl_id._get_current_company(pricelist=subscription.pricelist_id),
+                        fields.Date.today()
+                    )
+                else:
+                    self.price_unit = product.lst_price
+                self.discount = (self.price_unit - product.price) / self.price_unit * 100
+            else:
+                self.price_unit = product.price
 
             if subscription.pricelist_id.discount_policy == 'without_discount':
                 self.price_unit = product.list_price

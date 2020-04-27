@@ -25,7 +25,13 @@ class SaleSubscription(models.Model):
     commission_plan_assignation = fields.Selection([
         ('auto', 'Based On Referrer'),
         ('fixed', 'Manual')],
-        default='auto', compute='_compute_commission_plan_assignation', inverse='_inverse_commission_plan_assignation', search='_search_commission_plan_assignation')
+        default='auto',
+        compute='_compute_commission_plan_assignation',
+        inverse='_inverse_commission_plan_assignation',
+        search='_search_commission_plan_assignation',
+        help="Based on Referrer: the commission plan of this subscription will change automatically whenever the commission plan of the Referrer is changed.\n"
+             "Manual: the commission plan of this subscription is set manually here and will never change automatically. "
+             "Keep Commission Plan empty to avoid paying any commissions.")
 
     @api.depends('commission_plan_frozen')
     def _compute_commission_plan_assignation(self):

@@ -88,7 +88,8 @@ class AccountMoveLine(models.Model):
         :return: Python dictionary of values.
         '''
         self.ensure_one()
-        return {
+
+        vals = {
             'display_type': self.display_type,
             'sequence': self.sequence,
             'name': self.name,
@@ -100,3 +101,7 @@ class AccountMoveLine(models.Model):
             'analytic_account_id': self.analytic_account_id.id,
             'analytic_tag_ids': [(6, 0, self.analytic_tag_ids.ids)],
         }
+        # Ensure no account will be set at creation
+        if self.display_type:
+            vals['account_id'] = False
+        return vals

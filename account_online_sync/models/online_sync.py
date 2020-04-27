@@ -400,11 +400,14 @@ class AccountJournal(models.Model):
 
     @api.model
     def cron_fetch_online_transactions(self):
-        for account in self.search([('account_online_journal_id', '!=', False)]):
-            try:
-                account.account_online_provider_id.cron_fetch_online_transactions()
-            except UserError:
-                continue
+        journals = self.search([('account_online_journal_id', '!=', False)])
+        if len(journals):
+            account_online_providers = journals.mapped('account_online_journal_id').mapped('account_online_provider_id')
+            for account_online_provider in account_online_providers:
+                try:
+                    account_online_provider.cron_fetch_online_transactions()
+                except UserError:
+                    continue
 
     def unlink(self):
         acc_online_provider = False

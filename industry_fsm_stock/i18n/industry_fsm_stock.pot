@@ -57,7 +57,7 @@ msgstr ""
 #. module: industry_fsm_stock
 #: code:addons/industry_fsm_stock/wizard/fsm_stock_tracking.py:0
 #, python-format
-msgid "Each line need a Lot/Serial Number"
+msgid "Each line needs a Lot/Serial Number"
 msgstr ""
 
 #. module: industry_fsm_stock

@@ -23,7 +23,7 @@ class FsmStockTracking(models.TransientModel):
             return
 
         if self.tracking_line_ids.filtered(lambda l: not l.lot_id):
-            raise UserError(_('Each line need a Lot/Serial Number'))
+            raise UserError(_('Each line needs a Lot/Serial Number'))
 
         SaleOrderLine = self.env['sale.order.line'].sudo()
 

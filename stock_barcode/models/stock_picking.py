@@ -35,30 +35,30 @@ class StockPicking(models.Model):
         source_location_list, destination_location_list = self._get_locations()
         for picking in pickings:
             picking['move_line_ids'] = self.env['stock.move.line'].browse(picking.pop('move_line_ids')).read(move_line_ids_fields_to_read)
+
+            # Prefetch data
+            product_ids = tuple(set([move_line_id['product_id'][0] for move_line_id in picking['move_line_ids']]))
+            tracking_and_barcode_per_product_id = {}
+            for res in self.env['product.product'].search_read([('id', 'in', product_ids)], ['tracking', 'barcode']):
+                tracking_and_barcode_per_product_id[res.pop("id")] = res
+
             for move_line_id in picking['move_line_ids']:
-                move_line_id['product_id'] = self.env['product.product'].browse(move_line_id.pop('product_id')[0]).read([
-                    'id',
-                    'tracking',
-                    'barcode',
-                ])[0]
-                move_line_id['location_id'] = self.env['stock.location'].browse(move_line_id.pop('location_id')[0]).read([
-                    'id',
-                    'display_name',
-                ])[0]
-                move_line_id['location_dest_id'] = self.env['stock.location'].browse(move_line_id.pop('location_dest_id')[0]).read([
-                    'id',
-                    'display_name',
-                ])[0]
-            picking['location_id'] = self.env['stock.location'].browse(picking.pop('location_id')[0]).read([
-                'id',
-                'display_name',
+                id = move_line_id.pop('product_id')[0]
+                move_line_id['product_id'] = {"id": id, **tracking_and_barcode_per_product_id[id]}
+                id, name = move_line_id.pop('location_id')
+                move_line_id['location_id'] = {"id": id, "display_name": name}
+                id, name = move_line_id.pop('location_dest_id')
+                move_line_id['location_dest_id'] = {"id": id, "display_name": name}
+            id, name = picking.pop('location_id')
+            picking['location_id'] = self.env['stock.location'].search_read([("id", "=", id)], [
                 'parent_path'
             ])[0]
-            picking['location_dest_id'] = self.env['stock.location'].browse(picking.pop('location_dest_id')[0]).read([
-                'id',
-                'display_name',
+            picking['location_id'].update({"id": id, "display_name": name})
+            id, name = picking.pop('location_dest_id')
+            picking['location_dest_id'] = self.env['stock.location'].search_read([("id", "=", id)], [
                 'parent_path'
             ])[0]
+            picking['location_dest_id'].update({"id": id, "display_name": name})
             picking['group_stock_multi_locations'] = self.env.user.has_group('stock.group_stock_multi_locations')
             picking['group_tracking_owner'] = self.env.user.has_group('stock.group_tracking_owner')
             picking['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')

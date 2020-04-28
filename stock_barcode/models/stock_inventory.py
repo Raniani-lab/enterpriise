@@ -55,18 +55,24 @@ class StockInventory(models.Model):
                 'partner_id',
                 'dummy_id',
             ])
+
+            # Prefetch data
+            location_ids = list(set([line_id["location_id"][0] for line_id in inventory['line_ids']]))
+            product_ids = list(set([line_id["product_id"][0] for line_id in inventory['line_ids']]))
+
+            parent_path_per_location_id = {}
+            for res in self.env['stock.location'].search_read([('id', 'in', location_ids)], ['parent_path']):
+                parent_path_per_location_id[res.pop("id")] = res
+
+            tracking_and_barcode_per_product_id = {}
+            for res in self.env['product.product'].search_read([('id', 'in', product_ids)], ['tracking', 'barcode']):
+                tracking_and_barcode_per_product_id[res.pop("id")] = res
+
             for line_id in inventory['line_ids']:
-                line_id['product_id'] = self.env['product.product'].browse(line_id.pop('product_id')[0]).read([
-                    'id',
-                    'display_name',
-                    'tracking',
-                    'barcode',
-                ])[0]
-                line_id['location_id'] = self.env['stock.location'].browse(line_id.pop('location_id')[0]).read([
-                    'id',
-                    'display_name',
-                    'parent_path'
-                ])[0]
+                id, name = line_id.pop('product_id')
+                line_id['product_id'] = {"id": id, "display_name": name, **tracking_and_barcode_per_product_id[id]}
+                id, name = line_id.pop('location_id')
+                line_id['location_id'] = {"id": id, "display_name": name, **parent_path_per_location_id[id]}
             inventory['location_ids'] = self.env['stock.location'].browse(inventory.pop('location_ids')).read([
                 'id',
                 'display_name',

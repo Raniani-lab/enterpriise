@@ -104,6 +104,7 @@ class StockReport(models.Model):
             INNER JOIN product_product p ON sm.product_id = p.id
             INNER JOIN product_template t ON p.product_tmpl_id = t.id
             INNER JOIN product_category cat ON t.categ_id = cat.id
+            WHERE t.type = 'product'
         """
 
         return from_str

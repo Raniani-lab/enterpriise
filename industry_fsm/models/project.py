@@ -21,11 +21,11 @@ class Project(models.Model):
             if not project._origin:
                 project.allow_timesheets = not project.is_fsm
 
-    @api.depends('is_fsm')
-    def _compute_allow_subtasks(self):
-        subtask_enabled = self.user_has_groups('project.group_subtask_project')
-        for project in self:
-            project.allow_subtasks = subtask_enabled and not project.is_fsm
+    @api.model
+    def default_get(self, *args, **kwargs):
+        defaults = super().default_get(*args, **kwargs)
+        defaults['allow_subtasks'] = defaults.get('allow_subtasks', False) and not defaults.get('is_fsm')
+        return defaults
 
 
 class Task(models.Model):

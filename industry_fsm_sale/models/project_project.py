@@ -22,12 +22,6 @@ class Project(models.Model):
             defaults['allow_quotations'] = self.env.user.has_group('industry_fsm_sale.group_fsm_quotation_from_task')
         return defaults
 
-    @api.depends('allow_billable')
-    def _compute_allow_billable(self):
-        super()._compute_allow_billable()
-        for project in self:
-            project.allow_material = project.allow_billable
-
     @api.depends('allow_billable', 'is_fsm')
     def _compute_allow_material(self):
         for project in self:

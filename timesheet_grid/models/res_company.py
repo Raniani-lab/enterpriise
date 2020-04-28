@@ -125,7 +125,7 @@ class Company(models.Model):
         """ Send a email reminder to all users having the group 'timesheet manager'. """
         today_min = fields.Datetime.to_string(datetime.combine(date.today(), time.min))
         today_max = fields.Datetime.to_string(datetime.combine(date.today(), time.max))
-        companies = self.search([('timesheet_mail_employee_allow', '=', True), ('timesheet_mail_manager_nextdate', '<', today_max), ('timesheet_mail_manager_nextdate', '>=', today_min)])
+        companies = self.search([('timesheet_mail_manager_allow', '=', True), ('timesheet_mail_manager_nextdate', '<', today_max), ('timesheet_mail_manager_nextdate', '>=', today_min)])
         for company in companies:
             # calculate the period
             if company.timesheet_mail_manager_interval == 'months':

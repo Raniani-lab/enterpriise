@@ -80,3 +80,26 @@ class TestBillsPrediction(AccountTestInvoicingCommon):
         self._create_bill(self.test_partners[2], "Purchase of coca-cola", self.test_accounts[4])
         self._create_bill(self.test_partners[4], "Crate of coca-cola", self.test_accounts[4])
         self._create_bill(self.test_partners[1], "March", self.test_accounts[2])
+
+    def test_account_prediction_with_product(self):
+        product = self.env['product.product'].create({
+            'name': 'product_a',
+            'lst_price': 1000.0,
+            'standard_price': 800.0,
+            'property_account_income_id': self.company_data['default_account_revenue'].id,
+            'property_account_expense_id': self.company_data['default_account_expense'].id,
+        })
+
+        invoice_form = Form(self.env['account.move'].with_context(default_move_type='in_invoice'))
+        invoice_form.partner_id = self.test_partners[0]
+        invoice_form.invoice_date = self.frozen_today
+        with invoice_form.invoice_line_ids.new() as invoice_line_form:
+            invoice_line_form.product_id = product
+            invoice_line_form.name = "Maintenance and repair"
+        invoice = invoice_form.save()
+
+        self.assertRecordValues(invoice.invoice_line_ids, [{
+            'name': "Maintenance and repair",
+            'product_id': product.id,
+            'account_id': self.company_data['default_account_expense'].id,
+        }])

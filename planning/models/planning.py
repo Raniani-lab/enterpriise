@@ -73,7 +73,7 @@ class Planning(models.Model):
         ('planning', 'Planning'),
         ('forecast', 'Forecast')
     ], compute='_compute_allocation_type')
-    allocated_hours = fields.Float("Allocated Hours", default=0, compute='_compute_allocated_hours', store=True, readonly=False)
+    allocated_hours = fields.Float("Allocated Hours", compute='_compute_allocated_hours', store=True, readonly=False)
     allocated_percentage = fields.Float("Allocated Time (%)", default=100, help="Percentage of time the employee is supposed to work during the shift.")
     working_days_count = fields.Integer("Number Of Working Days", compute='_compute_working_days_count', store=True)
 
@@ -158,6 +158,8 @@ class Planning(models.Model):
                         slot.allocated_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours'] * percentage
                     else:
                         slot.allocated_hours = 0.0
+            else:
+                slot.allocated_hours = 0.0
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_working_days_count(self):

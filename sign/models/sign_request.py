@@ -114,7 +114,7 @@ class SignRequest(models.Model):
             infos = []
             for item in rec.request_item_ids:
                 infos.append({
-                    'partner_name': item.partner_id.name if item.partner_id else 'Public User',
+                    'partner_name': item.partner_id.sudo().name if item.partner_id else 'Public User',
                     'state': item.state,
                 })
             rec.request_item_infos = infos

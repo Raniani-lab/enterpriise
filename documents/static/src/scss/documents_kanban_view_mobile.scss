@@ -1,5 +1,5 @@
 @include media-breakpoint-down(sm) {
-    .o_documents_kanban {
+    .o_documents_content {
         details.o_documents_mobile_inspector {
             > summary {
                 @include o-details-hide-caret();

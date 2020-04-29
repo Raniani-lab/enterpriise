@@ -3,6 +3,7 @@
 
 import json
 import logging
+import threading
 
 from ast import literal_eval
 from datetime import timedelta, date, datetime
@@ -304,6 +305,8 @@ class MarketingActivity(models.Model):
         return graph_data
 
     def execute(self, domain=None):
+        # auto-commit except in testing mode
+        auto_commit = not getattr(threading.currentThread(), 'testing', False)
         trace_domain = [
             ('schedule_date', '<=', Datetime.now()),
             ('state', '=', 'scheduled'),
@@ -328,7 +331,8 @@ class MarketingActivity(models.Model):
         for activity, traces in trace_to_activities.items():
             for traces_batch in (traces[i:i + BATCH_SIZE] for i in range(0, len(traces), BATCH_SIZE)):
                 activity.execute_on_traces(traces_batch)
-                self.env.cr.commit()
+                if auto_commit:
+                    self.env.cr.commit()
 
     def execute_on_traces(self, traces):
         """ Execute current activity on given traces.

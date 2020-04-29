@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import threading
+
 from ast import literal_eval
 from dateutil.relativedelta import relativedelta
 
@@ -234,6 +236,8 @@ class MarketingCampaign(models.Model):
         """ Creates new participants, taking into account already-existing ones
         as well as campaign filter and unique field. """
         participants = self.env['marketing.participant']
+        # auto-commit except in testing mode
+        auto_commit = not getattr(threading.currentThread(), 'testing', False)
         for campaign in self.filtered(lambda c: c.marketing_activity_ids):
             now = Datetime.now()
             if not campaign.last_sync_date:
@@ -267,7 +271,7 @@ class MarketingCampaign(models.Model):
                     'campaign_id': campaign.id,
                     'res_id': rec_id,
                 })
-                if not index % BATCH_SIZE:
+                if not index % BATCH_SIZE and auto_commit:
                     self.env.cr.commit()
 
             if to_remove:
@@ -277,7 +281,7 @@ class MarketingCampaign(models.Model):
                 ])
                 for index, participant in enumerate(participants_to_unlink, start=1):
                     participant.action_set_unlink()
-                    if not index % BATCH_SIZE:
+                    if not index % BATCH_SIZE and auto_commit:
                         self.env.cr.commit()
 
         return participants

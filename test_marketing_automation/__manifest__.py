@@ -5,7 +5,14 @@
     'version': "1.0",
     'summary': "Test Suits for Automated Marketing Campaigns",
     'category': "Hidden",
-    'depends': ['marketing_automation', 'test_mail'],
+    'depends': [
+        'marketing_automation',
+        'marketing_automation_sms',
+        'test_mail',
+        'test_mail_enterprise',
+        'test_mail_full',
+        'test_mass_mailing',
+    ],
     'data': [
         'security/ir.model.access.csv',
     ],

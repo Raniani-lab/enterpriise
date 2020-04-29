@@ -15,7 +15,7 @@
             <field name="name">Net Profit</field>
             <field name="code">NEP</field>
             <field name="financial_report_id" ref="account_financial_report_profitandloss0"/>
-            <field name="formulas">GRP - LEX</field>
+            <field name="formulas">INC - LEX</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="0" />
         </record>

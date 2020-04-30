@@ -327,15 +327,14 @@ QUnit.module('DocumentsViews', {
             "should have a 'document inspector' column");
 
         // check control panel buttons
-        assert.containsN(kanban, '.o_cp_buttons .btn-primary', 3,
-            "should have three primary buttons");
-        assert.strictEqual(kanban.$('.o_cp_buttons .btn-primary:first').text().trim(), 'Upload',
+        assert.containsOnce(kanban, '.o_cp_buttons .btn-primary');
+        assert.strictEqual(kanban.$('.o_cp_buttons .btn-primary').text().trim(), 'Upload',
             "should have a primary 'Upload' button");
         assert.containsOnce(kanban, '.o_cp_buttons button.o_documents_kanban_url',
             "should allow to save a URL");
-        assert.strictEqual(kanban.$('.o_cp_buttons button.o_documents_kanban_request').text().trim(), 'Request Document',
+        assert.strictEqual(kanban.$('.o_cp_buttons button.o_documents_kanban_request').text().trim(), 'Request',
             "should have a primary 'request' button");
-        assert.strictEqual(kanban.$('.o_cp_buttons button.btn-secondary').text().trim(), 'Share',
+        assert.strictEqual(kanban.$('.o_cp_buttons button.btn-secondary.o_documents_kanban_share_domain').text().trim(), 'Share',
             "should have a secondary 'Share' button");
 
         kanban.destroy();

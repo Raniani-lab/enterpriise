@@ -18,6 +18,9 @@ class SignTemplate(models.Model):
     _description = "Signature Template"
     _rec_name = "attachment_id"
 
+    def _default_favorited_ids(self):
+        return [(4, self.env.user.id)]
+
     attachment_id = fields.Many2one('ir.attachment', string="Attachment", required=True, ondelete='cascade')
     name = fields.Char(related='attachment_id.name', readonly=False)
     datas = fields.Binary(related='attachment_id.datas', readonly=False)
@@ -32,7 +35,7 @@ class SignTemplate(models.Model):
                                     "- On Invitation: only invited users can view and use the template\n"
                                     "Invited users can always edit the document template.\n"
                                     "Existing requests based on this template will not be affected by changes.")
-    favorited_ids = fields.Many2many('res.users', string="Invited Users")
+    favorited_ids = fields.Many2many('res.users', string="Invited Users", default=lambda s: s._default_favorited_ids())
 
     share_link = fields.Char(string="Share Link", copy=False)
 

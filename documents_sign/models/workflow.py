@@ -24,6 +24,7 @@ class WorkflowActionRuleSign(models.Model):
                 create_values = {
                     'name': document.name.rsplit('.', 1)[0],
                     'attachment_id': document.attachment_id.id,
+                    'favorited_ids': [(4, self.env.user.id)],
                 }
                 if self.folder_id:
                     create_values['folder_id'] = self.folder_id.id

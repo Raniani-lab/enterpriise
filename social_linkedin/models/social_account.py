@@ -121,8 +121,8 @@ class SocialAccountLinkedin(models.Model):
             },
             headers=self._linkedin_bearer_headers(linkedin_access_token)).json()
 
+        accounts = []
         if 'elements' in response and isinstance(response.get('elements'), list):
-            accounts = []
             for organization in response.get('elements'):
                 image_url = self._extract_linkedin_picture_url(organization.get('organization~'))
                 image_data = requests.get(image_url).content if image_url else None

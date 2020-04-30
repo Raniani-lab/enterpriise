@@ -111,7 +111,7 @@ class View(models.Model):
         if 'x_studio_partner_id' in model._fields:
             fields.append(E.field(name='x_studio_partner_id'))
         if 'x_studio_user_id' in model._fields:
-            fields.append(E.field(name='x_studio_user_id'))
+            fields.append(E.field(name='x_studio_user_id', widget='many2one_avatar_user'))
         if 'x_studio_company_id' in model._fields:
             fields.append(E.field(name='x_studio_company_id', groups='base.group_multi_company'))
         if 'x_studio_currency_id' in model._fields and 'x_studio_value' in model._fields:
@@ -160,7 +160,7 @@ class View(models.Model):
         right_group = E.group(name=group_name + '_right')
         left_group_content, right_group_content = list(), list()
         if 'x_studio_user_id' in model._fields:
-            right_group_content.append(E.field(name='x_studio_user_id'))
+            right_group_content.append(E.field(name='x_studio_user_id', widget='many2one_avatar_user'))
         if 'x_studio_partner_id' in model._fields:
             left_group_content.append(E.field(name='x_studio_partner_id'))
             left_group_content.append(E.field(name='x_studio_partner_phone', widget='phone', options="{'enable_sms': True}"))
@@ -348,7 +348,7 @@ class View(models.Model):
         bottom_div.extend([bottom_left_div, bottom_right_div])
         bottom_right_div.append(E.field(name='x_studio_kanban_state', widget='state_selection'))
         if 'x_studio_user_id' in model._fields:
-            pre_fields.append(E.field(name='x_studio_user_id'))
+            pre_fields.append(E.field(name='x_studio_user_id', widget="many2one_avatar_user"))
             unassigned_var = E.t({'t-set': 'unassigned'})
             unassigned_var.append(E.t({'t-esc': "_t('Unassigned')"}))
             img = E.img({'t-att-src': "kanban_image('res.users', 'image_128', record.x_studio_user_id.raw_value)",

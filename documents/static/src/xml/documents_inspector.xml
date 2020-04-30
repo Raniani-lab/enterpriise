@@ -27,11 +27,7 @@
 <t t-name="documents.DocumentsInspector.previews">
     <t t-foreach="widget.records.slice(0, 4)" t-as="record">
         <t t-set="recordData" t-value="widget.recordsData[record.id]"/>
-        <div t-attf-class="o_document_preview
-            {{ record.data.type === 'empty' ? 'o_document_request_preview' : '' }}
-            {{ nbPreviews === 1 ? 'o_documents_single_preview' : '' }}
-            {{ ((recordData.isImage or recordData.isYouTubeVideo) and 'o_documents_preview_image') or 'o_documents_preview_mimetype' }}
-            {{ (recordData.isYouTubeVideo or recordData.isGif) and 'o_non_image_preview' or '' }}">
+        <div name="document_preview" t-attf-class="{{widget._computeClasses(record)}}">
             <t t-set="mimetype" t-value="record.data.mimetype"/>
             <t t-if="recordData.isImage or recordData.isGif or recordData.isYouTubeVideo">
                 <t t-set="size" t-value="nbPreviews === 1 ? '268x130' : nbPreviews === 2 ? '120x130' : '120x75'"/>

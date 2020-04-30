@@ -151,6 +151,32 @@ const DocumentsInspector = Widget.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * Compute the classes to use in DocumentsInspector.previews template
+     *
+     * @param {Object} record
+     * @return {String}
+     */
+    _computeClasses: function (record) {
+        const classes = ["o_document_preview"];
+        const nbPreviews = this.records.length;
+        const recordData = this.recordsData[record.id];
+        if (record.data.type === 'empty') {
+            classes.push("o_document_request_preview");
+        }
+        if (nbPreviews === 1) {
+            classes.push("o_documents_single_preview");
+        }
+        if ((recordData.isImage || recordData.isYouTubeVideo)) {
+            classes.push("o_documents_preview_image");
+        } else {
+            classes.push("o_documents_preview_mimetype");
+        }
+        if ((recordData.isYouTubeVideo || recordData.isGif)) {
+            classes.push("o_non_image_preview");
+        }
+        return classes.join(" ");
+    },
+    /**
      * Generate the record dataPoint to pass to the FieldMany2one when several
      * records a selected, and when those records have different values for the
      * many2one field to display.

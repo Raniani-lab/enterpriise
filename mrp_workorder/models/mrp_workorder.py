@@ -299,11 +299,6 @@ class MrpProductionWorkcenterLine(models.Model):
 
             if continue_production:
                 self._create_subsequent_checks()
-            elif float_compare(self.component_remaining_qty, 0, precision_rounding=rounding) < 0 and\
-                    self.consumption == 'strict' and self.test_type != 'register_byproducts':
-                # '< 0' as it's not possible to click on validate if qty_done < component_remaining_qty
-                # We exclude byproduct as strict consumption doesn't impact production
-                raise UserError(_('You should consume the quantity of %s defined in the BoM. If you want to consume more or less components, change the consumption setting on the BoM.') % self.component_id[0].name)
             self.workorder_line_id._check_line_sn_uniqueness()
 
         if self.test_type == 'picture' and not self.picture:

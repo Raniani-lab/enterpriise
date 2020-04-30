@@ -225,32 +225,6 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(wl_keybord.qty_reserved, 0)
         self.assertEqual(wl_keybord.qty_to_consume, 2)
 
-    def test_flexible_consumption_1(self):
-        """ Production with a strict consumption
-        Check that consuming a tracked product more than planned triggers an error"""
-        self.bom_submarine.consumption = 'strict'
-
-        mo_form = Form(self.env['mrp.production'])
-        mo_form.product_id = self.submarine_pod
-        mo_form.bom_id = self.bom_submarine
-        mo_form.product_qty = 1
-        mo = mo_form.save()
-
-        mo.action_assign()
-        mo.action_confirm()
-        mo.button_plan()
-
-        wo = mo.workorder_ids.sorted()[0]
-        wo.button_start()
-        wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.finished_lot_id = self.sp1
-        wo_form.lot_id = self.mc1
-        with self.assertRaises(UserError):
-            # try consume more with strict BoM
-            wo_form.qty_done = 10
-            wo = wo_form.save()
-            wo._next()
-
     def test_flexible_consumption_1b(self):
         """ Production with a strict consumption
         Check that consuming a non tracked product more than planned triggers an error"""
@@ -294,12 +268,6 @@ class TestWorkOrder(common.TestMrpCommon):
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.qty_done, 12, 'The suggested component qty_done is wrong')
         self.assertEqual(wo_form.component_remaining_qty, 12, 'The remaining quantity is wrong')
-
-        with self.assertRaises(UserError):
-            # try consume more with strict BoM
-            wo_form.qty_done = 30
-            wo = wo_form.save()
-            wo._next()
 
     def test_flexible_consumption_1c(self):
         """ Production with a strict consumption
@@ -1151,7 +1119,7 @@ class TestWorkOrder(common.TestMrpCommon):
         wo = wo_form.save()
         wo.record_production()
 
-        production.post_inventory()
+        production._post_inventory()
         self.assertEqual(len(production.move_raw_ids), 6, "wrong number of raw moves")
 
         done_raw_moves = production.move_raw_ids.filtered(lambda move: move.state == 'done')

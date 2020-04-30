@@ -290,6 +290,24 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('disable optional field dropdown icon', async function (assert) {
+        assert.expect(2);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<tree><field name='display_name' optional='show'/></tree>",
+        });
+
+        assert.strictEqual(vem.$('i.o_optional_columns_dropdown_toggle').length, 1,
+            'there should be optional field dropdown icon');
+        assert.hasClass(vem.$('i.o_optional_columns_dropdown_toggle'), 'text-muted',
+            'optional field dropdown icon must be muted');
+
+        vem.destroy();
+
+    });
+
     QUnit.test('optional field in list editor', async function (assert) {
         assert.expect(1);
 

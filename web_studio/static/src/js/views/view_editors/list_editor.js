@@ -198,6 +198,9 @@ return ListRenderer.extend(EditorMixin, {
             });
 
             self.setSelectable(self.$('th, td').not('.o_web_studio_hook'));
+            // Apply 'text-muted' class on optional field dropdown
+            self.$('i.o_optional_columns_dropdown_toggle')
+                .addClass('text-muted')
         });
         return prom;
     },

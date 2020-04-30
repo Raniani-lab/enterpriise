@@ -63,6 +63,7 @@
         <script type="text/javascript" src="/web_studio/static/src/js/views/map_view_dialog.js"></script>
 
         <script type="text/javascript" src="/web_studio/static/src/js/views/renderers/search_renderer.js"></script>
+        <script type="text/javascript" src="/web_studio/static/src/js/views/renderers/list_renderer.js"></script>
 
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/calendar_editor.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/fields.js"></script>

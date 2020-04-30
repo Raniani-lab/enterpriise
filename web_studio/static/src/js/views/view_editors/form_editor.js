@@ -331,6 +331,9 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
                     self.$('.oe_title').before($avatar);
                 }
             }
+            // Apply 'text-muted' class on optional field dropdown
+            self.$('i.o_optional_columns_dropdown_toggle')
+                .addClass('text-muted')
         });
     },
     /**

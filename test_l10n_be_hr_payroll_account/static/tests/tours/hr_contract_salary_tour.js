@@ -289,20 +289,14 @@ Tour.register('hr_contract_salary_tour', {
             run: 'click',
         },
         {
-            content: "Take Small Rep Fees",
-            trigger: 'input[name="representation_fees_radio"]:eq(1)',
+            content: "Untake Rep Fees",
+            trigger: 'input[name="representation_fees_radio"]:eq(0)',
             extra_trigger: 'input[name="Net"][value="2111.04"]',
             run: 'click',
         },
         {
-            content: "Untake Rep Fees",
-            trigger: 'input[name="representation_fees_radio"]:eq(0)',
-            extra_trigger: 'input[name="Gross"][value="3027.51"]',
-            run: 'click',
-        },
-        {
             content: "Retake Rep Fees",
-            trigger: 'input[name="representation_fees_radio"]:eq(2)',
+            trigger: 'input[name="representation_fees_radio"]:eq(1)',
             extra_trigger: 'input[name="Gross"][value="3103.16"]',
             run: 'click',
         },

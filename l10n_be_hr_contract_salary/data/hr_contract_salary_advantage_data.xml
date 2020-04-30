@@ -184,12 +184,6 @@
         <field name="name">0 €</field>
     </record>
 
-    <record id="l10n_be_representation_fees_value_1" model="hr.contract.salary.advantage.value">
-        <field name="advantage_id" ref="l10n_be_representation_fees"/>
-        <field name="name">110 €</field>
-        <field name="value">110</field>
-    </record>
-
     <record id="l10n_be_representation_fees_value_2" model="hr.contract.salary.advantage.value">
         <field name="advantage_id" ref="l10n_be_representation_fees"/>
         <field name="name">150 €</field>

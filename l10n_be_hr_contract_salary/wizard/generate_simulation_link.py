@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models, _
 
+
 class GenerateSimulationLink(models.TransientModel):
     _inherit = 'generate.simulation.link'
 
@@ -10,8 +11,7 @@ class GenerateSimulationLink(models.TransientModel):
         ('PFI', 'PFI'),
         ('CDI', 'CDI'),
         ('CDD', 'CDD')], string="Contract Type", default="PFI")
-    customer_relation = fields.Boolean("In relations with customers", default=True)
 
     def _get_url_triggers(self):
         res = super()._get_url_triggers()
-        return res + ['customer_relation', 'contract_type']
+        return res + ['contract_type']

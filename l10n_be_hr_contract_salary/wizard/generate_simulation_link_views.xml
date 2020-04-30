@@ -7,7 +7,6 @@
         <field name="arch" type="xml">
             <field name="applicant_id" position="after">
                 <field name="contract_type"/>
-                <field name="customer_relation"/>
             </field>
         </field>
     </record>

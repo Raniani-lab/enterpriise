@@ -124,7 +124,6 @@ class HrContractSalary(http.Controller):
 
         redirect_to_job = False
         applicant_id = False
-        customer_relation = False
         contract_type = False
         employee_contract_id = False
         job_title = False
@@ -139,8 +138,6 @@ class HrContractSalary(http.Controller):
                 applicant_id = value
             elif field_name == 'employee_contract_id':
                 employee_contract_id = value
-            elif field_name == 'customer_relation':
-                customer_relation = value
             elif field_name == 'contract_type':
                 contract_type = value
             elif field_name == 'job_title':
@@ -171,7 +168,6 @@ class HrContractSalary(http.Controller):
             'redirect_to_job': redirect_to_job,
             'applicant_id': applicant_id,
             'employee_contract_id': employee_contract_id,
-            'customer_relation': customer_relation,
             'contract_type': contract_type,
             'job_title': job_title,
             'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),

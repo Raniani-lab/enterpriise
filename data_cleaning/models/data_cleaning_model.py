@@ -67,7 +67,7 @@ class DataCleaningModel(models.Model):
             cm_model.records_to_clean_count = counts[cm_model.id] if cm_model.id in counts else 0
 
     def _cron_clean_records(self):
-        self.sudo().search([]).clean_records()
+        self.sudo().search([])._clean_records()
         self.sudo()._notify_records_to_clean()
 
     def _clean_records_format_phone(self, actions, field):

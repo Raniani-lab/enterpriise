@@ -73,6 +73,10 @@ class PatchedOfxParser(OfxParserClass):
         else:
             msec = datetime.timedelta(seconds=0)
 
+        # Some banks seem to return some OFX dates as YYYY-MM-DD; so we remove
+        # the '-' characters to support them as well
+        ofxDateTime = ofxDateTime.replace('-', '')
+
         try:
             local_date = datetime.datetime.strptime(
                 ofxDateTime[:14], '%Y%m%d%H%M%S'

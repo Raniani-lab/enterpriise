@@ -4,7 +4,9 @@
 from gatt import Device
 import logging
 
-from odoo.addons.hw_drivers.controllers.driver import event_manager, Driver, iot_devices
+from odoo.addons.hw_drivers.driver import Driver
+from odoo.addons.hw_drivers.event_manager import event_manager
+from odoo.addons.hw_drivers.main import iot_devices
 from odoo.addons.hw_drivers.iot_handlers.interfaces.BTInterface import bt_devices
 
 _logger = logging.getLogger(__name__)
@@ -13,14 +15,14 @@ _logger = logging.getLogger(__name__)
 class SylvacBtDriver(Driver):
     connection_type = 'bluetooth'
 
-    def __init__(self, device):
-        super(SylvacBtDriver, self).__init__(device)
+    def __init__(self, identifier, device):
+        super(SylvacBtDriver, self).__init__(identifier, device)
         self.gatt_device = GattSylvacBtDriver(mac_address=device.mac_address, manager=device.manager)
         self.gatt_device.btdriver = self
         self.gatt_device.connect()
-        self._device_type = 'device'
-        self._device_connection = 'bluetooth'
-        self._device_name = self.dev.alias()
+        self.device_type = 'device'
+        self.device_connection = 'bluetooth'
+        self.device_name = device.alias()
 
     @classmethod
     def supported(cls, device):
@@ -33,8 +35,8 @@ class SylvacBtDriver(Driver):
         return False
 
     def disconnect(self):
+        super(SylvacBtDriver, self).disconnect()
         del bt_devices[self.device_identifier]
-        del iot_devices[self.device_identifier]
 
 
 class GattSylvacBtDriver(Device):

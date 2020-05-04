@@ -2,7 +2,7 @@ odoo.define('posiot.scale.tour', function (require) {
     'use strict';
 
 var Tour = require('web_tour.tour');
-var DeviceProxy = require('iot.widgets').DeviceProxy;
+var DeviceProxy = require('iot.DeviceProxy');
 
 var PosScaleDummy = DeviceProxy.extend({
     action: function () { },

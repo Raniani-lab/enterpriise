@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import time
 import logging
-
 import serial
+import time
 
-from odoo.addons.hw_drivers.controllers.driver import event_manager
+from odoo.addons.hw_drivers.event_manager import event_manager
 from odoo.addons.hw_drivers.iot_handlers.drivers.SerialBaseDriver import SerialDriver, SerialProtocol, serial_connection
 
 _logger = logging.getLogger(__name__)
@@ -36,9 +35,9 @@ class SylvacSCalProDriver(SerialDriver):
 
     _protocol = SylvacSCalProProtocol
 
-    def __init__(self, device):
-        self._device_type = 'device'
-        super().__init__(device)
+    def __init__(self, identifier, device):
+        super(SylvacSCalProDriver, self).__init__(identifier, device)
+        self.device_type = 'device'
 
     def _take_measure(self):
         """Asks the device for a new value, and pushes that value to the frontend."""

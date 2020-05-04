@@ -3,7 +3,7 @@ odoo.define('pos_iot.test.payment_terminals', function (require) {
 
 var tour = require('web_tour.tour');
 
-var DeviceProxy = require('iot.widgets').DeviceProxy;
+var DeviceProxy = require('iot.DeviceProxy');
 
 var TerminalProxy = DeviceProxy.extend({
     /**

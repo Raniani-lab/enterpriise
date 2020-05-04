@@ -114,7 +114,7 @@ var PedalController = FormController.extend({
         } else {
             for (var box in boxes) {
                 for (var device in boxes[box]) {
-                    if ( data.device_id === boxes[box][device][0] && data.value.toUpperCase() === boxes[box][device][1].toUpperCase()){
+                    if ( data.device_identifier === boxes[box][device][0] && data.value.toUpperCase() === boxes[box][device][1].toUpperCase()){
                         this.$("button[barcode_trigger='" + boxes[box][device][2] + "']:visible").click();
                     }
                 }

@@ -1,4 +1,7 @@
-from odoo import fields, models, api, _
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import fields, models, api
 
 
 class IotDevice(models.Model):
@@ -11,9 +14,3 @@ class IotDevice(models.Model):
     def _compute_qcp_test_type(self):
         types = {'device': 'measure', 'camera': 'picture', 'printer': 'print_label'}
         self.qcp_test_type = types.get(self.type, '')
-
-
-class QualityPoint(models.Model):
-    _inherit = "quality.point"
-
-    device_id = fields.Many2one('iot.device', ondelete='restrict', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")

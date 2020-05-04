@@ -4,11 +4,10 @@ odoo.define('quality_iot.iot_picture', function (require) {
 var registry = require('web.field_registry');
 var TabletImage = require('quality.tablet_image_field').TabletImage;
 var iot_widgets = require('iot.widgets');
-var Dialog = require('web.Dialog');
 var core = require('web.core');
 var _t = core._t;
 
-var TabletImageIot = TabletImage.extend(iot_widgets.IotValueFieldMixin, {
+var TabletImageIoT = TabletImage.extend(iot_widgets.IoTValueFieldMixin, {
     events: _.extend({}, TabletImage.prototype.events, {
         'click .o_input_file': '_onButtonClick',
     }),
@@ -18,7 +17,7 @@ var TabletImageIot = TabletImage.extend(iot_widgets.IotValueFieldMixin, {
      */
     _getDeviceInfo: function() {
         if (this.recordData.test_type === 'picture') {
-            return iot_widgets.IotValueFieldMixin._getDeviceInfo.apply(this);
+            return iot_widgets.IoTValueFieldMixin._getDeviceInfo.apply(this);
         }
     },
 
@@ -53,7 +52,7 @@ var TabletImageIot = TabletImage.extend(iot_widgets.IotValueFieldMixin, {
     },
 });
 
-registry.add('iot_picture', TabletImageIot);
+registry.add('iot_picture', TabletImageIoT);
 
-return TabletImageIot;
+return TabletImageIoT;
 });

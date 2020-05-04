@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+import io
+import json
+import os
+import zipfile
+
 from odoo import http
 from odoo.http import request
 from odoo.modules import module as modules
-import odoo
-import json
-import zipfile
-import io
-import os
+
 
 class IoTController(http.Controller):
 
@@ -40,8 +43,7 @@ class IoTController(http.Controller):
             request.env['iot.keyboard.layout'].sudo().create(json.loads(available_layouts))
         return ''
 
-    # Return home screen
-    @http.route('/iot/box/<string:identifier>/screen_url', type='http', auth='public')
+    @http.route('/iot/box/<string:identifier>/display_url', type='http', auth='public')
     def get_url(self, identifier):
         urls = {}
         iotbox = request.env['iot.box'].sudo().search([('identifier', '=', identifier)], limit=1)

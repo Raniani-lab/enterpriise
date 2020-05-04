@@ -14,6 +14,7 @@
 """,
     "data": [
         'security/ir.model.access.csv',
+        'views/assets.xml',
         'views/mrp_workorder_views.xml',
     ],
     'auto_install': True,

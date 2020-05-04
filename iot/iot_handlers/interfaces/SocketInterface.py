@@ -2,7 +2,7 @@ import logging
 import socket
 
 from odoo import _
-from odoo.addons.hw_drivers.controllers.driver import Interface
+from odoo.addons.hw_drivers.interface import Interface
 
 _logger = logging.getLogger(__name__)
 

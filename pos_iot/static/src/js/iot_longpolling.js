@@ -1,8 +1,8 @@
-odoo.define('pos_iot.widgets', function (require) {
+odoo.define('pos_iot.IoTLongpolling', function (require) {
 'use strict';
 
 var core = require('web.core');
-var IoTLongpolling = require('iot.widgets').IoTLongpolling;
+var IoTLongpolling = require('iot.IoTLongpolling');
 const { Gui } = require('point_of_sale.Gui');
 
 var _t = core._t;
@@ -19,7 +19,7 @@ IoTLongpolling.include({
         posmodel.proxy.proxy_connection_status(iot_ip, true);
         return this._super.apply(this, arguments);
     },
-    action: function (iot_ip, device_id, data) {
+    action: function (iot_ip, device_identifier, data) {
         var res = this._super.apply(this, arguments);
         res.then(function () {
             posmodel.proxy.proxy_connection_status(iot_ip, true);

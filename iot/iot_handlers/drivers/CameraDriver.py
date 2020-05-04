@@ -2,20 +2,20 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
-import tempfile
 import subprocess
 
-from odoo.addons.hw_drivers.controllers.driver import event_manager, Driver
+from odoo.addons.hw_drivers.driver import Driver
+from odoo.addons.hw_drivers.event_manager import event_manager
 
 
 class CameraDriver(Driver):
     connection_type = 'video'
 
-    def __init__(self, device):
-        super(CameraDriver, self).__init__(device)
-        self._device_type = 'camera'
-        self._device_connection = 'direct'
-        self._device_name = self.dev.card.decode('utf-8')
+    def __init__(self, identifier, device):
+        super(CameraDriver, self).__init__(identifier, device)
+        self.device_type = 'camera'
+        self.device_connection = 'direct'
+        self.device_name = device.card.decode('utf-8')
 
     @classmethod
     def supported(cls, device):

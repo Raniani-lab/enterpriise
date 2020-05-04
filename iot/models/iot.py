@@ -1,8 +1,8 @@
-import base64
-import requests
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, exceptions, _
-from odoo.models import AbstractModel
+from odoo import api, fields, models
+
 
 # ----------------------------------------------------------
 # Models for client
@@ -45,7 +45,7 @@ class IotDevice(models.Model):
     _name = 'iot.device'
     _description = 'IOT Device'
 
-    iot_id = fields.Many2one('iot.box', string='IoT Box', required = True)
+    iot_id = fields.Many2one('iot.box', string='IoT Box', required=True, ondelete='cascade')
     name = fields.Char('Name')
     identifier = fields.Char(string='Identifier', readonly=True)
     type = fields.Selection([
@@ -74,7 +74,7 @@ class IotDevice(models.Model):
     company_id = fields.Many2one('res.company', 'Company', related="iot_id.company_id")
     connected = fields.Boolean(string='Status', help='If device is connected to the IoT Box', readonly=True)
     keyboard_layout = fields.Many2one('iot.keyboard.layout', string='Keyboard Layout')
-    screen_url = fields.Char('Screen URL', help="URL of the page that will be displayed by the device, leave empty to use the customer facing display of the POS.")
+    screen_url = fields.Char('Display URL', help="URL of the page that will be displayed by the device, leave empty to use the customer facing display of the POS.")
     manual_measurement = fields.Boolean('Manual Measurement', compute="_compute_manual_measurement", help="Manually read the measurement from the device")
     is_scanner = fields.Boolean(string='Is scanner', compute="_compute_is_scanner", inverse="_set_scanner" , help="Manually the device type between keyboard or scanner")
 
@@ -94,44 +94,6 @@ class IotDevice(models.Model):
     def _compute_manual_measurement(self):
         for device in self:
             device.manual_measurement = device.manufacturer == 'Adam'
-
-class IrActionReport(models.Model):
-    _inherit = 'ir.actions.report'
-
-    device_id = fields.Many2one('iot.device', string='IoT Device', domain="[('type', '=', 'printer')]",
-                                help='When setting a device here, the report will be printed through this device on the IoT Box')
-
-    def iot_render(self, res_ids, data=None):
-        if self.mapped('device_id'):
-            device = self.mapped('device_id')[0]
-        else:
-            device = self.env['iot.device'].browse(data['device_id'])
-        datas = self._render(res_ids, data=data)
-        data_bytes = datas[0]
-        data_base64 = base64.b64encode(data_bytes)
-        return device.iot_id.ip, device.identifier, data_base64
-
-    def report_action(self, docids, data=None, config=True):
-        result = super(IrActionReport, self).report_action(docids, data, config)
-        if result.get('type') != 'ir.actions.report':
-            return result
-        device = self.device_id
-        if data and data.get('device_id'):
-            device = self.env['iot.device'].browse(data['device_id'])
-
-        result['id'] = self.id
-        result['device_id'] = device.identifier
-        return result
-
-class PublisherWarrantyContract(models.AbstractModel):
-    _inherit = "publisher_warranty.contract"
-    _description = 'Publisher Warranty Contract For IoT Box'
-
-    @api.model
-    def _get_message(self):
-        msg = super(PublisherWarrantyContract, self)._get_message()
-        msg['IoTBox'] = self.env['iot.box'].search_count([])
-        return msg
 
 class KeyboardLayout(models.Model):
     _name = 'iot.keyboard.layout'

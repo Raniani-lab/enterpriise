@@ -2,7 +2,7 @@ from fcntl import ioctl
 from glob import glob
 import v4l2
 
-from odoo.addons.hw_drivers.controllers.driver import Interface
+from odoo.addons.hw_drivers.interface import Interface
 
 
 class CameraInterface(Interface):
@@ -16,6 +16,6 @@ class CameraInterface(Interface):
                 dev = v4l2.v4l2_capability()
                 ioctl(path, v4l2.VIDIOC_QUERYCAP, dev)
                 dev.interface = video
-                dev.identifier = dev.bus_info.decode('utf-8')
-                camera_devices[dev.identifier] = dev
+                identifier = dev.bus_info.decode('utf-8')
+                camera_devices[identifier] = dev
         return camera_devices

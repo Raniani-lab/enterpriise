@@ -1,13 +1,13 @@
-odoo.define('iot.IoTDeviceFormController', function (require) {
+odoo.define('iot.iot_device_controllers', function (require) {
 "use strict";
 
 var core = require('web.core');
 var FormController = require('web.FormController');
-var DeviceProxy = require('iot.widgets').DeviceProxy;
+var DeviceProxy = require('iot.DeviceProxy');
 
 var _t = core._t;
 
-var IotDeviceFormController = FormController.extend({
+var IoTDeviceFormController = FormController.extend({
     /**
      * @override
      */
@@ -17,7 +17,7 @@ var IotDeviceFormController = FormController.extend({
         if (['keyboard', 'scanner'].indexOf(this.renderer.state.data.type) >= 0) {
             return this._updateKeyboardLayout().then(self._processResult.bind(self, _super));
         } else if (this.renderer.state.data.type === 'display') {
-            return this._updateScreenUrl().then(() => _super());
+            return this._updateDisplayUrl().then(() => _super());
         } else {
             return this._super.apply(this, arguments);
         }
@@ -55,13 +55,15 @@ var IotDeviceFormController = FormController.extend({
     /**
      * Send an action to the device to update the screen url
      */
-    _updateScreenUrl: function () {
+    _updateDisplayUrl: function () {
         var screen_url = this.renderer.state.data.screen_url;
         var iot_device = new DeviceProxy(this, { iot_ip: this.renderer.state.data.iot_ip, identifier: this.renderer.state.data.identifier });
         return iot_device.action({'action': 'update_url', 'url': screen_url});
     },
 });
 
-return IotDeviceFormController;
+return {
+    IoTDeviceFormController: IoTDeviceFormController,
+};
 
 });

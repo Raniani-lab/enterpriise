@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.addons.hw_drivers.controllers.driver import event_manager, Driver, iot_devices
-from odoo.addons.hw_drivers.iot_handlers.interfaces.SocketInterface import socket_devices
-
 from binascii import unhexlify
 from logging import getLogger
 from time import sleep
 from traceback import format_exc
 from zlib import crc32
 import socket
+
+from odoo.addons.hw_drivers.driver import Driver
+from odoo.addons.hw_drivers.event_manager import event_manager
+from odoo.addons.hw_drivers.iot_handlers.interfaces.SocketInterface import socket_devices
 
 _logger = getLogger(__name__)
 
@@ -657,16 +658,16 @@ class IngenicoDriver(Driver):
     connection_type = 'socket'
     _ecrId = 'odoo'
 
-    def __init__(self, device):
-        super().__init__(device)
+    def __init__(self, identifier, device):
+        super(IngenicoDriver, self).__init__(identifier, device)
         self.dev = device.dev
         self._terminalId = device.terminalId
         self._protocolId = device.protocolId
         self._sequence = 0
-        self._device_type = 'payment'
-        self._device_connection = 'network'
-        self._device_name = 'Ingenico payment terminal'
-        self._device_manufacturer = 'Ingenico'
+        self.device_type = 'payment'
+        self.device_connection = 'network'
+        self.device_name = 'Ingenico payment terminal'
+        self.device_manufacturer = 'Ingenico'
         self.cid = None
 
     @classmethod
@@ -687,13 +688,9 @@ class IngenicoDriver(Driver):
             _logger.error(format_exc())
             return False
 
-    @property
-    def device_identifier(self):
-        return self.dev.getpeername()[0]
-
     def disconnect(self):
         del socket_devices[self.device_identifier]
-        del iot_devices[self.device_identifier]
+        super(IngenicoDriver, self).disconnect()
 
     def _getSequence(self):
         """Returns the sequence number for the next outgoing message.

@@ -3,7 +3,7 @@ odoo.define('pos_iot.models', function (require) {
 
 var models = require('point_of_sale.models');
 var PaymentIOT = require('pos_iot.payment');
-var DeviceProxy = require('iot.widgets').DeviceProxy;
+var DeviceProxy = require('iot.DeviceProxy');
 var PrinterProxy = require('pos_iot.Printer');
 
 models.load_fields("res.users", "lang");

@@ -4,7 +4,7 @@ odoo.define('quality_iot.iot_measure', function (require) {
 var registry = require('web.field_registry');
 var iot_widgets = require('iot.widgets');
 
-var IotMeasureRealTimeValue = iot_widgets.IotRealTimeValue.extend({
+var IoTMeasureRealTimeValue = iot_widgets.IoTRealTimeValue.extend({
     /**
      * @private
      */
@@ -15,7 +15,7 @@ var IotMeasureRealTimeValue = iot_widgets.IotRealTimeValue.extend({
     },
 });
 
-registry.add('iot_measure', IotMeasureRealTimeValue);
+registry.add('iot_measure', IoTMeasureRealTimeValue);
 
-return IotMeasureRealTimeValue;
+return IoTMeasureRealTimeValue;
 });

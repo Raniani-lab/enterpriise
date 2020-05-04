@@ -1,15 +1,15 @@
-odoo.define('delivery.iot', function (require) {
+odoo.define('delivery_iot.iot_widgets', function (require) {
 'use strict';
-
-var iot_widgets = require('iot.widgets');
 
 var AbstractService = require('web.AbstractService');
 var core = require('web.core');
 var FieldMany2One = require('web.relational_fields').FieldMany2One;
 var field_registry = require('web.field_registry');
+var iot_widgets = require('iot.widgets');
+var DeviceProxy = require('iot.DeviceProxy');
 
-var FieldMany2OneIotScale = FieldMany2One.extend(iot_widgets.IotValueFieldMixin, {
-    template: "FieldMany2OneIotScale",
+var FieldMany2OneIoTScale = FieldMany2One.extend(iot_widgets.IoTValueFieldMixin, {
+    template: "FieldMany2OneIoTScale",
     events: _.extend({}, FieldMany2One.prototype.events, {
         'click .o_read_weight': '_onClickReadWeight',
     }),
@@ -43,7 +43,7 @@ var FieldMany2OneIotScale = FieldMany2One.extend(iot_widgets.IotValueFieldMixin,
      * @override
      */
     _getDeviceInfo: function () {
-        iot_widgets.IotValueFieldMixin._getDeviceInfo.apply(this);
+        iot_widgets.IoTValueFieldMixin._getDeviceInfo.apply(this);
         this.manual_measurement = this.recordData[this.attrs.options.manual_measurement_field];
     },
 
@@ -65,7 +65,7 @@ var FieldMany2OneIotScale = FieldMany2One.extend(iot_widgets.IotValueFieldMixin,
      * @override
      */
     _startListening: function () {
-        iot_widgets.IotValueFieldMixin._startListening.apply(this);
+        iot_widgets.IoTValueFieldMixin._startListening.apply(this);
         if (this.iot_device && !this.manual_measurement) {
             this.iot_device.action({ action: 'start_reading' });
         }
@@ -78,11 +78,11 @@ var FieldMany2OneIotScale = FieldMany2One.extend(iot_widgets.IotValueFieldMixin,
         if (this.iot_device && !this.manual_measurement) {
             this.iot_device.action({ action: 'stop_reading' });
         }
-        iot_widgets.IotValueFieldMixin._stopListening.apply(this);
+        iot_widgets.IoTValueFieldMixin._stopListening.apply(this);
     },
 });
 
-field_registry.add('field_many2one_iot_scale', FieldMany2OneIotScale);
+field_registry.add('field_many2one_iot_scale', FieldMany2OneIoTScale);
 
 var DeliveryIoTNotificationManager = AbstractService.extend({
     /**
@@ -115,7 +115,7 @@ var DeliveryIoTNotificationManager = AbstractService.extend({
      * @param {String[]} documents
      */
     _printDocuments: function (identifier, iot_ip, documents) {
-        var iot_device = new iot_widgets.DeviceProxy(this, {identifier: identifier, iot_ip: iot_ip});
+        var iot_device = new DeviceProxy(this, {identifier: identifier, iot_ip: iot_ip});
         documents.forEach(function (document) {
             iot_device.action({'document': document});
         });
@@ -125,7 +125,7 @@ var DeliveryIoTNotificationManager = AbstractService.extend({
 core.serviceRegistry.add('delivery_iot_notification_service', DeliveryIoTNotificationManager);
 
 return {
-    FieldMany2OneIotScale: FieldMany2OneIotScale,
+    FieldMany2OneIoTtScale: FieldMany2OneIoTScale,
     DeliveryIoTNotificationManager: DeliveryIoTNotificationManager,
 }
 

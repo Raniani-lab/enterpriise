@@ -5,7 +5,7 @@ import logging
 import serial
 import os
 
-from odoo.addons.hw_drivers.controllers.driver import event_manager
+from odoo.addons.hw_drivers.event_manager import event_manager
 from odoo.addons.hw_drivers.iot_handlers.drivers.SerialBaseDriver import SerialDriver, SerialProtocol, serial_connection
 
 _logger = logging.getLogger(__name__)
@@ -39,10 +39,9 @@ class BlackBoxDriver(SerialDriver):
 
     _protocol = BlackboxProtocol
 
-    def __init__(self, device):
-        self._device_type = 'fiscal_data_module'
-
-        super().__init__(device)
+    def __init__(self, identifier, device):
+        super(BlackBoxDriver, self).__init__(identifier, device)
+        self.device_type = 'fiscal_data_module'
         self._set_actions()
 
     def _set_actions(self):

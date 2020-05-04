@@ -3,13 +3,13 @@
 
 
 {
-    'name': '',
+    'name': 'IoT for restaurants',
     'version': '1.0',
     'category': 'Sales/Point of Sale',
     'sequence': 6,
-    'summary': 'Link your PoS configuration with an IoT Box for the restaurant',
+    'summary': 'Connect kitchen printers to your PoS',
     'description': """
-It links the module iot with the pos restaurant, so you don't have to call the  
+Use receipt printers connected to an IoT Box to print orders in the kitchen or at the bar.
 """,
     'data': ['views/restaurant_printer_views.xml',],
     'depends': ['pos_restaurant', 'iot'],

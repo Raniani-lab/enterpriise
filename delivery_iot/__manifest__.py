@@ -2,7 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': "IoT for Delivery",
-    'description': "Allows using iot devices, such as scales, for delivery operations.",
+    'summary': "Use IoT devices in delivery operations",
+    'description': """
+Allows using IoT devices, such as scales and printers, for delivery operations.
+""",
     'category': 'Manufacturing/Internet of Things (IoT)',
     'version': '1.0',
     'depends': ['iot', 'delivery'],
@@ -13,7 +16,7 @@
         'views/assets.xml',
     ],
     'qweb': [
-        'static/src/xml/delivery_iot.xml',
+        'static/src/xml/iot_widgets_templates.xml',
     ],
     'license': 'OEEL-1',
     'auto_install': True,

@@ -3,13 +3,14 @@
 
 
 {
-    'name': '',
+    'name': 'IoT for PoS',
     'version': '1.0',
     'category': 'Sales/Point of Sale',
     'sequence': 6,
-    'summary': 'Link your PoS configuration with an IoT Box',
+    'summary': 'Use IoT Devices in the PoS',
     'description': """
-It links the module
+Allows to use in the Point of Sale the devices that are connected to an IoT Box.
+Supported devices include payment terminals, receipt printers, scales and customer displays.
 """,
     'data': [
         'views/pos_config_views.xml',

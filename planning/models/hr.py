@@ -3,7 +3,7 @@
 import logging
 import uuid
 
-from odoo import api, fields, models
+from odoo import fields, models, _
 
 _logger = logging.getLogger(__name__)
 
@@ -49,3 +49,16 @@ class Employee(models.Model):
         dbname = self.env.cr.dbname or [''],
         link = "/web?#action=%s&model=planning.slot&menu_id=%s&db=%s" % (action_id, menu_id, dbname[0])
         return {employee.id: link for employee in self}
+
+    def action_view_planning(self):
+        action = self.env.ref('planning.planning_action_schedule_by_employee').read()[0]
+        action.update({
+            'name': _('View Planning'),
+            'domain': [('employee_id', 'in', self.ids)],
+            'context': {
+                'search_default_group_by_employee': True,
+                'filter_employee_ids': self.ids,
+                'hide_open_shift': True,
+            }
+        })
+        return action

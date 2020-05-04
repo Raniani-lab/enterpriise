@@ -29,7 +29,7 @@ odoo.define('planning.PlanningGanttModel', function (require) {
             }
             this._renameOpenShifts(rows);
             // always prepend an empty row if employee_id is in the group_by
-            if (!params.parentPath && params.groupedBy && params.groupedBy.includes('employee_id')) {
+            if (!this.context.hide_open_shift && !params.parentPath && params.groupedBy && params.groupedBy.includes('employee_id')) {
                 this._prependEmptyRow(rows, params.groupedBy);
             }
             // generate empty rows for selected associations of group by

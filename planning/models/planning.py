@@ -646,10 +646,14 @@ class Planning(models.Model):
         }
 
     def _read_group_employee_id(self, employees, domain, order):
-        if employees == self.env.user.employee_id or not employees:
+        employee_ids = self.env.context.get('filter_employee_ids', False)
+        if (employees == self.env.user.employee_id or not employees) and not employee_ids:
             return employees
-        all_employees = self.env['hr.employee'].search([])
-        if len(all_employees) >= 20:
+        employee_domain = [('id', 'in', employee_ids)] if employee_ids else []
+        all_employees = self.env['hr.employee'].search(employee_domain)
+        if employee_ids:
+            return all_employees
+        elif len(all_employees) >= 20:
             start_date_list = [dom[2] for dom in domain if dom[0] == 'start_datetime']
             start_date = start_date_list[-1] if start_date_list else datetime.now()
             start_date = start_date if isinstance(start_date, date) else datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S')

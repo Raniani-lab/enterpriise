@@ -24,7 +24,7 @@
             <thead>
                 <tr>
                     <th>
-                        <span class="dropdown-toggle"><i class="fa fa-filter"/> Filters</span>
+                        <span><i class="fa fa-filter"/> Filters</span>
                     </th>
                 </tr>
             </thead>
@@ -37,7 +37,7 @@
             <thead>
                 <tr>
                     <th>
-                        <span class="dropdown-toggle"><i class="fa fa-bars"/>  Group by</span>
+                        <span><i class="fa fa-bars"/>  Group by</span>
                     </th>
                 </tr>
             </thead>
@@ -50,7 +50,7 @@
             <thead>
                 <tr>
                     <th>
-                        <span class="dropdown-toggle"><i class="fa fa-star"/> Favourites</span>
+                        <span><i class="fa fa-star"/> Favourites</span>
                     </th>
                 </tr>
             </thead>

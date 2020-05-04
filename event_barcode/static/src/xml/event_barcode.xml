@@ -20,7 +20,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-5 mt16">
-                        <img class="o_event_barcode_image" src="/event_barcode/static/img/barcode.png" alt="Barcode"/>
+                        <img class="o_event_barcode_image" src="/barcodes/static/img/barcode.png" alt="Barcode"/>
                         <h5 class="mt8 mb0 text-muted">Scan a badge</h5>
                     </div>
                     <div class="col-sm-2 mt32">

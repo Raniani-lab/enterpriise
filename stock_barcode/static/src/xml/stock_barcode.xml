@@ -12,12 +12,12 @@
                     <button type="button" class="close" data-dismiss="alert" title="Close" aria-label="Close">&#215;</button>
                     We have created a few demo data with barcodes for you to explore the features. Print the
                     <a href="/stock_barcode/static/img/barcodes_demo.pdf" target="_blank">stock barcodes sheet</a>
-                     to check out what this module can do! You can also print the barcode 
+                     to check out what this module can do! You can also print the barcode
                     <a href="/stock_barcode/static/img/barcodes_actions.pdf" target="_blank" aria-label="Download" title="Download">commands for Inventory</a>.
                 </div>
 
                 <div class="o_stock_barcode_container position-relative d-inline-block mt-4 mb-5">
-                    <img src="/stock_barcode/static/img/barcode.png" alt="Barcode" class="img-fluid mb-1 mt-1"/>
+                    <img src="/barcodes/static/img/barcode.png" alt="Barcode" class="img-fluid mb-1 mt-1"/>
                     <span class="o_stock_barcode_laser"/>
                 </div>
 

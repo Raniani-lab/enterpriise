@@ -649,6 +649,12 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             else if (number.startsWith("0")) {
                 return "+" + prefix + number.substr(1, number.length);
             }
+            /* USA exception for domestic numbers : In the US, the convention is 1 (area code)
+             * extension, while in Europe it is (0 area code)/extension.
+             */
+            else if (number.startsWith("1")) {
+                return "+" + number;
+            }
         }
 
         let name = inviteSession.remoteIdentity.displayName;

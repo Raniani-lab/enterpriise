@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo.addons.iap import jsonrpc
 from odoo import api, exceptions, fields, models, _
+from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tests.common import Form
 from odoo.tools.misc import clean_context
@@ -123,11 +123,11 @@ class AccountMove(models.Model):
     def _contact_iap_extract(self, local_endpoint, params):
         params['version'] = CLIENT_OCR_VERSION
         endpoint = self.env['ir.config_parameter'].sudo().get_param('account_invoice_extract_endpoint', EXTRACT_ENDPOINT)
-        return jsonrpc(endpoint + local_endpoint, params=params)
+        return iap_tools.iap_jsonrpc(endpoint + local_endpoint, params=params)
 
     @api.model
     def _contact_iap_partner_autocomplete(self, local_endpoint, params):
-        return jsonrpc(PARTNER_AUTOCOMPLETE_ENDPOINT + local_endpoint, params=params)
+        return iap_tools.iap_jsonrpc(PARTNER_AUTOCOMPLETE_ENDPOINT + local_endpoint, params=params)
 
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):

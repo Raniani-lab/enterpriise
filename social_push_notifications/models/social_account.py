@@ -6,7 +6,7 @@ import logging
 from werkzeug.urls import url_join
 
 from odoo import _, _lt, fields, models
-from odoo.addons.iap import jsonrpc
+from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import UserError
 
 MISSING_FIREBASE_LIB_ERROR_MESSAGE = _lt("""Push Notifications require the `firebase_admin` Python library (version >=2.17.0).
@@ -113,7 +113,7 @@ class SocialAccountPushNotifications(models.Model):
             tokens_batch = tokens[(i * batch_size):((i + 1) * batch_size)]
             batch_data = dict(data)
             batch_data['tokens'] = tokens_batch
-            jsonrpc(url_join(social_iap_endpoint, '/iap/social_push_notifications/firebase_send_message'), params=batch_data)
+            iap_tools.iap_jsonrpc(url_join(social_iap_endpoint, '/iap/social_push_notifications/firebase_send_message'), params=batch_data)
 
         return []
 

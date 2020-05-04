@@ -5,7 +5,7 @@ import urllib.parse
 from html2text import html2text
 
 from odoo import _, models, api
-from odoo.addons.iap import jsonrpc
+from odoo.addons.iap.tools import iap_tools
 
 import logging as logger
 _logger = logger.getLogger(__name__)
@@ -84,7 +84,7 @@ class MailThread(models.AbstractModel):
                 chunks = self._ocn_prepare_payload(receiver_ids, message, msg_vals)
                 for chunk in chunks:
                     try:
-                        jsonrpc(endpoint + '/iap/ocn/send', params=chunk)
+                        iap_tools.iap_jsonrpc(endpoint + '/iap/ocn/send', params=chunk)
                     except Exception as e:
                         _logger.error('An error occured while contacting the ocn server: %s', e)
 

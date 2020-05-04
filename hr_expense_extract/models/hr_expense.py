@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.iap import jsonrpc
+from odoo.addons.iap.tools import iap_tools
 from odoo import api, exceptions, fields, models, _
 from odoo.exceptions import AccessError, UserError
 from odoo.tests.common import Form
@@ -141,7 +143,7 @@ class HrExpense(models.Model):
                 'values': values
             }
             try:
-                jsonrpc(endpoint, params=params)
+                iap_tools.iap_jsonrpc(endpoint, params=params)
                 expense.extract_state = 'done'
             except AccessError:
                 pass
@@ -179,7 +181,7 @@ class HrExpense(models.Model):
                 'version': CLIENT_OCR_VERSION,
                 'document_id': self.extract_remote_id
             }
-        result = jsonrpc(endpoint, params=params)
+        result = iap_tools.iap_jsonrpc(endpoint, params=params)
         self.extract_status_code = result['status_code']
         if result['status_code'] == SUCCESS:
             self.extract_state = "waiting_validation"
@@ -265,7 +267,7 @@ class HrExpense(models.Model):
                 'user_infos': [],
                 }
             try:
-                result = jsonrpc(endpoint, params=params)
+                result = iap_tools.iap_jsonrpc(endpoint, params=params)
                 self.extract_status_code = result['status_code']
                 if result['status_code'] == SUCCESS:
                     self.extract_state = 'waiting_extraction'

@@ -11,8 +11,8 @@ import time
 import xml.etree.ElementTree as XmlElementTree
 
 from odoo import models, fields, api, _
+from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import UserError, AccessError
-from odoo.addons.iap import jsonrpc
 from werkzeug.urls import url_join, url_quote
 
 
@@ -179,7 +179,7 @@ class SocialMediaTwitter(models.Model):
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
         try:
-            return jsonrpc(url_join(social_iap_endpoint, 'iap/social_twitter/get_signature'), params=json_params)
+            return iap_tools.iap_jsonrpc(url_join(social_iap_endpoint, 'iap/social_twitter/get_signature'), params=json_params)
         except AccessError:
             return None
 

@@ -3,7 +3,7 @@
 
 {
     'name': 'Mail Mobile',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Hidden/Tools',
     'summary': 'Provides push notification and redirection to the mobile app.',
     'description': """
@@ -15,7 +15,7 @@ This module modifies the mail addon to provide:
 * Redirection to the Android/iOS mobile app when you click on an Odoo URL.
     """,
     'depends': [
-        'iap',
+        'iap_mail',
         'mail_enterprise',
         'web_mobile',
         'base_setup',

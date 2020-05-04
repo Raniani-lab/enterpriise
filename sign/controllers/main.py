@@ -13,7 +13,7 @@ from PyPDF2 import PdfFileReader
 from odoo import http, _
 from odoo.http import request
 from odoo.addons.web.controllers.main import content_disposition
-from odoo.addons.iap.models.iap import InsufficientCreditError
+from odoo.addons.iap.tools import iap_tools
 
 _logger = logging.getLogger()
 
@@ -251,7 +251,7 @@ class Sign(http.Controller):
             request_item.sms_number = phone_number
             try:
                 request_item._send_sms()
-            except InsufficientCreditError:
+            except iap_tools.InsufficientCreditError:
                 _logger.warning('Unable to send SMS: no more credits')
                 request_item.sign_request_id.activity_schedule(
                     'mail.mail_activity_data_todo',

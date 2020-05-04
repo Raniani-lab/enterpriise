@@ -64,7 +64,7 @@ class TestPushNotification(MailCommon):
             ]
         )
 
-    @patch('odoo.addons.mail_mobile.models.mail_thread.jsonrpc')
+    @patch('odoo.addons.mail_mobile.models.mail_thread.iap_tools.iap_jsonrpc')
     def test_push_notifications(self, jsonrpc):
         # Test No Inbox Condition
         self.record_simple.with_user(self.user_inbox).message_notify(
@@ -133,7 +133,7 @@ class TestPushNotification(MailCommon):
             'No Tracking Message found'
         )
 
-    @patch('odoo.addons.mail_mobile.models.mail_thread.jsonrpc')
+    @patch('odoo.addons.mail_mobile.models.mail_thread.iap_tools.iap_jsonrpc')
     def test_push_notifications_android_channel(self, jsonrpc):
         # Test Direct Message
         self.direct_message_channel.with_user(self.user_email).message_post(

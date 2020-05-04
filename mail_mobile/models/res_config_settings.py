@@ -4,7 +4,7 @@ import uuid
 
 import odoo
 from odoo import fields, models, api
-from odoo.addons.iap import jsonrpc
+from odoo.addons.iap.tools import iap_tools
 
 import logging as logger
 _logger = logger.getLogger(__name__)
@@ -45,7 +45,7 @@ class ResConfigSettings(models.TransientModel):
             }
             try:
                 # Register instance to ocn service. Unique with ocn.uuid
-                project_id = jsonrpc(self._get_endpoint() + '/iap/ocn/enable_service', params=params)
+                project_id = iap_tools.iap_jsonrpc(self._get_endpoint() + '/iap/ocn/enable_service', params=params)
                 # Storing project id for generate token
                 ir_params_sudo.set_param('odoo_ocn.project_id', project_id)
             except Exception as e:
@@ -71,7 +71,7 @@ class ResConfigSettings(models.TransientModel):
         }
         result = False
         try:
-            result = jsonrpc(self._get_endpoint() + '/iap/ocn/register_device', params=values)
+            result = iap_tools.iap_jsonrpc(self._get_endpoint() + '/iap/ocn/register_device', params=values)
         except Exception as e:
             _logger.error('An error occured while contacting the ocn server: %s', e.args[0])
 

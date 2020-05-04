@@ -209,12 +209,12 @@ class assets_report(models.AbstractModel):
 
         sql = """
                 -- remove all the moves that have been reversed from the search
-                WITH account_move AS (
-                    SELECT move.date, move.state, move.id, move.asset_depreciated_value, move.asset_remaining_value, move.amount_total, move.asset_value_change, move.asset_id
-                    FROM account_move move
-                    LEFT JOIN account_move reversal ON reversal.reversed_entry_id = move.id
-                    WHERE reversal.id IS NULL AND move.asset_id IS NOT NULL AND move.company_id in %(company_ids)s
-                )
+                CREATE TEMPORARY TABLE IF NOT EXISTS temp_account_move () INHERITS (account_move) ON COMMIT DROP;
+                INSERT INTO temp_account_move SELECT move.*
+                FROM ONLY account_move move
+                LEFT JOIN ONLY account_move reversal ON reversal.reversed_entry_id = move.id
+                WHERE reversal.id IS NULL AND move.asset_id IS NOT NULL AND move.company_id in %(company_ids)s;
+
                 SELECT asset.id as asset_id,
                        asset.parent_id as parent_id,
                        asset.name as asset_name,
@@ -225,7 +225,7 @@ class assets_report(models.AbstractModel):
                        asset.disposal_date as asset_disposal_date,
                        asset.acquisition_date as asset_acquisition_date,
                        asset.method as asset_method,
-                       (SELECT COUNT(*) FROM account_move WHERE asset_id = asset.id AND asset_value_change != 't') + asset.depreciation_number_import as asset_method_number,
+                       (SELECT COUNT(*) FROM temp_account_move WHERE asset_id = asset.id AND asset_value_change != 't') + asset.depreciation_number_import as asset_method_number,
                        asset.method_period as asset_method_period,
                        asset.method_progress_factor as asset_method_progress_factor,
                        asset.state as asset_state,
@@ -239,12 +239,12 @@ class assets_report(models.AbstractModel):
                        COALESCE(first_move.amount_total, 0.0) as depreciation
                 FROM account_asset as asset
                 LEFT JOIN account_account as account ON asset.account_asset_id = account.id
-                LEFT OUTER JOIN (SELECT MIN(date) as date, asset_id FROM account_move WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move} GROUP BY asset_id) min_date_in ON min_date_in.asset_id = asset.id
-                LEFT OUTER JOIN (SELECT MAX(date) as date, asset_id FROM account_move WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move} GROUP BY asset_id) max_date_in ON max_date_in.asset_id = asset.id
-                LEFT OUTER JOIN (SELECT MAX(date) as date, asset_id FROM account_move WHERE date <= %(date_from)s {where_account_move} GROUP BY asset_id) max_date_before ON max_date_before.asset_id = asset.id
-                LEFT OUTER JOIN account_move as first_move ON first_move.id = (SELECT m.id FROM account_move m WHERE m.asset_id = asset.id AND m.date = min_date_in.date ORDER BY m.id ASC LIMIT 1)
-                LEFT OUTER JOIN account_move as last_move ON last_move.id = (SELECT m.id FROM account_move m WHERE m.asset_id = asset.id AND m.date = max_date_in.date ORDER BY m.id DESC LIMIT 1)
-                LEFT OUTER JOIN account_move as move_before ON move_before.id = (SELECT m.id FROM account_move m WHERE m.asset_id = asset.id AND m.date = max_date_before.date ORDER BY m.id DESC LIMIT 1)
+                LEFT OUTER JOIN (SELECT MIN(date) as date, asset_id FROM temp_account_move WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move} GROUP BY asset_id) min_date_in ON min_date_in.asset_id = asset.id
+                LEFT OUTER JOIN (SELECT MAX(date) as date, asset_id FROM temp_account_move WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move} GROUP BY asset_id) max_date_in ON max_date_in.asset_id = asset.id
+                LEFT OUTER JOIN (SELECT MAX(date) as date, asset_id FROM temp_account_move WHERE date <= %(date_from)s {where_account_move} GROUP BY asset_id) max_date_before ON max_date_before.asset_id = asset.id
+                LEFT OUTER JOIN temp_account_move as first_move ON first_move.id = (SELECT m.id FROM temp_account_move m WHERE m.asset_id = asset.id AND m.date = min_date_in.date ORDER BY m.id ASC LIMIT 1)
+                LEFT OUTER JOIN temp_account_move as last_move ON last_move.id = (SELECT m.id FROM temp_account_move m WHERE m.asset_id = asset.id AND m.date = max_date_in.date ORDER BY m.id DESC LIMIT 1)
+                LEFT OUTER JOIN temp_account_move as move_before ON move_before.id = (SELECT m.id FROM temp_account_move m WHERE m.asset_id = asset.id AND m.date = max_date_before.date ORDER BY m.id DESC LIMIT 1)
                 WHERE asset.company_id in %(company_ids)s
                 AND asset.acquisition_date <= %(date_to)s
                 AND (asset.disposal_date >= %(date_from)s OR asset.disposal_date IS NULL)
@@ -265,6 +265,7 @@ class assets_report(models.AbstractModel):
         self.flush()
         self.env.cr.execute(sql, {'date_to': date_to, 'date_from': date_from, 'company_ids': company_ids})
         results = self.env.cr.dictfetchall()
+        self.env.cr.execute("DROP TABLE temp_account_move")  # Because tests are run in the same transaction, we need to clean here the SQL INHERITS
         return results
 
     def open_asset(self, options, params=None):

@@ -5,6 +5,7 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
     const { device } = require('web.config');
 
     const { Portal } = owl.misc;
+    const { useState } = owl.hooks;
     const STICKY_CLASS = 'o_mobile_sticky';
 
     if (!device.isMobile) {
@@ -22,9 +23,9 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
     ControlPanel.patch('web_enterprise.ControlPanel', T => {
         class ControlPanelPatchEnterprise extends T {
 
-            async willStart() {
-                // Extend the state
-                Object.assign(this.state, {
+            constructor() {
+                super(...arguments);
+                this.state = useState({
                     showSearchBar: false,
                     showMobileSearch: false,
                     showViewSwitcher: false,

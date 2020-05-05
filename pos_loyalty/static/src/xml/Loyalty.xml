@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ClientDetails" t-inherit="point_of_sale.ClientDetails" t-inherit-mode="extension" owl="1">
+        <xpath expr="//section[hasclass('client-details')]" position="inside">
+            <div class='client-detail'>
+                <span class='label'>Points</span>
+                <span class='detail client-points'>
+                    <t t-esc='props.partner.loyalty_points or 0' />
+                </span>
+            </div>
+        </xpath>
+    </t>
+
+     <t t-name="ClientLine" t-inherit="point_of_sale.ClientLine" t-inherit-mode="extension" owl="1">
+        <xpath expr="//tr" position="inside">
+            <td>
+                <t t-esc='props.partner.loyalty_points or 0' />
+            </td>
+        </xpath>
+    </t>
+
+    <t t-name="ClientListScreen" t-inherit="point_of_sale.ClientListScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//tr" position="inside">
+            <th>Points</th>
+        </xpath>
+    </t>
+
+    <t t-name="OrderWidget" t-inherit="point_of_sale.OrderWidget" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('order')]" position="inside">
+            <PointsCounter t-if="env.pos.loyalty" />
+        </xpath>
+    </t>
+
+ </templates>

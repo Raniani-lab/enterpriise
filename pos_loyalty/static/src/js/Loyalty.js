@@ -2,12 +2,10 @@ odoo.define('pos_loyalty.pos_loyalty', function (require) {
 "use strict";
 
 var models = require('point_of_sale.models');
-var screens = require('point_of_sale.screens');
 var core = require('web.core');
 var utils = require('web.utils');
 
 var round_pr = utils.round_precision;
-var QWeb     = core.qweb;
 
 var _t = core._t;
 
@@ -259,10 +257,6 @@ models.Order = models.Order.extend({
         var client = this.get_client();
         if ( client ) {
             client.loyalty_points = this.get_new_total_points();
-            // The client list screen has a cache to avoid re-rendering
-            // the client lines, and so the point updates may not be visible ...
-            // We need a better GUI framework !
-            this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
         }
         _super.prototype.finalize.apply(this,arguments);
     },
@@ -285,94 +279,6 @@ models.Order = models.Order.extend({
         var json = _super.prototype.export_as_JSON.apply(this,arguments);
         json.loyalty_points = this.get_new_points();
         return json;
-    },
-});
-
-var LoyaltyButton = screens.ActionButtonWidget.extend({
-    template: 'LoyaltyButton',
-    button_click: function(){
-        var order  = this.pos.get_order();
-        var client = order.get_client();
-        if (!client) {
-            this.gui.show_screen('clientlist');
-            return;
-        }
-
-        var rewards = order.get_available_rewards();
-        if (rewards.length === 0) {
-            this.gui.show_popup('alert',{
-                'title': _t('No Rewards Available'),
-                'body':  _t('There are no rewards available for this customer as part of the loyalty program'),
-            });
-            return;
-        } else if (rewards.length === 1) {
-            order.apply_reward(rewards[0]);
-            return;
-        } else {
-            var list = [];
-            for (var i = 0; i < rewards.length; i++) {
-                list.push({
-                    label: rewards[i].name,
-                    item:  rewards[i],
-                });
-            }
-            this.gui.show_popup('selection',{
-                'title': _t('Please select a reward'),
-                'list': list,
-                'confirm': function(reward){
-                    order.apply_reward(reward);
-                },
-            });
-        }
-    },
-});
-
-screens.define_action_button({
-    'name': 'loyalty',
-    'widget': LoyaltyButton,
-    'condition': function(){
-        return this.pos.loyalty && this.pos.loyalty.rewards.length;
-    },
-});
-
-screens.OrderWidget.include({
-    update_summary: function(){
-        this._super();
-
-        var order = this.pos.get_order();
-
-        var $loypoints = $(this.el).find('.summary .loyalty-points');
-
-        if(this.pos.loyalty && order.get_client()){
-            var points_won      = order.get_won_points();
-            var points_spent    = order.get_spent_points();
-            var points_total    = order.get_new_total_points();
-            $loypoints.replaceWith($(QWeb.render('LoyaltyPoints',{
-                widget: this,
-                points_won: points_won,
-                points_spent: points_spent,
-                points_total: points_total,
-            })));
-            $loypoints = $(this.el).find('.summary .loyalty-points');
-            $loypoints.removeClass('oe_hidden');
-
-            if(points_total < 0){
-                $loypoints.addClass('negative');
-            }else{
-                $loypoints.removeClass('negative');
-            }
-        }else{
-            $loypoints.empty();
-            $loypoints.addClass('oe_hidden');
-        }
-
-        if (this.pos.loyalty &&
-            this.getParent().action_buttons &&
-            this.getParent().action_buttons.loyalty) {
-
-            var rewards = order.get_available_rewards();
-            this.getParent().action_buttons.loyalty.highlight(!!rewards.length);
-        }
     },
 });
 

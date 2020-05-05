@@ -22,7 +22,12 @@ and get rewards.
         'security/ir.model.access.csv',
         'views/pos_loyalty_templates.xml'
     ],
-    'qweb': ['static/src/xml/loyalty.xml'],
+    'qweb': [
+        'static/src/xml/OrderReceipt.xml',
+        'static/src/xml/RewardButton.xml',
+        'static/src/xml/PointsCounter.xml',
+        'static/src/xml/Loyalty.xml',
+    ],
     'demo': [
         'data/pos_loyalty_demo.xml',
     ],

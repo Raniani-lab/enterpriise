@@ -39,7 +39,7 @@ class SDDTest(AccountTestInvoicingCommon):
         invoice = self.env['account.move'].create({
             'move_type': 'out_invoice',
             'partner_id': partner.id,
-            'currency_id': self.env.ref('base.EUR'),
+            'currency_id': self.env.ref('base.EUR').id,
             'payment_reference': 'invoice to client',
             'invoice_line_ids': [(0, 0, {
                 'product_id': self.env['product.product'].create({'name': 'A Test Product'}),

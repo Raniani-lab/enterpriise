@@ -84,7 +84,7 @@ class MulticurrencyRevaluationReport(models.AbstractModel):
                 AND aml.company_id IN %(company_ids)s
                 {all_entries}
                 {exclude}
-                AND (account.currency_id IS NOT NULL OR (account.internal_type IN ('receivable', 'payable') AND (aml.currency_id IS NOT NULL)))
+                AND (account.currency_id IS NOT NULL OR (account.internal_type IN ('receivable', 'payable') AND (aml.currency_id != aml.company_currency_id)))
 
 
                 UNION ALL
@@ -102,7 +102,7 @@ class MulticurrencyRevaluationReport(models.AbstractModel):
                 AND aml.company_id IN %(company_ids)s
                 {all_entries}
                 {exclude}
-                AND (account.currency_id IS NULL AND (account.internal_type IN ('receivable', 'payable') AND aml.currency_id IS NULL))
+                AND (account.currency_id IS NULL AND (account.internal_type IN ('receivable', 'payable') AND aml.currency_id = aml.company_currency_id))
 
                 UNION ALL
 
@@ -119,7 +119,7 @@ class MulticurrencyRevaluationReport(models.AbstractModel):
                 AND aml.company_id IN %(company_ids)s
                 {all_entries}
                 {exclude}
-                AND (account.currency_id IS NULL AND (account.internal_type IN ('receivable', 'payable') AND aml.currency_id IS NULL))
+                AND (account.currency_id IS NULL AND (account.internal_type IN ('receivable', 'payable') AND aml.currency_id = aml.company_currency_id))
             ) AS all_lines
             GROUP BY account_id, currency_id
         """.format(

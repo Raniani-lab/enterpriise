@@ -189,8 +189,8 @@ class AccountMove(models.Model):
             'credit': amount if float_compare(amount, 0.0, precision_digits=prec) > 0 else 0.0,
             'analytic_account_id': account_analytic_id.id if asset.asset_type == 'sale' else False,
             'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type == 'sale' else False,
-            'currency_id': company_currency != current_currency and current_currency.id or False,
-            'amount_currency': company_currency != current_currency and - 1.0 * vals['amount'] or 0.0,
+            'currency_id': current_currency.id,
+            'amount_currency': -vals['amount'],
         }
         move_line_2 = {
             'name': asset.name,
@@ -199,8 +199,8 @@ class AccountMove(models.Model):
             'debit': amount if float_compare(amount, 0.0, precision_digits=prec) > 0 else 0.0,
             'analytic_account_id': account_analytic_id.id if asset.asset_type in ('purchase', 'expense') else False,
             'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type in ('purchase', 'expense') else False,
-            'currency_id': company_currency != current_currency and current_currency.id or False,
-            'amount_currency': company_currency != current_currency and vals['amount'] or 0.0,
+            'currency_id': current_currency.id,
+            'amount_currency': vals['amount'],
         }
         move_vals = {
             'ref': vals['move_ref'],

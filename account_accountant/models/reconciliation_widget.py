@@ -520,9 +520,8 @@ class AccountReconciliation(models.AbstractModel):
     @api.model
     def _get_trailing_query(self, statement_line, limit=None, offset=None):
         liquidity_lines, suspense_lines, other_lines = statement_line._seek_for_lines()
-        assert len(liquidity_lines) == 1
 
-        if liquidity_lines.currency_id:
+        if liquidity_lines.currency_id != liquidity_lines.company_currency_id:
             amount_matching_order_by_clause = '''
                 account_move_line.balance = %s OR (
                     account_move_line.currency_id IS NOT NULL
@@ -655,7 +654,7 @@ class AccountReconciliation(models.AbstractModel):
         }, move_line=line)
         # Residual amounts.
         rec_vals_residual = statement_line._prepare_counterpart_move_line_vals({}, move_line=line)
-        if rec_vals_residual['currency_id']:
+        if rec_vals_residual['currency_id'] != statement_line.company_currency_id.id:
             currency = self.env['res.currency'].browse(rec_vals_residual['currency_id'])
             amount_currency = rec_vals_residual['debit'] - rec_vals_residual['credit']
             balance = rec_vals_residual['amount_currency']
@@ -906,6 +905,56 @@ class AccountReconciliation(models.AbstractModel):
         return Account_move_line
 
     @api.model
+    def _prepare_writeoff_moves(self, move_lines, vals):
+        if 'account_id' not in vals or 'journal_id' not in vals:
+            raise UserError(_("It is mandatory to specify an account and a journal to create a write-off."))
+
+        move_fields = {'journal_id', 'date'}
+        move_vals = {k: v for k, v in vals.items() if k in move_fields}
+
+        company_currency = move_lines.company_id.currency_id
+        currencies = set(line.currency_id for line in move_lines)
+        currency = list(currencies)[0] if len(currencies) == 1 else company_currency
+
+        line_vals = {
+            **{k: v for k, v in vals.items() if k not in move_fields},
+            'partner_id': move_lines[0].partner_id.id,
+            'sequence': 10,
+        }
+
+        if 'debit' not in vals and 'credit' not in vals:
+            balance = -sum(self.mapped('amount_residual'))
+        else:
+            balance = vals.get('debit', 0.0) - vals.get('credit', 0.0)
+        line_vals['debit'] = -balance if balance < 0.0 else 0.0
+        line_vals['credit'] = balance if balance > 0.0 else 0.0
+
+        if currency == company_currency:
+            line_vals['amount_currency'] = -balance
+            line_vals['currency_id'] = company_currency.id
+        else:
+            if 'amount_currency' in vals:
+                line_vals['amount_currency'] = vals['amount_currency']
+            else:
+                line_vals['amount_currency'] = -sum(self.mapped('amount_residual_currency'))
+            line_vals['currency_id'] = currency.id
+
+        move_vals['line_ids'] = [
+            (0, 0, line_vals),
+            (0, 0, {
+                'name': _('Write-Off'),
+                'debit': line_vals['credit'],
+                'credit': line_vals['debit'],
+                'amount_currency': -line_vals['amount_currency'],
+                'currency_id': currency.id,
+                'account_id': move_lines[0].account_id.id,
+                'partner_id': move_lines[0].partner_id.id,
+                'sequence': 20,
+            }),
+        ]
+        return move_vals
+
+    @api.model
     def _process_move_lines(self, move_line_ids, new_mv_line_dicts):
         """ Create new move lines from new_mv_line_dicts (if not empty) then call reconcile_partial on self and new move lines
 
@@ -914,26 +963,16 @@ class AccountReconciliation(models.AbstractModel):
         if len(move_line_ids) < 1 or len(move_line_ids) + len(new_mv_line_dicts) < 2:
             raise UserError(_('A reconciliation must involve at least 2 move lines.'))
 
-        account_move_line = self.env['account.move.line'].browse(move_line_ids)
-        writeoff_lines = self.env['account.move.line']
+        move_lines = self.env['account.move.line'].browse(move_line_ids)
 
         # Create writeoff move lines
         if len(new_mv_line_dicts) > 0:
-            company_currency = account_move_line[0].account_id.company_id.currency_id
-            same_currency = False
-            currencies = list(set([aml.currency_id or company_currency for aml in account_move_line]))
-            if len(currencies) == 1 and currencies[0] != company_currency:
-                same_currency = True
-            # We don't have to convert debit/credit to currency as all values in the reconciliation widget are displayed in company currency
-            # If all the lines are in the same currency, create writeoff entry with same currency also
-            for mv_line_dict in new_mv_line_dicts:
-                if not same_currency:
-                    mv_line_dict['amount_currency'] = False
-                writeoff_lines += account_move_line._create_writeoff([mv_line_dict])
-
-            (account_move_line + writeoff_lines).reconcile()
-        else:
-            account_move_line.reconcile()
+            move_vals_list = [self._prepare_writeoff_moves(move_lines, vals) for vals in new_mv_line_dicts]
+            moves = self.env['account.move'].create(move_vals_list)
+            moves.action_post()
+            account = move_lines[0].account_id
+            move_lines |= moves.line_ids.filtered(lambda line: line.account_id == account and not line.reconciled)
+        move_lines.reconcile()
 
     @api.model
     def get_reconciliation_dict_from_model(self, model_id, st_line, residual_balance):

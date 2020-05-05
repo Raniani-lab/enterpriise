@@ -366,7 +366,7 @@ class WinbooksImportWizard(models.TransientModel):
             move_data_dict = {
                 'journal_id': journal_id.id,
                 'move_type': 'out_invoice' if journal_id.type == 'sale' else 'in_invoice' if journal_id.type == 'purchase' else 'entry',
-                'ref': key[0],
+                'ref': '%s_%s' % (key[1], key[0]),
                 'company_id': self.env.company.id,
                 'date': min(max(start_period_date, move_date), end_period_date),
             }

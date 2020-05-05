@@ -38,7 +38,8 @@ No modified version is certified and supported by Odoo SA.
         'data/pos_blackbox_be_demo.xml',
     ],
     'qweb': [
-        'static/src/xml/pos_blackbox_be.xml'
+        'static/src/xml/WorkInButton.xml',
+        'static/src/xml/OrderReceipt.xml'
     ],
     'installable': False,
     'auto_install': False,

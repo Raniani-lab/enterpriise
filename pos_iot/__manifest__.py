@@ -18,7 +18,10 @@ It links the module
         'views/pos_payment_method_views.xml',
     ],
     'depends': ['point_of_sale', 'iot'],
-    'qweb': ['static/src/xml/pos.xml'],
+    'qweb': [
+        'static/src/xml/IoTErrorPopup.xml',
+        'static/src/xml/ScaleScreen.xml',
+    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

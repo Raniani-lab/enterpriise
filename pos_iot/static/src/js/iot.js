@@ -3,12 +3,13 @@ odoo.define('pos_iot.widgets', function (require) {
 
 var core = require('web.core');
 var IoTLongpolling = require('iot.widgets').IoTLongpolling;
+const { Gui } = require('point_of_sale.Gui');
 
 var _t = core._t;
 
 IoTLongpolling.include({
     _doWarnFail: function (url) {
-        posmodel.gui.show_popup('iot_error', {
+        Gui.showPopup('IoTErrorPopup', {
             title: _t('Connection to IoT Box failed'),
             url: url,
         });

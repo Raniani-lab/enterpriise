@@ -101,7 +101,7 @@ class AEATAccountFinancialReport(models.Model):
 
                 self = self.with_context(financial_report_line_values= context_line_values)
 
-        rslt = super(AEATAccountFinancialReport, self._with_correct_filters())._get_options(previous_options)
+        rslt = super(AEATAccountFinancialReport, self)._get_options(previous_options)
 
         return rslt
 

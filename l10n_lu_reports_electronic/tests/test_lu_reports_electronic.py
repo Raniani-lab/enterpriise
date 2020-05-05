@@ -56,7 +56,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         return filtered_lines
 
     def test_balance_sheet(self):
-        report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_bs')._with_correct_filters()
+        report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_bs')
         options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
 
         self.assertLinesValues(
@@ -82,7 +82,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         )
 
     def test_profit_and_loss(self):
-        report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_pl')._with_correct_filters()
+        report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_pl')
         options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
 
         self.assertLinesValues(

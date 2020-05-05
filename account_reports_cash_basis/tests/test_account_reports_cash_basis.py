@@ -118,7 +118,7 @@ class TestAccountReports(TestAccountReportsCommon):
 
     def test_balance_sheet_cash_basis(self):
         # Check the cash basis option.
-        report = self.env.ref('account_reports.account_financial_report_balancesheet0')._with_correct_filters()
+        report = self.env.ref('account_reports.account_financial_report_balancesheet0')
         options = self._init_options(report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
         options['cash_basis'] = True
 

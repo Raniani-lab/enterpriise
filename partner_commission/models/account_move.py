@@ -130,6 +130,12 @@ class AccountMove(models.Model):
             })
         return super(AccountMove, self)._reverse_moves(default_values_list=default_values_list, cancel=cancel)
 
+    def action_invoice_paid(self):
+        res = super().action_invoice_paid()
+        self.filtered(lambda move: move.move_type == 'out_refund')._refund_commission()
+        self.filtered(lambda move: move.move_type == 'out_invoice')._make_commission()
+        return res
+
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
@@ -151,20 +157,3 @@ class AccountMoveLine(models.Model):
             return self.env['commission.rule']
 
         return plan._match_rules(self.product_id, template_id, pricelist_id)
-
-    def reconcile(self, writeoff_acc_id=False, writeoff_journal_id=False):
-        res = super(AccountMoveLine, self).reconcile(writeoff_acc_id=writeoff_acc_id, writeoff_journal_id=writeoff_journal_id)
-
-        to_pay = self.env['account.move']
-        to_refund = self.env['account.move']
-
-        for move_line in self.filtered('reconciled'):
-            if move_line.move_id.move_type == 'out_refund':
-                to_refund |= move_line.move_id
-            elif move_line.move_id.move_type == 'out_invoice':
-                to_pay |= move_line.move_id
-
-        to_pay._make_commission()
-        to_refund._refund_commission()
-
-        return res

@@ -376,6 +376,16 @@ class WinbooksImportWizard(models.TransientModel):
             move_amount_total = 0
             move_total_receivable_payable = 0
 
+            # Split lines having a different sign on the balance in company currency and foreign currency
+            tmp_val = []
+            for rec in val:
+                tmp_val += [rec]
+                if rec['AMOUNTEUR'] * (rec['CURRAMOUNT'] or 0) < 0:
+                    tmp_val[-1]['CURRAMOUNT'] = 0
+                    tmp_val += [rec.copy()]
+                    tmp_val[-1]['AMOUNTEUR'] = 0
+            val = tmp_val
+
             # Basic line info
             for rec in val:
                 currency = ResCurrency.search([('name', '=', rec.get('CURRCODE'))], limit=1)

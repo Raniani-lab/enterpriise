@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import models, fields, api, _
-
+from odoo.exceptions import UserError
 
 class ResConfigSettings(models.TransientModel):
 
@@ -17,7 +17,13 @@ class ResConfigSettings(models.TransientModel):
 
     def l10n_ar_action_create_certificate_request(self):
         self.ensure_one()
-        return {'type': 'ir.actions.act_url', 'url': '/l10n_ar_edi/download_csr?', 'target': 'new'}
+        if not self.company_id.partner_id.city:
+            raise UserError(_('The company city must be defined before this action'))
+        if not self.company_id.partner_id.country_id:
+            raise UserError(_('The company country must be defined before this action'))
+        if not self.company_id.partner_id.l10n_ar_vat:
+            raise UserError(_('The company CUIT must be defined before this action'))
+        return {'type': 'ir.actions.act_url', 'url': '/l10n_ar_edi/download_csr/' + str(self.company_id.id), 'target': 'new'}
 
     @api.onchange('l10n_ar_afip_ws_crt')
     def _l10n_ar_onchange_afip_certificate(self):

@@ -238,7 +238,7 @@ class HelpdeskTeam(models.Model):
             list_fields.insert(2, 'sla_reached_late')
 
         HelpdeskTicket = self.env['helpdesk.ticket']
-        tickets = HelpdeskTicket.search_read(expression.AND([domain, [('stage_id.is_close', '=', False)]]), ['sla_deadline', 'close_hours', 'sla_reached_late', 'priority'])
+        tickets = HelpdeskTicket.search_read(expression.AND([domain, [('stage_id.is_close', '=', False)]]), ['sla_deadline', 'open_hours', 'sla_reached_late', 'priority'])
 
         result = {
             'helpdesk_target_closed': self.env.user.helpdesk_target_closed,
@@ -261,7 +261,7 @@ class HelpdeskTeam(models.Model):
 
         def add_to(ticket, key="my_all"):
             result[key]['count'] += 1
-            result[key]['hours'] += ticket['close_hours']
+            result[key]['hours'] += ticket['open_hours']
             if _is_sla_failed(ticket):
                 result[key]['failed'] += 1
 

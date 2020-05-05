@@ -203,9 +203,9 @@ class assets_report(models.AbstractModel):
 
     def _get_assets_lines(self, options):
         "Get the data from the database"
-        where_account_move = ""
-        if options.get('all_entries') is False:
-            where_account_move += " AND state = 'posted'"
+        where_account_move = " AND state != 'cancel'"
+        if not options.get('all_entries'):
+            where_account_move = " AND state = 'posted'"
 
         sql = """
                 -- remove all the moves that have been reversed from the search

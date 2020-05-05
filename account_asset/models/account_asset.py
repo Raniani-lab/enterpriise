@@ -236,7 +236,7 @@ class AccountAsset(models.Model):
     def unlink(self):
         for asset in self:
             if asset.state in ['open', 'paused', 'close']:
-                raise UserError(_('You cannot delete a document that is in %s state.') % _(asset.state,))
+                raise UserError(_('You cannot delete a document that is in %s state.') % self._fields['state']._description_selection(self.env)).get(asset.state)
             for line in asset.original_move_line_ids:
                 body = _('A document linked to %s has been deleted: ') % (line.name or _('this move'))
                 body += '<a href=# data-oe-model=account.asset data-oe-id=%d>%s</a>' % (asset.id, asset.name)
@@ -705,6 +705,12 @@ class AccountAsset(models.Model):
     def write(self, vals):
         res = super(AccountAsset, self).write(vals)
         return res
+
+    @api.constrains('active', 'state')
+    def _check_active(self):
+        for record in self:
+            if not record.active and record.state != 'close':
+                raise UserError(_('You cannot archive a record that is not closed'))
 
     @api.constrains('depreciation_move_ids')
     def _check_depreciations(self):

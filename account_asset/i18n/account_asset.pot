@@ -1946,6 +1946,12 @@ msgstr ""
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
+msgid "You cannot archive a record that is not closed"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
 msgid ""
 "You cannot create an asset from lines containing credit and debit on the "
 "account or with a null amount"

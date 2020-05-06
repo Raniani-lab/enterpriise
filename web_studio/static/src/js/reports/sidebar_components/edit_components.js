@@ -1,7 +1,7 @@
 odoo.define('web_studio.reportEditComponents', function (require) {
 "use strict";
 
-var ColorPickerDialog = require('web.ColorpickerDialog');
+var {ColorpickerDialog} = require('web.Colorpicker');
 var config = require('web.config');
 var core = require('web.core');
 var utils = require('web.utils');
@@ -619,7 +619,7 @@ var LayoutEditable = AbstractEditComponent.extend({
      */
     _onCustomColor: function (e) {
         e.preventDefault();
-        const colorpicker = new ColorPickerDialog(this, {
+        const colorpicker = new ColorpickerDialog(this, {
             defaultColor: 'rgb(255, 0, 0)',
         });
         colorpicker.on('colorpicker:saved', this, (ev) => {

@@ -75,6 +75,7 @@ odoo.define('sign_widgets_tour', function (require) {
                 content: "Sign",
                 trigger: 'button.btn-primary',
                 run: 'click',
+                extra_trigger: 'canvas.jSignature',
             },
             {
                 content: "Save Mitchell",

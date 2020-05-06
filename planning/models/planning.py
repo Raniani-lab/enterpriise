@@ -148,7 +148,9 @@ class Planning(models.Model):
                     else:
                         slot.allocated_percentage = 100
 
-    @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id', 'allocated_percentage')
+    @api.depends(
+        'start_datetime', 'end_datetime', 'employee_id.resource_calendar_id',
+        'company_id.resource_calendar_id', 'allocated_percentage')
     def _compute_allocated_hours(self):
         percentage_field = self._fields['allocated_percentage']
         self.env.remove_to_compute(percentage_field, self)
@@ -158,10 +160,9 @@ class Planning(models.Model):
                 if slot.allocation_type == 'planning':
                     slot.allocated_hours = (slot.end_datetime - slot.start_datetime).total_seconds() * percentage / 3600.0
                 else:
-                    if slot.employee_id:
-                        slot.allocated_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours'] * percentage
-                    else:
-                        slot.allocated_hours = 0.0
+                    calendar = slot.employee_id.resource_calendar_id or slot.company_id.resource_calendar_id
+                    hours = calendar.get_work_hours_count(slot.start_datetime, slot.end_datetime)
+                    slot.allocated_hours = hours * percentage
             else:
                 slot.allocated_hours = 0.0
 
@@ -254,8 +255,8 @@ class Planning(models.Model):
 
         start = self.start_datetime or datetime.combine(fields.Datetime.now(), datetime.min.time())
         end = self.end_datetime or datetime.combine(fields.Datetime.now(), datetime.max.time())
-        work_interval = employee.resource_id._get_work_interval(start, end)
-        start_datetime, end_datetime = work_interval[employee.resource_id.id] if employee.resource_id else (start, end)
+        work_interval = employee._adjust_to_calendar(start, end)
+        start_datetime, end_datetime = work_interval[employee] if employee else (start, end)
         if start_datetime:
             self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
         if end_datetime:

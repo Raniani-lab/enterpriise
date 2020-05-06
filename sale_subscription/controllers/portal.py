@@ -57,9 +57,10 @@ class CustomerPortal(CustomerPortal):
         if not filterby:
             filterby = 'all'
         domain += searchbar_filters[filterby]['domain']
+        domain += [('company_id', '=', request.env.user.company_id.id)]
 
         # pager
-        account_count = SaleSubscription.search_count(domain)
+        account_count = SaleSubscription.sudo().search_count(domain)
         pager = portal_pager(
             url="/my/subscription",
             url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'filterby': filterby},
@@ -67,8 +68,7 @@ class CustomerPortal(CustomerPortal):
             page=page,
             step=self._items_per_page
         )
-
-        accounts = SaleSubscription.search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
+        accounts = SaleSubscription.sudo().search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
         request.session['my_subscriptions_history'] = accounts.ids[:100]
 
         values.update({

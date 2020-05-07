@@ -49,22 +49,36 @@ class Company(models.Model):
         if any(field_name in values for field_name in ['timesheet_mail_manager_delay', 'timesheet_mail_manager_interval']):
             self._calculate_timesheet_mail_manager_nextdate()
 
+    def _calculate_next_week_date(self, delay):
+        now = fields.Datetime.now()
+        nextdate = now + relativedelta(weeks=1, days=-now.weekday() + delay - 1)
+        if nextdate < now or nextdate.date() == now.date():
+            nextdate = now + relativedelta(weeks=2, days=-now.weekday() + delay - 1)
+        return nextdate
+
+    def _calculate_next_month_date(self, delay):
+        now = fields.Datetime.now()
+        nextdate = now + relativedelta(day=1, months=1, days=delay - 1)
+        if nextdate < now or nextdate.date() == now.date():
+            nextdate = now + relativedelta(day=1, months=2, days=delay - 1)
+        return nextdate
+
     def _calculate_timesheet_mail_employee_nextdate(self):
         for company in self:
-            now = datetime.now()
+            delay = company.timesheet_mail_employee_delay
             if company.timesheet_mail_employee_interval == 'weeks':
-                nextdate = now + relativedelta(weeks=1, days=-now.weekday() + company.timesheet_mail_employee_delay - 1)
-            if company.timesheet_mail_employee_interval == 'months':
-                nextdate = now + relativedelta(day=1, months=1, days=company.timesheet_mail_employee_delay - 1)
+                nextdate = self._calculate_next_week_date(delay)
+            else:
+                nextdate = self._calculate_next_month_date(delay)
             company.timesheet_mail_employee_nextdate = fields.Datetime.to_string(nextdate)
 
     def _calculate_timesheet_mail_manager_nextdate(self):
         for company in self:
-            now = datetime.now()
+            delay = company.timesheet_mail_manager_delay
             if company.timesheet_mail_manager_interval == 'weeks':
-                nextdate = now + relativedelta(weeks=1, days=-now.weekday() + company.timesheet_mail_manager_delay - 1)
-            if company.timesheet_mail_manager_interval == 'months':
-                nextdate = now + relativedelta(day=1, months=1, days=company.timesheet_mail_manager_delay - 1)
+                nextdate = self._calculate_next_week_date(delay)
+            else:
+                nextdate = self._calculate_next_month_date(delay)
             company.timesheet_mail_manager_nextdate = fields.Datetime.to_string(nextdate)
 
     @api.model

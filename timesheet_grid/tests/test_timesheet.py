@@ -10,6 +10,10 @@ from odoo.addons.web_grid.models.models import END_OF
 from odoo.addons.hr_timesheet.tests.test_timesheet import TestCommonTimesheet
 from odoo.exceptions import AccessError, ValidationError
 
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 class TestTimesheetValidation(TestCommonTimesheet):
 
@@ -82,3 +86,75 @@ class TestTimesheetValidation(TestCommonTimesheet):
 
         # manager modify validated timesheet
         self.timesheet1.with_user(self.user_manager).write({'unit_amount': 5})
+
+    def _test_next_date(self, now, result, delay, interval):
+
+        def _now(*args, **kwargs):
+            return now
+
+        # To allow testing
+
+        patchers = [patch('odoo.fields.Datetime.now', _now)]
+
+        for p in patchers:
+            p.start()
+
+        self.user_manager.company_id.write({
+            'timesheet_mail_manager_interval': interval,
+            'timesheet_mail_manager_delay': delay,
+        })
+
+        self.assertEqual(result, self.user_manager.company_id.timesheet_mail_manager_nextdate)
+
+        for p in patchers:
+            p.stop()
+
+    def test_timesheet_next_date_reminder_neg_delay(self):
+
+        result = datetime(2020, 4, 23, 8, 8, 15)
+        now = datetime(2020, 4, 22, 8, 8, 15)
+        self._test_next_date(now, result, -3, "weeks")
+
+        result = datetime(2020, 4, 30, 8, 8, 15)
+        now = datetime(2020, 4, 23, 8, 8, 15)
+        self._test_next_date(now, result, -3, "weeks")
+        now = datetime(2020, 4, 24, 8, 8, 15)
+        self._test_next_date(now, result, -3, "weeks")
+        now = datetime(2020, 4, 25, 8, 8, 15)
+        self._test_next_date(now, result, -3, "weeks")
+
+        result = datetime(2020, 4, 27, 8, 8, 15)
+        now = datetime(2020, 4, 26, 8, 8, 15)
+        self._test_next_date(now, result, -3, "months")
+
+        result = datetime(2020, 5, 28, 8, 8, 15)
+        now = datetime(2020, 4, 27, 8, 8, 15)
+        self._test_next_date(now, result, -3, "months")
+        now = datetime(2020, 4, 28, 8, 8, 15)
+        self._test_next_date(now, result, -3, "months")
+        now = datetime(2020, 4, 29, 8, 8, 15)
+        self._test_next_date(now, result, -3, "months")
+
+        result = datetime(2020, 2, 27, 8, 8, 15)
+        now = datetime(2020, 2, 26, 8, 8, 15)
+        self._test_next_date(now, result, -3, "weeks")
+
+        result = datetime(2020, 3, 5, 8, 8, 15)
+        now = datetime(2020, 2, 27, 8, 8, 15)
+        self._test_next_date(now, result, -3, "weeks")
+        now = datetime(2020, 2, 28, 8, 8, 15)
+        self._test_next_date(now, result, -3, "weeks")
+        now = datetime(2020, 2, 29, 8, 8, 15)
+        self._test_next_date(now, result, -3, "weeks")
+
+        result = datetime(2020, 2, 26, 8, 8, 15)
+        now = datetime(2020, 2, 25, 8, 8, 15)
+        self._test_next_date(now, result, -3, "months")
+
+        result = datetime(2020, 3, 28, 8, 8, 15)
+        now = datetime(2020, 2, 26, 8, 8, 15)
+        self._test_next_date(now, result, -3, "months")
+        now = datetime(2020, 2, 27, 8, 8, 15)
+        self._test_next_date(now, result, -3, "months")
+        now = datetime(2020, 2, 28, 8, 8, 15)
+        self._test_next_date(now, result, -3, "months")

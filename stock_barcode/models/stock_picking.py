@@ -50,15 +50,15 @@ class StockPicking(models.Model):
                 id, name = move_line_id.pop('location_dest_id')
                 move_line_id['location_dest_id'] = {"id": id, "display_name": name}
             id, name = picking.pop('location_id')
-            picking['location_id'] = self.env['stock.location'].search_read([("id", "=", id)], [
-                'parent_path'
-            ])[0]
-            picking['location_id'].update({"id": id, "display_name": name})
+            picking['location_id'] = self.env['stock.location'].with_context(active_test=False).search_read(
+                [('id', '=', id)], ['parent_path']
+            )[0]
+            picking['location_id'].update({'display_name': name})
             id, name = picking.pop('location_dest_id')
-            picking['location_dest_id'] = self.env['stock.location'].search_read([("id", "=", id)], [
-                'parent_path'
-            ])[0]
-            picking['location_dest_id'].update({"id": id, "display_name": name})
+            picking['location_dest_id'] = self.env['stock.location'].with_context(active_test=False).search_read(
+                [('id', '=', id)], ['parent_path']
+            )[0]
+            picking['location_dest_id'].update({'display_name': name})
             picking['group_stock_multi_locations'] = self.env.user.has_group('stock.group_stock_multi_locations')
             picking['group_tracking_owner'] = self.env.user.has_group('stock.group_tracking_owner')
             picking['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')

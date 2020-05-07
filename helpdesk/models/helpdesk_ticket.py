@@ -443,7 +443,7 @@ class HelpdeskTicket(models.Model):
     def name_get(self):
         result = []
         for ticket in self:
-            result.append((ticket.id, "%s (#%d)" % (ticket.name, ticket.id)))
+            result.append((ticket.id, "%s (#%d)" % (ticket.name, ticket._origin.id)))
         return result
 
     @api.model_create_multi

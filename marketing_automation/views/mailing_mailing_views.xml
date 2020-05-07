@@ -42,7 +42,7 @@
             <xpath expr="//field[@name='state']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//button[@name='action_put_in_queue']" position="replace"/>
+            <xpath expr="//button[@name='action_launch']" position="replace"/>
             <xpath expr="//button[@name='action_schedule']" position="replace"/>
             <field name="mailing_domain" position="replace"/>
             <xpath expr="//label[@for='mailing_model_id']" position="attributes">
@@ -53,6 +53,12 @@
             </xpath>
             <xpath expr="//label[@for='contact_list_ids']" position="replace"/>
             <xpath expr="//field[@name='contact_list_ids']" position="replace"/>
+            <xpath expr="//label[@for='schedule_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@name='schedule_block']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <xpath expr="//field[@name='medium_id']" position="after">
                 <field name="marketing_activity_ids" string="Activities" widget="many2many_tags"/>
             </xpath>

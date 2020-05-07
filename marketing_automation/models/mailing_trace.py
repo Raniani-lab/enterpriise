@@ -14,27 +14,27 @@ class MailingTrace(models.Model):
     def set_clicked(self, mail_mail_ids=None, mail_message_ids=None):
         traces = super(MailingTrace, self).set_clicked(mail_mail_ids=mail_mail_ids, mail_message_ids=mail_message_ids)
         marketing_mail_traces = traces.filtered(lambda trace: trace.marketing_trace_id and trace.marketing_trace_id.activity_type == 'email')
-        if marketing_mail_traces:
-            marketing_mail_traces.process_event('mail_click')
+        for marketing_trace in marketing_mail_traces:
+            marketing_trace.process_event('mail_click')
         return traces
 
     def set_opened(self, mail_mail_ids=None, mail_message_ids=None):
         traces = super(MailingTrace, self).set_opened(mail_mail_ids=mail_mail_ids, mail_message_ids=mail_message_ids)
         marketing_mail_traces = traces.filtered(lambda trace: trace.marketing_trace_id and trace.marketing_trace_id.activity_type == 'email')
-        if marketing_mail_traces:
-            marketing_mail_traces.process_event('mail_open')
+        for marketing_trace in marketing_mail_traces:
+            marketing_trace.process_event('mail_open')
         return traces
 
     def set_replied(self, mail_mail_ids=None, mail_message_ids=None):
         traces = super(MailingTrace, self).set_replied(mail_mail_ids=mail_mail_ids, mail_message_ids=mail_message_ids)
         marketing_mail_traces = traces.filtered(lambda trace: trace.marketing_trace_id and trace.marketing_trace_id.activity_type == 'email')
-        if marketing_mail_traces:
-            marketing_mail_traces.process_event('mail_reply')
+        for marketing_trace in marketing_mail_traces:
+            marketing_trace.process_event('mail_reply')
         return traces
 
     def set_bounced(self, mail_mail_ids=None, mail_message_ids=None):
         traces = super(MailingTrace, self).set_bounced(mail_mail_ids=mail_mail_ids, mail_message_ids=mail_message_ids)
         marketing_mail_traces = traces.filtered(lambda trace: trace.marketing_trace_id and trace.marketing_trace_id.activity_type == 'email')
-        if marketing_mail_traces:
-            marketing_mail_traces.process_event('mail_bounce')
+        for marketing_trace in marketing_mail_traces:
+            marketing_trace.process_event('mail_bounce')
         return traces

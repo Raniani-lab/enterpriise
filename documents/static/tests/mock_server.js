@@ -1,6 +1,7 @@
 odoo.define('documents.MockServer', function (require) {
 'use strict';
 
+const Domain = require('web.Domain');
 var MockServer = require('web.MockServer');
 
 MockServer.include({
@@ -67,21 +68,28 @@ MockServer.include({
      * Override to handle the specific case of model 'documents.document'.
      *
      * @override
-     * @private
      */
     _mockSearchPanelSelectRange: function (model, [fieldName], kwargs) {
         if (model === 'documents.document' && fieldName === 'folder_id') {
+            const enableCounters = kwargs.enable_counters || false;
             const fields = ['display_name', 'description', 'parent_folder_id'];
             const records = this._mockSearchRead('documents.folder', [[], fields], {});
 
-            let localCounters = {};
-            if (kwargs.enable_counters) {
-                localCounters = this._mockSearchPanelLocalCounters(model, fieldName, kwargs);
+            let domainImage = new Map();
+            if (enableCounters) {
+                const modelDomain = Domain.prototype.normalizeArray([
+                    ...(kwargs.search_domain, []),
+                    ...(kwargs.category_domain, []),
+                    [fieldName, '!=', false],
+                ]);
+                domainImage = this._mockSearchPanelDomainImage(model, fieldName, modelDomain, enableCounters);
             }
 
             const valuesRange = new Map();
             for (const record of records) {
-                record.__count = localCounters[record.id] || 0;
+                if (enableCounters) {
+                    record.__count = domainImage.get(record.id) ? domainImage.get(record.id).__count : 0;
+                }
                 const value = record.parent_folder_id;
                 record.parent_folder_id = value && value[0];
                 valuesRange.set(record.id, record);
@@ -100,7 +108,6 @@ MockServer.include({
      * Override to handle the specific case of model 'documents.document'.
      *
      * @override
-     * @private
      */
     _mockSearchPanelSelectMultiRange: function (model, [fieldName], kwargs) {
         const searchDomain = kwargs.search_domain || [];
@@ -111,21 +118,25 @@ MockServer.include({
             if (fieldName === 'tag_ids') {
                 const folderId = categoryDomain.length ? categoryDomain[0][2] : false;
                 if (folderId) {
-                    const domain = [
+                    const domain = Domain.prototype.normalizeArray([
                         ...searchDomain,
                         ...categoryDomain,
                         ...filterDomain,
-                        [[fieldName, '!=', false]],
-                    ];
+                        [fieldName, '!=', false],
+                    ]);
                     return this.data['documents.tag'].get_tags(domain, folderId);
                 } else {
                     return [];
                 }
             } else if (fieldName === 'res_model') {
-                let domain = [...searchDomain, ...categoryDomain];
+                let domain = Domain.prototype.normalizeArray([...searchDomain, ...categoryDomain]);
                 const modelValues = this._mockGetModels(model, domain);
                 if (filterDomain) {
-                    domain = [...searchDomain, ...categoryDomain, ...filterDomain];
+                    domain = Domain.prototype.normalizeArray([
+                        ...searchDomain,
+                        ...categoryDomain,
+                        ...filterDomain,
+                    ]);
                     const modelCount = {};
                     for (const { id, __count } of this._mockGetModels(model, domain)) {
                         modelCount[id] = __count;

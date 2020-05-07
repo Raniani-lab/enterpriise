@@ -444,20 +444,27 @@ class Document(models.Model):
             DocumentFolder = self.env['documents.folder'].sudo().with_context(hierarchical_naming=False)
             records = DocumentFolder.search_read(folder_domain, fields)
 
-            local_counters = {}
+            domain_image = {}
             if enable_counters:
-                local_counters = self.search_panel_local_counters(field_name, **kwargs)
+                model_domain = expression.AND([
+                    kwargs.get('search_domain', []),
+                    kwargs.get('category_domain', []),
+                    [(field_name, '!=', False)]
+                ])
+                domain_image = self._search_panel_domain_image(field_name, model_domain, enable_counters)
 
             values_range = OrderedDict()
             for record in records:
                 record_id = record['id']
-                record['__count'] = local_counters.get(record_id, 0)
+                if enable_counters:
+                    image_element  = domain_image.get(record_id)
+                    record['__count'] = image_element['__count'] if image_element else 0
                 value = record['parent_folder_id']
                 record['parent_folder_id'] = value and value[0]
                 values_range[record_id] = record
 
             if enable_counters:
-                self.search_panel_global_counters(values_range, 'parent_folder_id')
+                self._search_panel_global_counters(values_range, 'parent_folder_id')
 
             return {
                 'parent_field': 'parent_folder_id',

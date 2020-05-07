@@ -368,9 +368,10 @@ class Planning(models.Model):
             for slot in self:
                 if slot.recurrency_id and values.get('repeat') is None:
                     repeat_type = values.get('repeat_type') or slot.recurrency_id.repeat_type
+                    repeat_until = values.get('repeat_until') or slot.recurrency_id.repeat_until
                     recurrency_values = {
                         'repeat_interval': values.get('repeat_interval') or slot.recurrency_id.repeat_interval,
-                        'repeat_until': values.get('repeat_until') if repeat_type == 'until' else False,
+                        'repeat_until': repeat_until if repeat_type == 'until' else False,
                         'repeat_type': repeat_type,
                         'company_id': slot.company_id.id,
                     }

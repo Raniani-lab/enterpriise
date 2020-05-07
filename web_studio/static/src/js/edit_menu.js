@@ -457,9 +457,11 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
      */
     _onConfirmOptions: async function (ev) {
         this.model_options = Object.entries(ev.data).filter(opt => opt[1].value).map(opt => opt[0]);
-        const res = await this._onSave();
-        this.modelConfiguratorDialog.close();
-        return res;
+        return this._onSave().then((res) => {
+            this.modelConfiguratorDialog.close();
+            return res;
+        }).guardedCatch(() =>
+            this.modelConfiguratorDialog.close());
     },
 
     /**

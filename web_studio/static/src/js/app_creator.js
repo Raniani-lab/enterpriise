@@ -175,7 +175,10 @@ odoo.define('web_studio.AppCreator', function (require) {
                     icon: iconValue,
                     context: this.env.session.user_context,
                 },
-            }).guardedCatch(() => this.env.services.unblockUI());
+            }).guardedCatch(() => {
+                this.env.services.unblockUI();
+                this._onPrevious();
+            });
             this.trigger('new-app-created', result);
             this.env.services.unblockUI();
         }

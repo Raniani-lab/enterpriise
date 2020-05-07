@@ -121,7 +121,8 @@ class AccountMove(models.Model):
                 self._cr.commit()
 
         if error_invoice:
-            msg = _('We couldn\'t validate the invoice "%s" (Draft Invoice *%s) in AFIP. This is what we get:\n%s') % (inv.partner_id.name, inv.id, return_info)
+            msg = _('We couldn\'t validate the invoice "%s" (Draft Invoice *%s) in AFIP. This is what we get:\n%s'
+                    '\n\nPlease make the required corrections and try again') % (inv.partner_id.name, inv.id, return_info)
             # if we've already validate any invoice, we've commit and we want to inform which invoices were validated
             # which one were not and the detail of the error we get. This ins neccesary because is not usual to have a
             # raise with changes commited on databases
@@ -286,6 +287,9 @@ class AccountMove(models.Model):
             afip_result = values.get('l10n_ar_afip_result')
             xml_response, xml_request = transport.xml_response, transport.xml_request
             if afip_result not in ['A', 'O']:
+                self.env.cr.rollback()
+                inv.sudo().write({'l10n_ar_afip_xml_request': xml_request, 'l10n_ar_afip_xml_response': xml_response})
+                self.env.cr.commit()
                 return return_info
             values.update(l10n_ar_afip_xml_request=xml_request, l10n_ar_afip_xml_response=xml_response)
             inv.sudo().write(values)

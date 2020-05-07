@@ -1142,7 +1142,9 @@ msgstr ""
 #, python-format
 msgid ""
 "We couldn't validate the invoice \"%s\" (Draft Invoice *%s) in AFIP. This is what we get:\n"
-"%s"
+"%s\n"
+"\n"
+"Please make the required corrections and try again"
 msgstr ""
 
 #. module: l10n_ar_edi

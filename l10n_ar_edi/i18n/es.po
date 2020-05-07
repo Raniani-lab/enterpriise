@@ -1298,10 +1298,14 @@ msgstr ""
 #, python-format
 msgid ""
 "We couldn't validate the invoice \"%s\" (Draft Invoice *%s) in AFIP. This is what we get:\n"
-"%s"
+"%s\n"
+"\n"
+"Please make the required corrections and try again"
 msgstr ""
 "No pudimos validar la factura \"%s\" (Draft Invoice *%s) en AFIP. Esto es lo que recibimos:\n"
-"%s"
+"%s\n"
+"\n"
+"Por favor haga las correciones necesarias e intente de nuevo"
 
 #. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/account_journal.py:0

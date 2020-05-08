@@ -1,54 +1,75 @@
-odoo.define('web_mobile.datepicker', function (require) {
-"use strict";
+odoo.define("web_mobile.datepicker", function (require) {
+    "use strict";
 
-var web_datepicker = require('web.datepicker');
+    const mobile = require("web_mobile.core");
 
-const mobile = require('web_mobile.core');
+    if (!mobile.methods.requestDateTimePicker) {
+        return;
+    }
 
-/**
- * Override odoo date-picker (bootstrap date-picker) to display mobile native
- * date picker. Because of it is better to show native mobile date-picker to
- * improve usability of Application (Due to Mobile users are used to native
- * date picker).
- */
+    const web_datepicker = require("web.datepicker");
+    const Widget = require("web.Widget");
 
-web_datepicker.DateWidget.include({
     /**
-     * @override
+     * Override odoo date-picker (bootstrap date-picker) to display mobile native
+     * date picker. Because of it is better to show native mobile date-picker to
+     * improve usability of Application (Due to Mobile users are used to native
+     * date picker).
      */
-    start: function () {
-        this._super.apply(this, arguments);
-        if (mobile.methods.requestDateTimePicker) {
-            // `super` will initiate bootstrap date-picker object which is not
-            // required in mobile application.
-            this.__libInput++;
-            this.$el.datetimepicker('destroy');
-            this.__libInput--;
-            this._setReadonly(true);
+
+    web_datepicker.DateWidget.include({
+        /**
+         * @override
+         */
+        start() {
+            this.$input = this.$("input.o_datepicker_input");
             this._setupMobilePicker();
-        }
-    },
+        },
 
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
+        /**
+         * Bootstrap date-picker already destroyed at initialization
+         *
+         * @override
+         */
+        destroy: Widget.prototype.destroy,
 
-    /**
-     * @private
-     */
-    _setupMobilePicker: function () {
-        var self = this;
-        this.$el.on('click', function () {
-            mobile.methods.requestDateTimePicker({
-                'value': self.getValue() ? self.getValue().format("YYYY-MM-DD HH:mm:ss") : false,
-                'type': self.type_of_date,
-                'ignore_timezone': true,
-            }).then(function (response) {
-                self.$input.val(response.data);
-                self.changeDatetime();
+        /**
+         * @override
+         */
+        maxDate() {
+            console.warn("Unsupported in the mobile applications");
+        },
+
+        /**
+         * @override
+         */
+        minDate() {
+            console.warn("Unsupported in the mobile applications");
+        },
+
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
+
+        /**
+         * @override
+         * @private
+         */
+        _setLibInputValue() {},
+
+        /**
+         * @private
+         */
+        _setupMobilePicker() {
+            this.$el.on("click", async () => {
+                const { data } = await mobile.methods.requestDateTimePicker({
+                    value: this.getValue() ? this.getValue().format("YYYY-MM-DD HH:mm:ss") : false,
+                    type: this.type_of_date,
+                    ignore_timezone: true,
+                });
+                this.$input.val(data);
+                this.changeDatetime();
             });
-        });
-    },
-});
-
+        },
+    });
 });

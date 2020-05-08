@@ -331,7 +331,7 @@ const MapModel = AbstractModel.extend({
                 partner.partner_longitude = undefined;
             }
         });
-        return Promise.all(promises).then(() => {
+        return Promise.all(promises.map(p => p.catch(error => null))).then(() => {
             this._addPartnerToRecord();
         });
     },

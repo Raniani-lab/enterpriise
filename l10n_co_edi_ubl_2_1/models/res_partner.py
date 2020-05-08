@@ -15,12 +15,16 @@ class ResPartner(models.Model):
         self.ensure_one()
         # last digit is the verification code
         # last digit is the verification code, but it could have a - before
+        if self.l10n_co_document_type != 'rut':
+            return self.vat
         if self.vat and "-" in self.vat:
             return self.vat.split('-')[0]
         return self.vat[:-1] if self.vat else ''
 
     def _get_vat_verification_code(self):
         self.ensure_one()
+        if self.l10n_co_document_type != 'rut':
+            return ''
         if self.vat and "-" in self.vat:
             return self.vat.split('-')[1]
         return self.vat[-1] if self.vat else ''

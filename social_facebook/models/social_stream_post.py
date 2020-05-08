@@ -12,7 +12,7 @@ from werkzeug.urls import url_join
 class SocialStreamPostFacebook(models.Model):
     _inherit = 'social.stream.post'
 
-    FACEBOOK_COMMENT_FIELDS = 'id,from.fields(id,name,picture),message,message_tags,created_time,attachment,comments.fields(id,from.fields(id,name,picture),message,created_time,attachment,user_likes,likes.limit(0).summary(true)),user_likes,likes.limit(0).summary(true)'
+    FACEBOOK_COMMENT_FIELDS = 'id,from.fields(id,name,picture),message,message_tags,created_time,attachment,comments.fields(id,from.fields(id,name,picture),message,created_time,attachment,user_likes,like_count),user_likes,like_count'
 
     facebook_post_id = fields.Char('Facebook Post ID', index=True)
     facebook_author_id = fields.Char('Facebook Author ID')
@@ -55,10 +55,12 @@ class SocialStreamPostFacebook(models.Model):
         result_json = requests.get(comments_endpoint_url, params).json()
 
         for comment in result_json.get('data'):
+            comment['likes'] = {'summary': {'total_count': comment.get('like_count', 0)}}
             comment['formatted_created_time'] = self._format_facebook_published_date(comment)
             comment['message'] = self.stream_id._format_facebook_message(comment.get('message'), comment.get('message_tags'))
             inner_comments = comment.get('comments', {}).get('data', [])
             for inner_comment in inner_comments:
+                inner_comment['likes'] = {'summary': {'total_count': inner_comment.get('like_count', 0)}}
                 inner_comment['formatted_created_time'] = self._format_facebook_published_date(inner_comment)
                 inner_comment['message'] = self.stream_id._format_facebook_message(inner_comment.get('message'), inner_comment.get('message_tags'))
 
@@ -128,9 +130,10 @@ class SocialStreamPostFacebook(models.Model):
             endpoint_url,
             params,
             files={'source': ('source', attachment.read(), attachment.content_type)} if attachment else None
-        )
+        ).json()
+        result['likes'] = {'summary': {'total_count': result.get('like_count', 0)}}
 
-        return result.json()
+        return result
 
     def _like_facebook_object(self, object_id, like):
         params = {'access_token': self.stream_id.account_id.facebook_access_token}

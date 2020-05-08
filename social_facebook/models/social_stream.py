@@ -34,7 +34,7 @@ class SocialStreamFacebook(models.Model):
         posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s/%s" % (self.account_id.facebook_account_id, endpoint_name))
         result = requests.get(posts_endpoint_url, {
             'access_token': self.account_id.facebook_access_token,
-            'fields': 'id,message,from,shares,insights.metric(post_impressions),message_tags,likes.limit(1).summary(true),comments.limit(10).summary(true){message,from,likes.limit(0).summary(true)},attachments,created_time',
+            'fields': 'id,message,from,shares,insights.metric(post_impressions),message_tags,likes.limit(1).summary(true),comments.limit(10).summary(true){message,from,like_count},attachments,created_time',
         })
 
         result_posts = result.json().get('data')

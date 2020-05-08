@@ -866,7 +866,7 @@ class AEATAccountFinancialReport(models.Model):
             if period[-1] == 'T':
                 options = options.copy()
                 end_date = datetime.strptime(options['date']['date_to'], '%Y-%m-%d')
-                options['date']['date_to'] = (end_date + relativedelta(day=31, months=-1)).stftime('%Y-%m-%d')
+                options['date']['date_to'] = (end_date + relativedelta(day=31, months=-1)).strftime('%Y-%m-%d')
             else:
                 raise UserError(_("You cannot generate a BOE file for the first two months of a trimester if only one month is selected!"))
 

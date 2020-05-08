@@ -214,6 +214,7 @@
             <field name="formulas">-sum</field>
             <field name="sequence" eval="20"/>
             <field name="level" eval="5"/>
+            <field name="special_date_changer">strict_range</field>
         </record>
 
         <record id="mod_303_title_6" model="account.financial.html.report.line">

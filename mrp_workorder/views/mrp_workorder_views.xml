@@ -5,10 +5,6 @@
         <field name="model">mrp.workorder</field>
         <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
         <field name="arch" type="xml">
-            <button name="record_production" position="replace">
-                <button name="record_production" type="object" string="Done" class="btn-success" attrs="{'invisible': ['|', '|', ('state', '!=', 'progress'), ('is_user_working', '=', False), ('quality_check_todo','=', True)]}"/>
-                <field name="quality_check_todo" invisible="1"/>
-            </button>
             <xpath expr="//header" position="replace">
                 <field name="check_ids" invisible="1"/>
                 <field name="quality_check_fail" invisible="1"/>

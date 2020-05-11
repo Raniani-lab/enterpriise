@@ -11,7 +11,9 @@ class MrpProduction(models.Model):
 
     def button_plan(self):
         res = super(MrpProduction, self).button_plan()
-        for order in self:
-            if not order.workorder_ids.mapped('check_ids'):
-                order.workorder_ids._create_checks()
+        orders_to_plan = self.filtered(lambda order: not order.is_planned)
+        for order in orders_to_plan:
+            workorder_to_plan = order.workorder_ids.filtered(lambda wo: not (wo.date_planned_start or wo.date_planned_finished))
+            if not workorder_to_plan.mapped('check_ids'):
+                workorder_to_plan._create_checks()
         return res

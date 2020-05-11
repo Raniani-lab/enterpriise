@@ -38,9 +38,6 @@ class Planning(models.Model):
     _rec_name = 'name'
     _check_company_auto = True
 
-    def _default_employee_id(self):
-        return self.env.user.employee_id
-
     def _default_start_datetime(self):
         return datetime.combine(fields.Datetime.now(), datetime.min.time())
 
@@ -48,7 +45,7 @@ class Planning(models.Model):
         return datetime.combine(fields.Datetime.now(), datetime.max.time())
 
     name = fields.Text('Note')
-    employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, group_expand='_read_group_employee_id', check_company=True)
+    employee_id = fields.Many2one('hr.employee', "Employee", group_expand='_read_group_employee_id', check_company=True)
     work_email = fields.Char("Work Email", related='employee_id.work_email')
     department_id = fields.Many2one(related='employee_id.department_id', store=True)
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
@@ -121,7 +118,7 @@ class Planning(models.Model):
     @api.depends('employee_id', 'template_id')
     def _compute_role_id(self):
         for slot in self:
-            if not slot.role_id:
+            if not slot.role_id and 'default_role_id' not in self.env.context:
                 if slot.employee_id and slot.employee_id.planning_role_ids:
                     slot.role_id = slot.employee_id.planning_role_ids[0]
                 else:

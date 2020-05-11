@@ -42,10 +42,10 @@ class pos_config(models.Model):
     iface_fiscal_data_module = fields.Many2one('iot.device',
                                                domain="[('type', '=', 'fiscal_data_module'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
-    @api.constrains("module_pos_reprint", "module_pos_discount", "module_pos_loyalty","blackbox_pos_production_id")
+    @api.constrains("module_pos_discount", "module_pos_loyalty","blackbox_pos_production_id")
     def _check_blackbox_config(self):
         for config in self:
-            if config.blackbox_pos_production_id and (config.module_pos_reprint or config.module_pos_discount or config.module_pos_loyalty):
+            if config.blackbox_pos_production_id and (config.module_pos_discount or config.module_pos_loyalty):
                 raise UserError(_("Loyalty programs, reprint and global discounts cannot be used on a PoS associated with a blackbox."))
 
     @api.constrains('blackbox_pos_production_id')

@@ -124,9 +124,9 @@ MockServer.include({
                         ...filterDomain,
                         [fieldName, '!=', false],
                     ]);
-                    return this.data['documents.tag'].get_tags(domain, folderId);
+                    return {values: this.data['documents.tag'].get_tags(domain, folderId), };
                 } else {
-                    return [];
+                    return {values: [], };
                 }
             } else if (fieldName === 'res_model') {
                 let domain = Domain.prototype.normalizeArray([...searchDomain, ...categoryDomain]);
@@ -143,7 +143,7 @@ MockServer.include({
                     }
                     modelValues.forEach(m => m.__count = modelCount[m.id] || 0);
                 }
-                return modelValues;
+                return {values: modelValues, };
             }
         }
         return this._super(...arguments);

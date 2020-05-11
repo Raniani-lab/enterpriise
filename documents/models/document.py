@@ -502,9 +502,9 @@ class Document(models.Model):
                     search_domain, category_domain, filter_domain,
                     [(field_name, '!=', False)],
                 ])
-                return self._get_processed_tags(domain, folder_id)
+                return {'values': self._get_processed_tags(domain, folder_id)}
             else:
-                return []
+                return {'values': []}
 
         elif field_name == 'res_model':
             domain = expression.AND([search_domain, category_domain])
@@ -521,6 +521,6 @@ class Document(models.Model):
                 for model in model_values:
                     model['__count'] = model_count.get(model['id'], 0)
 
-            return model_values
+            return {'values': model_values}
 
         return super(Document, self).search_panel_select_multi_range(field_name, **kwargs)

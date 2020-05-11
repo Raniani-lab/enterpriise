@@ -2577,7 +2577,7 @@ QUnit.module('DocumentsViews', {
             data: this.data,
             mockRPC: function (route, args) {
                 if (args.method === 'search_panel_select_multi_range') {
-                    return Promise.resolve([]);
+                    return Promise.resolve({values: [], });
                 }
                 return this._super.apply(this, arguments);
             },

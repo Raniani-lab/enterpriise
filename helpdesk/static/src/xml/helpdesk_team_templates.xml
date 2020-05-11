@@ -5,7 +5,7 @@
         some figures to it. We call this rubbon the "HelpdeskDashboard".
     -->
     <t t-name="helpdesk.HelpdeskDashboard">
-        <div t-if="show_demo or values" class="o_helpdesk_dashboard">
+        <div t-if="show_demo or values" class="o_helpdesk_dashboard py-4 mb-3">
             <div t-attf-class="#{show_demo ? 'o_demo' : ''}">
                 <table class="table table-sm">
                     <tr>

@@ -82,9 +82,10 @@ class HelpdeskTeam(models.Model):
 
     @api.depends('name', 'portal_show_rating')
     def _compute_portal_rating_url(self):
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         for team in self:
             if team.name and team.portal_show_rating and team.id:
-                team.portal_rating_url = '/helpdesk/rating/%s' % (slug(team))
+                team.portal_rating_url = '%s/helpdesk/rating/%s' % (base_url, slug(team))
             else:
                 team.portal_rating_url = False
 
@@ -486,8 +487,8 @@ class HelpdeskSLA(models.Model):
     stage_id = fields.Many2one(
         'helpdesk.stage', 'Target Stage',
         help='Minimum stage a ticket needs to reach in order to satisfy this SLA.')
-    exclude_stage_id = fields.Many2one(
-        'helpdesk.stage', 'Exclude Stage',
+    exclude_stage_ids = fields.Many2many(
+        'helpdesk.stage', string='Exclude Stages',
         domain="[('id', '!=', stage_id.id)]",
         help='The amount of time the ticket spends in this stage will not be taken into account when evaluating the status of the SLA Policy.')
     priority = fields.Selection(
@@ -514,4 +515,4 @@ class HelpdeskSLA(models.Model):
 
     @api.onchange('target_type')
     def _onchange_target_type(self):
-        self.exclude_stage_id = False
+        self.exclude_stage_ids = False

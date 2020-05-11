@@ -255,7 +255,6 @@
                                 <div id="use_rating" attrs="{'invisible': [('use_rating', '=', False)]}">
                                     <field name="rating_percentage_satisfaction" invisible="1"/>
                                     <div attrs="{'invisible': [('use_rating', '=', True), ('rating_percentage_satisfaction', '!=', -1)]}" class="mt16">
-                                        <i>No customer feedback yet.</i>
                                     </div>
                                 </div>
                             </div>
@@ -270,10 +269,9 @@
                                     Publish this team's ratings on your website
                                 </div>
                                 <div attrs="{'invisible': ['|', ('portal_show_rating', '=', False), ('portal_rating_url','=',False)]}" class="mt16">
-                                    View this team's ratings on the following page:<br/>
-                                    <a type="button" class="btn-link" target="_blank" role="button"><i class="fa fa-fw fa-arrow-right" role="img" aria-label="Rating URL" title="Rating URL"/>
-                                        <field name="portal_rating_url" nolabel="1" readonly="1" class="oe_inline" widget="url"/>
-                                    </a>
+                                    <button class="btn-link" role="button" icon="fa-arrow-right">
+                                        <field name="portal_rating_url" nolabel="1" readonly="1" class="oe_inline" widget="url" text="View this team's ratings"/>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -422,7 +420,7 @@
         <field name="model">helpdesk.team</field>
         <field name="priority">200</field>
         <field name="arch" type="xml">
-            <kanban class="oe_background_grey o_kanban_dashboard o_helpdesk_kanban" create="0" js_class="helpdesk_dashboard">
+            <kanban class="oe_background_grey o_kanban_dashboard o_helpdesk_kanban p-0" create="0" js_class="helpdesk_dashboard">
                 <field name="name"/>
                 <field name="color"/>
                 <field name="use_alias"/>
@@ -454,19 +452,13 @@
                                     </div>
                                     <div class="col-6 o_kanban_primary_right">
                                         <div class="mb4" groups="helpdesk.group_use_sla" attrs="{'invisible': [('use_sla', '=', False)]}">
-                                            <a name="%(helpdesk.action_upcoming_sla_fail_all_tickets)d" type="action"  context="{'search_default_team_id': active_id, 'default_team_id': active_id}"><t t-esc="record.upcoming_sla_fail_tickets.raw_value"/> Tickets to Review</a>
+                                            <a name="%(helpdesk.action_upcoming_sla_fail_all_tickets)d" type="action"  context="{'search_default_team_id': active_id, 'default_team_id': active_id}"><t t-esc="record.upcoming_sla_fail_tickets.raw_value"/> SLA Issues</a>
                                         </div>
                                         <div class="mb4">
                                             <a name="%(helpdesk.helpdesk_ticket_action_unassigned)d" type="action" context="{'search_default_team_id': active_id, 'default_team_id': active_id}"><t t-esc="record.unassigned_tickets.raw_value"/> Unassigned Tickets</a>
                                         </div>
                                         <div class="mb4" t-if="record.use_rating.raw_value">
                                             <a name="action_view_all_rating" type="object">See Customer Satisfaction</a>
-                                        </div>
-                                        <div class="mb4" t-if="record.use_sla.raw_value">
-                                            <a name="%(helpdesk_sla_action_main)d" type="action"
-                                                    context="{'search_default_team_id': active_id, 'default_team_id': active_id}">
-                                                See SLAs
-                                            </a>
                                         </div>
                                     </div>
                                 </div><!-- Smiley indicator of rating:

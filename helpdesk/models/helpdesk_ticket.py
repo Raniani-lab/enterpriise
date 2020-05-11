@@ -66,7 +66,7 @@ class HelpdeskSLAStatus(models.Model):
     @api.depends('ticket_id.create_date', 'sla_id', 'ticket_id.stage_id')
     def _compute_deadline(self):
         for status in self:
-            if (status.deadline and status.reached_datetime) or (status.deadline and status.target_type == 'stage' and not status.sla_id.exclude_stage_id) or (status.status == 'failed'):
+            if (status.deadline and status.reached_datetime) or (status.deadline and status.target_type == 'stage' and not status.sla_id.exclude_stage_ids) or (status.status == 'failed'):
                 continue
             if status.target_type == 'assigning' and status.sla_stage_id == status.ticket_id.stage_id:
                 deadline = fields.Datetime.now()
@@ -81,8 +81,8 @@ class HelpdeskSLAStatus(models.Model):
                 status.deadline = deadline
                 continue
 
-            if status.target_type == 'stage' and status.sla_id.exclude_stage_id:
-                if status.sla_id.exclude_stage_id == status.ticket_id.stage_id:
+            if status.target_type == 'stage' and status.sla_id.exclude_stage_ids:
+                if status.ticket_id.stage_id in status.sla_id.exclude_stage_ids:
                     # We are in the freezed time stage: No deadline
                     status.deadline = False
                     continue
@@ -101,7 +101,7 @@ class HelpdeskSLAStatus(models.Model):
 
             sla_hours = status.sla_id.time_hours + (status.sla_id.time_minutes / 60)
 
-            if status.target_type == 'stage' and status.sla_id.exclude_stage_id:
+            if status.target_type == 'stage' and status.sla_id.exclude_stage_ids:
                 sla_hours += status._get_freezed_hours(working_calendar)
 
             # We should execute the function plan_hours in any case because, in a 1 day SLA environment,
@@ -171,7 +171,7 @@ class HelpdeskSLAStatus(models.Model):
         hours_freezed = 0
 
         field_stage = self.env['ir.model.fields']._get(self.ticket_id._name, "stage_id")
-        freeze_stage = self.sla_id.exclude_stage_id.id
+        freeze_stages = self.sla_id.exclude_stage_ids.ids
         tracking_lines = self.ticket_id.message_ids.tracking_value_ids.filtered(lambda tv: tv.field == field_stage).sorted(key="create_date")
 
         if not tracking_lines:
@@ -179,11 +179,11 @@ class HelpdeskSLAStatus(models.Model):
 
         old_time = self.ticket_id.create_date
         for tracking_line in tracking_lines:
-            if tracking_line.old_value_integer == freeze_stage:
+            if tracking_line.old_value_integer in freeze_stages:
                 # We must use get_work_hours_count to compute real waiting hours (as the deadline computation is also based on calendar)
                 hours_freezed += working_calendar.get_work_hours_count(old_time, tracking_line.create_date)
             old_time = tracking_line.create_date
-        if tracking_lines[-1].new_value_integer == freeze_stage:
+        if tracking_lines[-1].new_value_integer in freeze_stages:
             # the last tracking line is not yet created
             hours_freezed += working_calendar.get_work_hours_count(old_time, fields.Datetime.now())
         return hours_freezed
@@ -274,6 +274,7 @@ class HelpdeskTicket(models.Model):
     sla_reached_late = fields.Boolean("Has SLA reached late", compute='_compute_sla_reached_late', compute_sudo=True, store=True)
     sla_deadline = fields.Datetime("SLA Deadline", compute='_compute_sla_deadline', compute_sudo=True, store=True, help="The closest deadline of all SLA applied on this ticket")
     sla_fail = fields.Boolean("Failed SLA Policy", compute='_compute_sla_fail', search='_search_sla_fail')
+    sla_success = fields.Boolean("Success SLA Policy", compute='_compute_sla_success', search='_search_sla_success')
 
     use_credit_notes = fields.Boolean(related='team_id.use_credit_notes', string='Use Credit Notes')
     use_coupons = fields.Boolean(related='team_id.use_coupons', string='Use Coupons')
@@ -357,6 +358,19 @@ class HelpdeskTicket(models.Model):
         if (value and operator in expression.NEGATIVE_TERM_OPERATORS) or (not value and operator not in expression.NEGATIVE_TERM_OPERATORS):  # is not failed
             return ['&', ('sla_reached_late', '=', False), '|', ('sla_deadline', '=', False), ('sla_deadline', '>=', datetime_now)]
         return ['|', ('sla_reached_late', '=', True), ('sla_deadline', '<', datetime_now)]  # is failed
+
+    @api.depends('sla_deadline', 'sla_reached_late')
+    def _compute_sla_success(self):
+        now = fields.Datetime.now()
+        for ticket in self:
+            ticket.sla_success = (ticket.sla_deadline and ticket.sla_deadline > now)
+
+    @api.model
+    def _search_sla_success(self, operator, value):
+        datetime_now = fields.Datetime.now()
+        if (value and operator in expression.NEGATIVE_TERM_OPERATORS) or (not value and operator not in expression.NEGATIVE_TERM_OPERATORS):  # is failed
+            return [[('sla_status_ids.reached_datetime', '>', datetime_now), ('sla_reached_late', '!=', False)]]
+        return [('sla_status_ids.reached_datetime', '<', datetime_now), ('sla_reached_late', '=', False)]  # is success
 
     @api.depends('user_id')
     def _compute_is_self_assigned(self):

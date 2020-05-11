@@ -39,6 +39,9 @@
                 <filter string="Failed Ticket" name="ticket_failed" domain="[('ticket_failed', '=', True)]"/>
                 <filter string="Closed Ticket" name="ticket_closed" domain="[('ticket_closed', '=', True)]"/>
                 <separator/>
+                <filter string="SLA in Progress" name="sla_inprogress" domain="[('sla_status', '=', 'ongoing')]"/>
+                <filter string="SLA Success" name="sla_success" domain="[('sla_status', '=', 'reached')]"/>
+                <separator/>
                 <filter string="Last 7 days" name="last_7days" domain="[('create_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
                 <filter string="Last 30 days" name="last_month" domain="[('create_date','&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))]"/>
                 <separator/>

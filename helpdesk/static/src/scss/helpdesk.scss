@@ -11,11 +11,10 @@
     }
 
     .o_helpdesk_dashboard {
-        flex: 1 0 100%;
-        padding: 2px 0 18px 0;
-
+        @include o-position-sticky($top: 0px)
+        border-bottom: 1px solid #CED4DA;
         background-color: $o-view-background-color;
-        position: relative;
+        z-index: 10;
 
         .o_welcome_message {
             width: 100%;

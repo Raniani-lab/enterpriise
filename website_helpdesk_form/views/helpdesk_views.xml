@@ -8,10 +8,9 @@
             <xpath expr="//div[@id='website_form']" position="replace">
                 <div id='website_form' attrs="{'invisible': [('use_website_helpdesk_form','=',False)]}">
                     <div attrs="{'invisible': ['|', ('use_website_helpdesk_form', '=', False), ('feature_form_url','=',False)]}" class="mt16">
-                        Submit an issue using this page:<br/>
-                        <a type="button" role="button" class="btn-link" target="_blank"><i class="fa fa-fw fa-arrow-right" aria-label="Go to" title="Go to"/>
-                            <field name="feature_form_url" readonly="1" class="oe_inline" widget="url"/>
-                        </a>
+                        <button role="button" class="btn-link" icon="fa-arrow-right">
+                            <field name="feature_form_url" readonly="1" class="oe_inline" widget="url" text="View the ticket submission page"/>
+                        </button>
                     </div>
                 </div>
             </xpath>

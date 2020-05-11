@@ -128,7 +128,7 @@ class HelpdeskTicket(models.Model):
 
     @api.onchange('task_id')
     def _onchange_task_id(self):
-        if self._get_timesheet():
+        if self._get_timesheet() and self._origin.task_id:
             if self.task_id:
                 msg = _("All timesheet hours will be assigned to the selected task on save. Discard to avoid the change.")
             else:

@@ -91,7 +91,7 @@ class HelpdeskSLA(SavepointCase):
             'time_hours': 2,
             'time_minutes': 2,
             'tag_ids': [(4, cls.tag_freeze.id)],
-            'exclude_stage_id': cls.stage_wait.id,
+            'exclude_stage_ids': cls.stage_wait.ids,
             'stage_id': cls.stage_done.id,
         })
         cls.sla_assigning_1 = cls.env['helpdesk.sla'].create({

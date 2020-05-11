@@ -14,9 +14,10 @@ class HelpdeskTeam(models.Model):
     forum_url = fields.Char(string='Help Center Forum URL', readonly=True, compute='_compute_forum_url')
 
     def _compute_forum_url(self):
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         for team in self:
             if team.forum_id and team.id:
-                team.forum_url = '/forum/%s' % slug(team.forum_id)
+                team.forum_url = '%s/forum/%s' % (base_url, slug(team.forum_id))
             else:
                 team.forum_url = False
 

@@ -8,10 +8,9 @@
             <xpath expr="//div[@id='im_livechat']" position="replace">
                 <div attrs="{'invisible': ['|', ('feature_livechat_channel_id','=',False), ('use_website_helpdesk_livechat', '=', False)]}" class="mt16">
                     <p>
-                        Test the livechat widget from this page:<br/>
-                        <a type="button" role="button" class="btn-link" target="_blank"><i class="fa fa-fw fa-arrow-right" aria-label="Go to" title="Go to"/>
-                            <field name="feature_livechat_web_page" readonly="1" class="oe_inline" widget="url"/>
-                        </a>
+                        <button role="button" class="btn-link" icon="fa-arrow-right">
+                            <field name="feature_livechat_web_page" readonly="1" class="oe_inline" widget="url" text="Test the livechat"/>
+                        </button>
                     </p>
                     <p>
                         Setup the

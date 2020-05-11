@@ -6,7 +6,7 @@
     'version': '1.3',
     'category': 'Services/Helpdesk',
     'sequence': 57,
-    'summary': 'Track help tickets',
+    'summary': 'Track, prioritize, and solve customer tickets',
     'website': 'https://www.odoo.com/page/helpdesk',
     'depends': [
         'base_setup',

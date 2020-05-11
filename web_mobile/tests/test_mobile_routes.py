@@ -8,7 +8,7 @@ from io import BytesIO
 from uuid import uuid4
 
 from odoo.tests.common import HttpCase, tagged
-from odoo.tools import mute_logger
+from odoo.tools import config, mute_logger
 
 
 @tagged("-at_install", "post_install")
@@ -42,19 +42,28 @@ class MobileRoutesTest(HttpCase):
         self.assertGreater(len(result["server_version_info"]), 0)
         self.assertEqual(result["server_version_info"][-1], "e")
 
+    @mute_logger("odoo.http")
     def test_database_list(self):
         """
         This request is used to retrieve the databases' list
+        NB: this route has a different behavior depending on the ability to list databases or not.
         """
         payload = self._build_payload()
         response = self.url_open("/web/database/list", data=json.dumps(payload), headers=self.headers)
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        self._is_success_json_response(data)
-        result = data["result"]
-        self.assertIsInstance(result, list)
-        self.assertGreater(len(result), 0)
-        self.assertIn(self.env.cr.dbname, result)
+        if config['list_db']:
+            self._is_success_json_response(data)
+            result = data["result"]
+            self.assertIsInstance(result, list)
+            self.assertGreater(len(result), 0)
+            self.assertIn(self.env.cr.dbname, result)
+        else:
+            self._is_error_json_response(data)
+            error = data["error"]
+            self.assertEqual(error["code"], 200)
+            self.assertEqual(error["message"], "Odoo Server Error")
+            self.assertEqual(error["data"]["name"], "odoo.exceptions.AccessDenied")
 
     def test_authenticate(self):
         """

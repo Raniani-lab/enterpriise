@@ -226,10 +226,10 @@
         <field name="name">mrp.eco.view.tree</field>
         <field name="model">mrp.eco</field>
         <field name="arch" type="xml">
-            <tree decoration-info="state=='progress'" decoration-danger="state=='confirmed'"> <!-- Or RED for late stuff-->
+            <tree>
                 <field name="name"/>
                 <field name="bom_id"/>
-                <field name="user_id"/>
+                <field name="user_id" widget='many2one_avatar_user'/>
                 <field name="effectivity_date"/>
                 <field name="state" invisible="1"/>
                 <field name="stage_id"/>

@@ -405,14 +405,15 @@
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="name" decoration-bf="1"/>
                 <field name='product_id' optional="show"/>
                 <field name="lot_id" optional="show"/>
                 <field name="picking_id" optional="hide" string="Transfer"/>
                 <field name="control_date" string="Checked Date" optional="show"/>
-                <field name="user_id" string="Checked By" optional="show"/>
+                <field name="user_id" string="Checked By" optional="show" widget='many2one_avatar_user'/>
                 <field name="point_id" optional="hide"/>
                 <field name="team_id" optional="show"/>
-                <field name="quality_state" optional="show"/>
+                <field name="quality_state" optional="show" widget='badge' decoration-success="quality_state == 'pass'" decoration-info="quality_state == 'none'" decoration-muted="quality_state == 'fail'"/>
                 <field name="company_id" groups="base.main_company"/>
             </tree>
         </field>

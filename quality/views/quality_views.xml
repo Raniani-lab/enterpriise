@@ -49,11 +49,12 @@
         <field name="model">quality.alert</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="name" decoration-bf="1"/>
                 <field name="product_tmpl_id" optional="show"/>
                 <field name="product_id" optional="hide"/>
                 <field name="lot_id" optional="hide"/>
                 <field name="team_id" optional="show"/>
-                <field name="user_id" optional="show"/>
+                <field name="user_id" optional="show" widget='many2one_avatar_user'/>
                 <field name="tag_ids" optional="hide" widget="many2many_tags"/>
                 <field name="reason_id" optional="hide"/>
                 <field name="priority" optional="hide"/>
@@ -103,13 +104,13 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="sequence" widget="handle"/>
-                <field name="name"/>
+                <field name="name" decoration-bf="1"/>
                 <field name="title" optional="show"/>
                 <field name="product_ids" widget="many2many_tags" optional="show"/>
                 <field name="picking_type_ids" widget="many2many_tags" optional="show" string="Operations"/>
                 <field name="test_type_id" optional="show" string="Type"/>
                 <field name="team_id" optional="show"/>
-                <field name="user_id" optional="hide"/>
+                <field name="user_id" optional="hide" widget='many2one_avatar_user'/>
                 <field name="company_id" groups="base.group_multi_company" optional="show"/>
             </tree>
         </field>

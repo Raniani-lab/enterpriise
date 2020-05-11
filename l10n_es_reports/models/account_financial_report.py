@@ -69,7 +69,7 @@ This feature is only supported/useful in spanish MOD347 report.""")
             threshold = self._parse_threshold_parameter(from_fy_dates['date_to'])
             for groupby_key, display_name, formula_results in fy_results:
                 balance = sum(formula_results.values())
-                if balance <= threshold:
+                if abs(balance) <= threshold:
                     ids_to_exclude.append(groupby_key)
 
             if ids_to_exclude:

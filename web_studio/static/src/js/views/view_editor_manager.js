@@ -645,6 +645,12 @@ var ViewEditorManager = AbstractEditorManager.extend({
         var subviewType = type === 'list' ? 'tree' : type;
         // We build the correct xpath if we are editing a 'sub' subview
         var subviewXpath = this._getSubviewXpath(this.x2mEditorPath.slice(0, -1));
+        var context = _.extend({}, session.user_context, {lang: false});
+        // Use specific view if available in context
+        var specific_view = this.x2mViewParams.context[subviewType+'_view_ref'];
+        if (specific_view) {
+            context[subviewType+'_view_ref'] = specific_view;
+        }
         var prom = this._rpc({
             route: '/web_studio/create_inline_view',
             params: {
@@ -655,7 +661,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 subview_xpath: subviewXpath,
                 // We write views in the base language to make sure we do it on the source term field
                 // of ir.ui.view
-                context: _.extend({}, session.user_context, {lang: false}),
+                context: context,
             },
         });
         return prom

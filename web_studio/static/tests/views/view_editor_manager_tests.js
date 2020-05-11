@@ -5305,6 +5305,41 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('edit one2many list view with tree_view_ref context key', async function (assert) {
+        assert.expect(1);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            arch: "<form>" +
+                "<sheet>" +
+                    "<field name='display_name'/>" +
+                    "<field name='product_ids' context=\"{'tree_view_ref': 'module.tree_view_ref'}\"/>" +
+                "</sheet>" +
+            "</form>",
+            model: "coucou",
+            archs: {
+                "product,module.tree_view_ref,list": '<tree><field name="display_name"/></tree>'
+            },
+            data: this.data,
+            debug: true,
+            mockRPC: function (route, args) {
+                if (route === "/web_studio/create_inline_view") {
+                    assert.equal(args.context.tree_view_ref, 'module.tree_view_ref',
+                        "context tree_view_ref should be propagated for inline view creation");
+                    return $.when();
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // non-inline view is detected by name, but there is no way to set it in mock environment
+        vem.view.loadParams.fieldsInfo.form.product_ids.views.list.name = "module.tree_view_ref";
+
+        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_one2many'));
+        await testUtils.dom.click($(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
+
+        vem.destroy();
+    });
+
     QUnit.test('edit one2many form view (2 level) and check chatter allowed', async function (assert) {
         assert.expect(6);
         this.data.coucou.records = [{

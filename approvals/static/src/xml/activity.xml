@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
     <t t-extend="mail.activity_items">
         <t t-jquery=".o_thread_message .o_thread_message_core .o_thread_message_tools" t-operation="replace">
-            <t t-if="activity.activity_type_id[1] == 'Approval'">
+            <t t-if="activity.approver_id">
                 <t t-if="activity.user_id[0] === uid">
                     <t t-set="approver_id" t-value="activity.approver_id"/>
                     <a t-if="activity.approver_status === 'pending'">

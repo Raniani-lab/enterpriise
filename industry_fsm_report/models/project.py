@@ -28,10 +28,11 @@ class Project(models.Model):
     def _compute_worksheet_template_id(self):
         default_worksheet = self.env.ref('industry_fsm_report.fsm_worksheet_template', False)
         for project in self:
-            if project.allow_worksheets and default_worksheet:
-                project.worksheet_template_id = default_worksheet.id
-            else:
-                project.worksheet_template_id = False
+            if not project.worksheet_template_id:
+                if project.allow_worksheets and default_worksheet:
+                    project.worksheet_template_id = default_worksheet.id
+                else:
+                    project.worksheet_template_id = False
 
 
 class Task(models.Model):

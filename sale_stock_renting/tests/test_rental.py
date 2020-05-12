@@ -282,6 +282,55 @@ class TestRentalCommon(common.SingleTransactionCase):
 
         return
 
-    def test_lot_consistency(self):
+    def test_schedule_report(self):
+        """Verify sql scheduling view consistency.
 
-        return
+        One sale.order.line with 3 different lots (reserved/pickedup/returned)
+        is represented by 3 sale.rental.schedule to allow grouping reservation information
+        by stock.production.lot .
+
+        Note that a lot can be pickedup (sol.pickedup_lot_ids) even if not reserved (sol.reserved_lot_ids).
+        """
+        self.order_line_id2.reserved_lot_ids = self.lot_id1
+        # Avoid magic setting pickedup lots as reserved when full quantity has been pickedup
+        self.order_line_id2.product_uom_qty = 2.0
+
+        # Lot pickedup but not reserved.
+        self.order_line_id2.pickedup_lot_ids = self.lot_id2
+
+        self.assertEqual(
+            self.env["sale.rental.schedule"].search_count([('lot_id', '=', self.lot_id2.id)]),
+            1,
+        )
+        scheduling_recs = self.env["sale.rental.schedule"].search([
+            ('order_line_id', '=', self.order_line_id2.id),
+        ])
+        self.assertEqual(
+            len(scheduling_recs),
+            2, # 1 reserved, 1 pickedup
+        )
+        self.assertEqual(
+            scheduling_recs.mapped('report_line_status'),
+            ["reserved", "pickedup"],
+        )
+
+        # More generic behavior:
+        # 2 reserved, 2 pickedup, 1 returned
+        self.order_line_id2.returned_lot_ids = self.lot_id2
+        self.order_line_id2.pickedup_lot_ids += self.lot_id1
+        scheduling_recs.invalidate_cache()
+        scheduling_recs = self.env["sale.rental.schedule"].search([
+            ('order_line_id', '=', self.order_line_id2.id)
+        ])
+        self.assertEqual(
+            len(scheduling_recs),
+            2,
+        )
+        self.assertEqual(
+            scheduling_recs.lot_id,
+            self.lot_id1 + self.lot_id2,
+        )
+        self.assertEqual(
+            scheduling_recs.mapped('report_line_status'),
+            ["pickedup", "returned"],
+        )

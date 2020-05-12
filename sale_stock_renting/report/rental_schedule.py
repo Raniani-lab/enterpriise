@@ -96,18 +96,23 @@ class RentalSchedule(models.Model):
                 (SELECT
                     lot.id as lot_id,
                     lot.name,
-                    sol.id as sol_id,
-                    CASE when returned.stock_production_lot_id IS NOT NULL then 'returned'
-                        when pickedup.stock_production_lot_id IS NOT NULL then 'pickedup'
-                        else 'reserved' END as report_line_status
+                    COALESCE(res.sale_order_line_id, pickedup.sale_order_line_id) as sol_id,
+                    CASE
+                        WHEN returned.stock_production_lot_id IS NOT NULL THEN 'returned'
+                        WHEN pickedup.stock_production_lot_id IS NOT NULL THEN 'pickedup'
+                        ELSE 'reserved'
+                    END AS report_line_status
                     FROM
-                        sale_order_line sol
-                            LEFT OUTER JOIN rental_reserved_lot_rel res ON res.sale_order_line_id=sol.id
-                            LEFT OUTER JOIN rental_pickedup_lot_rel pickedup ON pickedup.sale_order_line_id=sol.id AND pickedup.stock_production_lot_id = res.stock_production_lot_id
-                            LEFT OUTER JOIN rental_returned_lot_rel returned ON returned.sale_order_line_id=sol.id AND returned.stock_production_lot_id = res.stock_production_lot_id,
-                        stock_production_lot lot
-                    WHERE
-                        lot.id = res.stock_production_lot_id
+                        rental_reserved_lot_rel res
+                    FULL OUTER JOIN rental_pickedup_lot_rel pickedup
+                        ON res.sale_order_line_id=pickedup.sale_order_line_id
+                        AND res.stock_production_lot_id=pickedup.stock_production_lot_id
+                    LEFT OUTER JOIN rental_returned_lot_rel returned
+                        ON returned.sale_order_line_id=pickedup.sale_order_line_id
+                        AND returned.stock_production_lot_id=pickedup.stock_production_lot_id
+                    JOIN stock_production_lot lot
+                        ON res.stock_production_lot_id=lot.id
+                        OR pickedup.stock_production_lot_id=lot.id
                 ),
                 sol_id_max (id) AS
                     (SELECT MAX(id) FROM sale_order),

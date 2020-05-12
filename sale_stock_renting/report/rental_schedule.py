@@ -115,7 +115,7 @@ class RentalSchedule(models.Model):
                         OR pickedup.stock_production_lot_id=lot.id
                 ),
                 sol_id_max (id) AS
-                    (SELECT MAX(id) FROM sale_order),
+                    (SELECT MAX(id) FROM sale_order_line),
                 lot_id_max (id) AS
                     (SELECT MAX(id) FROM stock_production_lot),
                 padding (max_id) AS

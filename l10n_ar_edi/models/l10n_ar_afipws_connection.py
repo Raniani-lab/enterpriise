@@ -70,7 +70,7 @@ class L10nArAfipwsConnection(models.Model):
     def _get_client(self, return_transport=False):
         """ Get zeep client to connect to the webservice """
         wsdl = self._l10n_ar_get_afip_ws_url(self.l10n_ar_afip_ws, self.type)
-        auth = {'Token': self.token, 'Sign': self.sign, 'Cuit': self.company_id.partner_id.l10n_ar_vat}
+        auth = {'Token': self.token, 'Sign': self.sign, 'Cuit': self.company_id.partner_id.ensure_vat()}
         try:
             transport = ARTransport(operation_timeout=60, timeout=60)
             client = zeep.Client(wsdl, transport=transport)

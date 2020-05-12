@@ -183,7 +183,7 @@ class ResCompany(models.Model):
         req_subject.O = self.name.encode('ascii', 'ignore')
         req_subject.OU = 'IT'.encode('ascii', 'ignore')
         req_subject.CN = common_name.encode('ascii', 'ignore')
-        req_subject.serialNumber = ('CUIT %s' % self.partner_id.l10n_ar_vat).encode('ascii', 'ignore')
+        req_subject.serialNumber = ('CUIT %s' % self.partner_id.ensure_vat()).encode('ascii', 'ignore')
 
         if not self.l10n_ar_afip_ws_key:
             self._generate_afip_private_key()

@@ -24,13 +24,13 @@ Tour.register('pos_iot_scale_tour', {
         trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
     }, {
         trigger: ".o_pos_kanban button.oe_kanban_action_button",
-    }, { // Leave category displayed by default
-        trigger: ".js-category-switch",
     }, {
-        trigger: 'body:has(.loader:hidden)',
+        trigger: '.pos .pos-content',
         run: function () {
             posmodel.iot_device_proxies.scale = new PosScaleDummy({ iot_ip: '', identifier: '' });
         }
+    }, { // Leave category displayed by default
+        trigger: ".breadcrumb-home",
     }, {
         trigger: '.product:contains("Whiteboard Pen")',
     }, {

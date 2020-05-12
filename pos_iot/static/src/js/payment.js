@@ -3,6 +3,7 @@ odoo.define('pos_iot.payment', function (require) {
 
 var core = require('web.core');
 var PaymentInterface = require('point_of_sale.PaymentInterface');
+const { Gui } = require('point_of_sale.Gui');
 
 var _t = core._t;
 
@@ -57,28 +58,26 @@ var PaymentIOT = PaymentInterface.extend({
     },
     _onActionResult: function (data) {
         if (data.result === false) {
-            this.pos.gui.show_popup('error',{
+            Gui.showPopup('ErrorPopup',{
                 'title': _t('Connection to terminal failed'),
                 'body':  _t('Please check if the terminal is still connected.'),
             });
             if (this.pos.get_order().selected_paymentline) {
                 this.pos.get_order().selected_paymentline.set_payment_status('force_done');
             }
-            this.pos.chrome.gui.current_screen.render_paymentlines();
         }
     },
     _onActionFail: function () {
-        this.pos.gui.show_popup('error',{
+        Gui.showPopup('ErrorPopup',{
             'title': _t('Connection to IoT Box failed'),
             'body':  _t('Please check if the IoT Box is still connected.'),
         });
         if (this.pos.get_order().selected_paymentline) {
             this.pos.get_order().selected_paymentline.set_payment_status('force_done');
         }
-        this.pos.chrome.gui.current_screen.render_paymentlines();
     },
     _showErrorConfig: function () {
-        this.pos.gui.show_popup('error',{
+        Gui.showPopup('ErrorPopup',{
             'title': _t('Configuration of payment terminal failed'),
             'body':  _t('You must select a payment terminal in your POS config.'),
         });
@@ -86,7 +85,7 @@ var PaymentIOT = PaymentInterface.extend({
 
     _waitingPayment: function (resolve, data, line) {
         if (data.Error) {
-            this.pos.gui.show_popup('error',{
+            Gui.showPopup('ErrorPopup',{
                 'title': _t('Payment terminal error'),
                 'body':  _t(data.Error),
             });
@@ -97,7 +96,6 @@ var PaymentIOT = PaymentInterface.extend({
             resolve(true);
         } else if (['WaitingForCard', 'WaitingForPin'].includes(data.Stage)) {
             line.set_payment_status('waitingCard');
-            this.pos.gui.screen_instances.payment.render_paymentlines();
         }
     },
 

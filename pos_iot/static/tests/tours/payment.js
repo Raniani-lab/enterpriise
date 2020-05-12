@@ -74,7 +74,7 @@ tour.register('payment_terminals_tour', {
         trigger: ".o_pos_kanban button.oe_kanban_action_button",
     }, {
         content: 'Waiting for loading to finish',
-        trigger: 'body:has(.loader:hidden)',
+        trigger: '.pos .pos-content',
         run: function () {
             //Overrides the methods inside DeviceProxy to mock the IoT Box
             posmodel.payment_methods.forEach(function(payment_method) {
@@ -85,7 +85,7 @@ tour.register('payment_terminals_tour', {
         },
     }, { // Leave category displayed by default
         content: "Click category switch",
-        trigger: ".js-category-switch",
+        trigger: ".breadcrumb-home",
     }, {
         content: 'Buy a Desk Organizer',
         trigger: '.product-list .product-name:contains("Desk Organizer")',

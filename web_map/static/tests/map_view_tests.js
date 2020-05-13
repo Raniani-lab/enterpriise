@@ -1392,8 +1392,8 @@ QUnit.module('mapView', {
         assert.strictEqual(map.model.data.mapBoxToken, 'token',
             'The token should be the right token');
         assert.strictEqual(map.renderer.apiTilesRoute,
-            'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
-            'With no token the route for fetching tiles should be "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}"');
+            'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+            'With no token the route for fetching tiles should be "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}"');
         assert.strictEqual(map.renderer.mapBoxToken, 'token',
             'The token should be the right token');
 

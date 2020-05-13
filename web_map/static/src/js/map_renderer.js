@@ -36,7 +36,7 @@ const MapRenderer = AbstractRenderer.extend({
         this.mapBoxToken = state.mapBoxToken;
         this.apiTilesRoute = 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
         if (this.mapBoxToken) {
-            this.apiTilesRoute = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}';
+            this.apiTilesRoute = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
         }
     },
     /*
@@ -334,10 +334,12 @@ const MapRenderer = AbstractRenderer.extend({
             maxBounds: [L.latLng(180, -180), L.latLng(-180, 180)]
         });
         L.tileLayer(this.apiTilesRoute, {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+            tileSize: 512,
+            zoomOffset: -1,
             minZoom: 2,
             maxZoom: 19,
-            id: 'mapbox.streets',
+            id: 'mapbox/streets-v11',
             accessToken: this.mapBoxToken,
         }).addTo(this.leafletMap);
     },

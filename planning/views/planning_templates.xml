@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <template id="planning.frontend_layout" name="Planning Frontend Layout" inherit_id="web.frontend_layout" primary="True">
+        <xpath expr="//t[@t-call='web.brand_promotion']" position="replace">
+            <t t-call="planning.brand_promotion"/>
+        </xpath>
+    </template>
 
-    <template id="period_report_template" name="Planning Frontend View">
-        <t t-call="web.frontend_layout">
+    <template id="period_report_template" name="My Planning">
+        <t t-call="planning.frontend_layout">
                 <!-- fullcalendar object's container -->
                 <div class="container o_planning_calendar_container">
                     <h1 align="center" class="m-3">Planning: <t t-esc="employee.name"/></h1>
-                    <t t-call="planning.planning_shift_notification" />
+                    <div align="center" t-if="start_datetime">
+                        <div class="alert alert-info o_shift_info">
+                            Shifts from
+                            <t t-esc="format_datetime(start_datetime, dt_format='E')"/>.
+                            <t t-esc="format_datetime(start_datetime, dt_format='short')"/>
+                            to
+                            <t t-esc="format_datetime(end_datetime, dt_format='E')"/>.
+                            <t t-esc="format_datetime(end_datetime, dt_format='short')"/>
+                        </div>
+                    </div>
+                    <div align="center" t-if="no_data and not open_slots_ids" class="alert alert-info o_shift_info">
+                        There are no planning slot to display. Please, refer to your manager.
+                    </div>
+                    <t t-call="planning.planning_shift_notification"/>
                     <div id="calendar_employee" class="o_calendar_container">
                         <div class="o_calendar_view" >
                             <span class="employee_slots_fullcalendar_data" t-att-value="json.dumps(employee_slots_fullcalendar_data)"/>
@@ -18,6 +36,12 @@
                             <span class="message_slug" t-att-value="message_slug" />
                             <span class="has_role" t-att-value="has_role" />
                             <span class="has_note" t-att-value="has_note" />
+                            <span class="start_datetime" t-att-value="start_datetime"/>
+                            <span class="end_datetime" t-att-value="end_datetime" />
+                            <span class="default_view" t-att-value="default_view"/>
+                            <span class="default_start" t-att-value="default_start"/>
+                            <span class="mintime" t-att-value="mintime"/>
+                            <span class="maxtime" t-att-value="maxtime"/>
                             <div class="o_calendar_widget"/>
                         </div>
                     </div>
@@ -86,9 +110,14 @@
                                         <dt class="col-sm-4">End Date</dt>
                                         <dd class="col-sm-8" id="stop"/>
                                         <dt class="col-sm-4">Allocated Hours</dt>
-                                        <dd class="col-sm-8" id="alloc_hours"/>
-                                        <dt class="col-sm-4">Allocated Time</dt>
-                                        <dd class="col-sm-8" id="alloc_perc"/>
+                                        <dd class="col-sm-8" id="alloc_hours_time">
+                                            <span id="alloc_hours"/>
+                                            <span id="alloc_perc">
+                                                (<span id="alloc_perc_value"/>%)
+                                            </span>
+                                        </dd>
+                                        <dt class="col-sm-4">Role</dt>
+                                        <dd class="col-sm-8" id="role"/>
                                         <dt class="col-sm-4">Note</dt>
                                         <dd class="col-sm-8" id="note"/>
                                         <div class="d-none" t-esc="shift_id" id="shift_uid"/>
@@ -154,4 +183,16 @@
             </body>
         </t>
     </template>
+
+    <template id="planning.brand_promotion" inherit_id="web.brand_promotion" primary="True">
+        <xpath expr="//t[@t-call='web.brand_promotion_message']" position="replace">
+            <t t-call="web.brand_promotion_message">
+                <t t-set="_message">
+                    Give depth to your <a target="_blank" href="https://www.odoo.com/page/planning?utm_source=db&amp;utm_medium=planning">Plans</a>
+                </t>
+                <t t-set="_utm_medium" t-valuef="planning"/>
+            </t>
+        </xpath>
+    </template>
+
 </odoo>

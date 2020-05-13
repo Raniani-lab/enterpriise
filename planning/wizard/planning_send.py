@@ -20,12 +20,28 @@ class PlanningSend(models.TransientModel):
     end_datetime = fields.Datetime("Stop Date", required=True)
     include_unassigned = fields.Boolean("Include Open Shifts", default=True)
     note = fields.Text("Extra Message", help="Additional message displayed in the email sent to employees")
-    employee_ids = fields.Many2many('hr.employee', string="Employees", help="Employees who will receive planning by email if you click on publish & send.")
-    slot_ids = fields.Many2many('planning.slot')
+    employee_ids = fields.Many2many('hr.employee', string="Employees",
+                                    help="Employees who will receive planning by email if you click on publish & send.",
+                                    compute='_compute_slots_data', inverse='_inverse_employee_ids', store=True)
+    slot_ids = fields.Many2many('planning.slot', compute='_compute_slots_data', store=True)
+
+    @api.depends('start_datetime', 'end_datetime')
+    def _compute_slots_data(self):
+        for wiz in self:
+            wiz.slot_ids = self.env['planning.slot'].search([('start_datetime', '>=', wiz.start_datetime),
+                                                             ('end_datetime', '<=', wiz.end_datetime)])
+            wiz.employee_ids = wiz.slot_ids.mapped('employee_id')
+
+    def _inverse_employee_ids(self):
+        for wiz in self:
+            wiz.slot_ids = self.env['planning.slot'].search([('start_datetime', '>=', wiz.start_datetime),
+                                                             ('start_datetime', '<=', wiz.end_datetime)])
+
+
 
     def action_send(self):
         if not self.employee_ids:
-            raise UserError(_('You must select employees who will receive planning.'))
+            raise UserError(_('There are no shifts to send during the selected period.'))
         if self.include_unassigned:
             slot_to_send = self.slot_ids.filtered(lambda s: not s.employee_id or s.employee_id in self.employee_ids)
         else:

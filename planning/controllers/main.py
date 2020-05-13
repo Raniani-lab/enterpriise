@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licens
 
-from odoo import http
+from odoo import http, _
 from odoo.http import request
 
 import pytz
@@ -40,36 +40,96 @@ class ShiftController(http.Controller):
         else:
             planning_slots = planning_sudo.slot_ids.filtered(lambda s: s.employee_id == employee_sudo)
         # filter and format slots
-        for slot in planning_slots:
-            if slot.employee_id:
-                employee_fullcalendar_data.append({
-                    'title': '%s%s' % (slot.role_id.name or '', u' \U0001F4AC' if slot.name else ''),
-                    'start': str(pytz.utc.localize(slot.start_datetime).astimezone(employee_tz).replace(tzinfo=None)),
-                    'end': str(pytz.utc.localize(slot.end_datetime).astimezone(employee_tz).replace(tzinfo=None)),
-                    'color': self._format_planning_shifts(slot.role_id.color),
-                    'alloc_hours': '%d:%02d' % (int(slot.allocated_hours), round(slot.allocated_hours % 1 * 60)),
-                    'alloc_perc': slot.allocated_percentage,
-                    'slot_id': slot.id,
-                    'note': slot.name,
-                    'allow_self_unassign': slot.allow_self_unassign
-                })
-            elif not slot.is_past and (not employee_sudo.planning_role_ids or not slot.role_id or slot.role_id in employee_sudo.planning_role_ids):
-                open_slots.append(slot)
-        return {
+        slots_start_datetime = []
+        slots_end_datetime = []
+        # Default values. In case of missing slots (an error message is shown)
+        # Avoid errors if the _work_intervals are not defined.
+        checkin_min = 8
+        checkout_max = 18
+        planning_values = {
             'employee_slots_fullcalendar_data': employee_fullcalendar_data,
             'open_slots_ids': open_slots,
-            'planning_slots_ids': planning_slots,
             'planning_planning_id': planning_sudo,
-            'locale': get_lang(request.env).iso_code,
             'employee': employee_sudo,
             'employee_token': employee_token,
             'planning_token': planning_token,
-            'format_datetime': lambda dt, dt_format: tools.format_datetime(request.env, dt, tz=employee_tz.zone, dt_format=dt_format),
-            'notification_text': message in ['assign', 'unassign', 'already_assign'],
-            'message_slug': message,
-            'has_role': any(s.role_id for s in open_slots),
-            'has_note': any(s.name for s in open_slots),
+            'no_data': True
         }
+        for slot in planning_slots:
+            if planning_sudo.start_datetime <= slot.start_datetime <= planning_sudo.end_datetime:
+                # We only display slots starting in the planning_sudo range
+                # If a slot is moved outside the planning_sudo range, the url remains valid but the slot is hidden.
+                if slot.employee_id:
+                    employee_fullcalendar_data.append({
+                        'title': '%s%s' % (slot.role_id.name or _("Shift"), u' \U0001F4AC' if slot.name else ''),
+                        'start': str(pytz.utc.localize(slot.start_datetime).astimezone(employee_tz).replace(tzinfo=None)),
+                        'end': str(pytz.utc.localize(slot.end_datetime).astimezone(employee_tz).replace(tzinfo=None)),
+                        'color': self._format_planning_shifts(slot.role_id.color),
+                        'alloc_hours': '%d:%02d' % (int(slot.allocated_hours), round(slot.allocated_hours % 1 * 60)),
+                        'alloc_perc': slot.allocated_percentage,
+                        'slot_id': slot.id,
+                        'note': slot.name,
+                        'allow_self_unassign': slot.allow_self_unassign,
+                        'role': slot.role_id.name,
+                    })
+                    # We add the slot start and stop into the list after converting it to the timezone of the employee
+                    slots_start_datetime.append(pytz.utc.localize(slot.start_datetime).astimezone(employee_tz).replace(tzinfo=None))
+                    slots_end_datetime.append(pytz.utc.localize(slot.end_datetime).astimezone(employee_tz).replace(tzinfo=None))
+                elif not slot.is_past and (
+                        not employee_sudo.planning_role_ids or not slot.role_id or slot.role_id in employee_sudo.planning_role_ids):
+                    open_slots.append(slot)
+        # Calculation of the events to define the default calendar view:
+        # If all the events are the same day/week the default view is week. Else, the month is displayed
+        min_start_datetime = slots_start_datetime and min(slots_start_datetime) or planning_sudo.start_datetime
+        max_end_datetime = slots_end_datetime and max(slots_end_datetime) or planning_sudo.end_datetime
+        if min_start_datetime.isocalendar()[1] == max_end_datetime.isocalendar()[1]:
+            # isocalendar returns (year, week number, and weekday)
+            default_view = 'timeGridWeek'
+        else:
+            default_view = 'dayGridMonth'
+        # Calculation of the minTime and maxTime values in timeGridDay and timeGridWeek
+        # We want to avoid displaying overly large hours range each day or hiding slots outside the
+        # normal working hours
+        attendances = employee_sudo.resource_calendar_id._work_intervals(
+            pytz.utc.localize(planning_sudo.start_datetime),
+            pytz.utc.localize(planning_sudo.end_datetime),
+            resource=employee_sudo.resource_id, tz=employee_tz
+        )
+        if attendances and attendances._items:
+            checkin_min = min(map(lambda a: a[0].hour, attendances._items))  # hour in the timezone of the employee
+            checkout_max = max(map(lambda a: a[1].hour, attendances._items))  # idem
+        # We calculate the earliest/latest hour of the slots. It is used in the weekview.
+        if slots_start_datetime and slots_end_datetime:
+            event_hour_min = min(map(lambda s: s.hour, slots_start_datetime)) # idem
+            event_hour_max = max(map(lambda s: s.hour, slots_end_datetime)) # idem
+            mintime_weekview, maxtime_weekview = self._get_hours_intervals(checkin_min, checkout_max, event_hour_min,
+                                                                           event_hour_max)
+        else:
+            # Fallback when no slot is available. Still needed because open slots display a calendar
+            mintime_weekview, maxtime_weekview = checkin_min, checkout_max
+        defaut_start = pytz.utc.localize(planning_sudo.start_datetime).astimezone(employee_tz).replace(tzinfo=None)
+        if employee_fullcalendar_data or open_slots:
+            planning_values.update({
+                'employee_slots_fullcalendar_data': employee_fullcalendar_data,
+                'open_slots_ids': open_slots,
+                # fullcalendar does not understand complex iso code like fr_BE
+                'locale': get_lang(request.env).iso_code.split("_")[0],
+                'format_datetime': lambda dt, dt_format: tools.format_datetime(request.env, dt, tz=employee_tz.zone, dt_format=dt_format),
+                'notification_text': message in ['assign', 'unassign', 'already_assign'],
+                'message_slug': message,
+                'has_role': any([s.role_id.id for s in open_slots]),
+                'has_note': any([s.name for s in open_slots]),
+                # start_datetime and end_datetime are used in the banner. This ensure that these values are
+                # coherent with the sended mail.
+                'start_datetime': planning_sudo.start_datetime,
+                'end_datetime': planning_sudo.end_datetime,
+                'mintime': '%02d:00:00' % mintime_weekview,
+                'maxtime': '%02d:00:00' % maxtime_weekview,
+                'default_view': default_view,
+                'default_start': defaut_start.date(),
+                'no_data': False
+            })
+        return planning_values
 
     @http.route('/planning/<string:token_planning>/<string:token_employee>/assign/<int:slot_id>', type="http", auth="public", website=True)
     def planning_self_assign(self, token_planning, token_employee, slot_id, message=False, **kwargs):
@@ -167,3 +227,23 @@ class ShiftController(http.Controller):
         }
 
         return switch_color[color_code]
+
+    @staticmethod
+    def _get_hours_intervals(checkin_min, checkout_max, event_hour_min, event_hour_max):
+        """
+        This method aims to calculate the hours interval displayed in timeGrid
+        By default 0:00 to 23:59:59 is displayed.
+        We want to display work intervals but if an event occurs outside them, we adapt and display a margin
+        to render a nice grid
+        """
+        if event_hour_min is not None and checkin_min > event_hour_min:
+            # event_hour_min may be equal to 0 (12 am)
+            mintime = max(event_hour_min - 2, 0)
+        else:
+            mintime = checkin_min
+        if event_hour_max and checkout_max < event_hour_max:
+            maxtime = min(event_hour_max + 2, 24)
+        else:
+            maxtime = checkout_max
+
+        return mintime, maxtime

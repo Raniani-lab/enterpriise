@@ -897,8 +897,8 @@ class PlanningPlanning(models.Model):
             # send planning email template with custom domain per employee
             template = self.env.ref('planning.email_template_planning_planning', raise_if_not_found=False)
             template_context = {
-                'slot_unassigned_count': len(slots_open),
-                'slot_total_count': len(slots),
+                'slot_unassigned_count': slots_open and len(slots_open),
+                'slot_total_count': slots and len(slots),
                 'message': message,
             }
             if template:

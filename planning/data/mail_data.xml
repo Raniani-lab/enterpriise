@@ -104,7 +104,7 @@
                     % if ctx.get('assigned_new_shift'):
                         You have been assigned new shifts:
                     % else:
-                        Planning is available:
+                        Please, find your planning for the following period:
                     % endif
                     </p>
                     <br/>

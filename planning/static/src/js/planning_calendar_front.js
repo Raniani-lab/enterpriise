@@ -8,6 +8,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
     selector: '#calendar_employee',
     jsLibs: [
         '/web/static/lib/fullcalendar/core/main.js',
+        '/web/static/lib/fullcalendar/core/locales-all.js',
         '/web/static/lib/fullcalendar/interaction/main.js',
         '/web/static/lib/fullcalendar/moment/main.js',
         '/web/static/lib/fullcalendar/daygrid/main.js',
@@ -28,43 +29,66 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
        this._super.apply(this, arguments);
        this.calendarElement = this.$(".o_calendar_widget")[0];
        const employeeSlotsFcData = JSON.parse($('.employee_slots_fullcalendar_data').attr('value'));
+       const openSlotsIds = $('.open_slots_ids').attr('value');
        const locale = $('.locale').attr('value');
-       this.calendar = new FullCalendar.Calendar($("#calendar_employee")[0], {
-            // Settings
-            plugins: [
-                'moment',
-                'dayGrid',
-                'timeGrid'
-            ],
-            locale: locale,
-            defaultView: 'dayGridMonth',
-            titleFormat: 'MMMM YYYY',
-            defaultDate: moment.min(employeeSlotsFcData.map(item => moment(item.start))).toDate(),
-            timeFormat: 'LT',
-            displayEventEnd: true,
-            height: 'auto',
-            eventTextColor: 'white',
-            eventOverlap: true,
-            eventTimeFormat: {
-                hour: 'numeric',
-                minute: '2-digit',
-                meridiem: 'short',
-                omitZeroMinute: true,
-            },
-            header: {
-                left: 'title',
-                center: false,
-                right: false
-            },
-            eventRender: function (info) {
-                                $(info.el).css('font-weight', 'bold');
-            },
-            // Data
-            events: employeeSlotsFcData,
-            // Event Functions
-            eventClick: this.eventFunction
-            });
-            this.calendar.render();
+       // default date: first event of either assigned slots or open shifts
+       const defaultStart = moment($('.default_start').attr('value')).toDate();
+       const defaultView = $('.default_view').attr('value');
+       const minTime = $('.mintime').attr('value');
+       const maxTime = $('.maxtime').attr('value');
+       let calendarHeaders = {
+           left: 'dayGridMonth,timeGridWeek,listMonth',
+           center: 'title',
+           right: 'today,prev,next'
+       };
+       if (employeeSlotsFcData.length === 0) {
+           // There are no event to display. This is probably an empty slot sent for assignment
+           calendarHeaders = {
+                left: false,
+                center: 'title',
+                right: false,
+            };
+       }
+       let titleFormat = 'MMMM YYYY';
+        // The calendar is displayed if there are slots (open or not)
+       if (defaultView && (employeeSlotsFcData || openSlotsIds)) {
+           this.calendar = new FullCalendar.Calendar($("#calendar_employee")[0], {
+                // Settings
+                plugins: [
+                    'moment',
+                    'dayGrid',
+                    'timeGrid',
+                    'list',
+                    'interraction'
+                ],
+                locale: locale,
+                defaultView: defaultView,
+                navLinks: true, // can click day/week names to navigate views
+                eventLimit: true, // allow "more" link when too many events
+                titleFormat: titleFormat,
+                defaultDate: defaultStart,
+                timeFormat: 'LT',
+                displayEventEnd: true,
+                height: 'auto',
+                eventTextColor: 'white',
+                eventOverlap: true,
+                eventTimeFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: 'long',
+                    omitZeroMinute: true,
+                },
+                minTime: minTime,
+                maxTime: maxTime,
+                header: calendarHeaders,
+                // Data
+                events: employeeSlotsFcData,
+                // Event Function is called when clicking on the event
+                eventClick: this.eventFunction,
+                });
+                this.calendar.setOption('locale', locale);
+                this.calendar.render();
+           }
     },
     eventFunction: function (calEvent) {
         const planningToken = $('.planning_token').attr('value');
@@ -74,23 +98,31 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         $("#start").text(moment(calEvent.event.start).format("YYYY-MM-DD hh:mm A"));
         $("#stop").text(moment(calEvent.event.end).format("YYYY-MM-DD hh:mm A"));
         $("#alloc_hours").text(calEvent.event.extendedProps.alloc_hours);
+        $("#role").text(calEvent.event.extendedProps.role);
         if (calEvent.event.extendedProps.alloc_perc !== 100) {
-            $("#alloc_perc").text(calEvent.event.extendedProps.alloc_perc + "%");
-            $("#alloc_perc").prev().css("display", "");
+            $("#alloc_perc_value").text(calEvent.event.extendedProps.alloc_perc);
             $("#alloc_perc").css("display", "");
         } else {
-            $("#alloc_perc").prev().css("display", "none");
             $("#alloc_perc").css("display", "none");
         }
-        $("#allow_self_unassign").text(calEvent.event.extendedProps.allow_self_unassign);
+
+        if (calEvent.event.extendedProps.role) {
+            $("#role").prev().css("display", "");
+            $("#role").text(calEvent.event.extendedProps.role);
+            $("#role").css("display", "");
+        } else {
+            $("#role").prev().css("display", "none");
+            $("#role").css("display", "none");
+        }
         if (calEvent.event.extendedProps.note) {
             $("#note").prev().css("display", "");
             $("#note").text(calEvent.event.extendedProps.note);
             $("#note").css("display", "");
         } else {
             $("#note").prev().css("display", "none");
-            $("#note").text("");
+            $("#note").css("display", "none");
         }
+        $("#allow_self_unassign").text(calEvent.event.extendedProps.allow_self_unassign);
         if (calEvent.event.extendedProps.allow_self_unassign) {
             document.getElementById("dismiss_shift").style.display = "block";
         } else {

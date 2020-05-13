@@ -116,13 +116,11 @@ class MailThread(models.AbstractModel):
 
         if model == 'mail.channel':
             payload['action'] = 'mail.action_discuss'
-            # todo xdo could we just browse res_id? or are we using the fact that res_id could not be in channel_ids?
-            channel = message.channel_ids.filtered(lambda r: r.id == res_id)
-            if channel.channel_type == 'chat':
+            if self.channel_type == 'chat':
                 payload['subject'] = author_name
                 payload['type'] = 'chat'
                 payload['android_channel_id'] = 'DirectMessage'
-            elif channel.channel_type == 'channel':
+            elif self.channel_type == 'channel':
                 payload['subject'] = "#%s - %s" % (record_name, author_name)
                 payload['android_channel_id'] = 'ChannelMessage'
             else:

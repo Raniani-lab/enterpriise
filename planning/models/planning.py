@@ -39,7 +39,7 @@ class Planning(models.Model):
     _check_company_auto = True
 
     def _default_employee_id(self):
-        return self.env['hr.employee'].search([('user_id', '=', self.env.uid), ('company_id', '=', self.env.company.id)])
+        return self.env.user.employee_id
 
     def _default_start_datetime(self):
         return fields.Datetime.to_string(datetime.combine(fields.Datetime.now(), datetime.min.time()))
@@ -509,7 +509,7 @@ class Planning(models.Model):
     def get_unusual_days(self, date_from, date_to=None):
         # Checking the calendar directly allows to not grey out the leaves taken
         # by the employee
-        employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        employee = self.env.user.employee_id
         calendar = employee.resource_calendar_id
         if not calendar:
             return {}

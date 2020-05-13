@@ -13,7 +13,8 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
-        cls.company_data_2 = cls.setup_company_data('company_2_data', currency_id=cls.currency_data['currency'].id)
+        cls.company_data_2['company'].currency_id = cls.currency_data['currency']
+        cls.company_data_2['currency'] = cls.currency_data['currency']
 
     def _init_options(self, report, date_from, date_to):
         ''' Create new options at a certain date.

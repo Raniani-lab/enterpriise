@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.modules.module import get_module_resource
 from datetime import datetime
 from OpenSSL import crypto
@@ -50,6 +50,37 @@ class ResCompany(models.Model):
             certificate = self._l10n_ar_get_certificate_object(rec.l10n_ar_afip_ws_crt)
             rec.l10n_ar_afip_ws_crt_fname = certificate.get_subject().CN
         remaining.l10n_ar_afip_ws_crt_fname = ''
+
+    @api.constrains('l10n_ar_afip_ws_crt')
+    def _l10n_ar_check_afip_certificate(self):
+        """ Verify if certificate uploaded is well formed before saving """
+        for rec in self.filtered('l10n_ar_afip_ws_crt'):
+            error = False
+            try:
+                content = base64.decodebytes(rec.l10n_ar_afip_ws_crt).decode('ascii')
+                crypto.load_certificate(crypto.FILETYPE_PEM, content)
+            except Exception as exc:
+                if 'Expecting: CERTIFICATE' in repr(exc) or "('PEM routines', 'get_name', 'no start line')" in repr(exc):
+                    error = _('Wrong certificate file format.\nPlease upload a valid PEM certificate.')
+                else:
+                    error = _('Not a valid certificate file')
+                _logger.warning('%s %s' % (error, repr(exc)))
+            if error:
+                raise ValidationError('\n'.join([_('The certificate can not be uploaded!'), error]))
+
+    @api.constrains('l10n_ar_afip_ws_key')
+    def _l10n_ar_check_afip_private_key(self):
+        """ Verify if private key uploaded is well formed before saving """
+        for rec in self.filtered('l10n_ar_afip_ws_key'):
+            error = False
+            try:
+                content = base64.decodebytes(rec.l10n_ar_afip_ws_key).decode('ascii').strip()
+                crypto.load_privatekey(crypto.FILETYPE_PEM, content)
+            except Exception as exc:
+                error = _('Not a valid private key file')
+                _logger.warning('%s %s' % (error, repr(exc)))
+            if error:
+                raise ValidationError('\n'.join([_('The private key can not be uploaded!'), error]))
 
     def _l10n_ar_get_certificate_object(self, cert):
         crt_str = base64.decodebytes(cert).decode('ascii')

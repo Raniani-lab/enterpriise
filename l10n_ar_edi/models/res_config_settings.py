@@ -25,20 +25,24 @@ class ResConfigSettings(models.TransientModel):
             raise UserError(_('The company CUIT must be defined before this action'))
         return {'type': 'ir.actions.act_url', 'url': '/l10n_ar_edi/download_csr/' + str(self.company_id.id), 'target': 'new'}
 
-    @api.onchange('l10n_ar_afip_ws_crt')
-    def _l10n_ar_onchange_afip_certificate(self):
-        """ Verify if certificate uploaded is well formed before saving """
+    def l10n_ar_connection_test(self):
+        self.ensure_one()
+        error = ''
         if not self.l10n_ar_afip_ws_crt:
-            return
+            error += '\n* ' + _('Please set a certificate in order to make the test')
+        if not self.l10n_ar_afip_ws_key:
+            error += '\n* ' + _('Please set a private key in order to make the test')
+        if error:
+            raise UserError(error)
 
-        try:
-            self.company_id._l10n_ar_get_certificate_object(self.l10n_ar_afip_ws_crt)
-        except Exception as error:
-            msg = ''
-            if 'Expecting: CERTIFICATE' in repr(error):
-                msg = _('Wrong Certificate file format.\nBe sure you have BEGIN CERTIFICATE string in your first line.')
-            self.l10n_ar_afip_ws_crt = False
-            return {'warning': {'title': 'Error uploading certificate', 'message': '\n'.join(['The certificate can be uploaded!', msg, 'This is what we get', repr(error)])}}
+        res = ''
+        for webservice in ['wsfe', 'wsfex', 'wsbfe', 'wscdc']:
+            try:
+                self.company_id._l10n_ar_get_connection(webservice)
+                res += ('\n* %s: ' + _('Connection is available')) % webservice
+            except Exception as error:
+                res += ('\n* %s: ' + _('Connection failed. This is what we get') + ' %s') % (webservice, repr(error))
+        raise UserError(res)
 
     def random_demo_cert(self):
         self.company_id.set_demo_random_cert()

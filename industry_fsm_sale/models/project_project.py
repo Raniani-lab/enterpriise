@@ -9,6 +9,7 @@ class Project(models.Model):
 
     allow_material = fields.Boolean("Products on Tasks", compute="_compute_allow_material", store=True, readonly=False)
     allow_quotations = fields.Boolean("Extra Quotations")
+    allow_billable = fields.Boolean(store=True, readonly=False, compute='_compute_allow_billable')
 
     _sql_constraints = [
         ('material_imply_billable', "CHECK((allow_material = 't' AND allow_billable = 't') OR (allow_material = 'f'))", 'The material can be allowed only when the task can be billed.'),
@@ -21,6 +22,11 @@ class Project(models.Model):
         if 'allow_quotations' not in defaults and defaults.get('is_fsm'):
             defaults['allow_quotations'] = self.env.user.has_group('industry_fsm_sale.group_fsm_quotation_from_task')
         return defaults
+
+    @api.depends('is_fsm')
+    def _compute_allow_billable(self):
+        fsm_projects = self.filtered('is_fsm')
+        fsm_projects.allow_billable = True
 
     @api.depends('allow_billable', 'is_fsm')
     def _compute_allow_material(self):

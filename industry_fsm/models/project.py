@@ -13,12 +13,6 @@ class Project(models.Model):
     _inherit = "project.project"
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
-    allow_billable = fields.Boolean(store=True, readonly=False, compute='_compute_allow_billable')
-
-    @api.depends('is_fsm')
-    def _compute_allow_billable(self):
-        fsm_projects = self.filtered('is_fsm')
-        fsm_projects.allow_billable = True
 
     @api.model
     def default_get(self, *args, **kwargs):

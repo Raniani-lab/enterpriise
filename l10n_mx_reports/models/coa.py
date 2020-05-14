@@ -144,7 +144,7 @@ class MXReportAccountCoa(models.AbstractModel):
         version = '1.3'
         ctx = self._set_context(options)
         values = self.with_context(ctx)._get_coa_dict(options)
-        cfdicoa = qweb.render(CFDICOA_TEMPLATE, values=values)
+        cfdicoa = qweb._render(CFDICOA_TEMPLATE, values=values)
         for key, value in MX_NS_REFACTORING.items():
             cfdicoa = cfdicoa.replace(key.encode('UTF-8'),
                                       value.encode('UTF-8') + b':')

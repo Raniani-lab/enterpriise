@@ -55,7 +55,7 @@ class WebsiteCalendar(http.Controller):
         }
         if result['assignation_method'] == 'chosen':
             selection_template = request.env.ref('website_calendar.employee_select')
-            result['employee_selection_html'] = selection_template.render({
+            result['employee_selection_html'] = selection_template._render({
                 'appointment_type': Appt,
                 'suggested_employees': Appt.employee_ids.name_get(),
                 'selected_employee_id': prev_emp and int(prev_emp),

@@ -187,7 +187,7 @@ class DataCleaningModel(models.Model):
             template = self.env.ref('data_cleaning.notification')
             menu_id = self.env.ref('data_cleaning.menu_data_cleaning_root').id
             kwargs = {
-                'body': template.render(dict(records_count=records_count, res_model_label=self.res_model_id.name, cleaning_model_id=self.id, menu_id=menu_id)),
+                'body': template._render(dict(records_count=records_count, res_model_label=self.res_model_id.name, cleaning_model_id=self.id, menu_id=menu_id)),
                 'partner_ids': partner_ids,
             }
             self.env['mail.thread'].with_context(mail_notify_author=True).message_notify(**kwargs)

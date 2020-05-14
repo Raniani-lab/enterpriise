@@ -139,7 +139,7 @@ class DataMergeModel(models.Model):
             template = self.env.ref('data_merge.notification')
             menu_id = self.env.ref('data_cleaning.menu_data_cleaning_root').id
             kwargs = {
-                'body': template.render(dict(num_records=num_records, res_model_label=self.res_model_id.name, model_id=self.id, menu_id=menu_id)),
+                'body': template._render(dict(num_records=num_records, res_model_label=self.res_model_id.name, model_id=self.id, menu_id=menu_id)),
                 'partner_ids': partner_ids,
             }
             self.env['mail.thread'].with_context(mail_notify_author=True).sudo().message_notify(**kwargs)

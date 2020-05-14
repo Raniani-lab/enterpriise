@@ -85,7 +85,7 @@ class HrAppraisalReminder(models.Model):
         template_data.update({'link': action_url})
 
         tpl = self.env.ref('hr_appraisal.mail_template_appraisal_reminder')
-        body = tpl.render(template_data, engine='ir.qweb', minimal_qcontext=True)
+        body = tpl._render(template_data, engine='ir.qweb', minimal_qcontext=True)
 
         self.env['hr.appraisal']._send_mail(recipient, reminder.company_id, header_text, template_data['subject'], body)
 

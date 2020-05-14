@@ -29,7 +29,7 @@ class ApprovalRequest(models.Model):
             product_lines = self.product_line_ids.filtered(
                 lambda line: line.purchase_order_line_id.order_id.id == purchase.id
             )
-            purchase.activity_schedule_with_view(
+            purchase._activity_schedule_with_view(
                 'mail.mail_activity_data_warning',
                 views_or_xmlid='approvals_purchase.exception_approval_request_canceled',
                 user_id=self.env.user.id,

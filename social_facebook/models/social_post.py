@@ -33,7 +33,7 @@ class SocialPostFacebook(models.Model):
     @api.depends('message', 'scheduled_date', 'image_ids')
     def _compute_facebook_preview(self):
         for post in self:
-            post.facebook_preview = self.env.ref('social_facebook.facebook_preview').render({
+            post.facebook_preview = self.env.ref('social_facebook.facebook_preview')._render({
                 'message': post.message,
                 'published_date': post.scheduled_date if post.scheduled_date else fields.Datetime.now(),
                 'images': [

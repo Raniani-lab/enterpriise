@@ -297,7 +297,7 @@ class HrDMFAReport(models.Model):
             self.quarter_start, self.quarter_end = date_utils.get_quarter(date(year, month, 1))
 
     def generate_dmfa_report(self):
-        xml_str = self.env.ref('l10n_be_hr_payroll.dmfa_xml_report').render(self._get_rendering_data())
+        xml_str = self.env.ref('l10n_be_hr_payroll.dmfa_xml_report')._render(self._get_rendering_data())
 
         # Prettify xml string
         root = etree.fromstring(xml_str, parser=etree.XMLParser(remove_blank_text=True))

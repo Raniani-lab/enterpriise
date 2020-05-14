@@ -336,7 +336,7 @@ class MxReportAccountTrial(models.AbstractModel):
             return False
         ctx['no_format'] = True
         values = self.with_context(ctx).get_bce_dict(options)
-        cfdicoa = qweb.render(CFDIBCE_TEMPLATE, values=values)
+        cfdicoa = qweb._render(CFDIBCE_TEMPLATE, values=values)
         for key, value in MX_NS_REFACTORING.items():
             cfdicoa = cfdicoa.replace(key.encode('UTF-8'),
                                       value.encode('UTF-8') + b':')

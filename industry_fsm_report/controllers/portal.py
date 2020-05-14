@@ -54,7 +54,7 @@ class CustomerPortal(CustomerPortal):
         except (TypeError, binascii.Error):
             return {'error': _('Invalid signature data.')}
 
-        pdf = request.env.ref('industry_fsm_report.task_custom_report').sudo().render_qweb_pdf([task_sudo.id])[0]
+        pdf = request.env.ref('industry_fsm_report.task_custom_report').sudo()._render_qweb_pdf([task_sudo.id])[0]
         task_sudo.message_post(body=_('The worksheet has been signed'), attachments=[('%s.pdf' % task_sudo.name, pdf)])
 
         query_string = '&message=sign_ok'

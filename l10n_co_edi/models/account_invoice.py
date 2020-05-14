@@ -305,7 +305,7 @@ class AccountMove(models.Model):
             'in_refund': 'ND',
         }
 
-        return self.env.ref('l10n_co_edi.electronic_invoice_xml').render({
+        return self.env.ref('l10n_co_edi.electronic_invoice_xml')._render({
             'invoice': self,
             'company_partner': self.company_id.partner_id,
             'sales_partner': self.invoice_user_id,

@@ -110,7 +110,7 @@ class GithubController(http.Controller):
         template_values = dict(formated_payload)
         template_values['repository_id'] = repository_target
         template_values['partner_id'] = partner
-        rendered_template = request.env.ref('mail_github.message_github_notification').render(template_values)
+        rendered_template = request.env.ref('mail_github.message_github_notification')._render(template_values)
 
         channels = repository_target.channel_ids.filtered(lambda channel: channel.github_enabled)
         repository_target.message_post(

@@ -22,7 +22,7 @@ class SocialPostLinkedin(models.Model):
     @api.depends('message', 'scheduled_date', 'image_ids')
     def _compute_linkedin_preview(self):
         for post in self:
-            post.linkedin_preview = self.env.ref('social_linkedin.linkedin_preview').render({
+            post.linkedin_preview = self.env.ref('social_linkedin.linkedin_preview')._render({
                 'message': post.message,
                 'published_date': post.scheduled_date if post.scheduled_date else fields.Datetime.now(),
                 'images': [

@@ -130,7 +130,7 @@ class Planning(models.Model):
     @api.depends('start_datetime', 'end_datetime')
     def _compute_allocation_type(self):
         for slot in self:
-            if slot.start_datetime and slot.end_datetime and (slot.end_datetime - slot.start_datetime).total_seconds() / 3600.0 < 24:
+            if slot.start_datetime and slot.end_datetime and slot._get_slot_duration() < 24:
                 slot.allocation_type = 'planning'
             else:
                 slot.allocation_type = 'forecast'
@@ -140,7 +140,7 @@ class Planning(models.Model):
         for slot in self:
             if slot.start_datetime and slot.end_datetime and slot.start_datetime != slot.end_datetime:
                 if slot.allocation_type == 'planning':
-                    slot.allocated_percentage = 360000 * slot.allocated_hours / (slot.end_datetime - slot.start_datetime).total_seconds()
+                    slot.allocated_percentage = 100 * slot.allocated_hours / slot._get_slot_duration()
                 else:
                     if slot.employee_id:
                         work_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours']
@@ -156,13 +156,13 @@ class Planning(models.Model):
         self.env.remove_to_compute(percentage_field, self)
         for slot in self:
             if slot.start_datetime and slot.end_datetime:
-                percentage = slot.allocated_percentage / 100.0 or 1
+                ratio = slot.allocated_percentage / 100.0 or 1
                 if slot.allocation_type == 'planning':
-                    slot.allocated_hours = (slot.end_datetime - slot.start_datetime).total_seconds() * percentage / 3600.0
+                    slot.allocated_hours = slot._get_slot_duration() * ratio
                 else:
                     calendar = slot.employee_id.resource_calendar_id or slot.company_id.resource_calendar_id
-                    hours = calendar.get_work_hours_count(slot.start_datetime, slot.end_datetime)
-                    slot.allocated_hours = hours * percentage
+                    hours = calendar.get_work_hours_count(slot.start_datetime, slot.end_datetime) if calendar else slot._get_slot_duration()
+                    slot.allocated_hours = hours * ratio
             else:
                 slot.allocated_hours = 0.0
 
@@ -191,6 +191,12 @@ class Planning(models.Model):
                 slot.overlap_slot_count = overlap_mapping.get(slot.id, 0)
         else:
             self.overlap_slot_count = 0
+
+    def _get_slot_duration(self):
+        """Return the slot (effective) duration expressed in hours.
+        """
+        self.ensure_one()
+        return (self.end_datetime - self.start_datetime).total_seconds() / 3600.0
 
     def _get_domain_template_slots(self):
         domain = ['|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]

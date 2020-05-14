@@ -12,7 +12,7 @@ from uuid import uuid4
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
-from odoo.tools import format_date
+from odoo.tools import format_date, float_compare
 from odoo.tools.float_utils import float_is_zero
 
 
@@ -1049,7 +1049,10 @@ class SaleSubscriptionLine(models.Model):
                     )
                 else:
                     self.price_unit = product.lst_price
-                self.discount = (self.price_unit - product.price) / self.price_unit * 100
+                if float_compare(self.price_unit, product.price, precision_rounding=subscription.pricelist_id.currency_id.rounding) == 1:
+                    self.discount = (self.price_unit - product.price) / self.price_unit * 100
+                else:
+                    self.discount = 0
             else:
                 self.price_unit = product.price
 

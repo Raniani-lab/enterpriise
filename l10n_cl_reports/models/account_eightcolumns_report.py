@@ -67,7 +67,7 @@ class CL8ColumnsReport(models.AbstractModel):
                            journal_id.get('selected')] or journal_ids
         if options.get('analytic') and options.get('analytic_accounts'):
             analytic_ids = [int(analytic_id) for analytic_id in options['analytic_accounts']] or analytic_ids
-        parameters['state'] = ('draft', 'posted') if options.get('all_entries') else ('posted')
+        parameters['state'] = ('draft', 'posted') if options.get('all_entries') else ('posted',)
         parameters['journal_ids'] = tuple(journal_ids)
         parameters['analytic_accounts'] = tuple(analytic_ids)
         return sql_query, parameters

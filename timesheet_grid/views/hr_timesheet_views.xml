@@ -171,7 +171,8 @@
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" eval="False"/>
             <field name="arch" type="xml">
-                <grid string="Timesheets" adjustment="object" adjust_name="adjust_grid" js_class="timesheet_grid">
+                <grid string="Timesheets" adjustment="object" adjust_name="adjust_grid" js_class="timesheet_grid" 
+                    thumbnails="{'model': 'hr.employee', 'image_field': 'image_128'}">
                     <field name="validated" type="readonly"/>
                     <field name="employee_id" type="row"/>
                     <field name="date" type="col">
@@ -378,9 +379,7 @@
                 <p class="o_view_nocontent_smiling_face">
                     Record a new activity
                 </p><p>
-                    You can register and track your workings hours by project every
-                    day. Every time spent on a project will become a cost and can be re-invoiced to
-                    customers if required.
+                    Track your working hours by projects every day and invoice this time to your customers.
                 </p>
                 <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
                 <div>
@@ -412,7 +411,7 @@
         <record id="hr_timesheet.timesheet_action_all" model="ir.actions.act_window">
             <field name="name">All Timesheets</field>
             <field name="res_model">account.analytic.line</field>
-            <field name="view_mode">grid,tree</field>
+            <field name="view_mode">grid,tree,kanban</field>
             <field name="context">{
                 'group_expand': True,
             }</field>
@@ -420,9 +419,7 @@
                 <p class="o_view_nocontent_smiling_face">
                     Record a new activity
                 </p><p>
-                    You can register and track your workings hours by project every
-                    day. Every time spent on a project will become a cost and can be re-invoiced to
-                    customers if required.
+                    Track your working hours by projects every day and invoice this time to your customers.
                 </p>
                 <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
                 <div>

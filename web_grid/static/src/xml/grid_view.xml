@@ -89,7 +89,10 @@
             <tbody class="o_grid_section">
                 <tr>
                     <th>
-                        <t t-if="grid.__label" t-esc="grid.__label[1]"/>
+                        <div class="o_grid_thumbnail_wrapper" t-if="props.thumbnailsUrls and grid.__label">
+                            <img t-att-src="props.thumbnailsUrls[grid_index]" class="rounded-circle o_grid_thumbnail mr-2 ml-2"/>
+                            <t t-esc="grid.__label[1]"/>
+                        </div>
                         <t t-else="">Undefined</t>
                     </th>
                     <t t-foreach="columns" t-as="column" t-key="column_index">
@@ -165,10 +168,13 @@
             <t t-set="row" t-value="grid.grid[rowlabel_index]"/>
             <tr>
                 <th>
-                    <div>
+                    <div class="ml-3">
                         <t t-foreach="grid.rows[rowlabel_index].label" t-as="label" t-key="label_index">
                             <div t-if="label or grid.rows[rowlabel_index].label.length === 1" t-att-title="label"
                                 t-att-class="{o_grid_text_muted: !label }">
+                                <span class="o_grid_thumbnail_wrapper" t-if="props.thumbnailsUrls and props.groupBy[0] == props.thumbnails.model and label_index == 0 and !props.isGrouped">
+                                    <img t-att-src="props.thumbnailsUrls[rowlabel_index]" class="rounded-circle o_grid_thumbnail mr-2 ml-2"/>
+                                </span>
                                 <t t-if="label" t-esc="label"/>
                                 <t t-else="">Undefined</t>
                             </div>

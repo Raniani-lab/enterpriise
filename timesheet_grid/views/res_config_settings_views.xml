@@ -17,7 +17,7 @@
                         <div class="o_setting_right_pane">
                             <label for="reminder_user_allow"/>
                             <div class="text-muted" id="reminder_user_allow">
-                                Activate a periodical email reminder for timesheet users
+                                Send a periodical email reminder to timesheet users
                             </div>
                             <div class="content-group" attrs="{'invisible': [('reminder_user_allow', '=', False)]}">
                                 <div class="row mt16" id="user_mail_alias_domain">
@@ -36,7 +36,7 @@
                         <div class="o_setting_right_pane">
                             <label for="reminder_manager_allow"/>
                             <div class="text-muted" id="reminder_manager_allow">
-                                Activate a periodical email reminder for timesheet managers
+                                Send a periodical email reminder to timesheet managers
                             </div>
                             <div class="content-group" attrs="{'invisible': [('reminder_manager_allow', '=', False)]}">
                                 <div class="row mt16" id="manager_mail_alias_domain">

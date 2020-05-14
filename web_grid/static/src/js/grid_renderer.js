@@ -122,7 +122,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
          */
         get measureLabel() {
             if (this.props.measureLabel) {
-                return _.str.sprintf(this.env._t("Total (%s)"), this.props.measureLabel);
+                return _.str.sprintf("%s", this.props.measureLabel);
             } else {
                 return this.env._t("Total");
             }
@@ -349,6 +349,8 @@ odoo.define('web_grid.GridRenderer', function (require) {
             type: String,
             optional: true
         },
+        thumbnails: Object,
+        thumbnailsUrls: Object,
         range: String,
         context: Object,
         arch: Object,
@@ -358,7 +360,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
             cols: [{
                 values: Object,
                 domain: Array,
-                is_current: Boolean
+                is_current: Boolean,
             }],
             grid: [{
                 size: Number,
@@ -368,7 +370,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
                     type: Boolean,
                     optional: true
                 },
-                is_current: Boolean
+                is_current: Boolean,
             }],
             initial: Object,
             next: Object,

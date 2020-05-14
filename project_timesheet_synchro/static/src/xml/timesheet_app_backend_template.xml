@@ -19,11 +19,12 @@
             <div class="o_project_timesheet_app_links col-lg-6">
                 <div class="flex-container">
                     <h1>Your personal timesheets</h1>
-                    <h3 class="text-muted">Use timesheet apps to manage your timesheets.</h3>
+                    <h3 class="text-muted">Any device, anywhere. Even offline.</h3>
                     <div class="text-center mt32 mb32">
                         <a target="_blank" href="http://www.odoo.com/page/timesheet?platform=android"><img src="project_timesheet_synchro/static/src/img/play_store.png" class="mb8" alt="Google Play Store"/></a>
                         <a target="_blank" href="http://www.odoo.com/page/timesheet?platform=chrome"><img src="project_timesheet_synchro/static/src/img/chrome_store.png" class="mb8" alt="Google Chrome Store"/></a>
                         <a target="_blank" href="http://www.odoo.com/page/timesheet?platform=ios"><img src="project_timesheet_synchro/static/src/img/app_store.png" class="mb8" alt="Apple App Store"/></a>
+                        <h6 class="text-center text-muted">Available for iPhone, Android and Chrome.</h6>
                     </div>
                     <ul class="list-unstyled fa-ul">
                         <li>
@@ -49,7 +50,6 @@
                             <a target="_blank" href="http://www.odoo.com/page/timesheet"><button class="btn btn-primary mb16">More info</button></a>
                         </div>
                     </div>
-                    <h3 class="text-center text-muted">Available for iPhone, Android and Chrome.</h3>
                 </div>
             </div>
           </div>

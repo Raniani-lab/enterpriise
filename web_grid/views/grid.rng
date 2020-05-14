@@ -28,6 +28,9 @@
             <optional>
                 <attribute name="hide_line_total"/>
             </optional>
+            <optional>
+                <attribute name="thumbnails"/>
+            </optional>
             <interleave>
                 <oneOrMore><ref name="field"/></oneOrMore>
                 <zeroOrMore><ref name="button"/></zeroOrMore>

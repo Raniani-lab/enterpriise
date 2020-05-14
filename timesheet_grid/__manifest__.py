@@ -3,7 +3,7 @@
 # YTI FIXME: This module should be named timesheet_enterprise
 {
     'name': "Timesheets",
-    'summary': "Timesheet Validation and Grid View",
+    'summary': "Track employee time on tasks",
     'description': """
 * Timesheet submission and validation
 * Activate grid view for timesheets

@@ -10,6 +10,7 @@ var GridRenderer = require('web_grid.GridRenderer');
 var viewRegistry = require('web.view_registry');
 var pyUtils = require('web.py_utils');
 const RendererWrapper = require('web.RendererWrapper');
+var session = require('web.session');
 
 var _t = core._t;
 var _lt = core._lt;
@@ -70,6 +71,9 @@ var GridView = AbstractView.extend({
         this.loadParams.groupedBy = params.groupBy;
         this.loadParams.readonlyField = readonlyField;
 
+        // thumbnails for groups (display a thumbnail next to the group name)
+        var thumbnails = this.arch.attrs.thumbnails ? pyUtils.py_eval(this.arch.attrs.thumbnails) : {};
+
         // renderer
         this.rendererParams.canCreate = this.controllerParams.activeActions.create;
         this.rendererParams.fields = fields;
@@ -79,6 +83,8 @@ var GridView = AbstractView.extend({
         this.rendererParams.cellComponentOptions = cellComponentOptions;
         this.rendererParams.hideLineTotal = !!JSON.parse(arch.attrs.hide_line_total || '0');
         this.rendererParams.hideColumnTotal = !!JSON.parse(arch.attrs.hide_column_total || '0');
+        this.rendererParams.thumbnails = thumbnails;
+        this.rendererParams.thumbnailsUrls = [];
 
         // controller
         this.controllerParams.formViewID = false;
@@ -109,6 +115,7 @@ var GridView = AbstractView.extend({
      * @override
      */
     getRenderer(parent, state) {
+        this.setUpThumbnails(this.arch, state);
         state = Object.assign({}, state, this.rendererParams);
         return new RendererWrapper(null, this.config.Renderer, state);
     },
@@ -116,7 +123,33 @@ var GridView = AbstractView.extend({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+    /**
+     * Generate thumbnailUrl to display pictures on the view
+     */
+    setUpThumbnails(arch, state) {
+        if (arch.attrs.thumbnails) {
+            const rendererParams = this.rendererParams;
+            let model = rendererParams.thumbnails.model;
+            let field = rendererParams.thumbnails.image_field;
+            state.data.forEach(data => {
+                if (data && data.__label) {
+                    let id = data.__label[0];
+                    rendererParams.thumbnailsUrls.push(this.getThumbnailUrl(id, model, field));
+                }
+            });
+        }
+    },
 
+    getThumbnailUrl(id, model, field) {
+        const rendererParams = this.rendererParams;
+        return  session.url('/web/image', {
+            id: id,
+            model: model,
+            field: field,
+        });
+    },
+
+    
     /**
      * Extract the range to display on the view, and filter
      * them according they should be visible or not (attribute 'invisible')

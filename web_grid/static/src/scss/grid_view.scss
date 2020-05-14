@@ -1,3 +1,5 @@
+$grid-pill-height: 3rem;
+
 .o_web_client .o_view_grid {
     cursor: default;
 
@@ -161,9 +163,19 @@
     td.o_grid_cell_null > div {
         opacity: 0.2;
     }
+    .o_grid_thumbnail_wrapper {
+        .o_grid_thumbnail {
+            width: auto;
+            max-height: $grid-pill-height - 1.2rem;
+        }
+    }
 
     .o_grid_current:not(.o_grid_total) {
         background-color: rgba($o-brand-primary, 0.25);
+    }
+    
+    .o_grid_weekend:not(.o_grid_total) {
+        background-color: rgba(220,220,220, 0.25);
     }
 
     .o_grid_text_muted{

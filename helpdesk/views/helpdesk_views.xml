@@ -391,10 +391,11 @@
                 <field name="team_id" invisible="1" readonly="1"/>
                 <field name="display_name" string="Ticket Name" readonly="1"/>
                 <field name="partner_id" optional="show"/>
-                <field name="user_id" optional="show"/>
+                <field name="user_id" optional="show" widget="many2one_avatar_user"/>
                 <field name="ticket_type_id" optional="hide"/>
                 <field name="priority" optional="hide"/>
                 <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="activity_ids" widget="list_activity" optional="show"/>
                 <field name="stage_id" optional="show" readonly="1"/>
                 <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
                 <field name="activity_exception_decoration" widget="activity_exception" readonly="1"/>
@@ -433,7 +434,6 @@
                 <field name="sla_fail"/>
                 <field name="tag_ids"/>
                 <field name="active"/>
-                <field name="sla_deadline"/>
                 <field name="activity_ids"/>
                 <field name="activity_state"/>
                 <field name="team_id"/>
@@ -468,11 +468,7 @@
                                 <div>
                                     <field name="partner_id"/>
                                 </div>
-                                <div t-if="record.sla_fail.raw_value"> <!-- here  -->
-                                <t t-if="new Date(record.sla_deadline.raw_value) &lt; (new Date())"
-                                    t-set="red" t-value="'oe_kanban_text_red'" />
-                                    <span class="fa fa-clock-o" title="Deadline" role="img" aria-label="Deadline"/> <span t-attf-class="#{red}"><i><field name="sla_deadline"/></i></span>
-                                </div>
+                                <field name="sla_deadline" widget="remaining_days" attrs="{'invisible': [('sla_fail', '=', False)]}"/>
                                 <div class="o_kanban_record_bottom">
                                     <div class="oe_kanban_bottom_left">
                                         <field name="priority" widget="priority"/>
@@ -538,7 +534,7 @@
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="team_id"/>
-                            <field name="user_id" class="field_user_id" domain="['&amp;', ('id', 'in', domain_user_ids), ('share', '=', False)]"/>
+                            <field name="user_id" class="field_user_id" domain="['&amp;', ('id', 'in', domain_user_ids), ('share', '=', False)]" widget="many2one_avatar_user"/>
                             <field name="domain_user_ids" invisible="1"/>
                             <field name="ticket_type_id"/>
                             <field name="priority" widget="priority"/>

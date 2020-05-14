@@ -27,6 +27,11 @@ class AnalyticLine(models.Model):
 
     project_id = fields.Many2one(group_expand="_group_expand_project_ids")
 
+    def _compute_display_timer(self):
+        validated_lines = self.filtered(lambda line: line.validated)
+        validated_lines.update({'display_timer': False})
+        super(AnalyticLine, self - validated_lines)._compute_display_timer()
+
     @api.model
     def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None, orderby=None):
         """

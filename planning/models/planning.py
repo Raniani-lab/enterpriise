@@ -316,9 +316,34 @@ class Planning(models.Model):
         for fname in recurrence_fields:
             self[fname] = default_values.get(fname)
 
+    def _company_working_hours(self, start, end):
+        company = self.company_id or self.env.company
+        work_interval = company.resource_calendar_id._work_intervals(start, end)
+        intervals = [(start, stop) for start, stop, attendance in work_interval]
+        start_datetime, end_datetime = (intervals[0][0], intervals[-1][-1]) if intervals else (start, end)
+
+        return (start_datetime, end_datetime)
+
     # ----------------------------------------------------
     # ORM overrides
     # ----------------------------------------------------
+
+    @api.model
+    def default_get(self, fields_list):
+        res = super(Planning, self).default_get(fields_list)
+
+        if not res.get('employee_id') and 'start_datetime' in fields_list:
+            start_datetime = fields.Datetime.from_string(res.get('start_datetime'))
+            end_datetime = fields.Datetime.from_string(res.get('end_datetime')) if res.get('end_datetime') else False
+            start = pytz.utc.localize(start_datetime)
+            end = pytz.utc.localize(end_datetime) if end_datetime else self._default_end_datetime()
+            opening_hours = self._company_working_hours(start, end)
+            res['start_datetime'] = opening_hours[0].astimezone(pytz.utc).replace(tzinfo=None)
+
+            if 'end_datetime' in fields_list:
+                res['end_datetime'] = opening_hours[1].astimezone(pytz.utc).replace(tzinfo=None)
+
+        return res
 
     def _init_column(self, column_name):
         """ Initialize the value of the given column for existing rows.
@@ -492,6 +517,7 @@ class Planning(models.Model):
         tag_employee_rows(rows)
         employees = self.env['hr.employee'].browse(employee_ids)
         leaves_mapping = employees.mapped('resource_id')._get_unavailable_intervals(start_datetime, end_datetime)
+        company_leaves = self.env.company.resource_calendar_id._unavailable_intervals(start_datetime.replace(tzinfo=pytz.utc), end_datetime.replace(tzinfo=pytz.utc))
 
         # function to recursively replace subrows with the ones returned by func
         def traverse(func, row):
@@ -508,14 +534,17 @@ class Planning(models.Model):
         def inject_unavailability(row):
             new_row = dict(row)
 
+            calendar = company_leaves
             if row.get('employee_id'):
                 employee_id = self.env['hr.employee'].browse(row.get('employee_id'))
                 if employee_id:
-                    # remove intervals smaller than a cell, as they will cause half a cell to turn grey
-                    # ie: when looking at a week, a employee start everyday at 8, so there is a unavailability
-                    # like: 2019-05-22 20:00 -> 2019-05-23 08:00 which will make the first half of the 23's cell grey
-                    notable_intervals = filter(lambda interval: interval[1] - interval[0] >= cell_dt, leaves_mapping[employee_id.resource_id.id])
-                    new_row['unavailabilities'] = [{'start': interval[0], 'stop': interval[1]} for interval in notable_intervals]
+                    calendar = leaves_mapping[employee_id.resource_id.id]
+
+            # remove intervals smaller than a cell, as they will cause half a cell to turn grey
+            # ie: when looking at a week, a employee start everyday at 8, so there is a unavailability
+            # like: 2019-05-22 20:00 -> 2019-05-23 08:00 which will make the first half of the 23's cell grey
+            notable_intervals = filter(lambda interval: interval[1] - interval[0] >= cell_dt, calendar)
+            new_row['unavailabilities'] = [{'start': interval[0], 'stop': interval[1]} for interval in notable_intervals]
             return new_row
 
         return [traverse(inject_unavailability, row) for row in rows]

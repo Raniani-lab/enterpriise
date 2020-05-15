@@ -94,7 +94,7 @@ class ProductProduct(models.Model):
         })
 
         return {
-            'name': _('Validate the timesheets'),
+            'name': _('Validate Lot/Serial Number'),
             'type': 'ir.actions.act_window',
             'target': 'new',
             'res_model': 'fsm.stock.tracking',

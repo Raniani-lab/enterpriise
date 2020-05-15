@@ -42,5 +42,5 @@ class HelpdeskTicketCreateTimesheet(models.TransientModel):
             'timer_start': False,
             'timer_pause': False
         })
-        self.ticket_id.timesheet_ids = self.ticket_id.timesheet_ids | timesheet
+        self.ticket_id.timesheet_ids = [(4, timesheet.id)]
         return timesheet

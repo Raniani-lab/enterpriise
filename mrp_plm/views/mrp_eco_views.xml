@@ -479,7 +479,7 @@
                             </field>
                         </page>
                         <page string="Approvals" name="approvals">
-                            <field name="approval_ids" nolabel="1" readonly="1" help="ECO approvals">
+                            <field name="approval_ids" nolabel="1" readonly="1" help="Define the approval roles on the ECO stages.">
                                 <tree decoration-danger="template_stage_id == eco_stage_id and status == 'rejected' and not is_closed"
                                   decoration-info="template_stage_id == eco_stage_id and status == 'none' and not is_closed"
                                   decoration-success="template_stage_id == eco_stage_id and status in ('approved', 'commented') and not is_closed"

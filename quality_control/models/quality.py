@@ -218,7 +218,7 @@ class QualityCheck(models.Model):
 
     def redirect_after_pass_fail(self):
         check = self[0]
-        if check.quality_state =='fail' and check.test_type in ['passfail', 'measure']:
+        if check.quality_state == 'fail' and check.test_type in ['passfail', 'measure'] and (check.failure_message or check.warning_message):
             return self.show_failure_message()
         if check.picking_id:
             checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none')

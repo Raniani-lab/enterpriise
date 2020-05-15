@@ -430,7 +430,6 @@
                 <field name="user_id"/>
                 <field name="color"/>
                 <field name="priority"/>
-                <field name="message_needaction_counter"/>
                 <field name="sla_fail"/>
                 <field name="tag_ids"/>
                 <field name="active"/>
@@ -479,9 +478,6 @@
                                         <field name="priority" widget="priority"/>
                                     </div>
                                     <div class="oe_kanban_bottom_right">
-                                        <t t-if="record.message_needaction_counter.raw_value">
-                                            <span class='oe_kanban_mail_new' title='Important Messages'><i class='fa fa-comments' role="img" aria-label="Messages"/><t t-raw="record.message_needaction_counter.raw_value"/></span>
-                                        </t>
                                         <field name="activity_ids" widget="kanban_activity"/>
                                         <field name="kanban_state" widget="state_selection" groups="base.group_user"/>
                                         <field name="user_id" widget="many2one_avatar_user"/>

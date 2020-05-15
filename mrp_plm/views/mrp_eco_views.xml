@@ -295,7 +295,6 @@
                 <field name="displayed_image_attachment_id"/>
                 <field name="stage_id"/>
                 <field name="color"/>
-                <field name="message_needaction_counter"/>
                 <field name="kanban_state"/>
                 <field name="user_id"/>
                 <field name="product_tmpl_id"/>
@@ -345,9 +344,6 @@
                             <div class="o_kanban_record_bottom">
                                 <div class="oe_kanban_bottom_left">
                                     <field name="priority" widget="priority"/>
-                                    <t t-if="record.message_needaction_counter.raw_value">
-                                        <span class='oe_kanban_mail_new' title='Important Messages'><i class='fa fa-comments' role="img" aria-label="Messages"/><t t-raw="record.message_needaction_counter.raw_value"/></span>
-                                    </t>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
                                     <div class="float-left mr4" groups="base.group_user">

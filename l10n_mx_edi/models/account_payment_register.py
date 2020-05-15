@@ -7,18 +7,11 @@ class AccountPaymentRegister(models.TransientModel):
 
     l10n_mx_edi_payment_method_id = fields.Many2one(
         comodel_name='l10n_mx_edi.payment.method',
-        string='Payment Way',
+        string="Payment Way",
         readonly=False, store=True,
         compute='_compute_l10n_mx_edi_payment_method_id',
         help="Indicates the way the payment was/will be received, where the options could be: "
              "Cash, Nominal Check, Credit Card, etc.")
-    l10n_mx_edi_partner_bank_id = fields.Many2one(
-        comodel_name='res.partner.bank',
-        string='Partner Bank',
-        readonly=False, store=True,
-        compute='_compute_l10n_mx_edi_partner_bank_id',
-        help="If the payment was made with a financial institution define the bank account used "
-             "in this payment.")
 
     # -------------------------------------------------------------------------
     # HELPERS
@@ -29,10 +22,7 @@ class AccountPaymentRegister(models.TransientModel):
         # OVERRIDE
         # Group moves also using these additional fields.
         res = super()._get_line_batch_key(line)
-        res.update({
-            'l10n_mx_edi_payment_method_id': line.move_id.l10n_mx_edi_payment_method_id.id,
-            'l10n_mx_edi_partner_bank_id': line.move_id.l10n_mx_edi_partner_bank_id.id,
-        })
+        res['l10n_mx_edi_payment_method_id'] = line.move_id.l10n_mx_edi_payment_method_id.id
         return res
 
     # -------------------------------------------------------------------------
@@ -48,15 +38,6 @@ class AccountPaymentRegister(models.TransientModel):
             else:
                 wizard.l10n_mx_edi_payment_method_id = False
 
-    @api.depends('journal_id')
-    def _compute_l10n_mx_edi_partner_bank_id(self):
-        for wizard in self:
-            if wizard.can_edit_wizard:
-                batches = self._get_batches()
-                wizard.l10n_mx_edi_partner_bank_id = batches[0]['key_values']['l10n_mx_edi_partner_bank_id']
-            else:
-                wizard.l10n_mx_edi_partner_bank_id = False
-
     # -------------------------------------------------------------------------
     # BUSINESS METHODS
     # -------------------------------------------------------------------------
@@ -64,17 +45,11 @@ class AccountPaymentRegister(models.TransientModel):
     def _create_payment_vals_from_wizard(self):
         # OVERRIDE
         payment_vals = super()._create_payment_vals_from_wizard()
-        payment_vals.update({
-            'l10n_mx_edi_payment_method_id': self.l10n_mx_edi_payment_method_id.id,
-            'l10n_mx_edi_partner_bank_id': self.l10n_mx_edi_partner_bank_id.id,
-        })
+        payment_vals['l10n_mx_edi_payment_method_id'] = self.l10n_mx_edi_payment_method_id.id
         return payment_vals
 
     def _create_payment_vals_from_batch(self, batch_result):
         # OVERRIDE
         payment_vals = super()._create_payment_vals_from_batch(batch_result)
-        payment_vals.update({
-            'l10n_mx_edi_payment_method_id': batch_result['key_values']['l10n_mx_edi_payment_method_id'],
-            'l10n_mx_edi_partner_bank_id': batch_result['key_values']['l10n_mx_edi_partner_bank_id'],
-        })
+        payment_vals['l10n_mx_edi_payment_method_id'] = batch_result['key_values']['l10n_mx_edi_payment_method_id']
         return payment_vals

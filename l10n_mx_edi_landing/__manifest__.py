@@ -12,7 +12,7 @@ Generate Electronic Invoice with custom numbers
         'stock_landed_costs',
         'sale_management',
         'sale_stock',
-        'l10n_mx_edi',
+        'l10n_mx_edi_extended',
     ],
     'data': [
         'views/stock_landed_cost.xml',

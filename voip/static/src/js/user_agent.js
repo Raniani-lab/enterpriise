@@ -678,13 +678,29 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 ['sanitized_mobile', 'ilike', number],
             ];
         }
-        const contacts = await this._rpc({
+        let contacts = await this._rpc({
             model: 'res.partner',
             method: 'search_read',
             domain: domain,
             fields: ['id', 'display_name'],
             limit: 1,
         });
+        /* Fallback if inviteSession.remoteIdentity.uri.type didn't give the correct country prefix
+        */
+        if (!contacts.length) {
+            let lastSixDigitsNumber = number.substr(number.length - 6)
+            contacts = await this._rpc({
+                model: 'res.partner',
+                method: 'search_read',
+                domain: [
+                    '|',
+                    ['sanitized_phone', '=like', '%'+lastSixDigitsNumber],
+                    ['sanitized_mobile', '=like', '%'+lastSixDigitsNumber],
+                ],
+                fields: ['id', 'display_name'],
+                limit: 1,
+            });
+        }
         const incomingCallParams = { number };
         let contact = false;
         if (contacts.length) {

@@ -71,10 +71,10 @@
         <field name="arch" type="xml">
             <tree string="Appraisal">
                 <field name="active" invisible="1"/>
-                <field name="employee_id" string="Name"/>
-                <field name="date_close"/>
-                <field name="date_final_interview"/>
-                <field name="state"/>
+                <field name="employee_id" string="Name" widget="many2one_avatar_employee"/>
+                <field name="date_close" widget="remaining_days" attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}"/>
+                <field name="date_final_interview" widget="remaining_days"/>
+                <field name="state" widget="badge" decoration-info="state in ('new','pending')" decoration-success="state == 'done'"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>

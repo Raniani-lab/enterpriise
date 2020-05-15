@@ -5,7 +5,7 @@
         <field name="name">sale.order.list.subscription</field>
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
-            <tree string="Sales Orders" decoration-bf="message_needaction==True" decoration-muted="state=='cancel'">
+            <tree string="Sales Orders" decoration-muted="state=='cancel'">
                 <field name="message_needaction" invisible="1"/>
                 <field name="name" string="Order Number"/>
                 <field name="date_order"/>
@@ -348,17 +348,18 @@
         <field name="model">sale.subscription</field>
         <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
         <field name="arch" type="xml">
-            <tree string="Sale Subscriptions" decoration-warning="to_renew" decoration-muted="stage_category != 'progress'" multi_edit="1">
-                <field name="code" readonly="1"/>
+            <tree string="Sale Subscriptions" multi_edit="1">
+                <field name="code" readonly="1" decoration-bf="1"/>
                 <field name="partner_id" readonly="1"/>
-                <field name="recurring_next_date"/>
+                <field name="recurring_next_date" string="Next Invoice" widget="remaining_days" attrs="{'invisible': [('stage_category', '!=', 'progress')]}"/>
                 <field name="pricelist_id" invisible="1"/>
-                <field name="user_id" optional="show"/>
+                <field name="user_id" optional="show" widget="many2one_avatar_user"/>
+                <field name="activity_ids" widget="list_activity"/>
                 <field name="team_id" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" readonly="1"/>
-                <field name="recurring_total_incl"/>
                 <field name="percentage_satisfaction"/>
-                <field name="stage_id"/>
+                <field name="recurring_total_incl" decoration-bf="1"/>
+                <field name="stage_id" widget="badge" decoration-info="stage_category == 'draft'" decoration-success="stage_category == 'progress'"/>
                 <field name="to_renew" invisible="1"/>
                 <field name="stage_category" invisible="1"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>

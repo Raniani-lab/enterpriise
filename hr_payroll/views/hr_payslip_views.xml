@@ -140,17 +140,17 @@
         <field name="name">hr.payslip.tree</field>
         <field name="model">hr.payslip</field>
         <field name="arch" type="xml">
-            <tree decoration-info="state in ('confirm','verify')" decoration-muted="state == 'cancel'" js_class="hr_payroll_payslip_tree" string="Payslips">
+            <tree string="Payslips" js_class="hr_payroll_payslip_tree">
                 <field name="currency_id" invisible="1"/>
-                <field name="number"/>
-                <field name="employee_id"/>
+                <field name="number" decoration-bf="1"/>
+                <field name="employee_id" widget="many2one_avatar_employee"/>
                 <field name="payslip_run_id"/>
                 <field name="date_from"/>
                 <field name="date_to"/>
-                <field name="basic_wage" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                <field name="net_wage" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                <field name="state"/>
                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <field name="basic_wage" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="net_wage" widget="monetary" options="{'currency_field': 'currency_id'}" decoration-bf="1"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'verify'" decoration-success="state in ('done','paid')"/>
             </tree>
         </field>
     </record>

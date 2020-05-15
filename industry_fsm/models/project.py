@@ -36,13 +36,13 @@ class Task(models.Model):
         result = super(Task, self).default_get(fields_list)
         user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
         date_begin = result.get('planned_date_begin')
-        if date_begin:
+        if date_begin and not self.env.context.get('default_planned_date_begin'):
             date_begin = pytz.utc.localize(date_begin).astimezone(user_tz)
             date_begin = date_begin.replace(hour=9, minute=0, second=0)
             date_begin = date_begin.astimezone(pytz.utc).replace(tzinfo=None)
             result['planned_date_begin'] = date_begin
         date_end = result.get('planned_date_end')
-        if date_end:
+        if date_end and not self.env.context.get('default_planned_date_end'):
             date_end = pytz.utc.localize(date_end).astimezone(user_tz)
             date_end = date_end.replace(hour=17, minute=0, second=0)
             date_end = date_end.astimezone(pytz.utc).replace(tzinfo=None)

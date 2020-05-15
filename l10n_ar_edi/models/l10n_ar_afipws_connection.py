@@ -96,8 +96,7 @@ class L10nArAfipwsConnection(models.Model):
         token_in_use = 'El CEE ya posee un TA valido para el acceso al WSN solicitado'
         data = {
             'Computador no autorizado a acceder al servicio': _(
-                'it seems like you do not have permissions in AFIP to connect using the current certificate and CUIT.'
-                ' Please confirm this two parameters and then try again'),
+                'The certificate is not authorized (delegated) to work with this web service'),
             "ns1:cms.sign.invalid: Firma inválida o algoritmo no soportado": certificate_expired,
             "ns1:cms.cert.expired: Certificado expirado": certificate_expired,
             '500 Server Error: Internal Server': _('Webservice is down'),
@@ -106,6 +105,7 @@ class L10nArAfipwsConnection(models.Model):
                 ' that is requested to AFIP has been requested multiple times and the last one requested is still valid.'
                 ' You will need to wait 12 hours to generate a new token and be able to connect to AFIP'
                 '\n\n If not, then could be a overload of AFIP service, please wait some time and try again'),
+            'No se puede decodificar el BASE64': _('The certificate and private key do not match'),
         }
         for item, value in data.items():
             if item in error_name:

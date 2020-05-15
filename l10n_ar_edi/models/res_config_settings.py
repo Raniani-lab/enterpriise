@@ -1,6 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import re
+
 
 class ResConfigSettings(models.TransientModel):
 
@@ -40,8 +42,13 @@ class ResConfigSettings(models.TransientModel):
             try:
                 self.company_id._l10n_ar_get_connection(webservice)
                 res += ('\n* %s: ' + _('Connection is available')) % webservice
+            except UserError as error:
+                hint_msg = re.search('.*(HINT|CONSEJO): (.*)', error.name)
+                msg = hint_msg.groups()[-1] if hint_msg and len(hint_msg.groups()) > 1 \
+                    else '\n'.join(re.search('.*' + webservice + ': (.*)\n\n', error.name).groups())
+                res += '\n* %s: ' % webservice + _('Connection failed') + '. %s' % msg.strip()
             except Exception as error:
-                res += ('\n* %s: ' + _('Connection failed. This is what we get') + ' %s') % (webservice, repr(error))
+                res += ('\n* %s: ' + _('Connection failed') + '. ' + _('This is what we get') + ' %s') % (webservice, repr(error))
         raise UserError(res)
 
     def random_demo_cert(self):

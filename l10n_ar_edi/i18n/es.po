@@ -432,6 +432,18 @@ msgid "Config Settings"
 msgstr "Opciones de Configuración"
 
 #. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
+#, python-format
+msgid "Connection failed"
+msgstr "Conexión fallida"
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
+#, python-format
+msgid "Connection is available"
+msgstr "Conexión disponible"
+
+#. module: l10n_ar_edi
 #: model:ir.model.fields,field_description:l10n_ar_edi.field_res_company__l10n_ar_connection_ids
 #: model:ir.ui.menu,name:l10n_ar_edi.menu_action_afipws_auth
 msgid "Connections"
@@ -1065,6 +1077,26 @@ msgstr ""
 "Puedes usar este campo para búsqueda rápida."
 
 #. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/l10n_ar_afipws_connection.py:0
+#, python-format
+msgid "The certificate and private key do not match"
+msgstr "El certificado y la private key no coinciden"
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
+#, python-format
+msgid "The certificate can not be uploaded!"
+msgstr "El certificado no puede ser cargado!"
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/l10n_ar_afipws_connection.py:0
+#, python-format
+msgid ""
+"The certificate is not authorized (delegated) to work with this web service"
+msgstr ""
+"El certificado no está autorizado (delegado) para trabajar con este servicio web"
+
+#. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/res_config_settings.py:0
 #, python-format
 msgid "The company CUIT must be defined before this action"
@@ -1285,6 +1317,12 @@ msgstr ""
 "  * CAE (Código de Autorización Electrónica): significa que es una factura electrónica. Si valida una factura de cliente, este campo se rellenará automáticamente con la opción CAE. Además, si intenta verificar en AFIP una factura electrónica del proveedor, puede configurar esta opción\n"
 "  * CAI (Código de autorización impreso): significa que es una factura preimpresa. Con esta opción establecida, puede registrar y verificar  facturas de proveedores preimpresos en AFIP\n"
 "  * CAEA (Código de Autorización Electrónica Anticipada): Significa que es una factura electrónica. Este tipo de facturas se genera utilizando un código pregenerado por AFIP para las empresas que tienen una facturación masiva por mes para que puedan procesar previamente todas las facturas de la quincena en una operación con un CAEA único. Seleccione esta opción solo cuando verifique en AFIP una factura de proveedor que tenga CAEA (las facturas con CAEA no tendrán CAE)"
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
+#, python-format
+msgid "This is what we get"
+msgstr "Esto es lo que obtenemos"
 
 #. module: l10n_ar_edi
 #: model:ir.model.fields,help:l10n_ar_edi.field_res_company__l10n_ar_afip_ws_key

@@ -399,6 +399,18 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
+#, python-format
+msgid "Connection failed"
+msgstr ""
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
+#, python-format
+msgid "Connection is available"
+msgstr ""
+
+#. module: l10n_ar_edi
 #: model:ir.model.fields,field_description:l10n_ar_edi.field_res_company__l10n_ar_connection_ids
 #: model:ir.ui.menu,name:l10n_ar_edi.menu_action_afipws_auth
 msgid "Connections"
@@ -964,6 +976,25 @@ msgid ""
 msgstr ""
 
 #. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/l10n_ar_afipws_connection.py:0
+#, python-format
+msgid "The certificate and private key do not match"
+msgstr ""
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
+#, python-format
+msgid "The certificate can not be uploaded!"
+msgstr ""
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/l10n_ar_afipws_connection.py:0
+#, python-format
+msgid ""
+"The certificate is not authorized (delegated) to work with this web service"
+msgstr ""
+
+#. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/res_config_settings.py:0
 #, python-format
 msgid "The company CUIT must be defined before this action"
@@ -1133,6 +1164,12 @@ msgid ""
 " * CAE (Electronic Authorization Code): Means that is an electronic invoice. If you validate a customer invoice this field will be autofill with CAE option. Also, if you trying to verify in AFIP an electronic vendor bill you can set this option\n"
 " * CAI (Printed Authorization Code): Means that is a pre-printed invoice. With this option set you can register and verify in AFIP pre-printed vendor bills\n"
 " * CAEA (Anticipated Electronic Authorization Code): Means that is an electronic invoice. This kind of invoices are generated using a pre ganerated code by AFIP for companies that have a massive invoicing by month so they can pre process all the invoices of the fortnight in one operation with one unique CAEA. Select this option only when verifying in AFIP a vendor bill that have CAEA (invoices with CAEA will not have CAE)"
+msgstr ""
+
+#. module: l10n_ar_edi
+#: code:addons/l10n_ar_edi/models/res_config_settings.py:0
+#, python-format
+msgid "This is what we get"
 msgstr ""
 
 #. module: l10n_ar_edi

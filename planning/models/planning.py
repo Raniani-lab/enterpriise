@@ -8,7 +8,7 @@ import json
 import logging
 import pytz
 import uuid
-from math import ceil
+from math import ceil, modf
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, AccessError
@@ -277,9 +277,10 @@ class Planning(models.Model):
     def _onchange_template_id(self):
         user_tz = pytz.timezone(self.env.user.tz or 'UTC')
         if self.template_id and self.start_datetime:
-            h, m = divmod(self.template_id.start_time, 1)
+            h = int(self.template_id.start_time)
+            m = round(modf(self.template_id.start_time)[0] * 60.0)
             start = pytz.utc.localize(self.start_datetime).astimezone(user_tz)
-            start = start.replace(hour=int(h), minute=int(m * 60))
+            start = start.replace(hour=int(h), minute=int(m))
             self.start_datetime = start.astimezone(pytz.utc).replace(tzinfo=None)
             h, m = divmod(self.template_id.duration, 1)
             delta = timedelta(hours=int(h), minutes=int(m * 60))

@@ -12,7 +12,7 @@ odoo.define('pos_restaurant.ClientScreenButton', function(require) {
             }
             _start() {
                 this.env.pos.iot_device_proxies.display.add_listener(this._checkOwner.bind(this));
-                setTimeout(function () {
+                setTimeout(() => {
                     this.env.pos.iot_device_proxies.display.action({action: 'get_owner'});
                 }, 1500);
             }

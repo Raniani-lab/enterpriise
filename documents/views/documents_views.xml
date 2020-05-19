@@ -135,7 +135,7 @@
                                         <div class="oe_kanban_bottom_right">
                                             <field name="activity_ids" widget="kanban_activity"/>
                                             <a type="object" name="toggle_favorited"
-                                                t-attf-class="fa fa-lg fa-star#{(record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0)? '-o' : ' favorite_sign_button_enabled'} favorite_sign_button" title="toggle favorite"/>
+                                                t-attf-class="fa fa-lg fa-star#{(record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0)? '-o' : ''} o_favorite" title="toggle favorite"/>
                                             <field name="owner_id" widget="many2one_avatar_user"/>
                                         </div>
                                     </div>

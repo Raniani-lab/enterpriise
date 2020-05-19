@@ -276,6 +276,18 @@
         </field>
     </record>
 
+    <record id="action_fsm_task_send_report" model="ir.actions.server">
+        <field name="name">Send Report</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="binding_model_id" ref="project.model_project_task"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+            if record:
+                action = record.action_send_report()
+        </field>
+    </record>
+
     <record id="fsm_worksheets_action_settings" model="ir.actions.act_window" >
         <field name="name">Worksheets Templates</field>
         <field name="res_model">project.worksheet.template</field>

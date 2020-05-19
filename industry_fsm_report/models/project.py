@@ -93,11 +93,10 @@ class Task(models.Model):
             send_p, send_s = True, True
             if not task.allow_worksheets or task.timer_start or \
                     not task.worksheet_signature or not task.worksheet_template_id or \
-                    not task.display_satisfied_conditions_count:
+                    not task.display_satisfied_conditions_count or task.fsm_is_sent:
                 send_p, send_s = False, False
             else:
-                if task.display_enabled_conditions_count == task.display_satisfied_conditions_count \
-                        and not task.fsm_is_sent:
+                if task.display_enabled_conditions_count == task.display_satisfied_conditions_count:
                     send_s = False
                 else:
                     send_p = False

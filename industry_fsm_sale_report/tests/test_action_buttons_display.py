@@ -222,7 +222,7 @@ class TestTimerButtons(SavepointCase):
         self.assertFalse(self.task.display_send_report_secondary)
         self.task.fsm_is_sent = True
         self.assertFalse(self.task.display_send_report_primary)
-        self.assertTrue(self.task.display_send_report_secondary) # Report is sent
+        self.assertFalse(self.task.display_send_report_secondary) # Report is sent then do not display button
 
     def test_send_sign_report_button_02(self):
         # Sign not visible if the report is already signed

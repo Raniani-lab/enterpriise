@@ -830,10 +830,11 @@
                 <separator/>
                 <filter string="Open Tickets" domain="[('stage_id.is_close','=',False)]" name="is_open"/>
                 <filter string="Closed Tickets" domain="[('stage_id.is_close','=',True)]" name="is_close"/>
-                <filter string="Archived" domain="[('active','=',False)]" name="archive"/>
                 <separator/>
                 <filter string="SLA Failed" domain="[('sla_fail','!=',False)]" name="sla_failed" groups="helpdesk.group_use_sla"/>
                 <filter string="SLA Not Failed" domain="[('sla_fail','=',False)]" name="not_sla_failed" groups="helpdesk.group_use_sla"/>
+                <separator/>
+                <filter string="Archived" domain="[('active','=',False)]" name="archive"/>
                 <group expand="0" string="Group By">
                   <filter string="Assignee" name="assignee" context="{'group_by':'user_id'}"/>
                   <filter string="Team" name="team" context="{'group_by':'team_id'}"/>

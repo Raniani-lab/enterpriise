@@ -1707,7 +1707,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         var new_attrs = event.data.new_attrs || {};
         var position = event.data.position || 'after';
         var xpath_info;
-        if (node && _.isEmpty(_.pick(node.attrs, this.expr_attrs[node.tag]))) {
+        if (node) {
             xpath_info = findParentsPositions(this.view.arch, node);
         }
         switch (structure) {

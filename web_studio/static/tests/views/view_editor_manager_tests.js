@@ -305,7 +305,71 @@ QUnit.module('ViewEditorManager', {
             'optional field dropdown icon must be muted');
 
         vem.destroy();
+    });
 
+    QUnit.test('modification of field appearing multiple times in view', async function (assert) {
+        assert.expect(4);
+
+        // the typical case of the same field in a single view is conditional sub-views
+        // that use attrs={'invisible': [domain]}
+        // if the targeted node is after a hidden view, the hidden one should be ignored / skipped
+        var arch = '<form>' +
+                       '<group invisible="1">' +
+                           '<field name="display_name"/>' +
+                       '</group>' +
+                       '<group>' +
+                           '<field name="display_name"/>' +
+                       '</group>' +
+                       '<group>' +
+                           '<field name="char_field" />' +
+                       '</group>' +
+                   '</form>'
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            arch: arch,
+            data: this.data,
+            model: 'coucou',
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.deepEqual(args.operations[0].target.xpath_info, [
+                        {
+                            tag: 'form',
+                            indice: 1,
+                        },
+                        {
+                            tag: 'group',
+                            indice: 2,
+                        },
+                        {
+                            tag: 'field',
+                            indice: 1,
+                        },
+                    ], "the target should be the field of the second group");
+                    assert.deepEqual(args.operations[0].new_attrs, {string: "Foo"},
+                        "the string attribute should be changed from default to 'Foo'");
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            form: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        var fieldsView = $.extend(true, {}, vem.fields_view);
+
+        var $visibleElement = vem.$('.o_web_studio_form_view_editor [data-node-id=7]');
+        assert.strictEqual($visibleElement.text(), "Display Name", "the name should be correctly set");
+
+        await testUtils.dom.click($visibleElement);
+        var $labelInput = vem.$('.o_web_studio_sidebar_content input[name="string"]');
+        assert.strictEqual($labelInput.val(), "Display Name", "the name in the sidebar should be set");
+        await testUtils.fields.editAndTrigger($labelInput, "Foo", ['change']);
+
+        vem.destroy();
     });
 
     QUnit.test('optional field in list editor', async function (assert) {
@@ -964,8 +1028,18 @@ QUnit.module('ViewEditorManager', {
                         new_attrs: {groups: [4]},
                         position: 'attributes',
                         target: {
-                            tag: 'field',
                             attrs: {name: 'display_name'},
+                            tag: 'field',
+                            xpath_info: [
+                                {
+                                    indice: 1,
+                                    tag: "tree",
+                                },
+                                {
+                                    indice: 1,
+                                    tag: "field"
+                                }
+                            ],
                         },
                         type: 'attributes',
                     }, "the group operation should be correct");
@@ -1070,6 +1144,16 @@ QUnit.module('ViewEditorManager', {
                         target: {
                             tag: 'field',
                             attrs: {name: 'display_name'},
+                            xpath_info: [
+                                {
+                                    indice: 1,
+                                    tag: 'tree',
+                                },
+                                {
+                                    indice: 1,
+                                    tag: 'field',
+                                },
+                            ]
                         },
                         type: 'move',
                     }, "the move operation should be correct");
@@ -2066,6 +2150,24 @@ QUnit.module('ViewEditorManager', {
                         attrs: {
                             for: 'display_name',
                         },
+                        xpath_info: [
+                            {
+                                indice: 1,
+                                tag: 'form',
+                            },
+                            {
+                                indice: 1,
+                                tag: 'sheet',
+                            },
+                            {
+                                indice: 1,
+                                tag: 'group',
+                            },
+                            {
+                                indice: 1,
+                                tag: 'label',
+                            },
+                        ],
                     }, "the target should be set in edit_view");
                     assert.deepEqual(args.operations[0].new_attrs, {string: 'Yeah'},
                         "the string attribute should be set in edit_view");
@@ -2186,6 +2288,24 @@ QUnit.module('ViewEditorManager', {
                         position: 'before',
                         target: {
                             tag: 'field',
+                            xpath_info: [
+                                {
+                                    indice: 1,
+                                    tag: 'form',
+                                },
+                                {
+                                    indice: 1,
+                                    tag: 'sheet',
+                                },
+                                {
+                                    indice: 1,
+                                    tag: 'group',
+                                },
+                                {
+                                    indice: 1,
+                                    tag: 'field',
+                                },
+                            ],
                             attrs: {name: 'display_name'},
                         },
                         type: 'move',
@@ -2267,7 +2387,21 @@ QUnit.module('ViewEditorManager', {
                                 tag: "field",
                                 attrs: {
                                     name: "image",
-                                }
+                                },
+                                xpath_info: [
+                                    {
+                                        indice: 1,
+                                        tag: 'form',
+                                    },
+                                    {
+                                        indice: 1,
+                                        tag: 'sheet',
+                                    },
+                                    {
+                                        indice: 1,
+                                        tag: 'field',
+                                    },
+                                ],
                             }
                         }, "Proper field name and operation type should be passed");
                         fieldsView.arch = arch;
@@ -3062,6 +3196,16 @@ QUnit.module('ViewEditorManager', {
                         target: {
                             attrs: {name: 'display_name'},
                             tag: 'field',
+                            xpath_info: [
+                                {
+                                    indice: 1,
+                                    tag: 'search',
+                                },
+                                {
+                                    indice: 1,
+                                    tag: 'field',
+                                },
+                            ],
                         },
                         type: 'remove',
                     });
@@ -4335,11 +4479,11 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     editViewCount++;
                     if (editViewCount === 1) {
-                        assert.strictEqual(_.has(args.operations[0].target, 'xpath_info'), false,
-                            'should not give xpath_info if we have the tag identifier attributes');
+                        assert.strictEqual(_.has(args.operations[0].target, 'xpath_info'), true,
+                            'should give xpath_info even if we have the tag identifier attributes');
                     } else if (editViewCount === 2) {
-                        assert.strictEqual(_.has(args.operations[1].target, 'xpath_info'), false,
-                            'should not give xpath_info if we have the tag identifier attributes');
+                        assert.strictEqual(_.has(args.operations[1].target, 'xpath_info'), true,
+                            'should give xpath_info even if we have the tag identifier attributes');
                     } else if (editViewCount === 3) {
                         assert.strictEqual(args.operations[2].target.tag, 'group',
                             'should compute correctly the parent node for the group');
@@ -5555,6 +5699,16 @@ QUnit.module('ViewEditorManager', {
                             tag: 'field',
                             attrs: {name: 'm2o'},
                             subview_xpath: "//field[@name='product_ids']/tree",
+                            xpath_info: [
+                                {
+                                    indice: 1,
+                                    tag: 'tree',
+                                },
+                                {
+                                    indice: 1,
+                                    tag: 'field',
+                                },
+                            ],
                         },
                         type: 'move',
                     }, "the move operation should be correct");

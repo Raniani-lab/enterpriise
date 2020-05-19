@@ -25,7 +25,7 @@ var DashboardView = BasicView.extend({
         Renderer: DashboardRenderer,
     }),
     display_name: _lt('Dashboard'),
-    searchMenuTypes: ['filter', 'timeRange', 'favorite'],
+    searchMenuTypes: ['filter', 'comparison', 'favorite'],
     icon: 'fa-tachometer',
     viewType: 'dashboard',
 

@@ -110,16 +110,13 @@ var CohortModel = AbstractModel.extend({
 
     _getDomains: function () {
         const { range, comparisonRange } = this.timeRanges;
-        let domains = [];
-        if (range) {
-            domains.push(this.domain.concat(range));
-            if (comparisonRange) {
-                domains.push(this.domain.concat(comparisonRange));
-            }
-        } else {
-            domains.push(this.domain);
+        if (!range) {
+            return [this.domain];
         }
-        return domains;
+        return [
+            this.domain.concat(range),
+            this.domain.concat(comparisonRange),
+        ];
     },
 });
 

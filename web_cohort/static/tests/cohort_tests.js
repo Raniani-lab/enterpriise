@@ -433,7 +433,11 @@ QUnit.module('Views', {
             data: this.data,
             archs: {
                 'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
-                'subscription,false,search': '<search></search>',
+                'subscription,false,search': `
+                    <search>
+                        <filter date="start" name="date_filter" string="Date"/>
+                    </search>
+                `,
             },
             intercepts: {
                 do_action: function (ev) {
@@ -467,50 +471,49 @@ QUnit.module('Views', {
             });
         }
 
-
         // with no comparison, with data (no filter)
         verifyContents([3]);
         assert.containsNone(actionManager, '.o_cohort_no_data');
         assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with no comparison with no data (filter on 'last_year')
-        await cpHelpers.toggleTimeRangeMenu(actionManager);
-        await cpHelpers.selectRange(actionManager, 'last_year');
-        await cpHelpers.applyTimeRange(actionManager);
+        await cpHelpers.toggleFilterMenu(actionManager);
+        await cpHelpers.toggleMenuItem(actionManager, 'Date');
+        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', '2016');
 
         verifyContents([]);
         assert.containsNone(actionManager, '.o_cohort_no_data');
         assert.containsOnce(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
+        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', '2016');
+        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', 'August');
+        await cpHelpers.toggleComparisonMenu(actionManager);
+        await cpHelpers.toggleMenuItem(actionManager, 'Date: Previous period');
 
-        await cpHelpers.toggleTimeRangeMenuBox(actionManager);
-        await cpHelpers.selectRange(actionManager, 'this_month');
-        await cpHelpers.applyTimeRange(actionManager);
-
-        verifyContents(['This Month', 2, 'Previous Period', 1]);
+        verifyContents(['August 2017', 2, 'July 2017', 1]);
         assert.containsNone(actionManager, '.o_cohort_no_data');
         assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
-        await cpHelpers.selectRange(actionManager, 'this_year');
-        await cpHelpers.applyTimeRange(actionManager);
+        await cpHelpers.toggleFilterMenu(actionManager);
+        await cpHelpers.toggleMenuItem(actionManager, 'Date');
+        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', 'August');
 
-        verifyContents(['This Year', 3, 'Previous Period']);
+        verifyContents(['2017', 3, '2016']);
         assert.containsOnce(actionManager, '.o_cohort_no_data');
         assert.containsNone(actionManager, 'div.o_view_nocontent');
 
-        // with comparison active, no data, comparisonData (filter on 'today' + 'previous_period')
-        await cpHelpers.selectRange(actionManager, 'today');
-        await cpHelpers.applyTimeRange(actionManager);
+        // with comparison active, no data, comparisonData (filter on 'Q4' + 'previous_period')
+        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', 'Q4');
 
-        verifyContents(['Today', 'Previous Period', 1]);
+        verifyContents(['Q4 2017', 'Q3 2017', 3]);
         assert.containsOnce(actionManager, '.o_cohort_no_data');
         assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')
-        await cpHelpers.selectRange(actionManager, 'last_year');
-        await cpHelpers.applyTimeRange(actionManager);
+        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', '2016');
+        await cpHelpers.toggleMenuItemOption(actionManager, 'Date', '2017');
 
         verifyContents([]);
         assert.containsNone(actionManager, '.o_cohort_no_data');

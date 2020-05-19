@@ -2227,6 +2227,13 @@ QUnit.module('Views', {
             arch: '<dashboard>' +
                     '<aggregate name="some_value" field="sold" string="Some Value" widget="test"/>' +
                 '</dashboard>',
+            archs: {
+                'test_time_range,false,search': `
+                    <search>
+                        <filter name="date" date="date" string="Date"/>
+                    </search>
+                `,
+            },
             mockRPC: function (route, args) {
                 var def = this._super.apply(this, arguments);
                 if (args.method === 'read_group') {
@@ -2246,7 +2253,7 @@ QUnit.module('Views', {
                     if (nbReadGroup === 2 || nbReadGroup === 3) {
                         assert.deepEqual(args.kwargs.fields, ['some_value:sum(sold)'],
                             "should read the correct field");
-                        assert.deepEqual(args.kwargs.domain, ["&", ["date", ">=", "2017-03-22"], ["date", "<", "2017-03-23"]],
+                        assert.deepEqual(args.kwargs.domain, ["&", ["date", ">=", "2017-03-01"], ["date", "<=", "2017-03-31"]],
                             "should send the correct domain");
                         assert.deepEqual(args.kwargs.groupby, [],
                             "should send the correct groupby");
@@ -2259,7 +2266,7 @@ QUnit.module('Views', {
                     if (nbReadGroup === 4) {
                         assert.deepEqual(args.kwargs.fields, ['some_value:sum(sold)'],
                             "should read the correct field");
-                        assert.deepEqual(args.kwargs.domain, ["&", ["date", ">=", "2017-03-21"], ["date", "<", "2017-03-22"]],
+                        assert.deepEqual(args.kwargs.domain, ["&", ["date", ">=", "2017-02-01"], ["date", "<=", "2017-02-28"]],
                             "should send the correct domain");
                         assert.deepEqual(args.kwargs.groupby, [],
                             "should send the correct groupby");
@@ -2278,14 +2285,14 @@ QUnit.module('Views', {
         assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply time range with today
-        await cpHelpers.toggleTimeRangeMenu(dashboard);
-        await cpHelpers.selectRange(dashboard, 'today');
-        await cpHelpers.applyTimeRange(dashboard);
+        await cpHelpers.toggleFilterMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 'Date');
+        await cpHelpers.toggleMenuItemOption(dashboard, 'Date', 'March');
         assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply range with today and comparison with previous period
-        await cpHelpers.toggleTimeRangeMenuBox(dashboard);
-        await cpHelpers.applyTimeRange(dashboard);
+        await cpHelpers.toggleComparisonMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 'Date: Previous period');
         assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "300%");
         assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "The value is 16.00 vs The value is 4.00");
 
@@ -2308,13 +2315,20 @@ QUnit.module('Views', {
                 '</dashboard>',
             archs: {
                 'test_time_range,some_xmlid,cohort': '<cohort string="Cohort" date_start="date" date_stop="transformation_date" interval="week"/>',
+                'test_time_range,false,search': `
+                    <search>
+                        <filter name="date" date="date" string="Date"/>
+                    </search>
+                `,
             },
         });
 
+        await cpHelpers.toggleFilterMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 'Date');
+        await cpHelpers.toggleMenuItemOption(dashboard, 'Date', 'October');
 
-        await cpHelpers.toggleTimeRangeMenu(dashboard);
-        await cpHelpers.toggleTimeRangeMenuBox(dashboard);
-        await cpHelpers.applyTimeRange(dashboard);
+        await cpHelpers.toggleComparisonMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 'Date: Previous period');
 
         // The test should be modified and extended.
         assert.strictEqual(dashboard.$('.o_cohort_view div.o_view_nocontent').length, 1);
@@ -2339,6 +2353,13 @@ QUnit.module('Views', {
                         '<aggregate name="some_value" field="sold" string="Some Value"/>' +
                     '</group>' +
                 '</dashboard>',
+                archs: {
+                    'test_time_range,false,search': `
+                        <search>
+                            <filter name="date" date="date" string="Date"/>
+                        </search>
+                    `,
+                },
             mockRPC: function (route, args) {
 
                 function _readGroup(expectedDomain, readGroupResult) {
@@ -2361,43 +2382,42 @@ QUnit.module('Views', {
                         _readGroup([], 8);
                     }
                     if (nbReadGroup === 2 || nbReadGroup === 3) {
-                        _readGroup(["&", ["date", ">=", "2017-03-22"], ["date", "<", "2017-03-23"]], 16);
+                        _readGroup(["&", ["date", ">=", "2017-03-01"], ["date", "<=", "2017-03-31"]], 16);
                     }
                     if (nbReadGroup === 4) {
-                        _readGroup(["&", ["date", ">=", "2017-03-21"], ["date", "<", "2017-03-22"]], 4);
+                        _readGroup(["&", ["date", ">=", "2017-02-01"], ["date", "<=", "2017-02-28"]], 4);
                     }
                     if (nbReadGroup === 5) {
-                        _readGroup(["&", ["date", ">=", "2017-03-13"], ["date", "<", "2017-03-20"]], 4);
+                        _readGroup(["&", ["date", ">=", "2017-03-01"], ["date", "<=", "2017-03-31"]], 4);
                     }
                     if (nbReadGroup === 6) {
-                        _readGroup(["&", ["date", ">=", "2016-03-14"], ["date", "<", "2016-03-21"]], 16);
+                        _readGroup(["&", ["date", ">=", "2016-03-01"], ["date", "<=", "2016-03-31"]], 16);
                     }
                 }
                 return def;
             },
         });
 
-
         assert.strictEqual(dashboard.$('.o_aggregate .o_value').text().trim(), "8.00");
 
         // Apply time range with today
-        await cpHelpers.toggleTimeRangeMenu(dashboard);
-        await cpHelpers.selectRange(dashboard, 'today');
-        await cpHelpers.applyTimeRange(dashboard);
+        await cpHelpers.toggleFilterMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 'Date');
+        await cpHelpers.toggleMenuItemOption(dashboard, 'Date', 'March');
+
         assert.strictEqual(dashboard.$('.o_aggregate .o_value').text().trim(), "16.00");
         assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
-        // Apply range with today and comparison with previous period
-        await cpHelpers.toggleTimeRangeMenuBox(dashboard);
-        await cpHelpers.applyTimeRange(dashboard);
+        // Apply range with this month and comparison with previous period
+        await cpHelpers.toggleComparisonMenu(dashboard);
+        await cpHelpers.toggleMenuItem(dashboard, 'Date: Previous period');
+
         assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "300%");
         assert.hasClass(dashboard.$('.o_aggregate'), 'border-success');
         assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "16.00 vs 4.00");
 
-        // Apply range with last week and comparison with last year
-        await cpHelpers.selectRange(dashboard, 'last_week');
-        await cpHelpers.selectComparisonRange(dashboard, 'previous_year');
-        await cpHelpers.applyTimeRange(dashboard);
+        // Apply range with this month and comparison with last year
+        await cpHelpers.toggleMenuItem(dashboard, 'Date: Previous year');
         assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "-75%");
         assert.hasClass(dashboard.$('.o_aggregate'), 'border-danger');
         assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "4.00 vs 16.00");

@@ -28,7 +28,7 @@ var CohortView = AbstractView.extend({
         Renderer: CohortRenderer,
     }),
     viewType: 'cohort',
-    searchMenuTypes: ['filter', 'timeRange', 'favorite'],
+    searchMenuTypes: ['filter', 'comparison', 'favorite'],
 
     /**
      * @override

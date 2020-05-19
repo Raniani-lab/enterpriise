@@ -30,7 +30,7 @@
                         class="o_group_by_menu"
                         fields="fields"
                     />
-                    <TimeRangeMenu t-if="props.searchMenuTypes.includes('timeRange')"
+                    <TimeRangeMenu t-if="props.searchMenuTypes.includes('comparison')"
                         class="o_time_range_menu"
                         fields="fields"
                     />

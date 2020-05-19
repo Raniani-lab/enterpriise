@@ -9,7 +9,9 @@
                 <div class="content-group pos_iot_config" attrs="{'invisible': [('is_posbox', '=', False)]}">
                     <field name="iface_print_via_proxy" invisible="1"/>
                     <div class="mt16" id="btn_use_iot">
-                        <button string="Save" type="object" name="execute" class="oe_highlight"/>
+                        <div class="text-warning mt16 mb4">
+                            Save this page and come back here to set up the feature.
+                        </div>
                     </div>
                 </div>
             </xpath>

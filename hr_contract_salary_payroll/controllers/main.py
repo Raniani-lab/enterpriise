@@ -22,9 +22,6 @@ class HrContractSalary(HrContractSalary):
             'date_to': request.env['hr.payslip'].default_get(['date_to'])['date_to'],
         })
 
-        for worked_days_line_vals in payslip._get_worked_day_lines():
-            payslip.worked_days_line_ids += request.env['hr.payslip.worked_days'].sudo().new(worked_days_line_vals)
-
         payslip.with_context(salary_simulation=True, lang=None).compute_sheet()
 
         result['payslip_lines'] = [(

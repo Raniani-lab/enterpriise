@@ -46,8 +46,12 @@ class StockPicking(models.Model):
         res = super(StockPicking, self)._create_backorder()
         if self.env.context.get('skip_check'):
             return res
-        # remove quality check of unreceived product
-        self.sudo().mapped('check_ids').filtered(lambda x: x.quality_state == 'none').unlink()
+        # Transfer the quality checks from the original picking to the backorder
+        # note this will not apply to quality checks for partially completed move lines (quality_state!='none' at this point)
+        for backorder in res:
+            backorder.backorder_id.check_ids.filtered(lambda qc: qc.quality_state == 'none').write({
+                'picking_id': backorder.id,
+            })
         return res
 
     def _action_done(self):

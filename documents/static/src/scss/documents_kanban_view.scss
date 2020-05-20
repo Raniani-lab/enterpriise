@@ -33,6 +33,7 @@
 
             .o_kanban_image .o_kanban_image_wrapper {
                 background-color: $gray-200;
+                border-right: 1px solid gray('400');
             }
 
             .o_request_image .o_kanban_image_wrapper {

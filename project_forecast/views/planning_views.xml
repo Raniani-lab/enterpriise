@@ -8,8 +8,8 @@
         <field name="inherit_id" ref="planning.planning_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
-                <field name="project_id" optional="hide" readonly="1"/>
-                <field name="task_id" optional="hide" readonly="1" widget="task_with_hours"/>
+                <field name="project_id" optional="hide" />
+                <field name="task_id" optional="hide" widget="task_with_hours"/>
             </xpath>
         </field>
     </record>
@@ -21,7 +21,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id" context="{'default_allow_forecast': True}"/>
-                <field name="task_id" context="{'default_project_id': project_id}" attrs="{'invisible': [('project_id', '=', False)]}"  widget="task_with_hours"/>
+                <field name="task_id" context="{'default_project_id': project_id}" widget="task_with_hours"/>
             </xpath>
             <xpath expr="//field[@name='allocated_hours']" position="after">
                 <field name="allow_forecast" invisible="1"/>

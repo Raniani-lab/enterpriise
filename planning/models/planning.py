@@ -136,9 +136,9 @@ class Planning(models.Model):
     @api.depends('employee_id', 'template_id')
     def _compute_role_id(self):
         for slot in self:
-            if not slot.role_id and 'default_role_id' not in self.env.context:
-                if slot.employee_id and slot.employee_id.planning_role_ids:
-                    slot.role_id = slot.employee_id.planning_role_ids[0]
+            if not slot.role_id:
+                if slot.employee_id.default_planning_role_id:
+                    slot.role_id = slot.employee_id.default_planning_role_id
                 else:
                     slot.role_id = False
 

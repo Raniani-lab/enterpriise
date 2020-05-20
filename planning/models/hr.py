@@ -3,7 +3,7 @@
 import logging
 import uuid
 
-from odoo import fields, models, _
+from odoo import fields, models, _, api
 
 _logger = logging.getLogger(__name__)
 
@@ -14,7 +14,8 @@ class Employee(models.Model):
     def _default_employee_token(self):
         return str(uuid.uuid4())
 
-    planning_role_ids = fields.Many2many('planning.role', string="Default Planning Roles", groups='hr.group_hr_user')
+    default_planning_role_id = fields.Many2one('planning.role', string="Default Planning Role", groups='hr.group_hr_user')
+    planning_role_ids = fields.Many2many('planning.role', string="Planning Roles", groups='hr.group_hr_user', compute='_compute_planning_role_ids', store=True, readonly=False)
     employee_token = fields.Char('Security Token', default=_default_employee_token, copy=False, groups='hr.group_hr_user', readonly=True)
 
     _sql_constraints = [
@@ -62,3 +63,22 @@ class Employee(models.Model):
             }
         })
         return action
+
+    @api.depends('default_planning_role_id')
+    def _compute_planning_role_ids(self):
+        # Set the planning_role_ids to False where there's no value set yet, to avoid CacheMiss
+        for employee in self.filtered(lambda s: s.planning_role_ids is None):
+            employee.planning_role_ids = False
+
+        for employee in self.filtered(lambda s: s.default_planning_role_id):
+            if employee.default_planning_role_id and employee.default_planning_role_id not in employee.planning_role_ids:
+                employee.planning_role_ids |= employee.default_planning_role_id
+
+    def write(self, vals):
+        res = super(Employee, self).write(vals)
+
+        if 'default_planning_role_id' in vals or 'planning_role_ids' in vals:
+            # Ensures the default_planning_role_id is added to the planning_role_ids
+            self.env.add_to_compute(self._fields['planning_role_ids'], self)
+
+        return res

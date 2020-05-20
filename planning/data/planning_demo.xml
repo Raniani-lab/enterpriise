@@ -24,16 +24,20 @@
 
         <!-- Default Planning Role -->
         <record id="hr.employee_admin" model="hr.employee">
-            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_waiter'))]"/>
+            <field name="default_planning_role_id" ref="planning.planning_role_waiter"/>
+            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_waiter')), (4, ref('planning.planning_role_bartender'))]"/>
         </record>
         <record id="hr.employee_jth" model="hr.employee">
+            <field name="default_planning_role_id" ref="planning.planning_role_chef"/>
             <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_chef'))]"/>
         </record>
         <record id="hr.employee_qdp" model="hr.employee">
-            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_bartender'))]"/>
+            <field name="default_planning_role_id" ref="planning.planning_role_bartender"/>
+            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_bartender')), (4, ref('planning.planning_role_waiter'))]"/>
         </record>
         <record id="hr.employee_mit" model="hr.employee">
-            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_waiter'))]"/>
+            <field name="default_planning_role_id" ref="planning.planning_role_waiter"/>
+            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_waiter')), (4, ref('planning.planning_role_chef'))]"/>
         </record>
 
         <!-- Shift templates (morning shifts) -->

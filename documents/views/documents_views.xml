@@ -434,7 +434,6 @@
                             <field name="partner_id"/>
                         </group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" invisible="1"/>
                             <field name="activity_option"/>
                         </group>
                     </group>

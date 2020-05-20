@@ -282,8 +282,9 @@ class Planning(models.Model):
             start = pytz.utc.localize(self.start_datetime).astimezone(user_tz)
             start = start.replace(hour=int(h), minute=int(m))
             self.start_datetime = start.astimezone(pytz.utc).replace(tzinfo=None)
-            h, m = divmod(self.template_id.duration, 1)
-            delta = timedelta(hours=int(h), minutes=int(m * 60))
+            h = int(self.template_id.duration)
+            m = round(modf(self.template_id.duration)[0] * 60.0)
+            delta = timedelta(hours=int(h), minutes=int(m))
             self.end_datetime = fields.Datetime.to_string(self.start_datetime + delta)
         if self.template_id.role_id:
             self.role_id = self.template_id.role_id

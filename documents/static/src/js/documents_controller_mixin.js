@@ -109,7 +109,6 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         if ($node) {
             this.$buttons.appendTo($node);
         }
-        this.updateButtons();
     },
 
     //--------------------------------------------------------------------------

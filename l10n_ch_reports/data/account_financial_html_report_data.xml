@@ -306,7 +306,7 @@
         <field name="sequence" eval="2"/>
         <field name="parent_id" ref="account_financial_report_line_ch_28"/>
         <field name="groupby">account_id</field>
-        <field name="special_date_changer">strict_range</field>
+        <field name="special_date_changer">normal</field>
         <field name="domain" eval="[('account_id.code', '&gt;=', '290'), ('account_id.code', '&lt;', '2991')]"/>
         <field name="formulas">-sum</field>
     </record>

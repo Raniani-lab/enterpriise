@@ -636,6 +636,8 @@ class AccountBankStatementImport(models.TransientModel):
                     infoLine['type'] = 'information'
                     infoLine['sequence'] = len(statement['lines']) + 1
                     infoLine['ref'] = rmspaces(line[2:10])
+                    infoLine['ref_move'] = rmspaces(line[2:6])
+                    infoLine['ref_move_detail'] = rmspaces(line[6:10])
                     infoLine['transactionRef'] = rmspaces(line[10:31])
                     infoLine['transaction_family'] = rmspaces(line[32:34])
                     infoLine['transaction_code'] = rmspaces(line[34:36])
@@ -663,6 +665,8 @@ class AccountBankStatementImport(models.TransientModel):
                     comm_line['type'] = 'communication'
                     comm_line['sequence'] = len(statement['lines']) + 1
                     comm_line['ref'] = rmspaces(line[2:10])
+                    comm_line['ref_move'] = rmspaces(line[2:6])
+                    comm_line['ref_move_detail'] = rmspaces(line[6:10])
                     comm_line['communication'] = line[32:112]
                     statement['lines'].append(comm_line)
             elif line[0] == '8':
@@ -690,7 +694,7 @@ class AccountBankStatementImport(models.TransientModel):
             }
             temp_data = {}
             for line in statement['lines']:
-                to_add = statement_line and statement_line[-1]['ref'] == line.get('ref_move') and statement_line[-1] or temp_data
+                to_add = statement_line and statement_line[-1]['ref'][:4] == line.get('ref_move') and statement_line[-1] or temp_data
                 if line['type'] == 'information':
                     if line['communication_struct']:
                         to_add['narration'] = "\n".join([to_add.get('narration', ''), 'Communication: '] + parse_structured_communication(line['communication_type'], line['communication'])[1])
@@ -724,7 +728,7 @@ class AccountBankStatementImport(models.TransientModel):
                         note.extend(extend_notes)
                     elif line.get('communication'):
                         note.append(_('Communication') + ': ' + rmspaces(line['communication']))
-                    if not self.split_transactions and statement_line and line['ref_move'] == statement_line[-1]['ref']:
+                    if not self.split_transactions and statement_line and line['ref_move'] == statement_line[-1]['ref'][:4]:
                         to_add['amount'] = to_add.get('amount', 0) + line['amount']
                         to_add['narration'] = to_add.get('narration', '') + "\n" + "\n".join(note)
                     else:

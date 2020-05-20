@@ -13,7 +13,8 @@ class SignContract(Sign):
         super()._update_contract_on_signature(request_item, contract)
         # Only the applicant/employee has signed
         if request_item.sign_request_id.nb_closed == 1 and contract.car_id:
-            contract.car_id.future_driver_id = contract.employee_id.address_home_id
+            if contract.car_id and contract.driver_id != contract.employee_id.address_home_id:
+                contract.car_id.future_driver_id = contract.employee_id.address_home_id
         # Both applicant/employee and HR responsible have signed
         if request_item.sign_request_id.nb_closed == 2:
             if contract.new_car:

@@ -259,7 +259,7 @@ var ClientAction = AbstractAction.extend({
     },
 
     _focusNextInput: function (productionScheduleId, dateIndex, inputName) {
-        var tableSelector = '.table-responsive[data-id=' + productionScheduleId + ']';
+        var tableSelector = '.o_mps_content[data-id=' + productionScheduleId + ']';
         var rowSelector = 'tr[name=' + inputName + ']';
         var inputSelector = 'input[data-date_index=' + (dateIndex + 1) + ']';
         return $([tableSelector, rowSelector, inputSelector].join(' ')).select();
@@ -390,22 +390,22 @@ var ClientAction = AbstractAction.extend({
 
             var $table = $(QWeb.render('mrp_mps_production_schedule', {
                 manufacturingPeriods: this.manufacturingPeriods,
-                productionSchedule: state,
+                state: [state],
                 groups: this.groups,
                 formatFloat: this.formatFloat,
             }));
-            var $tableId = $('.table-responsive[data-id='+ state.id +']');
-            if ($tableId.length) {
-                $tableId.replaceWith($table);
+            var $tbody = $('.o_mps_content[data-id='+ state.id +']');
+            if ($tbody.length) {
+                $tbody.replaceWith($table);
             } else {
                 var $warehouse = false;
                 if ('warehouse_id' in state) {
-                    $warehouse = $('.table-responsive[data-warehouse_id='+ state.warehouse_id[0] +']');
+                    $warehouse = $('.o_mps_content[data-warehouse_id='+ state.warehouse_id[0] +']');
                 }
                 if ($warehouse.length) {
                     $warehouse.last().append($table);
                 } else {
-                    $('.o_mrp_mps').append($table);
+                    $('.o_mps_product_table').append($table);
                 }
             }
         }
@@ -523,9 +523,11 @@ var ClientAction = AbstractAction.extend({
         if (recodsLen) {
             $addProductButton.addClass('btn-secondary');
             $addProductButton.removeClass('btn-primary');
+            this.el.querySelector('.o_mps_product_table').classList.remove('d-none');
         } else {
             $addProductButton.addClass('btn-primary');
             $addProductButton.removeClass('btn-secondary');
+            this.el.querySelector('.o_mps_product_table').classList.add('d-none');
         }
         var toReplenish = _.filter(_.flatten(_.values(this.state)), function (mps) {
             if (_.where(mps.forecast_ids, {'to_replenish': true}).length) {
@@ -571,7 +573,7 @@ var ClientAction = AbstractAction.extend({
         ev.stopPropagation();
         var $target = $(ev.target);
         var dateIndex = $target.data('date_index');
-        var productionScheduleId = $target.closest('.table-responsive').data('id');
+        var productionScheduleId = $target.closest('.o_mps_content').data('id');
         var forecastQty = parseFloat($target.val());
         if (isNaN(forecastQty)){
             this._backToState(productionScheduleId);
@@ -590,7 +592,7 @@ var ClientAction = AbstractAction.extend({
         ev.stopPropagation();
         var $target = $(ev.target);
         var dateIndex = $target.data('date_index');
-        var productionScheduleId= $target.closest('.table-responsive').data('id');
+        var productionScheduleId= $target.closest('.o_mps_content').data('id');
         var replenishQty = parseFloat($target.val());
         if (isNaN(replenishQty)){
             this._backToState(productionScheduleId);
@@ -603,7 +605,7 @@ var ClientAction = AbstractAction.extend({
         ev.stopPropagation();
         var $target = $(ev.target);
         var dateIndex = $target.data('date_index');
-        var productionScheduleId = $target.closest('.table-responsive').data('id');
+        var productionScheduleId = $target.closest('.o_mps_content').data('id');
         this._removeQtyToReplenish(dateIndex, productionScheduleId);
     },
 
@@ -631,7 +633,7 @@ var ClientAction = AbstractAction.extend({
      */
     _onClickEdit: function (ev) {
         ev.stopPropagation();
-        var productionScheduleId = $(ev.target).closest('.table-responsive').data('id');
+        var productionScheduleId = $(ev.target).closest('.o_mps_content').data('id');
         this._editProduct(productionScheduleId);
     },
 
@@ -642,7 +644,7 @@ var ClientAction = AbstractAction.extend({
         var dateStop = $target.data('date_stop');
         var dateStr = this.manufacturingPeriods[$target.data('date_index')];
         var action = $target.data('action');
-        var productionScheduleId = $target.closest('.table-responsive').data('id');
+        var productionScheduleId = $target.closest('.o_mps_content').data('id');
         this._actionOpenDetails(productionScheduleId, action, dateStr, dateStart, dateStop);
     },
 
@@ -673,9 +675,9 @@ var ClientAction = AbstractAction.extend({
     _onClickReplenish: function (ev) {
         ev.stopPropagation();
         var productionScheduleId = [];
-        var $table = $(ev.target).closest('.table-responsive');
-        if ($table.length) {
-            productionScheduleId = [$table.data('id')];
+        var $tbody = $(ev.target).closest('.o_mps_content');
+        if ($tbody.length) {
+            productionScheduleId = [$tbody.data('id')];
         }
         this._actionReplenish(productionScheduleId);
     },
@@ -689,7 +691,7 @@ var ClientAction = AbstractAction.extend({
      */
     _onClickUnlink: function (ev) {
         ev.preventDefault();
-        var productionScheduleId = $(ev.target).closest('.table-responsive').data('id');
+        var productionScheduleId = $(ev.target).closest('.o_mps_content').data('id');
         this._unlinkProduct(productionScheduleId);
     },
 

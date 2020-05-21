@@ -30,7 +30,7 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
             'l10n_co_edi_header_resolucion_aplicable': report_text,
             'l10n_co_edi_header_actividad_economica': report_text,
             'l10n_co_edi_header_bank_information': report_text,
-            'vat': '0123456789',
+            'vat': '213123432-1',
             'phone': '+1 555 123 8069',
             'website': 'http://www.example.com',
             'email': 'info@yourcompany.example.com',
@@ -58,7 +58,7 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
             'zip': '4567',
             'city': 'Medellín',
             'state_id': cls.env.ref('base.state_co_02').id,
-            'vat': '9876543210',
+            'vat': '213.123.432-1',
         })
 
         cls.company_data_2['company'].partner_id.write({

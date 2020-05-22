@@ -103,18 +103,10 @@ class Task(models.Model):
         })
         super(Task, self - fsm_done_tasks)._compute_display_timer_buttons()
 
-    # determines if planned_date_begin and planned_date_end used for the gantt
-    # view should be visible on the task form view
     @api.depends('is_fsm')
     def _compute_display_fsm_dates(self):
-        has_group_no_one = self.env.user.user_has_groups('base.group_no_one')
         for task in self:
-            if task.is_fsm:
-                task.display_fsm_dates = True
-            elif has_group_no_one:
-                task.display_fsm_dates = True
-            else:
-                task.display_fsm_dates = False
+            task.display_fsm_dates = task.is_fsm
 
     @api.depends('partner_id')
     def _compute_has_complete_partner_address(self):

@@ -24,6 +24,9 @@
             <optional>
                 <attribute name="panel_title" />
             </optional>
+            <optional>
+                <attribute name="hide_title"/>
+            </optional>
             <zeroOrMore>
                 <optional>
                     <ref name="field"/>

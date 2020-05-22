@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 import datetime
 
 from odoo import api, exceptions, fields, models, _
@@ -10,6 +11,13 @@ class Project(models.Model):
     _inherit = 'project.project'
 
     allow_forecast = fields.Boolean("Planning", default=True, help="Enable planning tasks on the project.")
+    total_forecast_time = fields.Integer(compute='_compute_total_forecast_time',
+                                         help="Total number of forecast hours in the project rounded to the unit.")
+
+    def _compute_total_forecast_time(self):
+        for project in self:
+            forecast_data = self.env['planning.slot'].search([('project_id', '=', project.id)])
+            project.total_forecast_time = int(round(sum(slot.allocated_hours for slot in forecast_data)))
 
     def unlink(self):
         if self.env['planning.slot'].sudo().search_count([('project_id', 'in', self.ids)]) > 0:
@@ -27,13 +35,14 @@ class Task(models.Model):
     _inherit = 'project.task'
 
     allow_forecast = fields.Boolean('Allow Planning', readonly=True, related='project_id.allow_forecast', store=False)
-    forecast_hours = fields.Float('Forecast Hours', compute='_compute_forecast_hours', help="Number of hours forecast for this task (and its sub-tasks).")
+    forecast_hours = fields.Integer('Forecast Hours', compute='_compute_forecast_hours', help="Number of hours forecast for this task (and its sub-tasks), rounded to the unit.")
 
     def _compute_forecast_hours(self):
         forecast_data = self.env['planning.slot'].read_group([('task_id', 'in', self.ids + self._get_all_subtasks().ids)], ['allocated_hours', 'task_id'], ['task_id'])
         mapped_data = dict([(f['task_id'][0], f['allocated_hours']) for f in forecast_data])
         for task in self:
-            task.forecast_hours = mapped_data.get(task.id, 0) + sum(mapped_data.get(child_task.id, 0) for child_task in task._get_all_subtasks())
+            hours = mapped_data.get(task.id, 0) + sum(mapped_data.get(child_task.id, 0) for child_task in task._get_all_subtasks())
+            task.forecast_hours = int(round(hours))
 
     def unlink(self):
         if self.env['planning.slot'].sudo().search_count([('task_id', 'in', self.ids)]) > 0:

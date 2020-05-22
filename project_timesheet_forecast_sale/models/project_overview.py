@@ -174,7 +174,8 @@ class ProjectOverview(models.Model):
         action['context'] = context
 
         stat_buttons.append({
-            'name': _('Planning'),
+            'name': [_('Hours'), _('Forecast')],
+            'count': sum(self.mapped('total_forecast_time')),
             'icon': 'fa fa-tasks',
             'action': {
                 'data-model': 'planning.slot',

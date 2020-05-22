@@ -124,8 +124,6 @@ class TestExamples(common.SavepointCase):
         payslip_id.struct_id.journal_id = self.journal_id
 
         # Compute the payslip
-        if payslip_id.contract_id.name == "Contract For Roger The Fierce":
-            payslip_id = payslip_id.with_context(caca=True)
         payslip_id.compute_sheet()
 
         # Check that all is right

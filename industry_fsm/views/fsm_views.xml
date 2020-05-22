@@ -451,6 +451,18 @@
         <field name="context">{'module' : 'industry_fsm'}</field>
     </record>
 
+    <record id="project_view_tree_primary" model="ir.ui.view">
+        <field name="name">project.view.tree.primary</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+        </field>
+    </record>
+
     <record id="project_project_action_only_fsm" model="ir.actions.act_window" >
         <field name="name">Projects</field>
         <field name="res_model">project.project</field>
@@ -464,6 +476,7 @@
             'default_is_fsm': True,
             'default_allow_timesheets': True,
             'default_allow_timesheet_timer': True,
+            'tree_view_ref': 'industry_fsm.project_view_tree_primary',
         }</field>
     </record>
 

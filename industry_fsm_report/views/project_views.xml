@@ -109,7 +109,7 @@
         <field name="inherit_id" ref="project.view_task_tree2"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='project_id']" position="after">
-                <field name="worksheet_template_id" optional="show"/>
+                <field name="worksheet_template_id" optional="hide"/>
             </xpath>
         </field>
     </record>
@@ -159,7 +159,7 @@
                         <div class="o_setting_right_pane">
                             <label for="allow_worksheets"/>
                             <div class="text-muted" id="allow_billable_setting">
-                                Create and fill report on tasks
+                                Create and fill custom reports on tasks
                             </div>
                             <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
                         </div>
@@ -175,8 +175,19 @@
         <field name="inherit_id" ref="project.view_project"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
-                <field name="worksheet_template_id" optional="show"/>
+                <field name="worksheet_template_id" optional="hide"/>
             </xpath>
+        </field>
+    </record>
+
+    <record id="project_view_tree_primary" model="ir.ui.view">
+        <field name="name">project.view.tree.primary</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="industry_fsm.project_view_tree_primary"/>
+        <field name="arch" type="xml">
+            <field name="worksheet_template_id" position="attributes">
+                <attribute name="optional">show</attribute>
+            </field>
         </field>
     </record>
 
@@ -278,7 +289,8 @@
             'default_is_fsm': True,
             'default_allow_timesheets': True,
             'default_allow_timesheet_timer': True,
-            'default_allow_worksheets': True
+            'default_allow_worksheets': True,
+            'tree_view_ref': 'industry_fsm.project_view_tree_primary',
             }
         </field>
     </record>

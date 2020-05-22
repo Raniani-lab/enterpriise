@@ -11,7 +11,6 @@ Bridge module for project and enterprise
     'version': '1.0',
     'depends': ['project', 'web_map', 'web_gantt'],
     'data': [
-        'report/project_report_views.xml',
         'views/res_config_settings_views.xml',
         'views/project_task_views.xml',
         'views/assets.xml',

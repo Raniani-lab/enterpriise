@@ -29,7 +29,7 @@
 
     <t t-name="web_map.MapRenderer.PinList" owl="1">
         <div class="o_pin_list_container d-none d-lg-block col-2">
-            <div class="o_pin_list_header">
+            <div t-if="!props.hideTitle" class="o_pin_list_header">
                 <header>
                     <i class="fa fa-list"/>
                     <span t-esc="props.panelTitle"/>

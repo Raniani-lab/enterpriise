@@ -38,6 +38,22 @@
          </field>
     </record>
 
+    <record id="project_forecast_view_grid" model="ir.ui.view">
+        <field name="name">planning.slot.grid</field>
+        <field name="model">planning.slot</field>
+        <field name="arch" type="xml">
+            <grid string="Planning Analysis" edit="false">
+                <field name="project_id" type="row" section="1"/>
+                <field name="start_datetime" type="col">
+                    <range name="year" string="Year" span="year" step="month"/>
+                    <range name="month" string="Month" span="month" step="week"/>
+                    <range name="week" string="Week" span="week" step="day"/>
+                </field>
+                <field name="allocated_percentage" type="measure"/>
+            </grid>
+        </field>
+    </record>
+
     <!--
         Actions
     -->

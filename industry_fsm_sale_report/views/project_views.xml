@@ -9,7 +9,8 @@
                 'default_allow_timesheet_timer': True,
                 'default_allow_material': True,
                 'default_allow_billable': True,
-                'default_allow_worksheets': True
+                'default_allow_worksheets': True,
+                'tree_view_ref': 'industry_fsm.project_view_tree_primary',
             }
         </field>
     </record>

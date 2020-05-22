@@ -380,6 +380,7 @@ odoo.define('web_map.MapRenderer', function (require) {
             optional: true,
         },
         numbering: Boolean,
+        hideTitle: Boolean,
         panelTitle: String,
         offset: Number,
         partners: Array,

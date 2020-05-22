@@ -46,6 +46,7 @@ const MapView = AbstractView.extend({
         this.rendererParams.numbering = this.arch.attrs.routing ? true : false;
         this.rendererParams.defaultOrder = this.arch.attrs.default_order;
         this.rendererParams.panelTitle = this.arch.attrs.panel_title || params.displayName || _t('Items');
+        this.rendererParams.hideTitle = utils.toBoolElse(this.arch.attrs.hide_title || '', false);
 
         const hideName = utils.toBoolElse(this.arch.attrs.hide_name || '', false);
         this.rendererParams.hideName = hideName;

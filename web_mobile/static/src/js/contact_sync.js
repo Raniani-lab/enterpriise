@@ -31,14 +31,18 @@ var ContactSync = Widget.extend({
         var fieldNames = [
             'name', 'image_1920', 'parent_id', 'phone', 'mobile', 'email',
             'street', 'street2', 'city', 'state_id', 'zip', 'country_id',
-            'website', 'function', 'title',
+            'website', 'function',
         ];
         this._rpc({
             model: this.res_model,
             method: 'read',
             args: [this.res_id, fieldNames],
         }).then(function (r) {
-            mobile.methods.addContact(r[0]);
+            const contact = Object.assign({}, r[0], {
+                image: r[0].image_1920,
+            });
+            delete contact.image_1920;
+            mobile.methods.addContact(contact);
         });
     },
 });

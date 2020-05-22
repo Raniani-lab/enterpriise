@@ -159,7 +159,7 @@ QUnit.module('web_mobile', {
             email: "email",
             function: "function",
             id: 11,
-            image_1920: "image",
+            image: "image",
             mobile: "mobile",
             name: "coucou3",
             parent_id: [
@@ -170,7 +170,6 @@ QUnit.module('web_mobile', {
             state_id: "state_id",
             street: "street",
             street2: "street2",
-            title: "title",
             website: "website",
             zip: "zip"
         }, "all data should be correctly passed");

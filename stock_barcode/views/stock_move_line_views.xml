@@ -17,6 +17,7 @@
                 <div class="col-12 d-flex align-items-baseline">
                     <i class="fa fa-fw fa-lg fa-tags mr-3" title="Product"/>
                     <field name="product_id" placeholder="Product"
+                        context="{'default_type': 'product'}"
                         attrs="{'readonly': ['|', ('state', '=', 'done'), ('move_id', '!=', False)]}"
                         domain="[('type', 'in', ['product', 'consu']), '|', ('company_id', '=', False), ('company_id', '=', 'company_id')]"
                         required="1" nolabel="1"/>

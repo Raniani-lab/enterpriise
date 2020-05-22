@@ -182,17 +182,18 @@ class TestUi(odoo.tests.HttpCase):
             'user_type_id': self.env.ref('account.data_account_type_payable').id,
             'reconcile': True,
         })
-        self.env['ir.property'].create([{
-            'name': 'property_account_receivable_id',
-            'fields_id': self.env['ir.model.fields'].search([('model', '=', 'res.partner'), ('name', '=', 'property_account_receivable_id')], limit=1).id,
-            'value': 'account.account,%s' % (a_recv.id),
-            'company_id': company_id.id,
-        }, {
-            'name': 'property_account_payable_id',
-            'fields_id': self.env['ir.model.fields'].search([('model', '=', 'res.partner'), ('name', '=', 'property_account_payable_id')], limit=1).id,
-            'value': 'account.account,%s' % (a_pay.id),
-            'company_id': company_id.id,
-        }])
+        self.env['ir.property']._set_default(
+            'property_account_receivable_id',
+            'res.partner',
+            a_recv,
+            company_id,
+        )
+        self.env['ir.property']._set_default(
+            'property_account_payable_id',
+            'res.partner',
+            a_pay,
+            company_id,
+        )
 
         self.env.ref('base.user_admin').write({'company_ids': [(4, company_id.id)], 'name': 'Mitchell Admin'})
         self.env.ref('base.user_admin').partner_id.write({'email': 'mitchell.stephen@example.com', 'name': 'Mitchell Admin'})

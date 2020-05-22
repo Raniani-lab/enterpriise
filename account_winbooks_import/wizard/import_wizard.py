@@ -177,13 +177,7 @@ class WinbooksImportWizard(models.TransientModel):
                 property_name = 'property_tax_payable_account_id'
                 model_name = 'account.tax.group'
             if property_name:
-                field_id = self.env['ir.model.fields'].search([('model', '=', model_name), ('name', '=', property_name)], limit=1)
-                property_id = self.env['ir.property'].search([('name', '=', property_name), ('company_id', '=', self.env.company.id)])
-                value_reference = 'account.account,{}'.format(account.id)
-                if property_id:
-                    property_id.value_reference = value_reference
-                else:
-                    self.env['ir.property'].create({'name': property_name, 'company_id': self.env.company.id, 'fields_id': field_id.id, 'value_reference': value_reference})
+                self.env['ir.property']._set_default(property_name, model_name, account, self.env.company)
 
         _logger.info("Import Accounts")
         account_data = {}

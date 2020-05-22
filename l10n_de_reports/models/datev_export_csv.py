@@ -212,13 +212,10 @@ class DatevExportCSV(models.AbstractModel):
             # explicitely has a receivable/payable account set, we use that account, otherwise
             # we assume it is not an important partner and his datev virtual id will be the
             # l10n_de_datev_identifier set or the id + the start count parameter.
-            account = account.internal_type == 'receivable' and partner.property_account_receivable_id or partner.property_account_payable_id
-            prop = self.env['ir.property'].search([
-                ('name', '=', account.internal_type == 'receivable' and 'property_account_receivable_id' or 'property_account_payable_id'),
-                ('res_id', '=', 'res.partner,' + str(partner.id)),
-                ('value_reference', '=', 'account.account,'+str(account.id))
-            ])
-            if prop:
+            account = partner.property_account_receivable_id if account.internal_type == 'receivable' else partner.property_account_payable_id
+            fname   = "property_account_receivable_id"       if account.internal_type == "receivable" else "property_account_payable_id"
+            prop = self.env['ir.property']._get(fname, "res.partner", partner.id)
+            if prop == account:
                 return str(account.code).ljust(8, '0')
             param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count')
             start_count = param_start and param_start.isdigit() and int(param_start) or 100000000

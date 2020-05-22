@@ -19,9 +19,6 @@ class AccountChartTemplate(models.Model):
     def _configure_payroll_account_data(self, companies):
         accounts_codes = ['453000', '454200', '455200', '620200', '620220', '623100', '749200']
         belgian_structures = self.env['hr.payroll.structure'].search([('country_id', '=', self.env.ref('base.be').id)])
-        journal_field_id = self.env['ir.model.fields'].search([
-            ('model', '=', 'hr.payroll.structure'),
-            ('name', '=', 'journal_id')], limit=1)
 
         for company in companies:
             self = self.with_company(company)
@@ -52,13 +49,11 @@ class AccountChartTemplate(models.Model):
                     'default_debit_account_id': accounts['620200'].id,
                 })
 
-                self.env['ir.property'].create([{
-                    'name': 'structure_journal_id',
-                    'company_id': company.id,
-                    'fields_id': journal_field_id.id,
-                    'value_reference': 'account.journal,%s' % journal.id,
-                    'res_id': 'hr.payroll.structure,%s' % structure.id,
-                } for structure in belgian_structures])
+                self.env['ir.property']._set_multi(
+                    "journal_id",
+                    "hr.payroll.structure",
+                    {structure.id: journal for structure in belgian_structures},
+                )
 
             # CP200: Employees 13th Month
 

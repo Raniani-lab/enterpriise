@@ -91,7 +91,7 @@ class LandingCost(InvoiceTransactionCase):
         purchase.button_confirm()
         picking_purchase = purchase.picking_ids
         picking_purchase.move_line_ids.write({'qty_done': 2})
-        picking_purchase.action_done()
+        picking_purchase.button_validate()
         landing = self.landing.create({
             'l10n_mx_edi_customs_number': '15  48  3009  0001234',
             'picking_ids': [(4, picking_purchase.id)],
@@ -112,14 +112,15 @@ class LandingCost(InvoiceTransactionCase):
         # Generate two moves for procurement by partial delivery
         picking_sale.action_assign()
         picking_sale.move_line_ids.write({'qty_done': 1})
-        backorder_wiz_id = picking_sale.button_validate()['res_id']
-        backorder_wiz = self.env['stock.backorder.confirmation'].browse(
-            [backorder_wiz_id])
-        backorder_wiz.process()
+        res_dict = picking_sale.button_validate()
+        wizard = self.env[(res_dict.get('res_model'))].browse(
+        res_dict.get('res_id')).with_context(res_dict['context'])
+        wizard.process()
+
         picking_backorder = sale.picking_ids.filtered(
             lambda r: r.state == 'assigned')
         picking_backorder.move_line_ids.write({'qty_done': 1})
-        picking_backorder.action_done()
+        picking_backorder.button_validate()
 
         wizard = self.env['sale.advance.payment.inv'].create({
             'advance_payment_method': 'delivered',

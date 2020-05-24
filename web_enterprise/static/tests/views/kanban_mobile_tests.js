@@ -77,8 +77,8 @@ QUnit.module('Views', {
                 'partner,false,search': `
                     <search>
                         <searchpanel>
-                            <field name="product_id" enable_counters="1"/>
-                            <field name="state" select="multi" enable_counters="1"/>
+                            <field name="product_id" expand="1" enable_counters="1"/>
+                            <field name="state" expand="1" select="multi" enable_counters="1"/>
                         </searchpanel>
                     </search>
                 `,

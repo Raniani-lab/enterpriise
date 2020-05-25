@@ -71,7 +71,7 @@ class StudioApprovalRule(models.Model):
                     )
 
     def write(self, vals):
-        write_readonly_fields = bool(set(vals.keys()) & {'group_id', 'model', 'method', 'action_id'})
+        write_readonly_fields = bool(set(vals.keys()) & {'group_id', 'model_id', 'method', 'action_id'})
         if write_readonly_fields and any(rule.entry_ids for rule in self):
             raise UserError(_(
                 "Rules with existing entries cannot be modified since it would break existing "

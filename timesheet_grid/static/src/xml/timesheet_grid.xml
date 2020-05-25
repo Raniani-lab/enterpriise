@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+
+    <t t-name="timesheet_grid.GridRows" t-inherit="web_grid.GridRows" t-inherit-mode="extension" owl="1">
+        <xpath expr="//th/div" position="inside">
+            <t t-if="showTimer">
+                <t t-set="timesheet" t-value="grid.rows[rowlabel_index].timesheet" />
+                <t t-set="pathrow" t-value="path.concat([rowlabel_index]).join('.')"/>
+                <TimerComponent timesheet="timesheet" path="pathrow" grid="props.data" serverTime="props.serverTime"/>
+            </t>
+        </xpath>
+    </t>
+
+    <t t-name="timesheet_grid.Cell" t-inherit="web_grid.Cell" t-inherit-mode="extension" owl="1">
+        <xpath expr="//td" position="replace">
+            <t t-set="timesheet" t-value="grid.rows[rowIndex].timesheet" />
+            <td t-att-class="{
+                o_grid_current: cell.is_current,
+                o_cell_highlighted: timesheet and timesheet.timer_start
+                }">
+                <t t-set="cellPath" t-value="path.concat([rowIndex, cell_index]).join('.')"/>
+                <t t-set="cellReadOnly" t-value="!props.editableCells || cell.readonly"/>
+                <div t-att-class="_getCellClassMap(cell)" t-attf-data-path="cellPath">
+                    <t t-if="cell.size or !cellReadOnly">
+                        <i class="fa fa-search-plus o_grid_cell_information" t-on-click="_onClickCellInformation(cellPath)"
+                            title="See all the records aggregated in this cell">
+                        </i >
+                    </t>
+                    <t t-call="web_grid.CellValue"/>
+                </div>
+            </td>
+        </xpath>
+    </t>
+
+    <span t-name="timesheet_grid.timer" class="d-inline-flex" owl="1">
+        <t t-if="timesheet and timesheet.timer_start">
+            <span class="mr-3 font-weight-bold text-danger" id="display_timer">
+                <t t-esc="timerString"/>
+            </span>
+        </t>
+        <button t-att-class="propsButton.class" t-att-value="propsButton.value" t-att-title="propsButton.title"
+                t-att-aria-label="propsButton.arialabel" t-att-ariapressed="propsButton.ariapressed" type="button"
+                t-att-name="propsButton.name" t-on-click="_onClickTimer()">
+            <i t-att-class="propsIcon.class"/>
+        </button>
+    </span>
+</templates>

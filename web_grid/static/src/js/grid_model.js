@@ -4,7 +4,9 @@ odoo.define('web_grid.GridModel', function (require) {
 var AbstractModel = require('web.AbstractModel');
 var concurrency = require('web.concurrency');
 
-return AbstractModel.extend({
+const { _t } = require('web.core');
+
+const GridModel = AbstractModel.extend({
     /**
      * GridModel
      *
@@ -49,7 +51,7 @@ return AbstractModel.extend({
      * @returns {Promise<integer[]>} the list of ids used in the grid
      */
     getIds: function () {
-        var data = this._gridData;
+        var data = this._gridData.data;
         if (!_.isArray(data)) {
             data = [data];
         }
@@ -98,6 +100,7 @@ return AbstractModel.extend({
      * @returns {Promise}
      */
     load: function (params) {
+        this.fields = params.fields;
         this.modelName = params.modelName;
         this.rowFields = params.rowFields;
         this.sectionField = params.sectionField;
@@ -155,6 +158,56 @@ return AbstractModel.extend({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     * @param {Object[]} grid
+     * @returns {{super: number, rows: {}, columns: {}}}
+     */
+    _computeTotals: function (grid) {
+        const totals = {
+            super: 0,
+            rows: {},
+            columns: {}
+        };
+        for (let i = 0; i < grid.length; i++) {
+            const row = grid[i];
+            for (let j = 0; j < row.length; j++) {
+                const cell = row[j];
+                totals.super += cell.value;
+                totals.rows[i] = (totals.rows[i] || 0) + cell.value;
+                totals.columns[j] = (totals.columns[j] || 0) + cell.value;
+            }
+        }
+        return totals;
+    },
+    /**
+     * @private
+     * @param {Object} rows
+     * @param {boolean} grouped
+     * @returns {string[]}
+     */
+    _getRowLabel(row, grouped) {
+        let groupBy = this.groupedBy;
+        if (grouped) {
+            groupBy = groupBy.slice(1);
+        }
+        const rowValues = [];
+        for (let i = 0; i < groupBy.length; i++) {
+            const rowField = groupBy[i];
+            let value = row.values[rowField];
+            const fieldName = rowField.split(':')[0]; // remove groupby function (:day, :month...)
+            const fieldType = this.fields[fieldName].type;
+            if (fieldType === 'selection') {
+                value = this.fields[fieldName].selection.find(function (choice) {
+                    return choice[0] === value;
+                });
+            }
+            value = ["many2one", "selection"].includes(fieldType) ? value[1] : value;
+            rowValues.push(value);
+        }
+        return rowValues;
+    },
     /**
      * @private
      * @param {string[]} groupBy
@@ -215,18 +268,27 @@ return AbstractModel.extend({
                 return self._fetchSectionGrid(groupBy, group);
             }));
         }).then(function (results) {
-            self._gridData = results;
-            self._gridData.groupBy = groupBy;
-            self._gridData.colField = self.colField;
-            self._gridData.cellField = self.cellField;
-            self._gridData.range = self.currentRange.name;
-            self._gridData.context = self.context;
-
-            // set the prev & next in the state for grouped
-            var r0 = results[0];
-            self._gridData.prev = r0 && r0.prev;
-            self._gridData.next = r0 && r0.next;
-            self._gridData.initial = r0 && r0.initial;
+            if (!(_.isEmpty(results) || _.reduce(results, function (m, it) {
+                    return _.isEqual(m.cols, it.cols) && m;
+                }))) {
+                throw new Error(_t("The sectioned grid view can't handle groups with different columns sets"));
+            }
+            results.forEach((group, groupIndex) => {
+                results[groupIndex].totals = self._computeTotals(group.grid);
+                group.rows.forEach((row, rowIndex) => {
+                    results[groupIndex].rows[rowIndex].label = self._getRowLabel(row, true);
+                });
+            });
+            self._gridData = {
+                isGrouped: true,
+                data: results,
+                totals: self._computeTotals(_.flatten(_.pluck(results, 'grid'), true)),
+                groupBy,
+                colField: self.colField,
+                cellField: self.cellField,
+                range: self.currentRange.name,
+                context: self.context,
+            };
         });
     },
     /**
@@ -264,27 +326,37 @@ return AbstractModel.extend({
     _fetchUngroupedData: function (groupBy) {
         var self = this;
         return this._rpc({
-            model: self.modelName,
-            method: 'read_grid',
-            kwargs: {
-                row_fields: groupBy,
-                col_field: self.colField,
-                cell_field: self.cellField,
-                domain: self.domain,
-                range: self.currentRange,
-                readonly_field: this.readonlyField,
-            },
-            context: self.getContext(),
-        })
-        .then(function (result) {
-            self._gridData = result;
-            self._gridData.groupBy = groupBy;
-            self._gridData.colField = self.colField;
-            self._gridData.cellField = self.cellField;
-            self._gridData.range = self.currentRange.name;
-            self._gridData.context = self.context;
-        });
+                model: self.modelName,
+                method: 'read_grid',
+                kwargs: {
+                    row_fields: groupBy,
+                    col_field: self.colField,
+                    cell_field: self.cellField,
+                    domain: self.domain,
+                    range: self.currentRange,
+                    readonly_field: this.readonlyField,
+                },
+                context: self.getContext(),
+            })
+            .then(function (result) {
+                const rows = result.rows;
+                rows.forEach((row, rowIndex) => {
+                    result.rows[rowIndex].label = self._getRowLabel(row, false);
+                });
+                self._gridData = {
+                    isGrouped: false,
+                    data: [result],
+                    totals: self._computeTotals(result.grid),
+                    groupBy,
+                    colField: self.colField,
+                    cellField: self.cellField,
+                    range: self.currentRange.name,
+                    context: self.context,
+                };
+            });
     },
 });
+
+return GridModel;
 
 });

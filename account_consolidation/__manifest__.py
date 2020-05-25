@@ -5,7 +5,7 @@
     'summary': """All you need to make financial consolidation""",
     'description': """All you need to make financial consolidation""",
     'author': "Odoo S.A.",
-    'depends': ['account_reports'],
+    'depends': ['account_reports','web_grid'],
     'data': [
         'security/account_consolidation_security.xml',
         'security/ir.model.access.csv',

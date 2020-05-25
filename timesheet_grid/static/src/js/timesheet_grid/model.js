@@ -46,7 +46,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
         /**
          * Update state
          *
-         * When the user click on a timer button, we need to update the state without reordered the data.
+         * When the user click on a timer button, we need to update the state without reordering the data.
          */
         actionTimer: async function (state) {
             await this.reload();
@@ -55,8 +55,8 @@ odoo.define('timesheet_grid.GridModel', function (require) {
 
             const array = [];
 
-            while (state.hasOwnProperty(i)) {
-                array.push(state[i]);
+            while (state.data.hasOwnProperty(i)) {
+                array.push(state.data[i]);
                 i += 1;
             }
 
@@ -65,24 +65,24 @@ odoo.define('timesheet_grid.GridModel', function (require) {
             // Get fields containing in rowFields without the sectionField
             const fields = _.difference(this.rowFields, [this.sectionField]);
 
-            while (this._gridData.hasOwnProperty(i)) {
+            while (this._gridData.data.hasOwnProperty(i)) {
                 array.some((el, index) => {
-                    if (_.isEqual(el.__label, this._gridData[i].__label)) {
-                        state[index].cols = this._gridData[i].cols;
-                        if (this._checkRowsSameOrder(state[index].rows, this._gridData[i].rows, fields)) {
+                    if (_.isEqual(el.__label, this._gridData.data[i].__label)) {
+                        state.data[index].cols = this._gridData.data[i].cols;
+                        if (this._checkRowsSameOrder(state.data[index].rows, this._gridData.data[i].rows, fields)) {
                             // Then same order
-                            state[index].grid = this._gridData[i].grid;
-                            state[index].rows = this._gridData[i].rows;
+                            state.data[index].grid = this._gridData.data[i].grid;
+                            state.data[index].rows = this._gridData.data[i].rows;
                         } else {
                             // Update state with the same order than the old state
                             const {rows, grid} = this._updateGrid(
-                                {rows: state[index].rows, grid: state[index].grid},
-                                {rows: this._gridData[i].rows, grid: this._gridData[i].grid},
+                                {rows: state.data[index].rows, grid: state.data[index].grid},
+                                {rows: this._gridData.data[i].rows, grid: this._gridData.data[i].grid},
                                 fields
                             );
 
-                            state[index].rows = rows;
-                            state[index].grid = grid;
+                            state.data[index].rows = rows;
+                            state.data[index].grid = grid;
                         }
 
                         return true;
@@ -169,9 +169,8 @@ odoo.define('timesheet_grid.GridModel', function (require) {
             let i = 0;
             const promises = [];
 
-            while (this._gridData.hasOwnProperty(i)) {
-                const { rows } = this._gridData[i];
-
+            while (this._gridData.data.hasOwnProperty(i)) {
+                const { rows } = this._gridData.data[i];
                 if (rows.length > 0) {
                     for (const [index, row] of rows.entries()) {
                         promises.push(this._searchTimesheet(row.domain, index, i));
@@ -186,7 +185,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
                 for (const data of timesheets) {
                     if (data) {
                         const {rowIndex, gridIndex, timesheet, project} = data;
-                        const { rows, grid } = this._gridData[gridIndex];
+                        const { rows, grid } = this._gridData.data[gridIndex];
                         if (project) {
                             rows[rowIndex].project = project;
                         }

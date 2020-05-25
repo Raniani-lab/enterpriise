@@ -12,13 +12,10 @@ var qweb = core.qweb;
 var _t = core._t;
 
 var GridController = AbstractController.extend({
-    custom_events: _.extend({}, AbstractController.prototype.custom_events, {
+    custom_events: Object.assign({}, AbstractController.prototype.custom_events, {
         'cell_edited': '_onCellEdited',
+        'open_cell_information': '_onOpenCellInformation',
     }),
-    events: {
-        'click .o_grid_cell_information': '_onClickCellInformation',
-        'focus .o_grid_input': '_onGridInputFocus',
-    },
 
     /**
      * @override
@@ -46,11 +43,12 @@ var GridController = AbstractController.extend({
      * @param {jQuery} [$node]
      */
     renderButtons: function ($node) {
-        this.$buttons = $(qweb.render('grid.GridArrows', { widget: {
-            _ranges: this.ranges,
-            _buttons: this.navigationButtons,
-            allowCreate: this.canCreate,
-        },
+        this.$buttons = $(qweb.render('grid.GridArrows', {
+            widget: {
+                _ranges: this.ranges,
+                _buttons: this.navigationButtons,
+                allowCreate: this.canCreate,
+            },
             isMobile: config.device.isMobile
         }));
         this.$buttons.on('click', '.o_grid_button_add', this._onAddLine.bind(this));
@@ -71,10 +69,10 @@ var GridController = AbstractController.extend({
         if (!this.$buttons) {
             return;
         }
-        var state = this.model.get();
-        this.$buttons.find('.grid_arrow_previous').toggleClass('d-none', !state.prev);
-        this.$buttons.find('.grid_arrow_next').toggleClass('d-none', !state.next);
-        this.$buttons.find('.grid_button_initial').toggleClass('d-none', !state.initial);
+        const state = this.model.get();
+        this.$buttons.find('.grid_arrow_previous').toggleClass('d-none', !state.data[0].prev);
+        this.$buttons.find('.grid_arrow_next').toggleClass('d-none', !state.data[0].next);
+        this.$buttons.find('.grid_button_initial').toggleClass('d-none', !state.data[0].initial);
         this.$buttons.find('.grid_arrow_range').removeClass('active');
         this.$buttons.find('.grid_arrow_range[data-name=' + this.currentRange + ']').addClass('active');
     },
@@ -118,7 +116,7 @@ var GridController = AbstractController.extend({
                 return self.model.reload();
             }).then(function () {
                 var state = self.model.get();
-                return self.renderer.updateState(state, {});
+                return self.renderer.update(state);
             }).then(function () {
                 self.updateButtons(state);
             });
@@ -166,9 +164,9 @@ var GridController = AbstractController.extend({
     _onCellEdited: function (event) {
         var state = this.model.get();
         this._adjust({
-            row: utils.into(state, event.data.row_path),
-            col: utils.into(state, event.data.col_path),
-            value: utils.into(state, event.data.cell_path).value,
+            row: utils.into(state.data, event.data.row_path),
+            col: utils.into(state.data, event.data.col_path),
+            value: utils.into(state.data, event.data.cell_path).value,
         }, event.data.value)
         .then(function () {
             if (event.data.doneCallback !== undefined) {
@@ -179,7 +177,7 @@ var GridController = AbstractController.extend({
             if (event.data.doneCallback !== undefined) {
                 event.data.doneCallback();
             }
-        })
+        });
     },
     /**
      * @private
@@ -207,48 +205,42 @@ var GridController = AbstractController.extend({
     },
     /**
      * @private
-     * @param {MouseEvent} e
+     * @param {OwlEvent} ev
      */
-    _onClickCellInformation: function (e) {
+    _onOpenCellInformation: function (ev) {
         var self = this;
-        var $target = $(e.target);
-        var cell_path = $target.parent().attr('data-path').split('.');
+        var cell_path = ev.data.path.split('.');
         var row_path = cell_path.slice(0, -3).concat(['rows'], cell_path.slice(-2, -1));
         var state = this.model.get();
-        var cell = utils.into(state, cell_path);
-        var row = utils.into(state, row_path);
+        var cell = utils.into(state.data, cell_path);
+        var row = utils.into(state.data, row_path);
 
-        var groupFields = state.groupBy.slice(_.isArray(state) ? 1 : 0);
+        var groupFields = state.groupBy.slice(state.isGrouped ? 1 : 0);
         var label = _.map(groupFields, function (g) {
             return row.values[g][1] || _t('Undefined');
         }).join(': ');
-
         // pass group by, section and col fields as default in context
         var cols_path = cell_path.slice(0, -3).concat(['cols'], cell_path.slice(-1));
-        var col = utils.into(state, cols_path);
+        var col = utils.into(state.data, cols_path);
         var column_value = col.values[state.colField][0];
-        if(!column_value)
-        {
+        if (!column_value) {
             column_value = false;
-        }
-        else if(!_.isNumber(column_value))
-        {
-            column_value = column_value.split("/")[0]
+        } else if (!_.isNumber(column_value)) {
+            column_value = column_value.split("/")[0];
         }
         var ctx = _.extend({}, this.context);
-
-        var sectionField = _.find(this.renderer.fields ,function(res) {
+        var sectionField = _.find(this.renderer.fields, function (res) {
             return self.model.sectionField === res.name;
         });
         if (this.model.sectionField && state.groupBy && state.groupBy[0] === this.model.sectionField) {
-            var value = state[parseInt(cols_path[0])].__label;
+            var value = state.data[parseInt(cols_path[0])].__label;
             ctx['default_' + this.model.sectionField] = _.isArray(value) ? value[0] : value;
         }
         _.each(groupFields, function (field) {
-            ctx['default_'+field] = row.values[field][0] || false;
+            ctx['default_' + field] = row.values[field][0] || false;
         });
 
-        ctx['default_'+state.colField] = column_value;
+        ctx['default_' + state.colField] = column_value;
 
         ctx['create'] = this.canCreate && !cell.readonly;
         ctx['edit'] = this.activeActions.edit && !cell.readonly;
@@ -266,22 +258,11 @@ var GridController = AbstractController.extend({
     },
     /**
      * @private
-     * @param {MouseEvent} e
-     */
-    _onGridInputFocus: function (e) {
-        var selection = window.getSelection();
-        var range = document.createRange();
-        range.selectNodeContents(e.target);
-        selection.removeAllRanges();
-        selection.addRange(range);
-    },
-    /**
-     * @private
      * @param {string} dir either 'prev', 'initial' or 'next
      */
     _onPaginationChange: function (dir) {
         var state = this.model.get();
-        this.update({pagination: state[dir]});
+        this.update({pagination: state.data[0][dir]});
     },
     /**
      * @private

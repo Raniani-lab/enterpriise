@@ -3,6 +3,7 @@ odoo.define('web_grid.GridModel', function (require) {
 
 var AbstractModel = require('web.AbstractModel');
 var concurrency = require('web.concurrency');
+var utils = require('web.utils');
 
 const { _t } = require('web.core');
 
@@ -153,6 +154,41 @@ const GridModel = AbstractModel.extend({
             }
         }
         return this._fetch(this.groupedBy);
+    },
+    reloadCell: function (cell, cellField, colField) {
+        var self = this;
+        var domain = cell.col.domain.concat(this.domain);
+        var domainRow = cell.row.values;
+        for (var value in domainRow) {
+            domain = domain.concat([[value.toString(), '=', domainRow[value][0]]]);
+        }
+        if (this._gridData.isGrouped) {
+            var groupLabel = this._gridData.data[cell.cell_path[0]].__label;
+            domain = domain.concat([[this._gridData.groupBy[0], '=', groupLabel[0]]]);
+        }
+
+        return this._rpc({
+            model: this.modelName,
+            method: 'read_group',
+            kwargs: {
+                domain: domain,
+                fields: [cellField],
+                groupby: [colField],
+            },
+            context: this.getContext()
+        }).then(function (result) {
+            if (result.length === 0 || !(cellField in result[0])) {
+                return Promise.resolve();
+            }
+            var currentCell = utils.into(self._gridData.data, cell.cell_path);
+            currentCell.value = result[0][cellField];
+            currentCell.size = result[0][colField + '_count'];
+            currentCell.domain = domain;
+            self._gridData.data.forEach((group, groupIndex) => {
+                self._gridData.data[groupIndex].totals = self._computeTotals(group.grid);
+            });
+            self._gridData.totals = self._computeTotals(_.flatten(_.pluck(self._gridData.data, 'grid'), true));
+        });
     },
 
     //--------------------------------------------------------------------------

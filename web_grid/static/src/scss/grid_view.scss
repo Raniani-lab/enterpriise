@@ -44,6 +44,7 @@
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
+                text-align: left;
                 &:before {
                     content: "/\00a0";
                     padding: 0 2px;
@@ -53,6 +54,7 @@
                 }
                 &:last-child {
                     flex: 100 1 auto;
+                    padding-right: 0;
                 }
             }
         }

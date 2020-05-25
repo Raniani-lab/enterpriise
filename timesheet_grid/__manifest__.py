@@ -23,6 +23,7 @@
     ],
     'qweb': [
         'static/src/xml/timesheet_grid.xml',
+        'static/src/xml/timer_m2o.xml',
     ],
     'website': ' https://www.odoo.com/page/timesheet-mobile-app',
     'auto_install': ['web_grid', 'hr_timesheet'],

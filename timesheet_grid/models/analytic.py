@@ -62,12 +62,14 @@ class AnalyticLine(models.Model):
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
 
-        last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
+        last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=15)).date()
         domain_search = [
             ('project_id', '!=', False),
             ('date', '>=', last_month),
             ('date', '<=', grid_anchor)
         ]
+
+        domain_project_task = defaultdict(list)
 
         # check if project_id or employee_id is in domain
         # if not then group_expand return None
@@ -77,14 +79,17 @@ class AnalyticLine(models.Model):
             # then we are in 'My Timesheet' page.
             if len(rule) == 3:
                 name, operator, value = rule
-                if operator in ['=', '!=']:
-                    if name in ['project_id', 'employee_id']:
+                if operator in ['=', '!=', 'ilike', 'not ilike']:
+                    if name in ['project_id', 'employee_id', 'task_id']:
                         field = name
                         domain_search.append((name, operator, value))
                     elif name == 'user_id':
                         domain_search.append((name, operator, value))
-                elif operator == ['ilike', 'not ilike']:  # When the user want to filter the results
-                    domain_search.append((name, operator, value))
+                if name in ['project_id', 'task_id']:
+                    if operator in ['=', '!='] and value:
+                        domain_project_task[name].append(('id', operator, value))
+                    elif operator in ['ilike', 'not ilike']:
+                        domain_project_task[name].append(('name', operator, value))
 
         if not field:
             return result
@@ -109,6 +114,40 @@ class AnalyticLine(models.Model):
                 seen.append(k)
                 if not any(record == row for row in res_rows):
                     rows.append({'values': record, 'domain': [('id', '=', timesheet.id)]})
+
+        def read_row_fake_value(row_field, project, task):
+            if row_field == 'project_id':
+                return (project or task.project_id).name_get()[0]
+            elif row_field == 'task_id' and task:
+                return task.name_get()[0]
+            else:
+                return False
+
+        if 'project_id' in domain_project_task:
+            project_ids = self.env['project.project'].search(domain_project_task['project_id'])
+            for project_id in project_ids:
+                k = tuple(read_row_fake_value(f, project_id, False) for f in row_fields)
+                if k not in seen:  # check if it's not a duplicated row
+                    record = {
+                        row_field: read_row_fake_value(row_field, project_id, False)
+                        for row_field in row_fields
+                    }
+                    seen.append(k)
+                    if not any(record == row for row in res_rows):
+                        rows.append({'values': record, 'domain': [('id', '=', -1)]})
+
+        if 'task_id' in domain_project_task:
+            task_ids = self.env['project.task'].search(domain_project_task['task_id'])
+            for task_id in task_ids:
+                k = tuple(read_row_fake_value(f, False, task_id) for f in row_fields)
+                if k not in seen:  # check if it's not a duplicated row
+                    record = {
+                        row_field: read_row_fake_value(row_field, False, task_id)
+                        for row_field in row_fields
+                    }
+                    seen.append(k)
+                    if not any(record == row for row in res_rows):
+                        rows.append({'values': record, 'domain': [('id', '=', -1)]})
 
         # _grid_make_empty_cell return a dict, in this dictionary,
         # we need to check if the cell is in the current date,
@@ -288,32 +327,59 @@ class AnalyticLine(models.Model):
         if not self.user_timer_id.timer_start and self.display_timer:
             super(AnalyticLine, self).action_timer_start()
 
-    def _add_timesheet_time(self, minutes_spent):
+    def _add_timesheet_time(self, minutes_spent, try_to_match=False):
         if self.unit_amount == 0 and not minutes_spent:
             # Check if unit_amount equals 0,
             # if yes, then remove the timesheet
             self.unlink()
+            return
+        minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
+        rounding = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_rounding', 0))
+        minutes_spent = self._timer_rounding(minutes_spent, minimum_duration, rounding)
+        amount = self.unit_amount + minutes_spent * 60 / 3600
+        if not try_to_match or self.name != '/':
+            self.write({'unit_amount': amount})
+            return
+
+        last_timesheet_id = self.search([
+            ('id', '!=', self.id),
+            ('user_id', '=', self.env.user.id),
+            ('project_id', '=', self.project_id.id),
+            ('task_id', '=', self.task_id.id),
+            ('date', '=', fields.Date.today()),
+        ], limit=1)
+        # If the last timesheet of the day for this project and task has no description,
+        # we match both together.
+        if last_timesheet_id.name == '/' and not last_timesheet_id.validated:
+            last_timesheet_id.unit_amount += amount
+            self.unlink()
         else:
-            minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
-            rounding = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_rounding', 0))
-            minutes_spent = self._timer_rounding(minutes_spent, minimum_duration, rounding)
-            amount = self.unit_amount + minutes_spent * 60 / 3600
             self.write({'unit_amount': amount})
 
-    def action_timer_stop(self):
+    def action_timer_stop(self, try_to_match=False):
         """ Action stop the timer of the current timesheet
+            try_to_match: if true, we try to match with another timesheet which corresponds to the following criteria:
+            1. Neither of them has a description
+            2. The last one is not validated
+            3. Match user, project task, and must be the same day.
 
             * Override method of hr_timesheet module.
         """
+        if self.env.user == self.sudo().user_id:
+            # sudo as we can have a timesheet related to a company other than the current one.
+            self = self.sudo()
         if self.validated:
             raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
         if self.user_timer_id.timer_start and self.display_timer:
             minutes_spent = super(AnalyticLine, self).action_timer_stop()
-            self._add_timesheet_time(minutes_spent)
+            self._add_timesheet_time(minutes_spent, try_to_match)
 
     def action_timer_unlink(self):
         """ Action unlink the timer of the current timesheet
         """
+        if self.env.user == self.sudo().user_id:
+            # sudo as we can have a timesheet related to a company other than the current one.
+            self = self.sudo()
         self.user_timer_id.unlink()
         if not self.unit_amount:
             self.unlink()
@@ -322,31 +388,99 @@ class AnalyticLine(models.Model):
         self.action_timer_stop()
 
     @api.model
-    def create_timesheet_with_timer(self, vals):
-        """ Create timesheet when user launch timer in grid view.
-            :param vals: dictionary contains task_id or project_id for the timesheet
-            Return:
-                a dictionary contains the information required
-                about the timesheet created for grid view.
-        """
-        record = {'name': _('Timesheet Adjustment')}
-        if 'task_id' in vals:
-            task = self.env['project.task'].browse(vals.get('task_id'))
-            record.update(task_id=task.id, project_id=task.project_id.id)
-        elif 'project_id' in vals:
-            record.update(project_id=vals.get('project_id'))
-        else:
-            return
+    def get_running_timer(self):
+        timer = self.env['timer.timer'].search([
+            ('user_id', '=', self.env.user.id),
+            ('timer_start', '!=', False),
+            ('timer_pause', '=', False),
+            ('res_model', '=', self._name),
+        ], limit=1)
+        if not timer:
+            return {}
 
-        line = self.create(record)
-        # Start the timer
-        line.action_timer_start()
-        return {
-            'id': line.id,
-            'task_id': line.task_id.id,
-            'project_id': line.project_id.id,
-            'unit_amount': line.unit_amount
+        # sudo as we can have a timesheet related to a company other than the current one.
+        timesheet = self.sudo().browse(timer.res_id)
+
+        running_seconds = (fields.Datetime.now() - timer.timer_start).total_seconds() + timesheet.unit_amount * 3600
+        values = {
+            'id': timer.res_id,
+            'start': running_seconds,
+            'project_id': timesheet.project_id.id,
+            'task_id': timesheet.task_id.id,
+            'description': timesheet.name,
         }
+        if timesheet.project_id.company_id not in self.env.companies:
+            values.update({
+                'readonly': True,
+                'project_name': timesheet.project_id.name,
+                'task_name': timesheet.task_id.name or '',
+            })
+        return values
+
+    @api.model
+    def get_timer_data(self):
+        last_timesheet_ids = self.search([('user_id', '=', self.env.user.id)], limit=5)
+        favorite_project = False
+        if len(last_timesheet_ids) == 5 and len(last_timesheet_ids.project_id) == 1:
+            favorite_project = last_timesheet_ids.project_id.id
+        return {
+            'step_timer': int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 15)),
+            'favorite_project': favorite_project
+        }
+
+    @api.model
+    def get_rounded_time(self, timer):
+        minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
+        rounding = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_rounding', 0))
+        rounded_minutes = self._timer_rounding(timer, minimum_duration, rounding)
+        return rounded_minutes / 60
+
+    def action_add_time_to_timesheet(self, project, task, seconds):
+        if self:
+            task = False if not task else task
+            if self.task_id.id == task and self.project_id.id == project:
+                self.unit_amount += seconds / 3600
+                return self.id
+        timesheet_id = self.create({
+            'project_id': project,
+            'task_id': task,
+            'unit_amount': seconds / 3600
+        })
+        return timesheet_id.id
+
+    def action_add_time_to_timer(self, time):
+        if self.validated:
+            raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+        timer = self.user_timer_id
+        if not timer:
+            self.action_timer_start()
+            timer = self.user_timer_id
+        timer.timer_start = min(timer.timer_start - timedelta(0, time), fields.Datetime.now())
+
+    def change_description(self, description):
+        if not self.exists():
+            return
+        if True in self.mapped('validated'):
+            raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+        self.write({'name': description})
+
+    def action_change_project_task(self, new_project_id, new_task_id):
+        if self.validated:
+            raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+        if not self.unit_amount:
+            self.write({
+                'project_id': new_project_id,
+                'task_id': new_task_id,
+            })
+            return self.id
+
+        new_timesheet = self.create({
+            'name': self.name,
+            'project_id': new_project_id,
+            'task_id': new_task_id,
+        })
+        self.user_timer_id.res_id = new_timesheet
+        return new_timesheet.id
 
     def _action_open_to_validate_timesheet_view(self, type_view='week'):
         """ search the oldest non-validated timesheet to display in grid view

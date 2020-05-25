@@ -14,6 +14,7 @@ const TimesheetKanbanController = KanbanController.extend({
     }),
     /**
      * When a timer is launched or stopped, we reload the view to see the updating.
+     * @private
      * @param {Object} event
      */
     _onTimerChanged: function (event) {

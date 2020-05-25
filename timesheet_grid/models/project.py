@@ -26,8 +26,8 @@ class Project(models.Model):
     def write(self, values):
         result = super(Project, self).write(values)
         if 'allow_timesheet_timer' in values and not values.get('allow_timesheet_timer'):
-            self.with_context(active_test=False).mapped('task_ids').write({
-                'timer_start': False,
-                'timer_pause': False,
-            })
+            self.env['timer.timer'].search([
+                ('res_model', '=', "project.task"),
+                ('res_id', 'in', self.with_context(active_test=False).task_ids.ids)
+            ]).unlink()
         return result

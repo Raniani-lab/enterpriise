@@ -12,41 +12,6 @@ odoo.define('timer.Timer', function (require) {
             this.seconds = seconds;
         }
 
-        /**
-         * Convert float to time
-         * @param {number} float
-         */
-        static convertFloatToTime(float) {
-            if (float === 0) {
-                return new Timer(0, 0, 0);
-            }
-
-            let minutes = float % 1;
-            const hours = float - minutes;
-            minutes *= 60;
-
-            return new Timer(hours, Math.round(minutes), 0);
-        }
-
-        /**
-         * Create timer
-         * @param {number} unit_amount
-         * @param {String} timer_start
-         * @param {String} serverTime
-         */
-        static createTimer(unit_amount, timer_start, serverTime) {
-            const timer = this.convertFloatToTime(unit_amount);
-
-            timer.addTime(
-                moment.utc(
-                    Math.abs(moment.utc(serverTime)
-                        .diff(moment.utc(timer_start))
-                    )).format("HH:mm:ss")
-            );
-
-            return timer;
-        }
-
         addHours(hours) {
             this.hours += hours;
         }
@@ -113,6 +78,41 @@ odoo.define('timer.Timer', function (require) {
             return `${time.hours}:${time.minutes}:${time.seconds}`;
         }
     }
+
+        /**
+         * Convert float to time
+         * @param {number} float
+         */
+        Timer.convertFloatToTime = function (float) {
+            if (float === 0) {
+                return new Timer(0, 0, 0);
+            }
+
+            let minutes = float % 1;
+            const hours = float - minutes;
+            minutes *= 60;
+
+            return new Timer(hours, Math.round(minutes), 0);
+        };
+
+        /**
+         * Create timer
+         * @param {number} unit_amount
+         * @param {String} timer_start
+         * @param {String} serverTime
+         */
+        Timer.createTimer = function (unit_amount, timer_start, serverTime) {
+            const timer = this.convertFloatToTime(unit_amount);
+
+            timer.addTime(
+                moment.utc(
+                    Math.abs(moment.utc(serverTime)
+                        .diff(moment.utc(timer_start))
+                    )).format("HH:mm:ss")
+            );
+
+            return timer;
+        };
 
     return Timer;
 

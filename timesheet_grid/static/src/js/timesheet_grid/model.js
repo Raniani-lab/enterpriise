@@ -2,7 +2,6 @@ odoo.define('timesheet_grid.GridModel', function (require) {
 "use strict";
 
     const { _t } = require('web.core');
-    const fieldUtils = require('web.field_utils');
 
     const WebGridModel = require('web_grid.GridModel');
 
@@ -12,8 +11,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
          */
         load: async function () {
             await this._super.apply(this, arguments);
-
-            return this._loadTimesheetByTask();
+            await this._getTimerData();
         },
         /**
          * @override
@@ -31,17 +29,43 @@ odoo.define('timesheet_grid.GridModel', function (require) {
                 params.groupBy = GroupBy;
             }
             await this._super.apply(this, arguments);
-
-            return this._loadTimesheetByTask();
         },
-        getServerTime: async function () {
-            const time = await this._rpc({
-                model: 'timer.timer',
-                method: 'get_server_time',
+        _changeTimerDescription(timesheetId, description) {
+            this._rpc({
+                model: 'account.analytic.line',
+                method: 'change_description',
+                args: [[timesheetId], description],
+            });
+        },
+        _addTimeTimer(timesheetId, time) {
+            this._rpc({
+                model: 'account.analytic.line',
+                method: 'action_add_time_to_timer',
+                args: [[timesheetId], time],
+            });
+        },
+        async _stopTimer(timesheetId) {
+            await this._rpc({
+                model: 'account.analytic.line',
+                method: 'action_timer_stop',
+                args: [timesheetId, true],
+            });
+        },
+        _unlinkTimer(timesheetId) {
+            this._rpc({
+                model: 'account.analytic.line',
+                method: 'action_timer_unlink',
+                args: [[timesheetId]],
+            });
+        },
+        _getTimerData: async function () {
+            const result = await this._rpc({
+                model: 'account.analytic.line',
+                method: 'get_timer_data',
                 args: [],
             });
-
-            this._gridData.serverTime = time;
+            this._gridData.stepTimer = result['step_timer'];
+            this._gridData.defaultProject = result['favorite_project'];
         },
         /**
          * Update state
@@ -158,133 +182,6 @@ odoo.define('timesheet_grid.GridModel', function (require) {
 
             return result;
         },
-        /**
-         * Load timesheets by task.
-         *
-         * _gridData is an Object containing the data of each row
-         * we need to retrieve and add the timesheet data for today (useful for timer)
-         * in every row.
-         */
-        _loadTimesheetByTask: async function () {
-            let i = 0;
-            const promises = [];
-
-            while (this._gridData.data.hasOwnProperty(i)) {
-                const { rows } = this._gridData.data[i];
-                if (rows.length > 0) {
-                    for (const [index, row] of rows.entries()) {
-                        promises.push(this._searchTimesheet(row.domain, index, i));
-                    }
-                }
-
-                i += 1;
-            }
-
-            if (promises.length > 0) {
-                const timesheets = await Promise.all(promises);
-                for (const timesheet of timesheets) {
-                    for (const data of timesheet) {
-                        if (data) {
-                            const {rowIndex, gridIndex, timesheet, project} = data;
-                            const { rows, grid } = this._gridData.data[gridIndex];
-                            if (project) {
-                                rows[rowIndex].project = project;
-                            }
-                            if (timesheet) {
-                                rows[rowIndex].timesheet = timesheet;
-                                if (timesheet.timer_start) {
-                                    grid[rowIndex].map((column) => column.readonly = column.is_current);
-                                    await this.getServerTime();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        /**
-         * Search timesheet from the information of the the domain given in parameter
-         *
-         * @param {Number} rowIndex the index of the row to add the timesheet found
-         * @param {Number} gridIndex the index of the gridData
-         * @param {Array} domain domain to find the timesheet
-         */
-        _searchTimesheet: async function (domain, rowIndex, gridIndex) {
-            const timesheets = await this._rpc({
-                model: this.modelName,
-                method: 'search_read',
-                args: [domain],
-                fields: ['id', 'name', 'task_id', 'project_id', 'date', 'unit_amount', 'timer_start']
-            });
-
-            this._parseServerData(timesheets);
-            const result = [];
-            
-            if (timesheets.length > 0) {
-                const today = moment().utc().get('date');
-                
-                for (const record of timesheets) {
-                    const date = record.date.get('date');
-
-                    // Get the project then return it in any case
-                    const project = await this._searchProject(record.project_id[0]);
-
-                    if (record.name === _t('Timesheet Adjustment') && date === today) {
-                        result.push({rowIndex, gridIndex, timesheet: record, project});
-                    } else {
-                        result.push({rowIndex, gridIndex, project});
-                    }
-                }
-            }
-            return result;
-        },
-        /**
-         * Search project project id given in parameter
-         *
-         * @param {Number} projectId the id of the project
-         */
-        _searchProject: async function(projectId){
-            const project = await this._rpc({
-                model: 'project.project',
-                method: 'search_read',
-                fields: ['id', 'name', 'allow_timesheet_timer'],
-                domain: [['id', '=', projectId]]
-            });
-            if (project.length > 0) {
-                return project[0]
-            }
-            return null;
-        },
-        /**
-         * Request to create a timesheet when we click to start a timer for a task.
-         *
-         * @param {*} data
-         */
-        _createTimesheet: async function (data) {
-            const result = await this._rpc({
-                model: this.modelName,
-                method: 'create_timesheet_with_timer',
-                args: [data] || []
-            });
-
-            this._parseServerValue(result);
-
-            return result;
-        },
-        /**
-         * Parse the server values to javascript framework
-         *
-         * @private
-         * @param {Array} data the server data to parse
-         */
-        _parseServerData: function (data) {
-            data.forEach((record) => {
-                this._parseServerValue(record);
-            });
-        },
-        _parseServerValue: function (record) {
-            record.date = fieldUtils.parse.date(record.date, null, {isUTC: true});
-        }
     });
 
     var NoGroupByDateWebGridModel = WebGridModel.extend({

@@ -1622,8 +1622,10 @@ odoo.define('sign.document_signing', function (require) {
                                 value = 'on';
                             } else {
                                 if (!$elem.data('required')) value = 'off';
-                                }
                             }
+                        } else if($elem[0].type === 'textarea') {
+                            value = this.textareaApplyLineBreak($elem[0]);
+                        }
                         if(!value) {
                             if($elem.data('required')) {
                                 this.iframeWidget.checkSignItemsCompletion();
@@ -1733,6 +1735,42 @@ odoo.define('sign.document_signing', function (require) {
                 }
             });
         },
+
+        textareaApplyLineBreak: function (oTextarea) {
+            // Removing wrap in order to have scrollWidth > width
+            oTextarea.setAttribute('wrap', 'off');
+
+            var strRawValue = oTextarea.value;
+            oTextarea.value = "";
+
+            var nEmptyWidth = oTextarea.scrollWidth;
+            var nLastWrappingIndex = -1;
+
+            // Computing new lines
+            for (var i = 0; i < strRawValue.length; i++) {
+                var curChar = strRawValue.charAt(i);
+                oTextarea.value += curChar;
+
+                if (curChar === ' ' || curChar === '-' || curChar === '+') {
+                    nLastWrappingIndex = i;
+                }
+
+                if (oTextarea.scrollWidth > nEmptyWidth) {
+                    var buffer = '';
+                    if (nLastWrappingIndex >= 0) {
+                        for (var j = nLastWrappingIndex + 1; j < i; j++) {
+                            buffer += strRawValue.charAt(j);
+                        }
+                        nLastWrappingIndex = -1;
+                    }
+                    buffer += curChar;
+                    oTextarea.value = oTextarea.value.substr(0, oTextarea.value.length - buffer.length);
+                    oTextarea.value += '\n' + buffer;
+                }
+            }
+            oTextarea.setAttribute('wrap', '');
+            return oTextarea.value;
+        }
     });
 
     function initDocumentToSign(parent) {

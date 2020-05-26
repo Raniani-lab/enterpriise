@@ -48,7 +48,6 @@
 }
 
 textarea.o_sign_sign_item {
-    white-space: pre;
     font-size: 12pt !important;
 }
 
@@ -258,7 +257,7 @@ textarea.o_sign_sign_item {
     background: transparent;
     color: black;
     cursor: auto;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: left;
 }
 

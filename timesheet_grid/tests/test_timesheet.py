@@ -39,9 +39,7 @@ class TestTimesheetValidation(TestCommonTimesheet):
         """ Employee record its timesheets and Officer validate them. Then try to modify/delete it and get Access Error """
         # Officer validate timesheet of 'user_employee' through wizard
         timesheet_to_validate = self.timesheet1 | self.timesheet2
-        validate_action = timesheet_to_validate.with_user(self.user_manager).action_validate_timesheet()
-        wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
-        wizard.action_validate()
+        timesheet_to_validate.with_user(self.user_manager).action_validate_timesheet()
 
         # Check timesheets 1 and 2 are validated
         self.assertTrue(self.timesheet1.validated)
@@ -80,10 +78,7 @@ class TestTimesheetValidation(TestCommonTimesheet):
         """ Officer can see timesheets and modify the ones of other employees """
        # Officer validate timesheet of 'user_employee' through wizard
         timesheet_to_validate = self.timesheet1 | self.timesheet2
-        validate_action = timesheet_to_validate.with_user(self.user_manager).action_validate_timesheet()
-        wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
-        wizard.action_validate()
-
+        timesheet_to_validate.with_user(self.user_manager).action_validate_timesheet()
         # manager modify validated timesheet
         self.timesheet1.with_user(self.user_manager).write({'unit_amount': 5})
 

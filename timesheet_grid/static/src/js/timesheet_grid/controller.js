@@ -1,7 +1,52 @@
 odoo.define('timesheet_grid.GridController', function (require) {
     "use strict";
 
+    const core = require('web.core');
+    const _t = core._t;
+
     const GridController = require('web_grid.GridController');
+
+    const TimesheetGridValidateController = GridController.extend({
+        /**
+         * @override
+         */
+        renderButtons: function ($node) {
+            this._super.apply(this, arguments);
+            this.$buttons.on('click', '.o_timesheet_validate', this._onValidateButtonClicked.bind(this));
+        },
+
+        /**
+         * @override
+         */
+        updateButtons: function () {
+            this.$buttons.find('.o_timesheet_validate').removeClass('grid_arrow_button');
+        },
+
+        _onValidateButtonClicked: function (e) {
+            e.stopPropagation();
+            const $target = $(e.target);
+            const self = this;
+            var state = this.model.get();
+    
+            return this.mutex.exec(function () {
+                return self.model.getIds().then(ids => {
+                    return self._rpc({
+                        model: 'account.analytic.line',
+                        method: 'action_validate_timesheet',
+                        args: [ids],
+                    }).then(res => {
+                        self.displayNotification({type: res.status, title: res.message});
+                        return self.model.reload();
+                    }).then(() => {
+                        var state = self.model.get();
+                        return self.renderer.update(state);
+                    }).then(() => {
+                        self.updateButtons(state);
+                    });
+                });
+            });
+        },
+    });
 
     const TimesheetGridController = GridController.extend({
         custom_events: Object.assign({}, GridController.prototype.custom_events, {
@@ -80,5 +125,8 @@ odoo.define('timesheet_grid.GridController', function (require) {
         },
     });
 
-    return TimesheetGridController;
+    return {
+        TimesheetGridController: TimesheetGridController,
+        TimesheetGridValidateController: TimesheetGridValidateController
+    };
 });

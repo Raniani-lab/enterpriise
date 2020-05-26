@@ -167,10 +167,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
     def test_timesheet_validation_approver(self):
         """ Check if the approver who has created the timesheet for an employee, can validate the timesheet."""
         timesheet_to_validate = self.timesheet
-        validate_action = timesheet_to_validate.with_user(self.user_approver).action_validate_timesheet()
-
-        wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
-        wizard.action_validate()
+        timesheet_to_validate.with_user(self.user_approver).action_validate_timesheet()
         self.assertEqual(timesheet_to_validate.validated, True)
 
     def test_timesheet_validation_by_approver_when_he_is_not_responsible(self):
@@ -178,19 +175,14 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
         timesheet_to_validate = self.timesheet2
 
         # Normally the approver can't validate the timesheet because he doesn't know the project (and he isn't the manager of the employee) and he's not the Timesheet Responsible
-        with self.assertRaises(UserError):
-            validate_action = timesheet_to_validate.with_user(self.user_approver2).action_validate_timesheet()
-            wizard = self.env['timesheet.validation'].with_user(self.user_approver2).browse(validate_action['res_id'])
-            wizard.action_validate()
+        res = timesheet_to_validate.with_user(self.user_approver2).action_validate_timesheet()
+        self.assertEqual(res['status'], 'warning')
         self.assertEqual(timesheet_to_validate.validated, False)
 
     def test_timesheet_validation_by_approver_when_he_is_manager_of_employee(self):
         """Check if an approver can validate the timesheets into this project, when he is the manager of the employee."""
         timesheet_to_validate = self.timesheet2
-        validate_action = timesheet_to_validate.with_user(self.user_approver).action_validate_timesheet()
-
-        wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
-        wizard.action_validate()
+        timesheet_to_validate.with_user(self.user_approver).action_validate_timesheet()
         self.assertEqual(timesheet_to_validate.validated, True)
 
     def test_show_timesheet_only_if_user_follow_project(self):
@@ -225,12 +217,8 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             cannot update his timesheet when it's validated.
         """
         timesheet_to_validate = self.timesheet
-        validate_action = timesheet_to_validate.with_user(self.user_approver).action_validate_timesheet()
-
-        wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
-        wizard.action_validate()
+        timesheet_to_validate.with_user(self.user_approver).action_validate_timesheet()
         self.assertEqual(self.timesheet.validated, True)
-
         with self.assertRaises(AccessError):
             self.timesheet.with_user(self.user_employee).write({'unit_amount': 10})
 
@@ -241,13 +229,9 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             Check an user with the lowest access right
             cannot validate any timesheets.
         """
-        with self.assertRaises(AccessError):
-            timesheet_to_validate = self.timesheet
-            validate_action = timesheet_to_validate.with_user(self.user_employee).action_validate_timesheet()
-
-            wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
-            wizard.action_validate()
-
+        timesheet_to_validate = self.timesheet
+        res = timesheet_to_validate.with_user(self.user_employee).action_validate_timesheet()
+        self.assertEqual(res['status'], 'danger')
         self.assertEqual(self.timesheet.validated, False)
 
     def test_employee_read_timesheet_of_other_employee(self):

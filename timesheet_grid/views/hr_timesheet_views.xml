@@ -184,7 +184,7 @@
             <field name="mode">primary</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='unit_amount']" position="before">
-                    <button type="object" class="btn-primary" name="action_validate_timesheet" string="Validate"/>
+                    <button type="object" class="btn-primary o_timesheet_validate" name="action_validate_timesheet" string="Validate"/>
                 </xpath>
                 <xpath expr="/grid" position="attributes">
                     <attribute name="create">false</attribute>

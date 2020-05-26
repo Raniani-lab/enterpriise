@@ -102,9 +102,7 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheetNoChart):
 
         # Validate ordered and delivered some Timesheet
         timesheet_to_validate = delivered_timesheet1 | ordered_timesheet1
-        validate_action = timesheet_to_validate.with_context(grid_anchor=date.today() - relativedelta(weeks=1)).action_validate_timesheet()
-        wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
-        wizard.action_validate()
+        timesheet_to_validate.action_validate_timesheet()
         # check if timesheets are validated
         self.assertTrue(delivered_timesheet1.validated)
         self.assertTrue(ordered_timesheet1.validated)
@@ -133,9 +131,7 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheetNoChart):
 
         # Validate remaining Timesheet
         timesheet_to_validate = delivered_timesheet2 | ordered_timesheet2
-        validate_action = timesheet_to_validate.action_validate_timesheet()
-        wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
-        wizard.action_validate()
+        timesheet_to_validate.action_validate_timesheet()
 
         self.assertTrue(any([delivered_timesheet2.validated, ordered_timesheet2.validated]), 'Timesheet should be validated')
         # check remaining timesheet is linked to SOL

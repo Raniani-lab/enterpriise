@@ -13,7 +13,7 @@ odoo.define('timesheet_grid.GridView', function (require) {
     const TimesheetTimerGridView = WebGridView.extend({
         config: _.extend({}, WebGridView.prototype.config, {
             Model: TimesheetGridModel.timer,
-            Controller: TimesheetGridController,
+            Controller: TimesheetGridController.TimesheetGridController,
             Renderer: TimesheetGridRenderer
         })
     });
@@ -22,6 +22,7 @@ odoo.define('timesheet_grid.GridView', function (require) {
     const TimesheetGridView = WebGridView.extend({
         config: _.extend({}, WebGridView.prototype.config, {
             Model: TimesheetGridModel.no_group_by_date,
+            Controller: TimesheetGridController.TimesheetGridValidateController,
         })
     });
 

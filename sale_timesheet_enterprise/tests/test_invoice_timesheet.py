@@ -66,11 +66,7 @@ class TestInvoiceTimesheet(TestCommonSaleTimesheetNoChart):
         })
 
         # Validate first timesheet
-        validate_action = timesheet_1.action_validate_timesheet()
-        wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
-        wizard.validation_line_ids.filtered(lambda l: l.employee_id != self.employee_manager).validate = False
-        wizard.action_validate()
-
+        timesheet_1.action_validate_timesheet()
         self.assertEqual(so_line_product_1.qty_delivered, 2, "Timesheet 1 is validated, so 2 hours must be delivered")
 
         # Create an invoice, cancel it
@@ -89,10 +85,7 @@ class TestInvoiceTimesheet(TestCommonSaleTimesheetNoChart):
         self.assertEqual(so_line_product_1.qty_invoiced, 2, "2 hours must be invoiced")
         self.assertEqual(so_line_product_1.qty_delivered, 2, "Timesheet 1 is validated, so 2 hours must be delivered")
 
-        validate_action = timesheet_2.action_validate_timesheet()
-        wizard = self.env['timesheet.validation'].browse(validate_action['res_id'])
-        wizard.action_validate()
-
+        timesheet_2.action_validate_timesheet()
         self.assertEqual(so_line_product_1.qty_invoiced, 2, "2 hours must be invoiced (only timsheet 1)")
         self.assertEqual(so_line_product_1.qty_delivered, 5, "Timesheet 1 and 2 are validated, so 5 hours must be delivered")
         self.assertFalse(so_line_product_2.qty_invoiced, "No hours invoiced (as no timsheet linked to this so_line)")

@@ -12,13 +12,11 @@
     'depends': ['web_grid', 'hr_timesheet'],
     'category': 'Services/Timesheets',
     'data': [
-        'security/ir.model.access.csv',
         'data/mail_data.xml',
         'security/timesheet_security.xml',
         'views/hr_timesheet_views.xml',
         'views/res_config_settings_views.xml',
         'views/assets.xml',
-        'wizard/timesheet_validation_views.xml',
     ],
     'demo': [
         'data/timesheet_grid_demo.xml',

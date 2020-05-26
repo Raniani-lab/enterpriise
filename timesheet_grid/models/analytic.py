@@ -132,89 +132,22 @@ class AnalyticLine(models.Model):
         return [('project_id', '=', False)]
 
     def action_validate_timesheet(self):
-        """ Action validate timesheet
-
-            When the user want to validate the list of timesheets that he see
-            in grid view.
-            First, we need to check if this user has the correct access to do
-            this action.
-            Then, we need to add timesheets to validate into
-            timesheet.validation model for the wizard.
-
-            Explanation for record in timesheet.validation model :
-
-            For validation, we need to group by employee > project > task
-            (if task exists).
-
-            The first idea is created a dict contains records filtered
-            with this groupby, for example, the dict looks like this:
-
-            records = {
-                employee_id: {
-                    project_id: {
-                        task_id: [timesheet_ids]
-                    }
-                }
-            }
-
-            Then we create a list named "valid_data" that contains the list of
-            line for timesheet.validation.line model.
-            For example, this list will look like this :
-
-            valid_data = [{
-                employee_id: employee_id.id,
-                project_id: project_id.id,
-                task_id: task_id.id,
-                timesheet_ids: [list of timesheets]
-            }]
-        """
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
-            raise AccessError(_("Sorry, you don't have the access to validate the timesheets."))
+            return {'status': 'danger', 'message': _("Sorry, you don't have the access to validate the timesheets.")}
 
         if not self:
-            raise UserError(_("There aren't any timesheet to validate"))
+            return {'status': 'warning', 'message': (_("There are no timesheets to validate"))}
 
         analytic_lines = self.filtered_domain(self._get_domain_for_validation_timesheets())
         if not analytic_lines:
-            raise UserError(_('All selected timesheets for which you are indicated as responsible are already validated.'))
+            return {'status': 'warning', 'message': (_('All selected timesheets for which you are indicated as responsible are already validated.'))}
 
-        # Prepare record for timesheet.validation model
-        valid_data = []  # will contains the list of line for timesheet.validation.line
-        # records will be the dict containing the timesheets filtered with the group by
-        # employee > project > task.
-        # First, group by employee
-        for employee in analytic_lines.employee_id:
-            timesheets = analytic_lines.filtered(lambda t: t.employee_id == employee)
-            # group by (employee > project)
-            for project in timesheets.project_id:
-                record = defaultdict(lambda: [])  # structure -> {task_id.id: timesheets.ids}
+        if analytic_lines.filtered(lambda l: l.timer_start):
+            return {'status': 'danger', 'message': _('At least one timer is running on the selected timesheets.')}
 
-                # group by (employee > project > task)
-                for timesheet in timesheets.filtered(lambda t: t.project_id == project):
-                    record[timesheet.task_id.id].append(timesheet.id)
-                for (k, v) in record.items():
-                    # create records for timesheet.validation.line
-                    # each record contains a dict with
-                    # employee_id, project_id, task_id, timesheet_ids keys
-                    valid_data.append({
-                        'employee_id': employee.id,
-                        'project_id': project.id,
-                        'task_id': k,
-                        'timesheet_ids': v
-                    })
+        analytic_lines.sudo().write({'validated': True})
+        return {'status': 'success', 'message': _('The timesheets were successfully validated')}
 
-        validation = self.env['timesheet.validation'].create({
-            'validation_line_ids': [(0, 0, data) for data in valid_data]
-        })
-
-        return {
-            'name': _('Validate the timesheets'),
-            'type': 'ir.actions.act_window',
-            'target': 'new',
-            'res_model': 'timesheet.validation',
-            'res_id': validation.id,
-            'views': [(False, 'form')]
-        }
 
     @api.model_create_multi
     def create(self, vals_list):

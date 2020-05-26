@@ -1,3 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_timesheet_validation","access.timesheet.validation","model_timesheet_validation","hr_timesheet.group_hr_timesheet_approver",1,1,1,0
-"access_timesheet_validation_line","access.timesheet.validation.line","model_timesheet_validation_line","hr_timesheet.group_hr_timesheet_approver",1,1,1,0

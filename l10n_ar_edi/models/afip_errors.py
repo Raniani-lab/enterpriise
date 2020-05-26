@@ -22,7 +22,7 @@ def _hint_msg(error_code, afipws):
             '10153': _('If the invoice is a a FCE, Debit Note or Credit Note it is mandatory to inform related invoices. You are probably doing an CN/DN and the "Source" field (in the Other Information Tab) is not defined or has a wrong value. You must indicate in that field the original invoice number without any prefix or suffix, eg "0001-00000001"'),
             '10181': _('As the message mentions, if you are making an CN/DN, it must be with the same currency as the original invoice.\n\nThe only exception is the exchange rate adjustments that need to be done in ARS but taking into account that the orginal invoice must already be accepted (or rejected by the customer).\n\nWe recommend you to verify if the customer has already accepted/rejected the original invoice'),
             '10184': _('You are probably wanting to cancel an invoice through an CN but the invoice has already been accepted for the client. Keep in mind that acceptance may have been "express" or "tacit" (that is , automatically accepted after 30 calendar days without the client having rejected it).'),
-            '10051': _('What happens is that it calculates VAT without the discount, then it throws another amount.'),
+            '10051': _('Could happen that the VAT is calculated without the discount, then it throws another amount.'),
             '10162': _('You may not have completed the Bank Account field on the invoice'),
         })
 

@@ -1219,7 +1219,7 @@ msgstr ""
 #: code:addons/l10n_ar_edi/models/afip_errors.py:0
 #, python-format
 msgid ""
-"What happens is that it calculates VAT without the discount, then it throws "
+"Could happen that the VAT is calculated without the discount, then it throws "
 "another amount."
 msgstr ""
 

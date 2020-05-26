@@ -18,7 +18,7 @@ msgstr ""
 #. module: l10n_ar_edi
 #: model:ir.model.fields,field_description:l10n_ar_edi.field_account_move__l10n_ar_afip_auth_code_due
 msgid " Authorization Due date"
-msgstr "Fecha ce vencimiento de la Autorización"
+msgstr "Fecha de vencimiento de la Autorización"
 
 #. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/res_company.py:0
@@ -1252,7 +1252,7 @@ msgid ""
 " let it know that is happening and to investigate what is going on with the "
 "AFIP service"
 msgstr ""
-"Esto es un error interno de AFIP. Informe lo que sucedde a su proveedor de "
+"Esto es un error interno de AFIP. Informe lo que sucede a su proveedor de "
 "Odoo para investigar que puede estar sucendiendo con el servicio de AFIP"
 
 #. module: l10n_ar_edi
@@ -1388,10 +1388,10 @@ msgstr "El servicio web esta caído"
 #: code:addons/l10n_ar_edi/models/afip_errors.py:0
 #, python-format
 msgid ""
-"What happens is that it calculates VAT without the discount, then it throws "
+"Could happen that the VAT is calculated without the discount, then it throws "
 "another amount."
 msgstr ""
-"Lo que pasa es que calcula el IVA sin el descuento, entonces arroja otro "
+"Puede estar pasando que calcula el IVA sin el descuento, entonces arroja otro "
 "monto."
 
 #. module: l10n_ar_edi

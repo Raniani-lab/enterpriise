@@ -3,7 +3,7 @@
 
 from datetime import date
 from odoo.tests import common
-from odoo.addons.test_mail.tests.common import mail_new_test_user
+from odoo.addons.mail.tests.common import mail_new_test_user
 
 
 class TestDMFA(common.TransactionCase):

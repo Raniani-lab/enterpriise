@@ -3,13 +3,13 @@
 
 from odoo.addons.sms.tests import common as sms_common
 from odoo.addons.test_mail.tests.test_performance import BaseMailPerformance
-from odoo.tests.common import TransactionCase, users, warmup
+from odoo.tests.common import users, warmup
 from odoo.tests import tagged
 from odoo.tools import mute_logger
 
 
 @tagged('mail_performance')
-class TestSMSPerformance(BaseMailPerformance, sms_common.MockSMS):
+class TestSMSPerformance(BaseMailPerformance, sms_common.SMSCase):
 
     def setUp(self):
         super(TestSMSPerformance, self).setUp()

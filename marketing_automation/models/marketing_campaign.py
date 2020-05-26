@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import threading
+
 from ast import literal_eval
 from dateutil.relativedelta import relativedelta
 
@@ -233,7 +235,13 @@ class MarketingCampaign(models.Model):
     def sync_participants(self):
         """ Creates new participants, taking into account already-existing ones
         as well as campaign filter and unique field. """
+        def _uniquify_list(seq):
+            seen = set()
+            return [x for x in seq if x not in seen and not seen.add(x)]
+
         participants = self.env['marketing.participant']
+        # auto-commit except in testing mode
+        auto_commit = not getattr(threading.currentThread(), 'testing', False)
         for campaign in self.filtered(lambda c: c.marketing_activity_ids):
             now = Datetime.now()
             if not campaign.last_sync_date:
@@ -243,12 +251,12 @@ class MarketingCampaign(models.Model):
 
             # Fetch existing participants
             participants_data = participants.search_read([('campaign_id', '=', campaign.id)], ['res_id'])
-            existing_rec_ids = set([live_participant['res_id'] for live_participant in participants_data])
+            existing_rec_ids = _uniquify_list([live_participant['res_id'] for live_participant in participants_data])
 
             record_domain = literal_eval(campaign.domain or "[]")
-            db_rec_ids = set(RecordModel.search(record_domain).ids)
-            to_create = db_rec_ids - existing_rec_ids
-            to_remove = existing_rec_ids - db_rec_ids
+            db_rec_ids = _uniquify_list(RecordModel.search(record_domain).ids)
+            to_create = [rid for rid in db_rec_ids if rid not in existing_rec_ids]  # keep ordered IDs
+            to_remove = set(existing_rec_ids) - set(db_rec_ids)
             if campaign.unique_field_id and campaign.unique_field_id.name != 'id':
                 without_duplicates = []
                 unique_field_vals = {rec[campaign.unique_field_id.name]
@@ -267,7 +275,7 @@ class MarketingCampaign(models.Model):
                     'campaign_id': campaign.id,
                     'res_id': rec_id,
                 })
-                if not index % BATCH_SIZE:
+                if not index % BATCH_SIZE and auto_commit:
                     self.env.cr.commit()
 
             if to_remove:
@@ -277,7 +285,7 @@ class MarketingCampaign(models.Model):
                 ])
                 for index, participant in enumerate(participants_to_unlink, start=1):
                     participant.action_set_unlink()
-                    if not index % BATCH_SIZE:
+                    if not index % BATCH_SIZE and auto_commit:
                         self.env.cr.commit()
 
         return participants

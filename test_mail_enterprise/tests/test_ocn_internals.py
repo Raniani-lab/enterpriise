@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.test_mail.tests.common import TestMailCommon, mail_new_test_user
+from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 from odoo.tests import tagged
 from unittest.mock import patch
 
 
 @tagged('post_install', '-at_install')
-class TestPushNotification(TestMailCommon):
+class TestPushNotification(MailCommon):
 
     @classmethod
     def setUpClass(cls):

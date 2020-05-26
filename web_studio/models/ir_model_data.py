@@ -27,12 +27,12 @@ class IrModelData(models.Model):
     def _build_update_xmlids_query(self, sub_rows, update):
         '''Override of the base method to include the `studio` attribute for studio module imports.'''
         if self._context.get('studio'):
-            rowf = "(%s, %s, %s, %s, %s, now() at time zone 'UTC', now() at time zone 'UTC', 't')"
+            rowf = "(%s, %s, %s, %s, %s, 't')"
             return """
-                INSERT INTO ir_model_data (module, name, model, res_id, noupdate, date_init, date_update, studio)
+                INSERT INTO ir_model_data (module, name, model, res_id, noupdate, studio)
                 VALUES {rows}
                 ON CONFLICT (module, name)
-                DO UPDATE SET date_update=(now() at time zone 'UTC'), noupdate='t' {where}
+                DO UPDATE SET write_date=(now() at time zone 'UTC'), noupdate='t' {where}
             """.format(
                 rows=", ".join([rowf] * len(sub_rows)),
                 where="WHERE NOT ir_model_data.noupdate" if update else "",

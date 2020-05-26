@@ -182,18 +182,20 @@ odoo.define('timesheet_grid.GridModel', function (require) {
 
             if (promises.length > 0) {
                 const timesheets = await Promise.all(promises);
-                for (const data of timesheets) {
-                    if (data) {
-                        const {rowIndex, gridIndex, timesheet, project} = data;
-                        const { rows, grid } = this._gridData.data[gridIndex];
-                        if (project) {
-                            rows[rowIndex].project = project;
-                        }
-                        if (timesheet) {
-                            rows[rowIndex].timesheet = timesheet;
-                            if (timesheet.timer_start) {
-                                grid[rowIndex].map((column) => column.readonly = column.is_current);
-                                await this.getServerTime();
+                for (const timesheet of timesheets) {
+                    for (const data of timesheet) {
+                        if (data) {
+                            const {rowIndex, gridIndex, timesheet, project} = data;
+                            const { rows, grid } = this._gridData.data[gridIndex];
+                            if (project) {
+                                rows[rowIndex].project = project;
+                            }
+                            if (timesheet) {
+                                rows[rowIndex].timesheet = timesheet;
+                                if (timesheet.timer_start) {
+                                    grid[rowIndex].map((column) => column.readonly = column.is_current);
+                                    await this.getServerTime();
+                                }
                             }
                         }
                     }
@@ -216,11 +218,9 @@ odoo.define('timesheet_grid.GridModel', function (require) {
             });
 
             this._parseServerData(timesheets);
-
+            const result = [];
             
-            if (timesheets.length === 0) {
-                return null;
-            } else {
+            if (timesheets.length > 0) {
                 const today = moment().utc().get('date');
                 
                 for (const record of timesheets) {
@@ -230,13 +230,13 @@ odoo.define('timesheet_grid.GridModel', function (require) {
                     const project = await this._searchProject(record.project_id[0]);
 
                     if (record.name === _t('Timesheet Adjustment') && date === today) {
-                        return {rowIndex, gridIndex, timesheet: record, project};
+                        result.push({rowIndex, gridIndex, timesheet: record, project});
+                    } else {
+                        result.push({rowIndex, gridIndex, project});
                     }
-                    return {rowIndex, gridIndex, project}
                 }
-
-                return null;
             }
+            return result;
         },
         /**
          * Search project project id given in parameter

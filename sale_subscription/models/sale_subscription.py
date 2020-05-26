@@ -647,9 +647,12 @@ class SaleSubscription(models.Model):
             order_lines = []
             fpos = subscription.env['account.fiscal.position'].get_fiscal_position(subscription.partner_id.id)
             for line in subscription.recurring_invoice_line_ids:
+                partner_lang = subscription.partner_id.lang
+                product = line.product_id.with_context(lang=partner_lang) if partner_lang else line.product_id
+
                 order_lines.append((0, 0, {
-                    'product_id': line.product_id.id,
-                    'name': line.product_id.product_tmpl_id.name,
+                    'product_id': product.id,
+                    'name': product.get_product_multiline_description_sale(),
                     'subscription_id': subscription.id,
                     'product_uom': line.uom_id.id,
                     'product_uom_qty': line.quantity,

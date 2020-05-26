@@ -773,7 +773,7 @@ tour.register('web_studio_approval_tour', {
 }, {
     // set domain on first rule
     trigger: '.o_web_studio_sidebar_approval .o_approval_domain',
-    extra_trigger: '.o_web_studio_snackbar .fa-check',
+    extra_trigger: '.o_studio_sidebar_approval_rule:eq(1)',
 }, {
     // set stupid domain that is always truthy
     trigger: '.o_domain_debug_container input',

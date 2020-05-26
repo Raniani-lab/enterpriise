@@ -107,6 +107,11 @@
                                                 <field name="schedule_date" />
                                             </t>
                                             <t t-else="">
+                                                <t t-if="record.trigger_type.raw_value == 'mail_bounce'">
+                                                    <span class="o_ma_text_scheduled">
+                                                        <i t-attf-class="fa fa-exclamation-circle" /> Not bounced yet
+                                                    </span>
+                                                </t>
                                                 <t t-if="record.trigger_type.raw_value == 'mail_open'">
                                                     <span class="o_ma_text_scheduled">
                                                         <i t-attf-class="fa fa-envelope-open-o" /> Not opened yet

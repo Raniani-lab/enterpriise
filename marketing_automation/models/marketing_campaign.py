@@ -110,7 +110,11 @@ class MarketingCampaign(models.Model):
         for marketing_activity_id in self.marketing_activity_ids:
             new_marketing_activity_id = marketing_activity_id.copy()
             old_to_new[marketing_activity_id] = new_marketing_activity_id
-            new_marketing_activity_id.campaign_id = new_compaign
+            new_marketing_activity_id.write({
+                'campaign_id': new_compaign.id,
+                'require_sync': False,
+                'trace_ids': False,
+            })
 
         for marketing_activity_id in new_compaign.marketing_activity_ids:
             marketing_activity_id.parent_id = old_to_new.get(

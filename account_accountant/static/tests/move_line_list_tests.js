@@ -98,7 +98,7 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
         });
 
         QUnit.test('Fetch and preview of attachments on big devices', async function (assert) {
-            assert.expect(16);
+            assert.expect(21);
 
             this.data['account.move.line'].records[2].move_attachment_ids = [1];
             this.data['account.move.line'].records[3].move_attachment_ids = [2];
@@ -165,6 +165,15 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
             assert.hasAttrValue(list.$('.o_attachment_preview iframe'), 'data-src',
                 '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?filename%3Dundefined',
                 "the src attribute should still be correctly set on the iframe");
+
+            // reload with groupBy
+            await list.reload({ groupBy: ['move_id', 'move_attachment_ids'] });
+            await testUtils.dom.click(list.$('.o_group_header:eq(1)'));
+            // clicking on group header line should not do read call to ir.attachment
+            assert.verifySteps(["web_read_group/account.move.line",
+                "web_read_group/account.move.line",
+                "web_read_group/account.move.line",
+                "/web/dataset/search_read/account.move.line"]);
 
             list.destroy();
         });

@@ -98,7 +98,11 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
             }
             var record = this.model.get(recordId || this.last_selected);
             var types = ['pdf', 'image'];
-            var attachments = record.data.move_attachment_ids.data.map(function (attachment) {
+            // record type will be list when multi groupby while expanding group row
+            if (record.type === 'list') {
+                return;
+            }
+            let attachments = record.data.move_attachment_ids.data.map(function (attachment) {
                 return {
                     id: attachment.res_id,
                     filename: attachment.data.filename,

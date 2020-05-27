@@ -79,7 +79,7 @@ class StudioApprovalRule(models.Model):
         return super().write(vals)
 
     def unlink(self):
-        if any(rule.entry_ids for rule in self):
+        if any(rule.entry_ids for rule in self) and not self._context.get('_force_unlink'):
             raise UserError(_(
                 "Rules with existing entries cannot be deleted since it would delete existing "
                 "approval entries. You should archive the rule instead."))

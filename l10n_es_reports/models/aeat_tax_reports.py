@@ -522,7 +522,6 @@ class AEATAccountFinancialReport(models.Model):
 
         # We close the tags...
         rslt += self._boe_format_string('</T3030' + year + period + '0000>')
-        rslt += self._boe_format_string('\r\n')
 
         return rslt
 

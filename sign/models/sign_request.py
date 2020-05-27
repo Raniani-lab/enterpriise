@@ -103,7 +103,7 @@ class SignRequest(models.Model):
             rec.progress = "{} / {}".format(closed, wait + closed)
             if closed:
                 rec.start_sign = True
-            if wait == 0 and closed:
+            if wait == 0 and closed and rec.request_item_ids.filtered('signing_date'):
                 last_completed_request = rec.request_item_ids.sorted(key=lambda i: i.signing_date, reverse=True)[0]
                 rec.completion_date = last_completed_request.signing_date
             else:

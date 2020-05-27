@@ -145,19 +145,17 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
         this.setSelectable($button);
         const nodeID = this.node_id++;
         $button.attr('data-node-id', nodeID);
-        if (node.attrs.type === 'object') {
-            if (node.attrs.effect) {
-                node.attrs.effect = _.defaults(pyUtils.py_eval(node.attrs.effect), {
-                    fadeout: 'medium'
-                });
-            }
-            $button.click((event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                this.selected_node_id = nodeID;
-                this.trigger_up('node_clicked', {node: node});
+        if (node.attrs.effect) {
+            node.attrs.effect = _.defaults(pyUtils.py_eval(node.attrs.effect), {
+                fadeout: 'medium'
             });
         }
+        $button.click((event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            this.selected_node_id = nodeID;
+            this.trigger_up('node_clicked', {node: node});
+        });
         return $button;
     },
     

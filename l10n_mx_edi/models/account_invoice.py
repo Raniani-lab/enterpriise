@@ -1285,7 +1285,7 @@ class AccountMove(models.Model):
         cancel in the PAC or previously canceled in the PAC."""
         invoices = self.search([
             ('state', 'not in', ['cancel']), '|',
-            ('l10n_mx_edi_pac_status', '=', 'to_cancel'),
+            ('l10n_mx_edi_pac_status', 'in', ['to_cancel', 'cancelled']),
             ('l10n_mx_edi_sat_status', '=', 'cancelled')]).filtered(
                 lambda inv: inv.l10n_mx_edi_is_required())
         message = invoices.l10n_mx_edi_cancellation_messages().get('to_cancel')
@@ -1310,7 +1310,7 @@ class AccountMove(models.Model):
     def l10n_mx_edi_action_revert_cancellation(self):
         """Used when the customer do not approve the cancellation"""
         for inv in self.filtered(lambda i: i.l10n_mx_edi_is_required() and
-                                 i.l10n_mx_edi_pac_status == 'to_cancel'):
+                                 i.l10n_mx_edi_pac_status in ['to_cancel', 'cancelled']):
             inv.l10n_mx_edi_update_sat_status()
             if inv.l10n_mx_edi_sat_status == 'valid':
                 inv.write({'l10n_mx_edi_pac_status': 'signed'})

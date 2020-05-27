@@ -66,7 +66,7 @@ class AccountMove(models.Model):
 
                     self.create(self._prepare_move_for_asset_depreciation({
                         'asset_id': move.asset_id,
-                        'move_ref': _('Report of reversal for {name}').format(move.asset_id.name),
+                        'move_ref': _('Report of reversal for {name}').format(name=move.asset_id.name),
                         'amount': move.amount_total,
                         'date': last_date + (relativedelta(months=1) if method_period == "1" else relativedelta(years=1)),
                         'asset_depreciated_value': move.amount_total + max(move.asset_id.depreciation_move_ids.mapped('asset_depreciated_value')),

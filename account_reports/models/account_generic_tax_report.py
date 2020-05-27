@@ -415,7 +415,6 @@ class generic_tax_report(models.AbstractModel):
 
     def _get_lines_by_grid(self, options, line_id, grids):
         # Fetch the report layout to use
-        country = self.env.company.country_id
         report = self.env['account.tax.report'].browse(options['tax_report'])
         formulas_dict = dict(report.line_ids.filtered(lambda l: l.code and l.formula).mapped(lambda l: (l.code, l.formula)))
 

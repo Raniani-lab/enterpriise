@@ -45,7 +45,7 @@ class ResCompany(models.Model):
         company.
         """
         self.ensure_one()
-        return self.env['account.tax.report'].search([('country_id', '=', self.country_id.id)])
+        return self.env['account.tax.report'].search([('country_id', '=', self.get_fiscal_country().id)])
 
     def write(self, values):
         # in case the user want to change the journal or the periodicity without changing the date, we should change the next_activity

@@ -1,15 +1,5 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="hr_job_search_view" model="ir.ui.view">
-        <field name="name">hr.job.search</field>
-        <field name="model">hr.job</field>
-        <field name="mode">primary</field>
-        <field name="inherit_id" ref="hr_recruitment.hr_job_search_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="searchpanel" position="replace"/>
-        </field>
-    </record>
-
     <record id="view_hr_job_employee_referral_kanban" model="ir.ui.view">
         <field name="name">hr.job.employee.referral.kanban</field>
         <field name="model">hr.job</field>
@@ -95,7 +85,6 @@
         <field name="res_model">hr.job</field>
         <field name="view_mode">kanban,form</field>
         <field name="view_id" ref="hr_referral.view_hr_job_employee_referral_kanban"/>
-        <field name="search_view_id" ref="hr_referral.hr_job_search_view"/>
         <field name="domain">[('is_published', '=', True), ('state', '=', 'recruit')]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

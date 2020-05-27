@@ -50,8 +50,8 @@
         <field name="mode">primary</field>
         <field name="priority">20</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='opened']" position="replace"/>
-            <xpath expr="//field[@name='replied']" position="replace"/>
+            <xpath expr="//field[@name='opened_ratio']" position="replace"/>
+            <xpath expr="//field[@name='replied_ratio']" position="replace"/>
         </field>
     </record>
 

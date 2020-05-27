@@ -21,6 +21,7 @@ class MailActivity(models.Model):
             for record in self:
                 document = self.env['documents.document'].search([('request_activity_id', '=', record.id)], limit=1)
                 if document and not document.attachment_id:
+                    self.env['documents.document'].search([('attachment_id', '=', attachment_ids[0])]).unlink()
                     if not feedback:
                         feedback = _("Document Request: %s Uploaded by: %s") % (document.name, self.env.user.name)
                     document.write({'attachment_id': attachment_ids[0], 'request_activity_id': False})

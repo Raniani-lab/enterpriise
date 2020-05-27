@@ -155,6 +155,9 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         this._searchValue = '';
         this._isSearchValueActive = false;
 
+        const Widget = this.state.attrs.Widget;
+        this.widgetKey = this._getWidgetKey(Widget);
+
         const allowedModifiersNode = ['group', 'page', 'field', 'filter'];
         if (this.state.node && allowedModifiersNode.includes(this.state.node.tag)) {
             this.state.modifiers = this.state.attrs.modifiers || {};
@@ -175,9 +178,10 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                         arr[1].supportedFieldTypes :
                         arr[1].prototype.supportedFieldTypes;
                     const description = self.getFieldInfo(arr[1], 'description');
+                    const isWidgetKeyDescription = arr[0] === self.widgetKey && !description;
                     var isSupported = _.contains(supportedFieldTypes, field.type)
                         && arr[0].indexOf('.') < 0;
-                    return config.isDebug() ? isSupported : isSupported && description;
+                    return config.isDebug() ? isSupported : isSupported && description || isWidgetKeyDescription;
                 })
                 .sortBy(function (arr) {
                     const description = self.getFieldInfo(arr[1], 'description');
@@ -189,9 +193,6 @@ return Widget.extend(StandaloneFieldManagerMixin, {
 
             // only for list & tree view
             this._computeFieldAttrs();
-
-            var Widget = this.state.attrs.Widget;
-            this.widgetKey = this._getWidgetKey(Widget);
 
             // Get dynamic selection for 'full_name' node option of signature widget
             if (this.widgetKey === 'signature') {

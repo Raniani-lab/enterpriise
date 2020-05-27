@@ -553,6 +553,9 @@
                                 t-set="desc"
                                 t-value="desc and desc + ' ('+w[0]+')' or w[0]"/>
                         </t>
+                        <t t-if="widget.widgetKey === w[0] and !desc">
+                            <t t-set="desc" t-value="widget.widgetKey"/>
+                        </t>
                         <t t-esc="desc"/>
                     </option>
                 </select>

@@ -537,6 +537,28 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('widget without description property in sidebar should be shown a technical name of widget when selected in normal mode', async function (assert) {
+        assert.expect(2);
+
+        const originalOdooDebug = odoo.debug;
+        odoo.debug = false;
+        const FieldChar = fieldRegistry.get('char');
+        // add widget in fieldRegistry without desciption
+        fieldRegistry.add('widgetWithoutDescription', FieldChar.extend({}));
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<tree><field name='display_name' widget='widgetWithoutDescription'/></tree>",
+        });
+
+        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+        assert.containsOnce(vem, '#widget option[value="widgetWithoutDescription"]', "widget without description should be there");
+        assert.strictEqual(vem.$('#widget option:selected').text().trim(), "widgetWithoutDescription", "Widget should have technical name i.e. widgetWithoutDescription as it does not have description");
+        delete fieldRegistry.map.widgetWithoutDescription;
+        vem.destroy();
+    });
+
     QUnit.test('editing selection field of list of form view', async function(assert) {
         assert.expect(3);
 

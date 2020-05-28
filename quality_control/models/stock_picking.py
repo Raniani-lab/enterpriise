@@ -61,6 +61,22 @@ class StockPicking(models.Model):
             raise UserError(_('You still need to do the quality checks!'))
         return super(StockPicking, self)._action_done()
 
+    def _pre_action_done_hook(self):
+        res = super()._pre_action_done_hook()
+        if res is True:
+            pickings_to_check_quality = self._check_for_quality_checks()
+            if pickings_to_check_quality:
+                return pickings_to_check_quality[0].with_context(pickings_to_check_quality=pickings_to_check_quality.ids).check_quality()
+        return res
+
+    def _check_for_quality_checks(self):
+        quality_pickings = self.env['stock.picking']
+        for picking in self:
+            product_to_check = picking.mapped('move_line_ids').filtered(lambda ml: ml.qty_done != 0).mapped('product_id')
+            if picking.mapped('check_ids').filtered(lambda qc: qc.quality_state == 'none' and qc.product_id in product_to_check):
+                quality_pickings |= picking
+        return quality_pickings
+
     def action_cancel(self):
         res = super(StockPicking, self).action_cancel()
         self.sudo().mapped('check_ids').filtered(lambda x: x.quality_state == 'none').unlink()

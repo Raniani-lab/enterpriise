@@ -226,6 +226,13 @@ class QualityCheck(models.Model):
                 action = self.env.ref('quality_control.quality_check_action_small').read()[0]
                 action['res_id'] = checks.ids[0]
                 return action
+            if self.env.context.get('pickings_to_check_quality'):  # handle pre_done_hook + multi cases
+                pickings_to_check_quality = check.picking_id.browse(self.env.context['pickings_to_check_quality'])
+                remaining_pickings_to_check_quality = pickings_to_check_quality._check_for_quality_checks()
+                if remaining_pickings_to_check_quality:
+                    return remaining_pickings_to_check_quality[0].check_quality()
+                else:
+                    pickings_to_check_quality.button_validate()
         return super(QualityCheck, self).redirect_after_pass_fail()
 
     def redirect_after_failure(self):
@@ -236,6 +243,13 @@ class QualityCheck(models.Model):
                 action = self.env.ref('quality_control.quality_check_action_small').read()[0]
                 action['res_id'] = checks.ids[0]
                 return action
+            if self.env.context.get('pickings_to_check_quality'):  # handle pre_done_hook + multi cases
+                pickings_to_check_quality = check.picking_id.browse(self.env.context['pickings_to_check_quality'])
+                remaining_pickings_to_check_quality = pickings_to_check_quality._check_for_quality_checks()
+                if remaining_pickings_to_check_quality:
+                    return remaining_pickings_to_check_quality[0].check_quality()
+                else:
+                    pickings_to_check_quality.button_validate()
         return super(QualityCheck, self).redirect_after_pass_fail()
 
     def show_failure_message(self):

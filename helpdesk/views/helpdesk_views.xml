@@ -398,7 +398,6 @@
                 <field name="activity_ids" widget="list_activity" optional="show"/>
                 <field name="stage_id" optional="show" readonly="1"/>
                 <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
-                <field name="activity_exception_decoration" widget="activity_exception" readonly="1"/>
             </tree>
         </field>
     </record>

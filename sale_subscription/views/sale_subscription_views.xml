@@ -362,7 +362,6 @@
                 <field name="stage_id" widget="badge" decoration-info="stage_category == 'draft'" decoration-success="stage_category == 'progress'"/>
                 <field name="to_renew" invisible="1"/>
                 <field name="stage_category" invisible="1"/>
-                <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>
         </field>
     </record>

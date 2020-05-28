@@ -31,7 +31,7 @@ class IntrastatReport(models.AbstractModel):
             SELECT
                 move.id AS move_id,
                 move.partner_id,
-                partner.name AS partner_name,
+                COALESCE(partner.name, commercial_partner.name) AS partner_name,
                 partner.vat AS partner_vat,
                 country.code AS country_code,
                 move.currency_id AS currency_id,
@@ -42,6 +42,7 @@ class IntrastatReport(models.AbstractModel):
                 LEFT JOIN res_company company ON move.company_id = company.id
                 LEFT JOIN res_partner company_partner ON company_partner.id = company.partner_id
                 LEFT JOIN res_country country ON partner.country_id = country.id
+                LEFT JOIN res_partner commercial_partner ON move.commercial_partner_id = commercial_partner.id
             WHERE move.state = 'posted'
                 AND country.intrastat = TRUE
                 AND company_partner.country_id != country.id

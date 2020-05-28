@@ -63,6 +63,7 @@ class ReportExportWizard(models.TransientModel):
 
             if mimetype is not False: # We let the option to set a None value for it
                 report_options = json.loads(report_action['data']['options'])
+                report_options.pop('self', False)
                 generation_function = getattr(report, 'get_' + output_format)
                 file_name = report.get_report_filename(report_options) + '.' + output_format
                 file_content = base64.encodebytes(generation_function(report_options)) # We use the options from the action, as the action may have added or modified stuff into them (see l10n_es_reports, with BOE wizard)

@@ -356,7 +356,7 @@ class generic_tax_report(models.AbstractModel):
                  AND report_line.report_id = %s
                  AND account_move_line.tax_exigible
                  AND account_journal.id = account_move_line.journal_id
-                 AND (caba_origin_journal.type IS NULL OR caba_origin_journal.type != 'bank')
+                 AND (caba_origin_journal.type IS NULL OR caba_origin_journal.type IN ('sale', 'purchase'))
                  GROUP BY account_tax_report_line_tags_rel.account_tax_report_line_id
         """
 

@@ -10,8 +10,8 @@ from odoo import fields
 class LuxembourgElectronicReportTest(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass(chart_template_ref='l10n_lu.lu_2011_chart_1')
+    def setUpClass(cls, chart_template_ref='l10n_lu.lu_2011_chart_1'):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.company_data['company'].ecdf_prefix = '1234AB'
 

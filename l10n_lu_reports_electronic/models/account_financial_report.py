@@ -29,9 +29,8 @@ class ReportAccountFinancialReport(models.Model):
         # Add comparison filter to get data from last year
         self.filter_comparison = {'filter': 'same_last_year', 'number_period': 1}
         self._init_filter_comparison(options)
-        ctx = self._set_context(options)
 
-        lines = self.with_context(ctx)._get_lines(options)
+        lines = self._get_table(options)[1]
 
         ReportLine = self.env['account.financial.html.report.line']
         date_from = fields.Date.from_string(options['date'].get('date_from'))

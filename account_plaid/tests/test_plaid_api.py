@@ -34,8 +34,8 @@ class MockResponse:
 class TestPlaidApi(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.db_name = cls.env.cr.dbname
         cls.db_uid = cls.env['ir.config_parameter'].get_param('database.uuid')

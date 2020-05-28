@@ -2,15 +2,14 @@
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
 from odoo import fields
-from odoo.exceptions import ValidationError
 
 
 @tagged('post_install', '-at_install')
 class TestResPartner(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestResPartner, cls).setUpClass(chart_template_ref='l10n_be.l10nbe_chart_template')
+    def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.invoice = cls.init_invoice('in_invoice')
 
@@ -90,7 +89,7 @@ class TestResPartner(AccountTestInvoicingCommon):
             'nature': '2',
             'vat': '0475646468',
             'remunerations': {'commissions': 1000.0},
-            'paid_amount': 869.57,
+            'paid_amount': 826.45,
             'total_amount': 1000.0,
             'job_position': False,
             'citizen_identification': False
@@ -138,16 +137,16 @@ class TestResPartner(AccountTestInvoicingCommon):
         move.flush()
         payments.flush()
 
-        self.assertEqual(move.amount_residual, 150.0)
+        self.assertEqual(move.amount_residual, 210.0)
 
         tags = self.env['account.account.tag'] + self.tag_281_50_commissions + self.tag_281_50_fees + self.tag_281_50_atn + self.tag_281_50_exposed_expenses
         paid_amount_per_partner = self.partner_a._get_paid_amount_per_partner('2000', tags)
         paid_amount_for_partner_a = paid_amount_per_partner.get(self.partner_a.id, 0.0)
-        self.assertEqual(paid_amount_for_partner_a, self.partner_a.currency_id.round(434.7826))
+        self.assertEqual(paid_amount_for_partner_a, self.partner_a.currency_id.round(413.22))
 
         paid_amount_per_partner = self.partner_a._get_paid_amount_per_partner('2001', tags)
         paid_amount_for_partner_a = paid_amount_per_partner.get(self.partner_a.id, 0.0)
-        self.assertEqual(paid_amount_for_partner_a, self.partner_a.currency_id.round(434.7826))
+        self.assertEqual(paid_amount_for_partner_a, self.partner_a.currency_id.round(413.22))
 
     def test_res_partner_get_partner_information(self):
         '''Checking of all information about a specific partner.'''

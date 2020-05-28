@@ -9,13 +9,17 @@ from odoo.tests import tagged
 class LuxembourgSAFTReportTest(SAFTReportTest):
 
     @classmethod
-    def setUpClass(cls):
-        super(LuxembourgSAFTReportTest, cls).setUpClass()
+    def setUpClass(cls, chart_template_ref='l10n_lu.lu_2011_chart_1'):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
-        cls.setup_saft_company_data(cls.env.ref('l10n_lu.lu_2011_chart_1'),
-            cls.env.ref('base.lu'), city='Garnich',
-            zip='L-8353', company_registry='123456', phone='+352 11 11 11 11'
-        )
+        cls.company_data['company'].write({
+            'city': 'Garnich',
+            'zip': 'L-8353',
+            'company_registry': '123456',
+            'phone': '+352 11 11 11 11',
+            'country_id': cls.env.ref('base.lu').id,
+        })
+
         cls.check_or_create_xsd_attachment('l10n_lu_saft')
 
     def test_saft_report_values(self):
@@ -37,7 +41,7 @@ class LuxembourgSAFTReportTest(SAFTReportTest):
         # Below seven accounts should have reflected with three invoices and one refund(untaxed amount: 1200€, tax: 204€ @ 17% rate for each invoice/refund)
         # and one bill(untaxed amount: 960€, tax: 163.2€ @ 17% rate) in current year and one invoice in previous year
         self.assertAccountBalance(values['accounts'], {
-            self.company.get_unaffected_earnings_account().id: {
+            self.company_data['company'].get_unaffected_earnings_account().id: {
                 'opening_balance': {'debit': '0.00', 'credit': '1200.00'},
                 'closing_balance': {'debit': '0.00', 'credit': '0.00'}
             },

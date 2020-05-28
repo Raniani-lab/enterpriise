@@ -11,8 +11,8 @@ from unittest.mock import patch
 class TestAccountFollowupReports(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestAccountFollowupReports, cls).setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.partner_a.email = 'partner_a@mypartners.xyz'
 

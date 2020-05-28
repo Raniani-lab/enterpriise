@@ -3,49 +3,15 @@
 
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tests import tagged
-from odoo.tests.common import Form
 from odoo import fields, release
-from odoo.tools import date_utils
 
 
 @tagged('post_install', '-at_install')
 class SAFTReportTest(TestAccountReportsCommon):
 
     @classmethod
-    def setup_saft_company_data(cls, chart_template, country, **kwargs):
-        cls.env.company.write({
-            'chart_template_id': chart_template.id
-        })
-        # below property will be used in various common assertion message
-        cls.country_name = country.name
-        cls.company_data = cls.setup_company_data(
-            '{}Company'.format(country.name),
-            country_id=country.id, **kwargs
-        )
-        cls.company = cls.company_data['company']
-        cls.env = cls.env['res.company'].with_company(cls.company).env
-
-        cls.prepare_data()
-
-    @classmethod
-    def check_or_create_xsd_attachment(cls, module_name):
-        # Check for cached XSD file in attachment
-        xsd_file = cls.env['account.general.ledger']._get_xsd_file()
-        attachment = cls.env['ir.attachment'].search([
-            ('name', '=', 'xsd_cached_{0}'.format(xsd_file.replace('.', '_')))
-        ])
-        if not attachment:
-            # Below might take some time to download XSD file
-            cls.env.ref('{}.ir_cron_load_xsd_file'.format(module_name)).method_direct_trigger()
-        return True
-
-    @classmethod
-    def prepare_data(cls):
-        # below will trigger partner onchange that will update partner_id among other fields of account.move.line
-        def onchange_partner_b(invoice):
-            invoice_form = Form(invoice)
-            invoice_form.partner_id = cls.partner_b
-            return invoice_form.save()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         # prepare data required to create invoices
         cls.partner_a = cls.env['res.partner'].create({
@@ -53,14 +19,14 @@ class SAFTReportTest(TestAccountReportsCommon):
             'city': 'Garnich',
             'zip': 'L-8353',
             'country_id': cls.env.ref('base.lu').id,
-            'phone': '+352 24 11 11 11'
+            'phone': '+352 24 11 11 11',
         })
         cls.partner_b = cls.env['res.partner'].create({
             'name': 'SAFT Partner B',
             'city': 'Garnich',
             'zip': 'L-8353',
             'country_id': cls.env.ref('base.lu').id,
-            'phone': '+352 24 11 11 12'
+            'phone': '+352 24 11 11 12',
         })
         cls.product_a = cls.env['product.product'].create({
             'name': 'SAFT A',
@@ -80,41 +46,53 @@ class SAFTReportTest(TestAccountReportsCommon):
             'property_account_expense_id': cls.company_data['default_account_expense'].id,
         })
 
-        # Create three invoices, one refund and one bill in current year
+        # Create three invoices, one refund and one bill in 2019
         partner_a_invoice1 = cls.init_invoice('out_invoice')
         partner_a_invoice2 = cls.init_invoice('out_invoice')
         partner_a_invoice3 = cls.init_invoice('out_invoice')
         partner_a_refund = cls.init_invoice('out_refund')
 
-        partner_b_bill = onchange_partner_b(cls.init_invoice('in_invoice'))
+        partner_b_bill = cls.init_invoice('in_invoice', partner=cls.partner_b)
 
-        date_today = fields.Date.today()
-
-        # Create one invoice for partner B in previous year
-        partner_b_invoice1 = onchange_partner_b(cls.init_invoice('out_invoice'))
+        # Create one invoice for partner B in 2018
+        partner_b_invoice1 = cls.init_invoice('out_invoice', partner=cls.partner_b, invoice_date=fields.Date.from_string('2018-01-01'))
 
         # init_invoice has hardcoded 2019 year's date, we are resetting it to current year's one.
-        (partner_a_invoice1 + partner_a_invoice2 + partner_a_invoice3 + partner_a_refund + partner_b_bill).write({'invoice_date': date_today, 'date': date_today})
         (partner_a_invoice1 + partner_a_invoice2 + partner_a_invoice3 + partner_b_invoice1 + partner_a_refund + partner_b_bill).post()
 
-    def get_report_options(self):
-        GeneralLedger = self.env['account.general.ledger']
-        year_df, year_dt = date_utils.get_fiscal_year(fields.Date.today())
-        GeneralLedger.filter_date = {'mode': 'range', 'filter': 'this_year'}
+        cls.report_options = cls.get_report_options()
+
+        cls.country_name = cls.company_data['company'].country_id.name
+
+    @classmethod
+    def check_or_create_xsd_attachment(cls, module_name):
+        # Check for cached XSD file in attachment
+        xsd_file = cls.env['account.general.ledger']._get_xsd_file()
+        attachment = cls.env['ir.attachment'].search([
+            ('name', '=', 'xsd_cached_{0}'.format(xsd_file.replace('.', '_')))
+        ])
+        if not attachment:
+            # Below might take some time to download XSD file
+            cls.env.ref('{}.ir_cron_load_xsd_file'.format(module_name)).method_direct_trigger()
+        return True
+
+    @classmethod
+    def get_report_options(cls):
         # Generate `options` to feed to SAFT report
-        return self._init_options(GeneralLedger, year_df, year_dt)
+        return cls._init_options(cls.env['account.general.ledger'], fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
 
     def generate_saft_report(self):
         return self.env['account.general.ledger'].get_xml(self.report_options)
 
     def get_report_values(self):
-        return self.env['account.general.ledger']._prepare_saft_report_data(self.report_options)
+        with self.mocked_today('2019-01-01'):
+            return self.env['account.general.ledger']._prepare_saft_report_data(self.report_options)
 
     def assertHeaderData(self, header_values, expected_values):
         expected_values.update({
-            'date_created': fields.Date.today(),
+            'date_created': fields.Date.from_string('2019-01-01'),
             'software_version': release.version,
-            'company_currency': self.company.currency_id.name,
+            'company_currency': self.company_data['company'].currency_id.name,
             'date_from': self.report_options['date']['date_from'],
             'date_to': self.report_options['date']['date_to'],
         })
@@ -132,7 +110,7 @@ class SAFTReportTest(TestAccountReportsCommon):
                 "Wrong closing balance for account(s) of {} SAF-T report.".format(self.country_name))
 
     def execute_common_tests(self, values):
-        self.assertEqual(self.company.country_id.code, values['country_code'],
+        self.assertEqual(self.company_data['company'].country_id.code, values['country_code'],
             "Selected company is not one from {}! SAF-T report can't be generated.".format(self.country_name))
 
         # Test exported customers/suppliers
@@ -146,15 +124,10 @@ class SAFTReportTest(TestAccountReportsCommon):
             "{} SAF-T report should have {} as supplier in master data.".format(self.country_name, self.partner_b.name))
 
         # Test exported taxes
-        sales_tax = self.env['account.tax'].search_read([
-            ('type_tax_use', '=', 'sale'),
-            ('company_id', '=', self.company.id),
-        ], ['name', 'amount_type', 'amount'], limit=1) # default sale tax
-        purchases_tax = self.env['account.tax'].search_read([
-            ('type_tax_use', '=', 'purchase'),
-            ('company_id', '=', self.company.id),
-        ], ['name', 'amount_type', 'amount'], limit=1) # default purchase tax
+        taxes = self.tax_sale_a + self.tax_sale_b + self.tax_purchase_a + self.tax_purchase_b
+        taxes_values = {vals['id']: vals for vals in taxes.read(['name', 'amount_type', 'amount'])}
+
+        # Check the report.
         report_taxes = list(values['taxes'].values())
-        expected_taxes = sales_tax + purchases_tax
-        self.assertEqual(report_taxes, expected_taxes,
-            "{} SAF-T report should have default sales and purchase taxes.".format(self.country_name))
+        for report_vals in report_taxes:
+            self.assertDictEqual(report_vals, taxes_values.get(report_vals['id']))

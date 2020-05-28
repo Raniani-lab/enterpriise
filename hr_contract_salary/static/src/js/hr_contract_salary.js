@@ -194,7 +194,6 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                     'advantage_field': advantageField,
                     'new_value': newValue,
                     'contract_id': parseInt($("input[name='contract']").val()),
-                    'token': $("input[name='token']").val(),
                 },
             });
             if (event.target.type !== 'select') {
@@ -240,7 +239,6 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 route: '/salary_package/update_salary/',
                 params: {
                     'contract_id': parseInt($("input[name='contract']").val()),
-                    'token': $("input[name='token']").val(),
                     'advantages': self.getAdvantages({includeFiles: false}),
                 },
             }).then(data => {

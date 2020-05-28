@@ -217,7 +217,7 @@ WebClient.include({
                action.res_model &&
                // we don't want to edit Settings as it is a special case of form view
                // this is a heuristic to determine if the action is Settings
-               action.res_model.indexOf('settings') === -1 &&
+               (action.res_model.indexOf('settings') === -1 || action.res_model.indexOf('x_') === 0) &&
                // we don't want to edit Dashboard views
                action.res_model !== 'board.board');
     },

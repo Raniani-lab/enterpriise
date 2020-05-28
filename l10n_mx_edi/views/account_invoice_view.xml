@@ -7,8 +7,8 @@
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//sheet/group//group[last()]" position="inside">
-                    <label for="l10n_mx_edi_pac_status" attrs="{'invisible': ['|', ('state', 'not in', ['posted', 'cancel']), ('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
-                    <div class="o_row" attrs="{'invisible': ['|', ('state', 'not in', ['posted', 'cancel']), ('move_type', 'not in', ('out_invoice', 'out_refund'))]}">
+                    <label for="l10n_mx_edi_pac_status" attrs="{'invisible': ['|', ('l10n_mx_edi_pac_status', '=', False), ('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+                    <div class="o_row" attrs="{'invisible': ['|', ('l10n_mx_edi_pac_status', '=', False), ('move_type', 'not in', ('out_invoice', 'out_refund'))]}">
                         <field name="l10n_mx_edi_pac_status"/>
                         <button name="l10n_mx_edi_update_pac_status" string="Retry" class="oe_link" type="object" groups="account.group_account_invoice" attrs="{'invisible':[('l10n_mx_edi_pac_status', 'in', ['signed', 'cancelled', False])]}"/>
                         <button name="l10n_mx_edi_request_cancellation" string="Request Cancellation" class="oe_link" type="object" groups="account.group_account_invoice" attrs="{'invisible':[('l10n_mx_edi_pac_status', 'not in', ['signed'])]}"/>

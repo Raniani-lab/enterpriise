@@ -631,7 +631,7 @@ class AccountMove(models.Model):
                     body=_('This invoice does not have a properly cancelled XML and '
                            'it was signed at least once, please cancel properly with '
                            'the SAT.'))
-            allow = self - not_allow
+            allow = (self - not_allow).filtered(lambda inv: inv.state == 'cancel')
             allow.write({'l10n_mx_edi_time_invoice': False,
                          'l10n_mx_edi_pac_status': False})
             for record in allow.filtered('l10n_mx_edi_cfdi_uuid'):
@@ -1079,7 +1079,7 @@ class AccountMove(models.Model):
                     check_move_validity=False)._onchange_invoice_date()
             if not move.l10n_mx_edi_time_invoice:
                 move.l10n_mx_edi_time_invoice = date_mx
-            move._l10n_mx_edi_update_hour_timezone()
+                move._l10n_mx_edi_update_hour_timezone()
 
         result = super(AccountMove, self).post()
 

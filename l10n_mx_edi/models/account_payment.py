@@ -884,7 +884,7 @@ class AccountPayment(models.Model):
         return origin
 
     def action_draft(self):
-        for record in self.filtered('l10n_mx_edi_cfdi_uuid'):
+        for record in self.filtered(lambda payment: payment.l10n_mx_edi_cfdi_uuid and payment.state == 'cancelled'):
             record.write({
                 'l10n_mx_edi_expedition_date': False,
                 'l10n_mx_edi_pac_status': 'none',

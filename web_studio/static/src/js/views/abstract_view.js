@@ -3,6 +3,7 @@ odoo.define('web_studio.AbstractViewEditor', function (require) {
 
 var ajax = require('web.ajax');
 var AbstractView = require('web.AbstractView');
+const utils = require('web.utils');
 
 AbstractView.include({
 
@@ -75,9 +76,11 @@ AbstractView.include({
                     noContentHelp: undefined,
                 });
                 let editor;
-                if (Renderer.prototype instanceof owl.Component) {
-                    state = Object.assign(state || {}, params);
-                    return new Renderer(null, state);
+                if (utils.isComponent(Renderer)) {
+                    state = Object.assign({}, state, params);
+                    const Component = state.Component;
+                    delete state.Component;
+                    return new Renderer(parent, Component, state);
                 } else {
                     editor = new Renderer(parent, state, params);
                 }

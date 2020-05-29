@@ -13,19 +13,12 @@ class Project(models.Model):
     _inherit = "project.project"
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
-    allow_timesheets = fields.Boolean(default=False, compute='_compute_allow_timesheets', store=True, readonly=False)
 
-    @api.depends('is_fsm')
-    def _compute_allow_timesheets(self):
-        for project in self:
-            if not project._origin:
-                project.allow_timesheets = not project.is_fsm
-
-    @api.depends('is_fsm')
-    def _compute_allow_subtasks(self):
-        subtask_enabled = self.user_has_groups('project.group_subtask_project')
-        for project in self:
-            project.allow_subtasks = subtask_enabled and not project.is_fsm
+    @api.model
+    def default_get(self, *args, **kwargs):
+        defaults = super().default_get(*args, **kwargs)
+        defaults['allow_subtasks'] = defaults.get('allow_subtasks', False) and not defaults.get('is_fsm')
+        return defaults
 
 
 class Task(models.Model):

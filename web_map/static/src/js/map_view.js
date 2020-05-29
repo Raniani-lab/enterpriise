@@ -5,6 +5,7 @@ const MapModel = require('web_map.MapModel');
 const MapController = require('web_map.MapController');
 const MapRenderer = require('web_map.MapRenderer');
 const AbstractView = require('web.AbstractView');
+const RendererWrapper = require('web.RendererWrapper');
 const utils = require('web.utils');
 const viewRegistry = require('web.view_registry');
 const _t = require('web.core')._t;
@@ -62,9 +63,16 @@ const MapView = AbstractView.extend({
         this.loadParams.fieldNames = _.uniq(fieldNames);
         this.rendererParams.fieldNamesMarkerPopup = fieldNamesMarkerPopup;
 
-        this.rendererParams.hasFormView = params.actionViews.find(view => view.type === "form");
+        this.rendererParams.hasFormView = params.actionViews.some(view => view.type === "form");
 
         this.controllerParams.actionName = params.action ? params.action.name : _t("Untitled");
+    },
+    /**
+     * @override
+     */
+    getRenderer(parent, state) {
+        state = Object.assign({}, state, this.rendererParams);
+        return new RendererWrapper(null, this.config.Renderer, state);
     },
 });
 

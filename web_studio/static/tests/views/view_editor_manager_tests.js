@@ -3453,29 +3453,29 @@ QUnit.module('ViewEditorManager', {
         // Map rendered correctly
         assert.strictEqual(vem.view_type, 'map',
             'view type should be map');
-        assert.strictEqual(vem.editor.state.records.length, 1,
+        assert.strictEqual(vem.editor.props.records.length, 1,
             'There should be one records');
         assert.containsOnce(vem.editor, 'div.leaflet-marker-icon',
             'There should be one marker on the map');
 
         // Marker popup have correct field
-        await testUtils.dom.click(vem.editor.$('div.leaflet-marker-icon'));
+        await testUtils.dom.click($(vem.editor.el).find('div.leaflet-marker-icon'));
 
-        assert.strictEqual(vem.editor.$('.o_map_popup_table tbody tr:first .contentName').text().trim(), 'Name',
-            'Marker popup have should have a name field');
-        assert.strictEqual(vem.editor.$('.o_map_popup_table tbody tr:first .contentString').text().trim(), 'Chhagan',
-            'Marker popup have should have a name Chhagan');
-        assert.strictEqual(vem.editor.$('.o_map_popup_table tbody tr:last .contentName').text().trim(), 'Description',
-            'Marker popup have should have a Description field');
-        assert.strictEqual(vem.editor.$('.o_map_popup_table tbody tr:last .contentString').text().trim(), 'shaktiman',
-            'Marker popup have should have a description shaktiman');
+        assert.strictEqual($(vem.editor.el).find('.o_map_popup_table tbody tr:first .contentName').text().trim(),
+            'Name', 'Marker popup have should have a name field');
+        assert.strictEqual($(vem.editor.el).find('.o_map_popup_table tbody tr:first .contentString').text().trim(),
+            'Chhagan', 'Marker popup have should have a name Chhagan');
+        assert.strictEqual($(vem.editor.el).find('.o_map_popup_table tbody tr:last .contentName').text().trim(),
+            'Description', 'Marker popup have should have a Description field');
+        assert.strictEqual($(vem.editor.el).find('.o_map_popup_table tbody tr:last .contentString').text().trim(),
+            'shaktiman', 'Marker popup have should have a description shaktiman');
 
         // Remove field and check marker popup fields
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_map_popup_fields .badge:first .o_delete'));
         assert.containsOnce(vem, '.o_web_studio_sidebar .o_map_popup_fields .badge',
             'Should have only one selected fields in marker popup fields');
 
-        await testUtils.dom.click(vem.editor.$('div.leaflet-marker-icon'));
+        await testUtils.dom.click($(vem.editor.el).find('div.leaflet-marker-icon'));
         assert.containsOnce(vem.editor, '.o_map_popup_table tbody tr',
             'Marker popup have should have only Description field');
 

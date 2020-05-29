@@ -99,6 +99,9 @@ var AbstractEditorManager = Widget.extend({
      *
      */
     on_detach_callback: function () {
+        if (this.editor && this.editor.on_detach_callback) {
+            this.editor.on_detach_callback();
+        }
         this.isInDOM = false;
     },
 

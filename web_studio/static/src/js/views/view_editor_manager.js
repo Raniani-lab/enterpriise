@@ -1,6 +1,7 @@
 odoo.define('web_studio.ViewEditorManager', function (require) {
 "use strict";
 
+const { ComponentWrapper } = require('web.OwlCompatibility');
 var core = require('web.core');
 var data_manager = require('web.data_manager');
 var Dialog = require('web.Dialog');
@@ -27,6 +28,7 @@ var NewButtonBoxDialog = require('web_studio.NewButtonBoxDialog');
 var NewFieldDialog = require('web_studio.NewFieldDialog');
 var utils = require('web_studio.utils');
 var ViewEditorSidebar = require('web_studio.ViewEditorSidebar');
+const { isComponent } = require('web.utils');
 
 var _t = core._t;
 var QWeb = core.qweb;
@@ -39,6 +41,25 @@ var Editors = {
     calendar: CalendarEditor,
     search: SearchEditor,
 };
+
+class EditorWrapper extends ComponentWrapper {
+    handleDrop() {
+        return this.componentRef.comp &&
+            this.componentRef.comp.handleDrop(...arguments);
+    }
+    highlightNearestHook() {
+        return this.componentRef.comp &&
+            this.componentRef.comp.highlightNearestHook(...arguments);
+    }
+    setSelectable() {
+        return this.componentRef.comp &&
+            this.componentRef.comp.setSelectable(...arguments);
+    }
+    unselectedElements() {
+        return this.componentRef.comp &&
+            this.componentRef.comp.unselectedElements(...arguments);
+    }
+}
 
 var ViewEditorManager = AbstractEditorManager.extend({
     custom_events: _.extend({}, AbstractEditorManager.prototype.custom_events, {
@@ -999,8 +1020,21 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 var Editor = Editors[this.view_type];
                 if (!Editor) {
                     // generate the Editor on the fly if it doesn't exist
-                    if (View.prototype.config.Renderer.prototype instanceof owl.Component) {
-                        Editor = class ExtenderEditor extends EditorMixinOwl(View.prototype.config.Renderer) { };
+                    if (isComponent(View.prototype.config.Renderer)) {
+                        const Renderer = class extends EditorMixinOwl(View.prototype.config.Renderer) { };
+                        const propsValidation = View.prototype.config.Renderer.props;
+                        if (propsValidation) {
+                            Renderer.props = Object.assign({}, propsValidation, {
+                                mode: propsValidation.mode || String,
+                                chatter_allowed: propsValidation.chatter_allowed || Boolean,
+                                show_invisible: propsValidation.show_invisible || Boolean,
+                                arch: propsValidation.arch || Object,
+                                x2mField: propsValidation.x2mField || Object,
+                                viewType: propsValidation.viewType || String,
+                            });
+                        }
+                        params.Component = Renderer;
+                        Editor = EditorWrapper;
                     } else {
                         Editor = View.prototype.config.Renderer.extend(EditorMixin);
                     }

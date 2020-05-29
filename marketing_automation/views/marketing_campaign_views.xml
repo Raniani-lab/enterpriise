@@ -288,7 +288,7 @@
             <tree string="Campaign">
                 <field name="name" />
                 <field name="model_id" string="Target" attrs="{'readonly' :[('state' , '!=', 'draft')]}"/>
-                <field name="state" readonly="True"/>
+                <field name="state" readonly="True" decoration-info="state == 'draft'" decoration-success="state == 'running'" decoration-muted="state == 'stopped'" widget="badge"/>
                 <field name="mass_mailing_count" />
                 <field name="link_tracker_click_count" />
                 <field name="total_participant_count" />

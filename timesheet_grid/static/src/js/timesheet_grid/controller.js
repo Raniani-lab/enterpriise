@@ -19,6 +19,7 @@ odoo.define('timesheet_grid.GridController', function (require) {
          * @override
          */
         updateButtons: function () {
+            this._super(...arguments);
             this.$buttons.find('.o_timesheet_validate').removeClass('grid_arrow_button');
         },
 

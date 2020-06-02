@@ -54,7 +54,7 @@
             <t t-set="longitude" t-value="record.partner and record.partner.partner_longitude"/>
             <li
                 t-att-class="{o_pin_located: latitude and longitude}"
-                t-att-title="{'Could not locate': !latitude or !longitude}"
+                t-att-title="(!latitude or !longitude) and 'Could not locate'"
             >
                 <a t-if="latitude and longitude" href=""
                     t-on-click.prevent="_centerAndOpenPin(record)">

@@ -265,12 +265,12 @@ class Planning(models.Model):
             start = slot.start_datetime or self._default_start_datetime()
             end = slot.end_datetime or self._default_end_datetime()
             work_interval = employee._adjust_to_calendar(start, end)
-            start_datetime, end_datetime = work_interval[employee] if employee else (start, end)
+            start_datetime, end_datetime = work_interval[employee] if employee and employee.tz == slot.env.user.tz else (start, end)
 
             if start_datetime:
                 slot.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
             if end_datetime:
-                slot.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)            
+                slot.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
 
             if slot.template_id and slot.start_datetime:
                 h = int(slot.template_id.start_time)

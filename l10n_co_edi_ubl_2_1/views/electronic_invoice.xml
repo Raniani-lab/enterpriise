@@ -211,7 +211,7 @@
             </NOT>
 
             <ORC>
-                <ORC_1 t-esc="invoice.name"/>
+                <ORC_1 t-esc="invoice.ref and invoice.ref[:35]"/>
                 <ORC_4 t-esc="invoice.invoice_origin"/>
             </ORC>
 
@@ -251,7 +251,7 @@
             </CDN>
 
             <DCN>
-                <DCN_1 t-esc="invoice.name"/>
+                <DCN_1 t-esc="invoice.ref"/>
             </DCN>
 
             <OVT t-foreach="ovt_taxes" t-as="tax">

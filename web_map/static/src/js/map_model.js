@@ -33,11 +33,13 @@ const MapModel = AbstractModel.extend({
         this.model = params.modelName;
         this.context = params.context;
         this.fields = params.fieldNames;
+        this.fieldsInfo = params.fieldsInfo;
         this.domain = params.domain;
         this.params = params;
         this.orderBy = params.orderBy;
         this.routing = params.routing;
         this.numberOfLocatedRecords = 0;
+        this.data.groupBy = params.groupedBy.length ? params.groupedBy[0] : false;
         return this._fetchData();
     },
     __reload: function (handle, params) {
@@ -53,6 +55,9 @@ const MapModel = AbstractModel.extend({
         }
         if (options.offset !== undefined) {
             this.data.offset = options.offset;
+        }
+        if (options.groupBy !== undefined && options.groupBy[0] !== this.data.groupBy) {
+            this.data.groupBy = options.groupBy.length ? options.groupBy[0] : false;
         }
         return this._fetchData();
     },
@@ -145,6 +150,7 @@ const MapModel = AbstractModel.extend({
     _fetchData: async function () {
         //case of empty map
         if (!this.resPartnerField) {
+            this.data.recordGroups = [];
             this.data.records = [];
             this.data.routeInfo = { routes: [] };
             return;
@@ -152,6 +158,12 @@ const MapModel = AbstractModel.extend({
         const results = await this._fetchRecordData();
         this.data.records = results.records;
         this.data.count = results.length;
+        if (this.data.groupBy) {
+            this.data.recordGroups = this._getRecordGroups();
+        } else {
+            this.data.recordGroups = {};
+        }
+
         this.partnerIds = [];
         if (this.model === "res.partner" && this.resPartnerField === "id") {
             this.data.records.forEach((record) => {
@@ -176,12 +188,48 @@ const MapModel = AbstractModel.extend({
             route: '/web/dataset/search_read',
             model: this.model,
             context: this.context,
-            fields: this.fields,
+            fields: this.data.groupBy ?
+                this.fields.concat(this.data.groupBy.split(':')[0]) :
+                this.fields,
             domain: this.domain,
             orderBy: this.orderBy,
             limit: this.data.limit,
             offset: this.data.offset
         });
+    },
+    /**
+     * @private
+     * @returns {Object} the fetched records grouped by the groupBy field.
+     */
+    _getRecordGroups: function () {
+        const [fieldName, subGroup] = this.data.groupBy.split(':');
+        const dateGroupFormats = {
+            year: 'YYYY',
+            quarter: '[Q]Q YYYY',
+            month: 'MMMM YYYY',
+            week: '[W]WW YYYY',
+            day: 'DD MMM YYYY',
+        };
+        const groups = {};
+        for (const record of this.data.records) {
+            const value = record[fieldName];
+            let id, name;
+            if (['date', 'datetime'].includes(this.fieldsInfo[fieldName].type)) {
+                const date = moment(value);
+                id = name = date.format(dateGroupFormats[subGroup]);
+            } else {
+                id = Array.isArray(value) ? value[0] : value;
+                name = Array.isArray(value) ? value[1] : value;
+            }
+            if (!groups[id]) {
+                groups[id] = {
+                    name,
+                    records: [],
+                };
+            }
+            groups[id].records.push(record);
+        }
+        return groups;
     },
     /**
      * @private
@@ -272,7 +320,7 @@ const MapModel = AbstractModel.extend({
         return Promise.all(promises).then(() => {
             this._addPartnerToRecord();
             this.data.routeInfo = { routes: [] };
-            if (this.numberOfLocatedRecords > 1 && this.routing) {
+            if (this.numberOfLocatedRecords > 1 && this.routing && !this.data.groupBy) {
                 return this._fetchRoute().then(routeResult => {
                     if (routeResult.routes) {
                         this.data.routeInfo = routeResult;

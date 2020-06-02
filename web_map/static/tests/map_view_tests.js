@@ -1818,6 +1818,125 @@ QUnit.module('mapView', {
         map.destroy();
     });
 
+    QUnit.test('Toggle grouped pin lists', async function (assert) {
+        assert.expect(13);
+
+        const records = this.data['project.task'].threeRecords;
+        const partners = this.data['res.partner'].twoRecordsAddressCoordinates;
+        for (const record of records.records) {
+            // add name on partner_id to have name_get like value
+            record.partner_id.push(partners.find(x => x.id === record.partner_id[0]).name);
+        }
+
+        const map = await createView({
+            View: MapView,
+            model: 'project.task',
+            data: this.data,
+            arch: '<map res_partner="partner_id"/>',
+            async mockRPC(route) {
+                switch (route) {
+                    case '/web/dataset/search_read':
+                        return records;
+                    case '/web/dataset/call_kw/res.partner/search_read':
+                        return partners;
+                }
+            },
+            session: {
+                map_box_token: 'token'
+            },
+            groupBy: ['partner_id'],
+        });
+
+        assert.containsN(map, '.o_pin_list_group_header', 2, 'Should have 2 groups');
+        assert.strictEqual(map.$('.o_pin_list_group_header').text(), 'BarFoo');
+        assert.containsN(map, '.o_pin_list_details', 2);
+        assert.containsN(map, '.o_pin_list_details li', 3);
+        assert.strictEqual(map.$('.o_pin_list_details').text(), 'FooProjectFooBarProjectBarProject');
+
+        await testUtils.dom.click(map.$('.o_pin_list_group_header:eq(1)'));
+
+        assert.containsN(map, '.o_pin_list_group_header', 2, 'Should still have 2 groups');
+        assert.containsOnce(map, '.o_pin_list_details');
+        assert.containsN(map, '.o_pin_list_details li', 2);
+        assert.strictEqual(map.$('.o_pin_list_details').text(), 'FooProjectFooBarProject');
+
+        await testUtils.dom.click(map.$('.o_pin_list_group_header:eq(0)'));
+
+        assert.containsNone(map, '.o_pin_list_details');
+
+        await testUtils.dom.click(map.$('.o_pin_list_group_header:eq(1)'));
+
+        assert.containsOnce(map, '.o_pin_list_details');
+        assert.containsOnce(map, '.o_pin_list_details li');
+        assert.strictEqual(map.$('.o_pin_list_details').text(), 'BarProject');
+
+        map.destroy();
+    });
+
+    QUnit.test('Change groupBy', async function (assert) {
+        assert.expect(13);
+
+        const records = this.data['project.task'].threeRecords;
+        const partners = this.data['res.partner'].twoRecordsAddressCoordinates;
+        for (const record of records.records) {
+            // add name on partner_id to have name_get like value
+            record.partner_id.push(partners.find(x => x.id === record.partner_id[0]).name);
+        }
+
+        const map = await createView({
+            View: MapView,
+            model: 'project.task',
+            data: this.data,
+            arch: '<map res_partner="partner_id"/>',
+            archs: {
+                'project.task,false,search': `
+                    <search>
+                        <filter string="Partner" name="partner_id" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Name" name="display_name" context="{'group_by': 'display_name'}"/>
+                    </search>
+                `,
+            },
+            session: {
+                map_box_token: 'token'
+            },
+            async mockRPC(route) {
+                switch (route) {
+                    case '/web/dataset/search_read':
+                        return records;
+                    case '/web/dataset/call_kw/res.partner/search_read':
+                        return partners;
+                }
+            },
+        });
+
+        assert.containsNone(map, '.o_pin_list_group_header', 'Should not have any groups');
+
+        await cpHelpers.toggleGroupByMenu(map);
+        await cpHelpers.toggleMenuItem(map, 'Partner');
+
+        assert.containsN(map, '.o_pin_list_group_header', 2, 'Should have 2 groups');
+        assert.strictEqual(map.$('.o_pin_list_group_header').text(), 'BarFoo');
+        // Groups should be loaded too
+        assert.containsN(map, '.o_pin_list_details li', 3);
+        assert.strictEqual(map.$('.o_pin_list_details').text(), 'FooProjectFooBarProjectBarProject');
+
+        await cpHelpers.toggleMenuItem(map, 'Name');
+
+        assert.strictEqual(map.$('.o_pin_list_group_header').text(), 'BarFoo', 'Should not have changed');
+        assert.strictEqual(map.$('.o_pin_list_details').text(), 'FooProjectFooBarProjectBarProject');
+
+        await cpHelpers.toggleMenuItem(map, 'Partner');
+
+        assert.containsN(map, '.o_pin_list_group_header', 3, 'Should have 3 groups');
+        assert.strictEqual(map.$('.o_pin_list_group_header').text(), 'FooProjectBarProjectFooBarProject');
+        assert.strictEqual(map.$('.o_pin_list_details').text(), 'FooProjectBarProjectFooBarProject');
+        assert.containsOnce(map, '.o_pin_list_details:eq(0) li');
+        assert.containsOnce(map, '.o_pin_list_details:eq(1) li');
+        assert.containsOnce(map, '.o_pin_list_details:eq(2) li');
+
+        map.destroy();
+    });
+
     //--------------------------------------------------------------------------
     // Controller testing
     //--------------------------------------------------------------------------

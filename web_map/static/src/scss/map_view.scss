@@ -53,6 +53,30 @@ $map-marker-color: #2c8397;
         overflow-x: hidden;
         cursor: default;
 
+        > .o_pin_list_group {
+            margin-bottom: 1rem;
+
+            > .o_pin_list_group_header {
+                display: flex;
+                align-items: baseline;
+                color: #212529;
+
+                svg {
+                    height: 1.25rem;
+                    margin-right: 0.5rem;
+                }
+
+                > i {
+                    margin-right: 1rem;
+                    width: 0.5rem;
+                }
+            }
+
+            > .o_pin_list_details {
+                margin-left: 2rem;
+            }
+        }
+
         .o_pin_list_header {
             padding: 8px 0;
             text-transform: uppercase;

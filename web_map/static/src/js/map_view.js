@@ -23,7 +23,7 @@ const MapView = AbstractView.extend({
     display_name: 'Map',
     viewType: 'map',
     mobile_friendly: true,
-    searchMenuTypes: ['filter', 'favorite'],
+    searchMenuTypes: ['filter', 'groupBy', 'favorite'],
 
     init: function (viewInfo, params) {
         this._super.apply(this, arguments);
@@ -61,6 +61,7 @@ const MapView = AbstractView.extend({
                 fieldNamesMarkerPopup.push({ fieldName: node.attrs.name, string: node.attrs.string });
             }
         });
+        this.loadParams.fieldsInfo = this.fields;
         this.loadParams.fieldNames = _.uniq(fieldNames);
         this.rendererParams.fieldNamesMarkerPopup = fieldNamesMarkerPopup;
 

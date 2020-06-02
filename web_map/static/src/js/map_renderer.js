@@ -3,11 +3,24 @@ odoo.define('web_map.MapRenderer', function (require) {
 
     const AbstractRendererOwl = require('web.AbstractRendererOwl');
 
-    const { useRef } = owl.hooks;
+    const { useRef, useState } = owl.hooks;
 
     const apiTilesRouteWithToken =
         'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
     const apiTilesRouteWithoutToken = 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    const colors = [
+        '#F06050',
+        '#6CC1ED',
+        '#F7CD1F',
+        '#814968',
+        '#30C381',
+        '#D6145F',
+        '#475577',
+        '#F4A460',
+        '#EB7E7F',
+        '#2C8397',
+    ];
 
     const mapTileAttribution = `
         © <a href="https://www.mapbox.com/about/maps/">Mapbox</a>
@@ -28,6 +41,9 @@ odoo.define('web_map.MapRenderer', function (require) {
             this.markers = [];
             this.polylines = [];
             this.mapContainerRef = useRef('mapContainer');
+            this.state = useState({
+                closedGroupIds: [],
+            });
         }
         /**
          * Load marker icons.
@@ -73,6 +89,17 @@ odoo.define('web_map.MapRenderer', function (require) {
             super.patched(...arguments);
         }
         /**
+         * Update group opened/closed state.
+         *
+         * @override
+         */
+        willUpdateProps(nextProps) {
+            if (this.props.groupBy !== nextProps.groupBy) {
+                this.state.closedGroupIds = [];
+            }
+            return super.willUpdateProps(...arguments);
+        }
+        /**
          * Remove map and the listeners on its markers and routes.
          *
          * @override
@@ -115,7 +142,14 @@ odoo.define('web_map.MapRenderer', function (require) {
             this._removeMarkers();
 
             const markersInfo = {};
-            for (const record of this.props.records) {
+            let records = this.props.records;
+            if (this.props.groupBy) {
+                records = Object.entries(this.props.recordGroups)
+                    .filter(([key]) => !this.state.closedGroupIds.includes(key))
+                    .flatMap(([, value]) => value.records);
+            }
+
+            for (const record of records) {
                 const partner = record.partner;
                 if (partner && partner.partner_latitude && partner.partner_longitude) {
                     const key = `${partner.partner_latitude}-${partner.partner_longitude}`;
@@ -129,24 +163,25 @@ odoo.define('web_map.MapRenderer', function (require) {
             }
 
             for (const markerInfo of Object.values(markersInfo)) {
+                const params = {
+                    count: markerInfo.ids.length,
+                    isMulti: markerInfo.ids.length > 1,
+                    number: this.props.records.indexOf(markerInfo.record) + 1,
+                    numbering: this.props.numbering,
+                    pinSVG: (this.props.numbering ? this._pinNoCircleSVG : this._pinCircleSVG),
+                };
+
+                if (this.props.groupBy) {
+                    const group = Object.entries(this.props.recordGroups)
+                        .find(([, value]) => value.records.includes(markerInfo.record));
+                    params.color = this._getGroupColor(group[0]);
+                }
+
                 // Icon creation
                 const iconInfo = {
                     className: 'o_map_marker',
+                    html: this.env.qweb.renderToString('web_map.marker', params),
                 };
-                if (this.props.numbering) {
-                    iconInfo.html = this._pinNoCircleSVG +
-                        this.env.qweb.renderToString('web_map.markerNumber', {
-                            number: this.props.records.indexOf(markerInfo.record) + 1,
-                            count: markerInfo.ids.length,
-                        });
-                } else if (markerInfo.ids.length > 1) {
-                    iconInfo.html = this._pinCircleSVG +
-                        this.env.qweb.renderToString('web_map.markerBadge', {
-                            count: markerInfo.ids.length,
-                        });
-                } else {
-                    iconInfo.html = this._pinCircleSVG;
-                }
 
                 // Attach marker with icon and popup
                 const marker = L.marker([
@@ -223,6 +258,14 @@ odoo.define('web_map.MapRenderer', function (require) {
                     this.trigger('open_clicked', { ids: markerInfo.ids });
                 };
             }
+        }
+        /**
+         * @private
+         * @param {Number} groupId
+         */
+        _getGroupColor(groupId) {
+            const index = Object.keys(this.props.recordGroups).indexOf(groupId);
+            return colors[index % colors.length];
         }
         /**
          * Creates an array of latLng objects if there is located records.
@@ -352,6 +395,18 @@ odoo.define('web_map.MapRenderer', function (require) {
                 animate: true,
             });
         }
+        /**
+         * @private
+         * @param {Number} id
+         */
+        _toggleGroup(id) {
+            if (this.state.closedGroupIds.includes(id)) {
+                const index = this.state.closedGroupIds.indexOf(id);
+                this.state.closedGroupIds.splice(index, 1);
+            } else {
+                this.state.closedGroupIds.push(id);
+            }
+        }
     }
     MapRenderer.props = {
         arch: Object,
@@ -370,6 +425,7 @@ odoo.define('web_map.MapRenderer', function (require) {
                 },
             },
         },
+        groupBy: [String, Boolean],
         hasFormView: Boolean,
         hideAddress: Boolean,
         hideName: Boolean,
@@ -385,6 +441,7 @@ odoo.define('web_map.MapRenderer', function (require) {
         panelTitle: String,
         offset: Number,
         partners: Array,
+        recordGroups: Object,
         records: Array,
         routeInfo: {
             type: Object,

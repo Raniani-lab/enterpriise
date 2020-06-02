@@ -85,7 +85,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
             pluginRegistry.add("odooPivotPlugin", PivotPlugin);
             const model = new GridModel(workbookData, {
                 mode: "headless",
-                evalContext: this.renderer.env,
+                evalContext: { env: this.renderer.env },
             });
             if (!isNewModel) {
                 model.dispatch("CREATE_SHEET", { cols, rows, activate: true });

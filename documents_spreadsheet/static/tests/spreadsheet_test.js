@@ -2,23 +2,104 @@ odoo.define("web.spreadsheet_tests", function (require) {
     "use strict";
 
     const testUtils = require("web.test_utils");
+    const PivotView = require("web.PivotView");
+    const PivotPlugin = require("documents_spreadsheet.PivotPlugin");
 
-    const { createActionManager, fields, nextTick, dom } = testUtils;
+    const { createActionManager, fields, nextTick, dom, createView } = testUtils;
+    const pluginRegistry = o_spreadsheet.registries.pluginRegistry;
+    const contextMenuRegistry = o_spreadsheet.registries.contextMenuRegistry;
 
+    function mockRPCFn (route, args) {
+        if (args.method === "search_read" && args.model === "ir.model") {
+            return Promise.resolve([{ name: "partner" }]);
+        }
+        return this._super.apply(this, arguments);
+    }
+
+    async function createSpreadsheetFromPivot(pivotView) {
+        const { data, debug } = pivotView;
+        const pivot = await createView(Object.assign({View: PivotView}, pivotView));
+        const documents = data["documents.document"].records;
+        const id = Math.max(...documents.map((d) => d.id)) + 1
+        documents.push({
+            id,
+            name: "pivot spreadsheet",
+            raw: await pivot._getSpreadsheetData(),
+        });
+        pivot.destroy();
+        const actionManager = await createActionManager({
+            debug,
+            data,
+            mockRPC: mockRPCFn,
+        });
+        await actionManager.doAction({
+            type: "ir.actions.client",
+            tag: "action_open_spreadsheet",
+            params: {
+                active_id: id,
+            },
+        });
+        await nextTick();
+        const model = actionManager.getCurrentController().widget.spreadsheetComponent.componentRef.comp.spreadsheet.comp.model
+        const env = {
+            getters: model.getters,
+            dispatch: model.dispatch,
+            services: model.config.evalContext.env.services
+        }
+        return [actionManager, model, env];
+    }
 
     QUnit.module("Spreadsheet Client Action", {
         beforeEach: function () {
+            pluginRegistry.add("odooPivotPlugin", PivotPlugin);
+
             this.data = {
                 "documents.document": {
                     fields: {
                         name: { string: "Name", type: "char" },
-                        spreadsheet_data: { string: "Data", type: "text" },
+                        raw: { string: "Data", type: "text" },
                         favorited_ids: { string: "Name", type: "many2many" },
                         is_favorited: { string: "Name", type: "boolean" },
                     },
                     records: [
-                        { id: 1, name: "My spreadsheet", spreadsheet_data: "{}", is_favorited: false },
-                        { id: 2, name: "", spreadsheet_data: "{}", is_favorited: true },
+                        { id: 1, name: "My spreadsheet", raw: "{}", is_favorited: false },
+                        { id: 2, name: "", raw: "{}", is_favorited: true },
+                    ],
+                },
+                partner: {
+                    fields: {
+                        foo: {
+                            string: "Foo",
+                            type: "integer",
+                            searchable: true,
+                            group_operator: "sum",
+                        },
+                        bar: {
+                            string: "Bar",
+                            type: "integer",
+                            searchable: true,
+                            group_operator: "sum",
+                        },
+                        probability: {
+                            string: "Probability",
+                            type: "integer",
+                            searchable: true,
+                            group_operator: "avg",
+                        },
+                    },
+                    records: [
+                        {
+                            id: 1,
+                            foo: 12,
+                            bar: 110,
+                            probability: 10,
+                        },
+                        {
+                            id: 2,
+                            foo: 1,
+                            bar: 110,
+                            probability: 11,
+                        },
                     ],
                 },
             };
@@ -233,6 +314,141 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 },
             });
             assert.containsOnce(actionManager, ".favorite_button_enabled", "It should already be favorited");
+            actionManager.destroy();
+        });
+
+        QUnit.module("Spreadsheet");
+
+        QUnit.test("Reinsert a pivot", async function (assert) {
+            assert.expect(1);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
+            const reinsertPivot1 = root.subMenus(env)[0];
+            await reinsertPivot1.action(env);
+            assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","110","foo","1")`,
+                "It should contain a pivot formula");
+            actionManager.destroy();
+        });
+
+        QUnit.test("Reinsert a pivot in a too small sheet", async function (assert) {
+            assert.expect(3);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, activate: true });
+            model.dispatch("SELECT_CELL", { col: 0, row: 0 });
+            const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
+            const reinsertPivot1 = root.subMenus(env)[0];
+            await reinsertPivot1.action(env);
+            assert.equal(model.getters.getNumberCols(), 3);
+            assert.equal(model.getters.getNumberRows(), 4);
+            assert.equal(model.getters.getCell(1, 2).content, `=PIVOT("1","probability","bar","110","foo","1")`,
+                "It should contain a pivot formula");
+            actionManager.destroy();
+        });
+
+        QUnit.test("Reinsert a pivot with new data", async function (assert) {
+            assert.expect(2);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            this.data.partner.records = [...this.data.partner.records, {
+                id: 3,
+                foo: 1,
+                bar: 111, // <- new row value in the pivot
+                probability: 15,
+                name: "name",
+                display_name: "name",
+            }];
+            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
+            const reinsertPivot1 = root.subMenus(env)[0];
+            await reinsertPivot1.action(env);
+            assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","110","foo","1")`,
+                "It should contain a pivot formula");
+            assert.equal(model.getters.getCell(4, 10).content, `=PIVOT("1","probability","bar","111","foo","1")`,
+                "It should contain a new row");
+            actionManager.destroy();
+        });
+
+        QUnit.test("undo pivot reinsert", async function (assert) {
+            assert.expect(2);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
+            const reinsertPivot1 = root.subMenus(env)[0];
+            await reinsertPivot1.action(env);
+            assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","110","foo","1")`,
+                "It should contain a pivot formula");
+            model.dispatch("UNDO");
+            assert.notOk(model.getters.getCell(4, 9), "It should have removed the re-inserted pivot");
+            actionManager.destroy();
+        });
+
+        QUnit.test("reinsert pivot with anchor on merge but not top left", async function (assert) {
+            assert.expect(3);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            assert.equal(model.getters.getCell(1, 1).content, `=PIVOT.HEADER(\"1\",\"foo\",\"1\",\"measure\",\"probability\")`,
+                "It should contain a pivot formula");
+            model.dispatch("SELECT_CELL", { col: 0, row: 1 }); // A1 and A2 are merged; select A2
+            assert.ok(model.getters.isInMerge("A2"));
+            const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
+            const reinsertPivot1 = root.subMenus(env)[0];
+            await reinsertPivot1.action(env);
+            assert.equal(model.getters.getCell(1, 1).content, `=PIVOT.HEADER(\"1\",\"foo\",\"1\",\"measure\",\"probability\")`,
+                "It should contain a pivot formula");
             actionManager.destroy();
         });
 

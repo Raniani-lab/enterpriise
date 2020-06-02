@@ -375,7 +375,6 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
     },
 });
 
-
 var loadColors;
 var LayoutEditable = AbstractEditComponent.extend({
     name: 'layout',
@@ -408,6 +407,7 @@ var LayoutEditable = AbstractEditComponent.extend({
         var backgroundColorRegExp= new RegExp(/^\s*background\-color\s*:/gi);
         var colorRegExp= new RegExp(/^\s*color\s*:/gi);
         var widthRegExp= new RegExp(/^\s*width\s*:/gi);
+        const colClassRegex = /\bcol((-(sm|md|lg|xl))?-(\d{1,2}|auto))?\b/;
 
         this["margin-top"] = this._findMarginValue('margin-top');
         this["margin-bottom"] = this._findMarginValue('margin-bottom');
@@ -431,7 +431,7 @@ var LayoutEditable = AbstractEditComponent.extend({
         });
         // the width on div.col is set with col-. instead of width style
         this.displayWidth = !(params.node.tag === 'div' && _.find(this.classesArray, function(item) {
-            return item.indexOf('col') !== -1;
+            return colClassRegex.test(item);
         }));
         this.originalWidth =  _.find(this.stylesArray, function(item) {
             return widthRegExp.test(item);

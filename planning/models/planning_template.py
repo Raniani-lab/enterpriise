@@ -30,9 +30,9 @@ class PlanningTemplate(models.Model):
             duration = timedelta(hours=int(shift_template.duration), minutes=round(math.modf(shift_template.duration)[0] / (1 / 60.0)))
             end_time = datetime.combine(date.today(), start_time) + duration
             name = '%s - %s %s %s' % (
-                format_time(shift_template.env, start_time, time_format='h a' if start_time.minute == 0 else 'h:mm a'),
-                format_time(shift_template.env, end_time.time(), time_format='h a' if end_time.minute == 0 else 'h:mm a'),
-                '(%s days span)' % (duration.days + 1) if duration.days > 0 else '',
+                format_time(shift_template.env, start_time, time_format='short').replace(':00 ', ' '),
+                format_time(shift_template.env, end_time.time(), time_format='short').replace(':00 ', ' '),
+                _('(%s days span)') % (duration.days + 1) if duration.days > 0 else '',
                 shift_template.role_id.name if shift_template.role_id.name is not False else ''
             )
             result.append([shift_template.id, name])

@@ -26,6 +26,12 @@ msgid "&amp;times;"
 msgstr ""
 
 #. module: planning
+#: code:addons/planning/models/planning_template.py:0
+#, python-format
+msgid "(%s days span)"
+msgstr ""
+
+#. module: planning
 #: model:mail.template,body_html:planning.email_template_planning_planning
 msgid ""
 "<div>\n"

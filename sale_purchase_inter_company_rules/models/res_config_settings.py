@@ -15,7 +15,7 @@ class ResConfigSettings(models.TransientModel):
             self.auto_validation = False
             self.warehouse_id = False
         else:
-            warehouse_id = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
+            warehouse_id = self.warehouse_id or self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
             self.warehouse_id = warehouse_id
 
     @api.depends('rule_type', 'company_id', 'auto_validation', 'warehouse_id')

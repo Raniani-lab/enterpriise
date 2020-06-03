@@ -213,6 +213,10 @@ class DHLProvider():
             piece.Width = packaging.width
             piece.Height = packaging.height
             piece.Depth = packaging.packaging_length
+            piece.Weight = picking.carrier_id._dhl_convert_weight(
+                package.shipping_weight or package.weight,
+                picking.carrier_id.dhl_package_weight_unit
+            )
             piece.PieceContents = package.name
             pieces.append(piece)
         if picking.weight_bulk or picking.is_return_picking:

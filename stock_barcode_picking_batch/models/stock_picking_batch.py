@@ -80,8 +80,6 @@ class StockPickingBatch(models.Model):
                     }
                     move_line['color_hue'] = picking_colors[picking['id']]
                     batch_picking['move_line_ids'].append(move_line)
-            # ...then sort them to be sure they are always in the same order client side.
-            batch_picking['move_line_ids'] = sorted(batch_picking['move_line_ids'], key=lambda line: line['picking_id']['id'])
 
             batch_picking['group_stock_multi_locations'] = self.env.user.has_group('stock.group_stock_multi_locations')
             batch_picking['group_tracking_owner'] = self.env.user.has_group('stock.group_tracking_owner')

@@ -179,13 +179,19 @@ var LinesWidget = Widget.extend({
     },
 
     getProductLines: function (lines) {
-        if (! this.show_entire_packs) {
-            return lines;
+        // only applies to pickings
+        if (this.show_entire_packs) {
+            return this._sortProductLines(_.filter(lines, function (line) {
+                return ! line.package_id;
+            }));
         }
 
-        return _.filter(lines, function (line) {
-            return ! line.package_id;
-        });
+        if (this.model != 'stock.inventory') {
+            // expects a picking (may fail otherwise)
+            return this._sortProductLines(lines);
+        } else {
+            return lines;
+        }
     },
 
     getPackageLines: function (lines) {
@@ -539,6 +545,20 @@ var LinesWidget = Widget.extend({
             }
         }
     },
+
+    /**
+     * Sorting function for picking lines. This is designed to be extended for additional
+     * sorting criteria. This function sorts by display_name. Unfortunately we cannot just have
+     * a extendable compare function since this doesn't seem to work with the Odoo module system.
+     *
+     * @private
+     */
+    _sortProductLines: function (lines) {
+        return lines.sort(function(a,b) {
+            return a.display_name.localeCompare(b.display_name, {ignorePunctuation: true});
+        });
+    },
+
 
     //--------------------------------------------------------------------------
     // Handlers

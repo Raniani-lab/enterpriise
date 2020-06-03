@@ -80,59 +80,58 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
             'stage_id': self.ref('sale_subscription.sale_subscription_stage_in_progress'),
         })
 
-        for payment_mode in ['validate_send_payment', 'success_payment']:
-            self.send_success_count = 0
-            self.subscription_tmpl.write({'payment_mode': payment_mode})
+        self.send_success_count = 0
+        self.subscription_tmpl.write({'payment_mode': 'success_payment'})
 
-            def assertEqual(got, want, msg):
-                self.assertEqual(got, want, '%s: %s' % (payment_mode, msg))
+        def assertEqual(got, want, msg):
+            self.assertEqual(got, want, 'success_payment: %s' % msg)
 
-            sub = self.subscription.copy()
-            with patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription.send_success_mail', wraps=self._mock_send_success_mail):
-                sub.with_context(auto_commit=False)._recurring_create_invoice(automatic=True)
+        sub = self.subscription.copy()
+        with patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription.send_success_mail', wraps=self._mock_send_success_mail):
+            sub.with_context(auto_commit=False)._recurring_create_invoice(automatic=True)
 
-                # check success mail is not sent yet
-                assertEqual(self.send_success_count, 0, 'success mail should not be sent before reconciliation')
+            # check success mail is not sent yet
+            assertEqual(self.send_success_count, 0, 'success mail should not be sent before reconciliation')
 
-                # check invoice amount and taxes
-                invoice_id = sub.action_subscription_invoice()['res_id']
-                invoice = self.env['account.move'].browse(invoice_id)
+            # check invoice amount and taxes
+            invoice_id = sub.action_subscription_invoice()['res_id']
+            invoice = self.env['account.move'].browse(invoice_id)
 
-                # check transaction state
-                tx = invoice.mapped('transaction_ids')
-                payment = tx.payment_id
-                assertEqual(len(tx), 1, 'a single transaction should be created')
-                assertEqual(tx.state, 'pending', 'transaction should be pending')
-                assertEqual(payment.state, 'posted', 'payment should be posted')
-                assertEqual(invoice.payment_state, 'in_payment', 'invoice should be in_payment')
-                assertEqual(invoice.state, 'posted', 'move should be posted')
+            # check transaction state
+            tx = invoice.mapped('transaction_ids')
+            payment = tx.payment_id
+            assertEqual(len(tx), 1, 'a single transaction should be created')
+            assertEqual(tx.state, 'pending', 'transaction should be pending')
+            assertEqual(payment.state, 'posted', 'payment should be posted')
+            assertEqual(invoice.payment_state, 'in_payment', 'invoice should be in_payment')
+            assertEqual(invoice.state, 'posted', 'move should be posted')
 
-                # reconcile the payment
-                bank_journal = payment.journal_id
-                bank_stmt = self.env['account.bank.statement'].create({
-                    'journal_id': bank_journal.id,
-                    'date': payment.date,
-                    'name': payment.name,
-                })
-                bank_stmt_line = self.env['account.bank.statement.line'].create({
-                    'statement_id': bank_stmt.id,
-                    'partner_id': self.user_portal.partner_id.id,
-                    'amount': payment.amount,
-                    'date': payment.date,
-                    'payment_ref': payment.name,
-                })
-                bank_stmt.button_post()
-                move_line = payment.line_ids.filtered(lambda aml: aml.account_id.internal_type not in ('receivable', 'payable'))
-                bank_stmt_line.reconcile([{'id': move_line.id}])
+            # reconcile the payment
+            bank_journal = payment.journal_id
+            bank_stmt = self.env['account.bank.statement'].create({
+                'journal_id': bank_journal.id,
+                'date': payment.date,
+                'name': payment.name,
+            })
+            bank_stmt_line = self.env['account.bank.statement.line'].create({
+                'statement_id': bank_stmt.id,
+                'partner_id': self.user_portal.partner_id.id,
+                'amount': payment.amount,
+                'date': payment.date,
+                'payment_ref': payment.name,
+            })
+            bank_stmt.button_post()
+            move_line = payment.line_ids.filtered(lambda aml: aml.account_id.internal_type not in ('receivable', 'payable'))
+            bank_stmt_line.reconcile([{'id': move_line.id}])
 
-                # check success mail is sent
-                assertEqual(self.send_success_count, 1, 'success mail should have been sent, now that the payment is reconciled')
+            # check success mail is sent
+            assertEqual(self.send_success_count, 1, 'success mail should have been sent, now that the payment is reconciled')
 
-                # check post-reconciliation states
-                assertEqual(payment.is_matched, True, 'payment should be reconciled')
-                assertEqual(tx.state, 'done', 'transaction should be done')
-                assertEqual(invoice.state, 'posted', 'invoice should be posted')
-                assertEqual(invoice.payment_state, 'paid', 'invoice should be paid')
+            # check post-reconciliation states
+            assertEqual(payment.is_matched, True, 'payment should be reconciled')
+            assertEqual(tx.state, 'done', 'transaction should be done')
+            assertEqual(invoice.state, 'posted', 'invoice should be posted')
+            assertEqual(invoice.payment_state, 'paid', 'invoice should be paid')
 
     def _mock_send_success_mail(self, tx, invoice):
         self.send_success_count += 1

@@ -890,7 +890,7 @@ class SaleSubscription(models.Model):
                         continue
 
                     # payment + invoice (only by cron)
-                    if subscription.template_id.payment_mode in ['validate_send_payment', 'success_payment'] and subscription.recurring_total and automatic:
+                    if subscription.template_id.payment_mode == 'success_payment' and subscription.recurring_total and automatic:
                         try:
                             payment_token = subscription.payment_token_id
                             tx = None
@@ -914,11 +914,8 @@ class SaleSubscription(models.Model):
                                 if tx.renewal_allowed:
                                     msg_body = _('Automatic payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>.') % (tx.id, tx.reference, tx.amount, new_invoice.id)
                                     subscription.message_post(body=msg_body)
-                                    if subscription.template_id.payment_mode == 'validate_send_payment':
-                                        subscription.validate_and_send_invoice(new_invoice)
-                                    else:
-                                        # success_payment
-                                        new_invoice._post(False)
+                                    # success_payment
+                                    new_invoice._post(False)
                                     subscription.send_success_mail(tx, new_invoice)
                                     if auto_commit:
                                         cr.commit()
@@ -1199,8 +1196,7 @@ class SaleSubscriptionTemplate(models.Model):
     payment_mode = fields.Selection([
         ('manual', 'Manually'),
         ('draft_invoice', 'Draft'),
-        ('validate_send', 'Send'),
-        ('validate_send_payment', 'Send & try to charge'),
+        ('validate_send', 'Post'),
         ('success_payment', 'Send after successful payment'),
     ], required=True, default='draft_invoice')
     product_ids = fields.One2many('product.template', 'subscription_template_id', copy=True)

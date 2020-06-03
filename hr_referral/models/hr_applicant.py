@@ -224,9 +224,9 @@ class Applicant(models.Model):
 
         result['friends'] = self._get_friends(applicant_name)
 
-        result['point_received'] = sum(self.env['hr.referral.points'].search([
-            ('ref_user_id', '=', user_id.id),
-            ('hr_referral_reward_id', '=', False)]).mapped('points'))
+        referal_points = self.env['hr.referral.points'].search([('ref_user_id', '=', user_id.id)])
+        result['point_received'] = sum(referal_points.filtered(lambda x: not x.hr_referral_reward_id).mapped('points'))
+        result['point_to_spend'] = sum(referal_points.mapped('points'))
 
         # Employee comes for the first time on this app
         if not user_id.hr_referral_level_id:

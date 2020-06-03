@@ -12,6 +12,5 @@ access_planning_planning,access_planning_planning,model_planning_planning,planni
 access_planning_slot_template_employee,planning.slot.template.employee,planning.model_planning_slot_template,base.group_user,1,0,0,0
 access_planning_slot_template_user,planning.slot.template.user,planning.model_planning_slot_template,planning.group_planning_user,1,0,0,0
 access_planning_slot_template_manager,planning.slot.template.manager,planning.model_planning_slot_template,planning.group_planning_manager,1,1,1,1
-access_planning_slot_report_analysis,access_planning_slot_report_analysis,model_planning_slot_report_analysis,base.group_user,1,1,1,1
 access_planning_send,access.planning.send,model_planning_send,planning.group_planning_manager,1,1,1,0
 access_slot_planning_select_send,access.slot.planning.select.send,model_slot_planning_select_send,planning.group_planning_manager,1,1,1,0

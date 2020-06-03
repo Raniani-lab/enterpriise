@@ -210,6 +210,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 account_move_line.move_id,
                 account_move_line.tax_line_id,
                 account_move_line.journal_id,
+                account_move_line.balance,
                 account_move_line.price_total,
                 account_move_line.price_subtotal,
                 account_move_line.exclude_from_invoice_tab,
@@ -218,6 +219,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 journal.type                                                  AS journal_type,
                 journal.name                                                  AS journal_name,
                 invoice_line_taxes.taxes_count                                AS invoice_line_taxes_count,
+                invoice_line_taxes.taxes                                      AS invoice_line_taxes,
                 invoice_line_taxes.tax_id                                     AS invoice_line_tax_id,
                 account_type.type                                             AS account_type'''
 
@@ -232,7 +234,7 @@ class AccountGeneralLedger(models.AbstractModel):
         select_clause = self._get_updated_select_clause(query_select)
         from_clause = self._get_updated_from_clause(query_from)
         with_statement = ''' WITH invoice_line_taxes as (
-                    SELECT account_move_line_id, MAX(account_tax_id) as tax_id, COUNT(account_tax_id) taxes_count
+                    SELECT account_move_line_id, MAX(account_tax_id) as tax_id, COUNT(account_tax_id) taxes_count, ARRAY_AGG(account_tax_id) taxes
                     FROM account_move_line_account_tax_rel
                     GROUP BY account_move_line_id
                 ) '''
@@ -330,6 +332,21 @@ class AccountGeneralLedger(models.AbstractModel):
             # Tax information needs to be shown along with product lines of the move/transaction, hence,
             # preparing dictionary for the same with product line's ID as it's key.
             if not move_line['exclude_from_invoice_tab'] and move_line['invoice_line_taxes_count']:
+                # In case price_total and price_subtotal are not computed (e.g. from the POS), we
+                # compute them now from the balance.
+                if move_line['price_total'] is None or move_line['price_subtotal'] is None:
+                    prices = self.env['account.move.line']._get_price_total_and_subtotal_model(
+                        -move_line['balance'],
+                        1.0,
+                        0.0,
+                        self.env['res.currency'].browse(move_line['currency_id']),
+                        self.env['product.product'],
+                        self.env['res.partner'],
+                        self.env['account.tax'].browse(move_line['invoice_line_taxes']),
+                        'other',
+                    )
+                    move_line['price_subtotal'] = prices.get('price_subtotal', 0.0)
+                    move_line['price_total'] = prices.get('price_total', 0.0)
                 move_line['amount_tax'] = move_line['price_total'] - move_line['price_subtotal']
                 tax_amount_signed = self._convert_amount_to_company_currency(move_line['amount_tax'], move_line['currency_id'], move_line['date'])
                 tax_line_dict = {

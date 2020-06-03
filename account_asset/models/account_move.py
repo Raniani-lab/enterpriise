@@ -60,7 +60,7 @@ class AccountMove(models.Model):
                     # The depreciated and remaining values don't need to change
                     first_draft.amount_total += move.amount_total
                 else:
-                    # If there was no raft move left, create one
+                    # If there was no draft move left, create one
                     last_date = max(move.asset_id.depreciation_move_ids.mapped('date'))
                     method_period = move.asset_id.method_period
 

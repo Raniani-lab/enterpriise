@@ -667,7 +667,7 @@ class AccountAsset(models.Model):
     @api.depends('depreciation_move_ids.state', 'parent_id')
     def _entry_count(self):
         for asset in self:
-            res = self.env['account.move'].search_count([('asset_id', '=', asset.id), ('state', '=', 'posted')])
+            res = self.env['account.move'].search_count([('asset_id', '=', asset.id), ('state', '=', 'posted'), ('reversal_move_id', '=', False)])
             asset.depreciation_entries_count = res or 0
             asset.total_depreciation_entries_count = len(asset.depreciation_move_ids)
             asset.gross_increase_count = len(asset.children_ids)

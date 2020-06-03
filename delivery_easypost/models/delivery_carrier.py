@@ -125,7 +125,7 @@ class DeliverCarrier(models.Model):
         return res
 
     def easypost_get_return_label(self, pickings, tracking_number=None, origin_date=None):
-        ep = EasypostRequest(self.easypost_production_api_key if self.prod_environment else self.easypost_test_api_key, self.log_xml)
+        ep = EasypostRequest(self.sudo().easypost_production_api_key if self.prod_environment else self.sudo().easypost_test_api_key, self.log_xml)
         result = ep.send_shipping(self, pickings.partner_id, pickings.picking_type_id.warehouse_id.partner_id, picking=pickings, is_return=True)
         if result.get('error_message'):
             raise UserError(_(result['error_message']))

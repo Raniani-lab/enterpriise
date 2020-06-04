@@ -31,22 +31,38 @@ class CrmLeadConvert2Ticket(models.TransientModel):
         self.ensure_one()
         # get the lead to transform
         lead = self.lead_id
-        partner_id = self.partner_id.id
-        if not partner_id and (lead.partner_name or lead.contact_name):
+        partner = self.partner_id
+        if not partner and (lead.partner_name or lead.contact_name):
             lead.handle_partner_assignment(create_missing=True)
-            partner_id = lead.partner_id.id
-        # create new helpdesk.ticket
+            partner = lead.partner_id
+
+        # prepare new helpdesk.ticket values
         vals = {
             "name": lead.name,
             "description": lead.description,
             "team_id": self.team_id.id,
             "ticket_type_id": self.ticket_type_id.id,
-            "partner_id": partner_id,
+            "partner_id": partner.id,
             "user_id": None
         }
+        if lead.contact_name:
+            vals["partner_name"] = lead.contact_name
+        if lead.phone:  # lead phone is always sync with partner phone
+            vals["partner_phone"] = lead.phone
+        else:
+            vals["partner_phone"] = lead.mobile or partner.mobile
         if lead.email_from:
             vals['email'] = lead.email_from
-        ticket_sudo = self.env['helpdesk.ticket'].with_context(mail_create_nosubscribe=True).sudo().create(vals)
+
+        # create and add a specific creation message
+        ticket_sudo = self.env['helpdesk.ticket'].with_context(
+            mail_create_nosubscribe=True, mail_create_nolog=True
+        ).sudo().create(vals)
+        ticket_sudo.message_post_with_view(
+            'mail.message_origin_link', values={'self': ticket_sudo, 'origin': lead},
+            subtype_id=self.env.ref('mail.mt_note').id, author_id=self.env.user.partner_id.id
+        )
+
         # move the mail thread
         lead.message_change_thread(ticket_sudo)
         # move attachments

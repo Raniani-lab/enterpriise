@@ -256,6 +256,8 @@ class HelpdeskTicket(models.Model):
     # Used to submit tickets from a contact form
     partner_name = fields.Char(string='Customer Name', compute='_compute_partner_info', store=True, readonly=False)
     partner_email = fields.Char(string='Customer Email', compute='_compute_partner_info', store=True, readonly=False)
+    partner_phone = fields.Char(string='Customer Phone', compute='_compute_partner_info', store=True, readonly=False)
+
     closed_by_partner = fields.Boolean('Closed by Partner', readonly=True, help="If checked, this means the ticket was closed through the customer portal by the customer.")
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
     email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
@@ -394,6 +396,7 @@ class HelpdeskTicket(models.Model):
             if ticket.partner_id:
                 ticket.partner_name = ticket.partner_id.name
                 ticket.partner_email = ticket.partner_id.email
+                ticket.partner_phone = ticket.partner_id.phone
 
     @api.depends('partner_id')
     def _compute_partner_ticket_count(self):

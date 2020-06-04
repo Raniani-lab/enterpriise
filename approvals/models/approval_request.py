@@ -88,7 +88,7 @@ class ApprovalRequest(models.Model):
 
     def action_confirm(self):
         if len(self.approver_ids) < self.approval_minimum:
-            raise UserError(_("You have to add at least %s approvers to confirm your request.") % self.approval_minimum)
+            raise UserError(_("You have to add at least %s approvers to confirm your request.", self.approval_minimum))
         if self.requirer_document == 'required' and not self.attachment_number:
             raise UserError(_("You have to attach at lease one document."))
         approvers = self.mapped('approver_ids').filtered(lambda approver: approver.status == 'new')

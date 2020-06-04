@@ -290,7 +290,7 @@ class AccountPayment(models.Model):
 
     def l10n_mx_edi_log_error(self, message):
         self.ensure_one()
-        self.message_post(body=_('Error during the process: %s') % message)
+        self.message_post(body=_('Error during the process: %s', message))
 
     @api.depends('l10n_mx_edi_cfdi_name')
     def _compute_cfdi_values(self):
@@ -584,9 +584,9 @@ class AccountPayment(models.Model):
             body_msg = _('The cancel service requested failed')
         post_msg = []
         if code:
-            post_msg.extend([_('Code: %s') % code])
+            post_msg.extend([_('Code: %s', code)])
         if msg:
-            post_msg.extend([_('Message: %s') % msg])
+            post_msg.extend([_('Message: %s', msg)])
         self.message_post(
             body=body_msg + account_invoice.create_list_html(post_msg))
 
@@ -792,9 +792,9 @@ class AccountPayment(models.Model):
             body_msg = _('The sign service requested failed')
             post_msg = []
         if code:
-            post_msg.extend([_('Code: %s') % code])
+            post_msg.extend([_('Code: %s', code)])
         if msg:
-            post_msg.extend([_('Message: %s') % msg])
+            post_msg.extend([_('Message: %s', msg)])
         self.message_post(
             body=body_msg + account_invoice.create_list_html(post_msg))
 

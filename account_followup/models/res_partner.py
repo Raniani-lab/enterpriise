@@ -102,7 +102,7 @@ class ResPartner(models.Model):
                 next_action_date_done = datetime.strftime(partner.followup_level._get_next_date(), DEFAULT_SERVER_DATE_FORMAT)
             partner.payment_next_action_date = (not next_action_date or options['action'] == 'done') and next_action_date_done or next_action_date
             if options['action'] in ('done', 'later'):
-                msg = _('Next Reminder Date set to %s') % format_date(self.env, partner.payment_next_action_date)
+                msg = _('Next Reminder Date set to %s', format_date(self.env, partner.payment_next_action_date))
                 partner.message_post(body=msg)
             if options['action'] == 'done':
                 for aml in partner.unreconciled_aml_ids:
@@ -116,7 +116,7 @@ class ResPartner(models.Model):
     def open_action_followup(self):
         self.ensure_one()
         return {
-            'name': _("Overdue Payments for %s") % self.display_name,
+            'name': _("Overdue Payments for %s", self.display_name),
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
             'views': [[self.env.ref('account_followup.customer_statements_form_view').id, 'form']],

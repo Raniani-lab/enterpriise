@@ -54,10 +54,10 @@ class DMFANaturalPerson(DMFANode):
         super().__init__(employee.env, sequence=sequence)
         self.employee = employee
         if not employee.identification_id:
-            raise ValidationError(_("National Number not specified for %s") % employee.name)
+            raise ValidationError(_("National Number not specified for %s", employee.name))
         self.identification_id = re.sub('[^0-9]', '', employee.identification_id)
         if len(self.identification_id) != 11:
-            raise ValidationError(_("Invalid National Number for %s (It must contains eleven digits)") % employee.name)
+            raise ValidationError(_("Invalid National Number for %s (It must contains eleven digits)", employee.name))
         contracts = employee._get_contracts(quarter_start, quarter_end, states=['open', 'pending', 'close'])
         self.worker_records = DMFAWorker.init_multi([(contracts, quarter_start, quarter_end)])
 
@@ -141,10 +141,10 @@ class DMFAOccupation(DMFANode):
         self.remunerations = self._prepare_remunerations()
         work_address = contract.employee_id.address_id
         if not work_address:
-            raise ValidationError(_("%s does not have a working address") % contract.employee_id.name)
+            raise ValidationError(_("%s does not have a working address", contract.employee_id.name))
         location_unit = self.env['l10n_be.dmfa.location.unit'].search([('partner_id', '=', work_address.id)])
         if not location_unit:
-            raise ValidationError(_("Address of %s does not have any ONSS code. Please provide one in the company.") % work_address.name)
+            raise ValidationError(_("Address of %s does not have any ONSS code. Please provide one in the company.", work_address.name))
         self.work_place = format_amount(location_unit.code, width=10, hundredth=False)
 
     def _prepare_services(self):
@@ -202,7 +202,7 @@ class DMFAService(DMFANode):
         work_entry_type = work_days[0].work_entry_type_id
         self.code = work_entry_type.dmfa_code
         if not self.code:
-            raise ValidationError(_("Work entry type %s does not have a DMFA code") % work_entry_type.name)
+            raise ValidationError(_("Work entry type %s does not have a DMFA code", work_entry_type.name))
         self.nbr_days = format_amount(sum(work_days.mapped('number_of_days')), width=5)
 
 
@@ -316,9 +316,9 @@ class HrDMFAReport(models.Model):
             ('state', '=', 'done')
         ])
         if not self.company_id.dmfa_employer_class:
-            raise ValidationError(_("Please provide an employer class for company %s. The employer class is given by the ONSS and should be encoded in the Payroll setting.") % self.company_id.name)
+            raise ValidationError(_("Please provide an employer class for company %s. The employer class is given by the ONSS and should be encoded in the Payroll setting.", self.company_id.name))
         if not self.company_id.onss_registration_number and not self.company_id.onss_company_id:
-            raise ValidationError(_("No ONSS registration number nor company ID was found for company %s. Please provide at least one.") % self.company_id.name)
+            raise ValidationError(_("No ONSS registration number nor company ID was found for company %s. Please provide at least one.", self.company_id.name))
         return {
             'employer_class': self.company_id.dmfa_employer_class,
             'onss_company_id': format_amount(self.company_id.onss_company_id or 0, width=10, hundredth=False),

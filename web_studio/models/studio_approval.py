@@ -210,7 +210,7 @@ class StudioApprovalRule(models.Model):
         record.check_access_rule('write')
         # check if the user has the necessary group
         if not self.can_validate:
-            raise UserError(_('Only %s members can approve this rule.') % self.group_id.display_name)
+            raise UserError(_('Only %s members can approve this rule.', self.group_id.display_name))
         # check if there's an entry for this rule already
         # done in sudo since entries by other users are not visible otherwise
         existing_entry = ruleSudo.env['studio.approval.entry'].search([

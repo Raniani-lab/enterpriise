@@ -284,7 +284,7 @@ class AccountJournal(models.Model):
 
         partner_bank_id = payment.get('partner_bank_id')
         if not partner_bank_id:
-            raise UserError(_('Partner %s has not bank account defined.') % partner.name)
+            raise UserError(_('Partner %s has not bank account defined.', partner.name))
 
         partner_bank = self.env['res.partner.bank'].browse(partner_bank_id)
 

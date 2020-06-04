@@ -39,7 +39,7 @@ class sale_order(models.Model):
                 raise UserError(_('Provide one user for intercompany relation for % ') % company.name)
             # check intercompany user access rights
             if not self.env['purchase.order'].with_user(intercompany_uid).check_access_rights('create', raise_exception=False):
-                raise UserError(_("Inter company user of company %s doesn't have enough access rights") % company.name)
+                raise UserError(_("Inter company user of company %s doesn't have enough access rights", company.name))
 
             company_partner = rec.company_id.partner_id.with_user(intercompany_uid)
             # create the PO and generate its lines from the SO

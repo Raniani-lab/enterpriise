@@ -120,7 +120,7 @@ class PACSWMixin(models.AbstractModel):
         token, req_e = self._l10n_mx_edi_sw_token(pac_info)
         if not token:
             self.l10n_mx_edi_log_error(
-                _("Token could not be obtained %s") % req_e)
+                _("Token could not be obtained %s", req_e))
             return
         url = pac_info['url']
         for rec in self:
@@ -156,7 +156,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
         token, req_e = self._l10n_mx_edi_sw_token(pac_info)
         if not token:
             self.l10n_mx_edi_log_error(
-                _("Token could not be obtained %s") % req_e)
+                _("Token could not be obtained %s", req_e))
             return
         url = pac_info['url']
         headers = {

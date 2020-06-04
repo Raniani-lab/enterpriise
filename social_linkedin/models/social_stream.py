@@ -32,7 +32,7 @@ class SocialStreamLinkedIn(models.Model):
 
         # retrieve post information
         if self.stream_type_id.stream_type != 'linkedin_company_post':
-            raise UserError(_('Wrong stream type for "%s"') % self.name)
+            raise UserError(_('Wrong stream type for "%s"', self.name))
 
         projection = '(paging,elements*(%s))' % self.env['social.media']._LINKEDIN_STREAM_POST_PROJECTION
         posts_endpoint = url_join(

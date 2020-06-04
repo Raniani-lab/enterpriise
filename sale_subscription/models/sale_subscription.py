@@ -542,7 +542,7 @@ class SaleSubscription(models.Model):
         self.ensure_one()
 
         if not self.partner_id:
-            raise UserError(_("You must first select a Customer for Subscription %s!") % self.name)
+            raise UserError(_("You must first select a Customer for Subscription %s!", self.name))
 
         self = self.with_company(self.company_id).with_context(company_id=self.company_id.id)
         company = self.company_id

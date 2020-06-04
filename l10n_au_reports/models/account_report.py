@@ -102,7 +102,7 @@ class TaxReport(models.AbstractModel):
         partner_values = self.env.cr.dictfetchall()
         for p in partner_values:
             if p.get('total_gst', 0) > p.get('gross_paid', 0) and raise_warning:
-                raise UserError(_('The total GST is higher than the Gross Paid for %s.') % p['name'])
+                raise UserError(_('The total GST is higher than the Gross Paid for %s.', p['name']))
         return partner_values
 
     def _get_columns_name(self, options):

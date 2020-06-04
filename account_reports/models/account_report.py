@@ -867,7 +867,7 @@ class AccountReport(models.AbstractModel):
         line = self.env['account.financial.html.report.line'].browse(active_id)
         domain = ast.literal_eval(line.domain)
         action = self.open_action(options, domain)
-        action['display_name'] = _('Journal Items (%s)') % line.name
+        action['display_name'] = _('Journal Items (%s)', line.name)
         return action
 
     def open_general_ledger(self, options, params=None):

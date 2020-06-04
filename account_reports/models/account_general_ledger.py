@@ -775,7 +775,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             'remaining': remaining,
             'class': 'o_account_reports_load_more text-center',
             'parent_id': 'account_%s' % account.id,
-            'name': _('Load more... (%s remaining)') % remaining,
+            'name': _('Load more... (%s remaining)', remaining),
             'colspan': self.user_has_groups('base.group_multi_currency') and 7 or 6,
             'columns': [{}],
         }
@@ -793,7 +793,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             'id': 'total_%s' % account.id,
             'class': 'o_account_reports_domain_total',
             'parent_id': 'account_%s' % account.id,
-            'name': _('Total %s') % account["display_name"],
+            'name': _('Total %s', account["display_name"]),
             'columns': columns,
             'colspan': 4,
         }

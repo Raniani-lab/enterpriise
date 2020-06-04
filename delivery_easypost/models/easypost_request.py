@@ -61,15 +61,15 @@ class EasypostRequest():
         """
         # check carrier credentials
         if carrier.prod_environment and not carrier.sudo().easypost_production_api_key:
-            raise UserError(_("The %s carrier is missing (Missing field(s) :\n Production API Key)") % carrier.name)
+            raise UserError(_("The %s carrier is missing (Missing field(s) :\n Production API Key)", carrier.name))
         elif not carrier.sudo().easypost_test_api_key:
-            raise UserError(_("The %s carrier is missing (Missing field(s) :\n Test API Key)") % carrier.name)
+            raise UserError(_("The %s carrier is missing (Missing field(s) :\n Test API Key)", carrier.name))
 
         if not carrier.easypost_delivery_type:
-            raise UserError(_("The %s carrier is missing (Missing field(s) :\n Delivery Carrier Type)") % carrier.name)
+            raise UserError(_("The %s carrier is missing (Missing field(s) :\n Delivery Carrier Type)", carrier.name))
 
         if not carrier.easypost_default_packaging_id:
-            raise UserError(_("The %s carrier is missing (Missing field(s) :\n Default Product Packaging)") % carrier.name)
+            raise UserError(_("The %s carrier is missing (Missing field(s) :\n Default Product Packaging)", carrier.name))
 
         if not order and not picking:
             raise UserError(_("Sale Order/Stock Picking is missing."))
@@ -227,7 +227,7 @@ class EasypostRequest():
                     'order[shipments][%d][parcel][height]' % shipment_id: package.height
                 })
         else:
-            raise UserError(_('Product packaging used in pack %s is not configured for easypost.') % package.display_name)
+            raise UserError(_('Product packaging used in pack %s is not configured for easypost.', package.display_name))
         return shipment
 
     def _customs_info(self, shipment_id, lines):

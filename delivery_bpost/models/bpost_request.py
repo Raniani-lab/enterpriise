@@ -102,7 +102,7 @@ class BpostRequest():
             # If the authentication fails, the server returns plain HTML instead of XML
             error_page = html.fromstring(response)
             error_message = error_page.body.text_content()
-            raise UserError(_("Authentication error -- wrong credentials\n(Detailed error: %s)") % error_message)
+            raise UserError(_("Authentication error -- wrong credentials\n(Detailed error: %s)", error_message))
         else:
             xml_response = etree.fromstring(response)
 

@@ -704,7 +704,7 @@ class AccountMove(models.Model):
                         for taxes_record in line_val['tax_ids']:
                             line.tax_ids.add(taxes_record)
                         if not line.account_id:
-                            raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.") % move_form.journal_id.name_get()[0][1])
+                            raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.", move_form.journal_id.name_get()[0][1]))
 
                 # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
                 for i in range(len(move_form.line_ids)):

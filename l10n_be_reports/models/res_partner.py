@@ -149,9 +149,9 @@ class ResPartner(models.Model):
             raise UserError(_("Your company is not correctly configured. Please be sure that the following pieces of information are set: street, zip, city, phone and vat"))
         if not self.parent_id:
             if not (self.street and self.zip and (self.citizen_identification or self.vat)):
-                raise UserError(_("The partner %s is not correctly configured. Plsea be sure that the following pieces of information are set: street, zip code and vat.") % self.name)
+                raise UserError(_("The partner %s is not correctly configured. Plsea be sure that the following pieces of information are set: street, zip code and vat.", self.name))
         elif not (self.parent_id.street and self.parent_id.zip and self.parent_id.vat):
-            raise UserError(_("Partner %s is not correctly configured. Please be sure that the following pieces of information are set: street, zip code and vat.") % self.parent_id.name)
+            raise UserError(_("Partner %s is not correctly configured. Please be sure that the following pieces of information are set: street, zip code and vat.", self.parent_id.name))
 
     def _generate_codes_values(self, wizard_values, partner_information):
         '''

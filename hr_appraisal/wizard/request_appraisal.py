@@ -113,7 +113,7 @@ class RequestAppraisal(models.TransientModel):
             appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
                 'mail.mail_activity_data_todo', fields.Date.today(),
                 summary=_('Appraisal to Confirm and Send'),
-                note=_('Confirm and send appraisal of %s') % appraisal.employee_id.name,
+                note=_('Confirm and send appraisal of %s', appraisal.employee_id.name),
                 user_id=user.id)
 
         appraisal.message_notify(

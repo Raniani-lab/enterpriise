@@ -88,7 +88,7 @@ class MulticurrencyRevaluationWizard(models.TransientModel):
                             'account_id': self.expense_provision_account_id.id if balance < 0 else self.income_provision_account_id.id,
                         }))
         move_vals = {
-            'ref': _('Foreign currencies adjustment entry as of %s') % format_date(self.env, self.date),
+            'ref': _('Foreign currencies adjustment entry as of %s', format_date(self.env, self.date)),
             'journal_id': self.journal_id.id,
             'date': self.date,
             'line_ids': move_lines,
@@ -103,7 +103,7 @@ class MulticurrencyRevaluationWizard(models.TransientModel):
             move.post()
             reverse_move = move._reverse_moves(default_values_list=[{
                 'auto_post': True,
-                'ref': _('Reversal of: %s') % move.ref,
+                'ref': _('Reversal of: %s', move.ref),
             }])
             reverse_move.date = self.reversal_date
             if reverse_move.date < fields.Date.today():

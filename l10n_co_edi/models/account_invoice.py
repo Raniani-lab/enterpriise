@@ -89,10 +89,10 @@ class AccountMove(models.Model):
             try:
                 response = request.upload(xml_filename, xml)
             except CarvajalException as e:
-                invoice.message_post(body=_('Electronic invoice submission failed. Message from Carvajal:<br/>%s') % e,
+                invoice.message_post(body=_('Electronic invoice submission failed. Message from Carvajal:<br/>%s', e),
                                      attachments=[(xml_filename, xml)])
             else:
-                invoice.message_post(body=_('Electronic invoice submission succeeded. Message from Carvajal:<br/>%s') % response['message'],
+                invoice.message_post(body=_('Electronic invoice submission succeeded. Message from Carvajal:<br/>%s', response['message']),
                                      attachments=[(xml_filename, xml)])
                 invoice.l10n_co_edi_transaction = response['transactionId']
                 invoice.l10n_co_edi_invoice_status = 'processing'
@@ -119,9 +119,9 @@ class AccountMove(models.Model):
         try:
             response = request.download(self.journal_id.sequence_id.prefix, self.name, carvajal_type)
         except CarvajalException as e:
-            return _('Electronic invoice download failed. Message from Carvajal:<br/>%s') % e, []
+            return _('Electronic invoice download failed. Message from Carvajal:<br/>%s', e), []
         else:
-            return _('Electronic invoice download succeeded. Message from Carvajal:<br/>%s') % response['message'], [('%s.zip' % self.name, response['zip_b64'])]
+            return _('Electronic invoice download succeeded. Message from Carvajal:<br/>%s', response['message']), [('%s.zip' % self.name, response['zip_b64'])]
 
     def l10n_co_edi_check_status_electronic_invoice(self):
         '''This checks the current status of an uploaded XML with Carvajal. It
@@ -134,22 +134,22 @@ class AccountMove(models.Model):
             try:
                 response = request.check_status(invoice.l10n_co_edi_transaction)
             except CarvajalException as e:
-                invoice.message_post(body=_('Electronic invoice status check failed. Message from Carvajal:<br/>%s') % e)
+                invoice.message_post(body=_('Electronic invoice status check failed. Message from Carvajal:<br/>%s', e))
             else:
                 if response['status'] == 'PROCESSING':
                     invoice.l10n_co_edi_invoice_status = 'processing'
                 else:
                     invoice.l10n_co_edi_invoice_status = 'accepted' if response['legalStatus'] == 'ACCEPTED' else 'rejected'
 
-                msg = _('Electronic invoice status check completed. Message from Carvajal:<br/>Status: %s') % response['status']
+                msg = _('Electronic invoice status check completed. Message from Carvajal:<br/>Status: %s', response['status'])
                 attachments = []
 
                 if response['errorMessage']:
-                    msg += _('<br/>Error message: %s') % response['errorMessage'].replace('\n', '<br/>')
+                    msg += _('<br/>Error message: %s', response['errorMessage'].replace('\n', '<br/>'))
                 if response['legalStatus']:
-                    msg += _('<br/>Legal status: %s') % response['legalStatus']
+                    msg += _('<br/>Legal status: %s', response['legalStatus'])
                 if response['governmentResponseDescription']:
-                    msg += _('<br/>Government response: %s') % response['governmentResponseDescription']
+                    msg += _('<br/>Government response: %s', response['governmentResponseDescription'])
 
                 if invoice.l10n_co_edi_invoice_status == 'accepted':
                     invoice_download_msg, attachments = invoice.l10n_co_edi_download_electronic_invoice()

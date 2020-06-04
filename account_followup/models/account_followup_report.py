@@ -323,7 +323,7 @@ class AccountFollowupReport(models.AbstractModel):
                 attachment_ids=partner.followup_level.join_invoices and non_blocked_invoices.message_main_attachment_id.ids or [],
             )
             return True
-        raise UserError(_('Could not send mail to partner %s because it does not have any email address defined') % partner.display_name)
+        raise UserError(_('Could not send mail to partner %s because it does not have any email address defined', partner.display_name))
 
     @api.model
     def print_followups(self, records):

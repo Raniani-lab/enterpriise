@@ -351,7 +351,7 @@ class pos_session(models.Model):
         self.ensure_one()
         pos = self.config_id
         if not pos.blackbox_pos_production_id:
-            raise UserError(_("PoS %s is not a certified PoS") % pos.name)
+            raise UserError(_("PoS %s is not a certified PoS", pos.name))
         return {
             'type': 'ir.actions.act_url',
             'url': "/journal_file/" + pos.blackbox_pos_production_id,

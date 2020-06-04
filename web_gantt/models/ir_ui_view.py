@@ -76,7 +76,7 @@ class View(models.Model):
         default_scale = node.get('default_scale')
         if default_scale:
             if default_scale not in ('day', 'week', 'month', 'year'):
-                self.handle_view_error(_("Invalid default_scale '%s' in gantt") % default_scale)
+                self.handle_view_error(_("Invalid default_scale '%s' in gantt", default_scale))
         attrs = set(node.attrib)
         if not 'date_start' in attrs:
             msg = _("Gantt must have a 'date_start' attribute")

@@ -22,7 +22,7 @@ class SaleOrder(models.Model):
                 so = self._process_order_new(order)
                 so._process_order_update(order)
         except Exception as e:
-            message = _("Ebay could not synchronize order:\n%s") % str(e)
+            message = _("Ebay could not synchronize order:\n%s", str(e))
             path = str(order)
             product._log_logging(self.env, message, "_process_order", path)
             _logger.exception(message)
@@ -210,7 +210,7 @@ class SaleOrder(models.Model):
                 'ebay_sync_stock': False,
             })
             product.message_post(body=
-                _('Product created from eBay transaction %s') % transaction['TransactionID'])
+                _('Product created from eBay transaction %s', transaction['TransactionID']))
 
         if product.product_variant_count > 1:
             if 'Variation' in transaction:
@@ -294,4 +294,4 @@ class SaleOrder(models.Model):
                     body=_('The Buyer Chose The Following Delivery Method :\n') + shipping_name)
         except UserError as e:
             self.message_post(body=
-                _('Ebay Synchronisation could not confirm because of the following error:\n%s') % str(e))
+                _('Ebay Synchronisation could not confirm because of the following error:\n%s', str)(e))

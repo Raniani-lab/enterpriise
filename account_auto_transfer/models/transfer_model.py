@@ -54,7 +54,7 @@ class TransferModel(models.Model):
         """ Check that the total percent is not bigger than 100.0 """
         for record in self:
             if not (0 < record.total_percent <= 100.0):
-                raise ValidationError(_('The total percentage (%s) should be less or equal to 100 !') % record.total_percent)
+                raise ValidationError(_('The total percentage (%s) should be less or equal to 100 !', record.total_percent))
 
     @api.depends('line_ids')
     def _compute_total_percent(self):
@@ -237,7 +237,7 @@ class TransferModel(models.Model):
                 # the line which credit/debit the source account
                 substracted_amount = initial_amount - amount_left
                 source_move_line = {
-                    'name': _('Automatic Transfer (-%s%%)') % self.total_percent,
+                    'name': _('Automatic Transfer (-%s%%)', self.total_percent),
                     'account_id': account_id,
                     'date_maturity': end_date,
                     'credit' if source_account_is_debit else 'debit': substracted_amount
@@ -398,7 +398,7 @@ class TransferModelLine(models.Model):
             anal_accounts = ', '.join(self.analytic_account_ids.mapped('name'))
             name = _('Automatic Transfer (entries with analytic account(s): %s)') % (anal_accounts,)
         else:
-            name = _('Automatic Transfer (to account %s)') % self.account_id.code
+            name = _('Automatic Transfer (to account %s)', self.account_id.code)
         return {
             'name': name,
             'account_id': origin_account.id,

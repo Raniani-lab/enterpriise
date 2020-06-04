@@ -250,7 +250,7 @@ class MulticurrencyRevaluationReport(models.AbstractModel):
         id = params.get('id')
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Currency Rates (%s)') % self.env['res.currency'].browse(id).display_name,
+            'name': _('Currency Rates (%s)', self.env['res.currency'].browse(id).display_name),
             'views': [(False, 'list')],
             'res_model': 'res.currency.rate',
             'context': {**self.env.context, **{'default_currency_id': id}},

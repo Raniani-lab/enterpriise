@@ -148,7 +148,7 @@ class AccountBankStatementImport(models.TransientModel):
         if currency_code:
             currency = self.env['res.currency'].search([('name', '=ilike', currency_code)], limit=1)
             if not currency:
-                raise UserError(_("No currency found matching '%s'.") % currency_code)
+                raise UserError(_("No currency found matching '%s'.", currency_code))
             if currency == company_currency:
                 currency = False
 
@@ -245,7 +245,9 @@ class AccountBankStatementImport(models.TransientModel):
         if num_ignored > 0:
             notifications += [{
                 'type': 'warning',
-                'message': _("%d transactions had already been imported and were ignored.") % num_ignored if num_ignored > 1 else _("1 transaction had already been imported and was ignored."),
+                'message': _("%d transactions had already been imported and were ignored.", num_ignored)
+                           if num_ignored > 1
+                           else _("1 transaction had already been imported and was ignored."),
                 'details': {
                     'name': _('Already imported items'),
                     'model': 'account.bank.statement.line',

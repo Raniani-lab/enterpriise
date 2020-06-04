@@ -108,7 +108,7 @@ class AccountMove(models.Model):
             purchase = move._get_commission_purchase_order()
             line = move.commission_po_line_id
             self.env['purchase.order.line'].sudo().create({
-                'name': _('Refund for %s') % line.name,
+                'name': _('Refund for %s', line.name),
                 'product_id': line.product_id.id,
                 'product_qty': 1,
                 'price_unit': -line.price_unit,

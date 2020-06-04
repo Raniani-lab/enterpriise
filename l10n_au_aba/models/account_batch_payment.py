@@ -32,7 +32,7 @@ class AccountBatchPayment(models.Model):
 
             for payment in self.payment_ids:
                 if payment.partner_bank_account_id.acc_type != 'aba' or not payment.partner_bank_account_id.aba_bsb:
-                    raise UserError(_("Bank account for payment '%s' has an invalid BSB or account number.") % payment.name)
+                    raise UserError(_("Bank account for payment '%s' has an invalid BSB or account number.", payment.name))
 
             return {
                 'filename': 'ABA-' + self.journal_id.code + '-' + fields.Datetime.context_timestamp(self, datetime.now()).strftime("%Y%m%d%H%M") + '.aba',
@@ -81,7 +81,7 @@ class AccountBatchPayment(models.Model):
             credit = float_round(payment.amount, 2)
             debit = 0
             if credit > 99999999.99 or debit > 99999999.99:
-                raise UserError(_('Individual amount of payment %s is too high for ABA file - Please adjust') % payment.name)
+                raise UserError(_('Individual amount of payment %s is too high for ABA file - Please adjust', payment.name))
             detail_record = '1' \
                     + _normalise_bsb(payment.partner_bank_account_id.aba_bsb) \
                     + to_fixed_width(payment.partner_bank_account_id.acc_number, 9, right=True) \

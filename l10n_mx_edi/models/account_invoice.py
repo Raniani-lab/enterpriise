@@ -326,7 +326,7 @@ class AccountMove(models.Model):
 
     def l10n_mx_edi_log_error(self, message):
         self.ensure_one()
-        self.message_post(body=_('Error during the process: %s') % message, subtype_xmlid='account.mt_invoice_validated')
+        self.message_post(body=_('Error during the process: %s', message), subtype_xmlid='account.mt_invoice_validated')
 
     # -------------------------------------------------------------------------
     # SAT/PAC service methods
@@ -545,9 +545,9 @@ class AccountMove(models.Model):
             body_msg = _('The sign service requested failed')
             post_msg = []
         if code:
-            post_msg.extend([_('Code: %s') % code])
+            post_msg.extend([_('Code: %s', code)])
         if msg:
-            post_msg.extend([_('Message: %s') % msg])
+            post_msg.extend([_('Message: %s', msg)])
         self.message_post(
             body=body_msg + create_list_html(post_msg),
             subtype_xmlid='account.mt_invoice_validated')
@@ -576,9 +576,9 @@ class AccountMove(models.Model):
             body_msg = _('The cancel service requested failed')
         post_msg = []
         if code:
-            post_msg.extend([_('Code: %s') % code])
+            post_msg.extend([_('Code: %s', code)])
         if msg:
-            post_msg.extend([_('Message: %s') % msg])
+            post_msg.extend([_('Message: %s', msg)])
         self.message_post(
             body=body_msg + create_list_html(post_msg),
             subtype_xmlid='account.mt_invoice_validated')

@@ -162,7 +162,9 @@ class Providerdhl(models.Model):
         if available_product_code:
             return {'success': False,
                     'price': 0.0,
-                    'error_message': (_("There is no price available for this shipping, you should rather try with the DHL product %s") % available_product_code[0]),
+                    'error_message': _(
+                        "There is no price available for this shipping, you should rather try with the DHL product %s",
+                        available_product_code[0]),
                     'warning_message': False}
 
     def dhl_send_shipping(self, pickings):

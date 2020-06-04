@@ -241,7 +241,7 @@ class Base(models.AbstractModel):
                 format=lambda a: a and a[0],
             )
         else:
-            raise ValueError(_("Can not use fields of type %s as grid columns") % field.type)
+            raise ValueError(_("Can not use fields of type %s as grid columns", field.type))
 
     @api.model
     def read_grid_domain(self, field, range):
@@ -288,7 +288,7 @@ class Base(models.AbstractModel):
                 (field.name, '>=', field.to_string(r.start_utc)),
                 (field.name, '<=', field.to_string(r.end_utc))
             ]
-        raise UserError(_("Can not use fields of type %s as grid columns") % field.type)
+        raise UserError(_("Can not use fields of type %s as grid columns", field.type))
 
     def _get_date_column_label(self, date, field, span, step):
         """

@@ -63,7 +63,7 @@ class MarketingActivity(models.Model):
             traces.write({
                 'state': 'error',
                 'schedule_date': Datetime.now(),
-                'state_msg': _('Exception in SMS Marketing: %s') % str(e),
+                'state_msg': _('Exception in SMS Marketing: %s', str)(e),
             })
         else:
             failed_stats = self.env['mailing.trace'].sudo().search([

@@ -310,7 +310,7 @@ class SignRequest(models.Model):
                 {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
                  'email_to': follower.email_formatted,
-                 'subject': subject or _('%s : Signature request') % self.reference},
+                 'subject': subject or _('%s : Signature request', self.reference)},
                  lang=follower.lang,
             )
             self.message_subscribe(partner_ids=follower.ids)
@@ -374,7 +374,7 @@ class SignRequest(models.Model):
                 {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
                  'email_to': signer.partner_id.email_formatted,
-                 'subject': _('%s has been signed') % self.reference,
+                 'subject': _('%s has been signed', self.reference),
                  'attachment_ids': [(4, attachment.id), (4, attachment_log.id)]},
                 force_send=True,
                 lang=signer_lang,
@@ -401,7 +401,7 @@ class SignRequest(models.Model):
                 {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
                  'email_to': follower.email_formatted,
-                 'subject': _('%s has been signed') % self.reference},
+                 'subject': _('%s has been signed', self.reference)},
                 lang=follower.lang,
             )
 
@@ -713,7 +713,7 @@ class SignRequestItem(models.Model):
     def _send_sms(self):
         for rec in self:
             rec._reset_sms_token()
-            self.env['sms.api']._send_sms([rec.sms_number], _('Your confirmation code is %s') % rec.sms_token)
+            self.env['sms.api']._send_sms([rec.sms_number], _('Your confirmation code is %s', rec.sms_token))
 
     def _compute_access_url(self):
         super(SignRequestItem, self)._compute_access_url()

@@ -517,7 +517,7 @@ class AmazonAccount(models.Model):
                 gift_message = mwsc.get_string_value(item_data, 'GiftMessageText')
                 if gift_message:
                     new_order_lines_vals.append(_get_order_line_vals(
-                        description=_("Gift message:\n%s") % gift_message,
+                        description=_("Gift message:\n%s", gift_message),
                         display_type='line_note'))
 
             if shipping_code:
@@ -714,7 +714,7 @@ class AmazonAccount(models.Model):
         for order_line in order.order_line.filtered(
                 lambda l: l.product_id.type != 'service' and not l.display_type):
             stock_move = self.env['stock.move'].create({
-                'name': _('Amazon move : %s') % order.name,
+                'name': _('Amazon move : %s', order.name),
                 'company_id': self.company_id.id,
                 'product_id': order_line.product_id.id,
                 'product_uom_qty': order_line.product_uom_qty,

@@ -112,7 +112,7 @@ class HrPayrollStructureType(models.Model):
     def _check_country(self, vals):
         country_id = vals.get('country_id')
         if country_id and country_id not in self.env.companies.mapped('country_id').ids:
-            raise UserError(_('You should also be logged into a company in %s to set this country.') % self.env['res.country'].browse(country_id).name)
+            raise UserError(_('You should also be logged into a company in %s to set this country.', self.env['res.country'].browse(country_id).name))
 
     def write(self, vals):
         if self.env.context.get('payroll_check_country'):

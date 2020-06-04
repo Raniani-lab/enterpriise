@@ -200,7 +200,7 @@ class HmrcVatObligation(models.Model):
             raise UserError(_(
              "Sorry, your credentials were refused by HMRC or your permission grant has expired. You may try to authenticate again."))
         else:  # other issues
-            _logger.exception(_("HMRC other issue : %s") % r.content)
+            _logger.exception(_("HMRC other issue : %s", r.content))
             # even 'normal' hmrc errors have a json body. Otherwise will also raise.
             response = json.loads(r.content.decode())
             # Recuperate error message

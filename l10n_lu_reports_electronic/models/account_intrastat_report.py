@@ -79,7 +79,7 @@ class ReportL10nLuPartnerVatIntra(models.AbstractModel):
             amt = row['amount'] or 0.0
             if amt:
                 if get_xml_data and not row['vat']:
-                    raise UserError(_('Partner "%s" has no VAT Number.') % row['partner_name'])
+                    raise UserError(_('Partner "%s" has no VAT Number.', row['partner_name']))
                 country_code = row['vat'][:2].upper()
                 intrastat_code = row['tax_name'] == '0-IC-S-G' and 'L' or row['tax_name'] == '0-ICT-S-G' and 'T' or 'S'
                 columns = [

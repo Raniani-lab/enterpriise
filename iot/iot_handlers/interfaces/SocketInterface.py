@@ -22,4 +22,4 @@ class SocketInterface(Interface):
                 socket_devices[addr[0]] = type('', (), {'dev': dev})
             return socket_devices
         except OSError as e:
-            _logger.error(_('Error in SocketInterface: %s') % e.strerror)
+            _logger.error(_('Error in SocketInterface: %s', e.strerror))

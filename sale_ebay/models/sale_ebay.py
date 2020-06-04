@@ -50,7 +50,7 @@ class EbayCategory(models.Model):
             if auto_commit:
                 self.env.cr.rollback()
                 self.env.user.message_post(
-                    body=_("eBay error: Impossible to synchronize the categories. \n'%s'") % e.args[0])
+                    body=_("eBay error: Impossible to synchronize the categories. \n'%s'", e.args)[0])
                 self.env.cr.commit()
             else:
                 raise e

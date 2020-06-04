@@ -131,8 +131,8 @@ class AccountBatchPayment(models.Model):
                 raise ValidationError(_("The batch must have the same payment method as the payments it contains."))
             payment_null = record.payment_ids.filtered(lambda p: p.amount == 0)
             if payment_null:
-                names = '\n'.join([p.name or _('Id: %s') % p.id for p in payment_null])
-                msg = _('You cannot add payments with zero amount in a Batch Payment.\nPayments:\n%s') % names
+                names = '\n'.join([p.name or _('Id: %s', p.id) for p in payment_null])
+                msg = _('You cannot add payments with zero amount in a Batch Payment.\nPayments:\n%s', names)
                 raise ValidationError(msg)
 
     @api.model

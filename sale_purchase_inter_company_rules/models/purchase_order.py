@@ -34,7 +34,7 @@ class purchase_order(models.Model):
             raise UserError(_('Provide at least one user for inter company relation for % ') % company.name)
         # check intercompany user access rights
         if not self.env['sale.order'].check_access_rights('create', raise_exception=False):
-            raise UserError(_("Inter company user of company %s doesn't have enough access rights") % company.name)
+            raise UserError(_("Inter company user of company %s doesn't have enough access rights", company.name))
 
         for rec in self:
             # check pricelist currency should be same with SO/PO document

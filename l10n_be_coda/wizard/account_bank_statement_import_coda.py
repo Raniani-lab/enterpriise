@@ -529,7 +529,7 @@ class AccountBankStatementImport(models.TransientModel):
                 statements.append(statement)
                 statement['version'] = line[127]
                 if statement['version'] not in ['1', '2']:
-                    raise UserError(_('Error') + ' R001: ' + _('CODA V%s statements are not supported, please contact your bank') % statement['version'])
+                    raise UserError(_('Error') + ' R001: ' + _('CODA V%s statements are not supported, please contact your bank', statement['version']))
                 statement['globalisation_stack'] = []
                 statement['lines'] = []
                 statement['date'] = time.strftime(tools.DEFAULT_SERVER_DATE_FORMAT, time.strptime(rmspaces(line[5:11]), '%d%m%y'))
@@ -604,14 +604,14 @@ class AccountBankStatementImport(models.TransientModel):
                     statement['lines'].append(statementLine)
                 elif line[1] == '2':
                     if statement['lines'][-1]['ref'][0:4] != line[2:6]:
-                        raise UserError(_('Error') + 'R2004: ' + _('CODA parsing error on movement data record 2.2, seq nr %s! Please report this issue via your Odoo support channel.') % line[2:10])
+                        raise UserError(_('Error') + 'R2004: ' + _('CODA parsing error on movement data record 2.2, seq nr %s! Please report this issue via your Odoo support channel.', line[2:10]))
                     statement['lines'][-1]['communication'] += line[10:63]
                     statement['lines'][-1]['payment_reference'] = rmspaces(line[63:98])
                     statement['lines'][-1]['counterparty_bic'] = rmspaces(line[98:109])
                     # TODO 113, 114-117, 118-121, 122-125
                 elif line[1] == '3':
                     if statement['lines'][-1]['ref'][0:4] != line[2:6]:
-                        raise UserError(_('Error') + 'R2005: ' + _('CODA parsing error on movement data record 2.3, seq nr %s! Please report this issue via your Odoo support channel.') % line[2:10])
+                        raise UserError(_('Error') + 'R2005: ' + _('CODA parsing error on movement data record 2.3, seq nr %s! Please report this issue via your Odoo support channel.', line[2:10]))
                     if statement['version'] == '1':
                         statement['lines'][-1]['counterpartyNumber'] = rmspaces(line[10:22])
                         statement['lines'][-1]['counterpartyName'] = rmspaces(line[47:73])
@@ -628,7 +628,7 @@ class AccountBankStatementImport(models.TransientModel):
                         statement['lines'][-1]['communication'] += line[82:125]
                 else:
                     # movement data record 2.x (x != 1,2,3)
-                    raise UserError(_('Error') + 'R2006: ' + _('\nMovement data records of type 2.%s are not supported ') % line[1])
+                    raise UserError(_('Error') + 'R2006: ' + _('\nMovement data records of type 2.%s are not supported ', line[1]))
             elif line[0] == '3':
                 if line[1] == '1':
                     infoLine = {}
@@ -654,11 +654,11 @@ class AccountBankStatementImport(models.TransientModel):
                     statement['lines'].append(infoLine)
                 elif line[1] == '2':
                     if infoLine['ref'] != rmspaces(line[2:10]):
-                        raise UserError(_('Error') + 'R3004: ' + _('CODA parsing error on information data record 3.2, seq nr %s! Please report this issue via your Odoo support channel.') % line[2:10])
+                        raise UserError(_('Error') + 'R3004: ' + _('CODA parsing error on information data record 3.2, seq nr %s! Please report this issue via your Odoo support channel.', line[2:10]))
                     statement['lines'][-1]['communication'] += rmspaces(line[10:115])
                 elif line[1] == '3':
                     if infoLine['ref'] != rmspaces(line[2:10]):
-                        raise UserError(_('Error') + 'R3005: ' + _('CODA parsing error on information data record 3.3, seq nr %s! Please report this issue via your Odoo support channel.') % line[2:10])
+                        raise UserError(_('Error') + 'R3005: ' + _('CODA parsing error on information data record 3.3, seq nr %s! Please report this issue via your Odoo support channel.', line[2:10]))
                     statement['lines'][-1]['communication'] += rmspaces(line[10:100])
             elif line[0] == '4':
                     comm_line = {}

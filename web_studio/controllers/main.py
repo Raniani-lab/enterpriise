@@ -356,7 +356,7 @@ class WebStudioController(http.Controller):
         # it doesn't make sense to add field, and won't work
         table_kind = sql.table_kind(request.env.cr, Model._table)
         if not table_kind or table_kind == 'v':
-            raise UserError(_('The model %s doesn\'t support adding fields.') % Model._name)
+            raise UserError(_('The model %s doesn\'t support adding fields.', Model._name))
 
         model = request.env['ir.model'].search([('model', '=', model_name)])
 
@@ -544,7 +544,7 @@ class WebStudioController(http.Controller):
         operations = operations or []
         for op in operations:
             if op['type'] not in OPERATIONS_WHITELIST:
-                raise ValidationError(_('The operation  type "%s" is not supported') % op['type'])
+                raise ValidationError(_('The operation  type "%s" is not supported', op)['type'])
         parser = etree.XMLParser(remove_blank_text=True)
         if studio_view_arch == "":
             studio_view_arch = '<data/>'
@@ -575,7 +575,7 @@ class WebStudioController(http.Controller):
             char_op['node']['field_description'].update({
                 'name': filename,
                 'type': 'char',
-                'field_description': _('Filename for %s') % op['node']['field_description']['name'],
+                'field_description': _('Filename for %s', op)['node']['field_description']['name'],
             })
             char_op['node']['attrs']['invisible'] = '1'
             operations.append(char_op)
@@ -1162,7 +1162,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         """
         model_id = request.env['ir.model'].search([('model', '=', model)])
         if not model_id:
-            raise UserError(_('The model %s does not exist.') % model)
+            raise UserError(_('The model %s does not exist.', model))
 
         if not operation.get('field'):
             raise UserError(_('Please specify a field.'))
@@ -1172,7 +1172,7 @@ Are you sure you want to remove the selection values of those records?""") % len
             ('name', '=', operation['field'])
         ])
         if not field_id:
-            raise UserError(_('The field %s does not exist.') % operation['field'])
+            raise UserError(_('The field %s does not exist.', operation)['field'])
 
         # add field at the beginning
         etree.SubElement(arch, 'xpath', {
@@ -1222,14 +1222,14 @@ Are you sure you want to remove the selection values of those records?""") % len
         """
         model_id = request.env['ir.model'].search([('model', '=', model)])
         if not model_id:
-            raise UserError(_('The model %s does not exist.') % model)
+            raise UserError(_('The model %s does not exist.', model))
         if operation.get('field'):
             field_id = request.env['ir.model.fields'].search([
                 ('model', '=', model),
                 ('name', '=', operation['field'])
             ])
             if not field_id:
-                raise UserError(_('The field %s does not exist.') % operation['field'])
+                raise UserError(_('The field %s does not exist.', operation)['field'])
         else:
             att_model = request.env['ir.model'].search([('model', '=', 'ir.attachment')])
             field_id = request.env['ir.model.fields'].search([
@@ -1290,7 +1290,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         """
         model_id = request.env['ir.model'].search([('model', '=', model)])
         if not model_id:
-            raise UserError(_('The model %s does not exist.') % model)
+            raise UserError(_('The model %s does not exist.', model))
 
         if operation.get('field'):
             field_id = request.env['ir.model.fields'].search([
@@ -1298,7 +1298,7 @@ Are you sure you want to remove the selection values of those records?""") % len
                 ('name', '=', operation['field'])
             ])
             if not field_id:
-                raise UserError(_('The field %s does not exist.') % operation['field'])
+                raise UserError(_('The field %s does not exist.', operation)['field'])
 
         else:
             field_id = request.env['ir.model.fields'].search([
@@ -1339,14 +1339,14 @@ Are you sure you want to remove the selection values of those records?""") % len
         IrModelFields = request.env['ir.model.fields']
 
         if not model_id:
-            raise UserError(_('The model %s does not exist.') % model)
+            raise UserError(_('The model %s does not exist.', model))
         if operation.get('field'):
             field_id = IrModelFields.search([
                 ('model', '=', model),
                 ('name', '=', operation['field'])
             ])
             if not field_id:
-                raise UserError(_('The field %s does not exist.') % operation['field'])
+                raise UserError(_('The field %s does not exist.', operation)['field'])
         else:
             field_id = IrModelFields.search([
                 ('model_id', '=', model_id.id),

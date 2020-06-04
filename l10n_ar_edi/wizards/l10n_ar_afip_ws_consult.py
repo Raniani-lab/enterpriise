@@ -73,7 +73,7 @@ class L10nArAfipWsConsult(models.TransientModel):
             if response.BFEEvents.EventCode != 0 or response.BFEEvents.EventMsg:
                 error += repr(response.BFEEvents)
         else:
-            raise UserError(_('AFIP WS %s not implemented') % afip_ws)
+            raise UserError(_('AFIP WS %s not implemented', afip_ws))
 
         title = _('Invoice number %s\n' % self.number)
         if error:

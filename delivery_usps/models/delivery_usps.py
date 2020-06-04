@@ -113,7 +113,7 @@ class ProviderUSPS(models.Model):
         if quotes.get('error_message'):
             return {'success': False,
                     'price': 0.0,
-                    'error_message': _('Error:\n%s') % quotes['error_message'],
+                    'error_message': _('Error:\n%s', quotes['error_message']),
                     'warning_message': False}
 
         # USPS always returns prices in USD

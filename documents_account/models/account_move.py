@@ -21,7 +21,7 @@ class AccountMove(models.Model):
                         actions.append({
                             'type': 'ir.actions.act_window',
                             'res_model': 'documents.request_wizard',
-                            'name': _("Request Document for %s") % line.name,
+                            'name': _("Request Document for %s", line.name),
                             'view_id': view_id,
                             'views': [(view_id, 'form')],
                             'target': 'new',

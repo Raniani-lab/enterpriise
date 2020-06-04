@@ -506,7 +506,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
             {'name': _("Journal"), 'class': '', 'style': 'text-align:center; white-space:nowrap;'},
             {'name': _("Account"), 'class': '', 'style': 'text-align:center; white-space:nowrap;'},
             {'name': _("Exp. Date"), 'class': 'date', 'style': 'white-space:nowrap;'},
-            {'name': _("As of: %s") % format_date(self.env, options['date']['date_to']), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
+            {'name': _("As of: %s", format_date(self.env, options['date']['date_to'])), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
             {'name': _("1 - 30"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
             {'name': _("31 - 60"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
             {'name': _("61 - 90"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},

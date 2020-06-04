@@ -12,7 +12,7 @@ class AccountMoveReversal(models.TransientModel):
         result = super(AccountMoveReversal, self).default_get(fields)
         ticket_id = self._context.get('default_helpdesk_ticket_id')
         if ticket_id and 'reason' in fields:
-            result['reason'] = _('Helpdesk Ticket #%s') % ticket_id
+            result['reason'] = _('Helpdesk Ticket #%s', ticket_id)
         return result
 
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket')

@@ -182,7 +182,7 @@ class VoipPhonecall(models.Model):
     def create_from_recent(self, phonecall_id):
         recent_phonecall = self.browse(phonecall_id)
         vals = {
-            'name': _('Call to %s') % recent_phonecall.phone,
+            'name': _('Call to %s', recent_phonecall.phone),
             'phone': recent_phonecall.phone,
             'mobile': recent_phonecall.mobile,
             'partner_id': recent_phonecall.partner_id.id,
@@ -192,7 +192,7 @@ class VoipPhonecall(models.Model):
     @api.model
     def create_from_number(self, number):
         vals = {
-            'name': _('Call to %s') % number,
+            'name': _('Call to %s', number),
             'phone': number,
         }
         return self._create_and_init(vals)
@@ -200,7 +200,7 @@ class VoipPhonecall(models.Model):
     def create_from_missed_call(self, number, partner_id=False):
         self.ensure_one()
         vals = {
-            'name': _('Missed Call from %s') % number,
+            'name': _('Missed Call from %s', number),
             'phone': number,
             'state': 'missed',
             'phonecall_type': 'incoming',
@@ -211,7 +211,7 @@ class VoipPhonecall(models.Model):
     def create_from_rejected_call(self, number, partner_id=False):
         self.ensure_one()
         vals = {
-            'name': _('Rejected Incoming Call from %s') % number,
+            'name': _('Rejected Incoming Call from %s', number),
             'phone': number,
             'phonecall_type': 'incoming',
             'state': 'rejected',
@@ -222,7 +222,7 @@ class VoipPhonecall(models.Model):
     def create_from_incoming_call_accepted(self, number, partner_id=False):
         self.ensure_one()
         vals = {
-            'name': _('Incoming call from %s') % number,
+            'name': _('Incoming call from %s', number),
             'phone': number,
             'state': 'done',
             'phonecall_type': 'incoming',
@@ -233,9 +233,9 @@ class VoipPhonecall(models.Model):
     @api.model
     def create_from_incoming_call(self, number, partner_id=False):
         if partner_id:
-            name = _('Incoming call from %s') % self.env['res.partner'].browse([partner_id]).display_name
+            name = _('Incoming call from %s', self.env)['res.partner'].browse([partner_id]).display_name
         else:
-            name = _('Incoming call from %s') % number
+            name = _('Incoming call from %s', number)
         vals = {
             'name': name,
             'phone': number,
@@ -279,7 +279,7 @@ class VoipPhonecall(models.Model):
             if len(partner_field_name):
                 partner_id = record[partner_field_name].id
         vals = {
-            'name': _('Call to %s') % number,
+            'name': _('Call to %s', number),
             'phone': number,
             'partner_id': partner_id,
         }

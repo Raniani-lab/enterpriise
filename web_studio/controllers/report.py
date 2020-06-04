@@ -74,7 +74,7 @@ class WebStudioReportController(main.WebStudioController):
 
         model = request.env['ir.model'].search([('model', '=', model_name)])
         report = request.env['ir.actions.report'].create({
-            'name': _('%s Report') % model.name,
+            'name': _('%s Report', model.name),
             'model': model.model,
             'report_type': 'qweb-pdf',
             'report_name': view.name,

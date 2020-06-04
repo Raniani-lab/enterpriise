@@ -92,7 +92,7 @@ class IrasAuditFile(models.AbstractModel):
                 gst_total_sgd += tax_amount
 
                 if not invoice.partner_id.l10n_sg_unique_entity_number:
-                    raise UserError(_('Your partner (%s) must have a UEN.') % invoice.partner_id.name)
+                    raise UserError(_('Your partner (%s) must have a UEN.', invoice.partner_id.name))
                 purchases_lines.append({
                     'SupplierName': (invoice.partner_id.name or '')[:100],
                     'SupplierUEN': (invoice.partner_id.l10n_sg_unique_entity_number or '')[:16],
@@ -145,7 +145,7 @@ class IrasAuditFile(models.AbstractModel):
                 gst_total_sgd += tax_amount
 
                 if not invoice.partner_id.l10n_sg_unique_entity_number:
-                    raise UserError(_('Your partner (%s) must have a UEN.') % invoice.partner_id.name)
+                    raise UserError(_('Your partner (%s) must have a UEN.', invoice.partner_id.name))
                 supply_lines.append({
                     'CustomerName': (invoice.partner_id.name or '')[:100],
                     'CustomerUEN': (invoice.partner_id.l10n_sg_unique_entity_number or '')[:16],

@@ -43,7 +43,7 @@ class USPSRequest():
 
         res = [field for field in shipper_required_field if not shipper[field]]
         if res:
-            return _("The address of your company is missing or wrong (Missing field(s) :  \n %s)") % ", ".join(res).replace("_id", "")
+            return _("The address of your company is missing or wrong (Missing field(s) :  \n %s)", ", ".join(res).replace("_id", ""))
         if shipper.country_id.code != 'US':
             return _("Please set country U.S.A in your company address, Service is only available for U.S.A")
         if not ZIP_ZIP4.match(shipper.zip):
@@ -52,7 +52,7 @@ class USPSRequest():
             return _("Company phone number is invalid. Please insert a US phone number.")
         res = [field for field in recipient_required_field if not recipient[field]]
         if res:
-            return _("The recipient address is missing or wrong (Missing field(s) :  \n %s)") % ", ".join(res).replace("_id", "")
+            return _("The recipient address is missing or wrong (Missing field(s) :  \n %s)", ", ".join(res).replace("_id", ""))
         if delivery_nature == 'domestic' and not ZIP_ZIP4.match(recipient.zip):
             return _("Please enter a valid ZIP code in recipient address")
         if recipient.country_id.code == "US" and delivery_nature == 'international':
@@ -156,7 +156,7 @@ class USPSRequest():
                 if carrier.usps_service in service.findall("SvcDescription")[0].text:
                     postages_prices += [float(service.findall("Postage")[0].text)]
             if not postages_prices:
-                dict_response['error_message'] = _("The selected USPS service (%s) cannot be used to deliver this package.") % carrier.usps_service
+                dict_response['error_message'] = _("The selected USPS service (%s) cannot be used to deliver this package.", carrier.usps_service)
                 return dict_response
             else:
                 dict_response['price'] = min(postages_prices)

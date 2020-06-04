@@ -400,7 +400,7 @@ class MarketingActivity(models.Model):
                 trace.write({
                     'state': 'error',
                     'schedule_date': Datetime.now(),
-                    'state_msg': _('Exception in server action: %s') % str(e),
+                    'state_msg': _('Exception in server action: %s', str)(e),
                 })
             else:
                 traces_ok |= trace
@@ -430,7 +430,7 @@ class MarketingActivity(models.Model):
             traces.write({
                 'state': 'error',
                 'schedule_date': Datetime.now(),
-                'state_msg': _('Exception in mass mailing: %s') % str(e),
+                'state_msg': _('Exception in mass mailing: %s', str)(e),
             })
         else:
             failed_stats = self.env['mailing.trace'].sudo().search([

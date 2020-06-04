@@ -230,13 +230,13 @@ class ProviderFedex(models.Model):
         else:
             return {'success': False,
                     'price': 0.0,
-                    'error_message': _('Error:\n%s') % request['errors_message'],
+                    'error_message': _('Error:\n%s', request['errors_message']),
                     'warning_message': False}
 
         return {'success': True,
                 'price': price,
                 'error_message': False,
-                'warning_message': _('Warning:\n%s') % warnings if warnings else False}
+                'warning_message': _('Warning:\n%s', warnings) if warnings else False}
 
     def fedex_send_shipping(self, pickings):
         res = []

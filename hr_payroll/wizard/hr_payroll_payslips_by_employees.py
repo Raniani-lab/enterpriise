@@ -36,7 +36,7 @@ class HrPayslipEmployees(models.TransientModel):
             calendar_end = pytz.utc.localize(datetime.combine(min(contract.date_end or date.max, payslip_run.date_end), time.max))
             outside = contract.resource_calendar_id._attendance_intervals(calendar_start, calendar_end) - work_entries._to_intervals()
             if outside:
-                raise UserError(_("Some part of %s's calendar is not covered by any work entry. Please complete the schedule.") % contract.employee_id.name)
+                raise UserError(_("Some part of %s's calendar is not covered by any work entry. Please complete the schedule.", contract.employee_id.name))
 
     def compute_sheet(self):
         self.ensure_one()

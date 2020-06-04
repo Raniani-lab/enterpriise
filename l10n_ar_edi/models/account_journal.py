@@ -39,13 +39,13 @@ class AccountJournal(models.Model):
         connection = self.company_id._l10n_ar_get_connection(self.l10n_ar_afip_ws)
         client, auth = connection._get_client()
         if self.company_id._get_environment_type() == 'testing':
-            raise UserError(_('"Check Available AFIP PoS" is not implemented in testing mode for webservice %s') % self.l10n_ar_afip_ws)
+            raise UserError(_('"Check Available AFIP PoS" is not implemented in testing mode for webservice %s', self.l10n_ar_afip_ws))
         if self.l10n_ar_afip_ws == 'wsfe':
             response = client.service.FEParamGetPtosVenta(auth)
         elif self.l10n_ar_afip_ws == 'wsfex':
             response = client.service.FEXGetPARAM_PtoVenta(auth)
         else:
-            raise UserError(_('"Check Available AFIP PoS" is not implemented for webservice %s') % self.l10n_ar_afip_ws)
+            raise UserError(_('"Check Available AFIP PoS" is not implemented for webservice %s', self.l10n_ar_afip_ws))
         raise UserError(response)
 
     def _l10n_ar_get_afip_last_invoice_number(self, document_type):
@@ -83,8 +83,8 @@ class AccountJournal(models.Model):
             if response.BFEErr.ErrCode != 0 or response.BFEErr.ErrMsg != 'OK':
                 errors = response.BFEErr
         else:
-            return(_('AFIP WS %s not implemented') % afip_ws)
+            return(_('AFIP WS %s not implemented', afip_ws))
 
         if errors:
-            raise UserError(_('We receive this error trying to consult the last invoice number to AFIP:\n%s') % str(errors))
+            raise UserError(_('We receive this error trying to consult the last invoice number to AFIP:\n%s', str(errors)))
         return last

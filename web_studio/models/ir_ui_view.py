@@ -223,7 +223,7 @@ class View(models.Model):
             groupbys.append(E.filter(name='groupby_x_partner', string=_('Partner'), context="{'group_by': 'x_studio_partner_id'}", domain="[]"))
         if 'x_studio_user_id' in model._fields:
             fields.append(E.field(name='x_studio_user_id'))
-            filters.append(E.filter(string=_('My %s') % model._description, name='my_%s' % res_model, domain="[['x_studio_user_id', '=', uid]]"))
+            filters.append(E.filter(string=_('My %s', model._description), name='my_%s' % res_model, domain="[['x_studio_user_id', '=', uid]]"))
             groupbys.append(E.filter(name='groupby_x_user', string=_('Responsible'), context="{'group_by': 'x_studio_user_id'}", domain="[]"))
         date_filters = []
         if 'x_studio_date' in model._fields:
@@ -1115,7 +1115,7 @@ class View(models.Model):
             if tcall not in cloned_templates:
                 callview = self.search([('type', '=', 'qweb'), ('key', '=', tcall)], limit=1)
                 if not callview:
-                    raise UserError(_("Template '%s' not found") % tcall)
+                    raise UserError(_("Template '%s' not found", tcall))
                 callview.copy_qweb_template()
             node.set('t-call', cloned_templates[tcall])
 
@@ -1153,4 +1153,4 @@ class View(models.Model):
         if studio_approval and self.type != 'form':
             self.handle_view_error(_("studio_approval attribute can only be set in form views"))
         if studio_approval and studio_approval not in ['True', 'False']:
-            self.handle_view_error(_("Invalid studio_approval %s in button") % studio_approval)
+            self.handle_view_error(_("Invalid studio_approval %s in button", studio_approval))

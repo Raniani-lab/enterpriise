@@ -119,7 +119,7 @@ class ProviderUPS(models.Model):
         if result.get('error_message'):
             return {'success': False,
                     'price': 0.0,
-                    'error_message': _('Error:\n%s') % result['error_message'],
+                    'error_message': _('Error:\n%s', result['error_message']),
                     'warning_message': False}
 
         if order.currency_id.name == result['currency_code']:

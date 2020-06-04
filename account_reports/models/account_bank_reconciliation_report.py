@@ -158,7 +158,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
         journal_id = self._context.get('active_id')
         if journal_id:
             journal = self.env['account.journal'].browse(journal_id)
-            return _("Bank Reconciliation: %s") % journal.name
+            return _("Bank Reconciliation: %s", journal.name)
         return _("Bank Reconciliation")
 
     # -------------------------------------------------------------------------
@@ -216,7 +216,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
         if self.env.company.totals_below_sections:
             report_lines.append({
                 'id': '%s_total' % line_id,
-                'name': _("Total %s") % section_report_line['name'],
+                'name': _("Total %s", section_report_line['name']),
                 'columns': section_report_line['columns'],
                 'class': 'total',
                 'level': 3,
@@ -610,7 +610,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
 
         balance_gl_report_line = {
             'id': 'balance_gl_line',
-            'name': _("Balance of %s") % options['account_names'],
+            'name': _("Balance of %s", options['account_names']),
             'title_hover': _("The Book balance in Odoo dated today"),
             'columns': self._apply_groups([
                 {'name': format_date(self.env, options['date']['date_to']), 'class': 'date'},
@@ -630,7 +630,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
         if self.env.company.totals_below_sections:
             section_st_report_lines.append({
                 'id': '%s_total' % balance_gl_report_line,
-                'name': _("Total %s") % balance_gl_report_line['name'],
+                'name': _("Total %s", balance_gl_report_line['name']),
                 'columns': balance_gl_report_line['columns'],
                 'class': 'total',
                 'level': balance_gl_report_line['level'] + 1,
@@ -673,7 +673,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
             if self.env.company.totals_below_sections:
                 section_pay_report_lines.append({
                     'id': '%s_total' % outstanding_payments_report_line['id'],
-                    'name': _("Total %s") % outstanding_payments_report_line['name'],
+                    'name': _("Total %s", outstanding_payments_report_line['name']),
                     'columns': outstanding_payments_report_line['columns'],
                     'class': 'total',
                     'level': outstanding_payments_report_line['level'] + 1,

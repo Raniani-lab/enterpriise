@@ -243,7 +243,7 @@ class ConsolidationPeriod(models.Model):
             'context': {
                 'default_period_id': self.id
             },
-            'name': _('Trial Balance: %s') % self.display_name,
+            'name': _('Trial Balance: %s', self.display_name),
             'search_view_id': [self.env.ref('account_consolidation.trial_balance_grid_search').id, 'search']
         }
 
@@ -581,7 +581,7 @@ class ConsolidationCompanyPeriod(models.Model):
         self.ensure_one()
         journal_lines_values = self.get_journal_lines_values()
         self.env['consolidation.journal'].create({
-            'name': _("%s Consolidated Accounting") % self.company_name,
+            'name': _("%s Consolidated Accounting", self.company_name),
             'auto_generated': True,
             'company_period_id': self.id,
             'period_id': self.period_id.id,

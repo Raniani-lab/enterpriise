@@ -46,11 +46,11 @@ class MailChannel(models.Model):
         if key[0].lower() == '/helpdesk':
             if len(key) == 1:
                 if self.channel_type == 'channel':
-                    msg = _("You are in channel <b>#%s</b>.") % self.name
+                    msg = _("You are in channel <b>#%s</b>.", self.name)
                     if self.public == 'private':
                         msg += _(" This channel is private. People must be invited to join it.")
                 else:
-                    msg = _("You are in a private conversation with <b>@%s</b>.") % channel_partners.partner_id.name
+                    msg = _("You are in a private conversation with <b>@%s</b>.", channel_partners.partner_id.name)
                 msg += _("""<br><br>
                     You can create a new ticket by typing <b>/helpdesk "ticket title"</b>.<br>
                     You can search ticket by typing <b>/helpdesk_search "Keywords1 Keywords2 etc"</b><br>
@@ -71,7 +71,7 @@ class MailChannel(models.Model):
                     'team_id': team_id,
                 })
                 link_ticket = '<a href="#" data-oe-id='+str(helpdesk_ticket.id)+' data-oe-model="helpdesk.ticket">'+helpdesk_ticket.name+'</a>'
-                msg = _("Created a new ticket and request: %s") % link_ticket
+                msg = _("Created a new ticket and request: %s", link_ticket)
         return self._send_transient_message(partner, msg)
 
     def _define_command_helpdesk_search(self):

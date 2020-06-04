@@ -20,7 +20,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             return result
         employee_id = self.env['hr.employee'].browse(result['employee_id'])
         if not employee_id.start_notice_period or not employee_id.end_notice_period:
-            raise UserError(_("Notice period not set for %s. Please, set the departure notice period first.") % employee_id.name)
+            raise UserError(_("Notice period not set for %s. Please, set the departure notice period first.", employee_id.name))
         current_year = employee_id.end_notice_period.replace(month=1, day=1)
         previous_year = current_year + relativedelta(years=-1)
         next_year = current_year + relativedelta(years=+1)

@@ -61,7 +61,7 @@ class HrReferralReward(models.Model):
             # log a next activity for today
             self.sudo().activity_schedule(
                 activity_type_id=self.env.ref('mail.mail_activity_data_todo').id,
-                summary=_('New gift awarded for %s') % current_user.name,
+                summary=_('New gift awarded for %s', current_user.name),
                 user_id=self.gift_manager_id.id)
 
         return {

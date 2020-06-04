@@ -196,7 +196,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
             seq += 1
             vat = line['columns'][0].get('name', False)
             if not vat:
-                raise UserError(_('No vat number defined for %s.') % line['name'])
+                raise UserError(_('No vat number defined for %s.', line['name']))
             client = {
                 'vatnum': vat[2:].replace(' ', '').upper(),
                 'vat': vat,

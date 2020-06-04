@@ -202,7 +202,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
                 'credit': 20,
             }
         ])
-        move_product.post()
+        move_product.action_post()
 
         move_payment = self.env['account.move'].create({
             'ref': 'move payment',
@@ -231,7 +231,6 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             }
         ])
         move_payment.action_post()
-        move_product.post()
 
         # We are reconciling a move line in currency A with a move line in currency B and putting
         # the rest in a writeoff, this test ensure that the debit/credit value of the writeoff is

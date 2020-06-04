@@ -8,11 +8,11 @@ class AccountMove(models.Model):
     auto_generated = fields.Boolean(string='Auto Generated Document', copy=False, default=False)
     auto_invoice_id = fields.Many2one('account.move', string='Source Invoice', readonly=True, copy=False)
 
-    def post(self):
+    def _post(self, soft=True):
         # OVERRIDE to generate cross invoice based on company rules.
         invoices_map = {}
-        res = super(AccountMove, self).post()
-        for invoice in self.filtered(lambda move: move.is_invoice()):
+        posted = super()._post(soft)
+        for invoice in posted.filtered(lambda move: move.is_invoice()):
             company = self.env['res.company']._find_company_from_partner(invoice.partner_id.id)
             if company and company.rule_type == 'invoice_and_refund' and not invoice.auto_generated:
                 invoices_map.setdefault(company, self.env['account.move'])
@@ -21,7 +21,7 @@ class AccountMove(models.Model):
             context = dict(self.env.context, default_company_id=company.id)
             context.pop('default_journal_id', None)
             invoices.with_user(company.intercompany_user_id).with_context(context).with_company(company)._inter_company_create_invoices()
-        return res
+        return posted
 
     def _inter_company_create_invoices(self):
         ''' Create cross company invoices.

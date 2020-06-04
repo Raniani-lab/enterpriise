@@ -73,11 +73,11 @@ class AccountMove(models.Model):
             }
             self.env['res.config.settings']._create_edit_tax_reminder(vals)
 
-    def post(self):
+    def _post(self, soft=True):
         # When posting entry, generate the pdf and next activity for the tax moves.
         tax_return_moves = self.filtered(lambda m: m.is_tax_closing)
         tax_return_moves._close_tax_entry()
-        return super(AccountMove, self).post()
+        return super()._post(soft)
 
 
 class AccountTaxReportActivityType(models.Model):

@@ -290,7 +290,7 @@ class TestEdi(SingleTransactionCase):
         name = sql.Identifier(uuid.uuid1().hex)
         self.env.cr.execute(sql.SQL('SAVEPOINT {}').format(name))
         try:
-            invoice.post()
+            invoice.action_post()
         except Exception as error:
             error_msg = repr(error)
             if 'Code 500' in error_msg or 'Code 501' in error_msg or 'Code 502' in error_msg:

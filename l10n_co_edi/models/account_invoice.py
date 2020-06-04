@@ -322,12 +322,12 @@ class AccountMove(models.Model):
         self.ensure_one()
         return self.move_type in ('out_invoice', 'out_refund') and self.company_id.country_id == self.env.ref('base.co')
 
-    def post(self):
+    def _post(self, soft=True):
         # OVERRIDE to generate the e-invoice for the Colombian Localization.
-        res = super(AccountMove, self).post()
+        posted = super()._post(soft)
 
-        to_process = self.filtered(lambda move: move._l10n_co_edi_is_l10n_co_edi_required())
+        to_process = posted.filtered(lambda move: move._l10n_co_edi_is_l10n_co_edi_required())
         if to_process:
             to_process.write({'l10n_co_edi_datetime_invoice': fields.Datetime.now()})
             to_process.l10n_co_edi_upload_electronic_invoice()
-        return res
+        return posted

@@ -73,7 +73,7 @@ class AccountAutoTransferTestCase(common.TransactionCase):
             move_vals['journal_id'] = journal_id
         move = self.env['account.move'].create(move_vals)
         if posted:
-            move.post()
+            move.action_post()
         return move
 
     def _add_transfer_model_line(self, account_id: int = False, percent: float = 100.0, analytic_account_ids: list = False):

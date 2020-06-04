@@ -68,7 +68,7 @@ class TestSaleAccountTaxCloud(TestAccountTaxcloudCommon):
             10005,
             "Downpayment product should have the 'Gift Card' TIC",
         )
-        downpayment_invoice.post()
+        downpayment_invoice.action_post()
         self.assertEqual(
             downpayment_invoice.amount_tax,
             0.0,
@@ -82,7 +82,7 @@ class TestSaleAccountTaxCloud(TestAccountTaxcloudCommon):
         )
         payment.create_invoices()
         invoice = sale_order.invoice_ids - downpayment_invoice
-        invoice.post()
+        invoice.action_post()
 
         payment_method_manual_in = self.env.ref(
             "account.account_payment_method_manual_in"

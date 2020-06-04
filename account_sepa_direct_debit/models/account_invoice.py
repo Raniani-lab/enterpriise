@@ -16,7 +16,7 @@ class AccountMove(models.Model):
         help="Once this invoice has been paid with Direct Debit, contains the mandate that allowed the payment.")
     sdd_has_usable_mandate = fields.Boolean(compute='_compute_sdd_has_usable_mandate', search='_search_sdd_has_usable_mandate')
 
-    def post(self):
+    def _post(self, soft=True):
         # OVERRIDE
         # Register SDD payments on mandates or trigger an error if no mandate is available.
         for pay in self.payment_id:
@@ -31,7 +31,7 @@ class AccountMove(models.Model):
                     ))
                 pay.sdd_mandate_id = usable_mandate
 
-        return super().post()
+        return super()._post(soft)
 
     @api.model
     def _search_sdd_has_usable_mandate(self, operator, value):

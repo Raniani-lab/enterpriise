@@ -40,7 +40,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice = self.create_invoice()
         invoice.sudo().journal_id.l10n_mx_address_issued_id = self.env.company.partner_id.id
         invoice.name = 'INV/2017/999'
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.state, "posted")
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
@@ -74,7 +74,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
                 with move_form.invoice_line_ids.edit(i) as line_form:
                     line_form.discount = 10
                     line_form.price_unit = 500
-        invoice_disc.post()
+        invoice_disc.action_post()
         self.assertEqual(invoice_disc.state, "posted")
         self.assertEqual(invoice_disc.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
@@ -145,7 +145,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         # Testing invoice refund to verify CFDI related section
         # -----------------------
         invoice = self.create_invoice()
-        invoice.post()
+        invoice.action_post()
         refund = self.env['account.move.reversal'].with_context(active_model='account.move', active_ids=invoice.ids).create({
             'refund_method': 'refund',
             'reason': 'Refund Test',
@@ -154,7 +154,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         result = refund.reverse_moves()
         refund_id = result['res_id']
         refund = self.env['account.move'].browse(refund_id)
-        refund.post()
+        refund.action_post()
         xml = refund.l10n_mx_edi_get_xml_etree()
         self.assertEqual(xml.CfdiRelacionados.CfdiRelacionado.get('UUID'),
                           invoice.l10n_mx_edi_cfdi_uuid,
@@ -166,7 +166,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice = self.create_invoice()
         invoice.invoice_line_ids[0].product_id = False
         invoice.compute_taxes()
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.state, "posted")
 
         # -----------------------
@@ -182,7 +182,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         for line in invoice.invoice_line_ids:
             line.invoice_line_tax_id = [self.tax_positive.id, tax_ieps.id]
         invoice.compute_taxes()
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         xml_total = invoice.l10n_mx_edi_get_xml_etree().get('Total')
@@ -193,7 +193,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         # Testing send payment by email
         # -----------------------
         invoice = self.create_invoice()
-        invoice.post()
+        invoice.action_post()
         bank_journal = self.env['account.journal'].search([
             ('type', '=', 'bank')], limit=1)
         payment_register = Form(self.env['account.payment'].with_context(active_model='account.move', active_ids=invoice.ids))
@@ -206,7 +206,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         payment_register.ref = invoice.name
         payment_register.amount = invoice.amount_total
         payment = payment_register.save()
-        payment.post()
+        payment.action_post()
         self.assertEqual(payment.l10n_mx_edi_pac_status, "signed",
                          payment.message_ids.mapped('body'))
         default_template = self.env.ref(
@@ -231,7 +231,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice = self.create_invoice()
         invoice.name = 'INV/2017/999'
         today = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped("body"))
 

@@ -53,7 +53,7 @@
             ]"/>
         </record>
 
-        <function model="account.move" name="post">
+        <function model="account.move" name="_post">
             <value eval="[ref('liaison_invoice_1'), ref('liaison_bill_1')]"/>
         </function>
 

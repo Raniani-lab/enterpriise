@@ -36,19 +36,19 @@ class AccountMove(models.Model):
         for record in self:
             record.l10n_es_reports_mod349_available = record.partner_id.country_id in mod349_countries
 
-    def post(self):
+    def _post(self, soft=True):
         """ Overridden to require Spanish invoice type to be set if the company
         of the invoice uses a Spanish COA (so other companies using other COA
         on the same DB won't be force to use them).
         """
-        rslt = super(AccountMove, self).post()
+        posted = super()._post(soft)
         spanish_coa_list = [self.env.ref('l10n_es.account_chart_template_pymes'), self.env.ref('l10n_es.account_chart_template_assoc'), self.env.ref('l10n_es.account_chart_template_full')]
-        for record in self.filtered(lambda move: move.is_invoice()):
+        for record in posted.filtered(lambda move: move.is_invoice()):
             if record.company_id.chart_template_id in spanish_coa_list and \
             record.partner_id.country_id == self.env.ref('base.es', False) and \
             (not record.l10n_es_reports_mod347_invoice_type or (record.l10n_es_reports_mod349_available and not record.l10n_es_reports_mod349_invoice_type)):
                 raise UserError(_("Please select a Spanish invoice type for this invoice."))
-        return rslt
+        return posted
 
     @api.model
     def create(self, vals):

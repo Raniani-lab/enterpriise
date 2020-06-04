@@ -94,12 +94,13 @@ class TestAccountAsset(TestAccountReportsCommon):
                          'Depreciation lines not created correctly')
 
         # Check that auto_post is set on the entries, in the future, and we cannot post them.
+        self.assertTrue(all(CEO_car.depreciation_move_ids.mapped('auto_post')))
         with self.assertRaises(UserError):
-            CEO_car.depreciation_move_ids.post()
+            CEO_car.depreciation_move_ids.action_post()
 
         # I Check that After creating all the moves of depreciation lines the state "Running".
         CEO_car.depreciation_move_ids.write({'auto_post': False})
-        CEO_car.depreciation_move_ids.post()
+        CEO_car.depreciation_move_ids.action_post()
         self.assertEqual(account_asset_vehicles_test0.state, 'open',
                          'State of asset should be runing')
 
@@ -145,7 +146,7 @@ class TestAccountAsset(TestAccountReportsCommon):
                 'quantity': 1,
             })],
         })
-        invoice.post()
+        invoice.action_post()
 
         recognition = invoice.asset_ids
         self.assertEqual(len(recognition), 1, 'One and only one recognition sould have been created from invoice.')
@@ -159,7 +160,7 @@ class TestAccountAsset(TestAccountReportsCommon):
                          'Recognition value is not same as invoice line.')
 
         recognition.depreciation_move_ids.write({'auto_post': False})
-        recognition.depreciation_move_ids.post()
+        recognition.depreciation_move_ids.action_post()
 
         # I check data in move line and installment line.
         first_installment_line = recognition.depreciation_move_ids.sorted(lambda r: r.id)[0]
@@ -238,7 +239,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             ]
         },
         ])
-        move_ids.post()
+        move_ids.action_post()
         move_line_ids = move_ids.mapped('line_ids').filtered(lambda x: x.debit)
 
         asset = self.env['account.asset'].new({'original_move_line_ids': [(6, 0, move_line_ids.ids)]})
@@ -496,7 +497,7 @@ class TestAccountAsset(TestAccountReportsCommon):
                 }),
             ]
         })
-        move_id.post()
+        move_id.action_post()
         move_line_id = move_id.mapped('line_ids').filtered(lambda x: x.debit)
 
         asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))
@@ -541,7 +542,7 @@ class TestAccountAsset(TestAccountReportsCommon):
                 }),
             ]
         })
-        move.post()
+        move.action_post()
         assets = move.asset_ids
         assets = sorted(assets, key=lambda i: i['original_value'], reverse=True)
         self.assertEqual(len(assets), 3, '3 assets should have been created')
@@ -579,7 +580,7 @@ class TestAccountAsset(TestAccountReportsCommon):
                 }),
             ]
         })
-        move.post()
+        move.action_post()
         self.assertEqual(sum(asset.original_value for asset in move.asset_ids), move.line_ids[0].debit)
 
     def test_asset_multiple_assets_from_one_move_line_02(self):
@@ -629,6 +630,6 @@ class TestAccountAsset(TestAccountReportsCommon):
                     }),
                 ]
             })
-            move.post()
+            move.action_post()
             self.assertEqual(len(move.asset_ids), (factor * quantity) if uom_type == 'bigger' else math.ceil(quantity / factor))
             self.assertAlmostEqual(sum(asset.original_value for asset in move.asset_ids), move.line_ids[0].debit)

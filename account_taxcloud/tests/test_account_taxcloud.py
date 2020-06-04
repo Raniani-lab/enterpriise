@@ -44,7 +44,7 @@ class TestAccountTaxcloud(TestAccountTaxcloudCommon):
                 len(line.tax_ids), 0, "There should be no tax rate on the line."
             )
 
-        invoice.post()
+        invoice.action_post()
 
         for line in invoice.invoice_line_ids:
             self.assertEqual(

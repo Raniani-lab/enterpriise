@@ -74,7 +74,7 @@ class TestFinancialReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 800.0,     'credit': 0.0,      'account_id': accounts[8].id,   'partner_id': cls.partner_c.id}),
             ],
         })
-        cls.move_2019.post()
+        cls.move_2019.action_post()
 
         cls.move_2018 = cls.env['account.move'].create({
             'move_type': 'entry',
@@ -84,7 +84,7 @@ class TestFinancialReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 1000.0,   'account_id': accounts[2].id,   'partner_id': cls.partner_b.id}),
             ],
         })
-        cls.move_2018.post()
+        cls.move_2018.action_post()
 
         cls.move_2017 = cls.env['account.move'].with_company(cls.company_data_2['company']).create({
             'move_type': 'entry',
@@ -96,7 +96,7 @@ class TestFinancialReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 7000.0,    'credit': 0.0,      'account_id': accounts_2[6].id, 'partner_id': cls.partner_a.id}),
             ],
         })
-        cls.move_2017.post()
+        cls.move_2017.action_post()
 
         cls.report = cls.env.ref('account_reports.account_financial_report_balancesheet0')
         cls.report.applicable_filters_ids |= cls.filter

@@ -48,7 +48,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
             ],
         })
 
-        (cls.out_invoice + cls.in_invoice).post()
+        (cls.out_invoice + cls.in_invoice).action_post()
     #
     def _filter_zero_lines(self, lines):
         filtered_lines = []
@@ -150,7 +150,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
                 line_form.product_id = inv['product']
             move = move_form.save()
             move.line_ids[0].tax_ids = [inv['tax'].id]
-            move.post()
+            move.action_post()
 
         report = self.env['l10n.lu.report.partner.vat.intra']
         report = report.with_context(

@@ -664,7 +664,7 @@ class SaleSubscription(models.Model):
         else:
             warning = """ Please check the selected subscription template:
     - Is there a fixed duration which is reached?
-    - Do you configure your invoice method as "send & try to charge" or "Send after successful payment"?           
+    - Do you configure your invoice method as "send & try to charge" or "Send after successful payment"?
             """
             raise UserError(warning)
 
@@ -1029,7 +1029,7 @@ class SaleSubscription(models.Model):
 
     def validate_and_send_invoice(self, invoice):
         self.ensure_one()
-        invoice.post()
+        invoice._post(False)
         email_context = self.env.context.copy()
         email_context.update({
             'total_amount': invoice.amount_total,

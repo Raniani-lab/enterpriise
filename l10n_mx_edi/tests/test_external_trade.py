@@ -59,7 +59,7 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
 
         invoice = self.create_invoice()
         invoice.invoice_incoterm_id = self.incoterm
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         xml = objectify.fromstring(base64.b64decode(invoice.l10n_mx_edi_cfdi))
@@ -80,7 +80,7 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
         })
         invoice = self.create_invoice()
         invoice.invoice_incoterm_id = self.incoterm
-        invoice.post()
+        invoice.action_post()
         line = invoice.invoice_line_ids
         self.assertEqual(line.l10n_mx_edi_qty_umt,
                          line.product_id.weight * line.quantity,
@@ -103,6 +103,6 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
         self.assertEqual(line.l10n_mx_edi_qty_umt, 0,
                          'Qty umt must be manually assigned')
         invoice.invoice_line_ids.l10n_mx_edi_qty_umt = 2
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))

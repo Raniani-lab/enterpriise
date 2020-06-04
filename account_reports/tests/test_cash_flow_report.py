@@ -77,7 +77,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 1150.0,   'account_id': self.company_data_2['default_account_revenue'].id}),
             ],
         })
-        invoice.post()
+        invoice.action_post()
 
         payment_1 = self.env['account.move'].create({
             'move_type': 'entry',
@@ -88,7 +88,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 230.0,     'credit': 0.0,      'account_id': self.company_data_2['default_journal_bank'].default_credit_account_id.id}),
             ],
         })
-        payment_1.post()
+        payment_1.action_post()
 
         self._reconcile_on((invoice + payment_1).line_ids, self.company_data_2['default_account_receivable'])
 
@@ -141,7 +141,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 1000.0,   'account_id': self.account_operating.id}),
             ],
         })
-        invoice.post()
+        invoice.action_post()
 
         # First payment (20% of the invoice).
 
@@ -154,7 +154,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 230.0,     'credit': 0.0,      'account_id': self.liquidity_account.id}),
             ],
         })
-        payment_1.post()
+        payment_1.action_post()
 
         self._reconcile_on((invoice + payment_1).line_ids, self.receivable_account_1)
 
@@ -177,7 +177,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 230.0,     'credit': 0.0,      'account_id': self.liquidity_account.id}),
             ],
         })
-        payment_2.post()
+        payment_2.action_post()
 
         self._reconcile_on((invoice + payment_2).line_ids, self.receivable_account_1)
 
@@ -200,7 +200,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 1690.0,    'credit': 0.0,      'account_id': self.liquidity_account.id}),
             ],
         })
-        payment_3.post()
+        payment_3.action_post()
 
         self._reconcile_on((invoice + payment_3).line_ids, self.receivable_account_1)
 
@@ -224,7 +224,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 1000.0,   'account_id': self.account_operating.id}),
             ],
         })
-        invoice_2.post()
+        invoice_2.action_post()
 
         self._reconcile_on((invoice_2 + payment_3).line_ids, self.receivable_account_1)
 
@@ -256,7 +256,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 300.0,    'account_id': self.liquidity_account.id}),
             ],
         })
-        liquidity_move_1.post()
+        liquidity_move_1.action_post()
 
         expected_lines[1][1] -= 300.0               # Net increase in cash and cash equivalents
         expected_lines[2][1] -= 550.0               # Cash flows from operating activities
@@ -277,7 +277,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 3000.0,   'account_id': self.receivable_account_2.id}),
             ],
         })
-        misc_move.post()
+        misc_move.action_post()
 
         self._reconcile_on((misc_move + liquidity_move_1).line_ids, self.receivable_account_1)
 
@@ -300,7 +300,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 3000.0,   'account_id': self.liquidity_account.id}),
             ],
         })
-        liquidity_move_2.post()
+        liquidity_move_2.action_post()
 
         self._reconcile_on((misc_move + liquidity_move_2).line_ids, self.receivable_account_2)
 
@@ -358,7 +358,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 500.0,     'credit': 0.0,      'account_id': self.account_financing.id}),
             ],
         })
-        (move_1 + move_2 + move_3).post()
+        (move_1 + move_2 + move_3).action_post()
 
         # Reconcile everything on account_financing.
 
@@ -410,7 +410,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ],
         })
 
-        (move_1 + move_2).post()
+        (move_1 + move_2).action_post()
 
         self._reconcile_on(move_1.line_ids.filtered('credit') + move_2.line_ids, self.account_financing)
 
@@ -448,7 +448,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ],
         })
 
-        (move_1 + move_2).post()
+        (move_1 + move_2).action_post()
 
         self._reconcile_on(move_1.line_ids.filtered('debit') + move_2.line_ids, self.account_financing)
 
@@ -506,7 +506,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             },
         ])
 
-        moves.post()
+        moves.action_post()
 
         self._reconcile_on(moves.line_ids, self.receivable_account_1)
         self._reconcile_on(moves.line_ids, self.receivable_account_2)
@@ -546,7 +546,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 1000.0,    'credit': 0.0,      'account_id': self.receivable_account_1.id}),
             ],
         })
-        (move_1 + move_2).post()
+        (move_1 + move_2).action_post()
 
         self.liquidity_account.reconcile = True
 
@@ -596,7 +596,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 500.0,    'account_id': self.account_financing.id}),
             ],
         })
-        (move_1 + move_2).post()
+        (move_1 + move_2).action_post()
 
         self._reconcile_on(move_1.line_ids + move_2.line_ids.filtered('debit'), self.account_no_tag)
         self._reconcile_on(move_1.line_ids + move_2.line_ids.filtered('debit'), self.account_financing)
@@ -640,7 +640,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 500.0,     'credit': 0.0,      'account_id': self.account_financing.id}),
             ],
         })
-        (move_1 + move_2).post()
+        (move_1 + move_2).action_post()
 
         self._reconcile_on(move_1.line_ids + move_2.line_ids.filtered('credit'), self.account_no_tag)
         self._reconcile_on(move_1.line_ids + move_2.line_ids.filtered('credit'), self.account_financing)

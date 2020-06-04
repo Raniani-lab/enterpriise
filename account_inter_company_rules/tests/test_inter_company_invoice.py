@@ -41,7 +41,7 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
         self.assertEqual(customer_invoice.state, 'draft', 'Initially customer invoice should be in the "Draft" state')
 
         # Validate invoice
-        customer_invoice.with_user(self.res_users_company_a).post()
+        customer_invoice.with_user(self.res_users_company_a).action_post()
 
         # Check Invoice status should be open after validate.
         self.assertEqual(customer_invoice.state, 'posted', 'Invoice should be in Open state.')

@@ -32,17 +32,17 @@ class AccountMove(models.Model):
     def _onchange_amount(self):
         self.asset_manually_modified = True
 
-    def post(self):
+    def _post(self, soft=True):
         # OVERRIDE
-        res = super(AccountMove, self).post()
+        posted = super()._post(soft)
 
         # log the post of a depreciation
-        self._log_depreciation_asset()
+        posted._log_depreciation_asset()
 
         # look for any asset to create, in case we just posted a bill on an account
         # configured to automatically create assets
-        self._auto_create_asset()
-        return res
+        posted._auto_create_asset()
+        return posted
 
     def _reverse_moves(self, default_values_list=None, cancel=False):
         for move in self:
@@ -207,7 +207,6 @@ class AccountMove(models.Model):
             'date': depreciation_date,
             'journal_id': asset.journal_id.id,
             'line_ids': [(0, 0, move_line_1), (0, 0, move_line_2)],
-            'auto_post': asset.state == 'open',
             'asset_id': asset.id,
             'asset_remaining_value': vals['asset_remaining_value'],
             'asset_depreciated_value': vals['asset_depreciated_value'],

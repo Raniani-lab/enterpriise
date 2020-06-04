@@ -19,12 +19,12 @@ class AccountMove(models.Model):
     is_taxcloud_configured = fields.Boolean(related='company_id.is_taxcloud_configured', help='Used to determine whether or not to warn the user to configure TaxCloud.')
     is_taxcloud = fields.Boolean(related='fiscal_position_id.is_taxcloud', help='Technical field to determine whether to hide taxes in views or not.')
 
-    def post(self):
+    def _post(self, soft=True):
         # OVERRIDE
 
         # Don't change anything on moves used to cancel another ones.
         if self._context.get('move_reverse_cancel'):
-            return super(AccountMove, self).post()
+            return super()._post(soft)
 
         invoices_to_validate = self.filtered(
             lambda move: move.is_sale_document() and move.fiscal_position_id.is_taxcloud)
@@ -32,7 +32,7 @@ class AccountMove(models.Model):
         if invoices_to_validate:
             for invoice in invoices_to_validate.with_context(taxcloud_authorize_transaction=True):
                 invoice.validate_taxes_on_invoice()
-        return super(AccountMove, self).post()
+        return super()._post(soft)
 
     def button_draft(self):
         """At confirmation below, the AuthorizedWithCapture encodes the invoice

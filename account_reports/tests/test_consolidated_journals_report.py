@@ -46,7 +46,7 @@ class TestConsolidatedJournalsReport(TestAccountReportsCommon):
                         (0, 0, {'debit': amount / 2,    'credit': 0.0,      'account_id': account_2.id}),
                         (0, 0, {'debit': 0.0,           'credit': amount,   'account_id': counterpart_account.id}),
                     ],
-                }).post()
+                }).action_post()
 
     def test_consolidated_journals_unfold_1_whole_report(self):
         line_id = 'journal_%s' % self.journals[0].id

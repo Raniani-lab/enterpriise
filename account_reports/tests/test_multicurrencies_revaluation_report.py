@@ -49,7 +49,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 }),
             ],
         })
-        cls.receivable_move.post()
+        cls.receivable_move.action_post()
 
     def test_same_currency(self):
         report = self.env['account.multicurrency.revaluation.report']
@@ -75,7 +75,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 }),
             ],
         })
-        payment_move.post()
+        payment_move.action_post()
 
         (payment_move + self.receivable_move).line_ids\
             .filtered(lambda line: line.account_id == self.receivable_account_1)\
@@ -149,7 +149,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 }),
             ],
         })
-        payment_move.post()
+        payment_move.action_post()
 
         (payment_move + self.receivable_move).line_ids\
             .filtered(lambda line: line.account_id == self.receivable_account_1)\

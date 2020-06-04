@@ -265,7 +265,7 @@ class TestCommissionsSetup(TransactionCase):
         so.action_confirm()
 
         inv = so._create_invoices()
-        inv.post()
+        inv.action_post()
         self._pay_invoice(inv)
 
         return inv

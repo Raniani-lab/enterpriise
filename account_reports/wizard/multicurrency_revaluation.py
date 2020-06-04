@@ -101,14 +101,12 @@ class MulticurrencyRevaluationWizard(models.TransientModel):
         move_vals = self._compute_move_vals()
         if move_vals['line_ids']:
             move = self.env['account.move'].create(move_vals)
-            move.post()
+            move._post()
             reverse_move = move._reverse_moves(default_values_list=[{
-                'auto_post': True,
                 'ref': _('Reversal of: %s', move.ref),
             }])
             reverse_move.date = self.reversal_date
-            if reverse_move.date < fields.Date.today():
-                reverse_move.post()
+            reverse_move._post()
 
             form = self.env.ref('account.view_move_form', False)
             ctx = self.env.context.copy()

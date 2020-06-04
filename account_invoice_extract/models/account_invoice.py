@@ -275,11 +275,11 @@ class AccountMove(models.Model):
         return_box.update(text_to_send)
         return return_box
 
-    def post(self):
+    def _post(self, soft=True):
         # OVERRIDE
         # On the validation of an invoice, send the different corrected fields to iap to improve the ocr algorithm.
-        res = super(AccountMove, self).post()
-        for record in self.filtered(lambda move: move.move_type in ['in_invoice', 'in_refund']):
+        posted = super()._post(soft)
+        for record in posted.filtered(lambda move: move.move_type in ['in_invoice', 'in_refund']):
             if record.extract_state == 'waiting_validation':
                 values = {
                     'total': record.get_validation('total'),
@@ -307,8 +307,8 @@ class AccountMove(models.Model):
                 except AccessError:
                     pass
         # we don't need word data anymore, we can delete them
-        self.mapped('extract_word_ids').unlink()
-        return res
+        posted.mapped('extract_word_ids').unlink()
+        return posted
 
     def get_boxes(self):
         return [{

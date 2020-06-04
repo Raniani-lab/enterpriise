@@ -71,7 +71,7 @@ class TestAgedReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 1100.0,   'date_maturity': '2016-10-05',  'account_id': misc_1.id,            'partner_id': cls.partner_a.id}),
             ],
         })
-        (move_1 + move_2).post()
+        (move_1 + move_2).action_post()
         (move_1 + move_2).line_ids.filtered(lambda line: line.account_id == receivable_1).reconcile()
         (move_1 + move_2).line_ids.filtered(lambda line: line.account_id == receivable_2).reconcile()
 
@@ -113,7 +113,7 @@ class TestAgedReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 1100.0,   'date_maturity': False,         'account_id': misc_2.id,            'partner_id': cls.partner_b.id}),
             ],
         })
-        (move_3 + move_4).post()
+        (move_3 + move_4).action_post()
         (move_3 + move_4).line_ids.filtered(lambda line: line.account_id == receivable_4).reconcile()
         (move_3 + move_4).line_ids.filtered(lambda line: line.account_id == receivable_5).reconcile()
 

@@ -1062,7 +1062,7 @@ class AccountMove(models.Model):
                 subtype_xmlid='account.mt_invoice_validated')
             inv._l10n_mx_edi_sign()
 
-    def post(self):
+    def _post(self, soft=True):
         # OVERRIDE
         # Assign time and date coming from a certificate.
         for move in self.filtered(lambda move: move.l10n_mx_edi_is_required()):
@@ -1081,12 +1081,12 @@ class AccountMove(models.Model):
                 move.l10n_mx_edi_time_invoice = date_mx
                 move._l10n_mx_edi_update_hour_timezone()
 
-        result = super(AccountMove, self).post()
+        posted = super()._post(soft)
 
         # Generates the cfdi attachments for mexican companies when validated.
         version = self.l10n_mx_edi_get_pac_version().replace('.', '-')
         trans_field = 'transaction_ids' in self._fields
-        for move in self.filtered(lambda move: move.l10n_mx_edi_is_required()):
+        for move in posted.filtered(lambda move: move.l10n_mx_edi_is_required()):
             if move.move_type == 'out_refund' and move.reversed_entry_id and not move.reversed_entry_id.l10n_mx_edi_cfdi_uuid:
                 move.message_post(
                     body='<p style="color:red">' + _(
@@ -1100,7 +1100,7 @@ class AccountMove(models.Model):
             if subscription or (trans_field and move.mapped('transaction_ids')):
                 move = move.with_context(disable_after_commit=True)
             move._l10n_mx_edi_retry()
-        return result
+        return posted
 
     def button_cancel(self):
         inv_mx = self.filtered(lambda r: r.l10n_mx_edi_is_required())

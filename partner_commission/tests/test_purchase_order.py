@@ -75,7 +75,7 @@ class TestPurchaseOrder(TestCommissionsSetup):
 
         inv = so._create_invoices()
         inv.name = 'INV/12345/0001'
-        inv.post()
+        inv.action_post()
         self._pay_invoice(inv)
 
         sub = so.mapped('order_line.subscription_id')

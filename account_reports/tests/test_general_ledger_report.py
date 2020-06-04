@@ -26,7 +26,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 300.0,    'name': '2016_1_3',     'account_id': cls.company_data['default_account_revenue'].id}),
             ],
         })
-        cls.move_2016_1.post()
+        cls.move_2016_1.action_post()
 
         # Entries in 2016 for company_2 to test the initial balance in multi-companies/multi-currencies.
         cls.move_2016_2 = cls.env['account.move'].create({
@@ -38,7 +38,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 100.0,    'name': '2016_2_2',     'account_id': cls.company_data_2['default_account_revenue'].id}),
             ],
         })
-        cls.move_2016_2.post()
+        cls.move_2016_2.action_post()
 
         # Entry in 2017 for company_1 to test the report at current date.
         cls.move_2017_1 = cls.env['account.move'].create({
@@ -57,7 +57,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 8000.0,   'name': '2017_1_9',     'account_id': cls.company_data['default_account_expense'].id}),
             ],
         })
-        cls.move_2017_1.post()
+        cls.move_2017_1.action_post()
 
         # Entry in 2017 for company_2 to test the current period in multi-companies/multi-currencies.
         cls.move_2017_2 = cls.env['account.move'].create({
@@ -69,7 +69,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 400.0,    'name': '2017_2_2',     'account_id': cls.company_data_2['default_account_revenue'].id}),
             ],
         })
-        cls.move_2017_2.post()
+        cls.move_2017_2.action_post()
 
     # -------------------------------------------------------------------------
     # TESTS: General Ledger

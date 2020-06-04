@@ -64,7 +64,7 @@ class TestBillsPrediction(AccountTestInvoicingCommon):
         if account_to_set:
             invoice_line.account_id = account_to_set
 
-        invoice.post()
+        invoice.action_post()
         return invoice
 
     def test_account_prediction_flow(self):

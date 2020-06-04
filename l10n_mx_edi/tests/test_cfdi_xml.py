@@ -197,7 +197,7 @@ class TestEdiResults(AccountTestEdiCommon):
                                     Base="8000.000"
                                     Importe="800.00"
                                     TasaOCuota="0.100000"
-                                    TipoFactor="Tasa"/>                            
+                                    TipoFactor="Tasa"/>
                             </Retenciones>
                         </Impuestos>
                     </Concepto>
@@ -313,7 +313,7 @@ class TestEdiResults(AccountTestEdiCommon):
     def test_invoice_cfdi_no_external_trade(self):
         self.invoice.l10n_mx_edi_external_trade = False
         with freeze_time(self.frozen_today), self.without_web_services():
-            self.invoice.post()
+            self.invoice.action_post()
 
             edi_vals = self.invoice._l10n_mx_edi_create_cfdi()
             self.assertTrue('cfdi' in edi_vals)
@@ -329,7 +329,7 @@ class TestEdiResults(AccountTestEdiCommon):
         })
 
         with freeze_time(self.frozen_today), self.without_web_services():
-            self.invoice.post()
+            self.invoice.action_post()
 
             edi_vals = self.invoice._l10n_mx_edi_create_cfdi()
             self.assertTrue('cfdi' in edi_vals)
@@ -343,7 +343,7 @@ class TestEdiResults(AccountTestEdiCommon):
         self.invoice.partner_id.l10n_mx_edi_external_trade = True
 
         with freeze_time(self.frozen_today), self.without_web_services():
-            self.invoice.post()
+            self.invoice.action_post()
 
             edi_vals = self.invoice._l10n_mx_edi_create_cfdi()
             self.assertTrue('cfdi' in edi_vals)
@@ -413,7 +413,7 @@ class TestEdiResults(AccountTestEdiCommon):
         })
 
         with freeze_time(self.frozen_today), self.without_web_services():
-            self.invoice.post()
+            self.invoice.action_post()
 
             edi_vals = self.invoice._l10n_mx_edi_create_cfdi()
             self.assertTrue('cfdi' in edi_vals)
@@ -442,7 +442,7 @@ class TestEdiResults(AccountTestEdiCommon):
         self.invoice.invoice_line_ids.l10n_mx_edi_customs_number = '15  48  3009  0001234,15  48  3009  0001235'
 
         with freeze_time(self.frozen_today), self.without_web_services():
-            self.invoice.post()
+            self.invoice.action_post()
 
             edi_vals = self.invoice._l10n_mx_edi_create_cfdi()
             self.assertTrue('cfdi' in edi_vals)
@@ -465,7 +465,7 @@ class TestEdiResults(AccountTestEdiCommon):
 
     def test_payment_cfdi(self):
         with freeze_time(self.frozen_today), self.without_web_services():
-            self.invoice.post()
+            self.invoice.action_post()
             self.payment.action_post()
 
             # Fake the fact the invoice is signed.

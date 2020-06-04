@@ -87,7 +87,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 }),
             ],
         })
-        cls.move_sale.post()
+        cls.move_sale.action_post()
 
         # ==== Purchase taxes: group of taxes having type_tax_use = 'none' ====
 
@@ -146,7 +146,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 }),
             ],
         })
-        cls.move_purchase.post()
+        cls.move_purchase.action_post()
 
     def test_automatic_vat_closing(self):
         def _get_vat_report_attachments(*args, **kwargs):
@@ -371,7 +371,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 'tax_ids': [(6, 0, (tax_11 + tax_42).ids)],
             })],
         })
-        invoice.post()
+        invoice.action_post()
 
         # Generate the report and check the results
         report = self.env['account.generic.tax.report']
@@ -543,7 +543,7 @@ class TestTaxReport(TestAccountReportsCommon):
                         'tax_ids': [(6, 0, tax.ids)],
                     })],
                 })
-                invoice.post()
+                invoice.action_post()
 
                 # Pay the invoice, so that the cash basis entries are created
                 self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
@@ -628,7 +628,7 @@ class TestTaxReport(TestAccountReportsCommon):
                         'tax_ids': [(6, 0, tax.ids)],
                     })],
                 })
-                invoice.post()
+                invoice.action_post()
                 invoices += invoice
 
             invoices.mapped('line_ids').filtered(lambda x: x.account_internal_type in ('receivable', 'payable')).reconcile()
@@ -709,7 +709,7 @@ class TestTaxReport(TestAccountReportsCommon):
                         'tax_ids': [(6, 0, tax.ids)],
                     })],
                 })
-                invoice.post()
+                invoice.action_post()
 
                 # Pay the invoice with a misc operation simulating a payment, so that the cash basis entries are created
                 invoice_reconcilable_line = invoice.line_ids.filtered(lambda x: x.account_internal_type in ('payable', 'receivable'))
@@ -727,7 +727,7 @@ class TestTaxReport(TestAccountReportsCommon):
                                     'debit': invoice_reconcilable_line.debit,
                                 })],
                 })
-                pmt_move.post()
+                pmt_move.action_post()
                 payment_reconcilable_line = pmt_move.line_ids.filtered(lambda x: x.account_internal_type in ('payable', 'receivable'))
                 (invoice_reconcilable_line + payment_reconcilable_line).reconcile()
 

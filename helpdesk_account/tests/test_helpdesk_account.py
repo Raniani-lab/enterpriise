@@ -33,7 +33,7 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
         so.action_confirm()
         so._create_invoices()
         invoice = so.invoice_ids
-        invoice.post()
+        invoice.action_post()
         # helpdesk.ticket access rights
         ticket = self.env['helpdesk.ticket'].create({
             'name': 'test',

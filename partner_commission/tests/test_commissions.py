@@ -86,7 +86,7 @@ class TestCommissions(TestCommissionsSetup):
         so.action_confirm()
 
         inv = so._create_invoices()
-        inv.post()
+        inv.action_post()
 
         # pay 10 out of 20
         payment_register =self.env['account.payment.register'].with_context(active_model='account.move', active_ids=inv.ids).create({
@@ -115,7 +115,7 @@ class TestCommissions(TestCommissionsSetup):
         })
         reversal = move_reversal.reverse_moves()
         reverse_move = self.env['account.move'].browse(reversal['res_id'])
-        reverse_move.post()
+        reverse_move.action_post()
         self._pay_invoice(reverse_move)
         self.assertEqual(reverse_move.referrer_id, inv.referrer_id, 'Referrer should have been forwarded to credit note')
         self.assertEqual(reverse_move.commission_po_line_id, inv.commission_po_line_id)

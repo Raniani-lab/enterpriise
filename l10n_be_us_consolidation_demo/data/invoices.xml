@@ -100,7 +100,7 @@
             ]"/>
         </record>
 
-        <function model="account.move" name="post">
+        <function model="account.move" name="_post">
             <value eval="[ref('demo_invoice_1'), ref('demo_invoice_2'), ref('demo_invoice_3'), ref('vendor_bill_1')]"/>
         </function>
     </data>

@@ -24,7 +24,7 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
     def test_case1(self):
         """Call the method to request cancellation"""
         invoice = self.create_invoice()
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         invoice.l10n_mx_edi_request_cancellation()
@@ -36,7 +36,7 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         """The cron that cancel in Odoo when the PAC status is to_cancel is
         executed"""
         invoice = self.create_invoice()
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         invoice.l10n_mx_edi_pac_status = 'to_cancel'
@@ -50,7 +50,7 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         """The cron that cancel in Odoo when the SAT status is cancelled is
         executed"""
         invoice = self.create_invoice()
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         invoice.l10n_mx_edi_sat_status = 'cancelled'
@@ -63,7 +63,7 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
     def test_case4(self):
         """The cron that return to Open the invoice is executed"""
         invoice = self.create_invoice()
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         attachment = invoice.l10n_mx_edi_retrieve_last_attachment()
@@ -83,7 +83,7 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         """The cron that return to Open the invoice is executed (When the PAC)
         status is to_cancel"""
         invoice = self.create_invoice()
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         attachment = invoice.l10n_mx_edi_retrieve_last_attachment()

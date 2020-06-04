@@ -83,7 +83,7 @@ class AccountMove(models.Model):
 
     # Buttons
 
-    def post(self):
+    def _post(self, soft=True):
         """ After validate the invoice we then validate in AFIP. The last thing we do is request the cae because if an
         error occurs after CAE requested, the invoice has been already validated on AFIP """
         ar_invoices = self.filtered(lambda x: x.is_invoice() and x.company_id.country_id == self.env.ref('base.ar'))
@@ -102,17 +102,15 @@ class AccountMove(models.Model):
             if inv.company_id._get_environment_type() == 'testing' and \
                (not inv.company_id.sudo().l10n_ar_afip_ws_crt or not inv.company_id.sudo().l10n_ar_afip_ws_key):
                 inv._dummy_afip_validation()
-                super(AccountMove, inv).post()
-                validated += inv
+                validated += super(AccountMove, inv)._post()
                 continue
 
             client, auth, transport = self.company_id._l10n_ar_get_connection(inv.journal_id.l10n_ar_afip_ws)._get_client(return_transport=True)
-            super(AccountMove, inv).post()
+            validated += super(AccountMove, inv)._post()
             return_info = inv._l10n_ar_do_afip_ws_request_cae(client, auth, transport)
             if return_info:
                 error_invoice = inv
                 break
-            validated += inv
 
             # If we get CAE from AFIP then we make commit because we need to save the information returned by AFIP
             # in Odoo for consistency, this way if an error ocurrs later in another invoice we will have the ones
@@ -143,7 +141,7 @@ class AccountMove(models.Model):
                 )
             raise UserError(msg)
 
-        return super(AccountMove, self - sale_ar_edi_invoices).post()
+        return validated + super(AccountMove, self - sale_ar_edi_invoices)._post()
 
     def l10n_ar_verify_on_afip(self):
         """ This method let us to connect to AFIP using WSCDC webservice to verify if a vendor bill is valid on AFIP """

@@ -660,7 +660,7 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
                 }),
             ]
         })
-        right_move.post()
+        right_move.action_post()
 
         # Ignored as not posted
         self.env['account.move'].create({
@@ -700,7 +700,7 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
                     'debit': 1000
                 }),
             ]
-        }).post()
+        }).action_post()
 
         # All should be ignored as not in the right journal
         self.env['account.move'].create({
@@ -720,7 +720,7 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
                     'debit': 1000
                 }),
             ]
-        }).post()
+        }).action_post()
 
         total_balance, associated_move_line_ids = cp._get_total_balance_and_audit_lines(conso_account)
         self.assertAlmostEqual(sum(not_ignored_amounts), total_balance)

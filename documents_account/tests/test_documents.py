@@ -123,13 +123,13 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
             {'name': 'Receivable', 'code': '0000222', 'user_type_id': account_type_test.id, 'reconcile': True})
         journal_test = self.env['account.journal'].create({'name': 'journal test', 'type': 'bank', 'code': 'BNK67'})
         account_move_test = self.env['account.move'].create(
-            {'name': 'account move test', 'state': 'draft', 'journal_id': journal_test.id})
+            {'state': 'draft', 'journal_id': journal_test.id})
         account_move_line_test = self.env['account.move.line'].create({
             'name': 'account move line test',
             'move_id': account_move_test.id,
             'account_id': account_test.id,
         })
-        account_move_test.post()
+        account_move_test.action_post()
 
         document_test = self.env['documents.document'].create({
             'name': 'test reconciliation workflow',

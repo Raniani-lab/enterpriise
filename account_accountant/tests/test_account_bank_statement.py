@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 from odoo.addons.account.tests.test_account_bank_statement import TestAccountBankStatementCommon
 from odoo.tests import tagged
@@ -74,7 +75,7 @@ class TestAccountBankStatement(TestAccountBankStatementCommon):
         test_st_line_2 = self.statement.line_ids.filtered(lambda line: line.payment_ref == 'line_3')
 
         # Post everything.
-        (test_invoice_1 + test_invoice_2).post()
+        (test_invoice_1 + test_invoice_2).action_post()
         (test_payment_1 + test_payment_2).action_post()
         self.statement.button_post()
 

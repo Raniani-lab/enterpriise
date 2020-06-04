@@ -73,7 +73,7 @@ class TestNoSaftReport(AccountTestEdiCommon, TestAccountReportsCommon):
                 })],
             },
         ])
-        invoices.post()
+        invoices.action_post()
 
     @freeze_time('2019-12-31')
     def test_saft_report_values(self):

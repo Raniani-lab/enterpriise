@@ -387,7 +387,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             invoice._check_status()
 
         with self.mock_iap_extract({'status_code': SUCCESS}, {}):
-            invoice.post()
+            invoice.action_post()
 
         self.assertEqual(invoice.extract_state, 'done')
         self.assertEqual(invoice.get_validation('total')['content'], invoice.amount_total)

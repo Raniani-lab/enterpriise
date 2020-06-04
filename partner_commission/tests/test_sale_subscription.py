@@ -123,7 +123,7 @@ class TestSaleSubscription(TestCommissionsSetup):
 
         # pay
         inv = renewal_so._create_invoices()
-        inv.post()
+        inv.action_post()
         self._pay_invoice(inv)
 
         self.assertFalse(inv.commission_po_line_id)
@@ -139,7 +139,7 @@ class TestSaleSubscription(TestCommissionsSetup):
 
         # pay
         inv = renewal_so._create_invoices()
-        inv.post()
+        inv.action_post()
         self._pay_invoice(inv)
 
         self.assertEqual(inv.commission_po_line_id.price_subtotal, 18, 'Commission is wrong')
@@ -156,7 +156,7 @@ class TestSaleSubscription(TestCommissionsSetup):
 
         # pay
         inv = renewal_so._create_invoices()
-        inv.post()
+        inv.action_post()
         self._pay_invoice(inv)
 
         self.assertEqual(inv.commission_po_line_id.price_subtotal, 180, 'Commission is wrong')

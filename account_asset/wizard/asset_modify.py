@@ -101,7 +101,7 @@ class AssetModify(models.TransientModel):
                     }),
                 ],
             })
-            move.post()
+            move._post()
             asset_increase = self.env['account.asset'].create({
                 'name': self.asset_id.name + ': ' + self.name,
                 'currency_id': self.asset_id.currency_id.id,
@@ -136,7 +136,7 @@ class AssetModify(models.TransientModel):
                 'asset_remaining_value': 0,
                 'asset_depreciated_value': 0,
                 'asset_value_change': True,
-            })).post()
+            }))._post()
 
         asset_vals.update({
             'value_residual': new_residual,

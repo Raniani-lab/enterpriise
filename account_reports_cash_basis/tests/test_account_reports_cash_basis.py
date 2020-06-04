@@ -33,7 +33,7 @@ class TestAccountReports(TestAccountReportsCommon):
                 (0, 0, {'debit': 0.0,       'credit': 1150.0,   'account_id': cls.revenue_account_1.id}),
             ],
         })
-        invoice.post()
+        invoice.action_post()
 
         # First payment (20% of the invoice).
 
@@ -46,7 +46,7 @@ class TestAccountReports(TestAccountReportsCommon):
                 (0, 0, {'debit': 230.0,     'credit': 0.0,      'account_id': cls.liquidity_account.id}),
             ],
         })
-        payment_1.post()
+        payment_1.action_post()
 
         cls._reconcile_on((invoice + payment_1).line_ids, cls.receivable_account_1)
 
@@ -61,7 +61,7 @@ class TestAccountReports(TestAccountReportsCommon):
                 (0, 0, {'debit': 230.0,     'credit': 0.0,      'account_id': cls.liquidity_account.id}),
             ],
         })
-        payment_2.post()
+        payment_2.action_post()
 
         cls._reconcile_on((invoice + payment_2).line_ids, cls.receivable_account_1)
 

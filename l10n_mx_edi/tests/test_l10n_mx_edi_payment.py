@@ -46,7 +46,7 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
             'rate': 0.05, 'name': date})
         invoice = self.create_invoice()
         invoice.invoice_date = date
-        invoice.post()
+        invoice.action_post()
         ctx = {'active_model': 'account.move', 'active_ids': [invoice.id]}
         register_payments = self.env['account.payment.register'].with_context(ctx).create({
             'payment_date': date_mx,
@@ -65,7 +65,7 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         invoice = self.create_invoice()
         invoice.invoice_payment_term_id = self.payment_term
         invoice.name = 'INV/2017/999'
-        invoice.post()
+        invoice.action_post()
         invoice.refresh()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped("body"))
@@ -83,7 +83,7 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
             line_form.price_unit = invoice.invoice_line_ids[0].price_unit / 2
         move_form.save()
         invoice_refund.refresh()
-        invoice_refund.post()
+        invoice_refund.action_post()
         lines = invoice.mapped('line_ids').filtered(
             lambda l: l.account_id.user_type_id.type == 'receivable')
         invoice_refund.js_assign_outstanding_line(lines.ids)

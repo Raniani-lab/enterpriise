@@ -112,7 +112,7 @@ class TestResPartner(AccountTestInvoicingCommon):
             ]
         })
         move.invoice_line_ids.account_id.tag_ids |= self.tag_281_50_commissions
-        move.post()
+        move.action_post()
 
         payment_dicts = []
         for i in range(2):
@@ -161,7 +161,7 @@ class TestResPartner(AccountTestInvoicingCommon):
             ]
         })
         move.invoice_line_ids.account_id.tag_ids |= self.tag_281_50_commissions
-        move.post()
+        move.action_post()
 
         payment = self.env['account.payment'].create({
             'payment_type': 'outbound',

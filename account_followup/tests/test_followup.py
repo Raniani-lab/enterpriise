@@ -57,7 +57,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
             'partner_id': self.partner_a.id,
             'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 500})]
         })
-        invoice_1.post()
+        invoice_1.action_post()
 
         payment_1 = self.env['account.move'].create({
             'move_type': 'entry',
@@ -68,7 +68,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
                 (0, 0, {'debit': 200.0,     'credit': 0.0,      'account_id': self.company_data['default_journal_bank'].default_credit_account_id.id}),
             ],
         })
-        payment_1.post()
+        payment_1.action_post()
 
         (payment_1 + invoice_1).line_ids\
             .filtered(lambda line: line.account_id == self.company_data['default_account_receivable'])\
@@ -95,7 +95,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
             'partner_id': self.partner_a.id,
             'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 200})]
         })
-        invoice_2.post()
+        invoice_2.action_post()
 
         with freeze_time('2016-01-05'):
             self.assertLinesValues(
@@ -144,7 +144,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
             'currency_id': self.currency_data['currency'].id,
             'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 300})]
         })
-        invoice_4.post()
+        invoice_4.action_post()
 
         with freeze_time('2016-01-20'):
             lines = report._get_lines(options)

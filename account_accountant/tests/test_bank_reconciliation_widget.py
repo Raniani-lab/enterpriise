@@ -16,7 +16,7 @@ class TestBankStatementReconciliation(AccountTestInvoicingCommon):
                 'name': 'test invoice',
             })],
         })
-        move.post()
+        move.action_post()
         rcv_mv_line = move.line_ids.filtered(lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
 
         st_line = self.env['account.bank.statement'].create({

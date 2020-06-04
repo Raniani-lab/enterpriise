@@ -494,7 +494,7 @@ class AccountAsset(models.Model):
             if not asset.depreciation_move_ids:
                 asset.compute_depreciation_board()
             asset._check_depreciations()
-            asset.depreciation_move_ids.write({'auto_post': True})
+            asset.depreciation_move_ids._post()
 
     def _return_disposal_view(self, move_ids):
         name = _('Disposal Move')
@@ -631,7 +631,7 @@ class AccountAsset(models.Model):
                     time_ratio = ((pause_date - depreciation_period_start).days) / (first_following.date - depreciation_period_start).days
                     new_line = self._insert_depreciation_line(line_before_pause, first_following.amount_total * time_ratio, _("Asset paused"), pause_date)
                     if pause_date <= fields.Date.today():
-                        new_line.post()
+                        new_line._post()
                 except ZeroDivisionError:
                     pass
 

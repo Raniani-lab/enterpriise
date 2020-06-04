@@ -550,7 +550,7 @@ class AccountBankStatement(models.Model):
             statement_lines.filtered(lambda line: line.statement_id.state == 'posted')\
                 .mapped('move_id')\
                 .with_context(skip_account_move_synchronization=True)\
-                .post()
+                ._post()
 
             # Recompute the balance_end_real of the first statement where we added line
             # because adding line don't trigger a recompute and balance_end_real is not updated.

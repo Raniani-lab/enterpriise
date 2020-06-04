@@ -48,7 +48,7 @@ class SDDTest(AccountTestInvoicingCommon):
                 'name': 'something',
             })],
         })
-        invoice.post()
+        invoice.action_post()
         return invoice
 
     def pay_with_mandate(self, invoice, mandate):

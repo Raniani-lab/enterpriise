@@ -98,7 +98,7 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
             ]
         })
 
-        invoice.post()
+        invoice.action_post()
         self.assertEqual(invoice.l10n_co_edi_invoice_status, 'not_sent',
                          'Invoices belonging to a non-Colombian company should not be sent.')
 
@@ -110,7 +110,7 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
         }
         with patch('odoo.addons.l10n_co_edi.models.carvajal_request.CarvajalRequest.upload', new=Mock(return_value=return_value)):
             with patch('odoo.addons.l10n_co_edi.models.carvajal_request.CarvajalRequest._init_client', new=Mock(return_value=None)):
-                invoice.post()
+                invoice.action_post()
 
         invoice.name = invoice_name
         generated_xml = invoice._l10n_co_edi_generate_xml().decode()

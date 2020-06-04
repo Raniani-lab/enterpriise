@@ -269,6 +269,8 @@ Budgets
                 <field name="analytic_account_id"/>
                 <field name="crossovered_budget_id"/>
                 <filter name="filter_not_cancelled" string="Not Cancelled" domain="[('crossovered_budget_state','!=','cancel')]"/>
+                <separator/>
+                <filter string="Date" name="filter_date_from" date="date_from"/>
                 <group expand="0" string="Group By">
                     <filter name="group_crossevered_budgdet_id" string="Budgets" domain="[]" context="{'group_by':'crossovered_budget_id'}"/>
                 </group>

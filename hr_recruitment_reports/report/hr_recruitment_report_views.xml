@@ -68,6 +68,8 @@
                     <filter string="Last 365 Days Applicant" name="year" domain="[
                         ('create_date', '>=', (context_today() + relativedelta(days=-365)).strftime('%Y-%m-%d')),
                         ('create_date', '&lt;', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+                    <separator/>
+                    <filter name="filter_create_date" date="create_date"/>
                     <group expand="1" string="Group By">
                         <filter string="Job Position" name="job_id" context="{'group_by':'job_id'}"/>
                         <filter string="Company" name="company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>

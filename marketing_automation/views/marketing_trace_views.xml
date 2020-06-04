@@ -72,7 +72,9 @@
                 <field name="participant_id"/>
                 <filter string="Running" name="running" domain="[('state', '=', 'running')]" />
                 <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]" />
-                <separator />
+                <separator/>
+                <filter name="filter_schedule_date" date="schedule_date"/>
+                <separator/>
                 <filter string="Exclude Test" name="exclude_test" domain="[('is_test', '=', False)]" />
             </search>
         </field>

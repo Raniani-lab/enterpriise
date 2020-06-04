@@ -62,7 +62,8 @@ class SaleReport(models.Model):
                               ) AS days_to_confirm
                     """
 
-            subdomain = domain + [('company_id', '=', self.env.company.id), ('date_order', '!=', False)]
+            # NB: date_order is named date in sale.report
+            subdomain = domain + [('company_id', '=', self.env.company.id), ('date', '!=', False)]
             subtables, subwhere, subparams = expression(subdomain, self).query.get_sql()
 
             self.env.cr.execute(query % (subtables, subwhere), subparams)

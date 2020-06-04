@@ -32,6 +32,8 @@
                     <field name="city"/>
                     <field name="lost_reason"/>
                     <separator/>
+                    <filter name="filter_create_date" date="create_date" default_period="this_year"/>
+                    <separator/>
                     <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                     <group expand="1" string="Group By">
                         <filter string="Salesperson" name="salesperson" context="{'group_by':'user_id'}"/>
@@ -181,7 +183,11 @@
             <field name="name">Pipeline Analysis</field>
             <field name="res_model">crm.lead</field>
             <field name="view_mode">dashboard,pivot,graph,tree,form,cohort</field>
-            <field name="context" eval="{'tree_view_ref': 'crm.crm_case_tree_view_oppor','default_type': 'opportunity', 'search_default_opportunity': True, 'time_ranges': {'field':'create_date', 'range':'last_365_days'}}"/>
+            <field name="context" eval="{
+                'tree_view_ref': 'crm.crm_case_tree_view_oppor',
+                'default_type': 'opportunity',
+                'search_default_opportunity': True,
+                'search_default_filter_create_date': 1}"/>
             <field name="search_view_id" ref="crm_enterprise.crm_opportunity_view_search"/>
         </record>
 
@@ -227,7 +233,7 @@
             <field name="view_mode">dashboard,pivot,graph,tree</field>
             <field name="domain">['|', ('active','=',True), ('active','=',False)]</field>
             <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
-            <field name="context" eval="{'time_ranges': {'field':'create_date', 'range':'last_30_days'}}"/>
+            <field name="context" eval="{'search_default_filter_creation_date': 1}"/>
         </record>
 
         <record id="crm_lead_action_dashboard_dashboard" model="ir.actions.act_window.view">

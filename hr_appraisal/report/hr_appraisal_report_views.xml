@@ -56,6 +56,8 @@
                 <filter string="To Start" name="to_start" icon="fa-check" domain="[('state', '=' ,'new')]" help = "In progress Evaluations"/>
                 <filter string="Appraisal Sent" name="appraisal_sent" icon="fa-check" domain="[('state','=','pending')]" help = "Final Interview Date"/>
                 <filter string="Done" name="done" domain="[('state','=','done')]"/>
+                <separator/>
+                <filter string="Creation Date" name="filter_create_date" date="create_date"/>
                 <field name="employee_id"/>
                 <group expand="0" string="Extended Filters...">
                     <field name="deadline"/>

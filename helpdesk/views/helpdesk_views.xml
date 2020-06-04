@@ -374,6 +374,10 @@
                 <separator/>
                 <filter string="Archived" domain="[('active','=',False)]" name="archive"/>
                 <separator/>
+                <filter name="filter_create_date" date="create_date"/>
+                <filter name="filter_assign_date" date="assign_date"/>
+                <filter name="filter_sla_deadline" date="sla_deadline"/>
+                <separator/>
                 <filter string="SLA Failed" name="sla_failed" domain="[('sla_fail','!=',False)]" groups="helpdesk.group_use_sla"/>
                 <group expand="0" string="Group By">
                   <filter string="Assignee" name="assignee" context="{'group_by':'user_id'}"/>
@@ -825,6 +829,9 @@
                 <separator/>
                 <filter string="Open Tickets" domain="[('stage_id.is_close','=',False)]" name="is_open"/>
                 <filter string="Closed Tickets" domain="[('stage_id.is_close','=',True)]" name="is_close"/>
+                <separator/>
+                <filter name="filter_create_date" date="create_date"/>
+                <filter name="filter_sla_deadline" date="sla_deadline"/>
                 <separator/>
                 <filter string="SLA Failed" domain="[('sla_fail','!=',False)]" name="sla_failed" groups="helpdesk.group_use_sla"/>
                 <filter string="SLA Not Failed" domain="[('sla_fail','=',False)]" name="not_sla_failed" groups="helpdesk.group_use_sla"/>

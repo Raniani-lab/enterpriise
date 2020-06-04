@@ -158,6 +158,8 @@
                 <filter string="Running" name="running" domain="[('state', '=', 'running')]" />
                 <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]" />
                 <separator />
+                <filter name="filter_create_date" date="create_date"/>
+                <separator/>
                 <filter string="Exclude Test" name="exclude_test" domain="[('is_test', '=', False)]" />
                 <group>
                     <filter string="Campaign" name="group_by_campaign" context="{'group_by': 'campaign_id'}" />

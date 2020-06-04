@@ -261,6 +261,8 @@
                     <filter name="conflict" string="Conflict" domain="[('state', '=', 'conflict')]"/>
                     <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
                     <separator/>
+                    <filter name="filter_effectivity_date" date="effectivity_date"/>
+                    <separator/>
                     <filter name="bomchange" string="Bill of Materials" domain="[('type', 'in', ('bom', 'both'))]"/>
                     <filter name="routingchange" string="Routing" domain="[('type', 'in', ('routing', 'both'))]"/>
                     <separator/>

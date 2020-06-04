@@ -11,6 +11,8 @@
                     <filter string="Done Transfers" name="done" domain="[('state', '=', 'done')]"/>
                     <filter string="Done Deliveries" name="done_deliveries" domain="[('state', '=', 'done'), ('picking_type_code', '=', 'outgoing')]"/>
                     <filter string="Done Receipts" name="done_receipts" domain="[('state', '=', 'done'), ('picking_type_code', '=', 'incoming')]"/>
+                    <separator/>
+                    <filter name="filter_date_done" date="date_done" default_period="this_month"/>
                 </search>
             </field>
         </record>
@@ -137,7 +139,9 @@
             <field name="view_id" ref="stock_report_dashboard_view"/>
             <field name="search_view_id" ref="stock_enterprise.stock_report_search_view"/>
             <field name="domain" eval="[('picking_type_code', '!=', False)]"/>
-            <field name="context">{'search_default_done': 1, 'time_ranges': {'field':'date_done', 'range':'last_30_days'}}</field> <!-- Use context keys for cohort view -->
+            <field name="context">{
+                'search_default_done': 1,
+                'search_default_filter_date_done': 1}</field> <!-- Use context keys for cohort view -->
         </record>
 
         <menuitem

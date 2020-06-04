@@ -62,6 +62,9 @@
                 <separator/>
                 <filter name="good" string="Good Health" domain="[('health', '=', 'done')]"/>
                 <filter name="bad" string="Bad Health" domain="[('health', '=', 'bad')]"/>
+                <separator/>
+                <filter name="filter_date_start" date="date_start"/>
+                <filter name="filter_date_end" date="date_end"/>
                 <group expand="1" string="Group By">
                     <filter string="Stage" name="stage" domain="[]" context="{'group_by': 'stage_id'}"/>
                     <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by': 'user_id'}"/>

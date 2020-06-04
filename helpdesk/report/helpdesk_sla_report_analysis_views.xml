@@ -41,6 +41,10 @@
                 <separator/>
                 <filter string="Last 7 days" name="last_7days" domain="[('create_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
                 <filter string="Last 30 days" name="last_month" domain="[('create_date','&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))]"/>
+                <separator/>
+                <filter string="SLA Status Deadline" name="filter_sla_status_failed" date="sla_status_failed"/>
+                <filter string="Ticket Deadline" name="filter_ticket_deadline" date="ticket_deadline"/>
+                <filter string="Ticket Creation Date" name="filter_create_date" date="create_date"/>
                 <group expand="1" string="Group By">
                     <filter string="Customer" name="partner_id" context="{'group_by':'partner_id'}"/>
                     <filter string="SLA Status Failed" name="sla_status_failed" context="{'group_by':'sla_status_failed'}"/>

@@ -80,6 +80,9 @@
                 <filter string="In Progress" name="inprogress" domain="[('stage_id.done', '=', False)]"/>
                 <filter string="Done" name="done" domain="[('stage_id.done', '=', True)]"/>
                 <separator/>
+                <filter name="filter_date_assign" date="date_assign"/>
+                <filter name="filter_date_close" date="date_close"/>
+                <separator/>
                 <filter string="Late Activities" name="activities_overdue"
                     domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
                     help="Show all records which has next action date is before today"/>

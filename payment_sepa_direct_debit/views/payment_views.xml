@@ -27,8 +27,8 @@
                     <field name="sepa_direct_debit_sign_enabled"/>
                     <field name="sepa_direct_debit_sms_enabled"/>
                     <field name="iap_sms_credits"
-                           options="{'currency_field': 'currency_id'}"
                            attrs="{'invisible': [('sepa_direct_debit_sms_enabled', '=', False)]}"/>
+                    <field name="currency_id" invisible="1"/>
                 </group>
                 <group attrs="{'invisible': [('provider', '!=', 'sepa_direct_debit')]}">
                     <widget name="iap_buy_more_credits"

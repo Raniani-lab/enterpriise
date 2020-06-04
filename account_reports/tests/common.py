@@ -64,23 +64,6 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         return new_options
 
     @contextmanager
-    def mocked_today(self, forced_today):
-        ''' Helper to make easily a python "with statement" mocking the "today" date.
-        :param forced_today:    The expected "today" date as a str or Date object.
-        :return:                An object to be used like 'with self.mocked_today(<today>):'.
-        '''
-
-        if isinstance(forced_today, str):
-            forced_today = fields.Date.from_string(forced_today)
-
-        def today(*args, **kwargs):
-            return forced_today
-
-        with patch.object(fields.Date, 'today', today):
-            with patch.object(fields.Date, 'context_today', today):
-                yield
-
-    @contextmanager
     def debug_mode(self, report):
         Report_user_has_groups = type(report).user_has_groups
 

@@ -346,13 +346,7 @@ class Planning(models.Model):
         result = []
         for slot in self:
             # label part, depending on context `groupby`
-            name = ' - '.join([self._fields[fname].convert_to_display_name(slot[fname], slot) for fname in field_list if slot[fname]][:2])  # limit to 2 labels
-
-            start_datetime, end_datetime = slot._format_start_endtime(tz=self.env.user.tz or 'UTC')
-
-            # hide the start/end time on the calendar view if spanning multiple days
-            if not is_calendar or not (slot.end_datetime.date() - slot.start_datetime.date()).days: 
-                name = '%s - %s %s' % (start_datetime, end_datetime, name)
+            name = ' - '.join([self._fields[fname].convert_to_display_name(slot[fname], slot) for fname in field_list if slot[fname]][:3])  # limit to 3 labels
 
             # add unicode bubble to tell there is a note
             if slot.name:
@@ -683,24 +677,11 @@ class Planning(models.Model):
             return self.env['planning.slot'].search([('start_datetime', '>=', min_date), ('start_datetime', '<=', max_date)]).mapped('employee_id')
         return employees
 
-    def _format_start_endtime(self, tz):
-        # date / time part
+
+    def _format_start_end_datetime(self, record_env, tz=None, lang_code=False):
         destination_tz = pytz.timezone(tz)
         start_datetime = pytz.utc.localize(self.start_datetime).astimezone(destination_tz).replace(tzinfo=None)
         end_datetime = pytz.utc.localize(self.end_datetime).astimezone(destination_tz).replace(tzinfo=None)
-
-        if (end_datetime.date() - start_datetime.date()).days:  # not on the same day
-            return (
-                format_date(self.env, start_datetime.date(), date_format='short'),
-                format_date(self.env, end_datetime.date(), date_format='short')
-            )
-        else:
-            return (
-                format_time(self.env, start_datetime.time(), time_format='short'),
-                format_time(self.env, end_datetime.time(), time_format='short')
-            )
-
-    def _format_start_end_datetime(self, record_env, tz=None, lang_code=False):
         return (
             format_datetime(record_env, self.start_datetime, tz=tz, dt_format='short', lang_code=lang_code),
             format_datetime(record_env, self.end_datetime, tz=tz, dt_format='short', lang_code=lang_code)

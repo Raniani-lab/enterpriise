@@ -64,7 +64,6 @@
                 <field name="type"/>
                 <field name="create_uid"/>
                 <field name="url"/>
-                <field name="type"/>
                 <field name="create_date"/>
                 <field name="active"/>
                 <field name="checksum"/>
@@ -246,7 +245,6 @@
                   create="false" edit="false"
                   decoration-info="type == 'empty'"
                   sample="1">
-                <field name="type" invisible="1"/>
                 <field name="name" string="Document" required="True"/>
                 <field name="url" optional="hide"/>
                 <field name="tag_ids" widget="documents_many2many_tags"/>

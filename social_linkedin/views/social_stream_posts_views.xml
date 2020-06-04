@@ -7,8 +7,6 @@
         <field name="inherit_id" ref="social.social_stream_post_view_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='stream_id']" position="after">
-                <field name="id"/>
-                <field name="account_id"/>
                 <field name="linkedin_post_urn"/>
                 <field name="linkedin_author_urn"/>
                 <field name="linkedin_likes_count"/>

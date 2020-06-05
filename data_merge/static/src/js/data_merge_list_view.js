@@ -156,7 +156,6 @@ odoo.define('data_merge.ListView', function (require) {
          */
         _showMergeNotification: function(records_merged) {
             this.displayNotification({
-                title: _t('Records merged'),
                 message: _.str.sprintf(_t("%s records have been merged"), records_merged?records_merged:_t('The selected')),
                 type: 'info'
             });

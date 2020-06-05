@@ -254,7 +254,6 @@ var HierarchyKanbanRecord = KanbanRecord.extend({
         } else {
             this.displayNotification({
                 type: 'warning',
-                title: _t('Please save the campaign'),
                 message: _t('Please save the campaign to add a child activity'),
             });
         }

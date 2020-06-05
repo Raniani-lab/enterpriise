@@ -206,7 +206,7 @@ var InventoryClientAction = ClientAction.extend({
         const superCancel = this._super.bind(this);
         this.mutex.exec(() => {
             return superCancel().then(() => {
-                this.do_notify(_t("Cancel"), _t("The inventory adjustment has been cancelled"));
+                this.do_notify(false, _t("The inventory adjustment has been cancelled"));
                 this.trigger_up('exit');
             });
         });

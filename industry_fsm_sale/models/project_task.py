@@ -74,10 +74,10 @@ class Task(models.Model):
                 'display_create_invoice_secondary': secondary,
             })
 
-    @api.depends('is_fsm')
+    @api.depends('is_fsm', 'display_timesheet_timer', 'timer_start')
     def _compute_display_create_order(self):
         super()._compute_display_create_order()
-        self.filtered('is_fsm').display_create_order = False
+        self.filtered(lambda t: t.is_fsm or (t.display_timesheet_timer and t.timer_start)).display_create_order = False
 
     def action_view_invoices(self):
         invoices = self.mapped('sale_order_id.invoice_ids')

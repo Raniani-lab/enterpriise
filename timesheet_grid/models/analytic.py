@@ -13,7 +13,8 @@ from odoo.osv import expression
 
 
 class AnalyticLine(models.Model):
-    _inherit = 'account.analytic.line'
+    _name = 'account.analytic.line'
+    _inherit = ['account.analytic.line', 'timer.mixin']
 
     employee_id = fields.Many2one(group_expand="_group_expand_employee_ids")
 
@@ -27,10 +28,16 @@ class AnalyticLine(models.Model):
 
     project_id = fields.Many2one(group_expand="_group_expand_project_ids")
 
+    display_timer = fields.Boolean(
+        compute='_compute_display_timer',
+        help="Technical field used to display the timer if the encoding unit is 'Hours'.")
+
     def _compute_display_timer(self):
         validated_lines = self.filtered(lambda line: line.validated)
         validated_lines.update({'display_timer': False})
-        super(AnalyticLine, self - validated_lines)._compute_display_timer()
+        uom_hour = self.env.ref('uom.product_uom_hour')
+        for analytic_line in self - validated_lines:
+            analytic_line.display_timer = analytic_line.encoding_uom_id == uom_hour
 
     @api.model
     def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None, orderby=None):
@@ -170,7 +177,12 @@ class AnalyticLine(models.Model):
     def unlink(self):
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(lambda r: r.is_timesheet and r.validated):
             raise AccessError(_('Only a Timesheets Approver or Manager is allowed to delete a validated entry.'))
-        return super(AnalyticLine, self).unlink()
+        res = super(AnalyticLine, self).unlink()
+        self.env['timer.timer'].search([
+            ('res_model', '=', self._name),
+            ('res_id', 'in', self.ids)
+        ]).unlink()
+        return res
 
     @api.model
     def _fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
@@ -265,7 +277,7 @@ class AnalyticLine(models.Model):
     # ----------------------------------------------------
     # Timer Methods
     # ----------------------------------------------------
-    
+
     def action_timer_start(self):
         """ Action start the timer of current timesheet
 
@@ -273,7 +285,20 @@ class AnalyticLine(models.Model):
         """
         if self.validated:
             raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
-        super(AnalyticLine, self).action_timer_start()
+        if not self.user_timer_id.timer_start and self.display_timer:
+            super(AnalyticLine, self).action_timer_start()
+
+    def _add_timesheet_time(self, minutes_spent):
+        if self.unit_amount == 0 and not minutes_spent:
+            # Check if unit_amount equals 0,
+            # if yes, then remove the timesheet
+            self.unlink()
+        else:
+            minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
+            rounding = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_rounding', 0))
+            minutes_spent = self._timer_rounding(minutes_spent, minimum_duration, rounding)
+            amount = self.unit_amount + minutes_spent * 60 / 3600
+            self.write({'unit_amount': amount})
 
     def action_timer_stop(self):
         """ Action stop the timer of the current timesheet
@@ -282,7 +307,19 @@ class AnalyticLine(models.Model):
         """
         if self.validated:
             raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
-        super(AnalyticLine, self).action_timer_stop()
+        if self.user_timer_id.timer_start and self.display_timer:
+            minutes_spent = super(AnalyticLine, self).action_timer_stop()
+            self._add_timesheet_time(minutes_spent)
+
+    def action_timer_unlink(self):
+        """ Action unlink the timer of the current timesheet
+        """
+        self.user_timer_id.unlink()
+        if not self.unit_amount:
+            self.unlink()
+
+    def _action_interrupt_user_timers(self):
+        self.action_timer_stop()
 
     @api.model
     def create_timesheet_with_timer(self, vals):

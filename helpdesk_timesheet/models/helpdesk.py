@@ -216,10 +216,10 @@ class HelpdeskTicket(models.Model):
             minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
             rounding = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_rounding', 0))
             minutes_spent = self._timer_rounding(minutes_spent, minimum_duration, rounding)
-            return self._action_create_timesheet(minutes_spent * 60 / 3600)
+            return self._action_open_new_timesheet(minutes_spent * 60 / 3600)
         return False
 
-    def _action_create_timesheet(self, time_spent):
+    def _action_open_new_timesheet(self, time_spent):
         return {
             "name": _("Validate Spent Time"),
             "type": 'ir.actions.act_window',

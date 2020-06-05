@@ -14,6 +14,12 @@ class SaleOrderLine(models.Model):
     def _compute_qty_delivered(self):
         super(SaleOrderLine, self)._compute_qty_delivered()
 
+    def _timesheet_create_project_prepare_values(self):
+        """Generate project values"""
+        values = super(SaleOrderLine, self)._timesheet_create_project_prepare_values()
+        values['allow_timesheet_timer'] = True
+        return values
+
     def _timesheet_compute_delivered_quantity_domain(self):
         domain = super(SaleOrderLine, self)._timesheet_compute_delivered_quantity_domain()
         # force to use only the validated timesheet

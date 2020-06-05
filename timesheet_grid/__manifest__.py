@@ -9,7 +9,7 @@
 * Activate grid view for timesheets
     """,
     'version': '1.0',
-    'depends': ['web_grid', 'hr_timesheet'],
+    'depends': ['web_grid', 'hr_timesheet', 'timer'],
     'category': 'Services/Timesheets',
     'data': [
         'data/mail_data.xml',
@@ -25,7 +25,7 @@
         'static/src/xml/timesheet_grid.xml',
     ],
     'website': ' https://www.odoo.com/page/timesheet-mobile-app',
-    'auto_install': True,
+    'auto_install': ['web_grid', 'hr_timesheet'],
     'application': True,
     'license': 'OEEL-1',
     'pre_init_hook': 'pre_init_hook',

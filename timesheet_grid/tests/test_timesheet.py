@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields
@@ -19,6 +19,7 @@ class TestTimesheetValidation(TestCommonTimesheet):
 
     def setUp(self):
         super(TestTimesheetValidation, self).setUp()
+        self.project_customer.allow_timesheet_timer = True
         today = fields.Date.today()
         self.timesheet1 = self.env['account.analytic.line'].with_user(self.user_employee).create({
             'name': "my timesheet 1",
@@ -153,3 +154,69 @@ class TestTimesheetValidation(TestCommonTimesheet):
         self._test_next_date(now, result, -3, "months")
         now = datetime(2020, 2, 28, 8, 8, 15)
         self._test_next_date(now, result, -3, "months")
+
+    def test_minutes_computing_after_timer_stop(self):
+        """ Test if unit_amount is updated after stoping a timer """
+        Timesheet = self.env['account.analytic.line']
+        timesheet_1 = Timesheet.with_user(self.user_employee).create({
+            'project_id': self.project_customer.id,
+            'task_id': self.task1.id,
+            'name': '/',
+            'unit_amount': 1,
+        })
+
+        # When the timer is greater than 1 minute
+        now = datetime.now()
+        timesheet_1.with_user(self.user_employee).action_timer_start()
+        timesheet_1.with_user(self.user_employee).user_timer_id.timer_start = now - timedelta(minutes=1, seconds=28)
+        timesheet_1.with_user(self.user_employee).action_timer_stop()
+
+        self.assertGreater(timesheet_1.unit_amount, 1, 'unit_amount should be greated than his last value')
+
+    def test_allow_timesheets_and_timer(self):
+        """
+        Check that a modification of the 'allow_timesheets' field updates correctly the
+        'allow_timesheet_timer' field.
+        """
+        Project = self.env['project.project']
+
+        # case 1: create a project with allow_timesheets set to FALSE
+        project_1 = Project.create({
+            'name': 'Project 1',
+            'allow_timesheets': False,
+            'partner_id': self.partner.id
+        })
+
+        self.assertFalse(
+            project_1.allow_timesheet_timer,
+            "On project creation with 'allow_timesheets' set to FALSE, 'allow_timesheet_timer' shall be set to FALSE")
+
+        # case 2: create a project with allow_timesheets set to TRUE
+        project_2 = Project.create({
+            'name': 'Project 2',
+            'allow_timesheets': True,
+            'partner_id': self.partner.id,
+            'analytic_account_id': self.analytic_account.id
+        })
+
+        self.assertTrue(
+            project_2.allow_timesheet_timer,
+            "On project creation with 'allow_timesheets' set to TRUE, 'allow_timesheet_timer' shall be set to TRUE")
+
+        # case 3: change 'allow_timesheets' from FALSE to TRUE
+        project_1.write({
+            'allow_timesheets': True
+        })
+
+        self.assertTrue(
+            project_1.allow_timesheet_timer,
+            "On 'allow_timesheets' change to TRUE, 'allow_timesheet_timer' shall be set to TRUE")
+
+        # case 4: change 'allow_timesheets' from TRUE to FALSE
+        project_2.write({
+            'allow_timesheets': False
+        })
+
+        self.assertFalse(
+            project_2.allow_timesheet_timer,
+            "On 'allow_timesheets' change to FALSE, 'allow_timesheet_timer' shall be set to FALSE")

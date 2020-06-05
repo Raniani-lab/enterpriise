@@ -3,6 +3,7 @@
         <xpath expr="//script[last()]" position="after">
             <link rel="stylesheet" type="text/scss" href="/timesheet_grid/static/src/scss/timesheet_grid.scss"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_uom.js"></script>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_uom_timer.js"></script>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/model.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/controller.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/renderer.js"/>

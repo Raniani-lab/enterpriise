@@ -8,9 +8,9 @@ var testUtils = require('web.test_utils');
 QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('FieldButton', {}, function () {
 
-    QUnit.test('modeling: basic', function (assert) {
+    QUnit.test('modeling: basic', async function (assert) {
         assert.expect(3);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var fieldButton = new InvoiceExtractFieldButton(parent, {
             fieldName: 'my_field',
             text: 'myField',
@@ -24,9 +24,9 @@ QUnit.module('FieldButton', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('modeling: default active', function (assert) {
+    QUnit.test('modeling: default active', async function (assert) {
         assert.expect(1);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var fieldButton = new InvoiceExtractFieldButton(parent, {
             fieldName: 'my_field',
             isActive: true,
@@ -39,9 +39,9 @@ QUnit.module('FieldButton', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('modeling: set (in)active', function (assert) {
+    QUnit.test('modeling: set (in)active', async function (assert) {
         assert.expect(3);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var fieldButton = new InvoiceExtractFieldButton(parent, {
             fieldName: 'my_field',
             text: 'myField'
@@ -61,7 +61,7 @@ QUnit.module('FieldButton', {}, function () {
 
     QUnit.test('rendering: basic', async function (assert) {
         assert.expect(5);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var fieldButton = new InvoiceExtractFieldButton(parent, {
             fieldName: 'my_field',
             text: 'myField'
@@ -85,7 +85,7 @@ QUnit.module('FieldButton', {}, function () {
 
     QUnit.test('click', async function (assert) {
         assert.expect(2);
-        var parent = testUtils.createParent({
+        var parent = await testUtils.createParent({
             intercepts: {
                 /**
                  * @param {OdooEvent} ev

@@ -10,7 +10,7 @@ QUnit.module('Fields', {}, function () {
 
     QUnit.test('render buttons', async function (assert) {
         assert.expect(6);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var fields = new InvoiceExtractFields(parent);
 
         await fields.renderButtons({ $container: $('#qunit-fixture') });
@@ -40,7 +40,7 @@ QUnit.module('Fields', {}, function () {
 
     QUnit.test('get button', async function (assert) {
         assert.expect(5);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var fields = new InvoiceExtractFields(parent);
 
         await fields.renderButtons({ $container: $('#qunit-fixture') });
@@ -57,7 +57,7 @@ QUnit.module('Fields', {}, function () {
 
     QUnit.test('get active field', async function (assert) {
         assert.expect(1);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var fields = new InvoiceExtractFields(parent);
 
         await fields.renderButtons({ $container: $('#qunit-fixture') });
@@ -71,7 +71,7 @@ QUnit.module('Fields', {}, function () {
 
     QUnit.test('get field (provided name)', async function (assert) {
         assert.expect(1);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var fields = new InvoiceExtractFields(parent);
 
         await fields.renderButtons({ $container: $('#qunit-fixture') });
@@ -85,7 +85,7 @@ QUnit.module('Fields', {}, function () {
 
     QUnit.test('get field (no provide name)', async function (assert) {
         assert.expect(1);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var fields = new InvoiceExtractFields(parent);
 
         await fields.renderButtons({ $container: $('#qunit-fixture') });
@@ -97,7 +97,7 @@ QUnit.module('Fields', {}, function () {
 
     QUnit.test('click field button', async function (assert) {
         assert.expect(10);
-        var parent = testUtils.createParent({
+        var parent = await testUtils.createParent({
             intercepts: {
                 active_invoice_extract_field: function (ev) {
                     ev.stopPropagation();
@@ -143,7 +143,7 @@ QUnit.module('Fields', {}, function () {
 
     QUnit.test('reset active', async function (assert) {
         assert.expect(6);
-        var parent = testUtils.createParent({
+        var parent = await testUtils.createParent({
             intercepts: {
                 active_invoice_extract_field: function (ev) {
                     ev.stopPropagation();

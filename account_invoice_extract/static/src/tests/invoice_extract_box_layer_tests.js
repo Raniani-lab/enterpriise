@@ -215,7 +215,7 @@ QUnit.module('BoxLayer', {
 
     QUnit.test('multi-page', async function (assert) {
         assert.expect(3);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var boxesData = invoiceExtractTestUtils.createBoxesData();
         boxesData = boxesData.concat([
             invoiceExtractTestUtils.createBoxData({

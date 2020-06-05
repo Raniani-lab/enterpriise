@@ -74,7 +74,7 @@ QUnit.module('Studio', {
         var edit_menu = new EditMenu.MenuItem(null, this.menu_data, 2);
         await edit_menu.appendTo($target);
 
-        testUtils.mock.addMockEnvironment(edit_menu, {
+        await testUtils.mock.addMockEnvironment(edit_menu, {
             data: this.data,
             archs: this.archs,
         });
@@ -102,7 +102,7 @@ QUnit.module('Studio', {
 
         let customizeCalls = 0;
 
-        testUtils.mock.addMockEnvironment(dialog, {
+        await testUtils.mock.addMockEnvironment(dialog, {
             data: this.data,
             archs: this.archs,
             mockRPC: function (route, args) {

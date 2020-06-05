@@ -215,7 +215,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 dashboard_options: this.data.dashboard_options,
             });
             await testUtils.nextTick();
-            testUtils.mock.addMockEnvironment(subscription_dashboard, {
+            await testUtils.mock.addMockEnvironment(subscription_dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/fetch_data') {
                         return Promise.resolve(self.data.fetch_data);
@@ -250,7 +250,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 filters: null,
                 dashboard_options: this.data.dashboard_options,
             });
-            testUtils.mock.addMockEnvironment(dashboard, {
+            await testUtils.mock.addMockEnvironment(dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/get_default_values_forecast') {
                         assert.deepEqual(_.keys(args).sort(), ['context', 'end_date', 'filters', 'forecast_type'],
@@ -300,7 +300,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 filters: {},
                 dashboard_options: this.data.dashboard_options,
             });
-            testUtils.mock.addMockEnvironment(dashboard, {
+            await testUtils.mock.addMockEnvironment(dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/compute_stat') {
                         return Promise.resolve(self.data.compute_stat);
@@ -347,7 +347,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             assert.expect(11);
             var salesman_dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_salesman(null, {});
             salesman_dashboard.salesman =  self.data.fetch_salesmen.default_salesman;
-            testUtils.mock.addMockEnvironment(salesman_dashboard, {
+            await testUtils.mock.addMockEnvironment(salesman_dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/fetch_salesmen') {
                         return Promise.resolve(self.data.fetch_salesmen);

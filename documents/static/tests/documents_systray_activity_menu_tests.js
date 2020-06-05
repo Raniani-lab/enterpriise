@@ -18,7 +18,7 @@ QUnit.module('mail', {}, function () {
         assert.expect(4);
 
         var activityMenu = new ActivityMenu();
-        testUtils.mock.addMockEnvironment(activityMenu, {
+        await testUtils.mock.addMockEnvironment(activityMenu, {
             services: this.services,
             mockRPC: function (route, args) {
                 if (args.method === 'systray_get_activities') {

@@ -46,7 +46,7 @@ function loadAssetLib(parent) {
  * @param {Object} params
  * @return {ReportEditorManager}
  */
-function createReportEditor(params) {
+async function createReportEditor(params) {
     var Parent = Widget.extend({
         start: function () {
             var self = this;
@@ -63,7 +63,7 @@ function createReportEditor(params) {
     var parent = new Parent();
     weTestUtils.patch();
     params.data = weTestUtils.wysiwygData(params.data);
-    testUtils.mock.addMockEnvironment(parent, params);
+    await testUtils.mock.addMockEnvironment(parent, params);
 
     var selector = params.debug ? 'body' : '#qunit-fixture';
     return parent.appendTo(selector).then(function () {
@@ -92,7 +92,7 @@ function createReportEditor(params) {
  */
 async function createReportEditorManager(params) {
     var parent = new StudioEnvironment();
-    testUtils.mock.addMockEnvironment(parent, params);
+    await testUtils.mock.addMockEnvironment(parent, params);
     weTestUtils.patch();
     params.data = weTestUtils.wysiwygData(params.data);
 
@@ -127,7 +127,7 @@ async function createReportEditorManager(params) {
  * @param {Object} params
  * @return {Promise<ReportEditorSidebar>}
  */
-function createSidebar(params) {
+async function createSidebar(params) {
     var Parent = Widget.extend({
         start: function () {
             var self = this;
@@ -143,7 +143,7 @@ function createSidebar(params) {
     var parent = new Parent();
     weTestUtils.patch();
     params.data = weTestUtils.wysiwygData(params.data);
-    testUtils.mock.addMockEnvironment(parent, params);
+    await testUtils.mock.addMockEnvironment(parent, params);
 
     return loadAssetLib(parent).then(function () {
         var sidebar = new ReportEditorSidebar(parent, params);

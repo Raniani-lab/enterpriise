@@ -11,8 +11,17 @@ odoo.define('web_studio.AppCreator_tests', function (require) {
     const { xml } = tags;
 
     async function createAppCreator({ debug, env, events, rpc, state }) {
-        Component.env = makeTestEnvironment(env, rpc);
+        const cleanUp = await testUtils.mock.addMockEnvironmentOwl(Component, {
+            debug,
+            env,
+            mockRPC: rpc,
+        });
         const appCreatorWrapper = new AppCreatorWrapper(null, {});
+        const _destroy = appCreatorWrapper.destroy;
+        appCreatorWrapper.destroy = () => {
+            _destroy.call(appCreatorWrapper, arguments);
+            cleanUp();
+        };
         await appCreatorWrapper.prependTo(testUtils.prepareTarget(debug));
         Object.keys(events || {}).forEach(eventName => {
             appCreatorWrapper.appCreatorComponent.el.addEventListener(eventName, ev => {

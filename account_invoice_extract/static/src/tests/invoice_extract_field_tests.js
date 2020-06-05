@@ -8,9 +8,9 @@ var testUtils = require('web.test_utils');
 QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('Field', {}, function () {
 
-    QUnit.test('basic modeling', function (assert) {
+    QUnit.test('basic modeling', async function (assert) {
         assert.expect(2);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var field = new InvoiceExtractField(parent, {
             fieldName: 'my_field',
         });
@@ -21,9 +21,9 @@ QUnit.module('Field', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('active/inactive', function (assert) {
+    QUnit.test('active/inactive', async function (assert) {
         assert.expect(3);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var field = new InvoiceExtractField(parent, {
             fieldName: 'my_field',
         });
@@ -41,7 +41,7 @@ QUnit.module('Field', {}, function () {
 
     QUnit.test('render button', async function (assert) {
         assert.expect(3);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var field = new InvoiceExtractField(parent, {
             fieldName: 'my_field',
             text: 'myField',
@@ -60,7 +60,7 @@ QUnit.module('Field', {}, function () {
 
     QUnit.test('set (in)active with button', async function (assert) {
         assert.expect(4);
-        var parent = testUtils.createParent({});
+        var parent = await testUtils.createParent({});
         var field = new InvoiceExtractField(parent, {
             fieldName: 'my_field',
             text: 'myField',
@@ -87,7 +87,7 @@ QUnit.module('Field', {}, function () {
         assert.expect(4);
 
         var field;
-        var parent = testUtils.createParent({
+        var parent = await testUtils.createParent({
             intercepts: {
                 /**
                  * @param {OdooEvent} ev

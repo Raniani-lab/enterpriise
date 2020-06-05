@@ -13,7 +13,7 @@ odoo.define('web_enterprise.mobile_company_switcher_tests', function (require) {
         params = params || {};
         const target = params.debug ? document.body :  $('#qunit-fixture');
         const menu = new SwitchCompanyMenuMobile();
-        testUtils.mock.addMockEnvironment(menu, params);
+        await testUtils.mock.addMockEnvironment(menu, params);
         await menu.appendTo(target);
         return menu;
     }

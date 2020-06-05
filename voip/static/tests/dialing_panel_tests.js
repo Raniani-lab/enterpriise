@@ -16,7 +16,7 @@ const testUtils = require('web.test_utils');
  * @return {Promise<Object>} resolve with object: { dialingPanel, parent }
  */
 async function createDialingPanel(params) {
-    const parent = testUtils.createParent(params);
+    const parent = await testUtils.createParent(params);
     const dialingPanel = new DialingPanel(parent);
     const container = params.debug ? $('body') : $('#qunit-fixture');
     await dialingPanel.appendTo(container);

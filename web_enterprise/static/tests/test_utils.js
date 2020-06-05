@@ -18,7 +18,7 @@ var UserMenu = require('web.UserMenu');
  * @returns {Menu}
  */
 async function createMenu(params) {
-    var parent = testUtils.createParent({});
+    var parent = await testUtils.createParent({});
 
     var systrayMenuItems = params.systrayMenuItems || [];
     if (params.systrayMenuItems) {
@@ -34,7 +34,7 @@ async function createMenu(params) {
     }
 
     var menu = new Menu(parent, menuData);
-    testUtils.mock.addMockEnvironment(menu, params);
+    await testUtils.mock.addMockEnvironment(menu, params);
     return menu.appendTo($('#qunit-fixture')).then(function(){
         var menuDestroy = menu.destroy;
         menu.destroy = function () {
@@ -49,6 +49,6 @@ async function createMenu(params) {
 
 return {
     createMenu: createMenu,
-}
+};
 
 });

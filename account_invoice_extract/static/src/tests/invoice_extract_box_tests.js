@@ -22,7 +22,7 @@ function createBoxLayer() {
  * @param {boolean} [params.user_selected=false]
  * @returns {account_invoice_extract.Box}
  */
-function createBox(params) {
+async function createBox(params) {
     params = params || {};
     if (!params.parent) {
         var parentParams = {};
@@ -37,7 +37,7 @@ function createBox(params) {
                 return Promise.resolve();
             }
         });
-        params.parent = testUtils.createParent(parentParams);
+        params.parent = await testUtils.createParent(parentParams);
     }
 
     var $boxLayer = createBoxLayer();

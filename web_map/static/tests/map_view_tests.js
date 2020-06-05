@@ -163,9 +163,7 @@ QUnit.module('mapView', {
                     ],
             }
         };
-        testUtils.mock.patch(MapView, {});
         testUtils.mock.patch(MapModel, {
-
             _fetchCoordinatesFromAddressMB: function (record) {
                 if (this.data.mapBoxToken !== 'token') {
                     return Promise.reject({ status: 401 });

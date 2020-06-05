@@ -263,7 +263,7 @@ QUnit.module('ReportComponents', {
     QUnit.test('field', async function (assert) {
         assert.expect(2);
         var parent = new Widget();
-        testUtils.mock.addMockEnvironment(parent, {
+        await testUtils.mock.addMockEnvironment(parent, {
             data: this.data,
         });
         await parent.appendTo($('#qunit-fixture'));
@@ -318,7 +318,7 @@ QUnit.module('ReportComponents', {
     QUnit.test('add a binary field', async function (assert) {
         assert.expect(1);
         var parent = new Widget();
-        testUtils.mock.addMockEnvironment(parent, {
+        await testUtils.mock.addMockEnvironment(parent, {
             data: this.data,
         });
         await parent.appendTo($('#qunit-fixture'));
@@ -408,7 +408,7 @@ QUnit.module('ReportComponents', {
     QUnit.test('hidden "width" for layout component with col nodes', async function (assert) {
         assert.expect(1);
         var parent = new Widget();
-        testUtils.mock.addMockEnvironment(parent, this);
+        await testUtils.mock.addMockEnvironment(parent, this);
         await parent.appendTo($('#qunit-fixture'));
         var layout = new (editComponentsRegistry.get('layout'))(parent, {
             node: {
@@ -453,7 +453,7 @@ QUnit.module('ReportComponents', {
             "there should be no available option");
 
         // unset the `widget`
-        testUtils.mock.addMockEnvironment(parent, {
+        await testUtils.mock.addMockEnvironment(parent, {
             intercepts: {
                 view_change: function (ev) {
                     assert.deepEqual(ev.data.operation.new_attrs, {'t-options-widget': '""'},
@@ -475,7 +475,7 @@ QUnit.module('ReportComponents', {
         fields.company_id = {string: "Company", type: "many2one", relation: 'res.company', searchable: true};
         fields.currency_id = {string: "Currency", type: "many2one", relation: 'res.currency', searchable: true};
         fields.date = {string: "Date", type: "datetime", searchable: true};
-        testUtils.mock.addMockEnvironment(parent, {
+        await testUtils.mock.addMockEnvironment(parent, {
             data: this.data,
         });
 
@@ -519,7 +519,7 @@ QUnit.module('ReportComponents', {
         var parent = new Widget();
         await parent.appendTo($('#qunit-fixture'));
 
-        testUtils.mock.addMockEnvironment(parent, {
+        await testUtils.mock.addMockEnvironment(parent, {
             data: this.data,
         });
 
@@ -551,7 +551,7 @@ QUnit.module('ReportComponents', {
         var parent = new Widget();
         await parent.appendTo($('#qunit-fixture'));
 
-        testUtils.mock.addMockEnvironment(parent, {
+        await testUtils.mock.addMockEnvironment(parent, {
             data: this.data,
         });
 
@@ -585,7 +585,7 @@ QUnit.module('ReportComponents', {
         $('ul.ui-autocomplete').remove(); // clean the body to avoid errors due to another test
 
         var optionsFields;
-        testUtils.mock.addMockEnvironment(parent, {
+        await testUtils.mock.addMockEnvironment(parent, {
             intercepts: {
                 view_change: function (ev) {
                     assert.deepEqual(ev.data.operation.new_attrs['t-options-fields'], optionsFields,
@@ -648,7 +648,7 @@ QUnit.module('ReportComponents', {
         var parent = new Widget();
 
         var addressSeparator;
-        testUtils.mock.addMockEnvironment(parent, {
+        await testUtils.mock.addMockEnvironment(parent, {
             intercepts: {
                 view_change: function (ev) {
                     assert.strictEqual(ev.data.operation.new_attrs['t-options-separator'], addressSeparator,
@@ -745,7 +745,7 @@ QUnit.module('ReportComponents', {
             "the groups should be correctly set");
 
         // delete a group
-        testUtils.mock.addMockEnvironment(parent, {
+        await testUtils.mock.addMockEnvironment(parent, {
             intercepts: {
                 view_change: function (ev) {
                     assert.deepEqual(ev.data.operation.new_attrs, {groups: [13]},

@@ -1,11 +1,12 @@
 <template>
 
     <t t-extend="CalendarView.buttons">
-        <t t-jquery=".o_calendar_buttons" t-operation="inner">
+        <t t-jquery=".o_calendar_navigation_buttons" t-operation="replace">
             <t t-if="!isMobile">
-                <t t-call="CalendarView.navigation_buttons" />
+                <span class="o_calendar_navigation_buttons">
+                    <t t-call="CalendarView.navigation_buttons" />
+                </span>
             </t>
-            <t t-call="CalendarView.scale_buttons" />
         </t>
     </t>
 

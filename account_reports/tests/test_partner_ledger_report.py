@@ -129,58 +129,58 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
         line_id = 'partner_%s' % self.partner_a.id
         options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
         options['unfolded_lines'] = [line_id]
-        patch.object(type(report), 'MAX_LINES', 2).start()
 
-        report_lines = report._get_lines(options, line_id=line_id)
-        self.assertLinesValues(
-            report_lines,
-            #   Name                                    Init. Balance   Debit           Credit          Balance
-            [   0,                                      6,              7,              8,              9],
-            [
-                ('partner_a',                           150.0,          20000.0,        0.0,            20150.0),
-                ('01/01/2017',                          150.0,          2000.0,         '',             2150.0),
-                ('01/01/2017',                          2150.0,         3000.0,         '',             5150.0),
-                ('Load more... (3 remaining)',          '',             '',             '',             ''),
-            ],
-        )
+        with patch.object(type(report), 'MAX_LINES', 2):
+            report_lines = report._get_lines(options, line_id=line_id)
+            self.assertLinesValues(
+                report_lines,
+                #   Name                                    Init. Balance   Debit           Credit          Balance
+                [   0,                                      6,              7,              8,              9],
+                [
+                    ('partner_a',                           150.0,          20000.0,        0.0,            20150.0),
+                    ('01/01/2017',                          150.0,          2000.0,         '',             2150.0),
+                    ('01/01/2017',                          2150.0,         3000.0,         '',             5150.0),
+                    ('Load more... (3 remaining)',          '',             '',             '',             ''),
+                ],
+            )
 
-        line_id = report_lines[3]['id']
-        options['unfolded_lines'] = [line_id]
-        options.update({
-            'lines_offset': report_lines[3]['offset'],
-            'lines_progress': report_lines[3]['progress'],
-            'lines_remaining': report_lines[3]['remaining'],
-        })
+            line_id = report_lines[3]['id']
+            options['unfolded_lines'] = [line_id]
+            options.update({
+                'lines_offset': report_lines[3]['offset'],
+                'lines_progress': report_lines[3]['progress'],
+                'lines_remaining': report_lines[3]['remaining'],
+            })
 
-        report_lines = report._get_lines(options, line_id=line_id)
-        self.assertLinesValues(
-            report_lines,
-            #   Name                                    Init. Balance   Debit           Credit          Balance
-            [   0,                                      6,              7,              8,              9],
-            [
-                ('01/01/2017',                          5150.0,         4000.0,         '',             9150.0),
-                ('01/01/2017',                          9150.0,         5000.0,         '',             14150.0),
-                ('Load more... (1 remaining)',          '',             '',             '',             ''),
-            ],
-        )
+            report_lines = report._get_lines(options, line_id=line_id)
+            self.assertLinesValues(
+                report_lines,
+                #   Name                                    Init. Balance   Debit           Credit          Balance
+                [   0,                                      6,              7,              8,              9],
+                [
+                    ('01/01/2017',                          5150.0,         4000.0,         '',             9150.0),
+                    ('01/01/2017',                          9150.0,         5000.0,         '',             14150.0),
+                    ('Load more... (1 remaining)',          '',             '',             '',             ''),
+                ],
+            )
 
-        line_id = report_lines[2]['id']
-        options['unfolded_lines'] = [line_id]
-        options.update({
-            'lines_offset': report_lines[2]['offset'],
-            'lines_progress': report_lines[2]['progress'],
-            'lines_remaining': report_lines[2]['remaining'],
-        })
+            line_id = report_lines[2]['id']
+            options['unfolded_lines'] = [line_id]
+            options.update({
+                'lines_offset': report_lines[2]['offset'],
+                'lines_progress': report_lines[2]['progress'],
+                'lines_remaining': report_lines[2]['remaining'],
+            })
 
-        report_lines = report._get_lines(options, line_id=line_id)
-        self.assertLinesValues(
-            report_lines,
-            #   Name                                    Init. Balance   Debit           Credit          Balance
-            [   0,                                      6,              7,              8,              9],
-            [
-                ('01/01/2017',                          14150.0,        6000.0,         '',             20150.0),
-            ],
-        )
+            report_lines = report._get_lines(options, line_id=line_id)
+            self.assertLinesValues(
+                report_lines,
+                #   Name                                    Init. Balance   Debit           Credit          Balance
+                [   0,                                      6,              7,              8,              9],
+                [
+                    ('01/01/2017',                          14150.0,        6000.0,         '',             20150.0),
+                ],
+            )
 
     def test_partner_ledger_filter_account_types(self):
         ''' Test building the report with a filter on account types.

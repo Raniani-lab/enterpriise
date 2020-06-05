@@ -20,12 +20,11 @@ class TestAccountReportsFilters(AccountTestCommon):
         :param expected_date_values:    The expected results for the options['date'] as a dict.
         '''
         report = self.env['account.report']
-        patch.object(type(report), 'filter_date', filter_date).start()
+        with patch.object(type(report), 'filter_date', filter_date):
+            options = {}
+            report._init_filter_date(options)
 
-        options = {}
-        report._init_filter_date(options)
-
-        self.assertDictEqual(options['date'], expected_date_values)
+            self.assertDictEqual(options['date'], expected_date_values)
 
     def _assert_filter_comparison(self, filter_date, filter_comparison, expected_period_values):
         ''' Initialize the 'date'/'comparison' keys in the report options and then, assert the result matches the
@@ -36,17 +35,15 @@ class TestAccountReportsFilters(AccountTestCommon):
         :param expected_period_values: The expected results for options['comparison']['periods'] as a list of dicts.
         '''
         report = self.env['account.report']
-        patch.object(type(report), 'filter_date', filter_date).start()
-        patch.object(type(report), 'filter_comparison', filter_comparison).start()
+        with patch.object(type(report), 'filter_date', filter_date), patch.object(type(report), 'filter_comparison', filter_comparison):
+            options = {}
+            report._init_filter_date(options)
+            report._init_filter_comparison(options)
 
-        options = {}
-        report._init_filter_date(options)
-        report._init_filter_comparison(options)
+            self.assertEqual(len(options['comparison']['periods']), len(expected_period_values))
 
-        self.assertEqual(len(options['comparison']['periods']), len(expected_period_values))
-
-        for i, expected_values in enumerate(expected_period_values):
-            self.assertDictEqual(options['comparison']['periods'][i], expected_values)
+            for i, expected_values in enumerate(expected_period_values):
+                self.assertDictEqual(options['comparison']['periods'][i], expected_values)
 
     ####################################################
     # DATES RANGE

@@ -136,60 +136,60 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
         line_id = 'account_%s' % self.company_data['default_account_revenue'].id
         options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
         options['unfolded_lines'] = [line_id]
-        patch.object(type(report), 'MAX_LINES', 2).start()
 
-        report_lines = report._get_lines(options, line_id=line_id)
-        self.assertLinesValues(
-            report_lines,
-            #   Name                                    Debit           Credit          Balance
-            [   0,                                      4,              5,              6],
-            [
-                ('400000 Product Sales',                20000.0,        0.0,            20000.0),
-                ('Initial Balance',                     0.0,            0.0,            0.0),
-                ('INV/2017/01/0001',                    2000.0,         '',             2000.0),
-                ('INV/2017/01/0001',                    3000.0,         '',             5000.0),
-                ('Load more... (3 remaining)',          '',             '',             ''),
-                ('Total 400000 Product Sales',          20000.0,        0.0,            20000.0),
-            ],
-        )
+        with patch.object(type(report), 'MAX_LINES', 2):
+            report_lines = report._get_lines(options, line_id=line_id)
+            self.assertLinesValues(
+                report_lines,
+                #   Name                                    Debit           Credit          Balance
+                [   0,                                      4,              5,              6],
+                [
+                    ('400000 Product Sales',                20000.0,        0.0,            20000.0),
+                    ('Initial Balance',                     0.0,            0.0,            0.0),
+                    ('INV/2017/01/0001',                    2000.0,         '',             2000.0),
+                    ('INV/2017/01/0001',                    3000.0,         '',             5000.0),
+                    ('Load more... (3 remaining)',          '',             '',             ''),
+                    ('Total 400000 Product Sales',          20000.0,        0.0,            20000.0),
+                ],
+            )
 
-        line_id = report_lines[4]['id']
-        options['unfolded_lines'] = [line_id]
-        options.update({
-            'lines_offset': report_lines[4]['offset'],
-            'lines_progress': report_lines[4]['progress'],
-            'lines_remaining': report_lines[4]['remaining'],
-        })
+            line_id = report_lines[4]['id']
+            options['unfolded_lines'] = [line_id]
+            options.update({
+                'lines_offset': report_lines[4]['offset'],
+                'lines_progress': report_lines[4]['progress'],
+                'lines_remaining': report_lines[4]['remaining'],
+            })
 
-        report_lines = report._get_lines(options, line_id=line_id)
-        self.assertLinesValues(
-            report_lines,
-            #   Name                                    Debit           Credit          Balance
-            [   0,                                      4,              5,              6],
-            [
-                ('INV/2017/01/0001',                    4000.0,         '',             9000.0),
-                ('INV/2017/01/0001',                    5000.0,         '',             14000.0),
-                ('Load more... (1 remaining)',          '',             '',             ''),
-            ],
-        )
+            report_lines = report._get_lines(options, line_id=line_id)
+            self.assertLinesValues(
+                report_lines,
+                #   Name                                    Debit           Credit          Balance
+                [   0,                                      4,              5,              6],
+                [
+                    ('INV/2017/01/0001',                    4000.0,         '',             9000.0),
+                    ('INV/2017/01/0001',                    5000.0,         '',             14000.0),
+                    ('Load more... (1 remaining)',          '',             '',             ''),
+                ],
+            )
 
-        line_id = report_lines[2]['id']
-        options['unfolded_lines'] = [line_id]
-        options.update({
-            'lines_offset': report_lines[2]['offset'],
-            'lines_progress': report_lines[2]['progress'],
-            'lines_remaining': report_lines[2]['remaining'],
-        })
+            line_id = report_lines[2]['id']
+            options['unfolded_lines'] = [line_id]
+            options.update({
+                'lines_offset': report_lines[2]['offset'],
+                'lines_progress': report_lines[2]['progress'],
+                'lines_remaining': report_lines[2]['remaining'],
+            })
 
-        report_lines = report._get_lines(options, line_id=line_id)
-        self.assertLinesValues(
-            report_lines,
-            #   Name                                    Debit           Credit          Balance
-            [   0,                                      4,              5,              6],
-            [
-                ('INV/2017/01/0001',                    6000.0,         '',             20000.0),
-            ],
-        )
+            report_lines = report._get_lines(options, line_id=line_id)
+            self.assertLinesValues(
+                report_lines,
+                #   Name                                    Debit           Credit          Balance
+                [   0,                                      4,              5,              6],
+                [
+                    ('INV/2017/01/0001',                    6000.0,         '',             20000.0),
+                ],
+            )
 
     # -------------------------------------------------------------------------
     # TESTS: Trial Balance

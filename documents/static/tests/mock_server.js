@@ -80,6 +80,7 @@ MockServer.include({
                 const modelDomain = Domain.prototype.normalizeArray([
                     ...(kwargs.search_domain, []),
                     ...(kwargs.category_domain, []),
+                    ...(kwargs.filter_domain, []),
                     [fieldName, '!=', false],
                 ]);
                 domainImage = this._mockSearchPanelDomainImage(model, fieldName, modelDomain, enableCounters);

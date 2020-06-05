@@ -54,7 +54,7 @@ QUnit.module('Views', {
     },
 }, function () {
     QUnit.test('kanban with searchpanel: rendering in mobile', async function (assert) {
-        assert.expect(31);
+        assert.expect(32);
 
         const RamStorageService = AbstractStorageService.extend({
             storage: new RamStorage(),
@@ -138,8 +138,9 @@ QUnit.module('Views', {
         await dom.click($stateSection.find('.o_search_panel_filter_value:contains(DEF) input'));
         assert.containsOnce($searchPanel.find('.o_search_panel_current_selection'), '.o_search_panel_filter:contains(DEF)');
         assert.verifySteps([
-            'search_panel_select_multi_range',
+            'search_panel_select_range',
             '/web/dataset/search_read',
+            'search_panel_select_multi_range',
         ]);
 
         // close with back button

@@ -449,6 +449,7 @@ class Document(models.Model):
                 model_domain = expression.AND([
                     kwargs.get('search_domain', []),
                     kwargs.get('category_domain', []),
+                    kwargs.get('filter_domain', []),
                     [(field_name, '!=', False)]
                 ])
                 domain_image = self._search_panel_domain_image(field_name, model_domain, enable_counters)

@@ -4,9 +4,11 @@
         <t t-call="web.frontend_layout">
             <t t-set="title">Your Planning</t>
             <t t-set="head">
+                <t t-call="planning.planning_shift_notification" />
+                <t t-call-assets="planning.assets_common_planning" t-js="false"/>
+                <t t-call-assets="planning.assets_common_planning" t-css="false"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
-                <t t-call-assets="planning.assets_frontend_planning" t-js="false"/>
-                <t t-call-assets="planning.assets_frontend_planning" t-css="false"/>
+                <t t-call-assets="web.assets_frontend" t-css="false"/>
                 <script>
                     // Initialization of fullcalendar
                     $(document).ready(function() {

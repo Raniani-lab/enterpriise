@@ -11,92 +11,93 @@ Tour.register('bank_statement_reconciliation', {
         test: true,
         // Go to the reconciliation page of the statement: "BNK/2014/001"
     }, [
-        // Reconciliation of 'INV/2018/0002'
-        // Click on reconcile (matching done automatically by the reconciliation rule).
+        // Reconciliation of 'line1' (350.0) with 'out_invoice_1' (100.0) and 'out_invoice_2' (250.0).
+        // Both lines should be suggested directly to the user thanks to the reconcile model.
 
         {
-            content: "reconcile the line",
+            content: "Reconcile 'line1' with 'out_invoice_1' & 'out_invoice_2'",
             trigger: '.o_reconciliation_line:nth-child(1) .o_reconcile:visible',
         },
 
-        // Reconciliation of 'First 2000 $ of INV/2018/0001'
-        // Make a partial reconciliation
+        // Reconciliation of 'line2' (-500.0) with 'in_invoice_1' (-1175.0).
+        // Since the amounts doesn't match exactly, this should make a partial reconciliation.
 
         {
-            content: "open the 4th line in match_rp mode to test the partial reconciliation",
+            content: "Open the receivable/payable tab for 'line2'",
             extra_trigger: '.o_reconciliation_line:first[data-mode="match_rp"]',
-            trigger: '.o_reconciliation_line:nth-child(4) .cell_label:contains("First")'
+            trigger: '.o_reconciliation_line:nth-child(1) .cell_label:contains("line2")'
         },
         {
-            content: "select the right line to match",
-            trigger: '.o_reconciliation_line:nth-child(4) .o_notebook .cell_label:contains("' + currentYear + '/' + currentMonth +'/0001")'
+            content: "Select the line corresponding to 'in_invoice_1'",
+            trigger: '.o_reconciliation_line:nth-child(1) .o_notebook .cell_left:contains("1,175.00")'
         },
         {
-            content: "Check the suggested amount is correct",
-            trigger: '.o_reconciliation_line:nth-child(4) .accounting_view .line_amount:contains("2,000.00")'
+            content: "Check the line has been added to the propositions",
+            trigger: '.o_reconciliation_line:nth-child(1) .accounting_view .line_amount:contains("500.00")'
         },
         {
-            content: "reconcile the line",
-            trigger: '.o_reconciliation_line:nth-child(4) .o_reconcile:visible',
+            content: "Reconcile 'line2' with 'in_invoice_1'",
+            trigger: '.o_reconciliation_line:nth-child(1) .o_reconcile:visible',
         },
 
-        // Reconciliation of 'Prepayment'
-        // Test changing the partner
+        // Reconciliation of 'line3' (-180.0) having no partner.
+        // Set 'partner_b', then reconcile with 'in_invoice_2' (-180.0).
+
         {
-            content: 'open second line',
-            extra_trigger: '.o_reconciliation_line:nth-child(4)[data-mode="match_rp"]',
-            trigger: '.o_reconciliation_line:nth-child(2) .cell_label',
+            content: "Open the receivable/payable tab for 'line3'",
+            extra_trigger: '.o_reconciliation_line:first[data-mode="match_rp"]',
+            trigger: '.o_reconciliation_line:nth-child(1) .cell_label:contains("line3")'
         },
         {
-            content: "change the partner of the second line",
-            extra_trigger: '.o_reconciliation_line:nth-child(2)[data-mode="match_rp"]',
-            trigger: '.o_reconciliation_line:nth-child(2) .o_field_many2one[name="partner_id"] input',
-            run: 'text Deco'
+            content: "Search 'partner_b'",
+            extra_trigger: '.o_reconciliation_line:nth-child(1)[data-mode="match_rp"]',
+            trigger: '.o_reconciliation_line:nth-child(1) .o_field_many2one[name="partner_id"] input',
+            run: 'text partner_b'
         },
         {
-            content: "select Deco Addict ",
-            extra_trigger: '.ui-autocomplete:visible li:eq(1):contains(Create "Deco")',
-            trigger: '.ui-autocomplete:visible li:contains(Deco Addict)',
+            content: "Select 'partner_b' ",
+            extra_trigger: '.ui-autocomplete:visible li:eq(1):contains(Create)',
+            trigger: '.ui-autocomplete:visible li:contains("partner_b")',
         },
         {
-            content: "use filter",
-            trigger: '.o_reconciliation_line:nth-child(2) .match .match_controls .filter',
-            run: 'text 4610'
+            content: "Open the receivable/payable tab for 'line3'",
+            extra_trigger: '.o_reconciliation_line:first[data-mode="match_rp"]',
+            trigger: '.o_reconciliation_line:nth-child(1) .cell_label:contains("line3")'
         },
         {
-            content: "select a line linked to Deco Addict ",
-            trigger: ".o_reconciliation_line:nth-child(2) .match .line_info_button:last[data-content*='4,610'][data-content*='Deco Addict']"
+            content: "Search for 'in_invoice_2'",
+            trigger: '.o_reconciliation_line:nth-child(1) .match .match_controls .filter',
+            run: 'text 180'
         },
         {
-            content: "deselect the line",
-            trigger: '.o_reconciliation_line:nth-child(2) .accounting_view tbody .cell_label:first',
+            content: "Select the line corresponding to 'in_invoice_2'",
+            trigger: '.o_reconciliation_line:nth-child(1) .o_notebook .cell_left:contains("180.00")'
         },
         {
-            content: "open second line",
-            trigger: '.o_reconciliation_line:nth-child(2) .accounting_view tfoot .cell_left:visible:contains(32.58)',
+            content: "Reconcile 'line3' with 'in_invoice_2'",
+            trigger: '.o_reconciliation_line:nth-child(1) .o_reconcile:visible',
+        },
+
+        // Reconciliation of 'line4' (900.0).
+        // Create a write-off line manually.
+
+        {
+            content: "Open the manual tab for 'line4'",
+            extra_trigger: '.o_reconciliation_line:nth-child(1) .cell_label:contains("line4")',
+            trigger: '.o_reconciliation_line:nth-child(1) .o_notebook .nav-link[href*="notebook_page_create"]'
         },
         {
-            content: "create a write-off",
-            trigger: '.o_reconciliation_line:nth-child(2) .o_notebook .nav-link[href*="notebook_page_create"]'
-        },
-        {
-            content: "enter an account",
-            trigger: '.o_reconciliation_line:nth-child(2) .o_field_many2one[name="account_id"] input',
+            content: "Enter the write-off account",
+            trigger: '.o_reconciliation_line:nth-child(1) .o_field_many2one[name="account_id"] input',
             run: 'text 151000'
         },
         {
-            content: "select the first account",
+            content: "Select the first matched account",
             trigger: '.ui-autocomplete:visible li:last:contains(151000)',
         },
         {
-            content: "reconcile the line with the write-off",
-            trigger: '.o_reconciliation_line:nth-child(2) .o_reconcile:visible',
-        },
-
-        // Be done
-        {
-            content: "check the number off validate lines",
-            trigger: '.o_control_panel .progress-reconciliation:contains(2 / 7)'
+            content: "Reconcile 'line4'",
+            trigger: '.o_reconciliation_line:nth-child(1) .o_reconcile:visible',
         },
     ]
 );

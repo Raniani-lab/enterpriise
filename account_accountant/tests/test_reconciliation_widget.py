@@ -1,40 +1,9 @@
 import logging
 import odoo.tests
 import time
-import requests
 from odoo.addons.account.tests.common import TestAccountReconciliationCommon
 
 _logger = logging.getLogger(__name__)
-
-
-@odoo.tests.tagged('post_install', '-at_install')
-class TestUi(odoo.tests.HttpCase):
-
-    def test_01_admin_bank_statement_reconciliation(self):
-        bank_stmt_name = 'BNK/%s/0001' % time.strftime('%Y')
-        bank_stmt_line = self.env['account.bank.statement'].search([('name', '=', bank_stmt_name)]).mapped('line_ids')
-        if not bank_stmt_line:
-            # The test relies on several demo data, like
-            # Several invoices, a bank statement and a configured CoA on the company.
-            # This data should be created inside this test
-            self.skipTest("Tour bank_statement_reconciliation skipped: bank statement %s not found." % bank_stmt_name)
-
-        admin = self.env.ref('base.user_admin')
-
-        # Tour can't be run if the setup if not the generic one.
-        generic_coa = self.env.ref('l10n_generic_coa.configurable_chart_template', raise_if_not_found=False)
-        if not admin.company_id.chart_template_id or admin.company_id.chart_template_id != generic_coa:
-            self.skipTest("Tour bank_statement_reconciliation skipped: generic coa not found.")
-
-        # To be able to test reconciliation, admin user must have access to accounting features, so we give him the right group for that
-        admin.write({'groups_id': [(4, self.env.ref('account.group_account_user').id)]})
-
-        payload = {'action':'bank_statement_reconciliation_view', 'statement_line_ids[]': bank_stmt_line.ids}
-        prep = requests.models.PreparedRequest()
-        prep.prepare_url(url="http://localhost/web#", params=payload)
-
-        self.start_tour(prep.url.replace('http://localhost', '').replace('?', '#'),
-            'bank_statement_reconciliation', login="admin")
 
 
 @odoo.tests.tagged('post_install', '-at_install')

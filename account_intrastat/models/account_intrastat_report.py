@@ -219,16 +219,21 @@ class IntrastatReport(models.AbstractModel):
         '''
         if cache is None:
             cache = {}
+
+        # Prefetch data before looping
+        self.env['product.template'].browse([v['template_id'] for v in vals]).read(['intrastat_id', 'categ_id'])
+        self.env['product.category'].search([]).read(['intrastat_id', 'parent_id'])
+
         for index in range(len(vals)):
             # Check account.intrastat.code
             # If missing, retrieve the commodity code by looking in the product category recursively.
             if not vals[index]['commodity_code']:
                 cache_key = 'commodity_code_%d' % vals[index]['template_id']
-                vals[index]['commodity_code'] = cache.get(cache_key)
-                if not vals[index]['commodity_code']:
+                if cache_key not in cache:
                     product = self.env['product.template'].browse(vals[index]['template_id'])
                     intrastat_code = product.search_intrastat_code()
                     cache[cache_key] = vals[index]['commodity_code'] = intrastat_code.name
+                vals[index]['commodity_code'] = cache.get(cache_key)
 
             # Check the currency.
             cache_key = 'currency_%d' % vals[index]['invoice_currency_id']

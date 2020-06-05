@@ -1095,8 +1095,9 @@ class View(models.Model):
             ('key', '!=', new.key),
             ('key', 'like', '%s_copy_%%' % new.key),
             ('key', 'not like', '%s_copy_%%_copy_%%' % new.key)]
-        old_copy = self.search(domain, order='key desc', limit=1)
-        copy_no = int(old_copy and old_copy.key.split('_copy_').pop() or 0) + 1
+        old_copies = self.search_read(domain, order='key desc')
+        nos = [int(old_copy.get('key').split('_copy_').pop()) for old_copy in old_copies]
+        copy_no = (nos and max(nos) or 0) + 1
         new_key = '%s_copy_%s' % (new.key, copy_no)
 
         cloned_templates = self.env.context.get('cloned_templates', {})

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import json
 from base64 import b64encode
 
 from odoo import api, fields, models, _
@@ -7,6 +8,7 @@ from odoo.exceptions import UserError
 
 from .bpost_request import BpostRequest
 
+TRACKING_REF_DELIM = ', '
 
 class ProviderBpost(models.Model):
     _inherit = 'delivery.carrier'
@@ -87,23 +89,37 @@ class ProviderBpost(models.Model):
             else:
                 quote_currency = self.env['res.currency'].search([('name', '=', 'EUR')], limit=1)
                 carrier_price = quote_currency._convert(shipping['price'], order_currency, company, order.date_order or fields.Date.today())
-            carrier_tracking_ref = shipping['main_label']['tracking_code']
-            # bpost does not seem to handle multipackage
-            logmessage = (_("Shipment created into bpost <br/> <b>Tracking Number : </b>%s") % (carrier_tracking_ref))
-            picking.message_post(body=logmessage, attachments=[('Label-bpost-%s.%s' % (carrier_tracking_ref, self.bpost_label_format), shipping['main_label']['label'])])
+            carrier_tracking_ref = TRACKING_REF_DELIM.join(shipping['main_label']['tracking_codes'])
+            tracking_links = '<br/>'.join(self._tracking_link_element(code) for code in shipping['main_label']['tracking_codes'])
+            logmessage = (_("Shipment created into bpost <br/> <b>Tracking Links</b> <br/>%s") % (tracking_links))
+            picking.message_post(body=logmessage, attachments=[('Labels-bpost.%s' % self.bpost_label_format, shipping['main_label']['label'])])
 
             if shipping['return_label']:
-                carrier_return_label_ref = shipping['main_label']['tracking_code']
-                logmessage = (_("Return shipment created into bpost <br/> <b>Tracking Number : </b>%s") % (carrier_return_label_ref))
-                picking.message_post(body=logmessage, attachments=[('%s-%s-%s.%s' % (self.get_return_label_prefix(), carrier_return_label_ref, 1, self.bpost_label_format), shipping['return_label']['label'])])
+                carrier_return_label_ref = TRACKING_REF_DELIM.join(shipping['return_label']['tracking_codes'])
+                logmessage = (_("Return labels created into bpost <br/> <b>Tracking Numbers: </b><br/>%s") % (carrier_return_label_ref))
+                picking.message_post(body=logmessage, attachments=[('%s-%s.%s' % (self.get_return_label_prefix(), 1, self.bpost_label_format), shipping['return_label']['label'])])
 
             shipping_data = {'exact_price': carrier_price,
                              'tracking_number': carrier_tracking_ref}
             res = res + [shipping_data]
         return res
 
+    def _tracking_link_element(self, tracking_code):
+        return f'<a href="{self._generate_tracking_link(tracking_code)}" target="_blank" rel="noopener noreferrer">{tracking_code}</a>'
+
+    def _generate_tracking_link(self, tracking_code):
+        return f"http://track.bpost.be/btr/web/#/search?itemCode={tracking_code}&lang=en"
+
     def bpost_get_tracking_link(self, picking):
-        return 'http://track.bpost.be/btr/web/#/search?itemCode=%s&lang=en' % picking.carrier_tracking_ref
+        # Using similar trick done in easypost, which is supported in the main delivery module.
+        # This looks simpler than in easypost because we don't need to make a request to the api,
+        # we just use the tracking numbers saved in picking.carrier_tracking_ref to generate
+        # the links.
+        tracking_urls = []
+        for tracking_code in picking.carrier_tracking_ref.split(TRACKING_REF_DELIM):
+            tracking_code = tracking_code.strip()
+            tracking_urls.append([tracking_code, self._generate_tracking_link(tracking_code)])
+        return tracking_urls[0][1] if len(tracking_urls) == 1 else json.dumps(tracking_urls)
 
     def bpost_cancel_shipment(self, picking):
         picking.message_post(body=_(u'Shipment #%s has been cancelled', picking.carrier_tracking_ref))
@@ -135,7 +151,7 @@ class ProviderBpost(models.Model):
         else:
             quote_currency = self.env['res.currency'].search([('name', '=', 'EUR')], limit=1)
             carrier_price = quote_currency._convert(shipping['price'], order_currency, company, order.date_order or fields.Date.today())
-        carrier_tracking_ref = shipping['main_label']['tracking_code']
+        carrier_tracking_ref = shipping['main_label']['tracking_codes']
         # bpost does not seem to handle multipackage
-        logmessage = (_("Return shipment created into bpost <br/> <b>Tracking Number : </b>%s") % (carrier_tracking_ref))
-        pickings.message_post(body=logmessage, attachments=[('%s-%s-%s.%s' % (self.get_return_label_prefix(), carrier_tracking_ref, 1, self.bpost_label_format), shipping['main_label']['label'])])
+        logmessage = (_("Return shipment created into bpost <br/> <b>Tracking Number : </b>%s") % (carrier_tracking_ref[0]))
+        pickings.message_post(body=logmessage, attachments=[('%s-%s-%s.%s' % (self.get_return_label_prefix(), carrier_tracking_ref[0], 1, self.bpost_label_format), shipping['main_label']['label'])])

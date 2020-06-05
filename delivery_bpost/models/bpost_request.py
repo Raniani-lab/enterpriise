@@ -88,11 +88,11 @@ class BpostRequest():
 
     def rate(self, order, carrier):
         weight_in_kg = carrier._bpost_convert_weight(order._get_estimated_weight())
-        return self._get_rate(carrier, weight_in_kg, order.partner_shipping_id.country_id)
+        return self._get_rate(carrier, _grams(weight_in_kg), order.partner_shipping_id.country_id)
 
     def _get_rate(self, carrier, weight, country):
         '''@param carrier: a record of the delivery.carrier
-           @param weight: in kilograms
+           @param weight: in grams
            @param country: a record of the destination res.country'''
 
         # Surprisingly, bpost does not require to send other data while asking for prices;
@@ -112,7 +112,7 @@ class BpostRequest():
         bpost_delivery_type = carrier.bpost_domestic_deliver_type if carrier.bpost_delivery_nature == 'Domestic' else carrier.bpost_international_deliver_type
         for delivery_method in xml_response.findall('ns1:deliveryMethod/[@name="home or office"]/ns1:product/[@name="%s"]/ns1:price' % bpost_delivery_type, ns):
             if delivery_method.attrib['countryIso2Code'] == country.code:
-                price = float(self._get_price_by_weight(_grams(weight), delivery_method))/100
+                price = float(self._get_price_by_weight(weight, delivery_method))/100
                 sale_price_digits = carrier.env['decimal.precision'].precision_get('Product Price')
                 price = float_round(price, precision_digits=sale_price_digits)
         if not price:
@@ -141,34 +141,33 @@ class BpostRequest():
             raise UserError(_("Packages over 30 Kg are not accepted by bpost."))
 
     def send_shipping(self, picking, carrier, with_return_label, is_return_label=False):
-        # Get price of label
+
         if is_return_label:
-            shipping_weight_in_kg = 0.0
-            for move in picking.move_lines:
-                shipping_weight_in_kg += move.product_qty * move.product_id.weight
+            receiver = picking.picking_type_id.warehouse_id.partner_id
+            receiver_company = ''
+            sender = picking.partner_id
+            boxes = self._compute_return_boxes(picking, carrier)
         else:
-            shipping_weight_in_kg = carrier._bpost_convert_weight(picking.shipping_weight)
-        price = self._get_rate(carrier, shipping_weight_in_kg, picking.partner_id.country_id)
+            receiver = picking.partner_id
+            receiver_company = receiver.commercial_partner_id.name if receiver.commercial_partner_id != receiver else ''
+            sender = picking.picking_type_id.warehouse_id.partner_id
+            boxes = self._compute_boxes(picking, carrier)
+
+        ###### need to change the get_rate !!!!!!!!!!
+        price = 0.0
+        for box in boxes:
+            price += self._get_rate(carrier, int(box['weight']), picking.partner_id.country_id)
 
         # Announce shipment to bpost
         reference_id = str(picking.name.replace("/", "", 2))[:50]
-        sender_partner_id = picking.picking_type_id.warehouse_id.partner_id
-        ss, sn = self._parse_address(sender_partner_id)
-        rs, rn = self._parse_address(picking.partner_id)
-        if carrier.bpost_shipment_type in ('SAMPLE', 'GIFT', 'DOCUMENTS'):
-            shipping_value = 100
-        else:
-            shipping_value = 0
-            for line in picking.move_line_ids :
-                price_unit = line.move_id.sale_line_id.price_reduce_taxinc or line.product_id.list_price
-                shipping_value += price_unit * line.qty_done
-            shipping_value = max(min(int(shipping_value*100), 2500000), 100) # according to bpost, 100 <= parcelValue <= 2500000
+        ss, sn = self._parse_address(sender)
+        rs, rn = self._parse_address(receiver)
 
         # bpsot only allow a zip with a size of 8 characters. In some country
         # (e.g. brazil) the postalCode could be longer than 8. In this case we
         # set the zip in the locality.
-        receiver_postal_code = picking.partner_id.zip
-        receiver_locality = picking.partner_id.city
+        receiver_postal_code = receiver.zip
+        receiver_locality = receiver.city
 
         # Some country do not use zip code (Saudi Arabia, Congo, ...). Bpost
         # always require at least a zip or a PO box.
@@ -178,42 +177,32 @@ class BpostRequest():
             receiver_locality = '%s %s' % (receiver_locality, receiver_postal_code)
             receiver_postal_code = '/'
 
-        if picking.partner_id.state_id:
+        if receiver.state_id:
             receiver_locality = '%s, %s' % (receiver_locality, picking.partner_id.state_id.display_name)
-
 
         values = {'accountId': carrier.sudo().bpost_account_number,
                   'reference': reference_id,
-                  'sender': {'_record': sender_partner_id,
+                  'sender': {'_record': sender,
                              'streetName': ss,
                              'number': sn,
                              },
-                  'receiver': {'_record': picking.partner_id,
-                               'company': picking.partner_id.commercial_partner_id.name if picking.partner_id.commercial_partner_id != picking.partner_id else '',
+                  'receiver': {'_record': receiver,
+                               'company': receiver_company,
                                'streetName': rs,
                                'number': rn,
                                'locality': receiver_locality,
                                'postalCode': receiver_postal_code,
                                },
                   'is_domestic': carrier.bpost_delivery_nature == 'Domestic',
-                  'weight': str(_grams(shipping_weight_in_kg)),
                   # domestic
                   'product': 'bpack Easy Retour' if is_return_label else carrier.bpost_domestic_deliver_type,
                   'saturday': carrier.bpost_saturday,
                   # international
                   'international_product': carrier.bpost_international_deliver_type,
-                  'parcelValue': shipping_value,
-                  'contentDescription': ' '.join([
-                     "%d %s" % (line.qty_done, re.sub('[\W_]+', '', line.product_id.name or '')) for line in picking.move_line_ids
-                  ])[:50],
                   'shipmentType': carrier.bpost_shipment_type,
                   'parcelReturnInstructions': carrier.bpost_parcel_return_instructions,
+                  'boxes': boxes,
                   }
-        if is_return_label:
-            tmp = values['sender']
-            values['sender'] = values['receiver']
-            values['receiver'] = tmp
-            values['receiver']['company'] = picking.company_id.name
         xml = carrier.env['ir.qweb']._render('delivery_bpost.bpost_shipping_request', values)
         code, response = self._send_request('send', xml, carrier)
         if code != 201 and response:
@@ -234,7 +223,7 @@ class BpostRequest():
                 main_label, return_label = self._split_labels(labels, ns)
             else:
                 main_label = {
-                    'tracking_code': labels.find("ns1:barcode", ns).text,
+                    'tracking_codes': [label.text for label in labels.findall("ns1:barcode", ns)],
                     'label': a2b_base64(labels.find("ns1:bytes", ns).text)
                 }
                 return_label = False
@@ -246,12 +235,13 @@ class BpostRequest():
 
     def _split_labels(self, labels, ns):
 
-        def _get_page(src_pdf, num):
+        def _get_page(src_pdf, page_nums):
             with io.BytesIO(base64.b64decode(src_pdf)) as stream:
                 try:
                     pdf = PdfFileReader(stream)
                     writer = PdfFileWriter()
-                    writer.addPage(pdf.getPage(num))
+                    for page in page_nums:
+                        writer.addPage(pdf.getPage(page))
                     stream2 = io.BytesIO()
                     writer.write(stream2)
                     return a2b_base64(base64.b64encode(stream2.getvalue()))
@@ -261,19 +251,24 @@ class BpostRequest():
 
         barcodes = labels.findall("ns1:barcode", ns)
         src_pdf = labels.find("ns1:bytes", ns).text
-        main_barcode = {
-            'tracking_code': barcodes[0].text,
-            'label': _get_page(src_pdf, 0)
+
+        # return barcodes ends with '050'
+        main_indeces = [index for index, barcode in enumerate(barcodes) if barcode.text[-3:] != '050']
+        return_indeces = [index for index, barcode in enumerate(barcodes) if barcode.text[-3:] == '050']
+
+        main_label = {
+            'tracking_codes': [barcodes[index].text for index in main_indeces],
+            'label': _get_page(src_pdf, main_indeces)
         }
 
-        return_barcode = False
+        return_label = False
         if len(barcodes) > 1:
-            return_barcode = {
-                'tracking_code': barcodes[1].text,
-                'label': _get_page(src_pdf, 1)
+            return_label = {
+                'tracking_codes': [barcodes[index].text for index in return_indeces],
+                'label': _get_page(src_pdf, return_indeces)
             }
 
-        return (main_barcode, return_barcode)
+        return (main_label, return_label)
 
     def _send_request(self, action, xml, carrier, reference=None, with_return_label=False):
         supercarrier = carrier.sudo()
@@ -302,3 +297,43 @@ class BpostRequest():
         self.debug_logger("%s\n%s" % (response.status_code, response.text), 'bpost_response_%s' % action)
 
         return response.status_code, response.text
+
+    def _compute_boxes(self, picking, carrier):
+        """Group the move lines in the picking to different boxes.
+
+        Lines with the same result_package_id belong to the same box,
+        and lines without result_package_id are assigned to one box.
+        This method returns a list of summary of each box which will be
+        used in creating the request in making order in bpost.
+        """
+        boxes = []
+        for package in picking.package_ids:
+            package_lines = picking.move_line_ids.filtered(lambda sml: sml.result_package_id.id == package.id)
+            parcel_value = sum(sml.sale_price for sml in package_lines)
+            weight_in_kg = carrier._bpost_convert_weight(package.shipping_weight)
+            boxes.append({
+                'weight': str(_grams(weight_in_kg)),
+                'parcelValue': max(min(int(parcel_value*100), 2500000), 100),
+                'contentDescription': ' '.join(["%d %s" % (line.qty_done, re.sub('[\W_]+', '', line.product_id.name or '')) for line in package_lines])[:50],
+            })
+        lines_without_package = picking.move_line_ids.filtered(lambda sml: not sml.result_package_id)
+        if lines_without_package:
+            parcel_value = sum(sml.sale_price for sml in lines_without_package)
+            weight_in_kg = carrier._bpost_convert_weight(sum(sml.qty_done * sml.product_id.weight for sml in lines_without_package))
+            boxes.append({
+                'weight': str(_grams(weight_in_kg)),
+                'parcelValue': max(min(int(parcel_value*100), 2500000), 100),
+                'contentDescription': ' '.join(["%d %s" % (line.qty_done, re.sub('[\W_]+', '', line.product_id.name or '')) for line in lines_without_package])[:50],
+            })
+        return boxes
+
+    def _compute_return_boxes(self, picking, carrier):
+        weight = sum(move.product_qty * move.product_id.weight for move in picking.move_lines)
+        weight_in_kg = carrier._bpost_convert_weight(weight)
+        parcel_value = sum(move.product_qty * move.product_id.lst_price for move in picking.move_lines)
+        boxes = [{
+            'weight': str(_grams(weight_in_kg)),
+            'parcelValue': max(min(int(parcel_value*100), 2500000), 100),
+            'contentDescription': ' '.join(["%d %s" % (line.product_qty, re.sub('[\W_]+', '', line.product_id.name or '')) for line in picking.move_lines])[:50],
+        }]
+        return boxes

@@ -14,6 +14,19 @@ class IntrastatReport(models.AbstractModel):
         invoice_ids = [row['invoice_id'] for row in vals]
         if cache is None:
             cache = {}
+
+        # If the region codes do not apply on the warehouses, no need to search for stock moves
+        warehouses = self.env['stock.warehouse'].with_context(active_test=False).search([])
+        regions = warehouses.mapped('intrastat_region_id')
+        if not regions:
+            return vals
+
+        # If all moves are from the same region, assign its code to all values
+        if len(regions) == 1 and all(wh.intrastat_region_id for wh in warehouses):
+            for val in vals:
+                val['region_code'] = regions.code
+            return vals
+
         for index, invoice in enumerate(self.env['account.move'].browse(invoice_ids)):
             stock_moves = invoice._stock_account_get_last_step_stock_moves()
             if stock_moves:

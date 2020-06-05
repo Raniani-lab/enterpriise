@@ -49,7 +49,7 @@ class ResPartner(models.Model):
     def _inverse_nationality(self):
         default_lang = get_lang(self.env, lang_code='es_MX').code
         for partner in self.filtered('country_id'):
-            partner.country_id.with_context(lang=default_lang).demonym = (
+            partner.country_id.sudo().with_context(lang=default_lang).demonym = (
                 partner.l10n_mx_nationality)
 
     def _get_not_partners_diot(self):

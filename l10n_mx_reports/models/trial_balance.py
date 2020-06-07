@@ -159,7 +159,6 @@ class MxReportAccountTrial(models.AbstractModel):
         lines = []
         domain = ast.literal_eval(line.domain or '[]')
         domain += [
-            ('deprecated', '=', False),
             ('company_id', 'in', self.env.companies.ids),
         ]
         domain.append((('id', 'not in', self.env.companies.account_cash_basis_base_account_id.ids)))

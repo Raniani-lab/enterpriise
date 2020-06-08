@@ -18,6 +18,8 @@ odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
         custom_events: {
             spreadsheet_name_changed: "_onSpreadSheetNameChanged",
             favorite_toggled: "_onSpreadSheetFavoriteToggled",
+            make_copy: "_onMakeCopy",
+            new_spreadsheet: "_onNewSpreadsheet",
         },
         hasControlPanel: true,
 
@@ -62,6 +64,8 @@ odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
                 res_id: this.res_id,
             });
             await this.spreadsheetComponent.mount(container);
+            this.spreadsheetComponent._addListener("make_copy");
+            this.spreadsheetComponent._addListener("new_sheet");
         },
 
         destroy: function () {
@@ -96,6 +100,57 @@ odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
                 this.spreadsheetName = record.name;
                 this.isFavorited = record.is_favorited;
             }
+        },
+        /**
+         * Create a copy of the given spreadsheet and display it
+         */
+        async _onMakeCopy(ev) {
+            const { spreadsheet_data, thumbnail } = ev.data;
+            const record = await this._rpc({
+                model: "documents.document",
+                method: "search_read",
+                fields: ['name', 'folder_id'],
+                domain: [['res_id', '=', this.res_id]],
+            });
+            let sheetName = "";
+            let folder_id;
+            if (record.length !== 0) {
+                sheetName = record[0].name;
+                folder_id = record[0].folder_id[0];
+            }
+            const id = await this._rpc({
+                model: "documents.document",
+                method: "create",
+                args: [
+                    {
+                        name: _t(`Copy of ${sheetName}`),
+                        mimetype: "application/o-spreadsheet",
+                        folder_id,
+                        raw: spreadsheet_data,
+                        thumbnail,
+                        handler: "spreadsheet"
+                    },
+                ],
+            });
+            this._openSpreadsheet(id);
+        },
+        /**
+         * Create a new sheet and display it
+         */
+        async _onNewSpreadsheet() {
+            const spreadsheetId = await this._rpc({
+                model: "documents.document",
+                method: "create",
+                args: [
+                    {
+                        name: _t("Untitled spreadsheet"),
+                        mimetype: "application/o-spreadsheet",
+                        raw: spreadsheet_data,
+                        handler: "spreadsheet",
+                    },
+                ],
+            });
+            this._openSpreadsheet(spreadsheetId);
         },
         /**
          * Saves the spreadsheet name change.

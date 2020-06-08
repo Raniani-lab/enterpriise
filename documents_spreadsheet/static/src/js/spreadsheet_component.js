@@ -7,11 +7,17 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
 
     const Spreadsheet = spreadsheet.Spreadsheet;
     const pluginRegistry = spreadsheet.registries.pluginRegistry;
-    const { useState, useRef } = owl.hooks;
+    const { useState, useRef, useSubEnv } = owl.hooks;
 
     class SpreadsheetComponent extends owl.Component {
         constructor(parent, props) {
             super(...arguments);
+            useSubEnv({
+                newSpreadsheet: this.newSpreadsheet.bind(this),
+                makeCopy: this.makeCopy.bind(this),
+                saveData: this.saveData.bind(this),
+
+            })
             this.state = useState({
                 dialog: {
                     isDisplayed: false,
@@ -71,6 +77,21 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             canvasCtx.drawImage(canvas, 0, 0, 100, 100);
             const thumbnail = canvasResizer.toDataURL().replace("data:image/png;base64,", "");
             return { spreadsheet_data, thumbnail }
+        }
+        /**
+         * Make a copy of the current document
+         */
+        makeCopy() {
+            const { spreadsheet_data, thumbnail } = this.getSaveData();
+            this.saveData();
+            this.trigger("make_copy", { spreadsheet_data, thumbnail });
+        }
+        /**
+         * Create a new spreadsheet
+         */
+        newSpreadsheet() {
+            this.saveData();
+            this.trigger("new_spreasheet");
         }
         /**
          * Open a dialog to display a message to the user.

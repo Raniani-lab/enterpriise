@@ -25,7 +25,7 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         template_context['org_number'] = self.env.company.org_number
         template_context['period'] = (options['date']['date_to'][:4] + options['date']['date_to'][5:7])
-        template_context['comment'] = 'COMMENT_PLACEHOLDER'
+        template_context['comment'] = ''
 
         qweb = self.env['ir.qweb']
         doc = qweb._render('l10n_se_reports.tax_export_xml', values=template_context)

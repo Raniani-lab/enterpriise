@@ -39,7 +39,7 @@
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="priority">32</field>
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='timer_setting']/.." position="after">
+            <xpath expr="//div[@id='rating_settings']/.." position="after">
                 <div class="row mt16 o_settings_container">
                     <div class="col-lg-6 o_setting_box">
                         <div class="o_setting_left_pane">

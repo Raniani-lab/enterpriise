@@ -143,7 +143,13 @@ odoo.define('web_grid.components', function (require) {
     class FloatFactorComponent extends BaseGridComponent {}
 
 
-    class FloatTimeComponent extends BaseGridComponent {}
+    class FloatTimeComponent extends BaseGridComponent {
+        get fieldOptions() {
+            return Object.assign({}, super.fieldOptions, {
+                noLeadingZeroHour: true,
+            });
+        }
+    }
     FloatTimeComponent.formatType = 'float_time';
 
 

@@ -91,15 +91,15 @@ QUnit.module('Views', {
         assert.ok(grid.$('table').length, "should have rendered a table");
         assert.containsN(grid, 'div.o_grid_cell_container', 14,
             "should have 14 cells");
-        assert.strictEqual(grid.$('div.o_grid_input:contains(02:30)').length, 1,
+        assert.strictEqual(grid.$('div.o_grid_input:contains(2:30)').length, 1,
             "should have correctly parsed a float_time");
 
-        var cell = grid.$('div.o_grid_input:contains(02:30)').get(0);
+        var cell = grid.$('div.o_grid_input:contains(2:30)').get(0);
         cell.focus();
         cell.click();
         cell.blur();
 
-        assert.strictEqual(grid.$('div.o_grid_input:contains(00:00)').length, 12,
+        assert.strictEqual(grid.$('div.o_grid_input:contains(0:00)').length, 12,
             "should have correctly parsed another float_time");
 
         assert.ok(grid.$buttons.find('button.grid_arrow_previous').is(':visible'),
@@ -107,8 +107,8 @@ QUnit.module('Views', {
         assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'),'active',
             "current range is shown as active");
 
-        assert.strictEqual(grid.$('tfoot td:contains(02:30)').length, 1, "should display total in a column");
-        assert.strictEqual(grid.$('tfoot td:contains(00:00)').length, 5, "should display totals, even if 0");
+        assert.strictEqual(grid.$('tfoot td:contains(2:30)').length, 1, "should display total in a column");
+        assert.strictEqual(grid.$('tfoot td.o_grid_cell_null:contains(0:00)').length, 5, "should display totals, even if 0");
 
         await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
         assert.ok(grid.$('div.o_grid_cell_container').length, "should not have any cells");
@@ -132,7 +132,7 @@ QUnit.module('Views', {
 
         var zeroTd = 0;
         grid.$('tfoot td').each(function () {
-            if ($(this).text() === '00:00') {
+            if ($(this).text() === '0:00') {
                 zeroTd++;
             }
         });
@@ -199,9 +199,9 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(BS task)').length, 1,
             "first section should have a row for BS task");
 
-        assert.strictEqual(grid.$('.o_grid_section:eq(0) tr:eq(2) div.o_grid_input:contains(02:30)').length, 1,
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) tr:eq(2) div.o_grid_input:contains(2:30)').length, 1,
             "should have correctly parsed a float_time for cell without task");
-        assert.strictEqual(grid.$('.o_grid_section:eq(0) div.o_grid_input:contains(00:00)').length, 12,
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) div.o_grid_input:contains(0:00)').length, 12,
             "should have correctly parsed another float_time");
 
         // second section
@@ -217,8 +217,8 @@ QUnit.module('Views', {
         assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'),'active',
             "current range is shown as active");
 
-        assert.strictEqual(grid.$('tfoot td:contains(02:30)').length, 1, "should display total in a column");
-        assert.strictEqual(grid.$('tfoot td:contains(00:00)').length, 5, "should display totals, even if 0");
+        assert.strictEqual(grid.$('tfoot td:contains(2:30)').length, 1, "should display total in a column");
+        assert.strictEqual(grid.$('tfoot td.o_grid_cell_null:contains(0:00)').length, 5, "should display totals, even if 0");
 
         await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
 
@@ -741,7 +741,7 @@ QUnit.module('Views', {
 
         assert.doesNotHaveClass($div, 'o_has_error',
             "input should not be formatted like there is an error");
-        assert.strictEqual($div.text(), "08:30",
+        assert.strictEqual($div.text(), "8:30",
             "text should have been properly parsed/formatted");
 
         await testUtils.dom.click(grid.$buttons.find('button:contains("Action")'));
@@ -822,6 +822,107 @@ QUnit.module('Views', {
         assert.containsN(grid, 'thead th', 8,
             "header should have 8 cells, 1 for description and 7 for week days, total cell should not be there");
         assert.doesNotHaveClass(grid.$('tbody'), '.o_grid_total', "body grid total should not be there");
+
+        grid.destroy();
+    });
+
+    QUnit.test('row and column are highlighted when hovering a cell', async function (assert) {
+        assert.expect(29);
+
+        this.data['analytic.line'].fields.validated = {
+            string: "Validation",
+            type: "boolean"
+        };
+        this.data['analytic.line'].records.push({
+            id: 8, project_id: 142, task_id: 54,
+            date: "2017-01-25", unit_amount: 4,
+            employee_id: 101, validated: true,
+        });
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">
+                    <field name="validated" type="readonly"/>
+                    <field name="project_id" type="row" section="1"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="month" string="Month" span="month" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_time"/>
+                </grid>`,
+            currentDate: "2017-01-25",
+        });
+
+        // check row highlighting
+        assert.hasClass(grid.el.querySelector('table'), 'table-hover',
+            "table has 'table-hover' class to highlight table rows on hover");
+
+        // check column highlighting on th
+        await testUtils.dom.triggerEvents(grid.el.querySelectorAll('thead th')[2], 'mouseover');
+        assert.containsN(grid, 'tbody .o_cell_hover', 5);
+        for (let i = 0; i < 5; i++) {
+            assert.hasClass(grid.$(`tbody tr:nth(${i}) td:nth(1)`), 'o_cell_hover');
+        }
+        await testUtils.dom.triggerEvents(grid.el.querySelectorAll('thead th')[2], 'mouseout');
+        assert.containsNone(grid, '.o_cell_hover');
+
+        // check column highlighting on th of o_grid_total cell
+        await testUtils.dom.triggerEvents(grid.el.querySelectorAll('thead th')[8], 'mouseover');
+        assert.containsN(grid, 'tbody .o_cell_hover', 5);
+        for (let i = 0; i < 5; i++) {
+            assert.hasClass(grid.$(`tbody tr:nth(${i}) td:nth(7)`), 'o_cell_hover');
+        }
+        await testUtils.dom.triggerEvents(grid.el.querySelectorAll('thead th')[8], 'mouseout');
+        assert.containsNone(grid, '.o_cell_hover');
+
+        // hover second cell, second row
+        const cell = grid.el.querySelector('tbody tr:nth-child(2) td:nth-child(3)');
+        await testUtils.dom.triggerEvents(cell, 'mouseover');
+        assert.containsN(grid, '.o_cell_hover', 7);
+        // leading zero in hour are not displayed on hover, in input mode leading zero displayed
+        assert.strictEqual(cell.innerText, '0:00',
+            "in non edit mode there not be leading zero in hours");
+
+        const div = cell.querySelector('div.o_grid_input');
+        await testUtils.dom.triggerEvent(div, 'focus');
+        assert.strictEqual(cell.querySelector('input.o_grid_input').value, '0:00',
+            "in non edit mode there not be leading zero in hours");
+
+        await testUtils.dom.triggerEvents(cell, 'mouseout');
+        assert.containsNone(grid, '.o_cell_hover');
+
+        // check column highlighted on hover section row cell, hover on first row, first cell
+        await testUtils.dom.triggerEvents(grid.el.querySelector('tbody tr:nth-child(1) td:nth-child(2)'), 'mouseover');
+        assert.containsN(grid, '.o_cell_hover', 7);
+        await testUtils.dom.triggerEvents(grid.el.querySelector('tbody tr:nth-child(1) td:nth-child(2)'), 'mouseout');
+        assert.containsNone(grid, '.o_cell_hover');
+
+        // check column highlighted on mouse hover on footer cell
+        await testUtils.dom.triggerEvents(grid.el.querySelector('tfoot tr td:nth-child(2)'), 'mouseover');
+        assert.containsN(grid, '.o_cell_hover', 7);
+        await testUtils.dom.triggerEvents(grid.el.querySelector('tfoot tr td:nth-child(2)'), 'mouseout');
+        assert.containsNone(grid, '.o_cell_hover');
+
+        // check column highlighted on mouse hover on o_grid_total cell
+        await testUtils.dom.triggerEvents(grid.el.querySelector('tbody tr:nth-child(1) td.o_grid_total'), 'mouseover');
+        assert.containsN(grid, '.o_cell_hover', 7);
+        await testUtils.dom.triggerEvents(grid.el.querySelector('tbody tr:nth-child(1) td.o_grid_total'), 'mouseout');
+        assert.containsNone(grid, '.o_cell_hover');
+
+        // check column highlighted on mouse hover on o_grid_super cell
+        await testUtils.dom.triggerEvents(grid.el.querySelector('tfoot tr td:nth-child(9)'), 'mouseover');
+        assert.containsN(grid, '.o_cell_hover', 7);
+        await testUtils.dom.triggerEvents(grid.el.querySelector('tfoot tr td:nth-child(9)'), 'mouseout');
+        assert.containsNone(grid, '.o_cell_hover');
+
+        // null section value have opacity 0.2
+        assert.strictEqual(window.getComputedStyle(grid.el.querySelector('.o_grid_cell_null > div')).opacity, '0.2');
+
+        // no leading zero in readonly cell
+        assert.strictEqual(grid.el.querySelector('tbody .o_grid_cell_readonly').innerText, '4:00');
 
         grid.destroy();
     });

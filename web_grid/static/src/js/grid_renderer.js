@@ -6,7 +6,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
     const utils = require('web.utils');
 
     const gridComponentRegistry = require('web_grid.component_registry');
-
+    const { useListener } = require('web.custom_hooks');
     const {useRef, useState} = owl.hooks;
 
     class GridRenderer extends AbstractRenderer {
@@ -18,6 +18,8 @@ odoo.define('web_grid.GridRenderer', function (require) {
                 errors: {},
             });
             this.currentInput = useRef("currentInput");
+            useListener('mouseover', 'td:not(:first-child), th:not(:first-child)', this._onMouseEnter);
+            useListener('mouseout', 'td:not(:first-child), th:not(:first-child)', this._onMouseLeave);
         }
 
         willUpdateProps(nextProps) {
@@ -292,6 +294,28 @@ odoo.define('web_grid.GridRenderer', function (require) {
             if (value !== undefined) {
                 this._cellEdited(path, value, doneCallback);
             }
+        }
+        /**
+         * Hover the column in which the mouse is.
+         *
+         * @private
+         * @param {MouseEvent} ev
+         */
+        _onMouseEnter(ev) {
+            const cellParent = ev.target.closest('td,th');
+            const rowParent = ev.target.closest('tr');
+            const index = [...rowParent.children].indexOf(cellParent) + 1;
+            this.el.querySelectorAll(`td:nth-child(${index}), th:nth-child(${index})`)
+                .forEach(el => el.classList.add('o_cell_hover'));
+        }
+        /**
+         * Remove the hover on the columns.
+         *
+         * @private
+         */
+        _onMouseLeave() {
+            this.el.querySelectorAll('.o_cell_hover')
+                .forEach(el => el.classList.remove('o_cell_hover'));
         }
     }
 

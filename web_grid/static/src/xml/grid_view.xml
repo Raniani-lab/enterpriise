@@ -15,7 +15,7 @@
 
     <t t-name="web_grid.Table" owl="1">
         <div class="o_view_grid table-responsive">
-            <table class="table table-sm table-striped">
+            <table class="table table-hover table-sm table-striped">
                 <thead>
                     <tr>
                         <th class="o_grid_title_header"></th>
@@ -42,8 +42,8 @@
                             <t t-set="total_cells" t-value="_formatCellContentTotals(column_index)"/>
                             <td t-att-class="{
                                 'o_grid_current': column.is_current,
-                                'text-muted' : total_cells.muted,
-                                'text-danger': total_cells.smallerThanZero
+                                'o_grid_cell_null' : total_cells.muted,
+                                'text-danger': total_cells.smallerThanZero,
                                 }">
                                 <t t-if="hasComponent">
                                     <t t-component="component"
@@ -59,7 +59,10 @@
                             </td>
                         </t>
                         <t t-if="props.range !== 'day' and !props.hideLineTotal">
-                            <td t-att-class="gridTotal.classMap">
+                            <td t-att-class="{
+                                ...gridTotal.classMap,
+                                'o_grid_cell_null': gridTotal.value === 0,
+                                }">
                                 <t t-if="hasComponent">
                                     <t t-component="component"
                                         cellValue="gridTotal.value"
@@ -70,9 +73,9 @@
                                         path="cellPath"
                                         isTotal="true"/>
                                     </t>
-                                <t t-else="">
+                                <div t-else="">
                                     <t t-esc="_format(gridTotal.value)"/>
-                                </t>
+                                </div>
                             </td>
                         </t>
                     </tr>
@@ -92,8 +95,9 @@
                     <t t-foreach="columns" t-as="column" t-key="column_index">
                         <td t-att-class="{
                                  o_grid_current: column.is_current,
-                                'text-danger': grid.totals.columns[column_index] lt 0
-                                }">
+                                'text-danger': grid.totals.columns[column_index] lt 0,
+                                'o_grid_cell_null': grid.totals.columns[column_index] == 0,
+                            }">
                             <t t-if="hasComponent">
                                 <t t-component="component"
                                     cellValue="grid.totals.columns[column_index]"
@@ -103,12 +107,15 @@
                                     nodeOptions="props.cellComponentOptions"
                                     isTotal="true"/>
                             </t>
-                            <t t-else="" t-esc="_format(grid.totals.columns[column_index])"/>
+                            <div t-else="" t-esc="_format(grid.totals.columns[column_index])"/>
                         </td>
                     </t>
                     <t t-if="props.range !== 'day' and !props.hideLineTotal" >
                         <td class="o_grid_total"
-                            t-att-class="{'text-danger': grid.totals.super lt 0}">
+                            t-att-class="{
+                                'text-danger': grid.totals.super lt 0,
+                                'o_grid_cell_null': grid.totals.super == 0,
+                                }">
                             <t t-if="hasComponent">
                                 <t t-component="component"
                                     cellValue="grid.totals.super"
@@ -118,7 +125,7 @@
                                     nodeOptions="props.cellComponentOptions"
                                     isTotal="true"/>
                             </t>
-                            <t t-else="" t-esc="_format(grid.totals.super)"/>
+                            <div t-else="" t-esc="_format(grid.totals.super)"/>
                         </td>
                     </t>
                 </tr>
@@ -174,7 +181,10 @@
                 </t>
                 <t t-if="props.range !== 'day' and !props.hideLineTotal" >
                     <td class="o_grid_total"
-                        t-att-class="{'text-danger': groupTotals.rows[rowlabel_index] lt 0}">
+                        t-att-class="{
+                            'text-danger': groupTotals.rows[rowlabel_index] lt 0,
+                            'o_grid_cell_empty': groupTotals.rows[rowlabel_index] == 0,
+                        }">
                         <t t-if="hasComponent">
                             <t t-component="component"
                                 cellValue="groupTotals.rows[rowlabel_index]"
@@ -184,7 +194,7 @@
                                 nodeOptions="props.cellComponentOptions"
                                 isTotal="true"/>
                             </t>
-                        <t t-else="" t-esc="_format(groupTotals.rows[rowlabel_index])"/>
+                        <div t-else="" t-esc="_format(groupTotals.rows[rowlabel_index])"/>
                     </td>
                 </t>
             </tr>
@@ -250,9 +260,7 @@
 
     <t t-name="web_grid.BaseGridComponent" owl="1">
         <t t-if="props.isTotal">
-            <div>
-                <t t-esc="_format(props.cellValue)"/>
-            </div>
+            <div t-esc="_format(props.cellValue)"/>
         </t>
         <t t-elif="!props.readonly">
             <t t-if="props.isInput">

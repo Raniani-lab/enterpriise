@@ -22,6 +22,7 @@
     thead {
         color: $o-main-text-color;
         background-color: $o-brand-lightsecondary;
+        border-bottom: 1px solid $gray-300;
         th {
             text-align: center;
             white-space: pre-line;
@@ -29,14 +30,29 @@
     }
 
     tfoot, .o_grid_total {
-        color: white;
-        background-color: $o-brand-odoo;
+        color: $o-main-text-color;
+        background-color: $o-brand-lightsecondary;
+        border-top: 1px solid $gray-300;
+        border-bottom: 1px solid $gray-300;
+        font-weight: bold;
         text-align: right;
     }
 
+    .o_cell_hover {
+        background-color: $table-hover-bg;
+        position: relative;
+    }
+
     tbody {
+        border-top: none;
         background-color: $o-view-background-color;
         text-align: right;
+        th, td {
+            padding: 0;
+            & > div {
+                padding: 0.3rem;
+            }
+        }
         th > div {
             display: flex;
             > div {
@@ -56,8 +72,15 @@
                 }
             }
         }
-        tr:nth-of-type(odd) th > div:after {
+        tr:nth-of-type(odd) th > div:after, tr:hover td.o_grid_total {
             background-color: $table-accent-bg;
+        }
+        td.o_grid_total {
+            border-left: 1px solid $gray-300 !important;
+
+            &.o_grid_cell_empty > div {
+                opacity: 0.2;
+            }
         }
 
         .o_grid_cell_information {
@@ -93,8 +116,8 @@
             }
 
             &.o_grid_cell_empty {
-                > .o_grid_input, > .o_grid_show {
-                    opacity: 0.3;
+                & > .o_grid_input, & > .o_grid_show {
+                    opacity: 0.2;
                 }
             }
         }
@@ -119,7 +142,7 @@
         // row of the tbody) and the row labels of both title and regular rows
         &.o_grid_section {
             tr th {
-                padding-left: 3 * $table-cell-padding-sm;
+                padding-left: 6 * $table-cell-padding-sm;
                 text-align: left;
             }
             tr:first-child {
@@ -129,10 +152,12 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
-                color: lighten($o-main-text-color, 15%);
-                background-color: lighten($o-brand-lightsecondary, 4%);
             }
         }
+    }
+
+    td.o_grid_cell_null > div {
+        opacity: 0.2;
     }
 
     .o_grid_current:not(.o_grid_total) {

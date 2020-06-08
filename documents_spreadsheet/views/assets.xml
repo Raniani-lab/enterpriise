@@ -6,6 +6,8 @@
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet_loader.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/spreadsheet_action.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/spreadsheet_component.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/spreadsheet_control_panel.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/spreadsheet_name.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/documents_inspector.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/documents_kanban_record.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/documents_kanban_controller.js"/>
@@ -26,6 +28,7 @@
     <template id="qunit_suite" name="Spreadsheet tests" inherit_id="web.qunit_suite">
         <xpath expr="//t[@t-set='head']" position="inside">
             <script type="text/javascript" src="/documents_spreadsheet/static/tests/pivot_controller_test.js"></script>
+            <script type="text/javascript" src="/documents_spreadsheet/static/tests/spreadsheet_test.js"></script>
         </xpath>
     </template>
 

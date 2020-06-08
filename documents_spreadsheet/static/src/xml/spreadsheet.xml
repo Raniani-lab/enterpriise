@@ -3,6 +3,21 @@
 
     <div t-name="documents_spreadsheet.SpreadsheetAction" class="o_spreadsheet_action"></div>
 
+    <div t-name="documents_spreadsheet.ControlPanel" t-inherit="web.ControlPanel" t-inherit-mode="primary" owl="1">
+        <xpath expr="//ol[hasclass('breadcrumb')]/li[hasclass('active')]" position="replace">
+            <li class="breadcrumb-item active">
+                <SpreadsheetName name="props.title"/>
+                <a title="Toggle favorite"
+                   t-on-click="_toggleFavorited"
+                   t-attf-class="o_spreadsheet_favorite fa fa-lg fa-star{{!state.isFavorited ? '-o' : ' favorite_button_enabled'}}"/>
+            </li>
+        </xpath>
+        <xpath expr="//div[hasclass('o_cp_bottom')]" position="replace"/>
+        <xpath expr="//div[hasclass('o_control_panel')]" position="attributes">
+            <attribute name="class" add="o_spreadsheet_cp" separator=" "/>
+        </xpath>
+    </div>
+
     <div t-name="documents_spreadsheet.SpreadsheetComponent" class="o_spreadsheet_container" owl="1">
         <Spreadsheet data="data"
                      t-on-ask-confirmation="askConfirmation"
@@ -21,6 +36,18 @@
                 <button class="btn btn-secondary" t-on-click="closeDialog">Cancel</button>
             </t>
         </Dialog>
+    </div>
+
+    <div t-name="documents_spreadsheet.SpreadsheetName" class="o_spreadsheet_name" owl="1">
+        <input type="text" title="Rename"
+            t-ref='speadsheetNameInput'
+            t-att-value="props.name"
+            t-on-focus="_onFocus"
+            t-attf-style="width: {{state.inputSize}}px"
+            t-att-placeholder="placeholder"
+            t-on-input="_onInput"
+            t-att-class="state.isUntitled ? 'o-spreadsheet-untitled' : ''"
+            t-on-change="_onNameChanged"/>
     </div>
 
     <div t-name="documents_spreadsheet.PivotSidePanel" class="o_spreadsheet_pivot_side_panel" owl="1">
@@ -45,4 +72,5 @@
             </t>
         </div>
     </div>
+
 </templates>

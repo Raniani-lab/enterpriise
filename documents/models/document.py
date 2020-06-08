@@ -43,6 +43,7 @@ class Document(models.Model):
                             string='Type', required=True, store=True, default='empty', change_default=True,
                             compute='_compute_type')
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
+    is_favorited = fields.Boolean(compute='_compute_is_favorited')
     tag_ids = fields.Many2many('documents.tag', 'document_tag_rel', string="Tags")
     partner_id = fields.Many2one('res.partner', string="Contact", tracking=True)
     owner_id = fields.Many2one('res.users', default=lambda self: self.env.user.id, string="Owner",
@@ -160,6 +161,13 @@ class Document(models.Model):
                     '__count': group['res_model_count'],
                 })
         return sorted(models, key=lambda m: m['display_name']) + not_attached + not_a_file
+
+    @api.depends('favorited_ids')
+    @api.depends_context('uid')
+    def _compute_is_favorited(self):
+        favorited = self.filtered(lambda d: self.env.user in d.favorited_ids)
+        favorited.is_favorited = True
+        (self - favorited).is_favorited = False
 
     @api.depends('res_model')
     def _compute_res_model_name(self):

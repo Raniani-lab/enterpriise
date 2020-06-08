@@ -3,15 +3,23 @@ odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
 
     const AbstractAction = require("web.AbstractAction");
     const SpreadsheetComponent = require("documents_spreadsheet.SpreadsheetComponent");
+    const SpreadsheetControlPanel = require("documents_spreadsheet.ControlPanel");
     const core = require("web.core");
 
     const _t = core._t;
 
     const { ComponentWrapper } = require("web.OwlCompatibility");
     const SpreadsheetAction = AbstractAction.extend({
+        config: Object.assign({}, AbstractAction.prototype.config, {
+            ControlPanel: SpreadsheetControlPanel,
+        }),
         contentTemplate: "documents_spreadsheet.SpreadsheetAction",
         events: {},
-        hasControlPanel: false,
+        custom_events: {
+            spreadsheet_name_changed: "_onSpreadSheetNameChanged",
+            favorite_toggled: "_onSpreadSheetFavoriteToggled",
+        },
+        hasControlPanel: true,
 
         /**
          * @override
@@ -21,6 +29,8 @@ odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
             this.res_id = action.params.active_id;
             this.spreadsheetComponent = false;
             this.spreadsheetData = false;
+            this.spreadsheetName = false;
+            this.isFavorited = false;
         },
 
         /**
@@ -37,6 +47,8 @@ odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
          * @override
          */
         start: async function () {
+            this._setTitle(this.spreadsheetName);
+            this.controlPanelProps.isFavorited = this.isFavorited;
             if (!this.spreadsheetData) {
                 return this.do_action({
                     type: "ir.actions.client",
@@ -75,13 +87,41 @@ odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
                 route: "/web/dataset/search_read",
                 model: "documents.document",
                 context: this.context,
-                fields: ["raw"],
+                fields: ["raw", "name", "is_favorited"],
                 domain: [["id", "=", this.res_id]],
             });
             if (result.records.length !== 0) {
                 const [ record ] = result.records
                 this.spreadsheetData = JSON.parse(record.raw);
+                this.spreadsheetName = record.name;
+                this.isFavorited = record.is_favorited;
             }
+        },
+        /**
+         * Saves the spreadsheet name change.
+         * @private
+         * @param {OdooEvent} ev
+         * @returns {Promise}
+         */
+        _onSpreadSheetNameChanged(ev) {
+            return this._rpc({
+                model: "documents.document",
+                method: "write",
+                args: [[this.res_id], {
+                    name: ev.data.name,
+                }],
+            });
+        },
+        /**
+         * @param {OdooEvent} ev
+         * @returns {Promise}
+         */
+        _onSpreadSheetFavoriteToggled(ev) {
+            return this._rpc({
+                model: "documents.document",
+                method: "toggle_favorited",
+                args: [[this.res_id]],
+            });
         },
         /**
          * Open a spreadsheet

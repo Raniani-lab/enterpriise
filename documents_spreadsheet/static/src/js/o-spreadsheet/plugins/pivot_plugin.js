@@ -41,6 +41,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             super(workbook, getters, history, dispatch, config);
             this.pivots = {};
             this.rpc = config.evalContext.env.services.rpc;
+            this.selectedPivot = undefined;
         }
 
         /**
@@ -51,6 +52,9 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             switch (cmd.type) {
                 case "ADD_PIVOT":
                     this._addPivot(cmd.pivot, cmd.anchor);
+                    break;
+                case "SELECT_PIVOT":
+                    this._selectPivot(cmd.cell);
                     break;
             }
         }
@@ -77,6 +81,14 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
         getPivots() {
             return Object.values(this.pivots);
         }
+        /**
+         * Retrieve the pivot of the current selected cell
+         *
+         * @returns {Pivot}
+         */
+        getSelectedPivot() {
+            return this.selectedPivot;
+        }
 
         // ---------------------------------------------------------------------
         // Handlers
@@ -96,6 +108,20 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             this.pivots[id] = Object.assign(pivot, { id });
             this._buildPivot(pivot, anchor);
             this._autoresize(pivot, anchor);
+        }
+        /**
+         * Select the pivot that is used in the given cell
+         *
+         * @param {Object} cell
+         *
+         * @private
+         */
+        _selectPivot(cell) {
+            if (cell && cell.type === "formula" && cell.content.startsWith("=PIVOT")) {
+                const { args } = this._parseFormula(cell.content);
+                const id = args[0];
+                this.selectedPivot = this.pivots[id];
+            }
         }
 
         // ---------------------------------------------------------------------
@@ -521,7 +547,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
     }
 
     PivotPlugin.modes = ["normal", "headless", "readonly"];
-    PivotPlugin.getters = ["getPivot", "getPivots"];
+    PivotPlugin.getters = ["getPivot", "getPivots", "getSelectedPivot"];
 
     return PivotPlugin;
 });

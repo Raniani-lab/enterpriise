@@ -23,4 +23,26 @@
         </Dialog>
     </div>
 
+    <div t-name="documents_spreadsheet.PivotSidePanel" class="o_spreadsheet_pivot_side_panel" owl="1">
+        <div class="o_side_panel_section">
+            <div class="o_side_panel_title">Model</div>
+            <div><t t-esc="props.pivot.cache and props.pivot.cache.modelLabel or props.pivot.model"/> (<t t-esc="props.pivot.model"/>)</div>
+        </div>
+        <div class="o_side_panel_section">
+            <div class="o_side_panel_title">Domain</div>
+            <DomainComponentAdapter Component="DomainSelector" model="props.pivot.model" domain="props.pivot.domain" t-key="'pivot_' + props.pivot.id"/>
+        </div>
+        <div class="o_side_panel_section">
+            <div class="o_side_panel_title">Measures</div>
+            <t t-foreach="props.pivot.measures" t-as="measure" t-key="measure">
+                <div t-esc="formatMeasure(measure)"/>
+            </t>
+        </div>
+        <div class="o_side_panel_section">
+            <div class="o_side_panel_title">Dimensions</div>
+            <t t-foreach="props.pivot.rowGroupBys.concat(pivot.colGroupBys)" t-as="gp" t-key="gb">
+                <div t-esc="formatGroupBy(gp)"/>
+            </t>
+        </div>
+    </div>
 </templates>

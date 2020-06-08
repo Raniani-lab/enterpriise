@@ -325,6 +325,7 @@ odoo.define('web_map.MapRenderer', function (require) {
             } else {
                 this.leafletMap.fitWorld();
             }
+            this.leafletMap.closePopup();
             this._addMarkers();
             this._addRoutes();
         }

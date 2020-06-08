@@ -64,6 +64,36 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
         // ---------------------------------------------------------------------
 
         /**
+         * Get the next value to autofill of a pivot function
+         *
+         * @param {string} formula Pivot formula
+         * @param {boolean} isColumn True if autofill is LEFT/RIGHT, false otherwise
+         * @param {number} increment number of steps
+         *
+         * @returns Autofilled value
+         */
+        getNextValue(formula, isColumn, increment) {
+            const { functionName, args } = this._parseFormula(formula);
+            const pivot = this.getPivot(args[0]);
+            if (!pivot) {
+                return "";
+            }
+            let builder;
+            if (functionName === "PIVOT") {
+                builder = this._autofillPivotValue.bind(this);
+            } else if (functionName === "PIVOT.HEADER") {
+                if (pivot.rowGroupBys.includes(args[1])) {
+                    builder = this._autofillPivotRowHeader.bind(this);
+                } else {
+                    builder = this._autofillPivotColHeader.bind(this)
+                }
+            }
+            if (builder) {
+                return builder(pivot, args, isColumn, increment);
+            }
+            return formula;
+        }
+        /**
          * Retrieve the pivot associated to the given Id
          *
          * @param {string} pivotId Id of the pivot
@@ -154,6 +184,408 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                 data.pivots[id].lastUpdate = undefined;
                 data.pivots[id].isLoaded = false;
             }
+        }
+
+        // ---------------------------------------------------------------------
+        // Autofill
+        // ---------------------------------------------------------------------
+
+        /**
+         * Get the next value to autofill from a pivot value ("=PIVOT()")
+         *
+         * Here are the possibilities:
+         * 1) LEFT-RIGHT
+         *  - Working on a date value, with one level of group by in the header
+         *      => Autofill the date, without taking care of headers
+         *  - Targetting a row-header
+         *      => Creation of a PIVOT.HEADER with the value of the current rows
+         *  - Targetting outside the pivot (before the row header and after the
+         *    last col)
+         *      => Return empty string
+         *  - Targetting a value cell
+         *      => Autofill by changing the cols
+         * 2) UP-DOWN
+         *  - Working on a date value, with one level of group by in the header
+         *      => Autofill the date, without taking care of headers
+         *  - Targetting a col-header
+         *      => Creation of a PIVOT.HEADER with the value of the current cols,
+         *         with the given increment
+         *  - Targetting outside the pivot (after the last row)
+         *      => Return empty string
+         *  - Targetting a value cell
+         *      => Autofill by changing the rows
+         *
+         * @param {Pivot} pivot
+         * @param {Array<string>} args args of the pivot formula
+         * @param {boolean} isColumn True if the direction is left/right, false
+         *                           otherwise
+         * @param {number} increment Increment of the autofill
+         *
+         * @private
+         */
+        _autofillPivotValue(pivot, args, isColumn, increment) {
+            const currentElement = this._getCurrentValueElement(pivot, args);
+            const date = this._isDateHeader(isColumn ? pivot.colGroupBys : pivot.rowGroupBys, pivot.cache.fields);
+            let cols = [];
+            let rows = [];
+            if (isColumn) {
+                // LEFT-RIGHT
+                rows = currentElement.rows;
+                if (date.isDate) {
+                    // Date
+                    cols = currentElement.cols;
+                    cols[0] = this._incrementDate(cols[0], date.group, increment);
+                } else {
+                    const currentColIndex = pivot.cache.cols.findIndex(
+                        (elt) =>
+                            JSON.stringify(elt[elt.length - 1]) === JSON.stringify(currentElement.cols)
+                            );
+                    if (currentColIndex === -1) {
+                        return "";
+                    }
+                    const nextColIndex = currentColIndex + increment;
+                    if (nextColIndex === -1) {
+                        // Targeting row-header
+                        return this._autofillRowFromValue(pivot, currentElement);
+                    }
+                    if (nextColIndex < -1 || nextColIndex >= pivot.cache.cols.length) {
+                        // Outside the pivot
+                        return "";
+                    }
+                    // Targeting value
+                    const columns = pivot.cache.cols[nextColIndex];
+                    cols = columns[columns.length - 1].slice();
+                }
+            } else {
+                // UP-DOWN
+                cols = currentElement.cols;
+                if (date.isDate) {
+                    // Date
+                    rows = currentElement.rows;
+                    rows[0] = this._incrementDate(rows[0], date.group, increment);
+                } else {
+                    const currentRowIndex = this._findIndex(pivot.cache.rows, currentElement.rows);
+                    if (currentRowIndex === -1) {
+                        return "";
+                    }
+                    const nextRowIndex = currentRowIndex + increment;
+                    if (nextRowIndex < 0) {
+                        // Targeting col-header
+                        return this._autofillColFromValue(pivot, nextRowIndex, currentElement);
+                    }
+                    if (nextRowIndex >= pivot.cache.rows.length) {
+                        // Outside the pivot
+                        return "";
+                    }
+                    // Targeting value
+                    rows = pivot.cache.rows[nextRowIndex];
+                }
+            }
+            const measure = cols.pop();
+            return this._buildValueFormula(this._buildArgs(pivot, measure, rows, cols));
+        }
+        /**
+         * Get the next value to autofill from a pivot header ("=PIVOT.HEADER()")
+         * which is a col.
+         *
+         * Here are the possibilities:
+         * 1) LEFT-RIGHT
+         *  - Working on a date value, with one level of group by in the header
+         *      => Autofill the date, without taking care of headers
+         *  - Targetting outside (before the first col after the last col)
+         *      => Return empty string
+         *  - Targetting a col-header
+         *      => Creation of a PIVOT.HEADER with the value of the new cols
+         * 2) UP-DOWN
+         *  - Working on a date value, with one level of group by in the header
+         *      => Replace the date in the headers and autocomplete as usual
+         *  - Targetting a cell (after the last col and before the last row)
+         *      => Aufotill by adding the corresponding rows
+         *  - Targetting a col-header (after the first col and before the last
+         *    col)
+         *      => Creation of a PIVOT.HEADER with the value of the new cols
+         *  - Targetting outside the pivot (before the first col of after the
+         *    last row)
+         *      => Return empty string
+         *
+         * @param {Pivot} pivot
+         * @param {Array<string>} args args of the pivot.header formula
+         * @param {boolean} isColumn True if the direction is left/right, false
+         *                           otherwise
+         * @param {number} increment Increment of the autofill
+         *
+         * @private
+         */
+        _autofillPivotColHeader(pivot, args, isColumn, increment) {
+            const currentElement = this._getCurrentHeaderElement(pivot, args);
+            const currentIndex = pivot.cache.cols.findIndex((elt) => {
+                const index = elt.findIndex((e) => JSON.stringify(e) === JSON.stringify(currentElement.cols));
+                return index !== -1;
+            });
+            const date = this._isDateHeader(pivot.colGroupBys, pivot.cache.fields);
+            if (isColumn) {
+                // LEFT-RIGHT
+                let cols;
+                if (date.isDate) {
+                    // Date
+                    cols = currentElement.cols;
+                    cols[0] = this._incrementDate(cols[0], date.group, increment);
+                } else {
+                    const currentCols = pivot.cache.cols[currentIndex];
+                    const colIndex = this._findIndex(currentCols, currentElement.cols);
+                    const nextIndex = currentIndex + increment;
+                    if (currentIndex === -1 || nextIndex < 0 || nextIndex >= pivot.cache.cols.length) {
+                        // Outside the pivot
+                        return "";
+                    }
+                    // Targetting a col.header
+                    cols = pivot.cache.cols[nextIndex][colIndex];
+                }
+                return this._buildHeaderFormula(this._buildArgs(pivot, undefined, [], cols));
+            } else {
+                // UP-DOWN
+                let currentCols;
+                if (date.isDate) {
+                    // Date => Simply replace a date with the current date
+                    currentCols = pivot.cache.cols[0].slice();
+                    currentCols.map((col) => {
+                        const currentCol = col.slice();
+                        currentCol[0] = currentElement.cols[0]
+                        return currentCol;
+                    });
+                } else {
+                    currentCols = pivot.cache.cols[currentIndex];
+                }
+                const colIndex = this._findIndex(currentCols, currentElement.cols);
+                const nextIndex = colIndex + increment;
+                if (nextIndex < 0 || nextIndex >= currentCols.length + pivot.cache.rows.length) {
+                    // Outside the pivot
+                    return "";
+                }
+                if (nextIndex >= currentCols.length) {
+                    // Targetting a value
+                    const rowIndex = nextIndex - currentCols.length;
+                    const cols = currentCols[currentCols.length - 1].slice();
+                    const measure = cols.pop();
+                    const rows = pivot.cache.rows[rowIndex];
+                    return this._buildValueFormula(this._buildArgs(pivot, measure, rows, cols));
+                } else {
+                    // Targetting a col.header
+                    const cols = currentCols[nextIndex];
+                    return this._buildHeaderFormula(this._buildArgs(pivot, undefined, [], cols));
+                }
+            }
+        }
+        /**
+         * Get the next value to autofill from a pivot header ("=PIVOT.HEADER()")
+         * which is a row.
+         *
+         * Here are the possibilities:
+         * 1) LEFT-RIGHT
+         *  - Targetting outside (LEFT or after the last col)
+         *      => Return empty string
+         *  - Targetting a cell
+         *      => Aufotill by adding the corresponding cols
+         * 2) UP-DOWN
+         *  - Working on a date value, with one level of group by in the header
+         *      => Autofill the date, without taking care of headers
+         *  - Targetting a row-header
+         *      => Creation of a PIVOT.HEADER with the value of the new rows
+         *  - Targetting outside the pivot (before the first row of after the
+         *    last row)
+         *      => Return empty string
+         *
+         * @param {Pivot} pivot
+         * @param {Array<string>} args args of the pivot.header formula
+         * @param {boolean} isColumn True if the direction is left/right, false
+         *                           otherwise
+         * @param {number} increment Increment of the autofill
+         *
+         * @private
+         */
+        _autofillPivotRowHeader(pivot, args, isColumn, increment) {
+            const currentElement = this._getCurrentHeaderElement(pivot, args);
+            const currentIndex = this._findIndex(pivot.cache.rows, currentElement.rows);
+            const date = this._isDateHeader(pivot.rowGroupBys, pivot.cache.fields);
+            if (isColumn) {
+                // LEFT-RIGHT
+                if (increment < 0 || increment > pivot.cache.cols.length) {
+                    // Outside the pivot
+                    return "";
+                }
+                // Targetting value
+                const columns = pivot.cache.cols[increment - 1];
+                const cols = columns[columns.length - 1].slice();
+                const measure = cols.pop();
+                return this._buildValueFormula(this._buildArgs(pivot, measure, currentElement.rows, cols));
+            } else {
+                // UP-DOWN
+                let rows;
+                if (date.isDate) {
+                    // Date
+                    rows = currentElement.rows;
+                    rows[0] = this._incrementDate(rows[0], date.group, increment);
+                } else {
+                    const nextIndex = currentIndex + increment;
+                    if (currentIndex === -1 || nextIndex < 0 || nextIndex >= pivot.cache.rows.length) {
+                        return "";
+                    }
+                    rows = pivot.cache.rows[nextIndex];
+                }
+                return this._buildHeaderFormula(this._buildArgs(pivot, undefined, rows, []));
+            }
+        }
+        /**
+         * Create a col header from a value
+         *
+         * @param {Pivot} pivot
+         * @param {number} nextIndex Index of the target column
+         * @param {Object} currentElement Current element (rows and cols)
+         *
+         * @private
+         */
+        _autofillColFromValue(pivot, nextIndex, currentElement) {
+            const columns = pivot.cache.cols.find(
+                (elt) =>
+                    JSON.stringify(elt[elt.length - 1]) === JSON.stringify(currentElement.cols)
+            );
+            if (!columns) {
+                return "";
+            }
+            const index = columns.length + nextIndex;
+            if (index < 0 || index >= columns.length) {
+                return "";
+            }
+            const cols = columns[index];
+            return this._buildHeaderFormula(this._buildArgs(pivot, undefined, [], cols));
+        }
+        /**
+         * Create a row header from a value
+         *
+         * @param {Pivot} pivot
+         * @param {Object} currentElement Current element (rows and cols)
+         *
+         * @private
+         */
+        _autofillRowFromValue(pivot, currentElement) {
+            const rows = currentElement.rows;
+            if (!rows) {
+                return "";
+            }
+            return this._buildHeaderFormula(this._buildArgs(pivot, undefined, rows, []));
+        }
+        /**
+         * Parse the arguments of a pivot function to find the col values and
+         * the row values of a PIVOT.HEADER function
+         *
+         * @param {Pivot} pivot
+         * @param {Array<string>} args Args of the pivot.header formula
+         *
+         * @private
+         */
+        _getCurrentHeaderElement(pivot, args) {
+            const values = this._parseArgs(args.slice(1));
+            const cols = this._getFieldValues(pivot.cache.colStructure, values);
+            const rows = this._getFieldValues(pivot.rowGroupBys, values);
+            return { cols, rows };
+        }
+        /**
+         * Parse the arguments of a pivot function to find the col values and
+         * the row values of a PIVOT function
+         *
+         * @param {Pivot} pivot
+         * @param {Array<string>} args Args of the pivot formula
+         *
+         * @private
+         */
+        _getCurrentValueElement(pivot, args) {
+            const values = this._parseArgs(args.slice(2));
+            const cols = this._getFieldValues(pivot.colGroupBys, values);
+            cols.push(args[1]); // measure
+            const rows = this._getFieldValues(pivot.rowGroupBys, values);
+            return { cols, rows };
+        }
+        /**
+         * Return the values for the fields which are present in the list of
+         * fields
+         *
+         * ex: groupBys: ["create_date"]
+         *     items: { create_date: "01/01", stage_id: 1 }
+         *      => ["01/01"]
+         *
+         * @param {Array<string>} fields List of fields
+         * @param {Object} values Association field-values
+         *
+         * @private
+         * @returns {string}
+         */
+        _getFieldValues(fields, values) {
+            return fields.filter((field) => field in values).map((field) => values[field]);
+        }
+        /**
+         * Find the index of item in the target
+         *
+         * @param {Array<any>} target
+         * @param {any} item Item to find
+         *
+         * @private
+         * @returns {number}
+         */
+        _findIndex(target, item) {
+            const stringifiedItem = JSON.stringify(item);
+            return target.findIndex((x) => JSON.stringify(x) === stringifiedItem);
+        }
+        /**
+         * Increment a date with a given increment and interval (group)
+         *
+         * @param {string} date
+         * @param {string} group (day, week, month, ...)
+         * @param {number} increment
+         *
+         * @private
+         * @returns {string}
+         */
+        _incrementDate(date, group, increment) {
+            const format = pivotUtils.formats[group].out;
+            const interval = pivotUtils.formats[group].interval;
+            const dateMoment = moment(date, format);
+            return dateMoment.isValid() ? dateMoment.add(increment, interval).format(format) : date;
+        }
+        /**
+         * Check if the headers are only a level and represent a date
+         *
+         * @param {Array<string>} headers
+         * @param {Object} fields
+         *
+         * @private
+         * @returns {Object} isDate: boolean and group: string
+         */
+        _isDateHeader(headers, fields) {
+            if (headers.length !== 1) {
+                return false;
+            }
+            const [ fieldName, group ] = headers[0].split(":");
+            const field = fields[fieldName];
+            return {
+                isDate: ["date", "datetime"].includes(field.type),
+                group,
+            }
+        }
+        /**
+         * Create a structure { field: value } from the arguments of a pivot
+         * function
+         *
+         * @param {Array<string>} args
+         *
+         * @private
+         * @returns {Object}
+         */
+        _parseArgs(args) {
+            const values = {};
+            for (let i = 0; i < args.length; i+=2) {
+                values[args[i]] = args[i + 1];
+            }
+            return values;
         }
 
         // ---------------------------------------------------------------------
@@ -492,6 +924,38 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             this.dispatch("SET_FORMATTING", { sheet, target, style });
         }
         /**
+         * Create the args from pivot, measure, rows and cols
+         * if measure is undefined, it's not added
+         *
+         * @param {Pivot} pivot
+         * @param {string} measure
+         * @param {Object} rows
+         * @param {Object} cols
+         *
+         * @private
+         * @returns {Array<string>}
+         */
+        _buildArgs(pivot, measure, rows, cols) {
+            const args = [pivot.id];
+            if (measure) {
+                args.push(measure);
+            }
+            for (let index in rows) {
+                args.push(pivot.rowGroupBys[index]);
+                args.push(rows[index]);
+            }
+            if (cols.length === 1 && pivot.measures.map(x => x.field).includes(cols[0])) {
+                args.push("measure");
+                args.push(cols[0]);
+            } else {
+                for (let index in cols) {
+                    args.push(pivot.cache.colStructure[index]);
+                    args.push(cols[index]);
+                }
+            }
+            return args;
+        }
+        /**
          * Create a pivot header formula at col/row
          *
          * @param {Array<string>} args
@@ -547,7 +1011,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
     }
 
     PivotPlugin.modes = ["normal", "headless", "readonly"];
-    PivotPlugin.getters = ["getPivot", "getPivots", "getSelectedPivot"];
+    PivotPlugin.getters = ["getPivot", "getPivots", "getSelectedPivot", "getNextValue"];
 
     return PivotPlugin;
 });

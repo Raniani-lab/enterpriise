@@ -13,6 +13,7 @@
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/pivot_controller.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_context_menu.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/autofill.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js"/>

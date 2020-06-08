@@ -3,8 +3,19 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
 
     const PivotView = require("web.PivotView");
     const testUtils = require("web.test_utils");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet");
+    const toCartesian = spreadsheet.helpers.toCartesian;
 
     const createView = testUtils.createView;
+
+    function getAutofillValue(model, from, column, increment) {
+        const content = model.getters.getCell(...toCartesian(from)).content;
+        return model.getters.getNextValue(content, column, increment);
+    }
+
+    function getCellContent(model, xc) {
+        return model.getters.getCell(...toCartesian(xc)).content;
+    }
 
     function mockRPCFn (route, args) {
         if (args.method === "search_read" && args.model === "ir.model") {
@@ -338,6 +349,254 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 await testUtils.nextTick();
                 await testUtils.modal.clickButton("Confirm");
                 assert.verifySteps(["search_read", "write"]);
+                pivot.destroy();
+            });
+
+            QUnit.test("Autofill pivot values", async function (assert) {
+                assert.expect(26);
+
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivot._getSpreadsheetModel();
+                // From value to value
+                assert.strictEqual(
+                    getAutofillValue(model, "C3", false, 1),
+                    getCellContent(model, "C4")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B4", false, -1),
+                    getCellContent(model, "B3")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "C3", true, 1),
+                    getCellContent(model, "D3")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "C3", true, -1),
+                    getCellContent(model, "B3")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "C3", false, 2),
+                    getCellContent(model, "C5")
+                );
+                assert.strictEqual(getAutofillValue(model, "C3", false, 3), "");
+                assert.strictEqual(getAutofillValue(model, "C3", true, 4), "");
+                // From value to header
+                assert.strictEqual(
+                    getAutofillValue(model, "B4", true, -1),
+                    getCellContent(model, "A4")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B4", false, -1),
+                    getCellContent(model, "B3")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B4", false, -2),
+                    getCellContent(model, "B2")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B4", false, -3),
+                    getCellContent(model, "B1")
+                );
+                // From header to header
+                assert.strictEqual(
+                    getAutofillValue(model, "B3", true, 1),
+                    getCellContent(model, "C3")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B3", true, 2),
+                    getCellContent(model, "D3")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B3", true, -1),
+                    getCellContent(model, "A3")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B1", false, 1),
+                    getCellContent(model, "B2")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B3", false, -1),
+                    getCellContent(model, "B2")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "A4", false, 1),
+                    getCellContent(model, "A5")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "A4", false, -1),
+                    getCellContent(model, "A3")
+                );
+                assert.strictEqual(getAutofillValue(model, "A4", false, 2), "");
+                assert.strictEqual(getAutofillValue(model, "A4", false, -3), "");
+                // From header to value
+                assert.strictEqual(
+                    getAutofillValue(model, "B2", false, 1),
+                    getCellContent(model, "B3")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B2", false, 2),
+                    getCellContent(model, "B4")
+                );
+                assert.strictEqual(getAutofillValue(model, "B2", false, 4), "");
+                assert.strictEqual(
+                    getAutofillValue(model, "A3", true, 1),
+                    getCellContent(model, "B3")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "A3", true, 5),
+                    getCellContent(model, "F3")
+                );
+                assert.strictEqual(getAutofillValue(model, "A3", true, 6), "");
+                pivot.destroy();
+            });
+
+            QUnit.test("Autofill pivot values with date in rows", async function (assert) {
+                assert.expect(5);
+
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="date" interval="month" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivot._getSpreadsheetModel();
+                assert.strictEqual(
+                    getAutofillValue(model, "A3", false, 1),
+                    getCellContent(model, "A4").replace("10/2016", "05/2016")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "A5", false, 1),
+                    '=PIVOT.HEADER("1","date:month","01/2017")'
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B3", false, 1),
+                    getCellContent(model, "B4").replace("10/2016", "05/2016")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B5", false, 1),
+                    getCellContent(model, "B5").replace("12/2016", "01/2017")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B5", false, -1),
+                    getCellContent(model, "B4").replace("10/2016", "11/2016")
+                );
+                pivot.destroy();
+            });
+
+            QUnit.test("Autofill pivot values with date in cols", async function (assert) {
+                assert.expect(3);
+
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="row"/>
+                        <field name="date" interval="day" type="col"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivot._getSpreadsheetModel();
+                assert.strictEqual(
+                    getAutofillValue(model, "B1", true, 1),
+                    getCellContent(model, "B1").replace("20/01/2016", "21/01/2016")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B2", true, 1),
+                    getCellContent(model, "B2").replace("20/01/2016", "21/01/2016")
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "B3", true, 1),
+                    getCellContent(model, "B3").replace("20/01/2016", "21/01/2016")
+                );
+                pivot.destroy();
+            });
+
+            QUnit.test("Autofill pivot values with date (day)", async function (assert) {
+                assert.expect(1);
+
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="date" interval="day" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivot._getSpreadsheetModel();
+                assert.strictEqual(
+                    getAutofillValue(model, "A3", false, 1),
+                    getCellContent(model, "A3").replace("20/01/2016", "21/01/2016")
+                );
+                pivot.destroy();
+            });
+
+            QUnit.test("Autofill pivot values with date (quarter)", async function (assert) {
+                assert.expect(1);
+
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="date" interval="quarter" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivot._getSpreadsheetModel();
+                assert.strictEqual(
+                    getAutofillValue(model, "A3", false, 1),
+                    getCellContent(model, "A3").replace("2/2016", "3/2016")
+                );
+                pivot.destroy();
+            });
+
+            QUnit.test("Autofill pivot values with date (year)", async function (assert) {
+                assert.expect(1);
+
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="date" interval="year" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivot._getSpreadsheetModel();
+                assert.strictEqual(
+                    getAutofillValue(model, "A3", false, 1),
+                    getCellContent(model, "A3").replace("2016", "2017")
+                );
                 pivot.destroy();
             });
 

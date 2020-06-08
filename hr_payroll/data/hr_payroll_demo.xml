@@ -260,4 +260,10 @@
             <field name="round_days_type">DOWN</field>
         </record>
 
+        <function model="hr.employee" name="generate_work_entries">
+            <value model="hr.employee" eval="obj().search([]).ids"/>
+            <value eval="(DateTime.today() + relativedelta(day=1, months=-1))"/>
+            <value eval="(DateTime.today() + relativedelta(day=31))"/>
+        </function>
+
 </odoo>

@@ -53,6 +53,9 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                 case "ADD_PIVOT":
                     this._addPivot(cmd.pivot, cmd.anchor);
                     break;
+                case "REBUILD_PIVOT":
+                    this._rebuildPivot(cmd.id, cmd.anchor);
+                    break;
                 case "SELECT_PIVOT":
                     this._selectPivot(cmd.cell);
                     break;
@@ -138,6 +141,19 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             this.pivots[id] = Object.assign(pivot, { id });
             this._buildPivot(pivot, anchor);
             this._autoresize(pivot, anchor);
+        }
+        /**
+         * Rebuild a specific pivot and build it at the given anchor
+         *
+         * @param {number} id Id of the pivot to rebuild
+         * @param {Array<number>} anchor
+         *
+         * @private
+         */
+        _rebuildPivot(id, anchor) {
+            const pivot = this.pivots[id];
+            this._resizeSheet(pivot, anchor);
+            this._buildPivot(pivot, anchor);
         }
         /**
          * Select the pivot that is used in the given cell
@@ -876,6 +892,36 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             const field = args[len - 2];
             const value = args[len - 1];
             return pivotUtils.formatHeader(pivot, field, value);
+        }
+        /**
+         * Extend the columns and rows to fit the pivot
+         *
+         * @param {Pivot} pivot
+         * @param {Array<number>} anchor
+         */
+        _resizeSheet(pivot, anchor) {
+            const colLimit = pivot.cache.cols.length + pivot.measures.length + 1;
+            const numberCols = this.getters.getNumberCols();
+            const deltaCol = numberCols - anchor[0];
+            if (deltaCol < colLimit) {
+                this.dispatch("ADD_COLUMNS", {
+                    column: numberCols - 1,
+                    sheet: this.getters.getActiveSheet(),
+                    quantity: colLimit - deltaCol,
+                    position: "after",
+                });
+            }
+            const rowLimit = pivot.cache.rows.length + pivot.cache.cols[0].length + 1;
+            const numberRows = this.getters.getNumberRows();
+            const deltaRow = numberRows - anchor[1];
+            if (deltaRow < rowLimit) {
+                this.dispatch("ADD_ROWS", {
+                    row: numberRows - 1,
+                    sheet: this.getters.getActiveSheet(),
+                    quantity: rowLimit - deltaRow,
+                    position: "after",
+                });
+            }
         }
 
         // ---------------------------------------------------------------------

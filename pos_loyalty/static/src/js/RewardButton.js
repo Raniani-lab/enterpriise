@@ -12,7 +12,8 @@ odoo.define('pos_loyalty.RewardButton', function(require) {
             useListener('click', this.onClick);
         }
         is_available() {
-            return this.env.pos.get_order().get_available_rewards().length > 0;
+            const order = this.env.pos.get_order();
+            return order ? order.get_available_rewards().length > 0 : false;
         }
         async onClick() {
             let order = this.env.pos.get_order();

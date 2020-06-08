@@ -28,7 +28,7 @@
 
     <t t-name="OrderWidget" t-inherit="point_of_sale.OrderWidget" t-inherit-mode="extension" owl="1">
         <xpath expr="//div[hasclass('order')]" position="inside">
-            <PointsCounter t-if="env.pos.loyalty" />
+            <PointsCounter t-if="env.pos.loyalty and order" />
         </xpath>
     </t>
 

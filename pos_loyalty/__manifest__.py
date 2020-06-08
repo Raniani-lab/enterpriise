@@ -20,7 +20,8 @@ and get rewards.
         'views/pos_loyalty_views.xml',
         'views/pos_config_views.xml',
         'security/ir.model.access.csv',
-        'views/pos_loyalty_templates.xml'
+        'views/pos_loyalty_templates.xml',
+        'data/pos_loyalty_data.xml',
     ],
     'qweb': [
         'static/src/xml/OrderReceipt.xml',
@@ -28,10 +29,7 @@ and get rewards.
         'static/src/xml/PointsCounter.xml',
         'static/src/xml/Loyalty.xml',
     ],
-    'demo': [
-        'data/pos_loyalty_demo.xml',
-    ],
     'installable': True,
-    'auto_install': False,
+    'auto_install': True,
     'license': 'OEEL-1',
 }

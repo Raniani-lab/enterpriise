@@ -1,0 +1,40 @@
+.o_documents_content {
+    .o_document_spreadsheet {
+        cursor: zoom-in;
+    }
+    .o_spreadsheet_resize {
+        object-fit: cover;
+        object-position: left top;
+    }
+}
+
+
+.o_spreadsheet_selector_dialog {
+  option.o_new {
+      font-style: italic;
+  }
+}
+
+.o_content {
+    .o_spreadsheet_action {
+        height: 100%;
+        .o_spreadsheet_container {
+            height: 100%;
+            .o-spreadsheet {
+                height: 100%;
+                .o-spreadsheet-topbar .o-icon {
+                    vertical-align: unset;
+                }
+                .o-spreadsheet-topbar .o-menu-dropdown-item .o-icon {
+                    vertical-align: middle;
+                }
+                // Align spreadsheet menus and toolbar with the breadcrumb in Odoo
+                .o-spreadsheet-topbar {
+                    .o-topbar-toolbar .o-toolbar-tools {
+                        margin-left: 16px !important;
+                    }
+                }
+            }
+        }
+    }
+}

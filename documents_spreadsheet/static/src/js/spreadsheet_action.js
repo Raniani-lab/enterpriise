@@ -1,0 +1,106 @@
+odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
+    "use strict";
+
+    const AbstractAction = require("web.AbstractAction");
+    const SpreadsheetComponent = require("documents_spreadsheet.SpreadsheetComponent");
+    const core = require("web.core");
+
+    const _t = core._t;
+
+    const { ComponentWrapper } = require("web.OwlCompatibility");
+    const SpreadsheetAction = AbstractAction.extend({
+        contentTemplate: "documents_spreadsheet.SpreadsheetAction",
+        events: {},
+        hasControlPanel: false,
+
+        /**
+         * @override
+         */
+        init: function (parent, action) {
+            this._super.apply(this, arguments);
+            this.res_id = action.params.active_id;
+            this.spreadsheetComponent = false;
+            this.spreadsheetData = false;
+        },
+
+        /**
+         * @override
+         */
+        willStart: function () {
+            const promises = [];
+            promises.push(this._super.apply(this, arguments));
+            promises.push(this._loadData());
+            return Promise.all(promises);
+        },
+
+        /**
+         * @override
+         */
+        start: async function () {
+            if (!this.spreadsheetData) {
+                return this.do_action({
+                    type: "ir.actions.client",
+                    tag: "home",
+                });
+            }
+            await this._super.apply(this, arguments);
+            const container = this.el.getElementsByClassName("o_spreadsheet_action")[0];
+            this.spreadsheetComponent = new ComponentWrapper(this, SpreadsheetComponent, {
+                data: this.spreadsheetData,
+                res_id: this.res_id,
+            });
+            await this.spreadsheetComponent.mount(container);
+        },
+
+        destroy: function () {
+            if (this.spreadsheetComponent) {
+                this.spreadsheetComponent.destroy();
+            }
+            this._super.apply(this, arguments);
+        },
+
+        canBeRemoved: function () {
+            return this.spreadsheetComponent.componentRef.comp.saveData();
+        },
+
+        //----------------------------------------------------------------------
+        // Private
+        //----------------------------------------------------------------------
+
+        _loadData: async function () {
+            if (this.res_id === undefined) {
+                return;
+            }
+            const result = await this._rpc({
+                route: "/web/dataset/search_read",
+                model: "documents.document",
+                context: this.context,
+                fields: ["raw"],
+                domain: [["id", "=", this.res_id]],
+            });
+            if (result.records.length !== 0) {
+                const [ record ] = result.records
+                this.spreadsheetData = JSON.parse(record.raw);
+            }
+        },
+        /**
+         * Open a spreadsheet
+         */
+        _openSpreadsheet(active_id) {
+            this.displayNotification({
+                type: "info",
+                message: _t("New spreadsheet created in Documents"),
+                sticky: false,
+            });
+            this.do_action({
+                type: "ir.actions.client",
+                tag: "action_open_spreadsheet",
+                params: { active_id },
+            }, { clear_breadcrumbs: true });
+        }
+    });
+
+    core.action_registry.add("action_open_spreadsheet", SpreadsheetAction);
+
+    return SpreadsheetAction;
+});

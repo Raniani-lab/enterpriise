@@ -59,6 +59,9 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                 case "SELECT_PIVOT":
                     this._selectPivot(cmd.cell);
                     break;
+                case "INSERT_HEADER":
+                    this._insertHeader(cmd.id, cmd.col, cmd.row, cmd.field, cmd.value);
+                    break;
             }
         }
 
@@ -168,6 +171,19 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                 const id = args[0];
                 this.selectedPivot = this.pivots[id];
             }
+        }
+        /**
+         * Insert a header element in the given anchor
+         * @param {number} id Id of the pivot
+         * @param {number} col Index of the col
+         * @param {number} row Index of the row
+         * @param {string} field Name of the field
+         * @param {string} value Value to insert
+         */
+        _insertHeader(id, col, row, field, value) {
+            const sheet = this.getters.getActiveSheet();
+            const content = this._buildHeaderFormula([id, field, value]);
+            this.dispatch("UPDATE_CELL", { sheet, col, row, content });
         }
 
         // ---------------------------------------------------------------------

@@ -361,8 +361,8 @@ odoo.define("web.spreadsheet_tests", function (require) {
             const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
             const reinsertPivot1 = root.subMenus(env)[0];
             await reinsertPivot1.action(env);
-            assert.equal(model.getters.getNumberCols(), 3);
-            assert.equal(model.getters.getNumberRows(), 4);
+            assert.equal(model.getters.getNumberCols(), 5);
+            assert.equal(model.getters.getNumberRows(), 5);
             assert.equal(model.getters.getCell(1, 2).content, `=PIVOT("1","probability","bar","110","foo","1")`,
                 "It should contain a pivot formula");
             actionManager.destroy();
@@ -449,6 +449,34 @@ odoo.define("web.spreadsheet_tests", function (require) {
             await reinsertPivot1.action(env);
             assert.equal(model.getters.getCell(1, 1).content, `=PIVOT.HEADER(\"1\",\"foo\",\"1\",\"measure\",\"probability\")`,
                 "It should contain a pivot formula");
+            actionManager.destroy();
+        });
+
+        QUnit.test("Insert pivot element, with undo and redo", async function (assert) {
+            assert.expect(3);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            const root = contextMenuRegistry.getAll().find((item) => item.name === "insert_pivot_section");
+            const insertPivotSection1 = root.subMenus(env)[0];
+            const insertPivotSection1Foo = insertPivotSection1.subMenus(env)[0];
+            const insertPivotSection1Foo1 = insertPivotSection1Foo.subMenus(env)[0];
+            insertPivotSection1Foo1.action(env);
+            assert.equal(model.getters.getCell(3, 7).content, `=PIVOT.HEADER("1","foo","1")`)
+            model.dispatch("UNDO");
+            assert.notOk(model.getters.getCell(3, 7));
+            model.dispatch("REDO");
+            assert.equal(model.getters.getCell(3, 7).content, `=PIVOT.HEADER("1","foo","1")`)
             actionManager.destroy();
         });
 

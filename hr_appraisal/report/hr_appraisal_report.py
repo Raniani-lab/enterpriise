@@ -15,6 +15,7 @@ COLORS_BY_STATE = {
 class HrAppraisalReport(models.Model):
     _name = "hr.appraisal.report"
     _description = "Appraisal Statistics"
+    _order = 'create_date desc'
     _auto = False
 
     name = fields.Char(related='employee_id.name')
@@ -34,8 +35,6 @@ class HrAppraisalReport(models.Model):
     def _compute_color(self):
         for record in self:
             record.color = COLORS_BY_STATE[record.state]
-
-    _order = 'create_date desc'
 
     def init(self):
         tools.drop_view_if_exists(self.env.cr, 'hr_appraisal_report')

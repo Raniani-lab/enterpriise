@@ -2,247 +2,185 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
+import logging
 
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import formataddr
+from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
 
 
 class HrAppraisal(models.Model):
     _name = "hr.appraisal"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Employee Appraisal"
-    _order = 'date_close, date_final_interview'
+    _order = 'state desc, id desc'
     _rec_name = 'employee_id'
 
+    def _get_default_employee(self):
+        if not self.env.user.has_group('hr_appraisal.group_hr_appraisal_user'):
+            return self.env.user.employee_id
+
     active = fields.Boolean(default=True)
-    action_plan = fields.Text(string="Action Plan", help="If the evaluation does not meet the expectations, you can propose an action plan")
-    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
-    color = fields.Integer(string='Color Index', help='This color will be used in the kanban view.')
-    employee_id = fields.Many2one('hr.employee', required=True, string='Employee', index=True, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    department_id = fields.Many2one('hr.department', related='employee_id.department_id', string='Department', store=True, readonly=True)
-    date_close = fields.Date(string='Appraisal Deadline', required=True, default=lambda self: datetime.date.today().replace(day=1)+relativedelta(months=+1, days=-1))
-    state = fields.Selection([
-        ('new', 'To Start'),
-        ('pending', 'Appraisal Sent'),
-        ('done', 'Done'),
-        ('cancel', "Cancelled"),
-    ], string='Status', tracking=True, required=True, copy=False, default='new', index=True, group_expand='_group_expand_states')
-    manager_appraisal = fields.Boolean(string='Appraisal by Manager', help="This employee will be appraised by his managers")
-    manager_ids = fields.Many2many('hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    manager_body_html = fields.Html(string="Manager's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_manager_body_html, translate=True)
-    collaborators_ids = fields.Many2many('hr.employee', 'appraisal_subordinates_rel', 'hr_appraisal_id', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    collaborators_body_html = fields.Html(string="Collaborator's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_collaborators_body_html, translate=True)
-    colleagues_ids = fields.Many2many('hr.employee', 'appraisal_colleagues_rel', 'hr_appraisal_id', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", string="Colleagues")
-    colleagues_body_html = fields.Html(string="Colleague's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_colleagues_body_html, translate=True)
-    employee_body_html = fields.Html(string="Employee's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_employee_body_html, translate=True)
+    employee_id = fields.Many2one(
+        'hr.employee', required=True, string='Employee', index=True,
+        default=_get_default_employee)
+    employee_user_id = fields.Many2one('res.users', related='employee_id.user_id')
+    company_id = fields.Many2one('res.company', related='employee_id.company_id', store=True)
+    department_id = fields.Many2one(
+        'hr.department', related='employee_id.department_id', string='Department', store=True)
+    image_128 = fields.Image(related='employee_id.image_128')
+    image_1920 = fields.Image(related='employee_id.image_1920')
+    job_id = fields.Many2one('hr.job', related='employee_id.job_id')
+    last_appraisal_id = fields.Many2one('hr.appraisal', related='employee_id.last_appraisal_id')
+    last_appraisal_date = fields.Date(related='employee_id.last_appraisal_date')
+    employee_feedback_template = fields.Html(compute='_compute_feedback_templates')
+    manager_feedback_template = fields.Html(compute='_compute_feedback_templates')
+
+    date_close = fields.Date(
+        string='Appraisal Deadline', required=True,
+        default=lambda self: datetime.date.today().replace(day=1) + relativedelta(months=+1, days=-1))
+    state = fields.Selection(
+        [('new', 'To Confirm'),
+         ('pending', 'Confirmed'),
+         ('done', 'Done'),
+         ('cancel', "Cancelled")],
+        string='Status', tracking=True, required=True, copy=False,
+        default='new', index=True, group_expand='_group_expand_states')
+    manager_ids = fields.Many2many(
+        'hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     meeting_id = fields.Many2one('calendar.event', string='Meeting')
     date_final_interview = fields.Date(string="Final Interview", index=True, tracking=True)
-    is_autorized_to_send = fields.Boolean('Autorized Employee to Start Appraisal', compute='_compute_authorization')
+    waiting_feedback = fields.Boolean(
+        string="Waiting Feedback from Employee/Managers", compute='_compute_waiting_feedback', tracking=True)
+    employee_feedback = fields.Html(compute='_compute_feedbacks', store=True, readonly=False)
+    manager_feedback = fields.Html(compute='_compute_feedbacks', store=True, readonly=False)
+    employee_feedback_published = fields.Boolean(string="Employee Feedback Published", tracking=True)
+    manager_feedback_published = fields.Boolean(string="Manager Feedback Published", tracking=True)
+    can_see_employee_publish = fields.Boolean(compute='_compute_buttons_display')
+    can_see_manager_publish = fields.Boolean(compute='_compute_buttons_display')
+    assessment_note = fields.Many2one('hr.appraisal.note', domain="[('company_id', '=', company_id)]")
+
+    def _compute_buttons_display(self):
+        new_appraisals = self.filtered(lambda a: a.state == 'new')
+        new_appraisals.update({
+            'can_see_employee_publish': False,
+            'can_see_manager_publish': False,
+        })
+        user_employee = self.env.user.employee_id
+        for appraisal in self - new_appraisals:
+            appraisal.can_see_employee_publish = user_employee == appraisal.employee_id
+            appraisal.can_see_manager_publish = user_employee in appraisal.manager_ids
+
+    @api.depends('employee_id.job_id')
+    def _compute_feedbacks(self):
+        for appraisal in self.filtered(lambda a: a.state == 'new'):
+            appraisal.employee_feedback = appraisal.job_id.employee_feedback_template or appraisal.company_id.appraisal_employee_feedback_template
+            appraisal.manager_feedback = appraisal.job_id.manager_feedback_template or appraisal.company_id.appraisal_manager_feedback_template
+
+    @api.depends('employee_id.job_id')
+    def _compute_feedback_templates(self):
+        for appraisal in self:
+            appraisal.employee_feedback_template = appraisal.job_id.employee_feedback_template or appraisal.company_id.appraisal_employee_feedback_template
+            appraisal.manager_feedback_template = appraisal.job_id.manager_feedback_template or appraisal.company_id.appraisal_manager_feedback_template
+
+    @api.depends('employee_feedback_published', 'manager_feedback_published')
+    def _compute_waiting_feedback(self):
+        for appraisal in self:
+            appraisal.waiting_feedback = not appraisal.employee_feedback_published or not appraisal.manager_feedback_published
 
     def _group_expand_states(self, states, domain, order):
         return [key for key, val in self._fields['state'].selection]
-
-    def _compute_authorization(self):
-        user = self.env.user
-        appraisal_user = user.has_group('hr_appraisal.group_hr_appraisal_user')
-        for appraisal in self:
-            appraisal.is_autorized_to_send = appraisal_user or \
-                user.employee_id == appraisal.employee_id.parent_id or \
-                user.employee_id == appraisal.employee_id and user != appraisal.create_uid
 
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         self = self.sudo()  # fields are not on the employee public
         if self.employee_id:
-            self.company_id = self.employee_id.company_id
-            self.manager_appraisal = self.employee_id.appraisal_by_manager
-            self.manager_ids = self.employee_id.appraisal_manager_ids
-            self.colleagues_ids = self.employee_id.appraisal_colleagues_ids
-            self.collaborators_ids = self.employee_id.appraisal_collaborators_ids
-
-    @api.onchange('company_id')
-    def _onchange_company_id(self):
-        self.manager_body_html = self.company_id.appraisal_by_manager_body_html
-        self.colleagues_body_html = self.company_id.appraisal_by_colleagues_body_html
-        self.employee_body_html = self.company_id.appraisal_by_employee_body_html
-        self.collaborators_body_html = self.company_id.appraisal_by_collaborators_body_html
+            self.manager_ids = self.employee_id.parent_id
 
     def subscribe_employees(self):
-        """
-        Subscribes the employee and his manager to the appraisal thread.
-        Also subscribes other employees designed as manager for this appraisal, and the manager of the employee's department if he's different from the employee's direct manager.
-        Deprecated but public method: Should be remove in next version
-        """
         for appraisal in self:
-            partner_ids = [emp.related_partner_id.id for emp in appraisal.manager_ids if emp.related_partner_id]
-
-            if appraisal.employee_id.related_partner_id:
-                partner_ids.append(appraisal.employee_id.related_partner_id.id)
-            if appraisal.employee_id.parent_id.related_partner_id:
-                partner_ids.append(appraisal.employee_id.parent_id.related_partner_id.id)
-            if appraisal.employee_id.department_id.manager_id.related_partner_id:
-                partner_ids.append(appraisal.employee_id.department_id.manager_id.related_partner_id.id)
-
-            partner_ids = list(set(partner_ids))
-            appraisal.message_subscribe(partner_ids=partner_ids)
-        return True
-
-    def schedule_final_meeting(self, interview_deadline):
-        """ Creates event when user enters date manually from the form view.
-            If users edit the already entered date, created meeting is updated accordingly.
-        """
-        CalendarEvent = self.env['calendar.event']
-        values = {'start': interview_deadline, 'stop': interview_deadline}
-        for appraisal in self:
-            if appraisal.meeting_id and appraisal.meeting_id.allday:
-                appraisal.meeting_id.write(values)
-                appraisal.activity_reschedule(['mail.mail_activity_data_meeting'], date_deadline=interview_deadline)
-            elif appraisal.meeting_id and not appraisal.meeting_id.allday:
-                date = fields.Date.from_string(interview_deadline)
-                meeting_date = fields.Datetime.to_string(date)
-                appraisal.meeting_id.write({'start_datetime': meeting_date, 'stop_datetime': meeting_date})
-                appraisal.activity_reschedule(['mail.mail_activity_data_meeting'], date_deadline=interview_deadline)
-            if not appraisal.meeting_id:
-                employee_attendees = appraisal.manager_ids | appraisal.employee_id
-                values['name'] = _('Appraisal Meeting For %s') % appraisal.employee_id.name
-                values['allday'] = True
-                values['partner_ids'] = [(4, partner.id) for partner in employee_attendees.mapped('related_partner_id')]
-                user_ids = employee_attendees.mapped('user_id').ids or [self.env.uid]
-                values['user_id'] = user_ids[0]
-                # values['activity_ids'] = [(4, activity.id)]
-                meeting = CalendarEvent.create(values)  # LUL TODO batch creation
-                appraisal.activity_schedule(
-                    'mail.mail_activity_data_meeting', interview_deadline,
-                    note=_('<a href="#" data-oe-model="%s" data-oe-id="%s">Meeting</a> for <a href="#" data-oe-model="%s" data-oe-id="%s">%s\'s</a> appraisal') % (
-                        meeting._name, meeting.id, appraisal.employee_id._name,
-                        appraisal.employee_id.id, appraisal.employee_id.display_name),
-                    user_id=user_ids[0],
-                    calendar_event_id=meeting.id)
-                appraisal.meeting_id = meeting.id
-        return True
-
-    def _prepare_user_input_receivers(self):
-        """
-        @return: returns a list of tuple (body in html for mail, list of employees).
-        """
-        appraisal_receiver = []
-        if self.manager_ids:
-            appraisal_receiver.append((self.manager_body_html, self.manager_ids))
-        if self.colleagues_ids:
-            appraisal_receiver.append((self.colleagues_body_html, self.colleagues_ids))
-        if self.collaborators_ids:
-            appraisal_receiver.append((self.collaborators_body_html, self.collaborators_ids))
-        appraisal_receiver.append((self.employee_body_html, self.employee_id))
-        return appraisal_receiver
-
-    def _send_mail(self, recipient, company_id, header_text, subject, body):
-        """ Send the email reminder to specified employee (in recipient)
-            :param recipient: employee identifier to send the reminder
-            :param company_id: company object
-            :param header_text: text for header
-            :param subject: subject
-            :param body: body
-        """
-
-        msg = self.env['mail.message'].sudo().new(dict(body=body))
-
-        notif_layout = self.env.ref('mail.mail_notification_light')
-        notif_values = {'model_description': header_text, 'company': company_id}
-        body_html = notif_layout._render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
-        body_html = self.env['mail.render.mixin']._replace_local_links(body_html)
-        email = self.env.user.work_email or self.env.user.email
-
-        if not email:
-            raise ValidationError(_("You must configure your mail address."))
-
-        mail_values = {
-            'author_id': self.env.user.partner_id.id,
-            'email_from': self.env.user.email_formatted,
-            'email_to': formataddr((recipient.name, recipient.work_email)),
-            'subject': subject,
-            }
-        self.env['mail.mail'].sudo().create(dict(body_html=body_html, state='outgoing', **mail_values))
+            partners = appraisal.manager_ids.mapped('related_partner_id') | appraisal.employee_id.related_partner_id
+            appraisal.message_subscribe(partner_ids=partners.ids)
 
     def send_appraisal(self):
         for appraisal in self:
-            appraisal_data = appraisal._prepare_user_input_receivers()
-            for body_html, employees in appraisal_data:
-                for employee in employees:
-                    if not employee.work_email:
-                        continue
-
-                    subject = _('%s appraisal') % (appraisal.employee_id.name)
-                    template_data = {
-                        'record': employee,
-                        'body': body_html if body_html != '<p><br></p>' else False,
-                        'deadline': appraisal.date_close,
+            employee_mail_template = appraisal.company_id.appraisal_confirm_employee_mail_template
+            managers_mail_template = appraisal.company_id.appraisal_confirm_manager_mail_template
+            mapped_data = {
+                **{appraisal.employee_id: employee_mail_template},
+                **{manager: managers_mail_template for manager in appraisal.manager_ids}
+            }
+            for employee, mail_template in mapped_data.items():
+                if not employee.work_email or not self.env.user.email:
+                    continue
+                ctx = {'employee_to_name': employee.name,}
+                RenderMixin = self.env['mail.render.mixin'].with_context(**ctx)
+                subject = RenderMixin._render_template(mail_template.subject, 'hr.appraisal', appraisal.ids, post_process=True)[appraisal.id]
+                body = RenderMixin._render_template(mail_template.body_html, 'hr.appraisal', appraisal.ids, post_process=True)[appraisal.id]
+                # post the message
+                mail_values = {
+                    'email_from': self.env.user.email_formatted,
+                    'author_id': self.env.user.partner_id.id,
+                    'model': None,
+                    'res_id': None,
+                    'subject': subject,
+                    'body_html': body,
+                    'auto_delete': True,
+                    'email_to': employee.work_email
+                }
+                try:
+                    template = self.env.ref('mail.mail_notification_light', raise_if_not_found=True)
+                except ValueError:
+                    _logger.warning('QWeb template mail.mail_notification_light not found when sending appraisal confirmed mails. Sending without layouting.')
+                else:
+                    template_ctx = {
+                        'message': self.env['mail.message'].sudo().new(dict(body=mail_values['body_html'], record_name=employee.name)),
+                        'model_description': self.env['ir.model']._get('hr.appraisal').display_name,
+                        'company': self.env.company,
                     }
-                    if employee != appraisal.employee_id:
-                        template_data.update({'employee_name': appraisal.employee_id.display_name})
-                        header_text = _('appraisal about %s') % (appraisal.employee_id.name)
-                    else:
-                        header_text = _('appraisal')
-                    tpl = self.env.ref('hr_appraisal.mail_template_appraisal_reminder')
-                    body = tpl._render(template_data, engine='ir.qweb', minimal_qcontext=True)
-                    self._send_mail(employee, appraisal.company_id, header_text, subject, body)
+                    body = template._render(template_ctx, engine='ir.qweb', minimal_qcontext=True)
+                    mail_values['body_html'] = self.env['mail.render.mixin']._replace_local_links(body)
+                self.env['mail.mail'].sudo().create(mail_values)
 
-                    if employee.user_id:
-                        appraisal.activity_schedule(
-                            'hr_appraisal.mail_act_appraisal_form', appraisal.date_close,
-                            note=_('Fill appraisal for <a href="#" data-oe-model="%s" data-oe-id="%s">%s</a>') % (
-                                appraisal.employee_id._name, appraisal.employee_id.id, appraisal.employee_id.display_name),
-                            user_id=employee.user_id.id)
-            appraisal.message_post(body=_("Appraisal form(s) have been sent"))
-        return True
+                if employee.user_id:
+                    appraisal.activity_schedule(
+                        'mail.mail_activity_data_todo', appraisal.date_close,
+                        summary=_('Appraisal Form to Fill'),
+                        note=_('Fill appraisal for <a href="#" data-oe-model="%s" data-oe-id="%s">%s</a>') % (
+                            appraisal.employee_id._name, appraisal.employee_id.id, appraisal.employee_id.display_name),
+                        user_id=employee.user_id.id)
 
-    def cancel_appraisal(self):
-        """ Cancels the appraisal process, removing related calendar events,
-        removes sent surveys and generated activities. """
-        for appraisal in self:
-            if appraisal.meeting_id:
-                appraisal.meeting_id.unlink()
-
-            appraisal.date_final_interview = False
-        self.activity_unlink(['mail.mail_activity_data_meeting', 'hr_appraisal.mail_act_appraisal_form'])
+    def action_cancel(self):
+        self.write({
+            'state': 'cancel',
+            'date_final_interview': False
+        })
+        self.mapped('meeting_id').unlink()
+        self.activity_unlink(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
 
     @api.model
     def create(self, vals):
-        employee_id = vals.get('employee_id') or self.env.context.get('default_employee_id')
-        appraisals = self.search([('employee_id', '=', employee_id), ('state', '!=', 'cancel')])
-        if appraisals and not self.env.user.has_group('hr_appraisal.group_hr_appraisal_manager'):
-            last_appraisal_date = max(appraisals.mapped('date_close'))
-            appraisal_min_period = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_min_period'))
-            next_authorized_appraisal = last_appraisal_date + relativedelta(months=appraisal_min_period)
-            if datetime.date.today() < next_authorized_appraisal:
-                raise ValidationError(_("Your last appraisal was on %s %s. You will be able to request a new \
-appraisal on %s %s. If you think it's too late, feel free to have a chat with your manager.") %
-                    (last_appraisal_date.strftime("%B"), last_appraisal_date.strftime("%Y"),
-                    next_authorized_appraisal.strftime("%B"), next_authorized_appraisal.strftime("%Y")))
-
         result = super(HrAppraisal, self).create(vals)
         if vals.get('state') and vals['state'] == 'pending':
             self.send_appraisal()
 
         result.employee_id.sudo().write({
             'next_appraisal_date': result.date_close,
-            'periodic_appraisal_created': True,
         })
         result.subscribe_employees()
         return result
 
     def write(self, vals):
-        if vals.get('state'):
-            if vals['state'] == 'cancel':
-                self.cancel_appraisal()
-            if vals['state'] == 'pending':
-                self.send_appraisal()
+        if 'state' in vals and vals['state'] == 'pending':
+            self.send_appraisal()
         result = super(HrAppraisal, self).write(vals)
         if vals.get('date_close'):
-            self.mapped('employee_id').write({'next_appraisal_date': vals.get('date_close'), 'last_duration_reminder_send': 0})
-            self.activity_reschedule(['hr_appraisal.mail_act_appraisal_form'], date_deadline=vals['date_close'])
+            self.mapped('employee_id').write({'next_appraisal_date': vals.get('date_close')})
+            self.activity_reschedule(['mail.mail_activity_data_todo'], date_deadline=vals['date_close'])
         return result
 
     def unlink(self):
@@ -251,41 +189,47 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
         return super(HrAppraisal, self).unlink()
 
     def action_calendar_event(self):
-        """ Link to open calendar view for creating employee interview/meeting"""
         self.ensure_one()
-        partner_ids = [manager.related_partner_id.id for manager in self.manager_ids if manager.related_partner_id]
-        if self.employee_id.related_partner_id:
-            partner_ids.append(self.employee_id.related_partner_id.id)
+        partners = self.manager_ids.mapped('related_partner_id') | self.employee_id.related_partner_id | self.env.user.partner_id
         action = self.env.ref('calendar.action_calendar_event').read()[0]
-        partner_ids.append(self.env.user.partner_id.id)
         action['context'] = {
-            'default_partner_ids': partner_ids,
+            'default_partner_ids': partners.ids,
             'search_default_mymeetings': 1
         }
         return action
 
-    def button_send_appraisal(self):
+    def action_confirm(self):
+        self.activity_feedback(['mail.mail_activity_data_todo'])
         self.write({'state': 'pending'})
-        self.activity_feedback(['hr_appraisal.mail_act_appraisal_send'])
 
-    def button_done_appraisal(self):
+    def action_done(self):
         current_date = datetime.date.today()
+        self.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
         self.write({'state': 'done'})
-        self.mapped('employee_id').write({
-            'last_appraisal_date': current_date,
-            'last_duration_reminder_send': 0,
-            'next_appraisal_date': False,
-            'periodic_appraisal_created': False})
-        self.activity_feedback(['mail.mail_activity_data_meeting', 'hr_appraisal.mail_act_appraisal_form'])
+        for appraisal in self:
+            appraisal.employee_id.write({
+                'last_appraisal_id': appraisal.id,
+                'last_appraisal_date': current_date,
+                'next_appraisal_date': False})
 
-    def button_cancel_appraisal(self):
-        self.write({'state': 'cancel'})
-
-    def write_and_open(self):
+    def action_open_last_appraisal(self):
+        self.ensure_one()
         return {
             'view_mode': 'form',
             'res_model': 'hr.appraisal',
             'type': 'ir.actions.act_window',
             'target': 'current',
-            'res_id': self.id,
+            'res_id': self.last_appraisal_id.id,
+        }
+
+    def action_open_goals(self):
+        self.ensure_one()
+        return {
+            'name': _('%s Goals') % self.employee_id.name,
+            'view_mode': 'kanban,tree,form',
+            'res_model': 'hr.appraisal.goal',
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'domain': [('employee_id', '=', self.employee_id.id)],
+            'context': {'default_employee_id': self.employee_id.id},
         }

@@ -9,6 +9,7 @@ class HrEmployeeBase(models.AbstractModel):
     _description = "Basic Employee"
 
     parent_user_id = fields.Many2one(related='parent_id.user_id', string="Parent User")
+    last_appraisal_id = fields.Many2one('hr.appraisal')
 
     def action_send_appraisal_request(self):
         return {

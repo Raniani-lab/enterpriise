@@ -12,7 +12,7 @@ class HrDepartureWizard(models.TransientModel):
     def action_register_departure(self):
         super(HrDepartureWizard, self).action_register_departure()
         if self.cancel_appraisal:
-            furture_appraisals = self.env["hr.appraisal"].search([
+            future_appraisals = self.env["hr.appraisal"].search([
                 ('employee_id', '=', self.employee_id.id), 
                 ('state', 'in', ['new', 'pending'])])
-            furture_appraisals.button_cancel_appraisal()
+            future_appraisals.action_cancel()

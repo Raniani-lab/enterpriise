@@ -7,15 +7,9 @@ from odoo import models, fields, api
 class User(models.Model):
     _inherit = ['res.users']
 
-    appraisal_by_manager = fields.Boolean(related='employee_id.appraisal_by_manager')
-    appraisal_manager_ids = fields.Many2many(related='employee_id.appraisal_manager_ids')
-    appraisal_self = fields.Boolean(related='employee_id.appraisal_self', string='Employee Himself')
-    appraisal_by_collaborators = fields.Boolean(related='employee_id.appraisal_by_collaborators')
-    appraisal_collaborators_ids = fields.Many2many(related='employee_id.appraisal_collaborators_ids')
-    appraisal_by_colleagues = fields.Boolean(related='employee_id.appraisal_by_colleagues')
-    appraisal_colleagues_ids = fields.Many2many(related='employee_id.appraisal_colleagues_ids')
     next_appraisal_date = fields.Date(related='employee_id.next_appraisal_date')
     last_appraisal_date = fields.Date(related='employee_id.last_appraisal_date')
+    last_appraisal_id = fields.Many2one(related='employee_id.last_appraisal_id')
 
     def __init__(self, pool, cr):
         """ Override of __init__ to add access rights.
@@ -23,15 +17,9 @@ class User(models.Model):
             on some specific fields defined in self.SELF_{READ/WRITE}ABLE_FIELDS.
         """
         appraisal_readable_fields = [
-            'appraisal_by_manager',
-            'appraisal_manager_ids',
-            'appraisal_self',
-            'appraisal_by_collaborators',
-            'appraisal_collaborators_ids',
-            'appraisal_by_colleagues',
-            'appraisal_colleagues_ids',
             'next_appraisal_date',
             'last_appraisal_date',
+            'last_appraisal_id',
         ]
         init_res = super(User, self).__init__(pool, cr)
         # duplicate list to avoid modifying the original reference

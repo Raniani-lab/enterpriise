@@ -86,7 +86,7 @@ class RequestAppraisal(models.TransientModel):
             if wizard.template_id:
                 ctx = {
                     'partner_to_name': ', '.join(wizard.recipient_ids.sorted('name').mapped('name')),
-                    'recipient_users': wizard.recipient_ids.user_ids,
+                    'recipient_users': wizard.recipient_ids.mapped('user_id'),
                     'author_name': wizard.author_id.name,
                     'url': "${ctx['url']}",
                 }
@@ -105,17 +105,14 @@ class RequestAppraisal(models.TransientModel):
         })
         appraisal.message_subscribe(partner_ids=self.recipient_ids.ids)
         appraisal.sudo()._onchange_employee_id()
-        appraisal._onchange_company_id()
-
-        involved_employees = appraisal.employee_id | appraisal.manager_ids | appraisal.collaborators_ids | appraisal.colleagues_ids
-        appraisal.colleagues_ids |= self.recipient_ids.user_ids.employee_ids - involved_employees
 
         ctx = {'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id)}
         body = self.env['mail.render.mixin'].with_context(ctx)._render_template(self.body, 'hr.appraisal', appraisal.ids, post_process=True)[appraisal.id]
 
         for user in self.recipient_ids.user_ids or self.env.user:
             appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
-                'hr_appraisal.mail_act_appraisal_send', fields.Date.today(),
+                'mail.mail_activity_data_todo', fields.Date.today(),
+                summary=_('Appraisal to Confirm and Send'),
                 note=_('Confirm and send appraisal of %s') % appraisal.employee_id.name,
                 user_id=user.id)
 
@@ -124,3 +121,12 @@ class RequestAppraisal(models.TransientModel):
             body=body,
             email_layout_xmlid='mail.mail_notification_light',
             partner_ids=self.recipient_ids.ids)
+
+        return {
+            'view_mode': 'form',
+            'res_model': 'hr.appraisal',
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'res_id': appraisal.id,
+        }
+

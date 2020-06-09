@@ -30,9 +30,8 @@
                         class="o_group_by_menu"
                         fields="fields"
                     />
-                    <TimeRangeMenu t-if="props.searchMenuTypes.includes('comparison')"
-                        class="o_time_range_menu"
-                        fields="fields"
+                    <ComparisonMenu t-if="props.searchMenuTypes.includes('comparison') and model.getFiltersOfType('comparison').length"
+                        class="o_comparison_menu"
                     />
                     <FavoriteMenu t-if="props.searchMenuTypes.includes('favorite')"
                         class="o_favorite_menu"

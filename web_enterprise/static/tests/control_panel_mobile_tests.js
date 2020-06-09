@@ -5,7 +5,7 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
     const testUtils = require('web.test_utils');
 
     const cpHelpers = testUtils.controlPanel;
-    const {createActionManager, createView} = testUtils;
+    const { createActionManager, createControlPanel, createView } = testUtils;
 
     QUnit.module('Control Panel', {
         beforeEach: function () {
@@ -119,6 +119,46 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
 
             form.destroy();
             viewPort.style.position = '';
+        });
+
+        QUnit.test("mobile search: basic display", async function (assert) {
+            assert.expect(4);
+
+            const fields = {
+                birthday: { string: "Birthday", type: "date", store: true, sortable: true },
+            };
+            const viewInfo = {
+                arch: `
+                    <search>
+                        <filter name="birthday" date="birthday"/>
+                    </search>`,
+                fields,
+            };
+            const searchMenuTypes = ["filter", "groupBy", "comparison", "favorite"];
+            const params = {
+                cpStoreConfig: { viewInfo, searchMenuTypes },
+                cpProps: { fields, searchMenuTypes },
+            };
+            const controlPanel = await createControlPanel(params);
+
+            // Toggle search bar controls
+            await testUtils.dom.click(controlPanel.el.querySelector("button.o_enable_searchview"));
+            // Open search view
+            await testUtils.dom.click(controlPanel.el.querySelector("button.o_toggle_searchview_full"));
+
+            // Toggle filter date
+            // Note: 'document.body' is used instead of 'controlPanel' because the
+            // search view is directly in the body.
+            await cpHelpers.toggleFilterMenu(document);
+            await cpHelpers.toggleMenuItem(document, "Birthday");
+            await cpHelpers.toggleMenuItemOption(document, "Birthday", 0);
+
+            assert.containsOnce(document.body, ".o_filter_menu");
+            assert.containsOnce(document.body, ".o_group_by_menu");
+            assert.containsOnce(document.body, ".o_comparison_menu");
+            assert.containsOnce(document.body, ".o_favorite_menu");
+
+            controlPanel.destroy();
         });
 
         QUnit.test('mobile search: activate a filter through quick search', async function (assert) {

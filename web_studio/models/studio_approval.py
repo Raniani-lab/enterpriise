@@ -226,6 +226,7 @@ class StudioApprovalRule(models.Model):
         if ruleSudo.exclusive_user:
             existing_entry = ruleSudo.env['studio.approval.entry'].search([
                 ('model', '=', ruleSudo.model_name), ('res_id', '=', res_id),
+                ('method', '=', ruleSudo.method), ('action_id', '=', ruleSudo.action_id.id),
                 ('user_id', '=', self.env.user.id),
                 ('rule_id.active', '=', True),  # archived rules should have no impact
             ])
@@ -236,6 +237,7 @@ class StudioApprovalRule(models.Model):
         if not ruleSudo.exclusive_user:
             existing_entry = ruleSudo.env['studio.approval.entry'].search([
                 ('model', '=', ruleSudo.model_name), ('res_id', '=', res_id),
+                ('method', '=', ruleSudo.method), ('action_id', '=', ruleSudo.action_id.id),
                 ('user_id', '=', self.env.user.id), ('rule_id.exclusive_user', '=', True),
                 ('rule_id.active', '=', True),  # archived rules should have no impact
             ])

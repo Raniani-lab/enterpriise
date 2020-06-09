@@ -339,3 +339,33 @@ class TestStudioApproval(SavepointCase):
             method=self.METHOD,
             action_id=False)
         self.assertTrue(approval_result.get('approved'), "should be able to proceed with an exclusive rule if another entry was archived")
+
+    def test_10_exclusive_collision(self):
+        """Test that exclusive rules for different methods does not interact unexpectdedly."""
+        # set the base rule for users and the 'exlusive_user' rules for admin
+        self.rule.active = True
+        self.rule.group_id = self.group_user
+        self.rule_exclusive.active = True
+        self.rule_exclusive.group_id = self.group_user
+        other_exclusive_rule = self.env['studio.approval.rule'].create({
+            'active': True,
+            'model_id': self.rule_exclusive.model_id.id,
+            'method': 'unlink',
+            'message': "You didn't say the magic word!",
+            'group_id': self.group_user.id,
+            'exclusive_user': True,
+        })
+        approval_result = self.env['studio.approval.rule'].with_user(self.user).check_approval(
+            model=self.MODEL,
+            res_id=self.record.id,
+            method=self.METHOD,
+            action_id=False)
+        self.assertFalse(approval_result.get('approved'), "User shouldn't be able to proceed")
+        approval_result = self.env['studio.approval.rule'].with_user(self.user).check_approval(
+            model=self.MODEL,
+            res_id=self.record.id,
+            method='unlink',
+            action_id=False)
+        # check that the rule on 'unlink' is not prevented by another entry
+        # for a rule that is not related to the same action/method
+        self.assertTrue(approval_result.get('approved'), "User should be able to unlink")

@@ -87,8 +87,8 @@
     <h3 t-if="env.device.isMobile and props.actionName">
         <strong>Action to approve:</strong> <t t-esc="props.actionName"/>
     </h3>
-    <ul class="list-unstyled mb0 o_web_studio_approval_info">
-        <li t-foreach="state.rules" t-as="rule" t-key="rule.id">
+    <div class="o_web_studio_approval_info" t-att-data-mobile="env.device.isMobile">
+        <div t-foreach="state.rules" t-as="rule" t-key="rule.id" class="o_web_studio_approval_rule">
             <t t-set="entry" t-value="getEntry(rule.id)"/>
             <div t-if="!getEntry(rule.id)" class="o_web_studio_approval_no_entry">
                 <div class="o_web_studio_approval_avatar">
@@ -124,7 +124,7 @@
                     </div>
                 </t>
             </div>
-            <div t-else="" class="o_web_studio_approval_has_entry">
+            <div t-else="" t-attf-class="o_web_studio_approval_has_entry o_approval_{{getEntry(rule.id).approved?'success':'danger'}}">
                 <div class="o_web_studio_approval_avatar">
                     <img
                         t-attf-src="/web/image/res.users/{{getEntry(rule.id).user_id[0]}}/image_128"
@@ -132,11 +132,14 @@
                         t-att-title="getEntry(rule.id).user_id[1]"/>
                 </div>
                 <div class="o_web_studio_approval_description" t-att-title="getEntry(rule.id).long_date">
-                    <span><span t-esc="getEntry(rule.id).user_id[1]"/> <i t-if="rule.exclusive_user" class="fa fa-shield" title="This rule limits this user to a single approval for this action."/></span>
-                    <p class="text-muted small">
-                        <t t-if="getEntry(rule.id).approved">Approved on </t>
-                        <t t-else="">Rejected on </t>
-                        <span t-esc="getEntry(rule.id).short_date"/>
+                    <p>
+                        <strong t-esc="getEntry(rule.id).user_id[1]"/> <i t-if="rule.exclusive_user" class="fa fa-shield" title="This rule limits this user to a single approval for this action."/>
+                        <br/>
+                        <span class="small">
+                            <t t-if="getEntry(rule.id).approved">Approved on </t>
+                            <t t-else="">Rejected on </t>
+                            <span t-esc="getEntry(rule.id).short_date"/>
+                        </span>
                     </p>
                 </div>
                 <t t-if="rule.can_validate and getEntry(rule.id).user_id[0] === env.session.uid">
@@ -152,7 +155,7 @@
                     </div>
                 </t>
             </div>
-        </li>
-    </ul>
+        </div>
+    </div>
 </t>
 </templates>

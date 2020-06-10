@@ -881,7 +881,7 @@ QUnit.module('DocumentsViews', {
             model: 'documents.document',
             data: this.data,
             mockRPC: function (route) {
-                if (route === '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?model%3Ddocuments.document') {
+                if (route === '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?model%3Ddocuments.document%26filename%3Dblip') {
                     assert.step('pdf route');
                     return Promise.resolve();
                 }

@@ -158,12 +158,12 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
             assert.verifySteps(['/web/dataset/search_read/account.move.line', 'read/ir.attachment']);
             await testUtils.dom.click(list.$('.o_data_row:eq(2) .o_data_cell:eq(1)'));
             assert.hasAttrValue(list.$('.o_attachment_preview iframe'), 'data-src',
-                '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/1',
+                '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/1?filename%3Dundefined',
                 "the src attribute should be correctly set on the iframe");
 
             await testUtils.dom.click(list.$('.o_data_row:eq(3) .o_data_cell:eq(1)'));
             assert.hasAttrValue(list.$('.o_attachment_preview iframe'), 'data-src',
-                '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2',
+                '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?filename%3Dundefined',
                 "the src attribute should still be correctly set on the iframe");
 
             list.destroy();

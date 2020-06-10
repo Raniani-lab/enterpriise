@@ -74,9 +74,13 @@ class PdfPage extends owl.Component {
      * @private
      * @param {MouseEvent} ev
      */
-    _onClickIgnore(ev) {
+    _onClickSelect(ev) {
         ev.stopPropagation();
-        this.trigger('ignore-clicked', this.props.pageId);
+        this.trigger('select-clicked', {
+            pageId: this.props.pageId,
+            isRangeSelection: ev.shiftKey,
+            isKeepSelection: true,
+        });
     }
     /**
      * @private
@@ -85,7 +89,7 @@ class PdfPage extends owl.Component {
     _onDragEnter(ev) {
         ev.stopPropagation();
         ev.preventDefault();
-        this.state.isHover = !this.props.isIgnored;
+        this.state.isHover = true;
     }
     /**
      * @private
@@ -130,8 +134,8 @@ class PdfPage extends owl.Component {
 }
 
 PdfPage.defaultProps = {
-    isIgnored: false,
     isPreview: false,
+    isSelected: false,
 };
 
 PdfPage.props = {
@@ -139,8 +143,8 @@ PdfPage.props = {
         type: Object,
         optional: true,
     },
-    isIgnored: Boolean,
     isPreview: Boolean,
+    isSelected: Boolean,
     pageId: String,
 };
 

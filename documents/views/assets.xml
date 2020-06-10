@@ -4,6 +4,7 @@
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/documents/static/src/js/documents_controller_mixin.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_model_mixin.js"/>
+            <script type="text/javascript" src="/documents/static/src/js/documents_utils.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_view_mixin.js"/>
 
             <script type="text/javascript" src="/documents/static/src/js/documents_document_viewer.js"/>

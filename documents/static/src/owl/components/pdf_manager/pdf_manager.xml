@@ -59,12 +59,12 @@
                             <PdfPage t-ref="PdfPage_{{pageId}}"
                                 canvas="_pageCanvas[pageId].canvas"
                                 isPreview="false"
-                                isIgnored="state.pages[pageId].isIgnored"
+                                isSelected="state.pages[pageId].isSelected"
                                 pageId="pageId"
-                                t-on-ignore-clicked="_onClickIgnore"
                                 t-on-page-clicked="_onClickPage"
                                 t-on-page-dragged="_onPageDragStart"
                                 t-on-page-dropped="_onPageDrop"
+                                t-on-select-clicked="_onSelectClicked"
                             />
                             <div t-if="pageId_first" class="o_pdf_group_name_wrapper">
                                 <PdfGroupName groupId="groupId"

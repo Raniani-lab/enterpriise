@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="documents.component.PdfPage" owl="1">
-        <div class="o_pdf_page" t-att-class="{ o_pdf_thumbnail_dragover: state.isHover, o_pdf_page_ignored: props.isIgnored, o_pdf_page_preview: props.isPreview }">
+        <div class="o_pdf_page" t-att-class="{ o_pdf_thumbnail_dragover: state.isHover, o_pdf_page_selected: props.isSelected, o_pdf_page_preview: props.isPreview }">
             <div t-if="!props.isPreview" class="o_documents_pdf_button_wrapper">
-                <t t-if="props.isIgnored">
-                    <button class="btn btn-primary fa o_documents_pdf_page_button fa-eye" aria-label="Click to restore" title="Click to restore" t-on-click="_onClickIgnore"/>
-                </t>
-                <t t-else="">
-                    <button class="btn btn-primary fa o_documents_pdf_page_button fa-eye-slash" aria-label="Click to ignore" title="Click to ignore" t-on-click="_onClickIgnore"/>
-                </t>
+                <i class="o_documents_pdf_page_selector fa" t-att-class="{'fa-check-circle': props.isSelected, 'fa-circle-thin': !props.isSelected }" aria-label="select" title="select" t-on-click="_onClickSelect"/>
             </div>
             <div class="o_documents_pdf_canvas_wrapper"
                 draggable="true"
@@ -19,9 +14,6 @@
                 t-on-dragleave="_onDragLeave"
                 t-on-click="_onClickWrapper"
                 t-ref="canvasWrapper">
-                <t t-if="!props.isPreview and props.isIgnored">
-                    <i class="o_pdf_canvas_page_icon fa-6x fa fa-eye-slash"/>
-                </t>
             </div>
         </div>
     </t>

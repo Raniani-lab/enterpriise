@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 import logging
 import random
 
@@ -43,3 +45,24 @@ class EventRegistration(models.Model):
 
         else:
             super(EventRegistration, self)._init_column(column_name)
+
+    @api.model
+    def register_attendee(self, barcode, event_id):
+        attendee = self.search([('barcode', '=', barcode)], limit=1)
+        if not attendee:
+            return {'error': 'invalid_ticket'}
+        res = attendee._get_registration_summary()
+        if attendee.state == 'cancel':
+            status = 'canceled_registration'
+        elif not attendee.event_id.is_ongoing:
+            status = 'not_ongoing_event'
+        elif attendee.state != 'done':
+            if event_id and attendee.event_id.id != event_id:
+                status = 'need_manual_confirmation'
+            else:
+                attendee.action_set_done()
+                status = 'confirmed_registration'
+        else:
+            status = 'already_registered'
+        res.update({'status': status, 'event_id': event_id})
+        return res

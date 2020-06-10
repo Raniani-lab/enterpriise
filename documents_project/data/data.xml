@@ -5,7 +5,7 @@
         <!-- Workflow Rules -->
 
         <record id="documents_project_rule" model="documents.workflow.rule">
-            <field name="sequence">14</field>
+            <field name="sequence">3</field>
             <field name="name">Create a Task</field>
             <field name="activity_option">True</field>
             <field name="excluded_tag_ids" eval="[(4, ref('documents.documents_internal_status_deprecated'))]"/>

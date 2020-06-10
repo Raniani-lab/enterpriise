@@ -61,7 +61,7 @@ const selection = {
             if (newSelection.includes(target)) {
                 anchor = target;
             } else {
-                anchor = null;
+                anchor = undefined;
             }
         }
 

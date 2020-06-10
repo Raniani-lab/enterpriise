@@ -11,24 +11,26 @@ tour.register('documents_tour', {
     trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
     content: _t("Want to become a <b>paperless company</b>? Let's discover Odoo Documents."),
     position: 'bottom',
-}, { // equivalent to '.o_search_panel_label:contains('Internal')' but language agnostic.
-    trigger: '.o_search_panel_category_value[data-id="1"] .o_search_panel_label',
+}, { // equivalent to '.o_search_panel_category_value:contains('Internal')' but language agnostic.
+    trigger: '.o_search_panel_category_value[data-id="1"]',
     content: _t("Select the Internal workspace."),
     position: 'bottom',
 }, {
     trigger: 'img[src="https://img.youtube.com/vi/Ayab6wZ_U1A/0.jpg"]',
     content: _t("Click on a thumbnail to <b>preview the document</b>."),
     position: 'bottom',
-}, {
-    trigger: '.o_close_btn',
-    extra_trigger: '.o_documents_kanban',
-    content: _t("<b>Close the preview</b> to go back."),
-    position: 'left',
-}, { // equivalent to '.o_search_panel_label_title:contains('Inbox')' but language agnostic.
-    trigger: '.o_search_panel_filter_value[data-value-id="1"] .o_search_panel_label_title',
+    run: function (actions) {
+        // closes the modal
+        $('.o_close_btn').click();
+    },
+}, { // equivalent to '.o_search_panel_filter_value:contains('Inbox')' but language agnostic.
+    trigger: '.o_search_panel_filter_value[data-value-id="1"]',
     extra_trigger: '.o_search_panel_label',
     content: _t("Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter documents and structure your process.</i>"),
-    position: 'right',
+    position: 'bottom',
+    run: function (actions) {
+        $('.o_search_panel_filter_value[data-value-id="1"] .o_search_panel_label_title').click();
+    },
 }, {
     trigger: '.o_kanban_record:contains(invoice.png)',
     extra_trigger: '.o_documents_kanban',
@@ -38,7 +40,7 @@ tour.register('documents_tour', {
     trigger: '.o_inspector_rule[data-id="3"] .o_inspector_trigger_rule',
     extra_trigger: '.o_documents_image_background',
     content: _t("Let's tag this bill as legal<br/> <i>Tips: actions can be tailored to your process, according to the workspace.</i>"),
-    position: 'right',
+    position: 'bottom',
 }, { // the nth(0) ensures that the filter of the preceding step has been applied.
     trigger: '.o_kanban_record:nth(0):contains(Mails_inbox.pdf)',
     extra_trigger: '.o_documents_kanban',
@@ -50,24 +52,24 @@ tour.register('documents_tour', {
     content: _t("As this PDF contains multiple documents, let's split and process in bulk."),
     position: 'bottom',
 }, {
-    trigger: '.o_pdf_scissors:nth(1)',
+    trigger: '.o_page_splitter_wrapper:nth(3)',
     extra_trigger: '.o_documents_pdf_canvas:nth(5)', // Makes sure that all the canvas are loaded.
     content: _t("Click on the <b>page separator</b>: we don't want to split these two pages as they belong to the same document."),
     position: 'right',
 }, {
-    trigger: '.o_documents_pdf_page_button:nth(3)',
+    trigger: '.o_documents_pdf_page_selector:nth(5)',
     extra_trigger: '.o_documents_pdf_manager',
-    content: _t("<b>Hide this page</b> as we plan to process all bills first."),
+    content: _t("<b>Deselect this page</b> as we plan to process all bills first."),
     position: 'left',
-}, { // equivalent to '.o_pdf_rule_buttons:contains(Scan Bill)' but language agnostic.
-    trigger: '.o_pdf_rule_buttons:nth(2)',
+}, { // equivalent to '.o_pdf_rule_buttons:contains(Mark as Bill)' but language agnostic.
+    trigger: '.o_pdf_rule_buttons:first',
     extra_trigger: '.o_documents_pdf_manager',
-    content: _t("Let's process these bills: send to Finance workspace, and scan automatically."),
+    content: _t("Let's process these bills: send to Finance workspace."),
     position: 'bottom',
 }, { // equivalent to '.o_pdf_rule_buttons:contains(Send to Legal)' but language agnostic.
-    trigger: '.o_pdf_rule_buttons:nth(1)',
+    trigger: '.o_pdf_rule_buttons:nth-last-child(2)',
     extra_trigger: '.o_pdf_rule_buttons:not(:disabled)',
-    content: _t("Let's process these bills: send to Finance workspace, and scan automatically."),
+    content: _t("Send this letter to the legal department, by assigning the right tags."),
     position: 'bottom',
 }]);
 });

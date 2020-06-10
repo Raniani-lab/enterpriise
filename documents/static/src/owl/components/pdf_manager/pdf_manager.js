@@ -186,7 +186,7 @@ class PdfManager extends owl.Component {
             }
         } finally {
             this.state.uploadingLock = false;
-            this.state.anchorId = null;
+            this.state.anchorId = undefined;
         }
     }
     /**
@@ -198,7 +198,7 @@ class PdfManager extends owl.Component {
      * @param {boolean} [param0.isSelected] true if pages should be selected
      * @return {String} groupId (unique)
      */
-    _createGroup({ name, pageIds, index, isSelected=false } = {}) {
+    _createGroup({ name, pageIds, index, isSelected } = {}) {
         const groupId = _.uniqueId('group');
         pageIds = pageIds || [];
         this.state.groupData[groupId] = {
@@ -520,7 +520,7 @@ class PdfManager extends owl.Component {
      */
     _onSelectClicked(ev) {
         const { pageId, isRangeSelection, isKeepSelection } = ev.detail;
-        let recordIds = [];
+        const recordIds = [];
 
         for (const groupId of this.state.groupIds) {
             recordIds.push(...this.state.groupData[groupId].pageIds);
@@ -548,7 +548,7 @@ class PdfManager extends owl.Component {
         for (const pageId in this.state.pages) {
             this.state.pages[pageId].isSelected = false;
         }
-        this.state.anchorId = null;
+        this.state.anchorId = undefined;
     }
     /**
      * @private

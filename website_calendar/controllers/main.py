@@ -192,13 +192,16 @@ class WebsiteCalendar(http.Controller):
         day_name = format_func(date_start, 'EEE', locale=locale)
         date_start = day_name + ' ' + format_func(date_start, locale=locale) + date_start_suffix
         details = event.appointment_type_id and event.appointment_type_id.message_confirmation or event.description or ''
-        params = url_encode({
+        params = {
             'action': 'TEMPLATE',
             'text': event.name,
             'dates': url_date_start + '/' + url_date_stop,
             'details': html2plaintext(details.encode('utf-8'))
-        })
-        google_url = 'https://www.google.com/calendar/render?' + params
+        }
+        if event.location:
+            params.update(location=event.location.replace('\n', ' '))
+        encoded_params = url_encode(params)
+        google_url = 'https://www.google.com/calendar/render?' + encoded_params
 
         return request.render("website_calendar.appointment_validated", {
             'event': event,

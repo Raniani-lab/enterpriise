@@ -649,6 +649,7 @@ class AccountMove(models.Model):
         else:
             # we need to make sure the type is in the context as _get_default_journal uses it
             self_ctx = self.with_context(default_type=self.move_type) if 'default_type' not in self._context else self
+            self_ctx = self_ctx.with_company(self.company_id.id)
             self_ctx = self_ctx.with_context(default_journal_id=self_ctx._get_default_journal().id)
         with Form(self_ctx) as move_form:
             if not move_form.partner_id:

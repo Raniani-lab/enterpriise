@@ -52,7 +52,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-foreach="get_details_by_rule_category.get(o.id, [])" t-as="h">
+                            <t t-foreach="o.get_details_by_rule_category().get(o.id, [])" t-as="h">
                                 <t t-if="h['level']==0">
                                     <tr>
                                         <td>

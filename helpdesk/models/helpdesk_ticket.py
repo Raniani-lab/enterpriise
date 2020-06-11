@@ -264,7 +264,7 @@ class HelpdeskTicket(models.Model):
     # next 4 fields are computed in write (or create)
     assign_date = fields.Datetime("First assignment date")
     assign_hours = fields.Integer("Time to first assignment (hours)", compute='_compute_assign_hours', store=True, help="This duration is based on the working calendar of the team")
-    close_date = fields.Datetime("Close date")
+    close_date = fields.Datetime("Close date", copy=False)
     close_hours = fields.Integer("Time to close (hours)", compute='_compute_close_hours', store=True, help="This duration is based on the working calendar of the team")
     open_hours = fields.Integer("Open Time (hours)", compute='_compute_open_hours', search='_search_open_hours', help="This duration is not based on the working calendar of the team")
 

@@ -212,7 +212,7 @@ var FollowupFormRenderer = FormRenderer.extend({
         }
         ev.preventDefault();
         var $el = $(ev.currentTarget);
-        this.do_notify(_t('Start Calling'), _t('Calling') + ' ' + $el.data('number'));
+        this.do_notify(false, _t('Calling') + ' ' + $el.data('number'));
         this.trigger_up('voip_call', {
             resModel: $el.data('model'),
             resId: $el.data('id'),

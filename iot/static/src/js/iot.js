@@ -40,9 +40,9 @@ ActionManager.include({
 
     _onIoTActionResult: function (data){
         if (data.result === true) {
-            this.do_notify(_t('Successfully sent to printer!'));
+            this.do_notify(false, _t('Successfully sent to printer!'));
         } else {
-            this.do_warn(_t('Connection to Printer failed'), _t('Please check if the printer is still connected.'));
+            this.do_warn(_t('Connection to printer failed'), _t('Check if the printer is still connected'));
         }
     },
 
@@ -52,7 +52,7 @@ ActionManager.include({
     },
 
     _onValueChange: function (data) {
-        this.do_notify("Printer " + data.status);
+        this.do_notify(false, _t("Printer ") + data.status);
     }
 });
 

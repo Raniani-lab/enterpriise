@@ -70,7 +70,7 @@ WebClient.include({
         if (this.studioMode === 'main' && action.target === 'new') {
             // Wizards in the app creator can be opened (ex: Import wizard)
             // TODO: what if we modify target = 'curent' to modify it?
-            this.do_warn("Studio", _t("Wizards are not editable with Studio."));
+            this.do_warn(false, _t("Wizards are not editable with Studio"));
             return Promise.reject();
         }
 
@@ -247,7 +247,7 @@ WebClient.include({
         var self = this;
         if (this.studioMode) {
             if (!this._isStudioEditable(action)) {
-                this.do_warn("Studio", _t("This action is not editable by Studio"));
+                this.do_warn(false, _t("This action is not editable by Studio"));
                 return Promise.reject();
             }
             // tag the action for the actionManager

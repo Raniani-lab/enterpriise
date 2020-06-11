@@ -27,7 +27,7 @@ var MrpSubcontractingPickingClientAction = PickingClientAction.include({
             return self._getActionRecordComponents(moveId).then(function (res) {
                 self.do_action(res[0], res[1]);
             }, function (errorMessage) {
-                self.do_warn(_t('Warning'), errorMessage);
+                self.do_warn(false, errorMessage);
             });
         });
     },

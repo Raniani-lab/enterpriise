@@ -93,7 +93,7 @@ const BatchPickingClientAction = PickingClientAction.extend({
      * @override
      */
     _notify_cancellation: function () {
-        this.do_notify(_t("Cancel"), _t("The batch picking has been cancelled"));
+        this.do_notify(false, _t("The batch picking has been cancelled"));
     },
 
     /**

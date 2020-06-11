@@ -27,7 +27,7 @@ var TabletImageIot = TabletImage.extend(iot_widgets.IotValueFieldMixin, {
         ev.stopImmediatePropagation();
         if (this.iot_device) {
             ev.preventDefault();
-            this.do_notify(_t('Capture image...'));
+            this.do_notify(false, _t('Capture image...'));
             this.iot_device.action('')
                 .then(function(data) {
                     self._onIoTActionResult(data);

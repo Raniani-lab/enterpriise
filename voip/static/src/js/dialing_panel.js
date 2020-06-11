@@ -11,10 +11,10 @@ const config = require('web.config');
 const realSession = require('web.session');
 const Widget = require('web.Widget');
 
-const _t = core._t;
+const { _t, _lt } = core;
 const HEIGHT_OPEN = '480px';
 const HEIGHT_FOLDED = '0px';
-const YOUR_ARE_ALREADY_IN_A_CALL = _t("You are already in a call");
+const YOUR_ARE_ALREADY_IN_A_CALL = _lt("You are already in a call");
 
 // As voip is not supported on mobile devices,
 // we want to keep the standard phone widget
@@ -254,9 +254,7 @@ const DialingPanel = Widget.extend({
                 return;
             }
             if (!number) {
-                this.do_notify(
-                    _t("The phonecall has no number"),
-                    _t("Please check if a phone number is given for the current phonecall"));
+                this.do_notify(false, _t("The phonecall has no number"));
                 return;
             }
             if (!this._isShow || this._isFolded) {
@@ -663,9 +661,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _onSipCustomerUnavailable() {
-        this.do_notify(
-            _t("Customer unavailable"),
-            _t("The customer is temporary unavailable. Please try later."));
+        this.do_notify(false, _t("Customer unavailable. Please try later."));
     },
     /**
      * @private

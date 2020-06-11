@@ -440,7 +440,7 @@ var ActionEditorAction = AbstractAction.extend({
         var view_type = event.data.view_type;
 
         if (view_type === 'activity' && !this.activityAllowed) {
-            this.do_warn(_t("The activity view is not available on this model."));
+            this.do_warn(false, _t("Activity view unavailable on this model"));
             return;
         }
 

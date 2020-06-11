@@ -26,7 +26,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
                     return filter.split(':').length === 1;
                 });
                 if (GroupBy.length !== params.groupBy.length) {
-                    this.do_warn(_t('Invalid group by'), _t('Grouping by date is not supported, ignoring it'));
+                    this.do_warn(false, _t('Grouping by date is not supported'));
                 }
                 params.groupBy = GroupBy;
             }
@@ -299,7 +299,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
                     return filter.split(':').length === 1;
                 });
                 if (GroupBy.length !== params.groupBy.length) {
-                    this.do_warn(_t('Invalid group by'), _t('Grouping by date is not supported, ignoring it'));
+                    this.do_warn(false, _t('Grouping by date is not supported'));
                 }
                 params.groupBy = GroupBy;
             }

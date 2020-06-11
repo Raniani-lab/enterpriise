@@ -134,7 +134,7 @@ var Model = {
         if (selectedIds.length > 0) {
             var message = _t("Some journal items from the selected batch payment are already selected in another reconciliation : ");
             message += _.map(selectedIds, function(l) { return l.name; }).join(', ');
-            this.do_warn(_t("Incorrect Operation"), message, true);
+            this.do_warn(false, message, true);
             return;
         }
 

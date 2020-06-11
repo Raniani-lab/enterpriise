@@ -52,14 +52,12 @@ const AppraisalKanbanController = KanbanController.extend({
             // this is not ourself, so if we get here it means that the
             // employee is not associated with any user
             this.displayNotification({
-                title: _t('No user to chat with'),
-                message: _t('You can only chat with employees that have a dedicated user.'),
+                message: _t('You can only chat with employees that have a dedicated user'),
                 type: 'info',
             });
         } else {
             this.displayNotification({
-                title: _t('Cannot chat with yourself'),
-                message: _t('Click on the avatar of other users to chat with them.'),
+                message: _t('You cannot chat with yourself'),
                 type: 'info',
             });
         }

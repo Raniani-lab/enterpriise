@@ -190,7 +190,6 @@ var InventoryClientAction = ClientAction.extend({
         this.mutex.exec(() => {
             return superValidate().then(() => {
                 this.displayNotification({
-                    title: _t("Success"),
                     message: _t("The inventory adjustment has been validated"),
                     type: 'success',
                 });

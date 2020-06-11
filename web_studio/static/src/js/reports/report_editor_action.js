@@ -51,7 +51,7 @@ var ReportEditorAction = AbstractAction.extend({
             defs.push(this._renderEditor());
         }
         else {
-            this.do_warn(_t('Error: Preview not available because there is no existing record.'));
+            this.do_warn(false, _t('Preview unavailable because there is no existing record'));
             this.trigger_up('studio_history_back');
         }
         return Promise.all(defs);

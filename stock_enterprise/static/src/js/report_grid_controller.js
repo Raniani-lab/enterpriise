@@ -23,7 +23,7 @@ var ReportGridController = GridController.extend({
         var colPath = cellPath.slice(0, -3).concat(['cols'], cellPath.slice(-1));
         var col = utils.into(state.data, colPath);
         if (!row.values.product_id) {
-            this.do_warn(_t("Error: Only grouping by product is supported."));
+            this.do_warn(false, _t("Only grouping by product is supported"));
             return;
         }
         return this._rpc({

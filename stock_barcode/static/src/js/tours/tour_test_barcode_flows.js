@@ -1097,7 +1097,7 @@ tour.register('test_internal_change_location', {test: true}, [
         trigger: '.o_validate_page'
     },
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
     },
 ]);
 
@@ -1655,7 +1655,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         trigger: '.o_validate_page'
     },
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
     },
 ]);
 
@@ -1674,7 +1674,7 @@ tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Warning")'
+        trigger: '.o_notification.bg-danger'
     },
 
     {
@@ -1891,7 +1891,7 @@ tour.register('test_delivery_from_scratch_with_sn_1', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Warning")'
+        trigger: '.o_notification.bg-danger'
     },
 
     {
@@ -1976,7 +1976,7 @@ tour.register('test_delivery_reserved_with_sn_1', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Warning")'
+        trigger: '.o_notification.bg-danger'
     },
 
     {
@@ -2106,7 +2106,7 @@ tour.register('test_receipt_duplicate_serial_number', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Warning")'
+        trigger: '.o_notification.bg-danger'
     },
 
     {
@@ -2132,7 +2132,7 @@ tour.register('test_receipt_duplicate_serial_number', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_notification.bg-success'
     },
 
     {
@@ -2183,7 +2183,7 @@ tour.register('test_delivery_duplicate_serial_number', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Warning")'
+        trigger: '.o_notification.bg-danger'
     },
 
     {
@@ -2204,7 +2204,7 @@ tour.register('test_delivery_duplicate_serial_number', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_notification.bg-success'
     },
 
     {
@@ -2246,7 +2246,7 @@ tour.register('test_bypass_source_scan', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Warning")'
+        trigger: '.o_notification.bg-danger'
     },
 
     {
@@ -2320,7 +2320,7 @@ tour.register('test_bypass_source_scan', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_notification.bg-success'
     },
 ]);
 
@@ -2408,7 +2408,7 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
         run: function () {
             helper.assertErrorMessage('The inventory adjustment has been validated');
         },
@@ -2536,7 +2536,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Warning")'
+        trigger: '.o_notification.bg-danger'
     },
 
     {
@@ -2639,7 +2639,7 @@ tour.register('test_inventory_nomenclature', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_notification.bg-success'
     },
     {
         trigger: '.breadcrumb-item:contains("Barcode")',
@@ -2688,7 +2688,7 @@ tour.register('test_inventory_package', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
         run: function () {
             helper.assertErrorMessage('The inventory adjustment has been validated');
         },
@@ -2735,7 +2735,7 @@ tour.register('test_pack_multiple_scan', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_notification.bg-success'
     },
 
     {
@@ -2761,7 +2761,7 @@ tour.register('test_pack_multiple_scan', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Warning")'
+        trigger: '.o_notification.bg-danger'
     },
 
     {
@@ -2781,7 +2781,7 @@ tour.register('test_pack_multiple_scan', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_notification.bg-success'
     },
 
     {
@@ -2836,7 +2836,7 @@ tour.register('test_pack_common_content_scan', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_notification.bg-success'
     },
 
     {
@@ -2895,7 +2895,7 @@ tour.register('test_pack_multiple_location', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_notification.bg-success'
     },
 
     {
@@ -2992,7 +2992,7 @@ tour.register('test_put_in_pack_from_multiple_pages', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_notification.bg-success'
     },
 
 ]);
@@ -3063,7 +3063,7 @@ tour.register('test_reload_flow', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
     },
 
 ]);
@@ -3180,7 +3180,7 @@ tour.register('test_put_in_pack_from_different_location', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
     },
 ]);
 
@@ -3233,7 +3233,7 @@ tour.register('test_put_in_pack_before_dest', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
     },
 
 ]);
@@ -3261,7 +3261,7 @@ tour.register('test_picking_owner_scan_package', {test: true}, [
         run: 'scan O-BTN.validate',
     },
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
     },
 ]);
 
@@ -3287,7 +3287,7 @@ tour.register('test_inventory_owner_scan_package', {test: true}, [
         run: 'scan O-BTN.validate',
     },
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
     },
 ]);
 
@@ -3463,7 +3463,7 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_validate_page'
     },
     {
-        trigger: '.o_notification_title:contains("Success")'
+        trigger: '.o_notification.bg-success'
     }
 ]);
 });

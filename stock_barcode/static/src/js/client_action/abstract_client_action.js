@@ -738,7 +738,7 @@ var ClientAction = AbstractAction.extend({
             prom.then(always).guardedCatch(always);
             return prom;
         }, function (errorMessage) {
-            self.do_warn(_t('Warning'), errorMessage);
+            self.do_warn(false, errorMessage);
         });
     },
 
@@ -1608,7 +1608,7 @@ var ClientAction = AbstractAction.extend({
         var self = this;
         this.mutex.exec(function () {
             if (self.mode === 'done' || self.mode === 'cancel') {
-                self.do_warn(_t('Warning'), _t('Scanning is disabled in this state.'));
+                self.do_warn(false, _t('Scanning is disabled in this state'));
                 return Promise.resolve();
             }
             var commandeHandler = self.commands[barcode];

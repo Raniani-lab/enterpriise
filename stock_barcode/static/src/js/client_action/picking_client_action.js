@@ -276,7 +276,6 @@ var PickingClientAction = ClientAction.extend({
         this.mutex.exec(function () {
             const successCallback = function () {
                 self.displayNotification({
-                    title: _t("Success"),
                     message: _t("The transfer has been validated"),
                     type: 'success',
                 });
@@ -310,7 +309,7 @@ var PickingClientAction = ClientAction.extend({
         const superCancel = this._super.bind(this);
         this.mutex.exec(() => {
             return superCancel().then(() => {
-                this.do_notify(_t("Cancel"), _t("The transfer has been cancelled"));
+                this.do_notify(false, _t("The transfer has been cancelled"));
                 this.trigger_up('exit');
             });
         });
@@ -351,7 +350,7 @@ var PickingClientAction = ClientAction.extend({
     _putInPack: function () {
         var self = this;
         if (this.currentState.group_tracking_lot === false) {
-            this.do_warn(_t("Delivery Packages needs to be enabled in Inventory Settings to use packages"));
+            this.do_warn(false, _t("To use packages, enable 'Delivery Packages'from the settings"));
             return;
         }
         this.mutex.exec(function () {

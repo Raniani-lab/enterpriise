@@ -38,7 +38,7 @@ var FSMProductQty = FieldInteger.extend({
         var target_name = target_name;
         var target_value = value;
         if (isNaN(target_value)) {
-            this.do_warn(_t("Wrong value entered! Only integers are valid."));
+            this.do_warn(false, _t("Please enter an integer value"));
         } else {
             var changes = {};
             changes[target_name] =  parseInt(target_value);;

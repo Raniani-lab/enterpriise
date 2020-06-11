@@ -93,10 +93,7 @@ var DashboardController = AbstractController.extend({
         * will not work. e.g. user dashboard
         */
         if (!this._controlPanelWrapper) {
-            return this.do_warn(
-                _t("Incorrect Operation"),
-                _t("You cannot apply a filter from this view.")
-            );
+            return this.do_warn(false, _t("Cannot apply a filter from this view"));
         }
 
         var newFilters = [];

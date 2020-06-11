@@ -224,7 +224,7 @@ const DocumentsSearchPanel = SearchPanel.extend({
         const data = JSON.parse(dataTransfer.getData("o_documents_data"));
         if (data.lockedCount) {
             this.do_notify(
-                "Partial transfer",
+                _t("Partial transfer"),
                 _.str.sprintf(_t('%s file(s) not moved because they are locked by another user'), data.lockedCount)
             );
         }

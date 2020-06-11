@@ -35,10 +35,7 @@ BatchPickingClientAction.include({
                         };
                         return this.do_action(res, options);
                     } else {
-                        this.do_notify(
-                            _t("No more quality checks"),
-                            _t("All the quality checks have been done.")
-                        );
+                        this.do_notify(false, _t("All the quality checks have been done"));
                     }
                 });
             });

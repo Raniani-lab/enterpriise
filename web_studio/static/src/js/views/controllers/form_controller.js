@@ -41,7 +41,6 @@ odoo.define('web_studio.FormController', function (require) {
                     missingApprovals.forEach((r) => (msg += `<li>${r.message || r.group_id[1]}</li>`));
                     msg += '</ul>';
                     this.displayNotification({
-                        title: _t('Approval Required'),
                         subtitle: _t('The following approvals are missing:'),
                         message: msg,
                         type: 'warning',

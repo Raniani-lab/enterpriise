@@ -119,8 +119,8 @@ var StreamPostKanbanController = KanbanController.extend({
             this._addNewStream();
         } else {
             this.do_warn(
-                _t("Not allowed"),
-                _t("No social accounts currently configured, please contact your administrator.")
+                false,
+                _t("No social accounts configured, please contact your administrator.")
             );
         }
     },
@@ -143,7 +143,7 @@ var StreamPostKanbanController = KanbanController.extend({
             });
         } else {
             this.do_warn(
-                _t("Not allowed"),
+                false,
                 _t("Sorry, you're not allowed to re-link this account, please contact your administrator.")
             );
         }

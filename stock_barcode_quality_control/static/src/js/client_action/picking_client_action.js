@@ -33,7 +33,7 @@ var PickingQualityClientAction = PickingClientAction.include({
                         };
                         return self.do_action(res, options)
                     } else {
-                        self.do_notify(_t("No more quality checks"), _t("All the quality checks have been done."));
+                        self.do_notify(false, _t("All the quality checks have been done"));
                     }
                 });
             });

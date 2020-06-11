@@ -83,7 +83,7 @@ var EventScanView = AbstractAction.extend({
             }
         }).then(function(result) {
             if (result.error && result.error === 'invalid_ticket') {
-                self.do_warn(_t("Warning"), 'This ticket is not valid');
+                self.do_warn(_t("Warning"), 'Invalid ticket');
             } else {
                 self.registrationId = result.id;
                 new Dialog(self, self._getSummaryModalConfig(result)).open();
@@ -131,7 +131,7 @@ var EventScanView = AbstractAction.extend({
             method: 'action_set_done',
             args: [this.registrationId]
         }).then(function () {
-            self.do_notify(_t("Success"), _t("Registration confirmed"));
+            self.do_notify(false, _t("Registration confirmed"));
         });
     },
 

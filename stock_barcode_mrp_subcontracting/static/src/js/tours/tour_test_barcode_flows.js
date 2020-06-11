@@ -37,7 +37,7 @@ tour.register('test_receipt_subcontracted_1', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
     },
 
 ]);
@@ -87,7 +87,7 @@ tour.register('test_receipt_subcontracted_2', {test: true}, [
     },
 
     {
-        trigger: '.o_notification_title:contains("Success")',
+        trigger: '.o_notification.bg-success',
     },
 
 ]);

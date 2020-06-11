@@ -287,6 +287,7 @@ return AbstractWebClient.extend({
 
             // Attach the home_menu
             await this.homeMenuManager.mount(this.el);
+            this.trigger_up('webclient_started');
         } else {
             // Detach the home_menu
             this.homeMenuManager.unmount();

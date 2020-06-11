@@ -188,6 +188,7 @@ class generic_tax_report(models.AbstractModel):
          the correct receivable/payable account. Also takes into account amount already paid via advance tax payment account.
         """
         on_empty_msg = _('It seems that you have no entries to post, are you sure you correctly configured the accounts on your tax groups?')
+        on_empty_action = self.env.ref('account_accountant.action_tax_group')
 
 
         # make the preliminary checks
@@ -198,7 +199,7 @@ class generic_tax_report(models.AbstractModel):
         company = self.env.company
         if not self.env['account.tax.group']._any_is_configured(company):
             if raise_on_empty:
-                raise UserError(_(on_empty_msg))
+                raise RedirectWarning(on_empty_msg, on_empty_action.id, _('Configure your TAX accounts'))
             return False
 
         start_date = fields.Date.from_string(options.get('date').get('date_from'))
@@ -222,8 +223,7 @@ class generic_tax_report(models.AbstractModel):
             move_vals['line_ids'] = line_ids_vals
         else:
             if raise_on_empty:
-                action = self.env.ref('account.action_tax_group')
-                raise RedirectWarning(on_empty_msg, action.id, _('Configure your TAX accounts'))
+                raise RedirectWarning(on_empty_msg, on_empty_action.id, _('Configure your TAX accounts'))
         move_vals['tax_report_control_error'] = bool(options.get('tax_report_control_error'))
         if options.get('tax_report_control_error'):
             move.message_post(body=options.get('tax_report_control_error'))

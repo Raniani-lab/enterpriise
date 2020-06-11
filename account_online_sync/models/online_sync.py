@@ -320,6 +320,12 @@ class OnlineAccountWizard(models.TransientModel):
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
+    def _select_action_to_open(self):
+        self.ensure_one()
+        if not self._context.get('action_name') and self.type == 'bank' and self.bank_statements_source == 'online_sync':
+            return 'action_bank_statement_line'
+        return super()._select_action_to_open()
+
     def __get_bank_statements_available_sources(self):
         rslt = super(AccountJournal, self).__get_bank_statements_available_sources()
         rslt.append(("online_sync", _("Automated Bank Synchronization")))
@@ -579,7 +585,7 @@ class AccountBankStatement(models.Model):
             })
         statements = self.env['account.bank.statement'].create(st_vals_list)
         statements.button_post()
-            
+
         # write account balance on the last statement of the journal
         # That way if there are missing transactions, it will show in the last statement
         # and the day missing transactions are fetched or manually written, everything will be corrected

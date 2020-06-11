@@ -131,6 +131,7 @@
                             <field name="redirect_url_text"  attrs="{'invisible':[('redirect_url','=','')]}"/>
                             <field name="privacy"/>
                             <field name="favorited_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="group_ids" groups="base.group_no_one" widget="many2many_tags" />
                         </group>
                     </group>
                     <notebook>
@@ -322,9 +323,9 @@
     </record>
 
     <!-- Menus -->
-    <menuitem id="menu_document" name="Sign" web_icon="sign,static/description/icon.png" groups="sign.group_sign_user"/>
+    <menuitem id="menu_document" name="Sign" web_icon="sign,static/description/icon.png" groups="sign.group_sign_employee"/>
     <menuitem id="sign.sign_template_menu" name="Dashboard" parent="sign.menu_document" action="sign_template_action" sequence="10"/>
-    <menuitem id="sign_request_menu" name="Documents" parent="menu_document" action="sign_request_action" groups="sign.group_sign_user" sequence="20"/>
+    <menuitem id="sign_request_menu" name="Documents" parent="menu_document" action="sign_request_action" groups="sign.group_sign_employee" sequence="20"/>
     <menuitem id="menu_sign_configuration" sequence="100" name="Configuration" parent="menu_document"/>
     <!-- Menus -->
     <menuitem id="sign.sign_item_type_menu" name="Field Types" parent="sign.menu_sign_configuration" action="sign_item_type_action" groups="base.group_no_one"/>

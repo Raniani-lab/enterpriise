@@ -8,6 +8,7 @@ odoo.define('sign.views_custo', function(require) {
     var KanbanRecord = require("web.KanbanRecord");
     var ListController = require("web.ListController");
     var utils = require('web.utils');
+    var session = require('web.session');
 
     var _t = core._t;
 
@@ -81,6 +82,7 @@ odoo.define('sign.views_custo', function(require) {
                 if (this.modelName === "sign.template") {
                     this._sign_upload_file_button();
                     this.$buttons.find('button.o_button_import').hide();
+
                 } else if (this.modelName === "sign.request") {
                     if (this.$buttons) {
                         this._sign_create_request_button();
@@ -101,14 +103,18 @@ odoo.define('sign.views_custo', function(require) {
                     this.$buttons.find(selector_button).hide();
                     return;
                 }
-                this.$buttons.find(selector_button).after(
-                    $('<button class="btn btn-link o-kanban-button-new ml8" type="button">'+ _t('UPLOAD A PDF TEMPLATE') +'</button>')
-                    .off('click')
-                    .on('click', function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        _sign_upload_file.call(self, false, false, 'sign_template_edit');
-                }));
+
+                session.user_has_group('sign.group_sign_user').then(function (has_group) {
+                    if (has_group) {
+                        self.$buttons.find(selector_button).after(
+                            $('<button class="btn btn-link o-kanban-button-new ml8" type="button">'+ _t('UPLOAD A PDF TEMPLATE') +'</button>').off('click')
+                              .on('click', function (e) {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  _sign_upload_file.call(self, false, false, 'sign_template_edit');
+                              }));
+                    }
+                });
             },
 
             _sign_create_request_button: function () {
@@ -183,6 +189,7 @@ odoo.define('sign.template', function(require) {
     var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
     var FormFieldMany2ManyTags = require('web.relational_fields').FormFieldMany2ManyTags;
     const SmoothScrollOnDrag = require('web/static/src/js/core/smooth_scroll_on_drag.js');
+    var FormFieldSelection = require('web.relational_fields').FieldSelection;
 
     var _t = core._t;
 
@@ -205,6 +212,7 @@ odoo.define('sign.template', function(require) {
             this.parties = parties;
             this.select_options = select_options;
             this.debug = config.isDebug();
+
         },
 
         start: function() {
@@ -225,7 +233,6 @@ odoo.define('sign.template', function(require) {
                     self.$('.o_sign_options_group').hide();
                 }
             });
-
         },
 
         create: function($targetEl) {
@@ -827,6 +834,36 @@ odoo.define('sign.template', function(require) {
                                 type: 'integer',
                             }
                         },
+                    },
+                    group_ids: {
+                        relation: 'res.groups',
+                        type: 'many2many',
+                        relatedFields: {
+                            id : {
+                                type: 'integer',
+                            },
+                            display_name : {
+                                type: 'char',
+                            },
+                            color : {
+                                type: 'integer',
+                            }
+                        },
+                        fields: {
+                            id: {
+                                type: 'integer',
+                            },
+                            display_name: {
+                                type: 'char',
+                            },
+                            color: {
+                                type: 'integer',
+                            }
+                        },
+                    },
+                    privacy: {
+                        type: 'selection',
+                        selection: [['employee', 'All Users'], ['invite', 'On Invitation']]
                     }
                 },
                 fieldsInfo : {
@@ -863,22 +900,82 @@ odoo.define('sign.template', function(require) {
                                 }
                             },
                             viewType: 'default'
+                        },
+                        group_ids: {
+                            relatedFields: {
+                                id : {
+                                    type: 'integer',
+                                },
+                                display_name : {
+                                    type: 'char',
+                                },
+                                color : {
+                                    type: 'integer',
+                                }
+                            },
+                            fieldsInfo : {
+                                default : {
+                                    id : {
+                                        type: 'integer',
+                                    },
+                                    display_name : {
+                                        type: 'char',
+                                    },
+                                    color : {
+                                        type: 'integer',
+                                    }
+                                }
+                            },
+                            viewType: 'default'
+                        },
+                        privacy : {
+                            relatedFields: {
+                                id : {
+                                    type: 'selection',
+                                },
+                                display_name : {
+                                    type: 'char',
+                                }
+                            },
+                            fieldsInfo : {
+                                default : {
+                                    id : {
+                                        type: 'selection',
+                                    },
+                                    display_name : {
+                                        type: 'char',
+                                    }
+                                }
+                            },
+                            viewType: 'default'
                         }
                     },
                 },
             };
+
             return this.model.load(params).then(function (recordId) {
                 self.handleRecordId = recordId;
                 self.record = self.model.get(self.handleRecordId);
+
                 self.tag_idsMany2Many = new FormFieldMany2ManyTags(self, 'tag_ids', self.record, {mode: 'edit', create: true, attrs: {options:{color_field: 'color'}}});
                 self._registerWidget(self.handleRecordId, 'tag_ids', self.tag_idsMany2Many);
                 self.tag_idsMany2Many.appendTo(self.$('.o_sign_template_tags'));
+
+                if (config.isDebug()) {
+                    self.privacy = new FormFieldSelection(self, 'privacy', self.record, {mode: 'edit'});
+                    self._registerWidget(self.handleRecordId, 'privacy', self.privacy);
+                    self.privacy.appendTo(self.$('.o_sign_template_privacy'));
+
+                    self.group_idsMany2many = new FormFieldMany2ManyTags(self, 'group_ids', self.record, {mode: 'edit', create: false, attrs: {options:{color_field: 'color'}}});
+                    self._registerWidget(self.handleRecordId, 'group_ids', self.group_idsMany2many);
+                    self.group_idsMany2many.appendTo(self.$('.o_sign_template_group_id'));
+                }
             });
         },
 
         _onFieldChanged: function (event) {
             var self = this;
-            var $majInfo = this.$('.o_sign_template_saved_info').first();
+            var $majInfo = this.$(event.target.$el).parent().next('.o_sign_template_saved_info');
             StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
             this.model.save(this.handleRecordId, {reload:true}).then(function (fieldNames) {
                 self.record = self.model.get(self.handleRecordId);
@@ -979,6 +1076,8 @@ odoo.define('sign.template', function(require) {
                 return self.updateControlPanel(status);
             }).then(function () {
                 self.initialize_content();
+
+
                 self.createTemplateTagsField();
                 if(self.$('iframe').length) {
                     core.bus.on('DOM_updated', self, init_iframe);
@@ -993,6 +1092,7 @@ odoo.define('sign.template', function(require) {
                 });
 
                 self.$('.o_content').addClass('o_sign_template');
+
             });
             function init_iframe() {
                 if(this.$el.parents('html').length && !this.$el.parents('html').find('.modal-dialog').length) {
@@ -1017,6 +1117,7 @@ odoo.define('sign.template', function(require) {
 
         initialize_content: function() {
             this.$('.o_content').empty();
+            this.debug = config.isDebug();
             this.$('.o_content').append(core.qweb.render('sign.template', {widget: this}));
 
             this.$('iframe,.o_sign_template_name_input').prop('disabled', this.has_sign_requests);

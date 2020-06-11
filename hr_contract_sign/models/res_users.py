@@ -11,7 +11,6 @@ class ResUsers(models.Model):
     sign_request_count = fields.Integer(
         compute='_compute_sign_request_count',
         compute_sudo=True,
-        groups="hr_contract_sign.group_sign_employee",
     )
 
     def __init__(self, pool, cr):

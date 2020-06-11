@@ -9,7 +9,7 @@ from PyPDF2 import PdfFileReader
 from collections import defaultdict
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, AccessError
 from odoo.tools import pdf
 
 
@@ -29,7 +29,7 @@ class SignTemplate(models.Model):
 
     active = fields.Boolean(default=True, string="Active")
     privacy = fields.Selection([('employee', 'All Users'), ('invite', 'On Invitation')],
-                               string="Privacy", default="invite",
+                               string="Who can Sign", default="invite",
                                help="Set who can use this template:\n"
                                     "- All Users: all users of the Sign application can view and use the template\n"
                                     "- On Invitation: only invited users can view and use the template\n"
@@ -49,6 +49,15 @@ class SignTemplate(models.Model):
         help="Optional text to display on the button link")
     signed_count = fields.Integer(compute='_compute_signed_in_progress_template')
     in_progress_count = fields.Integer(compute='_compute_signed_in_progress_template')
+
+    group_ids = fields.Many2many("res.groups", string="Template Access Group")
+
+    @api.model
+    def create(self, vals):
+        if 'active' in vals and vals['active'] and not self.env.user.has_group('sign.group_sign_user'):
+            raise AccessError(_("Do not have access to create templates"))
+
+        return super(SignTemplate, self).create(vals)
 
     @api.depends('sign_item_ids.responsible_id')
     def _compute_responsible_count(self):
@@ -72,7 +81,7 @@ class SignTemplate(models.Model):
 
     @api.model
     def get_empty_list_help(self, help):
-        if not self.env.ref('sign.template_sign_tour', raise_if_not_found=False):
+        if not self.env.ref('sign.template_sign_tour', raise_if_not_found=False) or not self.env.user.has_group('sign.group_sign_user'):
             return '<p class="o_view_nocontent_smiling_face">%s</p>' % _('Upload a PDF')
         return super().get_empty_list_help(help)
 

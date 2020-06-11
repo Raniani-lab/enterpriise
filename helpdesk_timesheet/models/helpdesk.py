@@ -80,24 +80,27 @@ class HelpdeskTicket(models.Model):
     @api.depends('display_timesheet_timer', 'timer_start', 'timer_pause', 'total_hours_spent')
     def _compute_display_timer_buttons(self):
         for ticket in self:
-            displays = super()._compute_display_timer_buttons()
-            start_p, start_s, stop, pause, resume = displays['start_p'], displays['start_p'], displays['stop'], displays['pause'], displays['resume']
             if not ticket.display_timesheet_timer:
-                start_p, start_s, stop, pause, resume = False, False, False, False, False
+                ticket.update({
+                    'display_timer_start_primary': False,
+                    'display_timer_start_secondary': False,
+                    'display_timer_stop': False,
+                    'display_timer_pause': False,
+                    'display_timer_resume': False,
+                })
             else:
+                super(HelpdeskTicket, ticket)._compute_display_timer_buttons()
+                ticket.display_timer_start_secondary = ticket.display_timer_start_primary
                 if not ticket.timer_start:
-                    stop, pause, resume = False, False, False
+                    ticket.update({
+                        'display_timer_stop': False,
+                        'display_timer_pause': False,
+                        'display_timer_resume': False,
+                    })
                     if not ticket.total_hours_spent:
-                        start_s = False
+                        ticket.display_timer_start_secondary = False
                     else:
-                        start_p = False
-            ticket.write({
-                'display_timer_start_primary': start_p,
-                'display_timer_start_secondary': start_s,
-                'display_timer_stop': stop,
-                'display_timer_pause': pause,
-                'display_timer_resume': resume,
-            })
+                        ticket.display_timer_start_primary = False
 
     @api.depends('use_helpdesk_timesheet', 'timesheet_timer', 'timesheet_ids')
     def _compute_display_timesheet_timer(self):

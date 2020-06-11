@@ -93,13 +93,12 @@ class Task(models.Model):
     @api.depends('fsm_done', 'display_timesheet_timer', 'timer_start', 'total_hours_spent')
     def _compute_display_timer_buttons(self):
         fsm_done_tasks = self.filtered(lambda task: task.fsm_done)
-        start_p, start_s, stop, pause, resume = False, False, False, False, False
-        fsm_done_tasks.write({
-            'display_timer_start_primary': start_p,
-            'display_timer_start_secondary': start_s,
-            'display_timer_stop': stop,
-            'display_timer_pause': pause,
-            'display_timer_resume': resume,
+        fsm_done_tasks.update({
+            'display_timer_start_primary': False,
+            'display_timer_start_secondary': False,
+            'display_timer_stop': False,
+            'display_timer_pause': False,
+            'display_timer_resume': False,
         })
         super(Task, self - fsm_done_tasks)._compute_display_timer_buttons()
 

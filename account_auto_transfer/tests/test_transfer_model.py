@@ -288,7 +288,7 @@ class TransferModelTestCase(AccountAutoTransferTestCase):
 
     @patch('odoo.addons.account_auto_transfer.models.transfer_model.TransferModel._get_non_analytic_transfer_values')
     @patch('odoo.models.BaseModel.read_group')
-    def test__get_non_analytics_auto_transfer_move_line_values(self, patched_read_group, patched_get_values):
+    def test__get_non_filtered_auto_transfer_move_line_values(self, patched_read_group, patched_get_values):
         start_date = fields.Date.to_date('2019-01-01')
         end_date = fields.Date.to_date('2019-12-31')
         patched_read_group.return_value = [
@@ -326,7 +326,7 @@ class TransferModelTestCase(AccountAutoTransferTestCase):
             'debit': 12585.0 - amount_left
         }]
         exp_res_len = len([x for x in patched_read_group.return_value if x['balance'] != 0.0]) * 2
-        res = self.transfer_model._get_non_analytics_auto_transfer_move_line_values([], start_date, end_date)
+        res = self.transfer_model._get_non_filtered_auto_transfer_move_line_values([], start_date, end_date)
         self.assertEqual(len(res), exp_res_len)
         self.assertListEqual(exp, res)
 

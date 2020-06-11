@@ -31,8 +31,9 @@ class SocialPostTwitter(models.Model):
     @api.depends('message', 'scheduled_date', 'image_ids')
     def _compute_twitter_preview(self):
         for post in self:
+            message = self.env["social.live.post"]._remove_mentions(post.message or "")
             post.twitter_preview = self.env.ref('social_twitter.twitter_preview')._render({
-                'message': post.message,
+                'message': message,
                 'images': [
                     image.datas if not image.id
                     else base64.b64encode(open(image._full_path(image.store_fname), 'rb').read()) for image in post.image_ids

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import re
 import requests
 
-from odoo import models, fields
+from odoo import models, fields, api
 from werkzeug.urls import url_join
 
 
@@ -70,8 +71,9 @@ class SocialLivePostTwitter(models.Model):
             account = live_post.account_id
             post = live_post.post_id
 
+            message = self._remove_mentions(post.message)
             params = {
-                'status': self.env['mail.render.mixin'].sudo()._shorten_links_text(post.message, live_post._get_utm_values()),
+                'status': self.env['mail.render.mixin'].sudo()._shorten_links_text(message, live_post._get_utm_values()),
             }
 
             images_attachments_ids = account._format_attachments_to_images_twitter(post.image_ids)
@@ -101,3 +103,8 @@ class SocialLivePostTwitter(models.Model):
                 }
 
             live_post.write(values)
+
+    @api.model
+    def _remove_mentions(self, message):
+        """Remove mentions in the Tweet message."""
+        return re.sub(r'(^|[^\w\#])@(\w)', r'\1@ \2', message)

@@ -1530,3 +1530,9 @@ msgstr ""
 #, python-format
 msgid "unmapped accounts"
 msgstr ""
+
+#. module: account_consolidation
+#: code:addons/account_consolidation/models/consolidation_journal.py:0
+#, python-format
+msgid "You can't delete an auto-generated journal entry."
+msgstr ""

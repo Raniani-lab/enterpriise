@@ -2002,3 +2002,10 @@ msgstr ""
 #, python-format
 msgid "this move"
 msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#: code:addons/account_asset/models/account_sell.py:0
+#, python-format
+msgid "You cannot automate the journal entry for an asset that has a running gross increase. Please use 'Dispose' on the increase(s)."
+msgstr ""

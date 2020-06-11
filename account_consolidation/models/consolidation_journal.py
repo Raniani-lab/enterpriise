@@ -162,7 +162,7 @@ class ConsolidationJournalLine(models.Model):
 
     def unlink(self):
         if not self.env.context.get('allow_unlink', False) and self.journal_id and self.journal_id.auto_generated:
-            raise UserError("You can't delete an auto-generated journal entry.")
+            raise UserError(_("You can't delete an auto-generated journal entry."))
         return super().unlink()
 
     # GRID OVERRIDES

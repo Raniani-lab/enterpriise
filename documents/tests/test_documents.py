@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, new_test_user
 import base64
 
 GIF = b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="
@@ -372,3 +372,10 @@ class TestCaseDocuments(TransactionCase):
         self.assertTrue(document.exists(), 'the document should exist')
         document.attachment_id.unlink()
         self.assertFalse(document.exists(), 'the document should not exist')
+
+    def test_is_favorited(self):
+        user = new_test_user(self.env, "test user", groups='documents.group_documents_user')
+        document = self.env['documents.document'].create({'datas': GIF, 'folder_id': self.folder_b.id})
+        document.favorited_ids = user
+        self.assertFalse(document.is_favorited)
+        self.assertTrue(document.with_user(user).is_favorited)

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="spreadsheet_document_view_kanban" model="ir.ui.view">
+        <field name="name">spreadsheet.documents.document.kanban</field>
+        <field name="model">documents.document</field>
+        <field name="inherit_id" ref="documents.document_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//templates" position="before">
+                <field name="handler"/>
+            </xpath>
+            <xpath expr="//div[@name='document_preview']" position="before">
+                <t t-set="isSpreadsheet" t-value="record.handler.raw_value === 'spreadsheet'"/>
+            </xpath>
+            <xpath expr="//div[@name='document_preview']" position="attributes">
+                <attribute name="t-attf-class" separator=" " add="#{(isSpreadsheet) ? 'o_document_spreadsheet' : ''}"/>
+            </xpath>
+            <xpath expr="(//div[@name='document_preview']/div)[last()]" position="before">
+                <img t-elif="isSpreadsheet" t-attf-src="/documents/image/#{record.id.raw_value}?field=thumbnail&amp;unique=" width="100" height="100" alt="Spreadsheet Preview" class="o_attachment_image o_spreadsheet_resize"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="spreadsheet_contributor_action" model="ir.actions.act_window">
+        <field name="name">Contributors</field>
+        <field name="res_model">spreadsheet.contributor</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="document_view_search_spreadsheet" model="ir.ui.view">
+        <field name="model">documents.document</field>
+        <field name="inherit_id" ref="documents.document_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='pdf_doc']" position='after'>
+                <filter string="Spreadsheet" name="spreadsheet" domain="[('handler', '=', 'spreadsheet')]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="spreadsheet_contributor_view_tree" model="ir.ui.view">
+        <field name="name">spreadsheet.contributor</field>
+        <field name="model">spreadsheet.contributor</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="document_id"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Technical / Spreadsheet -->
+    <menuitem id="menu_technical_spreadsheet"
+        name="Spreadsheet"
+        sequence="5"
+        parent="base.menu_custom"/>
+
+    <!-- Add in Technical/Spreadsheet -->
+    <menuitem id="menu_technical_spreadsheet_contributor"
+        name="Contributors"
+        parent="menu_technical_spreadsheet" sequence="1"
+        action="spreadsheet_contributor_action"/>
+</odoo>

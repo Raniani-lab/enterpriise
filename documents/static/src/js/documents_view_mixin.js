@@ -2,7 +2,31 @@ odoo.define('documents.viewMixin', function (require) {
 'use strict';
 
 const DocumentsViewMixin = {
-
+    inspectorFields: [
+        'active',
+        'activity_ids',
+        'available_rule_ids',
+        'checksum',
+        'display_name', // necessary for the mail tracking system to work correctly
+        'folder_id',
+        'lock_uid',
+        'message_attachment_count',
+        'message_follower_ids',
+        'message_ids',
+        'mimetype',
+        'name',
+        'owner_id',
+        'partner_id',
+        'previous_attachment_ids',
+        'res_id',
+        'res_model',
+        'res_model_name',
+        'res_name',
+        'share_ids',
+        'tag_ids',
+        'type',
+        'url',
+    ],
     /**
      * @override
      * @param {Object} viewInfo unused
@@ -18,32 +42,7 @@ const DocumentsViewMixin = {
         this.controllerParams.selectedRecordIds = selectedRecordIds;
 
         // add the fields used in the DocumentsInspector to the list of fields to fetch
-        const inspectorFields = [
-            'active',
-            'activity_ids',
-            'available_rule_ids',
-            'checksum',
-            'display_name', // necessary for the mail tracking system to work correctly
-            'folder_id',
-            'lock_uid',
-            'message_attachment_count',
-            'message_follower_ids',
-            'message_ids',
-            'mimetype',
-            'name',
-            'owner_id',
-            'partner_id',
-            'previous_attachment_ids',
-            'res_id',
-            'res_model',
-            'res_model_name',
-            'res_name',
-            'share_ids',
-            'tag_ids',
-            'type',
-            'url',
-        ];
-        _.defaults(this.fieldsInfo[this.viewType], _.pick(this.fields, inspectorFields));
+        _.defaults(this.fieldsInfo[this.viewType], _.pick(this.fields, this.inspectorFields));
 
         // force fetch of relational data (display_name and tooltip) for related
         // rules to display in the DocumentsInspector

@@ -1,0 +1,99 @@
+.o_documents_content {
+    .o_document_spreadsheet {
+        cursor: zoom-in;
+    }
+    .o_spreadsheet_resize {
+        object-fit: cover;
+        object-position: left top;
+    }
+}
+
+
+.o_spreadsheet_selector_dialog {
+  option.o_new {
+      font-style: italic;
+  }
+}
+
+.o_content {
+    .o_spreadsheet_action {
+        height: 100%;
+        .o_spreadsheet_container {
+            height: 100%;
+            .o-spreadsheet {
+                height: 100%;
+                .o_spreadsheet_pivot_side_panel {
+                    min-width: 350px;
+                    .o_side_panel_section {
+                        padding: 10px;
+                        .o_side_panel_title {
+                            font-weight: bold;
+                            margin-bottom: 2px;
+                        }
+                    }
+                }
+                .o-spreadsheet-topbar .o-icon {
+                    vertical-align: unset;
+                }
+                .o-spreadsheet-topbar .o-menu-dropdown-item .o-icon {
+                    vertical-align: middle;
+                }
+                // Align spreadsheet menus and toolbar with the breadcrumb in Odoo
+                .o-spreadsheet-topbar {
+                    .o-topbar-toolbar .o-toolbar-tools {
+                        margin-left: 16px !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.o_spreadsheet_cp {
+    a.o_spreadsheet_favorite {
+        margin: 0px 5px;
+        @include o-hover-opacity(0.6, 1);
+        @include o-hover-text-color($gray-400, $warning);
+        &.favorite_button_enabled {
+            @include o-hover-text-color($warning, $danger);
+            transition: 0.3s color 0.1s;
+        }
+    }
+    .o_spreadsheet_name {
+        display: inline-block;
+        max-width: 95%;
+        input {
+            max-width: 100%;
+            text-overflow: clip;
+            overflow: hidden;
+            border: none;
+            padding: 0px 5px 0px 2px;
+            color: $o-brand-secondary;
+            &:focus {
+                outline: 1px solid #ccc;
+                outline-offset: -1px;
+                color: #000;
+            }
+            &.o-spreadsheet-untitled {
+                font-style: italic;
+            }
+            &.o-spreadsheet-untitled:focus {
+                font-style: normal;
+            }
+        }
+    }
+
+    .o_cp_top_left {
+        width: 100%;
+    }
+    .o_cp_top_right {
+        width: 0%;
+    }
+}
+
+.o_control_panel {
+    &.o_spreadsheet_cp {
+        padding-bottom: 0px;
+    }
+}

@@ -314,7 +314,7 @@ QUnit.module('web_mobile', {
             },
         });
 
-        const parent = createParent({
+        const parent = await createParent({
             data: this.data,
             archs: {
                 'partner,false,form': `

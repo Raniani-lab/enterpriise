@@ -60,7 +60,7 @@ QUnit.module('web_enterprise_menu_tests', {
                 this._super(...arguments);
             }
         });
-        const parent = testUtils.createParent({});
+        const parent = await testUtils.createParent({});
         const webClient = new WebClient(parent);
 
         // Fully rendering the web client in tests is a PITA

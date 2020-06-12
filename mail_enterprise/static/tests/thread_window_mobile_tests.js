@@ -49,7 +49,7 @@ QUnit.module('Discuss in mobile', {
             },
         };
         this.services = mailTestUtils.getMailServices();
-        this.createParent = (params) => {
+        this.createParent = async (params) => {
             const widget = new Widget();
 
             // in non-debug mode, append thread windows in qunit-fixture
@@ -61,7 +61,7 @@ QUnit.module('Discuss in mobile', {
                 this.services.mail_service.prototype.THREAD_WINDOW_APPENDTO = '#qunit-fixture';
             }
 
-            mock.addMockEnvironment(widget, params);
+            await mock.addMockEnvironment(widget, params);
             return widget;
         };
     },
@@ -77,7 +77,7 @@ QUnit.test('close thread window using backbutton event', async function (assert)
     const __overrideBackButton = mobile.methods.overrideBackButton;
     mobile.methods.overrideBackButton = function () {};
 
-    const parent = createParent({
+    const parent = await createParent({
         data: this.data,
         services: this.services,
         mockRPC(route, args) {
@@ -129,7 +129,7 @@ QUnit.test('do not automatically open chat window', async function (assert) {
         state: 'open',
     }];
 
-    const parent = this.createParent({
+    const parent = await this.createParent({
         data: this.data,
         services: this.services,
         session: { partner_id: 3 },
@@ -195,7 +195,7 @@ QUnit.test('do not automatically open chat window at first load', async function
         fields: {},
         records: [],
     };
-    const parent = this.createParent({
+    const parent = await this.createParent({
         data: this.data,
         services: this.services,
     });
@@ -209,7 +209,7 @@ QUnit.test('do not automatically open chat window at first load', async function
 QUnit.test('do not notify the server on open/close thread window', async function (assert) {
     assert.expect(3);
 
-    const parent = this.createParent({
+    const parent = await this.createParent({
         data: this.data,
         services: this.services,
         async mockRPC(route, args) {

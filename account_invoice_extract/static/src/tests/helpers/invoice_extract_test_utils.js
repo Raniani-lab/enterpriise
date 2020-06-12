@@ -101,7 +101,7 @@ async function createBoxLayer(params) {
                 return Promise.resolve();
             }
         });
-        params.parent = testUtils.createParent(parentParams);
+        params.parent = await testUtils.createParent(parentParams);
     }
 
     var boxLayer = new InvoiceExtractBoxLayer(params.parent, {

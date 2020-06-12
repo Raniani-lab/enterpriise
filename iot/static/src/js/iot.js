@@ -2,6 +2,7 @@ odoo.define('iot.widgets', function (require) {
 'use strict';
 
 var core = require('web.core');
+const env = require('web.env');
 var Widget = require('web.Widget');
 var field_registry = require('web.field_registry');
 var widget_registry = require('web.widget_registry');
@@ -787,7 +788,7 @@ var IoTDownloadLogsButton = Widget.extend(IoTConnectionMixin, {
 
 widget_registry.add('iot_download_logs', IoTDownloadLogsButton);
 
-var _iot_longpolling = new IoTLongpolling();
+var _iot_longpolling = new IoTLongpolling(env);
 
 /**
  * Frontend interface to iot devices

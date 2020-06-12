@@ -23,7 +23,7 @@ var testUtils = require('web.test_utils');
  *   this is set after the parent is created, but it should be used when this
  *   is set.
  */
-function createParent(params) {
+async function createParent(params) {
     var invoiceExtractWrapper = params.invoiceExtractWrapper;
     params.intercepts = _.extend({}, params.intercepts, {
         /**
@@ -93,7 +93,7 @@ function createParent(params) {
             field.setSelectedBox(box);
         },
     });
-    var parent = testUtils.createParent(params);
+    var parent = await testUtils.createParent(params);
     return parent;
 }
 
@@ -109,7 +109,7 @@ async function createFieldsAndBoxLayer(params) {
     // use wrapper to pass fields and box layer by reference
     // (due to them not already instantiated)
     var wrapper = {};
-    var parent = createParent({
+    var parent = await createParent({
         invoiceExtractWrapper: wrapper,
         debug: params.debug || false,
         session: {

@@ -3,6 +3,7 @@ odoo.define('documents.controllerMixin', function (require) {
 
 const DocumentsInspector = require('documents.DocumentsInspector');
 const DocumentViewer = require('documents.DocumentViewer');
+const { computeMultiSelection } = require('documents.utils');
 
 const Chatter = require('mail.Chatter');
 
@@ -801,52 +802,16 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      */
     async _onSelectRecord(ev) {
         const state = this.model.get(this.handle);
-        const targetRecordId = ev.data.resId;
-        const wasSelected = this._selectedRecordIds.includes(targetRecordId);
+        const recordIds = state.data.map(record => record.res_id);
 
-        // selections
-        const isRangeSelection = ev.data.originalEvent.shiftKey && this._anchorId;
-        const isKeepSelection = ev.data.isKeepSelection || ev.data.originalEvent.ctrlKey || ev.data.originalEvent.metaKey;
-        const isBasicSelection = !isRangeSelection && !isKeepSelection;
-        let newSelection;
-
-        if (isBasicSelection) {
-            if (this._selectedRecordIds.length > 1) {
-                newSelection = [targetRecordId];
-            } else {
-                newSelection = wasSelected ? [] : [targetRecordId];
-            }
-        } else {
-            let selectedRecordsIds;
-            if (isRangeSelection) {
-                const recordIds = state.data.map(record => record.res_id);
-                const anchorIndex = recordIds.indexOf(this._anchorId);
-                const selectedRecordIndex = recordIds.indexOf(targetRecordId);
-                const lowerIndex = Math.min(anchorIndex, selectedRecordIndex);
-                const upperIndex = Math.max(anchorIndex, selectedRecordIndex);
-                selectedRecordsIds = recordIds.slice(lowerIndex, upperIndex + 1);
-            } else {
-                selectedRecordsIds = [targetRecordId];
-            }
-
-            if (isKeepSelection) {
-                newSelection = wasSelected
-                    ? this._selectedRecordIds.filter(id => id !== targetRecordId)
-                    : this._selectedRecordIds.concat(selectedRecordsIds);
-            } else {
-                newSelection = selectedRecordsIds;
-            }
-        }
-
-        if (!isRangeSelection) {
-            if (newSelection.includes(targetRecordId)) {
-                this._anchorId = targetRecordId;
-            } else {
-                this._anchorId = null;
-            }
-        }
-
+        const { newSelection, anchor } = computeMultiSelection(recordIds, ev.data.resId, {
+            anchor: this._anchorId,
+            isKeepSelection: ev.data.isKeepSelection || ev.data.originalEvent.ctrlKey || ev.data.originalEvent.metaKey,
+            isRangeSelection: ev.data.originalEvent.shiftKey && this._anchorId,
+            selected: this._selectedRecordIds,
+         });
         this._selectedRecordIds = [...new Set(newSelection)];
+        this._anchorId = anchor;
         await this._updateChatter();
         this._deferredRenderInspector(ev);
         this._updateSelection();

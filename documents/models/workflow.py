@@ -7,6 +7,7 @@ from odoo import models, fields, api
 class WorkflowActionRule(models.Model):
     _name = "documents.workflow.rule"
     _description = "A set of condition and actions which will be available to all attachments matching the conditions"
+    _order = "sequence"
 
     domain_folder_id = fields.Many2one('documents.folder', string="Workspace", required=True, ondelete='cascade')
     name = fields.Char(required=True, string="Rule name", translate=True)

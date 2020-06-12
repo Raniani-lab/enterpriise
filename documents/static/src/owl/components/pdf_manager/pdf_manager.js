@@ -3,6 +3,8 @@ odoo.define('documents.component.PdfManager', function (require) {
 
 const PdfGroupName = require('documents.component.PdfGroupName');
 const PdfPage = require('documents.component.PdfPage');
+const { computeMultiSelection } = require('documents.utils');
+
 const ajax = require('web.ajax');
 const { csrf_token, _t } = require('web.core');
 
@@ -27,13 +29,15 @@ class PdfManager extends owl.Component {
             groupIds: [],
             /*
              * Will be sent to the backend.
-             *  object pages[pageId] = { pageId, groupId, isIgnored, fileId, localPageNumber }
+             *  object pages[pageId] = { pageId, groupId, isSelected, fileId, localPageNumber }
              */
             pages: {},
             // The page that is open as large preview.
             viewedPage: undefined,
             // whether to archive the original documents.
             archive: true,
+            // the anchor of the page selection, used to determine the record from which record selections should occur
+            anchorId: undefined,
         });
         /*
          * This object will be processed and sent to the backend.
@@ -42,6 +46,7 @@ class PdfManager extends owl.Component {
         this._newFiles = {};
         // object _pageCanvas[pageId] = pageObject from PDFJS
         this._pageCanvas = {};
+        this._onGlobalKeydown = this._onGlobalKeydown.bind(this);
     }
 
     async willStart() {
@@ -49,12 +54,17 @@ class PdfManager extends owl.Component {
     }
 
     mounted() {
+        document.addEventListener('keydown', this._onGlobalKeydown);
         for (const pdf_document of this.props.documents) {
             this._addFile(pdf_document.name, {
                 url: `/documents/content/${pdf_document.id}`,
                 documentId: pdf_document.id,
             });
         }
+    }
+
+    willUnmount() {
+        document.removeEventListener('keydown', this._onGlobalKeydown);
     }
 
     //--------------------------------------------------------------------------
@@ -66,7 +76,7 @@ class PdfManager extends owl.Component {
      */
     get ignoredPageIds() {
         return Object.keys(this.state.pages).filter(
-            key => this.state.pages[key].isIgnored && this.state.pages[key].groupId
+            key => !this.state.pages[key].isSelected && this.state.pages[key].groupId
         );
     }
 
@@ -75,7 +85,7 @@ class PdfManager extends owl.Component {
      */
     get activePageIds() {
         return Object.keys(this.state.pages).filter(
-            key => !this.state.pages[key].isIgnored && this.state.pages[key].groupId
+            key => this.state.pages[key].isSelected && this.state.pages[key].groupId
         );
     }
 
@@ -167,15 +177,16 @@ class PdfManager extends owl.Component {
                 for (const pageId of processedPageIds) {
                 this._removePage(pageId, { fromFile: true });
                 }
-                this._createGroup({ name: _t('Remaining Pages'), pageIds });
+                this._createGroup({ name: _t("Remaining Pages"), pageIds, isSelected: true });
             }
         } catch (error) {
             this.trigger('pdf-upload-error', { error });
             if (pageIds.length) {
-                this._createGroup({ name: _t('Remaining Pages'), pageIds: pageIds });
+                this._createGroup({ name: _t("Remaining Pages"), pageIds: pageIds, isSelected: true });
             }
         } finally {
             this.state.uploadingLock = false;
+            this.state.anchorId = undefined;
         }
     }
     /**
@@ -184,9 +195,10 @@ class PdfManager extends owl.Component {
      * @param {String} [param0.name]
      * @param {number[]} [param0.pageIds]
      * @param {number} [param0.index]
+     * @param {boolean} [param0.isSelected] true if pages should be selected
      * @return {String} groupId (unique)
      */
-    _createGroup({ name, pageIds, index } = {}) {
+    _createGroup({ name, pageIds, index, isSelected } = {}) {
         const groupId = _.uniqueId('group');
         pageIds = pageIds || [];
         this.state.groupData[groupId] = {
@@ -196,7 +208,9 @@ class PdfManager extends owl.Component {
         };
         for (const pageId of pageIds) {
             this.state.pages[pageId].groupId = groupId;
-            this.state.pages[pageId].isIgnored = false;
+            if (isSelected !== undefined) {
+                this.state.pages[pageId].isSelected = isSelected;
+            }
         }
         if (index) {
             this.state.groupIds.splice(index, 0, groupId);
@@ -236,7 +250,7 @@ class PdfManager extends owl.Component {
                 groupId,
                 fileId,
                 localPageNumber: pageNumber,
-                isIgnored: false,
+                isSelected: true,
             };
             newPages[pageNumber] = pageId;
             this._pageCanvas[pageId] = {};
@@ -504,9 +518,24 @@ class PdfManager extends owl.Component {
      * @param {customEvent} ev
      * @param {String} ev.detail
      */
-    _onClickIgnore(ev) {
-        const pageId = ev.detail;
-        this.state.pages[pageId].isIgnored = !this.state.pages[pageId].isIgnored;
+    _onSelectClicked(ev) {
+        const { pageId, isRangeSelection, isKeepSelection } = ev.detail;
+        const recordIds = [];
+
+        for (const groupId of this.state.groupIds) {
+            recordIds.push(...this.state.groupData[groupId].pageIds);
+        }
+        const { newSelection, anchor } = computeMultiSelection(recordIds, pageId, {
+            anchor: this.state.anchorId,
+            isKeepSelection,
+            isRangeSelection: isRangeSelection && this.state.anchorId,
+            selected: this.activePageIds,
+        });
+        const selectionSet = new Set(newSelection);
+        this.state.anchorId = anchor;
+        for (const pageId in this.state.pages) {
+            this.state.pages[pageId].isSelected = selectionSet.has(pageId);
+        }
     }
     /**
      * @private
@@ -516,6 +545,10 @@ class PdfManager extends owl.Component {
         ev.stopPropagation();
         this.previewCanvas = undefined;
         this.state.viewedPage = undefined;
+        for (const pageId in this.state.pages) {
+            this.state.pages[pageId].isSelected = false;
+        }
+        this.state.anchorId = undefined;
     }
     /**
      * @private
@@ -606,7 +639,20 @@ class PdfManager extends owl.Component {
     _onEditName(ev) {
         ev.stopPropagation();
         const groupId = ev.detail.groupId;
-        this.state.groupData[groupId].name = ev.detail.name || 'unnamed';
+        this.state.groupData[groupId].name = ev.detail.name || _t("unnamed");
+    }
+    /**
+     * @private
+     * @param {customEvent} ev
+     * @param {number} ev.keyCode
+     * @param {boolean} ev.ctrlKey
+     */
+    _onGlobalKeydown(ev) {
+        if (ev.key == 'a' && ev.ctrlKey) {
+            for (const pageId in this.state.pages) {
+                this.state.pages[pageId].isSelected = true;
+            }
+        }
     }
     /**
      * @private

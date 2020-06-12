@@ -167,7 +167,7 @@
 <t t-name="documents.DocumentsInspector.rule">
     <div class="o_inspector_rule o_inspector_trigger_hover_target mb-2" t-att-data-id="id">
         <button t-att-title="note || ''" class="btn fa fa-play text-white bg-primary o_inspector_trigger_rule"/>
-        <span class="ml-1" t-att-title="note || ''"><t t-esc="display_name"/></span>
+        <span class="ml-2" t-att-title="note || ''"><t t-esc="display_name"/></span>
     </div>
 </t>
 

@@ -30,7 +30,7 @@
 
         <record id="documents_rule_internal_mad" model="documents.workflow.rule">
             <field name="name">Mark As Draft</field>
-            <field name="sequence">6</field>
+            <field name="sequence">5</field>
             <field name="condition_type">domain</field>
             <field name="domain" eval="['|', ('tag_ids', '=', False), ('tag_ids', 'in', [
                 ref('documents.documents_internal_status_deprecated'),
@@ -77,7 +77,7 @@
         <!-- internal mark as bill -->
 
         <record id="documents_rule_internal_mark" model="documents.workflow.rule">
-            <field name="sequence">1</field>
+            <field name="sequence">2</field>
             <field name="name">Mark As Bill</field>
             <field name="condition_type">domain</field>
             <field name="domain" eval="[('tag_ids', 'in', [
@@ -107,7 +107,7 @@
         <!-- finance validate -->
 
         <record id="documents_rule_finance_validate" model="documents.workflow.rule">
-            <field name="sequence">1</field>
+            <field name="sequence">6</field>
             <field name="name">Validate</field>
             <field name="condition_type">domain</field>
             <field name="domain" eval="[('tag_ids', 'in', [
@@ -127,7 +127,7 @@
         <!-- finance ask for validation -->
 
         <record id="documents_rule_finance_afv" model="documents.workflow.rule">
-            <field name="sequence">2</field>
+            <field name="sequence">7</field>
             <field name="name">Ask for Validation</field>
             <field name="condition_type">domain</field>
             <field name="domain" eval="[('tag_ids', 'in', [

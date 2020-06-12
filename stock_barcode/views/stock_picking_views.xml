@@ -20,7 +20,7 @@
             <xpath expr="//button[@name='%(stock.action_report_delivery)d']" position="attributes">
                 <attribute name="barcode_trigger">print-slip</attribute>
             </xpath>
-            <xpath expr="//button[@name='put_in_pack']" position="attributes">
+            <xpath expr="//button[@name='action_put_in_pack']" position="attributes">
                 <attribute name="barcode_trigger">pack</attribute>
             </xpath>
             <xpath expr="//button[@name='button_scrap']" position="attributes">

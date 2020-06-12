@@ -36,5 +36,8 @@
                 This batch transfer is empty, you need to configure it
             </span>
         </t>
+        <t t-jquery="t[t-name='optional_buttons'] > div" t-operation="append">
+            <button t-if="widget.groups.group_tracking_lot and  widget.model == 'stock.picking.batch'" class="btn btn-secondary text-uppercase o_put_in_pack"><i class="fa fa-cube mr-1"/> Put In Pack</button>
+        </t>
     </t>
 </templates>

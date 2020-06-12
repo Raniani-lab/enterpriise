@@ -24,7 +24,7 @@ StockPickingBarcodeHandler.include({
             var pack_id = pack.attributes.id;
             return self.form_view.save()
                 .then(function() {
-                    return self.picking_model.call('put_in_pack',[[picking_id]]);
+                    return self.picking_model.call('action_put_in_pack',[[picking_id]]);
                 })
                 .then(function(put_in_pack_action) {
                     put_in_pack_action.context = _.extend(

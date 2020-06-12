@@ -44,8 +44,6 @@ var StatementAction = AbstractAction.extend({
         LineRenderer: ReconciliationRenderer.LineRenderer,
         // used context params
         params: ['statement_line_ids'],
-        // number of statements/partners/accounts to display
-        defaultDisplayQty: 10,
         // number of moves lines displayed in 'match' mode
         limitMoveLines: 15,
     }),
@@ -86,7 +84,6 @@ var StatementAction = AbstractAction.extend({
         this.controlPanelProps.cp_content = {};
         this.model = new this.config.Model(this, {
             modelName: "account.reconciliation.widget",
-            defaultDisplayQty: params.params && params.params.defaultDisplayQty || this.config.defaultDisplayQty,
             limitMoveLines: params.params && params.params.limitMoveLines || this.config.limitMoveLines,
         });
         this.widgets = [];
@@ -134,7 +131,6 @@ var StatementAction = AbstractAction.extend({
                             'bank_statement_line_id': self.model.bank_statement_line_id,
                             'valuenow': self.model.valuenow,
                             'valuemax': self.model.valuemax,
-                            'defaultDisplayQty': self.model.defaultDisplayQty,
                             'title': title,
                         });
                     });
@@ -209,6 +205,7 @@ var StatementAction = AbstractAction.extend({
         this._super.apply(this, arguments);
         if (this.action_manager) {
             this.$pager = $(QWeb.render('reconciliation.control.pager', {widget: this.renderer}));
+
             this.controlPanelProps.cp_content = {
                 $buttons: $(),
                 $pager: this.$pager,
@@ -290,12 +287,6 @@ var StatementAction = AbstractAction.extend({
             self.widgets.push(widget);
             linePromises.push(widget.appendTo(self.$('.o_reconciliation_lines')));
         });
-        if (this.model.hasMoreLines() === false) {
-            this.renderer.hideLoadMoreButton(true);
-        }
-        else {
-            this.renderer.hideLoadMoreButton(false);
-        }
         return Promise.all(linePromises);
     },
 
@@ -380,14 +371,6 @@ var StatementAction = AbstractAction.extend({
         });
     },
     /**
-     * Load more statement and render them
-     *
-     * @param {OdooEvent} event
-     */
-    _onLoadMore: function (event) {
-        return this._loadMore(this.model.defaultDisplayQty);
-    },
-    /**
      * call 'validate' model method then destroy the
      * validated lines and update the action renderer with the new status bar
      * values and notifications then open the first available line
@@ -416,12 +399,6 @@ var StatementAction = AbstractAction.extend({
                     self.widgets.splice(index, 1);
                 }
             });
-            // Get number of widget and if less than constant and if there are more to laod, load until constant
-            if (self.widgets.length < self.model.defaultDisplayQty
-                && self.model.valuemax - self.model.valuenow >= self.model.defaultDisplayQty) {
-                var toLoad = self.model.defaultDisplayQty - self.widgets.length;
-                self._loadMore(toLoad);
-            }
             self._openFirstLine(handle);
         });
     },
@@ -440,7 +417,6 @@ var ManualAction = StatementAction.extend({
         ActionRenderer: ReconciliationRenderer.ManualRenderer,
         LineRenderer: ReconciliationRenderer.ManualLineRenderer,
         params: ['company_ids', 'mode', 'partner_ids', 'account_ids'],
-        defaultDisplayQty: 30,
         limitMoveLines: 15,
     }),
 

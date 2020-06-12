@@ -85,7 +85,7 @@ class AccountReconciliation(models.AbstractModel):
     def _get_bank_statement_line_partners(self, st_lines):
         params = []
 
-        # Add the res.partner.ban's IR rules. In case partners are not shared between companies,
+        # Add the res.partner.bank's IR rules. In case partners are not shared between companies,
         # identical bank accounts may exist in a company we don't have access to.
         ir_rules_query = self.env['res.partner.bank']._where_calc([])
         self.env['res.partner.bank']._apply_ir_rules(ir_rules_query, 'read')
@@ -527,7 +527,7 @@ class AccountReconciliation(models.AbstractModel):
             amount_matching_order_by_clause = '''
                 account_move_line.balance = %s OR (
                     account_move_line.currency_id IS NOT NULL
-                    AND 
+                    AND
                     account_move_line.amount_currency = %s
                 )
             '''
@@ -537,7 +537,7 @@ class AccountReconciliation(models.AbstractModel):
             params = [liquidity_lines.balance]
 
         trailing_query = '''
-            ORDER BY 
+            ORDER BY
                 ''' + amount_matching_order_by_clause + ''' DESC,
                 account_move_line.date_maturity ASC,
                 account_move_line.id ASC
@@ -605,9 +605,9 @@ class AccountReconciliation(models.AbstractModel):
             SELECT *
             FROM (
                 ''' + query_1 + '''
-                
+
                 UNION ALL
-                
+
                 ''' + query_2 + '''
             ) AS account_move_line
         '''
@@ -633,7 +633,7 @@ class AccountReconciliation(models.AbstractModel):
         query = '''
             SELECT ''' + self._get_query_select_clause() + '''
             FROM ''' + tables + '''
-            JOIN account_account account ON account.id = account_move_line.account_id 
+            JOIN account_account account ON account.id = account_move_line.account_id
             LEFT JOIN res_partner partner ON partner.id = account_move_line.partner_id
             WHERE ''' + where_clause + '''
         '''

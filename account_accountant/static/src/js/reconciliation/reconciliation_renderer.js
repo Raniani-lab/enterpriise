@@ -20,7 +20,6 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
     template: 'reconciliation.statement',
     events: {
         'click *[rel="do_action"]': '_onDoAction',
-        'click button.js_load_more': '_onLoadMore',
     },
     /**
      * @override
@@ -47,17 +46,6 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    /*
-     * hide the button to load more statement line
-     */
-    hideLoadMoreButton: function (show) {
-        if (!show) {
-            this.$('.js_load_more').show();
-        }
-        else {
-            this.$('.js_load_more').hide();
-        }
-    },
     showRainbowMan: function (state) {
         if (this.model.display_context !== 'validate') {
             return
@@ -196,14 +184,6 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
             context: {search_default_journal_id: journalId, 'journal_type':'bank'},
             view_mode: 'form',
         });
-    },
-    /**
-     * Load more statement lines for reconciliation
-     * @private
-     * @param {MouseEvent} event
-     */
-    _onLoadMore: function (e) {
-        this.trigger_up('load_more');
     },
 });
 
@@ -643,6 +623,7 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
     _onCreateReconcileModel: function (event) {
         event.preventDefault();
         var self = this;
+
         this.do_action({
             type: 'ir.actions.act_window',
             res_model: 'account.reconcile.model',

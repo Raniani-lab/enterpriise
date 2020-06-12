@@ -533,8 +533,8 @@ var StatementModel = BasicModel.extend({
         var self = this;
         var line = this.getLine(handle);
         return this._rpc({
-            model: 'account.reconcile.model',
-            method: 'get_reconciliation_dict_for_widget',
+            model: 'account.reconciliation.widget',
+            method: 'get_reconciliation_dict_from_model',
             args: [reconcile_model_id, line.st_line.id, -line.balance.amount],
         }).then(function(result) {
             var lastBaseLineId = null;

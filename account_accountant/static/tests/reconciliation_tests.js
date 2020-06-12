@@ -231,26 +231,6 @@ var db = {
             {'id': 3, 'display_name': "ATOS", 'rule_type': 'writeoff_button', 'name': "ATOS", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
             {'id': 10, 'display_name': "Double", 'rule_type': 'writeoff_button', 'name': "Double", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"], 'analytic_tag_ids': [1,2]},
         ],
-        get_reconciliation_dict_for_widget: function(args) {
-            var model_id, st_line, residual_balance;
-            [model_id, st_line, residual_balance] = args;
-            var today = new moment().utc().format();
-            if (model_id === 3) {
-                return [
-                    {id: 'createLine100', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101120', account_id: {id: 285, display_name: "101120 Stock Interim Account (Received)"}, tax_ids: [{id: 6, display_name: "Tax 20.00%"}], __tax_to_recompute: false, date: today, name: 'ATOS Banque', credit: 1145.63, debit: 0, __focus: false},
-                    {id: 'createLine101', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: true, is_tax: true, account_code: '101300', account_id: {id: 288, display_name: "101300 Tax Paid"}, date: today, name: 'ATOS Banque Tax 20.00%', credit: 229.13, debit: 0, __focus: false, tax_repartition_line_id: true, is_tax: true, link: 'createLine100'},
-                    {id: 'createLine102', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101130', account_id: {id: 286, display_name: "101130 Stock Interim Account (Delivered)"}, tax_ids: [{id: 7, display_name: "Tax 10.00% include"}], force_tax_included: true, __tax_to_recompute: false, date: today, name: 'ATOS Frais', credit: 26.78, debit: 0, __focus: true},
-                    {id: 'createLine103', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: true, is_tax: true, account_code: '101300', account_id: {id: 288, display_name: "101300 Tax Paid"}, date: today, name: 'ATOS Frais Tax 10.00% include', credit: 2.68, debit: 0, __focus: false, tax_repartition_line_id: true, is_tax: true, link: 'createLine102'},
-                ];
-            };
-            if (model_id === 10) {
-                return [
-                    {id: 'createLine110', reconcile_model_id: 10, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101120', account_id: {id: 285, display_name: "101120 Stock Interim Account (Received)"}, tax_ids: [], date: today, name: 'Double Banque', credit: 1145.63, debit: 0, __focus: true, analytic_tag_ids: [{id: 1, display_name: "Come together"}, {id: 2, display_name: "Right now"}]},
-                    {id: 'createLine111', reconcile_model_id: 10, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101130', account_id: {id: 286, display_name: "101130 Stock Interim Account (Delivered)"}, tax_ids: [], date: today, name: 'Double Frais', credit: 29.37, debit: 0, __focus: true, analytic_tag_ids: [{id: 1, display_name: "Come together"}, {id: 2, display_name: "Right now"}]},
-                ];
-            };
-            return {};
-        },
     },
     'account.reconciliation.widget': {
         fields: {},
@@ -341,6 +321,26 @@ var db = {
                 }
             }
             return Promise.resolve();
+        },
+        get_reconciliation_dict_from_model: function(args) {
+            var model_id, st_line, residual_balance;
+            [model_id, st_line, residual_balance] = args;
+            var today = new moment().utc().format();
+            if (model_id === 3) {
+                return [
+                    {id: 'createLine100', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101120', account_id: {id: 285, display_name: "101120 Stock Interim Account (Received)"}, tax_ids: [{id: 6, display_name: "Tax 20.00%"}], __tax_to_recompute: false, date: today, name: 'ATOS Banque', credit: 1145.63, debit: 0, __focus: false},
+                    {id: 'createLine101', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: true, is_tax: true, account_code: '101300', account_id: {id: 288, display_name: "101300 Tax Paid"}, date: today, name: 'ATOS Banque Tax 20.00%', credit: 229.13, debit: 0, __focus: false, tax_repartition_line_id: true, is_tax: true, link: 'createLine100'},
+                    {id: 'createLine102', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101130', account_id: {id: 286, display_name: "101130 Stock Interim Account (Delivered)"}, tax_ids: [{id: 7, display_name: "Tax 10.00% include"}], force_tax_included: true, __tax_to_recompute: false, date: today, name: 'ATOS Frais', credit: 26.78, debit: 0, __focus: true},
+                    {id: 'createLine103', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: true, is_tax: true, account_code: '101300', account_id: {id: 288, display_name: "101300 Tax Paid"}, date: today, name: 'ATOS Frais Tax 10.00% include', credit: 2.68, debit: 0, __focus: false, tax_repartition_line_id: true, is_tax: true, link: 'createLine102'},
+                ];
+            };
+            if (model_id === 10) {
+                return [
+                    {id: 'createLine110', reconcile_model_id: 10, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101120', account_id: {id: 285, display_name: "101120 Stock Interim Account (Received)"}, tax_ids: [], date: today, name: 'Double Banque', credit: 1145.63, debit: 0, __focus: true, analytic_tag_ids: [{id: 1, display_name: "Come together"}, {id: 2, display_name: "Right now"}]},
+                    {id: 'createLine111', reconcile_model_id: 10, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101130', account_id: {id: 286, display_name: "101130 Stock Interim Account (Delivered)"}, tax_ids: [], date: today, name: 'Double Frais', credit: 29.37, debit: 0, __focus: true, analytic_tag_ids: [{id: 1, display_name: "Come together"}, {id: 2, display_name: "Right now"}]},
+                ];
+            };
+            return {};
         },
         open_rec_model_creation_widget: function(args) {
             return Datas.used.test_rec_model_wizard_action;

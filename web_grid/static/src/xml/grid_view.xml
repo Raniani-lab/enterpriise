@@ -304,7 +304,7 @@
         <t t-if="props.isTotal" t-esc="_format(props.cellValue)"/>
         <t t-else="">
             <button
-                class="o_grid_float_toggle btn btn-default d-inline-block w-100"
+                class="o_grid_float_toggle btn btn-default d-inline-block w-100 text-right pr-0"
                 t-att-class="{'text-danger': state.value lt 0}"
                 t-att-disabled="props.readonly or state.disabled"
                 t-on-click="_onClickButton"

@@ -624,15 +624,30 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
         event.preventDefault();
         var self = this;
 
-        this.do_action({
-            type: 'ir.actions.act_window',
-            res_model: 'account.reconcile.model',
-            views: [[false, 'form']],
-            target: 'current'
-        },
-        {
-            on_reverse_breadcrumb: function() {self.trigger_up('reload');},
-        });
+        var propositions_for_model = [];
+        for (var i = 0 ; i < this._initialState.reconciliation_proposition.length; i++) {
+            var rec_proposition = this._initialState.reconciliation_proposition[i];
+
+            if (!rec_proposition.tax_repartition_line_id && rec_proposition.account_id) {
+                propositions_for_model.push({
+                    label: rec_proposition.name,
+                    amount: rec_proposition.amount,
+                    account_id: rec_proposition.account_id.id,
+                    tax_ids: rec_proposition.tax_ids.map(x=> x.id),
+                    label: rec_proposition.name,
+                })
+            }
+        }
+
+        return this._rpc({
+            model: 'account.reconciliation.widget',
+            method: 'open_rec_model_creation_widget',
+            args: [propositions_for_model, this._initialState.st_line.amount, this._initialState.to_check],
+        }).then(function(rslt) {
+            self.do_action(rslt, {
+                'on_close': function() {self.trigger_up('reload');}
+            })
+        })
     },
     _editAmount: function (event) {
         event.stopPropagation();

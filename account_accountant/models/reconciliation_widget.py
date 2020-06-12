@@ -935,3 +935,31 @@ class AccountReconciliation(models.AbstractModel):
             (account_move_line + writeoff_lines).reconcile()
         else:
             account_move_line.reconcile()
+
+    @api.model
+    def open_rec_model_creation_widget(self, rec_propositions, st_line_amount, to_check):
+        """ Called by the reconciliation widget in order to open the wizard allowing
+        automatically creating a reconciliation model from the reconciliation
+        propositions manually matched with a statement line in the widget.
+        """
+        line_vals = [(0, 0, {
+            'account_id': proposition['account_id'],
+            'tax_ids': [(6, 0, proposition['tax_ids'])],
+            'amount_type': 'percentage',
+            'amount_string': str(round(100 * proposition['amount'] / st_line_amount, 5)),
+            'label': proposition['label'],
+        }) for proposition in rec_propositions]
+
+        view_id = self.env['ir.model.data'].xmlid_to_res_id('account_accountant.view_account_reconcile_model_widget_wizard')
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _("Create Reconciliation Model"),
+            'view_mode': 'form',
+            'res_model': 'account.reconcile.model',
+            'views': [[view_id, 'form']],
+            'target': 'new',
+            'context': {
+                'default_line_ids': line_vals,
+                'default_to_check': to_check,
+            }
+        }

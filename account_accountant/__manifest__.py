@@ -32,6 +32,7 @@ It assigns manager and user access rights to the Administrator for the accountin
         'views/res_config_settings_views.xml',
         'views/product_views.xml',
         'wizard/account_change_lock_date.xml',
+        'wizard/reconcile_model_wizard.xml',
     ],
     'qweb': [
         "static/src/xml/account_reconciliation.xml",

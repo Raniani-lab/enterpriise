@@ -342,6 +342,22 @@ var db = {
             }
             return Promise.resolve();
         },
+        open_rec_model_creation_widget: function(args) {
+            return Datas.used.test_rec_model_wizard_action;
+        },
+    }
+};
+
+var test_rec_model_wizard_action = {
+    "type":"ir.actions.act_window",
+    "name": "Create Reconciliation Model",
+    'view_mode': 'form',
+    'res_model': 'account.reconcile.model',
+    'views': [[false, 'form']],
+    'target': 'new',
+    'context': {
+        'default_line_ids': [[6, 0, []]],
+        'default_to_check': false,
     }
 };
 
@@ -628,6 +644,7 @@ Datas.params = {
     move_lines_for_manual_reconciliation: move_lines_for_manual_reconciliation,
     session: session,
     options: options,
+    test_rec_model_wizard_action: test_rec_model_wizard_action,
 };
     // this is the main function for this module. Its job is to export (and clone) all data for a test.
 Datas.getParams = function () {
@@ -1186,10 +1203,10 @@ QUnit.module('account', {
             "the new line should have the selected account, name and amout");
         assert.ok(widget.$('caption button.btn-primary:visible').length, "should display the 'Reconcile' button");
 
+        var self = this;
         testUtils.mock.intercept(clientAction, 'do_action', function (event) {
-            assert.strictEqual(JSON.stringify(event.data.action),
-                '{"type":"ir.actions.act_window","res_model":"account.reconcile.model","views":[[false,"form"]],"target":"current"}',
-                "should open the reconcile model form view");
+            assert.strictEqual(JSON.stringify(event.data.action), JSON.stringify(self.params.test_rec_model_wizard_action),
+            "should open the reconcile model form view");
         });
         await testUtils.dom.click(widget.$('.create .reconcile_model_create'),{allowInvisible:true});
 

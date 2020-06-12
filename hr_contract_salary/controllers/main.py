@@ -555,6 +555,11 @@ class HrContractSalary(http.Controller):
             elif isinstance(field_value, float):
                 field_value = round(field_value, 2)
             contract_info[advantage.advantage_type_id.name].append((field_names['hr.contract'][field_name], field_value))
+        # Add wage information
+        contract_info[_('Wage')] = [
+            (_('Monthly Gross Salary'), contract.wage_with_holidays),
+            (_('Annual Employer Cost'), contract.final_yearly_costs),
+        ]
         result[_('Contract Information:')] = contract_info
         # Personal Information
         infos = request.env['hr.contract.salary.personal.info'].sudo().search([('display_type', '!=', 'document'), '|', ('structure_type_id', '=', False), ('structure_type_id', '=', contract.structure_type_id.id)])

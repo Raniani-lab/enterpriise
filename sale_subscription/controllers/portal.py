@@ -22,9 +22,7 @@ class CustomerPortal(CustomerPortal):
         """ Add subscription details to main account page """
         values = super(CustomerPortal, self)._prepare_home_portal_values()
         partner = request.env.user.partner_id
-        sub_ids = request.env['sale.subscription'].search(self._get_subscription_domain(partner)).ids
-        values['subscription_count'] = len(sub_ids)
-        values['sub_ids'] = sub_ids
+        values['subscription_count'] = request.env['sale.subscription'].search_count(self._get_subscription_domain(partner))
         return values
 
     @http.route(['/my/subscription', '/my/subscription/page/<int:page>'], type='http', auth="user", website=True)
@@ -59,7 +57,6 @@ class CustomerPortal(CustomerPortal):
         if not filterby:
             filterby = 'all'
         domain += searchbar_filters[filterby]['domain']
-        domain += [('id', 'in', values['sub_ids'])]
 
         # pager
         account_count = SaleSubscription.sudo().search_count(domain)

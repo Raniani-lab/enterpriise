@@ -88,6 +88,7 @@ odoo.define('sign.PDFIframe', function (require) {
                 this._set_data(dataName, datas[dataName]);
             }
 
+            this.normalSize = () => this.$('.page').first().innerHeight() * 0.015;
             this.role = role || 0;
             this.configuration = {};
 
@@ -319,16 +320,25 @@ odoo.define('sign.PDFIframe', function (require) {
 
         updateFontSize: function() {
             var self = this;
-            var normalSize = this.$('.page').first().innerHeight() * 0.015;
+            const normalSize = this.normalSize();
             this.$('.o_sign_sign_item').each(function(i, el) {
-                var $elem = $(el);
-                var size = parseFloat($elem.css('height'));
-                if ($.inArray(self.types[$elem.data('type')].item_type, ['signature', 'initial', 'textarea', 'selection']) > -1) {
-                    size = normalSize;
-                }
-
-                $elem.css('font-size', size * 0.8);
+                const $elem = $(el);
+                self.updateSignItemFontSize($elem, normalSize);
             });
+        },
+
+        /**
+         * @param {jQuery} $signItem the signItem the font size has to be set
+         * @param {number} normalSize the normal font size
+         */
+        updateSignItemFontSize: function($signItem, normalSize) {
+            var size = parseFloat($signItem.css('height'));
+            if ($.inArray(
+                this.types[$signItem.data('type')].item_type,
+                ['signature', 'initial', 'textarea', 'selection']) > -1) {
+                size = normalSize;
+            }
+            $signItem.css('font-size', size * 0.8);
         },
 
         createSignItem: function (type, required, responsible, posX, posY, width, height, value, option_ids, name, tooltip) {

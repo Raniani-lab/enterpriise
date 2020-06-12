@@ -89,7 +89,7 @@
     <t t-name="sign.type_buttons">
         <div class="o_sign_field_type_toolbar_title d-flex justify-content-center align-items-center">Fields</div>
         <t t-foreach="sign_item_types" t-as="item_type">
-            <button type="button" class="o_sign_field_type_button flex-shrink-0" t-att-data-item-type-id="item_type.id" title="Drag &amp; Drop a field in the PDF"><t t-esc="item_type.name"/></button>
+            <button type="button" class="o_sign_field_type_button btn btn-primary flex-shrink-0" t-att-data-item-type-id="item_type.id" title="Drag &amp; Drop a field in the PDF"><t t-esc="item_type.name"/></button>
         </t>
     </t>
 </templates>

@@ -18,6 +18,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    text-align: center;
 
     border: 1px dashed #875A7B;
     vertical-align: middle;
@@ -343,7 +344,12 @@ textarea.o_sign_sign_item {
     cursor: -webkit-grab;
 }
 
-.ui-draggable-dragging .ui-draggable-handle, .o_sign_sign_item_to_add.ui-draggable-dragging { /* jQuery UI */
+.ui-draggable-dragging .ui-draggable-handle,
+.o_sign_sign_item_to_add.ui-draggable-dragging,
+.o_sign_sign_item.ui-draggable-dragging { /* jQuery UI */
+    transform: rotate(3deg);
+    box-shadow: 0 5px 25px -10px black;
+    transition: transform 0.3s, box-shadow 0.3s;
     cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing;
@@ -425,12 +431,12 @@ textarea.o_sign_sign_item {
 
     border: none;
 
-    background-color: #875A7B;
+    background-color: #00A09D;
     color: white;
 
-    height: 30px;
-    padding: 0px 20px 0px 20px;
-    margin: 0.5rem;
+    min-height: 30px;
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    padding: 0.5rem 2rem;
 }
 
 .o_sign_close_button {
@@ -466,13 +472,13 @@ textarea.o_sign_sign_item {
 }
 
 .o_sign_field_type_toolbar_title {
-    height: 32px;
+    height: 12px;
     color: white;
     font-size: 12px;
     background-color: #474747;
     background-image: url(../../img/texture.png), -webkit-gradient(linear, left top, left bottom, from(hsla(0,0%,32%,.99)), to(hsla(0,0%,27%,.95)));
     box-shadow: inset 0 1px 1px hsla(0,0%,0%,.15), inset 0 -1px 0 hsla(0,0%,100%,.05), 0 1px 0 hsla(0,0%,0%,.15), 0 1px 1px hsla(0,0%,0%,.1);
-    padding: 1rem;
+    padding: 10px;
 }
 
 #outerContainer.o_sign_field_type_toolbar_visible {

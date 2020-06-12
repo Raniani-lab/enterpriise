@@ -166,7 +166,7 @@
             <p class="o_view_nocontent_smiling_face">
                 Upload a PDF
             </p><p>
-                Or, <a type="action" name="%(sign.sign_template_tour_action)d" class="text-primary">start with our sample template</a>
+                Or, <a type="action" name="%(sign.sign_template_tour_action)d" class="btn btn-primary text-white">start with our sample template</a>
             </p>
         </field>
     </record>

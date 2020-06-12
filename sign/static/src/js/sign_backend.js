@@ -417,6 +417,8 @@ odoo.define('sign.template', function(require) {
                         self.$('#outerContainer').addClass('o_sign_field_type_toolbar_visible');
                         $fieldTypeButtons.appendTo(self.$fieldTypeToolbar).filter('button').draggable({
                             cancel: false,
+                            distance: 0,
+                            cursorAt: {top:5, left:5},
                             helper: function(e) {
                                 var type = self.types[$(this).data('item-type-id')];
                                 var $signatureItem = self.createSignItem(type, true, self.currentRole, 0, 0, type.default_width, type.default_height, '', []);
@@ -428,6 +430,7 @@ odoo.define('sign.template', function(require) {
                                 self.$('.page').first().append($signatureItem);
                                 self.updateSignItem($signatureItem);
                                 $signatureItem.css('width', $signatureItem.css('width')).css('height', $signatureItem.css('height')); // Convert % to px
+                                self.updateSignItemFontSize($signatureItem, self.normalSize());
                                 $signatureItem.detach();
 
                                 return $signatureItem;
@@ -536,7 +539,13 @@ odoo.define('sign.template', function(require) {
                 $signatureItem.toggleClass('ui-selected');
             });
 
-            $signatureItem.draggable({containment: "parent", handle: ".fa-arrows"}).resizable({containment: "parent"}).css('position', 'absolute');
+            $signatureItem.draggable({
+                containment: "parent",
+                distance: 0,
+                handle: ".fa-arrows"
+            }).resizable({
+                containment: "parent"
+            }).css('position', 'absolute');
 
             $signatureItem.off('dragstart resizestart').on('dragstart resizestart', function(e, ui) {
                 if(!e.ctrlKey) {

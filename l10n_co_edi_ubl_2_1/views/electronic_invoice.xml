@@ -111,17 +111,32 @@
                 <ADQ_7 t-esc="invoice_partner.l10n_co_edi_commercial_name or invoice_partner.name"/>
                 <ADQ_8 t-esc="invoice_partner.name"/>
                 <ADQ_9 t-esc="invoice_partner.name"/>
-                <ADQ_10 t-esc="invoice_partner.contact_address"/>
-                <ADQ_11 t-esc="invoice_partner.state_id.l10n_co_edi_code"/>
-                <ADQ_12/>
-                <ADQ_13 t-esc="invoice_partner.city"/>
-                <ADQ_14 t-esc="invoice_partner.zip"/>
-                <ADQ_15 t-esc="invoice_partner.country_id.code"/>
-                <ADQ_18/>
-                <ADQ_19 t-esc="invoice_partner.state_id.name"/>
-                <ADQ_21 t-esc="invoice_partner.country_id.name"/>
-                <ADQ_22 t-esc="invoice_partner._get_vat_verification_code()"/>
-                <ADQ_23 t-esc="invoice_partner.city_id.l10n_co_edi_code"/>
+                <t t-if="invoice_partner.vat != '222222222222'">
+                    <ADQ_10 t-esc="invoice_partner.contact_address"/>
+                    <ADQ_11 t-esc="invoice_partner.state_id.l10n_co_edi_code"/>
+                    <ADQ_12/>
+                    <ADQ_13 t-esc="invoice_partner.city"/>
+                    <ADQ_14 t-esc="invoice_partner.zip"/>
+                    <ADQ_15 t-esc="invoice_partner.country_id.code"/>
+                    <ADQ_18/>
+                    <ADQ_19 t-esc="invoice_partner.state_id.name"/>
+                    <ADQ_21 t-esc="invoice_partner.country_id.name"/>
+                    <ADQ_22 t-esc="invoice_partner._get_vat_verification_code()"/>
+                    <ADQ_23 t-esc="invoice_partner.city_id.l10n_co_edi_code"/>
+                </t>
+                <t t-else="">
+                    <ADQ_10/>
+                    <ADQ_11/>
+                    <ADQ_12/>
+                    <ADQ_13/>
+                    <ADQ_14/>
+                    <ADQ_15/>
+                    <ADQ_18/>
+                    <ADQ_19/>
+                    <ADQ_21/>
+                    <ADQ_22/>
+                    <ADQ_23/>
+                </t>
                 <ADQ_24 t-esc="invoice_partner._get_vat_without_verification_code()"/>
                 <ADQ_25 t-esc="invoice._l10n_co_edi_get_carvajal_code_for_document_type(invoice_partner)"/>
                 <ADQ_26 t-esc="invoice_partner._get_vat_verification_code()"/>
@@ -130,16 +145,9 @@
                     <TCR_1><t t-esc="';'.join(invoice_partner.commercial_partner_id._l10n_co_edi_get_fiscal_values().mapped('name'))"/></TCR_1>
                 </TCR>
 
-                <ILA>
-                   <ILA_1 t-esc="invoice_partner.display_name"/>
-                   <ILA_2 t-esc="invoice_partner._get_vat_without_verification_code()"/>
-                   <ILA_3 t-esc="invoice._l10n_co_edi_get_carvajal_code_for_document_type(invoice_partner)"/>
-                   <ILA_4 t-esc="invoice_partner._get_vat_verification_code()"/>
-                </ILA>
-
                 <ICR/>
 
-                <DFA>
+                <DFA t-if="invoice_partner.vat != '222222222222'">
                     <DFA_1 t-esc="invoice_partner.country_id.code"/>
                     <DFA_2 t-esc="invoice_partner.state_id.l10n_co_edi_code"/>
                     <DFA_4 t-esc="invoice_partner.city_id.l10n_co_edi_code"/>
@@ -223,6 +231,7 @@
                 <IEN_4 t-esc="shipping_partner.city if shipping_partner else ''"/>
                 <IEN_6 t-esc="shipping_partner.country_id.code if shipping_partner else ''"/>
                 <IEN_7 t-esc="invoice_partner.name"/>
+                <IEN_8 t-esc="invoice._l10n_co_edi_get_delivery_date()"/>
                 <IEN_12 t-esc="invoice.partner_shipping_id.city_id.l10n_co_edi_code if 'partner_shipping_id' in invoice._fields else invoice_partner.city_id.l10n_co_edi_code"/>
             </IEN>
 
@@ -278,7 +287,7 @@
                     <ITE_6 t-esc="invoice.currency_id.name"/>
                     <ITE_7 t-esc="'%.2f' % line.price_unit"/>
                     <ITE_8 t-esc="invoice.currency_id.name"/>
-                    <ITE_10/>
+                    <ITE_10 t-esc="(line.name or '')[:150]"/>
                     <ITE_11 t-esc="(line.name or '')[:150]"/>
                     <ITE_18 t-esc="line.product_id.product_tmpl_id.default_code"/>
                     <ITE_19 t-esc="'%.2f' % line.price_subtotal"/>
@@ -338,6 +347,9 @@
                         <IAE_1 t-esc="product_code[0]"/>
                         <IAE_2 t-esc="product_code[1]"/>
                     </IAE>
+                    <NTI t-if="exempt_tax_dict.get(line.id)">
+                        <NTI_1 t-esc="'Bienes Cubiertos'"/>
+                    </NTI>
                     <t t-set="ite_counter" t-value="ite_counter + 1"/>
             </ITE>
         </template>

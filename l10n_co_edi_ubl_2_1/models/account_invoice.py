@@ -51,6 +51,10 @@ class AccountInvoice(models.Model):
     l10n_co_edi_debit_origin_id = fields.Many2one('account.move', string="Documento de referencia de la Nota de Débito",
                                                   help="This is the invoice which needed correction by this debit note.  "
                                                        "We have a field for credit notes, but need one here for its positive counterpart. ")
+    l10n_co_edi_type = fields.Selection(selection_add=[
+        ('3', 'Documento electrónico de transmisión – tipo 03'),
+        ('4', 'Factura electrónica de Venta - tipo 04'),
+    ])
 
     @api.depends('invoice_date_due', 'date')
     def _compute_l10n_co_edi_is_direct_payment(self):
@@ -119,6 +123,9 @@ class AccountInvoice(models.Model):
             return 'ND' if self.l10n_co_edi_debit_note else 'INVOIC'
         return 'NC'
 
+    def _l10n_co_edi_get_delivery_date(self):
+        return self.invoice_date + timedelta(1)
+
     def l10n_co_edi_upload_electronic_invoice(self):
         """Some checks already before sending the electronic invoice to Carvajal"""
         to_process = self.filtered(lambda move: move._l10n_co_edi_is_l10n_co_edi_required())
@@ -160,6 +167,8 @@ class AccountInvoice(models.Model):
         tax_types = self.mapped('line_ids.tax_ids.l10n_co_edi_type')
 
         taxes_amount_dict = {}
+        exempt_tax_dict = {}
+        tax_group_covered_goods = self.env.ref('l10n_co.tax_group_covered_goods', raise_if_not_found=False)
         for line in self.invoice_line_ids:
             price_unit = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
             taxes = line.tax_ids.compute_all(price_unit, quantity=line.quantity, currency=line.currency_id,
@@ -173,14 +182,15 @@ class AccountInvoice(models.Model):
                                                    'retention': tax_rec.l10n_co_edi_type.retention,
                                                    'rate': tax_rec.amount,
                                                    'amount_type': tax_rec.amount_type})
-
+            if tax_group_covered_goods and tax_group_covered_goods in line.mapped('tax_ids.tax_group_id'):
+                exempt_tax_dict[line.id] = True
         # The rate should indicate how many pesos is one foreign currency
         currency_rate = "%.2f" % (self.currency_id._convert(1.0, self.company_id.currency_id, self.company_id,
                                   self.invoice_date or fields.Date.today()))
 
         withholding_amount = '%.2f' % (self.amount_untaxed + sum(self.line_ids.filtered(lambda move: move.tax_line_id and not move.tax_line_id.l10n_co_edi_type.retention).mapped('price_total')))
 
-        return self.env.ref('l10n_co_edi_ubl_2_1.electronic_invoice_xml')._render({
+        xml_content = self.env.ref('l10n_co_edi_ubl_2_1.electronic_invoice_xml')._render({
             'invoice': self,
             'company_partner': self.company_id.partner_id,
             'sales_partner': self.user_id,
@@ -188,6 +198,7 @@ class AccountInvoice(models.Model):
             'retention_lines_dict': retention_lines_dict,
             'regular_lines_dict': regular_lines_dict,
             'tax_types': tax_types,
+            'exempt_tax_dict': exempt_tax_dict,
             'currency_rate': currency_rate,
             'shipping_partner': self.env['res.partner'].browse(self._get_invoice_delivery_partner_id()),
             'invoice_type_to_ref_1': invoice_type_to_ref_1,
@@ -197,6 +208,7 @@ class AccountInvoice(models.Model):
             'taxes_amount_dict': taxes_amount_dict,
             'withholding_amount': withholding_amount
         })
+        return '<?xml version="1.0" encoding="utf-8"?>'.encode() + xml_content
 
     def l10n_co_edi_download_electronic_invoice(self):
         """ Method called by the user to download the response from the processing of the invoice by the DIAN

@@ -295,7 +295,7 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('tr:eq(1) th').text(), 'BS taskP1',
             "GroupBy should have been taken into account when loading the view."
         );
-        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'UndefinedP1',
+        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'P1',
             "GroupBy should have been taken into account when loading the view."
         );
 
@@ -398,7 +398,7 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('tr:eq(1) th').text(), 'BS taskP1',
             "GroupBy should have been taken into account when loading the view."
         );
-        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'UndefinedP1',
+        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'P1',
             "GroupBy should have been taken into account when loading the view."
         );
 
@@ -451,16 +451,16 @@ QUnit.module('Views', {
             arch: this.arch,
             currentDate: "2017-01-25",
         });
-        assert.strictEqual(grid.$('tbody th:first').text(), "RerUndefined", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(1)').text(), "SassyUndefined", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUndefined", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:first').text(), "Rer", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(1)').text(), "Sassy", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(2)').text(), "Rem", "Should be equal.");
 
         await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
-        assert.strictEqual(grid.$('tbody th:first').text(), "SarUndefined", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(1)').text(), "RerUndefined", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUndefined", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(3)').text(), "SassyUndefined", "Should be equal.");
-        assert.strictEqual(grid.$('tbody th:eq(4)').text(), "SasUndefined", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:first').text(), "Sar", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(1)').text(), "Rer", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(2)').text(), "Rem", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(3)').text(), "Sassy", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(4)').text(), "Sas", "Should be equal.");
 
         grid.destroy();
     });

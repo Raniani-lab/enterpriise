@@ -167,7 +167,7 @@
                 <th>
                     <div>
                         <t t-foreach="grid.rows[rowlabel_index].label" t-as="label" t-key="label_index">
-                            <div t-att-title="label"
+                            <div t-if="label or grid.rows[rowlabel_index].label.length === 1" t-att-title="label"
                                 t-att-class="{o_grid_text_muted: !label }">
                                 <t t-if="label" t-esc="label"/>
                                 <t t-else="">Undefined</t>

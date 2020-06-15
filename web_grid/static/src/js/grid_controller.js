@@ -113,7 +113,7 @@ var GridController = AbstractController.extend({
                 ],
                 context: self.model.getContext()
             }).then(function () {
-                return self.model.reload();
+                return self.model.reloadCell(cell, state.cellField, state.colField);
             }).then(function () {
                 var state = self.model.get();
                 return self.renderer.update(state);
@@ -167,6 +167,7 @@ var GridController = AbstractController.extend({
             row: utils.into(state.data, event.data.row_path),
             col: utils.into(state.data, event.data.col_path),
             value: utils.into(state.data, event.data.cell_path).value,
+            cell_path: event.data.cell_path,
         }, event.data.value)
         .then(function () {
             if (event.data.doneCallback !== undefined) {
@@ -216,8 +217,10 @@ var GridController = AbstractController.extend({
         var row = utils.into(state.data, row_path);
 
         var groupFields = state.groupBy.slice(state.isGrouped ? 1 : 0);
-        var label = _.map(groupFields, function (g) {
-            return row.values[g][1] || _t('Undefined');
+        var label = _.filter(_.map(groupFields, function (g) {
+            return row.values[g][1];
+        }), function (g) {
+            return g;
         }).join(': ');
         // pass group by, section and col fields as default in context
         var cols_path = cell_path.slice(0, -3).concat(['cols'], cell_path.slice(-1));

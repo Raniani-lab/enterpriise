@@ -14,6 +14,7 @@
         'data/res.city.csv',
         'data/res.country.state.csv',
         'data/res_country_data.xml',
+        'data/res_partner_data.xml',
         'security/ir.model.access.csv',
         'views/account_move_views.xml',
         'views/account_journal_views.xml',

@@ -18,9 +18,9 @@ class CustomerPortal(CustomerPortal):
             ('partner_id.id', 'in', [partner.id, partner.commercial_partner_id.id]),
         ]
 
-    def _prepare_portal_layout_values(self):
+    def _prepare_home_portal_values(self):
         """ Add subscription details to main account page """
-        values = super(CustomerPortal, self)._prepare_portal_layout_values()
+        values = super(CustomerPortal, self)._prepare_home_portal_values()
         partner = request.env.user.partner_id
         sub_ids = request.env['sale.subscription'].search(self._get_subscription_domain(partner)).ids
         values['subscription_count'] = len(sub_ids)

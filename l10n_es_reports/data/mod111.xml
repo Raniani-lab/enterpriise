@@ -59,7 +59,7 @@
             <field name="code">aeat_mod_111_03</field>
             <field name="parent_id" ref='mod_111_title_2'/>
             <field name="domain" eval="[('tax_tag_ids', '=', ref('l10n_es.mod_111_03'))]"/>
-            <field name="formulas">sum</field>
+            <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="4"/>

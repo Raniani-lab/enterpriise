@@ -245,7 +245,6 @@
         <field name="arch" type="xml">
             <search string="ECOs">
                 <field name="product_tmpl_id" string="Product" filter_domain="['|', ('product_tmpl_id', 'ilike', self), ('bom_id', 'ilike', self)]"/>
-                <field name="routing_id"/>
                 <field name="tag_ids"/>
                 <field name="stage_id"/>
                 <group expand="0" string="Filters">
@@ -303,7 +302,6 @@
                 <field name="tag_ids"/>
                 <field name="priority"/>
                 <field name="type"/>
-                <field name="routing_id"/>
                 <field name="activity_ids" />
                 <field name="activity_state" />
                 <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger"}'/>
@@ -334,9 +332,6 @@
                                 </div>
                                 <div t-if="record.type.raw_value == 'bom' or record.type.raw_value == 'both'">
                                     <span>BoM: <field name="bom_id"/></span>
-                                </div>
-                                <div t-if="record.type.raw_value == 'routing' or record.type.raw_value == 'both'">
-                                    <span>Routing: <field name="routing_id"/></span>
                                 </div>
                                 <div class="text-muted">
                                     <t t-if="record.effectivity_date.raw_value and record.effectivity_date.raw_value lt (new Date())" t-set="red">oe_kanban_text_red</t>
@@ -389,7 +384,6 @@
                             class="oe_highlight" attrs="{'invisible': [('allow_apply_change', '=', False)]}"/>
                     <button name="action_see_attachments" type="object" attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type', '=', 'routing')]}" string="Update Documents"/>
                     <button name="open_new_bom" type="object" attrs="{'invisible': ['|', ('new_bom_id', '=', False), ('state', '=', 'done')]}" string="Update BoM"/>
-                    <button name="open_new_routing" type="object" attrs="{'invisible': ['|', ('new_routing_id', '=', False), ('state', '=', 'done')]}" string="Update Routing"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -401,14 +395,6 @@
                             <div>
                                 <span>BOM</span><br/>
                                 <span>Revision :<field name="new_bom_revision" readonly="True"/> </span>
-                            </div>
-                        </div>
-                        </button>
-                        <button name="open_new_routing" icon="fa-cogs" type="object" attrs="{'invisible': [('new_routing_id', '=', False)]}" class="oe_stat_button">
-                        <div class="o_field_widget o_stat_info mr4">
-                            <div>
-                                <span>Routing</span><br/>
-                                <span>Revision :<field name="new_routing_revision" readonly="True"/> </span>
                             </div>
                         </div>
                         </button>
@@ -427,8 +413,6 @@
                             <field name="product_tmpl_id" domain="[('type', 'in', ['consu', 'product'])]" attrs="{'readonly': [('state', '!=', 'confirmed')], 'invisible': [('type', '=', 'routing')], 'required': [('type', 'in', ('bom', 'both', 'product'))]}"/>
                             <field name="bom_id" context="{'default_product_tmpl_id': product_tmpl_id}" attrs="{'readonly': [('state', '!=', 'confirmed')], 'invisible': [('type', 'in', ('routing', 'product'))], 'required': [('type', 'in', ('bom', 'both'))]}"/>
                             <field name="new_bom_id" invisible="1"/>
-                            <field name="new_routing_id" invisible="1"/>
-                            <field name="routing_id" attrs="{'readonly': [('state', '!=', 'confirmed')], 'invisible': [('type', 'in', ('bom','product'))], 'required': [('type', 'in', ('routing', 'both'))]}" groups="mrp.group_mrp_routings"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>
@@ -484,9 +468,9 @@
                             </field>
                         </page>
                         <page string="Routing Changes" name="routing_changes"
-                            attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type','in', ('product', 'bom'))]}"
+                            attrs="{'invisible': [('state', '=', 'confirmed')]}"
                             help="Changes made on the routing.">
-                            <field name="routing_change_ids" context="{'default_routing_id': routing_id}">
+                            <field name="routing_change_ids">
                                 <tree decoration-danger="change_type=='remove'" decoration-info="change_type=='add'">
                                     <field name="change_type"/>
                                     <field name="workcenter_id"/>
@@ -601,17 +585,6 @@
         </field>
     </record>
 
-    <record id="mrp_eco_action_routing" model="ir.actions.act_window">
-        <field name="name">Engineering Change Orders</field>
-        <field name="res_model">mrp.eco</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('new_routing_id', '=', active_id)]</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-              Create a new engineering change order
-            </p>
-        </field>
-    </record>
 
     <!-- mrp.eco.bom.change -->
     <record id="mrp_eco_bom_change_view_form" model="ir.ui.view">
@@ -811,13 +784,6 @@
         action="mrp_bom_action_kanban"
         parent="menu_mrp_plm_master_data"
         sequence="10"/>
-    <menuitem
-        id="menu_mrp_plm_routings"
-        name="Routings"
-        parent="menu_mrp_plm_master_data"
-        action="mrp.mrp_routing_action"
-        groups="mrp.group_mrp_routings"
-        sequence="15"/>
     <menuitem
         id="menu_mrp_plm_workcenters"
         name="Work Centers"

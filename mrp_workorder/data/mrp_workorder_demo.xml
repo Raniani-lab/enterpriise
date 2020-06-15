@@ -75,5 +75,8 @@
         <field name="implied_ids" eval="[(4, ref('mrp.group_mrp_routings')), (4, ref('mrp_workorder.group_mrp_wo_tablet_timer'))]"/>
     </record>
 
+    <function model="mrp.workorder" name="_create_checks">
+        <function eval="[[('state', 'not in', ('cancel', 'done'))]]" model="mrp.workorder" name="search"/>
+    </function>
 
 </odoo>

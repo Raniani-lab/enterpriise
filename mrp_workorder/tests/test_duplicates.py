@@ -15,16 +15,6 @@ class TestDuplicateProducts(common.SavepointCase):
             'time_stop': 5,
             'time_efficiency': 80,
         })
-        cls.routing_1 = cls.env['mrp.routing'].create({
-            'name': 'Simple Line',
-        })
-        cls.operation_1 = cls.env['mrp.routing.workcenter'].create({
-            'name': 'Gift Wrap Maching',
-            'workcenter_id': cls.workcenter_1.id,
-            'routing_id': cls.routing_1.id,
-            'time_cycle': 15,
-            'sequence': 1,
-        })
         # Products and lots
         cls.painted_boat = cls.env['product.product'].create({
             'name': 'Painted boat',
@@ -54,8 +44,14 @@ class TestDuplicateProducts(common.SavepointCase):
         # Bill of material
         cls.bom_boat = cls.env['mrp.bom'].create({
             'product_tmpl_id': cls.painted_boat.product_tmpl_id.id,
-            'product_qty': 1.0,
-            'routing_id': cls.routing_1.id})
+            'product_qty': 1.0})
+        cls.operation_1 = cls.env['mrp.routing.workcenter'].create({
+            'name': 'Gift Wrap Maching',
+            'workcenter_id': cls.workcenter_1.id,
+            'bom_id': cls.bom_boat.id,
+            'time_cycle': 15,
+            'sequence': 1,
+        })
         cls.env['mrp.bom.line'].create({
             'product_id': cls.blank_boat.id,
             'product_qty': 1.0,

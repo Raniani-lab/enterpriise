@@ -54,7 +54,7 @@
         <field name="model">mrp.bom</field>
         <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='routing_id']" position="after">
+            <xpath expr="//field[@name='type']" position="after">
                 <field name="version" optional="show"/>
             </xpath>
         </field>

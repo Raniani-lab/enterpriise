@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
+
 from odoo import api, fields, models, _
+from odoo.osv import expression
 from odoo.exceptions import UserError, ValidationError
-from odoo.osv.expression import AND
 from odoo.tools import float_compare, float_round
 
 
-class MrpProductionWorkorder(models.Model):
+class MrpWorkcenter(models.Model):
     _name = 'mrp.workcenter'
     _inherit = 'mrp.workcenter'
 
@@ -16,12 +18,15 @@ class MrpProductionWorkorder(models.Model):
             action = self.env.ref('mrp_workorder.mrp_workorder_action_tablet').read()[0]
             return action
         else:
-            return super(MrpProductionWorkorder, self).action_work_order()
+            return super(MrpWorkcenter, self).action_work_order()
 
 
 class MrpProductionWorkcenterLine(models.Model):
     _name = 'mrp.workorder'
     _inherit = ['mrp.workorder', 'barcodes.barcode_events_mixin']
+
+    quality_point_ids = fields.Many2many('quality.point', compute='_compute_quality_point_ids', store=True)
+    quality_point_count = fields.Integer('Steps', compute='_compute_quality_point_count')
 
     check_ids = fields.One2many('quality.check', 'workorder_id')
     skipped_check_ids = fields.One2many('quality.check', 'workorder_id', domain=[('quality_state', '=', 'none')])
@@ -44,9 +49,12 @@ class MrpProductionWorkcenterLine(models.Model):
     is_first_step = fields.Boolean('Is First Step')
     is_last_step = fields.Boolean('Is Last Step')
     is_last_lot = fields.Boolean('Is Last lot', compute='_compute_is_last_lot')
+    is_first_started_wo = fields.Boolean('Is The first Work Order', compute='_compute_is_last_unfinished_wo')
     is_last_unfinished_wo = fields.Boolean('Is Last Work Order To Process', compute='_compute_is_last_unfinished_wo', store=False)
     lot_id = fields.Many2one(related='current_quality_check_id.lot_id', readonly=False)
-    workorder_line_id = fields.Many2one(related='current_quality_check_id.workorder_line_id', readonly=False)
+    move_id = fields.Many2one(related='current_quality_check_id.move_id', readonly=False)
+    move_line_id = fields.Many2one(related='current_quality_check_id.move_line_id', readonly=False)
+    move_line_ids = fields.One2many(related='move_id.move_line_ids')
     note = fields.Html(related='current_quality_check_id.note')
     skip_completed_checks = fields.Boolean('Skip Completed Checks', readonly=True)
     quality_state = fields.Selection(related='current_quality_check_id.quality_state', string="Quality State", readonly=False)
@@ -59,12 +67,17 @@ class MrpProductionWorkcenterLine(models.Model):
     additional = fields.Boolean(related='current_quality_check_id.additional')
     component_qty_to_do = fields.Float(compute='_compute_component_qty_to_do')
 
-    @api.onchange('qty_producing')
-    def _onchange_qty_producing(self):
-        super(MrpProductionWorkcenterLine, self)._onchange_qty_producing()
-        # retrieve qty_to_consume on the workorder line updated by onchange
-        workorder_line = self.current_quality_check_id.workorder_line_id
-        self.qty_done = workorder_line.new(origin=workorder_line).qty_to_consume
+    @api.depends('operation_id')
+    def _compute_quality_point_ids(self):
+        for workorder in self:
+            quality_point = workorder.operation_id.quality_point_ids
+            workorder.quality_point_ids = quality_point
+
+    @api.depends('operation_id')
+    def _compute_quality_point_count(self):
+        for workorder in self:
+            quality_point = workorder.operation_id.quality_point_ids
+            workorder.quality_point_count = len(quality_point)
 
     @api.depends('qty_done', 'component_remaining_qty')
     def _compute_component_qty_to_do(self):
@@ -80,6 +93,7 @@ class MrpProductionWorkcenterLine(models.Model):
     @api.depends('production_id.workorder_ids')
     def _compute_is_last_unfinished_wo(self):
         for wo in self:
+            wo.is_first_started_wo = all(wo.state not in ('progress', 'done') for wo in (wo.production_id.workorder_ids - wo))
             other_wos = wo.production_id.workorder_ids - wo
             other_states = other_wos.mapped(lambda w: w.state == 'done')
             wo.is_last_unfinished_wo = all(other_states)
@@ -99,29 +113,15 @@ class MrpProductionWorkcenterLine(models.Model):
         self.component_uom_id = False
         for wo in self.filtered(lambda w: w.state not in ('done', 'cancel')):
             if wo.test_type in ('register_byproducts', 'register_consumed_materials'):
-                move = wo.current_quality_check_id.workorder_line_id.move_id
-                lines = wo._workorder_line_ids().filtered(
-                    lambda l: move and l.move_id == move or
-                    l.id == wo.current_quality_check_id.workorder_line_id.id)
                 if wo.quality_state == 'none':
-                    completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else lines
-                    wo.component_remaining_qty = self._prepare_component_quantity(move, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
-                wo.component_uom_id = lines[:1].product_uom_id
+                    completed_lines = wo.move_line_ids.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else wo.move_line_ids
+                    wo.component_remaining_qty = self._prepare_component_quantity(wo.move_id, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
+                wo.component_uom_id = wo.move_id.product_uom
 
-    def write(self, values):
-        res = super().write(values)
-        if 'raw_workorder_line_ids' in values or 'finished_workorder_line_id' in values:
-            # Additional lines should have a linked check if they normally should
-            # not (i.e. we create check for untracked product if they aren't in the bom)
-            for line in self._workorder_line_ids():
-                # no quality check for finished lot lines
-                if line.product_id == line.finished_workorder_id.product_id:
-                    continue
-                # A line is additional if no stock_move is linked
-                additional = not line.move_id
-                if additional and not line.check_ids:
-                    line._create_additional_check()
-        return res
+    @api.onchange('qty_producing')
+    def _onchange_qty_producing(self):
+        if self.component_id:
+            self._update_component_quantity()
 
     def action_back(self):
         self.ensure_one()
@@ -171,19 +171,6 @@ class MrpProductionWorkcenterLine(models.Model):
         self._next()
         return res
 
-    def _refresh_wo_lines(self):
-        res = super(MrpProductionWorkcenterLine, self)._refresh_wo_lines()
-        for workorder in self:
-            for check in workorder.check_ids:
-                if check.quality_state == 'none' and not check.workorder_line_id and check.component_id:
-                    assigned_to_check_moves = workorder.check_ids.mapped('workorder_line_id').mapped('move_id')
-                    if check.test_type == 'register_consumed_materials':
-                        move = workorder.move_raw_ids.filtered(lambda move: move.state not in ('done', 'cancel') and move.product_id == check.component_id and move not in assigned_to_check_moves)
-                    else:
-                        move = workorder.move_finished_ids.filtered(lambda move: move.state not in ('done', 'cancel') and move.product_id == check.component_id and move not in assigned_to_check_moves)
-                    check.write(workorder._defaults_from_workorder_lines(move, check.test_type))
-        return res
-
     def _create_subsequent_checks(self):
         """ When processing a step with regiter a consumed material
         that's a lot we will some times need to create a new
@@ -197,29 +184,8 @@ class MrpProductionWorkcenterLine(models.Model):
         next_check = self.current_quality_check_id.next_check_id
         if next_check.component_id != self.current_quality_check_id.product_id or\
                 next_check.point_id != self.current_quality_check_id.point_id:
-            # Split current workorder line.
-            rounding = self.workorder_line_id.product_uom_id.rounding
-            if float_compare(self.workorder_line_id.qty_done, self.workorder_line_id.qty_to_consume, precision_rounding=rounding) < 0:
-                self.workorder_line_id.copy(default={'qty_done': 0, 'qty_to_consume': self.workorder_line_id.qty_to_consume - self.workorder_line_id.qty_done})
-                self.workorder_line_id.write({'qty_to_consume': self.workorder_line_id.qty_done})
-            # Check if it exists a workorder line not used. If it could not find
-            # one, create it without prefilled values.
-            elif not self._defaults_from_workorder_lines(self.workorder_line_id.move_id, self.test_type):
-                moves = self.env['stock.move']
-                workorder_line_values = {}
-                if self.test_type == 'register_byproducts':
-                    moves |= self.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == self.component_id)
-                    workorder_line_values['finished_workorder_id'] = self.id
-                else:
-                    moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == self.component_id)
-                    workorder_line_values['raw_workorder_id'] = self.id
-                workorder_line_values.update({
-                    'move_id': moves[:1].id,
-                    'product_id': self.component_id.id,
-                    'product_uom_id': moves[:1].product_uom.id or self.component_id.uom_id.id,
-                    'qty_done': 0.0,
-                })
-                self.env['mrp.workorder.line'].create(workorder_line_values)
+            # TODO: manage reservation here
+
             # Creating quality checks
             quality_check_data = {
                 'workorder_id': self.id,
@@ -238,39 +204,10 @@ class MrpProductionWorkcenterLine(models.Model):
                     'test_type_id': self.current_quality_check_id.test_type_id.id,
                     'team_id': self.current_quality_check_id.team_id.id,
                 })
-            move = self.current_quality_check_id.workorder_line_id.move_id
-            quality_check_data.update(self._defaults_from_workorder_lines(move, self.current_quality_check_id.test_type))
+            move = self.current_quality_check_id.move_id
+            quality_check_data.update(self._defaults_from_move(move))
             new_check = self.env['quality.check'].create(quality_check_data)
             new_check._insert_in_chain('after', self.current_quality_check_id)
-
-    def _generate_lines_values(self, move, qty_to_consume):
-        """ In case of non tracked component without 'register component' step,
-        we need to fill the qty_done at this step"""
-        lines = super(MrpProductionWorkcenterLine, self)._generate_lines_values(move, qty_to_consume)
-        steps = self._get_quality_points(lines)
-        for line in lines:
-            if line['product_id'] in steps.mapped('component_id.id') or move.has_tracking != 'none':
-                line['qty_done'] = 0
-        return lines
-
-    def _update_workorder_lines(self):
-        res = super(MrpProductionWorkcenterLine, self)._update_workorder_lines()
-        if res['to_update']:
-            steps = self._get_quality_points([{'product_id': record.product_id.id} for record in res['to_update'].keys()])
-            for line, values in res['to_update'].items():
-                if line.product_id in steps.mapped('component_id') or line.move_id.has_tracking != 'none':
-                    values['qty_done'] = 0
-        return res
-
-    def _get_quality_points(self, iterator):
-        quality_point_domain = self.env['quality.point']._get_domain(self.product_id, self.production_id.picking_type_id)
-        quality_point_domain = AND([quality_point_domain, [
-            ('operation_id', 'in', self.production_id.routing_id.operation_ids.ids),
-            ('test_type', 'in', ('register_byproducts', 'register_consumed_materials')),
-            ('component_id', 'in', [values.get('product_id', False) for values in iterator])
-        ]])
-        steps = self.env['quality.point'].search(quality_point_domain)
-        return steps
 
     def _next(self, continue_production=False):
         """ This function:
@@ -293,18 +230,32 @@ class MrpProductionWorkcenterLine(models.Model):
                 raise UserError(_('Please enter a positive quantity.'))
 
             # Get the move lines associated with our component
-            self.component_remaining_qty -= float_round(self.qty_done, precision_rounding=self.workorder_line_id.product_uom_id.rounding or rounding)
+            self.component_remaining_qty -= float_round(self.qty_done, precision_rounding=self.move_id.product_uom.rounding or rounding)
             # Write the lot and qty to the move line
-            self.workorder_line_id.write({'lot_id': self.lot_id.id, 'qty_done': float_round(self.qty_done, precision_rounding=self.workorder_line_id.product_uom_id.rounding or rounding)})
-
+            if self.move_line_id:
+                rounding = self.move_line_id.product_uom_id.rounding
+                if float_compare(self.qty_done, self.move_line_id.product_uom_qty, precision_rounding=rounding) >= 0:
+                    self.move_line_id.write({
+                        'qty_done': self.qty_done,
+                        'lot_id': self.lot_id.id,
+                    })
+                else:
+                    new_qty_reserved = self.move_line_id.product_uom_qty - self.qty_done
+                    default = {
+                        'product_uom_qty': self.qty_done,
+                        'qty_done': self.qty_done,
+                        'lot_id': self.lot_id.id,
+                    }
+                    self.move_line_id.copy(default=default)
+                    self.move_line_id.with_context(bypass_reservation_update=True).write({
+                        'product_uom_qty': new_qty_reserved,
+                        'qty_done': 0
+                    })
+            else:
+                line = self.env['stock.move.line'].create(self._create_extra_move_lines())
+                self.move_line_id = line[:1]
             if continue_production:
                 self._create_subsequent_checks()
-            elif float_compare(self.component_remaining_qty, 0, precision_rounding=rounding) < 0 and\
-                    self.consumption == 'strict' and self.test_type != 'register_byproducts':
-                # '< 0' as it's not possible to click on validate if qty_done < component_remaining_qty
-                # We exclude byproduct as strict consumption doesn't impact production
-                raise UserError(_('You should consume the quantity of %s defined in the BoM. If you want to consume more or less components, change the consumption setting on the BoM.') % self.component_id[0].name)
-            self.workorder_line_id._check_line_sn_uniqueness()
 
         if self.test_type == 'picture' and not self.picture:
             raise UserError(_('Please upload a picture.'))
@@ -313,6 +264,8 @@ class MrpProductionWorkcenterLine(models.Model):
             self.current_quality_check_id.do_pass()
 
         self._change_quality_check(position='next', skipped=self.skip_completed_checks)
+        if self.test_type in ('register_byproducts', 'register_consumed_materials'):
+            self._update_component_quantity()
 
     def action_skip(self):
         self.ensure_one()
@@ -366,30 +319,12 @@ class MrpProductionWorkcenterLine(models.Model):
                 check = check.previous_check_id
         change_worksheet_page = not check.next_check_id and check.point_id.worksheet == 'scroll'
         self.write({
-            'allow_producing_quantity_change': not check.previous_check_id and all(c.quality_state == 'none' for c in checks_to_consider),
+            'allow_producing_quantity_change': not check.previous_check_id and all(c.quality_state == 'none' for c in checks_to_consider) and self.is_first_started_wo,
             'current_quality_check_id': check.id,
             'is_first_step': position == 'first',
             'is_last_step': not check,
             'worksheet_page': check.point_id.worksheet_page if change_worksheet_page else self.worksheet_page,
         })
-
-    def _defaults_from_workorder_lines(self, move, test_type):
-        # Check if a workorder line is not filled for this workorder. If it
-        # happens select it in order to create quality_check
-        self.ensure_one()
-        if test_type == 'register_byproducts':
-            available_workorder_lines = self.finished_workorder_line_ids.filtered(lambda wl: not wl.qty_done and wl.move_id == move)
-        else:
-            available_workorder_lines = self.raw_workorder_line_ids.filtered(lambda wl: not wl.qty_done and wl.move_id == move)
-        if available_workorder_lines:
-            workorder_line = available_workorder_lines.sorted()[0]
-            return {
-                'workorder_line_id': workorder_line.id,
-                'lot_id': workorder_line.lot_id.id,
-                # Prefill with 1.0 if it's an extra workorder line.
-                'qty_done': workorder_line.qty_to_consume or 1.0
-            }
-        return {}
 
     def action_menu(self):
         return {
@@ -427,6 +362,12 @@ class MrpProductionWorkcenterLine(models.Model):
             }
         }
 
+    def button_start(self):
+        res = super().button_start()
+        if self.product_tracking == 'serial' and self.component_id:
+            self._update_component_quantity()
+        return res
+
     def _compute_check(self):
         for workorder in self:
             todo = False
@@ -451,14 +392,11 @@ class MrpProductionWorkcenterLine(models.Model):
             processed_move = self.env['stock.move']
 
             production = wo.production_id
-            points_domain = self.env['quality.point']._get_domain(production.product_id, production.picking_type_id)
-            points_domain = AND([points_domain, [('operation_id', '=', wo.operation_id.id)]])
-            points = self.env['quality.point'].search(points_domain)
 
             move_raw_ids = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel'))
-            move_finished_ids = wo.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel'))
+            move_finished_ids = wo.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id != wo.production_id.product_id)
             previous_check = self.env['quality.check']
-            for point in points:
+            for point in wo.quality_point_ids:
                 # Check if we need a quality control for this point
                 if point.check_execute_now():
                     moves = self.env['stock.move']
@@ -485,7 +423,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     # Create 'register ...' checks
                     for move in moves:
                         check_vals = values.copy()
-                        check_vals.update(wo._defaults_from_workorder_lines(move, point.test_type))
+                        check_vals.update(wo._defaults_from_move(move))
                         # Create quality check and link it to the chain
                         check_vals.update({'previous_check_id': previous_check.id})
                         check = self.env['quality.check'].create(check_vals)
@@ -514,7 +452,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 if move in move_finished_ids:
                     test_type = self.env.ref('mrp_workorder.test_type_register_byproducts')
                 values.update({'test_type_id': test_type.id})
-                values.update(wo._defaults_from_workorder_lines(move, test_type.technical_name))
+                values.update(wo._defaults_from_move(move))
                 check = self.env['quality.check'].create(values)
                 previous_check.next_check_id = check
                 previous_check = check
@@ -528,20 +466,118 @@ class MrpProductionWorkcenterLine(models.Model):
         return moves.filtered(lambda m: m.product_id.tracking == 'none')
 
     def record_production(self):
+        if not self:
+            return True
+
         self.ensure_one()
+        self._check_sn_uniqueness()
+        self._check_company()
         if any([(x.quality_state == 'none') for x in self.check_ids]):
             raise UserError(_('You still need to do the quality checks!'))
-        if self.check_ids:
-            # Check if you can attribute the lot to the checks
-            if (self.production_id.product_id.tracking != 'none') and self.finished_lot_id:
-                self.check_ids.filtered(lambda check: not check.finished_lot_id).write({
-                    'finished_lot_id': self.finished_lot_id.id
-                })
-        res = super(MrpProductionWorkcenterLine, self).record_production()
-        rounding = self.product_uom_id.rounding
-        if float_compare(self.qty_producing, 0, precision_rounding=rounding) > 0:
-            self._create_checks()
-        return res
+        if float_compare(self.qty_producing, 0, precision_rounding=self.product_uom_id.rounding) <= 0:
+            raise UserError(_('Please set the quantity you are currently producing. It should be different from zero.'))
+
+        if self.production_id.product_id.tracking != 'none' and not self.finished_lot_id and self.move_raw_ids:
+            raise UserError(_('You should provide a lot for the final product'))
+
+        # Suggest a finished lot on the next workorder
+        if self.next_work_order_id and self.product_tracking != 'none' and not self.next_work_order_id.finished_lot_id:
+            self.production_id.lot_producing_id = self.finished_lot_id
+            self.next_work_order_id.finished_lot_id = self.finished_lot_id
+        backorder = False
+        # Trigger the backorder process if we produce less than expected
+        if float_compare(self.qty_producing, self.qty_remaining, precision_rounding=self.product_uom_id.rounding) == -1 and self.is_first_started_wo:
+            backorder = self.production_id._generate_backorder_productions(close_mo=False)
+            self.production_id.product_qty = self.qty_producing
+        else:
+            if self.operation_id:
+                backorder = (self.production_id.procurement_group_id.mrp_production_ids - self.production_id).filtered(
+                    lambda p: p.workorder_ids.filtered(lambda wo: wo.operation_id == self.operation_id).state not in ('cancel', 'done')
+                )[:1]
+            else:
+                index = list(self.production_id.workorder_ids).index(self)
+                backorder = (self.production_id.procurement_group_id.mrp_production_ids - self.production_id).filtered(
+                    lambda p: p.workorder_ids[index].state not in ('cancel', 'done')
+                )[:1]
+
+        # Update workorder quantity produced
+        self.qty_produced = self.qty_producing
+
+        # One a piece is produced, you can launch the next work order
+        self._start_nextworkorder()
+        self.button_finish()
+
+        if backorder:
+            for wo in (self.production_id | backorder).workorder_ids:
+                if wo.state in ('done', 'cancel'):
+                    continue
+                wo.current_quality_check_id.update(wo._defaults_from_move(wo.move_id))
+                if wo.move_id:
+                    wo._update_component_quantity()
+            if self.operation_id:
+                return backorder.workorder_ids.filtered(lambda wo: wo.operation_id == self.operation_id).open_tablet_view()
+            else:
+                index = list(self.production_id.workorder_ids).index(self)
+                return backorder.workorder_ids[index].open_tablet_view()
+        return True
+
+    def _create_extra_move_lines(self):
+        """Create new sml if quantity produced is bigger than the reserved one"""
+        vals_list = []
+        # apply putaway
+        location_dest_id = self.move_id.location_dest_id._get_putaway_strategy(self.product_id) or self.move_id.location_dest_id
+        quants = self.env['stock.quant']._gather(self.product_id, self.move_id.location_id, lot_id=self.lot_id, strict=False)
+        # Search for a sub-locations where the product is available.
+        # Loop on the quants to get the locations. If there is not enough
+        # quantity into stock, we take the move location. Anyway, no
+        # reservation is made, so it is still possible to change it afterwards.
+        vals = {
+            'move_id': self.move_id.id,
+            'product_id': self.move_id.product_id.id,
+            'location_dest_id': location_dest_id.id,
+            'product_uom_qty': 0,
+            'product_uom_id': self.move_id.product_uom.id,
+            'lot_id': self.lot_id.id,
+            'company_id': self.move_id.company_id.id,
+        }
+        for quant in quants:
+            quantity = quant.quantity - quant.reserved_quantity
+            quantity = self.product_id.uom_id._compute_quantity(quantity, self.product_uom_id, rounding_method='HALF-UP')
+            rounding = quant.product_uom_id.rounding
+            if (float_compare(quant.quantity, 0, precision_rounding=rounding) <= 0 or
+                    float_compare(quantity, 0, precision_rounding=self.product_uom_id.rounding) <= 0):
+                continue
+            vals.update({
+                'location_id': quant.location_id.id,
+                'qty_done': min(quantity, self.qty_done),
+            })
+
+            vals_list.append(vals)
+            self.qty_done -= vals['qty_done']
+            # If all the qty_done is distributed, we can close the loop
+            if float_compare(self.qty_done, 0, precision_rounding=self.product_id.uom_id.rounding) <= 0:
+                break
+
+        if float_compare(self.qty_done, 0, precision_rounding=self.product_id.uom_id.rounding) > 0:
+            vals.update({
+                'location_id': self.move_id.location_id.id,
+                'qty_done': self.qty_done,
+            })
+
+            vals_list.append(vals)
+        return vals_list
+
+    def _defaults_from_move(self, move):
+        self.ensure_one()
+        vals = {'move_id': move.id}
+        move_line_id = move.move_line_ids.filtered(lambda ml: not ml.quality_check_ids)[:1]
+        if move_line_id:
+            vals.update({
+                'move_line_id': move_line_id.id,
+                'lot_id': move_line_id.lot_id.id,
+                'qty_done': move_line_id.product_uom_qty or 1.0
+            })
+        return vals
 
     # --------------------------
     # Buttons from quality.check
@@ -549,7 +585,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def open_tablet_view(self):
         self.ensure_one()
-        if not self.is_user_working and self.working_state != 'blocked' and self.state in ('ready', 'progress'):
+        if not self.is_user_working and self.working_state != 'blocked' and self.state in ('ready', 'progress', 'pending'):
             self.button_start()
         return {
             'type': 'ir.actions.act_window',
@@ -574,7 +610,11 @@ class MrpProductionWorkcenterLine(models.Model):
     def action_open_manufacturing_order(self):
         action = self.do_finish()
         try:
-            self.production_id.button_mark_done()
+            with self.env.cr.savepoint():
+                res = self.production_id.button_mark_done()
+                if res is not True:
+                    res['context'] = dict(res['context'], from_workorder=True)
+                    return res
         except (UserError, ValidationError) as e:
             # log next activity on MO with error message
             self.production_id.activity_schedule(
@@ -592,21 +632,24 @@ class MrpProductionWorkcenterLine(models.Model):
         return action
 
     def do_finish(self):
-        self.record_production()
+        action = self.record_production()
+        domain = [('state', 'not in', ['done', 'cancel', 'pending'])]
+        if action is not True:
+            return action
         # workorder tree view action should redirect to the same view instead of workorder kanban view when WO mark as done.
         if self.env.context.get('active_model') == self._name:
             action = self.env.ref('mrp.action_mrp_workorder_production_specific').read()[0]
-            action['context'] = {'search_default_production_id': self.production_id.id}
+            action['domain'] = expression.AND([domain, [('production_id', 'in', self.production_id.procurement_group_id.mrp_production_ids.ids)]])
             action['target'] = 'main'
         else:
             # workorder tablet view action should redirect to the same tablet view with same workcenter when WO mark as done.
             action = self.env.ref('mrp_workorder.mrp_workorder_action_tablet').read()[0]
+            action['domain'] = domain
             action['context'] = {
                 'form_view_initial_mode': 'edit',
                 'no_breadcrumbs': True,
                 'search_default_workcenter_id': self.workcenter_id.id
             }
-        action['domain'] = [('state', 'not in', ['done', 'cancel', 'pending'])]
         return action
 
     def on_barcode_scanned(self, barcode):
@@ -646,63 +689,22 @@ class MrpProductionWorkcenterLine(models.Model):
                 })
             self.finished_lot_id = lot
 
+    def _update_component_quantity(self):
+        move = self.move_id
+        # Compute the new quantity for the current component
+        rounding = move.product_uom.rounding
+        new_qty = self._prepare_component_quantity(move, self.qty_producing)
 
-class MrpWorkorderLine(models.Model):
-    _inherit = 'mrp.workorder.line'
+        # In case the production uom is different than the workorder uom
+        # it means the product is serial and production uom is not the reference
+        new_qty = self.product_uom_id._compute_quantity(
+            new_qty,
+            self.production_id.product_uom_id,
+            round=False
+        )
+        qty_todo = float_round(new_qty, precision_rounding=rounding)
+        qty_todo = qty_todo - move.quantity_done
+        if self.move_line_id:
+            qty_todo = min(self.move_line_id.product_uom_qty, qty_todo)
+        self.qty_done = qty_todo or 1
 
-    check_ids = fields.One2many('quality.check', 'workorder_line_id', 'Associated step')
-
-    def _unreserve_order(self):
-        """ Delete or modify first the workorder line not linked to a check."""
-        order = super(MrpWorkorderLine, self)._unreserve_order()
-        return (self.check_ids,) + order
-
-    def write(self, values):
-        """ Using `record_production` may change the `qty_producing` on the following
-        workorder if the production is not totally done, and so changing the
-        `qty_to_consume` on some workorder lines.
-        Using the `change.production.qty` wizard may also impact those `qty_to_consume`.
-        We make this override to keep the `qty_done` field of the not yet processed
-        quality checks inline with their associated workorder line `qty_to_consume`."""
-        res = super(MrpWorkorderLine, self).write(values)
-        if 'qty_to_consume' in values:
-            for line in self:
-                if line.check_ids.quality_state == 'none' and line.check_ids.qty_done != line.qty_to_consume:
-                    # In case some lines are deleted or some quantities updated
-                    line.check_ids.qty_done = line.qty_to_consume
-        return res
-
-    def _create_additional_check(self):
-        """Create a quality check for a newly created workorder line."""
-        self.ensure_one()
-        if self.raw_workorder_id:
-            test_type = self.env.ref('mrp_workorder.test_type_register_consumed_materials')
-        else:
-            test_type = self.env.ref('mrp_workorder.test_type_register_byproducts')
-        wo = self.raw_workorder_id or self.finished_workorder_id
-        check = {
-            'workorder_id': wo.id,
-            'component_id': self.product_id.id,
-            'product_id': wo.product_id.id,
-            'company_id': self.company_id.id,
-            'team_id': self.env['quality.alert.team'].search([], limit=1).id,
-            'finished_product_sequence': wo.qty_produced,
-            'test_type_id': test_type.id,
-            'qty_done': self.qty_to_consume,
-            'workorder_line_id': self.id
-        }
-        additional_check = self.env['quality.check'].create(check)
-
-        # Insert the quality check in the chain. The process is slighty different
-        # if we are between two quality checks or at the summary step.
-        if wo.current_quality_check_id:
-            additional_check._insert_in_chain('before', wo.current_quality_check_id)
-            wo._change_quality_check(position='previous')
-        else:
-            last_check = wo.check_ids.filtered(
-                lambda c: not c.next_check_id and
-                c.finished_product_sequence == wo.qty_produced and
-                c != additional_check
-            )
-            additional_check._insert_in_chain('after', last_check)
-            wo._change_quality_check(position='last')

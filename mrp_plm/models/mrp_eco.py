@@ -166,8 +166,6 @@ class MrpEco(models.Model):
         types = [
             ('product', _('Product Only')),
             ('bom', _('Bill of Materials'))]
-        if self.user_has_groups('mrp.group_mrp_routings'):
-            types += [('routing', _('Routing')), ('both', _('BoM and Routing'))]
         return types
 
     name = fields.Char('Reference', copy=False, required=True)
@@ -225,11 +223,6 @@ class MrpEco(models.Model):
         'mrp.bom', 'New Bill of Materials',
         copy=False)
     new_bom_revision = fields.Integer('BoM Revision', related='new_bom_id.version', store=True, readonly=False)
-    routing_id = fields.Many2one('mrp.routing', "Routing", check_company=True)
-    new_routing_id = fields.Many2one(
-        'mrp.routing', 'New Routing',
-        copy=False, check_company=True)
-    new_routing_revision = fields.Integer('Routing Revision', related='new_routing_id.version', store=True, readonly=False)
     bom_change_ids = fields.One2many(
         'mrp.eco.bom.change', 'eco_id', string="ECO BoM Changes",
         compute='_compute_bom_change_ids', help='Difference between old BoM and new BoM revision', store=True)
@@ -376,14 +369,14 @@ class MrpEco(models.Model):
             else:
                 eco.previous_change_ids = False
 
-    @api.depends('routing_id.operation_ids', 'new_routing_id.operation_ids')
+    @api.depends('bom_id.operation_ids', 'new_bom_id.operation_ids')
     def _compute_routing_change_ids(self):
         for rec in self:
             # TDE TODO: should we add workcenter logic ?
             new_routing_commands = [(5,)]
-            old_routing_lines = dict(((op.workcenter_id,), op) for op in rec.routing_id.operation_ids)
-            if rec.new_routing_id and rec.routing_id:
-                for operation in rec.new_routing_id.operation_ids:
+            old_routing_lines = dict(((op.workcenter_id,), op) for op in rec.bom_id.operation_ids)
+            if rec.new_bom_id and rec.bom_id:
+                for operation in rec.new_bom_id.operation_ids:
                     key = (operation.workcenter_id,)
                     old_op = old_routing_lines.pop(key, None)
                     if old_op and tools.float_compare(old_op.time_cycle_manual, operation.time_cycle_manual, 2) != 0:
@@ -448,11 +441,6 @@ class MrpEco(models.Model):
     def onchange_product_tmpl_id(self):
         if self.product_tmpl_id.bom_ids:
             self.bom_id = self.product_tmpl_id.bom_ids.ids[0]
-
-    @api.onchange('bom_id', 'type')
-    def onchange_bom_id(self):
-        if self.type == 'both':
-            self.routing_id = self.bom_id.routing_id
 
     @api.onchange('type_id')
     def onchange_type_id(self):
@@ -603,7 +591,6 @@ class MrpEco(models.Model):
         self.ensure_one()
         self._check_company()
         self.mapped('new_bom_id').apply_new_version()
-        self.mapped('new_routing_id').apply_new_version()
         if self.type in ('bom', 'both', 'product'):
             documents = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', self.product_tmpl_id.id)])
             documents.mapped('ir_attachment_id').unlink()

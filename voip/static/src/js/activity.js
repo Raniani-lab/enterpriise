@@ -3,6 +3,8 @@ odoo.define('voip.Activity', function (require) {
 
 const Activity = require('mail.Activity');
 
+const { Component } = owl;
+
 Activity.include({
     events: Object.assign({}, Activity.prototype.events, {
         'click .o_activity_voip_call': '_onClickVoipCall',
@@ -13,8 +15,7 @@ Activity.include({
      */
     init() {
         this._super(...arguments);
-        const mailbus = this.call('mail_service', 'getMailBus');
-        mailbus.on('voip_reload_chatter', this, () =>
+        Component.env.bus.on('voip_reload_chatter', this, () =>
             this._reload({
                 activity: true,
                 thread: true,

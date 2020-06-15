@@ -5,16 +5,21 @@ const DocumentsInspector = require('documents.DocumentsInspector');
 const DocumentViewer = require('documents.DocumentViewer');
 const { computeMultiSelection } = require('documents.utils');
 
-const Chatter = require('mail.Chatter');
+const components = {
+    ChatterContainer: require('mail/static/src/components/chatter_container/chatter_container.js'),
+};
 
 const { _t, qweb } = require('web.core');
 const fileUploadMixin = require('web.fileUploadMixin');
 const session = require('web.session');
+const { ComponentWrapper } = require('web.OwlCompatibility');
+
+class ChatterContainerWrapperComponent extends ComponentWrapper {}
+
 
 const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
 
     events: {
-        'click .o_documents_close_chatter': '_onClickDocumentsCloseChatter',
         'click .o_documents_kanban_share_domain': '_onClickDocumentsShareDomain',
         'click .o_documents_kanban_upload': '_onClickDocumentsUpload',
         'click .o_documents_kanban_url': '_onClickDocumentsUploadFromUrl',
@@ -35,6 +40,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         history_item_restore: '_onHistoryItemRestore',
         kanban_image_clicked: '_onKanbanImageClicked',
         lock_attachment: '_onLockAttachment',
+        // relates to owl custom event o-close-chatter
+        o_close_chatter: '_onDocumentsCloseChatter',
         open_chatter: '_onOpenChatter',
         open_record: '_onOpenRecord',
         save_multi: '_onSaveMulti',
@@ -54,7 +61,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
          * Used to select records with ctrl/shift keys.
          */
         this._anchorId = null;
-        this._chatter = null;
+        this._chatterContainerComponent = undefined;
         this._documentsInspector = null;
         /**
          * This attribute sets the focus on the tag input of the inspector on mount.
@@ -122,11 +129,10 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
     _closeChatter() {
         this.$('.o_content').removeClass('o_chatter_open');
         this.$('.o_document_chatter_container').remove();
-        if (!this._chatter) {
-            return;
+        if (this._chatterContainerComponent) {
+            this._chatterContainerComponent.destroy();
+            this._chatterContainerComponent = undefined;
         }
-        this._chatter.destroy();
-        this._chatter = null;
     },
     /**
      * Renders the inspector with a slight delay.
@@ -183,6 +189,29 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             return rule.data;
         });
         return rules.filter(rule => !rule.limited_to_single_record);
+    },
+    /**
+     * @private
+     * @returns {Object}
+     */
+    _makeChatterContainerProps() {
+        const recordData = this.model.get(this.handle).data.find(record => record.res_id === this._selectedRecordIds[0]);
+        const record = this.model.get(recordData.id);
+        const context = record ? record.getContext() : {};
+        const activityIds = record.data.activity_ids
+            ? record.data.activity_ids.res_ids
+            : [];
+        const followerIds = record.data.message_follower_ids
+            ? record.data.message_follower_ids.res_ids
+            : [];
+        return {
+            activityIds,
+            followerIds,
+            context,
+            hasTopbarCloseButton: true,
+            threadId: recordData.res_id,
+            threadModel: recordData.model,
+        };
     },
     /**
      * Generates an drag icon near the cursor containing information on the dragged records.
@@ -257,24 +286,20 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @returns {Promise}
      */
     async _renderChatter() {
-        if (this._selectedRecordIds.length != 1) {
+        if (this._selectedRecordIds.length !== 1) {
             return;
         }
-        const recordData = this.model.get(this.handle).data.find(record => record.res_id === this._selectedRecordIds[0]);
-        await this.model.fetchActivities(recordData.id);
-        const record = this.model.get(recordData.id);
         this._closeChatter();
+        const props = this._makeChatterContainerProps();
+        this._chatterContainerComponent = new ChatterContainerWrapperComponent(
+            this,
+            components.ChatterContainer,
+            props
+        );
         const $chatterContainer = $(qweb.render('documents.ChatterContainer'));
         this.$('.o_content').addClass('o_chatter_open').append($chatterContainer);
-        this._chatter = new Chatter(this, record, {
-            mail_thread: 'message_ids',
-            mail_followers: 'message_follower_ids',
-            mail_activity: 'activity_ids'
-        }, {
-            display_log_button: true,
-            isEditable: true,
-        });
-        await this._chatter.replace($chatterContainer.find('.o_documents_chatter_placeholder'));
+        const target = $chatterContainer[0].querySelector(':scope .o_documents_chatter_placeholder');
+        await this._chatterContainerComponent.mount(target);
     },
     /**
      * Renders and appends the documents inspector sidebar.
@@ -384,15 +409,15 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @returns {Promise}
      */
     async _updateChatter() {
-        const state = this.model.get(this.handle);
-        if (!this._chatter) {
+        if (!this._chatterContainerComponent) {
             return;
         }
         if (this._selectedRecordIds.length === 1) {
-            const record = state.data.find(record => record.res_id === this._selectedRecordIds[0]);
-            if (record) {
-                await this._renderChatter();
-            }
+            const props = this._makeChatterContainerProps();
+            this._chatterContainerComponent.update(props);
+            const chatterContainer = this.el.querySelector(':scope .o_document_chatter_container');
+            const target = chatterContainer.querySelector(':scope .o_documents_chatter_placeholder');
+            await this._chatterContainerComponent.mount(target);
         } else {
             this._closeChatter();
         }
@@ -438,12 +463,6 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             ...new Set(Object.values(this._fileUploads).map(upload => upload.folderId))
         ];
         this._searchPanel.setUploadingFolderIds(folderIds);
-    },
-    /**
-     * @private
-     */
-    _onClickDocumentsCloseChatter() {
-        this._closeChatter();
     },
     /**
      * @private
@@ -519,6 +538,12 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         const resIds = ev.data.records.map(record => record.res_id);
         this._selectedRecordIds = _.difference(this._selectedRecordIds, resIds);
         await this.reload();
+    },
+    /**
+     * @private
+     */
+    _onDocumentsCloseChatter() {
+        this._closeChatter();
     },
     /**
      * @private

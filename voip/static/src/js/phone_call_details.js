@@ -6,6 +6,8 @@ const core = require('web.core');
 const session = require('web.session');
 const Widget = require('web.Widget');
 
+const { Component } = owl;
+
 const QWeb = core.qweb;
 const _t = core._t;
 
@@ -178,7 +180,7 @@ const PhoneCallDetails = Widget.extend({
             method: 'action_done',
             args: [[this.activityId]],
         });
-        this.call('mail_service', 'getMailBus').trigger('voip_reload_chatter');
+        Component.env.bus.trigger('voip_reload_chatter');
         this._$phoneCallActivityButtons.hide();
         this.trigger_up('markActivityDone');
     },

@@ -1,14 +1,18 @@
 odoo.define('account_invoice_extract.FormViewTests', function (require) {
 "use strict";
 
-var mailTestUtils = require('mail.testUtils');
+const {
+    afterNextRender,
+    nextAnimationFrame,
+    start,
+} = require('mail/static/src/utils/test_utils.js');
 
-var FormRenderer = require('account_invoice_extract.FormRenderer');
-var FormView = require('account_invoice_extract.FormView');
-var invoiceExtractTestUtils = require('account_invoice_extract.testUtils');
+const FormRenderer = require('account_invoice_extract.FormRenderer');
+const FormView = require('account_invoice_extract.FormView');
+const invoiceExtractTestUtils = require('account_invoice_extract.testUtils');
 
-var config = require('web.config');
-var testUtils = require('web.test_utils');
+const config = require('web.config');
+const testUtils = require('web.test_utils');
 
 QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('FormView', {
@@ -100,7 +104,8 @@ QUnit.module('FormView', {
     QUnit.test('basic', async function (assert) {
         assert.expect(27);
 
-        var form = await testUtils.createView({
+        const { widget: form } = await start({
+            hasView: true,
             View: FormView,
             model: 'account.move',
             data: this.data,
@@ -108,11 +113,15 @@ QUnit.module('FormView', {
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
                     '<div class="oe_chatter">' +
-                        '<field name="message_ids" widget="mail_thread" options="{\'display_log_button\': True}"/>' +
+                        '<field name="message_ids"/>' +
                     '</div>' +
                 '</form>',
+            // FIXME could be removed once task-2248306 is done
+            archs: {
+                'mail.message,false,list': '<tree/>',
+            },
             res_id: 2,
-            services: mailTestUtils.getMailServices(),
+            services: this.services,
             config: {
                 device: {
                     size_class: config.device.SIZES.XXL,
@@ -134,7 +143,7 @@ QUnit.module('FormView', {
         // 'o_success_ocr' is not loaded.
         await testUtils.dom.click($('.o_form_button_edit'));
 
-        var $attachmentPreview = form.$('.o_attachment_preview_img');
+        let $attachmentPreview = form.$('.o_attachment_preview_img');
 
         // check presence of attachment, buttons, box layer, boxes
         assert.strictEqual($attachmentPreview.length, 1,
@@ -216,7 +225,8 @@ QUnit.module('FormView', {
     QUnit.test('no box and button in readonly mode', async function (assert) {
         assert.expect(15);
 
-        var form = await testUtils.createView({
+        const { widget: form } = await start({
+            hasView: true,
             View: FormView,
             model: 'account.move',
             data: this.data,
@@ -224,11 +234,14 @@ QUnit.module('FormView', {
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
                     '<div class="oe_chatter">' +
-                        '<field name="message_ids" widget="mail_thread" options="{\'display_log_button\': True}"/>' +
+                        '<field name="message_ids"/>' +
                     '</div>' +
                 '</form>',
+            // FIXME could be removed once task-2248306 is done
+            archs: {
+                'mail.message,false,list': '<tree/>',
+            },
             res_id: 2,
-            services: mailTestUtils.getMailServices(),
             config: {
                 device: {
                     size_class: config.device.SIZES.XXL,
@@ -246,7 +259,9 @@ QUnit.module('FormView', {
             },
         });
 
-        var $attachmentPreview = form.$('.o_attachment_preview_img');
+        await nextAnimationFrame();
+
+        let $attachmentPreview = form.$('.o_attachment_preview_img');
         assert.strictEqual($attachmentPreview.length, 1,
             "should display attachment preview");
         assert.strictEqual($attachmentPreview.find('.o_invoice_extract_buttons').length, 0,
@@ -260,7 +275,9 @@ QUnit.module('FormView', {
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        await testUtils.dom.click($('.o_form_button_edit'));
+        await afterNextRender(() => {
+            testUtils.dom.click($('.o_form_button_edit'));
+        });
 
         $attachmentPreview = form.$('.o_attachment_preview_img');
         assert.strictEqual($attachmentPreview.length, 1,
@@ -274,7 +291,9 @@ QUnit.module('FormView', {
         assert.strictEqual($('.o_invoice_extract_box').length, 5,
             "should now display boxes in edit mode");
 
-        await testUtils.dom.click($('.o_form_button_save'));
+        await afterNextRender(() => {
+            testUtils.dom.click($('.o_form_button_save'));
+        });
 
         $attachmentPreview = form.$('.o_attachment_preview_img');
         assert.strictEqual($attachmentPreview.length, 1,
@@ -294,7 +313,8 @@ QUnit.module('FormView', {
     QUnit.test('change active field', async function (assert) {
         assert.expect(12);
 
-        var form = await testUtils.createView({
+        const { widget: form } = await start({
+            hasView: true,
             View: FormView,
             model: 'account.move',
             data: this.data,
@@ -302,11 +322,14 @@ QUnit.module('FormView', {
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
                     '<div class="oe_chatter">' +
-                        '<field name="message_ids" widget="mail_thread" options="{\'display_log_button\': True}"/>' +
+                        '<field name="message_ids"/>' +
                     '</div>' +
                 '</form>',
+            // FIXME could be removed once task-2248306 is done
+            archs: {
+                'mail.message,false,list': '<tree/>',
+            },
             res_id: 2,
-            services: mailTestUtils.getMailServices(),
             config: {
                 device: {
                     size_class: config.device.SIZES.XXL,
@@ -367,7 +390,8 @@ QUnit.module('FormView', {
     QUnit.test('always keep one box layer per page on enabling OCR boxes visualisation', async function (assert) {
         assert.expect(3);
 
-        const form = await testUtils.createView({
+        const { widget: form } = await start({
+            hasView: true,
             View: FormView,
             model: 'account.move',
             data: this.data,
@@ -375,11 +399,14 @@ QUnit.module('FormView', {
                     <div class="o_success_ocr"/>
                     <div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>
                     <div class="oe_chatter">
-                        <field name="message_ids" widget="mail_thread" options="{'display_log_button': True}"/>
+                        <field name="message_ids"/>
                     </div>
                 </form>`,
+            // FIXME could be removed once task-2248306 is done
+            archs: {
+                'mail.message,false,list': '<tree/>',
+            },
             res_id: 2,
-            services: mailTestUtils.getMailServices(),
             config: {
                 device: {
                     size_class: config.device.SIZES.XXL,
@@ -416,7 +443,9 @@ QUnit.module('FormView', {
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        await testUtils.dom.click($('.o_form_button_edit'));
+        await afterNextRender(() => {
+            testUtils.dom.click($('.o_form_button_edit'));
+        });
         let $attachmentPreview = form.$('.o_attachment_preview_img');
         // check presence of attachment, buttons, box layer, boxes
         assert.strictEqual($attachmentPreview.length, 1,
@@ -425,9 +454,11 @@ QUnit.module('FormView', {
             "should contain a box layer on attachment");
 
         // Send a new message to trigger a rerender (which will trigger a new boxlayer creation)
-        await testUtils.dom.click($('.o_chatter_button_log_note'));
-        form.$('.oe_chatter .o_composer_text_field:first()').val("Blah");
-        await testUtils.dom.click($('.o_composer_button_send'));
+        await afterNextRender(() => {
+            testUtils.dom.click($('.o_ChatterTopbar_buttonLogNote'));
+        });
+        form.$('.o_ComposerTextInput_textarea:first()').val("Blah");
+        await testUtils.dom.click($('.o_Composer_buttonSend'));
 
         $attachmentPreview = form.$('.o_attachment_preview_img');
         // check presence of attachment, buttons, box layer, boxes

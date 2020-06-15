@@ -28,7 +28,10 @@ Allows to make call from next activities or with click-to-dial.
         'wizard/voip_phonecall_transfer_wizard_views.xml',
         'data/mail_activity_data.xml',
     ],
-    'qweb': ['static/src/xml/*.xml'],
+    'qweb': [
+        'static/src/bugfix/bugfix.xml',
+        'static/src/xml/*.xml',
+    ],
     'application': True,
     'license': 'OEEL-1',
 }

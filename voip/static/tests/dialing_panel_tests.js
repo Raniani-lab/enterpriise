@@ -1,7 +1,7 @@
 odoo.define('voip.tests_panel', function (require) {
 "use strict";
 
-const mailTestUtils = require('mail.testUtils');
+const { start } = require('mail/static/src/utils/test_utils.js');
 
 const DialingPanel = require('voip.DialingPanel');
 const UserAgent = require('voip.UserAgent');
@@ -16,7 +16,7 @@ const testUtils = require('web.test_utils');
  * @return {Promise<Object>} resolve with object: { dialingPanel, parent }
  */
 async function createDialingPanel(params) {
-    const parent = await testUtils.createParent(params);
+    const { widget: parent } = await start(params);
     const dialingPanel = new DialingPanel(parent);
     const container = params.debug ? $('body') : $('#qunit-fixture');
     await dialingPanel.appendTo(container);
@@ -33,7 +33,6 @@ QUnit.module('voip', {}, function () {
 QUnit.module('DialingPanel', {
     beforeEach() {
         this.onaccepted = undefined;
-        this.services = mailTestUtils.getMailServices();
         this.recentList = {};
         // generate 3 records
         this.phoneCallDetailsData = [10,23,42].map(id => {
@@ -81,7 +80,7 @@ QUnit.module('DialingPanel', {
     },
     afterEach() {
         testUtils.mock.unpatch(UserAgent);
-    }
+    },
 }, function () {
 
 QUnit.test('autocall flow', async function (assert) {
@@ -178,7 +177,6 @@ QUnit.test('autocall flow', async function (assert) {
             }
             return this._super(...arguments);
         },
-        services: this.services,
     });
 
     // make a first call
@@ -435,7 +433,6 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
             }
             return this._super(...arguments);
         },
-        services: this.services,
     });
 
     // make a first call
@@ -557,7 +554,6 @@ QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
             }
             return this._super(...arguments);
         },
-        services: this.services,
     });
 
     // make a first call

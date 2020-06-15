@@ -10,14 +10,14 @@
             flex-flow: column nowrap;
             padding: 16px;
         }
-        .o_form_sheet, .oe_chatter {
+        .o_form_sheet, .o_ChatterContainer {
             max-width: 100%;
         }
         .o_form_sheet > .o_group {
             margin-left: -$-web-studio-form-edition-gap;
             margin-right: -$-web-studio-form-edition-gap;
         }
-        .oe_chatter {
+        .o_ChatterContainer {
             position: relative;
             .o_web_studio_overlay {
                 @include o-position-absolute(0, 0, 0, 0);
@@ -157,7 +157,7 @@
             opacity: 0.5;
             font-weight: bold;
             transition: all ease 0.1s;
-            > .o_chatter_topbar {
+            > .o_Studio_ChatterContainer {
                 padding: 16px;
                 max-width: 90%;
                 opacity: 0;
@@ -185,7 +185,7 @@
                 > span {
                     width: 100%;
                 }
-                > .o_chatter_topbar {
+                > .o_Studio_ChatterContainer {
                     transition: all .8s ease .1s;
                     max-width: 100%;
                     opacity: 1;

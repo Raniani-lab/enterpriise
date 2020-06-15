@@ -26,9 +26,8 @@
     <t t-esc="dragIconContent"/>
 </span>
 
-<div t-name="documents.ChatterContainer" class="o_document_chatter_container oe_chatter p-relative bg-white">
+<div t-name="documents.ChatterContainer" class="o_document_chatter_container">
     <div class="o_documents_chatter_placeholder"/>
-    <span class="o_documents_close_chatter text-center fa fa-times"/>
 </div>
 
 <div t-name="documents.uploadText" class="o_documents_upload_text text-center text-white">

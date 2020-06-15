@@ -1,6 +1,8 @@
 odoo.define('web_studio.testUtils', function (require) {
 "use strict";
 
+const { start } = require('mail/static/src/utils/test_utils.js');
+
 var dom = require('web.dom');
 var QWeb = require('web.QWeb');
 var testUtils = require('web.test_utils');
@@ -176,10 +178,10 @@ async function createSidebar(params) {
  * @return {ViewEditorManager}
  */
 async function createViewEditorManager(params) {
-    const parent = new StudioEnvironment();
     weTestUtils.patch();
     params.data = weTestUtils.wysiwygData(params.data);
-    const mockServer = await testUtils.mock.addMockEnvironment(parent, params);
+    const { mockServer, widget } = await start(params);
+    const parent = new StudioEnvironment(widget);
     const fieldsView = testUtils.mock.fieldsViewGet(mockServer, params);
     if (params.viewID) {
         fieldsView.view_id = params.viewID;
@@ -204,7 +206,7 @@ async function createViewEditorManager(params) {
     const originalDestroy = ViewEditorManager.prototype.destroy;
     vem.destroy = function () {
         vem.destroy = originalDestroy;
-        parent.destroy();
+        widget.destroy();
         weTestUtils.unpatch();
     };
 

@@ -33,7 +33,12 @@ creates next activities for the related approvers.
     'demo':[
         'data/approval_demo.xml',
     ],
-    'qweb': ['static/src/xml/*.xml'],
+    'qweb': [
+        'static/src/bugfix/bugfix.xml',
+        'static/src/components/activity/activity.xml',
+        'static/src/components/approval/approval.xml',
+        'static/src/xml/*.xml'
+    ],
     'application': True,
     'installable': True,
     'auto_install': False,

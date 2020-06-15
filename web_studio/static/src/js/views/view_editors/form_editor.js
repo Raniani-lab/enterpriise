@@ -9,8 +9,17 @@ var FieldSelectorDialog = require('web_studio.FieldSelectorDialog');
 var FormEditorHook = require('web_studio.FormEditorHook');
 var pyUtils = require('web.py_utils');
 
-var Qweb = core.qweb;
 var _t = core._t;
+
+const components = {
+    ChatterContainer: require('mail/static/src/components/chatter_container/chatter_container.js'),
+};
+const { ComponentWrapper } = require('web.OwlCompatibility');
+
+// ensure `.include()` on `mail_enterprise` is applied before `web_studio`
+require('mail_enterprise/static/src/widgets/form_renderer/form_renderer.js');
+
+class ChatterContainerWrapperComponent extends ComponentWrapper {}
 
 var FormEditor =  FormRenderer.extend(EditorMixin, {
     nearest_hook_tolerance: 50,
@@ -31,9 +40,18 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
         this._super.apply(this, arguments);
         this.show_invisible = params.show_invisible;
         this.chatter_allowed = params.chatter_allowed;
+        this._chatterNode = undefined;
+        this._chatterContainerOverview = undefined;
         this.silent = false;
         this.node_id = 1;
         this.hook_nodes = {};
+    },
+    /**
+     * @override
+     */
+    destroy() {
+        this._super(...arguments);
+        this._chatterContainerOverview = undefined;
     },
 
     //--------------------------------------------------------------------------
@@ -252,7 +270,6 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
      */
     _render: function () {
         var self = this;
-        this.has_chatter = false;
         this.has_follower_field = false;
         this.has_message_field = false;
         this.has_activity_field = false;
@@ -264,7 +281,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
 
         return this._super.apply(this, arguments).then(function () {
             // Add chatter hook + chatter preview
-            if (!self.has_chatter && self.chatter_allowed) {
+            if (!self._hasChatter() && self.chatter_allowed) {
                 var $chatter_hook = $('<div>').addClass('o_web_studio_add_chatter o_chatter');
                 // Append non-hover content
                 $chatter_hook.append($('<span>', {class: 'container'})
@@ -275,14 +292,17 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
                         style: 'margin-right:10px',
                     })))
                 );
+                const $studioChatterContainer = $('<div>').addClass('o_Studio_ChatterContainer');
+                $chatter_hook.append($studioChatterContainer);
                 // Append hover content (chatter preview)
-                $chatter_hook.append($(Qweb.render('mail.Chatter')).find('.o_chatter_topbar')
-                    .addClass('container')
-                    .prepend($(Qweb.render('mail.chatter.Buttons', {
-                        newMessageButton: true,
-                        logNoteButton: true,
-                    })), $(Qweb.render('mail.Followers')))
-                );
+                if (!self._chatterContainerOverview) {
+                    self._chatterContainerOverview = new ChatterContainerWrapperComponent(
+                        self,
+                        components.ChatterContainer,
+                        {},
+                    );
+                }
+                self._chatterContainerOverview.mount($studioChatterContainer[0]);
                 $chatter_hook.insertAfter(self.$('.o_form_sheet'));
             }
             // Add buttonbox hook
@@ -500,8 +520,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
     _renderNode: function (node) {
         var $el = this._super.apply(this, arguments);
         if (node.tag === 'div' && node.attrs.class === 'oe_chatter') {
-            this.has_chatter = true;
-            this.chatterNode = node;
+            this._chatterNode = node;
         }
         return $el;
     },
@@ -639,20 +658,19 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
      * @override
      * @private
      */
-    _renderView: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            if (self.has_chatter) {
-                self.setSelectable(self.chatter.$el);
-                // Put a div in overlay preventing all clicks chatter's elements
-                self.chatter.$el.append($('<div>', { 'class': 'o_web_studio_overlay' }));
-                self.chatter.$el.attr('data-node-id', self.node_id++);
-                self.chatter.$el.click(function () {
-                    self.selected_node_id = self.chatter.$el.data('node-id');
-                    self.trigger_up('node_clicked', { node: self.chatterNode });
-                });
-            }
-        });
+    async _renderView() {
+        await this._super(...arguments);
+        if (this._hasChatter()) {
+            const $el = $(this._chatterContainerComponent.el);
+            this.setSelectable($el);
+            // Put a div in overlay preventing all clicks chatter's elements
+            $el.append($('<div>', { 'class': 'o_web_studio_overlay' }));
+            $el.attr('data-node-id', this.node_id++);
+            $el.click(() => {
+                this.selected_node_id = $el.data('node-id');
+                this.trigger_up('node_clicked', { node: this._chatterNode });
+            });
+        }
     },
     /**
      * @private

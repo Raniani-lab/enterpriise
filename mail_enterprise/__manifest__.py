@@ -16,6 +16,7 @@ screen devices.
         'views/mail_enterprise_templates.xml',
     ],
     'qweb': [
+        'static/src/bugfix/bugfix.xml',
         'static/src/xml/mail_enterprise.xml',
     ],
     'auto_install': True,

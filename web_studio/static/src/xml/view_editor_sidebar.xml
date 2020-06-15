@@ -414,12 +414,16 @@
             <t t-call="web_studio.ViewEditorSidebar.group"/>
         </div>
         <t t-if="widget.state.node.tag === 'div'">
-            <div t-if="widget.state.node.attrs.class === 'oe_chatter'" class="o_web_studio_sidebar_content o_display_chatter">
-                <t t-call="web_studio.ViewEditorSidebar.chatter"/>
-            </div>
-            <div t-else="" class="o_web_studio_sidebar_content o_display_div">
-                <t t-call="web_studio.ViewEditorSidebar.div"/>
-            </div>
+            <t t-if="widget.state.node.attrs.class === 'oe_chatter'">
+                <div class="o_web_studio_sidebar_content o_display_chatter">
+                    <t t-call="web_studio.ViewEditorSidebar.chatter"/>
+                </div>
+            </t>
+            <t t-else="">
+                <div class="o_web_studio_sidebar_content o_display_div">
+                    <t t-call="web_studio.ViewEditorSidebar.div"/>
+                </div>
+            </t>
         </t>
         <div t-if="widget.state.node.tag === 'img'" class="o_web_studio_sidebar_content o_display_img">
             <t t-call="web_studio.ViewEditorSidebar.img"/>

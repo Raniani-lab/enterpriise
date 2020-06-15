@@ -9,6 +9,8 @@ const KanbanRecord = require('web.KanbanRecord');
 const session = require('web.session');
 const { _t } = require('web.core');
 
+const { Component } = owl;
+
 const AppraisalKanbanRecord = KanbanRecord.extend({
     _render: async function () {
         const self = this;
@@ -39,7 +41,6 @@ const AppraisalKanbanController = KanbanController.extend({
     }),
 
     _onOpenChat: async function (ev) {
-        const self = this;
         const partner_data = await this._rpc({
             model: 'hr.employee.public',
             method: 'read',
@@ -47,7 +48,11 @@ const AppraisalKanbanController = KanbanController.extend({
         });
         const partnerId = partner_data[0].user_partner_id[0];
         if (partnerId && partnerId !== session.partner_id) {
-            this.call('mail_service', 'openDMChatWindow', partner_data[0].id);
+            const env = Component.env;
+            const partner = env.models['mail.partner'].insert({
+                id: partner_data[0].id,
+            });
+            partner.openChat();
         } else if (partnerId !== session.partner_id) {
             // this is not ourself, so if we get here it means that the
             // employee is not associated with any user

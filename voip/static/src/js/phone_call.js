@@ -3,6 +3,8 @@ odoo.define('voip.PhoneCall', function (require) {
 
 const Widget = require('web.Widget');
 
+const { Component } = owl;
+
 const PhoneCall = Widget.extend({
     template: 'voip.PhoneCall',
     events: {
@@ -107,7 +109,7 @@ const PhoneCall = Widget.extend({
                 },
             });
         }
-        this.call('mail_service', 'getMailBus').trigger('voip_reload_chatter');
+        Component.env.bus.trigger('voip_reload_chatter');
     },
     /**
      * Makes rpc to set the call as canceled.

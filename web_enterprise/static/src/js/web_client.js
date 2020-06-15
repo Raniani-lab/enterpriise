@@ -264,6 +264,7 @@ return AbstractWebClient.extend({
 
         if (display) {
             await this.clear_uncommitted_changes();
+            core.bus.trigger('will_show_home_menu');
 
             // Save the current scroll position
             this.scrollPosition = this.getScrollPosition();
@@ -288,9 +289,11 @@ return AbstractWebClient.extend({
             // Attach the home_menu
             await this.homeMenuManager.mount(this.el);
             this.trigger_up('webclient_started');
+            core.bus.trigger('show_home_menu');
         } else {
             // Detach the home_menu
             this.homeMenuManager.unmount();
+            core.bus.trigger('will_hide_home_menu');
 
             dom.append(this.$el, [this.web_client_content], {
                 in_DOM: true,
@@ -298,6 +301,7 @@ return AbstractWebClient.extend({
             });
             delete this.web_client_content;
             this.trigger_up('scrollTo', this.scrollPosition);
+            core.bus.trigger('hide_home_menu');
         }
     },
     _onShowHomeMenu: function () {

@@ -17,6 +17,7 @@
     ],
     'auto_install': True,
     'qweb': [
+        'static/src/bugfix/bugfix.xml',
         'static/src/xml/invoice_extract_box.xml',
         'static/src/xml/invoice_extract_button.xml',
     ],

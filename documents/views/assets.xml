@@ -7,6 +7,8 @@
             <script type="text/javascript" src="/documents/static/src/js/documents_utils.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_view_mixin.js"/>
 
+            <script type="text/javascript" src="/documents/static/src/bugfix/bugfix.js"></script>
+
             <script type="text/javascript" src="/documents/static/src/js/documents_document_viewer.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_kanban_color_widget.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_kanban_controller.js"/>
@@ -27,6 +29,8 @@
             <script type="text/javascript" src="/documents/static/src/owl/components/pdf_group_name/pdf_group_name.js"/>
             <script type="text/javascript" src="/documents/static/src/js/systray_activity_menu.js"/>
             <script type="text/javascript" src="/documents/static/src/js/tours/documents.js"></script>
+
+            <link rel="stylesheet" type="text/scss" href="/documents/static/src/bugfix/bugfix.scss"/>
 
             <link rel="stylesheet" type="text/scss" href="/documents/static/src/scss/documents_views.scss"/>
             <link rel="stylesheet" type="text/scss" href="/documents/static/src/scss/documents_kanban_view.scss"/>
@@ -51,6 +55,8 @@
 
     <template id="qunit_suite" name="documents test suite" inherit_id="web.qunit_suite_tests">
         <xpath expr="." position="inside">
+            <script type="text/javascript" src="/documents/static/src/bugfix/bugfix_tests.js"></script>
+
             <script type="text/javascript" src="/documents/static/tests/documents_test_utils.js"></script>
             <script type="text/javascript" src="/documents/static/tests/documents_kanban_tests.js"></script>
             <script type="text/javascript" src="/documents/static/tests/documents_pdf_manager_tests.js"></script>

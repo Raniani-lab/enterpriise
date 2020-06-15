@@ -5,6 +5,8 @@ const AbstractStorageService = require('web.AbstractStorageService');
 const RamStorage = require('web.RamStorage');
 const {createView} = require('web.test_utils');
 
+const { start } = require('mail/static/src/utils/test_utils.js');
+
 async function createDocumentsView(params) {
     params.archs = params.archs || {};
     var searchArch = params.archs[`${params.model},false,search`] || '<search></search>';
@@ -26,7 +28,13 @@ async function createDocumentsView(params) {
         });
         params.services.local_storage = RamStorageService;
     }
-    return createView(params);
+
+    const { widget } = await start(
+        Object.assign({}, params, {
+            hasView: true,
+        })
+    );
+    return widget;
 }
 
 return {

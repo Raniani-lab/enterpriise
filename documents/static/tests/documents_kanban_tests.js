@@ -7,8 +7,9 @@ const DocumentsListView = require('documents.DocumentsListView');
 const { createDocumentsView } = require('documents.test_utils');
 const KanbanView = require('web.KanbanView');
 
-const mailTestUtils = require('mail.testUtils');
+const { afterNextRender } = require('mail/static/src/utils/test_utils.js');
 
+const Bus = require('web.Bus');
 const concurrency = require('web.concurrency');
 const NotificationService = require('web.NotificationService');
 const relationalFields = require('web.relational_fields');
@@ -2026,7 +2027,6 @@ QUnit.module('DocumentsViews', {
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2034,7 +2034,7 @@ QUnit.module('DocumentsViews', {
                 '</t></templates></kanban>',
         });
 
-        assert.containsNone(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsNone(kanban, '.o_Chatter',
             "should not display any chatter");
 
         // select a record
@@ -2043,13 +2043,13 @@ QUnit.module('DocumentsViews', {
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        assert.containsNone(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsNone(kanban, '.o_Chatter',
             "should still not display any chatter");
 
         // open the chatter
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_Chatter',
             "should display the chatter");
         assert.containsOnce(kanban, '.o_search_panel:visible',
             "documents selector should still be visible");
@@ -2059,8 +2059,8 @@ QUnit.module('DocumentsViews', {
             "document inspector should still be visible");
 
         // close the chatter
-        await testUtils.dom.click(kanban.$('.o_documents_close_chatter'));
-        assert.containsNone(kanban, '.o_document_chatter_container .o_chatter',
+        await testUtils.dom.click(kanban.$('.o_ChatterTopbar_buttonClose'));
+        assert.containsNone(kanban, '.o_document_chatter_container .o_Chatter',
             "should no longer display the chatter");
 
         kanban.destroy();
@@ -2079,7 +2079,6 @@ QUnit.module('DocumentsViews', {
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2094,9 +2093,9 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsN(kanban, '.o_document_chatter_container .o_thread_message', 2,
+        assert.containsN(kanban, '.o_document_chatter_container .o_Chatter .o_Message', 2,
             "should display two messages in the chatter");
 
         kanban.destroy();
@@ -2111,7 +2110,6 @@ QUnit.module('DocumentsViews', {
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2138,12 +2136,20 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
-            "should display the chatter");
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_followers',
-            "should display the follower widget");
-        assert.strictEqual(kanban.$('.o_document_chatter_container .o_followers_count').text(), "2",
-            "should have two followers");
+        assert.containsOnce(
+            kanban,
+            '.o_document_chatter_container .o_Chatter',
+            "should display the chatter"
+        );
+        assert.containsOnce(kanban,
+            '.o_document_chatter_container .o_FollowerListMenu',
+            "should display the follower widget"
+        );
+        assert.strictEqual(
+            document.querySelector('.o_FollowerListMenu_buttonFollowersCount').textContent,
+            "2",
+            "should have two followers"
+        );
 
         kanban.destroy();
     });
@@ -2151,35 +2157,35 @@ QUnit.module('DocumentsViews', {
     QUnit.test('document chatter: render the activity button', async function (assert) {
         assert.expect(3);
 
+        const bus = new Bus();
+        bus.on('do-action', null, payload => {
+            assert.deepEqual(payload.action, {
+                context: {
+                    default_res_id: 1,
+                    default_res_model: 'documents.document'
+                },
+                name: "Schedule Activity",
+                res_id: false,
+                res_model: 'mail.activity',
+                target: 'new',
+                type: 'ir.actions.act_window',
+                view_mode: 'form',
+                views: [[false, 'form']]
+                },
+                "the activity button should trigger do_action with the correct args"
+            );
+        });
+
         var kanban = await createDocumentsView({
+            env: { bus },
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
-            intercepts: {
-                do_action: function (ev) {
-                    assert.deepEqual(ev.data.action, {
-                        context: {
-                            default_res_id: 1,
-                            default_res_model: 'documents.document'
-                        },
-                        name: "Schedule Activity",
-                        res_id: false,
-                        res_model: 'mail.activity',
-                        target: 'new',
-                        type: 'ir.actions.act_window',
-                        view_mode: 'form',
-                        views: [[false, 'form']]
-                        },
-                        "the activity button should trigger do_action with the correct args"
-                    );
-                },
-            },
         });
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
@@ -2189,10 +2195,10 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
-        var $activityButton = kanban.$('.o_document_chatter_container .o_chatter_button_schedule_activity');
+        var $activityButton = kanban.$('.o_document_chatter_container .o_ChatterTopbar_buttonScheduleActivity');
         assert.strictEqual($activityButton.length, 1,
             "should display the activity button");
         await testUtils.dom.click($activityButton);
@@ -2236,11 +2242,11 @@ QUnit.module('DocumentsViews', {
                 activity_ids: [],
             }]
         };
+
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2255,18 +2261,18 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
-        assert.containsOnce(kanban, '.o_mail_activity',
+        assert.containsOnce(kanban, '.o_ActivityBox',
             "should display the activity area");
-        assert.containsOnce(kanban, '#o_chatter_activity_info_1',
+        assert.containsOnce(kanban, '.o_Activity',
             "should display an activity");
-        assert.strictEqual(kanban.$('.o_activity_link:contains(Mark Done)').length, 1,
+        assert.strictEqual(kanban.$('.o_Activity_markDoneButton').length, 1,
             "should display the activity mark done button");
-        assert.containsOnce(kanban, '.o_edit_activity',
+        assert.containsOnce(kanban, '.o_Activity_editButton',
             "should display the activity Edit button");
-        assert.containsOnce(kanban, '.o_unlink_activity',
+        assert.containsOnce(kanban, '.o_Activity_cancelButton',
             "should display the activity Cancel button");
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip)'));
@@ -2274,42 +2280,41 @@ QUnit.module('DocumentsViews', {
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-
-        assert.containsNone(kanban, '#o_chatter_activity_info_1',
+        assert.containsNone(kanban, '.o_Activity',
             "should not display an activity");
+
         kanban.destroy();
     });
 
     QUnit.test('document chatter: can write messages in the chatter', async function (assert) {
-        assert.expect(6);
+        assert.expect(8);
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
-            mockRPC: function (route, args) {
+            async mockRPC(route, args) {
                 if (route === '/mail/get_suggested_recipients') {
-                    return Promise.resolve({1: []});
+                    return { 1: [] };
                 }
                 if (args.method === 'message_post') {
                     assert.deepEqual(args.args, [1],
                         "should post message on correct record");
                     assert.strictEqual(args.kwargs.body, 'Some message',
                         "should post correct message");
-                    return Promise.resolve(98);
+                    return this._super(...arguments);
                 }
                 if (args.method === 'message_format') {
-                    assert.deepEqual(args.args, [[98]],
+                    assert.deepEqual(args.args, [[1]],
                         "should request message_format on correct message");
-                    return Promise.resolve([{}]);
+                    return this._super(...arguments);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -2323,21 +2328,31 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsNone(kanban, '.o_document_chatter_container .o_thread_composer',
+        assert.containsNone(kanban, '.o_document_chatter_container .o_Composer',
             "chatter composer should not be open");
 
         // open the composer
-        await testUtils.dom.click(kanban.$('.o_document_chatter_container .o_chatter_button_new_message'));
+        await testUtils.dom.click(kanban.$('.o_document_chatter_container .o_ChatterTopbar_buttonSendMessage'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_thread_composer',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Composer',
             "chatter composer should be open");
 
-        // write and send a message
-        kanban.$('.o_document_chatter_container .o_composer_text_field').val('Some message');
-        await testUtils.dom.click(kanban.$('.o_document_chatter_container .o_composer_button_send'));
-
+        // write and send a message (need to wait the Send button to be enabled)
+        document.querySelector(`.o_ComposerTextInput_textarea`).focus();
+        await afterNextRender(() => {
+            document.execCommand('insertText', false, "Some message");
+        });
+        await testUtils.dom.click(kanban.$('.o_Composer_buttonSend'));
+        assert.containsOnce(kanban, '.o_Message',
+            "a message should have been created"
+        );
+        assert.strictEqual(
+            document.querySelector('.o_Message_content').textContent,
+            "Some message",
+            "the created message should have the right body"
+        );
         kanban.destroy();
     });
 
@@ -2354,7 +2369,6 @@ QUnit.module('DocumentsViews', {
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2370,11 +2384,11 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_thread_message',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Message',
             "should display one message in the chatter");
-        assert.strictEqual(kanban.$('.o_thread_message .o_thread_message_content').text().trim(),
+        assert.strictEqual(kanban.$('.o_Message .o_Message_content').text().trim(),
             "Message on 'yop'", "should display the correct message");
 
         // select another record
@@ -2383,11 +2397,11 @@ QUnit.module('DocumentsViews', {
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should still display the chatter");
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_thread_message',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Message',
             "should display one message in the chatter");
-        assert.strictEqual(kanban.$('.o_thread_message .o_thread_message_content').text().trim(),
+        assert.strictEqual(kanban.$('.o_Message .o_Message_content').text().trim(),
             "Message on 'blip'", "should display the correct message");
 
         kanban.destroy();
@@ -2400,7 +2414,6 @@ QUnit.module('DocumentsViews', {
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2416,7 +2429,7 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
         // reload with a domain
@@ -2424,7 +2437,7 @@ QUnit.module('DocumentsViews', {
 
         assert.containsOnce(kanban, '.o_record_selected',
             "record should still be selected");
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should still display the chatter");
 
         kanban.destroy();
@@ -2437,7 +2450,6 @@ QUnit.module('DocumentsViews', {
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -2454,7 +2466,7 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
         // select another record alongside the first one
@@ -2462,8 +2474,9 @@ QUnit.module('DocumentsViews', {
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
+        await testUtils.nextTick(); // need to wait a little longer to be sure chatter component is unmounted
 
-        assert.containsNone(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsNone(kanban, '.o_document_chatter_container .o_Chatter',
             "should have closed the chatter");
 
         kanban.destroy();
@@ -2476,7 +2489,6 @@ QUnit.module('DocumentsViews', {
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2492,7 +2504,7 @@ QUnit.module('DocumentsViews', {
 
         await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
         // reload with a domain
@@ -2500,7 +2512,7 @@ QUnit.module('DocumentsViews', {
 
         assert.containsNone(kanban, '.o_record_selected',
             "no more record should be selected");
-        assert.containsNone(kanban, '.o_document_chatter_container .o_chatter',
+        assert.containsNone(kanban, '.o_document_chatter_container .o_Chatter',
             "should have closed the chatter");
 
         kanban.destroy();

@@ -96,14 +96,6 @@
         }
     }
 
-    // Chatter
-    > .oe_chatter {
-        flex: 1000 0 auto;
-        @include make-container();
-        @include make-container-max-widths();
-        padding: $grid-gutter-width*0.25 0;
-    }
-
     // Notebooks
     .o_notebook {
         > .o_notebook_headers {
@@ -299,57 +291,9 @@
             overflow: auto;
             border-bottom: none;
 
-            > :not(.o_form_sheet) {
-                margin-left: -$o-horizontal-padding;
-                margin-right: -$o-horizontal-padding;
-            }
             > .o_form_sheet {
                 width: 100%;
                 max-width: map-get($container-max-widths, xl);
-            }
-        }
-        > .oe_chatter {
-            flex: 1 1 auto; // Side chatter is disabled if this has to shrink but this was added for safety
-            width: $o-chatter-min-width;
-            padding: 0;
-            overflow: auto;
-            border-left: 1px solid gray('300');
-            background-color: white;
-
-            .o_chatter_topbar {
-                height: $o-statusbar-height + $nav-tabs-border-width;
-
-                .btn, .btn.o_active {
-                    border-top: 0;
-                }
-
-            }
-
-            &.o_chatter_composer_active {
-                .o_chatter_topbar {
-                    .btn, .btn.o_active {
-                        border-top: 0;
-
-                        &:first-child {
-                            border-left: 0;
-                        }
-                    }
-                }
-            }
-            .o_thread_composer {
-                border-width: 1px 0;
-                margin-top: 0;
-
-                // have mention drowdown below composer
-                .o_composer_mention_dropdown {
-                    position: absolute;
-                    top: 100%;
-
-                    > .dropdown-menu {
-                        top: 100%;
-                        bottom: auto;
-                    }
-                }
             }
         }
     }

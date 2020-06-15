@@ -102,7 +102,7 @@ tour.register('web_studio_new_app_tour', {
     trigger: '.o_web_studio_sidebar_text',
     auto: true,
 }, {
-    trigger: '.o_web_studio_form_view_editor .oe_chatter',
+    trigger: '.o_web_studio_form_view_editor .o_Chatter',
     content: _t("Click to edit messaging features on your model."),
     position: 'top',
     timeout: 15000, // this can take some time on 'slow' builds (coverage, etc.)

@@ -2,24 +2,18 @@ odoo.define('documents.systray.ActivityMenuTests', function (require) {
 "use strict";
 
 var ActivityMenu = require('mail.systray.ActivityMenu');
-var mailTestUtils = require('mail.testUtils');
+const { start } = require('mail/static/src/utils/test_utils.js');
 
 var testUtils = require('web.test_utils');
 
 QUnit.module('mail', {}, function () {
 
-    QUnit.module('DocumentsActivityMenu', {
-        beforeEach: function () {
-            this.services = mailTestUtils.getMailServices();
-        },
-    });
+    QUnit.module('DocumentsActivityMenu', {});
 
     QUnit.test('activity menu widget: documents request button', async function (assert) {
         assert.expect(4);
 
-        var activityMenu = new ActivityMenu();
-        await testUtils.mock.addMockEnvironment(activityMenu, {
-            services: this.services,
+        const { widget } = await start({
             mockRPC: function (route, args) {
                 if (args.method === 'systray_get_activities') {
                     return Promise.resolve([]);
@@ -42,6 +36,8 @@ QUnit.module('mail', {}, function () {
                 },
             },
         });
+
+        const activityMenu = new ActivityMenu(widget);
         await activityMenu.appendTo($('#qunit-fixture'));
 
         await testUtils.dom.click(activityMenu.$('> .dropdown-toggle'));
@@ -49,7 +45,7 @@ QUnit.module('mail', {}, function () {
         assert.containsOnce(activityMenu, '.o_sys_documents_request');
         await testUtils.dom.click(activityMenu.$('.o_sys_documents_request'));
 
-        activityMenu.destroy();
+        widget.destroy();
     });
 });
 });

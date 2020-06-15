@@ -74,7 +74,7 @@
             </xpath>
             <xpath expr="//field[@name='message_ids']" position='replace'>
                 <field name="message_main_attachment_id" invisible="1"/>
-                <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'always'}"/>
+                <field name="message_ids" options="{'post_refresh': 'always'}"/>
             </xpath>
             <xpath expr="//form" position="attributes">
                 <attribute name="js_class">account_invoice_extract_preview</attribute>
@@ -94,6 +94,8 @@
 
     <template id="assets_backend" name="Account invoice extract assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
+            <script type="text/javascript" src="/account_invoice_extract/static/src/bugfix/bugfix.js"></script>
+
             <script type="text/javascript" src="/account_invoice_extract/static/src/js/invoice_extract_box.js"></script>
             <script type="text/javascript" src="/account_invoice_extract/static/src/js/invoice_extract_box_layer.js"></script>
             <script type="text/javascript" src="/account_invoice_extract/static/src/js/invoice_extract_field.js"></script>
@@ -102,6 +104,7 @@
             <script type="text/javascript" src="/account_invoice_extract/static/src/js/invoice_extract_form_renderer.js"></script>
             <script type="text/javascript" src="/account_invoice_extract/static/src/js/invoice_extract_form_view.js"></script>
 
+            <link rel="stylesheet" type="text/scss" href="/account_invoice_extract/static/src/bugfix/bugfix.scss"/>
             <link rel="stylesheet" type="text/scss" href="/account_invoice_extract/static/src/scss/account_invoice_extract.scss"/>
 
             <!--
@@ -115,6 +118,8 @@
 
     <template id="qunit_suite" name="account_invoice_extract_tests" inherit_id="web.qunit_suite_tests">
         <xpath expr="." position="inside">
+            <script type="text/javascript" src="/account_invoice_extract/static/src/bugfix/bugfix_tests.js"></script>
+
             <script type="text/javascript" src="/account_invoice_extract/static/src/tests/helpers/invoice_extract_test_utils.js"></script>
             <script type="text/javascript" src="/account_invoice_extract/static/src/tests/invoice_extract_box_tests.js"></script>
             <script type="text/javascript" src="/account_invoice_extract/static/src/tests/invoice_extract_box_layer_tests.js"></script>

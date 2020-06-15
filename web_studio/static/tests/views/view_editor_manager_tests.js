@@ -1,8 +1,6 @@
 odoo.define('web_studio.ViewEditorManager_tests', function (require) {
 "use strict";
 
-var mailTestUtils = require('mail.testUtils');
-
 var AbstractFieldOwl = require('web.AbstractFieldOwl');
 var ace = require('web_editor.ace');
 var concurrency = require('web.concurrency');
@@ -19,7 +17,6 @@ QUnit.module('Studio', {}, function () {
 
 QUnit.module('ViewEditorManager', {
     beforeEach: function () {
-        this.services = mailTestUtils.getMailServices();
         this.data = {
             coucou: {
                 fields: {
@@ -394,6 +391,7 @@ QUnit.module('ViewEditorManager', {
         assert.expect(4);
 
         const originalOdooDebug = odoo.debug;
+        odoo.debug = false;
         const FieldChar = fieldRegistry.get('char');
         // add widget in fieldRegistry with description and without desciption
         fieldRegistry.add('widgetWithDescription', FieldChar.extend({
@@ -1697,7 +1695,6 @@ QUnit.module('ViewEditorManager', {
 
         var vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
-            services: this.services,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
@@ -1713,17 +1710,17 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        assert.containsOnce(vem, '.o_web_studio_form_view_editor .oe_chatter[data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor .o_ChatterContainer[data-node-id]',
             "there should be a chatter node");
 
         // click on the chatter
-        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .oe_chatter[data-node-id]'));
+        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_ChatterContainer[data-node-id]'));
 
         assert.hasClass(vem.$('.o_web_studio_sidebar .o_web_studio_properties'),'active',
             "the Properties tab should now be active");
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_chatter',
             "the sidebar should now display the chatter properties");
-        assert.hasClass(vem.$('.o_web_studio_form_view_editor .oe_chatter[data-node-id]'),'o_web_studio_clicked',
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_ChatterContainer[data-node-id]'),'o_web_studio_clicked',
             "the chatter should have the clicked style");
         assert.strictEqual(vem.$('.o_web_studio_sidebar input[name="email_alias"]').val(), "coucou",
             "the email alias in sidebar should be fetched");
@@ -4918,7 +4915,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('blockUI not removed just after rename', async function (assert) {
-        assert.expect(15);
+        assert.expect(16);
         // renaming is only available in debug mode
         var initialDebugMode = odoo.debug;
         odoo.debug = true;
@@ -4969,6 +4966,7 @@ QUnit.module('ViewEditorManager', {
         await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar input[name="name"]'), 'new', ['change']);
 
         assert.verifySteps([
+            '/mail/init_messaging',
             '/web/dataset/search_read',
             'block UI',
             '/web_studio/edit_view',
@@ -5486,7 +5484,6 @@ QUnit.module('ViewEditorManager', {
                 "product,module.tree_view_ref,list": '<tree><field name="display_name"/></tree>'
             },
             data: this.data,
-            debug: true,
             mockRPC: function (route, args) {
                 if (route === "/web_studio/create_inline_view") {
                     assert.equal(args.context.tree_view_ref, 'module.tree_view_ref',

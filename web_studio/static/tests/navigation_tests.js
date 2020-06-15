@@ -3,8 +3,7 @@ odoo.define('web_studio.navigation_tests', function (require) {
 
 var bus = require('web_studio.bus');
 var testUtils = require('web.test_utils');
-
-var createActionManager = testUtils.createActionManager;
+const { start } = require('mail/static/src/utils/test_utils.js');
 
 QUnit.module('Studio Navigation', {
     beforeEach: function () {
@@ -84,9 +83,10 @@ QUnit.module('Studio Navigation', {
     QUnit.module('Misc');
 
     QUnit.test('open Studio with act_window', async function (assert) {
-        assert.expect(17);
+        assert.expect(18);
 
-        var actionManager = await createActionManager({
+        const { widget: actionManager } = await start({
+            hasActionManager: true,
             actions: this.actions,
             archs: this.archs,
             data: this.data,
@@ -101,7 +101,12 @@ QUnit.module('Studio Navigation', {
 
         await actionManager.doAction(1);  // open a act_window_action
 
-        var rpcs = ['/web/action/load', '/web/dataset/call_kw/partner', '/web/dataset/search_read'];
+        var rpcs = [
+            '/mail/init_messaging',
+            '/web/action/load',
+            '/web/dataset/call_kw/partner',
+            '/web/dataset/search_read',
+        ];
         assert.verifySteps(rpcs, "should have loaded the action");
 
         await actionManager.doAction('action_web_studio_action_editor', {
@@ -144,7 +149,8 @@ QUnit.module('Studio Navigation', {
     QUnit.test('open Studio with act_window and viewType', async function (assert) {
         assert.expect(2);
 
-        var actionManager = await createActionManager({
+        const { widget: actionManager } = await start({
+            hasActionManager: true,
             actions: this.actions,
             archs: this.archs,
             data: this.data,
@@ -179,7 +185,8 @@ QUnit.module('Studio Navigation', {
     QUnit.test('switch view and close Studio', async function (assert) {
         assert.expect(3);
 
-        var actionManager = await createActionManager({
+        const { widget: actionManager } = await start({
+            hasActionManager: true,
             actions: this.actions,
             archs: this.archs,
             data: this.data,
@@ -221,9 +228,10 @@ QUnit.module('Studio Navigation', {
     });
 
     QUnit.test('navigation in Studio with act_window', async function (assert) {
-        assert.expect(27);
+        assert.expect(28);
 
-        var actionManager = await createActionManager({
+        const { widget: actionManager } = await start({
+            hasActionManager: true,
             actions: this.actions,
             archs: this.archs,
             data: this.data,
@@ -238,7 +246,7 @@ QUnit.module('Studio Navigation', {
 
         await actionManager.doAction(1);  // open a act_window_action
 
-        var rpcs = ['/web/action/load', '/web/dataset/call_kw/partner', '/web/dataset/search_read'];
+        var rpcs = ['/mail/init_messaging', '/web/action/load', '/web/dataset/call_kw/partner', '/web/dataset/search_read'];
         assert.verifySteps(rpcs, "should have loaded the action");
 
         await actionManager.doAction('action_web_studio_action_editor', {
@@ -309,7 +317,8 @@ QUnit.module('Studio Navigation', {
         this.actions[0].context = "{'active_id': 1}";
         var nbLoadAction = 0;
 
-        var actionManager = await createActionManager({
+        const { widget: actionManager } = await start({
+            hasActionManager: true,
             actions: this.actions,
             archs: this.archs,
             data: this.data,
@@ -342,7 +351,8 @@ QUnit.module('Studio Navigation', {
     QUnit.test('open same record when leaving form', async function (assert) {
         assert.expect(3);
 
-        var actionManager = await createActionManager({
+        const { widget: actionManager } = await start({
+            hasActionManager: true,
             actions: this.actions,
             archs: this.archs,
             data: this.data,
@@ -398,7 +408,8 @@ QUnit.module('Studio Navigation', {
                 '</field>' +
             '</grid>';
 
-        var actionManager = await createActionManager({
+        const { widget: actionManager } = await start({
+            hasActionManager: true,
             actions: this.actions,
             archs: this.archs,
             data: this.data,

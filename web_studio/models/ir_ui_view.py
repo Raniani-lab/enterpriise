@@ -194,10 +194,10 @@ class View(models.Model):
         form = E.form(E.header(*header_content), E.sheet(*sheet_content, string=model._description))
         chatter_widgets = list()
         if ir_model.is_mail_thread:
-            chatter_widgets.append(E.field(name='message_follower_ids', widget='mail_followers'))
-            chatter_widgets.append(E.field(name='message_ids', widget='mail_thread'))
+            chatter_widgets.append(E.field(name='message_follower_ids'))
+            chatter_widgets.append(E.field(name='message_ids'))
         if ir_model.is_mail_activity:
-            chatter_widgets.append(E.field(name='activity_ids', widget='mail_activity'))
+            chatter_widgets.append(E.field(name='activity_ids'))
         if chatter_widgets:
             chatter_div = E.div({'class': 'oe_chatter', 'name': 'oe_chatter'})
             chatter_div.extend(chatter_widgets)

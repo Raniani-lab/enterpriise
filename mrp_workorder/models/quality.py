@@ -116,6 +116,7 @@ class QualityAlert(models.Model):
     workcenter_id = fields.Many2one('mrp.workcenter', 'Work Center', check_company=True)
     production_id = fields.Many2one('mrp.production', "Production Order", check_company=True)
 
+
 class QualityCheck(models.Model):
     _inherit = "quality.check"
 
@@ -130,11 +131,14 @@ class QualityCheck(models.Model):
     previous_check_id = fields.Many2one('quality.check')
 
     # For components registration
+    move_id = fields.Many2one(
+        'stock.move', 'Stock Move', check_company=True)
+    move_line_id = fields.Many2one(
+        'stock.move.line', 'Stock Move Line', check_company=True)
     component_id = fields.Many2one(
         'product.product', 'Component', check_company=True)
-    component_uom_id = fields.Many2one('uom.uom', compute='_compute_component_uom', readonly=True)
-    workorder_line_id = fields.Many2one(
-        'mrp.workorder.line', 'Workorder Line', check_company=True)
+    component_uom_id = fields.Many2one('uom.uom', related='move_id.product_uom', readonly=True)
+
     qty_done = fields.Float('Done', default=1.0, digits='Product Unit of Measure')
     finished_lot_id = fields.Many2one(
         'stock.production.lot', 'Finished Product Lot',
@@ -163,12 +167,6 @@ class QualityCheck(models.Model):
                     value['component_id'] = point.component_id.id
         return super(QualityCheck, self).create(values)
 
-    @api.depends('component_id', 'workorder_id')
-    def _compute_component_uom(self):
-        for check in self:
-            move = check.workorder_id.move_raw_ids.filtered(lambda move: move.product_id == check.component_id)
-            check.component_uom_id = move.product_uom or check.workorder_line_id.product_uom_id
-
     def _compute_title(self):
         for check in self:
             if check.point_id:
@@ -186,13 +184,13 @@ class QualityCheck(models.Model):
             else:
                 check.result = check._get_check_result()
 
-    @api.depends('workorder_line_id.move_id')
+    @api.depends('move_id')
     def _compute_additional(self):
         """ The stock_move is linked to additional workorder line only at
         record_production. So line without move during production are additionnal
         ones. """
         for check in self:
-            check.additional = not check.workorder_line_id.move_id
+            check.additional = not check.move_id
 
     def _get_check_result(self):
         if self.test_type in ('register_consumed_materials', 'register_byproducts') and self.lot_id:

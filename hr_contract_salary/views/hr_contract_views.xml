@@ -38,14 +38,14 @@
             <field name="structure_type_id" position="before">
                 <field name="contract_type"/>
             </field>
-            <group name="duration_group" position="after">
+             <xpath expr="//group[@name='notes_group']" position="before">
                 <group name="contract_template">
                     <field name="default_contract_id"/>
                     <field name="sign_template_id" options="{'no_create': True}" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s"/>
                     <field name="contract_update_template_id" options="{'no_create': True}"/>
                     <field name="signatures_count" invisible="1"/>
                 </group>
-            </group>
+             </xpath>
             <page name="information" position="after">
                 <page string="Personal Documents" name="personal_documents" groups="hr.group_hr_manager" attrs="{'invisible': [('employee_id', '=', False)]}">
                     <group>

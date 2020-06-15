@@ -166,6 +166,18 @@
             </field>
         </record>
 
+        <record id="timesheet_view_grid_by_project_no_section" model="ir.ui.view">
+            <field name="name">account.analytic.line.grid.project.no.section</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="timesheet_view_grid_by_project"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="replace">
+                    <field name="project_id" type="row"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="timesheet_view_grid_by_employee" model="ir.ui.view">
             <field name="name">account.analytic.line.grid.employee</field>
             <field name="model">account.analytic.line</field>
@@ -447,6 +459,46 @@
             <field name="view_id" ref="timesheet_grid.timesheet_view_form"/>
         </record>
 
+        <record id="hr_timesheet.timesheet_action_from_employee" model="ir.actions.act_window">
+            <field name="domain">[('project_id', '!=', False), ('employee_id', '=', active_id)]</field>
+            <field name="context">{
+                'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'),
+                'group_expand': True,
+                'default_employee_id': active_id,
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Record a new activity
+                </p><p>
+                    You can register and track your workings hours by project every
+                    day. Every time spent on a project will become a cost and can be re-invoiced to
+                    customers if required.
+                </p>
+                <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
+                <div>
+                    <a href="http://www.odoo.com/page/timesheet?platform=chrome" target="_blank">
+                        <img alt="Google Chrome Store" class="img img-fluid h-100" src="project/static/src/img/chrome_store.png"/>
+                    </a>
+                    <a href="http://www.odoo.com/page/timesheet?platform=ios" target="_blank">
+                        <img alt="Apple App Store" class="img img-fluid h-100" src="project/static/src/img/app_store.png"/>
+                    </a>
+                    <a href="http://www.odoo.com/page/timesheet?platform=android" target="_blank">
+                        <img alt="Google Play Store" class="img img-fluid h-100" src="project/static/src/img/play_store.png"/>
+                    </a>
+                </div>
+            </field>
+        </record>
+
+        <record id="timesheet_action_view_form_employee_grid" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">grid</field>
+            <field name="view_id" ref="timesheet_grid.timesheet_view_grid_by_project_no_section"/>
+            <field name="act_window_id" ref="hr_timesheet.timesheet_action_from_employee"/>
+        </record>
+
+        <record id="hr_timesheet.timesheet_action_view_from_employee_form" model="ir.actions.act_window.view">
+            <field name="view_id" ref="timesheet_grid.timesheet_view_form"/>
+        </record>
 
         <record id="action_timesheet_previous_week" model="ir.actions.act_window">
             <field name="name">Timesheets from Last Week to Validate</field>

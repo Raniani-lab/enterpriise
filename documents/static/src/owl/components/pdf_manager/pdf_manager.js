@@ -160,8 +160,12 @@ class PdfManager extends owl.Component {
      * @param {number} [ruleId]
      */
     async _applyChanges(ruleId) {
-        const pageIds = this.ignoredPageIds;
         const processedPageIds = this.activePageIds;
+        if (!processedPageIds.length) {
+            this.trigger('pdf-manager-error', { message: _t("There is no selected document") });
+            return;
+        }
+        const pageIds = this.ignoredPageIds;
 
         for (const pageId of pageIds) {
             this._removePage(pageId);
@@ -180,7 +184,7 @@ class PdfManager extends owl.Component {
                 this._createGroup({ name: _t("Remaining Pages"), pageIds, isSelected: true });
             }
         } catch (error) {
-            this.trigger('pdf-upload-error', { error });
+            this.trigger('pdf-manager-error', { message: error.message });
             if (pageIds.length) {
                 this._createGroup({ name: _t("Remaining Pages"), pageIds: pageIds, isSelected: true });
             }

@@ -16,7 +16,7 @@ const DocumentsDocumentViewer = DocumentViewer.extend(WidgetAdapterMixin, {
     }),
     custom_events: Object.assign({}, DocumentViewer.prototype.custom_events, {
         process_documents: '_onProcessDocuments',
-        pdf_upload_error: '_onPdfUploadError',
+        pdf_manager_error: '_onPdfManagerError', // triggered by pdf-manager-error from the owl component
     }),
 
     /**
@@ -120,7 +120,7 @@ const DocumentsDocumentViewer = DocumentViewer.extend(WidgetAdapterMixin, {
      * @private
      * @param {OdooEvent} ev
      */
-    _onPdfUploadError(ev) {
+    _onPdfManagerError(ev) {
         ev.stopPropagation();
         const { message } = ev.data;
         this.do_notify(_t("Error"), message || '');

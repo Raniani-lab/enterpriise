@@ -328,8 +328,8 @@ class generic_tax_report(models.AbstractModel):
         tables, where_clause, where_params = self._query_get(options)
         sql = """SELECT account_tax_report_line_tags_rel.account_tax_report_line_id,
                         SUM(coalesce(account_move_line.balance, 0) * CASE WHEN acc_tag.tax_negate THEN -1 ELSE 1 END
-                                                 * CASE WHEN COALESCE(caba_origin_journal.type, account_journal.type) = 'sale' THEN -1 ELSE 1 END
-                                                 * CASE WHEN COALESCE(caba_origin_move.move_type, account_move.move_type) in ('in_refund', 'out_refund') THEN -1 ELSE 1 END)
+                                                 * CASE WHEN account_move.tax_cash_basis_rec_id IS NULL AND account_journal.type = 'sale' THEN -1 ELSE 1 END
+                                                 * CASE WHEN account_move.tax_cash_basis_rec_id IS NULL AND account_move.move_type in ('in_refund', 'out_refund') THEN -1 ELSE 1 END)
                         AS balance
                  FROM """ + tables + """
                  JOIN account_move
@@ -344,19 +344,10 @@ class generic_tax_report(models.AbstractModel):
                  ON acc_tag.id = account_tax_report_line_tags_rel.account_account_tag_id
                  JOIN account_tax_report_line report_line
                  ON account_tax_report_line_tags_rel.account_tax_report_line_id = report_line.id
-                 LEFT JOIN account_partial_reconcile caba_partial_rec
-                 ON caba_partial_rec.id = account_move.tax_cash_basis_rec_id
-                 LEFT JOIN account_move_line caba_origin_aml
-                 ON caba_origin_aml.id != account_move_line.id and caba_origin_aml.id IN (caba_partial_rec.credit_move_id, caba_partial_rec.debit_move_id)
-                 LEFT JOIN account_journal caba_origin_journal
-                 ON caba_origin_journal.id = caba_origin_aml.journal_id
-                 LEFT JOIN account_move caba_origin_move
-                 ON caba_origin_move.id = caba_origin_aml.move_id
                  WHERE """ + where_clause + """
                  AND report_line.report_id = %s
                  AND account_move_line.tax_exigible
                  AND account_journal.id = account_move_line.journal_id
-                 AND (caba_origin_journal.type IS NULL OR caba_origin_journal.type IN ('sale', 'purchase'))
                  GROUP BY account_tax_report_line_tags_rel.account_tax_report_line_id
         """
 

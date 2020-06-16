@@ -2883,33 +2883,12 @@ class TestAccountReports(TestAccountReportsCommon):
             ],
         )
 
-    def test_tax_report_grid_cash_basis(self):
-        """ Cash basis moves create for taxes based on payments are handled differently
-        by the report; we want to ensure their sign is managed properly.
+    def _create_caba_taxes_for_report_lines(self, report_lines_dict, company):
+        """ report_lines_dict is a dictionnary mapping tax_type_use values to
+        tax report lines.
         """
-        test_country = self.env['res.country'].create({
-            'name': "Side 3",
-            'code': 'ZE',
-        })
-
-        company = self.env.user.company_id
-        company.country_id = test_country
-        partner = self.env['res.partner'].create({'name': 'Char Aznable'})
-
-        # We create some report lines
-        tax_report = self.env['account.tax.report'].create({
-            'name': 'Test',
-            'country_id': test_country.id,
-        })
-
-        report_lines = {
-            'sale': self._create_tax_report_line('Sale', tax_report, sequence=1, tag_name='sale'),
-            'purchase': self._create_tax_report_line('Purchase', tax_report, sequence=2, tag_name='purchase'),
-        }
-
-        # We create a sale and a purchase tax, linked to our report lines' tags
-        today = fields.Date.today()
-        for tax_type, report_line in report_lines.items():
+        rslt = self.env['account.tax']
+        for tax_type, report_line in report_lines_dict.items():
             tax_template = self.env['account.tax.template'].create({
                 'name': 'Impôt sur tout ce qui bouge',
                 'amount': '20',
@@ -2956,7 +2935,6 @@ class TestAccountReports(TestAccountReportsCommon):
                 ],
             })
 
-
             # The template needs an xmlid in order so that we can call _generate_tax
             self.env['ir.model.data'].create({
                 'name': 'account_reports.test_tax_report_tax_' + tax_type,
@@ -2965,21 +2943,53 @@ class TestAccountReports(TestAccountReportsCommon):
                 'model': 'account.tax.template',
             })
             tax_id = tax_template._generate_tax(self.env.user.company_id)['tax_template_to_tax'][tax_template.id]
-            tax = self.env['account.tax'].browse(tax_id)
+            rslt += self.env['account.tax'].browse(tax_id)
 
-            # Create invoice and refund using the tax we just made
-            invoice_types = {
-                'sale': ('out_invoice', 'out_refund'),
-                'purchase': ('in_invoice', 'in_refund')
-            }
+        return rslt
 
-            account_types = {
-                'sale': self.env.ref('account.data_account_type_revenue').id,
-                'purchase': self.env.ref('account.data_account_type_expenses').id,
-            }
+    def test_tax_report_grid_cash_basis(self):
+        """ Cash basis moves create for taxes based on payments are handled differently
+        by the report; we want to ensure their sign is managed properly.
+        """
+        today = fields.Date.today()
+        test_country = self.env['res.country'].create({
+            'name': "Side 3",
+            'code': 'ZE',
+        })
 
-            account = self.env['account.account'].search([('company_id', '=', company.id), ('user_type_id', '=', account_types[tax_type])], limit=1)
-            for inv_type in invoice_types[tax_type]:
+        company = self.env.user.company_id
+        company.country_id = test_country
+        partner = self.env['res.partner'].create({'name': 'Char Aznable'})
+
+        # Create a tax report
+        tax_report = self.env['account.tax.report'].create({
+            'name': 'Test',
+            'country_id': test_country.id,
+        })
+
+        # We create some report lines
+        report_lines_dict = {
+            'sale': self._create_tax_report_line('Sale', tax_report, sequence=1, tag_name='sale'),
+            'purchase': self._create_tax_report_line('Purchase', tax_report, sequence=2, tag_name='purchase'),
+        }
+
+        # We create a sale and a purchase tax, linked to our report lines' tags
+        taxes = self._create_caba_taxes_for_report_lines(report_lines_dict, company)
+
+
+        # Create invoice and refund using the tax we just made
+        invoice_types = {
+            'sale': ('out_invoice', 'out_refund'),
+            'purchase': ('in_invoice', 'in_refund')
+        }
+
+        account_types = {
+            'sale': self.env.ref('account.data_account_type_revenue').id,
+            'purchase': self.env.ref('account.data_account_type_expenses').id,
+        }
+        for tax in taxes:
+            account = self.env['account.account'].search([('company_id', '=', company.id), ('user_type_id', '=', account_types[tax.type_tax_use])], limit=1)
+            for inv_type in invoice_types[tax.type_tax_use]:
                 invoice = self.env['account.move'].create({
                     'move_type': inv_type,
                     'partner_id': partner.id,
@@ -2998,6 +3008,186 @@ class TestAccountReports(TestAccountReportsCommon):
                 self.env['account.payment.register'].with_context(active_ids=invoice.ids).create({
                     'payment_date': today,
                 }).create_payments()
+
+        # Generate the report and check the results
+        report = self.env['account.generic.tax.report']
+        report_opt = report._get_options({'date': {'period_type': 'custom', 'filter': 'custom', 'date_to': today, 'mode': 'range', 'date_from': today}})
+        new_context = report._set_context(report_opt)
+
+        # We check the taxes on invoice have impacted the report properly
+        inv_report_lines = report.with_context(new_context)._get_lines(report_opt)
+
+        # 100 (base, invoice) - 100 (base, refund) + 20 (tax, invoice) - 5 (25% tax, refund) = 15
+        self.assertLinesValues(
+            inv_report_lines,
+            #   Name                      Balance
+            [   0,                        1],
+            [
+                ('Sale',                     15),
+                ('Purchase',                 15),
+            ],
+        )
+
+    def test_tax_report_grid_cash_basis_refund(self):
+        """ Cash basis moves create for taxes based on payments are handled differently
+        by the report; we want to ensure their sign is managed properly. This
+        test runs the case where an invoice is reconciled with a refund (created
+        separetely, so not cancelling it).
+        """
+        today = fields.Date.today()
+        test_country = self.env['res.country'].create({
+            'name': "Side 3",
+            'code': 'ZE',
+        })
+
+        company = self.env.user.company_id
+        company.country_id = test_country
+        partner = self.env['res.partner'].create({'name': 'Char Aznable'})
+
+        # Create a tax report
+        tax_report = self.env['account.tax.report'].create({
+            'name': 'Test',
+            'country_id': test_country.id,
+        })
+
+        # We create some report lines
+        report_lines_dict = {
+            'sale': self._create_tax_report_line('Sale', tax_report, sequence=1, tag_name='sale'),
+            'purchase': self._create_tax_report_line('Purchase', tax_report, sequence=2, tag_name='purchase'),
+        }
+
+        # We create a sale and a purchase tax, linked to our report lines' tags
+        taxes = self._create_caba_taxes_for_report_lines(report_lines_dict, company)
+
+
+        # Create invoice and refund using the tax we just made, and reconcile them together
+        invoice_types = {
+            'sale': ('out_invoice', 'out_refund'),
+            'purchase': ('in_invoice', 'in_refund')
+        }
+
+        account_types = {
+            'sale': self.env.ref('account.data_account_type_revenue').id,
+            'purchase': self.env.ref('account.data_account_type_expenses').id,
+        }
+
+        for tax in taxes:
+            invoices = self.env['account.move']
+            account = self.env['account.account'].search([('company_id', '=', company.id), ('user_type_id', '=', account_types[tax.type_tax_use])], limit=1)
+            for inv_type in invoice_types[tax.type_tax_use]:
+                invoice = self.env['account.move'].create({
+                    'move_type': inv_type,
+                    'partner_id': partner.id,
+                    'date': today,
+                    'invoice_line_ids': [(0, 0, {
+                        'name': 'test',
+                        'quantity': 1,
+                        'account_id': account.id,
+                        'price_unit': 100,
+                        'tax_ids': [(6, 0, tax.ids)],
+                    })],
+                })
+                invoice.post()
+                invoices += invoice
+
+            invoices.mapped('line_ids').filtered(lambda x: x.account_internal_type in ('receivable', 'payable')).reconcile()
+
+        # Generate the report and check the results
+        report = self.env['account.generic.tax.report']
+        report_opt = report._get_options({'date': {'period_type': 'custom', 'filter': 'custom', 'date_to': today, 'mode': 'range', 'date_from': today}})
+        new_context = report._set_context(report_opt)
+
+        # We check the taxes on invoice have impacted the report properly
+        inv_report_lines = report.with_context(new_context)._get_lines(report_opt)
+
+        # 100 (base, invoice) - 100 (base, refund) + 20 (tax, invoice) - 5 (25% tax, refund) = 15
+        self.assertLinesValues(
+            inv_report_lines,
+            #   Name                      Balance
+            [   0,                        1],
+            [
+                ('Sale',                     15),
+                ('Purchase',                 15),
+            ],
+        )
+
+    def test_tax_report_grid_cash_basis_misc_pmt(self):
+        """ Cash basis moves create for taxes based on payments are handled differently
+        by the report; we want to ensure their sign is managed properly. This
+        test runs the case where the invoice is paid with a misc operation instead
+        of a payment.
+        """
+        today = fields.Date.today()
+        test_country = self.env['res.country'].create({
+            'name': "Side 3",
+            'code': 'ZE',
+        })
+
+        company = self.env.user.company_id
+        company.country_id = test_country
+        partner = self.env['res.partner'].create({'name': 'Char Aznable'})
+
+        # Create a tax report
+        tax_report = self.env['account.tax.report'].create({
+            'name': 'Test',
+            'country_id': test_country.id,
+        })
+
+        # We create some report lines
+        report_lines_dict = {
+            'sale': self._create_tax_report_line('Sale', tax_report, sequence=1, tag_name='sale'),
+            'purchase': self._create_tax_report_line('Purchase', tax_report, sequence=2, tag_name='purchase'),
+        }
+
+        # We create a sale and a purchase tax, linked to our report lines' tags
+        taxes = self._create_caba_taxes_for_report_lines(report_lines_dict, company)
+
+
+        # Create invoice and refund using the tax we just made
+        invoice_types = {
+            'sale': ('out_invoice', 'out_refund'),
+            'purchase': ('in_invoice', 'in_refund')
+        }
+
+        account_types = {
+            'sale': self.env.ref('account.data_account_type_revenue').id,
+            'purchase': self.env.ref('account.data_account_type_expenses').id,
+        }
+        for tax in taxes:
+            account = self.env['account.account'].search([('company_id', '=', company.id), ('user_type_id', '=', account_types[tax.type_tax_use])], limit=1)
+            for inv_type in invoice_types[tax.type_tax_use]:
+                invoice = self.env['account.move'].create({
+                    'move_type': inv_type,
+                    'partner_id': partner.id,
+                    'date': today,
+                    'invoice_line_ids': [(0, 0, {
+                        'name': 'test',
+                        'quantity': 1,
+                        'account_id': account.id,
+                        'price_unit': 100,
+                        'tax_ids': [(6, 0, tax.ids)],
+                    })],
+                })
+                invoice.post()
+
+                # Pay the invoice with a misc operation simulating a payment, so that the cash basis entries are created
+                invoice_reconcilable_line = invoice.line_ids.filtered(lambda x: x.account_internal_type in ('payable', 'receivable'))
+                pmt_move = self.env['account.move'].create({
+                    'move_type': 'entry',
+                    'date': today,
+                    'line_ids': [(0, 0, {
+                                    'account_id': invoice_reconcilable_line.account_id.id,
+                                    'debit': invoice_reconcilable_line.credit,
+                                    'credit': invoice_reconcilable_line.debit,
+                                }),
+                                (0, 0, {
+                                    'account_id': account.id,
+                                    'credit': invoice_reconcilable_line.credit,
+                                    'debit': invoice_reconcilable_line.debit,
+                                })],
+                })
+                payment_reconcilable_line = pmt_move.line_ids.filtered(lambda x: x.account_internal_type in ('payable', 'receivable'))
+                (invoice_reconcilable_line + payment_reconcilable_line).reconcile()
 
         # Generate the report and check the results
         report = self.env['account.generic.tax.report']

@@ -15,12 +15,13 @@
     'website': 'https://www.odoo.com/page/documents',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail', 'portal', 'web', 'attachment_indexation'],
+    'depends': ['base', 'mail', 'portal', 'web', 'attachment_indexation', 'digest'],
 
     # always loaded
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/digest_data.xml',
         'data/documents_data.xml',
         'data/workflow_data.xml',
         'data/files_data.xml',

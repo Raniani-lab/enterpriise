@@ -77,6 +77,7 @@
         </field>
     </record>
 
+    <!--  overridden gantt view for project forecast with custom JS class  -->
     <record id="planning_view_gantt" model="ir.ui.view">
         <field name="name">planning.slot.gantt</field>
         <field name="model">planning.slot</field>
@@ -85,6 +86,20 @@
         <field name="arch" type="xml">
             <xpath expr="/gantt" position="attributes">
                 <attribute name="js_class">forecast_gantt</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- When the setting group_project_forecast_display_allocate_time is enabled, the consolidation are displayed-->
+    <record id="planning_view_gantt_inherit" model="ir.ui.view">
+        <field name="name">planning.slot.gantt.inherit</field>
+        <field name="model">planning.slot</field>
+        <field name="groups_id" eval="[(4, ref('project_forecast.group_project_forecast_display_allocate_time'))]"/>
+        <field name="inherit_id" ref="planning_view_gantt"/>
+        <field name="arch" type="xml">
+            <xpath expr="/gantt" position="attributes">
+                <attribute name="consolidation">allocated_percentage</attribute>
+                <attribute name="consolidation_max">{'employee_id': 100}</attribute>
             </xpath>
         </field>
     </record>
@@ -100,8 +115,22 @@
         <record id="planning_action_schedule_by_project_view_gantt" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">gantt</field>
-            <field name="view_id" ref="project_forecast.planning_view_gantt"/>
+            <field name="view_id" ref="planning_view_gantt"/>
             <field name="act_window_id" ref="planning_action_schedule_by_project"/>
+        </record>
+
+        <record id="project_forecast_action_schedule_by_employee" model="ir.actions.act_window">
+            <field name="name">Schedule by Employee</field>
+            <field name="res_model">planning.slot</field>
+            <field name="view_mode">gantt,calendar,tree,form,kanban</field>
+            <field name="context">{'search_default_group_by_employee': 1, 'planning_groupby_employee': True}</field>
+        </record>
+
+        <record id="project_forecast_action_schedule_by_employee_view_gantt" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">gantt</field>
+            <field name="view_id" ref="planning_view_gantt_inherit"/>
+            <field name="act_window_id" ref="project_forecast_action_schedule_by_employee"/>
         </record>
 
     <!-- menus -->
@@ -112,4 +141,12 @@
         parent="planning.planning_menu_schedule"
         action="planning_action_schedule_by_project"/>
 
+    <!--  override of the schedule by employee menu entry to take into account the option
+          project_forecast_display_allocated_time  -->
+        <menuitem
+            id="planning.planning_menu_schedule_by_employee"
+            name="By Employee"
+            sequence="10"
+            parent="planning.planning_menu_schedule"
+            action="project_forecast_action_schedule_by_employee"/>
 </odoo>

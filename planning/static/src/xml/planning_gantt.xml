@@ -35,11 +35,4 @@
         </button>
     </div>
 
-    <t t-name="PlanningGanttView.Row" t-extend="GanttView.Row">
-        <t t-jquery=".o_gantt_row_title" t-operation="prepend">
-            <t t-if="widget.groupedByField == 'employee_id'">
-                <img t-att-src="'/web/image?model=hr.employee&amp;field=image_128&amp;id='+widget.resId+'&amp;unique='" style="height: 30px; width: 30px;" class="o_object_fit_cover rounded-circle"/>
-            </t>
-        </t>
-    </t>
 </templates>

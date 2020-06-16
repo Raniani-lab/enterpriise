@@ -272,19 +272,6 @@
         </field>
     </record>
 
-    <record id="planning_view_gantt_inherit" model="ir.ui.view">
-        <field name="name">planning.slot.gantt.inherit</field>
-        <field name="model">planning.slot</field>
-        <field name="inherit_id" ref="planning.planning_view_gantt"/>
-        <field name="arch" type="xml">
-            <xpath expr="//li[@id='allocated_hours']" position="after">
-                <t t-if="allocated_percentage != 100">
-                    <li><strong>Allocated Time (%): </strong> <t t-esc="Math.round(allocated_percentage)"/></li>
-                </t>
-            </xpath>
-        </field>
-    </record>
-
     <record id="planning_view_pivot" model="ir.ui.view">
         <field name="name">planning.slot.pivot</field>
         <field name="model">planning.slot</field>

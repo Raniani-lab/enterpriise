@@ -1,7 +1,6 @@
 odoo.define('forecast.ForecastGanttView', function (require) {
     'use strict';
 
-    var GanttView = require('web_gantt.GanttView');
     var PlanningGanttModel = require('planning.PlanningGanttModel');
     var PlanningGanttView = require('planning.PlanningGanttView');
     var view_registry = require('web.view_registry');

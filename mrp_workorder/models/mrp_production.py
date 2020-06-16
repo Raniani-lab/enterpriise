@@ -25,3 +25,10 @@ class MrpProduction(models.Model):
                         continue
                     check.write(workorder._defaults_from_move(check.move_id))
         return res
+
+    def _generate_backorder_productions(self, close_mo=True):
+        backorders = super()._generate_backorder_productions(close_mo=close_mo)
+        for wo in backorders.workorder_ids:
+            if wo.component_id:
+                wo._update_component_quantity()
+        return backorders

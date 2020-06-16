@@ -27,7 +27,10 @@ class crm_team(models.Model):
     def _get_default_team_id(self, user_id=None, domain=None):
         if user_id is None:
             user_id = self.env.user.id
-        team_id = self.sudo().search([('team_user_ids.user_id', '=', user_id)], limit=1)
+        team_id = self.sudo().search([
+            ('team_user_ids.user_id', '=', user_id),
+            '|', ('company_id', '=', False), ('company_id', '=', self.env.company.id)
+        ], limit=1)
         if not team_id:
             team_id = super(crm_team, self)._get_default_team_id(user_id=user_id, domain=domain)
         return team_id

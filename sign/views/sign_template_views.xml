@@ -17,7 +17,7 @@
                 <field name="in_progress_count"/>
                 <templates>
                     <div t-name="kanban-box" t-attf-class="o_sign_sticky_bottom oe_kanban_global_click {{kanban_color(record.color.raw_value)}}">
-                        <div class="oe_kanban_details">
+                        <div class="oe_kanban_main">
                             <div class="o_kanban_record_top">
                                 <div class="o_kanban_record_headings">
                                     <div class="o_kanban_record_title">
@@ -33,19 +33,20 @@
                                     </div>
                                 </div>
                                 <div class="o_dropdown_kanban dropdown">
-                                    <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <a role="button" class="o_kanban_manage_toggle_button o_left o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                         <span class="fa fa-ellipsis-v"/>
                                     </a>
-                                    <div class="dropdown-menu" role="menu">
+                                    <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
                                         <t t-if="widget.editable" groups="base.group_no_one"><a role="menuitem" type="edit" class="dropdown-item">Properties</a></t>
                                         <a role="menuitem" type="object" name="go_to_custom_template" class="dropdown-item" context="{'sign_edit_call': 'sign_template_edit'}">Modify Template</a>
-                                         <a role="menuitem" type="object" name="open_requests" class="dropdown-item">Signed Documents</a>
+                                        <a role="menuitem" type="object" name="open_requests" class="dropdown-item">Signed Documents</a>
                                         <a role="menuitem" type="object" name="toggle_active" class="dropdown-item">
                                             <t t-if="!record.active.raw_value">Restore</t>
                                             <t t-if="record.active.raw_value">Archive</t>
                                         </a>
-                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
-                                    <ul role="menu" class="oe_kanban_colorpicker" data-field="color"/>
+                                        <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+
+                                        <ul role="menu" class="oe_kanban_colorpicker menu-item" data-field="color"/>
                                     </div>
                                 </div>
                             </div>

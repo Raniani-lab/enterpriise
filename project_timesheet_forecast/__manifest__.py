@@ -21,7 +21,9 @@ on old plannings.
         'security/ir.model.access.csv',
         'data/project_timesheet_forecast_data.xml',
         'views/project_forecast_views.xml',
+        'views/assets.xml',
     ],
+    'qweb': ['static/src/xml/forecast_gantt.xml'],
     'auto_install': True,
     'license': 'OEEL-1',
 }

@@ -83,7 +83,6 @@
         </div>
         <div class="o_gantt_slots_container col">
             <div class="row no-gutters">
-
                 <div t-foreach="widget.slots" t-as="slot"
                     t-attf-class="col o_gantt_cell #{slot.isToday ? 'o_gantt_today' : ''} #{slot.hasButtons ? 'o_gantt_hoverable' : ''}"
                     t-att-data-date="slot.start.format('YYYY-MM-DD HH:mm:ss')"
@@ -130,7 +129,7 @@
                                 t-att-title="pill.display_name"
                                 >
                                 <!-- README: be careful when modifying the DOM inside the pill ; @_onMouseMove is strongly dependant of it -->
-                                <p class="text-truncate position-relative mb-0" t-esc="pill.display_name"/>
+                                <p class="text-truncate position-relative mb-0 o_gantt_pill_title" t-esc="pill.display_name"/>
                             </div>
                         </div>
                     </t>

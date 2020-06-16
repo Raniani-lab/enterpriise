@@ -6,22 +6,21 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
     const { fetchCache, formatGroupBy, formatHeader } = require("documents_spreadsheet.pivot_utils");
 
     const _t = core._t;
-    const contextMenuRegistry = spreadsheet.registries.contextMenuRegistry;
+    const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
+    const createFullMenuItem = spreadsheet.helpers.createFullMenuItem;
 
     //--------------------------------------------------------------------------
     // Spreadsheet context menu items
     //--------------------------------------------------------------------------
 
-    contextMenuRegistry
+    cellMenuRegistry
         .add("reinsert_pivot", {
-            type: "root",
-            name: "reinsert_pivot",
-            description: _t("Re-insert pivot"),
-            subMenus: (env) => Object.values(env.getters.getPivots())
-                .map((pivot) => ({
-                    type: "action",
-                    name: `reinsert_pivot_${pivot.id}`,
-                    description: `${pivot.cache && pivot.cache.modelLabel || pivot.model} (#${pivot.id})`,
+            name: _t("Re-insert pivot"),
+            sequence: 102,
+            children: (env) => Object.values(env.getters.getPivots())
+                .map((pivot, index) => (createFullMenuItem(`reinsert_pivot_${pivot.id}`, {
+                    name: `${pivot.cache && pivot.cache.modelLabel || pivot.model} (#${pivot.id})`,
+                    sequence: index,
                     action: async (env) => {
                         pivot.lastUpdate = undefined;
                         await fetchCache(pivot, env.services.rpc);
@@ -31,43 +30,39 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
                             anchor: [zone.left, zone.top],
                         });
                     }
-                })
+                })),
             ),
-            isVisible: (type, env) => type === "CELL" && env.getters.getPivots().length,
+            isVisible: (env) => env.getters.getPivots().length,
         })
         .add("insert_pivot_section", {
-            type: "root",
-            name: "insert_pivot_section",
-            description: _t("Insert pivot section"),
-            subMenus: (env) => Object.values(env.getters.getPivots())
-                .map((pivot) => ({
-                    type: "root",
-                    name: `insert_pivot_section_${pivot.id}`,
-                    description: `${pivot.cache && pivot.cache.modelLabel || pivot.model} (#${pivot.id})`,
-                    subMenus: () => [pivot.colGroupBys[0], pivot.rowGroupBys[0]].filter(x => x !== undefined)
-                        .map((field) => ({
-                            type: "root",
-                            name: `insert_pivot_section_${pivot.id}_${field}`,
-                            description: `${formatGroupBy(pivot, field)}`,
-                            subMenus: () => Object.keys(pivot.cache.groupBys[field])
-                                .map((value) => ({
-                                    type: "action",
-                                    name: `insert_pivot_section_${pivot.id}_${field}_${value}`,
-                                    description: `${formatHeader(pivot, field, value)}`,
+            name: _t("Insert pivot section"),
+            sequence: 103,
+            children: (env) => Object.values(env.getters.getPivots())
+                .map((pivot, index) => (createFullMenuItem(`insert_pivot_section_${pivot.id}`, {
+                    name: `${pivot.cache && pivot.cache.modelLabel || pivot.model} (#${pivot.id})`,
+                    sequence: index,
+                    children: () => [pivot.colGroupBys[0], pivot.rowGroupBys[0]].filter(x => x !== undefined)
+                        .map((field, index) => (createFullMenuItem(`insert_pivot_section_${pivot.id}_${field}`, {
+                            name: `${formatGroupBy(pivot, field)}`,
+                            sequence: index,
+                            children: () => Object.keys(pivot.cache.groupBys[field])
+                                .map((value, index) => (createFullMenuItem(`insert_pivot_section_${pivot.id}_${field}_${value}`, {
+                                    name: `${formatHeader(pivot, field, value)}`,
+                                    sequence: index,
                                     action: (env) => {
                                         const [col, row] = env.getters.getPosition();
                                         env.dispatch("INSERT_HEADER", { id: pivot.id, col, row, field, value });
                                     },
-                                })),
-                            })),
-                })
+                                }))),
+                            }))),
+                })),
             ),
-            isVisible: (type, env) => type === "CELL" && env.getters.getPivots().length,
+            isVisible: (env) => env.getters.getPivots().length,
+            separator: true,
         })
         .add("pivot_properties", {
-            type: "action",
-            name: "pivot_properties",
-            description: _t("Pivot properties"),
+            name: _t("Pivot properties"),
+            sequence: 101,
             action(env) {
                 env.dispatch("SELECT_PIVOT", { cell: env.getters.getActiveCell() });
                 const pivot = env.getters.getSelectedPivot();
@@ -75,10 +70,9 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
                     env.openSidePanel("PIVOT_PROPERTIES_PANEL", { pivot });
                 }
             },
-            isEnabled: () => true,
-            isVisible: (type, env) => {
+            isVisible: (env) => {
                 const cell = env.getters.getActiveCell();
-                return type === "CELL" && cell && cell.type === "formula" && cell.content.match(/=\s*PIVOT/);
-            }
+                return cell && cell.type === "formula" && cell.content.match(/=\s*PIVOT/);
+            },
         });
 });

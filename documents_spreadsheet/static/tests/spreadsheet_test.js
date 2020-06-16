@@ -7,7 +7,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
 
     const { createActionManager, fields, nextTick, dom, createView } = testUtils;
     const pluginRegistry = o_spreadsheet.registries.pluginRegistry;
-    const contextMenuRegistry = o_spreadsheet.registries.contextMenuRegistry;
+    const cellMenuRegistry = o_spreadsheet.registries.cellMenuRegistry;
 
     function mockRPCFn (route, args) {
         if (args.method === "search_read" && args.model === "ir.model") {
@@ -334,8 +334,8 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 mockRPC: mockRPCFn,
             });
             model.dispatch("SELECT_CELL", { col: 3, row: 7 });
-            const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
-            const reinsertPivot1 = root.subMenus(env)[0];
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
+            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","110","foo","1")`,
                 "It should contain a pivot formula");
@@ -358,8 +358,8 @@ odoo.define("web.spreadsheet_tests", function (require) {
             });
             model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, activate: true });
             model.dispatch("SELECT_CELL", { col: 0, row: 0 });
-            const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
-            const reinsertPivot1 = root.subMenus(env)[0];
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
+            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(model.getters.getNumberCols(), 5);
             assert.equal(model.getters.getNumberRows(), 5);
@@ -391,8 +391,8 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 display_name: "name",
             }];
             model.dispatch("SELECT_CELL", { col: 3, row: 7 });
-            const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
-            const reinsertPivot1 = root.subMenus(env)[0];
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
+            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","110","foo","1")`,
                 "It should contain a pivot formula");
@@ -416,8 +416,8 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 mockRPC: mockRPCFn,
             });
             model.dispatch("SELECT_CELL", { col: 3, row: 7 });
-            const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
-            const reinsertPivot1 = root.subMenus(env)[0];
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
+            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","110","foo","1")`,
                 "It should contain a pivot formula");
@@ -444,8 +444,8 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 "It should contain a pivot formula");
             model.dispatch("SELECT_CELL", { col: 0, row: 1 }); // A1 and A2 are merged; select A2
             assert.ok(model.getters.isInMerge("A2"));
-            const root = contextMenuRegistry.getAll().find((item) => item.name === "reinsert_pivot");
-            const reinsertPivot1 = root.subMenus(env)[0];
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
+            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(model.getters.getCell(1, 1).content, `=PIVOT.HEADER(\"1\",\"foo\",\"1\",\"measure\",\"probability\")`,
                 "It should contain a pivot formula");
@@ -467,10 +467,10 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 mockRPC: mockRPCFn,
             });
             model.dispatch("SELECT_CELL", { col: 3, row: 7 });
-            const root = contextMenuRegistry.getAll().find((item) => item.name === "insert_pivot_section");
-            const insertPivotSection1 = root.subMenus(env)[0];
-            const insertPivotSection1Foo = insertPivotSection1.subMenus(env)[0];
-            const insertPivotSection1Foo1 = insertPivotSection1Foo.subMenus(env)[0];
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_section");
+            const insertPivotSection1 = cellMenuRegistry.getChildren(root, env)[0];
+            const insertPivotSection1Foo = cellMenuRegistry.getChildren(insertPivotSection1, env)[0];
+            const insertPivotSection1Foo1 = cellMenuRegistry.getChildren(insertPivotSection1Foo, env)[0];
             insertPivotSection1Foo1.action(env);
             assert.equal(model.getters.getCell(3, 7).content, `=PIVOT.HEADER("1","foo","1")`)
             model.dispatch("UNDO");

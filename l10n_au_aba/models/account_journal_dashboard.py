@@ -15,7 +15,7 @@ class AccountJournalDashboard(models.Model):
         ]
         return dict(
             super(AccountJournalDashboard, self).get_journal_dashboard_datas(),
-            num_aba_ct_to_send=len(self.env['account.payment'].search(domain_aba_ct_to_send))
+            num_aba_ct_to_send=self.env['account.payment'].search_count(domain_aba_ct_to_send)
         )
 
     def action_aba_ct_to_send(self):

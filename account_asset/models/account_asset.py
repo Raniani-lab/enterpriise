@@ -110,7 +110,7 @@ class AccountAsset(models.Model):
             if any(account != record.original_move_line_ids[0].account_id for account in record.original_move_line_ids.mapped('account_id')):
                 raise UserError(_("All the lines should be from the same account"))
             record.account_asset_id = record.original_move_line_ids[0].account_id
-            record.display_model_choice = record.state == 'draft' and len(self.env['account.asset'].search([('state', '=', 'model'), ('account_asset_id.user_type_id', '=', record.user_type_id.id)]))
+            record.display_model_choice = record.state == 'draft' and self.env['account.asset'].search_count([('state', '=', 'model'), ('account_asset_id.user_type_id', '=', record.user_type_id.id)])
             record.display_account_asset_id = False
             if not record.journal_id:
                 record.journal_id = misc_journal_id
@@ -189,7 +189,7 @@ class AccountAsset(models.Model):
 
     @api.onchange('account_asset_id')
     def _onchange_account_asset_id(self):
-        self.display_model_choice = self.state == 'draft' and len(self.env['account.asset'].search([('state', '=', 'model'), ('user_type_id', '=', self.user_type_id.id)]))
+        self.display_model_choice = self.state == 'draft' and self.env['account.asset'].search_count([('state', '=', 'model'), ('user_type_id', '=', self.user_type_id.id)])
         if self.asset_type in ('purchase', 'expense'):
             self.account_depreciation_id = self.account_depreciation_id or self.account_asset_id
         else:

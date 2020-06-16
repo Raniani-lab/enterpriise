@@ -13,7 +13,7 @@ class account_journal(models.Model):
         ]
         return dict(
             super(account_journal, self).get_journal_dashboard_datas(),
-            num_sepa_ct_to_send=len(self.env['account.payment'].search(domain_sepa_ct_to_send))
+            num_sepa_ct_to_send=self.env['account.payment'].search_count(domain_sepa_ct_to_send)
         )
 
     def action_sepa_ct_to_send(self):

@@ -752,7 +752,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         return etree.tostring(arch, encoding='unicode', pretty_print=True, method='html')
 
     def _node_to_expr(self, node):
-        if node.get('xpath_info'):
+        if node.get('xpath_info') and not node.get('subview_xpath'):
             # Format of expr is /form/tag1[]/tag2[]/[...]/tag[]
             expr = ''.join(['/%s[%s]' % (parent['tag'], parent['indice']) for parent in node.get('xpath_info')])
         else:

@@ -200,11 +200,14 @@ class Task(models.Model):
         if self.user_has_groups('project.group_project_user'):
             SaleOrder = SaleOrder.sudo()
 
+        domain = ['|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)]
+        team = self.env['crm.team'].sudo()._get_default_team_id(domain=domain)
         sale_order = SaleOrder.create({
             'partner_id': self.partner_id.id,
             'company_id': self.company_id.id,
             'task_id': self.id,
             'analytic_account_id': self.project_id.analytic_account_id.id,
+            'team_id': team.id if team else False,
         })
         sale_order.onchange_partner_id()
 

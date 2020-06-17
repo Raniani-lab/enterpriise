@@ -9,10 +9,11 @@
     """,
     'category': 'Human Resources/Planning',
     'version': '1.0',
-    'depends': ['hr', 'web_gantt'],
+    'depends': ['hr', 'web_gantt', 'digest'],
     'data': [
         'security/planning_security.xml',
         'security/ir.model.access.csv',
+        'data/digest_data.xml',
         'wizard/planning_send_views.xml',
         'wizard/slot_planning_select_send_views.xml',
         'views/assets.xml',

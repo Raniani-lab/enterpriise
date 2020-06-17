@@ -54,7 +54,7 @@ class AccountInvoice(models.Model):
     l10n_co_edi_type = fields.Selection(selection_add=[
         ('3', 'Documento electrónico de transmisión – tipo 03'),
         ('4', 'Factura electrónica de Venta - tipo 04'),
-    ])
+    ], ondelete={'3': 'set default', '4': 'set default'})
 
     @api.depends('invoice_date_due', 'date')
     def _compute_l10n_co_edi_is_direct_payment(self):

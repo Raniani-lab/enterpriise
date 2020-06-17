@@ -738,7 +738,8 @@ class ReportAccountFinancialReport(models.Model):
         for report in self:
             menu = report.generated_menu_id
             if menu:
-                menu.action.unlink()
+                if menu.action:
+                    menu.action.unlink()
                 menu.unlink()
         return super(ReportAccountFinancialReport, self).unlink()
 

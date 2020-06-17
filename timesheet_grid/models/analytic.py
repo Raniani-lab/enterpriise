@@ -55,11 +55,41 @@ class AnalyticLine(models.Model):
         # For the group_expand, we need to have some information :
         #   1) search in domain one rule with one of next conditions :
         #       -   project_id = value
-        #       -   user_id = value
         #       -   employee_id = value
         #   2) search in account.analytic.line if the user timesheeted
-        #       in the past 30 days
+        #      in the past 30 days. We reuse the actual domain and
+        #      modify it to enforce its validity concerning the dates,
+        #      while keeping the restrictions about other fields.
+        #      Example: Filter timesheet from my team this month:
+        #      [['project_id', '!=', False],
+        #       '|',
+        #           ['employee_id.timesheet_manager_id', '=', 2],
+        #           '|',
+        #               ['employee_id.parent_id.user_id', '=', 2],
+        #               '|',
+        #                   ['project_id.user_id', '=', 2],
+        #                   ['user_id', '=', 2]]
+        #       '&',
+        #           ['date', '>=', '2020-06-01'],
+        #           ['date', '<=', '2020-06-30']
+
+        #      Becomes:
+        #      [('project_id', '!=', False),
+        #       ('date', '>=', datetime.date(2020, 5, 9)),
+        #       ('date', '<=', '2020-06-08'),
+        #       ['project_id', '!=', False],
+        #       '|',
+        #           ['employee_id.timesheet_manager_id', '=', 2],
+        #           '|',
+        #              ['employee_id.parent_id.user_id', '=', 2],
+        #              '|',
+        #                  ['project_id.user_id', '=', 2],
+        #                  ['user_id', '=', 2]]
+        #       '&',
+        #           ['date', '>=', '1-1-1970'],
+        #           ['date', '<=', '1-1-2250']
         #   3) retrieve data and create correctly the grid and rows in result
+
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
 
@@ -74,25 +104,26 @@ class AnalyticLine(models.Model):
 
         # check if project_id or employee_id is in domain
         # if not then group_expand return None
-        field = None
+        apply_group_expand = False
+
         for rule in domain:
-            # if in domain, we have project_id = value and user_id = value
-            # then we are in 'My Timesheet' page.
             if len(rule) == 3:
                 name, operator, value = rule
-                if operator in ['=', '!=', 'ilike', 'not ilike']:
-                    if name in ['project_id', 'employee_id', 'task_id']:
-                        field = name
-                        domain_search.append((name, operator, value))
-                    elif name == 'user_id':
-                        domain_search.append((name, operator, value))
+                if name in ['project_id', 'employee_id', 'task_id']:
+                    apply_group_expand = True
+                elif name == 'date':
+                    if operator == '=':
+                        operator = '<='
+                    value = '1-1-2250' if operator in ['<', '<='] else '1-1-1970'
+                domain_search.append([name, operator, value])
                 if name in ['project_id', 'task_id']:
                     if operator in ['=', '!='] and value:
                         domain_project_task[name].append(('id', operator, value))
                     elif operator in ['ilike', 'not ilike']:
                         domain_project_task[name].append(('name', operator, value))
-
-        if not field:
+            else:
+                domain_search.append(rule)
+        if not apply_group_expand:
             return result
 
         # step 2: search timesheets
@@ -283,18 +314,53 @@ class AnalyticLine(models.Model):
             This group expand allow to add some record grouped by project,
             where the current user (= the current employee) has been
             timesheeted in the past 30 days.
+            
+            We keep the actual domain and modify it to enforce its validity
+            concerning the dates, while keeping the restrictions about other
+            fields.
+            Example: Filter timesheet from my team this month:
+            [['project_id', '!=', False],
+             '|',
+                 ['employee_id.timesheet_manager_id', '=', 2],
+                 '|',
+                     ['employee_id.parent_id.user_id', '=', 2],
+                     '|',
+                         ['project_id.user_id', '=', 2],
+                         ['user_id', '=', 2]]
+             '&',
+                 ['date', '>=', '2020-06-01'],
+                 ['date', '<=', '2020-06-30']
+
+            Becomes:
+            [('project_id', '!=', False),
+             ('date', '>=', datetime.date(2020, 5, 9)),
+             ('date', '<=', '2020-06-08'),
+             ['project_id', '!=', False],
+             '|',
+                 ['employee_id.timesheet_manager_id', '=', 2],
+                 '|',
+                    ['employee_id.parent_id.user_id', '=', 2],
+                    '|',
+                        ['project_id.user_id', '=', 2],
+                        ['user_id', '=', 2]]
+             '&',
+                 ['date', '>=', '1-1-1970'],
+                 ['date', '<=', '1-1-2250']
         """
+
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
-
         last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
 
-        # We keep the rules other than date
-        rules = [rule for rule in domain if len(rule) == 3 and rule[0] != 'date']
+        # We force the date rules to be always met
+        for rule in domain:
+            if len(rule) == 3 and rule[0] == 'date':
+                if rule[1] == '=':
+                    rule[1] = '<='
+                rule[2] = '1-1-2250' if rule[1] in ['<', '<='] else '1-1-1970'
 
-        domain_rule = expression.AND([[('date', '>=', last_month), ('date', '<=', grid_anchor)], rules])
-
-        return self.search(domain_rule).project_id
+        domain = expression.AND([[('date', '>=', last_month), ('date', '<=', grid_anchor)], domain])
+        return self.search(domain).project_id
 
     def _group_expand_employee_ids(self, employees, domain, order):
         """ Group expand by employee_ids in grid view
@@ -302,17 +368,52 @@ class AnalyticLine(models.Model):
             This group expand allow to add some record by employee, where
             the employee has been timesheeted in a task of a project in the
             past 30 days.
+
+            Example: Filter timesheet from my team this month:
+            [['project_id', '!=', False],
+             '|',
+                 ['employee_id.timesheet_manager_id', '=', 2],
+                 '|',
+                     ['employee_id.parent_id.user_id', '=', 2],
+                     '|',
+                         ['project_id.user_id', '=', 2],
+                         ['user_id', '=', 2]]
+             '&',
+                 ['date', '>=', '2020-06-01'],
+                 ['date', '<=', '2020-06-30']
+
+            Becomes:
+            [('project_id', '!=', False),
+             ('date', '>=', datetime.date(2020, 5, 9)),
+             ('date', '<=', '2020-06-08'),
+             ['project_id', '!=', False],
+             '|',
+                 ['employee_id.timesheet_manager_id', '=', 2],
+                 '|',
+                    ['employee_id.parent_id.user_id', '=', 2],
+                    '|',
+                        ['project_id.user_id', '=', 2],
+                        ['user_id', '=', 2]]
+             '&',
+                 ['date', '>=', '1-1-1970'],
+                 ['date', '<=', '1-1-2250']
         """
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
-
         last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
+        # We force the date rules to be always met
+        for rule in domain:
+            if len(rule) == 3 and rule[0] == 'date':
+                if rule[1] == '=':
+                    rule[1] = '<='
+                rule[2] = '1-1-2250' if rule[1] in ['<', '<='] else '1-1-1970'
+        domain = expression.AND([
+            [('project_id', '!=', False),
+             ('date', '>=', last_month),
+             ('date', '<=', grid_anchor)
+            ], domain])
 
-        rules = [rule for rule in domain if len(rule) == 3 and rule[0] != 'date']
-
-        domain_rule = expression.AND([[('project_id', '!=', False), ('date', '>=', last_month), ('date', '<=', grid_anchor)], rules])
-
-        return self.search(domain_rule).employee_id
+        return self.search(domain).employee_id
 
     # ----------------------------------------------------
     # Timer Methods

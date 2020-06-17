@@ -46,8 +46,8 @@ var BackArrow = FieldInteger.extend({
             method: 'action_back',
             model: 'mrp.workorder',
             args: [self.recordData.id],
-        }).then(function () {
-            self.trigger_up('history_back');
+        }).then(function (result) {
+            self.do_action(result);
         });
     },
 });

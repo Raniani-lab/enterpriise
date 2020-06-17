@@ -37,13 +37,14 @@ class ResCompany(models.Model):
         ('xe_com', 'xe.com'),
         ('bnr', 'National Bank Of Romania'),
         ('mindicador', 'Chilean mindicador.cl'),
+        ('bcrp', 'Bank of Peru'),
     ], default='ecb', string='Service Provider')
 
     @api.model
     def create(self, vals):
         ''' Change the default provider depending on the company data.'''
         if vals.get('country_id') and 'currency_provider' not in vals:
-            code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc', 'RO': 'bnr', 'CL': 'mindicador'}
+            code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc', 'RO': 'bnr', 'CL': 'mindicador', 'PE': 'bcrp'}
             cc = self.env['res.country'].browse(vals['country_id']).code.upper()
             if cc in code_providers:
                 vals['currency_provider'] = code_providers[cc]
@@ -59,6 +60,7 @@ class ResCompany(models.Model):
             'CA': 'boc',  # Bank of Canada
             'RO': 'bnr',
             'CL': 'mindicador',
+            'PE': 'bcrp',
         }
         for company in all_companies:
             company.currency_provider = currency_providers.get(company.country_id.code, 'ecb')
@@ -363,6 +365,59 @@ class ResCompany(models.Model):
         if rslt and 'RON' in available_currency_names:
             rslt['RON'] = (1.0, rate_date)
         return rslt
+
+    def _parse_bcrp_data(self, available_currencies):
+        """Bank of Peru (bcrp)
+        API Doc: https://estadisticas.bcrp.gob.pe/estadisticas/series/ayuda/api
+            - https://estadisticas.bcrp.gob.pe/estadisticas/series/api/[códigos de series]/[formato de salida]/[periodo inicial]/[periodo final]/[idioma]
+        Source: https://estadisticas.bcrp.gob.pe/estadisticas/series/diarias/tipo-de-cambio
+            PD04640PD	TC Sistema bancario SBS (S/ por US$) - Venta
+            PD04648PD	TC Euro (S/ por Euro) - Venta
+        """
+
+        bcrp_date_format_url = '%Y-%m-%d'
+        bcrp_date_format_res = '%d.%b.%y'
+        result = {}
+        available_currency_names = available_currencies.mapped('name')
+        if 'PEN' not in available_currency_names:
+            return result
+        result['PEN'] = (1.0, fields.Date.context_today(self.with_context(tz='America/Lima')))
+        url_format = "https://estadisticas.bcrp.gob.pe/estadisticas/series/api/%(currency_code)s/json/%(date_start)s/%(date_end)s/ing"
+        foreigns = {
+            # currency code from webservices
+            'USD': 'PD04640PD',
+            'EUR': 'PD04648PD',
+        }
+        date_pe = datetime.datetime.now(timezone('America/Lima')) if not self.currency_next_execution_date else self.currency_next_execution_date
+        # In case the desired date does not have an exchange rate, it means that we must use the previous day until we
+        # find a change. It is left 7 since in tests we have found cases of up to 5 days without update but no more
+        # than that. That is not to say that that cannot change in the future, so we leave a little margin.
+        first_pe_str = (date_pe - datetime.timedelta(days=7)).strftime(bcrp_date_format_url)
+        second_pe_str = date_pe.strftime(bcrp_date_format_url)
+        data = {
+            'date_start': first_pe_str,
+            'date_end': second_pe_str,
+        }
+        for currency_odoo_code, currency_pe_code in foreigns.items():
+            if currency_odoo_code not in available_currency_names:
+                continue
+            data.update({'currency_code': currency_pe_code})
+            url = url_format % data
+            try:
+                res = requests.get(url, timeout=10)
+                res.raise_for_status()
+                series = res.json()
+            except Exception as e:
+                _logger.error(e)
+                continue
+            date_rate_str = series['periods'][-1]['name']
+            rate = 1.0 / float(series['periods'][-1]['values'][0])
+            # This replace is done because the service is returning Set for September instead of Sep the value
+            # commonly accepted for September,
+            normalized_date = date_rate_str.replace('Set', 'Sep')
+            date_rate = datetime.datetime.strptime(normalized_date, bcrp_date_format_res).strftime(DEFAULT_SERVER_DATE_FORMAT)
+            result[currency_odoo_code] = (rate, date_rate)
+        return result
 
     def _parse_mindicador_data(self, available_currencies):
         """Parse function for mindicador.cl provider for Chile

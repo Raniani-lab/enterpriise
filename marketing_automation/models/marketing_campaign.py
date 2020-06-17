@@ -259,13 +259,18 @@ class MarketingCampaign(models.Model):
             to_remove = set(existing_rec_ids) - set(db_rec_ids)
             if campaign.unique_field_id and campaign.unique_field_id.name != 'id':
                 without_duplicates = []
+                existing_records = RecordModel.with_context(prefetch_fields=False).browse(existing_rec_ids).exists()
+                # Split the read in batch of 1000 to avoid the prefetch
+                # crawling the cache for the next 1000 records to fetch
                 unique_field_vals = {rec[campaign.unique_field_id.name]
-                                     for rec in RecordModel.browse(existing_rec_ids).exists()}
-                for rec_id in to_create:
-                    field_val = RecordModel.browse(rec_id)[campaign.unique_field_id.name]
+                                        for index in range(0, len(existing_records), 1000)
+                                        for rec in existing_records[index:index+1000]}
+
+                for rec in RecordModel.with_context(prefetch_fields=False).browse(to_create):
+                    field_val = rec[campaign.unique_field_id.name]
                     # we exclude the empty recordset with the first condition
                     if (not campaign.unique_field_id.relation or field_val) and field_val not in unique_field_vals:
-                        without_duplicates.append(rec_id)
+                        without_duplicates.append(rec.id)
                         unique_field_vals.add(field_val)
                 to_create = without_duplicates
 
@@ -282,10 +287,13 @@ class MarketingCampaign(models.Model):
                 participants_to_unlink = participants.search([
                     ('res_id', 'in', list(to_remove)),
                     ('campaign_id', '=', campaign.id),
+                    ('state', '!=', 'unlinked'),
                 ])
-                for index, participant in enumerate(participants_to_unlink, start=1):
-                    participant.action_set_unlink()
-                    if not index % BATCH_SIZE and auto_commit:
+                for index in range(0, len(participants_to_unlink), 1000):
+                    participants_to_unlink[index:index+1000].action_set_unlink()
+                    # Commit only every 100 operation to avoid committing to often
+                    # this mean every 10k record. It should be ok, it takes 1sec second to process 10k
+                    if not index % (BATCH_SIZE * 100):
                         self.env.cr.commit()
 
         return participants

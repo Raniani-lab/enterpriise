@@ -634,8 +634,7 @@ class AccountBankStatementImport(models.TransientModel):
         for statement in root[0].findall('ns:Stmt', ns):
             statement_vals = {}
             statement_vals['name'] = statement.xpath('ns:Id/text()', namespaces=ns)[0]
-            statement_vals['date'] = statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD' or ns:Cd='CLAV']/../../ns:Dt/ns:Dt/text()",
-                                                              namespaces=ns)[0]
+            statement_vals['date'] = (statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD']/../../ns:Dt/ns:Dt/text()", namespaces=ns) or statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLAV']/../../ns:Dt/ns:Dt/text()", namespaces=ns))[0]
 
             # Transaction Entries 0..n
             transactions = []
@@ -709,14 +708,11 @@ class AccountBankStatementImport(models.TransientModel):
             statement_vals['balance_start'] = start_amount
             # Ending Balance
             # Statement Date
-            # any 'CLBD', 'CLAV'
+            # 'CLBD', otherwise 'CLAV'
             #   CLBD : Closing Balance
             #   CLAV : Closing Available
-            end_amount = float(statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD' or ns:Cd='CLAV']/../../ns:Amt/text()",
-                                                              namespaces=ns)[0])
-            sign = statement.xpath(
-                "ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD' or ns:Cd='CLAV']/../../ns:CdtDbtInd/text()", namespaces=ns
-            )[0]
+            end_amount = float((statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD']/../../ns:Amt/text()", namespaces=ns) or statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLAV']/../../ns:Amt/text()", namespaces=ns))[0])
+            sign = (statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLBD']/../../ns:CdtDbtInd/text()", namespaces=ns) or statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='CLAV']/../../ns:CdtDbtInd/text()", namespaces=ns))[0]
             if sign == 'DBIT':
                 end_amount *= -1
             statement_vals['balance_end_real'] = end_amount

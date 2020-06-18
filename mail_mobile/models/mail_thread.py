@@ -217,7 +217,7 @@ class MailThread(models.AbstractModel):
         :return: a string with the new text if there is one or more tracking value
         '''
         tracking_message = ''
-        if message.subtype_id:
+        if message.subtype_id and message.subtype_id.description:
             tracking_message = _(message.subtype_id.description) + return_line
 
         for value in message.sudo().tracking_value_ids:

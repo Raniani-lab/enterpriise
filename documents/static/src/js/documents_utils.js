@@ -10,6 +10,8 @@ const selection = {
      * @param {any} [param2.anchor] if set, the item in the pool that acts as anchor.
      *   Useful to auto-(un)select all in-between items to `target` when optional parameter
      *   `isRangeSelection` is set.
+     * @param {boolean} [param2.isCheckbox=false] if the selection comes from a checkbox, in which case the
+     *   range selection takes precedence over the keep selection.
      * @param {boolean} [param2.isKeepSelection=false] if set, multi-selection must keep already
      *   selected items in resulting selection. See optional param `selected` for list of already
      *   selected items.
@@ -22,10 +24,14 @@ const selection = {
      */
     computeMultiSelection(items, target, {
        anchor,
+       isCheckbox = false,
        isKeepSelection = false,
        isRangeSelection = false,
        selected = []
     } = {}) {
+        if (isCheckbox) {
+            isKeepSelection = isRangeSelection ? false : isKeepSelection;
+        }
         const wasSelected = selected.includes(target);
         const isBasicSelection = !isRangeSelection && !isKeepSelection;
         let newSelection;

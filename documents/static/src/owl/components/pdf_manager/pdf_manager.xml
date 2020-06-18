@@ -22,6 +22,7 @@
                                 />
                             </t>
                         </span>
+                        <span t-if="state.lShiftKeyDown or state.rShiftKeyDown" class="ml-3 text-muted o_pdf_shortcut_helper">Select All: Shift + A</span>
                     </div>
                 </span>
                 <span class="pdf_manager_topbar_buttons_right">

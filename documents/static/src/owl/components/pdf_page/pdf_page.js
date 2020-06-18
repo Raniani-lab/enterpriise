@@ -78,6 +78,7 @@ class PdfPage extends owl.Component {
         ev.stopPropagation();
         this.trigger('select-clicked', {
             pageId: this.props.pageId,
+            isCheckbox: true,
             isRangeSelection: ev.shiftKey,
             isKeepSelection: true,
         });

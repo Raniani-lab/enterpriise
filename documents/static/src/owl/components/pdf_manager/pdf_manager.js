@@ -38,6 +38,9 @@ class PdfManager extends owl.Component {
             archive: true,
             // the anchor of the page selection, used to determine the record from which record selections should occur
             anchorId: undefined,
+            // shift keys held down.
+            lShiftKeyDown: false,
+            rShiftKeyDown: false,
         });
         /*
          * This object will be processed and sent to the backend.
@@ -47,6 +50,7 @@ class PdfManager extends owl.Component {
         // object _pageCanvas[pageId] = pageObject from PDFJS
         this._pageCanvas = {};
         this._onGlobalKeydown = this._onGlobalKeydown.bind(this);
+        this._onGlobalCaptureKeyup = this._onGlobalCaptureKeyup.bind(this);
     }
 
     async willStart() {
@@ -55,6 +59,7 @@ class PdfManager extends owl.Component {
 
     mounted() {
         document.addEventListener('keydown', this._onGlobalKeydown);
+        document.addEventListener('keyup', this._onGlobalCaptureKeyup, true);
         for (const pdf_document of this.props.documents) {
             this._addFile(pdf_document.name, {
                 url: `/documents/content/${pdf_document.id}`,
@@ -65,6 +70,7 @@ class PdfManager extends owl.Component {
 
     willUnmount() {
         document.removeEventListener('keydown', this._onGlobalKeydown);
+        document.removeEventListener('keyup', this._onGlobalCaptureKeyup);
     }
 
     //--------------------------------------------------------------------------
@@ -161,8 +167,8 @@ class PdfManager extends owl.Component {
      */
     async _applyChanges(ruleId) {
         const processedPageIds = this.activePageIds;
-        if (!processedPageIds.length) {
-            this.trigger('pdf-manager-error', { message: _t("There is no selected document") });
+        if (processedPageIds.length === 0) {
+            this.trigger('pdf-manager-error', { message: _t("No document has been selected") });
             return;
         }
         const pageIds = this.ignoredPageIds;
@@ -485,6 +491,7 @@ class PdfManager extends owl.Component {
      */
     _onClickArchive(ev) {
         ev.stopPropagation;
+        ev.target.blur();
         this.state.archive = !this.state.archive;
     }
     /**
@@ -523,17 +530,20 @@ class PdfManager extends owl.Component {
      * @param {String} ev.detail
      */
     _onSelectClicked(ev) {
-        const { pageId, isRangeSelection, isKeepSelection } = ev.detail;
+        const { pageId, isCheckbox, isRangeSelection, isKeepSelection } = ev.detail;
+        const selectedPageIds = this.activePageIds;
+        const anchorId = this.state.anchorId || selectedPageIds[0];
         const recordIds = [];
 
         for (const groupId of this.state.groupIds) {
             recordIds.push(...this.state.groupData[groupId].pageIds);
         }
         const { newSelection, anchor } = computeMultiSelection(recordIds, pageId, {
-            anchor: this.state.anchorId,
+            anchor: anchorId,
+            isCheckbox,
             isKeepSelection,
-            isRangeSelection: isRangeSelection && this.state.anchorId,
-            selected: this.activePageIds,
+            isRangeSelection: isRangeSelection && anchorId,
+            selected: selectedPageIds,
         });
         const selectionSet = new Set(newSelection);
         this.state.anchorId = anchor;
@@ -549,10 +559,6 @@ class PdfManager extends owl.Component {
         ev.stopPropagation();
         this.previewCanvas = undefined;
         this.state.viewedPage = undefined;
-        for (const pageId in this.state.pages) {
-            this.state.pages[pageId].isSelected = false;
-        }
-        this.state.anchorId = undefined;
     }
     /**
      * @private
@@ -647,15 +653,33 @@ class PdfManager extends owl.Component {
     }
     /**
      * @private
-     * @param {customEvent} ev
-     * @param {number} ev.keyCode
-     * @param {boolean} ev.ctrlKey
+     * @param {KeyboardEvent} ev
+     */
+    _onGlobalCaptureKeyup(ev) {
+        if (ev.code === 'ShiftLeft') {
+            this.state.lShiftKeyDown = false;
+        } else if (ev.code === 'ShiftRight') {
+            this.state.rShiftKeyDown = false;
+        }
+    }
+    /**
+     * @private
+     * @param {KeyboardEvent} ev
+     * @param {boolean} ev.altKey
+     * @param {string} ev.key
      */
     _onGlobalKeydown(ev) {
-        if (ev.key == 'a' && ev.ctrlKey) {
+        if ($(ev.target).is('input')) {
+            return;
+        }
+        if (ev.key === 'A') {
             for (const pageId in this.state.pages) {
                 this.state.pages[pageId].isSelected = true;
             }
+        } else if (ev.code === 'ShiftLeft') {
+            this.state.lShiftKeyDown = true;
+        } else if (ev.code === 'ShiftRight') {
+            this.state.rShiftKeyDown = true;
         }
     }
     /**

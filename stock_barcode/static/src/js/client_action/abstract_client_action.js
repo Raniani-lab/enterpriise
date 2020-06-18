@@ -425,13 +425,17 @@ var ClientAction = AbstractAction.extend({
                 this.ViewsWidget.destroy();
             }
             this.linesWidget.destroy();
+            let mode = 'readonly';
+            if (this._isPickingRelated()) {
+                mode = 'edit';
+            }
             this.ViewsWidget = new ViewsWidget(
                 this,
                 this.actionParams.model,
                 this.viewInfo,
                 {},
                 {currentId: this.currentState.id},
-                'readonly'
+                mode
             );
             this.ViewsWidget.appendTo(this.$('.o_content'));
         });
@@ -1793,7 +1797,8 @@ var ClientAction = AbstractAction.extend({
         var self = this;
         this._save({'forceReload': true}).then(function () {
             var record = ev.data.record;
-            if (record) {
+            // depending on record source, location_id may not be included, so avoid throwing an error in this case
+            if (record && record.data.location_id) {
                 var newPageIndex = _.findIndex(self.pages, function (page) {
                     return page.location_id === record.data.location_id.res_id &&
                            (self.actionParams.model === 'stock.inventory' ||

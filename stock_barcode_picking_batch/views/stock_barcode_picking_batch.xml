@@ -8,11 +8,11 @@
             <form>
                 <group>
                     <field name="allowed_picking_ids" invisible="1"/>
-                    <field name="user_id" attrs="{'invisible': [('user_id', '=', False)]}" />
-                    <field name="picking_type_id" attrs="{'invisible': [('picking_type_id', '=', False)]}" />
-                    <field name="state"/>
-                    <field name="company_id" groups="base.group_multi_company"/>
-                    <field name="picking_ids" attrs="{'invisible': [('picking_ids', '=', False)]}">
+                    <field name="user_id"/>
+                    <field name="picking_type_id" readonly="1" attrs="{'invisible': [('picking_type_id', '=', False)]}"/>
+                    <field name="state" readonly="1"/>
+                    <field name="company_id" readonly="1" groups="base.group_multi_company"/>
+                    <field name="picking_ids" readonly="1" attrs="{'invisible': [('picking_ids', '=', False)]}">
                         <tree decoration-danger="state != 'assigned'">
                             <button name="action_unbatch"
                                 title="Unbatch Transfer" string="Unbatch Transfer"
@@ -24,7 +24,7 @@
                             <field name="state"/>
                         </tree>
                     </field>
-                    <field name="move_ids" attrs="{'invisible': [('move_ids', '=', False)]}">
+                    <field name="move_ids" readonly="1" attrs="{'invisible': [('move_ids', '=', False)]}">
                         <tree>
                             <field name="product_id"/>
                             <field name="description_picking"/>

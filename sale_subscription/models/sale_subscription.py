@@ -1460,11 +1460,15 @@ class SaleSubscriptionAlert(models.Model):
     def _set_field_action(self, field_name, value):
         for alert in self.sudo():  # Require sudo to write on ir.actions.server fields
             tag_field = self.env['ir.model.fields'].search([('model', '=', alert.model_name), ('name', '=', field_name)])
+            evaluation_type = 'equation' if tag_field.ttype == 'many2many' else 'value'
+            if evaluation_type == 'equation':
+                value = '[(6, 0, [%s])]' % value
             super(SaleSubscriptionAlert, alert).write({
                 'state': 'object_write',
                 'fields_lines': [(5, 0, 0), (0, False, {
                     'evaluation_type': 'equation',
                     'col1': tag_field.id,
+                    'evaluation_type': evaluation_type,
                     'value': value})
                 ]})
 

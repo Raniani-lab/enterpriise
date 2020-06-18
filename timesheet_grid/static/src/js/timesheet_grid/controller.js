@@ -21,6 +21,14 @@ odoo.define('timesheet_grid.GridController', function (require) {
         //----------------------------------------------------------------------
 
         /**
+         * @constructor
+         */
+        init: function () {
+            this._super.apply(this, arguments);
+            this._onClickTimerButton = _.debounce(this._onClickTimerButton, 500);
+        },
+
+        /**
          * If we update an existing line, we update the view.
          *
          * @private

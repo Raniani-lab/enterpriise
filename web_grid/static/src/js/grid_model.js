@@ -239,7 +239,7 @@ const GridModel = AbstractModel.extend({
                     return choice[0] === value;
                 });
             }
-            value = ["many2one", "selection"].includes(fieldType) ? value[1] : value;
+            value = value && ["many2one", "selection"].includes(fieldType) ? value[1] : value;
             rowValues.push(value);
         }
         return rowValues;

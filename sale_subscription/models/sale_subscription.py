@@ -815,6 +815,7 @@ class SaleSubscription(models.Model):
             subscriptions = self
         else:
             domain = [('recurring_next_date', '<=', current_date),
+                      ('template_id.payment_mode', '!=','manual'),
                       '|', ('stage_category', '=', 'progress'), ('to_renew', '=', True)]
             subscriptions = self.search(domain)
         if subscriptions:

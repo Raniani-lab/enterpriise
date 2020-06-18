@@ -53,7 +53,7 @@ class Payslips(BrowsableObject):
     def sum(self, code, from_date, to_date=None):
         if to_date is None:
             to_date = fields.Date.today()
-        self.env.cr.execute("""SELECT sum(case when hp.credit_note = False then (pl.total) else (-pl.total) end)
+        self.env.cr.execute("""SELECT sum(case when hp.credit_note IS NOT TRUE then (pl.total) else (-pl.total) end)
                     FROM hr_payslip as hp, hr_payslip_line as pl
                     WHERE hp.employee_id = %s AND hp.state = 'done'
                     AND hp.date_from >= %s AND hp.date_to <= %s AND hp.id = pl.slip_id AND pl.code = %s""",

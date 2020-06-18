@@ -177,11 +177,11 @@ class ResPartner(models.Model):
             WITH unreconciled_aml AS (
                 SELECT aml.id, aml.partner_id, aml.followup_line_id, aml.date, aml.date_maturity, aml.balance FROM account_move_line aml
                 JOIN account_account account ON account.id = aml.account_id
-                                            AND account.deprecated = False
+                                            AND account.deprecated IS NOT TRUE
                                             AND account.internal_type = 'receivable'
                 JOIN account_move move ON move.id = aml.move_id
                                        AND move.state = 'posted'
-                WHERE aml.reconciled = False
+                WHERE aml.reconciled IS NOT TRUE
                 AND aml.company_id = %(company_id)s
                 {where}
             )

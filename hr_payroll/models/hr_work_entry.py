@@ -9,7 +9,7 @@ class HrWorkEntryType(models.Model):
     _description = 'HR Work Entry Type'
 
     _sql_constraints = [
-        ('is_unforeseen_is_leave', 'check (is_unforeseen = FALSE OR (is_leave = TRUE and is_unforeseen = TRUE))', 'A unforeseen absence must be a leave.')
+        ('is_unforeseen_is_leave', 'check (is_unforeseen IS NOT TRUE OR (is_leave = TRUE and is_unforeseen = TRUE))', 'A unforeseen absence must be a leave.')
     ]
 
     is_unforeseen = fields.Boolean(default=False, string="Unforeseen Absence")

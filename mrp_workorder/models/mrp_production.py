@@ -9,11 +9,6 @@ class MrpProduction(models.Model):
 
     check_ids = fields.One2many('quality.check', 'production_id', string="Checks")
 
-    def action_confirm(self):
-        res = super().action_confirm()
-        self.workorder_ids._create_checks()
-        return res
-
     def action_assign(self):
         res = super().action_assign()
         for production in self:

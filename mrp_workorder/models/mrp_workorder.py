@@ -717,3 +717,7 @@ class MrpProductionWorkcenterLine(models.Model):
             qty_todo = min(self.move_line_id.product_uom_qty, qty_todo)
         self.qty_done = qty_todo or 1
 
+    def _action_confirm(self):
+        res = super()._action_confirm()
+        self._create_checks()
+        return res

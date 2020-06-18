@@ -607,7 +607,7 @@ class AmazonAccount(models.Model):
         # If personal information of the customer are not provided because of API restrictions,
         # all concerned fields are left blank as well as the amazon email to avoid matching an
         # anonymized partner with the same customer if personal info are later provided again.
-        anonymized_customer = not all([buyer_name, shipping_address_name, street])
+        anonymized_customer = not all([buyer_name, shipping_address_name, street or street2])
         new_partner_vals = {
             'street': street if not anonymized_customer else None,
             'street2': street2 if not anonymized_customer else None,

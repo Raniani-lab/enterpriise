@@ -17,7 +17,7 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
         }
         get iconClass() {
             if (this.props.runningIndex === this.props.index) {
-                return 'fa fa-play red';
+                return 'fa fa-play primary-green';
             } else if (this.props.index < 26) {
                 return '';
             } else if (this.props.addTimeMode) {

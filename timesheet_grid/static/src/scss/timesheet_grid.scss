@@ -62,9 +62,9 @@ table > tbody.o_grid_section > tr {
         text-align:center;
         width: 25px;
         height: 23px;
-        &.red {
-            border: 1px solid red;
-            background-color: red;
+        &.primary-green {
+            border: 1px solid $o-enterprise-primary-color;
+            background-color: $o-enterprise-primary-color;
             color: white;
         }
     }

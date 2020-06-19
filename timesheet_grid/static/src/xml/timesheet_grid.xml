@@ -23,7 +23,7 @@
                 Stop
             </button>
             <div class="p-2 input_timer">
-                <input class="o_field_float o_field_number o_field_widget o_input input_manual_time" t-att-class="{'is-invalid': state.errorManualTimeInput === true}" type="text" t-att-value="timeInput"
+                <input class="o_field_float o_field_number o_field_widget o_input input_manual_time" t-att-class="{'o_field_invalid': state.errorManualTimeInput === true}" type="text" t-att-value="timeInput"
                 t-on-keydown="_onKeydown" t-on-input="_onInputTimer" t-on-focusout="_onFocusoutTimer" t-ref="manualTimerInput"
                 t-if="_manualTimeInput"/>
                 <span class="px-auto font-weight-bold" id="display_timer" t-else="" t-on-click="_onClickManualTime">

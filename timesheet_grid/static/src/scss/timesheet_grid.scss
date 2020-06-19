@@ -80,3 +80,39 @@ table > tbody.o_grid_section > tr {
         }
     }
 }
+
+.o_kanban_timer_start {
+    // The play and stop button will appear on the mouse hover
+    margin-top: 1px;
+    &:hover {
+        > .o_kanban_timer_toggle {
+            display: inline-block;
+        }
+        > .o_time_duration {
+            display: none;
+        }
+    }
+
+    .o_kanban_timer_toggle {
+        display: none;
+
+        > button {
+            @include size(33px, 23px);
+            text-align: center;
+            &[aria-pressed="true"] {
+                background-color: $danger;
+                margin: 0 9px 0 10px;
+            }
+            &[aria-pressed="false"] {
+                background-color: $o-enterprise-primary-color;
+            }
+            > i.o-timer-play-button, > i.o-timer-stop-button , &:hover > i.o-timer-play-button, &:hover > i.o-timer-stop-button {
+                color: white !important;
+                font-size: 1.2em;
+            }
+        }
+    }
+    .o_time_duration > span {
+        margin-top: 2.3px;
+    }
+}

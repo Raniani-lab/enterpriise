@@ -29,6 +29,7 @@ class AnalyticLine(models.Model):
         help="Set if this analytic line represents a line of timesheet.")
 
     project_id = fields.Many2one(group_expand="_group_expand_project_ids")
+    duration_unit_amount = fields.Float(related="unit_amount", readonly=True, string="Timesheet Init Amount")
 
     display_timer = fields.Boolean(
         compute='_compute_display_timer',
@@ -719,3 +720,12 @@ class AnalyticLine(models.Model):
             'target': 'new',
             'context': dict(self.env.context, active_ids=to_merge.ids),
         }
+
+    def action_timer_increase(self):
+        min_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
+        self.update({'unit_amount': self.unit_amount + (min_duration / 60)})
+
+    def action_timer_decrease(self):
+        min_duration = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_min_duration', 0))
+        duration = self.unit_amount - (min_duration / 60)
+        self.update({'unit_amount': duration if duration > 0 else 0 })

@@ -147,6 +147,53 @@ if (widgetName === 'float_toggle') {
 }
 fieldRegistry.add('timesheet_uom_timer', FieldTimesheetUom);
 
+
+/**
+ * Extend Time widget to add the +/- button for duration
+ * (duration_unit_amount) field.
+ */
+const FieldTimesheetHours = TimesheetUom.FieldTimesheetTime.extend({
+    /**
+     * @override
+     */
+    async _render() {
+        await this._super.apply(this, arguments);
+        const $timer = this.getParent().el.querySelector('.o_kanban_timer_start');
+        $timer.before(this._makeButton(_lt('Decrease Time'), 'action_timer_decrease', 'fa-minus'));
+        $timer.after(this._makeButton(_lt('Increase Time'), 'action_timer_increase', 'fa-plus'));
+    },
+    /**
+     * @private
+     * @param {String} title
+     * @param {String} name
+     * @param {String} icon
+     */
+    _makeButton(title, name, icon) {
+        const button = document.createElement('button');
+        button.className = 'btn btn-light btn-sm fa ' + icon;
+        button.title = title;
+        button.name = name;
+        button.type = 'button';
+        button.addEventListener('click', this._onToggleButton.bind(this));
+        return button;
+    },
+    /**
+     * @private
+     * @param {OdooEvent} event
+     */
+    async _onToggleButton(ev) {
+        ev.stopPropagation();
+        await this._rpc({
+            model: this.model,
+            method: ev.currentTarget.name,
+            args: [this.res_id]
+        });
+        this.trigger_up('reload');
+    },
+});
+
+fieldRegistry.add('timesheet_uom_hours', FieldTimesheetHours);
+
 // bind the formatter and parser method, and tweak the options
 const _tweak_options = function(options) {
     if (!_.contains(options, 'factor')) {

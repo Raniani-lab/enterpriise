@@ -34,7 +34,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
             });
             this.timerHeader = useRef('timerHeader');
             this.timesheetId = false;
-            this._onChangeProjectTaskDebounce = debounce(this._setProjectTask.bind(this), 500);
+            this._onChangeProjectTaskDebounce = _.debounce(this._setProjectTask.bind(this), 500);
         }
         mounted() {
             super.mounted(...arguments);

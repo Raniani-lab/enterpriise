@@ -69,7 +69,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             } else {
                 resolve(false);
             }
-        })
+        });
     },
 
     async getPersonalDocuments() {
@@ -86,7 +86,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             const docSrc = await this.getFileData(name)
             documentSrcs[appliesOn][name] = docSrc;
         });
-        await Promise.all(promises)
+        await Promise.all(promises);
         return documentSrcs;
     },
 
@@ -194,6 +194,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                     'advantage_field': advantageField,
                     'new_value': newValue,
                     'contract_id': parseInt($("input[name='contract']").val()),
+                    'advantages': this.getAdvantages({includeFiles: false}),
                 },
             });
             if (event.target.type !== 'select') {
@@ -319,7 +320,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     async getFormInfo() {
-        const personalDocuments = await this.getPersonalDocuments()
+        const personalDocuments = await this.getPersonalDocuments();
         let advantages = this.getAdvantages();
         advantages = {
             'employee': Object.assign(advantages.employee, personalDocuments.employee),

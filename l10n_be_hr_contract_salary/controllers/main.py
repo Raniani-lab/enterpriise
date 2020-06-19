@@ -39,8 +39,8 @@ class SignContract(Sign):
 class HrContractSalary(HrContractSalary):
 
     @route(['/salary_package/onchange_advantage/'], type='json', auth='public')
-    def onchange_advantage(self, advantage_field, new_value, contract_id):
-        res = super().onchange_advantage(advantage_field, new_value, contract_id)
+    def onchange_advantage(self, advantage_field, new_value, contract_id, advantages):
+        res = super().onchange_advantage(advantage_field, new_value, contract_id, advantages)
         if advantage_field == 'public_transport_reimbursed_amount':
             res['new_value'] = round(request.env['hr.contract'].sudo()._get_public_transport_reimbursed_amount(float(new_value)), 2)
         elif advantage_field == 'train_transport_reimbursed_amount':

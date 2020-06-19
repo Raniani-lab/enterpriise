@@ -90,6 +90,7 @@
                                             step="1"
                                             t-att-min="advantage.slider_min"
                                             t-att-max="advantage.slider_max"
+                                            applies-on="contract"
                                             t-att-value="initial_values[advantage.field]"
                                             t-att-list="advantage.field + '_range'"
                                             t-att-name="advantage.field + '_slider'"/>
@@ -108,6 +109,7 @@
                                                     type="radio"
                                                     t-att-name="advantage.field + '_radio'"
                                                     t-att-data-value="value.value"
+                                                    applies-on="contract"
                                                     t-att-checked="not initial_values[advantage.field] if value.value == '0' else (initial_values[advantage.field] if value.value != '0' else (initial_values[advantage.field] == float(value.value)))"
                                                     t-att-class="'hide_description' if value.hide_description else ''"
                                                     t-att-data-requested_documents="advantage.requested_documents"/>

@@ -493,7 +493,7 @@ class HrContractSalary(http.Controller):
         return result
 
     @http.route(['/salary_package/onchange_advantage/'], type='json', auth='public')
-    def onchange_advantage(self, advantage_field, new_value, contract_id):
+    def onchange_advantage(self, advantage_field, new_value, contract_id, advantages):
         # Return a dictionary describing the new advantage configuration:
         # - new_value: The advantage new_value (same by default)
         # - description: The dynamic description corresponding to the advantage new value

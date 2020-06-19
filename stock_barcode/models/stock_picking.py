@@ -287,6 +287,7 @@ class StockPicking(models.Model):
             'state',
             'picking_type_code',
             'company_id',
+            'immediate_transfer',
         ]
 
     @api.model

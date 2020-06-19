@@ -70,7 +70,9 @@ var PickingClientAction = ClientAction.extend({
                 (picking_type_code === 'incoming') && (picking_state === 'done') ||
                 (picking_type_code === 'outgoing') && (picking_state !== 'done') ||
                 (picking_type_code === 'internal')
-            )
+            );
+
+            self.isImmediatePicking = self.currentState.immediate_transfer;
         });
         return res;
     },
@@ -226,6 +228,7 @@ var PickingClientAction = ClientAction.extend({
     _isPickingRelated: function () {
         return true;
     },
+
 
     /**
      * @override

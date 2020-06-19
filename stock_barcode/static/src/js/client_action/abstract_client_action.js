@@ -960,6 +960,7 @@ var ClientAction = AbstractAction.extend({
         return false;
     },
 
+
     /**
      * Define and return a formatted command to update a record line.
      *

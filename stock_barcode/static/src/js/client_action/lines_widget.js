@@ -35,6 +35,7 @@ var LinesWidget = Widget.extend({
         this.displayControlButtons = this.nbPages > 0 && parent._isControlButtonsEnabled();
         this.displayOptionalButtons = parent._isOptionalButtonsEnabled();
         this.isPickingRelated = parent._isPickingRelated();
+        this.isImmediatePicking = parent.isImmediatePicking ? true : false;
         this.sourceLocations = parent.sourceLocations;
         this.destinationLocations = parent.destinationLocations;
     },
@@ -493,7 +494,11 @@ var LinesWidget = Widget.extend({
 
         var isReservationProcessed;
         if ($line.find('.o_barcode_scanner_qty').text().indexOf('/') === -1) {
-            isReservationProcessed = false;
+            if (this.isPickingRelated && !this.isImmediatePicking) {
+                isReservationProcessed = 1;  // product not part of initial transfer
+            } else {
+                isReservationProcessed = false; // there are no initial transfer products
+            }
         } else {
             isReservationProcessed = this._isReservationProcessedLine($line);
         }

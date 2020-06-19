@@ -351,6 +351,7 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
         self.assertEqual(workorder2.check_ids.component_id, self.compfinished2)
         self.assertEqual(workorder2.qty_remaining, 2)
 
+        mo.workorder_ids.check_ids.quality_state = 'pass'
         action = mo.with_context(debug=True).button_mark_done()
         backorder = Form(self.env['mrp.production.backorder'].with_context(**action['context']))
         backorder.save().action_backorder()
@@ -385,6 +386,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         product_bolt = self.product_bolt
         product_screw = self.product_screw
         mrp_bom_desk = self.mrp_bom_desk
+        mrp_bom_desk.bom_line_ids.operation_id = False
 
         self.env['stock.move'].search([('product_id', 'in', [product_bolt.id, product_screw.id])])._do_unreserve()
 

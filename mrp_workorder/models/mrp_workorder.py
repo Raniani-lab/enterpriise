@@ -441,7 +441,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     processed_move |= moves
 
             # Generate quality checks associated with unreferenced components
-            moves_without_check = ((move_raw_ids | move_finished_ids) - processed_move).filtered(lambda move: move.has_tracking != 'none')
+            moves_without_check = ((move_raw_ids | move_finished_ids) - processed_move).filtered(lambda move: move.has_tracking != 'none' or move.operation_id)
             quality_team_id = self.env['quality.alert.team'].search([], limit=1).id
             for move in moves_without_check:
                 values = {

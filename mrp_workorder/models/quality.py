@@ -195,7 +195,7 @@ class QualityCheck(models.Model):
     def _get_check_result(self):
         if self.test_type in ('register_consumed_materials', 'register_byproducts') and self.lot_id:
             return '{} - {}, {} {}'.format(self.component_id.name, self.lot_id.name, self.qty_done, self.component_uom_id.name)
-        elif self.test_type in ('register_consumed_materials', 'register_byproducts') and self.qty_done > 0:
+        elif self.test_type in ('register_consumed_materials', 'register_byproducts'):
             return '{}, {} {}'.format(self.component_id.name, self.qty_done, self.component_uom_id.name)
         else:
             return ''

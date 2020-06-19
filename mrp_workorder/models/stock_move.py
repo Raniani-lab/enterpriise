@@ -9,6 +9,6 @@ class StockMove(models.Model):
 
     def _should_bypass_set_qty_producing(self):
         production = self.raw_material_production_id or self.production_id
-        if production and self.has_tracking == 'none' and (self.product_id in production.workorder_ids.quality_point_ids.component_id):
+        if production and self.has_tracking == 'none' and ((self.product_id in production.workorder_ids.quality_point_ids.component_id) or self.operation_id):
             return True
         return super()._should_bypass_set_qty_producing()

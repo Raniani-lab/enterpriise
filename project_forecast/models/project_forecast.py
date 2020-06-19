@@ -40,6 +40,11 @@ class PlanningShift(models.Model):
         ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "If the planning is linked to a task, the project must be set too."),
     ]
 
+    def _read_group_task_id(self, tasks, domain, order):
+        if not self.env.context.get('active_ids'):
+            return self.env['project.task']
+        return self.env['project.task'].browse(self.env.context.get('active_ids'))
+
     @api.depends('task_id', 'allocated_hours', 'project_id')
     def _compute_forecast_hours(self):
         for slot in self:

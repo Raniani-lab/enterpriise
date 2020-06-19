@@ -95,4 +95,13 @@
         </field>
     </record>
 
+    <record id="action_project_task_view_planning" model="ir.actions.act_window">
+        <field name="name">View Planning</field>
+        <field name="res_model">planning.slot</field>
+        <field name="binding_model_id" ref="project.model_project_task"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="project_forecast.planning_view_gantt_no_sample"/>
+        <field name="domain">[('task_id', 'in', active_ids)]</field>
+        <field name="context">{'search_default_group_by_task': 1, 'hide_open_shift': 1}</field>
+    </record>
 </odoo>

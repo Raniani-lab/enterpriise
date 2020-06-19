@@ -33,7 +33,7 @@ odoo.define('planning.PlanningGanttModel', function (require) {
                 this._prependEmptyRow(rows, params.groupedBy);
             }
             // generate empty rows for selected associations of group by
-            if (!params.parentPath && params.groupedBy && this._allowedEmptyGroups(params.groupedBy)) {
+            if (!this.context.hide_open_shift && !params.parentPath && params.groupedBy && this._allowedEmptyGroups(params.groupedBy)) {
                 this._startGenerateEmptyRows(rows, params.groupedBy);
             }
             return rows;

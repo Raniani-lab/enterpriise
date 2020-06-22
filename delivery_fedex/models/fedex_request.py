@@ -9,6 +9,8 @@ from datetime import datetime, date
 from zeep import Client, Plugin, Settings
 from zeep.exceptions import Fault
 from zeep.wsdl.utils import etree_to_string
+from odoo.tools import remove_accents
+
 
 _logger = logging.getLogger(__name__)
 # uncomment to enable logging of Zeep requests and responses
@@ -80,14 +82,14 @@ class FedexRequest():
 
     def set_shipper(self, company_partner, warehouse_partner):
         Contact = self.factory.Contact()
-        Contact.PersonName = company_partner.name if not company_partner.is_company else ''
-        Contact.CompanyName = company_partner.name if company_partner.is_company else ''
+        Contact.PersonName = remove_accents(company_partner.name) if not company_partner.is_company else ''
+        Contact.CompanyName = remove_accents(company_partner.name) if company_partner.is_company else ''
         Contact.PhoneNumber = warehouse_partner.phone or ''
         # TODO fedex documentation asks for TIN number, but it seems to work without
 
         Address = self.factory.Address()
-        Address.StreetLines = [warehouse_partner.street or '', warehouse_partner.street2 or '']
-        Address.City = warehouse_partner.city or ''
+        Address.StreetLines = [remove_accents(warehouse_partner.street) or '',remove_accents(warehouse_partner.street2) or '']
+        Address.City = remove_accents(warehouse_partner.city) or ''
         if warehouse_partner.country_id.code in STATECODE_REQUIRED_COUNTRIES:
             Address.StateOrProvinceCode = warehouse_partner.state_id.code or ''
         else:
@@ -103,15 +105,15 @@ class FedexRequest():
         Contact = self.factory.Contact()
         if recipient_partner.is_company:
             Contact.PersonName = ''
-            Contact.CompanyName = recipient_partner.name
+            Contact.CompanyName = remove_accents(recipient_partner.name)
         else:
-            Contact.PersonName = recipient_partner.name
-            Contact.CompanyName = recipient_partner.parent_id.name or ''
+            Contact.PersonName = remove_accents(recipient_partner.name)
+            Contact.CompanyName = remove_accents(recipient_partner.parent_id.name) or ''
         Contact.PhoneNumber = recipient_partner.phone or ''
 
         Address = self.factory.Address()
-        Address.StreetLines = [recipient_partner.street or '', recipient_partner.street2 or '']
-        Address.City = recipient_partner.city or ''
+        Address.StreetLines = [remove_accents(recipient_partner.street) or '', remove_accents(recipient_partner.street2) or '']
+        Address.City = remove_accents(recipient_partner.city) or ''
         if recipient_partner.country_id.code in STATECODE_REQUIRED_COUNTRIES:
             Address.StateOrProvinceCode = recipient_partner.state_id.code or ''
         else:

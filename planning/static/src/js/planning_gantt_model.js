@@ -8,7 +8,7 @@ odoo.define('planning.PlanningGanttModel', function (require) {
         /**
          * @override
          */
-        reload: function (handle, params) {
+        __reload: function (handle, params) {
             if ('context' in params && params.context.planning_groupby_role && !params.groupBy.length) {
                 params.groupBy.unshift('employee_id');
                 params.groupBy.unshift('role_id');

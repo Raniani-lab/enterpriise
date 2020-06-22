@@ -4,11 +4,12 @@ odoo.define('planning.PlanningGanttRenderer', function (require) {
     var GanttRenderer = require('web_gantt.GanttRenderer');
 
     var PlanningGanttRenderer = GanttRenderer.extend({
-        _render: function () {
-            var self = this;
-            return this._super.apply(this, arguments).then(function() {
-                self.$el.addClass('o_planning_gantt');
-            });
+        sampleDataTargets: [
+            '.o_gantt_row:not([data-group-id=empty])',
+        ],
+        async _renderView() {
+            await this._super(...arguments);
+            this.el.classList.add('o_planning_gantt');
         }
     });
 

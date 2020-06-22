@@ -3,7 +3,7 @@
 
 from odoo import api, SUPERUSER_ID
 from . import models
-
+from . import controllers
 
 def post_init(cr, registry):
     env = api.Environment(cr, SUPERUSER_ID, {})

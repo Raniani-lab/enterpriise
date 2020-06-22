@@ -5,4 +5,10 @@
             <script type="text/javascript" src="/project_forecast/static/src/js/forecast_gantt.js"/>
         </xpath>
     </template>
+
+    <template id="assets_frontend" name="Planning Own Assets Frontend" inherit_id="planning.assets_frontend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/project_forecast/static/src/js/forecast_calendar_front.js"></script>
+        </xpath>
+    </template>
 </odoo>

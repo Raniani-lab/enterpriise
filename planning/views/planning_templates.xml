@@ -1,103 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <template id="period_report_template">
+
+    <template id="period_report_template" name="Planning Frontend View">
         <t t-call="web.frontend_layout">
-            <t t-set="title">Your Planning</t>
-            <t t-set="head">
-                <t t-call="planning.planning_shift_notification" />
-                <t t-call-assets="planning.assets_common_planning" t-js="false"/>
-                <t t-call-assets="planning.assets_common_planning" t-css="false"/>
-                <t t-call-assets="web.assets_frontend" t-js="false"/>
-                <t t-call-assets="web.assets_frontend" t-css="false"/>
-                <script>
-                    // Initialization of fullcalendar
-                    $(document).ready(function() {
-                        var employee_slots_fc_data = <t t-raw="json.dumps(employee_slots_fullcalendar_data)" />;
-                        var employee_token = "<t t-esc="employee.employee_token" />";
-                        var planning_token = "<t t-esc="planning_planning_id.access_token" />";
-                        var locale = "<t t-esc="locale" />";
-
-                        // Hide the unassign footer by default
-                        document.getElementById("dismiss_shift").style.display = "none";
-
-                        var eventFunction = function(calEvent) {
-                            $(".modal-title").text(calEvent.event.title);
-                            $(".modal-header").css("background-color", calEvent.event.backgroundColor);
-                            $("#start").text(moment(calEvent.event.start).format("LLL"));
-                            $("#stop").text(moment(calEvent.event.end).format("LLL"));
-                            $("#alloc_hours").text(calEvent.event.extendedProps.alloc_hours);
-                            $("#allow_self_unassign").text(calEvent.event.extendedProps.allow_self_unassign);
-
-                            if (calEvent.event.extendedProps.alloc_perc != 100) {
-                                $("#alloc_perc").text(calEvent.event.extendedProps.alloc_perc + "%");
-                                $("#alloc_perc").prev().css("display", "");
-                                $("#alloc_perc").css("display", "");
-                            } else {
-                                $("#alloc_perc").prev().css("display", "none");
-                                $("#alloc_perc").css("display", "none");
-                            }
-
-                            if (calEvent.event.extendedProps.note) {
-                                $("#note").text(calEvent.event.extendedProps.note);
-                                $("#note").prev().css("display", "");
-                            }
-                            else {
-                                $("#note").text("");
-                                $("#note").prev().css("display", "none");
-                            }
-                            if (calEvent.event.extendedProps.allow_self_unassign) {
-                                document.getElementById("dismiss_shift").style.display = "block";
-                            }
-                            else {
-                                document.getElementById("dismiss_shift").style.display = "none";
-                            }
-                            $("#modal_action_dismiss_shift").attr("action", "/planning/" + planning_token + "/" + employee_token + "/unassign/" + calEvent.event.extendedProps.slot_id);
-                            $("#fc-slot-onclick-modal").modal("show");
-                        }
-
-                        var calendar = new FullCalendar.Calendar($("#calendar_employee")[0], {
-                            // Settings
-                            plugins: [
-                                'moment',
-                                'dayGrid',
-                                'timeGrid'
-                            ],
-                            locale: locale,
-                            defaultView: 'dayGridMonth',
-                            titleFormat: 'MMMM YYYY',
-                            defaultDate: moment.min(employee_slots_fc_data.map(item => moment(item.start))).toDate(),
-                            timeFormat: 'LT',
-                            displayEventEnd: true,
-                            height: 'auto',
-                            eventTextColor: 'white',
-                            eventOverlap: true,
-                            header: {
-                                left:   'title',
-                                center: false,
-                                right:  false
-                            },
-                            eventRender: function (info) {
-                                $(info.el).css('font-weight', 'bold');
-                            },
-
-                            // Data
-                            events: employee_slots_fc_data,
-
-                            // Event Functions
-                            eventClick: eventFunction
-                        });
-                        calendar.render();
-                    });
-                </script>
-            </t>
-            <body>
                 <!-- fullcalendar object's container -->
                 <div class="container o_planning_calendar_container">
                     <h1 align="center" class="m-3">Planning: <t t-esc="employee.name"/></h1>
                     <t t-call="planning.planning_shift_notification" />
                     <div id="calendar_employee" class="o_calendar_container">
                         <div class="o_calendar_view" >
-                            <div class="o_calendar_widget" />
+                            <span class="employee_slots_fullcalendar_data" t-att-value="json.dumps(employee_slots_fullcalendar_data)"/>
+                            <span class="planning_token" t-att-value="planning_token" />
+                            <span class="employee_token" t-att-value="employee_token" />
+                            <span class="open_slots_ids" t-att-value="open_slots_ids" />
+                            <span class="locale" t-att-value="locale" />
+                            <span class="notification_text" t-att-value="notification_text" />
+                            <span class="message_slug" t-att-value="message_slug" />
+                            <span class="has_role" t-att-value="has_role" />
+                            <span class="has_note" t-att-value="has_note" />
+                            <div class="o_calendar_widget"/>
                         </div>
                     </div>
                 </div>
@@ -108,21 +29,27 @@
                             <h1 align="center" class="m-3">Open Shifts Available</h1>
                             <div>
                                 <table class="table table-borderless">
-                                    <thead>
+                                    <thead class="o_thead">
                                         <tr>
                                             <th class="text-left">From</th>
                                             <th class="text-left">To</th>
-                                            <th class="text-left">Role</th>
-                                            <th class="text-left">Note</th>
+                                            <th id="o_role" t-if="has_role" class="text-left">Role</th>
+                                            <th t-if="has_note" class="text-left">Note</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="o_tbody">
                                         <t t-foreach="open_slots_ids" t-as="shift">
                                             <tr>
-                                                <td class="align-middle"><t t-esc="format_datetime(shift.start_datetime, dt_format='short')"/></td>
-                                                <td class="align-middle"><t t-esc="format_datetime(shift.end_datetime, dt_format='short')"/></td>
-                                                <td class="align-middle"><t t-esc="shift.role_id.name"/></td>
-                                                <td class="align-middle"><t t-esc="shift.name"/></td>
+                                                <td class="align-middle">
+                                                    <t t-esc="format_datetime(shift.start_datetime, dt_format='E')"/>.
+                                                    <t t-esc="format_datetime(shift.start_datetime, dt_format='short')"/>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <t t-esc="format_datetime(shift.end_datetime, dt_format='E')"/>.
+                                                    <t t-esc="format_datetime(shift.end_datetime, dt_format='short')"/>
+                                                </td>
+                                                <td t-if="has_role" class="align-middle"><t t-esc="shift.role_id.name"/></td>
+                                                <td t-if="has_note" class="align-middle"><t t-esc="shift.name"/></td>
                                                 <td>
                                                     <t t-if="not shift.employee_id">
                                                         <div class="text-center float-right">
@@ -156,7 +83,7 @@
                                     <dl class="row mt-0 mb-0">
                                         <dt class="col-sm-4">Start Date</dt>
                                         <dd class="col-sm-8" id="start"/>
-                                        <dt class="col-sm-4">Stop Date</dt>
+                                        <dt class="col-sm-4">End Date</dt>
                                         <dd class="col-sm-8" id="stop"/>
                                         <dt class="col-sm-4">Allocated Hours</dt>
                                         <dd class="col-sm-8" id="alloc_hours"/>
@@ -179,7 +106,6 @@
                         </div>
                     </div>
                 </div>
-            </body>
         </t>
     </template>
 

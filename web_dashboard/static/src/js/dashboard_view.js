@@ -76,11 +76,10 @@ var DashboardView = BasicView.extend({
 
         var superDef = this._super.apply(this, arguments);
         return Promise.all([superDef, subViewsDef]).then(function (results) {
-            // the parent expects a promise resolved with a dataPoint id, but
-            // with this override, it becomes a promise resolved with an Array,
-            // whose first element is the dataPoint id
-            var dataPointID = results[0];
-            return dataPointID;
+            // the parent expects a promise resolved with an Object of the form
+            // { state, handle }, but with this override, it becomes a promise
+            // resolved with an Array, whose first element is the wanted object.
+            return results[0];
         });
     },
     /**

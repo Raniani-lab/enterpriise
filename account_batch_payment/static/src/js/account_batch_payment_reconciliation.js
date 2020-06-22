@@ -44,7 +44,7 @@ var Model = {
      * @param {number[]} context.statement_ids
      * @returns {Promise}
      */
-    load: function (context) {
+    __load: function (context) {
         var self = this;
         return this._super(context).then(function () {
             self.batchPayments = self.statement && self.statement.batch_payments || [];

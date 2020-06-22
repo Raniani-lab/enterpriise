@@ -125,7 +125,7 @@ var HelpdeskDashboardModel = KanbanModel.extend({
     /**
      * @override
      */
-    get: function (localID) {
+    __get: function (localID) {
         var result = this._super.apply(this, arguments);
         if (_.isObject(result)) {
             result.dashboardValues = this.dashboardValues[localID];
@@ -136,14 +136,14 @@ var HelpdeskDashboardModel = KanbanModel.extend({
      * @œverride
      * @returns {Promise}
      */
-    load: function () {
+    __load: function () {
         return this._loadDashboard(this._super.apply(this, arguments));
     },
     /**
      * @œverride
      * @returns {Promise}
      */
-    reload: function () {
+    __reload: function () {
         return this._loadDashboard(this._super.apply(this, arguments));
     },
 

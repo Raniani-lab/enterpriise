@@ -25,7 +25,7 @@ var DashboardModel = BasicModel.extend({
     /**
      * @override
      */
-     get: function () {
+    __get: function () {
         var record = this._super.apply(this, arguments);
         record.timeRanges = this.dataPoint.timeRanges;
         record.timeRange = this.dataPoint.timeRange;
@@ -38,7 +38,7 @@ var DashboardModel = BasicModel.extend({
     /**
      * @override
      */
-    load: function (params) {
+    __load: function (params) {
         params.type = 'record';
         this.dataPoint = this._makeDataPoint(params);
         return this._load(this.dataPoint);
@@ -46,7 +46,7 @@ var DashboardModel = BasicModel.extend({
     /**
      * @override
      */
-    reload: function (id, options) {
+    __reload: function (id, options) {
         options = options || {};
         if (options.domain !== undefined) {
             this.dataPoint.domain = options.domain;

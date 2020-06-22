@@ -66,7 +66,7 @@ AbstractView.include({
                 self._loadData(model, options.x2mField),
                 ajax.loadLibs(self)
             ]).then(function (results) {
-                var state = results[0];
+                var { state } = results[0];
                 if (options.x2mField) {
                     self.loadParams.static = false;
                 }

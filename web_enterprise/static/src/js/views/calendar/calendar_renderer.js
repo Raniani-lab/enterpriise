@@ -256,9 +256,8 @@ CalendarRenderer.include({
      * Add a element to be able to manage other calendar in mobile
      *
      * @override
-     * @private
      */
-    _render: function () {
+    async _renderView() {
         return this._super(...arguments).then(() => {
             this.$('.o_calendar_mini').toggleClass('d-none', true);
             this._renderOtherCalendar();

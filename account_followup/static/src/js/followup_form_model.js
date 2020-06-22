@@ -106,7 +106,7 @@ var FollowupFormModel = BasicModel.extend({
     /**
      * @override
      */
-    load: function (params) {
+    __load: function (params) {
         var self = this;
         this.modelName = params.modelName;
         this._computeProgressBar(params.res_id, params.res_ids);
@@ -117,7 +117,7 @@ var FollowupFormModel = BasicModel.extend({
     /**
      * @override
      */
-    reload: function (handle, params) {
+    __reload: function (handle, params) {
         if (params.offset !== undefined || params.currentId !== undefined) {
             this.localData[handle].data.report_manager_id = undefined;
         }

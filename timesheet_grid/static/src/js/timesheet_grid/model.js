@@ -9,14 +9,14 @@ odoo.define('timesheet_grid.GridModel', function (require) {
         /**
          * @override
          */
-        load: async function () {
+        __load: async function () {
             await this._super.apply(this, arguments);
             await this._getTimerData();
         },
         /**
          * @override
          */
-        reload: async function (handle, params) {
+        __reload: async function (handle, params) {
             if (params && 'groupBy' in params) {
                 // With timesheet grid, it makes nonsense to manage group_by with a field date (as the dates are already in the rows).
                 // Detection of groupby date with ':' (date:day). Ignore grouped by date, and display warning.

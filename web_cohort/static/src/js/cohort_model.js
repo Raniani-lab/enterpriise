@@ -12,7 +12,7 @@ var CohortModel = AbstractModel.extend({
     * @override
     * @returns {Object}
     */
-    get: function () {
+    __get: function () {
         const { rangeDescription, comparisonRangeDescription } = this.timeRanges;
         return Object.assign(this.data, { rangeDescription, comparisonRangeDescription });
     },
@@ -30,7 +30,7 @@ var CohortModel = AbstractModel.extend({
      * @param {Object} params.timeRanges
      * @returns {Promise}
      */
-    load: function (params) {
+    __load: function (params) {
         this.modelName = params.modelName;
         this.dateStart = params.dateStart;
         this.dateStop = params.dateStop;
@@ -58,7 +58,7 @@ var CohortModel = AbstractModel.extend({
      * @param {Object} [params.timeRanges]
      * @returns {Promise}
      */
-    reload: function (handle, params) {
+    __reload: function (handle, params) {
         if ('measure' in params) {
             this.data.measure = params.measure;
         }

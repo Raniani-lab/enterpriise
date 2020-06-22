@@ -426,6 +426,55 @@ QUnit.module('Studio Navigation', {
 
         actionManager.destroy();
     });
+
+    QUnit.test('open list view with sample data gives empty list view in studio', async function (assert) {
+        assert.expect(2);
+
+        this.data.partner.records = [];
+        this.data.pony.records = [];
+        this.archs['pony,false,list'] = `<tree sample="1"><field name="name"/></tree>`;
+
+        const { widget: actionManager } = await start({
+            hasActionManager: true,
+            actions: this.actions,
+            archs: this.archs,
+            data: this.data,
+            mockRPC: function (route) {
+                if (route === '/web_studio/chatter_allowed') {
+                    return Promise.resolve(true);
+                }
+                if (route === '/web_studio/get_studio_view_arch') {
+                    return Promise.resolve();
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        await actionManager.doAction(2);
+        assert.ok(
+            [
+                ...actionManager.el.querySelectorAll(
+                    '.o_list_table .o_data_row'
+                )
+            ].length > 0,
+            'there should be some sample data in the list view'
+        );
+
+        await actionManager.doAction('action_web_studio_action_editor', {
+            action: actionManager.getCurrentAction(),
+            controllerState: actionManager.getCurrentController().widget.exportState(),
+        });
+        bus.trigger('studio_toggled', 'main');
+        await testUtils.nextTick();
+
+        assert.containsNone(
+            actionManager,
+            '.o_list_table .o_data_row',
+            'the list view should not contain any data'
+        );
+
+        actionManager.destroy();
+    });
 });
 
 });

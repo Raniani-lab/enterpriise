@@ -21,6 +21,6 @@ class ResConfigSettings(models.TransientModel):
     @api.depends('rule_type', 'company_id', 'auto_validation', 'warehouse_id')
     def _compute_intercompany_transaction_message(self):
         for record in self:
-            self.company_id.auto_validation = self.auto_validation
-            self.company_id.warehouse_id = self.warehouse_id
+            record.company_id.auto_validation = record.auto_validation
+            record.company_id.warehouse_id = record.warehouse_id
         super(ResConfigSettings, self)._compute_intercompany_transaction_message()

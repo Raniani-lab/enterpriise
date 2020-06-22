@@ -68,7 +68,7 @@ class QualityPoint(models.Model):
         for point in self:
             point.available_product_ids = self.env['product.product'].search([
                 ('type', 'in', ['product', 'consu']),
-                '|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)
+                '|', ('company_id', '=', False), ('company_id', '=', point.company_id.id)
             ])
 
     def _compute_check_count(self):

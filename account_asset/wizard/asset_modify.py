@@ -159,10 +159,10 @@ class AssetModify(models.TransientModel):
     @api.depends('asset_id', 'value_residual', 'salvage_value')
     def _compute_need_date(self):
         for record in self:
-            value_changed = self.value_residual + self.salvage_value != self.asset_id.value_residual + self.asset_id.salvage_value
+            value_changed = record.value_residual + record.salvage_value != record.asset_id.value_residual + record.asset_id.salvage_value
             record.need_date = (self.env.context.get('resume_after_pause') and record.asset_id.prorata) or value_changed
 
     @api.depends('asset_id', 'value_residual', 'salvage_value')
     def _compute_gain_value(self):
         for record in self:
-            record.gain_value = self.value_residual + self.salvage_value > self.asset_id.value_residual + self.asset_id.salvage_value
+            record.gain_value = record.value_residual + record.salvage_value > record.asset_id.value_residual + record.asset_id.salvage_value

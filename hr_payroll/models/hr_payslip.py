@@ -523,7 +523,7 @@ class HrPayslipRun(models.Model):
 
     def _compute_payslip_count(self):
         for payslip_run in self:
-            payslip_run.payslip_count = len(self.slip_ids)
+            payslip_run.payslip_count = len(payslip_run.slip_ids)
 
     def action_draft(self):
         return self.write({'state': 'draft'})

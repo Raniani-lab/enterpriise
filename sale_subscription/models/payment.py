@@ -30,4 +30,4 @@ class PaymentTransaction(models.Model):
 
     def _compute_renewal_allowed(self):
         for tx in self:
-            tx.renewal_allowed = self.state in ['done', 'authorized']
+            tx.renewal_allowed = tx.state in ['done', 'authorized']

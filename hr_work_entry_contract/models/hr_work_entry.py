@@ -42,7 +42,7 @@ class HrWorkEntry(models.Model):
 
     def _inverse_duration(self):
         for work_entry in self:
-            if self._get_duration_is_valid():
+            if work_entry._get_duration_is_valid():
                 calendar = work_entry.contract_id.resource_calendar_id
                 if not calendar:
                     continue

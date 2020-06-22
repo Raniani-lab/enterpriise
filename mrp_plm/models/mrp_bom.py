@@ -35,7 +35,7 @@ class MrpBom(models.Model):
     def _compute_revision_ids(self):
         for rec in self:
             previous_boms = self.env['mrp.bom']
-            current = self
+            current = rec
             while current.previous_bom_id:
                 previous_boms |= current
                 current = current.previous_bom_id

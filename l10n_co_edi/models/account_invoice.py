@@ -70,7 +70,6 @@ class AccountMove(models.Model):
                                                                            int(invoice_number))
         return self.l10n_co_edi_invoice_name
 
-    @api.model
     def _l10n_co_edi_create_carvajal_request(self):
         company = self.company_id
         return CarvajalRequest(company.l10n_co_edi_username, company.l10n_co_edi_password,
@@ -83,7 +82,7 @@ class AccountMove(models.Model):
         messages.
         '''
         for invoice in self:
-            request = self._l10n_co_edi_create_carvajal_request()
+            request = invoice._l10n_co_edi_create_carvajal_request()
             xml_filename = invoice._l10n_co_edi_generate_electronic_invoice_filename()
             xml = invoice.l10n_co_edi_generate_electronic_invoice_xml()
             try:

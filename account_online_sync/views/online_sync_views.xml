@@ -217,7 +217,6 @@
       <field name="model_id" ref="account.model_account_journal"/>
       <field name="state">code</field>
       <field name="code">model.cron_fetch_online_transactions()</field>
-      <field name="active" eval="True"/>
       <field name="user_id" ref="base.user_root"/>
       <field name="interval_number">4</field>
       <field name="interval_type">hours</field>

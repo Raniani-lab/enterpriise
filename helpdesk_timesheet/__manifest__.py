@@ -18,6 +18,5 @@
         'wizard/helpdesk_ticket_create_timesheet_views.xml',
         'data/helpdesk_timesheet_data.xml',
     ],
-    'demo': ['data/helpdesk_timesheet_demo.xml'],
     'license': 'OEEL-1',
 }

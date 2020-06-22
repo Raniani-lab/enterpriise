@@ -14,5 +14,4 @@ Manage Product returns from helpdesk tickets
         'wizard/stock_picking_return_views.xml',
         'views/helpdesk_views.xml',
     ],
-    'demo': ['data/helpdesk_stock_demo.xml'],
 }

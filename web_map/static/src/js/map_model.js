@@ -20,10 +20,10 @@ const MapModel = AbstractModel.extend({
         this.data = {};
         this.data.mapBoxToken = session.map_box_token;
     },
-    get: function () {
+    __get: function () {
         return this.data;
     },
-    load: function (params) {
+    __load: function (params) {
         this.data.count = 0;
         this.data.offset = 0;
         this.data.limit = 80;
@@ -40,7 +40,7 @@ const MapModel = AbstractModel.extend({
         this.numberOfLocatedRecords = 0;
         return this._fetchData();
     },
-    reload: function (handle, params) {
+    __reload: function (handle, params) {
         const options = params || {};
         this.partnerToCache = [];
         this.partnerIds = [];

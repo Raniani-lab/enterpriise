@@ -134,7 +134,7 @@
         <field name="name">hr.appraisal.tree</field>
         <field name="model">hr.appraisal</field>
         <field name="arch" type="xml">
-            <tree string="Appraisal">
+            <tree string="Appraisal" sample="1">
                 <field name="active" invisible="1"/>
                 <field name="employee_id" string="Name" widget="many2one_avatar_employee"/>
                 <field name="date_close" widget="remaining_days" attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}"/>
@@ -187,7 +187,7 @@
         <field name="name">hr.appraisal.kanban</field>
         <field name="model">hr.appraisal</field>
         <field name="arch" type="xml">
-            <kanban quick_create="false" class="o_hr_employee_kanban" js_class="appraisal_kanban">
+            <kanban quick_create="false" class="o_hr_employee_kanban" js_class="appraisal_kanban" sample="1">
                 <field name="state"/>
                 <field name="activity_ids" />
                 <field name="activity_state" />

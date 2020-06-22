@@ -54,7 +54,7 @@
                     default_group_by="employee_id"
                     color="employee_id"
                     display_unavailability="True"
-                >
+                    sample="1">
                     <field name="name"/>
 
                 <templates>

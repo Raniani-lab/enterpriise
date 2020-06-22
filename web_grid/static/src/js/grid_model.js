@@ -32,7 +32,7 @@ const GridModel = AbstractModel.extend({
      * @override
      * @returns {Object}
      */
-    get: function () {
+    __get: function () {
         return this._gridData;
     },
     /**
@@ -100,7 +100,7 @@ const GridModel = AbstractModel.extend({
      * @param {Object} params
      * @returns {Promise}
      */
-    load: function (params) {
+    __load: function (params) {
         this.fields = params.fields;
         this.modelName = params.modelName;
         this.rowFields = params.rowFields;
@@ -123,7 +123,7 @@ const GridModel = AbstractModel.extend({
      * @param {Object} params
      * @returns {Promise}
      */
-    reload: function (handle, params) {
+    __reload: function (handle, params) {
         if (params === 'special') {
             return Promise.resolve();
         }

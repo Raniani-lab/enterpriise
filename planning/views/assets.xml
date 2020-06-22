@@ -20,4 +20,10 @@
             <script type="text/javascript" src="/planning/static/src/js/planning_calendar_front.js"/>
         </xpath>
     </template>
+
+    <template id="qunit_suite" name="planning tests" inherit_id="web.qunit_suite_tests">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/planning/static/tests/planning_gantt_tests.js"></script>
+        </xpath>
+    </template>
 </odoo>

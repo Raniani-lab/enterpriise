@@ -346,7 +346,7 @@ var StatementModel = BasicModel.extend({
      * @param {number[]} context.statement_line_ids
      * @returns {Promise}
      */
-    load: function (context) {
+    __load: function (context) {
         var self = this;
         this.context = context;
         this.statement_line_ids = context.statement_line_ids;
@@ -387,7 +387,7 @@ var StatementModel = BasicModel.extend({
     /**
      * Reload all data
      */
-    reload: function() {
+    __reload: function() {
         var self = this;
         self.alreadyDisplayed = [];
         self.lines = {};
@@ -1394,7 +1394,7 @@ var ManualModel = StatementModel.extend({
      *   'suppliers' mode
      * @returns {Promise}
      */
-    load: function (context) {
+    __load: function (context) {
         var self = this;
         this.context = context;
 
@@ -1482,7 +1482,7 @@ var ManualModel = StatementModel.extend({
      * Use case: coming back to manual reconcilation
      *           in breadcrumb
      */
-    reload: function () {
+    __reload: function () {
         this.lines = {};
         return this.load(this.context);
     },

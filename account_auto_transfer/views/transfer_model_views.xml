@@ -41,7 +41,7 @@
         <field name="name">account.auto.transfer.model.tree</field>
         <field name="model">account.transfer.model</field>
         <field name="arch" type="xml">
-            <tree string="Move Models">
+            <tree string="Move Models" sample="1">
                 <field name="name"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="date_start"/>

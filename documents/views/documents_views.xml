@@ -55,7 +55,7 @@
         <field name="name">documents.document kanban</field>
         <field name="model">documents.document</field>
         <field name="arch" type="xml">
-            <kanban js_class="documents_kanban" create="false">
+            <kanban js_class="documents_kanban" create="false" sample="1">
                 <field name="id"/>
                 <field name="mimetype"/>
                 <field name="favorited_ids"/>
@@ -244,7 +244,8 @@
         <field name="arch" type="xml">
             <tree js_class="documents_list"
                   create="false" edit="false"
-                  decoration-info="type == 'empty'">
+                  decoration-info="type == 'empty'"
+                  sample="1">
                 <field name="type" invisible="1"/>
                 <field name="name" string="Document" required="True"/>
                 <field name="url" optional="hide"/>

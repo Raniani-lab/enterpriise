@@ -33,7 +33,7 @@
         <field name="model">approval.request</field>
         <field name="priority">10</field>
         <field name="arch" type="xml">
-            <tree create="false">
+            <tree create="false" sample="1">
                 <field name="name"/>
                 <field name="request_owner_id"/>
                 <field name="category_id"/>
@@ -201,7 +201,7 @@
         <field name="model">approval.request</field>
         <field name="arch" type="xml">
             <kanban create="false" class="o_modules_kanban" default_group_by="request_status" default_order="create_date desc" 
-            group_create="false" group_edit="false" group_delete="false">
+            group_create="false" group_edit="false" group_delete="false" sample="1">
                 <field name="request_owner_id"/>
                 <field name="request_status"/>
                 <field name="user_status"/>

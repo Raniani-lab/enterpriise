@@ -6,7 +6,7 @@
         <field name="name">account.asset.sale.tree</field>
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
-            <tree string="Deferred Revenues" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')">
+            <tree string="Deferred Revenues" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')" sample="1">
                 <field name="name" string="Revenue Name"/>
                 <field name="first_depreciation_date"/>
                 <field name="book_value"/>

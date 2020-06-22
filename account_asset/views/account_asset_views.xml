@@ -134,7 +134,7 @@
         <field name="name">account.asset.kanban</field>
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile">
+            <kanban class="o_kanban_mobile" sample="1">
                 <field name="name"/>
                 <field name="first_depreciation_date"/>
                 <field name="state"/>
@@ -169,7 +169,7 @@
         <field name="name">account.asset.purchase.tree</field>
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
-            <tree string="Assets" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')" decoration-warning="(state == 'close' and value_residual != 0)">
+            <tree string="Assets" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')" decoration-warning="(state == 'close' and value_residual != 0)" sample="1">
                 <field name="name"/>
                 <field name="first_depreciation_date"/>
                 <field name="book_value"/>

@@ -39,7 +39,8 @@
                    scales="day,week,month"
                    precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:half'}"
                    create="0"
-                   plan="0">
+                   plan="0"
+                   sample="1">
                 <field name="color" invisible="1"/>
                 <field name="state"/>
                 <field name="employee_id"/>

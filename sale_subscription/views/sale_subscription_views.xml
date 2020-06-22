@@ -351,7 +351,7 @@
         <field name="model">sale.subscription</field>
         <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
         <field name="arch" type="xml">
-            <tree string="Sale Subscriptions" multi_edit="1">
+            <tree string="Sale Subscriptions" multi_edit="1" sample="1">
                 <field name="code" readonly="1" decoration-bf="1"/>
                 <field name="partner_id" readonly="1"/>
                 <field name="recurring_next_date" string="Next Invoice" widget="remaining_days" attrs="{'invisible': [('stage_category', '!=', 'progress')]}"/>
@@ -568,7 +568,7 @@
         <field name="name">sale.subscription.kanban</field>
         <field name="model">sale.subscription</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" class="o_kanban_mobile">
+            <kanban default_group_by="stage_id" class="o_kanban_mobile" sample="1">
                 <field name="user_id"/>
                 <field name="stage_id" options="{'group_by_tooltip': {'description': 'Description'}}"/>
                 <field name="starred"/>

@@ -141,7 +141,7 @@
       <field name="name">rental.order.tree</field>
       <field name="model">sale.order</field>
       <field name="arch" type="xml">
-        <tree multi_edit="1">
+        <tree multi_edit="1" sample="1">
           <field name="has_late_lines" invisible="1"/>
           <field name="name" readonly="1" decoration-bf="1"/>
           <field name="date_order" widget='date'/>

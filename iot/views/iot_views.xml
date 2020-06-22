@@ -150,7 +150,7 @@
         <field name="name">iot.device.view.kanban</field>
         <field name="model">iot.device</field>
         <field name="arch" type="xml">
-            <kanban create="false" group_create="false">
+            <kanban create="false" group_create="false" sample="1">
                 <field name="name"/>
                 <field name="type"/>
                 <field name="connection"/>

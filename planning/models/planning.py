@@ -688,13 +688,10 @@ class Planning(models.Model):
                 format_time(self.env, end_datetime.time(), time_format='short')
             )
 
-    def _format_start_end_datetime(self, tz, lang_code=False):
-        destination_tz = pytz.timezone(tz)
-        start_datetime = pytz.utc.localize(self.start_datetime).astimezone(destination_tz).replace(tzinfo=None)
-        end_datetime = pytz.utc.localize(self.end_datetime).astimezone(destination_tz).replace(tzinfo=None)
+    def _format_start_end_datetime(self, record_env, tz=None, lang_code=False):
         return (
-            format_datetime(self.env, start_datetime, dt_format='short', lang_code=lang_code),
-            format_datetime(self.env, end_datetime, dt_format='short', lang_code=lang_code)
+            format_datetime(record_env, self.start_datetime, tz=tz, dt_format='short', lang_code=lang_code),
+            format_datetime(record_env, self.end_datetime, tz=tz, dt_format='short', lang_code=lang_code)
         )
 
     def _send_slot(self, employee_ids, start_datetime, end_datetime, include_unassigned=True, message=None):
@@ -743,7 +740,7 @@ class Planning(models.Model):
                 view_context.update({'available_link': '/planning/assign/%s/%s' % (employee.sudo().employee_token, self.id)})
             elif not self.employee_id:
                 view_context.update({'available_link': '/planning/%s/%s/assign/%s?message=1' % (planning.access_token, employee.sudo().employee_token, self.id)})
-            start_datetime, end_datetime = self._format_start_end_datetime(employee.tz, lang_code=employee.user_partner_id.lang)
+            start_datetime, end_datetime = self._format_start_end_datetime(employee.env, tz=employee.tz, lang_code=employee.user_partner_id.lang)
             # update context to build a link for view in the slot
             view_context.update({
                 'link': employee_url_map[employee.id],

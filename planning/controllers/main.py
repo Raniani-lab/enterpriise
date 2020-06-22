@@ -2,14 +2,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licens
 
-from odoo import http, fields, _
+from odoo import http
 from odoo.http import request
-from odoo.osv import expression
 
 import pytz
 from werkzeug.utils import redirect
-import babel
-from werkzeug.exceptions import Forbidden
 from odoo.tools.misc import get_lang
 
 from odoo import tools
@@ -20,13 +17,19 @@ class ShiftController(http.Controller):
     @http.route(['/planning/<string:planning_token>/<string:employee_token>'], type='http', auth="public", website=True)
     def planning(self, planning_token, employee_token, message=False, **kwargs):
         """ Displays an employee's calendar and the current list of open shifts """
+        planning_data = self._planning_get(planning_token, employee_token, message)
+        if not planning_data:
+            return request.not_found()
+        return request.render('planning.period_report_template', planning_data)
+
+    def _planning_get(self, planning_token, employee_token, message=False):
         employee_sudo = request.env['hr.employee'].sudo().search([('employee_token', '=', employee_token)], limit=1)
         if not employee_sudo:
-            return request.not_found()
+            return
 
         planning_sudo = request.env['planning.planning'].sudo().search([('access_token', '=', planning_token)], limit=1)
         if not planning_sudo:
-            return request.not_found()
+            return
 
         employee_tz = pytz.timezone(employee_sudo.tz or 'UTC')
         employee_fullcalendar_data = []
@@ -52,18 +55,21 @@ class ShiftController(http.Controller):
                 })
             elif not slot.is_past and (not employee_sudo.planning_role_ids or not slot.role_id or slot.role_id in employee_sudo.planning_role_ids):
                 open_slots.append(slot)
-
-        return request.render('planning.period_report_template', {
+        return {
             'employee_slots_fullcalendar_data': employee_fullcalendar_data,
             'open_slots_ids': open_slots,
             'planning_slots_ids': planning_slots,
             'planning_planning_id': planning_sudo,
             'locale': get_lang(request.env).iso_code,
             'employee': employee_sudo,
-            'format_datetime': lambda dt, dt_format: tools.format_datetime(request.env, dt, dt_format=dt_format),
+            'employee_token': employee_token,
+            'planning_token': planning_token,
+            'format_datetime': lambda dt, dt_format: tools.format_datetime(request.env, dt, tz=employee_tz.zone, dt_format=dt_format),
             'notification_text': message in ['assign', 'unassign', 'already_assign'],
             'message_slug': message,
-        })
+            'has_role': any([s.role_id.id for s in open_slots]),
+            'has_note': any([s.name for s in open_slots]),
+        }
 
     @http.route('/planning/<string:token_planning>/<string:token_employee>/assign/<int:slot_id>', type="http", auth="public", website=True)
     def planning_self_assign(self, token_planning, token_employee, slot_id, message=False, **kwargs):

@@ -1103,8 +1103,7 @@ class AccountMove(models.Model):
         return result
 
     def button_cancel(self):
-        inv_mx = self.filtered(
-            lambda inv: inv.company_id.country_id == self.env.ref('base.mx'))
+        inv_mx = self.filtered(lambda r: r.l10n_mx_edi_is_required())
         if not inv_mx:
             return super(AccountMove, self).button_cancel()
         inv_mx.l10n_mx_edi_update_sat_status()

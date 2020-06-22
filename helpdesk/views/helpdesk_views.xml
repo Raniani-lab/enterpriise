@@ -391,7 +391,7 @@
         <field name="name">helpdesk.ticket.tree</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <tree string="Tickets" multi_edit="1">
+            <tree string="Tickets" multi_edit="1" sample="1">
                 <field name="team_id" invisible="1" readonly="1"/>
                 <field name="display_name" string="Ticket Name" readonly="1"/>
                 <field name="partner_id" optional="show"/>

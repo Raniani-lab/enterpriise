@@ -5,7 +5,7 @@
         <field name="name">marketing.campaign.view.kanban</field>
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state" quick_create="false">
+            <kanban default_group_by="state" quick_create="false" sample="1">
                 <field name="name"/>
                 <field name="state" readonly="1"/>
                 <templates>
@@ -285,7 +285,7 @@
         <field name="name">marketing.campaign.view.tree</field>
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
-            <tree string="Campaign">
+            <tree string="Campaign" sample="1">
                 <field name="name" />
                 <field name="model_id" string="Target" attrs="{'readonly' :[('state' , '!=', 'draft')]}"/>
                 <field name="state" readonly="True" decoration-info="state == 'draft'" decoration-success="state == 'running'" decoration-muted="state == 'stopped'" widget="badge"/>

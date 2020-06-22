@@ -226,7 +226,7 @@
         <field name="name">mrp.eco.view.tree</field>
         <field name="model">mrp.eco</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree sample="1">
                 <field name="name"/>
                 <field name="bom_id"/>
                 <field name="user_id" widget='many2one_avatar_user'/>

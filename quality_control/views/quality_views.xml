@@ -364,7 +364,7 @@
         <field name="name">quality.check.view.kanban</field>
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_small_column">
+            <kanban class="o_kanban_small_column" sample="1">
                 <field name="name"/>
                 <field name="user_id"/>
                 <field name="control_date"/>
@@ -404,7 +404,7 @@
         <field name="name">quality.check.view.tree</field>
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree sample="1">
                 <field name="name" decoration-bf="1"/>
                 <field name='product_id' optional="show"/>
                 <field name="lot_id" optional="show"/>

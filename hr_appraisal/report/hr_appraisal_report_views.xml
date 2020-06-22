@@ -32,7 +32,8 @@
                 color="color"
                 date_start="deadline"
                 date_stop="deadline"
-                default_group_by='department_id'>
+                default_group_by='department_id'
+                sample="1">
             </gantt>
         </field>
     </record>

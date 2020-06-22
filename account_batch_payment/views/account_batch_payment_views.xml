@@ -120,7 +120,7 @@ if records:
             <field name="name">account.batch.payment.tree</field>
             <field name="model">account.batch.payment</field>
             <field name="arch" type="xml">
-                <tree decoration-muted="state == 'reconciled'" decoration-info="state == 'draft'">
+                <tree decoration-muted="state == 'reconciled'" decoration-info="state == 'draft'" sample="1">
                     <field name="name"/>
                     <field name="journal_id"/>
                     <field name="date"/>

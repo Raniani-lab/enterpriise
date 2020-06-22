@@ -140,7 +140,7 @@
         <field name="name">hr.payslip.tree</field>
         <field name="model">hr.payslip</field>
         <field name="arch" type="xml">
-            <tree string="Payslips" js_class="hr_payroll_payslip_tree">
+            <tree string="Payslips" js_class="hr_payroll_payslip_tree" sample="1">
                 <field name="currency_id" invisible="1"/>
                 <field name="number" decoration-bf="1"/>
                 <field name="employee_id" widget="many2one_avatar_employee"/>
@@ -159,7 +159,7 @@
         <field name="name">hr.payslip.kanban</field>
         <field name="model">hr.payslip</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile">
+            <kanban class="o_kanban_mobile" sample="1">
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_content oe_kanban_global_click">
@@ -403,7 +403,7 @@
         <field name="name">hr.payslip.run.tree</field>
         <field name="model">hr.payslip.run</field>
         <field name="arch" type="xml">
-            <tree string="Payslips Batches">
+            <tree string="Payslips Batches" sample="1">
                 <field name="name"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
@@ -418,7 +418,7 @@
         <field name="name">hr.payslip.run.kanban</field>
         <field name="model">hr.payslip.run</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile">
+            <kanban class="o_kanban_mobile" sample="1">
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_content oe_kanban_global_click">

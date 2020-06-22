@@ -21,7 +21,7 @@
             <field name="name">customer.statements.tree</field>
             <field name="model">res.partner</field>
             <field name="arch" type="xml">
-                <tree string="Follow-up Reports Tree View" create="false" import="false" delete="false">
+                <tree string="Follow-up Reports Tree View" create="false" import="false" delete="false" sample="1">
                     <field name="currency_id" invisible="1"/>
                     <field name="name"/>
                     <field name="total_due" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>

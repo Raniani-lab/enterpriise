@@ -24,7 +24,7 @@
         <field name="name">social.post.view.kanban</field>
         <field name="model">social.post</field>
         <field name="arch" type="xml">
-            <kanban js_class="social_post_kanban_view">
+            <kanban js_class="social_post_kanban_view" sample="1">
                 <field name="message"/>
                 <field name="create_uid"/>
                 <field name="image_ids" widget="many2many_binary"/>
@@ -45,7 +45,9 @@
                             <div class="o_social_post_header d-flex justify-content-between border-bottom py-2 px-3">
                                 <div class="o_social_post_media d-flex align-items-center">
                                     <t t-foreach="record.media_ids.raw_value" t-as="media_id">
-                                        <img class="img mr-1" width="16" t-att-title="JSON.parse(record.live_posts_by_media.raw_value)[media_id].join('\n')" t-attf-src="/web/image/social.media/#{media_id}/image/16x16" alt="Media"/>
+                                        <t t-if="record.live_posts_by_media.raw_value"> <!-- unset in sample mode -->
+                                            <img class="img mr-1" width="16" t-att-title="title" t-attf-src="/web/image/social.media/#{media_id}/image/16x16" alt="Media"/>
+                                        </t>
                                     </t>
                                 </div>
                                 <div>
@@ -63,7 +65,7 @@
                                 <div t-if="has_attachments"
                                     class="o_social_stream_post_image d-flex mx-n3 overflow-hidden"
                                     t-att-data-images="record.image_urls.raw_value">
-                                    <t t-set="image_urls_json" t-value="JSON.parse(record.image_urls.raw_value)"/>
+                                    <t t-set="image_urls_json" t-value="JSON.parse(record.image_urls.raw_value || '[]')"/>  <!-- fallback on '[]' necessary as unset in sample mode -->
 
                                     <t t-foreach="image_urls_json.length > 2 ? image_urls_json.slice(0, 2) : image_urls_json" t-as="image_url">
                                         <t t-if="image_url_index == 1 &amp; record.image_ids.raw_value.length > 2">

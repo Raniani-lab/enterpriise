@@ -146,6 +146,7 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {integer|undefined} resID
      * @param {Object|undefined} context
+     * @returns {FormViewDialog}
      */
     _openDialog: function (resID, context) {
         var title = resID ? _t("Open") : _t("Create");

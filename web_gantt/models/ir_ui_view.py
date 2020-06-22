@@ -36,7 +36,8 @@ GANTT_VALID_ATTRIBUTES = set([
     'decoration-success',
     'decoration-info',
     'decoration-warning',
-    'decoration-danger'
+    'decoration-danger',
+    'sample'
 ])
 
 class View(models.Model):

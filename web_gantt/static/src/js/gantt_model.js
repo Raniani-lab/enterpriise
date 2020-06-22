@@ -60,11 +60,11 @@ var GanttModel = AbstractModel.extend({
      * @returns {Object} the whole gantt data if no rowId given, the given row's
      *   description otherwise
      */
-    get: function (rowId) {
+    __get: function (rowId) {
         if (rowId) {
             return this.allRows[rowId];
         } else {
-            return _.extend({}, this.ganttData);
+            return Object.assign({ isSample: this.isSampleModel }, this.ganttData);
         }
     },
     /**
@@ -106,7 +106,8 @@ var GanttModel = AbstractModel.extend({
      * @param {string} params.scale
      * @returns {Promise<any>}
      */
-    load: function (params) {
+    __load: async function (params) {
+        await this._super(...arguments);
         this.modelName = params.modelName;
         this.fields = params.fields;
         this.domain = params.domain;
@@ -149,7 +150,8 @@ var GanttModel = AbstractModel.extend({
      * @param {Moment} params.date
      * @returns {Promise<any>}
      */
-    reload: function (handle, params) {
+    __reload: async function (handle, params) {
+        await this._super(...arguments);
         if ('scale' in params) {
             this._setRange(this.ganttData.focusDate, params.scale);
         }
@@ -249,7 +251,7 @@ var GanttModel = AbstractModel.extend({
     _fetchData: function () {
         var self = this;
         var domain = this._getDomain();
-        var context = _.extend(this.context, {'group_by': this.ganttData.groupedBy});
+        var context = Object.assign({}, this.context, { group_by: this.ganttData.groupedBy });
 
         var groupsDef;
         if (this.ganttData.groupedBy.length) {
@@ -292,7 +294,7 @@ var GanttModel = AbstractModel.extend({
                 records: self.ganttData.records,
             });
             var unavailabilityProm;
-            if (self.displayUnavailability) {
+            if (self.displayUnavailability && !self.isSampleModel) {
                 unavailabilityProm = self._fetchUnavailability();
             }
             return unavailabilityProm;
@@ -522,6 +524,12 @@ var GanttModel = AbstractModel.extend({
         }
         var formattedValue = fieldUtils.format[field.type](value, field, options);
         return formattedValue || _.str.sprintf(_t('Undefined %s'), field.string);
+    },
+    /**
+     * @override
+     */
+    _isEmpty() {
+        return !this.ganttData.records.length;
     },
     /**
      * Parse in place the server values (and in particular, convert datetime

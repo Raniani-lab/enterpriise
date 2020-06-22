@@ -27,6 +27,9 @@ var GanttRenderer = AbstractRenderer.extend({
         'decoration-warning',
         'decoration-danger',
     ],
+    sampleDataTargets: [
+        '.o_gantt_row',
+    ],
     /**
      * @override
      * @param {Widget} parent
@@ -209,13 +212,11 @@ var GanttRenderer = AbstractRenderer.extend({
         };
     },
     /**
-     * Render gantt view and its rows.
+     * Renders gantt view and its rows.
      *
      * @override
-     * @private
-     * @returns {Deferred}
      */
-    _render: function () {
+    async _renderView() {
         var self = this;
         var oldRowWidgets = Object.keys(this.rowWidgets).map(function (rowId) {
             return self.rowWidgets[rowId];

@@ -1,6 +1,7 @@
 odoo.define('web_gantt.tests', function (require) {
 'use strict';
 
+const Domain = require('web.Domain');
 var GanttView = require('web_gantt.GanttView');
 var GanttRenderer = require('web_gantt.GanttRenderer');
 var GanttRow = require('web_gantt.GanttRow');
@@ -656,6 +657,344 @@ QUnit.module('Views', {
             "there should be an highlighted day");
         assert.strictEqual(parseInt(gantt.$('.o_gantt_header_cell.o_gantt_today').text(), 10), dayOfMonth,
             'the highlighted day should be today');
+
+        gantt.destroy();
+    });
+
+    // GANTT WITH SAMPLE="1"
+
+    QUnit.test('empty grouped gantt with sample="1"', async function (assert) {
+        assert.expect(3);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
+            viewOptions: {
+                initialDate: new Date(),
+            },
+            groupBy: ['project_id'],
+            domain: Domain.FALSE_DOMAIN,
+        });
+
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+
+        const content = gantt.$el.text();
+
+        await gantt.reload();
+        assert.strictEqual(gantt.$el.text(), content);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('empty gantt with sample="1"', async function (assert) {
+        assert.expect(3);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
+            viewOptions: {
+                initialDate: new Date(),
+            },
+            domain: Domain.FALSE_DOMAIN,
+        });
+
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+
+        const content = gantt.$el.text();
+
+        await gantt.reload();
+        assert.strictEqual(gantt.$el.text(), content);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('toggle filter on empty gantt with sample="1"', async function (assert) {
+        assert.expect(6);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
+            viewOptions: {
+                initialDate: new Date(),
+            },
+            domain: Domain.FALSE_DOMAIN,
+        });
+
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+
+        await gantt.reload({ domain: [['id', '<', 0]] });
+
+        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.containsOnce(gantt, '.o_gantt_row_container');
+        assert.containsNone(gantt, '.o_gantt_pill_wrapper');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('non empty gantt with sample="1"', async function (assert) {
+        assert.expect(6);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" default_scale="year" sample="1"/>',
+            viewOptions: { initialDate },
+        });
+
+        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.containsOnce(gantt, '.o_gantt_row_container');
+        assert.containsN(gantt, '.o_gantt_pill_wrapper', 7);
+
+        await gantt.reload({ domain: Domain.FALSE_DOMAIN });
+        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.containsNone(gantt, '.o_gantt_pill_wrapper');
+        assert.containsOnce(gantt, '.o_gantt_row_container');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('non empty grouped gantt with sample="1"', async function (assert) {
+        assert.expect(6);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" default_scale="year" sample="1"/>',
+            viewOptions: { initialDate },
+            groupBy: ['project_id'],
+        });
+
+        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row', 2);
+        assert.containsN(gantt, '.o_gantt_pill_wrapper', 7);
+
+        await gantt.reload({ domain: Domain.FALSE_DOMAIN });
+        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.containsOnce(gantt, '.o_gantt_row_container');
+        assert.containsNone(gantt, '.o_gantt_pill_wrapper');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('add record in empty gantt with sample="1"', async function (assert) {
+        assert.expect(5);
+
+        const today = new Date();
+        this.data.tasks.records = [];
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
+            archs: {
+                'tasks,false,form': `
+                    <form>
+                        <field name="name"/>
+                        <field name="start"/>
+                        <field name="stop"/>
+                        <field name="stage"/>
+                        <field name="project_id"/>
+                        <field name="user_id"/>
+                    </form>
+                `,
+            },
+            viewOptions: {
+                initialDate: today,
+            },
+            groupBy: ['project_id'],
+        });
+
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        await testUtils.dom.click(gantt.$('.o_gantt_button_add'));
+        await testUtils.modal.clickButton('Save & Close');
+
+        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.containsOnce(gantt, '.o_gantt_row');
+        assert.containsOnce(gantt, '.o_gantt_pill');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('click add and discard in empty gantt with sample="1"', async function (assert) {
+        assert.expect(3);
+
+        const today = new Date();
+        this.data.tasks.records = [];
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
+            archs: {
+                'tasks,false,form': `
+                    <form>
+                        <field name="name"/>
+                        <field name="start"/>
+                        <field name="stop"/>
+                        <field name="stage"/>
+                        <field name="project_id"/>
+                        <field name="user_id"/>
+                    </form>
+                `,
+            },
+            viewOptions: {
+                initialDate: today,
+            },
+            groupBy: ['project_id'],
+        });
+
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        const content = gantt.$el.text();
+        await testUtils.dom.click(gantt.$('.o_gantt_button_add'));
+        await testUtils.modal.clickButton('Discard');
+
+        assert.strictEqual(gantt.$el.text(), content,
+            "discarding should not modify the sample records previously displayed");
+
+        gantt.destroy();
+    });
+
+    QUnit.test('click button scale in empty gantt with sample="1"', async function (assert) {
+        assert.expect(11);
+
+        const today = new Date();
+        this.data.tasks.records = [];
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
+            viewOptions: {
+                initialDate: today,
+            }
+        });
+
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+
+        const content = gantt.$el.text();
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'));
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'));
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        assert.strictEqual(gantt.$el.text(), content,
+            "when we return to the default scale, the content should be the same as before");
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'));
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+
+        gantt.destroy();
+    });
+
+    QUnit.test('click today button in empty gantt with sample="1"', async function (assert) {
+        assert.expect(5);
+
+        const today = new Date();
+        this.data.tasks.records = [];
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
+            viewOptions: {
+                initialDate: today,
+            }
+        });
+
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+
+        const content = gantt.$el.text();
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_today'));
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        assert.strictEqual(gantt.$el.text(), content,
+            "when we return to the default scale, the content should be the same as before");
+
+        gantt.destroy();
+    });
+
+    QUnit.test('click prev/next button in empty gantt with sample="1"', async function (assert) {
+        assert.expect(7);
+
+        const today = new Date();
+        this.data.tasks.records = [];
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
+            viewOptions: {
+                initialDate: today,
+            }
+        });
+
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        const content = gantt.$el.text();
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.containsOnce(gantt, '.o_gantt_row_container');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        assert.strictEqual(gantt.$el.text(), content);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('empty grouped gantt with sample data: keyboard navigation', async function (assert) {
+        assert.expect(2);
+
+        const gantt = await createView({
+            arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
+            data: this.data,
+            domain: Domain.FALSE_DOMAIN,
+            groupBy: ['project_id'],
+            model: 'tasks',
+            View: GanttView,
+            viewOptions: {
+                initialDate: new Date(),
+            },
+        });
+
+        // Check keynav is disabled
+        assert.hasClass(
+            gantt.el.querySelector('.o_gantt_row:not([data-group-id=empty])'),
+            'o_sample_data_disabled'
+        );
+        assert.containsNone(gantt.renderer, '[tabindex]:not([tabindex="-1"])');
 
         gantt.destroy();
     });

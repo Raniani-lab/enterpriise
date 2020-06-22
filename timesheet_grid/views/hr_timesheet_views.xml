@@ -664,5 +664,13 @@ action = model._action_open_to_validate_timesheet_view('month')
             <field name="act_window_id" ref="hr_timesheet.timesheet_action_report_by_task"/>
         </record>
 
+        <record id="merge_timesheet_action" model="ir.actions.server">
+            <field name="name">Merge Timesheet Entries</field>
+            <field name="model_id" ref="analytic.model_account_analytic_line"/>
+            <field name="binding_model_id" ref="analytic.model_account_analytic_line"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_merge_timesheets()</field>
+        </record>
     </data>
 </odoo>

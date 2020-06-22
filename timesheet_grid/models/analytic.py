@@ -691,3 +691,29 @@ class AnalyticLine(models.Model):
                       '|', ('employee_id.parent_id.user_id', '=', self.env.user.id),
                       '|', ('project_id.user_id', '=', self.env.user.id), ('user_id', '=', self.env.user.id)]])
         return domain
+
+    def _get_timesheets_to_merge(self):
+        return self.filtered(lambda l: l.is_timesheet and not l.validated)
+
+    def action_merge_timesheets(self):
+        to_merge = self._get_timesheets_to_merge()
+
+        if len(to_merge) <= 1:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': _('There are no timesheet entries to merge.'),
+                    'sticky': False,
+                }
+            }
+
+        return {
+            'name': _('Merge Timesheet Entries'),
+            'view_mode': 'form',
+            'res_model': 'hr_timesheet.merge.wizard',
+            'views': [(self.env.ref('timesheet_grid.timesheet_merge_wizard_view_form').id, 'form')],
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': dict(self.env.context, active_ids=to_merge.ids),
+        }

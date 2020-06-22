@@ -14,9 +14,11 @@
     'data': [
         'data/mail_data.xml',
         'security/timesheet_security.xml',
+        'security/ir.model.access.csv',
         'views/hr_timesheet_views.xml',
         'views/res_config_settings_views.xml',
         'views/assets.xml',
+        'wizard/timesheet_merge_wizard_views.xml',
     ],
     'demo': [
         'data/timesheet_grid_demo.xml',

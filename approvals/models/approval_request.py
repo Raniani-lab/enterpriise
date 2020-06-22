@@ -39,7 +39,10 @@ class ApprovalRequest(models.Model):
         ('pending', 'Submitted'),
         ('approved', 'Approved'),
         ('refused', 'Refused'),
-        ('cancel', 'Cancel')], default="new", compute="_compute_request_status", store=True, compute_sudo=True, group_expand='_read_group_request_status')
+        ('cancel', 'Cancel'),
+    ], default="new", compute="_compute_request_status",
+        store=True, tracking=True,
+        group_expand='_read_group_request_status')
     request_owner_id = fields.Many2one('res.users', string="Request Owner",
         check_company=True, domain="[('company_ids', 'in', company_id)]")
     user_status = fields.Selection([
@@ -174,35 +177,6 @@ class ApprovalRequest(models.Model):
                 'user_id': user.id,
                 'request_id': self.id,
                 'status': 'new'})
-
-    def _write(self, values):
-        # The attribute 'tracking' doesn't work for the
-        # field request_status, as it is updated from the client side
-        # We have to track the values modification by hand.
-        if values.get('request_status'):
-            field_id = self.env['ir.model.fields'].search([('name', '=', 'request_status'), ('model', '=', 'approval.request')], limit=1).id
-            # The compute method is already called and the new value is in cache.
-            # We have to retrieve the correct old value from the database, as it is
-            # stored computed field.
-            self.env.cr.execute("""SELECT id, request_status FROM approval_request WHERE id IN %s""", (tuple(self.ids),))
-            mapped_data = {data.get('id'): data.get('request_status') for data in self.env.cr.dictfetchall()}
-            for request in self:
-                old_value = mapped_data.get(request.id)
-                if old_value != values['request_status']:
-                    selection_description_values = {elem[0]: elem[1] for elem in self._fields['request_status']._description_selection(self.env)}
-                    request._message_log(body=_('State change.'), tracking_value_ids=[(0, 0, {
-                        'field': field_id,
-                        'field_desc': 'Request Status',
-                        'field_type': 'selection',
-                        'old_value_char': selection_description_values.get(old_value),
-                        'new_value_char': selection_description_values.get(values['request_status']),
-                    })])
-                    if request.request_owner_id:
-                        request.message_notify(
-                            partner_ids=request.request_owner_id.partner_id.ids,
-                            body=_("Your request %s is now in the state %s") % (request.name, selection_description_values.get(values['request_status'])),
-                            subject=request.name)
-        return super(ApprovalRequest, self)._write(values)
 
 class ApprovalApprover(models.Model):
     _name = 'approval.approver'

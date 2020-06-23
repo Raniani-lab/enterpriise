@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import date, datetime, timedelta
-from dateutil.relativedelta import relativedelta
+from datetime import datetime, timedelta
 from lxml import etree
 from collections import defaultdict
+from pytz import utc
 
 from odoo import models, fields, api, _
 from odoo.addons.web_grid.models.models import END_OF, STEP_BY, START_OF
+from odoo.addons.resource.models.resource import make_aware
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
 
@@ -186,7 +187,8 @@ class AnalyticLine(models.Model):
         # then, we add a key 'is_current' into this dictionary
         # to get the result of this checking.
         grid = [
-            [{**self._grid_make_empty_cell(r['domain'], c['domain'], domain), 'is_current': c.get('is_current', False)} for c in result['cols']]
+            [{**self._grid_make_empty_cell(r['domain'], c['domain'], domain), 'is_current': c.get('is_current', False),
+              'is_unavailable': c.get('is_unavailable', False)} for c in result['cols']]
             for r in rows]
 
         if len(rows) > 0:
@@ -198,6 +200,49 @@ class AnalyticLine(models.Model):
                 result['grid'].extend(grid)
 
         return result
+
+    def _grid_range_of(self, span, step, anchor, field):
+        """
+            Override to calculate the unavabilities of the company
+        """
+        res = super()._grid_range_of(span, step, anchor, field)
+        unavailable_days = self._get_unavailable_dates(res.start, res.end)
+        # Saving the list of unavailable days to use in method _grid_datetime_is_unavailable
+        self.env.context = dict(self.env.context, unavailable_days=unavailable_days)
+        return res
+
+    def _get_unavailable_dates(self, start_date, end_date):
+        """
+        Returns the list of days when the current company is closed (we, or holidays)
+        """
+        start_dt = datetime(year=start_date.year, month=start_date.month, day=start_date.day)
+        end_dt = datetime(year=end_date.year, month=end_date.month, day=end_date.day, hour=23, minute=59, second=59)
+        # naive datetimes are made explicit in UTC
+        from_datetime, dummy = make_aware(start_dt)
+        to_datetime, dummy = make_aware(end_dt)
+        # We need to display in grey the unavailable full days
+        # We start by getting the avaibility intervals to avoid false positive with range outside the office hours
+        items = self.env.company.resource_calendar_id._work_intervals(from_datetime, to_datetime)
+        # get the dates where some work can be done in the interval. It returns a list of sets.
+        available_dates = list(map(lambda item: {item[0].date(), item[1].date()}, items))
+        # flatten the list of sets to get a simple list of dates and add it to the pile.
+        avaibilities = [date for dates in available_dates for date in dates]
+        unavailable_days = []
+        cur_day = from_datetime
+        while cur_day <= to_datetime:
+            if not cur_day.date() in avaibilities:
+                unavailable_days.append(cur_day.date())
+            cur_day = cur_day + timedelta(days=1)
+        return set(unavailable_days)
+
+
+    def _grid_datetime_is_unavailable(self, field, span, step, column_dates):
+        """
+            :param column_dates: tuple of start/stop dates of a grid column, timezoned in UTC
+        """
+        unavailable_days = self.env.context.get('unavailable_days')
+        if unavailable_days and column_dates in unavailable_days:
+            return True
 
     @api.depends('project_id')
     def _compute_is_timesheet(self):

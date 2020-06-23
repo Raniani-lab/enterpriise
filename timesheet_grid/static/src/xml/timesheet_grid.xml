@@ -99,6 +99,7 @@
             <t t-set="timesheet" t-value="grid.rows[rowIndex].timesheet" />
             <td t-att-class="{
                 o_grid_current: cell.is_current,
+                o_grid_unavailable: cell.is_unavailable,
                 o_cell_highlighted: timesheet and timesheet.timer_start
                 }">
                 <t t-set="cellPath" t-value="path.concat([rowIndex, cell_index]).join('.')"/>

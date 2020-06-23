@@ -4,6 +4,7 @@ odoo.define('documents.component.PdfManager', function (require) {
 const PdfGroupName = require('documents.component.PdfGroupName');
 const PdfPage = require('documents.component.PdfPage');
 const { computeMultiSelection } = require('documents.utils');
+const { isEventHandled, markEventHandled } = require('mail/static/src/utils/utils.js');
 
 const ajax = require('web.ajax');
 const { csrf_token, _t } = require('web.core');
@@ -498,6 +499,13 @@ class PdfManager extends owl.Component {
      * @private
      * @param {MouseEvent} ev
      */
+    _onClickDropdown(ev) {
+        markEventHandled(ev, 'PdfManager.toggleDropdown');
+    }
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
     _onClickGlobalAdd(ev) {
         ev.stopPropagation();
         const $uploadInput = $('<input/>', {
@@ -556,6 +564,9 @@ class PdfManager extends owl.Component {
      * @param {MouseEvent} ev
      */
     _onClickManager(ev) {
+        if (isEventHandled(ev, 'PdfManager.toggleDropdown')) {
+            return;
+        }
         ev.stopPropagation();
         this.previewCanvas = undefined;
         this.state.viewedPage = undefined;

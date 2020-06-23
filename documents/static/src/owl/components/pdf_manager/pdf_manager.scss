@@ -84,6 +84,7 @@ $o-pdf-manager-border-color: #b7b7b7;
     .o_pdf_scissors {
         margin: -8px;
         color: transparent;
+        transform: rotate(270deg);
     }
 
     &.o_pdf_separator_activated {
@@ -128,4 +129,28 @@ $o-pdf-manager-border-color: #b7b7b7;
 
 .o_pdf_rule_buttons {
     border: 1px solid;
+}
+
+@include media-breakpoint-down(sm) {
+    .o_documents_pdf_page_viewer {
+        flex-flow: column;
+        align-items: center;
+    }
+
+    .o_page_splitter_wrapper {
+        padding: 10px;
+        display: flex;
+        direction: rtl;
+        align-items: center;
+
+        .o_page_splitter {
+            height: 0;
+            width: 236px;
+        }
+
+        .o_pdf_scissors {
+            margin: 0;
+            transform: none;
+        }
+    }
 }

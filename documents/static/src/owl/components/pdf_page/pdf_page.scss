@@ -18,8 +18,10 @@
             color: $o-brand-primary;
         }
     }
-    &:hover:not(.o_pdf_page_preview) {
-        border: solid 1px rgba($o-brand-primary, 0.8);
+    @media (hover: hover) and (pointer: fine) {
+        &:hover:not(.o_pdf_page_preview) {
+            border: solid 1px rgba($o-brand-primary, 0.8);
+        }
     }
 }
 

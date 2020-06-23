@@ -293,7 +293,7 @@ class DatevExportCSV(models.AbstractModel):
                 elif aml.balance < 0:
                     letter = 'h'
                 else:
-                    if aml.invoice_id.type in ('out_invoice', 'in_refund',):
+                    if aml.move_id.type in ('out_invoice', 'in_refund',):
                         letter = 'h'
                     else:
                         letter = 's'
@@ -315,7 +315,7 @@ class DatevExportCSV(models.AbstractModel):
                     elif tax_balance_sum < 0:
                         letter = 'h'
                     else:
-                        if aml.invoice_id.type in ('out_invoice', 'in_refund',):
+                        if aml.move_id.type in ('out_invoice', 'in_refund',):
                             letter = 'h'
                         else:
                             letter = 's'

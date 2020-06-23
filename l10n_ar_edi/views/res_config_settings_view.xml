@@ -46,7 +46,7 @@
                     <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible':[('country_code', '!=', 'AR')]}">
                         <div class="o_setting_left_pane"/>
                         <div class="o_setting_right_pane">
-                            <label for="country_code" string="Verify Vendor Bills validity in AFIP"/>
+                            <label for="l10n_ar_afip_verification_type" string="Verify Vendor Bills validity in AFIP"/>
                             <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." groups="base.group_multi_company"/>
                             <div class="text-muted">
                                 Allow or Require to do vendor bill verify in AFIP for documents with CAE, CAI or CAEA numbers

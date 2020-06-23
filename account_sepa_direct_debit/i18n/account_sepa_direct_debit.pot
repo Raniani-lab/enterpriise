@@ -957,6 +957,14 @@ msgstr ""
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
+"The SEPA Direct Debit mandate associated to the payment has been "
+"revoked and cannot be used anymore."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:0
+#, python-format
+msgid ""
 "Trying to register a payment on a mandate belonging to a different partner."
 msgstr ""
 

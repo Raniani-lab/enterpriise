@@ -115,10 +115,10 @@
     </record>
 
     <record id="project_worksheet_template_view_list" model="ir.ui.view">
-        <field name="name">project.worksheet.template.view.form</field>
+        <field name="name">project.worksheet.template.view.tree</field>
         <field name="model">project.worksheet.template</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree multi_edit="1">
                 <field name="name" string="Template name"/>
                 <field name="company_ids" widget="many2many_tags" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/>
                 <field name="worksheet_count" string="Worksheets"/>

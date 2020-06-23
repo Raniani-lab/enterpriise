@@ -772,7 +772,7 @@
                         <div class="o_row">
                             <field name="l10n_mx_edi_colony" placeholder="Colony..."/>
                             <field name="l10n_mx_edi_colony_code" placeholder="Colony Code..." attrs="{'invisible': [('type', '!=', 'invoice')]}"/>
-                            <field name="l10n_mx_edi_locality" placeholder="Locality..."/>
+                            <field name="l10n_mx_edi_locality" placeholder="Locality..." attrs="{'invisible': [('l10n_mx_edi_locality_id', '!=', False)]}"/>
                             <field name="l10n_mx_edi_locality_id" placeholder="Locality..." domain="[('state_id','=', state_id)]" options='{"no_create": True}'/>
                         </div>
                     </div>

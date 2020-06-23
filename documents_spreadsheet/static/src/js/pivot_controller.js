@@ -21,6 +21,23 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
                 this.canInsertPivot = has_group;
             });
         },
+
+        /**
+         * Disable the spreadsheet button when data is empty. It makes no sense
+         * to insert an empty pivot in a spreadsheet
+         *
+         * @override
+         */
+        updateButtons: function () {
+            this._super(...arguments);
+            if (!this.$buttons) {
+                return;
+            }
+            const state = this.model.get({ raw: true });
+            const noDataDisplayed = !state.hasData || !state.measures.length;
+            this.$buttons.filter('.o_pivot_add_spreadsheet').prop('disabled', noDataDisplayed);
+        },
+
         //----------------------------------------------------------------------
         // Handlers
         //----------------------------------------------------------------------

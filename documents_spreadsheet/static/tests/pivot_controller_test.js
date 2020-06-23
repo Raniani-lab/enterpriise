@@ -637,6 +637,45 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 );
                 pivot.destroy();
             });
+
+            QUnit.test("Insert in spreadsheet is disabled when no measure is specified", async function (assert) {
+                assert.expect(1);
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                    session: { async user_has_group() { return true }},
+                });
+                await testUtils.pivot.toggleMeasuresDropdown(pivot);
+                await testUtils.pivot.clickMeasure(pivot, 'foo');
+                assert.ok(document.body.querySelector("button.o_pivot_add_spreadsheet").disabled);
+                pivot.destroy();
+            });
+
+            QUnit.test("Insert in spreadsheet is disabled when data is empty", async function (assert) {
+                assert.expect(1);
+                const data = Object.assign({}, this.data);
+                data.partner.records = [];
+                data.product.records = [];
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                    session: { async user_has_group() { return true }},
+                });
+                assert.ok(document.body.querySelector("button.o_pivot_add_spreadsheet").disabled);
+                pivot.destroy();
+            });
         }
     );
 });

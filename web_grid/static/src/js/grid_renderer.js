@@ -361,6 +361,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
                 values: Object,
                 domain: Array,
                 is_current: Boolean,
+                is_unavailable: Boolean,
             }],
             grid: [{
                 size: Number,
@@ -371,6 +372,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
                     optional: true
                 },
                 is_current: Boolean,
+                is_unavailable: Boolean,
             }],
             initial: Object,
             next: Object,

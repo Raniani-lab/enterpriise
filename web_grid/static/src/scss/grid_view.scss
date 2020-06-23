@@ -177,6 +177,9 @@ $grid-pill-height: 3rem;
     .o_grid_weekend:not(.o_grid_total) {
         background-color: rgba(220,220,220, 0.25);
     }
+    .o_grid_unavailable {
+        background-color: rgba($o-brand-secondary, 0.25);
+    }
 
     .o_grid_text_muted{
         color: lighten($o-main-text-color, 15%);

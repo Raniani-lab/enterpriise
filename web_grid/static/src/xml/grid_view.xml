@@ -20,7 +20,7 @@
                     <tr>
                         <th class="o_grid_title_header"></th>
                         <t t-foreach="columns" t-as="column" t-key="column_index">
-                            <th t-att-class="{o_grid_current: column.is_current}">
+                            <th t-att-class="{o_grid_current: column.is_current, o_grid_unavailable: column.is_unavailable}">
                                 <t t-esc="column.values[props.colField][1]"/>
                             </th>
                         </t>
@@ -42,6 +42,7 @@
                             <t t-set="total_cells" t-value="_formatCellContentTotals(column_index)"/>
                             <td t-att-class="{
                                 'o_grid_current': column.is_current,
+                                'o_grid_unavailable': column.is_unavailable,
                                 'o_grid_cell_null' : total_cells.muted,
                                 'text-danger': total_cells.smallerThanZero,
                                 }">
@@ -98,6 +99,7 @@
                     <t t-foreach="columns" t-as="column" t-key="column_index">
                         <td t-att-class="{
                                  o_grid_current: column.is_current,
+                                 o_grid_unavailable: column.is_unavailable,
                                 'text-danger': grid.totals.columns[column_index] lt 0,
                                 'o_grid_cell_null': grid.totals.columns[column_index] == 0,
                             }">
@@ -153,7 +155,7 @@
                 <tr class="o_grid_padding">
                     <th>\u00A0</th>
                     <t t-foreach="props.data[0].cols" t-as="col" t-key="col_index">
-                        <td t-att-class="{o_grid_current: col.is_current}"></td>
+                        <td t-att-class="{o_grid_current: col.is_current, o_grid_unavailable: col.is_unavailable}"></td>
                     </t>
                     <t t-if="props.range !== 'day' and !props.hideLineTotal">
                         <td class="o_grid_total"/>
@@ -208,7 +210,7 @@
     </t>
 
     <t t-name="web_grid.Cell" owl="1">
-        <td t-att-class="{o_grid_current: cell.is_current}">
+        <td t-att-class="{o_grid_current: cell.is_current, o_grid_unavailable: col.is_unavailable}">
             <t t-set="cellPath" t-value="path.concat([rowIndex, cell_index]).join('.')"/>
             <t t-set="cellReadOnly" t-value="!props.editableCells || cell.readonly"/>
             <div t-att-class="_getCellClassMap(cell)">

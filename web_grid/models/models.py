@@ -90,6 +90,7 @@ class Base(models.AbstractModel):
                     # column and the view.
                     row.append(self._grid_make_empty_cell(r['domain'], c['domain'], domain))
                 row[-1]['is_current'] = c.get('is_current', False)
+                row[-1]['is_unavailable'] = c.get('is_unavailable', False)
 
         return {
             'prev': column_info.prev,
@@ -155,7 +156,8 @@ class Base(models.AbstractModel):
                 values=[{
                         'values': { name: v },
                         'domain': [(name, '=', v[0])],
-                        'is_current': False
+                        'is_current': False,
+                        'is_unavailable': False
                     } for v in field._description_selection(self.env)
                 ],
                 format=lambda a: a,
@@ -203,7 +205,8 @@ class Base(models.AbstractModel):
                         'domain': ['&',
                                    (name, '>=', field.to_string(d)),
                                    (name, '<', field.to_string(d + self._grid_step_by(step)))],
-                        'is_current': self._grid_date_is_current(field, span, step, d)
+                        'is_current': self._grid_date_is_current(field, span, step, d),
+                        'is_unavailable': self._grid_datetime_is_unavailable(field, span, step, d)
                     } for d in r.iter(step)
                 ],
                 format=lambda a: a and a[0],
@@ -236,7 +239,8 @@ class Base(models.AbstractModel):
                         'domain': ['&',
                                    (name, '>=', field.to_string(d[0])),
                                    (name, '<', field.to_string(d[1]))],
-                        'is_current': self._grid_datetime_is_current(field, span, step, d)
+                        'is_current': self._grid_datetime_is_current(field, span, step, d),
+                        'is_unavailable': self._grid_datetime_is_unavailable(field, span, step, d),
                         } for d in r.iter()],
                 format=lambda a: a and a[0],
             )
@@ -433,6 +437,15 @@ class Base(models.AbstractModel):
         """
         today_utc = pytz.utc.localize(field.now())
         return column_dates[0] <= today_utc < column_dates[1]
+
+    def _grid_datetime_is_unavailable(self, field, span, step, column_dates):
+        """
+            :param column_dates: tuple of start/stop dates of a grid column, timezoned in UTC
+            This method is meant to be overriden by each model that want to
+            implement this feature on a Grid view.
+        """
+        return False
+
 
 # ---------------------------------------------------------
 # Internal Data Structure:

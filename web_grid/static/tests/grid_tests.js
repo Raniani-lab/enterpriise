@@ -1475,5 +1475,37 @@ QUnit.module('Views', {
 
         grid.destroy();
     });
+
+    QUnit.test('Unavailable day is greyed', async function (assert) {
+        assert.expect(1);
+
+        var nbReadGridDomain = 0;
+        var nbReadGroup = 0;
+        var nbReadGrid = 0;
+
+        this.data['analytic.line'].records.push([
+            {id: 6, project_id: 142, task_id: 12, date: "2020-06-23", unit_amount: 3.5},
+        ]);
+
+        this.arch = '<grid string="Timesheet By Project" adjustment="object" adjust_name="adjust_grid">' +
+                '<field name="project_id" type="row" section="1"/>' +
+                '<field name="task_id" type="row"/>' +
+                '<field name="date" type="col">' +
+                    '<range name="week" string="Week" span="week" step="day"/>' +
+                    '<range name="month" string="Month" span="month" step="day"/>' +
+                '</field>'+
+                '<field name="unit_amount" type="measure" widget="float_time"/>' +
+            '</grid>';
+
+        var grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            currentDate: "2020-06-22",
+        });
+        assert.containsN(grid, '.o_grid_unavailable', 4, "should have 4 unavailable elements");
+        grid.destroy();
+    });
 });
 });

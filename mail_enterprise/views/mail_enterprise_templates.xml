@@ -18,6 +18,7 @@
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/mail_enterprise/static/src/bugfix/bugfix_tests.js"></script>
             <script type="text/javascript" src="/mail_enterprise/static/tests/attachment_preview_tests.js"></script>
+            <script type="text/javascript" src="/mail_enterprise/static/src/widgets/form_renderer/form_renderer_tests.js"></script>
         </xpath>
     </template>
 

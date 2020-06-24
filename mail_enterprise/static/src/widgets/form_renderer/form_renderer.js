@@ -119,11 +119,14 @@ FormRenderer.include({
         const props = this._super(...arguments);
         // Cannot rely on _isChatterAside as this.attachmentViewer is
         // not loaded yet
-        const hasExternalBorder = (
-            config.device.size_class < config.device.SIZES.XXL ||
-            !!this.$attachmentPreview
+        const isChatterAside = (
+            config.device.size_class >= config.device.SIZES.XXL &&
+            !this.$attachmentPreview
         );
-        return Object.assign(props, { hasExternalBorder });
+        return Object.assign(props, {
+            hasExternalBorder: !isChatterAside,
+            hasMessageListScrollAdjust: isChatterAside,
+        });
     },
     /**
      * Add a class to allow styling of chatter depending on the fact is is

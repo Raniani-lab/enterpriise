@@ -291,6 +291,11 @@
             overflow: auto;
             border-bottom: none;
 
+            > .o_form_statusbar, > .alert {
+                margin-left: -$o-horizontal-padding;
+                margin-right: -$o-horizontal-padding;
+            }
+
             > .o_form_sheet {
                 width: 100%;
                 max-width: map-get($container-max-widths, xl);

@@ -4,31 +4,21 @@
 
         <template id="worksheet_custom_page">
                 <div class="page">
-                    <div class="d-flex flex-wrap">
-                        <div class="d-flex flex-wrap p-2 flex-column align-items-start col-md-6">
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <div class="d-flex flex-wrap pt-3 flex-column align-items-start">
                             <div class="pr-2 align-top"><strong>Contact: </strong></div>
                             <div class="align-top" t-esc="doc.user_id" t-options='{
                                 "widget": "contact",
                                 "fields": ["name", "address", "phone", "email"]
                                 }'/>
                         </div>
-                        <div class="d-flex flex-wrap p-2 flex-column align-items-start col-md-6">
+                        <div class="d-flex flex-wrap p-3 flex-column align-items-start">
                             <t t-if="doc.partner_id">
                                 <div class="pr-2 align-top"><strong>Customer: </strong></div>
-                                <div class="align-top">
-                                    <t t-esc="doc.partner_id" t-options='{
-                                        "widget": "contact",
-                                        "fields": ["name"],
-                                        "no_marker": true
-                                        }'/>
-                                    <t t-esc="doc.partner_id" t-options='{
-                                        "widget": "contact",
-                                        "fields": ["address"]
-                                        }'/>
-                                    <t t-esc="doc.partner_id" t-options='{
-                                        "widget": "contact",
-                                        "fields": ["phone", "email"]
-                                        }'/>
+                                <div class="align-top"><t t-esc="doc.partner_id" t-options='{
+                                                            "widget": "contact",
+                                                            "fields": ["name", "address", "phone", "email"]
+                                                            }'/>
                                 </div>
                             </t>
                         </div>
@@ -69,6 +59,7 @@
                         </table>
                         </div>
                     </t>
+
                     <div name="worksheet_map" t-if="doc.worksheet_template_id.report_view_id and worksheet_map.get(doc.id)" style="page-break-inside: avoid">
                         <t t-set="worksheet" t-value="worksheet_map.get(doc.id)"/>
                         <h2>Worksheet</h2>
@@ -99,9 +90,9 @@
                             </span>
                         </div>
 
-                        <div t-attf-class="#{'col-12 col-lg-3' if report_type != 'html' else 'col-sm-7 col-md-4'} ml-auto text-center">
+                        <div t-attf-class="#{'col-12 col-lg-3' if report_type != 'html' else 'col-sm-7 col-md-4'} ml-auto text-right" style="page-break-inside: avoid">
                             <h5>Signature</h5>
-                            <img t-att-src="image_data_uri(doc.worksheet_signature)" style="max-height: 6rem; max-width: 100%;"/>
+                            <img t-att-src="image_data_uri(doc.worksheet_signature)" style="max-height: 6rem; max-width: 100%; color:black;"/><br/>
                             <span t-field="doc.worksheet_signed_by"/>
                         </div>
                     </div>

@@ -69,6 +69,7 @@
                                     <t t-call="portal.signature_form">
                                         <t t-set="call_url" t-value="task.get_portal_url(suffix='/worksheet/sign/%s' % source)"/>
                                         <t t-set="default_name" t-value="task.partner_id.name"/>
+                                        <t t-set="font_color" t-value="'black'"/>
                                         <t t-set="send_label">Sign</t>
                                     </t>
                                 </main>

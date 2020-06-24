@@ -22,11 +22,14 @@ class AppraisalAskFeedback(models.TransientModel):
         if not self.env.user.email:
             raise UserError(_("Unable to post message, please configure the sender's email address."))
         result = super(AppraisalAskFeedback, self).default_get(fields)
-        appraisal = self.env['hr.appraisal'].browse(result['appraisal_id'])
+        appraisal_id = result.get('appraisal_id', False)
+        if not appraisal_id:
+            appraisal_id = self.env.context.get('active_id')
+        appraisal = self.env['hr.appraisal'].browse(appraisal_id)
         result.update({
             'email_from': self.env.user.email_formatted,
             'author_id': self.env.user.partner_id.id,
-            'appraisal_id': self.env.context.get('active_id'),
+            'appraisal_id': appraisal_id,
             'employee_id': appraisal.employee_id.id,
         })
         if 'survey_template_id' in fields and not result.get('survey_template_id'):

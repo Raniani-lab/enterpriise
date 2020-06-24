@@ -761,8 +761,8 @@
         <record id="balance_full_line_12450_debits" model="account.financial.html.report.line">
             <field name="name">12450 debits sum</field>
             <field name="code">l10n_es_full_debits_sum_12450</field>
-            <field name="domain" eval="[('debit', '>', 0.0), '|', ('account_id.code','=like','5523%'), ('account_id.code','=like','5524%')]"/>
-            <field name="formulas">-sum</field>
+            <field name="domain" eval="['|', ('account_id.code','=like','5523%'), ('account_id.code','=like','5524%')]"/>
+            <field name="formulas">-sum_if_pos</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="level" eval="3"/>
@@ -878,12 +878,11 @@
         <record id="balance_full_line_12550_debits" model="account.financial.html.report.line">
             <field name="name">12550 debits sum</field>
             <field name="code">l10n_es_full_debits_sum_12550</field>
-            <field name="domain" eval="[('debit', '>', 0.0),
-                                        '|', ('account_id.code','=like','550%'),
+            <field name="domain" eval="['|', ('account_id.code','=like','550%'),
                                         '|', ('account_id.code','=like','551%'),
                                         '|', ('account_id.code','=like','554%'),
                                         ('account_id.code','=like','5525%')]"/>
-            <field name="formulas">-sum</field>
+            <field name="formulas">-sum_if_pos</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="level" eval="3"/>
@@ -1612,12 +1611,11 @@
         <record id="balance_full_line_32350_credits" model="account.financial.html.report.line">
             <field name="name">32350 credits sum</field>
             <field name="code">l10n_es_full_credits_sum_32350</field>
-            <field name="domain" eval="[('credit', '>', 0.0),
-                                        '|', ('account_id.code','=like','550%'),
+            <field name="domain" eval="['|', ('account_id.code','=like','550%'),
                                         '|', ('account_id.code','=like','551%'),
                                         '|', ('account_id.code','=like','554%'),
                                         ('account_id.code','=like','5525%')]"/>
-            <field name="formulas">-sum</field>
+            <field name="formulas">-sum_if_neg</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="level" eval="3"/>
@@ -1656,8 +1654,8 @@
         <record id="balance_full_line_32400_credits" model="account.financial.html.report.line">
             <field name="name">32400 credits sum</field>
             <field name="code">l10n_es_full_credits_sum_32400</field>
-            <field name="domain" eval="[('credit', '>', 0.0), '|', ('account_id.code','=like','5523%'), ('account_id.code','=like','5524%')]"/>
-            <field name="formulas">-sum</field>
+            <field name="domain" eval="['|', ('account_id.code','=like','5523%'), ('account_id.code','=like','5524%')]"/>
+            <field name="formulas">-sum_if_neg</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="level" eval="2"/>

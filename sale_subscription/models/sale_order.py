@@ -141,7 +141,7 @@ class SaleOrder(models.Model):
         new_sub_lines = self.order_line.filtered(lambda l: not l.subscription_id and l.product_id.subscription_template_id and l.product_id.recurring_invoice)
         templates = new_sub_lines.mapped('product_id').mapped('subscription_template_id')
         for template in templates:
-            lines = self.order_line.filtered(lambda l: l.product_id.subscription_template_id == template)
+            lines = self.order_line.filtered(lambda l: l.product_id.subscription_template_id == template and l.product_id.recurring_invoice)
             res[template] = lines
         return res
 

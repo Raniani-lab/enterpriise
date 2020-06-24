@@ -184,7 +184,8 @@ class HelpdeskTicket(models.Model):
             if fname in values:
                 timesheet_vals[fname] = values[fname]
         if timesheet_vals:
-            self.sudo()._get_timesheet().write(timesheet_vals)  # sudo since helpdesk user can change task
+            for timesheet in self.sudo()._get_timesheet():
+                timesheet.write(timesheet_vals)  # sudo since helpdesk user can change task
         return result
 
     @api.model

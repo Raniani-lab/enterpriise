@@ -97,7 +97,7 @@ FormRenderer.include({
         }
         const $sheet = this.$('.o_form_sheet_bg');
 
-        $(this._chatterContainerTarget).addClass('o-aside');
+        this._updateChatterContainerTarget();
         if (enablePreview) {
             this.$attachmentPreview.insertAfter($sheet);
             dom.append($sheet, $(this._chatterContainerTarget), {

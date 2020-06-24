@@ -45,7 +45,7 @@ QUnit.module('MailAttachmentOnSide', {
 }, function () {
 
     QUnit.test('Attachment on side', async function (assert) {
-        assert.expect(9);
+        assert.expect(10);
 
         var count = 0;
         this.data.partner.records[0].message_ids = [1];
@@ -160,6 +160,11 @@ QUnit.module('MailAttachmentOnSide', {
             "There should be an image for attachment preview");
         assert.containsOnce(form, '.o_form_sheet_bg > .o_FormRenderer_chatterContainer',
             "Chatter should moved inside sheet");
+        assert.doesNotHaveClass(
+            document.querySelector('.o_FormRenderer_chatterContainer'),
+            'o-aside',
+            "Chatter should not have o-aside class as it is below form view and not aside",
+        );
         assert.containsOnce(form, '.o_form_sheet_bg + .o_attachment_preview',
             "Attachment preview should be next sibling to .o_form_sheet_bg");
 

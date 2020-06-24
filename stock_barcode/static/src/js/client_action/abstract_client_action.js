@@ -249,7 +249,7 @@ var ClientAction = AbstractAction.extend({
             }
             return product;
         } else {
-            return this.productsByBarcode[barcode];
+            return this.productsByBarcode[parsed.code];
         }
     },
 

@@ -20,6 +20,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "click a[name='recompute']": "recompute",
         "click button[name='toggle_personal_information']": "togglePersonalInformation",
         "change input.bg-danger": "checkFormValidity",
+        "change div.invalid_radio": "checkFormValidity",
         "change input.document": "onchangeDocument",
     },
 
@@ -108,7 +109,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                     advantages[appliesOn][input.name] = input.checked;
                 } else if (input.type === 'radio' && input.checked) {
                     advantages[appliesOn][input.name] = $(input).data('value');
-                } else if (input.type !== 'hidden') {
+                } else if (input.type !== 'hidden' && input.type !== 'radio') {
                     advantages[appliesOn][input.name] = input.value;
                 }
             });
@@ -295,6 +296,25 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         const atpos = email.indexOf("@");
         const dotpos = email.lastIndexOf(".");
         const invalid_email = atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length;
+
+        let requiredEmptyRadio;
+        const radios = Array.prototype.slice.call(document.querySelectorAll('input[type=radio]:required'));
+        const groups = Object.values(radios.reduce((result, el) => Object.assign(result, {[el.name]: (result[el.name] || []).concat(el)}), {}));
+        groups.some((group, index) => {
+            const $radio = group[0].parentElement.parentElement;
+            if (!group.some(el => el.checked)) {
+                requiredEmptyRadio = true;
+                const $warning = document.createElement('div');
+                $warning.classList = 'alert alert-danger alert-dismissable fade show';
+                $warning.textContent = _('Some required fields are not filled');
+                document.querySelector("button#hr_cs_submit").parentElement.append($warning);
+                $radio.classList.toggle('invalid_radio', requiredEmptyRadio);
+                document.querySelector("section#hr_cs_personal_information").scrollIntoView({block: "start", behavior: "smooth"});
+            } else if ($radio.classList.contains('invalid_radio')) {
+                $radio.classList.toggle('invalid_radio');
+            }
+        });
+
         if(requiredEmptyInput || requiredEmptySelect) {
             $("button#hr_cs_submit").parent().append("<div class='alert alert-danger alert-dismissable fade show'>" + _('Some required fields are not filled') + "</div>");
             $("input:required").toArray().forEach(input => {
@@ -316,7 +336,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $(".alert").delay(4000).slideUp(200, function () {
             $(this).alert('close');
         });
-        return !invalid_email && !requiredEmptyInput && !requiredEmptySelect;
+        return !invalid_email && !requiredEmptyInput && !requiredEmptySelect && !requiredEmptyRadio;
     },
 
     async getFormInfo() {

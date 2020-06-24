@@ -259,13 +259,14 @@
                 t-att-placeholder="personal_info.placeholder"/>
         </t>
         <t t-if="personal_info.display_type == 'radio'">
-            <div class="mt-2">
+            <div class="o_contract_radio">
                 <t t-foreach="personal_info.value_ids" t-as="value">
-                    <label class="hr_cs_control hr_cs_control_radio"><t t-esc="value.name"/>
+                    <label class="hr_cs_control hr_cs_control_radio mt-2"><t t-esc="value.name"/>
                         <input
                             type="radio"
                             t-att-name="personal_info.field"
                             t-att-applies-on="personal_info.applies_on"
+                            t-att-required="personal_info.is_required and not hidden_children"
                             t-att-value="value.value"
                             t-att-data-value="value.value"
                             t-att-checked="initial_values[personal_info.field] == value.value"

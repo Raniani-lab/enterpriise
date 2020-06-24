@@ -107,7 +107,7 @@ class HrContractSalary(http.Controller):
 
         if not contract.employee_id:
             contract.employee_id = request.env['hr.employee'].sudo().create({
-                'name': 'Enter your name',
+                'name': '',
                 'active': False,
                 'country_id': request.env.ref('base.be').id,
             })

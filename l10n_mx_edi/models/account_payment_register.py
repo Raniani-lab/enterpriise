@@ -8,11 +8,15 @@ class AccountPaymentRegister(models.TransientModel):
     l10n_mx_edi_payment_method_id = fields.Many2one(
         comodel_name='l10n_mx_edi.payment.method',
         string='Payment Way',
+        readonly=False, store=True,
+        compute='_compute_l10n_mx_edi_payment_method_id',
         help="Indicates the way the payment was/will be received, where the options could be: "
              "Cash, Nominal Check, Credit Card, etc.")
     l10n_mx_edi_partner_bank_id = fields.Many2one(
         comodel_name='res.partner.bank',
         string='Partner Bank',
+        readonly=False, store=True,
+        compute='_compute_l10n_mx_edi_partner_bank_id',
         help="If the payment was made with a financial institution define the bank account used "
              "in this payment.")
 
@@ -31,16 +35,27 @@ class AccountPaymentRegister(models.TransientModel):
         })
         return res
 
-    @api.model
-    def _get_wizard_values_from_batch(self, batch_result):
-        res = super()._get_wizard_values_from_batch(batch_result)
+    # -------------------------------------------------------------------------
+    # COMPUTE METHODS
+    # -------------------------------------------------------------------------
 
-        key_values = batch_result['key_values']
-        return {
-            **res,
-            'l10n_mx_edi_payment_method_id': key_values['l10n_mx_edi_payment_method_id'],
-            'l10n_mx_edi_partner_bank_id': key_values['l10n_mx_edi_partner_bank_id'],
-        }
+    @api.depends('journal_id')
+    def _compute_l10n_mx_edi_payment_method_id(self):
+        for wizard in self:
+            if wizard.can_edit_wizard:
+                batches = self._get_batches()
+                wizard.l10n_mx_edi_payment_method_id = batches[0]['key_values']['l10n_mx_edi_payment_method_id']
+            else:
+                wizard.l10n_mx_edi_payment_method_id = False
+
+    @api.depends('journal_id')
+    def _compute_l10n_mx_edi_partner_bank_id(self):
+        for wizard in self:
+            if wizard.can_edit_wizard:
+                batches = self._get_batches()
+                wizard.l10n_mx_edi_partner_bank_id = batches[0]['key_values']['l10n_mx_edi_partner_bank_id']
+            else:
+                wizard.l10n_mx_edi_partner_bank_id = False
 
     # -------------------------------------------------------------------------
     # BUSINESS METHODS

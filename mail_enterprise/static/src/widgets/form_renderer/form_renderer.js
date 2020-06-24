@@ -283,6 +283,7 @@ FormRenderer.include({
             this._updateChatterContainerComponent();
             this._updateChatterContainerTarget();
         }
+        this._applyFormSizeClass();
     }
 
 });

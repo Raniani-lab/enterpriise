@@ -279,7 +279,7 @@
         }
     }
 
-    @include media-breakpoint-up(xxl, $o-extra-grid-breakpoints) {
+    &.o_xxl_form_view {
         flex-flow: row nowrap;
         height: 100%;
 

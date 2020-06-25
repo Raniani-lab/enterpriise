@@ -58,7 +58,7 @@
                 <EMI_8/>
                 <EMI_9/>
                 <EMI_10 t-esc="company_partner.contact_address"/>
-                <EMI_11 t-esc="company_partner.state_id.l10n_co_edi_code"/>
+                <EMI_11 t-esc="str(company_partner.state_id.l10n_co_edi_code).zfill(2)"/>
                 <EMI_12/>
                 <EMI_13 t-esc="company_partner.city_id.name"/>
                 <EMI_14 t-esc="company_partner.zip"/>
@@ -67,7 +67,7 @@
                 <EMI_19 t-esc="company_partner.state_id.name"/>
                 <EMI_21 t-esc="company_partner.country_id.name"/>
                 <EMI_22 t-esc="company_partner._get_vat_verification_code()"/>
-                <EMI_23 t-esc="company_partner.city_id.l10n_co_edi_code"/>
+                <EMI_23 t-esc="str(company_partner.city_id.l10n_co_edi_code).zfill(5)"/>
                 <EMI_24 t-esc="company_partner.l10n_co_edi_commercial_name or company_partner.name"/>
 
                 <TAC>
@@ -79,10 +79,10 @@
                 </ICC>
 
                 <DFE>
-                    <DFE_1 t-esc="company_partner.city_id.l10n_co_edi_code"/>
-                    <DFE_2 t-esc="company_partner.state_id.l10n_co_edi_code"/>
+                    <DFE_1 t-esc="str(company_partner.city_id.l10n_co_edi_code).zfill(5)"/>
+                    <DFE_2 t-esc="str(company_partner.state_id.l10n_co_edi_code).zfill(2)"/>
                     <DFE_3 t-esc="company_partner.country_id.code"/>
-                    <DFE_4 t-esc="company_partner.zip"/>
+                    <DFE_4 t-esc="str(company_partner.zip).zfill(5)"/>
                     <DFE_5 t-esc="company_partner.country_id.name"/>
                     <DFE_6 t-esc="company_partner.state_id.name"/>
                     <DFE_7 t-esc="company_partner.city_id.name"/>
@@ -113,7 +113,7 @@
                 <ADQ_9 t-esc="invoice_partner.name"/>
                 <t t-if="invoice_partner.vat != '222222222222'">
                     <ADQ_10 t-esc="invoice_partner.contact_address"/>
-                    <ADQ_11 t-esc="invoice_partner.state_id.l10n_co_edi_code"/>
+                    <ADQ_11 t-esc="str(invoice_partner.state_id.l10n_co_edi_code).zfill(2)"/>
                     <ADQ_12/>
                     <ADQ_13 t-esc="invoice_partner.city"/>
                     <ADQ_14 t-esc="invoice_partner.zip"/>
@@ -122,7 +122,7 @@
                     <ADQ_19 t-esc="invoice_partner.state_id.name"/>
                     <ADQ_21 t-esc="invoice_partner.country_id.name"/>
                     <ADQ_22 t-esc="invoice_partner._get_vat_verification_code()"/>
-                    <ADQ_23 t-esc="invoice_partner.city_id.l10n_co_edi_code"/>
+                    <ADQ_23 t-esc="str(invoice_partner.city_id.l10n_co_edi_code).zfill(5)"/>
                 </t>
                 <t t-else="">
                     <ADQ_10/>
@@ -149,8 +149,8 @@
 
                 <DFA t-if="invoice_partner.vat != '222222222222'">
                     <DFA_1 t-esc="invoice_partner.country_id.code"/>
-                    <DFA_2 t-esc="invoice_partner.state_id.l10n_co_edi_code"/>
-                    <DFA_4 t-esc="invoice_partner.city_id.l10n_co_edi_code"/>
+                    <DFA_2 t-esc="str(invoice_partner.state_id.l10n_co_edi_code).zfill(2)"/>
+                    <DFA_4 t-esc="str(invoice_partner.city_id.l10n_co_edi_code).zfill(5)"/>
                     <DFA_8/>
                 </DFA>
 
@@ -226,13 +226,13 @@
 
             <IEN>
                 <IEN_1 t-esc="shipping_partner.street if shipping_partner else ''"/>
-                <IEN_2 t-esc="invoice.partner_shipping_id.state_id.l10n_co_edi_code if 'partner_shipping_id' in invoice._fields else invoice_partner.state_id.l10n_co_edi_code"/>
+                <IEN_2 t-esc="str(invoice.partner_shipping_id.state_id.l10n_co_edi_code).zfill(2) if 'partner_shipping_id' in invoice._fields else str(invoice_partner.state_id.l10n_co_edi_code).zfill(2)"/>
                 <IEN_3/>
                 <IEN_4 t-esc="shipping_partner.city if shipping_partner else ''"/>
                 <IEN_6 t-esc="shipping_partner.country_id.code if shipping_partner else ''"/>
                 <IEN_7 t-esc="invoice_partner.name"/>
                 <IEN_8 t-esc="invoice._l10n_co_edi_get_delivery_date()"/>
-                <IEN_12 t-esc="invoice.partner_shipping_id.city_id.l10n_co_edi_code if 'partner_shipping_id' in invoice._fields else invoice_partner.city_id.l10n_co_edi_code"/>
+                <IEN_12 t-esc="str(invoice.partner_shipping_id.city_id.l10n_co_edi_code).zfill(5) if 'partner_shipping_id' in invoice._fields else str(invoice_partner.city_id.l10n_co_edi_code).zfill(5)"/>
             </IEN>
 
             <MEP>

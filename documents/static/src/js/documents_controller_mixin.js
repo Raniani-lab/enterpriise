@@ -430,6 +430,27 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
     _updateSelection() {
         this.renderer.updateSelection(this._selectedRecordIds);
     },
+    /**
+     * Generates a handler for uploading one or multiple file(s)
+     *
+     * @private
+     * @param {boolean} multiple allow to upload a single file or multiple files
+     * @returns {Function}
+     */
+    _uploadFilesHandler(multiple) {
+        return (ev) => {
+            const recordId = ev.data ? ev.data.id : undefined;
+            const $uploadInput = this.hiddenUploadInputFile
+                ? this.hiddenUploadInputFile.off('change')
+                : (this.hiddenUploadInputFile = $('<input>', { type: 'file', name: 'files[]', class: 'o_hidden' }).appendTo(this.$el));
+            $uploadInput.attr('multiple', multiple ? true : null);
+            const cleanup = $.prototype.remove.bind($uploadInput);
+            $uploadInput.on('change', async changeEv => {
+                await this._uploadFiles(changeEv.target.files, { recordId }).finally(cleanup);
+            });
+            this._promptFileInput($uploadInput);
+        };
+    },
 
     //--------------------------------------------------------------------------
     // Handlers
@@ -497,17 +518,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
     /**
      * @private
      */
-    _onClickDocumentsUpload() {
-        const $uploadInput = $('<input>', {
-            type: 'file',
-            name: 'files[]',
-            multiple: 'multiple'
-        });
-        $uploadInput.on('change', async ev => {
-            await this._uploadFiles(ev.target.files);
-            $uploadInput.remove();
-        });
-        $uploadInput.click();
+    _onClickDocumentsUpload(ev) {
+        this._uploadFilesHandler(true)(ev);
     },
     /**
      * @private
@@ -857,15 +869,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @param {integer} ev.data.id
      */
     _onSetFile(ev) {
-        const $uploadInput = $('<input/>', {
-            type: 'file',
-            name: 'files[]'
-        });
-        $uploadInput.on('change', async e => {
-            await this._uploadFiles($uploadInput[0].files, {recordId: ev.data.id});
-            $uploadInput.remove();
-        });
-        this._promptFileInput($uploadInput);
+        this._uploadFilesHandler(false)(ev);
     },
     /**
      * Share the given records.

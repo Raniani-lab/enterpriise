@@ -141,7 +141,7 @@ def generate_module(module, data):
         for record in records:
             xmlid = get_xmlid(record)
             module_name = xmlid.split('.', 1)[0]
-            if module_name != module.name and module_name != '__export__':
+            if module_name != module.name:
                 # data depends on a record from another module
                 depends.add(module_name)
             for field in fields:
@@ -220,7 +220,7 @@ def generate_module(module, data):
         module.installed_version,
         'u"""\n%s\n"""' % module.description,
         module.author,
-        ''.join("\n        %r," % d for d in sorted(depends)),
+        ''.join("\n        %r," % d for d in sorted(depends - {'__export__'})),
         ''.join("\n        %r," % f for f in filenames),
         module.application,
         module.license,

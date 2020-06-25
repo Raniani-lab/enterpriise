@@ -567,6 +567,36 @@
                       <field name="note" placeholder="Write a tooltip for the action here"/>
                     </div>
                         <notebook>
+                            <page string="Conditions" name="conditions">
+                                <group>
+                                    <group>
+                                        <field name="domain_folder_id" required="1"/>
+                                        <field name="condition_type" widget="radio" groups="base.group_no_one"/>
+                                    </group>
+                                    <group/>
+                                </group>
+                                <field name="domain" string="Domain" nolabel="1" widget="domain" colspan="2" options="{'model':'documents.document'}" attrs="{ 'invisible' : [('condition_type', '=', 'criteria')]}"/>
+                                <group attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}">
+                                    <group string="Tags">
+                                        <field name="required_tag_ids"
+                                               string="Contains"
+                                               widget="many2many_tags"
+                                               domain="[('id','not in', excluded_tag_ids), ('folder_id', '=', domain_folder_id)]"
+                                               options='{"no_open": True, "no_create": True}'
+                                        />
+                                        <field name="excluded_tag_ids"
+                                               string="Does not contain"
+                                               widget="many2many_tags"
+                                               domain="[('id','not in', required_tag_ids), ('folder_id', '=', domain_folder_id)]"
+                                               options='{"no_open": True, "no_create": True}'
+                                        />
+                                    </group>
+                                    <group string="Miscellaneous">
+                                        <field name="criteria_partner_id"/>
+                                        <field name="criteria_owner_id"/>
+                                    </group>
+                                </group>
+                            </page>
                             <page string="Actions" name="actions">
                                 <group>
                                     <field name="has_business_option" invisible="1"/>
@@ -617,36 +647,6 @@
                                 </group>
                                 <group attrs="{'invisible': [('activity_option', '=', False)]}">
                                     <field name="activity_note" placeholder="Log a note..."/>
-                                </group>
-                            </page>
-                            <page string="Conditions" name="conditions">
-                                <group>
-                                    <group>
-                                        <field name="domain_folder_id" required="1"/>
-                                        <field name="condition_type" widget="radio" groups="base.group_no_one"/>
-                                    </group>
-                                    <group/>
-                                </group>
-                                <field name="domain" string="Domain" nolabel="1" widget="domain" colspan="2" options="{'model':'documents.document'}" attrs="{ 'invisible' : [('condition_type', '=', 'criteria')]}"/>
-                                <group attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}">
-                                    <group string="Tags">
-                                        <field name="required_tag_ids"
-                                               string="Contains"
-                                               widget="many2many_tags"
-                                               domain="[('id','not in', excluded_tag_ids), ('folder_id', '=', domain_folder_id)]"
-                                               options='{"no_open": True, "no_create": True}'
-                                        />
-                                        <field name="excluded_tag_ids"
-                                               string="Does not contain"
-                                               widget="many2many_tags"
-                                               domain="[('id','not in', required_tag_ids), ('folder_id', '=', domain_folder_id)]"
-                                               options='{"no_open": True, "no_create": True}'
-                                        />
-                                    </group>
-                                    <group string="Miscellaneous">
-                                        <field name="criteria_partner_id"/>
-                                        <field name="criteria_owner_id"/>
-                                    </group>
                                 </group>
                             </page>
                         </notebook>

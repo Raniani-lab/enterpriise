@@ -4,7 +4,6 @@
 import ast
 import base64
 import collections
-import itertools
 import io
 import logging
 import os
@@ -16,7 +15,7 @@ from tempfile import TemporaryDirectory
 from os import listdir
 from os.path import isfile, join
 
-from odoo import models, fields, api, tools, _
+from odoo import models, fields, _
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -194,11 +193,11 @@ class WinbooksImportWizard(models.TransientModel):
             {'min': 200000, 'max': 280000, 'id': 'account.data_account_type_non_current_assets'},
             {'min': 280000, 'max': 290000, 'id': 'account.data_account_type_fixed_assets'},
             {'min': 290000, 'max': 400000, 'id': 'account.data_account_type_current_assets'},
-            {'min': 400000, 'max': 410000, 'id': 'account.data_account_type_receivable', 'reconcile': True},
-            {'min': 410000, 'max': 420000, 'id': 'account.data_account_type_current_assets'},
+            {'min': 400000, 'max': 401000, 'id': 'account.data_account_type_receivable', 'reconcile': True},
+            {'min': 401000, 'max': 420000, 'id': 'account.data_account_type_current_assets'},
             {'min': 420000, 'max': 440000, 'id': 'account.data_account_type_current_liabilities'},
-            {'min': 440000, 'max': 450000, 'id': 'account.data_account_type_payable', 'reconcile': True},
-            {'min': 450000, 'max': 490000, 'id': 'account.data_account_type_current_liabilities'},
+            {'min': 440000, 'max': 441000, 'id': 'account.data_account_type_payable', 'reconcile': True},
+            {'min': 441000, 'max': 490000, 'id': 'account.data_account_type_current_liabilities'},
             {'min': 490000, 'max': 492000, 'id': 'account.data_account_type_current_assets'},
             {'min': 492000, 'max': 500000, 'id': 'account.data_account_type_current_liabilities'},
             {'min': 500000, 'max': 600000, 'id': 'account.data_account_type_liquidity'},

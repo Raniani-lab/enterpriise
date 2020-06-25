@@ -1306,7 +1306,9 @@ odoo.define('sign.document_signing', function (require) {
                     });
                 } else {
                     openDocumentButton.classes = 'btn-primary';
-                    self.options.buttons.push(openDocumentButton);
+                    if (!self.RedirectURL) {
+                        self.options.buttons.push(openDocumentButton);
+                    }
                 }
                 self.setElement($(core.qweb.render('sign.thank_you_dialog', {widget: self})));
                 self.set_buttons(self.options.buttons);

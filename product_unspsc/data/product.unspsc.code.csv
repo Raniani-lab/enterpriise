@@ -9092,6 +9092,8 @@ code|name|applies_to|active
 15101511|Etanol|product|TRUE
 15101512|Coque de petróleo o petcoke|product|TRUE
 15101513|Combustible diesel para uso fuera de carretera|product|TRUE
+15101514|Gasolina regular menor a 91 octanos|product|TRUE
+15101515|Gasolina premium mayor o igual a 91 octanos|product|FALSE
 15101600|Combustibles sólidos o gelificados|product|FALSE
 15101601|Carbón sub – bituminosos o débil|product|TRUE
 15101602|Lignito|product|TRUE
@@ -9124,6 +9126,7 @@ code|name|applies_to|active
 15111509|Gas metilacetileno propadieno mapp|product|TRUE
 15111510|Gas licuado de petróleo|product|TRUE
 15111511|Gas natural licuado gnl|product|TRUE
+15111512|Gas natural|product|TRUE
 15111700|Aditivos para carburante|product|FALSE
 15111701|Espesantes de combustible|product|TRUE
 15111702|Inhibidores de hielo para sistemas de combustibles|product|TRUE

@@ -235,17 +235,18 @@ class MWS(object):
             # be aware that response.content returns the content in bytes while response.text calls
             # response.content and converts it to unicode.
 
-            data = response.content
+            # Amazon does not always replies with UTF-8 encoded responses, and the specified
+            # encoding is sometimes wrong. Replace the response encoding by its apparent encoding
+            # provided by the chardet library for the text attribute of the response to be correctly
+            # decoded. See doc https://requests.readthedocs.io/en/master/api/#requests.Response.text
+            response.encoding = response.apparent_encoding
+            data = response.text
+
             # I do not check the headers to decide which content structure to server simply because sometimes
             # Amazon's MWS API returns XML error responses with "text/plain" as the Content-Type.
             rootkey = kwargs.get('rootkey', extra_data.get("Action") + "Result")
             try:
-                try:
-                    parsed_response = DictWrapper(data, rootkey)
-                except TypeError:  # raised when using Python 3 and trying to remove_namespace()
-                    # When we got CSV as result, we will got error on this
-                    parsed_response = DictWrapper(response.text, rootkey)
-
+                parsed_response = DictWrapper(data, rootkey)
             except XMLError:
                 parsed_response = DataWrapper(data, response.headers)
 

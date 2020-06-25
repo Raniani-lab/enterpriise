@@ -17,7 +17,7 @@ from odoo.tools.misc import xlsxwriter
 from odoo import models, fields, api, _
 from odoo.tools import config, date_utils, get_lang
 from odoo.osv import expression
-from babel.dates import get_quarter_names, parse_date
+from babel.dates import get_quarter_names
 from odoo.tools.misc import formatLang, format_date
 from odoo.addons.web.controllers.main import clean_action
 
@@ -1484,7 +1484,8 @@ class AccountReport(models.AbstractModel):
             return ('date', cell['name'])
         try:
             # the date is parsable to a xlsx compatible date
-            return ('date', parse_date(cell['name'], locale=get_lang(self.env).code))
+            lg = self.env['res.lang']._lang_get(self.env.user.lang) or get_lang(self.env)
+            return ('date', datetime.strptime(cell['name'], lg.date_format))
         except:
             # the date is not parsable thus is returned as text
             return ('text', cell['name'])

@@ -10,8 +10,10 @@ var Dialog = require('web.Dialog');
 var ActionManager = require('web.ActionManager');
 var basic_fields = require('web.basic_fields');
 var BusService = require('bus.BusService');
+var IoTScan = require('iot.scan');
 
 var _t = core._t;
+var QWeb = core.qweb;
 
 ActionManager.include({
     _executeReportAction: function (action) {
@@ -54,6 +56,304 @@ ActionManager.include({
         this.do_notify(false, _t("Printer ") + data.status);
     }
 });
+
+var IotScanButton = Widget.extend({
+    tagName: 'button',
+    className: 'o_iot_detect_button btn btn-primary',
+    events: {
+        'click': '_onButtonClick',
+    },
+
+    /**
+    * @override
+    */
+    init: function (parent, record) {
+        this._super.apply(this, arguments);
+        IoTScan.box_connect = '/hw_drivers/box/connect?token=' + btoa(record.data.token);
+    },
+
+    /**
+    * @override
+    */
+    start: function () {
+        var self = this;
+        return this._super.apply(this, arguments).then(function() {
+            self.$el.text(_t('SCAN'));
+            IoTScan._getLocalIP();
+        });
+    },
+
+    /**
+    * @override
+    */
+    destroy: function (){
+        IoTScan.reset();
+        this._super.apply(this, arguments);
+    },
+
+    /**
+    * @private
+    */
+    _onButtonClick: function (e) {
+        IoTScan.findIOTs();
+    },
+});
+
+widget_registry.add('iot_detect_button', IotScanButton);
+
+
+
+var IotScanProgress = Widget.extend({
+    tagName: 'div',
+    className: 'scan_progress',
+    events: {
+        'click .add_scan_range': '_onClickAddScanRange',
+        'click .add_scan_range_ip': '_onClickAddScanRangeIp',
+        'click .delete_scan_range': '_onClickDeleteScanRange',
+    },
+
+    /**
+    * @override
+    */
+    init: function () {
+        this._super.apply(this, arguments);
+
+        IoTScan.reset();
+
+        this.eventListeners = {
+            '_onAddRange': this._onAddRange.bind(this),
+            '_updateRangeProgress': this._updateRangeProgress.bind(this),
+            '_addIOTProgress': this._addIOTProgress.bind(this),
+            '_updateIOTProgress': this._updateIOTProgress.bind(this),
+            '_clearIOTProgress': this._clearIOTProgress.bind(this),
+        };
+
+        _.each(this.eventListeners, function (listener, event) {
+            window.addEventListener(event, listener);
+        });
+    },
+
+    /**
+    * @override
+    */
+    start: function () {
+        this._super.apply(this, arguments);
+        this.$el.html(QWeb.render('iot.scan_progress_template'));
+
+        this.$progressRanges = this.$('.scan_ranges');
+        this.$scanNetwork = this.$('.scan_network');
+        this.$progressFound = this.$('.found_devices');
+        this.$addRange = this.$('.add_scan_range');
+        this.$addRangeInput = this.$('.add_scan_range_ip');
+        this.$progressIotFound = this.$('.iot_box_found');
+
+
+    },
+
+    /**
+     * @override
+     */
+    destroy: function () {
+        this._super.apply(this, arguments);
+        _.each(this.eventListeners, function (listener, event) {
+            window.removeEventListener(event, listener);
+        });
+    },
+
+    /**
+    * Add an IoT to the progress bar UI
+    *
+    * @param {Object} event
+    * @param {string} event.url
+    * @private
+    */
+    _addIOTProgress: function (event) {
+        var url = event.detail;
+        this.$progressIotFound.text(_t('Found IoT Box(s)'));
+        var $iot = $('<li/>')
+            .addClass('list-group-item')
+            .appendTo(this.$progressFound);
+
+        $('<a/>')
+            .attr('href', url)
+            .attr('target', '_blank')
+            .text(url)
+            .appendTo($iot);
+
+        $iot.append('<i class="iot-scan-status-icon"/>')
+            .append('<div class="iot-scan-status-msg"/>');
+
+        IoTScan.iots[url] = $iot;
+        this.$progressFound.append($iot);
+    },
+
+    /**
+    * Clear all IoT
+    *
+    * @private
+    */
+    _clearIOTProgress: function () {
+        this.$progressRanges.empty();
+        this.$progressFound.empty();
+        this.$progressIotFound.empty();
+    },
+
+    /**
+    * Validate IP range format
+    * ex: xxx.xxx.xxx.* or xxx.xxx.xxx.xxx
+    *
+    * @param {string} range
+    * @return {Object}
+    * @private
+    */
+    _getNetworkId: function (range) {
+        var rangeLength = (range.match(/\./g) || []).length;
+        var pattern = new RegExp(['^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.',
+            '([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.',
+            '([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.',
+            '.*$'].join(''));
+        if (rangeLength === 3) {
+            return range.substring(0, range.lastIndexOf('.') + 1).match(pattern);
+        } else if (rangeLength === 2) {
+            return (range + '.').match(pattern);
+        } else {
+            return false;
+        }
+    },
+
+    /**
+    * start range scan status
+    *
+    * @private
+    */
+    _RangeProgress: function () {
+        this.$scanNetwork.text(_t('Scanning Network'));
+        this.$scanNetwork.append('<i class="fa float-right iot-scan-status-icon mt-1 fa-spinner fa-spin"/>');
+    },
+
+    /**
+    * start range scan status
+    *
+    * @private
+    */
+    _RangeProgressDone: function () {
+        this.$scanNetwork.text(_t('Scanning Network'));
+        this.$scanNetwork.append('<i class="fa float-right iot-scan-status-icon mt-1 fa-check text-success"/>');
+    },
+
+    /**
+    * Update IoT progress
+    *
+    * @param {Object} event
+    * @param {string} event.url
+    * @param {string} event.status
+    * @param {string} event.message
+    * @private
+    */
+    _updateIOTProgress: function (event) {
+        if (IoTScan.iots[event.detail.url]) {
+            var $iot = IoTScan.iots[event.detail.url];
+            var $icon = $iot.find('.iot-scan-status-icon');
+            var $msg = $iot.find('.iot-scan-status-msg');
+
+            var icon = 'fa float-right iot-scan-status-icon mt-1 ';
+            switch (event.detail.status) {
+                case "loading":
+                    icon += 'fa-spinner fa-spin';
+                    break;
+                case "success":
+                    icon += "fa-check text-success";
+                    break;
+                default:
+                    icon += "fa-exclamation-triangle text-danger";
+            }
+            $icon.removeClass().addClass(icon);
+            $msg.empty().append(event.detail.message);
+        }
+    },
+
+    /**
+    * Update range scan status
+    *
+    * @param {Object} event
+    * @param {Object} event.range
+    * @private
+    */
+    _updateRangeProgress: function (event) {
+        var range = event.detail;
+        this._RangeProgress();
+        range.current ++;
+        var percent = Math.round(range.current / range.total * 100);
+        range.$bar.css('width', percent + '%').attr('aria-valuenow', percent).text(percent + '%');
+        range.$delete.hide();
+        if (percent === 100) {
+            this._RangeProgressDone();
+            range.$delete.show();
+            range.$bar.text(_t('Done'));
+            if (_.isEmpty(IoTScan.iots)) {
+                this.$progressIotFound.text(_t('No IoT Box(s) found'));
+            }
+        }
+    },
+
+    /**
+    * Add range to scan in list-group
+    *
+    * @param {Object} event
+    * @param {Object} event.range
+    * @return {Object}
+    * @private
+    */
+    _onAddRange: function (event){
+        var range = event.detail;
+
+        var $range = $(QWeb.render('iot.range_item', {range: range.range}));
+        this.$progressRanges.append($range);
+
+        range.$range = $range;
+        range.$bar = $range.find('.progress-bar');
+        range.$delete = $range.find('.delete_scan_range');
+
+        return range;
+    },
+
+    /**
+    * Click to add a network ID to scan
+    * With this function it is possible to scan a specific range
+    * 1 - get the typed ip address
+    * 2 - check its validity
+    * 3 - extract the /24 subnet id
+    * 4 - perform a scan of this subnet
+    */
+    _onClickAddScanRange: function () {
+        var range = this.$addRangeInput.removeClass('is-invalid').val().trim();
+        var networkId = this._getNetworkId(range);
+        if (networkId && !_.keys(IoTScan.ranges).includes(networkId[0])) {
+            IoTScan._addIPRange(networkId[0]);
+            this.$addRangeInput[0].value = '';
+        } else {
+            this.$addRangeInput.addClass('is-invalid');
+        }
+    },
+
+    /**
+    */
+    _onClickAddScanRangeIp: function () {
+        this.$addRangeInput.removeClass('is-invalid').val().trim();
+    },
+
+    /**
+     * Click to delete the selected range from the list of scanned ranges
+     */
+    _onClickDeleteScanRange: function (ev) {
+        ev.preventDefault();
+        var range = $(ev.currentTarget).attr('data-range');
+        IoTScan.ranges[range].$range.remove();
+        delete IoTScan.ranges[range];
+    },
+});
+
+widget_registry.add('iot_scan_progress', IotScanProgress);
 
 var IoTConnectionMixin = {
     _doWarnFail: function (url){

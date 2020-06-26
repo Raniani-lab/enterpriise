@@ -44,6 +44,7 @@ class ReportL10nNLIntrastat(models.AbstractModel):
             LEFT JOIN product_template product_t on product.product_tmpl_id = product_t.id
             WHERE line_tag.account_account_tag_id IN %(product_service_tags)s
             AND c.id IN %(country_ids)s
+            AND l.parent_state = 'posted'
             AND l.date >= %(date_from)s
             AND l.date <= %(date_to)s
             AND l.company_id IN %(company_ids)s

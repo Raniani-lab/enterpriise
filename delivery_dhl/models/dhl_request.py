@@ -126,7 +126,7 @@ class DHLProvider():
 
     def _set_dutiable(self, total_value, currency_name):
         dutiable = self.factory.Dutiable()
-        dutiable.DeclaredValue = total_value
+        dutiable.DeclaredValue = float_repr(total_value, 2)
         dutiable.DeclaredCurrency = currency_name
         return dutiable
 

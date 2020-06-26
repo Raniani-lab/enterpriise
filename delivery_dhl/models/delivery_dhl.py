@@ -137,13 +137,24 @@ class Providerdhl(models.Model):
 
         available_product_code = []
         shipping_charge = False
-        for q in response.GetQuoteResponse.BkgDetails.QtdShp:
-            if q.GlobalProductCode == self.dhl_product_code and q.ShippingCharge:
-                shipping_charge = q.ShippingCharge
-                shipping_currency = q.CurrencyCode
-                break;
+        try:
+            for q in response.GetQuoteResponse.BkgDetails.QtdShp:
+                if q.GlobalProductCode == self.dhl_product_code and q.ShippingCharge:
+                    shipping_charge = q.ShippingCharge
+                    shipping_currency = q.CurrencyCode
+                    break;
+                else:
+                    available_product_code.append(q.GlobalProductCode)
+        except AttributeError:
+            if response.GetQuoteResponse.Note and response.GetQuoteResponse.Note.Condition and response.GetQuoteResponse.Note.Condition[0].ConditionCode == '410301':
+                return {
+                    'success': False,
+                    'price': 0.0,
+                    'error_message': "%s.\n%s" % (_(response.GetQuoteResponse.Note.Condition[0].ConditionData), _("Hint: The destination may not require the dutiable option.")),
+                    'warning_message': False,
+                }
             else:
-                available_product_code.append(q.GlobalProductCode)
+                raise
         if shipping_charge:
             if order:
                 order_currency = order.currency_id

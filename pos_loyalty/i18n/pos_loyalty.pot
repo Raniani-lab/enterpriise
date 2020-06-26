@@ -489,6 +489,14 @@ msgid ""
 msgstr ""
 
 #. module: pos_loyalty
+#: code:addons/pos_loyalty/models/product.py:0
+#, python-format
+msgid ""
+"The product cannot be archived because it's used in a point of sales loyalty"
+" program."
+msgstr ""
+
+#. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__gift_product_id
 msgid "The product given as a reward"
 msgstr ""

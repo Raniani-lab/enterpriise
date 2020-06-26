@@ -47,7 +47,7 @@ class MxReportPartnerLedger(models.AbstractModel):
         journal_ids = []
         for company in self.env.companies.filtered('tax_cash_basis_journal_id'):
             journal_ids.append(company.tax_cash_basis_journal_id.id)
-        tax_ids = self.env['account.tax'].search([
+        tax_ids = self.env['account.tax'].with_context(active_test=False).search([
             ('type_tax_use', '=', 'purchase'),
             ('tax_exigibility', '=', 'on_payment')])
         account_tax_ids = tax_ids.mapped('invoice_repartition_line_ids.account_id')
@@ -78,7 +78,7 @@ class MxReportPartnerLedger(models.AbstractModel):
         journal_ids = []
         for company in self.env.companies.filtered('tax_cash_basis_journal_id'):
             journal_ids.append(company.tax_cash_basis_journal_id.id)
-        tax_ids = self.env['account.tax'].search([
+        tax_ids = self.env['account.tax'].with_context(active_test=False).search([
             ('type_tax_use', '=', 'purchase'),
             ('tax_exigibility', '=', 'on_payment')])
         account_tax_ids = tax_ids.mapped('invoice_repartition_line_ids.account_id')
@@ -158,9 +158,9 @@ class MxReportPartnerLedger(models.AbstractModel):
         tag_0 = self.env.ref('l10n_mx.tag_diot_0')
         tag_ret = self.env.ref('l10n_mx.tag_diot_ret')
         tag_exe = self.env.ref('l10n_mx.tag_diot_exento')
-        rep_line_obj =  self.env['account.tax.repartition.line']
+        rep_line_obj =  self.env['account.tax.repartition.line'].with_context(active_test=False)
 
-        purchase_tax_ids = self.env['account.tax'].search([('type_tax_use', '=', 'purchase')]).ids
+        purchase_tax_ids = self.env['account.tax'].with_context(active_test=False).search([('type_tax_use', '=', 'purchase')]).ids
         diot_common_domain = ['|', ('invoice_tax_id', 'in', purchase_tax_ids), ('refund_tax_id', 'in', purchase_tax_ids)]
 
         company = self.env.company.id
@@ -178,11 +178,19 @@ class MxReportPartnerLedger(models.AbstractModel):
         tax0 = rep_line_obj.search([('tag_ids', 'in', tag_0.ids), ('company_id', '=', company)] + diot_common_domain).mapped('tax_id')
         tax_ret = rep_line_obj.search([('tag_ids', 'in', tag_ret.ids), ('company_id', '=', company)] + diot_common_domain).mapped('tax_id')
         tax_exe = rep_line_obj.search([('tag_ids', 'in', tag_exe.ids), ('company_id', '=', company)] + diot_common_domain).mapped('tax_id')
-        grouped_taxes = self.env['account.tax'].search([
+        grouped_taxes = self.env['account.tax'].with_context(active_test=False).search([
             ('type_tax_use', '=', 'purchase'),
             ('company_id', '=', company),
             ('amount_type', '=', 'group')])
-        taxes_in_groups = grouped_taxes.mapped('children_tax_ids')
+        taxes_in_groups = self.env['account.tax'].with_context(active_test=False)
+        if grouped_taxes:
+            self.env.cr.execute(
+                """
+                SELECT child_tax
+                FROM account_tax_filiation_rel
+                WHERE parent_tax IN %s
+                """, [tuple(grouped_taxes.ids)])
+            taxes_in_groups = taxes_in_groups.browse([x[0] for x in self.env.cr.fetchall()])
         for partner in sorted_partners:
             amls = grouped_partners[partner]['lines']
             if not amls:

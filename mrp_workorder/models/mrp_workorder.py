@@ -93,7 +93,7 @@ class MrpProductionWorkcenterLine(models.Model):
     @api.depends('production_id.workorder_ids')
     def _compute_is_last_unfinished_wo(self):
         for wo in self:
-            wo.is_first_started_wo = all(wo.state not in ('progress', 'done') for wo in (wo.production_id.workorder_ids - wo))
+            wo.is_first_started_wo = all(wo.state != 'done' for wo in (wo.production_id.workorder_ids - wo))
             other_wos = wo.production_id.workorder_ids - wo
             other_states = other_wos.mapped(lambda w: w.state == 'done')
             wo.is_last_unfinished_wo = all(other_states)

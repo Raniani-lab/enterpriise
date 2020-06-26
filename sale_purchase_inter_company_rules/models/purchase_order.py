@@ -85,7 +85,7 @@ class purchase_order(models.Model):
         partner_addr = partner.sudo().address_get(['invoice', 'delivery', 'contact'])
         warehouse = company.warehouse_id and company.warehouse_id.company_id.id == company.id and company.warehouse_id or False
         if not warehouse:
-            raise UserError(_('Configure correct warehouse for company(%s) from Menu: Settings/Users/Companies' % (company.name)))
+            raise UserError(_('Configure correct warehouse for company(%s) from Menu: Settings/Users/Companies', company.name))
         return {
             'name': self.env['ir.sequence'].sudo().next_by_code('sale.order') or '/',
             'company_id': company.id,

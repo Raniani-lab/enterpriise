@@ -195,9 +195,9 @@ class AccountGeneralLedger(models.AbstractModel):
         bad_contact_list = [partner['default_value']['name'] for partner in all_partner_details.values()
                             if not partner['contacts'] and not partner['default_value']['phone']]
         if bad_address_list:
-            raise UserError(_("Please define City/Zip for address(es) of `%s`.") % (', '.join(filter(None, bad_address_list))))
+            raise UserError(_("Please define City/Zip for address(es) of `%s`.", ', '.join(filter(None, bad_address_list))))
         if bad_contact_list:
-            raise UserError(_('Please define Phone or Mobile for `%s` Contact(s).' % (', '.join(filter(None, bad_contact_list)))))
+            raise UserError(_('Please define Phone or Mobile for `%s` Contact(s).', ', '.join(filter(None, bad_contact_list))))
 
         return all_partner_details
 

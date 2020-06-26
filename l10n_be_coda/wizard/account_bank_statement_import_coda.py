@@ -503,7 +503,7 @@ class AccountBankStatementImport(models.TransientModel):
                 o_idx = p_idx; p_idx +=  1; note.append(_('Detail') + ': ' + _('Type of R transaction') + ': ' + sepa_type[communication[o_idx:p_idx]])
                 o_idx = p_idx; p_idx +=  4; note.append(_('Detail') + ': ' + _('Reason') + ': ' + rmspaces(communication[o_idx:p_idx]))
             else:
-                structured_com = _('Type of structured communication not supported: ' + type)
+                structured_com = _('Type of structured communication not supported: ') + type
                 note.append(communication)
             return structured_com, note
 

@@ -150,7 +150,7 @@ class Providerdhl(models.Model):
                 return {
                     'success': False,
                     'price': 0.0,
-                    'error_message': "%s.\n%s" % (_(response.GetQuoteResponse.Note.Condition[0].ConditionData), _("Hint: The destination may not require the dutiable option.")),
+                    'error_message': "%s.\n%s" % (response.GetQuoteResponse.Note.Condition[0].ConditionData, _("Hint: The destination may not require the dutiable option.")),
                     'warning_message': False,
                 }
             else:

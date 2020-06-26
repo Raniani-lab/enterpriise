@@ -91,7 +91,7 @@ class DeliverCarrier(models.Model):
         for picking in pickings:
             result = ep.send_shipping(self, picking.partner_id, picking.picking_type_id.warehouse_id.partner_id, picking=picking)
             if result.get('error_message'):
-                raise UserError(_(result['error_message']))
+                raise UserError(result['error_message'])
             rate = result.get('rate')
             if rate['currency'] == picking.company_id.currency_id.name:
                 price = float(rate['rate'])
@@ -128,7 +128,7 @@ class DeliverCarrier(models.Model):
         ep = EasypostRequest(self.sudo().easypost_production_api_key if self.prod_environment else self.sudo().easypost_test_api_key, self.log_xml)
         result = ep.send_shipping(self, pickings.partner_id, pickings.picking_type_id.warehouse_id.partner_id, picking=pickings, is_return=True)
         if result.get('error_message'):
-            raise UserError(_(result['error_message']))
+            raise UserError(result['error_message'])
         rate = result.get('rate')
         if rate['currency'] == pickings.company_id.currency_id.name:
             price = rate['rate']

@@ -58,7 +58,7 @@ class ProviderAccount(models.Model):
         # cases to prevent writing on the object
         if not self._context.get('no_post_message'):
             subject = _("An error occurred during online synchronization")
-            message = _('The following error happened during the synchronization: %s' % (message,))
+            message = _('The following error happened during the synchronization: %s', message)
             with self.pool.cursor() as cr:
                 self.with_env(self.env(cr=cr)).message_post(body=message, subject=subject)
 

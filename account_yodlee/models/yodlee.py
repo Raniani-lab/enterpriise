@@ -8,9 +8,63 @@ import re
 
 from odoo import models, api, fields, SUPERUSER_ID
 from odoo.exceptions import AccessError, UserError
-from odoo.tools.translate import _
+from odoo.tools.translate import _, _lt
 
 _logger = logging.getLogger(__name__)
+
+ERROR_MESSAGES = {
+    '409': _lt("Problem Updating Account(409): We could not update your account because the end site is experiencing technical difficulties."),
+    '411': _lt("Site No Longer Available (411):The site no longer provides online services to its customers.  Please delete this account."),
+    '412': _lt("Problem Updating Account(412): We could not update your account because the site is experiencing technical difficulties."),
+    '415': _lt("Problem Updating Account(415): We could not update your account because the site is experiencing technical difficulties."),
+    '416': _lt("Multiple User Logins(416): We attempted to update your account, but another session was already established at the same time.  If you are currently logged on to this account directly, please log off and try after some time"),
+    '418': _lt("Problem Updating Account(418): We could not update your account because the site is experiencing technical difficulties. Please try later."),
+    '423': _lt("No Account Found (423): We were unable to detect an account. Please verify that you account information is available at this time and If the problem persists, please contact customer support at online@odoo.com for further assistance."),
+    '424': _lt("Site Down for Maintenance(424):We were unable to update your account as the site is temporarily down for maintenance. We apologize for the inconvenience.  This problem is typically resolved in a few hours. Please try later."),
+    '425': _lt("Problem Updating Account(425): We could not update your account because the site is experiencing technical difficulties. Please try later."),
+    '426': _lt("Problem Updating Account(426): We could not update your account for technical reasons. This type of error is usually resolved in a few days. We apologize for the inconvenience."),
+    '505': _lt("Site Not Supported (505): We currently does not support the security system used by this site. We apologize for any inconvenience. Check back periodically if this situation has changed."),
+    '510': _lt("Property Record Not Found (510): The site is unable to find any property information for your address. Please verify if the property address you have provided is correct."),
+    '511': _lt("Home Value Not Found (511): The site is unable to provide home value for your property. We suggest you to delete this site."),
+    '402': _lt("Credential Re-Verification Required (402): We could not update your account because your username and/or password were reported to be incorrect.  Please re-verify your username and password."),
+    '405': _lt("Update Request Canceled(405):Your account was not updated because you canceled the request."),
+    '406': _lt("Problem Updating Account (406): We could not update your account because the site requires you to perform some additional action. Please visit the site or contact its customer support to resolve this issue. Once done, please update your account credentials in case they are changed else try again."),
+    '407': _lt("Account Locked (407): We could not update your account because it appears your account has been locked. This usually results from too many unsuccessful login attempts in a short period of time. Please visit the site or contact its customer support to resolve this issue.  Once done, please update your account credentials in case they are changed."),
+    '414': _lt("Requested Account Type Not Found (414): We could not find your requested account. You may have selected a similar site under a different category by accident in which case you should select the correct site."),
+    '417': _lt("Account Type Not Supported(417):The type of account we found is not currently supported.  Please remove this site and add as a  manual account."),
+    '420': _lt("Credential Re-Verification Required (420):The site has merged with another. Please re-verify your credentials at the site and update the same."),
+    '421': _lt("Invalid Language Setting (421): The language setting for your site account is not English. Please visit the site and change the language setting to English."),
+    '422': _lt("Account Reported Closed (422): We were unable to update your account information because it appears one or more of your related accounts have been closed.  Please deactivate or delete the relevant account and try again."),
+    '427': _lt("Re-verification Required (427): We could not update your account due to the site requiring you to view a new promotion. Please log in to the site and click through to your account overview page to update the account.  We apologize for the inconvenience."),
+    '428': _lt("Re-verification Required (428): We could not update your account due to the site requiring you to accept a new Terms & Conditions. Please log in to the site and read and accept the T&C."),
+    '429': _lt("Re-Verification Required (429): We could not update your account due to the site requiring you to verify your personal information. Please log in to the site and update the fields required."),
+    '430': _lt("Site No Longer Supported (430):This site is no longer supported for data updates. Please deactivate or delete your account. We apologize for the inconvenience."),
+    '433': _lt("Registration Requires Attention (433): Auto registration is not complete. Please complete your registration at the end site. Once completed, please complete adding this account."),
+    '434': _lt("Registration Requires Attention (434): Your Auto-Registration could not be completed and requires further input from you.  Please re-verify your registration information to complete the process."),
+    '435': _lt("Registration Requires Attention (435): Your Auto-Registration could not be completed and requires further input from you.  Please re-verify your registration information to complete the process."),
+    '436': _lt("Account Already Registered (436):Your Auto-Registration could not be completed because the site reports that your account is already registered.  Please log in to the site to confirm and then complete the site addition process with the correct login information."),
+    '506': _lt("New Login Information Required(506):We're sorry, to log in to this site, you need to provide additional information. Please update your account and try again."),
+    '512': _lt("No Payees Found(512):Your request cannot be completed as no payees were found in your account."),
+    '518': _lt("MFA error: Authentication Information Unavailable (518):Your account was not updated as the required additional authentication information was unavailable. Please try now."),
+    '519': _lt("MFA error: Authentication Information Required (519): Your account was not updated as your authentication information like security question and answer was unavailable or incomplete. Please update your account settings."),
+    '520': _lt("MFA error: Authentication Information Incorrect (520):We're sorry, the site indicates that the additional authentication information you provided is incorrect. Please try updating your account again."),
+    '521': _lt("MFA error: Additional Authentication Enrollment Required (521) : Please enroll in the new security authentication system, <Account Name> has introduced. Ensure your account settings in <Cobrand> are updated with this information."),
+    '522': _lt("MFA error: Request Timed Out (522) :Your request has timed out as the required security information was unavailable or was not provided within the expected time. Please try again."),
+    '523': _lt("MFA error: Authentication Information Incorrect (523):We're sorry, the authentication information you  provided is incorrect. Please try again."),
+    '524': _lt("MFA error: Authentication Information Expired (524):We're sorry, the authentication information you provided has expired. Please try again."),
+    '526': _lt("MFA error: Credential Re-Verification Required (526): We could not update your account because your username/password or additional security credentials are incorrect. Please try again."),
+    '401': _lt("Problem Updating Account(401):We're sorry, your request timed out. Please try again."),
+    '403': _lt("Problem Updating Account(403):We're sorry, there was a technical problem updating your account. This kind of error is usually resolved in a few days. Please try again later."),
+    '404': _lt("Problem Updating Account(404):We're sorry, there was a technical problem updating your account. Please try again later."),
+    '408': _lt("Account Not Found(408): We're sorry, we couldn't find any accounts for you at the site. Please log in at the site and confirm that your account is set up, then try again."),
+    '413': _lt("Problem Updating Account(413):We're sorry, we couldn't update your account at the site because of a technical issue. This type of problem is usually resolved in a few days. Please try again later."),
+    '419': _lt("Problem Updating Account(419):We're sorry, we couldn't update your account because of unexpected variations at the site. This kind of problem is usually resolved in a few days. Please try again later."),
+    '507': _lt("Problem Updating Account(507):We're sorry, Yodlee has just started providing data updates for this site, and it may take a few days to be successful as we get started. Please try again later."),
+    '508': _lt("Request Timed Out (508): We are sorry, your request timed out due to technical reasons. Please try again."),
+    '509': _lt("MFA error: Site Device Information Expired(509): We're sorry, we can't update your account because your token is no longer valid at the site. Please update your information and try again, or contact customer support."),
+    '517': _lt("Problem Updating Account (517): We are sorry, there was a technical problem updating your account. Please try again."),
+    '525': _lt("MFA error: Problem Updating Account (525): We could not update your account for technical reasons. This type of error is usually resolved in a few days. We apologize for the inconvenience. Please try again later."),
+}
 
 
 class YodleeProviderAccount(models.Model):
@@ -95,15 +149,26 @@ class YodleeProviderAccount(models.Model):
             if resp_json.get('errorCode'):
                 if resp.json().get('errorCode') in ('Y007', 'Y008', 'Y009', 'Y010'):
                     return 'invalid_auth'
-                message = _('Error %s, message: %s, reference code: %s' % (resp_json.get('errorCode'), resp_json.get('errorMessage'), resp_json.get('referenceCode')))
-                message = ("%s\n\n" + _('(Diagnostic: %r for URL %s)')) % (message, resp.status_code, resp.url)
+                message = _(
+                    'Error %s, message: %s, reference code: %s',
+                    resp_json.get('errorCode'),
+                    resp_json.get('errorMessage'),
+                    resp_json.get('referenceCode')
+                )
+                message = "{}\n\n{}".format(
+                    message,
+                    _('(Diagnostic: %r for URL %s)', resp.status_code, resp.url)
+                )
                 if self and self.id:
                     self._update_status('FAILED', resp_json)
                     self.log_message(message)
                 raise UserError(message)
             resp.raise_for_status()
         except (requests.HTTPError, ValueError):
-            message = ('%s\n\n' + _('(Diagnostic: %r for URL %s)')) % (resp.text.strip(), resp.status_code, resp.url)
+            message = "{}\n\n{}".format(
+                resp.text.strip(),
+                _('(Diagnostic: %r for URL %s)', resp.status_code, resp.url)
+            )
             if self and self.id:
                 self.log_message(message)
             raise UserError(message)
@@ -311,59 +376,8 @@ class YodleeProviderAccount(models.Model):
         super(YodleeProviderAccount, self).unlink()
 
     def get_error_from_code(self, code):
-        return {
-            '409': _("Problem Updating Account(409): We could not update your account because the end site is experiencing technical difficulties."),
-            '411': _("Site No Longer Available (411):The site no longer provides online services to its customers.  Please delete this account."),
-            '412': _("Problem Updating Account(412): We could not update your account because the site is experiencing technical difficulties."),
-            '415': _("Problem Updating Account(415): We could not update your account because the site is experiencing technical difficulties."),
-            '416': _("Multiple User Logins(416): We attempted to update your account, but another session was already established at the same time.  If you are currently logged on to this account directly, please log off and try after some time"),
-            '418': _("Problem Updating Account(418): We could not update your account because the site is experiencing technical difficulties. Please try later."),
-            '423': _("No Account Found (423): We were unable to detect an account. Please verify that you account information is available at this time and If the problem persists, please contact customer support at online@odoo.com for further assistance."),
-            '424': _("Site Down for Maintenance(424):We were unable to update your account as the site is temporarily down for maintenance. We apologize for the inconvenience.  This problem is typically resolved in a few hours. Please try later."),
-            '425': _("Problem Updating Account(425): We could not update your account because the site is experiencing technical difficulties. Please try later."),
-            '426': _("Problem Updating Account(426): We could not update your account for technical reasons. This type of error is usually resolved in a few days. We apologize for the inconvenience."),
-            '505': _("Site Not Supported (505): We currently does not support the security system used by this site. We apologize for any inconvenience. Check back periodically if this situation has changed."),
-            '510': _("Property Record Not Found (510): The site is unable to find any property information for your address. Please verify if the property address you have provided is correct."),
-            '511': _("Home Value Not Found (511): The site is unable to provide home value for your property. We suggest you to delete this site."),
-            '402': _("Credential Re-Verification Required (402): We could not update your account because your username and/or password were reported to be incorrect.  Please re-verify your username and password."),
-            '405': _("Update Request Canceled(405):Your account was not updated because you canceled the request."),
-            '406': _("Problem Updating Account (406): We could not update your account because the site requires you to perform some additional action. Please visit the site or contact its customer support to resolve this issue. Once done, please update your account credentials in case they are changed else try again."),
-            '407': _("Account Locked (407): We could not update your account because it appears your account has been locked. This usually results from too many unsuccessful login attempts in a short period of time. Please visit the site or contact its customer support to resolve this issue.  Once done, please update your account credentials in case they are changed."),
-            '414': _("Requested Account Type Not Found (414): We could not find your requested account. You may have selected a similar site under a different category by accident in which case you should select the correct site."),
-            '417': _("Account Type Not Supported(417):The type of account we found is not currently supported.  Please remove this site and add as a  manual account."),
-            '420': _("Credential Re-Verification Required (420):The site has merged with another. Please re-verify your credentials at the site and update the same."),
-            '421': _("Invalid Language Setting (421): The language setting for your site account is not English. Please visit the site and change the language setting to English."),
-            '422': _("Account Reported Closed (422): We were unable to update your account information because it appears one or more of your related accounts have been closed.  Please deactivate or delete the relevant account and try again."),
-            '427': _("Re-verification Required (427): We could not update your account due to the site requiring you to view a new promotion. Please log in to the site and click through to your account overview page to update the account.  We apologize for the inconvenience."),
-            '428': _("Re-verification Required (428): We could not update your account due to the site requiring you to accept a new Terms & Conditions. Please log in to the site and read and accept the T&C."),
-            '429': _("Re-Verification Required (429): We could not update your account due to the site requiring you to verify your personal information. Please log in to the site and update the fields required."),
-            '430': _("Site No Longer Supported (430):This site is no longer supported for data updates. Please deactivate or delete your account. We apologize for the inconvenience."),
-            '433': _("Registration Requires Attention (433): Auto registration is not complete. Please complete your registration at the end site. Once completed, please complete adding this account."),
-            '434': _("Registration Requires Attention (434): Your Auto-Registration could not be completed and requires further input from you.  Please re-verify your registration information to complete the process."),
-            '435': _("Registration Requires Attention (435): Your Auto-Registration could not be completed and requires further input from you.  Please re-verify your registration information to complete the process."),
-            '436': _("Account Already Registered (436):Your Auto-Registration could not be completed because the site reports that your account is already registered.  Please log in to the site to confirm and then complete the site addition process with the correct login information."),
-            '506': _("New Login Information Required(506):We're sorry, to log in to this site, you need to provide additional information. Please update your account and try again."),
-            '512': _("No Payees Found(512):Your request cannot be completed as no payees were found in your account."),
-            '518': _("MFA error: Authentication Information Unavailable (518):Your account was not updated as the required additional authentication information was unavailable. Please try now."),
-            '519': _("MFA error: Authentication Information Required (519): Your account was not updated as your authentication information like security question and answer was unavailable or incomplete. Please update your account settings."),
-            '520': _("MFA error: Authentication Information Incorrect (520):We're sorry, the site indicates that the additional authentication information you provided is incorrect. Please try updating your account again."),
-            '521': _("MFA error: Additional Authentication Enrollment Required (521) : Please enroll in the new security authentication system, <Account Name> has introduced. Ensure your account settings in <Cobrand> are updated with this information."),
-            '522': _("MFA error: Request Timed Out (522) :Your request has timed out as the required security information was unavailable or was not provided within the expected time. Please try again."),
-            '523': _("MFA error: Authentication Information Incorrect (523):We're sorry, the authentication information you  provided is incorrect. Please try again."),
-            '524': _("MFA error: Authentication Information Expired (524):We're sorry, the authentication information you provided has expired. Please try again."),
-            '526': _("MFA error: Credential Re-Verification Required (526): We could not update your account because your username/password or additional security credentials are incorrect. Please try again."),
-            '401': _("Problem Updating Account(401):We're sorry, your request timed out. Please try again."),
-            '403': _("Problem Updating Account(403):We're sorry, there was a technical problem updating your account. This kind of error is usually resolved in a few days. Please try again later."),
-            '404': _("Problem Updating Account(404):We're sorry, there was a technical problem updating your account. Please try again later."),
-            '408': _("Account Not Found(408): We're sorry, we couldn't find any accounts for you at the site. Please log in at the site and confirm that your account is set up, then try again."),
-            '413': _("Problem Updating Account(413):We're sorry, we couldn't update your account at the site because of a technical issue. This type of problem is usually resolved in a few days. Please try again later."),
-            '419': _("Problem Updating Account(419):We're sorry, we couldn't update your account because of unexpected variations at the site. This kind of problem is usually resolved in a few days. Please try again later."),
-            '507': _("Problem Updating Account(507):We're sorry, Yodlee has just started providing data updates for this site, and it may take a few days to be successful as we get started. Please try again later."),
-            '508': _("Request Timed Out (508): We are sorry, your request timed out due to technical reasons. Please try again."),
-            '509': _("MFA error: Site Device Information Expired(509): We're sorry, we can't update your account because your token is no longer valid at the site. Please update your information and try again, or contact customer support."),
-            '517': _("Problem Updating Account (517): We are sorry, there was a technical problem updating your account. Please try again."),
-            '525': _("MFA error: Problem Updating Account (525): We could not update your account for technical reasons. This type of error is usually resolved in a few days. We apologize for the inconvenience. Please try again later."),
-        }.get(str(code), _('An Error has occurred (code %s)' % code))
+        msg = ERROR_MESSAGES.get(str(code))
+        return _('An Error has occurred (code %s)', str(code)) if msg is None else str(msg)
 
 
 class ResCompany(models.Model):

@@ -118,7 +118,7 @@ class ProviderAccount(models.Model):
         # is to not try to log message in that case.
         if not self._context.get('no_post_message'):
             subject = _("An error occurred during online synchronization")
-            message = _('The following error happened during the synchronization: %s' % (message,))
+            message = _('The following error happened during the synchronization: %s', message)
             # We have to call rollback manually here because if we don't do so we risk a deadlock in some case
             # Deadlock could appear in the following case: call to _ponto_fetch that will result in an error
             # because access token has expired, in that case we generate a new access token (which will write the
@@ -133,7 +133,7 @@ class ProviderAccount(models.Model):
             with self.pool.cursor() as cr:
                 self.with_env(self.env(cr=cr)).message_post(body=message, subject=subject)
                 self.with_env(self.env(cr=cr)).write({'status': 'FAILED', 'action_required': True})
-        raise UserError('An error has occurred: %s' % (message,))
+        raise UserError(_('An error has occurred: %s', message))
 
 
     def _update_ponto_accounts(self, method='add'):

@@ -197,7 +197,7 @@ class ProviderUSPS(models.Model):
         if result['error_found']:
             raise UserError(result['error_message'])
         else:
-            picking.message_post(body=_(u'Shipment N° %s has been cancelled' % picking.carrier_tracking_ref))
+            picking.message_post(body=_(u'Shipment #%s has been cancelled', picking.carrier_tracking_ref))
             picking.write({'carrier_tracking_ref': '',
                            'carrier_price': 0.0})
 

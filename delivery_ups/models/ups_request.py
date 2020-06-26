@@ -177,9 +177,9 @@ class UPSRequest():
         if not shipper.street and not shipper.street2:
             res.append('Street')
         if res:
-            return _("The address of your company is missing or wrong.\n(Missing field(s) : %s)") % ",".join(res)
+            return _("The address of your company is missing or wrong.\n(Missing field(s) : %s)", ",".join(res))
         if len(self._clean_phone_number(shipper.phone)) < 10:
-            return _(UPS_ERROR_MAP.get('120115'))
+            return str(UPS_ERROR_MAP.get('120115'))
         # Check required field for warehouse address
         res = [required_field[field] for field in required_field if not ship_from[field]]
         if ship_from.country_id.code in ('US', 'CA', 'IE') and not ship_from.state_id.code:
@@ -187,9 +187,9 @@ class UPSRequest():
         if not ship_from.street and not ship_from.street2:
             res.append('Street')
         if res:
-            return _("The address of your warehouse is missing or wrong.\n(Missing field(s) : %s)") % ",".join(res)
+            return _("The address of your warehouse is missing or wrong.\n(Missing field(s) : %s)", ",".join(res))
         if len(self._clean_phone_number(ship_from.phone)) < 10:
-            return _(UPS_ERROR_MAP.get('120313'))
+            return str(UPS_ERROR_MAP.get('120313'))
         # Check required field for recipient address
         res = [required_field[field] for field in required_field if field != 'phone' and not ship_to[field]]
         if ship_to.country_id.code in ('US', 'CA', 'IE') and not ship_to.state_id.code:
@@ -213,18 +213,18 @@ class UPSRequest():
                 return _("The delivery cannot be done because the weight of your product is missing.")
             packages_without_weight = picking.move_line_ids.mapped('result_package_id').filtered(lambda p: not p.shipping_weight)
             if packages_without_weight:
-                return _('Packages %s do not have a positive shipping weight.') % (', '.join(packages_without_weight.mapped('display_name')))
+                return _('Packages %s do not have a positive shipping weight.', ', '.join(packages_without_weight.mapped('display_name')))
         if not phone:
             res.append('Phone')
         if res:
-            return _("The recipient address is missing or wrong.\n(Missing field(s) : %s)") % ",".join(res)
+            return _("The recipient address is missing or wrong.\n(Missing field(s) : %s)", ",".join(res))
         if len(self._clean_phone_number(phone)) < 10:
-            return _(UPS_ERROR_MAP.get('120213'))
+            return str(UPS_ERROR_MAP.get('120213'))
         return False
 
     def get_error_message(self, error_code, description):
         result = {}
-        result['error_message'] = UPS_ERROR_MAP.get(error_code)
+        result['error_message'] = str(UPS_ERROR_MAP.get(error_code))
         if not result['error_message']:
             result['error_message'] = description
         return result

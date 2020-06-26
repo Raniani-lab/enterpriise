@@ -1230,11 +1230,12 @@ class AccountMove(models.Model):
         try:
             old_ids = l10n_mx_edi_origin.split('|')[1].split(',')
         except IndexError:
-            raise UserError(
-                _('The cfdi origin field must be filled with type and list of '
-                  'cfdi separated by comma like this '
-                  '"01|89966ACC-0F5C-447D-AEF3-3EED22E711EE,89966ACC-0F5C-447D-AEF3-3EED22E711EE"'
-                  '\n get %s instead' % l10n_mx_edi_origin))
+            raise UserError(_(
+                'The cfdi origin field must be filled with type and list of '
+                'cfdi separated by comma like this '
+                '"01|89966ACC-0F5C-447D-AEF3-3EED22E711EE,89966ACC-0F5C-447D-AEF3-3EED22E711EE"'
+                '\n get %s instead', l10n_mx_edi_origin
+            ))
         ids = ','.join(old_ids + uuids)
         origin = '%s|%s' % (rtype, ids)
         self.update({'l10n_mx_edi_origin': origin})

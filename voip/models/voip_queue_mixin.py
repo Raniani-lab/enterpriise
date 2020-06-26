@@ -39,7 +39,7 @@ class VoipQueueMixin(models.AbstractModel):
             if not phonecall_activity_type:
                 phonecall_activity_type = self.env.ref('mail.mail_activity_todo', raise_if_not_found=False) or self.env['mail.activity.type'].search([('category', '=', False)], limit=1)
                 if phonecall_activity_type:
-                    _logger.warning(_("No phonecall activity type found. VOIP activities aren't guaranteed to work as expected. Fallback on %s" % phonecall_activity_type.name))
+                    _logger.warning(_("No phonecall activity type found. VOIP activities aren't guaranteed to work as expected. Fallback on %s", phonecall_activity_type.name))
                 else:
                     _logger.warning(_("No phonecall or fallback activity type found. VOIP activities aren't guaranteed to work as expected."))
         # VFE FIXME what if mail_activity_data_call was deleted by user?
@@ -54,7 +54,7 @@ class VoipQueueMixin(models.AbstractModel):
         for activity in activities:
             if not activity.voip_phonecall_id:
                 record = self.env[activity.res_model_id.model].browse(activity.res_id)
-                raise UserError(_('Phone call cannot be created. Is it any phone number linked to record %s?' % record.name))
+                raise UserError(_('Phone call cannot be created. Is it any phone number linked to record %s?', record.name))
 
     def delete_call_in_queue(self):
         domain = self._linked_phone_call_domain()

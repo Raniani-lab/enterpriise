@@ -342,8 +342,11 @@ class HrPayslip(models.Model):
         self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
 
         if date_to > date_utils.end_of(fields.Date.today(), 'month'):
-            self.warning_message = _("This payslip can be erroneous! Work entries may not be generated for the period from %s to %s." %
-                (date_utils.add(date_utils.end_of(fields.Date.today(), 'month'), days=1), date_to))
+            self.warning_message = _(
+                "This payslip can be erroneous! Work entries may not be generated for the period from %(start)s to %(end)s.",
+                start=date_utils.add(date_utils.end_of(fields.Date.today(), 'month'), days=1),
+                end=date_to,
+            )
         else:
             self.warning_message = False
 

@@ -106,7 +106,7 @@ class ProviderBpost(models.Model):
         return 'http://track.bpost.be/btr/web/#/search?itemCode=%s&lang=en' % picking.carrier_tracking_ref
 
     def bpost_cancel_shipment(self, picking):
-        picking.message_post(body=_(u'Shipment N° %s has been cancelled' % picking.carrier_tracking_ref))
+        picking.message_post(body=_(u'Shipment #%s has been cancelled', picking.carrier_tracking_ref))
         picking.write({'carrier_tracking_ref': '',
                        'carrier_price': 0.0})
 

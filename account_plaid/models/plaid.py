@@ -54,7 +54,7 @@ class PlaidProviderAccount(models.Model):
                 raise UserError(resp.text)
             resp.raise_for_status()
         except (requests.HTTPError, ValueError):
-            message = _('Get %s status code for call to %s. Content message: %s' % (resp.status_code, resp.url, resp.text))
+            message = _('Get %s status code for call to %s. Content message: %s', resp.status_code, resp.url, resp.text)
             if self and self.id:
                 self.log_message(message)
             raise UserError(message)

@@ -218,17 +218,17 @@ class MailThread(models.AbstractModel):
         '''
         tracking_message = ''
         if message.subtype_id and message.subtype_id.description:
-            tracking_message = _(message.subtype_id.description) + return_line
+            tracking_message = message.subtype_id.description + return_line
 
         for value in message.sudo().tracking_value_ids:
             if value.field_type == 'boolean':
                 old_value = str(bool(value.old_value_integer))
                 new_value = str(bool(value.new_value_integer))
             else:
-                old_value = _(value.old_value_char) if value.old_value_char else str(value.old_value_integer)
-                new_value = _(value.new_value_char) if value.new_value_char else str(value.new_value_integer)
+                old_value = value.old_value_char if value.old_value_char else str(value.old_value_integer)
+                new_value = value.new_value_char if value.new_value_char else str(value.new_value_integer)
 
-            tracking_message += _(value.field_desc) + ': ' + old_value
+            tracking_message += value.field_desc + ': ' + old_value
             if old_value != new_value:
                 tracking_message += ' → ' + new_value
             tracking_message += return_line

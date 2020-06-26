@@ -75,7 +75,7 @@ class L10nArAfipWsConsult(models.TransientModel):
         else:
             raise UserError(_('AFIP WS %s not implemented', afip_ws))
 
-        title = _('Invoice number %s\n' % self.number)
+        title = _('Invoice number %s\n', self.number)
         if error:
             _logger.warning('%s\n%s' % (title, error))
             raise UserError(_('AFIP Errors') + ' %s' % error)

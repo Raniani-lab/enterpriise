@@ -361,7 +361,7 @@ class ReportPartnerLedger(models.AbstractModel):
             'remaining': remaining,
             'class': 'o_account_reports_load_more text-center',
             'parent_id': 'account_%s' % partner.id,
-            'name': _('Load more... (%s remaining)' % remaining),
+            'name': _('Load more... (%s remaining)', remaining),
             'colspan': 10 if self.user_has_groups('base.group_multi_currency') else 9,
             'columns': [{}],
         }

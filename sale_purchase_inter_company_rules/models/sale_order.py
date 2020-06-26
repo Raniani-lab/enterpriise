@@ -69,7 +69,7 @@ class sale_order(models.Model):
         # find location and warehouse, pick warehouse from company object
         warehouse = company.warehouse_id and company.warehouse_id.company_id.id == company.id and company.warehouse_id or False
         if not warehouse:
-            raise UserError(_('Configure correct warehouse for company(%s) from Menu: Settings/Users/Companies' % (company.name)))
+            raise UserError(_('Configure correct warehouse for company(%s) from Menu: Settings/Users/Companies', company.name))
         picking_type_id = self.env['stock.picking.type'].search([
             ('code', '=', 'incoming'), ('warehouse_id', '=', warehouse.id)
         ], limit=1)

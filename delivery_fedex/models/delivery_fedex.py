@@ -551,7 +551,7 @@ class ProviderFedex(models.Model):
             _logger.info(warnings)
 
         if result.get('delete_success') and not result.get('errors_message'):
-            picking.message_post(body=_(u'Shipment N° %s has been cancelled' % master_tracking_id))
+            picking.message_post(body=_(u'Shipment #%s has been cancelled', master_tracking_id))
             picking.write({'carrier_tracking_ref': '',
                            'carrier_price': 0.0})
         else:

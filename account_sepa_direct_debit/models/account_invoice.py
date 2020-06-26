@@ -23,7 +23,12 @@ class AccountMove(models.Model):
             if pay.payment_method_code == 'sdd':
                 usable_mandate = pay.get_usable_mandate()
                 if not usable_mandate:
-                    raise UserError(_("Unable to post payment '%s' due to no usable mandate being available at date %s for partner '%s'. Please create one before encoding a SEPA Direct Debit payment." % (pay.name, str(pay.date), pay.partner_id.name)))
+                    raise UserError(_(
+                        "Unable to post payment %(payment)r due to no usable mandate being available at date %(date)s for partner %(partner)r. Please create one before encoding a SEPA Direct Debit payment.",
+                        payment=pay.name,
+                        date=pay.date,
+                        partner=pay.partner_id.name,
+                    ))
                 pay.sdd_mandate_id = usable_mandate
 
         return super().post()

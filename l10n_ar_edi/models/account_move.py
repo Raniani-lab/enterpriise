@@ -128,10 +128,19 @@ class AccountMove(models.Model):
             # raise with changes commited on databases
             if validated:
                 unprocess = self - validated - error_invoice
-                msg = _('Some invoices where validated in AFIP but as we have an error with one invoice the batch validation was stopped\n'
-                        '\n* These invoices were validated:\n   * %s\n' % ('\n   * '.join(validated.mapped('name'))) +
-                        '\n* These invoices weren\'t validated:\n%s\n' % ('\n'.join(['   * %s: "%s" amount %s' % (
-                            item.display_name, item.partner_id.name, item.amount_total_signed) for item in unprocess])) + '\n\n\n' + msg)
+                msg = _(
+                    """Some invoices where validated in AFIP but as we have an error with one invoice the batch validation was stopped
+
+* These invoices were validated:
+%(validate_invoices)s
+* These invoices weren\'t validated:
+%(invalide_invoices)s
+""",
+                    invoice_name="\n   * ".join(validated.mapped('name')),
+                    invalide_invoices="\n   * ".join([
+                        _("%s: %r amount %s", item.display_name, item.partner_id.name, item.amount_total_signed) for item in unprocess
+                    ])
+                )
             raise UserError(msg)
 
         return super(AccountMove, self - sale_ar_edi_invoices).post()
@@ -176,7 +185,7 @@ class AccountMove(models.Model):
                 'DocNroReceptor': receptor_id_number})
             inv.write({'l10n_ar_afip_verification_result': response.Resultado})
             if response.Observaciones or response.Errors:
-                inv.message_post(body=_('AFIP authorization verification result: %s%s' % (response.Observaciones, response.Errors)))
+                inv.message_post(body=_('AFIP authorization verification result: %s%s', response.Observaciones, response.Errors))
 
     # Main methods
 
@@ -460,7 +469,7 @@ class AccountMove(models.Model):
 
             # Unit of measure of the product if it sale in a unit of measures different from has been purchase
             if not line.product_uom_id.l10n_ar_afip_code:
-                raise UserError(_('No AFIP code in %s UOM' % (line.product_uom_id.name)))
+                raise UserError(_('No AFIP code in %s UOM', line.product_uom_id.name))
 
             values = {'Pro_ds': line.name,
                      'Pro_qty': line.quantity,
@@ -473,7 +482,7 @@ class AccountMove(models.Model):
 
             if afip_ws == 'wsbfe':
                 if not line.product_id.uom_id.l10n_ar_afip_code:
-                    raise UserError(_('No AFIP code in %s UOM' % (line.product_id.uom_id.name)))
+                    raise UserError(_('No AFIP code in %s UOM', line.product_id.uom_id.name))
 
                 vat_tax = line.tax_ids.filtered(lambda x: x.tax_group_id.l10n_ar_vat_afip_code)
                 vat_taxes_amounts = vat_tax.compute_all(line.price_unit, self.currency_id, line.quantity, product=line.product_id, partner=self.partner_id)
@@ -594,12 +603,12 @@ class AccountMove(models.Model):
     @api.model
     def wsfex_get_cae_request(self, last_id, client):
         if not self.commercial_partner_id.country_id:
-            raise UserError(_('For WS "%s" country is required on partner' % (self.journal_id.l10n_ar_afip_ws)))
+            raise UserError(_('For WS "%s" country is required on partner', self.journal_id.l10n_ar_afip_ws))
         elif not self.commercial_partner_id.country_id.code:
-            raise UserError(_('For WS "%s" country code is mandatory country: %s' % (self.journal_id.l10n_ar_afip_ws, self.commercial_partner_id.country_id.name)))
+            raise UserError(_('For WS "%s" country code is mandatory country: %s', self.journal_id.l10n_ar_afip_ws, self.commercial_partner_id.country_id.name))
         elif not self.commercial_partner_id.country_id.l10n_ar_afip_code:
             hint_msg = afip_errors._hint_msg('country_afip_code', self.journal_id.l10n_ar_afip_ws)
-            msg = _('For "%s" WS the afip code country is mandatory: %s' % (self.journal_id.l10n_ar_afip_ws, self.commercial_partner_id.country_id.name))
+            msg = _('For "%s" WS the afip code country is mandatory: %s', self.journal_id.l10n_ar_afip_ws, self.commercial_partner_id.country_id.name)
             if hint_msg:
                 msg += '\n\n' + hint_msg
             raise RedirectWarning(msg, self.env.ref('l10n_ar_edi.action_help_afip').id, _('Go to AFIP page'))

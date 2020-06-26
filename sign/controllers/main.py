@@ -255,7 +255,7 @@ class Sign(http.Controller):
                 _logger.warning('Unable to send SMS: no more credits')
                 request_item.sign_request_id.activity_schedule(
                     'mail.mail_activity_data_todo',
-                    note=_("%s couldn't sign the document due to an insufficient credit error." % (request_item.partner_id.display_name)),
+                    note=_("%s couldn't sign the document due to an insufficient credit error.", request_item.partner_id.display_name),
                     user_id=request_item.sign_request_id.create_uid.id
                 )
                 return False

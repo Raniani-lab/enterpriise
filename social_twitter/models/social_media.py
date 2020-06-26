@@ -105,8 +105,8 @@ class SocialMediaTwitter(models.Model):
             error_node = document_root.find('error')
             if error_node is not None and error_node.get('code') == '415':
                 base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-                return _('You need to add the following callback URL to your twitter application settings: %s'
-                         % url_join(base_url, "social_twitter/callback"))
+                return _('You need to add the following callback URL to your twitter application settings: %s',
+                         url_join(base_url, "social_twitter/callback"))
         except XmlElementTree.ParseError:
             pass
 

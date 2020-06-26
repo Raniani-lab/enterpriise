@@ -227,7 +227,7 @@ class SaleSubscription(models.Model):
         ratio = float(time_to_invoice.days) / float((recurring_next_invoice - recurring_last_invoice).days)
         if (ratio < 0 or ratio > 1):
             message = _(
-                "Discount computation failed because the upsell date is not between the next " +
+                "Discount computation failed because the upsell date is not between the next "
                 "invoice date and the computed last invoice date. Defaulting to NO Discount policy."
             )
             message += "<br/>{}{}<br/>{}{}<br/>{}{}".format(

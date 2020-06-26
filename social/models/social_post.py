@@ -322,7 +322,7 @@ class SocialPost(models.Model):
         if posts_to_complete:
             posts_to_complete.sudo().write({'state': 'posted'})
             if posts_failed:
-                posts_to_complete._message_log(body=_("Message posted partially. These are the ones that couldn't be posted: %s" % ''.join(posts_failed)))
+                posts_to_complete._message_log(body=_("Message posted partially. These are the ones that couldn't be posted: %s", ''.join(posts_failed)))
             else:
                 posts_to_complete._message_log(body=_("Message posted"))
 

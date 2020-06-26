@@ -27,7 +27,7 @@ This feature is only supported/useful in spanish MOD347 report.""")
             threshold_currency = self.env.ref('base.EUR')
 
             if not threshold_currency or not threshold_currency.active:
-                raise UserError(_("Currency %s, used for a threshold in this report, is either nonexistent or inactive. Please create or activate it." % threshold_currency.name))
+                raise UserError(_("Currency %s, used for a threshold in this report, is either nonexistent or inactive. Please create or activate it.", threshold_currency.name))
 
             company_currency = self.env.company.currency_id
             return threshold_currency._convert(self.l10n_es_mod347_threshold, company_currency, self.env.company, date)

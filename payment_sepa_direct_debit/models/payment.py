@@ -275,7 +275,7 @@ class SDDMandate(models.Model):
         self.write({'phone_number': phone.replace(' ', ''), 'verification_code': randint(1000, 9999)})
         _logger.info('_send_verification_code: sending SMS to %s with code %s', self.phone_number, self.verification_code)
         if not self.env.registry.in_test_mode():
-            self.env['sms.api'].sudo()._send_sms([self.phone_number], _('Your confirmation code is %s' % self.verification_code))
+            self.env['sms.api'].sudo()._send_sms([self.phone_number], _('Your confirmation code is %s', self.verification_code))
 
     def _confirm(self, code=None, phone=None):
         """ Confirms the customer's ownership of the SEPA Direct Debit mandate.

@@ -105,7 +105,7 @@ class AccountBatchPayment(models.Model):
             rslt.append({
                 'title': _("Some payments are above the maximum amount allowed."),
                 'records': too_big_payments,
-                'help': _("Maximum amount is %s for payments in Euros, %s for other currencies." % (8 * '9' + ".99", 12 * '9' + ".99"))
+                'help': _("Maximum amount is %s for payments in Euros, %s for other currencies.", 8 * '9' + ".99", 12 * '9' + ".99")
             })
 
         return rslt

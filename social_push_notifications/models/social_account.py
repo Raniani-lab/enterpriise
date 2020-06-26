@@ -5,12 +5,12 @@ import logging
 
 from werkzeug.urls import url_join
 
-from odoo import _, fields, models
+from odoo import _, _lt, fields, models
 from odoo.addons.iap import jsonrpc
 from odoo.exceptions import UserError
 
-MISSING_FIREBASE_LIB_ERROR_MESSAGE = """Push Notifications require the `firebase_admin` Python library (version >=2.17.0).
-    You need to install it on your system to be able to use this module."""
+MISSING_FIREBASE_LIB_ERROR_MESSAGE = _lt("""Push Notifications require the `firebase_admin` Python library (version >=2.17.0).
+You need to install it on your system to be able to use this module.""")
 
 _logger = logging.getLogger(__name__)
 try:
@@ -124,4 +124,4 @@ class SocialAccountPushNotifications(models.Model):
             and hasattr(messaging, 'send')
 
         if not version_compliant:
-            raise UserError(_(MISSING_FIREBASE_LIB_ERROR_MESSAGE))
+            raise UserError(str(MISSING_FIREBASE_LIB_ERROR_MESSAGE))

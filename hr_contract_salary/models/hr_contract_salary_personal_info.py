@@ -57,7 +57,12 @@ class HrContractSalaryPersonalInfo(models.Model):
     def _check_res_field_model(self):
         for info in self:
             if info.res_field_id.model != MODELS_MAPPED.get(info.applies_on):
-                raise ValidationError(_('Mismatch between res_field_id %s and model %s for info %s' % (info.res_field_id.name, MODELS_MAPPED.get(info.applies_on), info.name)))
+                raise ValidationError(_(
+                    'Mismatch between res_field_id %(field)s and model %(model)s for info %(personal_info)s',
+                    field=info.res_field_id.name,
+                    model=MODELS_MAPPED.get(info.applies_on),
+                    personal_info=info.name
+                ))
 
     @api.depends('applies_on')
     def _compute_res_model(self):

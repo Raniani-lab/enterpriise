@@ -910,7 +910,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         """
 
         if field.ttype != 'many2one' or field.relation != model:
-            raise UserError(_('The related field of a button has to be a many2one to %s.' % model))
+            raise UserError(_('The related field of a button has to be a many2one to %s.', model))
 
         model = request.env['ir.model'].search([('model', '=', model)], limit=1)
 
@@ -979,7 +979,7 @@ Are you sure you want to remove the selection values of those records?""") % len
                     ('res_id', '=', many2many_value)])
                 if not group_xmlid:
                     raise UserError(_(
-                        "Only groups with an external ID can be used here. Please choose another " +
+                        "Only groups with an external ID can be used here. Please choose another "
                         "group or assign manually an external ID to this group."
                     ))
                 eval_attr.append(group_xmlid.complete_name)

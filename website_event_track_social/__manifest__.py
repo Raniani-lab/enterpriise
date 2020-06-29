@@ -12,9 +12,10 @@
     'description': "",
     'depends': [
         'website_event_social',
-        'website_event_track_online',
+        'website_event_track_session',
     ],
     'data': [
+        'views/event_track_views.xml'
     ],
     'demo': [
     ],

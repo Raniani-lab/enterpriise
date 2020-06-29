@@ -1,5 +1,16 @@
 .o_barcode_client_action {
     .o_barcode_lines {
+        .o_barcode_picking {
+            color: $gray-700;
+
+            &:hover {
+                color: black;
+            }
+        }
+        .o_selected {
+            background-color: rgba($success, 0.25);
+            border-color: $success;
+        }
         .o_barcode_line {
             &.o_colored_markup[data-picking-id] {
                 border-left-width: 24px;

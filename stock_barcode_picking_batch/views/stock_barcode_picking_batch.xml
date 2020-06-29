@@ -12,7 +12,7 @@
                     <field name="picking_type_id" readonly="1" attrs="{'invisible': [('picking_type_id', '=', False)]}"/>
                     <field name="state" readonly="1"/>
                     <field name="company_id" readonly="1" groups="base.group_multi_company"/>
-                    <field name="picking_ids" readonly="1" attrs="{'invisible': [('picking_ids', '=', False)]}">
+                    <field name="picking_ids" widget="many2many" attrs="{'invisible': [('picking_ids', '=', False)]}">
                         <tree decoration-danger="state != 'assigned'">
                             <button name="action_unbatch"
                                 title="Unbatch Transfer" string="Unbatch Transfer"
@@ -41,7 +41,7 @@
         <field name="name">stock.picking.batch.kanban</field>
         <field name="model">stock.picking.batch</field>
         <field name="arch" type="xml">
-            <kanban create="0" import="0"
+            <kanban import="0" js_class="stock_barcode_list_kanban"
                 class="oe_background_grey o_kanban_dashboard o_emphasize_colors o_stock_barcode_kanban">
                 <field name="move_line_ids"/>
                 <templates>

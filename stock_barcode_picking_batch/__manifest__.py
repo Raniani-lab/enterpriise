@@ -12,6 +12,7 @@
         'views/stock_barcode_picking_batch.xml',
         'views/stock_barcode_picking_batch_templates.xml',
         'views/stock_move_line_views.xml',
+        'data/data.xml',
     ],
     'qweb': [
         'static/src/xml/qweb_templates.xml',

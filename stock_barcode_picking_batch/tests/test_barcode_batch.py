@@ -308,3 +308,15 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         pack = self.env['stock.quant.package'].search([])[-1]
         self.assertEqual(len(pack.quant_ids), 2)
         self.assertEqual(pack.location_id, self.shelf4)
+
+    def test_batch_create(self):
+        """ Create a batch picking via barcode app from scratch """
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.start_tour(url, 'test_batch_create', login='admin', timeout=180)
+        self.assertEqual(self.picking_delivery_1.batch_id, self.picking_delivery_2.batch_id)
+        batch_delivery = self.picking_delivery_1.batch_id
+        self.assertEqual(len(batch_delivery.move_ids), 5)
+        self.assertEqual(len(batch_delivery.move_line_ids), 7)

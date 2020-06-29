@@ -530,4 +530,57 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
     },
 ]);
 
+tour.register('test_batch_create', {test: true}, [
+    {
+        trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',
+    },
+
+    {
+        trigger: '.button_batch_transfer',
+    },
+
+    {
+        trigger: '.o-kanban-button-new',
+    },
+
+    // select 2 delivery orders
+    {
+        trigger: '.o_barcode_line_title:contains("picking_delivery_1")',
+    },
+
+    {
+        trigger: '.o_barcode_line_title:contains("picking_delivery_2")',
+    },
+
+    {
+        trigger: '.o_confirm'
+    },
+
+    // from here should be the same as test_barcode_batch_delivery_1 => just check that it initially looks the same
+    {
+        trigger: '.o_picking_label',
+        run: function () {
+            currentViewState = updateState(defaultViewState, {
+                linesCount: 3,
+                pager: '1/4',
+                pageSummary: 'From WH/Stock/Section 1',
+                next: {
+                    isEnabled: true,
+                    isVisible: true,
+                },
+                previous: {
+                    isEnabled: true,
+                    isVisible: true
+                },
+                scanMessage: 'scan_src',
+            });
+            checkState(currentViewState);
+            const $lineFromPicking1 = helper.getLines({index: 1});
+            const $linesFromPicking2 = helper.getLines({from: 2});
+            helper.assertLineBelongTo($lineFromPicking1, 'picking_delivery_1');
+            helper.assertLinesBelongTo($linesFromPicking2, 'picking_delivery_2');
+        },
+    },
+]);
+
 });

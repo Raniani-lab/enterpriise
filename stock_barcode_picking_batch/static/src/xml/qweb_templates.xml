@@ -40,4 +40,48 @@
             <button t-if="widget.groups.group_tracking_lot and  widget.model == 'stock.picking.batch'" class="btn btn-secondary text-uppercase o_put_in_pack"><i class="fa fa-cube mr-1"/> Put In Pack</button>
         </t>
     </t>
+
+    <t t-name="stock_barcode_picking_batch_create_template">
+        <div class="o_barcode_header navbar navbar-expand navbar-dark">
+            <nav class="navbar-nav mr-auto">
+                <a tabindex="" class="nav-link o_exit mr-4"><i class="fa fa-chevron-left"/></a>
+                <span class="o_title navbar-text text-white" t-esc="widget.title"/>
+            </nav>
+        </div>
+        <div class="o_barcode_message d-flex flex-column justify-content-center align-items-center bg-800">
+            <div class="o_barcode_pic position-relative text-center mt-2 mb-1">
+                <i class="fa fa-5x mx-auto fa-exclamation-triangle text-white"/>
+            </div>
+            <span class="o_message_picking_batch_not_possible"><span class="fa fa-exclamation-triangle"/>
+                <b>No "ready" transfers found.</b>
+            </span>
+        </div>
+        <div class="o_barcode_lines list-group flex-grow-1 d-block position-relative"></div>
+        <div class="o_barcode_control d-flex">
+            <button class="btn btn-primary o_confirm">Confirm</button>
+        </div>
+    </t>
+
+    <t t-name="stock_barcode_picking_batch_create_lines_template">
+        <t t-if="lines">
+            <t t-foreach="lines" t-as="line">
+                <a class="o_barcode_line list-group-item d-flex flex-row flex-nowrap" href="#" title="Select" t-att-data-id="line.id">
+                    <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
+                        <div>
+                            <i class="fa fa-fw fa-truck"/>
+                            <span class="o_barcode_line_title" t-esc="line.name"/>
+                            <t t-if="line.state">&amp;nbsp;<span class="badge badge-pill" t-esc="line.state"/></t>
+                        </div>
+                        <div name="Responsible">
+                            <i class="fa fa-fw fa-user"/>
+                            <span class="o_barcode_picking_user">
+                                <t t-if="line.user_id" t-esc="line.user_id[1]"/>
+                                <t t-else="">-</t>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </t>
+        </t>
+    </t>
 </templates>

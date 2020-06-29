@@ -271,7 +271,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         });
         if (!_.isEmpty(data)) {
             const childDiv = $("div[name='personal_info_child_group_" + data.field + "']")
-            const childInputs = childDiv.filter('input').toArray();
+            const childInputs = childDiv.find('input').toArray();
             if (data.hide_children) {
                 childDiv.addClass('d-none');
                 childInputs.forEach(input => $(input).removeAttr('required'));
@@ -304,12 +304,12 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 const selectParent = $(select).parent().find('.select2-choice');
                 selectParent.toggleClass('bg-danger', $(select).val() === '');
             });
-            $("section#hr_cs_personal_information")[0].scrollIntoView({block: "end", behavior: "smooth"});
+            $("section#hr_cs_personal_information")[0].scrollIntoView({block: "start", behavior: "smooth"});
         }
         if (invalid_email) {
             $("input[name='email']").addClass('bg-danger');
             $("button#hr_cs_submit").parent().append("<div class='alert alert-danger alert-dismissable fade show'>" + _('Not a valid e-mail address') + "</div>");
-            $("section#hr_cs_personal_information")[0].scrollIntoView({block: "end", behavior: "smooth"});
+            $("section#hr_cs_personal_information")[0].scrollIntoView({block: "start", behavior: "smooth"});
         } else {
             $("input[name='email']").removeClass('bg-danger');
         }

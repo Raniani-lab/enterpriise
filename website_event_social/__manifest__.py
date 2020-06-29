@@ -11,10 +11,14 @@
     'website': 'https://www.odoo.com/page/events',
     'description': "",
     'depends': [
-        'website_event',
+        'website_event_online',
         'social_push_notifications',
     ],
     'data': [
+        'views/assets.xml',
+        'views/event_event_views.xml',
+        'views/social_post_views.xml',
+        'views/event_templates_registration.xml'
     ],
     'demo': [
     ],

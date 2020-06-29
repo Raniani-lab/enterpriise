@@ -109,6 +109,52 @@ QUnit.module('web_mobile', {
         form.destroy();
     });
 
+    QUnit.test("preserve current scroll position on form view while closing dialog", async function (assert) {
+        assert.expect(6);
+
+        const form = await createView({
+            View: FormView,
+            arch:
+                `<form>
+                    <sheet>
+                        <p style='height:500px'></p>
+                        <field name="parent_id"/>
+                        <p style='height:500px'></p>
+                    </sheet>
+                </form>`,
+            archs: {
+                'partner,false,kanban': `<kanban>
+                    <templates><t t-name="kanban-box">
+                        <div class="oe_kanban_global_click"><field name="display_name"/></div>
+                    </t></templates>
+                </kanban>`,
+                'partner,false,search': '<search></search>',
+            },
+            data: this.data,
+            model: 'partner',
+            res_id: 11,
+            debug: true, // need to be in the viewport to check scrollPosition
+            viewOptions: {mode: 'edit'},
+        });
+
+        const scrollPosition = {top: 265, left: 0};
+        window.scrollTo(scrollPosition);
+
+        assert.strictEqual(window.scrollY, scrollPosition.top, 'Should have scrolled 265 px vertically');
+        assert.strictEqual(window.scrollX, scrollPosition.left, 'Should be 0 px from left as it is');
+        // click on m2o field
+        await testUtils.dom.click(form.$('.o_field_many2one input'));
+        assert.strictEqual(window.scrollY, 0, 'Should have scrolled to top (0) px');
+        assert.containsOnce($('body'), '.modal.o_modal_full',
+            "there should be a many2one modal opened in full screen");
+        // click on back button
+        await testUtils.dom.click($('.modal').find('.modal-header .fa-arrow-left'));
+        assert.strictEqual(window.scrollY, scrollPosition.top, 'Should have scrolled back to 265 px vertically');
+        assert.strictEqual(window.scrollX, scrollPosition.left, 'Should be 0 px from left as it is');
+
+        form.destroy();
+    });
+
     QUnit.test("contact sync in a mobile environment", async function (assert) {
         assert.expect(5);
 

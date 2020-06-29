@@ -19,9 +19,10 @@ class SignContract(Sign):
         if request_item.sign_request_id.nb_closed == 2:
             if contract.new_car:
                 model = contract.new_car_model_id.sudo()
+                state_new_request = request.env.ref('fleet.fleet_vehicle_state_new_request', raise_if_not_found=False)
                 contract.car_id = request.env['fleet.vehicle'].sudo().create({
                     'model_id': model.id,
-                    'state_id': request.env.ref('fleet.fleet_vehicle_state_new_request').id,
+                    'state_id': state_new_request and state_new_request.id,
                     'future_driver_id': contract.employee_id.address_home_id.id,
                     'car_value': model.default_car_value,
                     'co2': model.default_co2,
@@ -162,9 +163,10 @@ class HrContractSalary(HrContractSalary):
             if wishlist_car:
                 dummy, model_id = advantages['contract']['select_wishlist_car_total_depreciated_cost'].split('-')
                 model = request.env['fleet.vehicle.model'].sudo().browse(int(model_id))
+                state_waiting_list = request.env.ref('fleet.fleet_vehicle_state_waiting_list', raise_if_not_found=False)
                 car = request.env['fleet.vehicle'].sudo().create({
                     'model_id': model.id,
-                    'state_id': request.env.ref('fleet.fleet_vehicle_state_waiting_list').id,
+                    'state_id': state_waiting_list and state_waiting_list.id,
                     'car_value': model.default_car_value,
                     'co2': model.default_co2,
                     'fuel_type': model.default_fuel_type,
@@ -182,9 +184,10 @@ class HrContractSalary(HrContractSalary):
         if contract.transport_mode_car and contract.new_car:
             employee = contract.employee_id
             model = contract.new_car_model_id
+            state_new_request = request.env.ref('fleet.fleet_vehicle_state_new_request', raise_if_not_found=False)
             contract.car_id = request.env['fleet.vehicle'].sudo().create({
                 'model_id': model.id,
-                'state_id': request.env.ref('fleet.fleet_vehicle_state_new_request').id,
+                'state_id': state_new_request and state_new_request.id,
                 'driver_id': employee.address_home_id.id,
                 'car_value': model.default_car_value,
                 'co2': model.default_co2,

@@ -73,9 +73,14 @@ odoo.define('sign_widgets_tour', function (require) {
             },
             {
                 content: "Sign",
-                trigger: 'button.btn-primary',
+                trigger: 'button.btn-primary:contains("Adopt and Sign")',
                 run: 'click',
                 extra_trigger: 'canvas.jSignature',
+                run: function () {
+                    setTimeout(() => {
+                        this.$anchor.click();
+                    }, 1000);
+                },
             },
             {
                 content: "Save Mitchell",

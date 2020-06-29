@@ -186,7 +186,7 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
         var $noContentHelper = this.$('.o_view_nocontent');
 
         if (displayNoContentHelper && !$noContentHelper.length) {
-            this.$el.append(this._renderNoContentHelper());
+            this._renderNoContentHelper();
         }
         if (!displayNoContentHelper && $noContentHelper.length) {
             $noContentHelper.remove();

@@ -78,7 +78,6 @@ QUnit.module('Views', {
                     stage: {string: 'Stage', type: 'selection', selection: [['todo', 'To Do'], ['in_progress', 'In Progress'], ['done', 'Done'], ['cancel', 'Cancelled']]},
                     project_id: {string: 'Project', type: 'many2one', relation: 'projects'},
                     user_id: {string: 'Assign To', type: 'many2one', relation: 'users'},
-                    active: {string: "active", type: "boolean", default: true},
                     color: {string: 'Color', type: 'integer'},
                     progress: {string: 'Progress', type: 'integer'},
                     exclude: {string: 'Excluded from Consolidation', type: 'boolean'},
@@ -995,6 +994,41 @@ QUnit.module('Views', {
         );
         assert.containsNone(gantt.renderer, '[tabindex]:not([tabindex="-1"])');
 
+        gantt.destroy();
+    });
+
+    QUnit.test('no content helper when no data and sample mode', async function (assert) {
+        assert.expect(3);
+
+        const records = this.data.tasks.records;
+
+        this.data.tasks.records = [];
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
+            viewOptions: {
+                initialDate: new Date(2018, 10, 15, 8, 0, 0),
+                action: {
+                    help: '<p class="hello">click to add a partner</p>'
+                }
+            },
+        });
+
+        await testUtils.nextTick();
+        assert.containsOnce(gantt, '.o_view_nocontent',
+            "should display the no content helper");
+
+        assert.strictEqual(gantt.$('.o_view_nocontent p.hello:contains(add a partner)').length, 1,
+            "should have rendered no content helper from action");
+
+        this.data.tasks.records = records;
+        await gantt.reload();
+
+        assert.containsNone(gantt, '.o_view_nocontent',
+            "should not display the no content helper");
         gantt.destroy();
     });
 

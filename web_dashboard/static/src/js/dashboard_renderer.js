@@ -151,20 +151,6 @@ var DashboardRenderer = FormRenderer.extend({
         return $result;
     },
     /**
-     * @private
-     */
-    _renderNoContentHelper: function () {
-        const templateName = this.noContentHelp ? "web.ActionHelper" : "web.NoContentHelper";
-        const context = this.noContentHelp ? { noContentHelp: this.noContentHelp } : {};
-        const template = document.createElement('template');
-        // FIXME: retrieve owl qweb instance via the env set on Component s.t.
-        // it also works in the tests (importing 'web.env' wouldn't). This won't
-        // be necessary as soon as this rendering will be written in owl.
-        const OwlQweb = owl.Component.env.qweb;
-        template.innerHTML = OwlQweb.renderToString(templateName, context);
-        this.el.append(template.content.firstChild);
-    },
-    /**
      * Renders a statistic (from an aggregate or a formula) with its label.
      * If a widget attribute is specified, and if there is no corresponding
      * formatter, instanciates a widget to render the value. Otherwise, simply

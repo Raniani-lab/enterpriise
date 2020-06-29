@@ -258,6 +258,10 @@ var GanttRenderer = AbstractRenderer.extend({
             if (self._isInDom) {
                 self._setRowsDroppable();
             }
+
+            if (self.state.isSample) {
+                self._renderNoContentHelper();
+            }
         });
     },
     /**

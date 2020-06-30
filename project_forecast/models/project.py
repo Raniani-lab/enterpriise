@@ -51,7 +51,7 @@ class Task(models.Model):
 
     def action_get_project_forecast_by_user(self):
         allowed_task_ids = self.ids + self._get_all_subtasks().ids
-        action = self.env.ref('project_forecast.project_forecast_action_by_user').read()[0]
+        action = self.env.ref('project_forecast.project_forecast_action_schedule_by_employee').read()[0]
         first_slot = self.env['planning.slot'].search([('end_datetime', '>=', datetime.datetime.now()), ('task_id', 'in', allowed_task_ids)], limit=1, order="end_datetime asc")
         action_context = {
             'group_by': ['task_id', 'employee_id'],

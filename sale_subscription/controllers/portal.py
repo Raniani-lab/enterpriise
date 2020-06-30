@@ -33,7 +33,7 @@ class CustomerPortal(CustomerPortal):
 
         domain = self._get_subscription_domain(partner)
 
-        archive_groups = self._get_archive_groups('sale.subscription', domain)
+        archive_groups = self._get_archive_groups('sale.subscription', domain) if values.get('my_details') else []
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 

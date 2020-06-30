@@ -100,7 +100,7 @@ class CustomerPortal(CustomerPortal):
             domain = searchbar_filters[filterby]['domain']
 
         # archive groups - Default Group By 'create_date'
-        archive_groups = self._get_archive_groups('helpdesk.ticket', domain)
+        archive_groups = self._get_archive_groups('helpdesk.ticket', domain) if values.get('my_details') else []
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 

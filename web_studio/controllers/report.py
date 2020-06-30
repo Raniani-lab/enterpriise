@@ -43,8 +43,8 @@ class WebStudioReportController(main.WebStudioController):
         if layout == 'web.basic_layout':
             arch = etree.fromstring("""
                 <t t-name="studio_main_report">
-                    <t t-call="%(layout)s">
-                        <t t-foreach="docs" t-as="doc">
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-call="%(layout)s">
                             <t t-call="%(document)s_document"/>
                             <p style="page-break-after: always;"/>
                         </t>

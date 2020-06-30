@@ -14,6 +14,12 @@
         </xpath>
     </template>
 
+    <template id="assets_tests" name="Mail Enterprise Assets Tests" inherit_id="web.assets_tests">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/mail_enterprise/static/tests/tours/mail_channel_expand_test_tour.js"/>
+        </xpath>
+    </template>
+
     <template id="qunit_suite" name="mail_tests" inherit_id="web.qunit_suite_tests">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/mail_enterprise/static/src/bugfix/bugfix_tests.js"></script>

@@ -185,13 +185,14 @@ class Providerdhl(models.Model):
             srm = DHLProvider(self.log_xml, request_type="ship", prod_environment=self.prod_environment)
             site_id = self.sudo().dhl_SiteID
             password = self.sudo().dhl_password
+            account_number = self.sudo().dhl_account_number
             shipment_request['Request'] = srm._set_request(site_id, password)
             shipment_request['RegionCode'] = srm._set_region_code(self.dhl_region_code)
             shipment_request['PiecesEnabled'] = srm._set_pieces_enabled(True)
             shipment_request['RequestedPickupTime'] = srm._set_requested_pickup_time(True)
-            shipment_request['Billing'] = srm._set_billing(self.dhl_account_number, "S", self.dhl_duty_payment, self.dhl_dutiable)
+            shipment_request['Billing'] = srm._set_billing(account_number, "S", self.dhl_duty_payment, self.dhl_dutiable)
             shipment_request['Consignee'] = srm._set_consignee(picking.partner_id)
-            shipment_request['Shipper'] = srm._set_shipper(self.dhl_account_number, picking.company_id.partner_id, picking.picking_type_id.warehouse_id.partner_id)
+            shipment_request['Shipper'] = srm._set_shipper(account_number, picking.company_id.partner_id, picking.picking_type_id.warehouse_id.partner_id)
             total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_lines])
             currency_name = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
             if self.dhl_dutiable:
@@ -222,13 +223,14 @@ class Providerdhl(models.Model):
         srm = DHLProvider(self.log_xml, request_type="ship", prod_environment=self.prod_environment)
         site_id = self.sudo().dhl_SiteID
         password = self.sudo().dhl_password
+        account_number = self.sudo().dhl_account_number
         shipment_request['Request'] = srm._set_request(site_id, password)
         shipment_request['RegionCode'] = srm._set_region_code(self.dhl_region_code)
         shipment_request['PiecesEnabled'] = srm._set_pieces_enabled(True)
         shipment_request['RequestedPickupTime'] = srm._set_requested_pickup_time(True)
-        shipment_request['Billing'] = srm._set_billing(self.dhl_account_number, "S", "S", self.dhl_dutiable)
+        shipment_request['Billing'] = srm._set_billing(account_number, "S", "S", self.dhl_dutiable)
         shipment_request['Consignee'] = srm._set_consignee(picking.picking_type_id.warehouse_id.partner_id)
-        shipment_request['Shipper'] = srm._set_shipper(self.dhl_account_number, picking.partner_id, picking.partner_id)
+        shipment_request['Shipper'] = srm._set_shipper(account_number, picking.partner_id, picking.partner_id)
         total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_lines])
         currency_name = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
         if self.dhl_dutiable:

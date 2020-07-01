@@ -79,7 +79,7 @@ class AccountMove(models.Model):
 
     def _compute_can_show_send_resend(self, record):
         can_show = True
-        if not self.env.company.extract_show_ocr_option_selection or self.env.company.extract_show_ocr_option_selection == 'no_send':
+        if not self.company_id.extract_show_ocr_option_selection or self.company_id.extract_show_ocr_option_selection == 'no_send':
             can_show = False
         if record.state != 'draft':
             can_show = False
@@ -134,7 +134,7 @@ class AccountMove(models.Model):
         """When a message is posted on an account.move, send the attachment to iap-ocr if
         the res_config is on "auto_send" and if this is the first attachment."""
         message = super(AccountMove, self).message_post(**kwargs)
-        if self.env.company.extract_show_ocr_option_selection == 'auto_send':
+        if self.company_id.extract_show_ocr_option_selection == 'auto_send':
             for record in self:
                 if record.move_type in ['in_invoice', 'in_refund'] and record.extract_state == "no_extract_requested":
                     record.retry_ocr()
@@ -142,7 +142,7 @@ class AccountMove(models.Model):
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""
-        if not self.env.company.extract_show_ocr_option_selection or self.env.company.extract_show_ocr_option_selection == 'no_send':
+        if not self.env.company.extract_show_ocr_option_selection or self.company_id.extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
         if attachments and attachments.exists() and self.move_type in ['in_invoice', 'in_refund'] and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:

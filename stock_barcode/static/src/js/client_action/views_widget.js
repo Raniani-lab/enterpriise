@@ -75,6 +75,7 @@ var ViewsWidget = Widget.extend({
                 userContext: self.getSession().user_context,
                 mode: self.mode,
                 withControlPanel: false,
+                withSearchPanel: false,
             });
             var View;
             if (self.view_type === 'form') {

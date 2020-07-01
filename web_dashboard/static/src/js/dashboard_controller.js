@@ -105,7 +105,7 @@ var DashboardController = AbstractController.extend({
             });
         }
         var filtersToRemove = this.currentFilterIDs || [];
-        this.currentFilterIDs = await this._controlPanelModel.dispatch(
+        this.currentFilterIDs = await this.searchModel.dispatch(
                                     'updateFilters', newFilters, filtersToRemove);
     },
 });

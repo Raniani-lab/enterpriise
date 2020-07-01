@@ -49,7 +49,7 @@ var ClientAction = AbstractAction.extend({
 
         this.mutex = new concurrency.Mutex();
 
-        this.controlPanelModelConfig.modelName = 'mrp.production.schedule';
+        this.searchModelConfig.modelName = 'mrp.production.schedule';
     },
 
     willStart: function () {

@@ -78,31 +78,6 @@
     </t>
 </t>
 
-<t t-name="SearchPanel.SummaryMobile">
-    <t t-set="emptySelection" t-value="!categories.length &amp; !filters.length"/>
-    <summary>
-        <div class="d-flex align-items-center h-100">
-            <i class="o_search_panel_mobile_close fa fa-fw fa-arrow-left"/>
-            <i class="o_search_panel_mobile_collapsed_only fa fa-fw fa-filter"/>
-            <span class="o_search_panel_mobile_title ml-3">Filters</span>
-            <div class="o_search_panel_current_selection o_search_panel_mobile_collapsed_only text-truncate ml-2 mr-auto">
-                <t t-if="emptySelection">All</t>
-                <t t-if="!emptySelection">
-                    <span t-foreach="categories" t-as="category" class="o_search_panel_category mr-1">
-                        <i t-if="category.icon" t-attf-class="o_search_panel_section_icon fa #{category.icon}" t-attf-style="#{category.color ? ('color: ' + category.color) : undefined}"/>
-                        <t t-esc="category.values.join('/')"/>
-                    </span>
-                    <span t-foreach="filters" t-as="filter" class="o_search_panel_filter mr-1">
-                        <i t-if="filter.icon" t-attf-class="o_search_panel_section_icon fa #{filter.icon}" t-attf-style="#{filter.color ? ('color: ' + filter.color) : undefined}"/>
-                        <t t-esc="filter.values.join(', ')"/>
-                    </span>
-                </t>
-            </div>
-        </div>
-    </summary>
-    <button class="o_search_panel_mobile_bottom_close btn btn-primary w-100 fixed-bottom">See result</button>
-</t>
-
 <t t-name="SnackBar" >
     <div class="o_snackbar">
         <p class="o_snackbar_message">

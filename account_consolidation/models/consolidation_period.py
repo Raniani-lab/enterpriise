@@ -3,6 +3,7 @@
 import datetime
 
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 from odoo.osv import expression
 from odoo.tools.misc import formatLang
 
@@ -424,6 +425,12 @@ class ConsolidationPeriodComposition(models.Model):
         ('_unique_composition', 'unique (composed_period_id, using_period_id)',
          "Two compositions of the same analysis period by the same analysis period cannot be created"),
     ]
+
+    @api.constrains('composed_period_id', 'using_period_id')
+    def _check_composed_period_id(self):
+        for comp in self:
+            if comp.composed_period_id == comp.using_period_id:
+                raise ValidationError(_("The Composed Analysis Period must be different from the Analysis Period"))
 
     def name_get(self):
         result = []

@@ -94,7 +94,7 @@
                                 groups="base.group_no_one">
                                 <field name="using_composition_ids" string="Sub-consolidations periods">
                                     <tree editable="bottom">
-                                        <field name="composed_period_id" string="Period" domain="[('id', '!=', parent.id)]"/>
+                                        <field name="composed_period_id" string="Period"/>
                                         <field name="composed_chart_currency_id" string="Currency"/>
                                         <field name="rate_consolidation" string="Consolidation Rate (%)"/>
                                         <field name="using_chart_currency_id" invisible="1"/>

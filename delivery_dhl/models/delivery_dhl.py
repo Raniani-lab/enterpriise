@@ -137,24 +137,26 @@ class Providerdhl(models.Model):
 
         available_product_code = []
         shipping_charge = False
-        try:
-            for q in response.GetQuoteResponse.BkgDetails.QtdShp:
-                if q.GlobalProductCode == self.dhl_product_code and q.ShippingCharge:
-                    shipping_charge = q.ShippingCharge
-                    shipping_currency = q.CurrencyCode
+        qtd_shp = response.findall('GetQuoteResponse/BkgDetails/QtdShp')
+        if qtd_shp:
+            for q in qtd_shp:
+                charge = q.find('ShippingCharge').text
+                global_product_code = q.find('GlobalProductCode').text
+                if global_product_code == self.dhl_product_code and charge:
+                    shipping_charge = charge
+                    shipping_currency = q.find('CurrencyCode').text
                     break;
                 else:
-                    available_product_code.append(q.GlobalProductCode)
-        except AttributeError:
-            if response.GetQuoteResponse.Note and response.GetQuoteResponse.Note.Condition and response.GetQuoteResponse.Note.Condition[0].ConditionCode == '410301':
+                    available_product_code.append(global_product_code)
+        else:
+            condition = response.find('GetQuoteResponse/Note/Condition')
+            if condition and condition.find('ConditionCode').text == '410301':
                 return {
                     'success': False,
                     'price': 0.0,
-                    'error_message': "%s.\n%s" % (response.GetQuoteResponse.Note.Condition[0].ConditionData, _("Hint: The destination may not require the dutiable option.")),
+                    'error_message': "%s.\n%s" % (condition.find('ConditionData').text, _("Hint: The destination may not require the dutiable option.")),
                     'warning_message': False,
                 }
-            else:
-                raise
         if shipping_charge:
             if order:
                 order_currency = order.currency_id

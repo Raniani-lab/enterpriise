@@ -294,8 +294,6 @@ class DHLProvider():
             self.debug_logger(request_to_send, 'dhl_rating_request')
             self.debug_logger(response.content, 'dhl_rating_response')
         response_element_xml = fromstring(response.content)
-        Response = self.client.get_element(response_element_xml.tag)
-        response_zeep = Response.type.parse_xmlelement(response_element_xml)
         dict_response = {'tracking_number': 0.0,
                          'price': 0.0,
                          'currency': False}
@@ -303,11 +301,11 @@ class DHLProvider():
         # 'ErrorResponse', we could handle them differently if needed as
         # the 'ShipmentValidateErrorResponse' is something you cannot do,
         # and 'ErrorResponse' are bad values given in the request.
-        if hasattr(response_zeep, 'GetQuoteResponse'):
-            return response_zeep
+        if response_element_xml.find('GetQuoteResponse'):
+            return response_element_xml
         else:
-            condition = response_zeep.Response.Status.Condition[0]
-            error_msg = "%s: %s" % (condition.ConditionCode, condition.ConditionData)
+            condition = response_element_xml.find('Response/Status/Condition')
+            error_msg = "%s: %s" % (condition.find('ConditionCode').text, condition.find('ConditionData').text)
             raise UserError(error_msg)
 
     def check_required_value(self, carrier, recipient, shipper, order=False, picking=False):

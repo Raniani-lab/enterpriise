@@ -7,16 +7,31 @@ from odoo import fields
 
 from odoo.addons.account_invoice_extract.models.account_invoice import SUCCESS, NOT_READY, ERROR_INTERNAL, WARNING_DUPLICATE_VENDOR_REFERENCE
 from odoo.addons.account_invoice_extract.tests import common as account_invoice_extract_common
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
-from odoo.tests.common import Form, TransactionCase
+from odoo.tests.common import Form
 
 
 @tagged('post_install', '-at_install')
-class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP):
-    def init_invoice(self, default_type="in_invoice", extract_state='waiting_extraction'):
-        move_form = Form(self.env['account.move'].with_context(default_move_type=default_type))
-        move_form.extract_state = extract_state
-        return move_form.save()
+class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_common.MockIAP):
+
+    @classmethod
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+
+        cls.env.user.groups_id |= cls.env.ref('base.group_system')
+
+        # Avoid passing on the iap.account's `get` method to avoid the cr.commit breaking the test transaction.
+        cls.env['iap.account'].create([
+            {
+                'service_name': 'partner_autocomplete',
+                'company_ids': [(6, 0, cls.company_data['company'].ids)],
+            },
+            {
+                'service_name': 'invoice_ocr',
+                'company_ids': [(6, 0, cls.company_data['company'].ids)],
+            },
+        ])
 
     def get_default_extract_response(self):
         return {
@@ -67,7 +82,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_no_merge_check_status(self):
         # test check_status without lines merging
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         self.env.company.extract_single_line_per_tax = False
         extract_response = self.get_default_extract_response()
 
@@ -81,7 +96,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertEqual(invoice.amount_tax, 30)
         self.assertEqual(invoice.ref, 'INV0001')
         self.assertEqual(invoice.invoice_date, fields.Date.from_string('2019-04-12'))
-        self.assertEqual(invoice.invoice_date_due, fields.Date.from_string('2019-04-19'))
+        self.assertEqual(invoice.invoice_date_due, fields.Date.from_string('2019-04-12'))
         self.assertEqual(invoice.payment_reference, "+++123/1234/12345+++")
 
         self.assertEqual(len(invoice.invoice_line_ids), 3)
@@ -101,7 +116,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_merge_check_status(self):
         # test check_status with lines merging
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         self.env.company.extract_single_line_per_tax = True
         extract_response = self.get_default_extract_response()
 
@@ -130,7 +145,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_partner_creation_from_vat(self):
         # test that the partner isn't created if the VAT number isn't valid
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {}):
@@ -139,7 +154,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertFalse(invoice.partner_id)
 
         # test that the partner is created if the VAT number is valid
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {'company_data': {'name': 'Partner', 'country_code': 'BE', 'vat': 'BE0477472701',
@@ -151,7 +166,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_partner_selection_from_vat(self):
         # test that if a partner with the VAT found already exists in database it is selected
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         existing_partner = self.env['res.partner'].create({'name': 'Existing partner', 'vat': 'BE0477472701'})
         extract_response = self.get_default_extract_response()
 
@@ -162,7 +177,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_partner_selection_from_name(self):
         # test that if a partner with a similar name already exists in database it is selected
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         existing_partner = self.env['res.partner'].create({'name': 'Test S.A.'})
         self.env['res.partner'].create({'name': 'Partner'})
         self.env['res.partner'].create({'name': 'Another supplier'})
@@ -174,7 +189,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertEqual(invoice.partner_id, existing_partner)
 
         # test that if no partner with a similar name exists, the partner isn't set
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
         extract_response['results'][0]['supplier']['selected_value']['content'] = 'Blablablablabla'
 
@@ -185,7 +200,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_multi_currency(self):
         # test that if the multi currency isn't disabled, the currency isn't changed
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         test_user = self.env['res.users'].create({
             'login': "test_user",
             'name': "Test User",
@@ -207,7 +222,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         })
 
         # test with the name of the currency
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         invoice.currency_id = usd_currency.id
         extract_response = self.get_default_extract_response()
 
@@ -217,7 +232,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertEqual(invoice.currency_id, eur_currency)
 
         # test with the symbol of the currency
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         invoice.currency_id = usd_currency.id
         extract_response = self.get_default_extract_response()
         extract_response['results'][0]['currency']['selected_value']['content'] = '€'
@@ -229,7 +244,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_tax_adjustments(self):
         # test that if the total computed by Odoo doesn't exactly match the total found by the OCR, the tax are adjusted accordingly
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
         extract_response['results'][0]['total']['selected_value']['content'] += 0.01
 
@@ -242,7 +257,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_non_existing_tax(self):
         # test that if there is an invoice line with a tax which doesn't exist in database it is ignored
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
         extract_response['results'][0]['total']['selected_value']['content'] = 123.4
         extract_response['results'][0]['subtotal']['selected_value']['content'] = 100
@@ -270,14 +285,21 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_duplicated_reference(self):
         # test that if an invoice with the same invoice reference already exists, the invoice is still created and the user is warned
-        invoice = self.init_invoice(extract_state='no_extract_requested')
-        invoice.ref = "INV0001"
-        invoice.invoice_date = fields.Date.from_string('2019-04-12')
         partner = self.env['res.partner'].create({'name': 'Test', 'vat': 'BE0000000000'})
-        invoice.partner_id = partner
+        invoice = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': partner.id,
+            'extract_state': 'no_extract_requested',
+            'ref': 'INV0001',
+            'invoice_date': '2019-04-12',
+            'date': '2019-04-12',
+        })
 
-        invoice2 = self.init_invoice()
-        invoice2.partner_id = partner
+        invoice2 = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': partner.id,
+            'extract_state': 'waiting_extraction',
+        })
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {}):
@@ -288,7 +310,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_server_error(self):
         # test that the extract state is set to 'error' if the OCR returned an error
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = {'status_code': ERROR_INTERNAL}
 
         with self.mock_iap_extract(extract_response, {}):
@@ -299,7 +321,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_server_not_ready(self):
         # test that the extract state is set to 'not_ready' if the OCR didn't finish to process the invoice
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = {'status_code': NOT_READY}
 
         with self.mock_iap_extract(extract_response, {}):
@@ -308,21 +330,10 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertEqual(invoice.extract_state, 'extract_not_ready')
         self.assertEqual(invoice.extract_status_code, NOT_READY)
 
-    def test_posted_invoice_not_edited(self):
-        # test that we don't edit an invoice that has already been posted
-        invoice = self.init_invoice()
-        invoice.state = 'posted'
-        extract_response = self.get_default_extract_response()
-
-        with self.mock_iap_extract(extract_response, {}):
-            invoice._check_status()
-
-        self.assertEqual(len(invoice.invoice_line_ids), 0)
-
     def test_preupdate_other_waiting_invoices(self):
         # test that when we update an invoice, other invoices waiting for extraction are updated as well
-        invoice = self.init_invoice()
-        invoice2 = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
+        invoice2 = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {}):
@@ -333,18 +344,23 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_no_overwrite_client_values(self):
         # test that we are not overwriting the values entered by the client
-        invoice = self.init_invoice()
         partner = self.env['res.partner'].create({'name': 'Blabla', 'vat': 'BE0123456789'})
+        invoice = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'extract_state': 'waiting_extraction',
+            'invoice_date': '2019-04-01',
+            'date': '2019-04-01',
+            'invoice_date_due': '2019-05-01',
+            'ref': 'INV1234',
+            'partner_id': partner.id,
+            'invoice_line_ids': [(0, 0, {
+                'name': 'Blabla',
+                'price_unit': 13.0,
+                'quantity': 2.0,
+                'account_id': self.company_data['default_account_revenue'].id,
+            })],
+        })
         self.env['res.partner'].create({'name': 'Test', 'vat': 'BE0000000000'})     # this match the partner found in the server response
-        with Form(invoice) as move_form:
-            move_form.invoice_date = fields.Date.from_string('2019-04-01')
-            move_form.invoice_date_due = fields.Date.from_string('2019-05-01')
-            move_form.ref = 'INV1234'
-            move_form.partner_id = partner
-            with move_form.invoice_line_ids.new() as line:
-                line.name = "Blabla"
-                line.price_unit = 13
-                line.quantity = 2
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {}):
@@ -363,7 +379,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
     def test_invoice_validation(self):
         # test that when we post the invoice, the validation is sent to the server
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {'company_data': {'name': 'Partner', 'country_code': 'BE', 'vat': 'BE0477472701',
@@ -413,7 +429,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
         # test with message_post()
         self.env.company.extract_show_ocr_option_selection = 'auto_send'
-        invoice = self.init_invoice(extract_state='no_extract_requested')
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
         test_attachment = self.env['ir.attachment'].create({
             'name': "an attachment",
             'datas': base64.b64encode(b'My attachment'),
@@ -425,7 +441,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
 
         # test with register_as_main_attachment()
-        invoice = self.init_invoice(extract_state='no_extract_requested')
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
         test_attachment = self.env['ir.attachment'].create({
             'name': "an attachment",
             'datas': base64.b64encode(b'My attachment'),
@@ -442,7 +458,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
         # test with message_post()
         self.env.company.extract_show_ocr_option_selection = 'manual_send'
-        invoice = self.init_invoice(extract_state='no_extract_requested')
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
         test_attachment = self.env['ir.attachment'].create({
             'name': "an attachment",
             'datas': base64.b64encode(b'My attachment'),
@@ -454,7 +470,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         self.assertEqual(invoice.extract_state, 'no_extract_requested')
 
         # test with register_as_main_attachment()
-        invoice = self.init_invoice(extract_state='no_extract_requested')
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
         test_attachment = self.env['ir.attachment'].create({
             'name': "another attachment",
             'datas': base64.b64encode(b'My other attachment'),
@@ -471,7 +487,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
         # test that the bank account is set when an iban is found
 
         # test that an account is created if no existing matches the account number
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {'company_data': {'name': 'Partner', 'country_code': 'BE', 'vat': 'BE0477472701', 'partner_gid': False, 'city': 'Namur', 'bank_ids': [], 'zip': '2110', 'street': 'OCR street'}}):
@@ -481,7 +497,7 @@ class TestInvoiceExtract(TransactionCase, account_invoice_extract_common.MockIAP
 
         # test that it uses the existing bank account if it exists
         created_bank_account = invoice.partner_bank_id
-        invoice = self.init_invoice()
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {}):

@@ -486,7 +486,7 @@ class AccountMove(models.Model):
                 if len(taxes_by_document) != 0:
                     taxes_found |= max(taxes_by_document, key=lambda tax: len(tax[1]))[0]
                 else:
-                    taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')])
+                    taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase'), ('company_id', '=', self.company_id.id)])
                     if taxes_records:
                         # prioritize taxes that are not included in the price
                         taxes_records_not_included = taxes_records.filtered(lambda r: not r.price_include)
@@ -648,7 +648,7 @@ class AccountMove(models.Model):
             self_ctx = self
         else:
             # we need to make sure the type is in the context as _get_default_journal uses it
-            self_ctx = self.with_context(default_type=self.move_type) if 'default_type' not in self._context else self
+            self_ctx = self.with_context(default_move_type=self.move_type) if 'default_move_type' not in self._context else self
             self_ctx = self_ctx.with_company(self.company_id.id)
             self_ctx = self_ctx.with_context(default_journal_id=self_ctx._get_default_journal().id)
         with Form(self_ctx) as move_form:

@@ -107,7 +107,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         const folderIds = [
             ...new Set(Object.values(this._fileUploads).map(upload => upload.folderId))
         ];
-        this._searchPanel.setUploadingFolderIds(folderIds);
+        this._updateSearchPanel({ uploadingFolderIds: folderIds });
     },
     /**
      * @param {jQuery} [$node]
@@ -155,7 +155,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @override
      */
     _getFileUploadRenderOptions() {
-        const currentFolderId = this._searchPanel.getSelectedFolderId();
+        const currentFolderId = this.searchModel.get('selectedFolderId');
         return {
             predicate: fileUpload => {
                 return !currentFolderId ||
@@ -251,7 +251,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      */
     _makeFileUpload({ recordId }) {
         return Object.assign({
-            folderId: this._searchPanel.getSelectedFolderId(),
+            folderId: this.searchModel.get('selectedFolderId'),
             recordId,
         },
         fileUploadMixin._makeFileUpload.apply(this, arguments));
@@ -264,7 +264,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         const context = this.model.get(this.handle, { raw: true }).getContext();
         return {
             document_id: recordId,
-            folder_id: this._searchPanel.getSelectedFolderId(),
+            folder_id: this.searchModel.get('selectedFolderId'),
             owner_id: context && context.default_owner_id,
             partner_id: context && context.default_partner_id,
         };
@@ -314,11 +314,11 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         }
         this._documentsInspector = new DocumentsInspector(this, {
             focusTagInput: this._isInspectorTagInputFocusOnMount,
-            folderId: this._searchPanel.getSelectedFolderId(),
-            folders: this._searchPanel.getFolders(),
+            folderId: this.searchModel.get('selectedFolderId'),
+            folders: this.searchModel.get('folders'),
             recordIds: this._selectedRecordIds,
             state,
-            tags: this._searchPanel.getTags(),
+            tags: this.searchModel.get('tags'),
             viewType: this.viewType,
         });
         this._isInspectorTagInputFocusOnMount = false;
@@ -396,7 +396,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @private
      */
     updateButtons() {
-        const selectedFolderId = this._searchPanel.getSelectedFolderId();
+        const selectedFolderId = this.searchModel.get('selectedFolderId');
         this.$buttons.find('.o_documents_kanban_upload').prop('disabled', !selectedFolderId);
         this.$buttons.find('.o_documents_kanban_url').prop('disabled', !selectedFolderId);
         this.$buttons.find('.o_documents_kanban_request').prop('disabled', !selectedFolderId);
@@ -483,7 +483,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         const folderIds = [
             ...new Set(Object.values(this._fileUploads).map(upload => upload.folderId))
         ];
-        this._searchPanel.setUploadingFolderIds(folderIds);
+        this._updateSearchPanel({ uploadingFolderIds: folderIds });
     },
     /**
      * @private
@@ -495,8 +495,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         this.do_action('documents.action_request_form', {
             additional_context: {
                 default_partner_id: context.default_partner_id || false,
-                default_folder_id: this._searchPanel.getSelectedFolderId(),
-                default_tag_ids: [[6, 0, this._searchPanel.getSelectedTagIds()]],
+                default_folder_id: this.searchModel.get('selectedFolderId'),
+                default_tag_ids: [[6, 0, this.searchModel.get('selectedTagIds')]],
             },
             on_close: () => this.reload(),
         });
@@ -510,8 +510,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         const state = this.model.get(this.handle, { raw: true });
         this._shareDocuments({
             domain: state.domain,
-            folder_id: this._searchPanel.getSelectedFolderId(),
-            tag_ids: [[6, 0, this._searchPanel.getSelectedTagIds()]],
+            folder_id: this.searchModel.get('selectedFolderId'),
+            tag_ids: [[6, 0, this.searchModel.get('selectedTagIds')]],
             type: 'domain',
         });
     },
@@ -531,8 +531,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         this.do_action('documents.action_url_form', {
             additional_context: {
                 default_partner_id: context.default_partner_id || false,
-                default_folder_id: this._searchPanel.getSelectedFolderId(),
-                default_tag_ids: [[6, 0, this._searchPanel.getSelectedTagIds()]],
+                default_folder_id: this.searchModel.get('selectedFolderId'),
+                default_tag_ids: [[6, 0, this.searchModel.get('selectedTagIds')]],
             },
             on_close: async () => await this.reload()
         });
@@ -613,7 +613,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      */
     _onDragoverDocumentsView(ev) {
         if (
-            !this._searchPanel.getSelectedFolderId() ||
+            !this.searchModel.get('selectedFolderId') ||
             !ev.originalEvent.dataTransfer.types.includes('Files')
         ) {
             return;
@@ -692,7 +692,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @param {callback} ev.data.callback
      */
     _onGetSearchPanelTags(ev) {
-         ev.data.callback(this._searchPanel.getTags());
+         ev.data.callback(this.searchModel.get('tags'));
     },
     /**
      * @private
@@ -882,7 +882,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         ev.stopPropagation();
         this._shareDocuments({
             document_ids: [[6, 0, ev.data.resIds]],
-            folder_id: this._searchPanel.getSelectedFolderId(),
+            folder_id: this.searchModel.get('selectedFolderId'),
             type: 'ids',
         });
     },

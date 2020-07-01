@@ -25,7 +25,7 @@ odoo.define("spreadsheet.DocumentsListController", function (require) {
         updateButtons() {
             this._super(...arguments);
             DocumentsControllerMixin.updateButtons.apply(this, arguments);
-            const selectedFolderId = this._searchPanel.getSelectedFolderId();
+            const selectedFolderId = this.searchModel.get('selectedFolderId');
             this.$buttons
                 .find(".o_documents_kanban_spreadsheet")
                 .prop("disabled", !selectedFolderId);
@@ -42,7 +42,7 @@ odoo.define("spreadsheet.DocumentsListController", function (require) {
         _onNewSpreadsheet: async function (ev) {
             ev.preventDefault();
             ev.stopPropagation();
-            const folder_id = this._searchPanel.getSelectedFolderId();
+            const folder_id = this.searchModel.get('selectedFolderId');
             const spreadsheetId = await this._rpc({
                 model: "documents.document",
                 method: "create",

@@ -54,7 +54,7 @@ QUnit.module('Views', {
     },
 }, function () {
     QUnit.test('kanban with searchpanel: rendering in mobile', async function (assert) {
-        assert.expect(32);
+        assert.expect(37);
 
         const RamStorageService = AbstractStorageService.extend({
             storage: new RamStorage(),
@@ -89,78 +89,84 @@ QUnit.module('Views', {
             },
             services: {
                 local_storage: RamStorageService,
-            }
+            },
         });
 
-        assert.containsOnce(kanban, 'details.o_search_panel');
+        let $sp = kanban.$(".o_search_panel");
 
+        assert.containsOnce(kanban, "div.o_search_panel.o_search_panel_summary");
+        assert.containsNone(document.body, "div.o_search_panel.o_searchview.o_mobile_search");
         assert.verifySteps([
-            'search_panel_select_range',
-            'search_panel_select_multi_range',
-            '/web/dataset/search_read',
+            "search_panel_select_range",
+            "search_panel_select_multi_range",
+            "/web/dataset/search_read",
         ]);
 
-        const $searchPanel = kanban.$('details.o_search_panel');
-
-        assert.isVisible($searchPanel.find('> summary'));
-        assert.ok($searchPanel.find('> summary ~ *').is(':not(:visible)'),
-            "content of the SearchPanel shouldn't be visible");
+        assert.containsOnce($sp, ".fa.fa-filter");
+        assert.containsOnce($sp, ".o_search_panel_current_selection:contains(All)");
 
         // open the search panel
-        await dom.click($searchPanel.find('> summary'));
+        await dom.click($sp);
+        $sp = $(".o_search_panel");
 
-        assert.ok($searchPanel.find('> summary ~ *').is(':visible'),
-            "content of the SearchPanel should be visible");
-        assert.containsOnce($searchPanel, '.o_search_panel_current_selection');
-        assert.isVisible($searchPanel.find('> summary > div > .o_search_panel_mobile_close'));
-        assert.containsN($searchPanel, '.o_search_panel_section', 2);
+        assert.containsNone(kanban, "div.o_search_panel.o_search_panel_summary");
+        assert.containsOnce(document.body, "div.o_search_panel.o_searchview.o_mobile_search");
 
-        // looking for 'category' sample section
-        const $productSection = $searchPanel.find('.o_search_panel_section:first');
-        assert.containsOnce($productSection, '.o_search_panel_section_header:contains(something_id)');
-        assert.containsN($productSection, '.o_search_panel_category_value', 3);
+        assert.containsOnce($sp, ".o_mobile_search_header > button:contains(FILTER)");
+        assert.containsOnce($sp, "button.o_mobile_search_footer:contains(SEE RESULT)");
+        assert.containsN($sp, ".o_search_panel_section", 2);
+        assert.containsOnce($sp, ".o_search_panel_section.o_search_panel_category");
+        assert.containsOnce($sp, ".o_search_panel_section.o_search_panel_filter");
+        assert.containsN($sp, ".o_search_panel_category_value", 3);
+        assert.containsOnce($sp, ".o_search_panel_category_value > header.active", 3);
+        assert.containsN($sp, ".o_search_panel_filter_value", 3);
 
         // select category
-        await dom.click($productSection.find('.o_search_panel_category_value:contains(hello) label'));
-        assert.containsOnce($searchPanel.find('.o_search_panel_current_selection'), '.o_search_panel_category:contains(hello)');
+        await dom.click($sp.find(".o_search_panel_category_value:contains(hello) header"));
+
         assert.verifySteps([
-            'search_panel_select_range',
-            'search_panel_select_multi_range',
-            '/web/dataset/search_read'
+            "search_panel_select_range",
+            "search_panel_select_multi_range",
+            "/web/dataset/search_read",
         ]);
 
-        // looking for 'filter' sample section
-        const $stateSection = $searchPanel.find('.o_search_panel_section:last');
-        assert.containsOnce($stateSection, '.o_search_panel_section_header:contains(State)');
-        assert.containsN($stateSection, '.o_search_panel_filter_value', 3);
-
         // select filter
-        await dom.click($stateSection.find('.o_search_panel_filter_value:contains(DEF) input'));
-        assert.containsOnce($searchPanel.find('.o_search_panel_current_selection'), '.o_search_panel_filter:contains(DEF)');
+        await dom.click($sp.find(".o_search_panel_filter_value:contains(DEF) input"));
+
         assert.verifySteps([
-            'search_panel_select_range',
-            'search_panel_select_multi_range',
-            '/web/dataset/search_read'
+            "search_panel_select_range",
+            "search_panel_select_multi_range",
+            "/web/dataset/search_read",
         ]);
 
         // close with back button
-        assert.containsOnce($searchPanel, '.o_search_panel_mobile_close');
-        await dom.click($searchPanel.find('.o_search_panel_mobile_close'));
-        assert.ok($searchPanel.find('> summary ~ *').is(':not(:visible)'));
+        await dom.click($sp.find(".o_mobile_search_header button"));
+        $sp = $(".o_search_panel");
+
+        assert.containsOnce(kanban, "div.o_search_panel.o_search_panel_summary");
+        assert.containsNone(document.body, "div.o_search_panel.o_searchview.o_mobile_search");
 
         // selection is kept when closed
-        const $summaryCurrentSelection = $searchPanel.find('> summary .o_search_panel_current_selection');
-        assert.containsOnce($summaryCurrentSelection, '.o_search_panel_category:contains(hello)');
-        assert.containsOnce($summaryCurrentSelection, '.o_search_panel_filter:contains(DEF)');
+
+        assert.containsOnce($sp, ".o_search_panel_current_selection");
+        assert.containsOnce($sp, ".o_search_panel_category:contains(hello)");
+        assert.containsOnce($sp, ".o_search_panel_filter:contains(DEF)");
 
         // open the search panel
-        await dom.click($searchPanel.find('> summary'));
-        assert.ok($searchPanel.find('> summary ~ *').is(':visible'));
+        await dom.click($sp);
+        $sp = $(".o_search_panel");
+
+        assert.containsOnce($sp, ".o_search_panel_category_value > header.active:contains(hello)");
+        assert.containsOnce($sp, ".o_search_panel_filter_value:contains(DEF) input:checked");
+
+        assert.containsNone(kanban, "div.o_search_panel.o_search_panel_summary");
+        assert.containsOnce(document.body, "div.o_search_panel.o_searchview.o_mobile_search");
 
         // close with bottom button
-        assert.containsOnce($searchPanel, '.o_search_panel_mobile_bottom_close');
-        await dom.click($searchPanel.find('.o_search_panel_mobile_bottom_close'));
-        assert.ok($searchPanel.find('> summary ~ *').is(':not(:visible)'));
+        await dom.click($sp.find("button.o_mobile_search_footer"));
+
+        assert.containsOnce(kanban, "div.o_search_panel.o_search_panel_summary");
+        assert.containsNone(document.body, "div.o_search_panel.o_searchview.o_mobile_search");
 
         kanban.destroy();
     });
@@ -466,7 +472,7 @@ QUnit.module('Views', {
         await dom.click(actionManager.$('.o_toggle_searchview_full')); // open full screen search view
         await dom.click($('.o_group_by_menu > .o_dropdown_toggler_btn')); // open 'group by' drop-down
         await dom.click($('.o_group_by_menu .o_menu_item .dropdown-item')); // select first drop-down item
-        await dom.click($('.o_mobile_search_show_result')); // click 'See Result' button
+        await dom.click($('button.o_mobile_search_footer')); // click 'See Result' button
 
         // after the group by is changed, check that preserved active column should be cleared and
         // first available column should be set to active instead

@@ -127,16 +127,16 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             const fields = {
                 birthday: { string: "Birthday", type: "date", store: true, sortable: true },
             };
-            const viewInfo = {
-                arch: `
-                    <search>
-                        <filter name="birthday" date="birthday"/>
-                    </search>`,
-                fields,
-            };
             const searchMenuTypes = ["filter", "groupBy", "comparison", "favorite"];
             const params = {
-                cpStoreConfig: { viewInfo, searchMenuTypes },
+                cpModelConfig: {
+                    arch: `
+                        <search>
+                            <filter name="birthday" date="birthday"/>
+                        </search>`,
+                    fields,
+                    searchMenuTypes,
+                },
                 cpProps: { fields, searchMenuTypes },
             };
             const controlPanel = await createControlPanel(params);

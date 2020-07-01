@@ -1261,19 +1261,24 @@ odoo.define('sign.document_signing', function (require) {
 
         },
 
-        start: function () {
+        start: async function () {
             var self = this;
-            return this._rpc({
-                model: 'sign.request.item',
-                method: 'search_read',
-                domain: ['&','&', ['partner_id', '=', session.partner_id], ['state', '=', 'sent'], ['id', '!=', self.requestID]],
-                fields: ['sign_request_id'],
-                orderBy: [{name: 'create_date', desc: true}]
-            }).then(function (result) {
+            var result = false;
+            var canReadRequestItem = await session.user_has_group('sign.group_sign_user');
+            if (canReadRequestItem) {
+                result = await this._rpc({
+                    model: 'sign.request.item',
+                    method: 'search_read',
+                    domain: ['&','&', ['partner_id', '=', session.partner_id], ['state', '=', 'sent'], ['id', '!=', this.requestID]],
+                    fields: ['sign_request_id'],
+                    orderBy: [{name: 'create_date', desc: true}]
+                });
+            }
 
-                var openDocumentButton = {
-                    text: _t('View Document'),
-                    click: function (e) {
+            var openDocumentButton = {
+                text: _t('View Document'),
+                click: function (e) {
+                    if (canReadRequestItem) {
                         self._rpc({
                             model: 'sign.request',
                             method: 'go_to_document',
@@ -1281,39 +1286,41 @@ odoo.define('sign.document_signing', function (require) {
                         }).then(function(action) {
                             self.do_action(action, {clear_breadcrumbs: true});
                         });
-                    }
-                };
-
-                if (result && result.length) {
-                    self.has_next_document = true;
-
-                    openDocumentButton.classes = 'btn-secondary';
-                    self.options.buttons.push(openDocumentButton);
-
-                    self.next_document = result.reduce(function (prev, curr) {
-                        return (Math.abs(curr.sign_request_id[0] - self.requestID) <= Math.abs(prev.sign_request_id[0] - self.requestID) ? curr : prev);
-                    });
-                    self.options.buttons.push({
-                        text: _t('Sign Next Document'), classes: 'btn-primary', click: function (e) {
-                            self._rpc({
-                                model: 'sign.request',
-                                method: 'go_to_document',
-                                args: [self.next_document.sign_request_id[0]],
-                            }).then(function(action) {
-                                self.do_action(action, {clear_breadcrumbs: true});
-                            });
-                       }
-                    });
-                } else {
-                    openDocumentButton.classes = 'btn-primary';
-                    if (!self.RedirectURL) {
-                        self.options.buttons.push(openDocumentButton);
+                    } else {
+                        window.location.reload();
                     }
                 }
-                self.setElement($(core.qweb.render('sign.thank_you_dialog', {widget: self})));
-                self.set_buttons(self.options.buttons);
-                self.renderElement();
-            });
+            };
+
+            if (result && result.length) {
+                this.has_next_document = true;
+
+                openDocumentButton.classes = 'btn-secondary';
+                this.options.buttons.push(openDocumentButton);
+
+                this.next_document = result.reduce(function (prev, curr) {
+                    return (Math.abs(curr.sign_request_id[0] - self.requestID) <= Math.abs(prev.sign_request_id[0] - self.requestID) ? curr : prev);
+                });
+                this.options.buttons.push({
+                    text: _t('Sign Next Document'), classes: 'btn-primary', click: function (e) {
+                        self._rpc({
+                            model: 'sign.request',
+                            method: 'go_to_document',
+                            args: [self.next_document.sign_request_id[0]],
+                        }).then(function(action) {
+                            self.do_action(action, {clear_breadcrumbs: true});
+                        });
+                    }
+                });
+            } else {
+                openDocumentButton.classes = 'btn-primary';
+                if (!this.RedirectURL) {
+                    this.options.buttons.push(openDocumentButton);
+                }
+            }
+            this.setElement($(core.qweb.render('sign.thank_you_dialog', {widget: this})));
+            this.set_buttons(this.options.buttons);
+            await this.renderElement();
         },
 
         /**

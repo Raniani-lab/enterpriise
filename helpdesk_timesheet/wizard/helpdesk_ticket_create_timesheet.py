@@ -35,4 +35,5 @@ class HelpdeskTicketCreateTimesheet(models.TransientModel):
             'timer_pause': False
         })
         self.ticket_id.timesheet_ids = [(4, timesheet.id)]
+        self.ticket_id.user_timer_id.unlink()
         return timesheet

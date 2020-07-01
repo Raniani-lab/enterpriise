@@ -160,7 +160,7 @@ class ReportL10nLuPartnerVatIntra(models.AbstractModel):
 
         # dt_from is 1st day of months 1,4,7 or 10 and dt_to is last day of dt_from month+2
         if dt_from.day == 1 and dt_from.month % 3 == 1 and dt_to == dt_from + relativedelta(day=31, month=dt_from.month + 2):
-            quarter = (dt_from + 2) / 3
+            quarter = (dt_from.month + 2) / 3
         # dt_from is 1st day & dt_to is last day of same month
         elif dt_from.day == 1 and dt_from + relativedelta(day=31) == dt_to:
             month = date_from[5:7]

@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import base64
 
 from odoo.fields import Date, Datetime
 from odoo.exceptions import AccessError
+from odoo.tests import Form
 from odoo.tests.common import SavepointCase, new_test_user
 
+TEXT = base64.b64encode(bytes("TEST", 'utf-8'))
+GIF = b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="
 
 class SpreadsheetDocuments(SavepointCase):
 
@@ -71,3 +75,46 @@ class SpreadsheetDocuments(SavepointCase):
         with self.assertRaises(AccessError, msg="field should be protected"):
             self.env["documents.document"].with_user(user).get_spreadsheets_to_display()
         self.env['documents.document']._fields['name'].groups = existing_groups
+
+    def test_save_template(self):
+        context = {
+            "default_spreadshee_name": "Spreadsheet test",
+            "default_template_name": "Spreadsheet test - Template",
+            "default_data": TEXT,
+            "default_thumbnail": GIF,
+        }
+        wizard = Form(self.env["save.spreadsheet.template"].with_context(context)).save()
+        wizard.save_template()
+        template = self.env["spreadsheet.template"].search([["name", "=", "Spreadsheet test - Template"]])
+        self.assertTrue(template, "It should have created a template")
+        self.assertEqual(template.name, "Spreadsheet test - Template")
+        self.assertEqual(template.data, TEXT)
+        self.assertEqual(template.thumbnail, GIF)
+        # TODO test notif
+
+    def test_user_right_own_template(self):
+        user = new_test_user(self.env, "Test user", groups='documents.group_documents_user')
+        template = self.env["spreadsheet.template"].with_user(user).create({
+            "name": "hello",
+            "data": TEXT,
+        })
+        template.write({
+            "name": "bye",
+        })
+        template.unlink()
+
+    def test_user_right_not_own_template(self):
+        manager = new_test_user(self.env, "Test manager", groups='documents.group_documents_manager')
+        user = new_test_user(self.env, "Test user", groups='documents.group_documents_user')
+        template = self.env["spreadsheet.template"].with_user(manager).create({
+            "name": "hello",
+            "data": TEXT,
+        })
+        with self.assertRaises(AccessError, msg="cannot write on template of your friend"):
+            template.with_user(user).write({
+                "name": "bye",
+            })
+        with self.assertRaises(AccessError, msg="cannot delete template of your friend"):
+            template.with_user(user).unlink()
+        template.name = "bye"
+        template.unlink()

@@ -22,6 +22,7 @@ odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
 
     class DateFilterValue extends owl.Component {
         dateOptions(type) {
+            console.log(type ? dateOptions(type) : [])
             return type ? dateOptions(type) : [];
         }
 
@@ -30,6 +31,7 @@ odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
         }
 
         isSelected(periodId) {
+            console.log(this.props.year, this.props.period)
             return [this.props.year, this.props.period].includes(periodId);
         }
 

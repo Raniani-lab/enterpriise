@@ -1053,7 +1053,12 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
     }
 
     PivotPlugin.modes = ["normal", "headless", "readonly"];
-    PivotPlugin.getters = ["getPivot", "getPivots", "getSelectedPivot", "getNextValue"];
+    PivotPlugin.getters = [
+        "getPivot",
+        "getPivots",
+        "getSelectedPivot",
+        "getNextValue",
+    ];
 
     return PivotPlugin;
 });

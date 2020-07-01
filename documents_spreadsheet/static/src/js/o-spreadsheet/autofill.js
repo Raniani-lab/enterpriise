@@ -2,6 +2,10 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
     "use strict";
 
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
+    const UP = 0;
+    const DOWN = 1;
+    const LEFT = 2;
+    const RIGHT = 3;
     const autofillRulesRegistry = spreadsheet.registries.autofillRulesRegistry;
     const autofillModifiersRegistry = spreadsheet.registries.autofillModifiersRegistry;
 
@@ -17,6 +21,10 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
             ).length;
             return { type: "PIVOT_UPDATER", increment, current: 0 };
         },
+        sequence: 10,
+    }).add("autofill_pivot_position", {
+        condition: (cell) => cell && cell.type === "formula" && cell.content.match(/=.*PIVOT.*PIVOT\.POSITION/),
+        generateRule: () => ({ type: "PIVOT_POSITION_UPDATER", current: 0 }),
         sequence: 1,
     });
 
@@ -30,19 +38,19 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
             let isColumn;
             let steps;
             switch (direction) {
-                case 0: //UP
+                case UP:
                     isColumn = false;
                     steps = -rule.current;
                     break;
-                case 1: //DOWN
+                case DOWN:
                     isColumn = false;
                     steps = rule.current;
                     break;
-                case 2: //LEFT
+                case LEFT:
                     isColumn = true;
                     steps = -rule.current;
                     break;
-                case 3: //RIGHT
+                case RIGHT:
                     isColumn = true;
                     steps = rule.current;
             }
@@ -50,8 +58,36 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
                 style: undefined,
                 format: undefined,
                 border: undefined,
-                content: getters.getNextValue(data.content, isColumn, steps)
+                content: getters.getNextValue(data.content, isColumn, steps),
             };
+        },
+    }).add("PIVOT_POSITION_UPDATER", {
+        /**
+         * Increment (or decrement) positions in template pivot formulas.
+         * Autofilling vertically increments the field of the deepest row
+         * group of the formula. Autofilling horizontally does the same for
+         * column groups.
+         */
+        apply: (rule, data, getters, direction) => {
+            const pivotId = data.content.match(/PIVOT\.POSITION\(\s*"(\w+)"\s*,/)[1];
+            const pivot = getters.getPivot(pivotId);
+            if (!pivot) return data;
+            const fields = [UP, DOWN].includes(direction)
+                ? pivot.rowGroupBys.slice()
+                : pivot.colGroupBys.slice();
+            const step = [RIGHT, DOWN].includes(direction) ? 1 : -1;
+
+            const field = fields
+                .reverse()
+                .find((field) => new RegExp(`PIVOT\\.POSITION.*${field}.*\\)`).test(data.content));
+            const content = data.content.replace(
+                new RegExp(`(.*PIVOT\\.POSITION\\(\\s*"\\w"\\s*,\\s*"${field}"\\s*,\\s*"?)(\\d+)(.*)`),
+                (match, before, position, after) => {
+                    rule.current += step;
+                    return before + Math.max(parseInt(position) + rule.current, 1) + after;
+                }
+            );
+            return Object.assign({}, data, { content });
         },
     });
 });

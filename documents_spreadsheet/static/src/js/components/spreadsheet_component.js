@@ -3,6 +3,11 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
 
     const Dialog = require("web.OwlDialog");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
+    const {
+        convertPivotFormulas,
+        absoluteToRelative,
+        getCells,
+    } = require("documents_spreadsheet.pivot_utils");
 
     const Spreadsheet = spreadsheet.Spreadsheet;
     const { useState, useRef, useSubEnv } = owl.hooks;
@@ -12,9 +17,9 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             super(...arguments);
             useSubEnv({
                 newSpreadsheet: this.newSpreadsheet.bind(this),
+                saveAsTemplate: this._saveAsTemplate.bind(this),
                 makeCopy: this.makeCopy.bind(this),
                 saveData: this.saveData.bind(this),
-
             });
             this.state = useState({
                 dialog: {
@@ -29,6 +34,9 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             this.res_id = props.res_id;
         }
         mounted() {
+            if (this.props.showFormulas) {
+                this.spreadsheet.comp.model.dispatch("SET_FORMULA_VISIBILITY", { show: true });
+            }
             window.onbeforeunload = () => {
                 this.saveData();
             };
@@ -66,14 +74,19 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
          */
         getSaveData() {
             const spreadsheet_data = JSON.stringify(this.spreadsheet.comp.model.exportData());
+            return { spreadsheet_data, thumbnail: this.getThumbnail() };
+        }
+
+        getThumbnail() {
             const canvas = this.spreadsheet.comp.grid.comp.canvas.el;
             const canvasResizer = document.createElement("canvas");
-            canvasResizer.width = 100;
-            canvasResizer.height = 100;
+            const size = this.props.thumbnailSize
+            canvasResizer.width = size;
+            canvasResizer.height = size;
             const canvasCtx = canvasResizer.getContext("2d");
-            canvasCtx.drawImage(canvas, 0, 0, 100, 100);
-            const thumbnail = canvasResizer.toDataURL().replace("data:image/png;base64,", "");
-            return { spreadsheet_data, thumbnail };
+            const sourceSize = Math.min(canvas.width, canvas.height);
+            canvasCtx.drawImage(canvas, 0, 0, sourceSize, sourceSize, 0, 0, size, size);
+            return canvasResizer.toDataURL().replace("data:image/png;base64,", "");
         }
         /**
          * Make a copy of the current document
@@ -81,14 +94,40 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
         makeCopy() {
             const { spreadsheet_data, thumbnail } = this.getSaveData();
             this.saveData();
-            this.trigger("make_copy", { spreadsheet_data, thumbnail });
+            this.trigger("make_copy", { spreadsheet_data, thumbnail, id: this.res_id });
         }
         /**
          * Create a new spreadsheet
          */
         newSpreadsheet() {
             this.saveData();
-            this.trigger("new_spreasheet");
+            this.trigger("new_spreadsheet");
+        }
+
+        /**
+         * @private
+         * @returns {Promise}
+         */
+        async _saveAsTemplate() {
+            const data = this.spreadsheet.comp.model.exportData();
+            const { pivots } = data;
+            await convertPivotFormulas(
+                this.env.services.rpc,
+                getCells(data, /^\s*=.*PIVOT/),
+                absoluteToRelative,
+                pivots
+            );
+            const name = this.props.name;
+            this.trigger("do-action", {
+                action: "documents_spreadsheet.save_spreadsheet_template_action",
+                options: {
+                    additional_context: {
+                        default_template_name: `${name} - Template`,
+                        default_data: btoa(JSON.stringify(data)),
+                        default_thumbnail: this.getThumbnail(),
+                    },
+                },
+            });
         }
         /**
          * Open a dialog to display a message to the user.
@@ -107,10 +146,9 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
          */
         saveData() {
             const { spreadsheet_data, thumbnail } = this.getSaveData();
-            return this.rpc({
-                model: "documents.document",
-                method: "write",
-                args: [[this.res_id], { raw: spreadsheet_data, thumbnail }],
+            this.trigger("spreadsheet_saved", {
+                data: spreadsheet_data,
+                thumbnail,
             });
         }
     }

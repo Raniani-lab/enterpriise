@@ -267,7 +267,7 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
          * @param {Object} data
          */
         export(data) {
-            data.globalFilters = this.globalFilters.slice();
+            data.globalFilters = this.globalFilters.map((filter) => Object.assign({}, filter));
             for (let globalFilter of data.globalFilters) {
                 globalFilter.value = undefined;
             }
@@ -336,7 +336,7 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                         continue;
                     }
                     if (filter.type === "date") {
-                        const values = Object.values(filter.value).filter(Boolean);
+                        const values = filter.value && Object.values(filter.value).filter(Boolean);
                         if (!values || values.length === 0) {
                             continue;
                         }
@@ -364,7 +364,7 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                     }
                     if (filter.type === "relation") {
                         const values = filter.value;
-                        if (values.length === 0) {
+                        if (!values || values.length === 0) {
                             continue;
                         }
                         const field = filter.fields[pivot.id].field;

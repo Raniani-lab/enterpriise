@@ -10,8 +10,10 @@
     'data': [
         'data/documents_data.xml',
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/assets.xml',
         'views/documents_views.xml',
+        'wizard/save_spreadsheet_template.xml',
     ],
     'qweb': [
         'static/src/xml/*.xml',

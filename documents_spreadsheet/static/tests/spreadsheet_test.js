@@ -2,53 +2,14 @@ odoo.define("web.spreadsheet_tests", function (require) {
     "use strict";
 
     const testUtils = require("web.test_utils");
-    const PivotView = require("web.PivotView");
+    const spreadsheetUtils = require("documents_spreadsheet.test_utils")
+
+    const { createSpreadsheetFromPivot, mockRPCFn } = spreadsheetUtils;
+
+    const { createActionManager, fields, nextTick, dom } = testUtils;
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
-
-    const { createActionManager, fields, nextTick, dom, createView } = testUtils;
     const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
-    const uuidv4 = spreadsheet.helpers.uuidv4;
     const { Model } = spreadsheet;
-
-    function mockRPCFn(route, args) {
-        if (args.method === "search_read" && args.model === "ir.model") {
-            return Promise.resolve([{ name: "partner" }]);
-        }
-        return this._super.apply(this, arguments);
-    }
-
-    async function createSpreadsheetFromPivot(pivotView) {
-        const { data, debug } = pivotView;
-        const pivot = await createView(Object.assign({View: PivotView}, pivotView));
-        const documents = data["documents.document"].records;
-        const id = Math.max(...documents.map((d) => d.id)) + 1;
-        documents.push({
-            id,
-            name: "pivot spreadsheet",
-            raw: await pivot._getSpreadsheetData(),
-        });
-        pivot.destroy();
-        const actionManager = await createActionManager({
-            debug,
-            data,
-            mockRPC: pivotView.mockRPC || mockRPCFn,
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-                active_id: id,
-            },
-        });
-        await nextTick();
-        const model = actionManager.getCurrentController().widget.spreadsheetComponent.componentRef.comp.spreadsheet.comp.model;
-        const env = {
-            getters: model.getters,
-            dispatch: model.dispatch,
-            services: model.config.evalContext.env.services
-        };
-        return [actionManager, model, env];
-    }
 
     QUnit.module("Spreadsheet Client Action", {
         beforeEach: function () {
@@ -57,6 +18,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
                     fields: {
                         name: { string: "Name", type: "char" },
                         raw: { string: "Data", type: "text" },
+                        thumbnail: { string: "Thumbnail", type: "text" },
                         favorited_ids: { string: "Name", type: "many2many" },
                         is_favorited: { string: "Name", type: "boolean" },
                     },
@@ -351,6 +313,38 @@ odoo.define("web.spreadsheet_tests", function (require) {
             actionManager.destroy();
         });
 
+        QUnit.test("Spreadsheet action is named in breadcrumb", async function (assert) {
+            assert.expect(2);
+            const arch = `
+                <pivot string="Partners">
+                    <field name="bar" type="col"/>
+                    <field name="foo" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch,
+                archs: {
+                    "partner,false,pivot": arch,
+                    "partner,false,search": `<search/>`,
+                },
+                mockRPC: mockRPCFn,
+            });
+            await actionManager.doAction({
+                name: 'Partner',
+                res_model: 'partner',
+                type: 'ir.actions.act_window',
+                views: [[false, 'pivot']],
+            });
+            await nextTick();
+            const items = actionManager.el.querySelectorAll(".breadcrumb-item");
+            const [breadcrumb1, breadcrumb2] = Array.from(items).map((item) => item.innerText);
+            assert.equal(breadcrumb1, "Spreadsheet");
+            assert.equal(breadcrumb2, "Partner");
+            actionManager.destroy();
+        });
+
         QUnit.module("Spreadsheet");
 
         QUnit.test("Reinsert a pivot", async function (assert) {
@@ -390,7 +384,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
-            model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, activate: true, id: uuidv4() });
+            model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, activate: true, id: "111" });
             model.dispatch("SELECT_CELL", { col: 0, row: 0 });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];

@@ -13,6 +13,11 @@ odoo.define('documents_spreadsheet.create_empty_sheet_tour', function (require) 
         },
         {
             trigger: '.o_documents_kanban_spreadsheet',
+            content: 'Open template dialog',
+            run: 'click',
+        },
+        {
+            trigger: '.o-spreadsheet-create',
             content: 'Create new spreadsheet',
             run: 'click',
         },

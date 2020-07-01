@@ -1,156 +1,84 @@
 odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
     "use strict";
 
-    const AbstractAction = require("web.AbstractAction");
-    const SpreadsheetComponent = require("documents_spreadsheet.SpreadsheetComponent");
-    const SpreadsheetControlPanel = require("documents_spreadsheet.ControlPanel");
+    const AbstractAction = require("documents_spreadsheet.SpreadsheetAbstractAction");
     const core = require("web.core");
 
-    const _t = core._t;
+    const { _lt, _t } = core;
 
-    const { ComponentWrapper } = require("web.OwlCompatibility");
     const SpreadsheetAction = AbstractAction.extend({
-        config: Object.assign({}, AbstractAction.prototype.config, {
-            ControlPanel: SpreadsheetControlPanel,
-        }),
-        contentTemplate: "documents_spreadsheet.SpreadsheetAction",
-        events: {},
-        custom_events: {
-            spreadsheet_name_changed: "_onSpreadSheetNameChanged",
+        custom_events: Object.assign({}, AbstractAction.prototype.custom_events, {
             favorite_toggled: "_onSpreadSheetFavoriteToggled",
-            make_copy: "_onMakeCopy",
-            new_spreadsheet: "_onNewSpreadsheet",
-        },
-        hasControlPanel: true,
+        }),
+        notificationMessage: _lt("New spreadsheet created in Documents"),
+
 
         /**
          * @override
          */
-        init: function (parent, action) {
-            this._super.apply(this, arguments);
-            this.res_id = action.params.active_id;
-            this.spreadsheetComponent = false;
-            this.spreadsheetData = false;
-            this.spreadsheetName = false;
+        init() {
+            this._super(...arguments);
             this.isFavorited = false;
         },
 
         /**
          * @override
          */
-        willStart: function () {
-            const promises = [];
-            promises.push(this._super.apply(this, arguments));
-            promises.push(this._loadData());
-            return Promise.all(promises);
-        },
-
-        /**
-         * @override
-         */
-        start: async function () {
-            this._setTitle(this.spreadsheetName);
+        start() {
             this.controlPanelProps.isFavorited = this.isFavorited;
-            if (!this.spreadsheetData) {
-                return this.do_action({
-                    type: "ir.actions.client",
-                    tag: "home",
-                });
-            }
-            await this._super.apply(this, arguments);
-            const container = this.el.getElementsByClassName("o_spreadsheet_action")[0];
-            this.spreadsheetComponent = new ComponentWrapper(this, SpreadsheetComponent, {
-                data: this.spreadsheetData,
-                res_id: this.res_id,
-            });
-            await this.spreadsheetComponent.mount(container);
-            this.spreadsheetComponent._addListener("make_copy");
-            this.spreadsheetComponent._addListener("new_sheet");
+            return this._super.apply(this, arguments);
         },
 
-        destroy: function () {
-            if (this.spreadsheetComponent) {
-                this.spreadsheetComponent.destroy();
-            }
-            this._super.apply(this, arguments);
-        },
-
-        canBeRemoved: function () {
-            return this.spreadsheetComponent.componentRef.comp.saveData();
-        },
-
-        //----------------------------------------------------------------------
-        // Private
-        //----------------------------------------------------------------------
-
-        _loadData: async function () {
-            if (this.res_id === undefined) {
-                return;
-            }
-            const result = await this._rpc({
-                route: "/web/dataset/search_read",
+        async _fetchSpreadsheetData(id) {
+            const [ record ] = await this._rpc({
                 model: "documents.document",
-                context: this.context,
-                fields: ["raw", "name", "is_favorited"],
-                domain: [["id", "=", this.res_id]],
+                method: "search_read",
+                fields: ["name", "raw", "is_favorited"],
+                domain: [["id", "=", id]],
+                limit: 1,
             });
-            if (result.records.length !== 0) {
-                const [ record ] = result.records
-                this.spreadsheetData = JSON.parse(record.raw);
-                this.spreadsheetName = record.name;
-                this.isFavorited = record.is_favorited;
-            }
+            return record;
         },
+
+        _updateData(record) {
+            this._super(record);
+            this.isFavorited = record.is_favorited;
+            this.spreadsheetData = JSON.parse(record.raw);
+        },
+
         /**
          * Create a copy of the given spreadsheet and display it
          */
-        async _onMakeCopy(ev) {
-            const { spreadsheet_data, thumbnail } = ev.data;
-            const record = await this._rpc({
+        _makeCopy({ spreadsheet_data, thumbnail }) {
+            return this._rpc({
                 model: "documents.document",
-                method: "search_read",
-                fields: ['name', 'folder_id'],
-                domain: [['res_id', '=', this.res_id]],
-            });
-            let sheetName = "";
-            let folder_id;
-            if (record.length !== 0) {
-                sheetName = record[0].name;
-                folder_id = record[0].folder_id[0];
-            }
-            const id = await this._rpc({
-                model: "documents.document",
-                method: "create",
+                method: "copy",
                 args: [
+                    this.res_id,
                     {
-                        name: _t(`Copy of ${sheetName}`),
                         mimetype: "application/o-spreadsheet",
-                        folder_id,
                         raw: spreadsheet_data,
                         thumbnail,
-                        handler: "spreadsheet"
                     },
                 ],
             });
-            this._openSpreadsheet(id);
         },
         /**
-         * Create a new sheet and display it
+         * Create a new sheet
          */
-        async _onNewSpreadsheet() {
-            const spreadsheetId = await this._rpc({
+        _createNewSpreadsheet() {
+            return this._rpc({
                 model: "documents.document",
                 method: "create",
                 args: [
                     {
                         name: _t("Untitled spreadsheet"),
                         mimetype: "application/o-spreadsheet",
-                        raw: spreadsheet_data,
+                        raw: "{}",
                         handler: "spreadsheet",
                     },
                 ],
             });
-            this._openSpreadsheet(spreadsheetId);
         },
         /**
          * Saves the spreadsheet name change.
@@ -158,12 +86,12 @@ odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
          * @param {OdooEvent} ev
          * @returns {Promise}
          */
-        _onSpreadSheetNameChanged(ev) {
+        _saveName(name) {
             return this._rpc({
                 model: "documents.document",
                 method: "write",
                 args: [[this.res_id], {
-                    name: ev.data.name,
+                    name,
                 }],
             });
         },
@@ -178,20 +106,13 @@ odoo.define("documents_spreadsheet.SpreadsheetAction", function (require) {
                 args: [[this.res_id]],
             });
         },
-        /**
-         * Open a spreadsheet
-         */
-        _openSpreadsheet(active_id) {
-            this.displayNotification({
-                type: "info",
-                message: _t("New spreadsheet created in Documents"),
-                sticky: false,
+
+        _saveSpreadsheet(data, thumbnail) {
+            return this._rpc({
+                model: "documents.document",
+                method: "write",
+                args: [[this.res_id], { raw: data, thumbnail }],
             });
-            this.do_action({
-                type: "ir.actions.client",
-                tag: "action_open_spreadsheet",
-                params: { active_id },
-            }, { clear_breadcrumbs: true });
         }
     });
 

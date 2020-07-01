@@ -28,6 +28,7 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
         }
 
         get filters() {
+            console.log(this.env.getters.getGlobalFilters())
             return this.env.getters.getGlobalFilters();
         }
 

@@ -7,7 +7,8 @@
         <xpath expr="//ol[hasclass('breadcrumb')]/li[hasclass('active')]" position="replace">
             <li class="breadcrumb-item active">
                 <SpreadsheetName name="props.title"/>
-                <a title="Toggle favorite"
+                <a t-if="state.isFavorited !== undefined"
+                   title="Toggle favorite"
                    t-on-click="_toggleFavorited"
                    t-attf-class="o_spreadsheet_favorite fa fa-lg fa-star{{!state.isFavorited ? '-o' : ' favorite_button_enabled'}}"/>
             </li>
@@ -203,7 +204,7 @@
     </div>
 
     <div t-name="documents_spreadsheet.DateFilterValue" class="date_filter_values" owl="1">
-        <select class="o_input" t-on-change="onPeriodChanged">
+        <select t-if="!isYear()" class="o_input" t-on-change="onPeriodChanged">
             <option value="empty"/>
             <t t-set="type" t-value="props.type"/>
             <t t-foreach="dateOptions(type)" t-as="period" >
@@ -215,7 +216,7 @@
                 </option>
             </t>
         </select>
-        <select t-if="!isYear()" class="o_input" t-on-change="onYearChanged">
+        <select class="o_input" t-on-change="onYearChanged">
             <option t-if="!props.period" value="empty"/>
             <t t-foreach="dateOptions('year')" t-as="year">
                 <option t-if="isSelected(year.id)" selected="1" t-att-value="year.id">

@@ -29,11 +29,11 @@ odoo.define("documents_spreadsheet.ControlPanel", function (require) {
     SpreadsheetControlPanel.components = Object.assign({}, ControlPanel.components, {
         SpreadsheetName,
     });
-    SpreadsheetControlPanel.defaultProps = Object.assign({}, ControlPanel.defaultProps, {
-        isFavorited: false,
-    });
     SpreadsheetControlPanel.props = Object.assign({}, ControlPanel.props, {
-        isFavorited: Boolean,
+        isFavorited:{
+            type: Boolean,
+            optional: true
+        }
     });
 
     return SpreadsheetControlPanel;

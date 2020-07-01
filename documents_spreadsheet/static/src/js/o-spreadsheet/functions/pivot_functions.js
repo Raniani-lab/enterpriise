@@ -77,6 +77,20 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
             domains (string,optional,repeating) ${_t("Domains list.")}
         `),
             returns: ["NUMBER", "STRING"],
+        })
+        .add("PIVOT.POSITION", {
+            description: _t("Get the absolute ID of an element in the pivot"),
+            compute: function () {
+                throw new Error(
+                    _t(`[[FUNCTION_NAME]] cannot be called from the spreadsheet.`)
+                );
+            },
+            args: args(`
+                pivot_id (string) ${_t("ID of the pivot.")}
+                field_name (string) ${_t("Name of the field.")}
+                position (number) ${_t("Position in the pivot")}
+            `),
+            returns: ["STRING"],
         });
 
     //--------------------------------------------------------------------------

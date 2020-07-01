@@ -27,4 +27,9 @@ odoo.define("documents_spreadsheet.menu_item_registry", function (require) {
         sequence: 30,
         action: (env) => env.saveData(),
     });
+    topbarMenuRegistry.addChild("save_as_template", ["file"], {
+        name: _t("Save as Template"),
+        sequence: 40,
+        action: (env) => env.saveAsTemplate(),
+    });
 });

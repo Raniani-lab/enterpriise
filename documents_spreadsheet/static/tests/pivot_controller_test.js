@@ -8,6 +8,13 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
     const { Model } = spreadsheet;
     const toCartesian = spreadsheet.helpers.toCartesian;
 
+    function mockRPCFn (route, args) {
+        if (args.method === "search_read" && args.model === "ir.model") {
+            return Promise.resolve([{ name: "partner" }]);
+        }
+        return this._super.apply(this, arguments);
+    }
+
     const createView = testUtils.createView;
 
     function getAutofillValue(model, from, column, increment) {
@@ -17,13 +24,6 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
 
     function getCellContent(model, xc) {
         return model.getters.getCell(...toCartesian(xc)).content;
-    }
-
-    function mockRPCFn(route, args) {
-        if (args.method === "search_read" && args.model === "ir.model") {
-            return Promise.resolve([{ name: "partner" }]);
-        }
-        return this._super.apply(this, arguments);
     }
 
     const LAST_YEAR_FILTER = {
@@ -1095,8 +1095,47 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     },
                 });
                 assert.equal(newModel.getters.getGlobalFilters().length, 1);
+                const [ pivot ] = newModel.getters.getPivots();
                 assert.equal(pivot.computedDomain.length, 3, "it should have updated the pivot domain");
                 assert.verifySteps(["load_cache"])
+                pivotCtrl.destroy();
+            });
+
+            QUnit.test("Relational filter with undefined value", async function (assert) {
+                assert.expect(1);
+                const pivotCtrl = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivotCtrl._getSpreadsheetModel();
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "42",
+                        type: "relation",
+                        label: "Relation Filter",
+                        fields: {
+                            1: {
+                                field: "foo",
+                                type: "char",
+                            },
+                        },
+                    },
+                });
+                const [filter] = model.getters.getGlobalFilters();
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    value: undefined,
+                });
+                const [ pivot ] = model.getters.getPivots();
+                assert.equal(pivot.computedDomain.length, 0, "it should not have updated the pivot domain");
                 pivotCtrl.destroy();
             });
 
@@ -1351,8 +1390,8 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     assert.expect(1);
                     const model = new Model();
                     model.dispatch("ADD_PIVOT_FILTER", {
-                        id: "42",
                         filter: {
+                            id: "42",
                             type: "date",
                             label: "Cuillère",
                             fields: {
@@ -1383,6 +1422,34 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                         model.getters.getCell(0, 9).content,
                         `=FILTER.VALUE("Interprete") & FILTER.VALUE("Interprete")`
                     );
+                }
+            );
+
+            QUnit.test("Exporting data does not remove value from model",
+                async function (assert) {
+                    assert.expect(2);
+                    const model = new Model();
+                    model.dispatch("ADD_PIVOT_FILTER", {
+                        filter: {
+                            id: "42",
+                            type: "text",
+                            label: "Cuillère",
+                            fields: {
+                                1: {
+                                    field: "name",
+                                    type: "char",
+                                },
+                            },
+                        },
+                    });
+                    model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                        id: "42",
+                        value: "Hello export bug",
+                    });
+                    const [filter] = model.getters.getGlobalFilters();
+                    assert.equal(filter.value, "Hello export bug");
+                    model.exportData();
+                    assert.equal(filter.value, "Hello export bug");
                 }
             );
         }

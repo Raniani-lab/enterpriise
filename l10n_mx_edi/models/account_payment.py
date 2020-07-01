@@ -109,7 +109,7 @@ class AccountPayment(models.Model):
             partner = record.journal_id.l10n_mx_address_issued_id or record.company_id.partner_id.commercial_partner_id
             tz = self.env['account.move']._l10n_mx_edi_get_timezone(
                 partner.state_id.code)
-            date_mx = datetime.now(tz)
+            date_mx = fields.Datetime.now(tz)
             record.write({
                 'l10n_mx_edi_expedition_date': date_mx,
                 'l10n_mx_edi_time_payment': date_mx.strftime(
@@ -387,7 +387,7 @@ class AccountPayment(models.Model):
         partner = self.journal_id.l10n_mx_address_issued_id or self.company_id.partner_id.commercial_partner_id
         tz = self.env['account.move']._l10n_mx_edi_get_timezone(
             partner.state_id.code)
-        date_mx = datetime.now(tz)
+        date_mx = fields.Datetime.now(tz)
         if not self.l10n_mx_edi_expedition_date:
             self.l10n_mx_edi_expedition_date = date_mx.date()
         if not self.l10n_mx_edi_time_payment:

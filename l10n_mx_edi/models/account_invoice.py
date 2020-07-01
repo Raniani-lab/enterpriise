@@ -710,7 +710,7 @@ class AccountMove(models.Model):
             price = line.price_unit * (1.0 - (line.discount or 0.0) / 100.0)
             tax_line = {tax['id']: tax for tax in line.tax_ids.compute_all(
                 price, line.currency_id, line.quantity, line.product_id, line.partner_id, self.move_type in ('in_refund', 'out_refund'))['taxes']}
-            for tax in line.tax_ids.filtered(lambda r: r.l10n_mx_cfdi_tax_type != 'Exento'):
+            for tax in line.tax_ids.flatten_taxes_hierarchy().filtered(lambda r: r.l10n_mx_cfdi_tax_type != 'Exento'):
                 tax_dict = tax_line.get(tax.id, {})
                 amount = round(abs(tax_dict.get(
                     'amount', tax.amount / 100 * float("%.2f" % line.price_subtotal))), 2)
@@ -1252,7 +1252,7 @@ class AccountMove(models.Model):
             if tz_force:
                 tz = timezone(tz_force)
 
-            datetime_mx_tz = datetime.now(tz)
+            datetime_mx_tz = fields.Datetime.now(tz)
             inv.l10n_mx_edi_time_invoice = datetime_mx_tz.strftime("%H:%M:%S")
 
     def l10n_mx_edi_request_cancellation(self):

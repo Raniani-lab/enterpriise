@@ -47,7 +47,12 @@
 
             @include media-breakpoint-down(xs) {
                 width: 140px;
+                height: 94px;
             }
+        }
+        .o_stock_mobile_barcode {
+            width: 140px;
+            height: 94px;
         }
     }
 

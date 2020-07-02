@@ -11,7 +11,7 @@ class HrContractSalaryPersonalInfo(models.Model):
     _name = 'hr.contract.salary.personal.info'
     _description = 'Salary Package Personal Info'
 
-    name = fields.Char(translate=True)
+    name = fields.Char(translate=True, required=True)
     res_field_id = fields.Many2one(
         'ir.model.fields', string="Related Field",
         domain="[('model', '=', res_model), ('ttype', 'not in', ('one2many', 'many2one', 'many2many'))]", required=True, ondelete='cascade',

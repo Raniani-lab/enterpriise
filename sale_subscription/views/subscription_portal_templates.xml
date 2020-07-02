@@ -79,7 +79,7 @@
                                         <tbody style="white-space:nowrap">
                                             <tr>
                                                 <th class="text-right pb-0">Current Plan:</th>
-                                                <td class="w-100 pb-0"><span t-field="template.name"/></td>
+                                                <td class="w-100 pb-0 text-wrap"><span t-field="template.name"/></td>
                                             </tr>
                                             <tr>
                                                 <th class="text-right pb-0">Reference:</th>

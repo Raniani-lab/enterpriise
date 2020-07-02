@@ -9,7 +9,7 @@ import requests
 from zeep import Client
 from zeep.exceptions import Fault
 
-from odoo import modules, fields
+from odoo import modules, fields, _
 
 _logger = logging.getLogger(__name__)
 
@@ -111,6 +111,11 @@ class TaxCloudRequest(object):
         cart_id = hasattr(self, 'cart_id') and self.cart_id or 'NoCartID'
         _logger.info('fetching tax values for cart %s (customer: %s)', cart_id, customer_id)
         formatted_response = {}
+        if not self.api_login_id or not self.api_key:
+            formatted_response['error_message'] = _("Please configure taxcloud credential on the current company"
+                                                    "or use a different fiscal position")
+            return formatted_response
+
         try:
             response = self.client.service.Lookup(
                 self.api_login_id,
@@ -160,8 +165,8 @@ class TaxCloudRequest(object):
         # The current date is appended to refresh the value every day.
         return hashlib.sha1(
             (
-                self.api_login_id
-                + self.api_key
+                (self.api_login_id or '')
+                + (self.api_key or '')
                 + str(hasattr(self, "customer_id") and self.customer_id or "NoCustomerID")
                 + str(hasattr(self, "cart_id") and self.cart_id or "NoCartID")
                 + str(self.cart_items)

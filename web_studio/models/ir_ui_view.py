@@ -452,7 +452,7 @@ class View(models.Model):
             self._groups_branding(specs_tree)
 
         # If this is studio view, we want to apply it spec by spec
-        if self._is_studio_view():
+        if self and self._is_studio_view():
             return self._apply_studio_specs(source, specs_tree)
         else:
             # Remove branding added by '_groups_branding' before locating a node

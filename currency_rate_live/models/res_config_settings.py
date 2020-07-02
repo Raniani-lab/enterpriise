@@ -97,7 +97,7 @@ class ResCompany(models.Model):
             if parse_results == False:
                 # We check == False, and don't use bool conversion, as an empty
                 # dict can be returned, if none of the available currencies is supported by the provider
-                _logger.warning(_('Unable to connect to the online exchange rate platform %s. The web service may be temporary down.', currency_provider))
+                _logger.warning('Unable to connect to the online exchange rate platform %s. The web service may be temporary down.', currency_provider)
                 rslt = False
             else:
                 companies._generate_currency_rates(parse_results)

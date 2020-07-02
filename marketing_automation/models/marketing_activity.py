@@ -396,7 +396,7 @@ class MarketingActivity(models.Model):
             try:
                 action.run()
             except Exception as e:
-                _logger.warning(_('Marketing Automation: activity <%s> encountered server action issue %s'), self.id, str(e), exc_info=True)
+                _logger.warning('Marketing Automation: activity <%s> encountered server action issue %s', self.id, str(e), exc_info=True)
                 trace.write({
                     'state': 'error',
                     'schedule_date': Datetime.now(),
@@ -426,7 +426,7 @@ class MarketingActivity(models.Model):
         try:
             mailing.sudo().action_send_mail(res_ids)
         except Exception as e:
-            _logger.warning(_('Marketing Automation: activity <%s> encountered mass mailing issue %s'), self.id, str(e), exc_info=True)
+            _logger.warning('Marketing Automation: activity <%s> encountered mass mailing issue %s', self.id, str(e), exc_info=True)
             traces.write({
                 'state': 'error',
                 'schedule_date': Datetime.now(),

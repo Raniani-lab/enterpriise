@@ -136,7 +136,7 @@ class AccountMove(models.Model):
                         fields.Datetime.from_string(self.invoice_date)
                     )
                 else:
-                    _logger.warning(_("The source document on the refund is not valid and thus the refunded cart won't be logged on your taxcloud account"))
+                    _logger.warning("The source document on the refund is not valid and thus the refunded cart won't be logged on your taxcloud account.")
 
         if raise_warning:
             return {'warning': _('The tax rates have been updated, you may want to check it before validation')}
@@ -168,7 +168,10 @@ class AccountMove(models.Model):
                             fields.Datetime.from_string(invoice.invoice_date)
                         )
                     else:
-                        _logger.warning(_("The source document on the refund is not valid and thus the refunded cart won't be logged on your taxcloud account"))
+                        _logger.warning(
+                            "The source document on the refund %i is not valid and thus the refunded cart won't be logged on your taxcloud account",
+                            invoice.id,
+                        )
 
         return super(AccountMove, self).action_invoice_paid()
 

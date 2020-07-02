@@ -441,7 +441,7 @@ class WinbooksImportWizard(models.TransientModel):
             # Balance move, should not happen in an import from a complete db
             if move_amount_total:
                 if not counter_part_created:
-                    _logger.warning(_('At least one automatic counterpart has been created at import. This is probably an error. Please check entry lines with reference: ') + _('Counterpart (generated at import from Winbooks)'))
+                    _logger.warning('At least one automatic counterpart has been created at import. This is probably an error. Please check entry lines with reference: ' + _('Counterpart (generated at import from Winbooks)'))
                 counter_part_created = True
                 account_id = journal_id.default_debit_account_id if rec.get('DOCTYPE') in ['0', '1'] else journal_id.default_credit_account_id
                 account_id = account_id or (partner_id.property_account_payable_id if rec.get('DOCTYPE') in ['0', '1'] else partner_id.property_account_receivable_id)

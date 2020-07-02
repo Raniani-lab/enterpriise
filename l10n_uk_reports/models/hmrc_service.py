@@ -136,7 +136,7 @@ class HmrcService(models.AbstractModel):
             if hashed_license:
                 gov_dict['Gov-Vendor-License-IDs'] = "Odoo=" + hashed_license
         except Exception:
-            _logger.warning(_("Could not construct fraud prevention headers"), exc_info=True)
+            _logger.warning("Could not construct fraud prevention headers", exc_info=True)
         return gov_dict
 
     @api.model

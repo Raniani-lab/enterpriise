@@ -59,7 +59,7 @@ class MarketingActivity(models.Model):
         try:
             mailing.sudo().action_send_sms(res_ids)
         except Exception as e:
-            _logger.warning(_('Marketing Automation: activity <%s> encountered mass mailing issue %s'), self.id, str(e), exc_info=True)
+            _logger.warning('Marketing Automation: activity <%s> encountered mass mailing issue %s', self.id, str(e), exc_info=True)
             traces.write({
                 'state': 'error',
                 'schedule_date': Datetime.now(),

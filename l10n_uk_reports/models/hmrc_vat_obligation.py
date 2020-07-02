@@ -196,11 +196,11 @@ class HmrcVatObligation(models.Model):
             self.sudo().message_post(body=msg)
             self.sudo().write({'status': "fulfilled"})
         elif r.status_code == 401:  # auth issue
-            _logger.exception(_("HMRC auth issue : %s"), r.content)
+            _logger.exception("HMRC auth issue : %s", r.content)
             raise UserError(_(
              "Sorry, your credentials were refused by HMRC or your permission grant has expired. You may try to authenticate again."))
         else:  # other issues
-            _logger.exception(_("HMRC other issue : %s", r.content))
+            _logger.exception("HMRC other issue : %s", r.content)
             # even 'normal' hmrc errors have a json body. Otherwise will also raise.
             response = json.loads(r.content.decode())
             # Recuperate error message

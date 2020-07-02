@@ -4,13 +4,13 @@
     <t t-name="stock_barcode_header_widget">
         <div class="o_barcode_header navbar navbar-expand navbar-dark">
             <nav class="navbar-nav mr-auto">
-                <a tabindex="" class="nav-link o_exit mr-4"><i class="fa fa-chevron-left"/></a>
+                <button class="nav-link btn o_exit mr-4"><i class="fa fa-chevron-left"/></button>
                 <span class="o_title navbar-text text-white" t-esc="widget.title"/>
             </nav>
             <nav class="navbar-nav">
-                <a tabindex="" class="nav-link o_show_information mr-4"><i class="fa fa-info-circle"/></a>
-                <a tabindex="" class="nav-link o_show_settings"><i class="fa fa-bars"/></a>
-                <a tabindex="" class="nav-link o_close o_hidden"><i class="fa fa-times"/></a>
+                <button class="nav-link btn o_show_information mr-4"><i class="fa fa-info-circle"/></button>
+                <button class="nav-link btn o_show_settings"><i class="fa fa-bars"/></button>
+                <button class="nav-link btn o_close o_hidden"><i class="fa fa-times"/></button>
             </nav>
         </div>
     </t>

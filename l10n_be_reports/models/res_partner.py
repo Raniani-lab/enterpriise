@@ -97,7 +97,7 @@ class ResPartner(models.Model):
                 partners.form_file = base64.b64encode(tmp_file.read())
         else: # If there is only one file, we download the file directly.
             downloaded_filename = attachments[0][0]
-            self.form_file = base64.b64encode(attachments[0][1])
+            partners.form_file = base64.b64encode(attachments[0][1])
 
         return {
             'type': 'ir.actions.act_url',

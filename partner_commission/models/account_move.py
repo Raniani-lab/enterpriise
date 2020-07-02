@@ -32,7 +32,7 @@ class AccountMove(models.Model):
                 'partner_id': self.referrer_id.id,
                 'currency_id': self.currency_id.id,
                 'company_id': self.company_id.id,
-                'fiscal_position_id': self.env['account.fiscal.position'].with_company(self.company_id).get_fiscal_position(self.referrer_id.id),
+                'fiscal_position_id': self.env['account.fiscal.position'].with_company(self.company_id).get_fiscal_position(self.referrer_id.id).id,
                 'payment_term_id': self.referrer_id.with_company(self.company_id).property_supplier_payment_term_id.id,
                 'user_id': False,
                 'dest_address_id': self.referrer_id.id,

@@ -125,8 +125,8 @@ QUnit.module('Views', {
         assert.containsOnce($searchPanel.find('.o_search_panel_current_selection'), '.o_search_panel_category:contains(hello)');
         assert.verifySteps([
             'search_panel_select_range',
-            '/web/dataset/search_read',
             'search_panel_select_multi_range',
+            '/web/dataset/search_read'
         ]);
 
         // looking for 'filter' sample section
@@ -139,8 +139,8 @@ QUnit.module('Views', {
         assert.containsOnce($searchPanel.find('.o_search_panel_current_selection'), '.o_search_panel_filter:contains(DEF)');
         assert.verifySteps([
             'search_panel_select_range',
-            '/web/dataset/search_read',
             'search_panel_select_multi_range',
+            '/web/dataset/search_read'
         ]);
 
         // close with back button

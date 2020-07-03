@@ -7,6 +7,7 @@ import re
 from odoo.osv import expression
 from odoo import api, fields, models, _, Command
 from odoo.tools import ustr
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -578,6 +579,12 @@ class IrModelField(models.Model):
         if self.env.context.get('studio'):
             return [(field.id, "%s (%s)" % (field.field_description, field.model_id.name)) for field in self]
         return super(IrModelField, self).name_get()
+
+    @api.constrains('name')
+    def _check_name(self):
+        for field in self:
+            if '__' in field.name:
+                raise ValidationError(_("Custom field names cannot contain double underscores."))
 
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):

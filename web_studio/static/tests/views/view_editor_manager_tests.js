@@ -4753,6 +4753,56 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('remove starting underscore from new field value', async function (assert) {
+        assert.expect(1);
+        // renaming is only available in debug mode
+        const initialDebugMode = odoo.debug;
+        odoo.debug = true;
+
+        let fieldsView;
+        const arch = `<form><sheet>
+            <group>
+            <field name="display_name"/>
+            </group>
+            </sheet></form>`;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    const fieldName = args.operations[0].node.field_description.name;
+                    fieldsView.arch = `<form><sheet><group><field name='${fieldName}'/><field name='display_name'/></group></sheet></form>`;
+                    fieldsView.fields[fieldName] = {
+                        string: "Hello",
+                        type: "char"
+                    };
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            form: fieldsView
+                        }
+                    });
+                } else if (route === '/web_studio/rename_field') {
+                    return Promise.resolve();
+                }
+                return this._super(...arguments);
+            },
+        });
+
+        fieldsView = Object.assign({}, vem.fields_view);
+
+        await testUtils.dom.dragAndDrop(vem.el.querySelector('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_group .o_web_studio_hook:first'));
+
+        // rename the field
+        await testUtils.fields.editAndTrigger(vem.el.querySelector('.o_web_studio_sidebar input[name="name"]'), '__new', ['change']);
+        assert.strictEqual(vem.el.querySelector('.input-group input').value, 'new', "value should not contain starting underscore in new field");
+
+        odoo.debug = initialDebugMode;
+        vem.destroy();
+    });
+
     QUnit.test('notebook and group not drag and drop in a group', async function (assert) {
         assert.expect(2);
         var editViewCount = 0;

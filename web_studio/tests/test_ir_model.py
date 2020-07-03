@@ -1,5 +1,6 @@
 from odoo.tests.common import TransactionCase
 from odoo.addons.web_studio.models.ir_model import OPTIONS_WL
+from odoo.exceptions import ValidationError
 
 class TestStudioIrModel(TransactionCase):
 
@@ -368,3 +369,14 @@ class TestStudioIrModel(TransactionCase):
         self.assertTrue(acl_user.perm_write, 'user should have write access on custom models')
         self.assertTrue(acl_user.perm_create, 'user should have create access on custom models')
         self.assertFalse(acl_user.perm_unlink, 'user should not have unlink access on custom models')
+
+    def test_20_prevent_double_underscore(self):
+        IrModelFields = self.env["ir.model.fields"]
+        with self.assertRaises(ValidationError, msg="Custom field names cannot contain double underscores."):
+            IrModelFields.create(
+                {
+                    "ttype": "char",
+                    "model_id": self.source_model.id,
+                    "name": "x_studio_hello___hap",
+                }
+            )

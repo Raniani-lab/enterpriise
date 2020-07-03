@@ -1051,7 +1051,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         if (!attribute) {
             return;
         }
-        var newName = 'x_studio_' + $input.val();
+        var newName = 'x_studio_' + $input.val().replace(/^_+/,"");
         var message;
         if (newName.match(/[^a-z0-9_]/g) || newName.length >= 54) {
             message = _.str.sprintf(_t('The new name can contain only a to z lower letters, numbers and _, with ' +

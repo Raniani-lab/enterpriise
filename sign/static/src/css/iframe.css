@@ -1,3 +1,6 @@
+body {
+    overflow: hidden;
+}
 
 #viewerContainer { /* PDFJS Viewer */
     visibility: hidden;

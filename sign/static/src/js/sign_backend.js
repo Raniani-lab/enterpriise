@@ -182,6 +182,7 @@ odoo.define('sign.template', function(require) {
     var sign_utils = require('sign.utils');
     var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
     var FormFieldMany2ManyTags = require('web.relational_fields').FormFieldMany2ManyTags;
+    const SmoothScrollOnDrag = require('web/static/src/js/core/smooth_scroll_on_drag.js');
 
     var _t = core._t;
 
@@ -405,7 +406,7 @@ odoo.define('sign.template', function(require) {
                             position: 'absolute',
                             "border-left": "1px dashed orange",
                             width: 0,
-                            height: "10000px",
+                            height: "100%",
                             "z-index": 103,
                             top: 0
                         });
@@ -415,27 +416,30 @@ odoo.define('sign.template', function(require) {
                         self.$fieldTypeToolbar = $('<div/>').addClass('o_sign_field_type_toolbar d-flex flex-column');
                         self.$fieldTypeToolbar.prependTo(self.$('body'));
                         self.$('#outerContainer').addClass('o_sign_field_type_toolbar_visible');
-                        $fieldTypeButtons.appendTo(self.$fieldTypeToolbar).filter('button').draggable({
-                            cancel: false,
-                            distance: 0,
-                            cursorAt: {top:5, left:5},
-                            helper: function(e) {
-                                var type = self.types[$(this).data('item-type-id')];
-                                var $signatureItem = self.createSignItem(type, true, self.currentRole, 0, 0, type.default_width, type.default_height, '', []);
-                                if(!e.ctrlKey) {
-                                    self.$('.o_sign_sign_item').removeClass('ui-selected');
+                        const smoothScrollOptions = {
+                            jQueryDraggableOptions: {
+                                cancel: false,
+                                distance: 0,
+                                cursorAt: {top:5, left:5},
+                                helper: function(e) {
+                                    var type = self.types[$(this).data('item-type-id')];
+                                    var $signatureItem = self.createSignItem(type, true, self.currentRole, 0, 0, type.default_width, type.default_height, '', []);
+                                    if(!e.ctrlKey) {
+                                        self.$('.o_sign_sign_item').removeClass('ui-selected');
+                                    }
+                                    $signatureItem.addClass('o_sign_sign_item_to_add ui-selected');
+
+                                    self.$('.page').first().append($signatureItem);
+                                    self.updateSignItem($signatureItem);
+                                    $signatureItem.css('width', $signatureItem.css('width')).css('height', $signatureItem.css('height')); // Convert % to px
+                                    self.updateSignItemFontSize($signatureItem, self.normalSize());
+                                    $signatureItem.detach();
+
+                                    return $signatureItem;
                                 }
-                                $signatureItem.addClass('o_sign_sign_item_to_add ui-selected');
-
-                                self.$('.page').first().append($signatureItem);
-                                self.updateSignItem($signatureItem);
-                                $signatureItem.css('width', $signatureItem.css('width')).css('height', $signatureItem.css('height')); // Convert % to px
-                                self.updateSignItemFontSize($signatureItem, self.normalSize());
-                                $signatureItem.detach();
-
-                                return $signatureItem;
                             }
-                        });
+                        };
+                        self.buttonsDraggableComponent = new SmoothScrollOnDrag(this, $fieldTypeButtons.appendTo(self.$fieldTypeToolbar).filter('button'), self.$('#viewerContainer'), smoothScrollOptions);
                         $fieldTypeButtons.each(function(i, el) {
                             self.enableCustomBar($(el));
                         });
@@ -538,12 +542,16 @@ odoo.define('sign.template', function(require) {
                 }
                 $signatureItem.toggleClass('ui-selected');
             });
-
-            $signatureItem.draggable({
-                containment: "parent",
-                distance: 0,
-                handle: ".fa-arrows"
-            }).resizable({
+            const smoothScrollOptions = {
+                jQueryDraggableOptions: {
+                    containment: "parent",
+                    distance: 0,
+                    handle: ".fa-arrows",
+                    scroll: false,
+                }
+            };
+            this.signItemsDraggableComponent = new SmoothScrollOnDrag(this, $signatureItem, self.$('#viewerContainer'), smoothScrollOptions);
+            $signatureItem.resizable({
                 containment: "parent"
             }).css('position', 'absolute');
 

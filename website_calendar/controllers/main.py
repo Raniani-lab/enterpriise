@@ -140,7 +140,6 @@ class WebsiteCalendar(http.Controller):
         alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
         partner_ids = list(set([Employee.user_id.partner_id.id] + [Partner.id]))
         event = request.env['calendar.event'].sudo().create({
-            'state': 'open',
             'name': _('%s with %s') % (appointment_type.name, name),
             'start': date_start.strftime(dtf),
             # FIXME master
@@ -149,9 +148,7 @@ class WebsiteCalendar(http.Controller):
             #     (fixing them in stable is a pita as it requires a good rewrite of the
             #      calendar engine)
             'start_date': date_start.strftime(dtf),
-            'start_datetime': date_start.strftime(dtf),
             'stop': date_end.strftime(dtf),
-            'stop_datetime': date_end.strftime(dtf),
             'allday': False,
             'duration': appointment_type.appointment_duration,
             'description': description,
@@ -179,9 +176,9 @@ class WebsiteCalendar(http.Controller):
         date_start_suffix = ""
         format_func = format_datetime
         if not event.allday:
-            url_date_start = fields.Datetime.from_string(event.start_datetime).strftime('%Y%m%dT%H%M%SZ')
-            url_date_stop = fields.Datetime.from_string(event.stop_datetime).strftime('%Y%m%dT%H%M%SZ')
-            date_start = fields.Datetime.from_string(event.start_datetime).replace(tzinfo=pytz.utc).astimezone(tz_session)
+            url_date_start = fields.Datetime.from_string(event.start).strftime('%Y%m%dT%H%M%SZ')
+            url_date_stop = fields.Datetime.from_string(event.stop).strftime('%Y%m%dT%H%M%SZ')
+            date_start = fields.Datetime.from_string(event.start).replace(tzinfo=pytz.utc).astimezone(tz_session)
         else:
             url_date_start = url_date_stop = fields.Date.from_string(event.start_date).strftime('%Y%m%d')
             date_start = fields.Date.from_string(event.start_date)
@@ -216,7 +213,7 @@ class WebsiteCalendar(http.Controller):
         event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
         if not event:
             return request.not_found()
-        if fields.Datetime.from_string(event.allday and event.start or event.start_datetime) < datetime.now() + relativedelta(hours=event.appointment_type_id.min_cancellation_hours):
+        if fields.Datetime.from_string(event.allday and event.start_date or event.start) < datetime.now() + relativedelta(hours=event.appointment_type_id.min_cancellation_hours):
             return request.redirect('/calendar/view/' + access_token + '?message=no-cancel')
         event.unlink()
         return request.redirect('/calendar?message=cancel')

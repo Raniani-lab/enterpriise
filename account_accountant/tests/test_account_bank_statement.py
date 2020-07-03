@@ -27,23 +27,21 @@ class TestAccountBankStatement(TestAccountBankStatementCommon):
         })
         test_invoice_2 = test_invoice_1.copy()
 
-        # Two payments, both having 2000.0 in foreign currency to reconcile.
-        test_payment_1 = self.env['account.payment'].create({
-            'payment_type': 'inbound',
-            'partner_type': 'customer',
-            'amount': 2000.0,
-            'date': fields.Date.from_string('2019-01-01'),
-            'currency_id': self.currency_2.id,
-            'partner_id': self.partner_a.id,
-            'journal_id': self.statement_line.journal_id.id,
-            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
-        })
-        test_payment_2 = test_payment_1.copy()
-
         # Two statement lines having respectively 2000.0 & 4000.0 in foreign currency to reconcile.
-        self.statement.write({
+        self.statement = self.env['account.bank.statement'].create({
+            'name': 'test_statement',
+            'date': '2019-01-01',
+            'journal_id': self.bank_journal_1.id,
             'balance_end_real': 7250.0,
             'line_ids': [
+                (0, 0, {
+                    'date': '2019-01-01',
+                    'payment_ref': 'line_1',
+                    'partner_id': self.partner_a.id,
+                    'foreign_currency_id': self.currency_2.id,
+                    'amount': 1250.0,
+                    'amount_currency': 2500.0,
+                }),
                 (0, 0, {
                     'date': '2019-01-01',
                     'payment_ref': 'line_2',
@@ -58,6 +56,20 @@ class TestAccountBankStatement(TestAccountBankStatementCommon):
                 }),
             ],
         })
+
+        # Two payments, both having 2000.0 in foreign currency to reconcile.
+        test_payment_1 = self.env['account.payment'].create({
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'amount': 2000.0,
+            'date': fields.Date.from_string('2019-01-01'),
+            'currency_id': self.currency_2.id,
+            'partner_id': self.partner_a.id,
+            'journal_id': self.statement.line_ids.journal_id.id,
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+        })
+        test_payment_2 = test_payment_1.copy()
+
         test_st_line_1 = self.statement.line_ids.filtered(lambda line: line.payment_ref == 'line_2')
         test_st_line_2 = self.statement.line_ids.filtered(lambda line: line.payment_ref == 'line_3')
 

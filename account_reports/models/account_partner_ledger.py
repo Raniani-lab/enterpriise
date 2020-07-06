@@ -307,7 +307,7 @@ class ReportPartnerLedger(models.AbstractModel):
         return {
             'id': 'partner_%s' % partner.id,
             'partner_id': partner.id,
-            'name': partner.name[:128],
+            'name': (partner.name or '')[:128],
             'columns': columns,
             'level': 2,
             'trust': partner.trust,

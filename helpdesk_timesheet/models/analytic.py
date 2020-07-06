@@ -9,9 +9,8 @@ class AccountAnalyticLine(models.Model):
 
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket', 'Helpdesk Ticket')
 
-    @api.depends('project_id')
-    def _compute_task_id(self):
-        super(AccountAnalyticLine, self)._compute_task_id()
+    def _compute_project_task_id(self):
+        super(AccountAnalyticLine, self)._compute_project_task_id()
         for line in self.filtered(lambda line: line.helpdesk_ticket_id):
             line.task_id = line.helpdesk_ticket_id.task_id
 

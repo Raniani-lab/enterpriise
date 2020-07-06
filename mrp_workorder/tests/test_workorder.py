@@ -1283,3 +1283,42 @@ class TestWorkOrder(common.TestMrpCommon):
         add_move_finished = mf.filtered(lambda m: m.product_id == self.product_2)
         self.assertTrue(add_move_finished)
         self.assertTrue(add_move_finished.quantity_done, 1)
+
+    def test_produce_more_than_planned(self):
+        self.env['quality.point'].create({
+            'product_ids': [(4, self.submarine_pod.id)],
+            'picking_type_ids': [(4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
+            'operation_id': self.bom_submarine.operation_ids[0].id,
+            'test_type_id': self.env.ref('mrp_workorder.test_type_register_consumed_materials').id,
+            'component_id': self.trapped_child.id,
+        })
+        self.bom_submarine.bom_line_ids.filtered(lambda line: line.product_id == self.trapped_child).operation_id = self.bom_submarine.operation_ids[0]
+        self.submarine_pod.tracking = 'lot'
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.product_id = self.submarine_pod
+        mo_form.bom_id = self.bom_submarine
+        mo_form.product_qty = 1
+        mo = mo_form.save()
+
+        mo.action_assign()
+        mo.action_confirm()
+        mo.button_plan()
+        sorted_workorder_ids = mo.workorder_ids.sorted()
+        wo = sorted_workorder_ids[0]
+        wo.button_start()
+
+        wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.qty_producing = 5
+        wo_form.finished_lot_id = self.sp1
+        self.assertEqual(wo_form.qty_done, 60, 'The suggested component qty_done is wrong')
+        self.assertEqual(wo_form.component_remaining_qty, 60, 'The component remaining quantity is wrong')
+        wo = wo_form.save()
+        wo._next()
+        wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.lot_id = self.mc1
+        self.assertEqual(wo_form.qty_done, 10, 'The suggested component qty_done is wrong')
+        self.assertEqual(wo_form.component_remaining_qty, 10, 'The component remaining quantity is wrong')
+        wo = wo_form.save()
+        wo._next()
+        wo.do_finish()
+        self.assertEqual(mo.qty_producing, 5)

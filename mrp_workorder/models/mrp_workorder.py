@@ -220,9 +220,8 @@ class MrpProductionWorkcenterLine(models.Model):
         """
         self.ensure_one()
         rounding = self.product_uom_id.rounding
-        if float_compare(self.qty_producing, 0, precision_rounding=rounding) <= 0\
-                or float_compare(self.qty_producing, self.qty_remaining, precision_rounding=rounding) > 0:
-            raise UserError(_('Please ensure the quantity to produce is nonnegative and does not exceed the remaining quantity.'))
+        if float_compare(self.qty_producing, 0, precision_rounding=rounding) <= 0:
+            raise UserError(_('Please ensure the quantity to produce is greater than 0.'))
         elif self.test_type in ('register_byproducts', 'register_consumed_materials'):
             # Form validation
             # in case we use continue production instead of validate button.
@@ -273,9 +272,8 @@ class MrpProductionWorkcenterLine(models.Model):
     def action_skip(self):
         self.ensure_one()
         rounding = self.product_uom_id.rounding
-        if float_compare(self.qty_producing, 0, precision_rounding=rounding) <= 0 or\
-                float_compare(self.qty_producing, self.qty_remaining, precision_rounding=rounding) > 0:
-            raise UserError(_('Please ensure the quantity to produce is nonnegative and does not exceed the remaining quantity.'))
+        if float_compare(self.qty_producing, 0, precision_rounding=rounding) <= 0:
+            raise UserError(_('Please ensure the quantity to produce is greater than 0.'))
         self._change_quality_check(position='next', skipped=self.skip_completed_checks)
 
     def action_first_skipped_step(self):

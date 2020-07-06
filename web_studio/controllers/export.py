@@ -55,7 +55,7 @@ FIELDS_TO_EXPORT = {
     'ir.filters': [
         'action_id', 'active', 'context', 'domain', 'is_default', 'model_id', 'name', 'sort'
     ],
-    'ir.model': ['info', 'is_mail_thread', 'model', 'name', 'state', 'transient'],
+    'ir.model': ['info', 'is_mail_thread', 'is_mail_activity', 'model', 'name', 'state', 'transient'],
     'ir.model.access': [
         'active', 'group_id', 'model_id', 'name', 'perm_create', 'perm_read', 'perm_unlink',
         'perm_write'

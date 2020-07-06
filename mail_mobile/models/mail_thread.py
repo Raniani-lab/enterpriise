@@ -107,6 +107,7 @@ class MailThread(models.AbstractModel):
             "res_id": res_id,
             "db_id": self.env['res.config.settings']._get_ocn_uuid()
         }
+        generate_tracking_message = True
 
         if not payload['model']:
             result = self._extract_model_and_id(msg_vals)
@@ -120,9 +121,11 @@ class MailThread(models.AbstractModel):
                 payload['subject'] = author_name
                 payload['type'] = 'chat'
                 payload['android_channel_id'] = 'DirectMessage'
+                generate_tracking_message = False
             elif self.channel_type == 'channel':
                 payload['subject'] = "#%s - %s" % (record_name, author_name)
                 payload['android_channel_id'] = 'ChannelMessage'
+                generate_tracking_message = False
             else:
                 payload['subject'] = "#%s" % (record_name)
         else:
@@ -138,7 +141,8 @@ class MailThread(models.AbstractModel):
         if payload_length < 4000:
             payload_body = body
             payload_body = re.sub(r'<a(.*?)>', r'<a>', payload_body)  # To-Do : Replace this fix
-            payload_body += self._generate_tracking_message(message, '<br/>')
+            if generate_tracking_message:
+                payload_body += self._generate_tracking_message(message, '<br/>')
             payload['body'] = html2text(payload_body)[:4000 - payload_length]
 
         chunks = []
@@ -218,7 +222,7 @@ class MailThread(models.AbstractModel):
         '''
         tracking_message = ''
         if message.subtype_id and message.subtype_id.description:
-            tracking_message = message.subtype_id.description + return_line
+            tracking_message = return_line + message.subtype_id.description + return_line
 
         for value in message.sudo().tracking_value_ids:
             if value.field_type == 'boolean':

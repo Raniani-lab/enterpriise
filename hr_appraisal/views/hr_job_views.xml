@@ -5,13 +5,15 @@
         <field name="model">hr.job</field>
         <field name="inherit_id" ref="hr.view_hr_job_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet" position="inside">
-                <group string="Appraisals">
-                    <group><h4>Employee Feedback Template</h4></group>
-                    <group><h4>Manager Feedback Template</h4></group>
-                    <group><field name="employee_feedback_template" nolabel="1"/></group>
-                    <group><field name="manager_feedback_template" nolabel="1"/></group>
-                </group>
+            <xpath expr="//notebook" position="inside">
+                <page string="Appraisals">
+                    <group string="Appraisals">
+                        <group><h4>Employee Feedback Template</h4></group>
+                        <group><h4>Manager Feedback Template</h4></group>
+                        <group><field name="employee_feedback_template" nolabel="1"/></group>
+                        <group><field name="manager_feedback_template" nolabel="1"/></group>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>

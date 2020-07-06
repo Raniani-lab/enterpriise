@@ -58,7 +58,7 @@ odoo.define('planning.PlanningGanttModel', function (require) {
 
             if (prependUndefined) {
                 if (!row.rows || !row.rows.length || row.rows[0].resId) {
-                    row.rows.unshift(this._createEmptyRow(emptyRowId, emptyGroupId, undefinedGroupBy, row.path, level < levelMax - 1));
+                    row.rows.unshift(this._createEmptyRow(emptyRowId, emptyGroupId, groupedBy.slice(level + 1), row.path, level < levelMax - 1));
                     row.childrenRowIds.unshift(emptyRowId);
 
                     if (level === levelMax - 1) {
@@ -74,9 +74,15 @@ odoo.define('planning.PlanningGanttModel', function (require) {
             // the empty row has to be added to the children list of his parent, so the action takes place in the parent of the last group
             // the empty row must be the first child, so if the first child has a value, it means there is no empty row yet
             } else if (level === levelMax - 1 && row.rows && row.rows.length && row.rows[0].resId) {
-                row.rows.unshift(this._createEmptyRow(emptyRowId, emptyGroupId, undefinedGroupBy, row.path));
+                row.rows.unshift(this._createEmptyRow(emptyRowId, emptyGroupId, groupedBy.slice(level + 1), row.path));
                 row.childrenRowIds.unshift(emptyRowId);
                 this._addGanttEmptyGroup(emptyGroupId, parentValues, undefinedGroupBy);
+            }
+            if (row.rows) {
+                for (const subRow of row.rows) {
+                    row.childrenRowIds = row.childrenRowIds.concat(subRow.childrenRowIds || []);
+                }
+                row.childrenRowIds = [...new Set(row.childrenRowIds)];
             }
         },
         /**
@@ -90,12 +96,13 @@ odoo.define('planning.PlanningGanttModel', function (require) {
          * @param {boolean} isGroup
          * @returns {Object}
          */
-        _createEmptyRow: function (rowId, groupId, groupBy, parentPath = null, isGroup = false) {
-            return {
-                name: ['employee_id', 'department_id'].includes(groupBy) ? _t('Open Shifts') : this._getFieldFormattedValue(false, this.ganttData.fields[groupBy]),
+        _createEmptyRow: function (rowId, groupId, groupedBy, parentPath = null, isGroup = false) {
+            const groupedByField = groupedBy[0];
+            const row = {
+                name: ['employee_id', 'department_id'].includes(groupedByField) ? _t('Open Shifts') : this._getFieldFormattedValue(false, this.ganttData.fields[groupedByField]),
                 groupId: groupId,
-                groupedBy: [groupBy],
-                groupedByField: groupBy,
+                groupedBy,
+                groupedByField,
                 id: rowId,
                 resId: false,
                 isGroup: isGroup,
@@ -106,6 +113,8 @@ odoo.define('planning.PlanningGanttModel', function (require) {
                 rows: isGroup ? [] : null,
                 childrenRowIds: isGroup ? [] : null
             };
+            this.allRows[rowId] = row;
+            return row;
         },
         /**
          * Create a Gantt group and add it to the Gantt data.
@@ -165,7 +174,7 @@ odoo.define('planning.PlanningGanttModel', function (require) {
                 if (!rows[0].id) {
                     rows.splice(0, 1);
                 }
-                rows.unshift(this._createEmptyRow('empty', 'empty', groupedBy[0], null, groupedBy.length > 1));
+                rows.unshift(this._createEmptyRow('empty', 'empty', groupedBy, null, groupedBy.length > 1));
                 if (groupedBy.length === 1) {
                     this._addGanttEmptyGroup('empty', {[groupedBy[0]]: false}, groupedBy[0]);
                 }
@@ -184,7 +193,7 @@ odoo.define('planning.PlanningGanttModel', function (require) {
         _startGenerateEmptyRows: function (rows, groupedBy) {
             // for one-level group by, directly create the empty row
             if (groupedBy.length === 1 && rows.length > 0 && rows[0].resId) {
-                rows.unshift(this._createEmptyRow('empty', 'empty', groupedBy[0],));
+                rows.unshift(this._createEmptyRow('empty', 'empty', groupedBy));
                 this._addGanttEmptyGroup('empty', {}, groupedBy[0]);
             } else if (groupedBy.length > 1) {
                 rows.forEach((row) => this._generateEmptyRows(row, groupedBy));

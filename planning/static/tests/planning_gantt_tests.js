@@ -26,11 +26,35 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                             type: "many2one",
                             relation: "hr.employee",
                         },
+                        department_id: {
+                            string: "Department",
+                            type: "many2one",
+                            relation: "department",
+                        },
+                        role_id: {
+                            string: "Role",
+                            type: "many2one",
+                            relation: "role",
+                        },
                         active: { string: "active", type: "boolean", default: true },
                     },
                     records: [],
                 },
                 'hr.employee': {
+                    fields: {
+                        id: { string: "ID", type: "integer" },
+                        name: { string: "Name", type: "char" },
+                    },
+                    records: [],
+                },
+                department: {
+                    fields: {
+                        id: { string: "ID", type: "integer" },
+                        name: { string: "Name", type: "char" },
+                    },
+                    records: [],
+                },
+                role: {
                     fields: {
                         id: { string: "ID", type: "integer" },
                         name: { string: "Name", type: "char" },
@@ -119,5 +143,61 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
 
             gantt.destroy();
         });
+
+        QUnit.test("gantt view collapse and expand empty rows in multi groupby", async function (assert) {
+            assert.expect(9);
+
+            const gantt = await createView({
+                View: PlanningGanttView,
+                model: 'task',
+                data: this.data,
+                arch: '<gantt date_start="start" date_stop="stop"/>',
+                archs: {
+                    'task,false,form': `
+                        <form>
+                            <field name="name"/>
+                            <field name="start"/>
+                            <field name="stop"/>
+                            <field name="employee_id"/>
+                            <field name="role_id"/>
+                            <field name="department_id"/>
+                        </form>`,
+                },
+                viewOptions: {
+                    initialDate: new Date(),
+                },
+                groupBy: ['department_id', 'role_id', 'employee_id'],
+            });
+
+            function getRow(index) {
+                return gantt.el.querySelectorAll('.o_gantt_row_container > .row')[index];
+            }
+            assert.strictEqual(getRow(0).innerText.replace(/\s/, ''), 'Open Shifts',
+                'should contain "Open Shifts" as a first group header for grouped by "Department"');
+            assert.strictEqual(getRow(1).innerText.replace(/\s/, ''), 'Undefined Role',
+                'should contain "Undefined Role" as a first group header for grouped by "Role"');
+            assert.strictEqual(getRow(2).innerText, 'Open Shifts',
+                'should contain "Open Shifts" as a first group header for grouped by "Employee"');
+
+            await testUtils.dom.click(getRow(0));
+            assert.doesNotHaveClass(getRow(0), 'open',
+                "'Open Shift' Group Collapsed");
+            await testUtils.dom.click(getRow(0));
+            assert.hasClass(getRow(0), 'open',
+                "'Open Shift' Group Expanded");
+            assert.strictEqual(getRow(2).innerText, 'Open Shifts',
+                'should contain "Open Shifts" as a first group header for grouped by "Employee"');
+            await testUtils.dom.click(getRow(1));
+            assert.doesNotHaveClass(getRow(1), 'open',
+                "'Undefined Role' Sub Group Collapsed");
+            await testUtils.dom.click(getRow(1));
+            assert.hasClass(getRow(1), 'open',
+                "'Undefined Role' Sub Group Expanded");
+            assert.strictEqual(getRow(2).innerText, 'Open Shifts',
+                'should contain "Open Shifts" as a first group header for grouped by "Employee"');
+
+            gantt.destroy();
+        });
+
     });
 });

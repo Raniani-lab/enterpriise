@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="digest_tip_digest_enterprise_0" model="digest.tip">
+            <field name="name">Tip: Navigate menus like a pro</field>
+            <field name="sequence">1900</field>
+            <field name="group_id" ref="base.group_user" />
+            <field name="tip_description" type="html">
+<div>
+    <b class="font-16" style="font-size: 15px;line-height: 30px">Tip: Navigate menus like a pro</b>
+    <p class="font-12" style="color:#888888;font-size: 15px; line-height: 25px; margin-top: 0; text-align: justify; text-justify: inter-word;">From the Home page, start typing what you'd like to access. Odoo will suggest menus matching your search. Use arrow keys and press enter to jump to your menu.</p>
+    <img src="/web_enterprise/static/src/img/menu-navigation.gif" style="max-width: 580px" width="100%"/>
+</div>
+            </field>
+        </record>
+    </data>
+</odoo>

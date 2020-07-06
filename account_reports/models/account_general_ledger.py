@@ -755,7 +755,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             {'name': self.format_value(cumulated_balance), 'class': 'number'},
         ]
         if self.user_has_groups('base.group_multi_currency'):
-            columns.insert(3, {'name': currency and self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True) or '', 'class': 'number'})
+            columns.insert(3, {'name': currency and aml['amount_currency'] and self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True) or '', 'class': 'number'})
         return {
             'id': aml['id'],
             'caret_options': caret_type,

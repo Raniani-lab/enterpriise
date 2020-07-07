@@ -248,6 +248,7 @@
                     <group>
                         <group>
                             <field name="product_id"/>
+                            <field name="finished_lot_id" groups="stock.group_production_lot"/>
                             <field name="lot_id" groups="stock.group_production_lot"/>
                             <field name="test_type" invisible="1"/>
                             <field name="measure" attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
@@ -408,6 +409,7 @@
             <tree sample="1">
                 <field name="name" decoration-bf="1"/>
                 <field name='product_id' optional="show"/>
+                <field name="finished_lot_id" optional="show"/>
                 <field name="lot_id" optional="show"/>
                 <field name="picking_id" optional="hide" string="Transfer"/>
                 <field name="control_date" string="Checked Date" optional="show"/>

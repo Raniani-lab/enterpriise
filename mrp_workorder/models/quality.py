@@ -140,9 +140,7 @@ class QualityCheck(models.Model):
     component_uom_id = fields.Many2one('uom.uom', related='move_id.product_uom', readonly=True)
 
     qty_done = fields.Float('Done', default=1.0, digits='Product Unit of Measure')
-    finished_lot_id = fields.Many2one(
-        'stock.production.lot', 'Finished Product Lot',
-        domain="[('product_id', '=', product_id), ('company_id', '=', company_id)]")
+    finished_lot_id = fields.Many2one('stock.production.lot', 'Finished Lot/Serial', related='production_id.lot_producing_id')
     additional = fields.Boolean('Register additionnal product', compute='_compute_additional')
 
     # Computed fields

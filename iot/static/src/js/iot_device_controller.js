@@ -37,7 +37,7 @@ var IotDeviceFormController = FormController.extend({
      */
     _updateKeyboardLayout: function () {
         var keyboard_layout = this.renderer.state.data.keyboard_layout;
-        var iot_device = new DeviceProxy({ iot_ip: this.renderer.state.data.iot_ip, identifier: this.renderer.state.data.identifier });
+        var iot_device = new DeviceProxy(this, { iot_ip: this.renderer.state.data.iot_ip, identifier: this.renderer.state.data.identifier });
         if (keyboard_layout) {
             return this._rpc({
                 model: 'iot.keyboard.layout',
@@ -55,7 +55,7 @@ var IotDeviceFormController = FormController.extend({
      */
     _updateScreenUrl: function () {
         var screen_url = this.renderer.state.data.screen_url;
-        var iot_device = new DeviceProxy({ iot_ip: this.renderer.state.data.iot_ip, identifier: this.renderer.state.data.identifier });
+        var iot_device = new DeviceProxy(this, { iot_ip: this.renderer.state.data.iot_ip, identifier: this.renderer.state.data.identifier });
         return iot_device.action({'action': 'update_url', 'url': screen_url});
     },
 });

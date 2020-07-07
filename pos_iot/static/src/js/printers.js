@@ -5,10 +5,10 @@ var PrinterMixin = require('point_of_sale.Printer').PrinterMixin;
 var DeviceProxy = require('iot.widgets').DeviceProxy;
 
 var PrinterProxy = DeviceProxy.extend(PrinterMixin, {
-    init: function (device, pos) {
+    init: function (parent, device, pos) {
         PrinterMixin.init.call(this, arguments);
         this.pos = pos;
-        this._super(device);
+        this._super(parent, device);
     },
     open_cashbox: function () {
         var self = this;

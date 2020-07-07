@@ -20,8 +20,7 @@ odoo.define('pos_restaurant.ClientScreenButton', function(require) {
                 if (data.error) {
                     this.state.status = 'not_found';
                 } else if (
-                    data.owner ===
-                    this.env.pos.iot_device_proxies.display._iot_longpolling._session_id
+                    data.owner === this.env.services.iot_longpolling._session_id
                 ) {
                     this.state.status = 'success';
                 } else {

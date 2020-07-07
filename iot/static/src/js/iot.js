@@ -2,7 +2,6 @@ odoo.define('iot.widgets', function (require) {
 'use strict';
 
 var core = require('web.core');
-const env = require('web.env');
 var Widget = require('web.Widget');
 var field_registry = require('web.field_registry');
 var widget_registry = require('web.widget_registry');
@@ -10,6 +9,8 @@ var Dialog = require('web.Dialog');
 var ActionManager = require('web.ActionManager');
 var basic_fields = require('web.basic_fields');
 var BusService = require('bus.BusService');
+const ServicesMixin = require('web.ServicesMixin');
+const { EventDispatcherMixin } = require('web.mixins');
 
 var _t = core._t;
 
@@ -24,7 +25,7 @@ ActionManager.include({
                 method: 'iot_render',
                 args: [action.id, action.context.active_ids, {'device_id': action.device_id}]
             }).then(function (result) {
-                var iot_device = new DeviceProxy({ iot_ip: result[0], identifier: result[1] });
+                var iot_device = new DeviceProxy(self, { iot_ip: result[0], identifier: result[1] });
                 iot_device.add_listener(self._onValueChange.bind(self));
                 iot_device.action({'document': result[2]})
                     .then(function(data) {
@@ -116,7 +117,7 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
      * @param {Array} devices list of devices
      * @param {Callback} callback
      */
-    addListener: function (iot_ip, devices, callback) {
+    addListener: function (iot_ip, devices, listener_id, callback) {
         if (!this._listeners[iot_ip]) {
             this._listeners[iot_ip] = {
             devices: {},
@@ -126,6 +127,7 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
         }
         for (var device in devices) {
             this._listeners[iot_ip].devices[devices[device]] = {
+                listener_id: listener_id,
                 device_id: devices[device],
                 callback: callback,
             };
@@ -139,8 +141,10 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
      * @param {string} iot_ip
      * @param {string} device_id
      */
-    removeListener: function(iot_ip, device_id) {
-        delete this._listeners[iot_ip].devices[device_id];
+    removeListener: function(iot_ip, device_id, listener_id) {
+        if (this._listeners[iot_ip].devices[device_id].listener_id === listener_id) {
+            delete this._listeners[iot_ip].devices[device_id];
+        }
     },
     /**
      * Execute a action on device_id
@@ -334,7 +338,7 @@ var IotValueFieldMixin = {
         var identifier = this.recordData[this.attrs.options.identifier];
         var iot_ip = this.recordData[this.attrs.options.ip_field];
         if (identifier) {
-            this.iot_device = new DeviceProxy({ iot_ip: iot_ip, identifier: identifier });
+            this.iot_device = new DeviceProxy(this, { iot_ip: iot_ip, identifier: identifier });
         }
         return Promise.resolve();
     },
@@ -420,8 +424,7 @@ var IotDeviceValueDisplay = Widget.extend(IotValueFieldMixin, {
      * @private
      */
     _getDeviceInfo: function() {
-        var self = this;
-        self.iot_device = new DeviceProxy({ identifier: this.identifier, iot_ip:this.iot_ip });
+        this.iot_device = new DeviceProxy(this, { identifier: this.identifier, iot_ip:this.iot_ip });
         return Promise.resolve();
     },
 
@@ -488,19 +491,19 @@ var IoTDownloadLogsButton = Widget.extend(IoTConnectionMixin, {
 
 widget_registry.add('iot_download_logs', IoTDownloadLogsButton);
 
-var _iot_longpolling = new IoTLongpolling(env);
-
 /**
  * Frontend interface to iot devices
  */
-var DeviceProxy = core.Class.extend({
+var DeviceProxy = core.Class.extend(EventDispatcherMixin, ServicesMixin, {
     /**
      * @param {Object} iot_device - Representation of an iot device
      * @param {string} iot_device.iot_ip - The ip address of the iot box the device is connected to
      * @param {string} iot_device.identifier - The device's unique identifier
      */
-    init: function(iot_device) {
-        this._iot_longpolling = _iot_longpolling;
+    init: function(parent, iot_device) {
+        EventDispatcherMixin.init.call(this, arguments);
+        this.setParent(parent);
+        this._id = _.uniqueId('listener-');
         this._iot_ip = iot_device.iot_ip;
         this._identifier = iot_device.identifier;
         this.manual_measurement = iot_device.manual_measurement;
@@ -512,7 +515,7 @@ var DeviceProxy = core.Class.extend({
      * @returns {Promise}
      */
     action: function(data) {
-        return this._iot_longpolling.action(this._iot_ip, this._identifier, data);
+        return this.call('iot_longpolling', 'action', this._iot_ip, this._identifier, data);
     },
 
     /**
@@ -521,13 +524,13 @@ var DeviceProxy = core.Class.extend({
      * @returns {Promise}
      */
     add_listener: function(callback) {
-        return this._iot_longpolling.addListener(this._iot_ip, [this._identifier, ], callback);
+        return this.call('iot_longpolling', 'addListener', this._iot_ip, [this._identifier, ], this._id, callback);
     },
     /**
      * Stop listening the device
      */
     remove_listener: function() {
-        return this._iot_longpolling.removeListener(this._iot_ip, this._identifier);
+        return this.call('iot_longpolling', 'removeListener', this._iot_ip, this._identifier, this._id);
     },
 });
 

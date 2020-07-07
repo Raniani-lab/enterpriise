@@ -123,7 +123,7 @@ var PaymentIOT = PaymentInterface.extend({
     _onValueChange: function (resolve, order, data) {
         var line = order.get_paymentline(data.cid);
         var terminal_proxy = this.pos.payment_methods_by_id[line.payment_method.id].terminal_proxy;
-        if (line && terminal_proxy && (!data.owner || data.owner === terminal_proxy._iot_longpolling._session_id)) {
+        if (line && terminal_proxy && (!data.owner || data.owner === this.pos.env.services.iot_longpolling._session_id)) {
             this._waitingResponse(resolve, data, line);
             if (data.Ticket) {
                 line.set_receipt_info(data.Ticket.replace(/\n/g, "<br />"));

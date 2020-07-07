@@ -115,7 +115,7 @@ var DeliveryIoTNotificationManager = AbstractService.extend({
      * @param {String[]} documents
      */
     _printDocuments: function (identifier, iot_ip, documents) {
-        var iot_device = new iot_widgets.DeviceProxy({identifier: identifier, iot_ip: iot_ip});
+        var iot_device = new iot_widgets.DeviceProxy(this, {identifier: identifier, iot_ip: iot_ip});
         documents.forEach(function (document) {
             iot_device.action({'document': document});
         });

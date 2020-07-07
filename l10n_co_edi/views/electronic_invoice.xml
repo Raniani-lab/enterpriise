@@ -4,16 +4,16 @@
         <template id="tim_section">
             <TIM t-if="tax_lines">
                 <TIM_1 t-esc="'true' if retention else 'false'"/>
-                <TIM_2 t-esc="sum(tax_lines.mapped(lambda line: abs(line.amount)))"/>
+                <TIM_2 t-esc="sum(tax_lines.mapped('price_subtotal'))"/>
                 <TIM_3 t-esc="invoice.currency_id.name"/>
 
                 <IMP t-foreach="tax_lines" t-as="tax">
-                    <IMP_1 t-esc="tax.tax_id.l10n_co_edi_type.code"/>
-                    <IMP_2 t-esc="tax.base"/>
+                    <IMP_1 t-esc="tax.tax_line_id.l10n_co_edi_type.code"/>
+                    <IMP_2 t-esc="tax.tax_base_amount"/>
                     <IMP_3 t-esc="invoice.currency_id.name"/>
-                    <IMP_4 t-esc="abs(tax.amount)"/>
+                    <IMP_4 t-esc="abs(tax.price_subtotal)"/>
                     <IMP_5 t-esc="invoice.currency_id.name"/>
-                    <IMP_6 t-esc="abs(tax.tax_id.amount)"/>
+                    <IMP_6 t-esc="abs(tax.tax_line_id.amount)"/>
                 </IMP>
             </TIM>
         </template>
@@ -108,7 +108,7 @@
             <DRF>
                 <DRF_1 t-esc="invoice.journal_id.l10n_co_edi_dian_authorization_number"/>
                 <DRF_2 t-esc="invoice.journal_id.l10n_co_edi_dian_authorization_date"/>
-                <DRF_4 t-esc="invoice.journal_id.sequence_id.prefix"/>
+                <DRF_4 t-esc="invoice.journal_id.secure_sequence_id.prefix"/>
             </DRF>
             <ITD>
                 <ITD_5 t-esc="invoice.amount_total"/>
@@ -121,12 +121,12 @@
 
             <ORC>
                 <ORC_1 t-esc="invoice.name"/>
-                <ORC_4 t-esc="invoice.invoice_origin"/>
+                <ORC_4 t-esc="invoice.reversed_entry_id.name"/>
             </ORC>
 
             <REF>
                 <REF_1 t-esc="invoice_type_to_ref_1[invoice.move_type]"/>
-                <REF_2 t-esc="invoice.invoice_origin or 'N/A'"/>
+                <REF_2 t-esc="invoice.reversed_entry_id.name or 'N/A'"/>
             </REF>
 
             <IEN>
@@ -140,8 +140,8 @@
             </CTS>
 
             <OVT t-foreach="ovt_taxes" t-as="tax">
-                <OVT_1 t-esc="tax.tax_id.l10n_co_edi_type.code"/>
-                <OVT_2 t-esc="tax.amount"/>
+                <OVT_1 t-esc="tax.tax_line_id.l10n_co_edi_type.code"/>
+                <OVT_2 t-esc="tax.price_subtotal"/>
                 <OVT_3 t-esc="invoice.currency_id.name"/>
             </OVT>
 
@@ -165,7 +165,7 @@
             <t t-set="ite_counter" t-value="1"/>
             <ITE t-foreach="invoice.invoice_line_ids" t-as="line">
                     <ITE_1 t-esc="ite_counter"/>
-                    <ITE_2 t-if="line.currency_id and float_compare(line.price_subtotal, 0, precision_rounding=line.currency_id.rounding) &lt; 1">true</ITE_2>
+                    <ITE_2 t-if="line.always_set_currency_id and float_compare(line.price_subtotal, 0, precision_rounding=line.always_set_currency_id.rounding) &lt; 1">true</ITE_2>
                     <ITE_2 t-else="">false</ITE_2>
                     <ITE_3 t-esc="line.quantity"/>
                     <ITE_4 t-esc="line.product_uom_id.l10n_co_edi_ubl"/>
@@ -193,10 +193,7 @@
                     </MYM>
 
                     <IDE>
-                        <IDE_1 t-esc="'false' if line.currency_id and float_compare(line.price_subtotal, 0, precision_rounding=line.currency_id.rounding) &gt;= 0 else 'true'">
-                            <t t-if="line.currency_id and float_compare(line.price_subtotal, 0, precision_rounding=line.currency_id.rounding) &gt;= 0">false</t>
-                            <t t-else="">true</t>
-                        </IDE_1>
+                        <IDE_1 t-esc="'false' if line.always_set_currency_id and float_compare(line.price_subtotal, 0, precision_rounding=line.always_set_currency_id.rounding) &gt;= 0 else 'true'"/>
                         <IDE_2 t-esc="invoice.currency_id.round((line.discount / 100) * line.price_unit * line.quantity) or 0.0"/>
                         <IDE_3 t-esc="invoice.currency_id.name"/>
                     </IDE>
@@ -204,7 +201,7 @@
             </ITE>
         </template>
         <template id="electronic_invoice_xml">
-            <FACTURA t-if="'_invoice' in invoice.move_type">
+            <FACTURA t-if="invoice.move_type in ['in_invoice', 'out_invoice']">
                 <t t-call="l10n_co_edi.electronic_invoice_body"/>
             </FACTURA>
             <NOTA t-else="">

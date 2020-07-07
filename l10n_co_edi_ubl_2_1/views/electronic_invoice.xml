@@ -196,8 +196,8 @@
                 <DRF_1 t-esc="invoice.journal_id.l10n_co_edi_dian_authorization_number"/>
                 <DRF_2 t-esc="invoice.journal_id.l10n_co_edi_dian_authorization_date"/>
                 <DRF_3 t-esc="invoice.journal_id.l10n_co_edi_dian_authorization_end_date"/>
-                <DRF_4 t-if="invoice.type == 'out_refund' and invoice.journal_id.refund_sequence" t-esc="invoice.journal_id.refund_sequence_id.prefix"/>
-                <DRF_4 t-else="" t-esc="invoice.journal_id.sequence_id.prefix"/>
+                <DRF_4 t-if="invoice.move_type == 'out_refund' and invoice.journal_id.refund_sequence" t-esc="invoice.journal_id.secure_sequence_id.prefix"/>
+                <DRF_4 t-else="" t-esc="invoice.journal_id.secure_sequence_id.prefix"/>
                 <DRF_5 t-esc="invoice.journal_id.l10n_co_edi_min_range_number"/>
                 <DRF_6 t-esc="invoice.journal_id.l10n_co_edi_max_range_number"/>
             </DRF>
@@ -217,11 +217,11 @@
 
             <t t-set="origin_invoice" t-value="invoice.reversed_entry_id or invoice.l10n_co_edi_debit_origin_id or False"/>
             <REF t-if="origin_invoice">
-                <REF_1 t-esc="'FTC' if invoice._l10n_co_edi_get_edi_type() =='3' else invoice_type_to_ref_1[origin_invoice.type]"/>
+                <REF_1 t-esc="'FTC' if invoice._l10n_co_edi_get_edi_type() =='3' else invoice_type_to_ref_1[origin_invoice.move_type]"/>
                 <REF_2 t-esc="origin_invoice.name"/>
                 <REF_3 t-esc="origin_invoice.date"/>
                 <REF_4 t-esc="origin_invoice.l10n_co_edi_cufe_cude_ref"/>
-                <REF_5 t-esc="'CUFE-SHA384' if origin_invoice.type == 'out_invoice' else 'CUDE-SHA384'"/>
+                <REF_5 t-esc="'CUFE-SHA384' if origin_invoice.move_type == 'out_invoice' else 'CUDE-SHA384'"/>
             </REF>
 
             <IEN>
@@ -298,7 +298,7 @@
                     <ITE_28 t-esc="line.product_uom_id.l10n_co_edi_ubl or '94'"/>
 
                     <IRF>
-                        <IRF_1 t-esc="invoice_type_to_ref_1[invoice.type]"/>
+                        <IRF_1 t-esc="invoice_type_to_ref_1[invoice.move_type]"/>
                         <IRF_2 t-esc="invoice.name"/>
                         <IRF_3 t-esc="ite_counter"/>
                     </IRF>
@@ -354,7 +354,7 @@
             </ITE>
         </template>
         <template id="electronic_invoice_xml">
-            <NOTA t-if="'_refund' in invoice.type or ('_invoice' in invoice.type and invoice.l10n_co_edi_debit_note)">
+            <NOTA t-if="'_refund' in invoice.move_type or ('_invoice' in invoice.move_type and invoice.l10n_co_edi_debit_note)">
                 <t t-call="l10n_co_edi_ubl_2_1.electronic_invoice_body"/>
             </NOTA>
             <FACTURA t-else="">

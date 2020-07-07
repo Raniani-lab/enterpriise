@@ -292,11 +292,11 @@ class AccountMove(models.Model):
             self.env.ref('l10n_co_edi.tax_type_2') |\
             self.env.ref('l10n_co_edi.tax_type_3') |\
             self.env.ref('l10n_co_edi.tax_type_4')
-        tax_lines_with_type = self.line_ids.filtered(lambda line: line.tax_line_id).filtered(lambda tax: tax.tax_line_id.l10n_co_edi_type in imp_taxes)
+        tax_lines_with_type = self.line_ids.filtered(lambda line: line.tax_line_id.l10n_co_edi_type in imp_taxes)
         retention_taxes = tax_lines_with_type.filtered(lambda tax: tax.tax_line_id.l10n_co_edi_type.retention)
         regular_taxes = tax_lines_with_type - retention_taxes
         ovt_tax_codes = ('01C', '02C', '03C')
-        ovt_taxes = self.line_ids.filtered(lambda line: line.tax_line_id).filtered(lambda tax: tax.tax_line_id.l10n_co_edi_type.code in ovt_tax_codes)
+        ovt_taxes = self.line_ids.filtered(lambda line: line.tax_line_id.l10n_co_edi_type.code in ovt_tax_codes)
         invoice_type_to_ref_1 = {
             'out_invoice': 'IV',
             'in_invoice': 'IV',

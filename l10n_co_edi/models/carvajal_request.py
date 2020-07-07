@@ -60,8 +60,11 @@ class CarvajalRequest():
         self.company = company or ''
         self.account = account or ''
 
+        self.client = self._init_client(test_mode)
+
+    def _init_client(self, test_mode):
         token = self._create_wsse_header(self.username, self.password)
-        self.client = Client('https://cenfinanciero%s.cen.biz/isows/InvoiceService?wsdl' % ('lab' if test_mode else ''), plugins=[CarvajalPlugin()], wsse=token)
+        return Client('https://cenfinanciero%s.cen.biz/isows/InvoiceService?wsdl' % ('lab' if test_mode else ''), plugins=[CarvajalPlugin()], wsse=token)
 
     def _create_wsse_header(self, username, password):
 

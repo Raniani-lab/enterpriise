@@ -54,14 +54,14 @@ class MrpCostStructure(models.AbstractModel):
             for product_id, mo_id, bom_line_id, bom_line_qty, qty, cost in self.env.cr.fetchall():
                 bom = self.env['mrp.bom.line'].browse(bom_line_id).bom_id
                 mo = self.env['mrp.production'].browse(mo_id)
-                if bom.product_uom_id != mo.product_uom_id:
+                if bom and bom.product_uom_id != mo.product_uom_id:
                     bom_line_qty = mo.product_uom_id._compute_quantity(bom_line_qty, bom.product_uom_id)
                 raw_material_moves.append({
-                    'qty': bom_line_qty,
+                    'qty': bom_line_qty if bom else qty,
                     'cost': cost,
                     'product_id': ProductProduct.browse(product_id),
                     'bom_line_id': bom_line_id,
-                    'extra_qty': qty - bom_line_qty,
+                    'extra_qty': qty - bom_line_qty if bom else 0.0,
                 })
                 total_cost += cost
 

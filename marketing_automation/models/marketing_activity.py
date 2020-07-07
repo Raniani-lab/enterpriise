@@ -498,7 +498,7 @@ class MarketingActivity(models.Model):
     def _action_view_documents_filtered(self, view_filter):
         if not self.mass_mailing_id:  # Only available for mass mailing
             return False
-        action = self.env.ref('marketing_automation.marketing_participants_action_mail').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("marketing_automation.marketing_participants_action_mail")
         participant_ids = self.trace_ids.filtered(lambda stat: stat[view_filter]).mapped("participant_id").ids
         action.update({
             'display_name': _('Participants of %s (%s)') % (self.name, view_filter),

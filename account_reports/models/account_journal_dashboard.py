@@ -12,7 +12,7 @@ class AccountJournal(models.Model):
         :return: An action opening the General Ledger.
         '''
         self.ensure_one()
-        action = self.env.ref('account_reports.action_account_report_general_ledger').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_reports.action_account_report_general_ledger")
 
         action['context'] = dict(ast.literal_eval(action['context']), default_filter_accounts=self.default_account_id.code)
 

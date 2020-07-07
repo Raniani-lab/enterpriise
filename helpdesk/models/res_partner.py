@@ -28,7 +28,7 @@ class ResPartner(models.Model):
                 partner = partner.parent_id
 
     def action_open_helpdesk_ticket(self):
-        action = self.env.ref('helpdesk.helpdesk_ticket_action_main_tree').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.helpdesk_ticket_action_main_tree")
         action['context'] = {}
         action['domain'] = [('partner_id', 'child_of', self.ids)]
         return action

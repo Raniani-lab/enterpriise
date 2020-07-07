@@ -39,7 +39,7 @@ class ProviderAccount(models.Model):
             rec.next_refresh = self.env['ir.cron'].sudo().search([('id', '=', self.env.ref('account_online_sync.online_sync_cron').id)], limit=1).nextcall
 
     def open_action(self, action_name, number_added):
-        action = self.env.ref(action_name).read()[0]
+        action = self.env['ir.actions.act_window']._for_xml_id(action_name)
         ctx = self.env.context.copy()
         ctx.update({'default_number_added': number_added})
         action.update({'context': ctx})
@@ -129,7 +129,7 @@ class ProviderAccount(models.Model):
                 vals['journal_id'] = values.get('journal_id')
             self.env['account.online.link.wizard'].create(vals)
 
-        action = self.env.ref('account_online_sync.action_account_online_wizard_form').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_online_sync.action_account_online_wizard_form")
         action['res_id'] = transient.id
         return action
 
@@ -311,10 +311,10 @@ class OnlineAccountWizard(models.TransientModel):
         # call to synchronize
         self.env['account.journal'].cron_fetch_online_transactions()
         # Reload dashboard
-        return self.env.ref('account.open_account_journal_dashboard_kanban').read()[0]
+        return self.env["ir.actions.actions"]._for_xml_id("account.open_account_journal_dashboard_kanban")
 
     def open_accounting_dashboard(self):
-        return self.env.ref('account.open_account_journal_dashboard_kanban').read()[0]
+        return self.env["ir.actions.actions"]._for_xml_id("account.open_account_journal_dashboard_kanban")
 
 
 class AccountJournal(models.Model):

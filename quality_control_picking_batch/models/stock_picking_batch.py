@@ -18,7 +18,7 @@ class StockPickingBatch(models.Model):
         self.ensure_one()
         checks = self.picking_ids.check_ids.filtered(lambda check: check.quality_state == 'none')
         if checks:
-            action = self.env.ref('quality_control.quality_check_action_small').read()[0]
+            action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
             action['context'] = self.env.context
             action['res_id'] = checks.ids[0]
             return action

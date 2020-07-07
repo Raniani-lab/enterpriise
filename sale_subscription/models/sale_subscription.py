@@ -396,7 +396,7 @@ class SaleSubscription(models.Model):
     def action_subscription_invoice(self):
         self.ensure_one()
         invoices = self.env['account.move'].search([('invoice_line_ids.subscription_id', 'in', self.ids)])
-        action = self.env.ref('account.action_move_out_invoice_type').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_out_invoice_type")
         action["context"] = {"create": False}
         if len(invoices) > 1:
             action['domain'] = [('id', 'in', invoices.ids)]

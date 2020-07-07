@@ -27,7 +27,7 @@ class SaleOrder(models.Model):
         """Display the linked subscription and adapt the view to the number of records to display."""
         self.ensure_one()
         subscriptions = self.order_line.mapped('subscription_id')
-        action = self.env.ref('sale_subscription.sale_subscription_action').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("sale_subscription.sale_subscription_action")
         if len(subscriptions) > 1:
             action['domain'] = [('id', 'in', subscriptions.ids)]
         elif len(subscriptions) == 1:

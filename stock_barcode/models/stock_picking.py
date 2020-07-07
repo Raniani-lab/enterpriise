@@ -263,7 +263,7 @@ class StockPicking(models.Model):
 
     @api.model
     def _get_client_action(self, picking_id):
-        action = self.env.ref('stock_barcode.stock_barcode_picking_client_action').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_picking_client_action")
         params = {
             'model': 'stock.picking',
             'picking_id': picking_id,
@@ -430,7 +430,7 @@ class StockPicking(models.Model):
                 'res_id': self.id,
             }
         else:
-            action = self.env.ref('stock_barcode.stock_barcode_picking_client_action').read()[0]
+            action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_picking_client_action")
             params = {
                 'model': 'stock.picking',
                 'picking_id': self.id,

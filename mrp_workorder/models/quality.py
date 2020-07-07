@@ -39,7 +39,7 @@ class MrpRouting(models.Model):
     def action_mrp_workorder_show_steps(self):
         self.ensure_one()
         picking_type_id = self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id
-        action = self.env.ref('mrp_workorder.action_mrp_workorder_show_steps').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.action_mrp_workorder_show_steps")
         ctx = dict(self._context, default_picking_type_id=picking_type_id, default_company_id=self.company_id.id)
         action.update({'context': ctx, 'domain': [('id', 'in', self.quality_point_ids.ids)]})
         return action

@@ -6,7 +6,6 @@ from odoo.tools import safe_eval
 from odoo.tools.translate import _
 from odoo.tools.misc import formatLang, format_date
 from odoo.exceptions import UserError, RedirectWarning
-from odoo.addons.web.controllers.main import clean_action
 from dateutil.relativedelta import relativedelta
 import json
 import base64

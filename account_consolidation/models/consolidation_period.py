@@ -201,7 +201,7 @@ class ConsolidationPeriod(models.Model):
         self.ensure_one()
         company_id = self.env.context.get('company_id')
         company = self.env['res.company'].browse(company_id)
-        action = self.env.ref('account_consolidation.account_mapping_action').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_consolidation.account_mapping_action")
         action.update({
             'domain': [('company_id', '=', company_id)],
             # dont know why but it's needed otherwise "cannot read type of undefined" js error
@@ -222,7 +222,7 @@ class ConsolidationPeriod(models.Model):
         :return: the action to execute
         """
         self.ensure_one()
-        action = self.env.ref('account_consolidation.consolidation_period_action').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_consolidation.consolidation_period_action")
         action.update({
             'views': [[False, 'form']],
             'res_id': self.id
@@ -254,7 +254,7 @@ class ConsolidationPeriod(models.Model):
         :return: the action to execute
         """
         self.ensure_one()
-        action = self.env.ref('account_consolidation.consolidation_account_action').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_consolidation.consolidation_account_action")
         action['context'] = {
             'search_default_chart_id': self.chart_id.id,
             'default_chart_id': self.chart_id.id

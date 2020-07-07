@@ -37,8 +37,8 @@ class analytic_report(models.AbstractModel):
             options['hierarchy'] = self.filter_hierarchy
 
     def open_analytic_entries(self, options, params):
-        action = self.env.ref('analytic.account_analytic_line_action').read()[0]
-        action = clean_action(action)
+        action = self.env["ir.actions.actions"]._for_xml_id("analytic.account_analytic_line_action")
+        action = clean_action(action, env=self.env)
         action['context'] = {
             'active_id': int(params['id'].split('analytic_account_')[1]),
         }

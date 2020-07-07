@@ -14,7 +14,7 @@ class AccountMove(models.Model):
     tax_report_control_error = fields.Boolean(help="technical field used to know if there was a failed control check")
 
     def action_open_tax_report(self):
-        action = self.env.ref('account_reports.action_account_report_gt').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_reports.action_account_report_gt")
         options = self._compute_vat_period_date()
         # Pass options in context and set ignore_session: read to prevent reading previous options
         action.update({'options': options, 'ignore_session': 'read'})

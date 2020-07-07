@@ -94,7 +94,7 @@ class QualityPoint(models.Model):
 
     def action_see_quality_checks(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_check_action_main').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_main")
         action['domain'] = [('point_id', '=', self.id)]
         action['context'] = {
             'default_company_id': self.company_id.id,
@@ -104,7 +104,7 @@ class QualityPoint(models.Model):
 
     def action_see_spc_control(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_check_action_spc').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_spc")
         if self.test_type == 'measure':
             action['context'] = {'group_by': ['name', 'point_id'], 'graph_measure': ['measure'], 'graph_mode': 'line'}
         action['domain'] = [('point_id', '=', self.id), ('quality_state', '!=', 'none')]
@@ -211,7 +211,7 @@ class QualityCheck(models.Model):
                 'context': {'default_check_id': self.id},
             }
         else:
-            action = self.env.ref('quality_control.quality_alert_action_check').read()[0]
+            action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_alert_action_check")
             action['domain'] = [('id', 'in', self.alert_ids.ids)]
             action['context'] = dict(self._context, default_check_id=self.id)
             return action
@@ -223,7 +223,7 @@ class QualityCheck(models.Model):
         if check.picking_id:
             checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none')
             if checks:
-                action = self.env.ref('quality_control.quality_check_action_small').read()[0]
+                action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
                 action['res_id'] = checks.ids[0]
                 return action
             if self.env.context.get('pickings_to_check_quality'):  # handle pre_done_hook + multi cases
@@ -240,7 +240,7 @@ class QualityCheck(models.Model):
         if check.picking_id:
             checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none')
             if checks:
-                action = self.env.ref('quality_control.quality_check_action_small').read()[0]
+                action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
                 action['res_id'] = checks.ids[0]
                 return action
             if self.env.context.get('pickings_to_check_quality'):  # handle pre_done_hook + multi cases
@@ -339,7 +339,7 @@ class ProductTemplate(models.Model):
 
     def action_see_quality_control_points(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_point_action').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_point_action")
         action['context'] = dict(self.env.context)
         action['context'].update({
             'search_default_product_ids': self.product_variant_ids.ids,
@@ -349,7 +349,7 @@ class ProductTemplate(models.Model):
 
     def action_see_quality_checks(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_check_action_main').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_main")
         action['context'] = dict(self.env.context, default_product_id=self.product_variant_id.id, create=False)
         return action
 
@@ -387,6 +387,6 @@ class ProductProduct(models.Model):
 
     def action_see_quality_checks(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_check_action_main').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_main")
         action['context'] = dict(self.env.context, default_product_id=self.id, create=False)
         return action

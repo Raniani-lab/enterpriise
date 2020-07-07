@@ -104,7 +104,7 @@ class Task(models.Model):
 
     def action_fsm_create_quotation(self):
         view_form_id = self.env.ref('sale.view_order_form').id
-        action = self.env.ref('sale.action_quotations').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("sale.action_quotations")
         action.update({
             'views': [(view_form_id, 'form')],
             'view_mode': 'form',
@@ -120,7 +120,7 @@ class Task(models.Model):
         return action
 
     def action_fsm_view_quotations(self):
-        action = self.env.ref('sale.action_quotations').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("sale.action_quotations")
         action.update({
             'name': self.name,
             'domain': [('task_id', '=', self.id)],

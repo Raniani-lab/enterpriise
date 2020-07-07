@@ -313,7 +313,7 @@ class DataMergeModel(models.Model):
     def open_records(self):
         self.ensure_one()
 
-        action = self.env.ref('data_merge.action_data_merge_record').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("data_merge.action_data_merge_record")
         action['context'] = dict(ast.literal_eval(action.get('context')), searchpanel_default_model_id=self.id)
         return action
 

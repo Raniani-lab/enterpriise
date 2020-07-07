@@ -36,7 +36,7 @@ class StockPicking(models.Model):
         self.ensure_one()
         checks = self.check_ids.filtered(lambda check: check.quality_state == 'none')
         if checks:
-            action = self.env.ref('quality_control.quality_check_action_small').read()[0]
+            action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
             action['context'] = self.env.context
             action['res_id'] = checks.ids[0]
             return action
@@ -84,7 +84,7 @@ class StockPicking(models.Model):
 
     def button_quality_alert(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_alert_action_check').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_alert_action_check")
         action['views'] = [(False, 'form')]
         action['context'] = {
             'default_product_id': self.product_id.id,
@@ -95,7 +95,7 @@ class StockPicking(models.Model):
 
     def open_quality_alert_picking(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_alert_action_check').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_alert_action_check")
         action['context'] = {
             'default_product_id': self.product_id.id,
             'default_product_tmpl_id': self.product_id.product_tmpl_id.id,

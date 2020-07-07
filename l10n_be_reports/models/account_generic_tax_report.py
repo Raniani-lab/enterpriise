@@ -1,6 +1,5 @@
 from odoo import models, api, fields, _
 from odoo.exceptions import UserError
-from odoo.addons.web.controllers.main import clean_action
 import calendar
 
 
@@ -9,7 +8,7 @@ class AccountTaxReportActivity(models.Model):
 
     def _get_vat_report_action_to_open(self, company_id):
         if company_id.country_id.code == 'BE':
-            return self.env.ref('l10n_be_reports.action_account_report_be_vat').read()[0]
+            return self.env["ir.actions.actions"]._for_xml_id("l10n_be_reports.action_account_report_be_vat")
         else:
             return super(AccountTaxReportActivity, self)._get_vat_report_action_to_open(company_id)
 

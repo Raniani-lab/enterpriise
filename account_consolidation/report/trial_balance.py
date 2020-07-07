@@ -61,7 +61,7 @@ class AccountConsolidationTrialBalanceReport(models.AbstractModel):
         ])
         if len(journal_lines) == 0:
             return None
-        action = self.env.ref('account_consolidation.view_account_move_line_filter').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_consolidation.view_account_move_line_filter")
         action.update({
             'context': {
                 'search_default_consolidation_journal_line_ids': journal_lines.ids,

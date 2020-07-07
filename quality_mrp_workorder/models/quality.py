@@ -33,7 +33,7 @@ class QualityCheck(models.Model):
         if self.workorder_id:
             checks = self.workorder_id.check_ids.filtered(lambda x: x.quality_state == 'none')
         if checks:
-            action = self.env.ref('quality_control.quality_check_action_small').read()[0]
+            action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
             action['res_id'] = checks.ids[0]
             return action
         else:

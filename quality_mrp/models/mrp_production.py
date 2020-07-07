@@ -34,7 +34,7 @@ class MrpProduction(models.Model):
 
     def button_quality_alert(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_alert_action_check').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_alert_action_check")
         action['views'] = [(False, 'form')]
         action['context'] = {
             'default_company_id': self.company_id.id,
@@ -52,7 +52,7 @@ class MrpProduction(models.Model):
 
     def open_quality_alert_mo(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_alert_action_check').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_alert_action_check")
         action['context'] = {
             'default_company_id': self.company_id.id,
             'default_product_id': self.product_id.id,

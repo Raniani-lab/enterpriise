@@ -208,7 +208,7 @@ class MarketingCampaign(models.Model):
 
     def action_view_mailings(self):
         self.ensure_one()
-        action = self.env.ref('marketing_automation.mail_mass_mailing_action_marketing_automation').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("marketing_automation.mail_mass_mailing_action_marketing_automation")
         action['domain'] = [
             '&',
             ('use_in_marketing_automation', '=', True),
@@ -226,7 +226,7 @@ class MarketingCampaign(models.Model):
         return action
 
     def action_view_tracker_statistics(self):
-        action = self.env.ref('marketing_automation.link_tracker_action_marketing_campaign').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("marketing_automation.link_tracker_action_marketing_campaign")
         action['domain'] = [
             ('mass_mailing_id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids)
         ]

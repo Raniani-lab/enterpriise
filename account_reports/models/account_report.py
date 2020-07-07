@@ -875,7 +875,7 @@ class AccountReport(models.AbstractModel):
             params = {}
         ctx = self.env.context.copy()
         ctx.pop('id', '')
-        action = self.env.ref('account_reports.action_account_report_general_ledger').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_reports.action_account_report_general_ledger")
         options['unfolded_lines'] = ['account_%s' % (params.get('id', ''),)]
         options['unfold_all'] = False
         ctx.update({'model': 'account.general.ledger'})
@@ -884,8 +884,8 @@ class AccountReport(models.AbstractModel):
 
     def open_unposted_moves(self, options, params=None):
         ''' Open the list of draft journal entries that might impact the reporting'''
-        action = self.env.ref('account.action_move_journal_line').read()[0]
-        action = clean_action(action)
+        action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_journal_line")
+        action = clean_action(action, env=self.env)
         domain = [('state', '=', 'draft')]
         if options.get('date'):
             #there's no condition on the date from, as a draft entry might change the initial balance of a line
@@ -902,8 +902,8 @@ class AccountReport(models.AbstractModel):
         ctx['strict_range'] = True
         self = self.with_context(ctx)
         move = self.env['account.generic.tax.report']._generate_tax_closing_entry(options, raise_on_empty=True)
-        action = self.env.ref('account.action_move_journal_line').read()[0]
-        action = clean_action(action)
+        action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_journal_line")
+        action = clean_action(action, env=self.env)
         action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
         action['res_id'] = move.id
         return action
@@ -926,8 +926,8 @@ class AccountReport(models.AbstractModel):
         }
 
     def open_journal_items(self, options, params):
-        action = self.env.ref('account.action_move_line_select').read()[0]
-        action = clean_action(action)
+        action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_line_select")
+        action = clean_action(action, env=self.env)
         ctx = self.env.context.copy()
         if params and 'id' in params:
             active_id = params['id']

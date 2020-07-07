@@ -62,7 +62,7 @@ class CrmLead(models.Model):
         }
 
     def action_view_rental_quotation(self):
-        action = self.env.ref("sale_renting.rental_order_action").read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("sale_renting.rental_order_action")
         action.update({
             'context': self._get_action_rental_context(),
             'domain': [("opportunity_id", "=", self.id), ('is_rental_order', '=', True)]

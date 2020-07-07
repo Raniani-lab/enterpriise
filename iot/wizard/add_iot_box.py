@@ -63,4 +63,4 @@ class AddIotBox(models.TransientModel):
             return self.reload_page()
 
     def reload_page(self):
-        return self.env.ref('iot.iot_box_action').read()[0]
+        return self.env["ir.actions.actions"]._for_xml_id("iot.iot_box_action")

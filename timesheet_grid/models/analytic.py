@@ -655,7 +655,7 @@ class AnalyticLine(models.Model):
             name = 'Timesheets from Last Month to Validate'
             context['grid_range'] = 'month'
 
-        action = self.env.ref('hr_timesheet.act_hr_timesheet_report').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("hr_timesheet.act_hr_timesheet_report")
         action.update({
             "name": name,
             "display_name": name,

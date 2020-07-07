@@ -176,7 +176,7 @@ class HrContract(models.Model):
         }
 
     def action_view_origin_contract(self):
-        action = self.env.ref("hr_contract.action_hr_contract").read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("hr_contract.action_hr_contract")
         action['views'] = [(self.env.ref('hr_contract.hr_contract_view_form').id, 'form')]
         action['res_id'] = self.origin_contract_id.id
         return action

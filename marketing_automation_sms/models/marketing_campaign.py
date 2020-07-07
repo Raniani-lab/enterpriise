@@ -17,7 +17,7 @@ class MarketingCampaign(models.Model):
 
     def action_view_sms(self):
         self.ensure_one()
-        action = self.env.ref('marketing_automation_sms.mail_mass_mailing_action_marketing_automation_sms').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("marketing_automation_sms.mail_mass_mailing_action_marketing_automation_sms")
         action['domain'] = [
             '&',
             ('use_in_marketing_automation', '=', True),

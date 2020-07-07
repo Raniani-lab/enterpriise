@@ -21,7 +21,7 @@ class PurchaseOrder(models.Model):
     def action_view_customer_invoices(self):
         self.ensure_one()
 
-        res = self.env['ir.actions.act_window'].for_xml_id('partner_commission', 'action_view_customer_invoices')
+        res = self.env['ir.actions.act_window']._for_xml_id('partner_commission.action_view_customer_invoices')
         res.update({
             'domain': [('commission_po_line_id.order_id', 'in', self.ids)],
         })

@@ -93,7 +93,7 @@ class StockInventory(models.Model):
 
     @api.model
     def open_new_inventory(self):
-        action = self.env.ref('stock_barcode.stock_barcode_inventory_client_action').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_inventory_client_action")
         company_user = self.env.company
         warehouses = self.env['stock.warehouse'].search([('company_id', '=', company_user.id)])
         if warehouses:

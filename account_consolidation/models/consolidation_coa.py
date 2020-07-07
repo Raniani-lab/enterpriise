@@ -83,7 +83,7 @@ class ConsolidationChart(models.Model):
         Called by the 'Create' button of the setup bar in "first consolidation" step.
         :return: the action to execute
         """
-        action = self.env.ref('account_consolidation.consolidation_chart_action_onboarding').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_consolidation.consolidation_chart_action_onboarding")
         last_chart = self.search([], order="id desc", limit=1)
         if last_chart.id:
             action.update({
@@ -100,7 +100,7 @@ class ConsolidationChart(models.Model):
         Called by the 'Setup' button of the setup bar in "Consolidated Chart of Accounts" step.
         :return: the action to execute
         """
-        action = self.env.ref('account_consolidation.consolidation_account_action').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_consolidation.consolidation_account_action")
         last_chart = self.search([], order="id desc", limit=1)
         action.update({
             'context': {'default_chart_id': last_chart.id, 'search_default_chart_id': last_chart.id},
@@ -118,7 +118,7 @@ class ConsolidationChart(models.Model):
         Called by the 'Create' button of the setup bar in "first period" step.
         :return: the action to execute
         """
-        action = self.env.ref('account_consolidation.consolidation_period_action_onboarding').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account_consolidation.consolidation_period_action_onboarding")
         last_chart = self.search([], order="id desc", limit=1)
         action.update({'context': {'default_chart_id': last_chart.id}})
         return action

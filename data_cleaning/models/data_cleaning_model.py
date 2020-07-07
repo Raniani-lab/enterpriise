@@ -210,7 +210,7 @@ class DataCleaningModel(models.Model):
     def open_records(self):
         self.ensure_one()
 
-        action = self.env.ref('data_cleaning.action_data_cleaning_record').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("data_cleaning.action_data_cleaning_record")
         action['context'] = dict(ast.literal_eval(action.get('context')), searchpanel_default_cleaning_model_id=self.id)
         return action
 

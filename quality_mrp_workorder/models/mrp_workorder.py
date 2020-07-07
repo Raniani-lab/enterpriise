@@ -37,7 +37,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def button_quality_alert(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_alert_action_check').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_alert_action_check")
         action['target'] = 'new'
         action['views'] = [(False, 'form')]
         action['context'] = {

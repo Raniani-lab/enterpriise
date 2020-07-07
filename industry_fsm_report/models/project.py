@@ -123,7 +123,7 @@ class Task(models.Model):
         return self.allow_worksheets and not self.worksheet_signature
 
     def action_fsm_worksheet(self):
-        action = self.worksheet_template_id.action_id.read()[0]
+        action = self.worksheet_template_id.action_id.sudo().read()[0]
         worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])
         context = literal_eval(action.get('context', '{}'))
         action.update({

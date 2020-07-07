@@ -68,7 +68,7 @@ class CalendarAppointmentType(models.Model):
 
     def action_calendar_meetings(self):
         self.ensure_one()
-        action = self.env.ref('calendar.action_calendar_event').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("calendar.action_calendar_event")
         action['context'] = {
             'default_appointment_type_id': self.id,
             'search_default_appointment_type_id': self.id

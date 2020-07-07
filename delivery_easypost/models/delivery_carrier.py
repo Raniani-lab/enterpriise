@@ -41,7 +41,7 @@ class DeliverCarrier(models.Model):
             ep = EasypostRequest(self.sudo().easypost_production_api_key, self.log_xml)
             carriers = ep.fetch_easypost_carrier()
             if carriers:
-                action = self.env.ref('delivery_easypost.act_delivery_easypost_carrier_type').read()[0]
+                action = self.env["ir.actions.actions"]._for_xml_id("delivery_easypost.act_delivery_easypost_carrier_type")
                 action['context'] = {
                     'carrier_types': carriers,
                     'default_delivery_carrier_id': self.id,

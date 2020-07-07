@@ -52,7 +52,7 @@ class Employee(models.Model):
         return {employee.id: link for employee in self}
 
     def action_view_planning(self):
-        action = self.env.ref('planning.planning_action_schedule_by_employee').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("planning.planning_action_schedule_by_employee")
         action.update({
             'name': _('View Planning'),
             'domain': [('employee_id', 'in', self.ids)],

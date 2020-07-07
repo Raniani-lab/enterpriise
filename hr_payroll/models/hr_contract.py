@@ -22,7 +22,7 @@ class HrContract(models.Model):
     hourly_wage = fields.Monetary('Hourly Wage', default=0, required=True, tracking=True, help="Employee's hourly gross wage.")
 
     def _index_contracts(self):
-        action = self.env.ref('hr_payroll.action_hr_payroll_index').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("hr_payroll.action_hr_payroll_index")
         action['context'] = repr(self.env.context)
         return action
 

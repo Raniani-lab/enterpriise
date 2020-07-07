@@ -165,7 +165,7 @@ class ProjectOverview(models.Model):
         if not any(self.mapped('allow_forecast')):
             return stat_buttons
 
-        action = clean_action(self.env.ref('project_forecast.planning_action_schedule_by_project').read()[0])
+        action = self.env["ir.actions.actions"]._for_xml_id("project_forecast.planning_action_schedule_by_project")
         context = literal_eval(action['context'])
 
         if len(self) == 1:

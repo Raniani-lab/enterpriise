@@ -217,7 +217,7 @@ class SocialPost(models.Model):
         return super(SocialPost, self).write(vals)
 
     def social_stream_post_action_my(self):
-        action = self.env.ref('social.action_social_stream_post').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("social.action_social_stream_post")
         action['name'] = _('Feed Posts')
         action['domain'] = self._get_stream_post_domain()
         action['context'] = {
@@ -255,7 +255,7 @@ class SocialPost(models.Model):
         self._action_post()
 
     def action_redirect_to_clicks(self):
-        action = self.env.ref('link_tracker.link_tracker_action').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("link_tracker.link_tracker_action")
         action['domain'] = [('source_id', '=', self.utm_source_id.id)]
         return action
 

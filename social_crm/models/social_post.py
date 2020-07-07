@@ -24,7 +24,7 @@ class SocialPost(models.Model):
 
     def action_redirect_to_leads_opportunities(self):
         view = 'crm.crm_lead_all_leads' if self.use_leads else 'crm.crm_lead_opportunities'
-        action = self.env.ref(view).read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id(view)
         action['view_mode'] = 'tree,kanban,graph,pivot,form,calendar'
         action['domain'] = self._get_crm_utm_domain()
         action['context'] = {'active_test': False, 'create': False}

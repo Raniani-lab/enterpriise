@@ -48,13 +48,13 @@ class SocialPost(models.Model):
                 post.sale_invoiced_amount = 0
 
     def action_redirect_to_quotations(self):
-        action = self.env.ref('sale.action_quotations_with_onboarding').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("sale.action_quotations_with_onboarding")
         action['domain'] = self._get_sale_utm_domain()
         action['context'] = {'create': False}
         return action
 
     def action_redirect_to_invoiced(self):
-        action = self.env.ref('account.action_move_journal_line').read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_journal_line")
         action['context'] = {
             'create': False,
             'edit': False,

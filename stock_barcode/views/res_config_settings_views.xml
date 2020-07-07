@@ -23,6 +23,24 @@
                     </a>
                 </div>
             </xpath>
+            <xpath expr="//div[@id='process_operations_barcodes']" position="after">
+                <div class="col-12 col-lg-6 o_setting_box" id="process_operations_barcodes" attrs="{'invisible': [('module_stock_barcode', '=', False)]}">
+                    <div class="o_setting_left_pane">
+                        <field name="group_barcode_keyboard_shortcuts"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="group_barcode_keyboard_shortcuts"/>
+                        <div class="text-muted">
+                            Use keyboard shortcuts for increment buttons in the barcode app
+                        </div>
+                        <div attrs="{'invisible': [('group_barcode_keyboard_shortcuts', '=', False)]}">
+                            <div class="mt8">
+                                <field name="keyboard_layout" class="o_light_label" widget="radio" required="True"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

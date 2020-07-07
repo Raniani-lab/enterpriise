@@ -1240,6 +1240,49 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         line_owner = move_line.owner_id
         self.assertEqual(line_owner.id, self.owner.id)
 
+    def test_picking_keyboard_shortcuts(self):
+        """ Test keyboard shortcuts for increment buttons
+        By default, keyboard shortcuts are active and set to "QWERTY" keyboard.
+        """
+        clean_access_rights(self.env)
+
+        # Creates a new product.
+        product3 = self.env['product.product'].create({
+            'name': 'product3',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': 'product3',
+        })
+
+        # Creates some quants.
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 2)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 3)
+        self.env['stock.quant']._update_available_quantity(product3, self.stock_location, 4)
+
+        # Create the delivery transfer.
+        delivery_form = Form(self.env['stock.picking'])
+        delivery_form.picking_type_id = self.picking_type_out
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 2
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product2
+            move.product_uom_qty = 3
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = product3
+            move.product_uom_qty = 4
+
+        delivery_picking = delivery_form.save()
+        delivery_picking.action_confirm()
+        delivery_picking.action_assign()
+
+        url = self._get_client_action_url(delivery_picking.id)
+        self.start_tour(url, 'test_picking_keyboard_shortcuts', login='admin', timeout=180)
+
+        self.assertEqual(len(delivery_picking.move_line_ids), 3)
+        self.assertEqual(delivery_picking.move_line_ids.mapped('qty_done'), [2, 3, 4])
+
+
 
 @tagged('post_install', '-at_install')
 class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):

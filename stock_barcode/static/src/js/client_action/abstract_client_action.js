@@ -99,6 +99,8 @@ var ClientAction = AbstractAction.extend({
         var self = this;
         this.$('.o_content').addClass('o_barcode_client_action');
         core.bus.on('barcode_scanned', this, this._onBarcodeScannedHandler);
+        this._onKeyDown = this._onKeyDown.bind(this);
+        this._toggleKeyEvents(true);
 
         this.headerWidget = new HeaderWidget(this);
         this.settingsWidget = new SettingsWidget(this, this.actionParams.model, this.mode, this.allow_scrap);
@@ -117,6 +119,7 @@ var ClientAction = AbstractAction.extend({
 
     destroy: function () {
         core.bus.off('barcode_scanned', this, this._onBarcodeScannedHandler);
+        this._toggleKeyEvents(false);
         this._super();
     },
 
@@ -204,8 +207,10 @@ var ClientAction = AbstractAction.extend({
                 'group_tracking_lot': self.currentState.group_tracking_lot,
                 'group_production_lot': self.currentState.group_production_lot,
                 'group_uom': self.currentState.group_uom,
+                'group_barcode_keyboard_shortcuts': self.currentState.group_barcode_keyboard_shortcuts,
             };
             self.show_entire_packs = self.currentState.show_entire_packs;
+            self.keyboard_layout = self.currentState.keyboard_layout;
             if (self._isPickingRelated()) {
                 self.sourceLocations = self.currentState.source_location_list;
                 self.destinationLocations = self.currentState.destination_location_list;
@@ -960,6 +965,19 @@ var ClientAction = AbstractAction.extend({
         return false;
     },
 
+    /**
+     * Enables or disables the `keydown` and `keyup` event.
+     * They are toggled when passing through the form view (edit or add a line).
+     *
+     * @param {boolean} mustBeActive
+     */
+    _toggleKeyEvents: function (mustBeActive) {
+        if (mustBeActive) {
+            document.addEventListener('keydown', this._onKeyDown);
+        } else {
+            document.removeEventListener('keydown', this._onKeyDown);
+        }
+    },
 
     /**
      * Define and return a formatted command to update a record line.
@@ -1669,6 +1687,7 @@ var ClientAction = AbstractAction.extend({
      */
      _onAddLine: function (ev) {
         ev.stopPropagation();
+        this._toggleKeyEvents(false);
         this.mutex.exec(() => {
             this.linesWidgetState = this.linesWidget.getState();
             this.linesWidget.destroy();
@@ -1696,6 +1715,7 @@ var ClientAction = AbstractAction.extend({
      */
     _onEditLine: function (ev) {
         ev.stopPropagation();
+        this._toggleKeyEvents(false);
         this.linesWidgetState = this.linesWidget.getState();
         this.linesWidget.destroy();
         this.headerWidget.toggleDisplayContext('specialized');
@@ -1787,6 +1807,7 @@ var ClientAction = AbstractAction.extend({
      */
     _onReload: function (ev) {
         ev.stopPropagation();
+        this._toggleKeyEvents(true);
         if (this.ViewsWidget) {
             this.ViewsWidget.destroy();
         }
@@ -1885,6 +1906,33 @@ var ClientAction = AbstractAction.extend({
        ev.stopPropagation();
        this._validate();
    },
+
+    /**
+     * Listens for a letter being clicked to trigger corresponding product increment button.
+     *
+     * Assumptions:
+     * - We don't need to indicate Caps Lock is active without warning user because it's a huge pain to detect
+     *   and probably can't be until the first letter is pushed.
+     * - We don't need to hide the letters when "Alt" is pushed (i.e. when accesskeys are displayed)
+     *   because of weird interactions that the accesskey logic sometimes causes (e.g. when 'alt' is
+     *   pushed firefox may display menubar if it's not displayed and interrupt accesskey display logic).
+     *   See 'keyboard_navigation_mixin.js' for accesskey logic
+     *
+     * @private
+     * @param {KeyboardEvent} keyDownEvent
+     */
+    _onKeyDown: function (keyDownEvent) {
+        if (this.linesWidget) {
+            if (!keyDownEvent.repeat && !keyDownEvent.ctrlKey &&
+                !keyDownEvent.altKey && !keyDownEvent.metaKey &&
+                "abcdefghijklmnopqrstuvwxyz".includes(keyDownEvent.key.toLowerCase())) {
+                let $button = this.$el.find('[shortcutKey="' + keyDownEvent.key + '"]');
+                if ($button.length && $button.is(":visible")) {
+                    $button[0].click();
+                }
+            }
+        }
+    },
 
 });
 

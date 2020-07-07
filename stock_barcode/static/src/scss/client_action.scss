@@ -176,6 +176,11 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                text-transform: none;
+
+                &.o_has_shortcut {
+                    padding-top: 14px;
+                }
             }
 
             &.o_barcode_line_package {

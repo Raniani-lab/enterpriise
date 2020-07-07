@@ -11,6 +11,7 @@ This module enables the barcode scanning feature for the warehouse management sy
     'version': '1.0',
     'depends': ['barcodes', 'stock', 'web_tour'],
     'data': [
+        'security/stock_barcode_security.xml',
         'security/ir.model.access.csv',
         'views/stock_inventory_views.xml',
         'views/stock_picking_views.xml',

@@ -32,12 +32,19 @@ var LinesWidget = Widget.extend({
         this.groups = parent.groups;
         this.model = parent.actionParams.model;
         this.show_entire_packs = parent.show_entire_packs;
+        this.keyboard_layout = parent.keyboard_layout;
         this.displayControlButtons = this.nbPages > 0 && parent._isControlButtonsEnabled();
         this.displayOptionalButtons = parent._isOptionalButtonsEnabled();
         this.isPickingRelated = parent._isPickingRelated();
         this.isImmediatePicking = parent.isImmediatePicking ? true : false;
         this.sourceLocations = parent.sourceLocations;
         this.destinationLocations = parent.destinationLocations;
+        // detect if touchscreen (more complicated than one would expect due to browser differences...)
+        this.istouchSupported = 'ontouchend' in document ||
+                               'ontouchstart' in document ||
+                               'ontouchstart' in window ||
+                               navigator.maxTouchPoints > 0 ||
+                               navigator.msMaxTouchPoints > 0;
     },
 
     start: function () {
@@ -78,7 +85,6 @@ var LinesWidget = Widget.extend({
         } else if (this.mode === 'no_multi_locations') {
             this._toggleScanMessage('scan_products');
         }
-
         this._updateIncrementButtons($line);
     },
 
@@ -307,6 +313,9 @@ var LinesWidget = Widget.extend({
                 if (line.dataset) {
                     this._updateIncrementButtons($(line));
                 }
+            }
+            if (this.groups.group_barcode_keyboard_shortcuts && !this.istouchSupported) {
+                this._assignKeyboardShortcuts($lines);
             }
             $body.prepend($lines);
             $lines.on('click', '.o_edit', this._onClickEditLine.bind(this));
@@ -544,7 +553,11 @@ var LinesWidget = Widget.extend({
                 const qty = line.product_uom_qty - qtyDone;
                 if (qty != 1) {
                     $button.data('reserved', qty);
-                    $button.text(`+ ${qty}`);
+                    if ($button.attr('shortcutKey')) {
+                        $button.html(`+ ${qty}` + "<br/>" + $button.attr('shortcutKey'));
+                    } else {
+                        $button.text(`+ ${qty}`);
+                    }
                 } else {
                     // hide button to avoid having two +1 buttons
                     $button.hide();
@@ -552,6 +565,8 @@ var LinesWidget = Widget.extend({
             } else {
                 // ...or hides the buttons if they are now useless.
                 $line.find('.o_line_button').hide();
+                 // flag line so we know it doesn't need a shortcut key
+                $line.addClass('o_line_completed');
             }
         }
     },
@@ -567,6 +582,38 @@ var LinesWidget = Widget.extend({
         return lines.sort(function(a,b) {
             return a.display_name.localeCompare(b.display_name, {ignorePunctuation: true});
         });
+    },
+
+    _assignKeyboardShortcuts: function ($lines) {
+        let candidateLetters;
+        if (this.keyboard_layout === 'qwerty') {
+            candidateLetters = "qwertyuiopasdfghjklzxcvbnm";
+        } else if (this.keyboard_layout === 'azerty') {
+            candidateLetters = "azertyuiopqsdfghjklmwxcvbn,";
+        } else {
+            candidateLetters = "abcdefghijklmnopqrstuvwxyz";
+        }
+        let letterIndex = 0;
+        for (const line of $lines) {
+            if (line.dataset && !$(line).hasClass('o_line_completed')) {
+                let addUnit = $(line).find('.o_add_unit');
+                let otherButton = $(line).find('.o_add_reserved, .o_remove_unit');
+
+                if (addUnit.length || otherButton.length) {
+                    let shortcutKey = candidateLetters[letterIndex];
+                    addUnit.addClass('o_has_shortcut');
+                    addUnit.attr('shortcutKey', shortcutKey);
+                    addUnit.html(addUnit.text() + "<br/>" + shortcutKey);
+                    otherButton.addClass('o_has_shortcut');
+                    otherButton.attr('shortcutKey', shortcutKey.toUpperCase());
+                    otherButton.html(otherButton.text() + "<br/>" + shortcutKey.toUpperCase());
+                    letterIndex++;
+                }
+                if (letterIndex >= candidateLetters.length) {
+                    break;
+                }
+            }
+        }
     },
 
 

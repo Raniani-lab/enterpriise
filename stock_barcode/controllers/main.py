@@ -112,5 +112,7 @@ class StockBarcodeController(http.Controller):
     def get_set_barcode_view_state(self, model_name, record_id, mode, write_field=None, write_vals=None):
         if mode != 'read':
             request.env[model_name].browse(record_id).write({write_field: write_vals})
-        return request.env[model_name].browse(record_id).get_barcode_view_state()
+        cids = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
+        allowed_company_ids = [int(cid) for cid in cids.split(',')]
+        return request.env[model_name].browse(record_id).with_context(company_id=allowed_company_ids[0]).get_barcode_view_state()
 

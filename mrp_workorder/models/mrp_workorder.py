@@ -722,5 +722,5 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def _action_confirm(self):
         res = super()._action_confirm()
-        self._create_checks()
+        self.filtered(lambda wo: not wo.check_ids)._create_checks()
         return res

@@ -215,15 +215,15 @@ class TestSubscription(TestSubscriptionCommon):
             'product_uom_qty': 2,
             'product_uom': self.product.uom_id.id,
             'price_unit': self.product.list_price}
-        new_line = self.env['sale.order.line'].with_context(dbo=True).create(so_line_vals)
+        new_line = self.env['sale.order.line'].create(so_line_vals)
         self.assertEqual(new_line.subscription_id, self.subscription, 'sale_subscription: SO lines added to renewal orders manually should have the correct subscription set on them')
         self.assertEqual(renewal_so.origin, self.subscription.code, 'sale_subscription: renewal order must have the "source document" set to the subscription code')
-        self.assertTrue(renewal_so.subscription_management == 'renew', 'sale_subscription: renewal quotation generation is wrong')
+        self.assertEqual(renewal_so.subscription_management, 'renew', 'sale_subscription: renewal quotation generation is wrong')
         self.subscription.write({'recurring_invoice_line_ids': [(0, 0, {'name': 'TestRecurringLine', 'product_id': self.product.id, 'quantity': 1, 'price_unit': 50, 'uom_id': self.product.uom_id.id})]})
         renewal_so.write({'order_line': [(0, 0, {'product_id': self.product.id, 'product_uom_qty': 5, 'subscription_id': self.subscription.id, 'product_uom': self.product.uom_id.id})]})
         renewal_so.action_confirm()
-        lines = [line.quantity for line in self.subscription.mapped('recurring_invoice_line_ids')]
-        self.assertTrue(lines[0] == 5, 'sale_subscription: Renewal quantity is not equal to the SO quantity')
+        total_quantity = sum([line.quantity for line in self.subscription.mapped('recurring_invoice_line_ids')])
+        self.assertEqual(total_quantity, 7, 'sale_subscription: Renewal quantity is not equal to the SO quantity')
         self.assertEqual(renewal_so.subscription_management, 'renew', 'sale_subscription: so should be set to "renew" in the renewal process')
 
     def test_07_upsell_via_so(self):
@@ -481,3 +481,34 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(lines_renew[1][1], self.product3.id, 'sale_subscription: First product should be TestProduct')
         self.assertEqual(lines_renew[1][2], 10,
                          'sale_subscription: Renewal quantity of new replacement product should be equal to 3.')
+
+    def test_18_log_change_template(self):
+        """ Test subscription log generation when template_id is changed """
+        # Create a subscription and add a line, should have logs with MMR 120
+        subscription = self.env['sale.subscription'].create({
+            'name': 'TestSubscription',
+            'partner_id': self.user_portal.partner_id.id,
+            'pricelist_id': self.env.ref('product.list0').id,
+            'template_id': self.subscription_tmpl.id,
+        })
+        self.cr.precommit.clear()
+        subscription.write({'recurring_invoice_line_ids': [(0, 0, {
+            'name': 'TestRecurringLine',
+            'product_id': self.product.id,
+            'quantity': 1,
+            'price_unit': 120,
+            'uom_id': self.product.uom_id.id})]})
+        subscription.start_subscription()
+        self.flush_tracking()
+        init_nb_log = len(subscription.subscription_log_ids)
+        # Configure a template to be yearly, assign that template
+        self.subscription_tmpl_3.recurring_rule_type = 'yearly'
+        self.subscription_tmpl_3.recurring_interval = 1
+        subscription.write({'template_id': self.subscription_tmpl_3})
+        self.flush_tracking()
+        # Should get one more log with MRR 10 (so change is -110)
+        self.assertEqual(len(subscription.subscription_log_ids), init_nb_log + 1,
+                         "Subscription log not generated after change of the subscription template")
+        self.assertRecordValues(subscription.subscription_log_ids[-1],
+                                [{'recurring_monthly': 10.0, 'amount_signed': -110}])
+

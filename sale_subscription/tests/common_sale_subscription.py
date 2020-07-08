@@ -195,3 +195,7 @@ class TestSubscriptionCommon(TestSaleCommon):
             'partner_id': cls.user_portal.partner_id.id,
             'order_line': [(0, 0, {'name': cls.product4.name, 'product_id': cls.product4.id, 'product_uom_qty': 1.0, 'product_uom': cls.product4.uom_id.id, 'price_unit': cls.product4.list_price})]
         })
+
+    def flush_tracking(self):
+        self.env['base'].flush()
+        self.cr.precommit.run()

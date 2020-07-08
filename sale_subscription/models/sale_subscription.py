@@ -443,52 +443,50 @@ class SaleSubscription(models.Model):
                  - a set of updated column names
                  - a list of ORM (0, 0, values) commands to create 'mail.tracking.value' """
         res = super()._mail_track(tracked_fields, initial)
-        updated_fields = res[0]
-        commands = res[1]
-        for sub in self:
-            if 'recurring_total' or 'stage_id' in updated_fields:
-                for tracking_value in commands:
-                    if tracking_value:
-                        # tracking_value = [0, 0, {...}]
-                        tracking_value = tracking_value[2]
-                        field_name = self.env['ir.model.fields'].browse(tracking_value.get('field')).name
-                        if field_name == 'recurring_total':
-                            old_value_monthly = tracking_value.get('old_value_float') * INTERVAL_FACTOR[sub.recurring_rule_type] / sub.recurring_interval
-                            new_value_monthly = tracking_value.get('new_value_float') * INTERVAL_FACTOR[sub.recurring_rule_type] / sub.recurring_interval
-                            delta = new_value_monthly - old_value_monthly
-                            cur_round = sub.company_id.currency_id.rounding
-                            if not float_is_zero(delta, precision_rounding=cur_round):
-                                self.env['sale.subscription.log'].sudo().create({
-                                    'event_date': fields.Date.context_today(self),
-                                    'subscription_id': sub.id,
-                                    'currency_id': sub.currency_id.id,
-                                    'recurring_monthly': new_value_monthly,
-                                    'amount_signed': delta,
-                                    'event_type': '1_change',
-                                    'category': sub.stage_id.category,
-                                    'user_id': sub.user_id.id,
-                                    'team_id': sub.team_id.id,
-                                })
-                        if field_name == 'stage_id':
-                            new_stage_id = self.env['sale.subscription.stage'].browse(tracking_value['new_value_integer'])
-                            old_stage_id = self.env['sale.subscription.stage'].browse(tracking_value['old_value_integer'])
-                            if new_stage_id.category in ['progress', 'closed'] and old_stage_id.category != new_stage_id.category:
-                                # subscription started or churned
-                                start_churn = {'progress': {'type': '0_creation', 'amount_signed': sub.recurring_monthly,
-                                                            'recurring_monthly': sub.recurring_monthly},
-                                               'closed': {'type': '2_churn', 'amount_signed': -sub.recurring_monthly,
-                                                          'recurring_monthly': 0}}
-                                self.env['sale.subscription.log'].sudo().create({
-                                    'event_date': fields.Date.context_today(self),
-                                    'subscription_id': sub.id,
-                                    'currency_id': sub.currency_id.id,
-                                    'recurring_monthly': start_churn[new_stage_id.category]['recurring_monthly'],
-                                    'amount_signed': start_churn[new_stage_id.category]['amount_signed'],
-                                    'event_type': start_churn[new_stage_id.category]['type'],
-                                    'category': sub.stage_id.category,
-                                    'user_id': sub.user_id.id,
-                                    'team_id': sub.team_id.id,
-                                })
+        updated_fields, commands = res
+        if any(f in updated_fields for f in ['recurring_total', 'template_id']):
+            # Intial may not always contains all the needed values if they didn't changed
+            # Fallback on record value in that case
+            initial_rrule_type = INTERVAL_FACTOR[initial.get('recurring_rule_type', self.recurring_rule_type)]
+            initial_rrule_interval = initial.get('recurring_interval', self.recurring_interval)
+            old_factor = initial_rrule_type / initial_rrule_interval
+            old_value_monthly = initial.get('recurring_total', self.recurring_total) * old_factor
+            new_factor = INTERVAL_FACTOR[self.recurring_rule_type] / self.recurring_interval
+            new_value_monthly = self.recurring_total * new_factor
+            delta = new_value_monthly - old_value_monthly
+            cur_round = self.company_id.currency_id.rounding
+            if not float_is_zero(delta, precision_rounding=cur_round):
+                self.env['sale.subscription.log'].sudo().create({
+                    'event_date': fields.Date.context_today(self),
+                    'subscription_id': self.id,
+                    'currency_id': self.currency_id.id,
+                    'recurring_monthly': new_value_monthly,
+                    'amount_signed': delta,
+                    'event_type': '1_change',
+                    'category': self.stage_id.category,
+                    'user_id': self.user_id.id,
+                    'team_id': self.team_id.id,
+                })
+        if 'stage_id' in updated_fields:
+            old_stage_id = initial['stage_id']
+            new_stage_id = self.stage_id
+            if new_stage_id.category in ['progress', 'closed'] and old_stage_id.category != new_stage_id.category:
+                # subscription started or churned
+                start_churn = {'progress': {'type': '0_creation', 'amount_signed': self.recurring_monthly,
+                                            'recurring_monthly': self.recurring_monthly},
+                                'closed': {'type': '2_churn', 'amount_signed': -self.recurring_monthly,
+                                            'recurring_monthly': 0}}
+                self.env['sale.subscription.log'].sudo().create({
+                    'event_date': fields.Date.context_today(self),
+                    'subscription_id': self.id,
+                    'currency_id': self.currency_id.id,
+                    'recurring_monthly': start_churn[new_stage_id.category]['recurring_monthly'],
+                    'amount_signed': start_churn[new_stage_id.category]['amount_signed'],
+                    'event_type': start_churn[new_stage_id.category]['type'],
+                    'category': self.stage_id.category,
+                    'user_id': self.user_id.id,
+                    'team_id': self.team_id.id,
+                })
         return res
 
     def _get_subscription_delta(self, date):

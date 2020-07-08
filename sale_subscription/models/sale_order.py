@@ -95,6 +95,7 @@ class SaleOrder(models.Model):
                 order.subscription_management = 'upsell'
             res.append(subscriptions.ids)
             if order.subscription_management == 'renew':
+                subscriptions.wipe()
                 subscriptions.increment_period(renew=True)
                 subscriptions.payment_term_id = order.payment_term_id
                 subscriptions.set_open()
@@ -104,12 +105,7 @@ class SaleOrder(models.Model):
                     'recurring_invoice_line_ids.product_id') - order.order_line.mapped('product_id')
             for subscription in subscriptions:
                 subscription_lines = order.order_line.filtered(lambda l: l.subscription_id == subscription and l.product_id.recurring_invoice)
-                line_values = subscription_lines._update_subscription_line_data(subscription, order.subscription_management)
-                if deleted_product_ids:
-                    deleted_line_id = subscription.recurring_invoice_line_ids.mapped(
-                        lambda l: l.id if l.product_id in deleted_product_ids else None)
-                    deleted_line_values = [(2, v) for v in deleted_line_id if v]
-                    line_values += deleted_line_values
+                line_values = subscription_lines._update_subscription_line_data(subscription)
                 subscription.write({'recurring_invoice_line_ids': line_values})
         return res
 
@@ -248,7 +244,7 @@ class SaleOrderLine(models.Model):
             }))
         return values
 
-    def _update_subscription_line_data(self, subscription, subscription_management):
+    def _update_subscription_line_data(self, subscription):
         """Prepare a dictionnary of values to add or update lines on a subscription."""
         values = list()
         dict_changes = dict()
@@ -265,11 +261,8 @@ class SaleOrderLine(models.Model):
                     sub_line[0].copy({'name': line.display_name, 'quantity': line.product_uom_qty})
                 else:
                     dict_changes.setdefault(sub_line.id, sub_line.quantity)
-                    if subscription_management == 'renew':
-                        dict_changes[sub_line.id] = line.product_uom_qty
-                    else:
-                        # upsell, we add the product to the existing quantity
-                        dict_changes[sub_line.id] += line.product_uom_qty
+                    # upsell, we add the product to the existing quantity
+                    dict_changes[sub_line.id] += line.product_uom_qty
             else:
                 # we create a new line in the subscription: (0, 0, values)
                 values.append(line._prepare_subscription_line_data()[0])

@@ -357,7 +357,7 @@ textarea.o_sign_sign_item {
 .o_sign_sign_item.ui-draggable-dragging { /* jQuery UI */
     transform: rotate(3deg);
     box-shadow: 0 5px 25px -10px black;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: box-shadow 0.3s;
     cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing;
@@ -445,6 +445,12 @@ textarea.o_sign_sign_item {
     min-height: 30px;
     margin: 0.5rem 0.5rem 0 0.5rem;
     padding: 0.5rem 2rem;
+}
+
+.o_sign_field_type_button:hover {
+    transition: transform 200ms ease 0s;
+    box-shadow: 0 8px 15px -10px black;
+    transform: translateX(1px) translateY(-1px) scale(1.05) rotate(1deg);
 }
 
 .o_sign_close_button {

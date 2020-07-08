@@ -273,13 +273,14 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
         // The backend has a maximum cycle time of 50 seconds so give +10 seconds
         this._rpcIoT(iot_ip, this.POLL_ROUTE, data, options)
             .then(function (result) {
+                self._retries = 0;
                 self._listeners[iot_ip].rpc = false;
                 if (result.result) {
                     if (self._session_id === result.result.session_id) {
                         self._onSuccess(iot_ip, result.result);
                     }
-                } else {
-                    self._onError();
+                } else if (!_.isEmpty(self._listeners[iot_ip].devices)) {
+                    self._poll(iot_ip);
                 }
             }).fail(function (jqXHR, textStatus) {
                 if (textStatus === 'error') {
@@ -298,7 +299,6 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
         if (!_.isEmpty(devices)) {
             this._poll(iot_ip);
         }
-        this._retries = 0;
     },
 
     _onError: function (){

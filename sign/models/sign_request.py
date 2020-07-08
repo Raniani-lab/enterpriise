@@ -441,8 +441,9 @@ class SignRequest(models.Model):
         SignItemValue = self.env['sign.request.item.value']
         for p in range(0, old_pdf.getNumPages()):
             page = old_pdf.getPage(p)
-            width = float(page.mediaBox.getUpperRight_x())
-            height = float(page.mediaBox.getUpperRight_y())
+            # Absolute values are taken as it depends on the MediaBox template PDF metadata, they may be negative
+            width = float(abs(page.mediaBox.getWidth()))
+            height = float(abs(page.mediaBox.getHeight()))
 
             # Set page orientation (either 0, 90, 180 or 270)
             rotation = page.get('/Rotate')

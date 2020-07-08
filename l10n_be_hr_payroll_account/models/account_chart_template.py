@@ -35,18 +35,15 @@ class AccountChartTemplate(models.Model):
                 ('company_id', '=', company.id)])
 
             if journal:
-                if not journal.default_credit_account_id:
-                    journal.default_credit_account_id = accounts['620200'].id
-                if not journal.default_debit_account_id:
-                    journal.default_debit_account_id = accounts['620200'].id
+                if not journal.default_account_id:
+                    journal.default_account_id = accounts['620200'].id
             else:
                 journal = self.env['account.journal'].create({
                     'name': 'Salaries',
                     'code': 'SLR',
                     'type': 'general',
                     'company_id': company.id,
-                    'default_credit_account_id': accounts['620200'].id,
-                    'default_debit_account_id': accounts['620200'].id,
+                    'default_account_id': accounts['620200'].id,
                 })
 
                 self.env['ir.property']._set_multi(

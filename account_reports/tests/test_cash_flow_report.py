@@ -13,7 +13,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
         current_assets_type = cls.env.ref('account.data_account_type_current_assets')
 
         cls.liquidity_journal_1 = cls.company_data['default_journal_bank']
-        cls.liquidity_account = cls.liquidity_journal_1.default_credit_account_id
+        cls.liquidity_account = cls.liquidity_journal_1.default_account_id
         cls.receivable_account_1 = cls.company_data['default_account_receivable']
         cls.receivable_account_2 = cls.receivable_account_1.copy()
         cls.receivable_account_2.name = 'Account Receivable 2'
@@ -85,7 +85,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             'journal_id': self.company_data_2['default_journal_misc'].id,
             'line_ids': [
                 (0, 0, {'debit': 0.0,       'credit': 230.0,    'account_id': self.company_data_2['default_account_receivable'].id}),
-                (0, 0, {'debit': 230.0,     'credit': 0.0,      'account_id': self.company_data_2['default_journal_bank'].default_credit_account_id.id}),
+                (0, 0, {'debit': 230.0,     'credit': 0.0,      'account_id': self.company_data_2['default_journal_bank'].default_account_id.id}),
             ],
         })
         payment_1.action_post()

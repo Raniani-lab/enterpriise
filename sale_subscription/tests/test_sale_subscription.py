@@ -120,8 +120,7 @@ class TestSubscription(TestSubscriptionCommon):
              'code': 'ref',
              'type': 'sale',
              'company_id': self.company.id,
-             'default_credit_account_id': self.account_sale.id,
-             'default_debit_account_id': self.account_sale.id})
+             'default_account_id': self.account_sale.id})
 
         self.partner = self.env['res.partner'].create(
             {'name': 'Stevie Nicks',

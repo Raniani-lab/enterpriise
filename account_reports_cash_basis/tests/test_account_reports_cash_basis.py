@@ -17,7 +17,7 @@ class TestAccountReports(TestAccountReportsCommon):
         super().setUpClass()
 
         cls.liquidity_journal_1 = cls.company_data['default_journal_bank']
-        cls.liquidity_account = cls.liquidity_journal_1.default_credit_account_id
+        cls.liquidity_account = cls.liquidity_journal_1.default_account_id
         cls.receivable_account_1 = cls.company_data['default_account_receivable']
         cls.revenue_account_1 = cls.company_data['default_account_revenue']
 

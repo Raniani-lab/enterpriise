@@ -44,7 +44,7 @@ class TestBillsPrediction(AccountTestInvoicingCommon):
         invoice_form.invoice_date = self.frozen_today
         with invoice_form.invoice_line_ids.new() as invoice_line_form:
             # Set the default account to avoid "account_id is a required field" in case of bad configuration.
-            invoice_line_form.account_id = self.company_data['default_journal_purchase'].default_credit_account_id
+            invoice_line_form.account_id = self.company_data['default_journal_purchase'].default_account_id
 
             invoice_line_form.quantity = 1.0
             invoice_line_form.price_unit = 42.0
@@ -68,7 +68,7 @@ class TestBillsPrediction(AccountTestInvoicingCommon):
         return invoice
 
     def test_account_prediction_flow(self):
-        default_account = self.company_data['default_journal_purchase'].default_debit_account_id
+        default_account = self.company_data['default_journal_purchase'].default_account_id
         self._create_bill(self.test_partners[0], "Maintenance and repair", self.test_accounts[0])
         self._create_bill(self.test_partners[5], "Subsidies obtained", default_account, account_to_set=self.test_accounts[1])
         self._create_bill(self.test_partners[6], "Prepare subsidies file", self.test_accounts[1])

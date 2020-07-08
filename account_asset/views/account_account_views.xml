@@ -29,7 +29,7 @@
         <field name="model">account.account</field>
         <field name="inherit_id" ref="account.view_account_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='right_main_group']" position="after">
+            <xpath expr="//group[@name='security_group']" position="after">
               <group name="asset_group" attrs="{'invisible': ['|', ('can_create_asset', '=', False), ('asset_type', 'not in', ('purchase', 'sale', 'expense'))]}">
                 <separator string="Asset Options" attrs="{'invisible': ['|', ('can_create_asset', '=', False), ('asset_type', '!=', 'purchase')]}"/>
                 <separator string="Deferred Revenue Options" attrs="{'invisible': ['|', ('can_create_asset', '=', False), ('asset_type', '!=', 'sale')]}"/>

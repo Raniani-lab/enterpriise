@@ -838,9 +838,9 @@ class AccountReconciliation(models.AbstractModel):
             'partner_id': st_line.partner_id.id,
             'journal_id': st_line.journal_id.id,
             'statement_id': st_line.statement_id.id,
-            'account_id': [st_line.journal_id.default_debit_account_id.id, st_line.journal_id.default_debit_account_id.display_name],
-            'account_code': st_line.journal_id.default_debit_account_id.code,
-            'account_name': st_line.journal_id.default_debit_account_id.name,
+            'account_id': [st_line.journal_id.default_account_id.id, st_line.journal_id.default_account_id.display_name],
+            'account_code': st_line.journal_id.default_account_id.code,
+            'account_name': st_line.journal_id.default_account_id.name,
             'partner_name': st_line.partner_id.name,
             'communication_partner_name': st_line.partner_name,
             'amount_currency_str': amount_currency_str,  # Amount in the statement currency

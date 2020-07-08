@@ -65,7 +65,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
             'journal_id': self.company_data['default_journal_misc'].id,
             'line_ids': [
                 (0, 0, {'debit': 0.0,       'credit': 200.0,    'account_id': self.company_data['default_account_receivable'].id}),
-                (0, 0, {'debit': 200.0,     'credit': 0.0,      'account_id': self.company_data['default_journal_bank'].default_credit_account_id.id}),
+                (0, 0, {'debit': 200.0,     'credit': 0.0,      'account_id': self.company_data['default_journal_bank'].default_account_id.id}),
             ],
         })
         payment_1.action_post()

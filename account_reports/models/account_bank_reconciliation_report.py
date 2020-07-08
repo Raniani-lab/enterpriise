@@ -52,15 +52,14 @@ class AccountBankReconciliationReport(models.AbstractModel):
         :param journal: The account.journal from which this report has been opened.
         :return:        A domain to search on the account.move.line model.
         '''
-        accounts = journal.default_debit_account_id + journal.default_credit_account_id
 
-        if not accounts:
+        if not journal.default_account_id:
             return None
 
         domain = [
             ('display_type', 'not in', ('line_section', 'line_note')),
             ('move_id.state', '!=', 'cancel'),
-            ('account_id', 'in', accounts.ids),
+            ('account_id', '=', journal.default_account_id.id),
             ('statement_line_id', '=', False),
             ('date', '<=', options['date']['date_to']),
         ]
@@ -237,15 +236,14 @@ class AccountBankReconciliationReport(models.AbstractModel):
         report_currency = journal_currency or company_currency
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
 
-        accounts = journal.default_debit_account_id + journal.default_credit_account_id
-        if not accounts:
+        if not journal.default_account_id:
             return [], []
 
         # Compute the percentage corresponding of the remaining amount to reconcile.
 
         tables, where_clause, where_params = self.with_company(journal.company_id)._query_get(options, domain=[
             ('journal_id', '=', journal.id),
-            ('account_id', 'not in', accounts.ids),
+            ('account_id', '!=', journal.default_account_id.id),
         ])
 
         self._cr.execute('''
@@ -545,10 +543,6 @@ class AccountBankReconciliationReport(models.AbstractModel):
         company_currency = journal.company_id.currency_id
         journal_currency = journal.currency_id if journal.currency_id and journal.currency_id != company_currency else False
         report_currency = journal_currency or company_currency
-        accounts = journal.default_debit_account_id + journal.default_credit_account_id
-
-        if journal.default_debit_account_id == journal.default_credit_account_id:
-            accounts = journal.default_debit_account_id
 
         last_statement_domain = [('date', '<=', options['date']['date_to'])]
         if not options['all_entries']:
@@ -566,7 +560,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
             options['has_bank_miscellaneous_move_lines'] = bool(self.env['account.move.line'].search_count(domain))
         else:
             options['has_bank_miscellaneous_move_lines'] = False
-        options['account_names'] = ', '.join(accounts.mapped('display_name'))
+        options['account_names'] = journal.default_account_id.display_name
 
         # ==== Build sub-sections about journal items ====
 

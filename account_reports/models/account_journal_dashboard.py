@@ -14,7 +14,6 @@ class AccountJournal(models.Model):
         self.ensure_one()
         action = self.env.ref('account_reports.action_account_report_general_ledger').read()[0]
 
-        account_to_show = self.default_debit_account_id or self.default_credit_account_id
-        action['context'] = dict(ast.literal_eval(action['context']), default_filter_accounts=account_to_show.code)
+        action['context'] = dict(ast.literal_eval(action['context']), default_filter_accounts=self.default_account_id.code)
 
         return action

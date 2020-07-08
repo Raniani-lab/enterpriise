@@ -114,17 +114,12 @@ class AccountCashFlowReport(models.AbstractModel):
             where_clause = "account_journal.type IN ('bank', 'cash')"
             where_params = []
 
-        payment_account_ids = set()
         self._cr.execute('''
-            SELECT default_debit_account_id, default_credit_account_id
+            SELECT default_account_id
             FROM account_journal
             WHERE ''' + where_clause, where_params
         )
-        for debit_account_id, credit_account_id in self._cr.fetchall():
-            if debit_account_id:
-                payment_account_ids.add(debit_account_id)
-            if credit_account_id:
-                payment_account_ids.add(credit_account_id)
+        payment_account_ids = set(r[0] for r in self._cr.fetchall())
 
         if not payment_account_ids:
             return (), ()

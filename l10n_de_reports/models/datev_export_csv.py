@@ -42,7 +42,7 @@ class AccountMoveL10NDe(models.Model):
     l10n_de_datev_main_account_id = fields.Many2one('account.account', compute='_get_datev_account',
         help='Technical field needed for datev export', store=True)
 
-    @api.depends('journal_id', 'line_ids', 'journal_id.default_debit_account_id', 'journal_id.default_credit_account_id')
+    @api.depends('journal_id', 'line_ids', 'journal_id.default_account_id')
     def _get_datev_account(self):
         for move in self:
             move.l10n_de_datev_main_account_id = value = False
@@ -54,16 +54,13 @@ class AccountMoveL10NDe(models.Model):
                     move.l10n_de_datev_main_account_id = payment_term_lines[0].account_id
                 continue
             # If move belongs to a bank journal, return the journal's account (debit/credit should normally be the same)
-            if move.journal_id.type == 'bank' and move.journal_id.default_debit_account_id:
-                move.l10n_de_datev_main_account_id = move.journal_id.default_debit_account_id
+            if move.journal_id.type == 'bank' and move.journal_id.default_account_id:
+                move.l10n_de_datev_main_account_id = move.journal_id.default_account_id
                 continue
             # If the move is an automatic exchange rate entry, take the gain/loss account set on the exchange journal
             elif move.journal_id.type == 'general' and move.journal_id == self.env.company.currency_exchange_journal_id:
-                accounts = [
-                    move.journal_id.default_debit_account_id,
-                    move.journal_id.default_credit_account_id,
-                ]
-                lines = move.line_ids.filtered(lambda r: r.account_id in accounts)
+                lines = move.line_ids.filtered(lambda r: r.account_id == move.journal_id.default_account_id)
+
                 if len(lines) == 1:
                     move.l10n_de_datev_main_account_id = lines.account_id
                     continue

@@ -457,7 +457,7 @@ class WinbooksImportWizard(models.TransientModel):
                 if not counter_part_created:
                     _logger.warning('At least one automatic counterpart has been created at import. This is probably an error. Please check entry lines with reference: ' + _('Counterpart (generated at import from Winbooks)'))
                 counter_part_created = True
-                account_id = journal_id.default_debit_account_id if rec.get('DOCTYPE') in ['0', '1'] else journal_id.default_credit_account_id
+                account_id = journal_id.default_account_id
                 account_id = account_id or (partner_id.property_account_payable_id if rec.get('DOCTYPE') in ['0', '1'] else partner_id.property_account_receivable_id)
                 account_id = account_id or suspense_account  # Use suspense account as fallback
                 line_data = {

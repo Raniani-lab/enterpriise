@@ -342,7 +342,7 @@ class AEATAccountFinancialReport(models.Model):
         report_line = self.env.ref(line_xml_id)
         for generated_line in self._get_lines(report_options, line_id=report_line.id):
             # We only treat sublines (excluding the 'total' line)
-            if generated_line['id'] != 'total_'+str(report_line.id) and generated_line['level'] > report_line.level:
+            if generated_line['id'] != 'total_'+str(report_line.id) and generated_line['level'] >= report_line.level and generated_line.get('caret_options') == 'partner_id':
                 rslt += fun_to_call({'line_data': generated_line, 'line_xml_id': line_xml_id, 'report_options': report_options})
                 if generated_line['id'] in required_ids_set:
                     required_ids_set.remove(generated_line['id'])
@@ -363,7 +363,7 @@ class AEATAccountFinancialReport(models.Model):
         """
         report_line = self.env.ref(line_xml_id)
         for generated_line in self._get_lines(report_options, line_id=report_line.id):
-            if generated_line['id'] != 'total_'+str(report_line.id) and generated_line['level'] > report_line.level and generated_line['id'] == sub_line_id:
+            if generated_line['id'] != 'total_'+str(report_line.id) and generated_line['level'] >= report_line.level and generated_line.get('caret_options') == 'partner_id' and generated_line['id'] == sub_line_id:
                 return generated_line
 
     def _extract_tin(self, partner, error_if_no_tin=True):
@@ -789,7 +789,7 @@ class AEATAccountFinancialReport(models.Model):
                 current_invoice_type = domain_tuple[2]
                 break
 
-        user_type_id = operation_key == 'A' and self.env.ref('account.data_account_type_receivable').id or self.env.ref('data_account_type_payable').id
+        user_type_id = operation_key == 'A' and self.env.ref('account.data_account_type_receivable').id or self.env.ref('account.data_account_type_payable').id
         matching_field = operation_key == 'A' and 'debit' or 'credit'
         cash_payments_lines_in_period = self.env['account.move.line'].search([('date','<=',year+'-12-31'), ('date','>=',year+'-01-01'), ('journal_id.type','=','cash'), ('payment_id','!=',False), ('partner_id','=',line_partner.id), ('account_id.user_type_id','=',user_type_id), ('company_id','=',current_company.id)])
         metalico_amount = 0
@@ -926,7 +926,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(self._extract_tin(line_partner), length=17)
         rslt += self._boe_format_string(line_partner.name, length=40)
         rslt += self._boe_format_string(key, length=1)
-        rslt += self._boe_format_number(report_data['columns'][0]['no_format_name'], length=13, decimal_places=2, in_currency=True)
+        rslt += self._boe_format_number(report_data['line_data']['columns'][0]['no_format_name'], length=13, decimal_places=2, in_currency=True)
         rslt += self._boe_format_string(' ' * 354)
 
         return rslt
@@ -940,8 +940,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt = self._boe_format_string('')
         for refund_invoice in self.env['account.move'].search([('date', '<=', report_date_to), ('date', '>=', report_date_from), ('move_type', 'in', ['in_refund', 'out_refund']), ('l10n_es_reports_mod349_invoice_type', '=', mod_349_type), ('partner_id', '=', line_partner.id)]):
             original_invoice = refund_invoice.reversed_entry_id
-            original_date = datetime.strptime(original_invoice.date, '%Y-%m-%d')
-            invoice_period, invoice_year = self._retrieve_period_and_year(original_date, trimester=report_period[-1] == 'T')
+            invoice_period, invoice_year = self._retrieve_period_and_year(original_invoice.date, trimester=report_period[-1] == 'T')
             group_key = (invoice_period, invoice_year, refund_invoice.l10n_es_reports_mod349_invoice_type)
 
             # We compute the total refund for this invoice until the current period

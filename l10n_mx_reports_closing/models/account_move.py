@@ -41,7 +41,7 @@ class AccountMoveLine(models.Model):
         """
         if self._context.get('model') != 'l10n_mx.trial.report':
             return super(AccountMoveLine, self)._query_get(domain=domain)
-        closing_moves = self.env['account.move']._get_closing_move(self._context.get('date_to'))
+        closing_moves = self.env['account.move']._get_closing_move(fields.Date.from_string(self._context.get('date_to')))
         if domain is None:
             domain = []
         domain.append(('move_id', 'not in', closing_moves.ids))

@@ -393,7 +393,7 @@ odoo.define('sign.template', function(require) {
                         self.$hBarTop = $('<div/>');
                         self.$hBarBottom = $('<div/>');
                         self.$hBarTop.add(self.$hBarBottom).css({
-                            position: 'absolute',
+                            position: 'fixed',
                             "border-top": "1px dashed orange",
                             width: "100%",
                             height: 0,
@@ -403,7 +403,7 @@ odoo.define('sign.template', function(require) {
                         self.$vBarLeft = $('<div/>');
                         self.$vBarRight = $('<div/>');
                         self.$vBarLeft.add(self.$vBarRight).css({
-                            position: 'absolute',
+                            position: 'fixed',
                             "border-left": "1px dashed orange",
                             width: 0,
                             height: "100%",
@@ -599,7 +599,7 @@ odoo.define('sign.template', function(require) {
             });
             $item.find('.o_sign_config_area .fa.fa-arrows').on('mousedown', function(e) {
                 start.call(self, $item);
-                process.call(self, $item, $item.position());
+                process.call(self, $item);
             });
             $item.on('drag resize', function(e, ui) {
                 var $target = $(e.target);
@@ -608,7 +608,7 @@ odoo.define('sign.template', function(require) {
                     // Let the event propagate to its parents
                     return;
                 }
-                process.call(self, ui.helper, ui.position);
+                process.call(self, ui.helper);
             });
             $item.on('dragstop resizestop', function(e, ui) {
                 end.call(self);
@@ -623,11 +623,18 @@ odoo.define('sign.template', function(require) {
                 this.$vBarLeft.detach().insertAfter($helper).show();
                 this.$vBarRight.detach().insertAfter($helper).show();
             }
-            function process($helper, position) {
-                this.$hBarTop.css('top', position.top);
-                this.$hBarBottom.css('top', position.top+parseFloat($helper.css('height'))-1);
-                this.$vBarLeft.css('left', position.left);
-                this.$vBarRight.css('left', position.left+parseFloat($helper.css('width'))-1);
+            function process($helper) {
+                const helperBoundingClientRect = $helper.get(0).getBoundingClientRect();
+                this.$hBarTop.css('top', helperBoundingClientRect.top);
+                this.$hBarBottom.css(
+                    'top',
+                    helperBoundingClientRect.top + parseFloat($helper.css('height')) - 1
+                );
+                this.$vBarLeft.css('left', helperBoundingClientRect.left);
+                this.$vBarRight.css(
+                    'left',
+                    helperBoundingClientRect.left + parseFloat($helper.css('width')) - 1
+                );
             }
             function end() {
                 this.$hBarTop.hide();

@@ -132,7 +132,7 @@ class TaxCloudRequest(object):
             elif response.ResponseType == 'Error':
                 formatted_response['error_message'] = response.Messages.ResponseMessage[0].Message
         except Fault as fault:
-            formatted_response['error_message'] = fault
+            formatted_response['error_message'] = fault.message
         except IOError:
             formatted_response['error_message'] = "TaxCloud Server Not Found"
         return formatted_response
@@ -147,7 +147,7 @@ class TaxCloudRequest(object):
             elif self.response.ResponseType == 'Error':
                 formatted_response['error_message'] = self.response.Messages.ResponseMessage[0].Message
         except Fault as fault:
-            formatted_response['error_message'] = fault
+            formatted_response['error_message'] = fault.message
         except IOError:
             formatted_response['error_message'] = "TaxCloud Server Not Found"
 

@@ -1,4 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from psycopg2 import sql
+
 from odoo import fields
 from odoo.exceptions import UserError
 from odoo.tests.common import Form, SingleTransactionCase
@@ -285,18 +287,18 @@ class TestEdi(SingleTransactionCase):
         return invoice
 
     def _post(self, invoice):
-        name = uuid.uuid1().hex
-        self.env.cr.execute('SAVEPOINT "%s"' % name)
+        name = sql.Identifier(uuid.uuid1().hex)
+        self.env.cr.execute(sql.SQL('SAVEPOINT {}').format(name))
         try:
             invoice.post()
         except Exception as error:
             error_msg = repr(error)
             if 'Code 500' in error_msg or 'Code 501' in error_msg or 'Code 502' in error_msg:
-                self.env.cr.execute('ROLLBACK TO SAVEPOINT "%s"' % name)
-                self.env.cr.execute('RELEASE SAVEPOINT "%s"' % name)
+                self.env.cr.execute(sql.SQL('ROLLBACK TO SAVEPOINT {}').format(name))
+                self.env.cr.execute(sql.SQL('RELEASE SAVEPOINT {}').format(name))
                 self.skipTest("We receive an internal error from AFIP so skip this test")
             else:
-                self.env.cr.execute('RELEASE SAVEPOINT "%s"' % name)
+                self.env.cr.execute(sql.SQL('RELEASE SAVEPOINT {}').format(name))
                 raise error
 
     def _edi_validate_and_review(self, invoice, expected_result=None, error_msg=None):

@@ -3,6 +3,7 @@
 
 import ast
 from dateutil.relativedelta import relativedelta
+from psycopg2 import sql
 
 from odoo import models, api, fields
 
@@ -111,37 +112,40 @@ class DataCleaningModel(models.Model):
                 field_id = actions[field]['field_id']
                 rule_ids = actions[field]['rule_ids']
                 operator = actions[field]['operator']
-                if hasattr(self, '_clean_records_%s' % action):
-                    values = getattr(cleaning_model, '_clean_records_%s' % (action))(actions, field)
+                cleaner = getattr(cleaning_model, '_clean_records_%s' % action, None)
+                if cleaner:
+                    values = cleaner(actions, field)
                     records_to_create += values
                 else:
                     active_name = self.env[cleaning_model.res_model_name]._active_name
-                    active_cond = "AND %s = 't'" % (active_name, ) if active_name else ''
+                    active_cond = sql.SQL("AND {}").format(sql.Identifier(active_name)) if active_name else sql.SQL('')
 
-                    query = """
+                    query = sql.SQL("""
                         SELECT
                             id AS res_id
                         FROM
-                            %(table)s
+                            {table}
                         WHERE
-                            "%(field_name)s" %(operator)s %(cleaned_field_name)s
+                            {field_name} {operator} {cleaned_field_expr}
                             AND NOT EXISTS(
                                 SELECT 1
-                                FROM %(cleaning_record_table)s
+                                FROM {cleaning_record_table}
                                 WHERE
-                                    res_id = %(table)s.id
-                                    AND cleaning_model_id = %(cleaning_model_id)s)
-                            %(active_cond)s
-                    """ % {
-                        'table': self.env[cleaning_model.res_model_name]._table,
-                        'field_name': field,
-                        'operator': operator,
-                        'cleaned_field_name': action.format(field),
-                        'cleaning_record_table': self.env['data_cleaning.record']._table,
-                        'cleaning_model_id': cleaning_model.id,
-                        'active_cond': active_cond
-                    }
-                    self._cr.execute(query)
+                                    res_id = {table}.id
+                                    AND cleaning_model_id = %s)
+                            {active_cond}
+                    """).format(
+                        table=sql.Identifier(self.env[cleaning_model.res_model_name]._table),
+                        field_name=sql.Identifier(field),
+                        operator=sql.SQL(operator),
+                        # can be complex sql expression & multiple actions get
+                        # combined through string formatting, so doesn't seem
+                        # to be a smarter solution than whitelisting the entire thing
+                        cleaned_field_expr=sql.SQL(action.format(field)),
+                        cleaning_record_table=sql.Identifier(self.env['data_cleaning.record']._table),
+                        active_cond=active_cond
+                    )
+                    self._cr.execute(query, [cleaning_model.id])
                     for r in self._cr.fetchall():
                         records_to_create.append({
                             'res_id': r[0],

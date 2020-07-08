@@ -1,4 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from psycopg2 import sql
+
 from odoo import tools, models, fields, api, _
 
 
@@ -139,5 +141,5 @@ GROUP BY
 ORDER BY
     am.date, am.name
         """
-        sql = """CREATE or REPLACE VIEW %s as (%s)""" % (self._table, query)
-        cr.execute(sql)
+        q = sql.SQL("CREATE or REPLACE VIEW {} as ({})".format(sql.Identifier(self._table), sql.SQL(query)))
+        cr.execute(q)

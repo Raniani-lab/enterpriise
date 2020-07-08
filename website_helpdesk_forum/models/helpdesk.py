@@ -38,16 +38,11 @@ class HelpdeskTeam(models.Model):
         else:
             default_value = self.env.ref('website_forum.forum_help').id
 
-            query = 'SELECT id, use_website_helpdesk_forum FROM "%s" WHERE "%s" is NULL' % (
-                self._table, column_name)
-            self.env.cr.execute(query)
-            # query_results = [team_ids, use_website_helpdesk_forum]
-            query_results = self.env.cr.fetchall()
-            for team in query_results:
-                if team[1]:
-                    query = 'UPDATE "%s" SET "%s"=%%s WHERE id = %s' % (
-                        self._table, column_name, team[0])
-                    self.env.cr.execute(query, (default_value,))
+            self.env.cr.execute("""
+            UPDATE {}
+               SET forum_id = %s
+             WHERE use_website_helpdesk_forum AND forum_id IS NULL
+            """.format(self._table), [default_value])
 
 
 class HelpdeskTicket(models.Model):

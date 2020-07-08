@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
+from freezegun import freeze_time
 
-from odoo import fields
 from odoo.tests import tagged
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
-
-from unittest.mock import patch
 
 
 @tagged('post_install', '-at_install')
@@ -48,7 +46,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         }
         report = report.with_context(report._set_context(options))
 
-        with self.mocked_today('2016-01-01'):
+        with freeze_time('2016-01-01'):
             self.assertPartnerFollowup(self.partner_a, None, None)
 
         # 2016-01-01: First invoice, partially paid.
@@ -76,7 +74,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
             .filtered(lambda line: line.account_id == self.company_data['default_account_receivable'])\
             .reconcile()
 
-        with self.mocked_today('2016-01-01'):
+        with freeze_time('2016-01-01'):
             self.assertLinesValues(
                 report._get_lines(options),
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
@@ -99,7 +97,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         })
         invoice_2.post()
 
-        with self.mocked_today('2016-01-05'):
+        with freeze_time('2016-01-05'):
             self.assertLinesValues(
                 report._get_lines(options),
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
@@ -123,7 +121,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
             'invoice_line_ids': [(0, 0, {'quantity': 1, 'price_unit': 1000})]
         })
 
-        with self.mocked_today('2016-01-15'):
+        with freeze_time('2016-01-15'):
             self.assertLinesValues(
                 report._get_lines(options),
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
@@ -148,7 +146,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         })
         invoice_4.post()
 
-        with self.mocked_today('2016-01-20'):
+        with freeze_time('2016-01-20'):
             lines = report._get_lines(options)
             self.assertLinesValues(
                 lines[:3],
@@ -198,5 +196,5 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
 
         self.partner_a._execute_followup_partner()
 
-        with self.mocked_today('2016-01-20'):
+        with freeze_time('2016-01-20'):
             self.assertPartnerFollowup(self.partner_a, 'with_overdue_invoices', self.second_followup_level)

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from freezegun import freeze_time
 
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tests import tagged
@@ -85,7 +86,7 @@ class SAFTReportTest(TestAccountReportsCommon):
         return self.env['account.general.ledger'].get_xml(self.report_options)
 
     def get_report_values(self):
-        with self.mocked_today('2019-01-01'):
+        with freeze_time('2019-01-01'):
             return self.env['account.general.ledger']._prepare_saft_report_data(self.report_options)
 
     def assertHeaderData(self, header_values, expected_values):

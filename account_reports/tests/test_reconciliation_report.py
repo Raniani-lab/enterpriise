@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from .common import TestAccountReportsCommon
+from freezegun import freeze_time
 
+from .common import TestAccountReportsCommon
 
 class TestReconciliationReport(TestAccountReportsCommon):
 
@@ -115,7 +116,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
 
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
 
-        with self.mocked_today('2016-01-02'):
+        with freeze_time('2016-01-02'):
 
             options = report._get_options(None)
 
@@ -245,7 +246,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
 
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
 
-        with self.mocked_today('2016-01-02'), self.debug_mode(report):
+        with freeze_time('2016-01-02'), self.debug_mode(report):
 
             options = report._get_options(None)
             lines = report._get_lines(options)

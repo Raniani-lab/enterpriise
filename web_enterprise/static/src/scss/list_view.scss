@@ -29,6 +29,7 @@
 
     // ------- Make full-width tables to fit odoo layout -------
     > thead, > tbody, > tfoot {
+        .o_web_client:not(.o_touch_device) & {
         > tr > * {
             &:first-child {
                 padding-left: $o-horizontal-padding!important;
@@ -39,6 +40,7 @@
             &.o_list_record_selector {
                 padding-right: 5px!important;
             }
+        }
         }
     }
 }
@@ -161,7 +163,7 @@
 }
 
 // Standalone list views
-.o_content > .o_list_view > .table-responsive > .table {
+body:not(.o_touch_device) .o_content > .o_list_view > .table-responsive > .table {
     // List views always have the table-sm class, maybe we should remove
     // it (and consider it does not exist) and change the default table paddings
     @include o-list-view-full-width-padding($base: $table-cell-padding-sm, $ratio: 2);
@@ -179,23 +181,18 @@
 @include media-breakpoint-down(sm) {
     .o_view_controller > .o_content > .o_list_view > .table-responsive {
         overflow: auto;
-    }
 
-    // Mobile selection banner
-    .o_list_view.o_renderer_selection_banner {
-
-        th.o_list_record_selector > .custom-checkbox {
-            z-index: 2;
-        }
-
-        .o_list_selection_box {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            position: absolute;
-            padding: ceil(($table-cell-padding / 1rem) * $o-root-font-size + 4px) 4px;
-            z-index: 2;
+        .o_list_table tr:focus-within {
+            background-color: inherit;
         }
     }
 
+    .o_data_row_selected {
+        user-select: none; // Prevent text selection when editing
+        background-color: $table-hover-bg !important;
+    }
+
+    .o_web_client.o_touch_device .o_content table.o_list_table.table tr > :first-child {
+        display: none;
+    }
 }

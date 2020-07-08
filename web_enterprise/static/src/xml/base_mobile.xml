@@ -89,4 +89,12 @@
     </div>
 </t>
 
+<t t-extend="ListView.selection">
+    <t t-jquery=".o_list_selection_box" t-operation="prepend">
+        <button class="btn o_discard_selection" t-if="isMobile">
+            <i class="fa fa-close"/>
+        </button>
+    </t>
+</t>
+
 </templates>

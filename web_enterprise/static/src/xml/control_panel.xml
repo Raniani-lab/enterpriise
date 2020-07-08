@@ -77,7 +77,11 @@
                     </div>
                 </div>
             </div>
-            <div class="o_cp_bottom">
+            <div t-if="props.actionMenus and props.actionMenus.items and env.view and env.view.type == 'list'"
+                 class="o_cp_bottom o_renderer_selection_banner">
+                <ActionMenus t-props="props.actionMenus" />
+            </div>
+            <div t-else="" class="o_cp_bottom">
                 <div class="o_cp_bottom_left">
                     <!-- Additional content: buttons (legacy) -->
                     <div class="o_cp_buttons" role="toolbar" aria-label="Control panel toolbar" t-ref="buttons">
@@ -115,6 +119,7 @@
                             </li>
                         </ul>
                     </nav>
+                    <ActionMenus t-if="props.actionMenus and props.actionMenus.items" t-props="props.actionMenus"/>
                 </div>
             </div>
         </t>

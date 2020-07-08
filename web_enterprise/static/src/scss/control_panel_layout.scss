@@ -18,6 +18,15 @@
     .o_control_panel {
         padding-right: 0;
 
+        .o_cp_action_menus {
+            .o_dropdown_title {
+                @include sr-only;
+            }
+            .o_dropdown_chevron, .o_dropdown_caret {
+                display: none;
+            }
+        }
+
         .breadcrumb  {
             width: 100%;
             overflow: hidden;

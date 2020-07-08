@@ -56,5 +56,6 @@ class AppraisalSurvey(Survey):
             'survey_data': survey_data,
             'search_filters': search_filters,
             'search_finished': 'true',  # always finished
+            'appraisal_id': appraisal_id,
         }
         return request.render('survey.survey_page_statistics', template_values)

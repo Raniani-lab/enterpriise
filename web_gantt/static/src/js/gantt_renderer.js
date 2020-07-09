@@ -13,6 +13,10 @@ var QWeb = core.qweb;
 
 
 var GanttRenderer = AbstractRenderer.extend({
+    config: {
+        GanttRow: GanttRow
+    },
+
     custom_events: _.extend({}, AbstractRenderer.prototype.custom_events, {
         'start_dragging': '_onStartDragging',
         'start_no_dragging': '_onStartNoDragging',
@@ -328,7 +332,7 @@ var GanttRenderer = AbstractRenderer.extend({
      * @returns {Promise<GanttRow>} resolved when the row is ready
      */
     _renderRow: function (pillsInfo, params) {
-        var ganttRow = new GanttRow(this, pillsInfo, this.viewInfo, params);
+        var ganttRow = new this.config.GanttRow(this, pillsInfo, this.viewInfo, params);
         this.rowWidgets[ganttRow.rowId] = ganttRow;
         this.proms.push(ganttRow._widgetRenderAndInsert(function () {}));
         return ganttRow;

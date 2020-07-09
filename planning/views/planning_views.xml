@@ -240,8 +240,7 @@
                 decoration-warning="publication_warning and is_published"
                 decoration-danger="overlap_slot_count > 0"
                 display_unavailability="1"
-                sample="1"
-                thumbnails="{'employee_id': 'image_128'}">
+                sample="1">
 
                 <field name="allocated_hours"/>
                 <field name="recurrency_id" />

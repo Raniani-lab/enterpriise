@@ -24,13 +24,13 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                         employee_id: {
                             string: "Assigned to",
                             type: "many2one",
-                            relation: "employee",
+                            relation: "hr.employee",
                         },
                         active: { string: "active", type: "boolean", default: true },
                     },
                     records: [],
                 },
-                employee: {
+                'hr.employee': {
                     fields: {
                         id: { string: "ID", type: "integer" },
                         name: { string: "Name", type: "char" },

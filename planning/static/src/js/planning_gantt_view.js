@@ -1,23 +1,23 @@
 odoo.define('planning.PlanningGanttView', function (require) {
-'use strict';
+    'use strict';
 
-var GanttView = require('web_gantt.GanttView');
-var PlanningGanttController = require('planning.PlanningGanttController');
-var PlanningGanttModel = require('planning.PlanningGanttModel');
-var PlanningGanttRenderer = require('planning.PlanningGanttRenderer');
+    const HrGanttView = require('hr_gantt.GanttView');
+    const PlanningGanttController = require('planning.PlanningGanttController');
+    const PlanningGanttModel = require('planning.PlanningGanttModel');
+    const PlanningGanttRenderer = require('planning.PlanningGanttRenderer');
 
-var view_registry = require('web.view_registry');
+    const view_registry = require('web.view_registry');
 
-var PlanningGanttView = GanttView.extend({
-    config: _.extend({}, GanttView.prototype.config, {
-        Renderer: PlanningGanttRenderer,
-        Controller: PlanningGanttController,
-        Model: PlanningGanttModel,
-    }),
-});
+    const PlanningGanttView = HrGanttView.extend({
+        config: Object.assign({}, HrGanttView.prototype.config, {
+            Renderer: PlanningGanttRenderer,
+            Controller: PlanningGanttController,
+            Model: PlanningGanttModel,
+        }),
+    });
 
-view_registry.add('planning_gantt', PlanningGanttView);
+    view_registry.add('planning_gantt', PlanningGanttView);
 
-return PlanningGanttView;
+    return PlanningGanttView;
 
 });

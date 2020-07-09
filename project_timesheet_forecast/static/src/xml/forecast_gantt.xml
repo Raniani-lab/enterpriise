@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <templates id="template" xml:space="preserve">
-     <t t-name="PlanningTimesheetGanttView.Row" t-extend="GanttView.Row">
+     <t t-name="PlanningTimesheetGanttView.Row" t-extend="PlanningGanttView.Row">
         <!--   Add a span to convert the gantt cells into progress bars      -->
          <t t-jquery='.o_gantt_pill_title' t-operation="before">
             <!-- README: be careful when modifying the DOM inside the pill ; @_onMouseMove is strongly dependant of it -->

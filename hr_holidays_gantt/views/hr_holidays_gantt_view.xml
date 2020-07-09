@@ -7,6 +7,7 @@
             <field name="model">hr.leave</field>
             <field name="arch" type="xml">
                 <gantt
+                       js_class="hr_gantt"
                        date_start="date_from"
                        date_stop="date_to"
                        string="Days"
@@ -17,7 +18,6 @@
                        precision="{'week': 'day:half', 'month': 'day:full'}"
                        plan="0"
                        total_row="True"
-                       thumbnails="{'employee_id': 'image_128'}"
                        display_unavailability="1"
                 >
                     <field name="state" invisible="1"/>
@@ -30,6 +30,7 @@
             <field name="model">hr.leave.allocation</field>
             <field name="arch" type="xml">
                 <gantt
+                    js_class="hr_gantt"
                     date_start="date_from"
                     date_stop="date_to"
                     string="Days"
@@ -48,11 +49,11 @@
             <field name="model">hr.leave.report.calendar</field>
             <field name="arch" type="xml">
                 <gantt
+                    js_class="hr_gantt"
                     string="Time Off"
                     date_start="start_datetime"
                     date_stop="stop_datetime"
                     default_group_by="employee_id"
-                    thumbnails="{'employee_id': 'image_128'}"
                     decoration-info="state in ['confirm', 'validate1']"
                     color="employee_id"
                     display_unavailability="True"

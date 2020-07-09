@@ -8,7 +8,8 @@
                 <field name="template_id" invisible="1"/>
                 <span class="text-muted" attrs="{'invisible': [('url', '=', False)]}">Share this link and Odoo will create a new document per person who clicks on the link. The link is private, only those that receive the link will be able to sign it.</span>
                 <group attrs="{'invisible': [('url', '=', False)]}">
-                    <field name="url" widget="CopyClipboardChar" readonly="1"/>
+                    <field name="url" widget="CopyClipboardChar" readonly="1" class="mb-3"/>
+                    <field name="user_id" attrs="{'invisible': [('user_id', '=', False)]}" widget="selection"/>
                 </group>
                 <span attrs="{'invisible': [('url', '!=', False)]}">To be able to share, there should be only one responsible for all the fields.</span>
                 <footer>

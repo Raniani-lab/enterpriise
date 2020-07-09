@@ -94,6 +94,7 @@
         <field name="create_uid" ref="base.user_admin"/>
         <field name="favorited_ids" eval="[(4, ref('base.user_admin'))]"/>
         <field name="tag_ids" eval="[(4, ref('sign.sign_template_tag_2')), (4, ref('sign.sign_template_tag_1'))]"/>
+        <field name="user_id" ref="base.user_admin"/>
     </record>
     <record model="sign.item" id="sign_item_10">
         <field name="template_id" ref="template_sign_2"/>
@@ -258,6 +259,7 @@
         <field name="create_uid" ref="base.user_admin"/>
         <field name="favorited_ids" eval="[(4, ref('base.user_admin'))]"/>
         <field name="tag_ids" eval="[(4, ref('sign.sign_template_tag_3'))]"/>
+        <field name="user_id" ref="base.user_admin"/>
     </record>
     <record model="sign.item" id="sign_item_27">
         <field name="template_id" ref="template_sign_4"/>

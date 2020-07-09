@@ -29,6 +29,7 @@ class SignTemplateShare(models.TransientModel):
         default=lambda s: s.env.context.get("active_id", None),
     )
     url = fields.Char(string="Link to Share")
+    user_id = fields.Many2one('res.users', related='template_id.user_id')
     is_one_responsible = fields.Boolean()
 
     def open(self):

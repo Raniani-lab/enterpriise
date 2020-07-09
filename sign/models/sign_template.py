@@ -36,6 +36,7 @@ class SignTemplate(models.Model):
                                     "Invited users can always edit the document template.\n"
                                     "Existing requests based on this template will not be affected by changes.")
     favorited_ids = fields.Many2many('res.users', string="Invited Users", default=lambda s: s._default_favorited_ids())
+    user_id = fields.Many2one('res.users', string="Responsible", default=lambda self: self.env.user)
 
     share_link = fields.Char(string="Share Link", copy=False)
 

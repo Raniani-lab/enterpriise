@@ -60,7 +60,10 @@
         <field name="name">Schedule by Role</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
-        <field name="context">{'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True}</field>
+        <field name="context">{
+            'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True,
+            'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
+        }</field>
     </record>
 
         <record id="planning_menu_schedule_by_role" model="ir.actions.act_window.view">

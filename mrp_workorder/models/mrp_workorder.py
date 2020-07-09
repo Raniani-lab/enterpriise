@@ -487,7 +487,7 @@ class MrpProductionWorkcenterLine(models.Model):
             raise UserError(_('Please set the quantity you are currently producing. It should be different from zero.'))
 
         if self.production_id.product_id.tracking != 'none' and not self.finished_lot_id and self.move_raw_ids:
-            raise UserError(_('You should provide a lot for the final product'))
+            raise UserError(_('You should provide a lot/serial number for the final product'))
 
         # Suggest a finished lot on the next workorder
         if self.next_work_order_id and self.product_tracking != 'none' and not self.next_work_order_id.finished_lot_id:

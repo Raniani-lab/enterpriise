@@ -257,6 +257,7 @@ $o-dms-progress-bar-height: 15px;
             box-shadow: inset 0 1px 0 fade_out(white, 0.9), 0 1px 0 fade_out(white, 0.9);
             text-shadow: 0 1px 0 $o-dms-inspector-bg-darker;
             color: $o-dms-inspector-txt-light;
+            width: 32px;
 
             &:not(:disabled) {
                 @include o-hover-text-color($o-dms-inspector-txt-light, white);

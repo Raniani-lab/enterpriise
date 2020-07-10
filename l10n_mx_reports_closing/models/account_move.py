@@ -39,7 +39,7 @@ class AccountMoveLine(models.Model):
     def _query_get(self, domain=None):
         """Avoid that the model l10n_mx.trial.report consider the closing moves
         """
-        if self._context.get('model') != 'l10n_mx.trial.report':
+        if self._context.get('model') not in ('l10n_mx.trial.report', 'account.financial.html.report'):
             return super(AccountMoveLine, self)._query_get(domain=domain)
         closing_moves = self.env['account.move']._get_closing_move(fields.Date.from_string(self._context.get('date_to')))
         if domain is None:

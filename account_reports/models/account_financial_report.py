@@ -175,6 +175,11 @@ class ReportAccountFinancialReport(models.Model):
 
         return options
 
+    def _set_context(self, options):
+        ctx = super(ReportAccountFinancialReport, self)._set_context(options)
+        ctx['model'] = self._name
+        return ctx
+
     # -------------------------------------------------------------------------
     # HELPERS
     # -------------------------------------------------------------------------

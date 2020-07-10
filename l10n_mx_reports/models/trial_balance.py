@@ -397,3 +397,8 @@ class MxReportAccountTrial(models.AbstractModel):
         params = [
             l.get('id') for l in lines if l.get('parent_id') in params]
         return self._get_accounts_journal_items(params, lines)
+
+    def _set_context(self, options):
+        ctx = super(MxReportAccountTrial, self)._set_context(options)
+        ctx['model'] = self._name
+        return ctx

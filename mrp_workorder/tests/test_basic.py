@@ -390,19 +390,18 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
 
         self.env['stock.move'].search([('product_id', 'in', [product_bolt.id, product_screw.id])])._do_unreserve()
 
-        production_table_form = Form(self.env['mrp.production'])
-        production_table_form.product_id = dining_table
-        production_table_form.bom_id = mrp_bom_desk
-        production_table_form.product_qty = 1.0
-        production_table_form.product_uom_id = dining_table.uom_id
-        production_table = production_table_form.save()
-
         # Set tracking lot on finish and consume products.
         dining_table.tracking = 'lot'
         product_table_sheet.tracking = 'lot'
         product_table_leg.tracking = 'lot'
         product_bolt.tracking = "lot"
 
+        production_table_form = Form(self.env['mrp.production'])
+        production_table_form.product_id = dining_table
+        production_table_form.bom_id = mrp_bom_desk
+        production_table_form.product_qty = 1.0
+        production_table_form.product_uom_id = dining_table.uom_id
+        production_table = production_table_form.save()
         production_table.action_confirm()
 
         # Initial inventory of product sheet, lags and bolt
@@ -458,6 +457,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         finished_lot = self.env['stock.production.lot'].create({'product_id': production_table.product_id.id, 'company_id': self.env.company.id})
         workorder.write({'finished_lot_id': finished_lot.id})
         workorder.button_start()
+        workorder.qty_producing = 1.0
         for quality_check in workorder.check_ids:
             if quality_check.component_id.id == product_bolt.id:
                 workorder.write({'lot_id': lot_bolt.id, 'qty_done': 1})

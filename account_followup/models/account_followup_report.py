@@ -302,7 +302,8 @@ class AccountFollowupReport(models.AbstractModel):
         non_printed_invoices = non_blocked_invoices.filtered(lambda inv: not inv.message_main_attachment_id)
         if non_printed_invoices and partner.followup_level.join_invoices:
             raise UserError(_('You are trying to send a followup report to a partner for which you didn\'t print all the invoices ({})').format(" ".join(non_printed_invoices.mapped('name'))))
-        email = self.env['res.partner'].browse(partner.address_get(['invoice'])['invoice']).email
+        invoice_partner = self.env['res.partner'].browse(partner.address_get(['invoice'])['invoice'])
+        email = invoice_partner.email
         options['keep_summary'] = True
         if email and email.strip():
             # When printing we need te replace the \n of the summary by <br /> tags
@@ -314,7 +315,7 @@ class AccountFollowupReport(models.AbstractModel):
                 replaced_msg = body_html[start_index:end_index].replace(b'\n', b'')
                 body_html = body_html[:start_index] + replaced_msg + body_html[end_index:]
             partner.with_context(mail_post_autofollow=True).message_post(
-                partner_ids=[partner.id],
+                partner_ids=[invoice_partner.id],
                 body=body_html,
                 subject=_('%s Payment Reminder') % (self.env.company.name) + ' - ' + partner.name,
                 subtype_id=self.env.ref('mail.mt_note').id,

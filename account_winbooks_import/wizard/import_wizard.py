@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import ast
 import base64
 import collections
 import io
@@ -188,22 +187,22 @@ class WinbooksImportWizard(models.TransientModel):
         ResCurrency = self.env['res.currency']
         AccountGroup = self.env['account.group']
         account_types = [
-            {'min': 100000, 'max': 160000, 'id': 'account.data_account_type_equity'},
-            {'min': 160000, 'max': 200000, 'id': 'account.data_account_type_non_current_liabilities'},
-            {'min': 200000, 'max': 280000, 'id': 'account.data_account_type_non_current_assets'},
-            {'min': 280000, 'max': 290000, 'id': 'account.data_account_type_fixed_assets'},
-            {'min': 290000, 'max': 400000, 'id': 'account.data_account_type_current_assets'},
-            {'min': 400000, 'max': 401000, 'id': 'account.data_account_type_receivable', 'reconcile': True},
-            {'min': 401000, 'max': 420000, 'id': 'account.data_account_type_current_assets'},
-            {'min': 420000, 'max': 440000, 'id': 'account.data_account_type_current_liabilities'},
-            {'min': 440000, 'max': 441000, 'id': 'account.data_account_type_payable', 'reconcile': True},
-            {'min': 441000, 'max': 490000, 'id': 'account.data_account_type_current_liabilities'},
-            {'min': 490000, 'max': 492000, 'id': 'account.data_account_type_current_assets'},
-            {'min': 492000, 'max': 500000, 'id': 'account.data_account_type_current_liabilities'},
-            {'min': 500000, 'max': 600000, 'id': 'account.data_account_type_liquidity'},
-            {'min': 600000, 'max': 700000, 'id': 'account.data_account_type_expenses'},
-            {'min': 700000, 'max': 822000, 'id': 'account.data_account_type_revenue'},
-            {'min': 822000, 'max': 860000, 'id': 'account.data_account_type_expenses'},
+            {'min': 100, 'max': 160, 'id': 'account.data_account_type_equity'},
+            {'min': 160, 'max': 200, 'id': 'account.data_account_type_non_current_liabilities'},
+            {'min': 200, 'max': 280, 'id': 'account.data_account_type_non_current_assets'},
+            {'min': 280, 'max': 290, 'id': 'account.data_account_type_fixed_assets'},
+            {'min': 290, 'max': 400, 'id': 'account.data_account_type_current_assets'},
+            {'min': 400, 'max': 401, 'id': 'account.data_account_type_receivable', 'reconcile': True},
+            {'min': 401, 'max': 420, 'id': 'account.data_account_type_current_assets'},
+            {'min': 420, 'max': 440, 'id': 'account.data_account_type_current_liabilities'},
+            {'min': 440, 'max': 441, 'id': 'account.data_account_type_payable', 'reconcile': True},
+            {'min': 441, 'max': 490, 'id': 'account.data_account_type_current_liabilities'},
+            {'min': 490, 'max': 492, 'id': 'account.data_account_type_current_assets'},
+            {'min': 492, 'max': 500, 'id': 'account.data_account_type_current_liabilities'},
+            {'min': 500, 'max': 600, 'id': 'account.data_account_type_liquidity'},
+            {'min': 600, 'max': 700, 'id': 'account.data_account_type_expenses'},
+            {'min': 700, 'max': 822, 'id': 'account.data_account_type_revenue'},
+            {'min': 822, 'max': 860, 'id': 'account.data_account_type_expenses'},
         ]
         for file_name in files:
             for rec in DBF(join(file_dir, file_name), encoding='latin').records:
@@ -232,7 +231,11 @@ class WinbooksImportWizard(models.TransientModel):
                         }
                         if rec.get('VATCODE'):
                             account_tax[rec.get('NUMBER')] = rec.get('VATCODE')
-                        account_code = ast.literal_eval(rec.get('NUMBER'))
+                        try:
+                            account_code = int(rec.get('NUMBER')[:3])
+                        except Exception:
+                            _logger.warning(_('%s is not a valid account number for %s.') % (rec.get('NUMBER'), rec.get('NAME11')))
+                            account_code = 300  # set Current Asset by default for deprecated accounts
                         for account_type in account_types:
                             if account_code in range(account_type['min'], account_type['max']):
                                 data.update({

@@ -4,6 +4,8 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
     const PivotView = require("web.PivotView");
     const testUtils = require("web.test_utils");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
+    const CancelledReason = require('documents_spreadsheet.CancelledReason');
+    const { Model } = spreadsheet;
     const toCartesian = spreadsheet.helpers.toCartesian;
 
     const createView = testUtils.createView;
@@ -17,12 +19,31 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
         return model.getters.getCell(...toCartesian(xc)).content;
     }
 
-    function mockRPCFn (route, args) {
+    function mockRPCFn(route, args) {
         if (args.method === "search_read" && args.model === "ir.model") {
             return Promise.resolve([{ name: "partner" }]);
         }
         return this._super.apply(this, arguments);
     }
+
+    const LAST_YEAR_FILTER = {
+        filter: {
+            id: "42",
+            type: "date",
+            label: "Last Year",
+            defaultValue: { year: "last_year" },
+            fields: { 1: { field: "date", type: "date" } },
+        }
+    };
+
+    const THIS_YEAR_FILTER = {
+        filter: {
+            type: "date",
+            label: "This Year",
+            defaultValue: { year: "this_year" },
+            fields: { 1: { field: "date", type: "date" } },
+        }
+    };
 
     QUnit.module(
         "Spreadsheet",
@@ -38,6 +59,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                                 group_operator: "sum",
                             },
                             bar: { string: "bar", type: "boolean", store: true, sortable: true },
+                            name: { string: "name", type: "char", store: true, sortable: true },
                             date: { string: "Date", type: "date", store: true, sortable: true },
                             product_id: {
                                 string: "Product",
@@ -123,15 +145,15 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 });
                 const data = await pivot._getSpreadsheetData();
                 const spreadsheetData = JSON.parse(data);
-                const cells = spreadsheetData["sheets"][0]["cells"];
+                const cells = spreadsheetData.sheets[0].cells;
                 assert.strictEqual(Object.keys(cells).length, 5);
-                assert.strictEqual(cells["A1"].content, "");
-                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1")');
-                assert.strictEqual(cells["B1"].content, '=PIVOT.HEADER("1")');
-                assert.strictEqual(cells["B2"].content, '=PIVOT.HEADER("1","measure","foo")');
-                assert.strictEqual(cells["B3"].content, '=PIVOT("1","foo")');
-                assert.strictEqual(cells["B3"].format, "#,##0.00");
-                assert.strictEqual(spreadsheetData["sheets"][0]["merges"][0], "A1:A2");
+                assert.strictEqual(cells.A1.content, "");
+                assert.strictEqual(cells.A3.content, '=PIVOT.HEADER("1")');
+                assert.strictEqual(cells.B1.content, '=PIVOT.HEADER("1")');
+                assert.strictEqual(cells.B2.content, '=PIVOT.HEADER("1","measure","foo")');
+                assert.strictEqual(cells.B3.content, '=PIVOT("1","foo")');
+                assert.strictEqual(cells.B3.format, "#,##0.00");
+                assert.strictEqual(spreadsheetData.sheets[0].merges[0], "A1:A2");
                 pivot.destroy();
             });
 
@@ -174,19 +196,19 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 });
                 const data = await pivot._getSpreadsheetData();
                 const spreadsheetData = JSON.parse(data);
-                const cells = spreadsheetData["sheets"][0]["cells"];
+                const cells = spreadsheetData.sheets[0].cells;
                 assert.strictEqual(Object.keys(cells).length, 8);
-                assert.strictEqual(cells["B1"].content, '=PIVOT.HEADER("1")');
-                assert.strictEqual(cells["B2"].content, '=PIVOT.HEADER("1","measure","foo")');
+                assert.strictEqual(cells.B1.content, '=PIVOT.HEADER("1")');
+                assert.strictEqual(cells.B2.content, '=PIVOT.HEADER("1","measure","foo")');
                 assert.strictEqual(
-                    cells["C2"].content,
+                    cells.C2.content,
                     '=PIVOT.HEADER("1","measure","probability")'
                 );
-                assert.strictEqual(cells["B3"].content, '=PIVOT("1","foo")');
-                assert.strictEqual(cells["B3"].format, "#,##0.00");
-                assert.strictEqual(cells["C3"].content, '=PIVOT("1","probability")');
-                assert.strictEqual(cells["C3"].format, "#,##0.00");
-                const merges = spreadsheetData["sheets"][0]["merges"];
+                assert.strictEqual(cells.B3.content, '=PIVOT("1","foo")');
+                assert.strictEqual(cells.B3.format, "#,##0.00");
+                assert.strictEqual(cells.C3.content, '=PIVOT("1","probability")');
+                assert.strictEqual(cells.C3.format, "#,##0.00");
+                const merges = spreadsheetData.sheets[0].merges;
                 assert.strictEqual(merges.length, 2);
                 assert.strictEqual(merges[0], "A1:A2");
                 assert.strictEqual(merges[1], "B1:C1");
@@ -210,21 +232,21 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 });
                 const data = await pivot._getSpreadsheetData();
                 const spreadsheetData = JSON.parse(data);
-                const cells = spreadsheetData["sheets"][0]["cells"];
+                const cells = spreadsheetData.sheets[0].cells;
                 assert.strictEqual(Object.keys(cells).length, 29);
-                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1","bar","false")');
-                assert.strictEqual(cells["A4"].content, '=PIVOT.HEADER("1","bar","true")');
-                assert.strictEqual(cells["A5"].content, '=PIVOT.HEADER("1")');
+                assert.strictEqual(cells.A3.content, '=PIVOT.HEADER("1","bar","false")');
+                assert.strictEqual(cells.A4.content, '=PIVOT.HEADER("1","bar","true")');
+                assert.strictEqual(cells.A5.content, '=PIVOT.HEADER("1")');
                 assert.strictEqual(
-                    cells["B2"].content,
+                    cells.B2.content,
                     '=PIVOT.HEADER("1","foo","1","measure","probability")'
                 );
                 assert.strictEqual(
-                    cells["C3"].content,
+                    cells.C3.content,
                     '=PIVOT("1","probability","bar","false","foo","2")'
                 );
-                assert.strictEqual(cells["F5"].content, '=PIVOT("1","probability")');
-                const merges = spreadsheetData["sheets"][0]["merges"];
+                assert.strictEqual(cells.F5.content, '=PIVOT("1","probability")');
+                const merges = spreadsheetData.sheets[0].merges;
                 assert.strictEqual(merges.length, 1);
                 assert.strictEqual(merges[0], "A1:A2");
                 pivot.destroy();
@@ -252,13 +274,13 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const spreadsheetData = JSON.parse(data);
                 const cells = spreadsheetData["sheets"][0]["cells"];
                 assert.strictEqual(Object.keys(cells).length, 17);
-                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1","bar","false")');
-                assert.strictEqual(cells["A3"].style, 3);
+                assert.strictEqual(cells.A3.content, '=PIVOT.HEADER("1","bar","false")');
+                assert.strictEqual(cells.A3.style, 3);
                 assert.strictEqual(
                     cells["A4"].content,
                     '=PIVOT.HEADER("1","bar","false","product_id","37")'
                 );
-                assert.strictEqual(cells["A4"].style, 2);
+                assert.strictEqual(cells.A4.style, 2);
                 assert.strictEqual(
                     cells["A5"].content,
                     '=PIVOT.HEADER("1","bar","false","product_id","41")'
@@ -419,10 +441,10 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 await testUtils.pivot.clickMeasure(pivot, "__count");
                 const data = await pivot._getSpreadsheetData();
                 const spreadsheetData = JSON.parse(data);
-                const cells = spreadsheetData["sheets"][0]["cells"];
+                const cells = spreadsheetData.sheets[0].cells;
                 assert.strictEqual(Object.keys(cells).length, 8);
-                assert.strictEqual(cells["C2"].content, '=PIVOT.HEADER("1","measure","__count")');
-                assert.strictEqual(cells["C3"].content, '=PIVOT("1","__count")');
+                assert.strictEqual(cells.C2.content, '=PIVOT.HEADER("1","measure","__count")');
+                assert.strictEqual(cells.C3.content, '=PIVOT("1","__count")');
                 pivot.destroy();
             });
 
@@ -489,7 +511,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                         }
                         return this._super.apply(this, arguments);
                     },
-                    session: { async user_has_group() { return true }},
+                    session: { user_has_group: async () => true },
                 });
                 await testUtils.nextTick();
                 await testUtils.dom.click(pivot.$el.find(".o_pivot_add_spreadsheet"));
@@ -529,7 +551,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                         }
                         return this._super.apply(this, arguments);
                     },
-                    session: { async user_has_group() { return true }},
+                    session: { user_has_group: async () => true },
                 });
                 await testUtils.nextTick();
                 await testUtils.dom.click(pivot.$el.find(".o_pivot_add_spreadsheet"));
@@ -838,7 +860,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                         <field name="foo" type="measure"/>
                     </pivot>`,
                     mockRPC: mockRPCFn,
-                    session: { async user_has_group() { return true }},
+                    session: { user_has_group: async () => true },
                 });
                 await testUtils.pivot.toggleMeasuresDropdown(pivot);
                 await testUtils.pivot.clickMeasure(pivot, 'foo');
@@ -860,11 +882,509 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                         <field name="foo" type="measure"/>
                     </pivot>`,
                     mockRPC: mockRPCFn,
-                    session: { async user_has_group() { return true }},
+                    session: { user_has_group: async () => true },
                 });
                 assert.ok(document.body.querySelector("button.o_pivot_add_spreadsheet").disabled);
                 pivot.destroy();
             });
+
+            QUnit.test("Can add a global filter", async function (assert) {
+                assert.expect(4);
+                const pivotCtrl = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivotCtrl._getSpreadsheetModel();
+                assert.equal(model.getters.getGlobalFilters().length, 0);
+                const [ pivot ] = model.getters.getPivots();
+                model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+                assert.equal(model.getters.getGlobalFilters().length, 1);
+                assert.equal(pivot.computedDomain.length, 3);
+                assert.equal(pivot.computedDomain[0], "&");
+                pivotCtrl.destroy();
+            });
+
+            QUnit.test("Can delete a global filter", async function (assert) {
+                assert.expect(4);
+                const pivotCtrl = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivotCtrl._getSpreadsheetModel();
+                assert.deepEqual(model.dispatch("REMOVE_PIVOT_FILTER", { id: 1 }), { status: "CANCELLED", reason: CancelledReason.FilterNotFound });
+                model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+                const gf = model.getters.getGlobalFilters()[0];
+                assert.deepEqual(model.dispatch("REMOVE_PIVOT_FILTER", { id: gf.id }), { status: "SUCCESS" });
+                assert.equal(model.getters.getGlobalFilters().length, 0);
+                const [ pivot ] = model.getters.getPivots();
+                assert.equal(pivot.computedDomain.length, 0);
+                pivotCtrl.destroy();
+            });
+
+            QUnit.test("Can edit a global filter", async function (assert) {
+                assert.expect(4);
+                const pivotCtrl = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivotCtrl._getSpreadsheetModel();
+                const gfDef = Object.assign({}, THIS_YEAR_FILTER, { id: 1 });
+                assert.deepEqual(model.dispatch("EDIT_PIVOT_FILTER", gfDef), { status: "CANCELLED", reason: CancelledReason.FilterNotFound });
+                model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+                const gf = model.getters.getGlobalFilters()[0];
+                gfDef.id = gf.id;
+                assert.deepEqual(model.dispatch("EDIT_PIVOT_FILTER", gfDef), { status: "SUCCESS" });
+                assert.equal(model.getters.getGlobalFilters().length, 1);
+                assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue.year, "this_year");
+                pivotCtrl.destroy();
+            });
+
+            QUnit.test("Cannot have duplicated names", async function (assert) {
+                assert.expect(6);
+                const pivotCtrl = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivotCtrl._getSpreadsheetModel();
+                const filter = Object.assign({}, THIS_YEAR_FILTER.filter, { label: "Hello" });
+                model.dispatch("ADD_PIVOT_FILTER", { filter });
+                assert.equal(model.getters.getGlobalFilters().length, 1);
+
+                // Add filter with same name
+                let result = model.dispatch("ADD_PIVOT_FILTER", Object.assign({ id: "456" }, { filter }));
+                assert.deepEqual(result, { status: "CANCELLED", reason: CancelledReason.DuplicatedFilterLabel });
+                assert.equal(model.getters.getGlobalFilters().length, 1);
+
+                // Edit to set same name as other filter
+                model.dispatch("ADD_PIVOT_FILTER", { filter: Object.assign({ id: "789" }, filter, { label: "Other name" }) });
+                assert.equal(model.getters.getGlobalFilters().length, 2);
+                result = model.dispatch("EDIT_PIVOT_FILTER", {id: "789", filter: Object.assign({}, filter, { label: "Hello" }) });
+                assert.deepEqual(result, { status: "CANCELLED", reason: CancelledReason.DuplicatedFilterLabel });
+
+                // Edit to set same name
+                result = model.dispatch("EDIT_PIVOT_FILTER", {id: "789", filter: Object.assign({}, filter, { label: "Other name" }) });
+                assert.deepEqual(result, { status: "SUCCESS" });
+
+                pivotCtrl.destroy();
+            });
+
+            QUnit.test("Can save a value to an existing global filter", async function (assert) {
+                assert.expect(7);
+                const pivotCtrl = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivotCtrl._getSpreadsheetModel();
+                model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+                const gf = model.getters.getGlobalFilters()[0];
+                assert.deepEqual(model.dispatch("SET_PIVOT_FILTER_VALUE", { id: gf.id, value: { period: "last_month" } }), { status: "SUCCESS" });
+                assert.equal(model.getters.getGlobalFilters().length, 1);
+                assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue.year, "last_year");
+                assert.deepEqual(model.getters.getGlobalFilters()[0].value.period, "last_month");
+                assert.deepEqual(model.dispatch("SET_PIVOT_FILTER_VALUE", { id: gf.id, value: { period: "this_month" } }), { status: "SUCCESS" });
+                assert.deepEqual(model.getters.getGlobalFilters()[0].value.period, "this_month");
+                const [ pivot ] = model.getters.getPivots();
+                assert.equal(pivot.computedDomain.length, 3);
+                pivotCtrl.destroy();
+            });
+
+            QUnit.test("Can export/import filters", async function (assert) {
+                assert.expect(4);
+                const pivotCtrl = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivotCtrl._getSpreadsheetModel();
+                model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+                const newModel = new Model(model.exportData(), {
+                    evalContext: {
+                        env: {
+                            services: {
+                                rpc: () => [],
+                            },
+                        },
+                    },
+                });
+                assert.equal(newModel.getters.getGlobalFilters().length, 1);
+                const [filter] = newModel.getters.getGlobalFilters();
+                assert.deepEqual(filter.defaultValue.year, "last_year");
+                assert.deepEqual(filter.value.year, "last_year", "it should have applied the default value");
+
+                const [ pivot ] = newModel.getters.getPivots();
+                assert.equal(pivot.computedDomain.length, 3, "it should have updated the pivot domain");
+                pivotCtrl.destroy();
+            });
+
+            QUnit.skip("It only loads pivot cache once", async function (assert) {
+                assert.expect(7);
+                const pivotCtrl = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivotCtrl._getSpreadsheetModel();
+                model.dispatch("ADD_PIVOT_FILTER", LAST_YEAR_FILTER);
+                const newModel = new Model(model.exportData(), {
+                    evalContext: {
+                        env: {
+                            services: {
+                                rpc: (params) => {
+                                    if (params.method === "read_group") {
+                                        assert.step("load_cache")
+                                        assert.equal(params.domain.length, 3, "it should have the filter domain")
+                                    }
+                                    return []
+                                },
+                            },
+                        },
+                    },
+                });
+                assert.equal(newModel.getters.getGlobalFilters().length, 1);
+                assert.equal(pivot.computedDomain.length, 3, "it should have updated the pivot domain");
+                assert.verifySteps(["load_cache"])
+                pivotCtrl.destroy();
+            });
+
+            QUnit.test("Get active filters with multiple filters", async function (assert) {
+                assert.expect(2);
+                const model = new Model();
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "42",
+                        type: "text",
+                        label: "Text Filter",
+                    },
+                });
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "43",
+                        type: "date",
+                        label: "Date Filter",
+                        rangeType: "quarter",
+                    },
+                });
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "44",
+                        type: "relation",
+                        label: "Relation Filter",
+                    },
+                });
+                const [text, date, relation] = model.getters.getGlobalFilters();
+                assert.equal(model.getters.getActiveFilterCount(), false);
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: text.id,
+                    value: "Hello",
+                });
+                assert.equal(model.getters.getActiveFilterCount(), true);
+            });
+
+            QUnit.test("Get active filters with text filter enabled", async function (assert) {
+                assert.expect(2);
+                const model = new Model();
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "42",
+                        type: "text",
+                        label: "Text Filter",
+                    },
+                });
+                const [filter] = model.getters.getGlobalFilters();
+                assert.equal(model.getters.getActiveFilterCount(), false);
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    value: "Hello",
+                });
+                assert.equal(model.getters.getActiveFilterCount(), true);
+            });
+
+            QUnit.test("Get active filters with relation filter enabled", async function (assert) {
+                assert.expect(2);
+                const model = new Model();
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "42",
+                        type: "relation",
+                        label: "Relation Filter",
+                    },
+                });
+                const [filter] = model.getters.getGlobalFilters();
+                assert.equal(model.getters.getActiveFilterCount(), false);
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    value: [1],
+                });
+                assert.equal(model.getters.getActiveFilterCount(), true);
+            });
+
+            QUnit.test("Get active filters with date filter enabled", async function (assert) {
+                assert.expect(4);
+                const model = new Model();
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "42",
+                        type: "date",
+                        label: "Date Filter",
+                        rangeType: "quarter",
+                    },
+                });
+                const [filter] = model.getters.getGlobalFilters();
+                assert.equal(model.getters.getActiveFilterCount(), false);
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    value: {
+                        year: "this_year",
+                        period: undefined,
+                    },
+                });
+                assert.equal(model.getters.getActiveFilterCount(), true);
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    value: {
+                        year: undefined,
+                        period: "first_quarter",
+                    },
+                });
+                assert.equal(model.getters.getActiveFilterCount(), true);
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    value: {
+                        year: "this_year",
+                        period: "first_quarter",
+                    },
+                });
+                assert.equal(model.getters.getActiveFilterCount(), true);
+            });
+
+            QUnit.test("FILTER.VALUE text filter", async function (assert) {
+                assert.expect(3);
+                const model = new Model();
+                model.dispatch("SET_VALUE", { xc: "A10", text: `=FILTER.VALUE("Text Filter")` });
+                await testUtils.nextTick();
+                assert.equal(model.getters.getCell(0, 9).value, "#ERROR");
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "42",
+                        type: "text",
+                        label: "Text Filter",
+                        fields: {
+                            1: {
+                                field: "name",
+                                type: "char",
+                            },
+                        },
+                    },
+                });
+                await testUtils.nextTick();
+                assert.equal(model.getters.getCell(0, 9).value, "");
+                const [filter] = model.getters.getGlobalFilters();
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    value: "Hello",
+                });
+                await testUtils.nextTick();
+                assert.equal(model.getters.getCell(0, 9).value, "Hello");
+            });
+
+            QUnit.test("FILTER.VALUE date filter", async function (assert) {
+                assert.expect(2);
+                const model = new Model();
+                model.dispatch("SET_VALUE", { xc: "A10", text: `=FILTER.VALUE("Date Filter")` });
+                await testUtils.nextTick();
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "42",
+                        type: "date",
+                        label: "Date Filter",
+                        fields: {
+                            1: {
+                                field: "name",
+                                type: "char",
+                            },
+                        },
+                    },
+                });
+                await testUtils.nextTick();
+                const [filter] = model.getters.getGlobalFilters();
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    rangeType: "quarter",
+                    value: {
+                        year: "this_year",
+                        period: "first_quarter",
+                    },
+                });
+                await testUtils.nextTick();
+                assert.equal(model.getters.getCell(0, 9).value, `Q1 ${moment().year()}`);
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    rangeType: "year",
+                    value: {
+                        year: "this_year",
+                    },
+                });
+                await testUtils.nextTick();
+                assert.equal(model.getters.getCell(0, 9).value, `${moment().year()}`);
+            });
+
+            QUnit.test("FILTER.VALUE relation filter", async function (assert) {
+                assert.expect(6);
+                const model = new Model(
+                    {},
+                    {
+                        evalContext: {
+                            env: {
+                                services: {
+                                    rpc: async (params) => {
+                                        const resId = params.args[0][0]
+                                        assert.step(`name_get_${resId}`)
+                                        return resId === 1
+                                            ? [[1, "Jean-Jacques"]]
+                                            : [[2, "Raoul Grosbedon"]]
+                                    }
+                                },
+                            },
+                        },
+                    }
+                );
+                model.dispatch("SET_VALUE", {
+                    xc: "A10",
+                    text: `=FILTER.VALUE("Relation Filter")`,
+                });
+                await testUtils.nextTick();
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "42",
+                        type: "relation",
+                        label: "Relation Filter",
+                        modelName: "partner",
+                    },
+                });
+                await testUtils.nextTick();
+                const [filter] = model.getters.getGlobalFilters();
+
+                // One record; displayNames not defined => rpc
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    value: [1],
+                });
+                await testUtils.nextTick();
+                assert.equal(model.getters.getCell(0, 9).value, "Jean-Jacques");
+
+                // Two records; displayNames defined => no rpc
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    value: [1, 2],
+                    displayNames: ["Jean-Jacques", "Raoul Grosbedon"],
+                });
+                await testUtils.nextTick();
+                assert.equal(model.getters.getCell(0, 9).value, "Jean-Jacques, Raoul Grosbedon");
+
+                // another record; displayNames not defined => rpc
+                model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                    id: filter.id,
+                    value: [2],
+                });
+                await testUtils.nextTick();
+                assert.equal(model.getters.getCell(0, 9).value, "Raoul Grosbedon");
+                assert.verifySteps(["name_get_1", "name_get_2"]);
+            });
+
+            QUnit.test(
+                "FILTER.VALUE formulas are updated when filter label is changed",
+                async function (assert) {
+                    assert.expect(1);
+                    const model = new Model();
+                    model.dispatch("ADD_PIVOT_FILTER", {
+                        id: "42",
+                        filter: {
+                            type: "date",
+                            label: "Cuillère",
+                            fields: {
+                                1: {
+                                    field: "name",
+                                    type: "char",
+                                },
+                            },
+                        },
+                    });
+                    model.dispatch("SET_VALUE", {
+                        xc: "A10",
+                        text: `=FILTER.VALUE("Cuillère") & FILTER.VALUE( "Cuillère" )`,
+                    });
+                    const [filter] = model.getters.getGlobalFilters();
+                    const newFilter = {
+                        type: "date",
+                        label: "Interprete",
+                        fields: {
+                            1: {
+                                field: "name",
+                                type: "char",
+                            },
+                        },
+                    };
+                    model.dispatch("EDIT_PIVOT_FILTER", { id: filter.id, filter: newFilter });
+                    assert.equal(
+                        model.getters.getCell(0, 9).content,
+                        `=FILTER.VALUE("Interprete") & FILTER.VALUE("Interprete")`
+                    );
+                }
+            );
         }
     );
 });

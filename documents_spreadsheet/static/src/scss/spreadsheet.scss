@@ -1,3 +1,8 @@
+.o-spreadsheet {
+    .fa {
+        font-family: FontAwesome;
+    }
+}
 .o_documents_content {
     .o_document_spreadsheet {
         cursor: zoom-in;
@@ -22,13 +27,22 @@
             height: 100%;
             .o-spreadsheet {
                 height: 100%;
-                .o_spreadsheet_pivot_side_panel {
-                    min-width: 350px;
+                .o_spreadsheet_pivot_side_panel, .o_spreadsheet_filter_editor_side_panel, .o_spreadsheet_global_filters_side_panel {
                     .o_side_panel_section {
+                        background-color: #fff;
+                        min-height: 60px;
                         padding: 10px;
                         .o_side_panel_title {
                             font-weight: bold;
-                            margin-bottom: 2px;
+                        }
+                        .o_field_selector, .o_field_many2manytags, .o_field_many2one {
+                            width: 100%;
+                            &,
+                            *,
+                            *:before,
+                            *:after {
+                                box-sizing: border-box;
+                            }
                         }
                     }
                 }
@@ -43,7 +57,22 @@
                     .o-topbar-toolbar .o-toolbar-tools {
                         margin-left: 16px !important;
                     }
+
+                    .o_topbar_filter_icon {
+                        padding: 3px 6px;
+                        font-size: 20px;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: #ebebeb;
+                        }
+                    }
                 }
+
+                .o_filter_component {
+                    display: flex;
+                }
+
             }
         }
     }
@@ -95,5 +124,77 @@
 .o_control_panel {
     &.o_spreadsheet_cp {
         padding-bottom: 0px;
+    }
+}
+
+.o-sidePanelButtons {
+    .o-sidePanelButton {
+        color: #666;
+    }
+}
+
+.o_spreadsheet_global_filters_side_panel, .o_spreadsheet_filter_editor_side_panel {
+    input {
+        outline: none;
+        width: 100%;
+    }
+
+    .pivot_filter_section {
+        display: flex;
+        flex-direction: row;
+        .pivot_filter {
+            flex-grow: 1;
+
+            .pivot_filter_input {
+                display: flex;
+                flex-direction: row;
+                flex-grow: 1;
+                > div {
+                    width: 100%;
+                }
+                .o_side_panel_filter_icon {
+                    visibility: hidden;
+                    width: 15px;
+                    margin-left: 0.5rem;
+                    padding: 0;
+                    cursor: pointer;
+                }
+            }
+            &:hover{
+                .o_side_panel_filter_icon {
+                    visibility: visible;
+                }
+            }
+        }
+
+    }
+
+    .o_add_filter {
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .o-sidePanelButtons {
+        display: flex;
+        flex-direction: row;
+        .o-sidePanelButton {
+            flex-grow: 1;
+        }
+    }
+
+    .date_filter_values {
+        display: flex;
+        flex-direction: row;
+
+        select:not(:first-child) {
+            margin-left: 10px;
+        }
+    }
+}
+
+.o_spreadsheet_filter_editor_side_panel {
+    .o_global_filter_delete {
+        color: $danger;
+        float: left;
     }
 }

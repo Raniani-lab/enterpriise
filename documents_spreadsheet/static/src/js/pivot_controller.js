@@ -5,14 +5,12 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
     const config = require('web.config');
     const PivotController = require("web.PivotController");
     const session = require("web.session");
-    const PivotPlugin = require("documents_spreadsheet.PivotPlugin");
     const SpreadsheetSelectorDialog = require("documents_spreadsheet.SpreadsheetSelectorDialog");
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
     const _t = core._t;
     const GridModel = spreadsheet.Model;
-    const pluginRegistry = spreadsheet.registries.pluginRegistry;
     const uuidv4 = spreadsheet.helpers.uuidv4;
 
     PivotController.include({
@@ -96,7 +94,6 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
             if (isNewModel) {
                 workbookData = {};
             }
-            pluginRegistry.add("odooPivotPlugin", PivotPlugin);
             const model = new GridModel(workbookData, {
                 mode: "headless",
                 evalContext: { env: this.renderer.env },

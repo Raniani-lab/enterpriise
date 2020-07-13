@@ -16,6 +16,9 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
 
+    const Domain = require('web.Domain');
+    const pyUtils = require('web.py_utils');
+
     const _t = core._t;
     const parse = spreadsheet.parse;
 
@@ -27,7 +30,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
         constructor(workbook, getters, history, dispatch, config) {
             super(workbook, getters, history, dispatch, config);
             this.pivots = {};
-            this.rpc = config.evalContext.env.services.rpc;
+            this.rpc = config.evalContext.env ? config.evalContext.env.services.rpc : undefined;
             this.selectedPivot = undefined;
         }
 
@@ -48,6 +51,9 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                     break;
                 case "INSERT_HEADER":
                     this._insertHeader(cmd.id, cmd.col, cmd.row, cmd.field, cmd.value);
+                    break;
+                case "ADD_PIVOT_DOMAIN":
+                    this._addDomain(cmd.id, cmd.domain, cmd.refresh);
                     break;
             }
         }
@@ -78,7 +84,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                 if (pivot.rowGroupBys.includes(args[1])) {
                     builder = this._autofillPivotRowHeader.bind(this);
                 } else {
-                    builder = this._autofillPivotColHeader.bind(this)
+                    builder = this._autofillPivotColHeader.bind(this);
                 }
             }
             if (builder) {
@@ -126,7 +132,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          * @private
          */
         _addPivot(pivot, anchor) {
-            const pivots = this.getPivots()
+            const pivots = this.getPivots();
             const id = pivots.length ? Math.max(...pivots.map((p) => p.id)) + 1 : 1;
             this.pivots[id] = Object.assign(pivot, { id });
             this._buildPivot(pivot, anchor);
@@ -171,6 +177,41 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             const content = this._buildHeaderFormula([id, field, value]);
             this.dispatch("UPDATE_CELL", { sheet, col, row, content });
         }
+        /**
+         * Update the cache of a pivot object
+         * @param {string} id Id of the pivot to update
+         * @private
+         */
+        _refreshPivotCache(id, { dataOnly = false } = {}) {
+            const pivot = this.pivots[id];
+            pivot.lastUpdate = undefined;
+            pivot.isLoaded = false;
+            if (!this.rpc) {
+                console.warn("Pivot plugin: RPC not defined");
+            }
+            pivotUtils.fetchCache(pivot, this.rpc, { dataOnly }).then(() => {
+                pivot.isLoaded = true;
+            });
+        }
+
+        /**
+         * Add an additional domain to a pivot
+         * @private
+         * @param {string} id pivot id
+         * @param {Array<Array<any>>} domain
+         * @param {boolean} refresh whether the cache should be reloaded or not
+         */
+        _addDomain(id, domain, refresh = true) {
+            const pivot = this.getters.getPivot(id);
+            domain = pyUtils.assembleDomains([
+                Domain.prototype.arrayToString(pivot.domain),
+                Domain.prototype.arrayToString(domain),
+            ], "AND");
+            pivot.computedDomain = pyUtils.eval("domain", domain, {});
+            if (refresh) {
+                this._refreshPivotCache(id, { dataOnly: true });
+            }
+        }
 
         // ---------------------------------------------------------------------
         // Import/Export
@@ -185,8 +226,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             if (data.pivots) {
                 this.pivots = data.pivots;
                 for (let pivot of Object.values(this.pivots)) {
-                    pivot.isLoaded = false;
-                    pivotUtils.fetchCache(pivot, this.rpc).then(() => pivot.isLoaded = true);
+                    this._refreshPivotCache(pivot.id);
                 }
             }
         }
@@ -198,7 +238,8 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
         export(data) {
             data.pivots = JSON.parse(JSON.stringify(this.pivots));
             for (const id in data.pivots) {
-                data.pivots[id].cache = {};
+                data.pivots[id].computedDomain = undefined;
+                data.pivots[id].cache = undefined;
                 data.pivots[id].lastUpdate = undefined;
                 data.pivots[id].isLoaded = false;
             }
@@ -547,7 +588,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _parseArgs(args) {
             const values = {};
-            for (let i = 0; i < args.length; i+=2) {
+            for (let i = 0; i < args.length; i += 2) {
                 values[args[i]] = args[i + 1];
             }
             return values;
@@ -763,7 +804,6 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             // 1) Create the values for all cols and rows
             let col = anchorCol;
             let row = anchorRow;
-            const sheet = this.getters.getActiveSheet();
 
             const length = pivot.cache.getTopHeaderCount() - pivot.measures.length;
 

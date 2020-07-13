@@ -73,6 +73,6 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
             isVisible: (env) => {
                 const cell = env.getters.getActiveCell();
                 return cell && cell.type === "formula" && cell.content.match(/=\s*PIVOT/);
-            },
+            }
         });
 });

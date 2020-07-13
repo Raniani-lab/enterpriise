@@ -14,13 +14,22 @@
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/documents_kanban_controller.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/documents_list_controller.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/pivot_controller.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/widgets/field_selector_widget.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/widgets/model_selector_widget.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/widgets/tag_selector_widget.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_context_menu.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/menu_item_registry.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/components/filter_editor_side_panel.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/components/global_filters_side_panel.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/components/filter_date_value.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/filter_component.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/autofill.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_cache.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/filters_plugin.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/cancelled_reason.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/spreadsheet_selector_dialog.js"/>
 

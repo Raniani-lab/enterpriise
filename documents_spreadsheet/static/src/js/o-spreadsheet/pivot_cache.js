@@ -170,6 +170,14 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
         }
 
         /**
+         * Return all field definitions
+         * @returns {Object}
+         */
+        getFields() {
+            return this._fields;
+        }
+
+        /**
          * Return a field description
          * @param {string} fieldName
          * @returns {Object}

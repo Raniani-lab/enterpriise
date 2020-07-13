@@ -41,35 +41,71 @@
      *
      * @param {Pivot} pivot
      * @param {Function} rpc Rpc function to use
+     * @param {Object} params
+     * @param {boolean} params.dataOnly fetch only read_group data if possible
      */
-    async function createPivotCache(pivot, rpc) {
-        const groupBys = pivot.rowGroupBys.concat(pivot.colGroupBys)
+    async function createPivotCache(pivot, rpc, { dataOnly = false } = {}) {
+        const domain = pivot.computedDomain || pivot.domain;
         const readGroupRPC = rpc({
             model: pivot.model,
             method: "read_group",
             context: pivot.context,
-            domain: pivot.domain,
+            domain,
             fields: pivot.measures.map((elt) =>
                 elt.field === "__count" ? elt.field : elt.field + ":" + elt.operator
             ),
-            groupBy: groupBys,
+            groupBy: pivot.rowGroupBys.concat(pivot.colGroupBys),
             lazy: false,
         });
-        const fieldsGetRPC = rpc({
-            model: pivot.model,
-            method: "fields_get",
-        });
-        const searchReadRPC = rpc({
-            model: "ir.model",
-            method: "search_read",
-            fields: ["name"],
-            domain: [["model", "=", pivot.model]],
-        });
-        const resultFG = await fieldsGetRPC;
+        const fieldsPromise = _fetchFields(rpc, pivot, { forceRefetch: !dataOnly })
+        const modelNamePromise = _fetchModelName(rpc, pivot, { forceRefetch: !dataOnly });
         const resultGB = await readGroupRPC;
-        const resultSR = await searchReadRPC;
-
+        const resultFG = await fieldsPromise;
+        const resultSR = await modelNamePromise;
         pivot.cache = await _createCache(resultGB, resultFG, resultSR, pivot, rpc);
+    }
+
+    /**
+     * Returns all fields descriptions of the pivot model
+     * @param {Function} rpc
+     * @param {Pivot} pivot
+     * @param {Object} params
+     * @param {boolean} params.forceRefetch
+     * @returns {Promise<Array<Object>>}
+     */
+    async function _fetchFields(rpc, pivot, { forceRefetch }) {
+        if (!forceRefetch && pivot.cache) {
+            return pivot.cache.getFields();
+        }
+        else {
+            return rpc({
+                model: pivot.model,
+                method: "fields_get",
+            });
+        }
+    }
+
+    /**
+     * Returns the pivot model display name
+     * @param {Function} rpc
+     * @param {Pivot} pivot
+     * @param {Object} params
+     * @param {boolean} params.forceRefetch
+     * @returns {Promise<string>}
+     */
+    async function _fetchModelName(rpc, pivot, { forceRefetch }) {
+        if (!forceRefetch && pivot.cache) {
+            return pivot.cache.modelName;
+        }
+        else {
+            const result = await rpc({
+                model: "ir.model",
+                method: "search_read",
+                fields: ["name"],
+                domain: [["model", "=", pivot.model]],
+            });
+            return result[0] && result[0].name;
+        }
     }
     /**
      * Fill the cache of the pivot object given
@@ -78,14 +114,14 @@
      * @param {Pivot} pivot Pivot object
      * @param {Function} rpc Rpc function to use
      */
-    async function fetchCache(pivot, rpc) {
+    async function fetchCache(pivot, rpc, { dataOnly = false } = {}) {
         // cache for 1 hour
         if (
             !pivot.lastUpdate ||
             pivot.lastUpdate + 60 * 60 * 1000 < Date.now()
         ) {
             pivot.lastUpdate = Date.now();
-            pivot.promise = createPivotCache(pivot, rpc);
+            pivot.promise = createPivotCache(pivot, rpc,  { dataOnly });
         }
         await pivot.promise;
     }
@@ -198,13 +234,14 @@
      *
      * @param {Object} readGroupResult Result of the read_group rpc
      * @param {Object} fieldsGetResult Result of the fields_get rpc
-     * @param {Object} searchReadResult Result of the search_read rpc
+     * @param {string} modelLabel
      * @param {Pivot} pivot Pivot object
+     * @param {Function} rpc
      *
      * @private
      * @returns {PivotCache} Cache for pivot object
      */
-    async function _createCache(readGroupResult, fieldsGetResult, searchReadResult, pivot, rpc) {
+    async function _createCache(readGroupResult, fieldsGetResult, modelLabel, pivot, rpc) {
         const groupBys = {};
         const labels = {};
         const values = [];
@@ -223,7 +260,11 @@
             value["count"] = readGroup["__count"];
             const index = values.push(value) - 1;
             for (let fieldName of fieldNames) {
-                const { label, id } = _formatValue(fieldName, readGroup[fieldName], fieldsGetResult);
+                const { label, id } = _formatValue(
+                    fieldName,
+                    readGroup[fieldName],
+                    fieldsGetResult
+                );
                 labels[fieldName][id] = label;
                 let groupBy = groupBys[fieldName] || {};
                 let vals = groupBy[id] || [];
@@ -235,11 +276,12 @@
         const orderedValues = await _getOrderedValues(pivot, groupBys, fieldsGetResult, rpc);
         const orderedMeasureIds = {};
         for (const fieldName of fieldNames) {
-            orderedMeasureIds[fieldName] = orderedValues[fieldName].map((value) => [value, groupBys[fieldName][value] || []]);
+            orderedMeasureIds[fieldName] = orderedValues[fieldName]
+                ? orderedValues[fieldName].map((value) => [value, groupBys[fieldName][value] || []])
+                : [];
         }
 
         const measures = pivot.measures.map((m) => m.field);
-        const modelLabel = searchReadResult[0] && searchReadResult[0].name;
         const rows = _createRows(pivot.rowGroupBys, orderedMeasureIds);
         const cols = _createCols(pivot.colGroupBys, orderedMeasureIds, measures);
         const colStructure = pivot.colGroupBys.slice();

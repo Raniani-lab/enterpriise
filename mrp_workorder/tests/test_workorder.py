@@ -319,6 +319,12 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(wo.finished_lot_id, self.sp1, 'The suggested final product is wrong')
         wo.do_finish()
 
+        # Verify the reserved quantity has been split correctly
+        self.assertEqual(mo.move_raw_ids.move_line_ids[1].product_uom_qty, 6.0, 'The reserved quantity is wrong')
+        self.assertEqual(mo.move_raw_ids.move_line_ids[2].product_uom_qty, 6.0, 'The reserved quantity is wrong')
+        self.assertEqual(mo.move_raw_ids.move_line_ids[3].product_uom_qty, 1.0, 'The reserved quantity is wrong')
+        self.assertEqual(mo.move_raw_ids.move_line_ids[4].product_uom_qty, 1.0, 'The reserved quantity is wrong')
+
         mo.button_mark_done()
         self.assertEqual(mo.state, 'done', 'Final state of the MO should be "done"')
 

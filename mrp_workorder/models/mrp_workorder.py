@@ -242,14 +242,14 @@ class MrpProductionWorkcenterLine(models.Model):
                 else:
                     new_qty_reserved = self.move_line_id.product_uom_qty - self.qty_done
                     default = {
-                        'product_uom_qty': self.qty_done,
-                        'qty_done': self.qty_done,
-                        'lot_id': self.lot_id.id,
+                        'product_uom_qty': new_qty_reserved,
+                        'qty_done': 0,
                     }
                     self.move_line_id.copy(default=default)
                     self.move_line_id.with_context(bypass_reservation_update=True).write({
-                        'product_uom_qty': new_qty_reserved,
-                        'qty_done': 0
+                        'product_uom_qty': self.qty_done,
+                        'qty_done': self.qty_done,
+                        'lot_id': self.lot_id.id,
                     })
             else:
                 line = self.env['stock.move.line'].create(self._create_extra_move_lines())

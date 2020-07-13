@@ -641,7 +641,9 @@ class MrpProductionWorkcenterLine(models.Model):
         return action
 
     def do_finish(self):
-        action = self.record_production()
+        action = True
+        if self.state != 'done':
+            action = self.record_production()
         domain = [('state', 'not in', ['done', 'cancel', 'pending'])]
         if action is not True:
             return action

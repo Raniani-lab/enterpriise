@@ -10,7 +10,7 @@ import requests
 class TestWinbooksImport(common.TransactionCase):
 
     def download_test_db(self):
-        url = 'https://www.winbooks.be/wp-content/uploads/2013/02/PARFILUX_2013.04.08.zip'
+        url = 'https://s3.amazonaws.com/winbooks-public/softwares/winbooks-classic-and-virtual-invoice/Tools/PARFILUX_2013.04.08.zip'
         response = requests.get(url, timeout=30)
         response.raise_for_status()
         attachment = self.env['ir.attachment'].create({

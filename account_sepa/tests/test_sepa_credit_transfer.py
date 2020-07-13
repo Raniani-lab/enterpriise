@@ -3,50 +3,54 @@
 import base64
 from lxml import etree
 
-from odoo.addons.account.tests.common import AccountTestCommon
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.modules.module import get_module_resource
 from odoo.tests import tagged
 from odoo.tests.common import Form
 
 
 @tagged('post_install', '-at_install')
-class TestSEPACreditTransfer(AccountTestCommon):
+class TestSEPACreditTransfer(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestSEPACreditTransfer, cls).setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
-        cls.env.user.company_id.country_id = cls.env.ref('base.be')
-        cls.env.user.company_id.vat = "BE0477472701"
+        cls.company_data['company'].write({
+            'country_id': cls.env.ref('base.be').id,
+            'vat': 'BE0477472701',
+        })
 
-        # Get some records
-        cls.asustek_sup = cls.env['res.partner'].create({'name': 'Wood Corner'})
-        cls.supplier = cls.env['res.partner'].create({'name': 'Lambda Supplier'})
         cls.sepa_ct = cls.env.ref('account_sepa.account_payment_method_sepa_ct')
 
         # Create an IBAN bank account and its journal
-        bank = cls.env['res.bank'].create({'name': 'ING', 'bic': 'BBRUBEBB'})
-        cls.bank_journal = cls.env['account.journal'].create({
-            'name': 'BE48363523682327',
-            'type': 'bank',
+        cls.bank_ing = cls.env['res.bank'].create({
+            'name': 'ING',
+            'bic': 'BBRUBEBB',
+        })
+        cls.bank_bnp = cls.env['res.bank'].create({
+            'name': 'BNP Paribas',
+            'bic': 'GEBABEBB',
+        })
+
+        cls.bank_journal = cls.company_data['default_journal_bank']
+        cls.bank_journal.write({
+            'bank_id': cls.bank_ing.id,
             'bank_acc_number': 'BE48363523682327',
-            'bank_id': bank.id,
             'currency_id': cls.env.ref('base.EUR').id,
         })
 
-        cls.bank_bnp = cls.env['res.bank'].create({'name': 'BNP Paribas', 'bic': 'GEBABEBB'})
-
         # Make sure all suppliers have exactly one bank account
-        cls.setSingleBankAccountToPartner(cls.asustek_sup, {
+        cls.env['res.partner.bank'].create({
             'acc_type': 'iban',
-            'partner_id': cls.asustek_sup[0].id,
+            'partner_id': cls.partner_a.id,
             'acc_number': 'BE08429863697813',
             'bank_id': cls.bank_bnp.id,
             'currency_id': cls.env.ref('base.USD').id,
         })
-        cls.setSingleBankAccountToPartner(cls.supplier, {
+        cls.env['res.partner.bank'].create({
             'acc_type': 'bank',
-            'partner_id': cls.supplier.id,
+            'partner_id': cls.partner_b.id,
             'acc_number': '1234567890',
             'bank_name': 'Mock & Co',
         })
@@ -56,31 +60,23 @@ class TestSEPACreditTransfer(AccountTestCommon):
         cls.xmlschema = etree.XMLSchema(etree.parse(open(schema_file_path)))
 
     @classmethod
-    def setSingleBankAccountToPartner(cls, partner_id, bank_account_vals):
-        """ Make sure a partner has exactly one bank account """
-        partner_id.bank_ids.unlink()
-        return cls.env['res.partner.bank'].create(bank_account_vals)
-
-    @classmethod
     def createPayment(cls, partner, amount):
         """ Create a SEPA credit transfer payment """
         return cls.env['account.payment'].create({
-            'journal_id': cls.bank_journal.id,
-            'partner_bank_id': partner.bank_ids[0].id,
+            'journal_id': cls.company_data['default_journal_bank'].id,
             'payment_method_id': cls.sepa_ct.id,
             'payment_type': 'outbound',
             'date': '2015-04-28',
             'amount': amount,
-            'currency_id': cls.env.ref("base.EUR").id,
             'partner_id': partner.id,
             'partner_type': 'supplier',
         })
 
     def testStandardSEPA(self):
         for bic in ["BBRUBEBB", False]:
-            payment_1 = self.createPayment(self.asustek_sup, 500)
+            payment_1 = self.createPayment(self.partner_a, 500)
             payment_1.action_post()
-            payment_2 = self.createPayment(self.asustek_sup, 600)
+            payment_2 = self.createPayment(self.partner_a, 600)
             payment_2.action_post()
 
             self.bank_journal.bank_id.bic = bic
@@ -105,9 +101,9 @@ class TestSEPACreditTransfer(AccountTestCommon):
 
     def testGenericSEPA(self):
         for bic in ["BBRUBEBB", False]:
-            payment_1 = self.createPayment(self.supplier, 500)
+            payment_1 = self.createPayment(self.partner_b, 500)
             payment_1.action_post()
-            payment_2 = self.createPayment(self.supplier, 700)
+            payment_2 = self.createPayment(self.partner_b, 700)
             payment_2.action_post()
 
             self.bank_journal.bank_id.bic = bic

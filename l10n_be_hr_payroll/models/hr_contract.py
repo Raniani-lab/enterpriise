@@ -196,15 +196,15 @@ class HrContract(models.Model):
         calendar = self.resource_calendar_id
         standard_calendar = self.standard_calendar_id
 
-        standard_attendances = standard_calendar._work_intervals(
+        standard_attendances = standard_calendar._work_intervals_batch(
             pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
             pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-            resource=resource)
+            resources=resource)[resource.id]
 
-        attendances = calendar._work_intervals(
+        attendances = calendar._work_intervals_batch(
             pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
             pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-            resource=resource)
+            resources=resource)[resource.id]
 
         credit_time_intervals = standard_attendances - attendances
 

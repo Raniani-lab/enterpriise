@@ -60,8 +60,9 @@ class Employee(models.Model):
         datetime_min = datetime.combine(fields.Date.from_string(date_start), time.min)
         datetime_max = datetime.combine(fields.Date.from_string(date_stop), time.max)
 
+        employees_work_days_data = employees._get_work_days_data_batch(datetime_min, datetime_max, compute_leaves=False)
         for employee in employees:
-            working_hours = employee._get_work_days_data(datetime_min, datetime_max, compute_leaves=False)['hours']
+            working_hours = employees_work_days_data[employee.id]['hours']
             result[employee.id]['working_hours'] = float_round(working_hours, 2)
         return result
 

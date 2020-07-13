@@ -57,7 +57,10 @@ class HrWorkEntry(models.Model):
             calendar = self.contract_id.resource_calendar_id
             if not calendar:
                 return 0
-            contract_data = self.contract_id.employee_id._get_work_days_data(date_start, date_stop, compute_leaves=False, calendar=calendar)
+            employee = self.contract_id.employee_id
+            contract_data = employee._get_work_days_data_batch(
+                date_start, date_stop, compute_leaves=False, calendar=calendar
+            )[employee.id]
             return contract_data.get('hours', 0)
         return super()._get_duration(date_start, date_stop)
 
@@ -107,7 +110,7 @@ class HrWorkEntry(models.Model):
             datetime_start = min(entries.mapped('date_start'))
             datetime_stop = max(entries.mapped('date_stop'))
 
-            calendar_intervals = calendar._attendance_intervals(pytz.utc.localize(datetime_start), pytz.utc.localize(datetime_stop))
+            calendar_intervals = calendar._attendance_intervals_batch(pytz.utc.localize(datetime_start), pytz.utc.localize(datetime_stop))[False]
             entries_intervals = entries._to_intervals()
             overlapping_entries = self._from_intervals(entries_intervals & calendar_intervals)
             outside_entries |= entries - overlapping_entries

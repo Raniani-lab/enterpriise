@@ -173,7 +173,7 @@ class Planning(models.Model):
                     slot.allocated_percentage = 100 * slot.allocated_hours / slot._get_slot_duration()
                 else:
                     if slot.employee_id:
-                        work_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours']
+                        work_hours = slot.employee_id._get_work_days_data_batch(slot.start_datetime, slot.end_datetime, compute_leaves=True)[slot.employee_id.id]['hours']
                         slot.allocated_percentage = 100 * slot.allocated_hours / work_hours if work_hours else 100
                     else:
                         slot.allocated_percentage = 100
@@ -200,7 +200,9 @@ class Planning(models.Model):
     def _compute_working_days_count(self):
         for slot in self:
             if slot.employee_id:
-                slot.working_days_count = ceil(slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['days'])
+                slot.working_days_count = ceil(slot.employee_id._get_work_days_data_batch(
+                    slot.start_datetime, slot.end_datetime, compute_leaves=True
+                )[slot.employee_id.id]['days'])
             else:
                 slot.working_days_count = 0
 
@@ -598,7 +600,7 @@ class Planning(models.Model):
         dfrom = datetime.combine(fields.Date.from_string(date_from), time.min).replace(tzinfo=pytz.utc)
         dto = datetime.combine(fields.Date.from_string(date_to), time.max).replace(tzinfo=pytz.utc)
 
-        works = {d[0].date() for d in calendar._work_intervals(dfrom, dto, employee.resource_id)}
+        works = {d[0].date() for d in calendar._work_intervals_batch(dfrom, dto, employee.resource_id)[employee.resource_id.id]}
         return {fields.Date.to_string(day.date()): (day.date() not in works) for day in rrule(DAILY, dfrom, until=dto)}
 
 

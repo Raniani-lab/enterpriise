@@ -194,7 +194,7 @@ class HrLeave(models.Model):
             contracts = employee.sudo()._get_contracts(date_from, date_to, states=['open'])
             contracts |= employee.sudo()._get_incoming_contracts(date_from, date_to)
             calendar = contracts[:1].resource_calendar_id if contracts else None # Note: if len(contracts)>1, the leave creation will crash because of unicity constaint
-            return employee._get_work_days_data(date_from, date_to, calendar=calendar)
+            return employee._get_work_days_data_batch(date_from, date_to, calendar=calendar)[employee.id]
 
         return days
 

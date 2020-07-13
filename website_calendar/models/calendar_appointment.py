@@ -205,9 +205,9 @@ class CalendarAppointmentType(models.Model):
                     workhours[emp_pos] = [
                         (interval[0].astimezone(pytz.UTC).replace(tzinfo=None),
                          interval[1].astimezone(pytz.UTC).replace(tzinfo=None))
-                        for interval in emp.resource_calendar_id._work_intervals(
-                            first_day, last_day, resource=emp.resource_id,
-                        )
+                        for interval in emp.resource_calendar_id._work_intervals_batch(
+                            first_day, last_day, resources=emp.resource_id,
+                        )[emp.resource_id.id]
                     ]
 
                 if is_work_available(slot['UTC'][0], slot['UTC'][1], workhours[emp_pos]):

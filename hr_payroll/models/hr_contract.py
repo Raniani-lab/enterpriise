@@ -86,7 +86,10 @@ class HrContract(models.Model):
             if work_entry.work_entry_type_id.is_leave:
                 contract = work_entry.contract_id
                 calendar = contract.resource_calendar_id
-                contract_data = contract.employee_id._get_work_days_data(date_start, date_stop, compute_leaves=False, calendar=calendar)
+                employee = contract.employee_id
+                contract_data = employee._get_work_days_data_batch(
+                    date_start, date_stop, compute_leaves=False, calendar=calendar
+                )[employee.id]
 
                 work_data[work_entry.work_entry_type_id.id] += contract_data.get('hours', 0)
             else:

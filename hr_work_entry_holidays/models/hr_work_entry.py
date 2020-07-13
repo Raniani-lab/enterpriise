@@ -15,7 +15,9 @@ class HrWorkEntry(models.Model):
             return 0
         if not self.work_entry_type_id and self.leave_id:
             calendar = self.contract_id.resource_calendar_id
-            contract_data = self.contract_id.employee_id._get_work_days_data(date_start, date_stop, compute_leaves=False, calendar=calendar)
+            employee = self.contract_id.employee_id
+            contract_data = employee._get_work_days_data_batch(
+                date_start, date_stop, compute_leaves=False, calendar=calendar)[employee.id]
             return contract_data.get('hours', 0)
         return super()._get_duration(date_start, date_stop)
 

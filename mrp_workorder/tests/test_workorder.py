@@ -225,8 +225,8 @@ class TestWorkOrder(common.TestMrpCommon):
         mo_form.product_qty = 2
         mo = mo_form.save()
 
-        mo.action_assign()
         mo.action_confirm()
+        mo.action_assign()
         mo.button_plan()
 
         wo = mo.workorder_ids.sorted()[0]
@@ -269,8 +269,8 @@ class TestWorkOrder(common.TestMrpCommon):
         mo_form.product_qty = 1
         mo = mo_form.save()
 
-        mo.action_assign()
         mo.action_confirm()
+        mo.action_assign()
         mo.button_plan()
         sorted_workorder_ids = mo.workorder_ids.sorted()
         wo = sorted_workorder_ids[0]
@@ -289,14 +289,14 @@ class TestWorkOrder(common.TestMrpCommon):
         wo._next()
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.qty_done, 2, 'The suggested component qty_done is wrong')
-        wo_form.lot_id = self.mc1
+        self.assertEqual(wo_form.lot_id, self.mc1, 'The suggested lot is wrong')
         wo_form.qty_done = 1
         wo = wo_form.save()
         wo.action_continue()
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.component_id, self.metal_cylinder, 'The suggested component is wrong')
         self.assertEqual(wo_form.qty_done, 1, 'The suggested component qty_done is wrong')
-        wo_form.lot_id = self.mc1
+        self.assertEqual(wo_form.lot_id, self.mc1, 'The suggested lot is wrong')
         wo = wo_form.save()
         wo._next()
         wo.do_finish()
@@ -309,7 +309,7 @@ class TestWorkOrder(common.TestMrpCommon):
         # try to write on readonly field
         with self.assertRaises(AssertionError):
             wo_form.qty_done = 2
-        wo_form.lot_id = self.elon1
+        self.assertEqual(wo_form.lot_id, self.elon1, 'The suggested lot is wrong')
         wo = wo_form.save()
         wo._next()
         wo.do_finish()
@@ -334,15 +334,15 @@ class TestWorkOrder(common.TestMrpCommon):
         mo_form.product_qty = 1
         mo = mo_form.save()
 
-        mo.action_assign()
         mo.action_confirm()
+        mo.action_assign()
         mo.button_plan()
 
         sorted_workorder_ids = mo.workorder_ids.sorted()
         wo = sorted_workorder_ids[0]
         wo.button_start()
         wo.finished_lot_id = self.sp1
-        wo.lot_id = self.mc1
+        self.assertEqual(wo.lot_id, self.mc1, 'The suggested lot is wrong')
         wo.qty_done = 1
         wo._next()
         wo.do_finish()
@@ -350,7 +350,7 @@ class TestWorkOrder(common.TestMrpCommon):
         wo = sorted_workorder_ids[1]
         wo.button_start()
         self.assertEqual(wo.finished_lot_id, self.sp1, 'The suggested final product is wrong')
-        wo.lot_id = self.elon1
+        self.assertEqual(wo.lot_id, self.elon1, 'The suggested lot is wrong')
         wo.action_continue()
         wo.lot_id = self.elon2
         wo._next()

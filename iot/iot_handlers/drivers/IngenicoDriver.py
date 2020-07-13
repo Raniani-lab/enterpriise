@@ -739,7 +739,7 @@ class IngenicoDriver(Driver):
         """
         try:
             self.data = {'value': '', 'Stage': False, 'Response': False, 'Ticket': False, 'Error': False}
-            while True:
+            while not self._stopped.isSet():
                 sleep(1)
                 msg = IncommingIngenicoMessage(self)
                 if msg:

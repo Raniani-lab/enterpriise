@@ -3,7 +3,7 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
 
     const core = require("web.core");
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
-    const spreadsheet = require("documents_spreadsheet.spreadsheet");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
     const _t = core._t;
     const args = spreadsheet.helpers.args;

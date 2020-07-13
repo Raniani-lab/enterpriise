@@ -2,7 +2,7 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
     "use strict";
 
     const core = require("web.core");
-    const spreadsheet = require("documents_spreadsheet.spreadsheet");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const { fetchCache, formatGroupBy, formatHeader } = require("documents_spreadsheet.pivot_utils");
 
     const _t = core._t;

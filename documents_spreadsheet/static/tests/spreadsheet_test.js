@@ -3,11 +3,10 @@ odoo.define("web.spreadsheet_tests", function (require) {
 
     const testUtils = require("web.test_utils");
     const PivotView = require("web.PivotView");
-    const PivotPlugin = require("documents_spreadsheet.PivotPlugin");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
     const { createActionManager, fields, nextTick, dom, createView } = testUtils;
-    const pluginRegistry = o_spreadsheet.registries.pluginRegistry;
-    const cellMenuRegistry = o_spreadsheet.registries.cellMenuRegistry;
+    const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
     const uuidv4 = o_spreadsheet.helpers.uuidv4;
 
     function mockRPCFn (route, args) {
@@ -52,8 +51,6 @@ odoo.define("web.spreadsheet_tests", function (require) {
 
     QUnit.module("Spreadsheet Client Action", {
         beforeEach: function () {
-            pluginRegistry.add("odooPivotPlugin", PivotPlugin);
-
             this.data = {
                 "documents.document": {
                     fields: {

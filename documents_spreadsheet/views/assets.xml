@@ -4,6 +4,7 @@
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet_loader.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet_extended.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/spreadsheet_action.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/spreadsheet_component.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/spreadsheet_control_panel.js"/>

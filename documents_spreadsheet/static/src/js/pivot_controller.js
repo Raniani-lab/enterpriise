@@ -8,7 +8,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
     const PivotPlugin = require("documents_spreadsheet.PivotPlugin");
     const SpreadsheetSelectorDialog = require("documents_spreadsheet.SpreadsheetSelectorDialog");
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
-    const spreadsheet = require("documents_spreadsheet.spreadsheet");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
     const _t = core._t;
     const GridModel = spreadsheet.Model;

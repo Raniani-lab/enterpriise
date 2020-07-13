@@ -2,11 +2,9 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
     "use strict";
 
     const Dialog = require("web.OwlDialog");
-    const PivotPlugin = require("documents_spreadsheet.PivotPlugin");
-    const spreadsheet = require("documents_spreadsheet.spreadsheet");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
     const Spreadsheet = spreadsheet.Spreadsheet;
-    const pluginRegistry = spreadsheet.registries.pluginRegistry;
     const { useState, useRef, useSubEnv } = owl.hooks;
 
     class SpreadsheetComponent extends owl.Component {
@@ -17,7 +15,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
                 makeCopy: this.makeCopy.bind(this),
                 saveData: this.saveData.bind(this),
 
-            })
+            });
             this.state = useState({
                 dialog: {
                     isDisplayed: false,
@@ -29,7 +27,6 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             this.confirmDialog = () => true;
             this.data = props.data;
             this.res_id = props.res_id;
-            pluginRegistry.add("odooPivotPlugin", PivotPlugin);
         }
         mounted() {
             window.onbeforeunload = () => {
@@ -76,7 +73,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             const canvasCtx = canvasResizer.getContext("2d");
             canvasCtx.drawImage(canvas, 0, 0, 100, 100);
             const thumbnail = canvasResizer.toDataURL().replace("data:image/png;base64,", "");
-            return { spreadsheet_data, thumbnail }
+            return { spreadsheet_data, thumbnail };
         }
         /**
          * Make a copy of the current document

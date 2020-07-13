@@ -3,7 +3,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
 
     const PivotView = require("web.PivotView");
     const testUtils = require("web.test_utils");
-    const spreadsheet = require("documents_spreadsheet.spreadsheet");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const toCartesian = spreadsheet.helpers.toCartesian;
 
     const createView = testUtils.createView;

@@ -4,7 +4,7 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
     const core = require("web.core");
     const { ComponentAdapter } = require("web.OwlCompatibility");
     const DomainSelector = require("web.DomainSelector");
-    const spreadsheet = require("documents_spreadsheet.spreadsheet");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
 
     const _t = core._t;
@@ -29,12 +29,12 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
             this.pivot = props.pivot;
             this.DomainSelector = DomainSelector;
             this.periods = {
-                "day": _t("Day"),
-                "week": _t("Week"),
-                "month": _t("Month"),
-                "quarter": _t("Quarter"),
-                "year": _t("Year"),
-            }
+                day: _t("Day"),
+                week: _t("Week"),
+                month: _t("Month"),
+                quarter: _t("Quarter"),
+                year: _t("Year"),
+            };
         }
 
         async willUpdateProps(nextProps) {

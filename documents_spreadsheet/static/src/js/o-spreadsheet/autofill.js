@@ -1,7 +1,7 @@
 odoo.define("documents_spreadsheet.autofill", function (require) {
     "use strict";
 
-    const spreadsheet = require("documents_spreadsheet.spreadsheet");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const autofillRulesRegistry = spreadsheet.registries.autofillRulesRegistry;
     const autofillModifiersRegistry = spreadsheet.registries.autofillModifiersRegistry;
 

@@ -316,6 +316,10 @@ class WinbooksImportWizard(models.TransientModel):
         return attachments
 
     def import_move(self, file_dir, files, scanfiles, account_data, journal_data, partner_data, vatcode_data, param_data):
+        _logger.warning("`import_move` is deprecated, use `_import_move` instead")
+        self._import_move(file_dir, files, scanfiles, account_data, {}, journal_data, partner_data, vatcode_data, param_data)
+
+    def _import_move(self, file_dir, files, scanfiles, account_data, account_central, journal_data, partner_data, vatcode_data, param_data):
         """Import the journal entries from *_act*.dfb and @scandbk.zip files.
         The data in *_act*.dfb files are related to the moves and the data in
         @scandbk.zip files are the attachments.
@@ -423,12 +427,20 @@ class WinbooksImportWizard(models.TransientModel):
                 if self.env['account.account'].browse(account_data.get(rec.get('ACCOUNTGL'))).user_type_id.type in ('receivable', 'payable'):
                     continue
                 tax_line = self.env['account.tax'].browse(vatcode_data.get(rec.get('VATCODE') or rec.get('VATIMPUT', [])))
+                if not tax_line and line_data[2]['account_id'] in account_central.values():
+                    # this line is on a centralised account, most likely a tax account, but is not linked to a tax
+                    # this is because the counterpart (second repartion line) line of a tax is not flagged in Winbooks
+                    try:
+                        counterpart = next(r for r in val if r['AMOUNTEUR'] == -rec['AMOUNTEUR'] and r['DOCORDER'] == 'VAT' and r['VATCODE'])
+                        tax_line = self.env['account.tax'].browse(vatcode_data.get(counterpart['VATCODE']))
+                    except StopIteration:
+                        pass  # We didn't find a tax line that is counterpart with same amount
                 repartition_line = is_refund and tax_line.refund_repartition_line_ids or tax_line.invoice_repartition_line_ids
-                repartition_type = rec.get('DOCORDER') == 'VAT' and 'tax' or 'base'
+                repartition_type = 'tax' if rec.get('DOCORDER') == 'VAT' else 'base'
                 line_data[2].update({
-                    'tax_ids': tax_line and rec.get('DOCORDER') != 'VAT' and[(4, tax_line.id)] or [],
+                    'tax_ids': tax_line and rec.get('DOCORDER') != 'VAT' and [(4, tax_line.id)] or [],
                     'tax_tag_ids': [(6, 0, tax_line.get_tax_tags(is_refund, repartition_type).ids)],
-                    'tax_repartition_line_id': rec.get('DOCORDER') == 'VAT' and repartition_line.filtered(lambda x: x.repartition_type == repartition_type).id or False,
+                    'tax_repartition_line_id': rec.get('DOCORDER') == 'VAT' and repartition_line.filtered(lambda x: x.repartition_type == repartition_type and x.account_id.id == line_data[2]['account_id']).id or False,
                 })
             move_line_data_list = [i for i in move_line_data_list if i[2]['account_id'] or i[2]['debit'] or i[2]['credit']]  # Remove empty lines
 
@@ -571,7 +583,7 @@ class WinbooksImportWizard(models.TransientModel):
                 tag_id = tags_cache.get(tag_name, False)
                 if not tag_id:
                     tag_id = self.env['account.account.tag'].search([('name', '=', tag_name), ('applicability', '=', 'taxes')])
-                    tags_cache['tag_name'] = tag_id
+                    tags_cache[tag_name] = tag_id
                 if not tag_id:
                     tag_id = self.env['account.account.tag'].create({'name': tag_name, 'applicability': 'taxes', 'country_id': self.env.company.country_id.id})
                 tag_ids += tag_id
@@ -608,6 +620,10 @@ class WinbooksImportWizard(models.TransientModel):
                             (0, 0, {'repartition_type': 'tax', 'factor_percent': 100.0, 'tag_ids': get_tags(rec.get('TAX_INV')), 'company_id': self.env.company.id, 'account_id': account_central.get(rec.get('ACCINV1'), False)}),
                         ],
                     }
+                    if rec.get('ACCCN2'):
+                        data['refund_repartition_line_ids'] += [(0, 0, {'repartition_type': 'tax', 'factor_percent': -100.0, 'tag_ids': [], 'company_id': self.env.company.id, 'account_id': account_central.get(rec.get('ACCCN2'), False)})]
+                    if rec.get('ACCINV2'):
+                        data['invoice_repartition_line_ids'] += [(0, 0, {'repartition_type': 'tax', 'factor_percent': -100.0, 'tag_ids': [], 'company_id': self.env.company.id, 'account_id': account_central.get(rec.get('ACCINV2'), False)})]
                     data_list.append(data)
                     code_list.append(rec.get('CODE'))
 
@@ -685,7 +701,7 @@ class WinbooksImportWizard(models.TransientModel):
             self.post_process_account(account_data, vatcode_data, account_tax)
             civility_data, category_data = self.import_partner_info(file_dir, tablefile)
             partner_data = self.import_partner(file_dir, csffile, civility_data, category_data, account_data)
-            self.import_move(file_dir, actfile, scanfile, account_data, journal_data, partner_data, vatcode_data, param_data)
+            self._import_move(file_dir, actfile, scanfile, account_data, account_central, journal_data, partner_data, vatcode_data, param_data)
             analytic_account_data = self.import_analytic_account(file_dir, anffile)
             self.import_analytic_account_line(file_dir, antfile, analytic_account_data, account_data)
             self.post_import(account_deprecated_ids)

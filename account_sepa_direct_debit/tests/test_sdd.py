@@ -1,30 +1,21 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-from lxml import etree
-
-import time
-
 from odoo import fields
-
-from odoo.addons.account.tests.common import AccountTestCommon
-
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.modules.module import get_module_resource
 from odoo.tests import tagged
 
+from lxml import etree
+
 
 @tagged('post_install', '-at_install')
-class SDDTest(AccountTestCommon):
+class SDDTest(AccountTestInvoicingCommon):
 
+    @classmethod
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
-    def create_user(self):
-        return self.env['res.users'].create({
-            'company_id': self.env.ref("base.main_company").id,
-            'name': "Ruben Rybnik",
-            'login': "ruben",
-            'email': "ruben.rybnik@sorcerersfortress.com",
-            'groups_id': [(6, 0, [self.ref('account.group_account_invoice')])]
-        })
+        cls.env.user.email = "ruben.rybnik@sorcerersfortress.com"
 
     def create_account(self, number, partner, bank):
         return self.env['res.partner.bank'].create({
@@ -33,8 +24,8 @@ class SDDTest(AccountTestCommon):
             'bank_id': bank.id
         })
 
-    def create_mandate(self,partner, partner_bank, one_off, company, current_uid, payment_journal):
-        return self.env['sdd.mandate'].with_context({'uid': current_uid}).create({
+    def create_mandate(self,partner, partner_bank, one_off, company, payment_journal):
+        return self.env['sdd.mandate'].create({
             'name': 'mandate ' + (partner.name or ''),
             'partner_bank_id': partner_bank.id,
             'one_off': one_off,
@@ -44,12 +35,12 @@ class SDDTest(AccountTestCommon):
             'payment_journal_id': payment_journal.id
         })
 
-    def create_invoice(self, partner, current_uid, currency):
-        invoice = self.env['account.move'].with_context(default_move_type='out_invoice', uid=current_uid).create({
+    def create_invoice(self, partner):
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
             'partner_id': partner.id,
             'currency_id': self.env.ref('base.EUR'),
             'payment_reference': 'invoice to client',
-            'move_type': 'out_invoice',
             'invoice_line_ids': [(0, 0, {
                 'product_id': self.env['product.product'].create({'name': 'A Test Product'}),
                 'quantity': 1,
@@ -68,13 +59,10 @@ class SDDTest(AccountTestCommon):
         })._create_payments()
 
     def test_sdd(self):
-        # We generate the user whose the test will simulate the actions.
-        user = self.create_user()
-
         # We setup our test company
-        company = user.company_id
+        company = self.env.company
         company.sdd_creditor_identifier = 'BE30ZZZ300D000000042'
-        company_bank_journal = self.env['account.journal'].search([('company_id', '=', company.id), ('type', '=', 'bank')], limit=1)
+        company_bank_journal = self.company_data['default_journal_bank']
         company_bank_journal.bank_acc_number = 'CH9300762011623852957'
         bank_ing = self.env['res.bank'].create({'name': 'ING', 'bic': 'BBRUBEBB'})
         bank_bnp = self.env['res.bank'].create({'name': 'BNP Paribas', 'bic': 'GEBABEBB'})
@@ -84,23 +72,23 @@ class SDDTest(AccountTestCommon):
         # Then we setup the banking data and mandates of two customers (one with a one-off mandate, the other with a recurrent one)
         partner_agrolait = self.env['res.partner'].create({'name': 'Agrolait'})
         partner_bank_agrolait = self.create_account('DE44500105175407324931', partner_agrolait, bank_ing)
-        mandate_agrolait = self.create_mandate(partner_agrolait, partner_bank_agrolait, False, company, user.id, company_bank_journal)
+        mandate_agrolait = self.create_mandate(partner_agrolait, partner_bank_agrolait, False, company, company_bank_journal)
         mandate_agrolait.action_validate_mandate()
 
         partner_china_export = self.env['res.partner'].create({'name': 'China Export'})
         partner_bank_china_export = self.create_account('SA0380000000608010167519', partner_china_export, bank_bnp)
-        mandate_china_export = self.create_mandate(partner_china_export, partner_bank_china_export, True, company, user.id, company_bank_journal)
+        mandate_china_export = self.create_mandate(partner_china_export, partner_bank_china_export, True, company, company_bank_journal)
         mandate_china_export.action_validate_mandate()
 
         partner_no_bic = self.env['res.partner'].create({'name': 'NO BIC Co'})
         partner_bank_no_bic = self.create_account('BE68844010370034', partner_no_bic, bank_no_bic)
-        mandate_no_bic = self.create_mandate(partner_no_bic, partner_bank_no_bic, True, company, user.id, company_bank_journal)
+        mandate_no_bic = self.create_mandate(partner_no_bic, partner_bank_no_bic, True, company, company_bank_journal)
         mandate_no_bic.action_validate_mandate()
 
         # We create one invoice for each of our test customers ...
-        invoice_agrolait = self.create_invoice(partner_agrolait, user.id, company.currency_id)
-        invoice_china_export = self.create_invoice(partner_china_export, user.id, company.currency_id)
-        invoice_no_bic = self.create_invoice(partner_no_bic, user.id, company.currency_id)
+        invoice_agrolait = self.create_invoice(partner_agrolait)
+        invoice_china_export = self.create_invoice(partner_china_export)
+        invoice_no_bic = self.create_invoice(partner_no_bic)
 
         # Pay the invoices with mandates
         self.pay_with_mandate(invoice_agrolait, mandate_agrolait)

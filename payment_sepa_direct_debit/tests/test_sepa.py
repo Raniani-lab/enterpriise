@@ -9,50 +9,47 @@ from odoo.addons.payment.tests.common import PaymentAcquirerCommon
 
 class SepaDirectDebitCommon(PaymentAcquirerCommon):
 
-    def setUp(self):
-        super(SepaDirectDebitCommon, self).setUp()
+    @classmethod
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
-        self.company = self.env.ref('base.main_company')
-        self.company.sdd_creditor_identifier = 'BE30ZZZ300D000000042'
-        self.EUR = self.env.ref('base.EUR').id
-        bank_ing = self.env['res.bank'].create({'name': 'ING', 'bic': 'BBRUBEBB'})
+        cls.company = cls.env.company
+        cls.company.sdd_creditor_identifier = 'BE30ZZZ300D000000042'
+        cls.EUR = cls.env.ref('base.EUR').id
+        bank_ing = cls.env['res.bank'].create({'name': 'ING', 'bic': 'BBRUBEBB'})
         
-        self.sepa_bank_account = self.env['res.partner.bank'].create({
+        cls.sepa_bank_account = cls.env['res.partner.bank'].create({
             'acc_number': 'NL91 ABNA 0417 1643 00',
-            'partner_id': self.company.partner_id.id,
+            'partner_id': cls.company.partner_id.id,
             'bank_id': bank_ing.id,
         })
 
-        assert self.sepa_bank_account.acc_type == 'iban'
+        assert cls.sepa_bank_account.acc_type == 'iban'
 
-        self.sepa_journal = self.env['account.journal'].create({
-            'name': 'Bank SEPA',
-            'type': 'bank',
-            'code': 'BNKSEPA',
-            'inbound_payment_method_ids': [(4, self.env.ref('account_sepa_direct_debit.payment_method_sdd').id)],
-            'bank_account_id': self.sepa_bank_account.id,
-        })
+        cls.sepa_journal = cls.company_data['default_journal_bank']
+        cls.sepa_journal.bank_account_id = cls.sepa_bank_account
 
-        self.sepa = self.env.ref('payment.payment_acquirer_sepa_direct_debit')
-        self.sepa.write({
-            'journal_id': self.sepa_journal.id,
+        cls.sepa = cls.env.ref('payment.payment_acquirer_sepa_direct_debit')
+        cls.sepa.write({
+            'company_id': cls.env.company.id,
+            'journal_id': cls.sepa_journal.id,
             'state': 'enabled',
             'sepa_direct_debit_sms_enabled': True,
         })
 
         # create the partner bank account
-        partner_bank = self.env['res.partner.bank'].create({
+        partner_bank = cls.env['res.partner.bank'].create({
             'acc_number': 'BE17412614919710',
-            'partner_id': self.buyer_id,
-            'company_id': self.company.id,
+            'partner_id': cls.buyer_id,
+            'company_id': cls.company.id,
         })
 
-        self.mandate = self.env['sdd.mandate'].create({
-            'partner_id': self.buyer_id,
-            'company_id': self.company.id,
+        cls.mandate = cls.env['sdd.mandate'].create({
+            'partner_id': cls.buyer_id,
+            'company_id': cls.company.id,
             'partner_bank_id': partner_bank.id,
             'start_date': fields.date.today(),
-            'payment_journal_id': self.sepa_journal.id,
+            'payment_journal_id': cls.sepa_journal.id,
             'verified': True,
             'state': 'active',
         })
@@ -65,18 +62,17 @@ class SepaDirectDebitCommon(PaymentAcquirerCommon):
             'journal_id': bank_journal.id,
             'date': payment.date,
             'name': payment.name,
-        })
-        bank_stmt_line = self.env['account.bank.statement.line'].create({
-            'statement_id': bank_stmt.id,
-            'partner_id': self.buyer_id,
-            'foreign_currency_id': move_line.currency_id.id,
-            'amount_currency': abs(move_line.amount_currency),
-            'amount': abs(move_line.balance),
-            'date': payment.date,
-            'payment_ref': payment.name,
+            'line_ids': [(0, 0, {
+                'partner_id': self.buyer_id,
+                'foreign_currency_id': move_line.currency_id.id,
+                'amount_currency': abs(move_line.amount_currency),
+                'amount': abs(move_line.balance),
+                'date': payment.date,
+                'payment_ref': payment.name,
+            })],
         })
         bank_stmt.button_post()
-        bank_stmt_line.reconcile([{'id': move_line.id}])
+        bank_stmt.line_ids.reconcile([{'id': move_line.id}])
 
         self.assertTrue(payment.is_matched, 'payment should be reconciled')
 

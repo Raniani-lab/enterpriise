@@ -34,6 +34,7 @@ class PlanningShift(models.Model):
     planned_hours = fields.Float("Initially Planned Hours", related="task_id.planned_hours")
     allow_forecast = fields.Boolean(related="project_id.allow_forecast")
     forecast_hours = fields.Float("Forecast Hours", compute='_compute_forecast_hours', help="Number of hours already forecast for this task (and its sub-tasks).")
+    parent_id = fields.Many2one('project.task', related='task_id.parent_id', store=True)  # store for group by
 
     _sql_constraints = [
         ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "If the planning is linked to a task, the project must be set too."),

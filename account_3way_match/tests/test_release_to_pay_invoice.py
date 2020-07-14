@@ -2,16 +2,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields
-from odoo.addons.account.tests.common import AccountTestCommon
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged, Form
 
 
 @tagged('post_install', '-at_install')
-class TestReleaseToPayInvoice(AccountTestCommon):
+class TestReleaseToPayInvoice(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+
         cls.partner = cls.env['res.partner'].create({'name': 'Zizizapartner'})
         cls.product = cls.env['product.product'].create({
             'name': 'VR Computer',

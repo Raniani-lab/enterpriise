@@ -30,6 +30,7 @@ Allows to make call from next activities or with click-to-dial.
     ],
     'qweb': [
         'static/src/bugfix/bugfix.xml',
+        'static/src/components/activity/activity.xml',
         'static/src/xml/*.xml',
     ],
     'application': True,

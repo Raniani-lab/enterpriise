@@ -46,22 +46,21 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         invoice = self.create_invoice(invoice_amount=50, currency_id=self.currency_usd_id)
 
         # journal currency in USD
-        bank_stmt = self.acc_bank_stmt_model.create({
+        bank_stmt = self.env['account.bank.statement'].create({
             'journal_id': self.bank_journal_usd.id,
             'date': time.strftime('%Y-07-15'),
             'name': 'payment %s' % invoice.name,
+            'line_ids': [(0, 0, {
+                'payment_ref': 'payment',
+                'partner_id': self.partner_agrolait_id,
+                'amount': 50,
+                'date': time.strftime('%Y-07-15'),
+            })],
         })
 
-        bank_stmt_line = self.acc_bank_stmt_line_model.create({
-            'payment_ref': 'payment',
-            'statement_id': bank_stmt.id,
-            'partner_id': self.partner_agrolait_id,
-            'amount': 50,
-            'date': time.strftime('%Y-07-15'),
-        })
         bank_stmt.button_post()
 
-        result = self.env['account.reconciliation.widget'].get_bank_statement_line_data(bank_stmt_line.ids)
+        result = self.env['account.reconciliation.widget'].get_bank_statement_line_data(bank_stmt.line_ids.ids)
         self.assertEqual(result['lines'][0]['reconciliation_proposition'][0]['amount_str'], '$ 50.00')
 
     def test_filter_partner1(self):
@@ -72,14 +71,14 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         receivable1 = inv1.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
         receivable2 = inv2.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
 
-        bank_stmt = self.acc_bank_stmt_model.create({
+        bank_stmt = self.env['account.bank.statement'].create({
             'company_id': self.company.id,
             'journal_id': self.bank_journal_euro.id,
             'date': time.strftime('%Y-07-15'),
             'name': 'test',
         })
 
-        bank_stmt_line = self.acc_bank_stmt_line_model.create({
+        bank_stmt_line = self.env['account.bank.statement.line'].create({
             'payment_ref': 'testLine',
             'statement_id': bank_stmt.id,
             'amount': 100,
@@ -149,14 +148,14 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         })
         self.create_invoice_partner(currency_id=self.currency_euro_id, partner_id=child_partner.id)
 
-        bank_stmt = self.acc_bank_stmt_model.create({
+        bank_stmt = self.env['account.bank.statement'].create({
             'company_id': self.company.id,
             'journal_id': self.bank_journal_euro.id,
             'date': time.strftime('%Y-07-15'),
             'name': 'test',
         })
 
-        bank_stmt_line = self.acc_bank_stmt_line_model.create({
+        bank_stmt_line = self.env['account.bank.statement.line'].create({
             'payment_ref': 'testLine',
             'statement_id': bank_stmt.id,
             'amount': 100,

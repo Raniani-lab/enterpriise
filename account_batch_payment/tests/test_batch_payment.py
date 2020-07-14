@@ -3,36 +3,28 @@
 
 import time
 
-from odoo.addons.account.tests.common import AccountTestCommon
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
 from odoo.exceptions import ValidationError
 
 
 @tagged('post_install', '-at_install')
-class TestBatchPayment(AccountTestCommon):
+class TestBatchPayment(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestBatchPayment, cls).setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         # Get some records
-        cls.customers = cls.env['res.partner'].search([('company_id', 'in', [False, cls.env.user.company_id.id])])
+        cls.customers = cls.env['res.partner'].create([
+            {'name': 'alpha'},
+            {'name': 'beta'},
+            {'name': 'gamma'},
+        ])
         cls.batch_deposit = cls.env.ref('account_batch_payment.account_payment_method_batch_deposit')
 
         # Create a bank journal
-        journal_account = cls.env['account.account'].create({
-            'code': 'BNKT',
-            'name': 'Bank Test',
-            'user_type_id': cls.env.ref('account.data_account_type_liquidity').id,
-        })
-        cls.journal = cls.env['account.journal'].create({
-            'name': 'Bank Test',
-            'code': 'BNKT',
-            'type': 'bank',
-            'default_debit_account_id': journal_account.id,
-            'default_credit_account_id': journal_account.id,
-            'company_id': cls.env.user.company_id.id
-        })
+        cls.journal = cls.company_data['default_journal_bank']
 
         # Create some payments
         cls.payments = [

@@ -3,6 +3,7 @@
 
 import time
 from odoo import api, models, _
+from odoo.tools import html_escape
 from odoo.tools.misc import formatLang
 from odoo.exceptions import UserError
 
@@ -161,7 +162,8 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
             month = date_from[5:7]
 
         xml_data.update({
-            'company_name': company.name,
+            # opw-2295963 xml does not accept special characters in company name
+            'company_name': html_escape(company.name),
             'company_vat': company_vat,
             'vatnum': company_vat[2:],
             'sender_date': str(time.strftime('%Y-%m-%d')),

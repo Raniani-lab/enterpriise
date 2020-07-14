@@ -2838,11 +2838,13 @@ QUnit.module('Views', {
     QUnit.test('decoration attribute with date', async function (assert) {
         assert.expect(6);
 
+        const unpatchDate = patchDate(2018, 11, 19, 12, 0, 0);
+
         var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
-            arch: '<gantt date_start="start" date_stop="stop" decoration-danger="start &lt; \'2018-12-19 00:00:00\'">' +
+            arch: '<gantt date_start="start" date_stop="stop" decoration-danger="start &lt; today">' +
                 '</gantt>',
             viewOptions: {
                 initialDate: initialDate,
@@ -2863,6 +2865,7 @@ QUnit.module('Views', {
             'should not have a "decoration-danger" class on task 7');
 
         gantt.destroy();
+        unpatchDate();
     });
 
     QUnit.test('consolidation feature', async function (assert) {

@@ -4,6 +4,7 @@ odoo.define('web_gantt.GanttRow', function (require) {
 var core = require('web.core');
 var session = require('web.session');
 var Widget = require('web.Widget');
+const pyUtils = require('web.py_utils');
 
 var QWeb = core.qweb;
 
@@ -470,10 +471,10 @@ var GanttRow = Widget.extend({
      * @returns {Object} context contains pill data, current date, user session
      */
     _getDecorationEvalContext: function (pillData) {
-        return _.extend(
-            this._getPillEvalContext(pillData),
+        return Object.assign(
+            pyUtils.context(),
             session.user_context,
-            {current_date: moment().format('YYYY-MM-DD')}
+            this._getPillEvalContext(pillData),
         );
     },
     /**

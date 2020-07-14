@@ -699,6 +699,9 @@ class MrpProductionWorkcenterLine(models.Model):
             self.finished_lot_id = lot
 
     def _update_component_quantity(self):
+        if self.component_tracking == 'serial':
+            self.qty_done = self.product_id.uom_id._compute_quantity(1, self.product_uom_id, rounding_method='HALF-UP')
+            return
         move = self.move_id
         # Compute the new quantity for the current component
         rounding = move.product_uom.rounding

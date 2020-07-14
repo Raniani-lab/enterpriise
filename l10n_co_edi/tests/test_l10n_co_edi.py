@@ -3,75 +3,73 @@ import os
 import re
 from unittest.mock import patch, Mock
 
-from odoo.addons.account.tests.common import AccountTestCommon
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
 from odoo.tools import misc, mute_logger
 
 
 @tagged('post_install', '-at_install')
-class InvoiceTransactionCase(AccountTestCommon):
-    def setUp(self):
-        super(InvoiceTransactionCase, self).setUp()
+class InvoiceTransactionCase(AccountTestInvoicingCommon):
 
-        self.partner = self.env.ref('base.res_partner_12')
-        self.partner.country_id = self.env.ref('base.co')
+    @classmethod
+    def setUpClass(cls, chart_template_ref='l10n_co.l10n_co_chart_template_generic'):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
-        self.company = self.env.ref('base.main_company')
-        self.company.country_id = self.env.ref('base.co')
+        cls.partner = cls.env.ref('base.res_partner_12')
+        cls.partner.country_id = cls.env.ref('base.co')
 
-        self.salesperson = self.env.ref('base.user_admin')
-        self.salesperson.function = 'Sales'
+        cls.company = cls.env.company
+        cls.company.country_id = cls.env.ref('base.co')
+
+        cls.salesperson = cls.env.ref('base.user_admin')
+        cls.salesperson.function = 'Sales'
 
         report_text = 'GRANDES CONTRIBUYENTES SHD Res. DDI-042065 13-10-17'
-        self.company.l10n_co_edi_header_gran_contribuyente = report_text
-        self.company.l10n_co_edi_header_tipo_de_regimen = report_text
-        self.company.l10n_co_edi_header_retenedores_de_iva = report_text
-        self.company.l10n_co_edi_header_autorretenedores = report_text
-        self.company.l10n_co_edi_header_resolucion_aplicable = report_text
-        self.company.l10n_co_edi_header_actividad_economica = report_text
-        self.company.l10n_co_edi_header_bank_information = report_text
+        cls.company.l10n_co_edi_header_gran_contribuyente = report_text
+        cls.company.l10n_co_edi_header_tipo_de_regimen = report_text
+        cls.company.l10n_co_edi_header_retenedores_de_iva = report_text
+        cls.company.l10n_co_edi_header_autorretenedores = report_text
+        cls.company.l10n_co_edi_header_resolucion_aplicable = report_text
+        cls.company.l10n_co_edi_header_actividad_economica = report_text
+        cls.company.l10n_co_edi_header_bank_information = report_text
 
-        self.company.vat = '0123456789'
-        self.company.partner_id.l10n_co_document_type = 'rut'
-        self.company.partner_id.l10n_co_edi_representation_type_id = self.env.ref('l10n_co_edi.representation_type_0')
-        self.company.partner_id.l10n_co_edi_establishment_type_id = self.env.ref('l10n_co_edi.establishment_type_0')
-        self.company.partner_id.l10n_co_edi_obligation_type_ids = self.env.ref('l10n_co_edi.obligation_type_0')
-        self.company.partner_id.l10n_co_edi_customs_type_ids = self.env.ref('l10n_co_edi.customs_type_0')
-        self.company.partner_id.l10n_co_edi_large_taxpayer = True
+        cls.company.vat = '0123456789'
+        cls.company.partner_id.l10n_co_document_type = 'rut'
+        cls.company.partner_id.l10n_co_edi_representation_type_id = cls.env.ref('l10n_co_edi.representation_type_0')
+        cls.company.partner_id.l10n_co_edi_establishment_type_id = cls.env.ref('l10n_co_edi.establishment_type_0')
+        cls.company.partner_id.l10n_co_edi_obligation_type_ids = cls.env.ref('l10n_co_edi.obligation_type_0')
+        cls.company.partner_id.l10n_co_edi_customs_type_ids = cls.env.ref('l10n_co_edi.customs_type_0')
+        cls.company.partner_id.l10n_co_edi_large_taxpayer = True
 
-        self.partner.vat = '9876543210'
-        self.partner.l10n_co_document_type = 'rut'
-        self.partner.l10n_co_edi_representation_type_id = self.env.ref('l10n_co_edi.representation_type_0')
-        self.partner.l10n_co_edi_establishment_type_id = self.env.ref('l10n_co_edi.establishment_type_0')
-        self.partner.l10n_co_edi_obligation_type_ids = self.env.ref('l10n_co_edi.obligation_type_0')
-        self.partner.l10n_co_edi_customs_type_ids = self.env.ref('l10n_co_edi.customs_type_0')
-        self.partner.l10n_co_edi_large_taxpayer = True
+        cls.partner.vat = '9876543210'
+        cls.partner.l10n_co_document_type = 'rut'
+        cls.partner.l10n_co_edi_representation_type_id = cls.env.ref('l10n_co_edi.representation_type_0')
+        cls.partner.l10n_co_edi_establishment_type_id = cls.env.ref('l10n_co_edi.establishment_type_0')
+        cls.partner.l10n_co_edi_obligation_type_ids = cls.env.ref('l10n_co_edi.obligation_type_0')
+        cls.partner.l10n_co_edi_customs_type_ids = cls.env.ref('l10n_co_edi.customs_type_0')
+        cls.partner.l10n_co_edi_large_taxpayer = True
 
-        self.tax = self.env['account.tax'].search([('type_tax_use', '=', 'sale')], limit=1)
-        self.tax.amount = 15
-        self.tax.l10n_co_edi_type = self.env.ref('l10n_co_edi.tax_type_0')
-        self.retention_tax = self.tax.copy({
-            'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_9').id
+        cls.tax = cls.company_data['default_tax_sale']
+        cls.tax.amount = 15
+        cls.tax.l10n_co_edi_type = cls.env.ref('l10n_co_edi.tax_type_0')
+        cls.retention_tax = cls.tax.copy({
+            'l10n_co_edi_type': cls.env.ref('l10n_co_edi.tax_type_9').id
         })
 
-        self.account_receivable = self.env['account.account'].search([('user_type_id', '=', self.env.ref('account.data_account_type_receivable').id)], limit=1)
-        self.account_revenue = self.env['account.account'].search([('user_type_id', '=', self.env.ref('account.data_account_type_revenue').id)], limit=1)
-
-        self.env.ref('uom.product_uom_unit').l10n_co_edi_ubl = 'S7'
+        cls.env.ref('uom.product_uom_unit').l10n_co_edi_ubl = 'S7'
 
     def test_dont_handle_non_colombian(self):
         self.company.country_id = self.env.ref('base.us')
         product = self.env.ref('product.product_product_4')
-        invoice = self.env['account.move'].with_context(default_move_type='out_invoice').create({
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
             'partner_id': self.partner.id,
-            'account_id': self.account_receivable.id,
             'invoice_line_ids': [
                 (0, 0, {
                     'product_id': product.id,
                     'quantity': 1,
                     'price_unit': 42,
                     'name': 'something',
-                    'account_id': self.account_revenue.id,
                 })
             ]
         })
@@ -106,7 +104,6 @@ class InvoiceTransactionCase(AccountTestCommon):
         product = self.env.ref('product.product_product_4')
         invoice = self.env['account.move'].create({
             'partner_id': self.partner.id,
-            'account_id': self.account_receivable.id,
             'move_type': 'out_invoice',
             'invoice_user_id': self.salesperson.id,
             'name': 'OC 123',
@@ -117,16 +114,14 @@ class InvoiceTransactionCase(AccountTestCommon):
                     'price_unit': 250,
                     'discount': 10,
                     'name': 'Line 1',
-                    'account_id': self.account_revenue.id,
                     'tax_ids': [(6, 0, (self.tax.id, self.retention_tax.id))],
                 }),
                 (0, 0, {
                     'quantity': 1,
                     'price_unit': 0.2,
                     'name': 'Line 2',
-                    'account_id': self.account_revenue.id,
                     'tax_ids': [(6, 0, (self.tax.id, self.retention_tax.id))],
-                    'uom_id': self.env.ref('uom.product_uom_unit').id,
+                    'product_uom_id': self.env.ref('uom.product_uom_unit').id,
                 })
             ]
         })

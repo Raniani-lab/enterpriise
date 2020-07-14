@@ -1,31 +1,30 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.account.tests.common import AccountTestCommon
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
 from odoo import fields
 
 
-@tagged('post_install','-at_install')
-class TestSynchStatementCreation(AccountTestCommon):
-    def setUp(self):
-        super(TestSynchStatementCreation, self).setUp()
-        self.bnk_stmt = self.env['account.bank.statement']
+@tagged('post_install', '-at_install')
+class TestSyncStatementCreation(AccountTestInvoicingCommon):
+
+    @classmethod
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+
+        cls.bnk_stmt = cls.env['account.bank.statement']
 
         # Create an account.online.provider and account.online.journal and associate to journal bank
-        self.bank_journal = self.env['account.journal'].create({'name': 'Bank_Online', 'type': 'bank', 'code': 'BNKonl', 'currency_id': self.env.ref('base.EUR').id})
-        self.provider_account = self.env['account.online.provider'].create({'name': 'Test Bank'})
-        self.online_account = self.env['account.online.journal'].create({
+        cls.bank_journal = cls.env['account.journal'].create({'name': 'Bank_Online', 'type': 'bank', 'code': 'BNKonl', 'currency_id': cls.env.ref('base.EUR').id})
+        cls.provider_account = cls.env['account.online.provider'].create({'name': 'Test Bank'})
+        cls.online_account = cls.env['account.online.journal'].create({
             'name': 'MyBankAccount',
-            'account_online_provider_id': self.provider_account.id,
-            'journal_ids': [(6, 0, [self.bank_journal.id])]
+            'account_online_provider_id': cls.provider_account.id,
+            'journal_ids': [(6, 0, [cls.bank_journal.id])]
         })
-        self.transaction_id = 1
-        self.account = self.env['account.account'].create({
-            'name': 'toto',
-            'code': 'bidule',
-            'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id
-        })
+        cls.transaction_id = 1
+        cls.account = cls.company_data['default_account_assets']
 
     # This method return a list of transactions with the given dates
     # amount for each transactions is 10
@@ -76,7 +75,6 @@ class TestSynchStatementCreation(AccountTestCommon):
             }])
         statement.button_validate()
         return statement
-
 
     def test_creation_initial_sync_statement(self):
         transactions = self.create_transactions(['2016-01-01', '2016-01-03'])

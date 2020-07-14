@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
-from odoo.addons.account.tests.common import AccountTestCommon
-
-import odoo.tests
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.tests import tagged
 from odoo import fields
 
-from datetime import datetime
 
-
-@odoo.tests.tagged('post_install', '-at_install')
-class TestFiscalPosition(AccountTestCommon):
+@tagged('post_install', '-at_install')
+class TestFiscalPosition(AccountTestInvoicingCommon):
 
     def check_compute_fiscal_year(self, company, date, expected_date_from, expected_date_to):
         '''Compute the fiscal year at a certain date for the company passed as parameter.
@@ -26,7 +23,7 @@ class TestFiscalPosition(AccountTestCommon):
 
     def test_default_fiscal_year(self):
         '''Basic case with a fiscal year xxxx-01-01 - xxxx-12-31.'''
-        company = self.env.ref('base.main_company')
+        company = self.env.company
         company.fiscalyear_last_day = 31
         company.fiscalyear_last_month = '12'
 
@@ -46,7 +43,7 @@ class TestFiscalPosition(AccountTestCommon):
 
     def test_leap_fiscal_year_1(self):
         '''Case with a leap year ending the 29 February.'''
-        company = self.env.ref('base.main_company')
+        company = self.env.company
         company.fiscalyear_last_day = 29
         company.fiscalyear_last_month = '2'
 
@@ -66,7 +63,7 @@ class TestFiscalPosition(AccountTestCommon):
 
     def test_leap_fiscal_year_2(self):
         '''Case with a leap year ending the 28 February.'''
-        company = self.env.ref('base.main_company')
+        company = self.env.company
         company.fiscalyear_last_day = 28
         company.fiscalyear_last_month = '2'
 
@@ -86,7 +83,7 @@ class TestFiscalPosition(AccountTestCommon):
 
     def test_custom_fiscal_year(self):
         '''Case with custom fiscal years.'''
-        company = self.env.ref('base.main_company')
+        company = self.env.company
         company.fiscalyear_last_day = 31
         company.fiscalyear_last_month = '12'
 

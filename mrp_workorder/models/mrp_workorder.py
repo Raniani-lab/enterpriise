@@ -523,11 +523,12 @@ class MrpProductionWorkcenterLine(models.Model):
                 wo.current_quality_check_id.update(wo._defaults_from_move(wo.move_id))
                 if wo.move_id:
                     wo._update_component_quantity()
-            if self.operation_id:
-                return backorder.workorder_ids.filtered(lambda wo: wo.operation_id == self.operation_id).open_tablet_view()
-            else:
-                index = list(self.production_id.workorder_ids).index(self)
-                return backorder.workorder_ids[index].open_tablet_view()
+            if not self.env.context.get('no_start_next'):
+                if self.operation_id:
+                    return backorder.workorder_ids.filtered(lambda wo: wo.operation_id == self.operation_id).open_tablet_view()
+                else:
+                    index = list(self.production_id.workorder_ids).index(self)
+                    return backorder.workorder_ids[index].open_tablet_view()
         return True
 
     def _create_extra_move_lines(self):
@@ -618,7 +619,7 @@ class MrpProductionWorkcenterLine(models.Model):
         self._next(continue_production=True)
 
     def action_open_manufacturing_order(self):
-        action = self.do_finish()
+        action = self.with_context(no_start_next=True).do_finish()
         try:
             with self.env.cr.savepoint():
                 res = self.production_id.button_mark_done()

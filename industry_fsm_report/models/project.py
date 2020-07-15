@@ -184,3 +184,10 @@ class Task(models.Model):
     def _message_post_after_hook(self, message, *args, **kwargs):
         if self.env.context.get('fsm_mark_as_sent') and not self.fsm_is_sent:
             self.write({'fsm_is_sent': True})
+
+class ProjectTaskRecurrence(models.Model):
+    _inherit = 'project.task.recurrence'
+
+    @api.model
+    def _get_recurring_fields(self):
+        return ['worksheet_template_id'] + super(ProjectTaskRecurrence, self)._get_recurring_fields()

@@ -8,6 +8,7 @@
             <script type="text/javascript" src="/pos_loyalty/static/src/js/Loyalty.js"></script>
             <script type="text/javascript" src="/pos_loyalty/static/src/js/RewardButton.js"></script>
             <script type="text/javascript" src="/pos_loyalty/static/src/js/PointsCounter.js"></script>
+            <script type="text/javascript" src="/pos_loyalty/static/src/js/ClientDetailsEdit.js"></script>
         </xpath>
     </template>
 

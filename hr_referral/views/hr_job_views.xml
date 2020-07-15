@@ -87,7 +87,7 @@
         <field name="view_id" ref="hr_referral.view_hr_job_employee_referral_kanban"/>
         <field name="domain">[('is_published', '=', True), ('state', '=', 'recruit')]</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
+            <p class="o_view_nocontent_referral_job_kanban">
                 No job positions are available to share.
             </p>
         </field>

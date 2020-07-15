@@ -140,7 +140,7 @@
         <field name="name">hr.referral.reward.tree</field>
         <field name="model">hr.referral.reward</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree sample="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="cost"/>
@@ -155,6 +155,11 @@
         <field name="res_model">hr.referral.reward</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="groups_id" eval="[(4, ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Let's create Super Rewards to thank your employees.
+            </p>
+        </field>
     </record>
 
     <record model="ir.actions.act_window" id="action_hr_referral_reward">
@@ -162,6 +167,11 @@
         <field name="res_model">hr.referral.reward</field>
         <field name="view_mode">kanban,form</field>
         <field name="view_id" ref="hr_referral.view_hr_referral_reward_kanban"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_referral_kanban">
+                Let's create super Rewards to thank<br/>your employees.
+            </p>
+        </field>
     </record>
 
     <menuitem parent="menu_hr_referral_configuration" id="menu_hr_referral_reward_configuration" action="action_hr_referral_reward_configuration" sequence="2"/>

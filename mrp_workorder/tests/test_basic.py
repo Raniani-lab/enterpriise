@@ -1303,48 +1303,6 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
             self.assertNotEqual(mo.date_planned_start, planned_date)
             self.assertAlmostEqual(mo.date_planned_start, mo.workorder_ids.date_planned_start, delta=timedelta(seconds=10))
 
-    def test_planning_2(self):
-        """ Plan some manufacturing orders with 2 workorders each
-        Batch size of the operation will influence start dates of workorders
-        The first unit to be produced can go the second workorder before finishing
-        to produce the second unit.
-        calendar wc1 : [q1][q2]
-        calendar wc2 :     [q1][q2]"""
-        self.workcenter_1.alternative_workcenter_ids = self.wc_alt_1 | self.wc_alt_2
-        self.planning_bom.operation_ids = False
-        self.planning_bom.write({
-            'operation_ids': [
-                (0, 0, {'name': 'Cutting Machine', 'workcenter_id': self.workcenter_1.id, 'time_cycle': 12, 'sequence': 1, 'batch': 'yes', 'batch_size': 1}),
-                (0, 0, {'name': 'Weld Machine', 'workcenter_id': self.workcenter_1.id, 'time_cycle': 18, 'sequence': 2}),
-            ],
-        })
-        # Allow second workorder to start once the first one is not ended yet
-        self.env['mrp.workcenter'].search([]).write({'capacity': 1})
-        # workcenters work 24/7
-        self.full_availability()
-
-        mo_form = Form(self.env['mrp.production'])
-        mo_form.product_id = self.product_4
-        mo_form.bom_id = self.planning_bom
-        mo_form.product_qty = 2
-        mo = mo_form.save()
-        mo.action_confirm()
-        plan = datetime.now()
-        mo.button_plan()
-        self.assertEqual(mo.workorder_ids[0].workcenter_id, self.wc_alt_2, "wrong workcenter")
-        self.assertEqual(mo.workorder_ids[1].workcenter_id, self.wc_alt_1, "wrong workcenter")
-
-        duration1 = self.planning_bom.operation_ids[0].time_cycle * 100.0 / self.wc_alt_2.time_efficiency + self.wc_alt_2.time_start
-        duration2 = 2.0 * self.planning_bom.operation_ids[0].time_cycle * 100.0 / self.wc_alt_1.time_efficiency + self.wc_alt_1.time_start + self.wc_alt_1.time_stop
-        wo2_start = mo.workorder_ids[1].date_planned_start
-        wo2_stop = mo.workorder_ids[1].date_planned_finished
-
-        wo2_start_theo = self.wc_alt_2.resource_calendar_id.plan_hours(duration1 / 60.0, plan, compute_leaves=False, resource=self.wc_alt_2.resource_id)
-        wo2_stop_theo = self.wc_alt_1.resource_calendar_id.plan_hours(duration2 / 60.0, wo2_start, compute_leaves=False, resource=self.wc_alt_2.resource_id)
-
-        self.assertAlmostEqual(wo2_start, wo2_start_theo, delta=timedelta(seconds=10), msg="Wrong plannification")
-        self.assertAlmostEqual(wo2_stop, wo2_stop_theo, delta=timedelta(seconds=10), msg="Wrong plannification")
-
     def test_planning_3(self):
         """ Plan some manufacturing orders with 1 workorder on 1 workcenter
         the first workorder will be hard set in the future to see if the second

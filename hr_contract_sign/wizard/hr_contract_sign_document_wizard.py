@@ -20,14 +20,20 @@ class HrContractSignDocumentWizard(models.TransientModel):
                 list_template.append(template.id)
         return [('id', 'in', list_template)]
 
-    def _default_responsible_id(self):
-        return self.env['hr.contract'].browse(self.env.context.get('active_id')).hr_responsible_id
+    def default_get(self, fields_list):
+        defaults = super().default_get(fields_list)
+        if 'responsible_id' in fields_list and not defaults.get('responsible_id') and defaults.get('contract_id'):
+            contract = self.env['hr.contract'].browse(defaults.get('contract_id'))
+            defaults['responsible_id'] = contract.hr_responsible_id
+        return defaults
 
     contract_id = fields.Many2one('hr.contract', string='Contract',
         default=lambda self: self.env.context.get('active_id'))
     employee_id = fields.Many2one('hr.employee', string='Employee', compute='_compute_employee')
-    responsible_id = fields.Many2one('res.users', string='Responsible', required=True,
-        default=_default_responsible_id, domain=_group_hr_contract_domain)
+    responsible_id = fields.Many2one(
+        'res.users', string='Responsible', required=True,
+        domain=_group_hr_contract_domain,
+    )
     employee_role_id = fields.Many2one("sign.item.role", string="Employee Role", required=True, domain="[('id', 'in', sign_template_responsible_ids)]")
     sign_template_responsible_ids = fields.Many2many('sign.item.role', compute='_compute_responsible_ids')
 

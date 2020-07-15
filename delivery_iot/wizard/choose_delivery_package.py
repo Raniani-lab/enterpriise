@@ -10,8 +10,8 @@ class ChooseDeliveryPackage(models.TransientModel):
     @api.model
     def default_get(self, fields):
         res = super(ChooseDeliveryPackage, self).default_get(fields)
-        if 'iot_device_id' in fields and self.env.context.get('default_picking_id'):
-            picking_id = self.env['stock.picking'].browse(self.env.context['default_picking_id'])
+        if 'iot_device_id' in fields and res.get('picking_id'):
+            picking_id = self.env['stock.picking'].browse(res['picking_id'])
             iot_scale_ids = picking_id.picking_type_id.iot_scale_ids
             if len(iot_scale_ids) == 1:
                 res['iot_device_id'] = iot_scale_ids.id

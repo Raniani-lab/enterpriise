@@ -17,7 +17,8 @@ class CreateTask(models.TransientModel):
     @api.model
     def default_get(self, fields_list):
         defaults = super(CreateTask, self).default_get(fields_list)
-        defaults.update(self.env['project.task'].with_context(fsm_mode=True).default_get(['project_id']))
+        if 'project_id' in fields_list and not defaults.get('project_id'):
+            defaults.update(self.env['project.task'].with_context(fsm_mode=True).default_get(['project_id']))
         return defaults
 
     def action_generate_task(self):

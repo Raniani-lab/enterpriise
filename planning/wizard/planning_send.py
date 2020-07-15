@@ -12,7 +12,7 @@ class PlanningSend(models.TransientModel):
     @api.model
     def default_get(self, default_fields):
         res = super().default_get(default_fields)
-        if 'slot_ids' in res:
+        if 'slot_ids' in res and 'employee_ids' in default_fields:
             res['employee_ids'] = self.env['planning.slot'].browse(res['slot_ids'][0][2]).mapped('employee_id.id')
         return res
 

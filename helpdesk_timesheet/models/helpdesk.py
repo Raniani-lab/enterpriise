@@ -60,7 +60,7 @@ class HelpdeskTicket(models.Model):
     @api.model
     def default_get(self, fields_list):
         result = super(HelpdeskTicket, self).default_get(fields_list)
-        if result.get('team_id') and not result.get('project_id'):
+        if 'project_id' in fields_list and result.get('team_id') and not result.get('project_id'):
             result['project_id'] = self.env['helpdesk.team'].browse(result['team_id']).project_id.id
         return result
 

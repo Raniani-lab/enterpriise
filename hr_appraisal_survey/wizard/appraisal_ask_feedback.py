@@ -22,25 +22,13 @@ class AppraisalAskFeedback(models.TransientModel):
         if not self.env.user.email:
             raise UserError(_("Unable to post message, please configure the sender's email address."))
         result = super(AppraisalAskFeedback, self).default_get(fields)
-        appraisal_id = result.get('appraisal_id', False)
-        if not appraisal_id:
-            appraisal_id = self.env.context.get('active_id')
-        appraisal = self.env['hr.appraisal'].browse(appraisal_id)
-        result.update({
-            'email_from': self.env.user.email_formatted,
-            'author_id': self.env.user.partner_id.id,
-            'appraisal_id': appraisal_id,
-            'employee_id': appraisal.employee_id.id,
-        })
-        if 'survey_template_id' in fields and not result.get('survey_template_id'):
+        appraisal = self.env['hr.appraisal'].browse(result.get('appraisal_id'))
+        if 'survey_template_id' in fields and appraisal and not result.get('survey_template_id'):
             result['survey_template_id'] = appraisal.company_id.appraisal_survey_template_id.id
-        if not result.get('template_id', False):
-            template = self.env.ref('hr_appraisal_survey.mail_template_appraisal_ask_feedback', raise_if_not_found=False)
-            result['template_id'] = template.id if template else False
         return result
 
-    appraisal_id = fields.Many2one('hr.appraisal')
-    employee_id = fields.Many2one('hr.employee', related='appraisal_id.employee_id', string='Appraisal Employee')
+    appraisal_id = fields.Many2one('hr.appraisal', default=lambda self: self.env.context.get('active_id', None))
+    employee_id = fields.Many2one(related='appraisal_id.employee_id', string='Appraisal Employee')
     subject = fields.Char('Subject', compute='_compute_body', store=True, readonly=False)
     body = fields.Html('Contents', sanitize_style=True, compute='_compute_body', store=True, readonly=False)
     attachment_ids = fields.Many2many(
@@ -48,9 +36,19 @@ class AppraisalAskFeedback(models.TransientModel):
         'wizard_id', 'attachment_id', string='Attachments')
     template_id = fields.Many2one(
         'mail.template', 'Use template', index=True,
-        domain="[('model', '=', 'appraisal.ask.feedback')]")
-    email_from = fields.Char('From', help="Email address of the sender", required=True)
-    author_id = fields.Many2one('res.partner', 'Author', help="Author of the message.", required=True)
+        domain="[('model', '=', 'appraisal.ask.feedback')]",
+        default=lambda self: self.env.ref('hr_appraisal_survey.mail_template_appraisal_ask_feedback', raise_if_not_found=False),
+    )
+    email_from = fields.Char(
+        'From', required=True,
+        default=lambda self: self.env.user.email_formatted,
+        help="Email address of the sender",
+    )
+    author_id = fields.Many2one(
+        'res.partner', string='Author', required=True,
+        default=lambda self: self.env.user.partner_id.id,
+        help="Author of the message.",
+    )
     survey_template_id = fields.Many2one('survey.survey')
     employee_ids = fields.Many2many(
         'hr.employee', string="Recipients", domain=[('user_id', '!=', False)])

@@ -15,9 +15,10 @@ class Project(models.Model):
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
 
     @api.model
-    def default_get(self, *args, **kwargs):
-        defaults = super().default_get(*args, **kwargs)
-        defaults['allow_subtasks'] = defaults.get('allow_subtasks', False) and not defaults.get('is_fsm')
+    def default_get(self, fields_list):
+        defaults = super().default_get(fields_list)
+        if 'allow_subtasks' in fields_list:
+            defaults['allow_subtasks'] = defaults.get('allow_subtasks', False) and not defaults.get('is_fsm')
         return defaults
 
 

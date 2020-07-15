@@ -176,7 +176,7 @@ class SocialPost(models.Model):
 
         result = super(SocialPost, self).default_get(fields)
         default_calendar_date = self.env.context.get('default_calendar_date')
-        if default_calendar_date:
+        if default_calendar_date and ('post_method' in fields or 'scheduled_date' in fields):
             result.update({
                 'post_method': 'scheduled',
                 'scheduled_date': default_calendar_date

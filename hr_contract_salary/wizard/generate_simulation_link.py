@@ -17,6 +17,8 @@ class GenerateSimulationLink(models.TransientModel):
     @api.model
     def default_get(self, fields):
         result = super(GenerateSimulationLink, self).default_get(fields)
+        if not set(fields) & set(['contract_id', 'employee_id', 'employee_contract_id', 'applicant_id']):
+            return result
         model = self.env.context.get('active_model')
         if model == 'hr.contract':
             contract_id = self.env.context.get('active_id')

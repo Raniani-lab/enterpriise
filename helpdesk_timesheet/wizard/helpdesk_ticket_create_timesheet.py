@@ -10,18 +10,13 @@ class HelpdeskTicketCreateTimesheet(models.TransientModel):
 
     _sql_constraints = [('time_positive', 'CHECK(time_spent > 0)', "The timesheet's time must be positive" )]
 
-    @api.model
-    def default_get(self, fields):
-        result = super(HelpdeskTicketCreateTimesheet, self).default_get(fields)
-
-        active_id = self._context.get('active_id')
-        if 'ticket_id' in fields and active_id:
-            result['ticket_id'] = active_id
-        return result
-
     time_spent = fields.Float('Time', digits=(16, 2))
     description = fields.Char('Description')
-    ticket_id = fields.Many2one('helpdesk.ticket', "Ticket", help="Ticket for which we are creating a sales order", required=True)
+    ticket_id = fields.Many2one(
+        'helpdesk.ticket', "Ticket", required=True,
+        default=lambda self: self.env.context.get('active_id', None),
+        help="Ticket for which we are creating a sales order",
+    )
 
     def action_generate_timesheet(self):
         values = {

@@ -12,24 +12,33 @@ class SignSendRequest(models.TransientModel):
     @api.model
     def default_get(self, fields):
         res = super(SignSendRequest, self).default_get(fields)
-        res['template_id'] = self.env.context.get('active_id')
+        if not res.get('template_id'):
+            return res
         template = self.env['sign.template'].browse(res['template_id'])
-        res['filename'] = template.display_name
-        res['subject'] = _("Signature Request - %s") % (template.attachment_id.name)
-        roles = template.mapped('sign_item_ids.responsible_id')
-        res['signers_count'] = len(roles)
-        res['signer_ids'] = [(0, 0, {
-            'role_id': role.id,
-            'partner_id': False,
-        }) for role in roles]
-        if self.env.context.get('sign_directly_without_mail'):
-            if len(roles) == 1:
-                res['signer_ids'][0][2]['partner_id'] = self.env.user.partner_id.id
-            elif not roles:
-                res['signer_id'] = self.env.user.partner_id.id
+        if 'filename' in fields:
+            res['filename'] = template.display_name
+        if 'subject' in fields:
+            res['subject'] = _("Signature Request - %(file_name)s", file_name=template.attachment_id.name)
+        if 'signers_count' in fields or 'signer_ids' in fields or 'signer_id' in fields:
+            roles = template.sign_item_ids.responsible_id
+            if 'signers_count' in fields:
+                res['signers_count'] = len(roles)
+            if 'signer_ids' in fields:
+                res['signer_ids'] = [(0, 0, {
+                    'role_id': role.id,
+                    'partner_id': False,
+                }) for role in roles]
+            if self.env.context.get('sign_directly_without_mail'):
+                if len(roles) == 1 and 'signer_ids' in fields and res.get('signer_ids'):
+                    res['signer_ids'][0][2]['partner_id'] = self.env.user.partner_id.id
+                elif not roles and 'signer_id' in fields:
+                    res['signer_id'] = self.env.user.partner_id.id
         return res
 
-    template_id = fields.Many2one('sign.template', required=True, ondelete='cascade')
+    template_id = fields.Many2one(
+        'sign.template', required=True, ondelete='cascade',
+        default=lambda self: self.env.context.get('active_id', None),
+    )
     signer_ids = fields.One2many('sign.send.request.signer', 'sign_send_request_id', string="Signers")
     signer_id = fields.Many2one('res.partner', string="Send To")
     signers_count = fields.Integer()

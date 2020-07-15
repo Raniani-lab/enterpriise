@@ -11,12 +11,12 @@ class SlotPlanningSelectSend(models.TransientModel):
     @api.model
     def default_get(self, default_fields):
         res = super().default_get(default_fields)
-        if 'slot_id' in res and 'employee_ids' not in res:
-            slot_id = self.env['planning.slot'].browse(res['slot_id'])
-            if slot_id and slot_id.role_id:
+        if 'employee_ids' in default_fields and res.get('slot_id') and 'employee_ids' not in res:
+            slot = self.env['planning.slot'].browse(res['slot_id'])
+            if slot and slot.role_id:
                 res['employee_ids'] = self.env['hr.employee'].sudo().search([
-                    '|', ('planning_role_ids', '=', False), ('planning_role_ids', 'in', slot_id.role_id.id),
-                    ('company_id', '=', res['company_id']), ('work_email', '!=', False)
+                    '|', ('planning_role_ids', '=', False), ('planning_role_ids', 'in', slot.role_id.id),
+                    ('company_id', '=', slot.company_id), ('work_email', '!=', False),
                 ]).ids
         return res
 

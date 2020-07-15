@@ -17,7 +17,7 @@ class DocumentFolder(models.Model):
     @api.model
     def default_get(self, fields):
         res = super(DocumentFolder, self).default_get(fields)
-        if self._context.get('folder_id'):
+        if 'parent_folder_id' in fields and self._context.get('folder_id') and not res.get('parent_folder_id'):
             res['parent_folder_id'] = self._context.get('folder_id')
 
         return res

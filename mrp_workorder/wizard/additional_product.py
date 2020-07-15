@@ -8,13 +8,6 @@ class MrpWorkorderAdditionalProduct(models.TransientModel):
     _name = "mrp_workorder.additional.product"
     _description = "Additional Product"
 
-    @api.model
-    def default_get(self, fields):
-        res = super().default_get(fields)
-        workorder_id = self.env.context.get('default_workorder_id') or self.env.context.get('active_id')
-        res['workorder_id'] = workorder_id
-        return res
-
     product_id = fields.Many2one(
         'product.product',
         'Product',
@@ -27,7 +20,10 @@ class MrpWorkorderAdditionalProduct(models.TransientModel):
     type = fields.Selection([
         ('component', 'Component'),
         ('byproduct', 'By-Product')])
-    workorder_id = fields.Many2one('mrp.workorder', required=True)
+    workorder_id = fields.Many2one(
+        'mrp.workorder', required=True,
+        default=lambda self: self.env.context.get('active_id', None),
+    )
     company_id = fields.Many2one(related='workorder_id.company_id')
 
     @api.onchange('product_id')

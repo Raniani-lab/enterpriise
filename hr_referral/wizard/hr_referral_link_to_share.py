@@ -10,14 +10,10 @@ class HrReferralLinkToShare(models.TransientModel):
     _name = 'hr.referral.link.to.share'
     _description = 'Referral Link To Share'
 
-    @api.model
-    def default_get(self, default_fields):
-        res = super().default_get(default_fields)
-        if 'job_id' not in res:
-            res['job_id'] = self.env.context.get('active_id')
-        return res
-
-    job_id = fields.Many2one('hr.job')
+    job_id = fields.Many2one(
+        'hr.job',
+        default=lambda self: self.env.context.get('active_id', None),
+    )
     channel = fields.Selection([
         ('direct', 'Link'),
         ('facebook', 'Facebook'),

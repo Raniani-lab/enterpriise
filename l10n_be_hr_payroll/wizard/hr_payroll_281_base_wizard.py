@@ -13,11 +13,11 @@ class HrPayroll281BaseWizard(models.AbstractModel):
     _description = 'HR Payroll 281 Base Wizard'
 
     @api.model
-    def default_get(self, field_list=None):
+    def default_get(self, field_list):
         if self.env.company.country_id != self.env.ref('base.be'):
             raise UserError(_('You must be logged in a Belgian company to use this feature'))
         defaults = super().default_get(field_list)
-        if 'employee_ids' not in defaults:
+        if 'employee_ids' in field_list and 'employee_ids' not in defaults:
             defaults['employee_ids'] = [(6, 0, self.env.context.get('active_ids'))]
         return defaults
 

@@ -11,15 +11,12 @@ class FollowupSend(models.TransientModel):
 
     snailmail_cost = fields.Float(string='Stamp(s)', compute='_compute_snailmail_cost', readonly=True)
     letters_qty = fields.Integer(compute='_compute_letters_qty', string='Number of letters')
-    partner_ids = fields.Many2many('res.partner', string='Recipients')
+    partner_ids = fields.Many2many(
+        'res.partner', string='Recipients',
+        default=lambda s: s.env.context.get("active_ids", []),
+    )
     invalid_addresses = fields.Integer('Invalid Addresses Count', compute='_compute_invalid_addresses')
     invalid_partner_ids = fields.Many2many('res.partner', string='Invalid Addresses', compute='_compute_invalid_addresses')
-
-    @api.model
-    def default_get(self, fields):
-        res = super(FollowupSend, self).default_get(fields)
-        res.update({'partner_ids': self._context.get('active_ids')})
-        return res
 
     @api.depends('partner_ids')
     def _compute_invalid_addresses(self):

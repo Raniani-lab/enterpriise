@@ -169,7 +169,7 @@ class TestHrAppraisal(TransactionCase):
         """
         template_employee_id = self.env.ref('hr_appraisal.mail_template_appraisal_request').id
         Request = self.Request.with_context(active_model='hr.employee', active_id=self.hr_employee.id)
-        default = Request.default_get([])
+        default = Request.default_get(['template_id'])
         self.assertEqual(default['template_id'], template_employee_id)
         default['deadline'] = date.today() + relativedelta(months=1)
         request = Request.create(default)
@@ -187,7 +187,7 @@ class TestHrAppraisal(TransactionCase):
         """
         template_employee_id = self.env.ref('hr_appraisal.mail_template_appraisal_request_from_employee').id
         Request = self.Request.with_context(active_model='res.users', active_id=self.hr_employee.user_id.id)
-        default = Request.default_get([])
+        default = Request.default_get(['template_id'])
         self.assertEqual(default['template_id'], template_employee_id)
         # Check the recipient is the manager define on the employee
         self.assertEqual(default['recipient_ids'], self.manager.user_id.partner_id.ids)

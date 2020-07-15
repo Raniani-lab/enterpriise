@@ -16,17 +16,19 @@ class HmrcSendWizard(models.TransientModel):
         # Check obligations: should be logged in by now
         self.env['l10n_uk.vat.obligation'].import_vat_obligations()
 
-        obligations = self.env['l10n_uk.vat.obligation'].search([('status', '=', 'open')])
-        if not obligations:
-            raise UserError(_('You have no open obligations anymore'))
+        if 'obligation_id' in fields_list:
+            obligations = self.env['l10n_uk.vat.obligation'].search([('status', '=', 'open')])
+            if not obligations:
+                raise UserError(_('You have no open obligations anymore'))
 
-        date_from = fields.Date.from_string(self.env.context['options']['date']['date_from'])
-        date_to = fields.Date.from_string(self.env.context['options']['date']['date_to'])
-        for obl in obligations:
-            if obl.date_start == date_from and obl.date_end == date_to:
-                res['obligation_id'] = obl.id
-                break
-        res['message'] = not res.get('obligation_id')
+            date_from = fields.Date.from_string(self.env.context['options']['date']['date_from'])
+            date_to = fields.Date.from_string(self.env.context['options']['date']['date_to'])
+            for obl in obligations:
+                if obl.date_start == date_from and obl.date_end == date_to:
+                    res['obligation_id'] = obl.id
+                    break
+        if 'message' in fields_list:
+            res['message'] = not res.get('obligation_id')
         return res
 
     obligation_id = fields.Many2one('l10n_uk.vat.obligation', 'Obligation', domain=[('status', '=', 'open')], required=True)

@@ -10,14 +10,10 @@ class HrReferralSendMail(models.TransientModel):
     _name = 'hr.referral.send.mail'
     _description = 'Referral Send Mail'
 
-    @api.model
-    def default_get(self, fields):
-        result = super(HrReferralSendMail, self).default_get(fields)
-        if 'job_id' not in result:
-            result['job_id'] = self.env.context.get('active_id')
-        return result
-
-    job_id = fields.Many2one('hr.job', readonly=True)
+    job_id = fields.Many2one(
+        'hr.job', readonly=True,
+        default=lambda self: self.env.context.get('active_id', None),
+    )
     url = fields.Char("url", compute='_compute_url', readonly=True)
     email_to = fields.Char(string="Email", required=True)
     subject = fields.Char('Subject', default="Job for you")

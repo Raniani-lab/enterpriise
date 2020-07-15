@@ -18,10 +18,8 @@ class RequestAppraisal(models.TransientModel):
         if not self.env.user.email:
             raise UserError(_("Unable to post message, please configure the sender's email address."))
         result = super(RequestAppraisal, self).default_get(fields)
-        result.update({
-            'email_from': self.env.user.email_formatted,
-            'author_id': self.env.user.partner_id.id,
-        })
+        if not set(fields) & set(['employee_id', 'template_id', 'recipient_ids']):
+            return result
         if self.env.context.get('active_model') in ('hr.employee', 'hr.employee.public'):
             employee = self.env['hr.employee'].browse(self.env.context['active_id'])
             manager = employee.parent_id
@@ -74,8 +72,16 @@ class RequestAppraisal(models.TransientModel):
     template_id = fields.Many2one(
         'mail.template', 'Use template', index=True,
         domain="[('model', '=', 'hr.appraisal')]")
-    email_from = fields.Char('From', help="Email address of the sender", required=True)
-    author_id = fields.Many2one('res.partner', 'Author', help="Author of the message.", required=True)
+    email_from = fields.Char(
+        'From', required=True,
+        default=lambda self: self.env.user.email_formatted,
+        help="Email address of the sender",
+    )
+    author_id = fields.Many2one(
+        'res.partner', 'Author', required=True,
+        default=lambda self: self.env.user.partner_id.id,
+        help="Author of the message.",
+    )
     employee_id = fields.Many2one('hr.employee', 'Appraisal Employee')
     recipient_ids = fields.Many2many('res.partner', string='Recipients', required=True)
     deadline = fields.Date(string="Desired Deadline", required=True)

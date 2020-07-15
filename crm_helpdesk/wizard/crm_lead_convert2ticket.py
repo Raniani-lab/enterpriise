@@ -12,17 +12,17 @@ class CrmLeadConvert2Ticket(models.TransientModel):
     @api.model
     def default_get(self, fields):
         result = super(CrmLeadConvert2Ticket, self).default_get(fields)
-        if 'lead_id' in fields:
-            lead_id = result.get('lead_id') or self.env.context.get('active_id')
+        if 'partner_id' in fields:
+            lead_id = result.get('lead_id')
             if lead_id:
                 lead = self.env['crm.lead'].browse(lead_id)
-                result.update({
-                    'lead_id': lead.id,
-                    'partner_id': lead._find_matching_partner().id,
-                })
+                result['partner_id'] = lead._find_matching_partner().id
         return result
 
-    lead_id = fields.Many2one('crm.lead', string='Lead', domain=[('type', '=', 'lead')])
+    lead_id = fields.Many2one(
+        'crm.lead', string='Lead', domain=[('type', '=', 'lead')],
+        default=lambda self: self.env.context.get('active_id', None),
+    )
     partner_id = fields.Many2one('res.partner', 'Customer')
     team_id = fields.Many2one('helpdesk.team', string='Team', required=True)
     ticket_type_id = fields.Many2one('helpdesk.ticket.type', "Ticket Type")

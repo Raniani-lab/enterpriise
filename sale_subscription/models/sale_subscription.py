@@ -1354,9 +1354,10 @@ class SaleSubscriptionAlert(models.Model):
     @api.model
     def default_get(self, default_fields):
         res = super(SaleSubscriptionAlert, self).default_get(default_fields)
-        res['model_id'] = self.env['ir.model'].search([('model', '=', 'sale.subscription')]).id
-        res['model_name'] = 'sale.subscription'
-        res['trigger'] = 'on_create_or_write'
+        if 'model_id' in default_fields:
+            # model_id default cannot be specified at field level
+            # because model_id is an inherited field from base.automation
+            res['model_id'] = self.env['ir.model']._get_id('sale.subscription')
         return res
 
     automation_id = fields.Many2one('base.automation', 'Automated Action', required=True, ondelete='restrict')

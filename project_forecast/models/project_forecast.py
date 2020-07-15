@@ -18,7 +18,7 @@ class PlanningShift(models.Model):
     @api.model
     def default_get(self, fields):
         result = super(PlanningShift, self).default_get(fields)
-        if 'task_id' in result and 'project_id' not in result:
+        if 'project_id' in fields and 'task_id' in result and 'project_id' not in result:
             task_id = self.env['project.task'].browse(result['task_id'])
             result['project_id'] = task_id.project_id.id
         return result

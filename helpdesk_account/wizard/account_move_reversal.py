@@ -10,7 +10,7 @@ class AccountMoveReversal(models.TransientModel):
     @api.model
     def default_get(self, fields):
         result = super(AccountMoveReversal, self).default_get(fields)
-        ticket_id = self._context.get('default_helpdesk_ticket_id')
+        ticket_id = result.get('helpdesk_ticket_id')
         if ticket_id and 'reason' in fields:
             result['reason'] = _('Helpdesk Ticket #%s', ticket_id)
         return result

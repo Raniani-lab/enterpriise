@@ -76,7 +76,7 @@ odoo.define('mrp_workorder_navigation.tests', function (require) {
             await testUtils.dom.click($('button[name="open_tablet_view"]'));
             assert.containsOnce(actionManager, '.o_workorder_tablet', "tablet view should be opened");
             await testUtils.dom.click($('.btn.o_workorder_icon_btn'));
-            assert.strictEqual(actionManager.controllerStack.length, 2, "there should be two controllers in actionManager");
+            assert.strictEqual(actionManager.controllerStack.length, 1, "there should be only one controller in actionManager");
 
             actionManager.destroy();
         });

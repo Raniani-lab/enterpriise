@@ -127,15 +127,6 @@ class MrpProductionWorkcenterLine(models.Model):
         self.ensure_one()
         if self.is_user_working and self.working_state != 'blocked':
             self.button_pending()
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'mrp.workorder',
-            'views': [[self.env.ref('mrp.mrp_production_workorder_tree_editable_view').id, 'tree']],
-            'res_id': self.id,
-            'name': _('Work orders'),
-            'domain': [('production_id', 'in', self.production_id.procurement_group_id.mrp_production_ids.ids)],
-            'target': 'main',
-        }
 
     def action_cancel(self):
         self.mapped('check_ids').filtered(lambda c: c.quality_state == 'none').sudo().unlink()

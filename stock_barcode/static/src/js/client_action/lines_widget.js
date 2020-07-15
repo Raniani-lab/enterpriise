@@ -554,7 +554,13 @@ var LinesWidget = Widget.extend({
                 if (qty != 1) {
                     $button.data('reserved', qty);
                     if ($button.attr('shortcutKey')) {
-                        $button.html(`+ ${qty}` + "<br/>" + $button.attr('shortcutKey'));
+                        // Make sure shortcut still doesn't show when incrementing a product
+                        if ($button.find(":first-child").is(":hidden")) {
+                            $button.html(`+ ${qty}` + "<span><br/>" + $button.attr('shortcutKey') + "</span>");
+                            $button.find(":first-child").hide();
+                        } else {
+                            $button.html(`+ ${qty}` + "<span><br/>" + $button.attr('shortcutKey') + "</span>");
+                        }
                     } else {
                         $button.text(`+ ${qty}`);
                     }
@@ -584,6 +590,14 @@ var LinesWidget = Widget.extend({
         });
     },
 
+    /**
+     * Assignment function for keyboard shortcuts for increment buttons. Some hacking is required
+     * due to dynamic display of letters based on whether "Shift" is pushed or not. Order of the
+     * assigned letters is based on user setting and only uses the 26 English letters regardless
+     * of selected keyboard
+     *
+     * @private
+     */
     _assignKeyboardShortcuts: function ($lines) {
         let candidateLetters;
         if (this.keyboard_layout === 'qwerty') {
@@ -601,12 +615,13 @@ var LinesWidget = Widget.extend({
 
                 if (addUnit.length || otherButton.length) {
                     let shortcutKey = candidateLetters[letterIndex];
-                    addUnit.addClass('o_has_shortcut');
                     addUnit.attr('shortcutKey', shortcutKey);
-                    addUnit.html(addUnit.text() + "<br/>" + shortcutKey);
-                    otherButton.addClass('o_has_shortcut');
+                    addUnit.html(addUnit.text() + "<span><br/>" + shortcutKey + "</span>");
+                    // dynamically set css to handle centering text when letters appear/disappear (i.e. "Shift is pushed")
+                    addUnit.addClass("o_shortcut_displayed");
                     otherButton.attr('shortcutKey', shortcutKey.toUpperCase());
-                    otherButton.html(otherButton.text() + "<br/>" + shortcutKey.toUpperCase());
+                    otherButton.html(otherButton.text() + "<span><br/>" +  shortcutKey.toUpperCase() + "</span>");
+                    otherButton.children(":first").hide();
                     letterIndex++;
                 }
                 if (letterIndex >= candidateLetters.length) {

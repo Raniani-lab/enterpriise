@@ -100,6 +100,7 @@ var ClientAction = AbstractAction.extend({
         this.$('.o_content').addClass('o_barcode_client_action');
         core.bus.on('barcode_scanned', this, this._onBarcodeScannedHandler);
         this._onKeyDown = this._onKeyDown.bind(this);
+        this._onKeyUp = this._onKeyUp.bind(this);
         this._toggleKeyEvents(true);
 
         this.headerWidget = new HeaderWidget(this);
@@ -974,8 +975,10 @@ var ClientAction = AbstractAction.extend({
     _toggleKeyEvents: function (mustBeActive) {
         if (mustBeActive) {
             document.addEventListener('keydown', this._onKeyDown);
+            document.addEventListener('keyup', this._onKeyUp);
         } else {
             document.removeEventListener('keydown', this._onKeyDown);
+            document.removeEventListener('keyup', this._onKeyUp);
         }
     },
 
@@ -1908,10 +1911,12 @@ var ClientAction = AbstractAction.extend({
    },
 
     /**
-     * Listens for a letter being clicked to trigger corresponding product increment button.
+     * Listens for:
+     * 1. Shift being pushed to display capitalized letters only
+     * 2. Letter being clicked to trigger corresponding product increment button.
      *
      * Assumptions:
-     * - We don't need to indicate Caps Lock is active without warning user because it's a huge pain to detect
+     * - We don't need to worry about Caps Lock being active because it's a huge pain to detect
      *   and probably can't be until the first letter is pushed.
      * - We don't need to hide the letters when "Alt" is pushed (i.e. when accesskeys are displayed)
      *   because of weird interactions that the accesskey logic sometimes causes (e.g. when 'alt' is
@@ -1922,14 +1927,50 @@ var ClientAction = AbstractAction.extend({
      * @param {KeyboardEvent} keyDownEvent
      */
     _onKeyDown: function (keyDownEvent) {
-        if (this.linesWidget) {
-            if (!keyDownEvent.repeat && !keyDownEvent.ctrlKey &&
-                !keyDownEvent.altKey && !keyDownEvent.metaKey &&
-                "abcdefghijklmnopqrstuvwxyz".includes(keyDownEvent.key.toLowerCase())) {
-                let $button = this.$el.find('[shortcutKey="' + keyDownEvent.key + '"]');
+        if (this.linesWidget &&
+            !keyDownEvent.repeat && !keyDownEvent.ctrlKey &&
+            !keyDownEvent.altKey && !keyDownEvent.metaKey) {
+            if (keyDownEvent.key === "Shift") {
+                const addUnits = this.$el.find('.o_add_unit');
+                const otherButtons = this.$el.find('.o_add_reserved, .o_remove_unit');
+                addUnits.find(":first-child").hide();
+                addUnits.removeClass("o_shortcut_displayed");
+                otherButtons.find(":first-child").show();
+                otherButtons.addClass("o_shortcut_displayed");
+            }
+            else if ("abcdefghijklmnopqrstuvwxyz".includes(keyDownEvent.key.toLowerCase())) {
+                let $button;
+                // ignore if caps lock is on because displayed letters are only based on shift
+                if (keyDownEvent.shiftKey) {
+                    $button = this.$el.find('[shortcutKey="' + keyDownEvent.key.toUpperCase() + '"]');
+                } else {
+                    $button = this.$el.find('[shortcutKey="' + keyDownEvent.key.toLowerCase() + '"]');
+                }
                 if ($button.length && $button.is(":visible")) {
                     $button[0].click();
                 }
+            }
+        }
+    },
+
+    /**
+     * Listens for shift being released to only display lowercase letters. There's no
+     * reliable way to distinguish between 1 or 2 shift buttons being pushed (without
+     * a tedious tracking variable), so let's assume the user won't push both down at
+     * the same time and still expect it to work properly.
+     *
+     * @private
+     * @param {KeyboardEvent} keyUpEvent
+     */
+    _onKeyUp: function (keyUpEvent) {
+        if (this.linesWidget) {
+            if (keyUpEvent.key === 'Shift') {
+                const addUnits = this.$el.find('.o_add_unit');
+                const otherButtons = this.$el.find('.o_add_reserved, .o_remove_unit');
+                addUnits.find(":first-child").show();
+                addUnits.addClass("o_shortcut_displayed");
+                otherButtons.find(":first-child").hide();
+                otherButtons.removeClass("o_shortcut_displayed");
             }
         }
     },

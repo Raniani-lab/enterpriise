@@ -3536,6 +3536,7 @@ tour.register('test_picking_keyboard_shortcuts', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
+            helper.triggerKeydown("Shift");
             helper.triggerKeydown("W", true);
             helper.assertLineButtonsAreVisible(1, false);
             helper.assertLineQuantityOnReservedQty(1, '3 / 3');

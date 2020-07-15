@@ -1,4 +1,4 @@
-odoo.define("documents_spreadsheet.pivot_utils", function (require) {
+ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
     "use strict";
 
     /**
@@ -43,6 +43,7 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
      * @param {Function} rpc Rpc function to use
      */
     async function createPivotCache(pivot, rpc) {
+        const groupBys = pivot.rowGroupBys.concat(pivot.colGroupBys)
         const readGroupRPC = rpc({
             model: pivot.model,
             method: "read_group",
@@ -51,7 +52,7 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
             fields: pivot.measures.map((elt) =>
                 elt.field === "__count" ? elt.field : elt.field + ":" + elt.operator
             ),
-            groupBy: pivot.rowGroupBys.concat(pivot.colGroupBys),
+            groupBy: groupBys,
             lazy: false,
         });
         const fieldsGetRPC = rpc({
@@ -64,10 +65,11 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
             fields: ["name"],
             domain: [["model", "=", pivot.model]],
         });
-        const resultGB = await readGroupRPC;
         const resultFG = await fieldsGetRPC;
+        const resultGB = await readGroupRPC;
         const resultSR = await searchReadRPC;
-        pivot.cache = _createCache(resultGB, resultFG, resultSR, pivot);
+
+        pivot.cache = await _createCache(resultGB, resultFG, resultSR, pivot, rpc);
     }
     /**
      * Fill the cache of the pivot object given
@@ -202,7 +204,7 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
      * @private
      * @returns {PivotCache} Cache for pivot object
      */
-    function _createCache(readGroupResult, fieldsGetResult, searchReadResult, pivot) {
+    async function _createCache(readGroupResult, fieldsGetResult, searchReadResult, pivot, rpc) {
         const groupBys = {};
         const labels = {};
         const values = [];
@@ -219,7 +221,6 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
                 value[field] = readGroup[field];
             }
             value["count"] = readGroup["__count"];
-
             const index = values.push(value) - 1;
             for (let fieldName of fieldNames) {
                 const { label, id } = _formatValue(fieldName, readGroup[fieldName], fieldsGetResult);
@@ -231,22 +232,106 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
                 groupBys[fieldName] = groupBy;
             }
         }
+        const orderedValues = await _getOrderedValues(pivot, groupBys, fieldsGetResult, rpc);
+        const orderedMeasureIds = {};
+        for (const fieldName of fieldNames) {
+            orderedMeasureIds[fieldName] = orderedValues[fieldName].map((value) => [value, groupBys[fieldName][value] || []]);
+        }
+
         const measures = pivot.measures.map((m) => m.field);
         const modelLabel = searchReadResult[0] && searchReadResult[0].name;
-        const rows = _createRows(pivot.rowGroupBys, groupBys);
-        const cols = _createCols(pivot.colGroupBys, groupBys, measures);
+        const rows = _createRows(pivot.rowGroupBys, orderedMeasureIds);
+        const cols = _createCols(pivot.colGroupBys, orderedMeasureIds, measures);
         const colStructure = pivot.colGroupBys.slice();
         colStructure.push("measure");
         return new PivotCache({
             cols,
             colStructure,
             fields: fieldsGetResult,
-            groupBys,
+            orderedMeasureIds,
             labels,
             modelLabel,
             rows,
             values,
         });
+    }
+
+    /**
+     * Return all possible values for each grouped field. Values are ordered according
+     * to the read group result.
+     * e.g.
+     *  {
+     *      field1: [value1, value2, value3],
+     *      field2: [value1, value2],
+     *  }
+     * @param {Object} params rpc params
+     * @param {string} params.model model name
+     * @param {Object} params.context
+     * @param {Object} groupBys
+     * @param {Object} fields
+     * @param {Function} rpc
+     * @returns {Object}
+     */
+    async function _getOrderedValues({ model, context }, groupBys, fields, rpc) {
+        return Object.fromEntries(
+            await Promise.all(
+                Object.entries(groupBys).map(async ([groupBy, measures]) => {
+                    const [fieldName, aggregationFunction] = groupBy.split(":");
+                    const field = fields[fieldName];
+                    let values = Object.keys(measures);
+                    const hasUndefined = values.includes("false");
+                    values = ["date", "datetime"].includes(field.type)
+                        ? _orderDateValues(values.filter((value) => value !== "false"), aggregationFunction)
+                        : await _orderValues(values, fieldName, field, model, context, rpc);
+                    if (hasUndefined && field.type !== "boolean") {
+                        values.push("false");
+                    }
+                    return [groupBy, values];
+                })
+            )
+        );
+    }
+
+    /**
+     * Sort date and datetime aggregated values.
+     * @param {Array<string>} values
+     * @param {string} aggregationFunction
+     * @returns {Array<string>}
+     */
+    function _orderDateValues(values, aggregationFunction) {
+        return aggregationFunction === "quarter"
+            ? values.sort()
+            : values
+                  .map((value) => moment(value, formats[aggregationFunction].out))
+                  .sort((a, b) => a - b)
+                  .map((value) => value.format(formats[aggregationFunction].out));
+    }
+
+    /**
+     * Order values according to a search_read result.
+     * @param {Array} values
+     * @param {string} fieldName
+     * @param {Object} field
+     * @param {string} model
+     * @param {Object} context
+     * @param {Function} rpc
+     * @returns {Array}
+     */
+    async function _orderValues(values, fieldName, field, model, context, rpc) {
+        const requestField = field.relation ? "id" : fieldName;
+        values = ["boolean", "many2one", "integer", "float"].includes(field.type)
+            ? values.map((value) => JSON.parse(value))
+            : values;
+        const records = await rpc({
+            model: field.relation ? field.relation : model,
+            domain: [[requestField, "in", values]],
+            context,
+            method: "search_read",
+            fields: [requestField],
+            // orderby is omitted for relational fields on purpose to have the default order of the model
+            orderBy: field.relation ? false : [{name: fieldName, asc: true}]
+        });
+        return [...new Set(records.map((record) => record[requestField].toString()))];
     }
     /**
      * Create the columns structure
@@ -313,7 +398,8 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
         if (field && ["date", "datetime"].includes(field.type) && group && value) {
             const fIn = formats[group]["in"];
             const fOut = formats[group]["out"];
-            id = moment(value, fIn).format(fOut);
+            const date = moment(value, fIn)
+            id = date.isValid() ? date.format(fOut) : false;
             label = id;
         }
         return { label, id };
@@ -355,15 +441,13 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
             }
             return;
         }
-        for (let [id, vals] of Object.entries(values[field] || {})) {
+        for (let [id, vals] of values[field] || []) {
             let ids = currentIds ? _intersect(currentIds, vals) : vals;
-            if (ids.length !== 0) {
-                const row = currentRow.slice();
-                const col = currentCol.slice();
-                row.push(id);
-                col.push(row);
-                _fillColumns(cols, row, col, groupBys.slice(1), measures, values, ids);
-            }
+            const row = currentRow.slice();
+            const col = currentCol.slice();
+            row.push(id);
+            col.push(row);
+            _fillColumns(cols, row, col, groupBys.slice(1), measures, values, ids);
         }
     }
     /**
@@ -382,14 +466,12 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
             return;
         }
         const fieldName = groupBys[0];
-        for (let [id, vals] of Object.entries(values[fieldName] || {})) {
+        for (let [id, vals] of values[fieldName] || []) {
             let ids = currentIds ? _intersect(currentIds, vals) : vals;
-            if (ids.length !== 0) {
-                const row = currentRow.slice();
-                row.push(id);
-                rows.push(row);
-                _fillRows(rows, row, groupBys.slice(1), values, ids);
-            }
+            const row = currentRow.slice();
+            row.push(id);
+            rows.push(row);
+            _fillRows(rows, row, groupBys.slice(1), values, ids);
         }
     }
     /**

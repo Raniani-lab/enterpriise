@@ -46,26 +46,48 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
             /**
              * Link between a given group and measures falling in that group.
              * e.g. group with partner=10 contains the measure referenced by 4,
-             * the group with no partner (=false) contains measures referenced by 0, 1, 2, 3 and 5.
+             * the group with no partner (=false) contains measures referenced by 1, 2 and 3.
              * {
-             *      partner: {
-             *          10: [4],
-             *          11: [0],
-             *          12: [6, 5],
-             *          false: [1, 2, 3],
-             *      },
-             *      "create_date:day" : {
-             *          10/07/2020: [5],
-             *          15/07/2020: [6],
-             *          16/07/2020: [0, 3, 4],
-             *          17/05/2020: [1],
-             *          17/06/2020: [2],
-             *      },
+             *      partner: [
+             *          [10, [4]],
+             *          [11, [0]],
+             *          [12, [6, 5]],
+             *          [false, [1, 2, 3]],
+             *      ],
+             *      "create_date:day" : [
+             *          ["10/07/2020", [5]],
+             *          ["15/07/2020", [6]],
+             *          ["16/07/2020", [0, 3, 4]],
+             *          ["17/05/2020", [1]],
+             *          ["17/06/2020", [2]],
+             *      ],
              *      stage: ...,
              *      country: ...,
              * }
              */
-            this._groupBys = data.groupBys;
+            this._orderedMeasureIds = data.orderedMeasureIds;
+
+            /**
+             * All possible values for each fields.
+             * {
+             *      partner: [10, 11, 12, false],
+             *      "create_date:day": [
+             *          "10/07/2020",
+             *          "15/07/2020",
+             *          "16/07/2020",
+             *          "17/05/2020",
+             *          "17/06/2020",
+             *      ]
+             *      stage: ...,
+             *      country: ...,
+             * }
+             */
+            this._fieldValues = {};
+            for (let fieldName of Object.keys(this._orderedMeasureIds)) {
+                this._fieldValues[fieldName] = this._orderedMeasureIds[fieldName].map(
+                    ([fieldValue]) => fieldValue
+                );
+            }
 
             /**
              * Display name of many2one records. Useless for non many2one fields.
@@ -162,7 +184,7 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
          * @returns {Array<string>}
          */
         getFieldValues(fieldName) {
-            return Object.keys(this._groupBys[fieldName]);
+            return this._fieldValues[fieldName];
         }
 
         /**
@@ -322,7 +344,7 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
                 cols: this._cols,
                 colStructure: this._colStructure,
                 fields: this._fields,
-                groupBys: this._groupBys,
+                orderedMeasureIds: this._orderedMeasureIds,
                 labels: labels,
                 modelLabel: this._modelLabel,
                 rows: this._rows,
@@ -350,19 +372,23 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
             let i = 0;
             while (i < domain.length && returnValue.length) {
                 const field = toString(domain[i]);
-                if (!(field in this._groupBys)) {
+                if (!(field in this._orderedMeasureIds)) {
                     return [];
                 }
                 const value = toString(domain[i + 1]);
-                if (!(value in this._groupBys[field])) {
+                if (!this._fieldValues[field].includes(value)) {
                     return [];
                 }
-                const dimension = this._groupBys[field] && this._groupBys[field][value];
-                returnValue = dimension.filter((x) => returnValue.includes(x));
+                const [, measureIds] =
+                   field in this._orderedMeasureIds &&
+                   this._orderedMeasureIds[field]
+                       .find(([fieldValue,]) => fieldValue === value);
+               returnValue = measureIds.filter((x) => returnValue.includes(x));
                 i += 2;
             }
             return returnValue;
         }
+
         /**
          * Process the values computed to return one value
          *

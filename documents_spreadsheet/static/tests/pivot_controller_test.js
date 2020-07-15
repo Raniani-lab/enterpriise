@@ -137,6 +137,29 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 pivot.destroy();
             });
 
+            QUnit.test("groupby week is sorted", async function (assert) {
+                assert.expect(3);
+
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="date" interval="week" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivot._getSpreadsheetModel();
+                const cells = model.getters.getSheets()[0].cells
+                assert.strictEqual(cells["A3"].content, `=PIVOT.HEADER("1","date:week","16/2016")`);
+                assert.strictEqual(cells["A4"].content, `=PIVOT.HEADER("1","date:week","44/2016")`);
+                assert.strictEqual(cells["A5"].content, `=PIVOT.HEADER("1","date:week","51/2016")`);
+                pivot.destroy();
+            });
+
             QUnit.test("simple pivot export with two measures", async function (assert) {
                 assert.expect(11);
 
@@ -191,8 +214,8 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const spreadsheetData = JSON.parse(data);
                 const cells = spreadsheetData["sheets"][0]["cells"];
                 assert.strictEqual(Object.keys(cells).length, 29);
-                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1","bar","true")');
-                assert.strictEqual(cells["A4"].content, '=PIVOT.HEADER("1","bar","false")');
+                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1","bar","false")');
+                assert.strictEqual(cells["A4"].content, '=PIVOT.HEADER("1","bar","true")');
                 assert.strictEqual(cells["A5"].content, '=PIVOT.HEADER("1")');
                 assert.strictEqual(
                     cells["B2"].content,
@@ -200,7 +223,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 );
                 assert.strictEqual(
                     cells["C3"].content,
-                    '=PIVOT("1","probability","bar","true","foo","2")'
+                    '=PIVOT("1","probability","bar","false","foo","2")'
                 );
                 assert.strictEqual(cells["F5"].content, '=PIVOT("1","probability")');
                 const merges = spreadsheetData["sheets"][0]["merges"];
@@ -209,8 +232,8 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 pivot.destroy();
             });
 
-            QUnit.test("pivot with two levels of group bys", async function (assert) {
-                assert.expect(9);
+            QUnit.test("pivot with two levels of group bys in rows", async function (assert) {
+                assert.expect(10);
 
                 const pivot = await createView({
                     View: PivotView,
@@ -230,24 +253,153 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const data = await pivot._getSpreadsheetData();
                 const spreadsheetData = JSON.parse(data);
                 const cells = spreadsheetData["sheets"][0]["cells"];
-                assert.strictEqual(Object.keys(cells).length, 15);
-                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1","bar","true")');
+                assert.strictEqual(Object.keys(cells).length, 17);
+                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1","bar","false")');
                 assert.strictEqual(cells["A3"].style, 3);
                 assert.strictEqual(
                     cells["A4"].content,
-                    '=PIVOT.HEADER("1","bar","true","product_id","37")'
+                    '=PIVOT.HEADER("1","bar","false","product_id","37")'
                 );
                 assert.strictEqual(cells["A4"].style, 2);
                 assert.strictEqual(
                     cells["A5"].content,
-                    '=PIVOT.HEADER("1","bar","true","product_id","41")'
-                );
-                assert.strictEqual(cells["A6"].content, '=PIVOT.HEADER("1","bar","false")');
-                assert.strictEqual(
-                    cells["A7"].content,
                     '=PIVOT.HEADER("1","bar","false","product_id","41")'
                 );
-                assert.strictEqual(cells["A8"].content, '=PIVOT.HEADER("1")');
+                assert.strictEqual(cells["A6"].content, '=PIVOT.HEADER("1","bar","true")');
+                assert.strictEqual(
+                    cells["A7"].content,
+                    '=PIVOT.HEADER("1","bar","true","product_id","37")'
+                );
+                assert.strictEqual(
+                    cells["A8"].content,
+                    '=PIVOT.HEADER("1","bar","true","product_id","41")'
+                );
+                assert.strictEqual(cells["A9"].content, '=PIVOT.HEADER("1")');
+                pivot.destroy();
+            });
+
+            QUnit.test("verify that there is a record for an undefined header", async function (assert) {
+                assert.expect(1);
+                this.data.partner.records = [{
+                    id: 1,
+                    foo: 12,
+                    bar: true,
+                    date: "2016-04-14",
+                    product_id: false,
+                    probability: 10,
+                }];
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="product_id" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const data = await pivot._getSpreadsheetData();
+                const spreadsheetData = JSON.parse(data);
+                const cells = spreadsheetData["sheets"][0]["cells"];
+                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1","product_id","false")');
+                pivot.destroy();
+            });
+
+            QUnit.test("undefined date is inserted in pivot", async function (assert) {
+                assert.expect(1);
+                this.data.partner.records = [{
+                    id: 1,
+                    foo: 12,
+                    bar: true,
+                    date: false,
+                    product_id: 37,
+                    probability: 10,
+                }];
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="date" interval="day" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const data = await pivot._getSpreadsheetData();
+                const spreadsheetData = JSON.parse(data);
+                const cells = spreadsheetData["sheets"][0]["cells"];
+                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1","date:day","false")');
+                pivot.destroy();
+            });
+
+            QUnit.test("pivot with two levels of group bys in cols", async function (assert) {
+                assert.expect(14);
+
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="bar" type="col"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                await testUtils.dom.click(pivot.$("thead .o_pivot_header_cell_closed:first"));
+                await testUtils.dom.click(
+                    pivot.$('.o_pivot_field_menu .dropdown-item[data-field="product_id"]:first')
+                );
+                const data = await pivot._getSpreadsheetData();
+                const spreadsheetData = JSON.parse(data);
+                const cells = spreadsheetData["sheets"][0]["cells"];
+
+                assert.strictEqual(Object.keys(cells).length, 23);
+                assert.strictEqual(cells["A1"].content, '');
+                assert.strictEqual(cells["A4"].style, 3);
+                assert.strictEqual(
+                    cells["B1"].content,
+                    '=PIVOT.HEADER("1","bar","false")',
+                );
+                assert.strictEqual(
+                    cells["B2"].content,
+                    '=PIVOT.HEADER("1","bar","false","product_id","37")',
+                );
+                assert.strictEqual(
+                    cells["B3"].content,
+                    '=PIVOT.HEADER("1","bar","false","product_id","37","measure","probability")',
+                );
+                assert.strictEqual(cells["C2"].style, 3);
+                assert.strictEqual(
+                    cells["C2"].content,
+                    '=PIVOT.HEADER("1","bar","false","product_id","41")',
+                );
+                assert.strictEqual(
+                    cells["C3"].content,
+                    '=PIVOT.HEADER("1","bar","false","product_id","41","measure","probability")',
+                );
+                assert.strictEqual(
+                    cells["D1"].content,
+                    '=PIVOT.HEADER("1","bar","true")',
+                );
+                assert.strictEqual(
+                    cells["D2"].content,
+                    '=PIVOT.HEADER("1","bar","true","product_id","37")',
+                );
+                assert.strictEqual(
+                    cells["D3"].content,
+                    '=PIVOT.HEADER("1","bar","true","product_id","37","measure","probability")',
+                );
+                assert.strictEqual(
+                    cells["E2"].content,
+                    '=PIVOT.HEADER("1","bar","true","product_id","41")'
+                );
+                assert.strictEqual(
+                    cells["E3"].content,
+                    '=PIVOT.HEADER("1","bar","true","product_id","41","measure","probability")'
+                );
                 pivot.destroy();
             });
 
@@ -310,7 +462,8 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 );
                 const data = await pivot._getSpreadsheetData();
                 const spreadsheetData = JSON.parse(data);
-                assert.equal(spreadsheetData.sheets[0].colNumber, 41);
+                // 37 products * 2 groups + 1 row header + 1 total col + 1 extra empty col at the end
+                assert.equal(spreadsheetData.sheets[0].colNumber, 77);
                 pivot.destroy();
             });
 

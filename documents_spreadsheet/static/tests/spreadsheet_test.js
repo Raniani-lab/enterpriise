@@ -405,7 +405,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
             this.data.partner.records = [...this.data.partner.records, {
                 id: 3,
                 foo: 1,
-                bar: 111, // <- new row value in the pivot
+                bar: 7, // <- new row value in the pivot
                 probability: 15,
                 name: "name",
                 display_name: "name",
@@ -414,9 +414,9 @@ odoo.define("web.spreadsheet_tests", function (require) {
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
-            assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","110","foo","1")`,
+            assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","7","foo","1")`,
                 "It should contain a pivot formula");
-            assert.equal(model.getters.getCell(4, 10).content, `=PIVOT("1","probability","bar","111","foo","1")`,
+            assert.equal(model.getters.getCell(4, 10).content, `=PIVOT("1","probability","bar","110","foo","1")`,
                 "It should contain a new row");
             actionManager.destroy();
         });

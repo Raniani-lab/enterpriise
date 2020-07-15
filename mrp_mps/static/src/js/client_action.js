@@ -75,9 +75,11 @@ var ClientAction = AbstractAction.extend({
     },
 
     start: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            self.update_cp();
+        return this._super(...arguments).then(() => {
+            if (this.state.length == 0) {
+                this.$el.find('.o_mrp_mps').append($(QWeb.render('mrp_mps_nocontent_helper')));
+            }
+            this.update_cp();
         });
     },
 
@@ -566,6 +568,7 @@ var ClientAction = AbstractAction.extend({
      */
     _onClickCreate: function (ev) {
         ev.stopPropagation();
+        this.$el.find('.o_view_nocontent').remove();
         this._createProduct();
     },
 

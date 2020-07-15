@@ -287,8 +287,25 @@
         </field>
     </record>
 
+    <!-- override to change the no content image -->
+    <record model="ir.actions.act_window" id="mrp.mrp_workorder_todo">
+        <field name="help" type="html">
+          <p class="o_view_nocontent_workorder">
+            No work orders to do!
+          </p><p>
+            Work orders are operations to do as part of a manufacturing order.
+            Operations are defined in the bill of materials or added in the manufacturing order directly.
+          </p><p>
+            Use the table work center control panel to register operations in the shop floor directly.
+            The tablet provides worksheets for your workers and allow them to scrap products, track time,
+            launch a maintenance request, perform quality tests, etc.
+          </p>
+        </field>
+    </record>
+
     <template id="quality_check_view_form_css" name="quality.check.view.form.css" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/mrp_workorder/static/src/scss/empty_screen.scss"/>
             <link rel="stylesheet" type="text/scss" href="/mrp_workorder/static/src/scss/tablet_view.scss"/>
             <script type="text/javascript" src="/mrp_workorder/static/src/js/mrp_workorder.js"></script>
             <script type="text/javascript" src="/mrp_workorder/static/src/js/pdf_viewer_no_reload.js"></script>

@@ -87,26 +87,12 @@ var DashboardController = AbstractController.extend({
      */
     _onReload: async function (ev) {
         ev.stopPropagation();
-
-        /*
-        * If we do not have a control panel, this method
-        * will not work. e.g. user dashboard
-        */
-        if (!this._controlPanelWrapper) {
-            return this.do_warn(false, _t("Cannot apply a filter from this view"));
-        }
-
-        var newFilters = [];
+        const dashboardDomain = {};
         if (ev.data.domain && ev.data.domain.length) {
-            newFilters.push({
-                type: 'filter',
-                domain: Domain.prototype.arrayToString(ev.data.domain),
-                description: ev.data.domainLabel
-            });
+            dashboardDomain.domain = Domain.prototype.arrayToString(ev.data.domain);
+            dashboardDomain.label = ev.data.domainLabel;
         }
-        var filtersToRemove = this.currentFilterIDs || [];
-        this.currentFilterIDs = await this.searchModel.dispatch(
-                                    'updateFilters', newFilters, filtersToRemove);
+        this.searchModel.dispatch("updateDashboardDomain", dashboardDomain);
     },
 });
 

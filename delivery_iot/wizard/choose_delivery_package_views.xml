@@ -8,7 +8,6 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='package_weight']" position="after">
                 <field name="iot_ip" invisible="1"/>
-                <field name="picking_id" invisible="1"/>
                 <field name="available_scale_ids" invisible="1"/>
                 <field name="iot_device_identifier" invisible="1"/>
                 <field name="manual_measurement" invisible="1"/>

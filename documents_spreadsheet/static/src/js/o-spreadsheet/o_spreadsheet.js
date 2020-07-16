@@ -5172,7 +5172,7 @@
             }
         }
         pasteZone(width, height, col, row) {
-            const { cols, rows } = this.workbook;
+            const { cols, rows } = this.workbook.activeSheet;
             // first, add missing cols/rows if needed
             const missingRows = height + row - rows.length;
             if (missingRows > 0) {
@@ -5210,7 +5210,7 @@
             }
         }
         pasteCell(origin, col, row, cut) {
-            const { cols, rows } = this.workbook;
+            const { cols, rows } = this.workbook.activeSheet;
             const targetCell = this.getters.getCell(col, row);
             if (origin) {
                 let content = origin.content || "";
@@ -5511,7 +5511,7 @@
             const zone = toZone(range);
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
-                    const cell = this.workbook.rows[row].cells[col];
+                    const cell = this.workbook.activeSheet.rows[row].cells[col];
                     if (cell && cell.value && !Number.isNaN(Number.parseFloat(cell.value))) {
                         const r = Math.round(((rule.minimum.color >> 16) % 256) - colorDiffUnitR * (cell.value - minValue));
                         const g = Math.round(((rule.minimum.color >> 8) % 256) - colorDiffUnitG * (cell.value - minValue));
@@ -5552,7 +5552,7 @@
                                 for (let row = zone.top; row <= zone.bottom; row++) {
                                     for (let col = zone.left; col <= zone.right; col++) {
                                         const pr = this.rulePredicate[cf.rule.type];
-                                        let cell = this.workbook.rows[row].cells[col];
+                                        let cell = this.workbook.activeSheet.rows[row].cells[col];
                                         let xc = toXC(col, row);
                                         if (pr && pr(cell, cf.rule)) {
                                             // we must combine all the properties of all the CF rules applied to the given cell
@@ -5675,9 +5675,8 @@
     class CorePlugin extends BasePlugin {
         constructor() {
             super(...arguments);
-            this.width = 0;
-            this.height = 0;
             this.sheetIds = {};
+            this.showFormulas = false;
         }
         // ---------------------------------------------------------------------------
         // Command Handling
@@ -5685,11 +5684,11 @@
         allowDispatch(cmd) {
             switch (cmd.type) {
                 case "REMOVE_COLUMNS":
-                    return this.workbook.cols.length > cmd.columns.length
+                    return this.workbook.activeSheet.cols.length > cmd.columns.length
                         ? { status: "SUCCESS" }
                         : { status: "CANCELLED", reason: 5 /* NotEnoughColumns */ };
                 case "REMOVE_ROWS":
-                    return this.workbook.rows.length > cmd.rows.length
+                    return this.workbook.activeSheet.rows.length > cmd.rows.length
                         ? { status: "SUCCESS" }
                         : { status: "CANCELLED", reason: 6 /* NotEnoughRows */ };
                 case "CREATE_SHEET":
@@ -5704,7 +5703,7 @@
         handle(cmd) {
             switch (cmd.type) {
                 case "ACTIVATE_SHEET":
-                    this.activateSheet(cmd.to);
+                    this.history.updateState(["activeSheet"], this.workbook.sheets[cmd.to]);
                     break;
                 case "CREATE_SHEET":
                     const sheet = this.createSheet(cmd.name || `Sheet${this.workbook.visibleSheets.length + 1}`, cmd.cols || 26, cmd.rows || 100);
@@ -5719,7 +5718,7 @@
                 case "SET_VALUE":
                     const [col, row] = toCartesian(cmd.xc);
                     this.dispatch("UPDATE_CELL", {
-                        sheet: cmd.sheet ? cmd.sheet : this.workbook.activeSheet.id,
+                        sheet: cmd.sheetId ? cmd.sheetId : this.workbook.activeSheet.id,
                         col,
                         row,
                         content: cmd.text,
@@ -5743,7 +5742,7 @@
                     for (let col of cmd.cols) {
                         const size = this.getColMaxWidth(col);
                         if (size !== 0) {
-                            this.setColSize(col, size + 2 * MIN_PADDING);
+                            this.setColSize(cmd.sheet, col, size + 2 * MIN_PADDING);
                         }
                     }
                     break;
@@ -5751,71 +5750,91 @@
                     for (let col of cmd.rows) {
                         const size = this.getRowMaxHeight(col);
                         if (size !== 0) {
-                            this.setRowSize(col, size + 2 * MIN_PADDING);
+                            this.setRowSize(cmd.sheet, col, size + 2 * MIN_PADDING);
                         }
                     }
                     break;
                 case "RESIZE_COLUMNS":
                     for (let col of cmd.cols) {
-                        this.setColSize(col, cmd.size);
+                        this.setColSize(cmd.sheet, col, cmd.size);
                     }
                     break;
                 case "RESIZE_ROWS":
                     for (let row of cmd.rows) {
-                        this.setRowSize(row, cmd.size);
+                        this.setRowSize(cmd.sheet, row, cmd.size);
                     }
                     break;
                 case "REMOVE_COLUMNS":
                     this.removeColumns(cmd.sheet, cmd.columns);
+                    this.history.updateState(["activeSheet", "colNumber"], this.workbook.activeSheet.colNumber - cmd.columns.length);
                     break;
                 case "REMOVE_ROWS":
                     this.removeRows(cmd.sheet, cmd.rows);
+                    this.history.updateState(["activeSheet", "rowNumber"], this.workbook.activeSheet.rowNumber - cmd.rows.length);
                     break;
                 case "ADD_COLUMNS":
                     this.addColumns(cmd.sheet, cmd.column, cmd.position, cmd.quantity);
+                    this.history.updateState(["activeSheet", "colNumber"], this.workbook.activeSheet.colNumber + cmd.quantity);
                     break;
                 case "ADD_ROWS":
                     this.addRows(cmd.sheet, cmd.row, cmd.position, cmd.quantity);
+                    this.history.updateState(["activeSheet", "rowNumber"], this.workbook.activeSheet.rowNumber + cmd.quantity);
+                    break;
+                case "SET_FORMULA_VISIBILITY":
+                    this.showFormulas = cmd.show;
                     break;
             }
         }
         // ---------------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------------
-        getCell(col, row) {
-            const r = this.workbook.rows[row];
+        getCell(col, row, sheetName) {
+            let r;
+            if (!sheetName) {
+                r = this.workbook.activeSheet.rows[row];
+            }
+            else {
+                const sheet = Object.values(this.workbook.sheets).find((x) => x.name === sheetName);
+                if (sheet) {
+                    r = sheet.rows[row];
+                }
+                else {
+                    return null;
+                }
+            }
             return r ? r.cells[col] || null : null;
         }
         getCellText(cell) {
-            const shouldFormat = cell.value && cell.format && !cell.error && !cell.pending;
+            const value = this.showFormulas ? cell.content : cell.value;
+            const shouldFormat = value && cell.format && !cell.error && !cell.pending;
             const dateTimeFormat = shouldFormat && cell.format.match(/y|m|d|:/);
             const numberFormat = shouldFormat && !dateTimeFormat;
-            switch (typeof cell.value) {
+            switch (typeof value) {
                 case "string":
-                    return cell.value;
+                    return value;
                 case "boolean":
-                    return cell.value ? "TRUE" : "FALSE";
+                    return value ? "TRUE" : "FALSE";
                 case "number":
                     if (dateTimeFormat) {
-                        return formatDateTime({ value: cell.value }, cell.format);
+                        return formatDateTime({ value }, cell.format);
                     }
                     if (numberFormat) {
-                        return formatNumber(cell.value, cell.format);
+                        return formatNumber(value, cell.format);
                     }
-                    return formatStandardNumber(cell.value);
+                    return formatStandardNumber(value);
                 case "object":
                     if (dateTimeFormat) {
-                        return formatDateTime(cell.value, cell.format);
+                        return formatDateTime(value, cell.format);
                     }
                     if (numberFormat) {
-                        return formatNumber(cell.value.value, cell.format);
+                        return formatNumber(value.value, cell.format);
                     }
-                    if (cell.value && cell.value.format.match(/y|m|d|:/)) {
-                        return formatDateTime(cell.value);
+                    if (value && value.format.match(/y|m|d|:/)) {
+                        return formatDateTime(value);
                     }
                     return "0";
             }
-            return cell.value.toString();
+            return value.toString();
         }
         /**
          * Converts a zone to a XC coordinate system
@@ -5853,28 +5872,28 @@
             const { visibleSheets, sheets } = this.workbook;
             return visibleSheets.map((id) => sheets[id]);
         }
-        getCol(index) {
-            return this.workbook.cols[index];
+        getCol(sheetId, index) {
+            return this.workbook.sheets[sheetId].cols[index];
         }
-        getRow(index) {
-            return this.workbook.rows[index];
+        getRow(sheetId, index) {
+            return this.workbook.sheets[sheetId].rows[index];
         }
         /**
          * Returns all the cells of a col
          */
         getColCells(col) {
-            return this.workbook.rows.reduce((acc, cur) => (cur.cells[col] ? acc.concat(cur.cells[col]) : acc), []);
+            return this.workbook.activeSheet.rows.reduce((acc, cur) => (cur.cells[col] ? acc.concat(cur.cells[col]) : acc), []);
         }
         getNumberCols() {
-            return this.workbook.cols.length;
+            return this.workbook.activeSheet.cols.length;
         }
         getNumberRows() {
-            return this.workbook.rows.length;
+            return this.workbook.activeSheet.rows.length;
         }
         getColsZone(start, end) {
             return {
                 top: 0,
-                bottom: this.workbook.rows.length - 1,
+                bottom: this.workbook.activeSheet.rows.length - 1,
                 left: start,
                 right: end,
             };
@@ -5884,48 +5903,54 @@
                 top: start,
                 bottom: end,
                 left: 0,
-                right: this.workbook.cols.length - 1,
+                right: this.workbook.activeSheet.cols.length - 1,
             };
         }
         getGridSize() {
-            return [this.width, this.height];
+            const activeSheet = this.workbook.activeSheet;
+            const height = activeSheet.rows[activeSheet.rows.length - 1].end + DEFAULT_CELL_HEIGHT + 5;
+            const width = activeSheet.cols[activeSheet.cols.length - 1].end + DEFAULT_CELL_WIDTH;
+            return [width, height];
+        }
+        shouldShowFormulas() {
+            return this.showFormulas;
         }
         // ---------------------------------------------------------------------------
         // Row/Col manipulation
         // ---------------------------------------------------------------------------
         getColMaxWidth(index) {
-            const cells = this.workbook.rows.reduce((acc, cur) => (cur.cells[index] ? acc.concat(cur.cells[index]) : acc), []);
+            const cells = this.workbook.activeSheet.rows.reduce((acc, cur) => (cur.cells[index] ? acc.concat(cur.cells[index]) : acc), []);
             const sizes = cells.map(this.getters.getCellWidth);
             return Math.max(0, ...sizes);
         }
         getRowMaxHeight(index) {
-            const cells = Object.values(this.workbook.rows[index].cells);
+            const cells = Object.values(this.workbook.activeSheet.rows[index].cells);
             const sizes = cells.map(this.getters.getCellHeight);
             return Math.max(0, ...sizes);
         }
-        setColSize(index, size) {
-            const col = this.workbook.cols[index];
+        setColSize(sheetId, index, size) {
+            const cols = this.workbook.sheets[sheetId].cols;
+            const col = cols[index];
             const delta = size - col.size;
-            this.history.updateState(["cols", index, "size"], size);
-            this.history.updateState(["cols", index, "end"], col.end + delta);
-            for (let i = index + 1; i < this.workbook.cols.length; i++) {
-                const col = this.workbook.cols[i];
-                this.history.updateState(["cols", i, "start"], col.start + delta);
-                this.history.updateState(["cols", i, "end"], col.end + delta);
+            this.history.updateState(["sheets", sheetId, "cols", index, "size"], size);
+            this.history.updateState(["sheets", sheetId, "cols", index, "end"], col.end + delta);
+            for (let i = index + 1; i < cols.length; i++) {
+                const col = cols[i];
+                this.history.updateState(["sheets", sheetId, "cols", i, "start"], col.start + delta);
+                this.history.updateState(["sheets", sheetId, "cols", i, "end"], col.end + delta);
             }
-            this.history.updateLocalState(["width"], this.width + delta);
         }
-        setRowSize(index, size) {
-            const row = this.workbook.rows[index];
+        setRowSize(sheetId, index, size) {
+            const rows = this.workbook.sheets[sheetId].rows;
+            const row = rows[index];
             const delta = size - row.size;
-            this.history.updateState(["rows", index, "size"], size);
-            this.history.updateState(["rows", index, "end"], row.end + delta);
-            for (let i = index + 1; i < this.workbook.rows.length; i++) {
-                const row = this.workbook.rows[i];
-                this.history.updateState(["rows", i, "start"], row.start + delta);
-                this.history.updateState(["rows", i, "end"], row.end + delta);
+            this.history.updateState(["sheets", sheetId, "rows", index, "size"], size);
+            this.history.updateState(["sheets", sheetId, "rows", index, "end"], row.end + delta);
+            for (let i = index + 1; i < rows.length; i++) {
+                const row = rows[i];
+                this.history.updateState(["sheets", sheetId, "rows", i, "start"], row.start + delta);
+                this.history.updateState(["sheets", sheetId, "rows", i, "end"], row.end + delta);
             }
-            this.history.updateLocalState(["height"], this.height + delta);
         }
         /**
          * Delete column. This requires a lot of handling:
@@ -6025,11 +6050,10 @@
             const cols = [];
             let start = 0;
             let colIndex = 0;
-            let newWidth = this.width;
-            for (let i in this.workbook.cols) {
+            for (let i in this.workbook.activeSheet.cols) {
                 if (parseInt(i, 10) === base) {
                     if (step !== -1) {
-                        const { size } = this.workbook.cols[colIndex];
+                        const { size } = this.workbook.activeSheet.cols[colIndex];
                         for (let a = 0; a < step; a++) {
                             cols.push({
                                 name: numberToLetters(colIndex),
@@ -6037,18 +6061,15 @@
                                 start,
                                 end: start + size,
                             });
-                            newWidth = newWidth + size;
                             start += size;
                             colIndex++;
                         }
                     }
                     else {
-                        const size = this.workbook.cols[colIndex].size;
-                        newWidth = newWidth - size;
                         continue;
                     }
                 }
-                const { size } = this.workbook.cols[i];
+                const { size } = this.workbook.activeSheet.cols[i];
                 cols.push({
                     name: numberToLetters(colIndex),
                     size,
@@ -6058,20 +6079,17 @@
                 start += size;
                 colIndex++;
             }
-            this.history.updateLocalState(["width"], newWidth);
-            this.history.updateState(["cols"], cols);
+            this.history.updateState(["activeSheet", "cols"], cols);
         }
         processRowsHeaderDelete(index) {
             const rows = [];
             let start = 0;
             let rowIndex = 0;
-            let sizeToDelete = 0;
-            const cellsQueue = this.workbook.rows.map((row) => row.cells);
-            for (let i in this.workbook.rows) {
-                const row = this.workbook.rows[i];
+            const cellsQueue = this.workbook.activeSheet.rows.map((row) => row.cells);
+            for (let i in this.workbook.activeSheet.rows) {
+                const row = this.workbook.activeSheet.rows[i];
                 const { size } = row;
                 if (parseInt(i, 10) === index) {
-                    sizeToDelete = size;
                     continue;
                 }
                 rowIndex++;
@@ -6084,17 +6102,16 @@
                 });
                 start += size;
             }
-            this.history.updateLocalState(["height"], this.height - sizeToDelete);
-            this.history.updateState(["rows"], rows);
+            this.history.updateState(["activeSheet", "rows"], rows);
         }
         processRowsHeaderAdd(index, quantity) {
             const rows = [];
             let start = 0;
             let rowIndex = 0;
             let sizeIndex = 0;
-            const cellsQueue = this.workbook.rows.map((row) => row.cells);
-            for (let i in this.workbook.rows) {
-                const { size } = this.workbook.rows[sizeIndex];
+            const cellsQueue = this.workbook.activeSheet.rows.map((row) => row.cells);
+            for (let i in this.workbook.activeSheet.rows) {
+                const { size } = this.workbook.activeSheet.rows[sizeIndex];
                 if (parseInt(i, 10) < index || parseInt(i, 10) >= index + quantity) {
                     sizeIndex++;
                 }
@@ -6108,14 +6125,12 @@
                 });
                 start += size;
             }
-            this.history.updateLocalState(["height"], start + DEFAULT_CELL_HEIGHT + 5);
-            this.history.updateState(["rows"], rows);
-            this.history.updateState(["sheets", this.workbook.activeSheet.id, "rows"], rows);
+            this.history.updateState(["activeSheet", "rows"], rows);
         }
         addEmptyRow() {
-            const lastEnd = this.workbook.rows[this.workbook.rows.length - 1].end;
-            const name = (this.workbook.rows.length + 1).toString();
-            const newRows = this.workbook.rows.slice();
+            const lastEnd = this.workbook.activeSheet.rows[this.workbook.activeSheet.rows.length - 1].end;
+            const name = (this.workbook.activeSheet.rows.length + 1).toString();
+            const newRows = this.workbook.activeSheet.rows.slice();
             const size = 0;
             newRows.push({
                 start: lastEnd,
@@ -6124,9 +6139,7 @@
                 name,
                 cells: {},
             });
-            this.history.updateLocalState(["height"], this.height + size);
-            this.history.updateState(["rows"], newRows);
-            const path = ["sheets", this.workbook.activeSheet.id, "rows"];
+            const path = ["activeSheet", "rows"];
             this.history.updateState(path, newRows);
         }
         updateAllFormulasHorizontally(base, step) {
@@ -6156,7 +6169,7 @@
         processCellsToMove(shouldDelete, shouldAdd, buildCellToAdd) {
             const deleteCommands = [];
             const addCommands = [];
-            for (let [xc, cell] of Object.entries(this.workbook.cells)) {
+            for (let [xc, cell] of Object.entries(this.workbook.activeSheet.cells)) {
                 if (shouldDelete(cell)) {
                     const [col, row] = toCartesian(xc);
                     deleteCommands.push({
@@ -6267,21 +6280,6 @@
             this.history.updateSheet(_sheet, ["cells", xc], cell);
             this.history.updateSheet(_sheet, ["rows", row, "cells", col], cell);
         }
-        activateSheet(id) {
-            const sheet = this.workbook.sheets[id];
-            this.history.updateState(["activeSheet"], sheet);
-            // setting up rows and columns
-            this.history.updateState(["rows"], sheet.rows);
-            this.history.updateState(["cols"], sheet.cols);
-            // cells
-            this.history.updateState(["cells"], sheet.cells);
-            // sizes
-            const workbook = this.workbook;
-            const height = workbook.rows[workbook.rows.length - 1].end + DEFAULT_CELL_HEIGHT + 5;
-            const width = workbook.cols[workbook.cols.length - 1].end + DEFAULT_CELL_WIDTH;
-            this.history.updateLocalState(["width"], width);
-            this.history.updateLocalState(["height"], height);
-        }
         createSheet(name, cols, rows) {
             const sheet = {
                 id: uuidv4(),
@@ -6382,7 +6380,7 @@
             for (let sheet of data.sheets) {
                 this.importSheet(sheet);
             }
-            this.activateSheet(data.activeSheet);
+            this.workbook.activeSheet = this.workbook.sheets[data.activeSheet];
         }
         importSheet(data) {
             let { sheets, visibleSheets } = this.workbook;
@@ -6450,6 +6448,7 @@
         "getNumberCols",
         "getNumberRows",
         "getGridSize",
+        "shouldShowFormulas",
     ];
     function createDefaultCols(colNumber) {
         const cols = [];
@@ -6618,14 +6617,14 @@
             if (this.mode !== "inactive") {
                 this.cancelEdition();
                 let xc = toXC(this.col, this.row);
-                const { mergeCellMap, merges } = this.workbook.activeSheet;
+                const { mergeCellMap, merges, cells } = this.workbook.activeSheet;
                 if (xc in mergeCellMap) {
                     const mergeId = mergeCellMap[xc];
                     xc = merges[mergeId].topLeft;
                 }
                 let content = this.currentContent;
                 this.currentContent = "";
-                const cell = this.workbook.cells[xc];
+                const cell = cells[xc];
                 const didChange = cell ? cell.content !== content : content !== "";
                 if (!didChange) {
                     return;
@@ -6730,7 +6729,7 @@
                     if (cmd.onlyWaiting) {
                         const cells = new Set(this.WAITING);
                         this.WAITING.clear();
-                        this.evaluateCells(makeSetIterator(cells));
+                        this.evaluateCells(makeSetIterator(cells), this.workbook.activeSheet.id);
                     }
                     else {
                         this.WAITING.clear();
@@ -6801,15 +6800,15 @@
         // ---------------------------------------------------------------------------
         evaluate() {
             this.COMPUTED.clear();
-            this.evaluateCells(makeObjectIterator(this.workbook.cells));
+            this.evaluateCells(makeObjectIterator(this.workbook.activeSheet.cells), this.workbook.activeSheet.id);
         }
-        evaluateCells(cells) {
+        evaluateCells(cells, sheetId) {
             const self = this;
             const { COMPUTED, PENDING, WAITING } = this;
             const params = this.getFormulaParameters(computeValue);
             const visited = {};
             for (let cell of cells) {
-                computeValue(cell);
+                computeValue(cell, sheetId);
             }
             function handleError(e, cell) {
                 if (PENDING.has(cell)) {
@@ -6827,13 +6826,14 @@
                     cell.error = e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled);
                 }
             }
-            function computeValue(cell) {
+            function computeValue(cell, sheetId) {
                 if (cell.type !== "formula" || !cell.formula) {
                     return;
                 }
                 const xc = cell.xc;
-                if (xc in visited) {
-                    if (visited[xc] === null) {
+                visited[sheetId] = visited[sheetId] || {};
+                if (xc in visited[sheetId]) {
+                    if (visited[sheetId][xc] === null) {
                         cell.value = "#CYCLE";
                         cell.error = _lt("Circular reference");
                     }
@@ -6842,7 +6842,7 @@
                 if (COMPUTED.has(cell) || PENDING.has(cell)) {
                     return;
                 }
-                visited[xc] = null;
+                visited[sheetId][xc] = null;
                 cell.error = undefined;
                 try {
                     // todo: move formatting in grid and formatters.js
@@ -6873,7 +6873,7 @@
                 catch (e) {
                     handleError(e, cell);
                 }
-                visited[xc] = true;
+                visited[sheetId][xc] = true;
             }
         }
         /**
@@ -6899,10 +6899,10 @@
                 if (!cell || cell.content === "") {
                     return null;
                 }
-                return getCellValue(cell);
+                return getCellValue(cell, sheet);
             }
-            function getCellValue(cell) {
-                computeValue(cell);
+            function getCellValue(cell, sheetId) {
+                computeValue(cell, sheetId);
                 if (cell.error) {
                     throw new Error(_lt("This formula depends on invalid values"));
                 }
@@ -6928,7 +6928,7 @@
                     for (let r = r1; r <= r2; r++) {
                         let cell = sheet.rows[r].cells[c];
                         if (cell) {
-                            col[r - r1] = getCellValue(cell);
+                            col[r - r1] = getCellValue(cell, sheetId);
                         }
                     }
                 }
@@ -7183,10 +7183,10 @@
             if (row > 0) {
                 this.clearSide(sheet, col, row - 1, "bottom", borderMap);
             }
-            if (col < this.workbook.cols.length - 1) {
+            if (col < this.workbook.activeSheet.cols.length - 1) {
                 this.clearSide(sheet, col + 1, row, "left", borderMap);
             }
-            if (row < this.workbook.rows.length - 1) {
+            if (row < this.workbook.activeSheet.rows.length - 1) {
                 this.clearSide(sheet, col, row + 1, "top", borderMap);
             }
         }
@@ -7273,7 +7273,9 @@
          * @param upper true if the style of the upper row/col should be used, false, if the lower should be used
          */
         onAddElements(start, end, isColumn, upper) {
-            const length = isColumn ? this.workbook.rows.length : this.workbook.cols.length;
+            const length = isColumn
+                ? this.workbook.activeSheet.rows.length
+                : this.workbook.activeSheet.cols.length;
             const index = start + 1;
             for (let x = 0; x < length; x++) {
                 const xc = isColumn ? toXC(index, x) : toXC(x, index);
@@ -7329,15 +7331,15 @@
         getFormat(xc) {
             const format = {};
             xc = this.getters.getMainCell(xc);
-            if (xc in this.workbook.cells) {
-                if (this.workbook.cells[xc].border) {
-                    format["border"] = this.workbook.cells[xc].border;
+            if (xc in this.workbook.activeSheet.cells) {
+                if (this.workbook.activeSheet.cells[xc].border) {
+                    format["border"] = this.workbook.activeSheet.cells[xc].border;
                 }
-                if (this.workbook.cells[xc].style) {
-                    format["style"] = this.workbook.cells[xc].style;
+                if (this.workbook.activeSheet.cells[xc].style) {
+                    format["style"] = this.workbook.activeSheet.cells[xc].style;
                 }
-                if (this.workbook.cells[xc].format) {
-                    format["format"] = this.workbook.cells[xc].format;
+                if (this.workbook.activeSheet.cells[xc].format) {
+                    format["format"] = this.workbook.activeSheet.cells[xc].format;
                 }
             }
             return format;
@@ -7453,7 +7455,7 @@
         isMergeDestructive(zone) {
             const { left, right, top, bottom } = zone;
             for (let row = top; row <= bottom; row++) {
-                const actualRow = this.workbook.rows[row];
+                const actualRow = this.workbook.activeSheet.rows[row];
                 for (let col = left; col <= right; col++) {
                     if (col !== left || row !== top) {
                         const cell = actualRow.cells[col];
@@ -7675,7 +7677,7 @@
             const sheet = this.workbook.sheets[sheetId];
             for (let merge of Object.values(sheet.merges)) {
                 const xc = merge.topLeft;
-                const topLeft = this.workbook.cells[xc];
+                const topLeft = this.workbook.activeSheet.cells[xc];
                 if (!topLeft) {
                     continue;
                 }
@@ -7789,8 +7791,11 @@
     // -----------------------------------------------------------------------------
     // Constants, types, helpers, ...
     // -----------------------------------------------------------------------------
-    function computeAlign(cell) {
-        if (cell.error || cell.pending) {
+    function computeAlign(cell, isShowingFormulas) {
+        if (cell.type === "formula" && isShowingFormulas) {
+            return "left";
+        }
+        else if (cell.error || cell.pending) {
             return "center";
         }
         switch (typeof cell.value) {
@@ -7837,7 +7842,7 @@
             if (x < HEADER_WIDTH) {
                 return -1;
             }
-            const cols = this.workbook.cols;
+            const cols = this.workbook.activeSheet.cols;
             const adjustedX = x - HEADER_WIDTH + cols[left].start + 1;
             return searchIndex(cols, adjustedX);
         }
@@ -7845,7 +7850,7 @@
             if (y < HEADER_HEIGHT) {
                 return -1;
             }
-            const rows = this.workbook.rows;
+            const rows = this.workbook.activeSheet.rows;
             const adjustedY = y - HEADER_HEIGHT + rows[top].start + 1;
             return searchIndex(rows, adjustedY);
         }
@@ -7854,7 +7859,7 @@
             let { offsetY, offsetX } = viewport;
             offsetX -= HEADER_WIDTH;
             offsetY -= HEADER_HEIGHT;
-            const { cols, rows } = this.workbook;
+            const { cols, rows } = this.workbook.activeSheet;
             const x = Math.max(cols[left].start - offsetX, HEADER_WIDTH);
             const width = cols[right].end - offsetX - x;
             const y = Math.max(rows[top].start - offsetY, HEADER_HEIGHT);
@@ -7862,58 +7867,73 @@
             return [x, y, width, height];
         }
         /**
-         * A viewport is a "physical" window into the data represented on a grid.
-         * This method returns the corresponding zone (so, pretty much the same data,
-         * but expressed in term of rows/cols)
+         * Snap a viewport boundaries to exactly match the start of a cell.
+         * @param viewport
          */
-        getAdjustedViewport(viewport, adjustment) {
-            const { cols, rows } = this.workbook;
-            viewport = Object.assign({}, viewport);
-            if (adjustment === "offsets") {
-                viewport.offsetX = cols[viewport.left].start;
-                viewport.offsetY = rows[viewport.top].start;
-                return viewport;
+        snapViewportToCell(viewport) {
+            const { cols, rows } = this.workbook.activeSheet;
+            const adjustedViewport = Object.assign({}, viewport);
+            adjustedViewport.offsetX = cols[viewport.left].start;
+            adjustedViewport.offsetY = rows[viewport.top].start;
+            return adjustedViewport;
+        }
+        /**
+         * Adjust the viewport until the active cell is completely visible inside it.
+         * @param viewport the viewport that will be adjusted
+         */
+        adjustViewportPosition(viewport) {
+            const adjustedViewport = Object.assign({}, viewport);
+            const { cols, rows } = this.workbook.activeSheet;
+            const [col, row] = this.getters.getPosition();
+            while (col >= adjustedViewport.right && col !== cols.length - 1) {
+                adjustedViewport.offsetX = cols[adjustedViewport.left].end;
+                this.adjustViewportZoneX(adjustedViewport);
             }
-            if (adjustment === "position") {
-                const [col, row] = this.getters.getPosition();
-                while (col >= viewport.right && col !== cols.length - 1) {
-                    viewport.offsetX = cols[viewport.left].end;
-                    viewport = this.getAdjustedViewport(viewport, "zone");
-                }
-                while (col < viewport.left) {
-                    viewport.offsetX = cols[viewport.left - 1].start;
-                    viewport = this.getAdjustedViewport(viewport, "zone");
-                }
-                while (row >= viewport.bottom && row !== rows.length - 1) {
-                    viewport.offsetY = rows[viewport.top].end;
-                    viewport = this.getAdjustedViewport(viewport, "zone");
-                }
-                while (row < viewport.top) {
-                    viewport.offsetY = rows[viewport.top - 1].start;
-                    viewport = this.getAdjustedViewport(viewport, "zone");
-                }
-                return viewport;
+            while (col < adjustedViewport.left) {
+                adjustedViewport.offsetX = cols[adjustedViewport.left - 1].start;
+                this.adjustViewportZoneX(adjustedViewport);
             }
-            const { width, height, offsetX, offsetY } = viewport;
-            const top = this.getRowIndex(offsetY + HEADER_HEIGHT, 0);
-            const left = this.getColIndex(offsetX + HEADER_WIDTH, 0);
+            while (row >= adjustedViewport.bottom && row !== rows.length - 1) {
+                adjustedViewport.offsetY = rows[adjustedViewport.top].end;
+                this.adjustViewportZoneY(adjustedViewport);
+            }
+            while (row < adjustedViewport.top) {
+                adjustedViewport.offsetY = rows[adjustedViewport.top - 1].start;
+                this.adjustViewportZoneY(adjustedViewport);
+            }
+            return adjustedViewport;
+        }
+        adjustViewportZone(viewport) {
+            const adjustedViewport = Object.assign({}, viewport);
+            this.adjustViewportZoneX(adjustedViewport);
+            this.adjustViewportZoneY(adjustedViewport);
+            return adjustedViewport;
+        }
+        adjustViewportZoneX(viewport) {
+            const { cols } = this.workbook.activeSheet;
+            const { width, offsetX } = viewport;
+            viewport.left = this.getColIndex(offsetX + HEADER_WIDTH, 0);
             const x = width + offsetX - HEADER_WIDTH;
-            let right = cols.length - 1;
-            for (let i = left; i < cols.length; i++) {
+            viewport.right = cols.length - 1;
+            for (let i = viewport.left; i < cols.length; i++) {
                 if (x < cols[i].end) {
-                    right = i;
+                    viewport.right = i;
                     break;
                 }
             }
+        }
+        adjustViewportZoneY(viewport) {
+            const { rows } = this.workbook.activeSheet;
+            const { height, offsetY } = viewport;
+            viewport.top = this.getRowIndex(offsetY + HEADER_HEIGHT, 0);
             let y = height + offsetY - HEADER_HEIGHT;
-            let bottom = rows.length - 1;
-            for (let i = top; i < rows.length; i++) {
+            viewport.bottom = rows.length - 1;
+            for (let i = viewport.top; i < rows.length; i++) {
                 if (y < rows[i].end) {
-                    bottom = i;
+                    viewport.bottom = i;
                     break;
                 }
             }
-            return { width, height, offsetX, offsetY, left, top, right, bottom };
         }
         // ---------------------------------------------------------------------------
         // Grid rendering
@@ -7935,7 +7955,7 @@
         drawBackground(renderingContext) {
             const { ctx, viewport, thinLineWidth } = renderingContext;
             let { width, height, offsetX, offsetY, top, left, bottom, right } = viewport;
-            const { rows, cols } = this.workbook;
+            const { rows, cols } = this.workbook.activeSheet;
             // white background
             ctx.fillStyle = "white";
             ctx.fillRect(0, 0, viewport.width, viewport.height);
@@ -8072,7 +8092,7 @@
             offsetX -= HEADER_WIDTH;
             offsetY -= HEADER_HEIGHT;
             const selection = this.getters.getSelectedZones();
-            const { cols, rows } = this.workbook;
+            const { cols, rows } = this.workbook.activeSheet;
             const activeCols = this.getters.getActiveCols();
             const activeRows = this.getters.getActiveRows();
             ctx.fillStyle = BACKGROUND_HEADER_COLOR;
@@ -8127,10 +8147,10 @@
             ctx.stroke();
         }
         hasContent(col, row) {
-            const { cells, activeSheet } = this.workbook;
+            const { cells, mergeCellMap } = this.workbook.activeSheet;
             const xc = toXC(col, row);
             const cell = cells[xc];
-            return (cell && cell.content) || (xc in activeSheet.mergeCellMap);
+            return (cell && cell.content) || (xc in mergeCellMap);
         }
         getGridBoxes(renderingContext) {
             const { viewport } = renderingContext;
@@ -8138,13 +8158,13 @@
             offsetX -= HEADER_WIDTH;
             offsetY -= HEADER_HEIGHT;
             const result = [];
-            const { cols, rows, activeSheet, cells } = this.workbook;
+            const { cols, rows, mergeCellMap, cells, merges } = this.workbook.activeSheet;
             // process all visible cells
             for (let rowNumber = top; rowNumber <= bottom; rowNumber++) {
                 let row = rows[rowNumber];
                 for (let colNumber = left; colNumber <= right; colNumber++) {
                     let cell = row.cells[colNumber];
-                    if (cell && !(cell.xc in activeSheet.mergeCellMap)) {
+                    if (cell && !(cell.xc in mergeCellMap)) {
                         let col = cols[colNumber];
                         const text = this.getters.getCellText(cell);
                         const textWidth = this.getters.getCellWidth(cell);
@@ -8153,7 +8173,9 @@
                         if (conditionalStyle) {
                             style = Object.assign({}, style, conditionalStyle);
                         }
-                        const align = text ? (style && style.align) || computeAlign(cell) : undefined;
+                        const align = text
+                            ? (style && style.align) || computeAlign(cell, this.getters.shouldShowFormulas())
+                            : undefined;
                         let clipRect = null;
                         if (text && textWidth > cols[cell.col].size) {
                             if (align === "left") {
@@ -8194,7 +8216,6 @@
                 }
             }
             // process all visible merges
-            const merges = activeSheet.merges;
             for (let id in merges) {
                 let merge = merges[id];
                 if (overlap(merge, viewport)) {
@@ -8205,7 +8226,9 @@
                         text = refCell ? this.getters.getCellText(refCell) : "";
                         textWidth = this.getters.getCellWidth(refCell);
                         style = this.getters.getCellStyle(refCell);
-                        align = text ? (style && style.align) || computeAlign(refCell) : null;
+                        align = text
+                            ? (style && style.align) || computeAlign(refCell, this.getters.shouldShowFormulas())
+                            : null;
                         border = this.getters.getCellBorder(refCell);
                     }
                     style = style || {};
@@ -8239,7 +8262,14 @@
         }
     }
     RendererPlugin.layers = [0 /* Background */, 5 /* Headers */];
-    RendererPlugin.getters = ["getColIndex", "getRowIndex", "getRect", "getAdjustedViewport"];
+    RendererPlugin.getters = [
+        "getColIndex",
+        "getRowIndex",
+        "getRect",
+        "snapViewportToCell",
+        "adjustViewportPosition",
+        "adjustViewportZone",
+    ];
     RendererPlugin.modes = ["normal", "readonly"];
 
     var SelectionMode;
@@ -8272,7 +8302,7 @@
             switch (cmd.type) {
                 case "MOVE_POSITION": {
                     const [refCol, refRow] = this.getReferenceCoords();
-                    const { cols, rows } = this.workbook;
+                    const { cols, rows } = this.workbook.activeSheet;
                     const outOfBound = (cmd.deltaY < 0 && refRow === 0) ||
                         (cmd.deltaY > 0 && refRow === rows.length - 1) ||
                         (cmd.deltaX < 0 && refCol === 0) ||
@@ -8287,7 +8317,7 @@
                 }
                 case "SELECT_COLUMN": {
                     const { index } = cmd;
-                    if (index < 0 || index >= this.workbook.cols.length) {
+                    if (index < 0 || index >= this.workbook.activeSheet.cols.length) {
                         return {
                             status: "CANCELLED",
                             reason: 8 /* SelectionOutOfBound */,
@@ -8297,7 +8327,7 @@
                 }
                 case "SELECT_ROW": {
                     const { index } = cmd;
-                    if (index < 0 || index >= this.workbook.rows.length) {
+                    if (index < 0 || index >= this.workbook.activeSheet.rows.length) {
                         return {
                             status: "CANCELLED",
                             reason: 8 /* SelectionOutOfBound */,
@@ -8401,7 +8431,7 @@
         getActiveCols() {
             const activeCols = new Set();
             for (let zone of this.selection.zones) {
-                if (zone.top === 0 && zone.bottom === this.workbook.rows.length - 1) {
+                if (zone.top === 0 && zone.bottom === this.workbook.activeSheet.rows.length - 1) {
                     for (let i = zone.left; i <= zone.right; i++) {
                         activeCols.add(i);
                     }
@@ -8412,7 +8442,7 @@
         getActiveRows() {
             const activeRows = new Set();
             for (let zone of this.selection.zones) {
-                if (zone.left === 0 && zone.right === this.workbook.cols.length - 1) {
+                if (zone.left === 0 && zone.right === this.workbook.activeSheet.cols.length - 1) {
                     for (let i = zone.top; i <= zone.bottom; i++) {
                         activeRows.add(i);
                     }
@@ -8437,7 +8467,7 @@
             let n = 0;
             for (let zone of this.selection.zones) {
                 for (let row = zone.top; row <= zone.bottom; row++) {
-                    const r = this.workbook.rows[row];
+                    const r = this.workbook.activeSheet.rows[row];
                     for (let col = zone.left; col <= zone.right; col++) {
                         const cell = r.cells[col];
                         if (cell && cell.type !== "text" && !cell.error && typeof cell.value === "number") {
@@ -8466,7 +8496,7 @@
             return isSelectingRange ? this.selection.anchor : [this.activeCol, this.activeRow];
         }
         selectColumn(index, createRange, updateRange) {
-            const bottom = this.workbook.rows.length - 1;
+            const bottom = this.workbook.activeSheet.rows.length - 1;
             const zone = { left: index, right: index, top: 0, bottom };
             const current = this.selection.zones;
             let zones, anchor;
@@ -8483,7 +8513,7 @@
             this.dispatch("SET_SELECTION", { zones, anchor, strict: true });
         }
         selectRow(index, createRange, updateRange) {
-            const right = this.workbook.cols.length - 1;
+            const right = this.workbook.activeSheet.cols.length - 1;
             const zone = { top: index, bottom: index, left: 0, right };
             const current = this.selection.zones;
             let zones, anchor;
@@ -8500,8 +8530,8 @@
             this.dispatch("SET_SELECTION", { zones, anchor, strict: true });
         }
         selectAll() {
-            const bottom = this.workbook.rows.length - 1;
-            const right = this.workbook.cols.length - 1;
+            const bottom = this.workbook.activeSheet.rows.length - 1;
+            const right = this.workbook.activeSheet.cols.length - 1;
             const zone = { left: 0, top: 0, bottom, right };
             this.dispatch("SET_SELECTION", { zones: [zone], anchor: [0, 0] });
         }
@@ -8572,9 +8602,9 @@
                 const { left, right, top, bottom } = this.getters.expandZone(z);
                 return {
                     left: Math.max(0, left),
-                    right: Math.min(this.workbook.cols.length - 1, right),
+                    right: Math.min(this.workbook.activeSheet.cols.length - 1, right),
                     top: Math.max(0, top),
-                    bottom: Math.min(this.workbook.rows.length - 1, bottom),
+                    bottom: Math.min(this.workbook.activeSheet.rows.length - 1, bottom),
                 };
             };
             // check if we can shrink selection
@@ -8625,8 +8655,8 @@
             this.dispatch("SET_SELECTION", { zones, anchor: [anchorCol, anchorRow] });
         }
         updateSelection() {
-            const cols = this.workbook.cols.length - 1;
-            const rows = this.workbook.rows.length - 1;
+            const cols = this.workbook.activeSheet.cols.length - 1;
+            const rows = this.workbook.activeSheet.rows.length - 1;
             const zones = this.selection.zones.map((z) => ({
                 left: clip(z.left, 0, cols),
                 right: clip(z.right, 0, cols),
@@ -8986,6 +9016,7 @@
         sheet: env.getters.getActiveSheet(),
         target: env.getters.getSelectedZones(),
     });
+    const SET_FORMULA_VISIBILITY_ACTION = (env) => env.dispatch("SET_FORMULA_VISIBILITY", { show: !env.getters.shouldShowFormulas() });
     //------------------------------------------------------------------------------
     // Grid manipulations
     //------------------------------------------------------------------------------
@@ -9543,6 +9574,11 @@
         sequence: 60,
         action: CREATE_SHEET_ACTION,
         separator: true,
+    })
+        .addChild("view_formulas", ["view"], {
+        name: (env) => env.getters.shouldShowFormulas() ? _lt("Hide formulas") : _lt("Show formulas"),
+        action: SET_FORMULA_VISIBILITY_ACTION,
+        sequence: 10,
     })
         .addChild("format_number", ["format"], {
         name: _lt("Numbers"),
@@ -11062,8 +11098,8 @@
             })
                 .filter((x) => x.zone.top >= 0 &&
                 x.zone.left >= 0 &&
-                x.zone.bottom < this.workbook.rows.length &&
-                x.zone.right < this.workbook.cols.length);
+                x.zone.bottom < this.workbook.activeSheet.rows.length &&
+                x.zone.right < this.workbook.activeSheet.cols.length);
         }
         removeHighlights(ranges) {
             this.highlights = this.highlights.filter((h) => ranges[this.getters.zoneToXC(h.zone)] !== h.color);
@@ -11507,9 +11543,6 @@
     }
     function createEmptyWorkbook() {
         return {
-            rows: [],
-            cols: [],
-            cells: {},
             visibleSheets: [],
             sheets: {},
             activeSheet: null,
@@ -11772,7 +11805,7 @@
         drawGrid(context) {
             // we make sure here that the viewport is properly positioned: the offsets
             // correspond exactly to a cell
-            context.viewport = this.getters.getAdjustedViewport(context.viewport, "offsets");
+            this.getters.snapViewportToCell(context.viewport);
             for (let [renderer, layer] of this.renderers) {
                 renderer.drawGrid(context, layer);
             }
@@ -12962,7 +12995,7 @@
             return this.getters.getColIndex(index, this.props.viewport.left);
         }
         _getElement(index) {
-            return this.getters.getCol(index);
+            return this.getters.getCol(this.getters.getActiveSheet(), index);
         }
         _getBottomRightValue(element) {
             return element.end;
@@ -13066,7 +13099,7 @@
             return this.getters.getRowIndex(index, this.props.viewport.top);
         }
         _getElement(index) {
-            return this.getters.getRow(index);
+            return this.getters.getRow(this.getters.getActiveSheet(), index);
         }
         _getHeaderSize() {
             return HEADER_HEIGHT;
@@ -13338,6 +13371,9 @@
                 if (400 < delta && delta < 600) {
                     // mouse did not move for a short while
                     const [col, row] = getPosition();
+                    if (col < 0 || row < 0) {
+                        return;
+                    }
                     const mainXc = getters.getMainCell(toXC(col, row));
                     const cell = getters.getCell(...toCartesian(mainXc));
                     if (cell && cell.error) {
@@ -13562,50 +13598,59 @@
         onScroll() {
             this.viewport.offsetX = this.hScrollbar.scroll;
             this.viewport.offsetY = this.vScrollbar.scroll;
-            const viewport = this.getters.getAdjustedViewport(this.viewport, "zone");
+            const viewport = this.getters.adjustViewportZone(this.viewport);
             if (!isEqual(viewport, this.viewport)) {
                 this.viewport = viewport;
                 this.render();
             }
-            this.snappedViewport = this.getters.getAdjustedViewport(this.viewport, "offsets");
+            this.snappedViewport = this.getters.snapViewportToCell(this.viewport);
         }
         checkChanges() {
             const [col, row] = this.getters.getPosition();
             const [curCol, curRow] = this.currentPosition;
-            const didChange = col !== curCol || row !== curRow;
-            if (didChange) {
+            const currentSheet = this.getters.getActiveSheet();
+            const changed = currentSheet !== this.currentSheet || col !== curCol || row !== curRow;
+            if (changed) {
                 this.currentPosition = [col, row];
             }
-            const currentSheet = this.getters.getActiveSheet();
             if (currentSheet !== this.currentSheet) {
                 this.focus();
                 this.currentSheet = currentSheet;
             }
-            return didChange;
+            return changed;
         }
         getAutofillPosition() {
             const zone = this.getters.getSelectedZone();
+            const sheet = this.getters.getActiveSheet();
             return {
-                left: this.getters.getCol(zone.right).end - 4 + HEADER_WIDTH - this.snappedViewport.offsetX,
-                top: this.getters.getRow(zone.bottom).end - 4 + HEADER_HEIGHT - this.snappedViewport.offsetY,
+                left: this.getters.getCol(sheet, zone.right).end -
+                    4 +
+                    HEADER_WIDTH -
+                    this.snappedViewport.offsetX,
+                top: this.getters.getRow(sheet, zone.bottom).end -
+                    4 +
+                    HEADER_HEIGHT -
+                    this.snappedViewport.offsetY,
             };
         }
         drawGrid() {
             // update viewport dimensions
+            // resize window
             this.viewport.width = this.el.clientWidth - SCROLLBAR_WIDTH;
             this.viewport.height = this.el.clientHeight - SCROLLBAR_WIDTH;
+            // scrollbar scrolled
             this.viewport.offsetX = this.hScrollbar.scroll;
             this.viewport.offsetY = this.vScrollbar.scroll;
+            // needed to reset the bottom and the right on the current viewport to the one of the new
+            // active sheet or in any case, the number of cols & rows might have changed.
+            this.viewport = this.getters.adjustViewportZone(this.viewport);
             // check for position changes
             if (this.checkChanges()) {
-                this.viewport = this.getters.getAdjustedViewport(this.viewport, "position");
+                this.viewport = this.getters.adjustViewportPosition(this.viewport);
                 this.hScrollbar.scroll = this.viewport.offsetX;
                 this.vScrollbar.scroll = this.viewport.offsetY;
             }
-            else {
-                this.viewport = this.getters.getAdjustedViewport(this.viewport, "zone");
-            }
-            this.snappedViewport = this.getters.getAdjustedViewport(this.viewport, "offsets");
+            this.snappedViewport = this.getters.snapViewportToCell(this.snappedViewport);
             // drawing grid on canvas
             const canvas = this.canvas.el;
             const dpr = window.devicePixelRatio || 1;
@@ -14389,6 +14434,7 @@
                 getters: this.model.getters,
                 _t: Spreadsheet._t,
                 clipboard: navigator.clipboard,
+                export: this.model.exportData.bind(this.model),
             });
             useExternalListener$4(window, "resize", this.render);
             useExternalListener$4(document.body, "cut", this.copy.bind(this, true));
@@ -14506,9 +14552,9 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '0.2.0';
-    exports.__info__.date = '2020-07-02T08:05:08.189Z';
-    exports.__info__.hash = '5321133';
+    exports.__info__.version = '0.3.0';
+    exports.__info__.date = '2020-07-16T12:35:38.019Z';
+    exports.__info__.hash = '7945fb1';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

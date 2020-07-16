@@ -634,13 +634,14 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _autoresize(pivot, anchor) {
             const end = anchor[0] + pivot.cache.cols.length;
+            const sheet = this.getters.getActiveSheet();
             for (let col = anchor[0]; col <= end; col++) {
                 const cells = this.getters.getColCells(col);
                 const sizes = cells.map((cell) => this.getters.getTextWidth(this._getHeaderText(cell) + 6)); // 6: padding
                 const size = Math.max(96, ...sizes); //96: default header width
                 const cols = [col];
                 if (size !== 0) {
-                    this.dispatch("RESIZE_COLUMNS", { cols, size });
+                    this.dispatch("RESIZE_COLUMNS", { sheet, cols, size });
                 }
             }
         }

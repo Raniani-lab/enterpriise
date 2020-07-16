@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import re
 
 from datetime import datetime, timedelta
 from lxml import etree
@@ -301,20 +302,18 @@ class AnalyticLine(models.Model):
         return res
 
     @api.model
-    def _fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
-        """ Set the correct label for `unit_amount`, depending on company UoM """
-        result = super(AnalyticLine, self)._fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
-        if view_type == 'grid':
-            doc = etree.XML(result['arch'])
-            encoding_uom = self.env.company.timesheet_encode_uom_id
-            # Here, we override the string put on unit_amount field to display only the UoM name in
-            # the total label on the grid view.
-            # Here, we select only the unit_amount field having no string set to give priority to
-            # custom inheretied view stored in database.
-            for node in doc.xpath("//field[@name='unit_amount'][@widget='timesheet_uom'][not(@string)]"):
+    def _apply_timesheet_label(self, view_arch, view_type='form'):
+        doc = etree.XML(view_arch)
+        encoding_uom = self.env.company.timesheet_encode_uom_id
+        # Here, we select only the unit_amount field having no string set to give priority to
+        # custom inheretied view stored in database. Even if normally, no xpath can be done on
+        # 'string' attribute.
+        for node in doc.xpath("//field[@name='unit_amount'][@widget='timesheet_uom' or @widget='timesheet_uom_timer'][not(@string)]"):
+            if view_type == 'grid':
                 node.set('string', encoding_uom.name)
-            result['arch'] = etree.tostring(doc, encoding='unicode')
-        return result
+            else:
+                node.set('string', _('Duration (%s)') % (re.sub(r'[\(\)]', '', encoding_uom.name or '')))
+        return etree.tostring(doc, encoding='unicode')
 
     def adjust_grid(self, row_domain, column_field, column_value, cell_field, change):
         if column_field != 'date' or cell_field != 'unit_amount':

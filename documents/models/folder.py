@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 
 class DocumentFolder(models.Model):
@@ -7,6 +8,11 @@ class DocumentFolder(models.Model):
     _description = 'Documents Workspace'
     _parent_name = 'parent_folder_id'
     _order = 'sequence'
+
+    @api.constrains('parent_folder_id')
+    def _check_parent_folder_id(self):
+        if not self._check_recursion():
+            raise ValidationError(_('You cannot create recursive folders.'))
 
     @api.model
     def default_get(self, fields):

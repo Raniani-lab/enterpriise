@@ -45,7 +45,7 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
                         .map((field, index) => (createFullMenuItem(`insert_pivot_section_${pivot.id}_${field}`, {
                             name: `${formatGroupBy(pivot, field)}`,
                             sequence: index,
-                            children: () => Object.keys(pivot.cache.groupBys[field])
+                            children: () => pivot.cache.getFieldValues(field)
                                 .map((value, index) => (createFullMenuItem(`insert_pivot_section_${pivot.id}_${field}_${value}`, {
                                     name: `${formatHeader(pivot, field, value)}`,
                                     sequence: index,

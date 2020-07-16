@@ -12,19 +12,6 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
      * @property {Array<string>} rowGroupBys
      */
 
-     /**
-      * @typedef {Object} PivotCache
-      * @property {Array<number>} cacheKeys
-      * @property {Array<Array<Array<string>>>} cols
-      * @property {Array<string>} colStructure
-      * @property {Object} fields
-      * @property {Object} groupBys
-      * @property {Object} labels
-      * @property {string} modelName
-      * @property {Array<Array<string>>} rows
-      * @property {Array<Array<number>>} values
-      */
-
     const core = require("web.core");
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
@@ -256,9 +243,10 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _autofillPivotValue(pivot, args, isColumn, increment) {
             const currentElement = this._getCurrentValueElement(pivot, args);
-            const date = this._isDateHeader(isColumn ? pivot.colGroupBys : pivot.rowGroupBys, pivot.cache.fields);
+            const date = pivot.cache.isGroupedByDate(isColumn ? pivot.colGroupBys : pivot.rowGroupBys);
             let cols = [];
             let rows = [];
+            let measure;
             if (isColumn) {
                 // LEFT-RIGHT
                 rows = currentElement.rows;
@@ -266,11 +254,9 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                     // Date
                     cols = currentElement.cols;
                     cols[0] = this._incrementDate(cols[0], date.group, increment);
+                    measure = cols.pop();
                 } else {
-                    const currentColIndex = pivot.cache.cols.findIndex(
-                        (elt) =>
-                            JSON.stringify(elt[elt.length - 1]) === JSON.stringify(currentElement.cols)
-                            );
+                    const currentColIndex = pivot.cache.getTopGroupIndex(currentElement.cols);
                     if (currentColIndex === -1) {
                         return "";
                     }
@@ -279,13 +265,13 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                         // Targeting row-header
                         return this._autofillRowFromValue(pivot, currentElement);
                     }
-                    if (nextColIndex < -1 || nextColIndex >= pivot.cache.cols.length) {
+                    if (nextColIndex < -1 || nextColIndex >= pivot.cache.getTopHeaderCount()) {
                         // Outside the pivot
                         return "";
                     }
                     // Targeting value
-                    const columns = pivot.cache.cols[nextColIndex];
-                    cols = columns[columns.length - 1].slice();
+                    cols = pivot.cache.getColumnValues(nextColIndex);
+                    measure = pivot.cache.getMeasureName(nextColIndex);
                 }
             } else {
                 // UP-DOWN
@@ -295,7 +281,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                     rows = currentElement.rows;
                     rows[0] = this._incrementDate(rows[0], date.group, increment);
                 } else {
-                    const currentRowIndex = this._findIndex(pivot.cache.rows, currentElement.rows);
+                    const currentRowIndex = pivot.cache.getRowIndex(currentElement.rows);
                     if (currentRowIndex === -1) {
                         return "";
                     }
@@ -304,15 +290,15 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                         // Targeting col-header
                         return this._autofillColFromValue(pivot, nextRowIndex, currentElement);
                     }
-                    if (nextRowIndex >= pivot.cache.rows.length) {
+                    if (nextRowIndex >= pivot.cache.getRowCount()) {
                         // Outside the pivot
                         return "";
                     }
                     // Targeting value
-                    rows = pivot.cache.rows[nextRowIndex];
+                    rows = pivot.cache.getRowValues(nextRowIndex);
                 }
+                measure = cols.pop();
             }
-            const measure = cols.pop();
             return this._buildValueFormula(this._buildArgs(pivot, measure, rows, cols));
         }
         /**
@@ -349,60 +335,45 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _autofillPivotColHeader(pivot, args, isColumn, increment) {
             const currentElement = this._getCurrentHeaderElement(pivot, args);
-            const currentIndex = pivot.cache.cols.findIndex((elt) => {
-                const index = elt.findIndex((e) => JSON.stringify(e) === JSON.stringify(currentElement.cols));
-                return index !== -1;
-            });
-            const date = this._isDateHeader(pivot.colGroupBys, pivot.cache.fields);
+            const currentIndex = pivot.cache.getTopGroupIndex(currentElement.cols);
+            const date = pivot.cache.isGroupedByDate(pivot.colGroupBys);
             if (isColumn) {
                 // LEFT-RIGHT
-                let cols;
+                let groupValues;
                 if (date.isDate) {
                     // Date
-                    cols = currentElement.cols;
-                    cols[0] = this._incrementDate(cols[0], date.group, increment);
+                    groupValues = currentElement.cols;
+                    groupValues[0] = this._incrementDate(groupValues[0], date.group, increment);
                 } else {
-                    const currentCols = pivot.cache.cols[currentIndex];
-                    const colIndex = this._findIndex(currentCols, currentElement.cols);
+                    const colIndex = pivot.cache.getSubgroupLevel(currentElement.cols)
                     const nextIndex = currentIndex + increment;
-                    if (currentIndex === -1 || nextIndex < 0 || nextIndex >= pivot.cache.cols.length) {
+                    if (currentIndex === -1 || nextIndex < 0 || nextIndex >= pivot.cache.getTopHeaderCount()) {
                         // Outside the pivot
                         return "";
                     }
                     // Targetting a col.header
-                    cols = pivot.cache.cols[nextIndex][colIndex];
+                    groupValues = pivot.cache.getColGroupHierarchy(nextIndex, colIndex);
                 }
-                return this._buildHeaderFormula(this._buildArgs(pivot, undefined, [], cols));
+                return this._buildHeaderFormula(this._buildArgs(pivot, undefined, [], groupValues));
             } else {
                 // UP-DOWN
-                let currentCols;
-                if (date.isDate) {
-                    // Date => Simply replace a date with the current date
-                    currentCols = pivot.cache.cols[0].slice();
-                    currentCols.map((col) => {
-                        const currentCol = col.slice();
-                        currentCol[0] = currentElement.cols[0]
-                        return currentCol;
-                    });
-                } else {
-                    currentCols = pivot.cache.cols[currentIndex];
-                }
-                const colIndex = this._findIndex(currentCols, currentElement.cols);
+                const colIndex = pivot.cache.getSubgroupLevel(currentElement.cols)
                 const nextIndex = colIndex + increment;
-                if (nextIndex < 0 || nextIndex >= currentCols.length + pivot.cache.rows.length) {
+                const groupLevels = pivot.cache.getColGroupByLevels();
+                if (nextIndex < 0 || nextIndex >= groupLevels + 1 + pivot.cache.getRowCount()) {
                     // Outside the pivot
                     return "";
                 }
-                if (nextIndex >= currentCols.length) {
+                if (nextIndex >= groupLevels + 1) {
                     // Targetting a value
-                    const rowIndex = nextIndex - currentCols.length;
-                    const cols = currentCols[currentCols.length - 1].slice();
-                    const measure = cols.pop();
-                    const rows = pivot.cache.rows[rowIndex];
+                    const rowIndex = nextIndex - groupLevels - 1;
+                    const measure = pivot.cache.getMeasureName(currentIndex);
+                    const cols = pivot.cache.getColumnValues(currentIndex);
+                    const rows = pivot.cache.getRowValues(rowIndex);
                     return this._buildValueFormula(this._buildArgs(pivot, measure, rows, cols));
                 } else {
                     // Targetting a col.header
-                    const cols = currentCols[nextIndex];
+                    const cols = pivot.cache.getColGroupHierarchy(currentIndex, nextIndex);
                     return this._buildHeaderFormula(this._buildArgs(pivot, undefined, [], cols));
                 }
             }
@@ -436,19 +407,17 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _autofillPivotRowHeader(pivot, args, isColumn, increment) {
             const currentElement = this._getCurrentHeaderElement(pivot, args);
-            const currentIndex = this._findIndex(pivot.cache.rows, currentElement.rows);
-            const date = this._isDateHeader(pivot.rowGroupBys, pivot.cache.fields);
+            const currentIndex = pivot.cache.getRowIndex(currentElement.rows);
+            const date = pivot.cache.isGroupedByDate(pivot.rowGroupBys);
             if (isColumn) {
                 // LEFT-RIGHT
-                if (increment < 0 || increment > pivot.cache.cols.length) {
+                if (increment < 0 || increment > pivot.cache.getTopHeaderCount()) {
                     // Outside the pivot
                     return "";
                 }
-                // Targetting value
-                const columns = pivot.cache.cols[increment - 1];
-                const cols = columns[columns.length - 1].slice();
-                const measure = cols.pop();
-                return this._buildValueFormula(this._buildArgs(pivot, measure, currentElement.rows, cols));
+                const values = pivot.cache.getColumnValues(increment - 1);
+                const measure = pivot.cache.getMeasureName(increment - 1);
+                return this._buildValueFormula(this._buildArgs(pivot, measure, currentElement.rows, values));
             } else {
                 // UP-DOWN
                 let rows;
@@ -458,10 +427,10 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                     rows[0] = this._incrementDate(rows[0], date.group, increment);
                 } else {
                     const nextIndex = currentIndex + increment;
-                    if (currentIndex === -1 || nextIndex < 0 || nextIndex >= pivot.cache.rows.length) {
+                    if (currentIndex === -1 || nextIndex < 0 || nextIndex >= pivot.cache.getRowCount()) {
                         return "";
                     }
-                    rows = pivot.cache.rows[nextIndex];
+                    rows = pivot.cache.getRowValues(nextIndex);
                 }
                 return this._buildHeaderFormula(this._buildArgs(pivot, undefined, rows, []));
             }
@@ -476,18 +445,16 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          * @private
          */
         _autofillColFromValue(pivot, nextIndex, currentElement) {
-            const columns = pivot.cache.cols.find(
-                (elt) =>
-                    JSON.stringify(elt[elt.length - 1]) === JSON.stringify(currentElement.cols)
-            );
-            if (!columns) {
+            const groupIndex = pivot.cache.getTopGroupIndex(currentElement.cols);
+            if (groupIndex < 0) {
                 return "";
             }
-            const index = columns.length + nextIndex;
-            if (index < 0 || index >= columns.length) {
+            const levels = pivot.cache.getColGroupByLevels();
+            const index = levels + 1 + nextIndex;
+            if (index < 0 || index >= levels + 1) {
                 return "";
             }
-            const cols = columns[index];
+            const cols = pivot.cache.getColGroupHierarchy(groupIndex, index);
             return this._buildHeaderFormula(this._buildArgs(pivot, undefined, [], cols));
         }
         /**
@@ -516,7 +483,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _getCurrentHeaderElement(pivot, args) {
             const values = this._parseArgs(args.slice(1));
-            const cols = this._getFieldValues(pivot.cache.colStructure, values);
+            const cols = this._getFieldValues([...pivot.colGroupBys, "measure"], values);
             const rows = this._getFieldValues(pivot.rowGroupBys, values);
             return { cols, rows };
         }
@@ -554,19 +521,6 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             return fields.filter((field) => field in values).map((field) => values[field]);
         }
         /**
-         * Find the index of item in the target
-         *
-         * @param {Array<any>} target
-         * @param {any} item Item to find
-         *
-         * @private
-         * @returns {number}
-         */
-        _findIndex(target, item) {
-            const stringifiedItem = JSON.stringify(item);
-            return target.findIndex((x) => JSON.stringify(x) === stringifiedItem);
-        }
-        /**
          * Increment a date with a given increment and interval (group)
          *
          * @param {string} date
@@ -581,26 +535,6 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             const interval = pivotUtils.formats[group].interval;
             const dateMoment = moment(date, format);
             return dateMoment.isValid() ? dateMoment.add(increment, interval).format(format) : date;
-        }
-        /**
-         * Check if the headers are only a level and represent a date
-         *
-         * @param {Array<string>} headers
-         * @param {Object} fields
-         *
-         * @private
-         * @returns {Object} isDate: boolean and group: string
-         */
-        _isDateHeader(headers, fields) {
-            if (headers.length !== 1) {
-                return false;
-            }
-            const [ fieldName, group ] = headers[0].split(":");
-            const field = fields[fieldName];
-            return {
-                isDate: ["date", "datetime"].includes(field.type),
-                group,
-            }
         }
         /**
          * Create a structure { field: value } from the arguments of a pivot
@@ -632,8 +566,8 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          * @private
          */
         _autoresize(pivot, anchor) {
-            const end = anchor[0] + pivot.cache.cols.length;
             const sheet = this.getters.getActiveSheet();
+            const end = anchor[0] + pivot.cache.getTopHeaderCount();
             for (let col = anchor[0]; col <= end; col++) {
                 const cells = this.getters.getColCells(col);
                 const sizes = cells.map((cell) => this.getters.getTextWidth(this._getHeaderText(cell) + 6)); // 6: padding
@@ -675,11 +609,11 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
         _buildColHeaders(pivot, anchor) {
             const [colAnchor, rowAnchor] = anchor;
             const bold = [];
-
+            const levels = pivot.cache.getColGroupByLevels();
             // 1) Top Left merge
             this._merge({
                 top: rowAnchor,
-                bottom: rowAnchor + Object.keys(pivot.cache.cols[0]).length - 1,
+                bottom: rowAnchor + levels,
                 left: colAnchor,
                 right: colAnchor,
             });
@@ -688,22 +622,22 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             let col = colAnchor + 1;
 
             // Do not take the last measures into account here
-            let length = pivot.cache.cols.length - pivot.measures.length;
+            let length = pivot.cache.getTopHeaderCount() - pivot.measures.length;
             if (length === 0) {
-                length = pivot.cache.cols.length;
+                length = pivot.cache.getTopHeaderCount();
             }
 
             for (let i = 0; i < length; i++) {
                 let row = rowAnchor;
-                const colItems = pivot.cache.cols[i];
-                for (let item of colItems) {
+                for (let level = 0; level <= levels; level++){
                     const args = [pivot.id];
-                    for (let index in item) {
-                        args.push(pivot.cache.colStructure[index]);
-                        args.push(item[index]);
+                    const values = pivot.cache.getColGroupHierarchy(i,level);
+                    for (const index in values){
+                        args.push(pivot.cache.getColLevelIdentifier(index));
+                        args.push(values[index]);
                     }
                     this._applyFormula(col, row, args, true);
-                    if (item.length <= 1) {
+                    if (levels <= 2) {
                         bold.push({ top: row, bottom: row, left: col, right: col });
                     }
                     row++;
@@ -712,13 +646,13 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             }
 
             // 3) Create the total for measures
-            let row = rowAnchor + pivot.cache.colStructure.length - 2;
-            for (let i = length; i < pivot.cache.cols.length; i++) {
+            let row = rowAnchor + levels - 1;
+            for (let i = length; i < pivot.cache.getTopHeaderCount(); i++) {
                 const args = [pivot.id];
                 this._applyFormula(col, row, args, true);
                 bold.push({ top: row, bottom: row, left: col, right: col });
                 args.push("measure");
-                args.push(pivot.cache.cols[i][1][0]);
+                args.push(pivot.cache.getColGroupHierarchy(i, 1)[0]);
                 this._applyFormula(col, row + 1, args, true);
                 col++;
             }
@@ -727,10 +661,10 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             col = colAnchor + 1;
             let value;
             let first;
-            for (let index = 0; index < pivot.cache.cols[0].length - 1; index++) {
+            for (let index = 0; index < pivot.cache.getColGroupByLevels(); index++) {
                 let row = rowAnchor + index;
                 for (let i = 0; i < length; i++) {
-                    const next = JSON.stringify(pivot.cache.cols[i][index]);
+                    const next = JSON.stringify(pivot.cache.getColGroupHierarchy(i, index));
                     if (!value) {
                         value = next;
                         first = col + i;
@@ -751,9 +685,9 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             this._applyStyle(HEADER_STYLE, [
                 {
                     top: rowAnchor,
-                    bottom: rowAnchor + pivot.cache.cols[0].length - 2,
+                    bottom: rowAnchor + pivot.cache.getColGroupByLevels() - 1,
                     left: colAnchor,
-                    right: colAnchor + pivot.cache.cols.length,
+                    right: colAnchor + pivot.cache.getTopHeaderCount(),
                 },
             ]);
 
@@ -764,10 +698,10 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             // 6) Apply formatting on measures
             this._applyStyle(MEASURE_STYLE, [
                 {
-                    top: rowAnchor + pivot.cache.cols[0].length - 1,
-                    bottom: rowAnchor + pivot.cache.cols[0].length - 1,
+                    top: rowAnchor + pivot.cache.getColGroupByLevels(),
+                    bottom: rowAnchor + pivot.cache.getColGroupByLevels(),
                     left: colAnchor + 1,
-                    right: colAnchor + pivot.cache.cols.length,
+                    right: colAnchor + pivot.cache.getTopHeaderCount(),
                 },
             ]);
         }
@@ -783,12 +717,13 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _buildRowHeaders(pivot, anchor) {
             const col = anchor[0];
-            const anchorRow = anchor[1] + Object.keys(pivot.cache.cols[0]).length;
+            const anchorRow = anchor[1] + pivot.cache.getColGroupByLevels() + 1;
             const bold = [];
-            for (let index in pivot.cache.rows) {
+            const rowCount = pivot.cache.getRowCount();
+            for (let index = 0; index < rowCount ; index++) {
                 const args = [pivot.id];
                 const row = anchorRow + parseInt(index, 10);
-                const current = pivot.cache.rows[index];
+                const current = pivot.cache.getRowValues(index);
                 for (let i in current) {
                     args.push(pivot.rowGroupBys[i]);
                     args.push(current[i]);
@@ -801,7 +736,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             this._applyStyle(HEADER_STYLE, [
                 {
                     top: anchorRow,
-                    bottom: anchorRow + pivot.cache.rows.length - 1,
+                    bottom: anchorRow + rowCount - 1,
                     left: col,
                     right: col,
                 },
@@ -824,30 +759,32 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _buildValues(pivot, anchor) {
             const anchorCol = anchor[0] + 1;
-            const anchorRow = anchor[1] + Object.keys(pivot.cache.cols[0]).length;
+            const anchorRow = anchor[1] + pivot.cache.getColGroupByLevels() + 1;
             // 1) Create the values for all cols and rows
             let col = anchorCol;
             let row = anchorRow;
             const sheet = this.getters.getActiveSheet();
 
-            const length = pivot.cache.cols.length - pivot.measures.length;
+            const length = pivot.cache.getTopHeaderCount() - pivot.measures.length;
 
             for (let i = 0; i < length; i++) {
-                const cols = pivot.cache.cols[i];
-                const colElement = cols[cols.length - 1];
+                const colElement = [
+                    ...pivot.cache.getColumnValues(i),
+                    pivot.cache.getMeasureName(i),
+                ];
                 row = anchorRow;
-                for (let rowElement of pivot.cache.rows) {
+                for (let rowElement of pivot.cache.getRows()) {
                     const args = [];
                     for (let index in rowElement) {
                         args.push(pivot.rowGroupBys[index]);
                         args.push(rowElement[index]);
                     }
                     for (let index in colElement) {
-                        const field = pivot.cache.colStructure[index];
+                        const field = pivot.cache.getColLevelIdentifier(index);
                         if (field === "measure") {
                             args.unshift(colElement[index]);
                         } else {
-                            args.push(pivot.cache.colStructure[index]);
+                            args.push(pivot.cache.getColLevelIdentifier(index));
                             args.push(colElement[index]);
                         }
                     }
@@ -860,11 +797,13 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
 
             // 2) Create the total for measures
             row = anchorRow;
-            for (let i = length; i < pivot.cache.cols.length; i++) {
-                const cols = pivot.cache.cols[i];
-                const colElement = cols[cols.length - 1];
+            for (let i = length; i < pivot.cache.getTopHeaderCount(); i++) {
+                const colElement = [
+                    ...pivot.cache.getColumnValues(i),
+                    pivot.cache.getMeasureName(i),
+                ];
                 row = anchorRow;
-                for (let rowElement of pivot.cache.rows) {
+                for (let rowElement of pivot.cache.getRows()) {
                     const args = [];
                     for (let index in rowElement) {
                         args.push(pivot.rowGroupBys[index]);
@@ -882,9 +821,9 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             this._applyFormatter("#,##0.00", [
                 {
                     top: anchorRow,
-                    bottom: anchorRow + pivot.cache.rows.length - 1,
+                    bottom: anchorRow + pivot.cache.getRowCount() - 1,
                     left: anchorCol,
-                    right: anchorCol + pivot.cache.cols.length - 1,
+                    right: anchorCol + pivot.cache.getTopHeaderCount() - 1,
                 },
             ]);
         }
@@ -917,7 +856,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          * @param {Array<number>} anchor
          */
         _resizeSheet(pivot, anchor) {
-            const colLimit = pivot.cache.cols.length + pivot.measures.length + 1;
+            const colLimit = pivot.cache.getTopHeaderCount() + pivot.measures.length + 1;
             const numberCols = this.getters.getNumberCols();
             const deltaCol = numberCols - anchor[0];
             if (deltaCol < colLimit) {
@@ -928,7 +867,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                     position: "after",
                 });
             }
-            const rowLimit = pivot.cache.rows.length + pivot.cache.cols[0].length + 1;
+            const rowLimit = pivot.cache.getRowCount() + pivot.cache.getColGroupByLevels() + 2;
             const numberRows = this.getters.getNumberRows();
             const deltaRow = numberRows - anchor[1];
             if (deltaRow < rowLimit) {
@@ -1012,7 +951,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                 args.push(cols[0]);
             } else {
                 for (let index in cols) {
-                    args.push(pivot.cache.colStructure[index]);
+                    args.push(pivot.cache.getColLevelIdentifier(index));
                     args.push(cols[index]);
                 }
             }

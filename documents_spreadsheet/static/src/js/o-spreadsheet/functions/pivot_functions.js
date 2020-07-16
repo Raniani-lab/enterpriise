@@ -20,10 +20,10 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
             compute: async function (pivotId, measureName, ...domain) {
                 const pivot = _getPivot(this.getters, pivotId);
                 const measure = toString(measureName);
-                _sanitizeArgs(pivot, measure, ...domain);
+                _sanitizeArgs(pivot, measure, domain);
                 await pivotUtils.fetchCache(pivot, this.env.services.rpc);
-                const values = _computeValues(pivot, ...domain);
-                return _computeValueToReturn(this, values, pivot, measure);
+                const operator = pivot.measures.filter((m) => m.field === measure)[0].operator;
+                return pivot.cache.getMeasureValue(this, measure, operator, domain);
             },
             async: true,
             args: args(`
@@ -56,7 +56,7 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
                     if (value === "__count") {
                         return _t("Count");
                     }
-                    return pivot.cache.fields[value].string;
+                    return pivot.cache.getField(value).string;
                 } else {
                     return await _getValue(pivot, this.env.services.rpc, field, value);
                 }
@@ -72,38 +72,6 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
-
-    /**
-     * Compute the values corresponding to a pivot and a given domain
-     *
-     * For that, we take the intersection of all group_bys
-     *
-     * @private
-     * @param {Object} pivot Pivot object
-     * @param  {Array<string>} domain Domain
-     *
-     * @returns List of values to return
-     */
-    function _computeValues(pivot, ...domain) {
-        let returnValue = pivot.cache.cacheKeys;
-        let i = 0;
-        while (i < domain.length && returnValue.length) {
-            const field = toString(domain[i]);
-            if (!(field in pivot.cache.groupBys)) {
-                return "";
-            }
-            const value = toString(domain[i + 1]);
-            if (!(value in pivot.cache.groupBys[field])) {
-                return "";
-            }
-            const dimension = pivot.cache.groupBys[field] && pivot.cache.groupBys[field][value];
-            returnValue = dimension.filter((x) => returnValue.includes(x));
-            //returnValue = returnValue.filter(x => dimension.includes(x));
-            i += 2;
-        }
-        return returnValue;
-    }
-
 
     /**
      * Get the pivot object with the given ID
@@ -126,65 +94,13 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
      */
     async function _getValue(pivot, rpc, field, value) {
         const undef = _t("(Undefined)");
-        if (!(value in pivot.cache.labels[field]) && pivot.cache.fields[field.split(":")[0]].relation) {
+        if (!(pivot.cache.isGroupLabelLoaded(field, value)) && pivot.cache.getField(field.split(":")[0]).relation) {
             await pivotUtils.fetchLabel(pivot, rpc, field, value);
         }
-        if (["date", "datetime"].includes(pivot.cache.fields[field.split(":")[0]].type)) {
+        if (["date", "datetime"].includes(pivot.cache.getField(field.split(":")[0]).type)) {
             return pivotUtils.formatDate(field, value);
         }
-        return pivot.cache.labels[field][value] || undef;
-    }
-    /**
-     * Process the values computed to return one value
-     *
-     * @private
-     * @param {Object} evalContext (See EvalContext in o-spreadsheet)
-     * @param {number[]} values List of values
-     * @param {Pivot} pivot Pivot object
-     * @param {string} measure Name of the measure
-     *
-     * @returns Computed value
-     */
-    function _computeValueToReturn(evalContext, values, pivot, measure) {
-        if (values.length === 0) {
-            return "";
-        }
-        if (values.length === 1) {
-            return pivot.cache.values[values[0]][measure] || "";
-        }
-        const operator = pivot.measures.filter((x) => x.field === measure)[0].operator;
-        switch (operator) {
-            case "array_agg":
-                throw Error(_.str.sprintf(_t("Not implemented: %s"), operator));
-            case "count":
-                return evalContext.COUNT(...values.map((x) => pivot.cache.values[x][measure] || 0));
-            case "count_distinct":
-                return evalContext.COUNTUNIQUE(
-                    ...values.map((x) => pivot.cache.values[x][measure] || 0)
-                );
-            case "bool_and":
-                return evalContext.AND(...values.map((x) => pivot.cache.values[x][measure] || 0));
-            case "bool_or":
-                return evalContext.OR(...values.map((x) => pivot.cache.values[x][measure] || 0));
-            case "max":
-                return evalContext.MAX(...values.map((x) => pivot.cache.values[x][measure] || 0));
-            case "min":
-                return evalContext.MIN(...values.map((x) => pivot.cache.values[x][measure] || 0));
-            case "avg":
-                return evalContext["AVERAGE.WEIGHTED"](
-                    ...values
-                        .map((x) => [
-                            pivot.cache.values[x][measure] || 0,
-                            pivot.cache.values[x]["count"],
-                        ])
-                        .flat()
-                );
-            case "sum":
-                return evalContext.SUM(...values.map((x) => pivot.cache.values[x][measure] || 0));
-            default:
-                console.warn(_.str.sprintf(_t("Unknown operator: %s"), operator));
-                return "";
-        }
+        return pivot.cache.getGroupLabel(field, value) || undef;
     }
     /**
      * Sanitize arguments given to the PIVOT function
@@ -195,7 +111,7 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
      * @param {Array<string>} domain domain (list of field and value)
      *
      */
-    function _sanitizeArgs(pivot, measure, ...domain) {
+    function _sanitizeArgs(pivot, measure, domain) {
         if (domain.length % 2 !== 0) {
             throw new Error(_t("Function PIVOT takes an even number of arguments."));
         }

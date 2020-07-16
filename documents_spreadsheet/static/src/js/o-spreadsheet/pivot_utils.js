@@ -12,21 +12,9 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
      * @property {Array<string>} rowGroupBys
      */
 
-     /**
-      * @typedef {Object} PivotCache
-      * @property {Array<number>} cacheKeys
-      * @property {Array<Array<Array<string>>>} cols
-      * @property {Array<string>} colStructure
-      * @property {Object} fields
-      * @property {Object} groupBys
-      * @property {Object} labels
-      * @property {string} modelName
-      * @property {Array<Array<string>>} rows
-      * @property {Array<Array<number>>} values
-      */
-
     const core = require("web.core");
     const _t = core._t;
+    const PivotCache = require("documents_spreadsheet.pivot_cache");
 
     const formats = {
         "day": { in: "DD MMM YYYY", out: "DD/MM/YYYY", display: "DD MMM YYYY", interval: "d" },
@@ -100,7 +88,7 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
         await pivot.promise;
     }
     /**
-     * Fetch the labels which not exist on the cache (it could happen for
+     * Fetch the labels which do not exist on the cache (it could happen for
      * exemple in multi-company).
      * It also update the cache to avoid further rpc.
      *
@@ -112,14 +100,14 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
      * @returns {string}
      */
     async function fetchLabel(pivot, rpc, field, value) {
-        const model = pivot.cache.fields[field].relation;
+        const model = pivot.cache.getField(field).relation;
         const result = await rpc({
             model,
             method: 'name_get',
             args: [parseInt(value, 10)],
         });
-        pivot.cache.labels[field][value] = result && result[0] && result[0][1] || undefined;
-        return pivot.cache.labels[field][value];
+        pivot.cache = pivot.cache.withLabel(field, value, result && result[0] && result[0][1] || undefined);
+        return pivot.cache.getGroupLabel(field, value);
     }
     /**
      * Format a data
@@ -147,26 +135,26 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
         }
         let [name, period] = gp.split(":");
         period = periods[period];
-        return pivot.cache.fields[name].string + (period ? ` (${period})` : "");
+        return pivot.cache.getField(name).string + (period ? ` (${period})` : "");
     }
     /**
      * Format a header value
      *
      * @param {Pivot} pivot
-     * @param {string} field Name of the field
+     * @param {string} groupBy e.g. stage_id, create_date:month
      * @param {string} value Value
      */
-    function formatHeader(pivot, field, value) {
-        if (field === "measure") {
+    function formatHeader(pivot, groupBy, value) {
+        if (groupBy === "measure") {
             if (value === "__count") {
                 return _t("Count");
             }
-            return pivot.cache.fields[value].string;
+            return pivot.cache.getField(value).string
         }
-        if (["date", "datetime"].includes(pivot.cache.fields[field.split(":")[0]].type)) {
-            return formatDate(field, value);
+        if (["date", "datetime"].includes(pivot.cache.getField(groupBy.split(":")[0]).type)) {
+            return formatDate(groupBy, value);
         }
-        return pivot.cache.labels[field][value];
+        return pivot.cache.getGroupLabel(groupBy, value);
     }
     /**
      * Create the pivot object
@@ -220,7 +208,6 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
         const values = [];
 
         const fieldNames = pivot.rowGroupBys.concat(pivot.colGroupBys);
-
         for (let fieldName of fieldNames) {
             labels[fieldName] = {};
         }
@@ -250,9 +237,7 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
         const cols = _createCols(pivot.colGroupBys, groupBys, measures);
         const colStructure = pivot.colGroupBys.slice();
         colStructure.push("measure");
-
-        return {
-            cacheKeys: [...values.keys()],
+        return new PivotCache({
             cols,
             colStructure,
             fields: fieldsGetResult,
@@ -261,7 +246,7 @@ odoo.define("documents_spreadsheet.pivot_utils", function (require) {
             modelLabel,
             rows,
             values,
-        };
+        });
     }
     /**
      * Create the columns structure

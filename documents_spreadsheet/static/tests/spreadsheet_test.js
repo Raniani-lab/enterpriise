@@ -480,5 +480,26 @@ odoo.define("web.spreadsheet_tests", function (require) {
             actionManager.destroy();
         });
 
+        QUnit.test("Verify pivot measures are correctly computed :)", async function (assert) {
+            assert.expect(4);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            assert.equal(model.getters.getCell(1, 2).value, 11);
+            assert.equal(model.getters.getCell(2, 2).value, 10);
+            assert.equal(model.getters.getCell(1, 3).value, 11);
+            assert.equal(model.getters.getCell(2, 3).value, 10);
+            actionManager.destroy();
+        });
+
     });
 });

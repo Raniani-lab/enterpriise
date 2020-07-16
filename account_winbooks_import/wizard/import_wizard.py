@@ -15,7 +15,7 @@ from os import listdir
 from os.path import isfile, join
 
 from odoo import models, fields, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, RedirectWarning
 
 _logger = logging.getLogger(__name__)
 
@@ -654,7 +654,11 @@ class WinbooksImportWizard(models.TransientModel):
         if not DBF:
             raise UserError(_('dbfread library not found, Winbooks Import features disabled. If you plan to use it, please install the dbfread library from https://pypi.org/project/dbfread/'))
         if not self.env.company.country_id:
-            raise UserError(_('Please define the country on your company.'))
+            action = self.env.ref('base.action_res_company_form')
+            raise RedirectWarning(_('Please define the country on your company.'), action.id, _('Company Settings'))
+        if not self.env.company.chart_template_id:
+            action = self.env.ref('account.action_account_config')
+            raise RedirectWarning(_('You should install a Fiscal Localization first.'), action.id,  _('Accounting Settings'))
         self = self.with_context(active_test=False)
         with TemporaryDirectory() as file_dir:
             zip_ref = zipfile.ZipFile(io.BytesIO(base64.decodebytes(self.zip_file)))

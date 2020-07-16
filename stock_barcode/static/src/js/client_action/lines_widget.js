@@ -166,8 +166,8 @@ var LinesWidget = Widget.extend({
      */
     clearLineHighlight: function () {
         var $body = this.$el.filter('.o_barcode_lines');
-        // Remove the highlight from the other line.
-        $body.find('.o_highlight').removeClass('o_highlight');
+        // Remove the highlight from the other line + picking specific border if exists.
+        $body.find('.o_highlight').removeClass('o_highlight').css("box-shadow", "");
     },
 
     /**
@@ -517,6 +517,11 @@ var LinesWidget = Widget.extend({
         } else {
             $line.toggleClass('o_highlight_green', true);
             $line.toggleClass('o_highlight_red', false);
+            if ($line.attr('data-picking-id')) {
+                // determine picking specific color dynamically since border-color is set in template
+                // we must use a more specific css value than 'border-color' for firefox for some reason
+                $line.css("box-shadow", "inset 0px 0px 0px 3px " +  $line.css('border-top-color'));
+            }
         }
 
         // Scroll to `$line`.

@@ -84,9 +84,6 @@
                         />
                 </div>
             </div>
-            <div class="mt-5">
-                <field name="description_picking" placeholder="Note"/>
-            </div>
         </form>
     </field>
 </record>

@@ -24,7 +24,8 @@ var HeaderWidget = Widget.extend({
     /**
      * Toggle the header between two display modes: `init` and `specialized`.
      * - in init mode: exit, informations and settings button are displayed;
-     * - in settings mode: close button is displayed.
+     * - in specialized mode: close button is displayed twice with not necessarily
+     *   the same icon to better suit what users might expect for navigation.
      *
      * @param {string} mode: "init" or "settings".
      */
@@ -38,12 +39,12 @@ var HeaderWidget = Widget.extend({
             $showInformation.toggleClass('o_hidden', false);
             $showSettings.toggleClass('o_hidden', false);
             $close.toggleClass('o_hidden', true);
-            $exit.toggleClass('o_invisible', false);
+            $exit.toggleClass('o_hidden', false);
         } else if (mode === 'specialized') {
             $showInformation.toggleClass('o_hidden', true);
             $showSettings.toggleClass('o_hidden', true);
             $close.toggleClass('o_hidden', false);
-            $exit.toggleClass('o_invisible', true);
+            $exit.toggleClass('o_hidden', true);
         }
     },
 

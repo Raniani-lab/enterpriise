@@ -151,11 +151,14 @@
         </t>
     </template>
 
-    <report id="action_sign_request_print_logs"
-        string="Activity Logs"
-        model="sign.request"
-        name="sign.sign_request_logs_user"
-        file="sign.sign_request_logs_user"
-        report_type="qweb-pdf"/>
+    <record id="action_sign_request_print_logs" model="ir.actions.report">
+        <field name="name">Activity Logs</field>
+        <field name="model">sign.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sign.sign_request_logs_user</field>
+        <field name="report_file">sign.sign_request_logs_user</field>
+        <field name="binding_model_id" ref="model_sign_request"/>
+        <field name="binding_type">report</field>
+    </record>
 
 </odoo>

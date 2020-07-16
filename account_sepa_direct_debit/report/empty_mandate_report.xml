@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <report
-            id = "sdd_mandate_form_report_main"
-            model = "sdd.mandate"
-            string = "Mandate form"
-            report_type = "qweb-pdf"
-            name = "account_sepa_direct_debit.sdd_mandate_form_report"
-            file = "account_sepa_direct_debit.sdd_mandate_form_report"
-            attachment_use = "False"
-            menu = "True"/>
+        <record id="sdd_mandate_form_report_main" model="ir.actions.report">
+            <field name="name">Mandate form</field>
+            <field name="model">sdd.mandate</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">account_sepa_direct_debit.sdd_mandate_form_report</field>
+            <field name="report_file">account_sepa_direct_debit.sdd_mandate_form_report</field>
+            <field name="attachment_use">True</field>
+            <field name="binding_model_id" ref="model_sdd_mandate"/>
+            <field name="binding_type">report</field>
+        </record>
 
         <template id="account_sepa_direct_debit.sdd_mandate_form_report">
             <t t-call="web.html_container">

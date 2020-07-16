@@ -208,11 +208,12 @@
 
         <!--  Shortcuts -->
 
-        <act_window name="Payslips"
-            domain="[('advice_id', '=', active_id)]"
-            res_model="hr.payslip"
-            binding_model="hr.payroll.advice" binding_views="form"
-            view_id ="hr_payroll.view_hr_payslip_tree"
-            id="act_hr_emp_payslip_list"
-         />
+        <record id="act_hr_emp_payslip_list" model="ir.actions.act_window">
+            <field name="name">Payslips</field>
+            <field name="res_model">hr.payslip</field>
+            <field name="view_id" ref="hr_payroll.view_hr_payslip_tree"/>
+            <field name="domain">[('advice_id', '=', active_id)]</field>
+            <field name="binding_model_id" ref="model_hr_payroll_advice"/>
+            <field name="binding_view_types">form</field>
+        </record>
 </odoo>

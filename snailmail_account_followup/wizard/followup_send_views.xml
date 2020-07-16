@@ -48,15 +48,14 @@
             </field>
         </record>
 
-       <act_window
-            name="Send by post"
-            id="followup_send"
-            res_model="followup.send"
-            binding_model="res.partner"
-            binding_views="list"
-            view_mode="form"
-            target="new"
-            />
+       <record id="followup_send" model="ir.actions.act_window">
+           <field name="name">Send by post</field>
+           <field name="res_model">followup.send</field>
+           <field name="view_mode">form</field>
+           <field name="target">new</field>
+           <field name="binding_model_id" ref="base.model_res_partner"/>
+           <field name="binding_view_types">list</field>
+       </record>
 
     </data>
 

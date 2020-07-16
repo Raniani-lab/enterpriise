@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <act_window id="rental_sign_documents"
-         name="Sign Documents"
-         res_model="rental.sign.wizard"
-         view_mode="form"
-         target="new"/>
+  <record id="rental_sign_documents" model="ir.actions.act_window">
+      <field name="name">Sign Documents</field>
+      <field name="res_model">rental.sign.wizard</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+  </record>
 
   <record id="rental_sign_wizard_view_form" model="ir.ui.view">
     <field name="name">rental.sign.wizard.form</field>

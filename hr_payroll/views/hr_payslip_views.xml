@@ -497,13 +497,14 @@
 
     <!--  Shortcuts -->
 
-    <act_window name="Payslip Lines"
-        domain="[('partner_id', '=', active_id)]"
-        context="{'default_partner_id': active_id, 'search_default_partner_id': 1}"
-        res_model="hr.payslip.line"
-        binding_model="res.partner"
-        binding_views="form"
-        id="act_contribution_reg_payslip_lines"/>
+    <record id="act_contribution_reg_payslip_lines" model="ir.actions.act_window">
+        <field name="name">Payslip Lines</field>
+        <field name="res_model">hr.payslip.line</field>
+        <field name="domain">[('partner_id', '=', active_id)]</field>
+        <field name="context">{'default_partner_id': active_id, 'search_default_partner_id': 1}</field>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">form</field>
+    </record>
 
     <record model="ir.actions.server" id="action_hr_payroll_compute_payroll">
         <field name="name">Compute Sheet</field>

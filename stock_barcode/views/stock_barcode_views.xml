@@ -12,7 +12,6 @@
     <menuitem
         id="stock_barcode_menu"
         action="stock_barcode_action_main_menu"
-        icon="fa-barcode"
         web_icon="stock_barcode,static/description/icon.png"
         sequence="50"
         groups="stock.group_stock_user" />

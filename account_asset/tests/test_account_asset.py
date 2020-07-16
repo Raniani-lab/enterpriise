@@ -67,16 +67,6 @@ class TestAccountAsset(TestAccountReportsCommon):
             'method_period': '12',
             'state': 'model',
         })
-        account_asset_model_fixedassets_test1 = self.env['account.asset'].create({
-            'account_depreciation_id': self.company_data['default_account_assets'].id,
-            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
-            'account_asset_id': self.company_data['default_account_assets'].id,
-            'journal_id': self.company_data['default_journal_purchase'].id,
-            'name': 'Cars - 5 Years',
-            'method_number': 5,
-            'method_period': '12',
-            'state': 'model',
-        })
 
         account_asset_vehicles_test0 = self.env['account.asset'].create({
             'salvage_value': 2000.0,
@@ -87,20 +77,6 @@ class TestAccountAsset(TestAccountReportsCommon):
             'original_value': 12000.0,
             'model_id': account_asset_model_fixedassets_test0.id,
         })
-
-        account_asset_office_test0 = self.env['account.asset'].create({
-            'prorata': 1,
-            'salvage_value': 100000.0,
-            'state': 'open',
-            'method_period': '12',
-            'method_number': 3,
-            'first_depreciation_date': time.strftime('%Y-01-01'),
-            'name': "Office",
-            'original_value': 500000.0,
-            'model_id': account_asset_model_fixedassets_test0.id,
-        })
-
-        # self._load('account_asset', 'test', 'account_asset_demo_test.xml')
 
         CEO_car = account_asset_vehicles_test0
         # In order to get the fields from the model, I need to trigger the onchange method.
@@ -153,47 +129,6 @@ class TestAccountAsset(TestAccountReportsCommon):
             'prorata_date': time.strftime('%Y-01-01'),
             'asset_type': 'sale',
             'state': 'model',
-        })
-
-        account_asset_model_sale1 = self.env['account.asset'].create({
-            'account_depreciation_id': self.company_data['default_account_assets'].id,
-            'account_depreciation_expense_id': self.company_data['default_account_revenue'].id,
-            'journal_id': self.company_data['default_journal_sale'].id,
-            'name': 'Maintenance Contract - 1 Year',
-            'method_period': '12',
-            'prorata': True,
-            'prorata_date': time.strftime('%Y-01-01'),
-            'asset_type': 'sale',
-            'state': 'model',
-        })
-
-        account_asset_pc = self.env['account.asset'].create({
-            'account_depreciation_id': self.company_data['default_account_assets'].id,
-            'account_depreciation_expense_id': self.company_data['default_account_revenue'].id,
-            'journal_id': self.company_data['default_journal_sale'].id,
-            'name': 'Car Maintenance',
-            'method_period': '12',
-            'method_number': 3,
-            'prorata': True,
-            'prorata_date': time.strftime('%Y-01-01'),
-            'first_depreciation_date': time.strftime('%Y-01-01'),
-            'state': 'draft',
-            'original_value': 30000.0,
-            'model_id': account_asset_model_sale_test0.id,
-        })
-
-        account_asset_ac = self.env['account.asset'].create({
-            'account_depreciation_id': self.company_data['default_account_assets'].id,
-            'account_depreciation_expense_id': self.company_data['default_account_revenue'].id,
-            'journal_id': self.company_data['default_journal_sale'].id,
-            'name': 'Air Conditioner Maintenance Contract',
-            'method_period': '12',
-            'prorata': True,
-            'prorata_date': time.strftime('%Y-01-01'),
-            'first_depreciation_date': time.strftime('%Y-01-01'),
-            'state': 'open',
-            'original_value': 1000.0,
-            'model_id': account_asset_model_sale1.id,
         })
 
         # The account needs a default model for the invoice to validate the revenue

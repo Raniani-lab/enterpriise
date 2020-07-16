@@ -1654,7 +1654,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('invisible form editor', async function (assert) {
-        assert.expect(6);
+        assert.expect(7);
 
         var vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
@@ -1669,8 +1669,8 @@ QUnit.module('ViewEditorManager', {
                 "</form>",
         });
 
-        assert.containsN(vem, '.o_web_studio_form_view_editor .o_field_widget.o_invisible_modifier', 2,
-            "there should be two invisible nodes");
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor .o_field_widget');
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_field_widget'), 'o_invisible_modifier');
         assert.containsOnce(vem, '.o_web_studio_form_view_editor [data-node-id]',
             "the invisible node should not be editable (only the group has a node-id set)");
         assert.containsN(vem, '.o_web_studio_form_view_editor .o_web_studio_hook', 2,

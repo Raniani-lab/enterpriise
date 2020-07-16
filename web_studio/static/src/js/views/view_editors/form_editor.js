@@ -39,6 +39,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
     init: function (parent, state, params) {
         this._super.apply(this, arguments);
         this.show_invisible = params.show_invisible;
+        this.renderInvisible = this.show_invisible;
         this.chatter_allowed = params.chatter_allowed;
         this._chatterNode = undefined;
         this._chatterContainerOverview = undefined;

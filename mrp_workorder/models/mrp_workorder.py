@@ -606,6 +606,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 'withControlPanel': False,
                 'form_view_initial_mode': 'edit',
             },
+            'context': {'from_production_order': self.env.context.get('from_production_order')},
         }
 
     def action_next(self):
@@ -648,7 +649,7 @@ class MrpProductionWorkcenterLine(models.Model):
         if action is not True:
             return action
         # workorder tree view action should redirect to the same view instead of workorder kanban view when WO mark as done.
-        if self.env.context.get('active_model') == self._name:
+        if self.env.context.get('from_production_order'):
             action = self.env.ref('mrp.action_mrp_workorder_production_specific').read()[0]
             action['domain'] = expression.AND([domain, [('production_id', 'in', self.production_id.procurement_group_id.mrp_production_ids.ids)]])
             action['target'] = 'main'

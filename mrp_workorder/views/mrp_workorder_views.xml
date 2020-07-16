@@ -39,7 +39,7 @@
                 <attribute name="js_class">tablet_list_view</attribute>
             </tree>
             <xpath expr="//button[@name='button_start']" position="replace">
-                <button name="open_tablet_view" type="object" string="Start" class="btn-success"
+                <button name="open_tablet_view" type="object" string="Start" class="btn-success" context="{'from_production_order': True}"
                   attrs="{'invisible': ['|', '|', '|', ('production_state','in', ('draft', 'done')), ('working_state', '=', 'blocked'), ('state', '=', 'done'), ('is_user_working', '!=', False)]}"/>
             </xpath>
         </field>

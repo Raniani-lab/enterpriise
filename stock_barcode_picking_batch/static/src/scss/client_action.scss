@@ -1,6 +1,6 @@
 .o_barcode_client_action {
     .o_barcode_lines {
-        .o_barcode_picking {
+        .o_barcode_picking, .o_barcode_picking_type {
             color: $gray-700;
 
             &:hover {

@@ -543,6 +543,22 @@ tour.register('test_batch_create', {test: true}, [
         trigger: '.o-kanban-button-new',
     },
 
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+           const $pickingTypes = $('.o_barcode_picking_type');
+           helper.assert($pickingTypes.length, 2, "Should contain Delivery Orders and Receipts");
+        },
+    },
+    // select picking type
+    {
+        trigger: '.o_barcode_line_title:contains("Delivery Orders")'
+    },
+
+    {
+        trigger: '.o_confirm'
+    },
+
     // select 2 delivery orders
     {
         trigger: '.o_barcode_line_title:contains("picking_delivery_1")',

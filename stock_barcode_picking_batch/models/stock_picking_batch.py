@@ -57,8 +57,9 @@ class StockPickingBatch(models.Model):
         """ Return the initial state of a new batch picking as a dict. """
         picking_batch = self.env['stock.picking.batch'].browse(picking_batch_id)
         picking_states = dict(self.env['stock.picking'].fields_get(['state'])['state']['selection'])
-        allowed_picking_ids = picking_batch.allowed_picking_ids.read(['name', 'user_id', 'state'])
-        allowed_picking_ids = sorted(allowed_picking_ids, key=itemgetter('name'))
+        allowed_picking_ids = picking_batch.allowed_picking_ids.filtered(lambda p: p.state == 'assigned')
+        allowed_picking_types = sorted(allowed_picking_ids.mapped('picking_type_id').read(['name']), key=itemgetter('name'))
+        allowed_picking_ids = sorted(allowed_picking_ids.read(['name', 'user_id', 'state', 'picking_type_id']), key=itemgetter('name'))
         # convert to selection label
         for picking in allowed_picking_ids:
             picking["state"] = picking_states[picking["state"]]
@@ -66,6 +67,7 @@ class StockPickingBatch(models.Model):
         return {
             'picking_batch_name': picking_batch.name,
             'allowed_picking_ids': allowed_picking_ids,
+            'allowed_picking_types': allowed_picking_types,
         }
 
     @api.model

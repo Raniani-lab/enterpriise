@@ -62,25 +62,58 @@
         </div>
     </t>
 
-    <t t-name="stock_barcode_picking_batch_create_lines_template">
-        <t t-if="lines">
-            <t t-foreach="lines" t-as="line">
-                <a class="o_barcode_line list-group-item d-flex flex-row flex-nowrap" href="#" title="Select" t-att-data-id="line.id">
+    <t t-name="stock_barcode_picking_batch_create_choose_picking_type_template">
+        <t t-if="picking_types">
+            <div class="o_barcode_message d-flex flex-column justify-content-center align-items-center bg-800">
+                <div class="o_barcode_pic position-relative text-center mt-2 mb-1">
+                    <i class="fa fa-5x mx-auto fa-hand-pointer-o text-white"/>
+                </div>
+                <span class="o_message_picking_batch_select_type">
+                    <b>Select an operation type for batch transfer</b>
+                </span>
+            </div>
+            <t t-foreach="picking_types" t-as="picking_type">
+                <a class="o_barcode_line o_barcode_picking_type list-group-item d-flex flex-row flex-nowrap" href="#" title="Select" t-att-data-id="picking_type.id">
                     <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
                         <div>
                             <i class="fa fa-fw fa-truck"/>
-                            <span class="o_barcode_line_title" t-esc="line.name"/>
-                            <t t-if="line.state">&amp;nbsp;<span class="badge badge-pill" t-esc="line.state"/></t>
-                        </div>
-                        <div name="Responsible">
-                            <i class="fa fa-fw fa-user"/>
-                            <span class="o_barcode_picking_user">
-                                <t t-if="line.user_id" t-esc="line.user_id[1]"/>
-                                <t t-else="">-</t>
-                            </span>
+                            <span class="o_barcode_line_title" t-esc="picking_type.name"/>
                         </div>
                     </div>
                 </a>
+            </t>
+        </t>
+    </t>
+
+    <t t-name="stock_barcode_picking_batch_create_choose_pickings_template">
+        <t t-if="pickings and pickingTypeId">
+            <div class="o_barcode_message d-flex flex-column justify-content-center align-items-center bg-800">
+                <div class="o_barcode_pic position-relative text-center mt-2 mb-1">
+                    <i class="fa fa-5x mx-auto fa-hand-pointer-o text-white"/>
+                </div>
+                <span class="o_message_picking_batch_select_type">
+                    <b>Select transfers for batch transfer</b>
+                </span>
+            </div>
+            <t t-foreach="pickings" t-as="picking">
+                <t t-if="picking.picking_type_id[0] == pickingTypeId">
+                    <a class="o_barcode_line o_barcode_picking list-group-item d-flex flex-row flex-nowrap" href="#" title="Select" t-att-data-id="picking.id">
+                        <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
+                            <div>
+                                <i class="fa fa-fw fa-truck"/>
+                                <span class="o_barcode_line_title" t-esc="picking.name"/>
+                                <t t-if="picking.state">&amp;nbsp;<span class="badge badge-pill" t-esc="picking.state"/></t>
+                            </div>
+                            <div name="Responsible">
+                                <i class="fa fa-fw fa-user"/>
+                                <span class="o_barcode_picking_user">
+                                    <t t-if="picking.user_id" t-esc="picking.user_id[1]"/>
+                                    <t t-else="">-</t>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </t>
             </t>
         </t>
     </t>

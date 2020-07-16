@@ -86,18 +86,14 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
          *
          * @param {Object|null} workbookData Data with which to initialise the
          * model
-         * @param {number} cols Initial number of columns
-         * @param {number} rows Initial number of rows
          *
          * @private
          * @returns o_spreadsheet Model
          */
-        _initializeModel(workbookData, cols, rows) {
+        _initializeModel(workbookData) {
             const isNewModel = !workbookData;
             if (isNewModel) {
-                workbookData = {
-                    sheets: [{ colNumber: cols, rowNumber: rows }],
-                };
+                workbookData = {};
             }
             pluginRegistry.add("odooPivotPlugin", PivotPlugin);
             const model = new GridModel(workbookData, {
@@ -105,7 +101,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
                 evalContext: { env: this.renderer.env },
             });
             if (!isNewModel) {
-                model.dispatch("CREATE_SHEET", { cols, rows, activate: true });
+                model.dispatch("CREATE_SHEET", { activate: true });
             }
             return model;
         },
@@ -122,9 +118,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
         async _getSpreadsheetModel(workbookData) {
             const payload = this.model.get();
             const pivot = pivotUtils.sanitizePivot(payload);
-            const cols = Math.max(payload.table.rows[0].subGroupMeasurements.length + 10, 26);
-            const rows = Math.max(payload.table.rows.length + 10, 100);
-            const model = this._initializeModel(workbookData, cols, rows);
+            const model = this._initializeModel(workbookData);
             await pivotUtils.createPivotCache(pivot, this._rpc.bind(this));
             pivot.lastUpdate = Date.now();
             const anchor = [0, 0];

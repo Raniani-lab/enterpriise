@@ -276,6 +276,44 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 pivot.destroy();
             });
 
+            QUnit.test("pivot with two levels of group bys in cols with not enough cols", async function (assert) {
+                assert.expect(1);
+
+                // add many values in a subgroup
+                for (let i = 0; i < 35; i++) {
+                    this.data.product.records.push({
+                        id: i + 9999,
+                        display_name: i.toString(),
+                    })
+                    this.data.partner.records.push({
+                        id: i + 9999,
+                        bar: i % 2 === 0,
+                        product_id: i + 9999,
+                        probability: i,
+                    })
+                }
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="bar" type="col"/>
+                        <field name="foo" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                await testUtils.dom.click(pivot.$("thead .o_pivot_header_cell_closed:first"));
+                await testUtils.dom.click(
+                    pivot.$('.o_pivot_field_menu .dropdown-item[data-field="product_id"]:first')
+                );
+                const data = await pivot._getSpreadsheetData();
+                const spreadsheetData = JSON.parse(data);
+                assert.equal(spreadsheetData.sheets[0].colNumber, 41);
+                pivot.destroy();
+            });
+
             QUnit.test("Can save a pivot in a new spreadsheet", async function (assert) {
                 assert.expect(2);
 

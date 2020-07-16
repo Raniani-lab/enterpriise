@@ -155,7 +155,6 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _rebuildPivot(id, anchor) {
             const pivot = this.pivots[id];
-            this._resizeSheet(pivot, anchor);
             this._buildPivot(pivot, anchor);
         }
         /**
@@ -654,6 +653,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          * @private
          */
         _buildPivot(pivot, anchor) {
+            this._resizeSheet(pivot, anchor);
             this._buildColHeaders(pivot, anchor);
             this._buildRowHeaders(pivot, anchor);
             this._buildValues(pivot, anchor);

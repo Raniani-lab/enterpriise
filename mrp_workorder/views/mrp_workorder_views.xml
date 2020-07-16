@@ -114,7 +114,7 @@
                     <div class="o_workorder_bar_content o_workorder_bar_content_right">
                         <div class="o_actions" attrs="{'invisible': [('working_state', '=', 'blocked')]}">
                             <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="mr-3 my-3 text-center">
-                                <field name="duration" widget="mrp_time_counter" class="mr-3"/>
+                                <field name="duration" widget="mrp_time_counter" readonly="1" class="mr-3"/>
                                 <i class="fa fa-clock-o" attrs="{'invisible': [('is_user_working', '=', False)]}" title="User is not working"/>
                                 <i class="fa fa-clock-o text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}" title="User is working"/>
                             </span>

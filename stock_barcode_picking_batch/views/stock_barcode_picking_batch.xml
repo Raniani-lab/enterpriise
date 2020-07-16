@@ -41,7 +41,7 @@
         <field name="name">stock.picking.batch.kanban</field>
         <field name="model">stock.picking.batch</field>
         <field name="arch" type="xml">
-            <kanban import="0" js_class="stock_barcode_list_kanban"
+            <kanban import="0" js_class="stock_barcode_list_kanban" sample="1"
                 class="oe_background_grey o_kanban_dashboard o_emphasize_colors o_stock_barcode_kanban">
                 <field name="move_line_ids"/>
                 <templates>
@@ -88,5 +88,15 @@
             'search_default_in_progress': 1,
         }</field>
         <field name="view_id" ref="stock_barcode_batch_picking_view_kanban"/>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            No batch transfer found
+          </p><p>
+            The goal of the batch transfer is to group operations that may
+            (needs to) be done together in order to increase their efficiency.
+            It may also be useful to assign jobs (one person = one batch) or
+            help the timing management of operations (tasks to be done at 1pm).
+          </p>
+        </field>
     </record>
 </odoo>

@@ -1045,7 +1045,7 @@ tour.register('test_internal_change_location', {test: true}, [
         trigger: '.o_barcode_summary_location_dest',
     },
     {
-        trigger: '.o_destination_locations li:first-child()',
+        trigger: '.o_destination_locations li:first-child',
     },
     {
         trigger: '.o_current_dest_location:contains("Stock House"):not(:contains("/"))',
@@ -1055,7 +1055,7 @@ tour.register('test_internal_change_location', {test: true}, [
     },
     // ... then checks the dest location is really updated on the two move lines.
     {
-        trigger: '.o_barcode_line:first-child() .o_edit i',
+        trigger: '.o_barcode_line:first-child .o_edit i',
     },
     {
         trigger: '.o_field_widget[name="location_id"]',
@@ -1074,7 +1074,7 @@ tour.register('test_internal_change_location', {test: true}, [
         trigger: '.o_save',
     },
     {
-        trigger: '.o_barcode_line:last-child() .o_edit i',
+        trigger: '.o_barcode_line:last-child .o_edit i',
     },
     {
         trigger: '.o_field_widget[name="location_id"]',
@@ -1510,21 +1510,21 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     // On the first line...
     // Press +1 button , remaining quantity must be updated on the button.
     {
-        trigger: '.o_barcode_line:first-child() .o_add_unit'
+        trigger: '.o_barcode_line:first-child .o_add_unit'
     },
     {
         trigger: '.o_barcode_client_action',
         run: function() {
             helper.assert($('.o_add_reserved').eq(0).text(), '+ 1');
             helper.assertLineQuantityOnReservedQty(0, '1 / 2');
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child()'), true);
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child()'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
         }
     },
     // Press +1 button again, now its buttons must be hidden.
     {
-        trigger: '.o_barcode_line:first-child() .o_add_unit'
+        trigger: '.o_barcode_line:first-child .o_add_unit'
     },
     {
         trigger: '.o_barcode_client_action',
@@ -1553,9 +1553,9 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         run: function() {
             helper.assertLineButtonsAreVisible(1, false);
             helper.assertLineQuantityOnReservedQty(1, '3 / 3');
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child()'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), true);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child()'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
         }
     },
 
@@ -1579,14 +1579,14 @@ tour.register('test_delivery_using_buttons', {test: true}, [
             helper.assert($('.o_add_reserved').eq(2).text(), '+ 3');
             helper.assertLineButtonsAreVisible(2, true);
             helper.assertLineQuantityOnReservedQty(2, '1 / 4');
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child()'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child()'), true);
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), true);
         }
     },
     // Press +1 button, then checks the quantities.
     {
-        trigger: '.o_barcode_line:last-child() .o_add_unit'
+        trigger: '.o_barcode_line:last-child .o_add_unit'
     },
     {
         trigger: '.o_barcode_client_action',
@@ -1619,11 +1619,11 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:nth-child(4)',
         run: function() {
             helper.assertLinesCount(4);
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child()'), true);
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(3)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child()'), false);
-            const $line = $('.o_barcode_line:first-child()');
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
+            const $line = $('.o_barcode_line:first-child');
             helper.assertLineQty($line, '1');
             // +1 button must be present on new line.
             helper.assert($line.find('.o_add_unit').length, 1);
@@ -1633,16 +1633,16 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     },
     // Press +1 button of the new line.
     {
-        trigger: '.o_barcode_line:first-child() .o_add_unit'
+        trigger: '.o_barcode_line:first-child .o_add_unit'
     },
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child()'), true);
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(3)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child()'), false);
-            const $line = $('.o_barcode_line:first-child()');
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
+            const $line = $('.o_barcode_line:first-child');
             helper.assertLineQty($line, '2');
             // +1 button must still be present.
             helper.assert($line.find('.o_add_unit').length, 1);

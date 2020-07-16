@@ -136,7 +136,7 @@ class HrContract(models.Model):
         description += '<ul>%s</ul>' % ''.join(['<li>%s: %s</li>' % (key, value) for key, value in car_elements.items() if value])
         return description
 
-    def _get_description_yearly_commission(self, new_value=None):
+    def _get_description_commission_on_target(self, new_value=None):
         self.ensure_one()
         return '<span class="form-text">The commission is scalable and starts from the 1st € sold. The commission plan has stages with accelerators. At 100%%, 3 months are paid in Warrant which results to a monthly NET commission value of %s € and 9 months in cash which result in a GROSS monthly commission of %s €, taxable like your usual monthly pay.</span>' % (round(self.warrant_value_employee, 2), round(self.commission_on_target, 2))
 

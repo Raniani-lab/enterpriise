@@ -205,7 +205,7 @@
 
     <record id="l10n_be_yearly_commission" model="hr.contract.salary.advantage">
         <field name="name">Commissions</field>
-        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'yearly_commission')])"/>
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'commission_on_target')])"/>
         <field name="cost_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'yearly_commission_cost')])"/>
         <field name="sequence">53</field>
         <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_yearly_cash"/>

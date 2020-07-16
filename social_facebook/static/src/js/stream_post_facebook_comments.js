@@ -28,12 +28,8 @@ var StreamPostFacebookComments = StreamPostComments.extend({
         var superDef = this._super.apply(this, arguments);
         var pageInfoDef = this._rpc({
             model: 'social.account',
-            method: 'search_read',
-            fields: [
-                'name',
-                'facebook_account_id'
-            ],
-            domain: [['id', '=', this.accountId]]
+            method: 'read',
+            args: [this.accountId, ['name', 'facebook_account_id']],
         }).then(function (result) {
             self.accountName = result[0].name;
             self.pageFacebookId = result[0].facebook_account_id;

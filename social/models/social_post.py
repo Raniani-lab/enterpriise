@@ -115,7 +115,7 @@ class SocialPost(models.Model):
     @api.depends('account_ids.media_id')
     def _compute_media_ids(self):
         for post in self:
-            post.media_ids = post.account_ids.mapped('media_id')
+            post.media_ids = post.with_context(active_test=False).account_ids.mapped('media_id')
 
     @api.depends('state', 'scheduled_date', 'published_date')
     def _compute_calendar_date(self):

@@ -26,7 +26,7 @@ class TransferModel(models.Model):
     date_stop = fields.Date(string="Stop Date", required=False)
     frequency = fields.Selection([('month', 'Monthly'), ('quarter', 'Quarterly'), ('year', 'Yearly')],
                                  required=True, default='month')
-    account_ids = fields.Many2many('account.account', 'account_model_rel', string="Origin Accounts")
+    account_ids = fields.Many2many('account.account', 'account_model_rel', string="Origin Accounts", domain="[('is_off_balance', '=', False)]")
     line_ids = fields.One2many('account.transfer.model.line', 'transfer_model_id', string="Destination Accounts")
     move_ids = fields.One2many('account.move', 'transfer_model_id', string="Generated Moves")
     move_ids_count = fields.Integer(compute="_compute_move_ids_count")
@@ -291,7 +291,8 @@ class TransferModelLine(models.Model):
     _description = "Account Transfer Model Line"
 
     transfer_model_id = fields.Many2one('account.transfer.model', string="Transfer Model", required=True)
-    account_id = fields.Many2one('account.account', string="Destination Account", required=True)
+    account_id = fields.Many2one('account.account', string="Destination Account", required=True,
+                                 domain="[('is_off_balance', '=', False)]")
     percent = fields.Float(string="Percent", required=True, default=100, help="Percentage of the sum of lines from the origin accounts will be transferred to the destination account")
     analytic_account_ids = fields.Many2many('account.analytic.account', string='Analytic Filter', help="The sum of all lines from the origin accounts having this analytic account will be automatically transferred to the destination account")
     percent_is_readonly = fields.Boolean(compute="_compute_percent_is_readonly")

@@ -1508,14 +1508,15 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     },
 
     // On the first line...
-    // Press +1 button , remaining quantity must be updated on the button.
+    // Press +1 button , remaining quantity is hidden once it's also +1.
     {
         trigger: '.o_barcode_line:first-child .o_add_unit'
     },
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assert($('.o_add_reserved').eq(0).text(), '+ 1');
+            const $line = $('.o_barcode_line:first-child()');
+            helper.assertButtonIsNotVisible($line, 'add_reserved');
             helper.assertLineQuantityOnReservedQty(0, '1 / 2');
             helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
@@ -1529,7 +1530,6 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assert($('.o_add_reserved').eq(0).text(), '+ 1');
             helper.assertLineButtonsAreVisible(0, false);
             helper.assertLineQuantityOnReservedQty(0, '2 / 2');
         }
@@ -3138,7 +3138,11 @@ tour.register('test_put_in_pack_from_different_location', {test: true}, [
     },
 
     {
-        trigger: '.fa-archive',
+        trigger: '.o_barcode_line:contains("product2")',
+        run: function() {
+            const $line = helper.getLine({barcode: 'product2'});
+            helper.assert($line.find('.fa-archive').length, 1, "Expected a 'fa-archive' icon for assigned pack");
+        },
     },
 
     {

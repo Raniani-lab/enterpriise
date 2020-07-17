@@ -537,8 +537,13 @@ var LinesWidget = Widget.extend({
                 // Updates the remaining quantities...
                 const $button = $line.find('.o_add_reserved');
                 const qty = line.product_uom_qty - qtyDone;
-                $button.data('reserved', qty);
-                $button.text(`+ ${qty}`);
+                if (qty != 1) {
+                    $button.data('reserved', qty);
+                    $button.text(`+ ${qty}`);
+                } else {
+                    // hide button to avoid having two +1 buttons
+                    $button.hide();
+                }
             } else {
                 // ...or hides the buttons if they are now useless.
                 $line.find('.o_line_button').hide();

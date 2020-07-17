@@ -101,14 +101,14 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan product1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(1).o_highlight[data-barcode="product1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             currentViewState.scanMessage = 'scan_more_dest';
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'product1'});
             helper.assert($lines.length, 2, "Expect 2 lines for product1");
             helper.assertLineIsHighlighted($lines, true);
-            helper.assertLineQty($($lines[0]), '1');
+            helper.assertLineQty($($lines[1]), '1');
         }
     },
 
@@ -125,7 +125,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan product1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(2).o_highlight[data-barcode="product1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'product1'});
@@ -163,7 +163,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan productserial1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(4).o_highlight[data-barcode="productserial1"]',
+        trigger: '.o_barcode_line.o_highlight[data-barcode="productserial1"]',
         run: function() {
             currentViewState.scanMessage = 'scan_lot';
             checkState(currentViewState);
@@ -184,7 +184,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan SN-LHOOQ'
     },
     {
-        trigger: '.o_barcode_line:nth-child(4).o_highlight[data-barcode="productserial1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             currentViewState.scanMessage = 'scan_more_dest';
             checkState(currentViewState);
@@ -192,8 +192,8 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
             helper.assert($lines.length, 2, "Expect 2 lines for productserial1");
             const $line1 = $($lines[0]);
             const $line2 = $($lines[1]);
-            helper.assertLineQty($line1, '1');
-            helper.assertLineQty($line2, '0');
+            helper.assertLineQty($line1, '0');
+            helper.assertLineQty($line2, '1');
         }
     },
     {
@@ -201,7 +201,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan SN-OQPAPT'
     },
     {
-        trigger: '.o_barcode_line:nth-child(5).o_highlight[data-barcode="productserial1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'productserial1'});
@@ -219,7 +219,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan productlot1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(3).o_highlight[data-barcode="productlot1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             currentViewState.scanMessage = 'scan_lot';
             checkState(currentViewState);
@@ -249,7 +249,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan lot0001'
     },
     {
-        trigger: '.o_barcode_line:nth-child(3).o_highlight[data-barcode="productlot1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             currentViewState.scanMessage = 'scan_more_dest';
             checkState(currentViewState);
@@ -300,7 +300,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         trigger: '.o_save',
     },
     {
-        trigger: '.o_barcode_line:nth-child(4)',
+        trigger: '.o_barcode_lines',
         run: function() {
             currentViewState.linesCount = 6;
             checkState(currentViewState);
@@ -358,7 +358,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan lot0002'
     },
     {
-        trigger: '.o_barcode_line:nth-child(4).o_highlight[data-barcode="productlot1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             const $lines =  helper.getLines({barcode: 'productlot1'});
             helper.assert($lines.length, 2, "Expect 2 lines for productlot1");

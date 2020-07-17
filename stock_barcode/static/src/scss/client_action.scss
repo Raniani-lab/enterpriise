@@ -195,6 +195,10 @@
                     }
                 }
             }
+
+            &.o_line_completed {
+                background: #F5F5F5;
+            }
         }
 
         &.o_js_has_highlight .o_barcode_line.o_highlight {

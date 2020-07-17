@@ -309,6 +309,7 @@ var LinesWidget = Widget.extend({
                 groups: this.groups,
                 isPickingRelated: this.isPickingRelated,
             }));
+            $body.prepend($lines);
             for (const line of $lines) {
                 if (line.dataset) {
                     this._updateIncrementButtons($(line));
@@ -317,7 +318,6 @@ var LinesWidget = Widget.extend({
             if (this.groups.group_barcode_keyboard_shortcuts && !this.istouchSupported) {
                 this._assignKeyboardShortcuts($lines);
             }
-            $body.prepend($lines);
             $lines.on('click', '.o_edit', this._onClickEditLine.bind(this));
             $lines.on('click', '.o_package_content', this._onClickTruckLine.bind(this));
         }
@@ -524,10 +524,13 @@ var LinesWidget = Widget.extend({
             }
         }
 
-        // Scroll to `$line`.
-        $body.animate({
-            scrollTop: $body.scrollTop() + $line.position().top - $body.height()/2 + $line.height()/2
-        }, 500);
+        // don't move to done lines since they're at the bottom of list
+        if (!$line.hasClass('o_line_completed')) {
+            // Scroll to `$line`.
+            $body.animate({
+                scrollTop: $body.scrollTop() + $line.position().top - $body.height()/2 + $line.height()/2
+            }, 500);
+        }
     },
 
     /**
@@ -574,10 +577,16 @@ var LinesWidget = Widget.extend({
                     $button.hide();
                 }
             } else {
-                // ...or hides the buttons if they are now useless.
+                // hides the buttons since they are now useless.
                 $line.find('.o_line_button').hide();
-                 // flag line so we know it doesn't need a shortcut key
-                $line.addClass('o_line_completed');
+                // flag line so we know it doesn't need a shortcut key
+                $line.addClass('o_line_qty_completed');
+                if (!(line.product_id.tracking === 'serial' || line.product_id.tracking === 'lot') || line.lot_name ) {
+                    // move line to bottom of list
+                    $line.parent().append($line);
+                    // class for css
+                    $line.addClass('o_line_completed');
+                }
             }
         }
     },
@@ -614,7 +623,7 @@ var LinesWidget = Widget.extend({
         }
         let letterIndex = 0;
         for (const line of $lines) {
-            if (line.dataset && !$(line).hasClass('o_line_completed')) {
+            if (line.dataset && !$(line).hasClass('o_line_qty_completed')) {
                 let addUnit = $(line).find('.o_add_unit');
                 let otherButton = $(line).find('.o_add_reserved, .o_remove_unit');
 

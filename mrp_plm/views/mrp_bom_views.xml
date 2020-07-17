@@ -55,7 +55,7 @@
         <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='type']" position="after">
-                <field name="version" optional="show"/>
+                <field name="version" optional="hide"/>
             </xpath>
         </field>
     </record>

@@ -224,7 +224,7 @@ class QualityCheck(models.Model):
     name = fields.Char('Name', default=lambda self: _('New'))
     point_id = fields.Many2one(
         'quality.point', 'Control Point', check_company=True)
-    title = fields.Char(related='point_id.title')
+    title = fields.Char('Title', compute='_compute_title')
     quality_state = fields.Selection([
         ('none', 'To do'),
         ('pass', 'Passed'),
@@ -262,6 +262,10 @@ class QualityCheck(models.Model):
         alert_result = dict((data['check_id'][0], data['check_id_count']) for data in alert_data)
         for check in self:
             check.alert_count = alert_result.get(check.id, 0)
+
+    def _compute_title(self):
+        for check in self:
+            check.title = check.point_id.title
 
     @api.onchange('point_id')
     def _onchange_point_id(self):

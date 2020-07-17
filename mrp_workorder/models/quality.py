@@ -168,10 +168,9 @@ class QualityCheck(models.Model):
         return super(QualityCheck, self).create(values)
 
     def _compute_title(self):
+        super()._compute_title()
         for check in self:
-            if check.point_id:
-                check.title = check.point_id.title
-            else:
+            if not check.point_id or check.component_id:
                 check.title = '{} "{}"'.format(check.test_type_id.display_name, check.component_id.name)
 
     @api.depends('point_id', 'quality_state', 'component_id', 'component_uom_id', 'lot_id', 'qty_done')

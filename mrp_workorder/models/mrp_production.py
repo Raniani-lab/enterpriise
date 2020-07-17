@@ -30,6 +30,9 @@ class MrpProduction(models.Model):
         return backorders
 
     def _button_mark_done_sanity_checks(self):
-        if any(x.quality_state == 'none' for x in self.workorder_ids.check_ids):
-            raise UserError(_('You still need to do the quality checks!'))
+        checks_not_process = self.workorder_ids.check_ids.filtered(lambda c: c.quality_state == 'none')
+        if checks_not_process:
+            error_msg = _('Please go in the Operations tab and perform the following work orders and the corresponding quality checks:\n')
+            error_msg += '\n'.join(checks_not_process.mapped('title'))
+            raise UserError(error_msg)
         return super()._button_mark_done_sanity_checks()

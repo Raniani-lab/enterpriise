@@ -935,7 +935,7 @@ var StatementModel = BasicModel.extend({
                                 'link': prop.id,
                                 'tax_ids': tax.tax_ids,
                                 'tax_repartition_line_id': tax.tax_repartition_line_id,
-                                'tag_ids': tax.tag_ids,
+                                'tax_tag_ids': tax.tag_ids,
                                 'amount': tax.amount,
                                 'name': prop.name ? prop.name + " " + tax.name : tax.name,
                                 'date': prop.date,
@@ -955,7 +955,7 @@ var StatementModel = BasicModel.extend({
                             reconciliation_proposition.push(tax_prop);
                         });
 
-                        prop.tag_ids = result.base_tags;
+                        prop.tax_tag_ids = self._formatMany2ManyTagsTax(result.base_tags || []);
                     }));
             } else {
                 prop.amount_str = field_utils.format.monetary(Math.abs(prop.amount), {}, formatOptions);
@@ -1203,7 +1203,7 @@ var StatementModel = BasicModel.extend({
             'analytic_tag_ids': this._formatMany2ManyTags(values.analytic_tag_ids || []),
             'journal_id': this._formatNameGet(values.journal_id),
             'tax_ids': this._formatMany2ManyTagsTax(values.tax_ids || []),
-            'tag_ids': values.tag_ids,
+            'tax_tag_ids': this._formatMany2ManyTagsTax(values.tax_tag_ids || []),
             'tax_repartition_line_id': values.tax_repartition_line_id,
             'debit': 0,
             'credit': 0,
@@ -1334,7 +1334,7 @@ var StatementModel = BasicModel.extend({
         }
         if (prop.analytic_account_id) result.analytic_account_id = prop.analytic_account_id.id;
         if (prop.tax_ids && prop.tax_ids.length) result.tax_ids = [[6, null, _.pluck(prop.tax_ids, 'id')]];
-        if (prop.tag_ids && prop.tag_ids.length) result.tag_ids = [[6, null, _.pluck(prop.tag_ids, 'id')]];
+        if (prop.tax_tag_ids && prop.tax_tag_ids.length) result.tax_tag_ids = [[6, null, _.pluck(prop.tax_tag_ids, 'id')]];
         if (prop.tax_repartition_line_id) result.tax_repartition_line_id = prop.tax_repartition_line_id;
         if (prop.reconcile_model_id) result.reconcile_model_id = prop.reconcile_model_id
         if (prop.currency_id) result.currency_id = prop.currency_id;

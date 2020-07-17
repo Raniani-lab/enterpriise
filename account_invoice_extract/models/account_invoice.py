@@ -142,7 +142,7 @@ class AccountMove(models.Model):
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""
-        if not self.env.company.extract_show_ocr_option_selection or self.company_id.extract_show_ocr_option_selection == 'no_send':
+        if not self.company_id.extract_show_ocr_option_selection or self.company_id.extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
         if attachments and attachments.exists() and self.move_type in ['in_invoice', 'in_refund'] and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
@@ -294,7 +294,7 @@ class AccountMove(models.Model):
                     'currency': record.get_validation('currency'),
                     'payment_ref': record.get_validation('payment_ref'),
                     'iban': record.get_validation('iban'),
-                    'merged_lines': self.env.company.extract_single_line_per_tax,
+                    'merged_lines': self.company_id.extract_single_line_per_tax,
                     'invoice_lines': record.get_validation('invoice_lines')
                 }
                 params = {
@@ -503,7 +503,7 @@ class AccountMove(models.Model):
         """
         self.ensure_one()
         invoice_lines_to_create = []
-        if self.env.company.extract_single_line_per_tax:
+        if self.company_id.extract_single_line_per_tax:
             merged_lines = {}
             for il in invoice_lines:
                 description = il['description']['selected_value']['content'] if 'description' in il else None

@@ -9,6 +9,8 @@
     <record id="template_sign_1" model="sign.template">
         <field name="attachment_id" ref="attachment_sign_1"/>
         <field name="share_link">demo-template-1</field>
+        <field name="create_uid" ref="base.user_admin"/>
+        <field name="tag_ids" eval="[(4, ref('sign.sign_template_tag_1'))]"/>
     </record>
     <record model="sign.item" id="sign_item_1">
         <field name="template_id" ref="template_sign_1"/>
@@ -89,7 +91,9 @@
     <record id="template_sign_2" model="sign.template">
         <field name="attachment_id" ref="attachment_sign_2"/>
         <field name="share_link">demo-template-2</field>
+        <field name="create_uid" ref="base.user_admin"/>
         <field name="favorited_ids" eval="[(4, ref('base.user_admin'))]"/>
+        <field name="tag_ids" eval="[(4, ref('sign.sign_template_tag_2')), (4, ref('sign.sign_template_tag_1'))]"/>
     </record>
     <record model="sign.item" id="sign_item_10">
         <field name="template_id" ref="template_sign_2"/>
@@ -180,6 +184,7 @@
     <record id="template_sign_3" model="sign.template">
         <field name="attachment_id" ref="attachment_sign_3"/>
         <field name="share_link">demo-template-3</field>
+        <field name="create_uid" ref="base.user_admin"/>
     </record>
     <record model="sign.item" id="sign_item_20">
         <field name="template_id" ref="template_sign_3"/>
@@ -250,7 +255,9 @@
     <record id="template_sign_4" model="sign.template">
         <field name="attachment_id" ref="attachment_sign_4"/>
         <field name="share_link">demo-template-4</field>
+        <field name="create_uid" ref="base.user_admin"/>
         <field name="favorited_ids" eval="[(4, ref('base.user_admin'))]"/>
+        <field name="tag_ids" eval="[(4, ref('sign.sign_template_tag_3'))]"/>
     </record>
     <record model="sign.item" id="sign_item_27">
         <field name="template_id" ref="template_sign_4"/>
@@ -301,7 +308,9 @@
     <record id="template_sign_5" model="sign.template">
         <field name="attachment_id" ref="attachment_sign_5"/>
         <field name="share_link">demo-template-5</field>
+        <field name="create_uid" ref="base.user_demo"/>
         <field name="favorited_ids" eval="[(4, ref('base.user_demo'))]"/>
+        <field name="tag_ids" eval="[(4, ref('sign.sign_template_tag_3'))]"/>
     </record>
     <record model="sign.item" id="sign_item_34">
         <field name="template_id" ref="template_sign_5"/>

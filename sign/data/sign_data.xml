@@ -198,4 +198,19 @@
     <record model="sign.item.role" id="sign_item_role_employee">
         <field name="name">Employee</field>
     </record>
+
+    <!-- Template tags -->
+    <record id="sign_template_tag_1" model="sign.template.tag">
+        <field name="name">HR</field>
+        <field name="color">2</field>
+    </record>
+    <record id="sign_template_tag_2" model="sign.template.tag">
+        <field name="name">NDA</field>
+        <field name="color">3</field>
+    </record>
+    <record id="sign_template_tag_3" model="sign.template.tag">
+        <field name="name">Sales</field>
+        <field name="color">4</field>
+    </record>
+
 </odoo>

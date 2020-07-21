@@ -155,6 +155,9 @@
                 <field name="tag_ids"/>
                 <filter name="my_templates" string="My Templates" domain="[('create_uid', '=', uid)]"/>
                 <filter name="favorite" string="My Favorites" domain="[('favorited_ids', 'in', uid)]"/>
+                <searchpanel>
+                    <field name="tag_ids" select="multi" icon="fa-tag" enable_counters="1"/>
+                </searchpanel>
             </search>
         </field>
     </record>

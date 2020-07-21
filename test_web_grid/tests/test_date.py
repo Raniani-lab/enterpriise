@@ -11,6 +11,9 @@ class TestReadGridDomainDate(TestWebGrid):
         field = "start_date"
         grid_anchor = '2019-06-14'
 
+        lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+        lang.write({'week_start': '1'})
+
         domain_day = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_day)
 
         # For checking different span and step in week
@@ -24,6 +27,46 @@ class TestReadGridDomainDate(TestWebGrid):
         self.assertEqual(domain_week_2, ['&', ('start_date', '>=', '2019-05-27'), ('start_date', '<=', '2019-06-30')])
         self.assertEqual(domain_month, ['&', ('start_date', '>=', '2019-01-01'), ('start_date', '<=', '2019-12-31')])
 
+    def test_read_grid_domain_date_1(self):
+
+        field = "start_date"
+        grid_anchor = '2020-07-24'
+        lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+        lang.write({'week_start': '6'})
+
+        domain_day = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_day)
+
+        # For checking different span and step in week
+        domain_week = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_week)
+        domain_week_2 = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_week_2)
+
+        domain_month = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_month)
+
+        self.assertEqual(domain_day, ['&', ('start_date', '>=', '2020-07-01'), ('start_date', '<=', '2020-07-31')])
+        self.assertEqual(domain_week, ['&', ('start_date', '>=', '2020-07-18'), ('start_date', '<=', '2020-07-24')])
+        self.assertEqual(domain_week_2, ['&', ('start_date', '>=', '2020-06-27'), ('start_date', '<=', '2020-07-31')])
+        self.assertEqual(domain_month, ['&', ('start_date', '>=', '2020-01-01'), ('start_date', '<=', '2020-12-31')])
+
+    def test_read_grid_domain_date_2(self):
+
+        field = "start_date"
+        grid_anchor = '2020-07-24'
+        lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+        lang.write({'week_start': '2'})
+
+        domain_day = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_day)
+
+        # For checking different span and step in week
+        domain_week = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_week)
+        domain_week_2 = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_week_2)
+
+        domain_month = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_month)
+
+        self.assertEqual(domain_day, ['&', ('start_date', '>=', '2020-07-01'), ('start_date', '<=', '2020-07-31')])
+        self.assertEqual(domain_week, ['&', ('start_date', '>=', '2020-07-21'), ('start_date', '<=', '2020-07-27')])
+        self.assertEqual(domain_week_2, ['&', ('start_date', '>=', '2020-06-30'), ('start_date', '<=', '2020-08-03')])
+        self.assertEqual(domain_month, ['&', ('start_date', '>=', '2020-01-01'), ('start_date', '<=', '2020-12-31')])
+
     def test_read_grid_method_date(self):
         project_id = self.grid_obj_2.project_id
         grid_range = self.range_day
@@ -31,6 +74,9 @@ class TestReadGridDomainDate(TestWebGrid):
         col_field = "start_date"
         cell_field = "resource_hours"
         domain = [('project_id', '=', project_id.id)]
+
+        lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+        lang.write({'week_start': '1'})
 
         # A call to read_grid with grid_anchor should return data from 2019-06-01 to 2019-06-30
         result_read_grid = self.grid_obj_2.with_context(grid_anchor="2019-06-14").read_grid(row_field, col_field, cell_field, domain, grid_range)

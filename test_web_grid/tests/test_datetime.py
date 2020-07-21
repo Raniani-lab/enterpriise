@@ -13,6 +13,9 @@ class TestReadGridDomainDatetime(TestWebGrid):
         field = "start_datetime"
         grid_anchor = '2019-06-14 00:00:00'
 
+        lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+        lang.write({'week_start': '1'})
+
         domain_day = self.grid_obj_1.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_day)
 
         # For checking different span and step in week
@@ -42,6 +45,9 @@ class TestReadGridDomainDatetime(TestWebGrid):
         col_field = "start_datetime"
         cell_field = "resource_hours"
         domain = [('project_id', '=', project_id.id)]
+
+        lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+        lang.write({'week_start': '1'})
 
         timezone = 'Asia/Kolkata'
         # For checking for day range ('span': 'month', 'step': 'day')

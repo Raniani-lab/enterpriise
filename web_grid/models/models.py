@@ -6,7 +6,7 @@ import collections
 from functools import partial
 
 import babel.dates
-from dateutil.relativedelta import relativedelta, MO, SU
+from dateutil.relativedelta import relativedelta, MO, TU, WE, TH, FR, SA, SU
 import pytz
 
 from odoo import _, api, models
@@ -405,23 +405,23 @@ class Base(models.AbstractModel):
 
     def _grid_start_of(self, span, step, anchor):
         if step == 'week':
-            return anchor + START_OF_WEEK[span]
-        return anchor + START_OF[span]
+            return anchor + self._get_start_of_week(span)
+        return anchor + self._get_start_of(span)
 
     def _grid_end_of(self, span, step, anchor):
         if step == 'week':
-            return anchor + END_OF_WEEK[span]
-        return anchor + END_OF[span]
+            return anchor + self._get_end_of_week(span)
+        return anchor + self._get_end_of(span)
 
     def _grid_start_of_period(self, span, step, anchor):
         if step == 'day':
             return anchor
-        return anchor + START_OF[step]
+        return anchor + self._get_start_of(span)
 
     def _grid_end_of_period(self, span, step, anchor):
         if step == 'day':
             return anchor
-        return anchor + END_OF[step]
+        return anchor + self._get_end_of(span)
 
     def _grid_date_is_current(self, field, span, step, date):
         today = field.from_string(field.context_today(self))
@@ -445,6 +445,36 @@ class Base(models.AbstractModel):
             implement this feature on a Grid view.
         """
         return False
+
+    def _get_start_of(self, span):
+        if span == 'week':
+            user_lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+            week_start_map = {'1': MO(-1), '2': TU(-1), '3': WE(-1), '4': TH(-1), '5': FR(-1), '6': SA(-1), '7': SU(-1)}
+            return relativedelta(weekday=week_start_map.get(user_lang.week_start))
+        return START_OF[span]
+
+    def _get_start_of_week(self, span):
+        user_lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+        week_start_map = {'1': MO(-1), '2': TU(-1), '3': WE(-1), '4': TH(-1), '5': FR(-1), '6': SA(-1), '7': SU(-1)}
+        week_start_delta = relativedelta(weekday=week_start_map.get(user_lang.week_start))
+        if span == 'week':
+            return week_start_delta
+        return START_OF[span] + week_start_delta
+
+    def _get_end_of(self, span):
+        if span == 'week':
+            user_lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+            week_end_map = {'1': SU, '2': MO, '3': TU, '4': WE, '5': TH, '6': FR, '7': SA}
+            return relativedelta(weekday=week_end_map.get(user_lang.week_start))
+        return END_OF[span]
+
+    def _get_end_of_week(self, span):
+        user_lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+        week_end_map = {'1': SU, '2': MO, '3': TU, '4': WE, '5': TH, '6': FR, '7': SA}
+        week_end_delta = relativedelta(weekday=week_end_map.get(user_lang.week_start))
+        if span == 'week':
+            return week_end_delta
+        return END_OF[span] + week_end_delta
 
 
 # ---------------------------------------------------------
@@ -528,25 +558,13 @@ class datetime_range(object):
 
 START_OF = {
     'day': relativedelta(days=0),
-    'week': relativedelta(weekday=MO(-1)),
     'month': relativedelta(day=1),
     'year': relativedelta(yearday=1),
 }
-START_OF_WEEK = {
-    'week': relativedelta(weekday=MO(-1)),
-    'month': relativedelta(day=1, weekday=MO(-1)),
-    'year': relativedelta(yearday=1, weekday=MO(-1)),
-}
 END_OF = {
     'day': relativedelta(days=0),
-    'week': relativedelta(weekday=SU),
     'month': relativedelta(months=1, day=1, days=-1),
     'year': relativedelta(years=1, yearday=1, days=-1),
-}
-END_OF_WEEK = {
-    'week': relativedelta(weekday=SU),
-    'month': relativedelta(months=1, day=1, days=-1, weekday=SU),
-    'year': relativedelta(years=1, yearday=1, days=-1, weekday=SU),
 }
 STEP_BY = {
     'day': relativedelta(days=1),

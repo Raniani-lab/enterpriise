@@ -1,5 +1,7 @@
 from odoo import http, _
 from odoo.http import request
+from odoo.modules.module import get_resource_path
+from odoo.tools import pdf
 
 
 class StockBarcodeController(http.Controller):
@@ -102,6 +104,18 @@ class StockBarcodeController(http.Controller):
         else:
             return request.env['stock.picking']._get_client_action(picking_id)
 
+    def _get_allowed_company_ids(self):
+        """ Return the allowed_company_ids based on cookies.
+
+        Currently request.env.company returns the current user's company when called within a controller
+        rather than the selected company in the company switcher and request.env.companies lists the
+        current user's allowed companies rather than the selected companies.
+
+        :returns: List of active companies. The first company id in the returned list is the selected company.
+        """
+        cids = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
+        return [int(cid) for cid in cids.split(',')]
+
     @http.route('/stock_barcode/rid_of_message_demo_barcodes', type='json', auth='user')
     def rid_of_message_demo_barcodes(self, **kw):
         """ Edit the main_menu client action so that it doesn't display the 'print demo barcodes sheet' message """
@@ -112,7 +126,49 @@ class StockBarcodeController(http.Controller):
     def get_set_barcode_view_state(self, model_name, record_id, mode, write_field=None, write_vals=None):
         if mode != 'read':
             request.env[model_name].browse(record_id).write({write_field: write_vals})
-        cids = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
-        allowed_company_ids = [int(cid) for cid in cids.split(',')]
-        return request.env[model_name].browse(record_id).with_context(company_id=allowed_company_ids[0]).get_barcode_view_state()
+        return request.env[model_name].browse(record_id).with_context(company_id=self._get_allowed_company_ids()[0]).get_barcode_view_state()
 
+    @http.route('/stock_barcode/print_inventory_commands', type='http', auth='user')
+    def print_inventory_commands(self):
+        if not request.env.user.has_group('stock.group_stock_user'):
+            return request.not_found()
+
+        barcode_pdfs = []
+
+        # get fixed command barcodes
+        file_path = get_resource_path('stock_barcode', 'static/img', 'barcodes_actions.pdf')
+        commands_file = open(file_path, 'rb')
+        barcode_pdfs.append(commands_file.read())
+        commands_file.close()
+
+        # make sure we use the selected company if possible
+        allowed_company_ids = self._get_allowed_company_ids()
+
+        # same domain conditions for picking types and locations
+        domain = [('active', '=', 'True'),
+                  ('barcode', '!=', ''),
+                  ('company_id', 'in', allowed_company_ids)]
+
+        # get picking types barcodes
+        picking_type_ids = request.env['stock.picking.type'].search(domain)
+        picking_report = request.env.ref('stock.action_report_picking_type_label', raise_if_not_found=True)
+        picking_types_pdf, _ = picking_report._render_qweb_pdf(picking_type_ids.ids)
+        if picking_types_pdf:
+            barcode_pdfs.append(picking_types_pdf)
+
+        # get locations barcodes
+        if request.env.user.has_group('stock.group_stock_multi_locations'):
+            locations_ids = request.env['stock.location'].search(domain)
+            locations_report = request.env.ref('stock.action_report_location_barcode', raise_if_not_found=True)
+            locations_pdf, _ = locations_report._render_qweb_pdf(locations_ids.ids)
+            if locations_pdf:
+                barcode_pdfs.append(locations_pdf)
+
+        merged_pdf = pdf.merge_pdf(barcode_pdfs)
+
+        pdfhttpheaders = [
+            ('Content-Type', 'application/pdf'),
+            ('Content-Length', len(merged_pdf))
+        ]
+
+        return request.make_response(merged_pdf, headers=pdfhttpheaders)

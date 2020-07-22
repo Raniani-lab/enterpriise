@@ -71,7 +71,7 @@ class ConsolidationChart(models.Model):
             'views': [[self.env.ref('account_consolidation.consolidation_account_tree_mapping').id, 'list']],
             'domain': [('chart_id', '=', self.id)],
             'context': {},
-            'name': _('Account Mapping: ') + self.name,
+            'name': _('Account Mapping: %(chart)s', chart=self.name),
             'search_view_id': [self.env.ref('account_consolidation.consolidation_account_search_mapping').id, 'search']
         }
 

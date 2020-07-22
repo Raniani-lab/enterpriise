@@ -275,7 +275,11 @@ class AccountJournal(models.Model):
         val_InstdAmt = float_repr(float_round(payment['amount'], 2), 2)
         max_digits = val_Ccy == 'EUR' and 11 or 15
         if len(re.sub('\.', '', val_InstdAmt)) > max_digits:
-            raise ValidationError(_("The amount of the payment '%s' is too high. The maximum permitted is %s.") % (payment['name'], str(9) * (max_digits - 3) + ".99"))
+            raise ValidationError(_(
+                "The amount of the payment '%(payment)s' is too high. The maximum permitted is %(limit)s.",
+                payment=payment['name'],
+                limit=str(9) * (max_digits - 3) + ".99",
+            ))
         InstdAmt = etree.SubElement(Amt, "InstdAmt", Ccy=val_Ccy)
         InstdAmt.text = val_InstdAmt
         CdtTrfTxInf.append(self._get_ChrgBr(sct_generic))

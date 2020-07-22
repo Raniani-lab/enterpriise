@@ -91,13 +91,13 @@ class AssetModify(models.TransientModel):
                         'account_id': self.account_asset_id.id,
                         'debit': residual_increase + salvage_increase,
                         'credit': 0,
-                        'name': _('Value increase for: ') + self.asset_id.name,
+                        'name': _('Value increase for: %(asset)s', asset=self.asset_id.name),
                     }),
                     (0, 0, {
                         'account_id': self.account_asset_counterpart_id.id,
                         'debit': 0,
                         'credit': residual_increase + salvage_increase,
-                        'name': _('Value increase for: ') + self.asset_id.name,
+                        'name': _('Value increase for: %(asset)s', asset=self.asset_id.name),
                     }),
                 ],
             })
@@ -131,7 +131,7 @@ class AssetModify(models.TransientModel):
             move = self.env['account.move'].create(self.env['account.move']._prepare_move_for_asset_depreciation({
                 'amount': -increase,
                 'asset_id': self.asset_id,
-                'move_ref': _('Value decrease for: ') + self.asset_id.name,
+                'move_ref': _('Value decrease for: %(asset)s', asset=self.asset_id.name),
                 'date': self.date,
                 'asset_remaining_value': 0,
                 'asset_depreciated_value': 0,

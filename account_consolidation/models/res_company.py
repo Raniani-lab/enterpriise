@@ -48,7 +48,7 @@ class Company(models.Model):
         action = self.env.ref('account_consolidation.account_mapping_action').read()[0]
         action.update({
             'domain': [('company_id', '=', self.id)],
-            'display_name': _('Account Mapping: ') + self.name,
+            'display_name': _('Account Mapping: %(company)s', company=self.name),
         })
         return action
 
@@ -68,7 +68,7 @@ class Company(models.Model):
                 'search_default_company_id': self.id
             },
             'domain': [('company_id', '=', self.id)],
-            'display_name': _('Historical Rates: ') + self.name,
+            'display_name': _('Historical Rates: %(company)s', company=self.name),
         })
         return action
 

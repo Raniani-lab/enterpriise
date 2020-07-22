@@ -684,7 +684,7 @@ class AccountBankStatementImport(models.TransientModel):
                     notes = [_get_additional_entry_info(entry, namespaces=ns) or ""]
                     partner_address = _get_partner_address(entry_details, ns, counter_party)
                     if partner_name:
-                        notes.append(_('Counter Party: ') + partner_name)
+                        notes.append(_('Counter Party: %(partner)s', partner=partner_name))
                     if partner_address:
                         notes.append(_('Address:\n') + partner_address)
                     entry_vals['narration'] = "\n".join(notes)

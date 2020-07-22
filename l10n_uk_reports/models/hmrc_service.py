@@ -66,7 +66,10 @@ class HmrcService(models.AbstractModel):
                     if response.get('error'):
                         self._clean_tokens()
                         self._cr.commit() # Even with the raise, we want to commit the cleaning of the tokens in the db
-                        raise UserError(_('There was a problem refreshing the tokens.  Please log in again. ') + response.get('message'))
+                        raise UserError(_(
+                            'There was a problem refreshing the tokens.  Please log in again. %(error)s',
+                            error=response.get('message'),
+                        ))
         else:
             # if no user_token, ask for one
             url = PROXY_SERVER + '/onlinesync/l10n_uk/get_user'

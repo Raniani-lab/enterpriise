@@ -230,7 +230,7 @@ class sale_subscription(http.Controller):
             close_reason = request.env['sale.subscription.close.reason'].browse(int(kw.get('close_reason_id')))
             account.close_reason_id = close_reason
             if kw.get('closing_text'):
-                account.message_post(body=_('Closing text : ') + kw.get('closing_text'))
+                account.message_post(body=_('Closing text: %s', kw.get('closing_text')))
             account.set_close()
             account.date = datetime.date.today().strftime('%Y-%m-%d')
         return request.redirect('/my/home')

@@ -118,7 +118,11 @@ class HrContract(models.Model):
             contract.public_transport_reimbursed_amount = contract._get_public_transport_reimbursed_amount(contract.public_transport_employee_amount)
 
     def _get_public_transport_reimbursed_amount(self, amount):
-        return min(amount * 0.718, 48)
+        # As of February 1st, 2020, reimbursement for non-train-based public transportation,
+        # when based on a flat fee, is computed as 71.8% of the actual cost, capped at the
+        # reimbursement for 7 km of train-based transportation (34.00 EUR)
+        # Source: http://www.cnt-nar.be/CCT-COORD/cct-019-09.pdf (Art. 4)
+        return min(amount * 0.718, 34)
 
     @api.depends('km_home_work', 'transport_mode_private_car')
     def _compute_private_car_reimbursed_amount(self):

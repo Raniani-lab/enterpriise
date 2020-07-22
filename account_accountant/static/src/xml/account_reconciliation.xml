@@ -275,7 +275,7 @@
 
 
 <t t-name="reconciliation.line.mv_line.amount">
-    <span t-att-class="(line.is_move_line &amp;&amp; proposition == true) ? 'cell' : ''">
+    <span t-att-class="((line.is_move_line || line.is_liquidity_line) &amp;&amp; proposition == true) ? 'cell' : ''">
         <span class="line_amount">
             <span t-if="line.amount_currency_str"
                   t-attf-class="o_multi_currency o_multi_currency_color_#{line.currency_id%8} line_info_button fa fa-money"
@@ -285,7 +285,7 @@
                 <br/>
             </span>
         </span>
-        <t t-if="line.is_move_line &amp;&amp; proposition == true">
+        <t t-if="(line.is_move_line || line.is_liquidity_line) &amp;&amp; proposition == true">
             <i class="fa fa-pencil edit_amount"></i>
             <input class="edit_amount_input text-right d-none"/>
         </t>

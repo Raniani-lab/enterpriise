@@ -19,6 +19,7 @@
 
         <record id="base.main_company" model="res.company">
             <field name="documents_hr_payslips_tags" eval="[(6,0,[ref('documents_hr_documents_payslips')])]"/>
+            <field name="documents_payroll_folder_id" ref="documents_payroll_folder"/>
         </record>
 
     </data>

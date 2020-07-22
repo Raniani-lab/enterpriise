@@ -723,7 +723,7 @@
                     <notebook>
                         <page string="Tags" name="tags">
                             <field name="tag_ids">
-                                <tree editable="bottom">
+                                <tree editable="bottom" no_open="1">
                                     <field name="sequence" widget="handle"/>
                                     <field name="name"/>
                                     <field name="display_name" invisible="1"/>

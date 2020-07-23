@@ -3,6 +3,7 @@ odoo.define('mrp_mps.ClientAction', function (require) {
 
 var concurrency = require('web.concurrency');
 var core = require('web.core');
+var Pager = require('web.Pager');
 var AbstractAction = require('web.AbstractAction');
 var Dialog = require('web.Dialog');
 var field_utils = require('web.field_utils');
@@ -10,6 +11,8 @@ var session = require('web.session');
 
 var QWeb = core.qweb;
 var _t = core._t;
+
+const defaultPagerSize = 20;
 
 var ClientAction = AbstractAction.extend({
     contentTemplate: 'mrp_mps',
@@ -47,6 +50,8 @@ var ClientAction = AbstractAction.extend({
         this.manufacturingPeriods = [];
         this.state = false;
 
+        this.active_ids = [];
+        this.recordsPager = false;
         this.mutex = new concurrency.Mutex();
 
         this.searchModelConfig.modelName = 'mrp.production.schedule';
@@ -56,8 +61,6 @@ var ClientAction = AbstractAction.extend({
         var self = this;
         var _super = this._super.bind(this);
         var args = arguments;
-
-        var def_content = this._getState();
 
         var def_control_panel = this._rpc({
             model: 'ir.model.data',
@@ -69,8 +72,12 @@ var ClientAction = AbstractAction.extend({
             self.viewId = viewId[1];
         });
 
+        var def_content = this._getRecordIds();
+
         return Promise.all([def_content, def_control_panel]).then(function () {
-            return _super.apply(self, args);
+            return self._getState().then(function () {
+                return _super.apply(self, args);
+            });
         });
     },
 
@@ -80,12 +87,33 @@ var ClientAction = AbstractAction.extend({
                 this.$el.find('.o_mrp_mps').append($(QWeb.render('mrp_mps_nocontent_helper')));
             }
             this.update_cp();
+            this.renderPager();
         });
     },
 
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
+
+    
+    /**
+     */
+     renderPager: function () {
+         var self = this;
+         this.pager = new Pager(this, this.recordsPager.length, 1, defaultPagerSize);
+         this.pager.on('pager_changed', this, function (newState) {
+            var current_min = newState.current_min - 1;
+            this.active_ids = self.recordsPager.slice(current_min, current_min + newState.limit).map(i => i.id);
+            this._reloadContent();
+         });
+         this.$pager = $('<div>', {
+             class: 'o_mrp_mps_pager float-right',
+         });
+         this.pager.appendTo(this.$pager).then(function () {
+             self.pager.enable();
+         });
+         this.$pager.appendTo(this._controlPanel.$el.find('.o_cp_right'));
+     },
 
     /**
      * Update the control panel in order to add the 'replenish' button and a
@@ -149,7 +177,7 @@ var ClientAction = AbstractAction.extend({
             basedOnLeadTime = false;
         }
         else {
-            ids = _.map(self.state, function (s) {return s.id;});
+            ids = self.active_ids;
             basedOnLeadTime = true;
         }
         this.mutex.exec(function () {
@@ -230,6 +258,19 @@ var ClientAction = AbstractAction.extend({
         return $([tableSelector, rowSelector, inputSelector].join(' ')).select();
     },
 
+    _getRecordIds: function () {
+        var self = this;
+        return this._rpc({
+            model: 'mrp.production.schedule',
+            method: 'search_read',
+            domain: this.domain,
+            fields: ['id'],
+        }).then(function (ids) {
+            self.recordsPager = ids;
+            self.active_ids = ids.slice(0, defaultPagerSize).map(i => i.id);
+        });
+    },
+
     /**
      * Make an rpc to get the state and afterwards set the company, the
      * manufacturing period, the groups in order to display/hide the differents
@@ -241,10 +282,11 @@ var ClientAction = AbstractAction.extend({
      */
     _getState: function () {
         var self = this;
+        var domain = this.domain.concat([['id', 'in', this.active_ids]]);
         return this._rpc({
             model: 'mrp.production.schedule',
             method: 'get_mps_view_state',
-            args: [this.domain],
+            args: [domain],
         }).then(function (state) {
             self.companyId = state.company_id;
             self.manufacturingPeriods = state.dates;
@@ -682,8 +724,15 @@ var ClientAction = AbstractAction.extend({
      * @param {Object} searchQuery
      */
     _onSearch: function (searchQuery) {
+        event.stopPropagation();
+        var self = this;
         this.domain = searchQuery.domain;
-        this._reloadContent();
+        this.$pager.remove();
+        this.pager.destroy();
+        this._getRecordIds().then(function () {
+            self.renderPager();
+            self._reloadContent();
+        });
     },
 });
 

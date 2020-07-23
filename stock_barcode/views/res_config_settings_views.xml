@@ -22,6 +22,12 @@
                         <i class="fa fa-print"/> Print barcode commands
                     </a>
                 </div>
+                <field name="stock_barcode_demo_active" invisible="1"/>
+                <div attrs="{'invisible': [('stock_barcode_demo_active', '!=', True)]}">
+                    <a href="stock_barcode/static/img/barcodes_demo.pdf" class="oe_link" target="_blank">
+                        <i class="fa fa-print"/> Print barcode demo sheet
+                    </a>
+                </div>
             </xpath>
             <xpath expr="//div[@id='process_operations_barcodes']" position="after">
                 <div class="col-12 col-lg-6 o_setting_box" id="process_operations_barcodes" attrs="{'invisible': [('module_stock_barcode', '=', False)]}">

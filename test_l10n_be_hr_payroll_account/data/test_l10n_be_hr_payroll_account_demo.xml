@@ -2119,8 +2119,8 @@
         <function model="account.journal" name="write">
             <value model="account.journal" eval="obj().search([('name', 'ilike', 'Bank'), ('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)]).ids"></value>
             <value model="res.partner.bank" eval="{
-                'bank_account_id': obj().search([('acc_number', '=', '45678912352')]).id if obj().search([('acc_number', '=', '45678912352')]) else obj().env['res.partner.bank'].create({
-                'acc_number': '45678912352',
+                'bank_account_id': obj().search([('acc_number', '=', 'BE15001559627230')]).id if obj().search([('acc_number', '=', 'BE15001559627230')]) else obj().env['res.partner.bank'].create({
+                'acc_number': 'BE15001559627230',
                 'bank_id': obj().env.ref('base.bank_bnp').id,
                 'partner_id': obj().env.ref('l10n_be_hr_payroll.res_company_be').partner_id.id,
                 'company_id': obj().env.ref('l10n_be_hr_payroll.res_company_be').id,

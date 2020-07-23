@@ -183,7 +183,7 @@ class ResCompany(models.Model):
             ['http://www.sat.gob.mx/EstadoDeCuentaCombustible',
              'http://www.sat.gob.mx/sitio_internet/cfd/EstadoDeCuentaCombustible/ecc11.xsd'],
             ['http://www.sat.gob.mx/donat',
-             'http://www.sat.gob.mx/sitio_internet/cfd/donat/donat.xsd'],
+             'http://www.sat.gob.mx/sitio_internet/cfd/donat/donat11.xsd'],
             ['http://www.sat.gob.mx/divisas',
              'http://www.sat.gob.mx/sitio_internet/cfd/divisas/Divisas.xsd'],
             ['http://www.sat.gob.mx/implocal',

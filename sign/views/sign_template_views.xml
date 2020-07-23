@@ -100,6 +100,14 @@
             <form create="false">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button type="object" name="open_requests" class="oe_stat_button" icon="fa-pencil-square-o" >
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="signed_count"/>
+                                </span>
+                                <span class="o_stat_text">Signed Document</span>
+                            </div>
+                        </button>
                         <button string="Edit fields" icon="fa-wrench" type="object" name="go_to_custom_template" class="oe_stat_button"/>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>

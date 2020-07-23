@@ -171,14 +171,15 @@ class SignTemplate(models.Model):
         option_id = option if option else self.env['sign.item.option'].create({'value': value})
         return option_id.id
 
-    def open_requests(self,):
+    def open_requests(self):
         return {
             "type": "ir.actions.act_window",
             "name": _("Sign requests"),
             "res_model": "sign.request",
-            "domain": [["template_id.id", "in", self.ids]],
-            "views": [[False, 'kanban'],[False, "form"]],
             "res_id": self.id,
+            "domain": [["template_id.id", "in", self.ids]],
+            "views": [[False, 'kanban'], [False, "form"]],
+            "context": {'search_default_signed': True}
         }
 
 class SignTemplateTag(models.Model):

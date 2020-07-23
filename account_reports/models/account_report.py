@@ -1284,7 +1284,7 @@ class AccountReport(models.AbstractModel):
             names.append(move_name)
         if move_ref and move_ref != '/':
             names.append(move_ref)
-        if line_name and line_name != '/':
+        if line_name and line_name != move_name and line_name != '/':
             names.append(line_name)
         name = '-'.join(names)
         return name

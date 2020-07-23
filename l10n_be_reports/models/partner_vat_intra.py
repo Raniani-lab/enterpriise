@@ -50,8 +50,8 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
                        AND l.company_id IN %s
                       GROUP BY {group_by}
         """
-        params = (tuple(tag_ids), context.get('date_from'),
-                  context.get('date_to'), tuple(self.env.companies.ids))
+        params = (tuple(tag_ids), options['date']['date_from'],
+                  options['date']['date_to'], tuple(self.env.companies.ids))
         self.env.cr.execute(query.format(select=select, group_by=group_by), params)
         p_count = 0
 

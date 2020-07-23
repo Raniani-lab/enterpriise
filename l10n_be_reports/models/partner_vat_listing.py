@@ -77,8 +77,8 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
             'tags': tuple(tag_ids),
             'tags2': tuple(tag_ids_2),
             'partner_ids': tuple(partner_ids),
-            'date_from': context['date_from'],
-            'date_to': context['date_to'],
+            'date_from': options['date']['date_from'],
+            'date_to': options['date']['date_to'],
             'company_ids': tuple(self.env.companies.ids),
         }
         self.env.cr.execute(query, params)

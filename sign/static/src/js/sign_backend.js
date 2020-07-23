@@ -887,6 +887,11 @@ odoo.define('sign.template', function(require) {
                     args: [[this.templateID]],
                 })
                 .then(function prepare_template(template) {
+                    if (template.length === 0) {
+                        self.templateID = undefined;
+                        self.do_notify(_t("Warning"), _t("The template doesn't exist anymore."));
+                        return Promise.resolve();
+                    }
                     template = template[0];
                     self.sign_template = template;
                     self.has_sign_requests = (template.sign_request_ids.length > 0);

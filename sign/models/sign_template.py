@@ -70,6 +70,12 @@ class SignTemplate(models.Model):
             template.signed_count = signed_request_dict[template.id]
             template.in_progress_count = in_progress_request_dict[template.id]
 
+    @api.model
+    def get_empty_list_help(self, help):
+        if not self.env.ref('sign.template_sign_tour', raise_if_not_found=False):
+            return '<p class="o_view_nocontent_smiling_face">%s</p>' % _('Upload a PDF')
+        return super().get_empty_list_help(help=help)
+
     def go_to_custom_template(self, sign_directly_without_mail=False):
         self.ensure_one()
         return {

@@ -9,7 +9,7 @@ class L10nARVatBook(models.AbstractModel):
     _inherit = "account.report"
     _description = "Argentinian VAT Book"
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_month'}
+    filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_all_entries = False
 
     def print_pdf(self, options):
@@ -67,10 +67,7 @@ class L10nARVatBook(models.AbstractModel):
         state = context.get('state')
         if state and state.lower() != 'all':
             domain += [('state', '=', state)]
-        if context.get('date_to'):
-            domain += [('date', '<=', context['date_to'])]
-        if context.get('date_from'):
-            domain += [('date', '>=', context['date_from'])]
+        domain += [('date', '<=', options['date']['date_to']), ('date', '>=', options['date']['date_from'])]
         for rec in self.env['account.ar.vat.line'].search_read(domain):
             taxed = rec['base_25'] + rec['base_5'] + rec['base_10'] + rec['base_21'] + rec['base_27']
             other_taxes = rec['other_taxes']

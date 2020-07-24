@@ -36,8 +36,7 @@ class ReportL10nDePartnerVatIntra(models.AbstractModel):
                        AND m.state = 'posted'
                       GROUP BY p.name, l.partner_id, p.vat, intra_code, partner_country
         """
-        params = (tuple(tag_ids), context.get('date_from'),
-                  context.get('date_to'), tuple(self.env.companies.ids))
+        params = (tuple(tag_ids), options['date']['date_from'], options['date']['date_to'], tuple(self.env.companies.ids))
         self.env.cr.execute(query, params)
 
         for row in self.env.cr.dictfetchall():

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests.common import SavepointCase
 from odoo.addons.sale_timesheet.tests.common import TestCommonSaleTimesheetMultiCompanyNoChart
 from datetime import datetime
 

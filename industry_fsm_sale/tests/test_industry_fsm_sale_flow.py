@@ -3,8 +3,10 @@
 from datetime import datetime
 from odoo.addons.industry_fsm_sale.tests.common import TestFsmFlowSaleCommon
 from odoo.exceptions import UserError
+from odoo.tests import tagged
 
 
+@tagged('-at_install', 'post_install')
 class TestFsmFlowSale(TestFsmFlowSaleCommon):
 
     @classmethod
@@ -39,13 +41,10 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
         self.task.with_user(self.project_user).action_fsm_view_material()
         self.product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
         self.assertEqual(self.task.material_line_product_count, 1, "1 product should be linked to the task")
-        self.assertEqual(self.task.material_line_total_price, self.product_ordered.list_price)
         self.product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
         self.assertEqual(self.task.material_line_product_count, 2, "2 product should be linked to the task")
-        self.assertEqual(self.task.material_line_total_price, 2 * self.product_ordered.list_price)
         self.product_delivered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
         self.assertEqual(self.task.material_line_product_count, 3, "3 products should be linked to the task")
-        self.assertEqual(self.task.material_line_total_price, 2 * self.product_ordered.list_price + self.product_delivered.list_price)
         self.product_delivered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_remove_quantity()
 
         self.assertEqual(self.task.material_line_product_count, 2, "2 product should be linked to the task")

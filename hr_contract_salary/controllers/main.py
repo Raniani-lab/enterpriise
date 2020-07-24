@@ -316,6 +316,7 @@ class HrContractSalary(http.Controller):
             'sign_template_id': contract.sign_template_id.id,
             'contract_update_template_id': contract.contract_update_template_id.id,
             'date_start': fields.Date.today().replace(day=1),
+            'contract_type': contract.contract_type,
         }
         for advantage in contract_advantages:
             if advantage.field not in contract:

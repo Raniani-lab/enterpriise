@@ -337,30 +337,6 @@ class AccountMove(models.Model):
             raise UserError(_('We can not post %s in Odoo because the AFIP verification fail: %s\nPlease verify in AFIP manually'
                               ' and review the bill chatter for more information') % (text, '\n * '.join(still_missing.mapped('display_name'))))
 
-    def _l10n_ar_get_amounts(self):
-        """ Method used to prepare data to present amounts and taxes related amounts when creating an
-        electronic invoice for argentinian. Only take into account the argentinian taxes """
-        self.ensure_one()
-        tax_lines = self.line_ids.filtered('tax_line_id')
-        vat_taxes = tax_lines.filtered(lambda r: r.tax_line_id.tax_group_id.l10n_ar_vat_afip_code)
-
-        vat_taxable = self.env['account.move.line']
-        for line in self.invoice_line_ids:
-            if any(tax.tax_group_id.l10n_ar_vat_afip_code and tax.tax_group_id.l10n_ar_vat_afip_code not in ['0', '1', '2'] for tax in line.tax_ids):
-                vat_taxable |= line
-
-        return {'vat_amount': sum(vat_taxes.mapped('price_subtotal')),
-                # For invoices of letter C should not pass VAT
-                'vat_taxable_amount': sum(vat_taxable.mapped('price_subtotal'))
-                if self.l10n_latam_document_type_id.l10n_ar_letter != 'C' else self.amount_untaxed,
-                'vat_exempt_base_amount': sum(self.invoice_line_ids.filtered(lambda x: x.tax_ids.filtered(lambda y: y.tax_group_id.l10n_ar_vat_afip_code == '2')).mapped('price_subtotal')),
-                'vat_untaxed_base_amount': sum(self.invoice_line_ids.filtered(lambda x: x.tax_ids.filtered(lambda y: y.tax_group_id.l10n_ar_vat_afip_code == '1')).mapped('price_subtotal')),
-                'other_taxes_amount': sum((tax_lines - vat_taxes).mapped('price_subtotal')),
-                'iibb_perc_amount': sum(tax_lines.filtered(lambda r: r.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code == '07').mapped('price_subtotal')),
-                'mun_perc_amount': sum(tax_lines.filtered(lambda r: r.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code == '08').mapped('price_subtotal')),
-                'intern_tax_amount': sum(tax_lines.filtered(lambda r: r.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code == '04').mapped('price_subtotal')),
-                'other_perc_amount': sum(tax_lines.filtered(lambda r: r.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code == '09').mapped('price_subtotal'))}
-
     def _is_mipyme_fce(self):
         """ True of False if the invoice is a mipyme document """
         self.ensure_one()
@@ -408,26 +384,6 @@ class AccountMove(models.Model):
                         'Desc': tribute.tax_line_id.tax_group_id.name,
                         'BaseImp': float_repr(base_imp, precision_digits=2),
                         'Importe': float_repr(tribute.price_subtotal, precision_digits=2)})
-        return res if res else None
-
-    def _get_vat(self):
-        """ Applies on wsfe web service """
-        res = []
-        vat_taxable = self.env['account.move.line']
-        for line in self.line_ids:
-            if any(tax.tax_group_id.l10n_ar_vat_afip_code and tax.tax_group_id.l10n_ar_vat_afip_code not in ['0', '1', '2'] for tax in line.tax_line_id) and line.price_subtotal:
-                vat_taxable |= line
-        for vat in vat_taxable:
-            base_imp = sum(self.invoice_line_ids.filtered(lambda x: x.tax_ids.filtered(lambda y: y.tax_group_id.l10n_ar_vat_afip_code == vat.tax_line_id.tax_group_id.l10n_ar_vat_afip_code)).mapped('price_subtotal'))
-            res += [{'Id': vat.tax_line_id.tax_group_id.l10n_ar_vat_afip_code,
-                     'BaseImp': float_repr(base_imp, precision_digits=2),
-                     'Importe': float_repr(vat.price_subtotal, precision_digits=2)}]
-
-        # Report vat 0%
-        vat_base_0 = sum(self.invoice_line_ids.filtered(lambda x: x.tax_ids.filtered(lambda y: y.tax_group_id.l10n_ar_vat_afip_code == '3')).mapped('price_subtotal'))
-        if vat_base_0:
-            res += [{'Id': '3', 'BaseImp': float_repr(vat_base_0, precision_digits=2), 'Importe': float_repr(0.0, precision_digits=2)}]
-
         return res if res else None
 
     def _get_related_invoice_data(self):
@@ -560,6 +516,11 @@ class AccountMove(models.Model):
 
         related_invoices = self._get_related_invoice_data()
         vat_items = self._get_vat()
+        for item in vat_items:
+            if 'BaseImp' in item and 'Importe' in item:
+                item['BaseImp'] = float_repr(item['BaseImp'], precision_digits=2)
+                item['Importe'] = float_repr(item['Importe'], precision_digits=2)
+
         tributes = self._get_tributes()
         optionals = self._get_optionals_data()
 
@@ -582,7 +543,7 @@ class AccountMove(models.Model):
                    'ImpTotConc': float_repr(amounts['vat_untaxed_base_amount'], precision_digits=2),  # Not Taxed VAT
                    'ImpNeto': float_repr(amounts['vat_taxable_amount'], precision_digits=2),
                    'ImpOpEx': float_repr(amounts['vat_exempt_base_amount'], precision_digits=2),
-                   'ImpTrib': float_repr(amounts['other_taxes_amount'], precision_digits=2),
+                   'ImpTrib': float_repr(amounts['not_vat_taxes_amount'], precision_digits=2),
                    'ImpIVA': float_repr(amounts['vat_amount'], precision_digits=2),
 
                    # Service dates are only informed when AFIP Concept is (2,3)
@@ -673,13 +634,13 @@ class AccountMove(models.Model):
                'Imp_total': float_round(self.amount_total, precision_digits=2),
                'Imp_tot_conc': float_round(amounts['vat_untaxed_base_amount'], precision_digits=2),  # Not Taxed VAT
                'Imp_neto': float_round(amounts['vat_taxable_amount'], precision_digits=2),
-               'Impto_liq': 0.0,
-               'Impto_liq_rni': 0.0,
+               'Impto_liq': amounts['vat_amount'],
+               'Impto_liq_rni': 0.0,  # "no categorizado / responsable no inscripto " figure is not used anymore
                'Imp_op_ex': float_round(amounts['vat_exempt_base_amount'], precision_digits=2),
-               'Imp_perc': amounts['other_perc_amount'],
+               'Imp_perc': amounts['vat_perc_amount'] + amounts['profits_perc_amount'] + amounts['other_perc_amount'],
                'Imp_iibb': amounts['iibb_perc_amount'],
                'Imp_perc_mun': amounts['mun_perc_amount'],
-               'Imp_internos': amounts['intern_tax_amount'],
+               'Imp_internos': amounts['intern_tax_amount'] + amounts['other_taxes_amount'],
                'Imp_moneda_Id': self.currency_id.l10n_ar_afip_code,
                'Imp_moneda_ctz': float_repr(self.l10n_ar_currency_rate, precision_digits=6),
                'Fecha_cbte': self.invoice_date.strftime(WS_DATE_FORMAT['wsbfe']),

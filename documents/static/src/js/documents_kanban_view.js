@@ -21,7 +21,6 @@ const DocumentsKanbanView = KanbanView.extend(DocumentsViewMixin, {
     }),
     display_name: _lt('Attachments Kanban'),
     searchMenuTypes: ['filter', 'favorite'],
-
 });
 
 viewRegistry.add('documents_kanban', DocumentsKanbanView);

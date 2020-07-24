@@ -80,7 +80,7 @@ var StatementAction = AbstractAction.extend({
         this._super.apply(this, arguments);
         this.action_manager = parent;
         this.params = params;
-        this.controlPanelModelConfig.modelName = 'account.bank.statement.line';
+        this.searchModelConfig.modelName = 'account.bank.statement.line';
         this.controlPanelProps.cp_content = {};
         this.model = new this.config.Model(this, {
             modelName: "account.reconciliation.widget",

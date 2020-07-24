@@ -55,6 +55,14 @@ var DashboardView = BasicView.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * @override
+     */
+    _createSearchModel(params, extraExtensions = {}) {
+        Object.assign(extraExtensions, { Dashboard: {} });
+        return this._super(params, extraExtensions);
+    },
+
+    /**
      * Overrides to fetch the fieldsView of subviews.
      *
      * @override

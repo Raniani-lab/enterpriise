@@ -49,7 +49,7 @@ AbstractView.include({
 
         var loadViewDef = this._loadSubviews ? this._loadSubviews(parent) : Promise.resolve();
         return loadViewDef.then(function () {
-            var searchQuery = self.controllerParams.controlPanelModel.getQuery();
+            const searchQuery = self.controllerParams.searchModel.get('query');
             if (options.viewType === 'list') {
                 // reset the group by so lists are not grouped in studio.
                 searchQuery.groupBy = [];

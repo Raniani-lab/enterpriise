@@ -59,7 +59,6 @@ QUnit.module('Views');
 
 QUnit.module('DocumentsViews', {
     beforeEach: function () {
-        const self = this;
         this.ORIGINAL_CREATE_XHR = DocumentsKanbanController.prototype._createXHR;
         this.patchDocumentXHR = (mockedXHRs, customSend) => {
             DocumentsKanbanController.prototype._createXhr = () => {
@@ -70,8 +69,8 @@ QUnit.module('DocumentsViews', {
                 };
                 mockedXHRs.push(xhr);
                 return xhr;
-            }
-        }
+            };
+        };
         this.data = {
             'documents.document': {
                 fields: {
@@ -550,6 +549,12 @@ QUnit.module('DocumentsViews', {
                         '<button name="some_method" type="object"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
+            archs: {
+                "documents.document,false,search": `
+                    <search>
+                        <filter name="owo" string="OwO" domain="[['name', '=', 'burp']]"/>
+                    </search>`
+            },
         });
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
@@ -564,14 +569,15 @@ QUnit.module('DocumentsViews', {
         assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 3,
             "should show 3 document previews in the DocumentsInspector");
 
-        await kanban.reload({domain: [['name', '=', 'burp']]});
+        await testUtils.controlPanel.toggleFilterMenu(kanban);
+        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
 
         assert.containsOnce(kanban, '.o_record_selected',
             "should have 1 selected record");
         assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show 1 document preview in the DocumentsInspector");
 
-        await kanban.reload({domain: []});
+        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
 
         assert.containsOnce(kanban, '.o_record_selected',
             "should have 1 selected records");
@@ -643,8 +649,8 @@ QUnit.module('DocumentsViews', {
     QUnit.test('can share current domain', async function (assert) {
         assert.expect(2);
 
-        var domain = [['owner_id', '=', 2]];
-        var kanban = await createDocumentsView({
+        const domain = ['owner_id', '=', 2];
+        const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
@@ -653,13 +659,17 @@ QUnit.module('DocumentsViews', {
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
-            domain: domain,
+            domain: [domain],
             mockRPC: function (route, args) {
                 if (args.method === 'create_share') {
                     assert.deepEqual(args.args, [{
-                        domain: domain.concat([
-                            ['folder_id', 'child_of', 1], ['res_model', 'in', ['task']],
-                        ]),
+                        domain: [
+                            "&",
+                                domain,
+                            "&",
+                                ["folder_id", "child_of", 1],
+                                ["res_model", "in", ["task"]]
+                        ],
                         folder_id: 1,
                         tag_ids: [[6, 0, []]],
                         type: 'domain',
@@ -668,9 +678,13 @@ QUnit.module('DocumentsViews', {
                 return this._super.apply(this, arguments);
             },
         });
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_category_value header', 1)
+        );
         // filter on 'task' in the DocumentsSelector
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="task"] input:checkbox'));
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
+        );
 
         assert.containsN(kanban, '.o_kanban_record:not(.o_kanban_ghost)', 1,
             "should have 2 records in the renderer");
@@ -1043,12 +1057,10 @@ QUnit.module('DocumentsViews', {
             mockRPC: function (route, args) {
                 if (route === "/web/dataset/call_kw/documents.document/toggle_active") {
                     var documentIDS = args.args[0];
-                    var records = this.data['documents.document'].records
-                    _.each(documentIDS, function(documentID) {
-                        _.find(records, function (record) {
-                            return record.id === documentID;
-                        }).active = false;
-                    })
+                    var records = this.data['documents.document'].records;
+                    documentIDS.forEach((documentID) => {
+                        records.find((record) => record.id === documentID).active = false;
+                    });
                     return Promise.resolve();
                 }
                 return this._super.apply(this, arguments);
@@ -1189,7 +1201,7 @@ QUnit.module('DocumentsViews', {
             mockRPC: function (route, args) {
                 if (args.method === 'toggle_lock') {
                     assert.deepEqual(args.args, [1], "should call method for the correct record");
-                    var record = _.findWhere(self.data['documents.document'].records, {id: 1});
+                    var record = self.data['documents.document'].records.find((d) => d.id === 1);
                     record.lock_uid = record.lock_uid ? false : 1;
                     return Promise.resolve();
                 }
@@ -1462,7 +1474,7 @@ QUnit.module('DocumentsViews', {
                     assert.deepEqual(args.args, [[1], {name: value}],
                         "should correctly save the changes");
                     if (nbWrite === 1) {
-                        return def.then(_.constant(result));
+                        return def.then(() => result);
                     }
                 }
                 return result;
@@ -2419,6 +2431,12 @@ QUnit.module('DocumentsViews', {
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
+            archs: {
+                "documents.document,false,search": `
+                    <search>
+                        <filter name="owo" string="OwO" domain="[['id', '&lt;', 4]]"/>
+                    </search>`
+            },
         });
 
         // select a record and open the chatter
@@ -2433,7 +2451,8 @@ QUnit.module('DocumentsViews', {
             "should display the chatter");
 
         // reload with a domain
-        await kanban.reload({domain: [['id', '<', 4]]});
+        await testUtils.controlPanel.toggleFilterMenu(kanban);
+        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
 
         assert.containsOnce(kanban, '.o_record_selected',
             "record should still be selected");
@@ -2494,6 +2513,12 @@ QUnit.module('DocumentsViews', {
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
+            archs: {
+                "documents.document,false,search": `
+                    <search>
+                        <filter name="owo" string="OwO" domain="[['id', '&gt;', 4]]"/>
+                    </search>`
+            },
         });
 
         // select a record and open the chatter
@@ -2508,7 +2533,8 @@ QUnit.module('DocumentsViews', {
             "should display the chatter");
 
         // reload with a domain
-        await kanban.reload({domain: [['id', '>', 4]]});
+        await testUtils.controlPanel.toggleFilterMenu(kanban);
+        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
 
         assert.containsNone(kanban, '.o_record_selected',
             "no more record should be selected");
@@ -2572,8 +2598,7 @@ QUnit.module('DocumentsViews', {
             'Attached To', "should have an 'attached to' section");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(3) .o_search_panel_filter_value', 4,
             "should have 4 types of models");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id=task]').text().replace(/\s/g, ""),
-            'Task2', "should display the correct number of records");
+        assert.ok(testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n2"), "should display the correct number of records");
         assert.containsOnce(kanban.$('.o_search_panel'), '.o_search_panel_section:nth-child(3) .o_search_panel_filter_value:contains("Not attached")', "should at least have a no-model element");
 
         kanban.destroy();
@@ -2659,20 +2684,27 @@ QUnit.module('DocumentsViews', {
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should have 4 related models");
 
         // filter on 'Task'
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="task"] input:checkbox'));
-
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
+        );
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 3 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should have 4 related models");
 
         // filter on 'Sale Order' (should be a disjunction)
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="order"] input:checkbox'));
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Sale Order")
+        );
 
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 3 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         // remove both filters
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="order"] input:checkbox'));
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="task"] input:checkbox'));
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Sale Order")
+        );
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
+        );
 
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should still have 4 related models");
@@ -2699,21 +2731,28 @@ QUnit.module('DocumentsViews', {
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should have 4 related models");
 
-        // filter on 'No Source'
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id=false] input:checkbox'));
+        // filter on 'Not a file'
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Not a file")
+        );
 
         assert.containsOnce(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', "should have 1 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         // filter on 'Task'
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="task"] input:checkbox'));
-
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
+        );
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 4 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         // remove both filters
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id=false] input:checkbox'));
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="task"] input:checkbox'));
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Not a file")
+        );
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
+        );
 
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
@@ -2733,41 +2772,62 @@ QUnit.module('DocumentsViews', {
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
+            archs: {
+                "documents.document,false,search": `
+                    <search>
+                        <filter name="owo" string="OwO" domain="[['public', '=', True]]"/>
+                    </search>`
+            },
         });
 
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
 
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id=task]').text().replace(/\s/g, ""),
-            'Task2', "should display the correct number of records");
+        assert.ok(
+            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n2"),
+            "should display the correct number of records"
+        );
 
         // filter on 'Task'
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id=task] input:checkbox'));
-
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
+        );
         assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 2, "should have 3 records in the renderer");
 
         // reload with a domain
-        await kanban.reload({domain: [['public', '=', true]]});
+        await testUtils.controlPanel.toggleFilterMenu(kanban);
+        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
 
         assert.containsOnce(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 1, "should have 1 record in the renderer");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="task"]').text().replace(/\s/g, ""),
-            'Task1', "should display the correct number of records");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id="order"]').text().replace(/\s/g, ""),
-            'SaleOrder1', "should display the correct number of records");
+        assert.ok(
+            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n1"),
+            "should display the correct number of records"
+        );
+        assert.ok(
+            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Sale Order\n1"),
+            "should display the correct number of records"
+        );
 
         // filter on 'Sale Order'
-        await testUtils.dom.click(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id=order] input:checkbox'));
+        await testUtils.dom.click(
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Sale Order")
+        );
 
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 2 records in the renderer");
 
         // reload without the domain
-        await kanban.reload({domain: []});
+        await testUtils.controlPanel.toggleFilterMenu(kanban);
+        await testUtils.controlPanel.toggleMenuItem(kanban, "OwO");
 
         assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 3, "should have 4 record in the renderer");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id=task]').text().replace(/\s/g, ""),
-            'Task2', "should display the correct number of records");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id=order]').text().replace(/\s/g, ""),
-            'SaleOrder1', "should display the correct number of records");
+        assert.ok(
+            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n2"),
+            "should display the correct number of records"
+        );
+        assert.ok(
+            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Sale Order\n1"),
+            "should display the correct number of records"
+        );
 
         kanban.destroy();
     });
@@ -2806,8 +2866,8 @@ QUnit.module('DocumentsViews', {
 
         assert.verifySteps([
             '[["folder_id","child_of",1]]',
-            '[["folder_id","child_of",1],["tag_ids","in",[2]]]',
-            '[["folder_id","child_of",2],["tag_ids","in",[2]]]',
+            '["&",["folder_id","child_of",1],["tag_ids","in",[2]]]',
+            '["&",["folder_id","child_of",2],["tag_ids","in",[2]]]',
         ]);
 
         kanban.destroy();
@@ -2950,7 +3010,7 @@ QUnit.module('DocumentsViews', {
             </t></templates></kanban>`,
         });
 
-        const $yopRecord = kanban.$('.o_kanban_record:contains(yop) .o_record_selector')
+        const $yopRecord = kanban.$('.o_kanban_record:contains(yop) .o_record_selector');
         // selects three records
         await testUtils.dom.click($yopRecord);
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
@@ -2989,7 +3049,7 @@ QUnit.module('DocumentsViews', {
         });
 
         const mockedXHRs = [];
-        this.patchDocumentXHR(mockedXHRs, data => assert.step('xhrSend'));
+        this.patchDocumentXHR(mockedXHRs, () => assert.step('xhrSend'));
 
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
@@ -3016,13 +3076,12 @@ QUnit.module('DocumentsViews', {
         assert.strictEqual(kanban.$('.o_file_upload_progress_text_left').text(), "Uploading... (50%)",
             "the current upload progress should be at 50%");
 
-        assert.containsOnce(kanban, '[data-field-name="folder_id"] .o_search_panel_spinner',
-            "there must be a spinner representing the upload");
+        assert.containsOnce(kanban, '.fa.fa-spinner');
 
         progressEvent.loaded = 350000000;
         mockedXHRs[0].upload.dispatchEvent(progressEvent);
         assert.strictEqual(kanban.$('.o_file_upload_progress_text_right').text(), "(350/500Mb)",
-            "the current upload progress should be at (350/500Mb)")
+            "the current upload progress should be at (350/500Mb)");
 
         kanban.destroy();
     });
@@ -3047,7 +3106,7 @@ QUnit.module('DocumentsViews', {
         const ORIGINAL_PROMPT_FILE_INPUT = DocumentsKanbanController.prototype._promptFileInput;
         DocumentsKanbanController.prototype._promptFileInput = $input => inputFiles($input, [file]);
 
-        this.patchDocumentXHR([], data => assert.step('xhrSend'));
+        this.patchDocumentXHR([], () => assert.step('xhrSend'));
 
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
@@ -3098,7 +3157,7 @@ QUnit.module('DocumentsViews', {
         });
 
         const mockedXHRs = [];
-        this.patchDocumentXHR(mockedXHRs, data => assert.step('xhrSend'));
+        this.patchDocumentXHR(mockedXHRs, () => assert.step('xhrSend'));
 
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
@@ -3260,7 +3319,7 @@ QUnit.module('DocumentsViews', {
         assert.containsN(list, '.o_list_record_selector input:checked', 6, "All (6) records should be selected");
 
         await testUtils.dom.click(list.$('thead .o_list_record_selector input'));
-        assert.containsNone(list, '.o_list_record_selector input:checked', "No record should be selected")
+        assert.containsNone(list, '.o_list_record_selector input:checked', "No record should be selected");
 
         list.destroy();
     });

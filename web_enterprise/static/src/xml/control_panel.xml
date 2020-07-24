@@ -7,8 +7,8 @@
         <Portal t-if="state.showMobileSearch" target="'body'">
             <div class="o_searchview o_mobile_search">
                 <div class="o_mobile_search_header">
-                    <button type="button" class="o_mobile_search_button btn float-left"
-                        t-on-click.stop="state.showMobileSearch = !state.showMobileSearch"
+                    <button type="button" class="o_mobile_search_button btn"
+                        t-on-click.stop="state.showMobileSearch = false"
                         >
                         <i class="fa fa-arrow-left"/>
                         <strong class="ml8">FILTER</strong>
@@ -19,26 +19,28 @@
                         <t>CLEAR</t>
                     </button>
                 </div>
-                <SearchBar t-if="props.withSearchBar" fields="fields"/>
-                <!-- Additional content: searchview buttons(legacy) -->
-                <div class="o_mobile_search_filter o_search_options" t-ref="searchViewButtons">
-                    <FilterMenu t-if="props.searchMenuTypes.includes('filter')"
-                        class="o_filter_menu"
-                        fields="fields"
-                    />
-                    <GroupByMenu t-if="props.searchMenuTypes.includes('groupBy')"
-                        class="o_group_by_menu"
-                        fields="fields"
-                    />
-                    <ComparisonMenu t-if="props.searchMenuTypes.includes('comparison') and model.getFiltersOfType('comparison').length"
-                        class="o_comparison_menu"
-                    />
-                    <FavoriteMenu t-if="props.searchMenuTypes.includes('favorite')"
-                        class="o_favorite_menu"
-                    />
+                <div class="o_mobile_search_content">
+                    <SearchBar t-if="props.withSearchBar" fields="fields"/>
+                    <!-- Additional content: searchview buttons(legacy) -->
+                    <div class="o_mobile_search_filter o_search_options" t-ref="searchViewButtons">
+                        <FilterMenu t-if="props.searchMenuTypes.includes('filter')"
+                            class="o_filter_menu"
+                            fields="fields"
+                        />
+                        <GroupByMenu t-if="props.searchMenuTypes.includes('groupBy')"
+                            class="o_group_by_menu"
+                            fields="fields"
+                        />
+                        <ComparisonMenu t-if="props.searchMenuTypes.includes('comparison') and model.get('filters', f => f.type === 'comparison').length"
+                            class="o_comparison_menu"
+                        />
+                        <FavoriteMenu t-if="props.searchMenuTypes.includes('favorite')"
+                            class="o_favorite_menu"
+                        />
+                    </div>
                 </div>
-                <button type="button" class="btn btn-primary o_mobile_search_show_result fixed-bottom"
-                    t-on-click.stop="state.showMobileSearch = !state.showMobileSearch"
+                <button type="button" class="btn btn-primary o_mobile_search_footer"
+                    t-on-click.stop="state.showMobileSearch = false"
                     >
                     <t>SEE RESULT</t>
                 </button>

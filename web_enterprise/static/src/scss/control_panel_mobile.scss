@@ -1,32 +1,4 @@
-.o_web_client .o_searchview.o_mobile_search {
-    background-color: white;
-    bottom: 0;
-    flex-direction: column;
-    left: 0;
-    overflow: auto;
-    padding: 0;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: $zindex-modal;
-
-    .o_mobile_search_header {
-        background-color: $o-brand-odoo;
-        display: flex;
-        min-height: 46px;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        width: 100%;
-
-        .o_mobile_search_button {
-            color: white;
-
-            &:active {
-                background-color: darken($o-brand-primary, 10%);
-            }
-        }
-    }
-
+.o_web_client .o_searchview.o_mobile_search > .o_mobile_search_content {
     .o_searchview_input_container {
         display: flex;
         padding: 15px 20px 0 20px;
@@ -41,7 +13,7 @@
         .o_searchview_facet {
             border-radius: 10px;
             display: inline-flex;
-            order:1;
+            order: 1;
 
             .o_searchview_facet_label {
                 border-radius: 2em 0em 0em 2em;
@@ -49,7 +21,7 @@
         }
 
         .o_searchview_autocomplete {
-            top:100%;
+            top: 100%;
 
             > li {
                 margin: 5px 0px;
@@ -60,12 +32,12 @@
     .o_mobile_search_filter {
         margin: 8px 16px;
         padding-bottom: 15%;
+        flex: auto;
 
         .o_dropdown {
-            border: solid 1px darken(gray('200'), 20%);
+            border: solid 1px darken(gray("200"), 20%);
             margin: 15px 5px 0px 5px;
             width: 100%;
-
         }
 
         .o_dropdown_toggler_btn {
@@ -88,7 +60,7 @@
             // to element so to override it use !important
             border: none;
             box-shadow: none;
-            color: gray('600');
+            color: gray("600");
             position: relative !important;
             transform: translate3d(0, 0, 0) !important;
             width: 100% !important;
@@ -97,12 +69,6 @@
                 margin: 0px;
             }
         }
-    }
-
-    .o_mobile_search_show_result {
-        font-size: 17px;
-        padding: 15px;
-        width: 100%;
     }
 }
 

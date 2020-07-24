@@ -44,7 +44,6 @@ class MxReportPartnerLedger(models.AbstractModel):
     def _do_query_group_by_account(self, options, line_id):
         select = ',\"account_move_line_account_tax_rel\".account_tax_id, SUM(\"account_move_line\".debit - \"account_move_line\".credit)'  # noqa
         sql = "SELECT \"account_move_line\".partner_id%s FROM %s WHERE %s%s AND \"account_move_line_account_tax_rel\".account_move_line_id = \"account_move_line\".id GROUP BY \"account_move_line\".partner_id, \"account_move_line_account_tax_rel\".account_tax_id"  # noqa
-        context = self.env.context
         journal_ids = []
         for company in self.env.companies.filtered('tax_cash_basis_journal_id'):
             journal_ids.append(company.tax_cash_basis_journal_id.id)
@@ -56,7 +55,7 @@ class MxReportPartnerLedger(models.AbstractModel):
             ('journal_id', 'in', journal_ids),
             ('account_id', 'not in', account_tax_ids.ids),
             ('tax_ids', 'in', tax_ids.ids),
-            ('date', '>=', context['date_from']),
+            ('date', '>=', options['date']['date_from']),
             ('move_id.state', '=', 'posted'),
         ]
         tables, where_clause, where_params = self.env[
@@ -76,7 +75,6 @@ class MxReportPartnerLedger(models.AbstractModel):
         partners = {}
         results = self._do_query_group_by_account(options, line_id)
         mx_country = self.env.ref('base.mx')
-        context = self.env.context
         journal_ids = []
         for company in self.env.companies.filtered('tax_cash_basis_journal_id'):
             journal_ids.append(company.tax_cash_basis_journal_id.id)
@@ -85,15 +83,13 @@ class MxReportPartnerLedger(models.AbstractModel):
             ('tax_exigibility', '=', 'on_payment')])
         account_tax_ids = tax_ids.mapped('invoice_repartition_line_ids.account_id')
         base_domain = [
-            ('date', '<=', context['date_to']),
+            ('date', '<=', options['date']['date_to']),
+            ('date', '>=', options['date']['date_from']),
             ('company_id', 'in', self.env.companies.ids),
             ('journal_id', 'in', journal_ids),
             ('account_id', 'not in', account_tax_ids.ids),
             ('tax_ids', 'in', tax_ids.ids),
         ]
-
-        if context['date_from_aml']:
-            base_domain.append(('date', '>=', context['date_from_aml']))
         without_vat = []
         without_too = []
         for partner_id, result in results.items():
@@ -101,7 +97,7 @@ class MxReportPartnerLedger(models.AbstractModel):
             domain.append(('partner_id', '=', partner_id))
             partner = self.env['res.partner'].browse(partner_id)
             partners[partner] = result
-            if not context.get('print_mode'):
+            if not self._context.get('print_mode'):
                 #  fetch the 81 first amls. The report only displays the first
                 # 80 amls. We will use the 81st to know if there are more than
                 # 80 in which case a link to the list view must be displayed.
@@ -148,14 +144,12 @@ class MxReportPartnerLedger(models.AbstractModel):
         lines = []
         if line_id:
             line_id = line_id.replace('partner_', '')
-        context = self.env.context
-        grouped_partners = self.with_context(date_from_aml=context[
-            'date_from'])._group_by_partner_id(options, line_id)
+        grouped_partners = self._group_by_partner_id(options, line_id)
         # Aml go back to the beginning of the user chosen range but the
         # amount on the partner line should go back to either the beginning of
         # the fy or the beginning of times depending on the partner
         sorted_partners = sorted(grouped_partners, key=lambda p: p.name or '')
-        unfold_all = context.get('print_mode') and not options.get('unfolded_lines')
+        unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
         tag_16 = self.env.ref('l10n_mx.tag_diot_16')
         tag_non_cre = self.env.ref('l10n_mx.tag_diot_16_non_cre', raise_if_not_found=False) or self.env['account.account.tag']
         tag_8 = self.env.ref('l10n_mx.tag_diot_8', raise_if_not_found=False) or self.env['account.account.tag']
@@ -245,7 +239,7 @@ class MxReportPartnerLedger(models.AbstractModel):
             domain_lines = []
             amls = grouped_partners[partner]['lines']
             too_many = False
-            if len(amls) > 80 and not context.get('print_mode'):
+            if len(amls) > 80 and not self._context.get('print_mode'):
                 amls = amls[:80]
                 too_many = True
             for line in amls:
@@ -392,8 +386,7 @@ class MxReportPartnerLedger(models.AbstractModel):
     def _l10n_mx_dpiva_txt_export(self, options):
         txt_data = self._get_lines(options)
         lines = ''
-        date = fields.datetime.strptime(
-            self.env.context['date_from'], DEFAULT_SERVER_DATE_FORMAT)
+        date = fields.datetime.strptime(options['date']['date_from'], DEFAULT_SERVER_DATE_FORMAT)
         with self._custom_setlocale():
             month = date.strftime("%B").capitalize()
 

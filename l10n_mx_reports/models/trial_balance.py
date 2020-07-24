@@ -282,7 +282,7 @@ class MxReportAccountTrial(models.AbstractModel):
                 'credit': "%.2f" % (credit),
                 'end': "%.2f" % (end),
             })
-        date = fields.Date.from_string(self.env.context['date_from'])
+        date = fields.Date.from_string(options['date']['date_from'])
         chart = {
             'vat': company.vat or '',
             'month': str(date.month).zfill(2),

@@ -11,7 +11,7 @@ class MulticurrencyRevaluationReport(models.AbstractModel):
     _description = 'Multicurrency Revaluation Report'
 
     filter_multi_company = None
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_month', 'mode': 'single'}
+    filter_date = {'filter': 'this_month', 'mode': 'single'}
     filter_all_entries = False
 
     # TEMPLATING

@@ -216,6 +216,7 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
             'category_id': self.env.ref('product.product_category_all').id,
         })
 
+        self.env['stock.quant']._update_available_quantity(self.graphics_card, self.stock_location, 20)
         form = Form(self.env['mrp.production'])
         form.product_id = self.laptop
         form.product_qty = 1
@@ -253,6 +254,7 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
             "location_out_id": self.depot_location.id,
             'category_id': self.env.ref('product.product_category_all').id,
         })
+        self.env['stock.quant']._update_available_quantity(self.graphics_card, self.stock_location, 20)
         self.laptop.tracking = 'serial'
         form = Form(self.env['mrp.production'])
         form.product_id = self.laptop
@@ -353,15 +355,11 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
 
         mo.workorder_ids.check_ids.quality_state = 'pass'
         action = mo.with_context(debug=True).button_mark_done()
-        backorder = Form(self.env['mrp.production.backorder'].with_context(**action['context']))
-        backorder.save().action_backorder()
-        mo_backorder = mo.procurement_group_id.mrp_production_ids[-1]
-        mo_backorder.button_plan()
-        self.assertEqual(len(mo_backorder.workorder_ids), 2)
+        immediate_wizard = Form(self.env['mrp.immediate.production'].with_context(**action['context']))
+        immediate_wizard.save().process()
 
         self.assertEqual(workorder1.state, 'done')
         self.assertEqual(workorder2.state, 'done')
-
 
 class TestWorkOrderProcess(TestWorkOrderProcessCommon):
     def full_availability(self):

@@ -41,6 +41,7 @@ class TestQualityCheck(TestQualityMrpCommon):
             ml.qty_done = self.mrp_production_qc_test1.product_qty
         details_operation_form.save()
 
+        self.mrp_production_qc_test1 = mo_form.save()
         # Check Quality Check for Production is created and check it's state is 'none'.
         self.assertEqual(len(self.mrp_production_qc_test1.check_ids), 1)
         self.assertEqual(self.mrp_production_qc_test1.check_ids.quality_state, 'none')

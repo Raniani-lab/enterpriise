@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import odoo
 from odoo.addons.account.tests.account_test_xml import AccountTestEdiCommon
-from odoo import fields
 from odoo.tests import tagged
 from odoo.tools import misc
+from odoo.exceptions import ValidationError
 
 import base64
 import os
@@ -19,8 +19,8 @@ class TestEdiResults(AccountTestEdiCommon):
     def setUpClass(cls, chart_template_ref='l10n_mx.mx_coa'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
-        cls.frozen_today = datetime.datetime(year=2017, month=1, day=1,
-                                        hour=0, minute=0, second=0, tzinfo=timezone('utc'))
+        cls.frozen_today = datetime.datetime(year=2017, month=1, day=1, hour=0, minute=0, second=0, tzinfo=timezone('utc'))
+
         # Allow to see the full result of AssertionError.
         cls.maxDiff = None
 
@@ -108,7 +108,7 @@ class TestEdiResults(AccountTestEdiCommon):
             'lst_price': 1000.0,
             'property_account_income_id': cls.company_data['default_account_revenue'].id,
             'property_account_expense_id': cls.company_data['default_account_expense'].id,
-            'l10n_mx_edi_code_sat_id': cls.env.ref('l10n_mx_edi.prod_code_sat_01010101').id,
+            'unspsc_code_id': cls.env.ref('product_unspsc.unspsc_code_01010101').id,
             'l10n_mx_edi_tariff_fraction_id': cls.env.ref('l10n_mx_edi_external_trade.tariff_fraction_72123099').id,
             'l10n_mx_edi_umt_aduana_id': cls.env.ref('uom.product_uom_unit').id,
         })
@@ -135,7 +135,7 @@ class TestEdiResults(AccountTestEdiCommon):
         # ==== Records needing CFDI ====
 
         cls.invoice = cls.env['account.move'].create({
-            'type': 'out_invoice',
+            'move_type': 'out_invoice',
             'partner_id': cls.partner_a.id,
             'invoice_date': '2017-01-01',
             'date': '2017-01-01',
@@ -160,7 +160,7 @@ class TestEdiResults(AccountTestEdiCommon):
                 MetodoPago="PUE"
                 Moneda="Gol"
                 NoCertificado="''' + cls.certificate.serial_number + '''"
-                Serie="INV/2017/"
+                Serie="INV/2017/01/"
                 Sello="___ignore___"
                 Descuento="2000.000"
                 SubTotal="10000.000"
@@ -220,7 +220,7 @@ class TestEdiResults(AccountTestEdiCommon):
         '''
 
         cls.payment = cls.env['account.payment'].create({
-            'payment_date': '2017-01-01',
+            'date': '2017-01-01',
             'amount': cls.invoice.amount_total,
             'payment_type': 'inbound',
             'partner_type': 'customer',
@@ -239,7 +239,7 @@ class TestEdiResults(AccountTestEdiCommon):
                 LugarExpedicion="85134"
                 Moneda="XXX"
                 NoCertificado="''' + cls.certificate.serial_number + '''"
-                Serie="CUST.IN/2017/"
+                Serie="BNK1/2017/01/"
                 Sello="___ignore___"
                 SubTotal="0"
                 Total="0"
@@ -280,7 +280,7 @@ class TestEdiResults(AccountTestEdiCommon):
                                 MetodoDePagoDR="PUE"
                                 MonedaDR="Gol"
                                 NumParcialidad="1"
-                                Serie="INV/2017/"/>
+                                Serie="INV/2017/01/"/>
                         </Pago>
                     </Pagos>
                 </Complemento>
@@ -316,11 +316,11 @@ class TestEdiResults(AccountTestEdiCommon):
             self.invoice.post()
 
             edi_vals = self.invoice._l10n_mx_edi_create_cfdi()
-        self.assertTrue('cfdi' in edi_vals)
+            self.assertTrue('cfdi' in edi_vals)
 
-        current_etree = self.get_xml_tree_from_string(edi_vals['cfdi'])
-        expected_etree = self.get_xml_tree_from_string(self.expected_invoice_cfdi_values)
-        self.assertXmlTreeEqual(current_etree, expected_etree)
+            current_etree = self.get_xml_tree_from_string(edi_vals['cfdi'])
+            expected_etree = self.get_xml_tree_from_string(self.expected_invoice_cfdi_values)
+            self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_invoice_cfdi_group_of_taxes(self):
         self.invoice.write({
@@ -332,11 +332,11 @@ class TestEdiResults(AccountTestEdiCommon):
             self.invoice.post()
 
             edi_vals = self.invoice._l10n_mx_edi_create_cfdi()
-        self.assertTrue('cfdi' in edi_vals)
+            self.assertTrue('cfdi' in edi_vals)
 
-        current_etree = self.get_xml_tree_from_string(edi_vals['cfdi'])
-        expected_etree = self.get_xml_tree_from_string(self.expected_invoice_cfdi_values)
-        self.assertXmlTreeEqual(current_etree, expected_etree)
+            current_etree = self.get_xml_tree_from_string(edi_vals['cfdi'])
+            expected_etree = self.get_xml_tree_from_string(self.expected_invoice_cfdi_values)
+            self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_invoice_cfdi_external_trade(self):
         self.invoice.l10n_mx_edi_external_trade = True
@@ -346,57 +346,57 @@ class TestEdiResults(AccountTestEdiCommon):
             self.invoice.post()
 
             edi_vals = self.invoice._l10n_mx_edi_create_cfdi()
-        self.assertTrue('cfdi' in edi_vals)
+            self.assertTrue('cfdi' in edi_vals)
 
-        current_etree = self.get_xml_tree_from_string(edi_vals['cfdi'])
-        expected_etree = self.with_applied_xpath(
-            self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
-            '''
-                <xpath expr="//Receptor" position="attributes">
-                    <attribute name="NumRegIdTrib">123456789</attribute>
-                    <attribute name="ResidenciaFiscal">USA</attribute>
-                </xpath>
-                <xpath expr="//Comprobante" position="inside">
-                    <Complemento>
-                        <ComercioExterior
-                            CertificadoOrigen="0"
-                            ClaveDePedimento="A1"
-                            Incoterm="FCA"
-                            Subdivision="0"
-                            TipoCambioUSD="0.250000"
-                            TipoOperacion="2"
-                            TotalUSD="20000.00"
-                            Version="1.1">
-                            <Emisor>
-                                <Domicilio
-                                    Calle="Campobasso Norte"
-                                    CodigoPostal="85134"
-                                    Estado="SON"
-                                    Localidad="04"
-                                    NumeroExterior="3206"
-                                    NumeroInterior="9000"
-                                    Pais="MEX"/>
-                            </Emisor>
-                            <Receptor>
-                                <Domicilio
-                                    CodigoPostal="39301"
-                                    Estado="NV"
-                                    Pais="USA"/>
-                            </Receptor>
-                            <Mercancias>
-                                <Mercancia
-                                    FraccionArancelaria="72123099"
-                                    UnidadAduana="06"
-                                    ValorDolares="20000.00"
-                                    CantidadAduana="0.000"
-                                    ValorUnitarioAduana="0.00"/>
-                            </Mercancias>
-                        </ComercioExterior>
-                    </Complemento>
-                </xpath>
-            ''',
-        )
-        self.assertXmlTreeEqual(current_etree, expected_etree)
+            current_etree = self.get_xml_tree_from_string(edi_vals['cfdi'])
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
+                '''
+                    <xpath expr="//Receptor" position="attributes">
+                        <attribute name="NumRegIdTrib">123456789</attribute>
+                        <attribute name="ResidenciaFiscal">USA</attribute>
+                    </xpath>
+                    <xpath expr="//Comprobante" position="inside">
+                        <Complemento>
+                            <ComercioExterior
+                                CertificadoOrigen="0"
+                                ClaveDePedimento="A1"
+                                Incoterm="FCA"
+                                Subdivision="0"
+                                TipoCambioUSD="0.250000"
+                                TipoOperacion="2"
+                                TotalUSD="20000.00"
+                                Version="1.1">
+                                <Emisor>
+                                    <Domicilio
+                                        Calle="Campobasso"
+                                        CodigoPostal="85134"
+                                        Estado="SON"
+                                        Localidad="04"
+                                        NumeroExterior="Norte 3206"
+                                        NumeroInterior="9000"
+                                        Pais="MEX"/>
+                                </Emisor>
+                                <Receptor>
+                                    <Domicilio
+                                        CodigoPostal="39301"
+                                        Estado="NV"
+                                        Pais="USA"/>
+                                </Receptor>
+                                <Mercancias>
+                                    <Mercancia
+                                        FraccionArancelaria="72123099"
+                                        UnidadAduana="06"
+                                        ValorDolares="20000.00"
+                                        CantidadAduana="0.000"
+                                        ValorUnitarioAduana="0.00"/>
+                                </Mercancias>
+                            </ComercioExterior>
+                        </Complemento>
+                    </xpath>
+                ''',
+            )
+            self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_invoice_cfdi_addenda(self):
         self.invoice.l10n_mx_edi_external_trade = False
@@ -416,21 +416,48 @@ class TestEdiResults(AccountTestEdiCommon):
             self.invoice.post()
 
             edi_vals = self.invoice._l10n_mx_edi_create_cfdi()
-        self.assertTrue('cfdi' in edi_vals)
-        cfdi = base64.decodebytes(self.invoice.l10n_mx_edi_append_addenda(base64.encodebytes(edi_vals['cfdi'])))
+            self.assertTrue('cfdi' in edi_vals)
+            cfdi = base64.decodebytes(self.invoice.l10n_mx_edi_append_addenda(base64.encodebytes(edi_vals['cfdi'])))
 
-        current_etree = self.get_xml_tree_from_string(cfdi)
-        expected_etree = self.with_applied_xpath(
-            self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
-            '''
-                <xpath expr="//Comprobante" position="inside">
-                    <Addenda>
-                        <test info="this is an addenda"/>
-                    </Addenda>
-                </xpath>
-            ''',
-        )
-        self.assertXmlTreeEqual(current_etree, expected_etree)
+            current_etree = self.get_xml_tree_from_string(cfdi)
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
+                '''
+                    <xpath expr="//Comprobante" position="inside">
+                        <Addenda>
+                            <test info="this is an addenda"/>
+                        </Addenda>
+                    </xpath>
+                ''',
+            )
+            self.assertXmlTreeEqual(current_etree, expected_etree)
+
+    def test_invoice_cfdi_customs_number(self):
+        self.invoice.l10n_mx_edi_external_trade = False
+
+        # The format of the customs number is incorrect.
+        with self.assertRaises(ValidationError), self.cr.savepoint():
+            self.invoice.invoice_line_ids.l10n_mx_edi_customs_number = '15  48  30  001234'
+
+        self.invoice.invoice_line_ids.l10n_mx_edi_customs_number = '15  48  3009  0001234,15  48  3009  0001235'
+
+        with freeze_time(self.frozen_today), self.without_web_services():
+            self.invoice.post()
+
+            edi_vals = self.invoice._l10n_mx_edi_create_cfdi()
+            self.assertTrue('cfdi' in edi_vals)
+
+            current_etree = self.get_xml_tree_from_string(edi_vals['cfdi'])
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
+                '''
+                    <xpath expr="//Concepto" position="inside">
+                        <InformacionAduanera NumeroPedimento="15  48  3009  0001234"/>
+                        <InformacionAduanera NumeroPedimento="15  48  3009  0001235"/>
+                    </xpath>
+                ''',
+            )
+            self.assertXmlTreeEqual(current_etree, expected_etree)
 
     # -------------------------------------------------------------------------
     # PAYMENTS
@@ -439,12 +466,12 @@ class TestEdiResults(AccountTestEdiCommon):
     def test_payment_cfdi(self):
         with freeze_time(self.frozen_today), self.without_web_services():
             self.invoice.post()
-            self.payment.post()
+            self.payment.action_post()
 
             # Fake the fact the invoice is signed.
             self.invoice.l10n_mx_edi_cfdi_uuid = '123456789'
 
-            (self.invoice.line_ids + self.payment.move_line_ids)\
+            (self.invoice.line_ids + self.payment.line_ids)\
                 .filtered(lambda line: line.account_internal_type == 'receivable')\
                 .reconcile()
 

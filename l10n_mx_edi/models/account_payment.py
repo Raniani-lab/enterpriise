@@ -301,7 +301,7 @@ class AccountPayment(models.Model):
             # At this moment, the attachment contains the file size in its 'datas' field because
             # to save some memory, the attachment will store its data on the physical disk.
             # To avoid this problem, we read the 'datas' directly on the disk.
-            datas = attachment_id._file_read(attachment_id.store_fname) if attachment_id else None
+            datas = attachment_id.with_context(bin_size=False).datas if attachment_id else None
             rec.l10n_mx_edi_cfdi_uuid = None
             if not datas:
                 if attachment_id:

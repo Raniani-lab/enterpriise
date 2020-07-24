@@ -191,7 +191,6 @@ class SaleSubscription(models.Model):
     def partial_invoice_line(self, sale_order, option_line, refund=False, date_from=False):
         """ Add an invoice line on the sales order for the specified option and add a discount
         to take the partial recurring period into account """
-        self = self.with_company(self.company_id)
         order_line_obj = self.env['sale.order.line']
         fpos = self.fiscal_position_id or self.fiscal_position_id.get_fiscal_position(self.partner_id.id)
         taxes = option_line.product_id.taxes_id.filtered(lambda t: t.company_id == self.company_id)
@@ -568,8 +567,7 @@ class SaleSubscription(models.Model):
         if not self.partner_id:
             raise UserError(_("You must first select a Customer for Subscription %s!", self.name))
 
-        self = self.with_company(self.company_id).with_context(company_id=self.company_id.id)
-        company = self.company_id
+        company = self.env.company or self.company_id
 
         fpos = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
         journal = self.template_id.journal_id or self.env['account.journal'].search([('type', '=', 'sale'), ('company_id', '=', company.id)], limit=1)
@@ -649,6 +647,12 @@ class SaleSubscription(models.Model):
         return [(0, 0, self._prepare_invoice_line(line, fiscal_position, revenue_date_start, revenue_date_stop)) for line in self.recurring_invoice_line_ids]
 
     def _prepare_invoice(self):
+        """
+        Note that the company of the environment will be the one for which the invoice will be created.
+
+        :returns: account.move create values
+        :rtype: dict
+        """
         invoice = self._prepare_invoice_data()
         invoice['invoice_line_ids'] = self._prepare_invoice_lines(invoice['fiscal_position_id'])
         return invoice

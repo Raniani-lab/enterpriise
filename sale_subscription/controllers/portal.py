@@ -178,6 +178,7 @@ class sale_subscription(http.Controller):
         # we can't call _recurring_invoice because we'd miss 3DS, redoing the whole payment here
         payment_token = account.payment_token_id
         if payment_token:
+            account = account.with_company(account.company_id)
             invoice_values = account.sudo()._prepare_invoice()
             new_invoice = invoice_res.sudo().create(invoice_values)
             tx = account.sudo().with_context(off_session=False)._do_payment(payment_token, new_invoice)[0]

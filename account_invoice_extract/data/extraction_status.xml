@@ -33,22 +33,22 @@
                     You don't have enough credit to extract data from your invoice.
                     <div class="clearfix"/>
                 </div>
-                <div role="status" class="alert alert-info mb8"
+                <div role="status" class="alert alert-info mb8" name="waiting_extraction"
                      attrs="{'invisible':['|', '|',
                             ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['waiting_extraction'])]}">
-                    <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
-                    The file has been sent and is being processed. It usually takes between 5 and 60 seconds.
+                    <button string="Refresh" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
+                    All fields will be automated by Artificial Intelligence, it might take 5 seconds.
                     <div class="clearfix"/>
                 </div>
                 <field name="extract_status_code" invisible="1" options="{'format': false}"/>
-                <div role="status" class="alert alert-info mb8"
+                <div role="status" class="alert alert-info mb8" name="extraction_status"
                      attrs="{'invisible':['|', '|',
                             ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['extract_not_ready'])]}">
-                    <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
+                    <button string="Refresh" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
                     The data extraction is not finished yet. The extraction usually takes between 5 and 60 seconds.
                     <div class="clearfix"/>
                 </div>

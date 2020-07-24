@@ -44,6 +44,7 @@ class CertificationReport(models.AbstractModel):
             'docs': docs,
             'options': data['wizard_values'],
             'report_name': data['report_name'],
+            'company': self.env.company,
             'current_year': self.env.company.compute_fiscalyear_dates(datetime.now())['date_from'].year,
         }
 

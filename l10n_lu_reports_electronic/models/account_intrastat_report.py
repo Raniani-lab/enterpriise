@@ -69,7 +69,7 @@ class ReportL10nLuPartnerVatIntra(models.AbstractModel):
         """
         codes = [x['id'] for x in options['intrastat_code'] if x['selected']]
         codes = codes or [x['id'] for x in options['intrastat_code']]
-        params = (tuple(codes), self.env.company.id, context.get('date_from'), context.get('date_to'))
+        params = (tuple(codes), self.env.company.id, options['date']['date_from'], options['date']['date_to'])
         self.env.cr.execute(query, params)
 
         for row in self.env.cr.dictfetchall():

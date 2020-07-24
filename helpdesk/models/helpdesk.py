@@ -165,16 +165,23 @@ class HelpdeskTeam(models.Model):
         return super(HelpdeskTeam, self).unlink()
 
     def _check_sla_group(self):
-        for team in self:
-            if team.use_sla and not self.user_has_groups('helpdesk.group_use_sla'):
-                self.env.ref('helpdesk.group_helpdesk_user').write({'implied_ids': [(4, self.env.ref('helpdesk.group_use_sla').id)]})
-            if team.use_sla:
-                self.env['helpdesk.sla'].with_context(active_test=False).search([('team_id', '=', team.id), ('active', '=', False)]).write({'active': True})
-            else:
-                self.env['helpdesk.sla'].search([('team_id', '=', team.id)]).write({'active': False})
-                if not self.search_count([('use_sla', '=', True)]):
-                    self.env.ref('helpdesk.group_helpdesk_user').write({'implied_ids': [(3, self.env.ref('helpdesk.group_use_sla').id)]})
-                    self.env.ref('helpdesk.group_use_sla').write({'users': [(5, 0, 0)]})
+        sla_teams = self.filtered_domain([('use_sla', '=', True)])
+        non_sla_teams = self - sla_teams
+        if sla_teams and not self.user_has_groups('helpdesk.group_use_sla'):
+            self.env.ref('helpdesk.group_helpdesk_user').write({
+                'implied_ids': [(4, self.env.ref('helpdesk.group_use_sla').id)]
+            })
+        if sla_teams:
+            self.env['helpdesk.sla'].with_context(active_test=False).search([
+                ('team_id', 'in', sla_teams.ids), ('active', '=', False),
+            ]).write({'active': True})
+        if non_sla_teams:
+            self.env['helpdesk.sla'].search([('team_id', 'in', non_sla_teams.ids)]).write({'active': False})
+            if not self.search([('use_sla', '=', True)], limit=1):
+                self.env.ref('helpdesk.group_helpdesk_user').write({
+                    'implied_ids': [(3, self.env.ref('helpdesk.group_use_sla').id)]
+                })
+                self.env.ref('helpdesk.group_use_sla').write({'users': [(5, 0, 0)]})
 
     def _check_modules_to_install(self):
         # mapping of field names to module names
@@ -204,11 +211,12 @@ class HelpdeskTeam(models.Model):
             modules = modules.filtered(lambda module: module.state not in STATES)
 
         # other stuff
-        for team in self:
-            if team.use_rating:
-                for stage in team.stage_ids:
-                    if stage.is_close and not stage.fold:
-                        stage.template_id = self.env.ref('helpdesk.rating_ticket_request_email_template', raise_if_not_found= False)
+        template = self.env.ref('helpdesk.rating_ticket_request_email_template', raise_if_not_found= False)
+        stages_to_update = self.filtered('use_rating').stage_ids.filtered(
+            lambda stage: stage.is_close and not stage.fold
+        )
+        if stages_to_update and template:
+            stages_to_update.template_id = template
 
         if modules:
             modules.button_immediate_install()

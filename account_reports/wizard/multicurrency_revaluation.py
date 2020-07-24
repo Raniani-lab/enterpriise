@@ -25,7 +25,7 @@ class MulticurrencyRevaluationWizard(models.TransientModel):
     @api.model
     def default_get(self, default_fields):
         rec = super(MulticurrencyRevaluationWizard, self).default_get(default_fields)
-        if 'reversal_date' in fields:
+        if 'reversal_date' in default_fields:
             rec['reversal_date'] = fields.Date.to_date(self._context.get('date').get('date_to')) + relativedelta(days=1)
         if not self._context.get('revaluation_no_loop') and not self.with_context(revaluation_no_loop=True)._compute_move_vals()['line_ids']:
             raise UserError(_('No adjustment needed'))

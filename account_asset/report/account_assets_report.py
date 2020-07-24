@@ -18,7 +18,7 @@ class assets_report(models.AbstractModel):
     _name = 'account.assets.report'
     _description = 'Account Assets Report'
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_year'}
+    filter_date = {'mode': 'range', 'filter': 'this_year'}
     filter_all_entries = False
     filter_hierarchy = True
     filter_unfold_all = True

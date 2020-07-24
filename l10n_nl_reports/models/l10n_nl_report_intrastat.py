@@ -57,8 +57,8 @@ class ReportL10nNLIntrastat(models.AbstractModel):
         params = {
             'product_service_tags': tuple(self.env.ref('l10n_nl.tax_report_rub_3b').tag_ids.ids),
             'country_ids': tuple(country_ids),
-            'date_from': self._context['date_from'],
-            'date_to': self._context['date_to'],
+            'date_from': options['date']['date_from'],
+            'date_to': options['date']['date_to'],
             'company_ids': tuple(self.env.companies.ids),
         }
         self.env.cr.execute(query, params)

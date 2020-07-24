@@ -78,7 +78,7 @@ class Mod347And349CommonBOEWizard(models.TransientModel):
     previous_report_number = fields.Char(string="Previous Report Number", size=13, help="Number of the previous report, corrected or replaced by this one, if any")
 
     def get_formatted_contact_phone(self):
-        return re.sub('\D', '', self.contact_person_phone)
+        return re.sub('\D', '', self.contact_person_phone or '')
 
 
 class Mod111BOEWizard(models.TransientModel):

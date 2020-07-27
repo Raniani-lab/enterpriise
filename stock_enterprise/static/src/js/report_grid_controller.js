@@ -14,7 +14,7 @@ var ReportGridController = GridController.extend({
      * cell.
      *
      */
-    _onClickCellInformation: function (ev) {
+    _onOpenCellInformation: function (ev) {
         var self = this;
         var state = this.model.get();
         var cellPath = ev.data.path.split('.');

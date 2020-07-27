@@ -77,11 +77,16 @@ class SocialStreamPostFacebook(models.Model):
             comment['likes'] = {'summary': {'total_count': comment.get('like_count', 0)}}
             comment['formatted_created_time'] = self._format_facebook_published_date(comment)
             comment['message'] = self.stream_id._format_facebook_message(comment.get('message'), comment.get('message_tags'))
+            if "from" not in comment:
+                comment["from"] = {"name": _("Unknown")}
+
             inner_comments = comment.get('comments', {}).get('data', [])
             for inner_comment in inner_comments:
                 inner_comment['likes'] = {'summary': {'total_count': inner_comment.get('like_count', 0)}}
                 inner_comment['formatted_created_time'] = self._format_facebook_published_date(inner_comment)
                 inner_comment['message'] = self.stream_id._format_facebook_message(inner_comment.get('message'), inner_comment.get('message_tags'))
+                if "from" not in inner_comment:
+                    inner_comment["from"] = {"name": _("Unknown")}
 
         return {
             'comments': result_json.get('data'),

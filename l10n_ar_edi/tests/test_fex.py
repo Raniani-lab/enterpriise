@@ -66,3 +66,20 @@ class TestFex(common.TestFex):
         tax_exento = self._search_tax('iva_exento')
         self.assertEqual(invoice.invoice_line_ids.mapped('tax_ids'), tax_exento)
         self._edi_validate_and_review(invoice)
+
+    def test_10_invoice_with_notes(self):
+        """ Invoice with multiple products/services and with line note """
+        partner = self.env.ref('l10n_ar.res_partner_expresso')
+        invoice = self._test_case('invoice_e', 'product_service', forced_values={
+            'partner': partner,
+            'lines': [{'product': self.env.ref('product.product_product_27'), 'price_unit': 642.0, 'quantity': 5},
+                      {'product': self.env.ref('l10n_ar.product_product_telefonia'), 'price_unit': 250.0, 'quantity': 1},
+                      {'product': self.env.ref('product.product_product_25'), 'price_unit': 3245.0, 'quantity': 2},
+                      {'product': self.env.ref('l10n_ar.product_product_no_gravado'), 'price_unit': 50.0, 'quantity': 10},
+                      {'product': self.env.ref('l10n_ar.product_product_cero'), 'price_unit': 200.0, 'quantity': 1},
+                      {'product': self.env.ref('l10n_ar.product_product_exento'), 'price_unit': 100.0, 'quantity': 1},
+                      {'display_type': 'line_note', 'name': 'Notes'}
+                      ]})
+        tax_exento = self._search_tax('iva_exento')
+        self.assertEqual(invoice.invoice_line_ids.mapped('tax_ids'), tax_exento)
+        self._edi_validate_and_review(invoice)

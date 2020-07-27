@@ -45,4 +45,4 @@ class HrReferralLinkToShare(models.TransientModel):
         elif self.channel == 'twitter':
             self.url = 'https://twitter.com/intent/tweet?tw_p=tweetbutton&text=Amazing job offer for %s! Check it live: %s' % (self.job_id.name, link_tracker.short_url)
         elif self.channel == 'linkedin':
-            self.url = 'https://www.linkedin.com/shareArticle?mini=true&url=%s' % link_tracker.short_url
+            self.url = 'https://www.linkedin.com/sharing/share-offsite?url=%s' % link_tracker.short_url

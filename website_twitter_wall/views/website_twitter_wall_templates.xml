@@ -154,7 +154,7 @@
             <a target="_Blank" t-attf-title="Share #{wall.name} on twitter" t-attf-href="https://twitter.com/intent/tweet?text=#{wall.name}&amp;url=#{wall.website_url}">
                 <i class="fa fa-twitter-square fa-2x" />
             </a>
-            <a target="_Blank" t-attf-title="Share #{wall.name} on linkedin" t-attf-href="http://www.linkedin.com/shareArticle?mini=true&amp;url=#{wall.website_url}&amp;title=#{wall.name}&amp;">
+            <a target="_Blank" t-attf-title="Share #{wall.name} on linkedin" t-attf-href="http://www.linkedin.com/sharing/share-offsite/?url=#{wall.website_url}">
                 <i class="fa fa-linkedin-square fa-2x" />
             </a>
             <a target="_Blank" t-attf-title="Share #{wall.name} on google+" t-attf-href="https://plus.google.com/share?url=#{wall.website_url}">

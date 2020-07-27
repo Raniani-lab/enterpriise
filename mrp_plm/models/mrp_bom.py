@@ -15,7 +15,6 @@ class MrpBom(models.Model):
         'mrp.eco', 'new_bom_id', 'ECO to be applied')
     eco_count = fields.Integer('# ECOs', compute='_compute_eco_data')
     eco_inprogress_count = fields.Integer("# ECOs in progress", compute='_compute_eco_data')
-    revision_ids = fields.Many2many('mrp.bom', compute='_compute_revision_ids')
 
     def _compute_eco_data(self):
         eco_inprogress_data = self.env['mrp.eco'].read_group([
@@ -31,15 +30,6 @@ class MrpBom(models.Model):
         for bom in self:
             bom.eco_count = result.get(bom.id, 0)
             bom.eco_inprogress_count = result_inprogress.get(bom.product_tmpl_id.id, 0)
-
-    def _compute_revision_ids(self):
-        for rec in self:
-            previous_boms = self.env['mrp.bom']
-            current = rec
-            while current.previous_bom_id:
-                previous_boms |= current
-                current = current.previous_bom_id
-            rec.revision_ids = previous_boms.ids
 
     def apply_new_version(self):
         """ Put old BoM as deprecated - TODO: Set to stage that is production_ready """

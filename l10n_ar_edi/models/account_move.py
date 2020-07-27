@@ -105,7 +105,7 @@ class AccountMove(models.Model):
                 validated += super(AccountMove, inv)._post()
                 continue
 
-            client, auth, transport = self.company_id._l10n_ar_get_connection(inv.journal_id.l10n_ar_afip_ws)._get_client(return_transport=True)
+            client, auth, transport = inv.company_id._l10n_ar_get_connection(inv.journal_id.l10n_ar_afip_ws)._get_client(return_transport=True)
             validated += super(AccountMove, inv)._post()
             return_info = inv._l10n_ar_do_afip_ws_request_cae(client, auth, transport)
             if return_info:

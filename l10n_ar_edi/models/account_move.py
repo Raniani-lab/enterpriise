@@ -82,6 +82,10 @@ class AccountMove(models.Model):
         remaining.l10n_ar_afip_verification_type = 'not_available'
 
     # Buttons
+    def _is_dummy_afip_validation(self):
+        self.ensure_one()
+        return self.company_id._get_environment_type() == 'testing' and \
+            not self.company_id.sudo().l10n_ar_afip_ws_crt or not self.company_id.sudo().l10n_ar_afip_ws_key
 
     def _post(self, soft=True):
         """ After validate the invoice we then validate in AFIP. The last thing we do is request the cae because if an
@@ -99,8 +103,7 @@ class AccountMove(models.Model):
 
             # If we are on testing environment and we don't have certificates we validate only locally.
             # This is useful when duplicating the production database for training purpose or others
-            if inv.company_id._get_environment_type() == 'testing' and \
-               (not inv.company_id.sudo().l10n_ar_afip_ws_crt or not inv.company_id.sudo().l10n_ar_afip_ws_key):
+            if inv._is_dummy_afip_validation():
                 inv._dummy_afip_validation()
                 validated += super(AccountMove, inv)._post()
                 continue

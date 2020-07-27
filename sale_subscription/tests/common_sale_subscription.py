@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from odoo.tests import SavepointCase
+from odoo.addons.sale.tests.common import TestSaleCommon
+from odoo.tests import tagged
 
 
-class TestSubscriptionCommon(SavepointCase):
+@tagged('-at_install', 'post_install')
+class TestSubscriptionCommon(TestSaleCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestSubscriptionCommon, cls).setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+
         # disable most emails for speed
         context_no_mail = {'no_reset_password': True, 'mail_create_nosubscribe': True, 'mail_create_nolog': True}
         Analytic = cls.env['account.analytic.account'].with_context(context_no_mail)
@@ -14,32 +17,14 @@ class TestSubscriptionCommon(SavepointCase):
         SubTemplate = cls.env['sale.subscription.template'].with_context(context_no_mail)
         SaleOrder = cls.env['sale.order'].with_context(context_no_mail)
         Tax = cls.env['account.tax'].with_context(context_no_mail)
-        Journal = cls.env['account.journal'].with_context(context_no_mail)
         FPos = cls.env['account.fiscal.position'].with_context(context_no_mail)
         FPosMap = cls.env['account.fiscal.position.tax'].with_context(context_no_mail)
         ProductTmpl = cls.env['product.template'].with_context(context_no_mail)
 
         # Minimal CoA & taxes setup
-        user_type_payable = cls.env.ref('account.data_account_type_payable')
-        cls.account_payable = cls.env['account.account'].create({
-            'code': 'NC1110',
-            'name': 'Test Payable Account',
-            'user_type_id': user_type_payable.id,
-            'reconcile': True
-        })
-        user_type_receivable = cls.env.ref('account.data_account_type_receivable')
-        cls.account_receivable = cls.env['account.account'].create({
-            'code': 'NC1111',
-            'name': 'Test Receivable Account',
-            'user_type_id': user_type_receivable.id,
-            'reconcile': True
-        })
-        user_type_income = cls.env.ref('account.data_account_type_direct_costs')
-        cls.account_income = cls.env['account.account'].create({
-            'code': 'NC1112', 'name':
-            'Sale - Test Account',
-            'user_type_id': user_type_income.id
-        })
+        cls.account_payable = cls.company_data['default_account_payable']
+        cls.account_receivable = cls.company_data['default_account_receivable']
+        cls.account_income = cls.company_data['default_account_revenue']
 
         cls.tax_10 = Tax.create({
             'name': "10% tax",
@@ -74,11 +59,7 @@ class TestSubscriptionCommon(SavepointCase):
             'tax_dest_id': cls.tax_20.id,
         })
 
-        cls.journal = Journal.create({
-            'name': 'Sales Journal',
-            'type': 'sale',
-            'code': 'SUB0',
-        })
+        cls.journal = cls.company_data['default_journal_sale']
 
         # Test Subscription Template
         cls.subscription_tmpl = SubTemplate.create({
@@ -166,6 +147,7 @@ class TestSubscriptionCommon(SavepointCase):
             'property_account_payable_id': cls.account_payable.id,
             'property_account_receivable_id': cls.account_receivable.id,
             'property_account_position_id': cls.fpos_partner.id,
+            'company_id': cls.company_data['company'].id,
         })
 
         # Test analytic account
@@ -182,7 +164,7 @@ class TestSubscriptionCommon(SavepointCase):
         cls.subscription = Subscription.create({
             'name': 'TestSubscription',
             'partner_id': cls.user_portal.partner_id.id,
-            'pricelist_id': cls.env.ref('product.list0').id,
+            'pricelist_id': cls.company_data['default_pricelist'].id,
             'template_id': cls.subscription_tmpl.id,
         })
         cls.sale_order = SaleOrder.create({
@@ -191,7 +173,7 @@ class TestSubscriptionCommon(SavepointCase):
             'partner_invoice_id': cls.user_portal.partner_id.id,
             'partner_shipping_id': cls.user_portal.partner_id.id,
             'order_line': [(0, 0, {'name': cls.product.name, 'product_id': cls.product.id, 'subscription_id': cls.subscription.id, 'product_uom_qty': 2, 'product_uom': cls.product.uom_id.id, 'price_unit': cls.product.list_price})],
-            'pricelist_id': cls.env.ref('product.list0').id,
+            'pricelist_id': cls.company_data['default_pricelist'].id,
         })
         cls.sale_order_2 = SaleOrder.create({
             'name': 'TestSO2',

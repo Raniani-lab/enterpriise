@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.addons.sale_timesheet.tests.common import TestCommonSaleTimesheetNoChart
+from odoo.addons.sale_timesheet.tests.common import TestCommonSaleTimesheet
+from odoo.tests import tagged
 
 
-class TestInvoiceTimesheet(TestCommonSaleTimesheetNoChart):
-    @classmethod
-    def setUpClass(cls):
-        super(TestInvoiceTimesheet, cls).setUpClass()
-        # set up
-        cls.setUpEmployees()
-        cls.setUpServiceProducts()
+@tagged('-at_install', 'post_install')
+class TestInvoiceTimesheet(TestCommonSaleTimesheet):
 
     def test_timesheet_transfer_sol(self):
         """ Test transfer of timesheet between sale order line + Test cancel invoice
@@ -18,10 +14,10 @@ class TestInvoiceTimesheet(TestCommonSaleTimesheetNoChart):
 
         # create SO
         sale_order = self.env['sale.order'].create({
-            'partner_id': self.partner_customer_usd.id,
-            'partner_invoice_id': self.partner_customer_usd.id,
-            'partner_shipping_id': self.partner_customer_usd.id,
-            'pricelist_id': self.pricelist_usd.id,
+            'partner_id': self.partner_a.id,
+            'partner_invoice_id': self.partner_a.id,
+            'partner_shipping_id': self.partner_a.id,
+            'pricelist_id': self.company_data['default_pricelist'].id,
         })
         so_line_product_1 = self.env['sale.order.line'].create({
             'name': self.product_delivery_timesheet3.name,

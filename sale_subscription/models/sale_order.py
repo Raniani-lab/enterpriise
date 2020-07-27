@@ -126,7 +126,7 @@ class SaleOrder(models.Model):
         """
         res = []
         for order in self:
-            to_create = self._split_subscription_lines()
+            to_create = order._split_subscription_lines()
             # create a subscription for each template with all the necessary lines
             for template in to_create:
                 values = order._prepare_subscription_data(template)

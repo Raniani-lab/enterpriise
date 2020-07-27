@@ -3,15 +3,17 @@ import datetime
 
 from odoo import fields
 from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSubscriptionCommon
+from odoo.tests import tagged
 
 
+@tagged('-at_install', 'post_install')
 class TestSubscriptionSEPA(TestSubscriptionCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestSubscriptionSEPA, cls).setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
-        cls.env.user.company_id.country_id = cls.env.ref('base.us')
+        cls.company_data['company'].country_id = cls.env.ref('base.us')
 
         cls.sepa = cls.env.ref('payment.payment_acquirer_sepa_direct_debit')
         bank_ing = cls.env['res.bank'].create({
@@ -31,7 +33,10 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
             'inbound_payment_method_ids': [(4, cls.env.ref('account_sepa_direct_debit.payment_method_sdd').id)],
             'bank_account_id': bank_account.id,
         })
-        cls.sepa.write({'journal_id': journal.id})
+        cls.sepa.write({
+            'journal_id': journal.id,
+            'company_id': cls.company_data['company'].id,
+        })
 
         cls.partner_bank = cls.env['res.partner.bank'].create({
             'acc_number': 'BE17412614919710',
@@ -60,21 +65,9 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
     def test_01_recurring_invoice(self):
         from unittest.mock import patch
 
-        self.account_type_receivable = self.env['account.account.type'].create({
-            'name': 'receivable',
-            'type': 'receivable',
-            'internal_group': 'asset',
-        })
-        self.account_receivable = self.env['account.account'].create({
-            'name': 'Ian Anderson',
-            'code': 'IA',
-            'user_type_id': self.account_type_receivable.id,
-            'company_id': self.env.company.id,
-            'reconcile': True,
-        })
         self.user_portal.partner_id.write({
-            'property_account_receivable_id': self.account_receivable.id,
-            'property_account_payable_id': self.account_receivable.id,
+            'property_account_receivable_id': self.company_data['default_account_receivable'].id,
+            'property_account_payable_id': self.company_data['default_account_payable'].id,
         })
         self.subscription_tmpl.write({'invoice_mail_template_id': self.env.ref('sale_subscription.mail_template_subscription_invoice').id})
         self.subscription.write({

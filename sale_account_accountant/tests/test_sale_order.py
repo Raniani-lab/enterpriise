@@ -1,42 +1,28 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-import odoo
-from odoo.exceptions import UserError, AccessError
-from odoo.tests import Form
-from odoo.tools import float_compare
-
-from odoo.addons.sale.tests.test_sale_common import TestCommonSaleNoChart
+from odoo.addons.sale.tests.common import TestSaleCommon
+from odoo.tests import tagged
 
 
-class TestSaleOrder(TestCommonSaleNoChart):
-
-    @classmethod
-    def setUpClass(cls):
-        super(TestSaleOrder, cls).setUpClass()
-        # set up users
-        cls.setUpUsers()
-        # set up accounts and products and journals
-        cls.setUpAdditionalAccounts()
-        cls.setUpClassicProducts()
-        cls.setUpAccountJournal()
+@tagged('-at_install', 'post_install')
+class TestSaleOrder(TestSaleCommon):
 
     def test_reconciliation_with_so(self):
         # create SO
         so = self.env['sale.order'].create({
             'name': 'SO/01/01',
             'reference': 'Petit suisse',
-            'partner_id': self.partner_customer_usd.id,
-            'partner_invoice_id': self.partner_customer_usd.id,
-            'partner_shipping_id': self.partner_customer_usd.id,
-            'pricelist_id': self.pricelist_usd.id,
+            'partner_id': self.partner_a.id,
+            'partner_invoice_id': self.partner_a.id,
+            'partner_shipping_id': self.partner_a.id,
+            'pricelist_id': self.company_data['default_pricelist'].id,
         })
         self.env['sale.order.line'].create({
-            'name': self.product_order.name,
-            'product_id': self.product_order.id,
+            'name': self.company_data['product_order_no'].name,
+            'product_id': self.company_data['product_order_no'].id,
             'product_uom_qty': 2,
-            'product_uom': self.product_order.uom_id.id,
-            'price_unit': self.product_order.list_price,
+            'product_uom': self.company_data['product_order_no'].uom_id.id,
+            'price_unit': self.company_data['product_order_no'].list_price,
             'order_id': so.id,
             'tax_id': False,
         })
@@ -45,8 +31,8 @@ class TestSaleOrder(TestCommonSaleNoChart):
         # Create bank statement
         statement = self.env['account.bank.statement'].create({
             'name': 'Test',
-            'journal_id': self.journal_bank.id,
-            'user_id': self.user_employee.id,
+            'journal_id': self.company_data['default_journal_bank'].id,
+            'user_id': self.company_data['default_user_employee'].id,
         })
         st_line1 = self.env['account.bank.statement.line'].create({
             'payment_ref': 'should not find anything',

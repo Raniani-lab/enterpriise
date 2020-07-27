@@ -9,7 +9,6 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models, tools
 from odoo.addons.hr_payroll.tests.common import TestPayslipContractBase
-from odoo.addons.account.tests.common import AccountTestCommon
 
 
 @odoo.tests.tagged('post_install', '-at_install')

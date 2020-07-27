@@ -633,7 +633,7 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
                     label: rec_proposition.name,
                     amount: rec_proposition.amount,
                     account_id: rec_proposition.account_id.id,
-                    tax_ids: rec_proposition.tax_ids.map(x=> x.id),
+                    tax_ids: rec_proposition.tax_ids && rec_proposition.tax_ids.map(x=> x.id) || [],
                     label: rec_proposition.name,
                 })
             }

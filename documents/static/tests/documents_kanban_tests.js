@@ -1,6 +1,7 @@
 odoo.define('documents.documents_kanban_tests', function (require) {
 "use strict";
 
+const AbstractStorageService = require('web.AbstractStorageService');
 const DocumentsKanbanController = require('documents.DocumentsKanbanController');
 const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const DocumentsListView = require('documents.DocumentsListView');
@@ -12,6 +13,7 @@ const { afterNextRender } = require('mail/static/src/utils/test_utils.js');
 const Bus = require('web.Bus');
 const concurrency = require('web.concurrency');
 const NotificationService = require('web.NotificationService');
+const RamStorage = require('web.RamStorage');
 const relationalFields = require('web.relational_fields');
 const testUtils = require('web.test_utils');
 const { str_to_datetime } = require('web.time');
@@ -3398,6 +3400,118 @@ QUnit.module('DocumentsViews', {
         assert.verifySteps(['attachmentRestored']);
         await testUtils.dom.click(kanban.$('.o_inspector_history_item_delete'));
         assert.verifySteps(['attachmentUnlinked']);
+        kanban.destroy();
+    });
+
+    QUnit.test("store and retrieve active category value", async function (assert) {
+        assert.expect(8);
+
+        let expectedActiveId = 3;
+        const storageKey = "searchpanel_documents.document_folder_id";
+        const Storage = RamStorage.extend({
+            init() {
+                this._super(...arguments);
+                this.setItem(storageKey, expectedActiveId);
+            },
+            getItem(key) {
+                const value = this._super(...arguments);
+                if (key === storageKey) {
+                    assert.step(`storage get ${value}`);
+                }
+                return value;
+            },
+            setItem(key, value) {
+                if (key === storageKey) {
+                    assert.step(`storage set ${value}`);
+                }
+                this._super(...arguments);
+            },
+        });
+        const local_storage = AbstractStorageService.extend({
+            storage: new Storage(),
+        });
+        const kanban = await createDocumentsView({
+            View: DocumentsKanbanView,
+            model: "documents.document",
+            data: this.data,
+            services: { local_storage },
+            arch: `
+                <kanban>
+                    <templates>
+                        <div t-name="kanban-box">
+                            <field name="name"/>
+                        </div>
+                    </templates>
+                </kanban>`,
+            async mockRPC(route, args) {
+                if (route === "/web/dataset/search_read") {
+                    assert.deepEqual(args.domain, [["folder_id", "child_of", expectedActiveId]]);
+                }
+                return this._super(...arguments);
+            },
+        });
+
+        assert.containsOnce(kanban, ".o_search_panel_category_value .active");
+        assert.containsOnce(kanban, ".o_search_panel_category_value:nth(1) .active");
+
+        expectedActiveId = 2;
+        await testUtils.dom.click(kanban.$(".o_search_panel_category_value:nth(3) header"));
+
+        assert.verifySteps([
+            "storage set 3", // Manual set for initial value
+            "storage get 3",
+            "storage set 2", // Set on toggle
+        ]);
+
+        kanban.destroy();
+    });
+
+    QUnit.test("retrieved category value does not exist", async function (assert) {
+        assert.expect(5);
+
+        const storageKey = "searchpanel_documents.document_folder_id";
+        const Storage = RamStorage.extend({
+            init() {
+                this._super(...arguments);
+                this.setItem(storageKey, 343); // Doesn't exist
+            },
+            getItem(key) {
+                const value = this._super(...arguments);
+                if (key === storageKey) {
+                    assert.step(`storage get ${value}`);
+                }
+                return value;
+            },
+        });
+        const local_storage = AbstractStorageService.extend({
+            storage: new Storage(),
+        });
+        const kanban = await createDocumentsView({
+            View: DocumentsKanbanView,
+            model: "documents.document",
+            data: this.data,
+            services: { local_storage },
+            arch: `
+                <kanban>
+                    <templates>
+                        <div t-name="kanban-box">
+                            <field name="name"/>
+                        </div>
+                    </templates>
+                </kanban>`,
+            async mockRPC(route, args) {
+                if (route === "/web/dataset/search_read") {
+                    assert.deepEqual(args.domain, [["folder_id", "child_of", 1]]);
+                }
+                return this._super(...arguments);
+            },
+        });
+
+        assert.containsOnce(kanban, ".o_search_panel_category_value .active");
+        assert.containsOnce(kanban, ".o_search_panel_category_value:nth(1) .active");
+
+        assert.verifySteps(["storage get 343"]);
+
         kanban.destroy();
     });
 });

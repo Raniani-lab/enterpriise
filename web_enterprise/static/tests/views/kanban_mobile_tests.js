@@ -1,10 +1,8 @@
 odoo.define('web_enterprise.kanban_mobile_tests', function (require) {
 "use strict";
 
-const AbstractStorageService = require('web.AbstractStorageService');
 const KanbanView = require('web.KanbanView');
 const {createActionManager, createView, dom} = require('web.test_utils');
-const RamStorage = require('web.RamStorage');
 const {_t} = require('web.core');
 
 QUnit.module('Views', {
@@ -56,10 +54,6 @@ QUnit.module('Views', {
     QUnit.test('kanban with searchpanel: rendering in mobile', async function (assert) {
         assert.expect(37);
 
-        const RamStorageService = AbstractStorageService.extend({
-            storage: new RamStorage(),
-        });
-
         const kanban = await createView({
             View: KanbanView,
             model: 'partner',
@@ -86,9 +80,6 @@ QUnit.module('Views', {
             mockRPC(route, {method}) {
                 assert.step(method || route);
                 return this._super.apply(this, arguments);
-            },
-            services: {
-                local_storage: RamStorageService,
             },
         });
 

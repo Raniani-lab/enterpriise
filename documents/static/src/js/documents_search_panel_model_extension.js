@@ -9,11 +9,6 @@ odoo.define("documents/static/src/js/documents_search_panel_model_extension", fu
     const isTagFilter = (s) => s.type === "filter" && s.fieldName === "tag_ids";
 
     class DocumentsSearchPanelModelExtension extends SearchPanelModelExtension {
-        constructor() {
-            super(...arguments);
-
-            this.DEFAULT_VALUE_INDEX = 1;
-        }
 
         //---------------------------------------------------------------------
         // Public
@@ -81,6 +76,17 @@ odoo.define("documents/static/src/js/documents_search_panel_model_extension", fu
         }
 
         /**
+         * Overridden to write the new value in the local storage.
+         * @override
+         */
+        toggleCategoryValue(sectionId, valueId) {
+            super.toggleCategoryValue(...arguments);
+            const { fieldName } = this.state.sections.get(sectionId);
+            const storageKey = this._getStorageKey(fieldName);
+            this.env.services.local_storage.setItem(storageKey, valueId);
+        }
+
+        /**
          * Updates the folder id of a record matching the given value.
          * @param {number[]} recordIds
          * @param {number} valueId
@@ -104,6 +110,45 @@ odoo.define("documents/static/src/js/documents_search_panel_model_extension", fu
                 method: "write",
                 args: [recordIds, { tag_ids: [[4, valueId]] }],
             });
+        }
+
+        //---------------------------------------------------------------------
+        // Private
+        //---------------------------------------------------------------------
+
+        /**
+         * @override
+         */
+        _ensureCategoryValue(category, valueIds) {
+            if (valueIds.includes(category.activeValueId)) {
+                return;
+            }
+            // If not set in context, or set to an unknown value, set active value
+            // from localStorage
+            const storageKey = this._getStorageKey(category.fieldName);
+            category.activeValueId = this.env.services.local_storage.getItem(storageKey);
+            if (valueIds.includes(category.activeValueId)) {
+                return;
+            }
+            // If still not a valid value, get the search panel default value
+            // from the given valid values.
+            category.activeValueId = valueIds[Math.min(valueIds.length - 1, 1)];
+        }
+
+        /**
+         * @private
+         * @param {string} fieldName
+         * @returns {string}
+         */
+        _getStorageKey(fieldName) {
+            return `searchpanel_${this.config.modelName}_${fieldName}`;
+        }
+
+        /**
+         * @override
+         */
+        _shouldWaitForData() {
+            return true;
         }
     }
 

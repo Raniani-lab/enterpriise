@@ -344,6 +344,7 @@ class HelpdeskTeam(models.Model):
         ticket_ids = self.env['helpdesk.ticket'].search(domain).ids
         action = self.env.ref('rating.rating_rating_view').read()[0]
         action['domain'] = [('res_id', 'in', ticket_ids), ('rating', '!=', -1), ('res_model', '=', 'helpdesk.ticket'), ('consumed', '=', True)]
+        action['help'] = '<p class="o_view_nocontent_empty_folder">No data yet !</p><p>Create tickets to get statistics.</p>'
         return action
 
     def action_view_ticket(self):
@@ -364,13 +365,6 @@ class HelpdeskTeam(models.Model):
     def action_view_all_rating(self):
         """ return the action to see all the rating about the all sort of activity of the team (tickets) """
         return self._action_view_rating()
-
-    def action_unhappy_rating_ticket(self):
-        self.ensure_one()
-        action = self.env.ref('helpdesk.helpdesk_ticket_action_main').read()[0]
-        action['domain'] = [('team_id', '=', self.id), ('user_id', '=', self.env.uid), ('rating_ids.rating', '=', 1)]
-        action['context'] = {'default_team_id': self.id}
-        return action
 
     @api.model
     def _compute_activity_avg(self, activity):

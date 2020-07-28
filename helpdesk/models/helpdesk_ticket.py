@@ -462,6 +462,17 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             result.append((ticket.id, "%s (#%d)" % (ticket.name, ticket._origin.id)))
         return result
+        
+    @api.model
+    def create_action(self, action_ref, title, search_view_ref):
+        action = self.env.ref(action_ref).read()[0]
+        if title:
+            action['display_name'] = title
+        if search_view_ref:
+            action['search_view_id'] = self.env.ref(search_view_ref).read()[0]
+        action['views'] = [(False, view) for view in action['view_mode'].split(",")]
+        
+        return {'action': action}
 
     @api.model_create_multi
     def create(self, list_value):

@@ -75,12 +75,34 @@ var HelpdeskDashboardRenderer = KanbanRenderer.extend({
      * @param {MouseEvent}
      */
     _onDashboardActionClicked: function (e) {
+        var self = this;
         e.preventDefault();
         var $action = $(e.currentTarget);
-        this.trigger_up('dashboard_open_action', {
-            action_name: $action.attr('name'),
-        });
+        var action_ref = $action.attr('name');
+        var title = $action.attr('title');
+        var search_view_ref = $action.attr('search_view_ref');
+        if ($action.attr('show_demo') != 'true'){
+            if ($action.attr('name').includes("helpdesk.")) {
+                this._rpc({
+                    model: 'helpdesk.ticket',
+                    method: 'create_action',
+                    args: [action_ref, title, search_view_ref],
+                }).then(function (result) {
+                    if (result.action) {
+                        self.do_action(result.action, {
+                            additional_context: $action.attr('context')
+                        });
+                    }
+                });
+            }
+            else {
+                this.trigger_up('dashboard_open_action', {
+                    action_name: $action.attr('name'),
+                });
+            }
+        }
     },
+
     /**
      * @private
      * @param {MouseEvent}

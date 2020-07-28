@@ -6,7 +6,7 @@
         <field name="name">helpdesk.team.tree</field>
         <field name="model">helpdesk.team</field>
         <field name="arch" type="xml">
-            <tree string="Helpdesk Team" multi_edit="1">
+            <tree string="Helpdesk Team" multi_edit="1" sample="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name" class="field_name"/>
                 <field name="alias_id"/>
@@ -21,16 +21,11 @@
         <field name="view_mode">tree,form</field>
         <field name="context">{'default_team_id': active_id, 'search_default_team_id': active_id}</field>
         <field name="help" type="html">
-          <p class="o_view_nocontent_smiling_face">
-            Create a new Service Level Agreement (SLA) policy
-          </p><p>
-            A service level agreement is a contract between you and your
-            customers that specifies performance measures for support
-            by ticket priority.
-          </p><p>
-            For example, we respond to urgent tickets related to bugs
-            in two hours and resolve them within 36 hours.
-          </p>
+            <p class="o_view_nocontent_smiling_face">
+                No SLA policies found. Let's create one! 
+            </p><p> 
+                Make sure tickets are handled in a timely manner by using SLA Policies.<br/>
+            </p>
         </field>
     </record>
 
@@ -53,10 +48,11 @@
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-            Create a new ticket team
-          </p><p>
-            Teams allows to organize tickets.
-          </p>
+                No teams found
+            </p>
+            <p>
+                Teams regroup tickets for people sharing the same expertise or from the same area.
+            </p>
         </field>
     </record>
 
@@ -494,8 +490,11 @@
         <field name="context">{}</field>
         <field name="view_id" ref="helpdesk.helpdesk_team_view_kanban"/>
         <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                Your teams will appear here
+        <p class="o_view_nocontent_smiling_face">
+                No teams found
+            </p>
+            <p>
+                Teams regroup tickets for people sharing the same expertise or from the same area.
             </p>
         </field>
     </record>

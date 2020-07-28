@@ -252,7 +252,7 @@ class assets_report(models.AbstractModel):
                 AND asset.asset_type = 'purchase'
                 AND asset.active = 't'
 
-                ORDER BY account.code;
+                ORDER BY account.code, asset.acquisition_date;
             """.format(where_account_move=where_account_move)
 
         date_to = options['date']['date_to']

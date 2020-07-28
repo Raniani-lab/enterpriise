@@ -320,17 +320,16 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             initial_company.write({
                 'planning_generation_interval': 2,
             })
-
-            with self.assertRaises(UserError, msg="The employee should be in the same company as the shift"), self.cr.savepoint():
-                slot1 = self.env['planning.slot'].create({
-                    'start_datetime': datetime(2019, 6, 1, 8, 0, 0),
-                    'end_datetime': datetime(2019, 6, 1, 17, 0, 0),
-                    'employee_id': self.employee_bert.id,
-                    'repeat': True,
-                    'repeat_type': 'forever',
-                    'repeat_interval': 1,
-                    'company_id': initial_company.id,
-                })
+            # Should be able to create a slot with a company_id != employee.company_id
+            slot1 = self.env['planning.slot'].create({
+                'start_datetime': datetime(2019, 6, 1, 8, 0, 0),
+                'end_datetime': datetime(2019, 6, 1, 17, 0, 0),
+                'employee_id': self.employee_bert.id,
+                'repeat': True,
+                'repeat_type': 'forever',
+                'repeat_interval': 1,
+                'company_id': initial_company.id,
+            })
 
             # put the employee in the second company
             self.employee_bert.write({'company_id': initial_company.id})
@@ -362,7 +361,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
 
             # initial company's recurrency should have created 9 slots since it's span is two month
             # other company's recurrency should have create 5 slots since it's span is one month
-            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 9, 'initial company\'s span is two month, so 9 slots')
+            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 18, 'initial company\'s span is two month, so 2 * 9 slots')
             self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 5, 'other company\'s span is one month, so only 5 slots')
 
             self.assertEqual(slot1.company_id, slot1.recurrency_id.company_id, "Recurrence and slots (1) must have the same company")

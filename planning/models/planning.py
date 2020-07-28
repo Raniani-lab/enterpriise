@@ -45,7 +45,7 @@ class Planning(models.Model):
         return datetime.combine(fields.Datetime.now(), datetime.max.time())
 
     name = fields.Text('Note')
-    employee_id = fields.Many2one('hr.employee', "Employee", group_expand='_read_group_employee_id', check_company=True)
+    employee_id = fields.Many2one('hr.employee', "Employee", group_expand='_read_group_employee_id')
     work_email = fields.Char("Work Email", related='employee_id.work_email')
     department_id = fields.Many2one(related='employee_id.department_id', store=True)
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)

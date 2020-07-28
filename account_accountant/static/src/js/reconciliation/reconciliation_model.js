@@ -1442,7 +1442,7 @@ var ManualModel = StatementModel.extend({
                             self.manualLines = result;
                             self.valuenow = 0;
                             self.valuemax = Object.keys(self.manualLines).length;
-                            return self.loadData(lines);
+                            return self.loadData(self.manualLines);
                         });
                 case 'accounts':
                     return self._rpc({
@@ -1455,7 +1455,7 @@ var ManualModel = StatementModel.extend({
                             self.manualLines = result;
                             self.valuenow = 0;
                             self.valuemax = Object.keys(self.manualLines).length;
-                            return self.loadData(lines);
+                            return self.loadData(self.manualLines);
                         });
                 default:
                     var partner_ids = context.partner_ids || null;

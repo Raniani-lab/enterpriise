@@ -20,6 +20,7 @@ class ApprovalRequest(models.Model):
 
     name = fields.Char(string="Approval Subject", tracking=True)
     category_id = fields.Many2one('approval.category', string="Category", required=True)
+    category_image = fields.Binary(related='category_id.image')
     approver_ids = fields.One2many('approval.approver', 'request_id', string="Approvers", check_company=True)
     company_id = fields.Many2one(
         string='Company', related='category_id.company_id',

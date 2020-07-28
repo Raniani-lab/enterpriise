@@ -43,7 +43,7 @@
             <field name="perm_write" eval="0"/>
             <field name="perm_create" eval="0"/>
             <field name="perm_unlink" eval="1"/>
-            <field name="domain_force">[('request_owner_id.id', '=', user.id), ('request_status','=','cancel')]</field>
+            <field name="domain_force">[('request_owner_id.id', '=', user.id), ('request_status', 'in', ['cancel', 'new'])]</field>
         </record>
 
         <record id="approval_request_approvers_rule" model="ir.rule">

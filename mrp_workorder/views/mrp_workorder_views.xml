@@ -38,9 +38,9 @@
             <tree position="attributes">
                 <attribute name="js_class">tablet_list_view</attribute>
             </tree>
-            <xpath expr="//button[@name='button_start']" position="replace">
-                <button name="open_tablet_view" type="object" string="Start" class="btn-success" context="{'from_production_order': True}"
-                  attrs="{'invisible': ['|', '|', '|', ('production_state','in', ('draft', 'done')), ('working_state', '=', 'blocked'), ('state', '=', 'done'), ('is_user_working', '!=', False)]}"/>
+            <xpath expr="//button[@name='action_open_wizard']" position="after">
+                <field name="production_state" invisible="1"/>
+                <button name="open_tablet_view" type="object" icon="fa-tablet" context="{'from_production_order': True}" attrs="{'invisible': ['|', ('production_state', 'in', ('draft', 'cancel', 'done')), ('state', '=', 'done')]}"/>
             </xpath>
         </field>
     </record>

@@ -39,6 +39,7 @@ class HrPayslip(models.Model):
 
         # Map the necessary data
         payments_data = []
+        sct_generic = (journal_id.currency_id or journal_id.company_id.currency_id).name != 'EUR'
         for slip in self:
             payments_data.append({
                 'id' : slip.id,
@@ -52,9 +53,11 @@ class HrPayslip(models.Model):
                 'partner_id' : slip.employee_id.address_home_id.id,
                 'partner_bank_id': slip.employee_id.bank_account_id.id,
             })
+            if not sct_generic and (not slip.employee_id.bank_account_id.bank_bic or not slip.employee_id.bank_account_id.acc_type == 'iban'):
+                sct_generic = True
 
         # Generate XML File
-        xml_doc = journal_id.create_iso20022_credit_transfer(payments_data, True)
+        xml_doc = journal_id.create_iso20022_credit_transfer(payments_data, True, sct_generic)
         xml_binary = base64.encodebytes(xml_doc)
 
         # Save XML file on the payslip

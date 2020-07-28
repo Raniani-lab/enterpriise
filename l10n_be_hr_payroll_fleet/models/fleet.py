@@ -199,7 +199,7 @@ class FleetVehicleModel(models.Model):
     default_car_value = fields.Float(string="Catalog Value (VAT Incl.)")
     can_be_requested = fields.Boolean(string="Can be requested", help="Can be requested on a contract as a new vehicle")
     default_atn = fields.Float(compute='_compute_atn', string="ATN")
-    default_total_depreciated_cost = fields.Float(compute='_compute_default_total_depreciated_cost', string="Total Cost (Depreciated)")
+    default_total_depreciated_cost = fields.Float(compute='_compute_default_total_depreciated_cost', compute_sudo=True, string="Total Cost (Depreciated)")
     co2_fee = fields.Float(compute='_compute_co2_fee', string="CO2 fee")
 
     @api.depends('default_car_value', 'default_co2', 'default_fuel_type')

@@ -43,7 +43,7 @@ class HrContractSalary(HrContractSalary):
     def onchange_advantage(self, advantage_field, new_value, contract_id, advantages):
         res = super().onchange_advantage(advantage_field, new_value, contract_id, advantages)
         if advantage_field == 'public_transport_reimbursed_amount':
-            res['new_value'] = round(request.env['hr.contract'].sudo()._get_public_transport_reimbursed_amount(float(new_value)), 2)
+            res['new_value'] = round(request.env['hr.contract']._get_public_transport_reimbursed_amount(float(new_value)), 2)
         elif advantage_field == 'train_transport_reimbursed_amount':
             res['new_value'] = round(request.env['hr.contract']._get_train_transport_reimbursed_amount(float(new_value)), 2)
         elif advantage_field in ['private_car_reimbursed_amount', 'km_home_work']:
@@ -63,7 +63,7 @@ class HrContractSalary(HrContractSalary):
                 res['new_value'] = round(request.env['fleet.vehicle'].sudo().browse(int(vehicle_id)).total_depreciated_cost, 2)
         elif advantage_field == 'wishlist_car_total_depreciated_cost':
             dummy, vehicle_id = new_value.split('-')
-            res['new_value'] = round(request.env['fleet.vehicle.model'].sudo().browse(int(vehicle_id)).default_total_depreciated_cost, 2)
+            res['new_value'] = round(request.env['fleet.vehicle.model'].browse(int(vehicle_id)).default_total_depreciated_cost, 2)
         elif advantage_field == 'fold_company_car_total_depreciated_cost' and not res['new_value']:
             res['extra_values'] = [('company_car_total_depreciated_cost', 0)]
         elif advantage_field == 'fold_wishlist_car_total_depreciated_cost' and not res['new_value']:

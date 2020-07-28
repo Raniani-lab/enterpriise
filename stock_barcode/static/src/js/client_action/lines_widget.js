@@ -73,9 +73,11 @@ var LinesWidget = Widget.extend({
         this._highlightLine($line, doNotClearLineHighlight);
 
         this._handleControlButtons();
+        this._updateIncrementButtons($line);
 
         if (qty === 0) {
             this._toggleScanMessage('scan_lot');
+            this._highlightLotIcon($line);
         } else if (this.mode === 'receipt') {
             this._toggleScanMessage('scan_more_dest');
         } else if (['delivery', 'inventory'].indexOf(this.mode) >= 0) {
@@ -85,7 +87,6 @@ var LinesWidget = Widget.extend({
         } else if (this.mode === 'no_multi_locations') {
             this._toggleScanMessage('scan_products');
         }
-        this._updateIncrementButtons($line);
     },
 
     /**
@@ -114,6 +115,7 @@ var LinesWidget = Widget.extend({
 
         if (lineDescription.qty_done === 0) {
             this._toggleScanMessage('scan_lot');
+            this._highlightLotIcon($line);
         } else if (this.mode === 'receipt') {
             this._toggleScanMessage('scan_more_dest');
         } else if (['delivery', 'inventory'].indexOf(this.mode) >= 0) {
@@ -394,6 +396,53 @@ var LinesWidget = Widget.extend({
         this.$('.o_scan_message_' + message).toggleClass('o_hidden', false);
         if (_.indexOf(this._getErrorName(), message) > -1) {
             this.$('.o_barcode_pic > .fa, .o_barcode_icon').toggleClass('d-none');
+        }
+        if (this.model != 'stock.inventory') {
+            this._highlightNextExpected(message);
+        }
+    },
+
+    /**
+     * Highline the next expected action to aid in flow understanding
+     * based on the current help message. For now this is implemented as:
+     *  - highlight the next non-completed product
+     *  - all messages except the 'scan_lot' message will do this since the lot icon
+     *    to highlight is dependent on the last product scanned
+     *
+     * Note that products not part of original picking cannot ever be
+     * "completed".
+     *
+     * @private
+     * @param {string} message
+     */
+    _highlightNextExpected: function(message) {
+        if (message != 'scan_lot') {
+            this.$('.o_next_expected').removeClass('o_next_expected');
+            if (! this._isReservationProcessed()) {
+                const $lines = this.$('.o_barcode_line:not(.o_line_qty_completed)');
+                for (const line of $lines) {
+                    // do not include lines not part of original picking as "next_expected"
+                    if ($(line).find('.o_barcode_scanner_qty').text().indexOf('/') != -1) {
+                        $(line).find('.fa-tags').addClass('o_next_expected');
+                        break;
+                    }
+                }
+            }
+        }
+    },
+
+
+    /**
+     * Highline the lot/sn icon in $line. Needs to be separate from _highlightNextExpected
+     *  so we know from which line to highlight the lot/sn icon.
+     *
+     * @private
+     * @param {jQueryElement} $line
+     */
+    _highlightLotIcon: function ($line) {
+        this.$('.o_next_expected').removeClass('o_next_expected');
+        if ($line) {
+            $line.find('.fa-barcode').addClass('o_next_expected');
         }
     },
 

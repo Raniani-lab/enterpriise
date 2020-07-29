@@ -134,7 +134,8 @@ var PlanningGanttController = GanttController.extend({
            'default_slot_ids': _.pluck(this.model.get().records, 'id'),
            'scale': state.scale,
            'active_domain': this.model.domain,
-           'active_ids': this.model.get().records
+           'active_ids': this.model.get().records,
+           'default_employee_ids': _.filter(_.pluck(self.initialState.rows, 'resId'), Boolean),
         });
         return this.do_action('planning.planning_send_action', {
             additional_context: additional_context,

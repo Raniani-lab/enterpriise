@@ -608,17 +608,13 @@ class Planning(models.Model):
         self.ensure_one()
         if not self.employee_id or not self.employee_id.work_email:
             self.is_published = True
-            return {
-                'type': 'ir.actions.act_window',
-                'res_model': 'slot.planning.select.send',
-                'name': _('Send Slot'),
-                'view_mode': 'form',
-                'target': 'new',
-                'context': {
-                    'default_slot_id': self.id,
-                    'default_company_id': self.company_id.id,
-                }
-            }
+            domain = [('company_id', '=', self.company_id.id), ('work_email', '!=', False)]
+            if self.role_id:
+                domain = expression.AND([
+                    domain,
+                    ['|', ('planning_role_ids', '=', False), ('planning_role_ids', 'in', self.role_id.id)]])
+            employee_ids = self.env['hr.employee'].sudo().search(domain)
+            return self._send_slot(employee_ids, self.start_datetime, self.end_datetime)
         self._send_slot(self.employee_id, self.start_datetime, self.end_datetime)
         return True
 

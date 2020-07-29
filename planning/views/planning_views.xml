@@ -6,8 +6,8 @@
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
             <tree string="Shift List" multi_edit="1" sample="1" editable="bottom">
-                <field name="employee_id" groups="planning.group_planning_user" widget="many2one_avatar_employee"/>
-                <field name="role_id"/>
+                <field name="employee_id" groups="planning.group_planning_user" widget="many2one_avatar_employee" optional="show"/>
+                <field name="role_id" optional="show"/>
                 <field name="start_datetime" widget="daterange" options="{'related_end_date': 'end_datetime'}"/>
                 <field name="end_datetime" widget="daterange" options="{'related_start_date': 'start_datetime'}"/>
                 <field name="allocated_hours" widget="float_time" readonly="1" decoration-danger="allocated_percentage &gt; 100"/>
@@ -55,9 +55,10 @@
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>
-                            <field name="start_datetime" string="Date" widget="daterange" options='{"related_end_date": "end_datetime"}'/>
-                                <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                            <label for="start_datetime" string="Date"/>
                             <div class="o_row">
+                                <field name="start_datetime" widget="daterange" options='{"related_end_date": "end_datetime"}'/>
+                                <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
                                 <field name="end_datetime" widget="daterange" options='{"related_start_date": "start_datetime"}'/>
                             </div>
                             <field name="allocated_percentage" decoration-danger="allocated_percentage &gt; 100"/>
@@ -80,7 +81,7 @@
                         </div>
                     </group>
                     <group>
-                        <field name="name"/>
+                        <field name="name" string="" placeholder="Additional message"/>
                     </group>
                 </sheet>
             </form>
@@ -305,11 +306,11 @@
         <field name="name">planning.role.tree</field>
         <field name="model">planning.role</field>
         <field name="arch" type="xml">
-            <tree string="Planning Role List" editable="bottom" multi_edit="1">
+            <tree string="Planning Role List" editable="bottom" multi_edit="1" sample="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
-                <field name="color" widget="color_picker"/>
                 <field name="employee_ids" widget="many2many_tags"/>
+                <field name="color" widget="color_picker"/>
             </tree>
         </field>
     </record>
@@ -346,6 +347,12 @@
             (0, 0, {'view_mode': 'tree'}),
             (0, 0, {'view_mode': 'form'})]"/>
         <field name="context">{'search_default_my_shifts': 1, 'search_default_open_shifts': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No shift found <br/>
+                Let's start your planning by adding a new shift
+            </p>
+        </field>
     </record>
 
     <record id="planning_action_my_gantt" model="ir.actions.act_window">
@@ -353,6 +360,12 @@
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{'search_default_my_shifts': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No shift found <br/>
+                Let's start your planning by adding a new shift
+            </p>
+        </field>
     </record>
 
     <record id="planning_action_open_shift" model="ir.actions.act_window">
@@ -374,6 +387,12 @@
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{'search_default_group_by_employee': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No shift found <br/>
+                Let's start your planning by adding a new shift
+            </p>
+        </field>
     </record>
 
         <record id="planning_action_schedule_by_employee_view_gantt" model="ir.actions.act_window.view">
@@ -388,6 +407,12 @@
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No shift found <br/>
+                Let's start your planning by adding a new shift
+            </p>
+        </field>
     </record>
 
         <record id="planning_action_schedule_by_role_view_gantt" model="ir.actions.act_window.view">
@@ -409,6 +434,12 @@
         <field name="name">Roles</field>
         <field name="res_model">planning.role</field>
         <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No roles found <br/>
+                Define the different roles filled by your employees
+            </p>
+        </field>
     </record>
 
     <record id="planning_action_shift_template" model="ir.actions.act_window">
@@ -416,6 +447,12 @@
         <field name="res_model">planning.slot.template</field>
         <field name="view_mode">tree</field>
         <field name="search_view_id" ref="planning_slot_template_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No shift templates found <br/>
+                Encode your shifts in one click by using templates
+            </p>
+        </field>
     </record>
 
     <!--

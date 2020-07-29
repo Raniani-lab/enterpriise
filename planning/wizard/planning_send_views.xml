@@ -22,7 +22,7 @@
                         </group>
                     </group>
                     <group col="2">
-                        <field name="employee_ids" widget="many2many_tags"/>
+                        <field name="employee_ids" attrs="{'invisible': [('employee_ids','!=',[])]}" widget="many2many_tags"/>
                         <field name="note" nolabel="1" colspan="2" placeholder="Additional message"/>
                     </group>
                 </sheet>

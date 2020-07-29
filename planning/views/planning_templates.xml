@@ -115,10 +115,10 @@
             <t t-if="message_slug in ['assign', 'unassign']">
                 <div class="alert alert-success" role="alert">
                     <t t-if="message_slug == 'assign'">
-                        You were successfully assigned this open shift. <i class="fa fa-check-circle text-success"></i>
+                        You were successfully assigned this open shift.<i class="fa fa-check-circle text-success"></i>
                     </t>
                     <t t-if="message_slug == 'unassign'">
-                        This shift is not assigned to you anymore.
+                        This shift is no longer assigned to you.
                     </t>
                     <t t-if="message_slug == 'already_assign'">
                         This shift is already assigned to another employee.

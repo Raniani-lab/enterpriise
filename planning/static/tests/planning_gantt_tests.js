@@ -64,6 +64,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                 assert.deepEqual(data.options.additional_context, {
                     active_domain: Domain.FALSE_DOMAIN,
                     active_ids: [],
+                    default_employee_ids: [],
                     default_slot_ids: [],
                     default_end_datetime: "2018-12-31 23:59:59",
                     default_start_datetime: "2018-12-01 00:00:00",

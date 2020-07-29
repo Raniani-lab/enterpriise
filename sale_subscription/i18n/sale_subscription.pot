@@ -3582,6 +3582,12 @@ msgid "Years"
 msgstr ""
 
 #. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_order.py:49
+#, python-format
+msgid "You cannot set to draft a canceled quotation linked to subscriptions. Please create a new quotation."
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 msgid "You don't have any subscriptions yet."
 msgstr ""

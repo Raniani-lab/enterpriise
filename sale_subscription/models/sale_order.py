@@ -3,6 +3,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 class SaleOrder(models.Model):
     _name = "sale.order"
@@ -40,6 +41,11 @@ class SaleOrder(models.Model):
             action = {'type': 'ir.actions.act_window_close'}
         action['context'] = dict(self._context, create=False)
         return action
+
+    def action_draft(self):
+        if any([order.state == 'cancel' and any([line.subscription_id and line.subscription_id.in_progress == False for line in order.order_line]) for order in self]):
+            raise UserError(_('You cannot set to draft a canceled quotation linked to subscriptions. Please create a new quotation.'))
+        return super(SaleOrder, self).action_draft()
 
     def _prepare_subscription_data(self, template):
         """Prepare a dictionnary of values to create a subscription from a template."""

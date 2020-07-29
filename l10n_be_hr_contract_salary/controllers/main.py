@@ -63,7 +63,7 @@ class HrContractSalary(HrContractSalary):
                 res['new_value'] = round(request.env['fleet.vehicle'].sudo().browse(int(vehicle_id)).total_depreciated_cost, 2)
         elif advantage_field == 'wishlist_car_total_depreciated_cost':
             dummy, vehicle_id = new_value.split('-')
-            res['new_value'] = round(request.env['fleet.vehicle.model'].browse(int(vehicle_id)).default_total_depreciated_cost, 2)
+            res['new_value'] = 0
         elif advantage_field == 'fold_company_car_total_depreciated_cost' and not res['new_value']:
             res['extra_values'] = [('company_car_total_depreciated_cost', 0)]
         elif advantage_field == 'fold_wishlist_car_total_depreciated_cost' and not res['new_value']:

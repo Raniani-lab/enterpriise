@@ -90,13 +90,6 @@ class HrContract(models.Model):
         }
 
     def _get_advantage_values_wishlist_car_total_depreciated_cost(self, contract, advantages):
-        wishlist_car = advantages['fold_wishlist_car_total_depreciated_cost']
-        if wishlist_car:
-            dummy, model_id = advantages['select_wishlist_car_total_depreciated_cost'].split('-')
-            return {
-                'new_car_model_id': int(model_id),
-                'new_car': True,
-            }
         return {}
 
     def _get_description_company_car_total_depreciated_cost(self, new_value=None):

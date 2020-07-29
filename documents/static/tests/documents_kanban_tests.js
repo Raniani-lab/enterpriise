@@ -238,6 +238,7 @@ QUnit.module('DocumentsViews', {
                     body: {string: "Body", type: 'char'},
                     model: {string: "Related Document Model", type: 'char'},
                     res_id: {string: "Related Document ID", type: 'integer'},
+                    message_type: {string:"Message Type", type: 'char'},
                 },
                 records: [],
             },

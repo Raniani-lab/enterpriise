@@ -329,7 +329,7 @@ class generic_tax_report(models.AbstractModel):
         sql = """SELECT account_tax_report_line_tags_rel.account_tax_report_line_id,
                         SUM(coalesce(account_move_line.balance, 0) * CASE WHEN acc_tag.tax_negate THEN -1 ELSE 1 END
                                                  * CASE WHEN account_move.tax_cash_basis_rec_id IS NULL AND account_journal.type = 'sale' THEN -1 ELSE 1 END
-                                                 * CASE WHEN account_move.tax_cash_basis_rec_id IS NULL AND account_move.move_type in ('in_refund', 'out_refund') THEN -1 ELSE 1 END)
+                                                 * CASE WHEN """ + self._get_grids_refund_sql_condition() + """ THEN -1 ELSE 1 END)
                         AS balance
                  FROM """ + tables + """
                  JOIN account_move
@@ -359,6 +359,13 @@ class generic_tax_report(models.AbstractModel):
             if result[0] in dict_to_fill:
                 dict_to_fill[result[0]]['periods'][period_number]['balance'] = result[1]
                 dict_to_fill[result[0]]['show'] = True
+
+    def _get_grids_refund_sql_condition(self):
+        """ Returns the SQL condition to be used by the tax report's query in order
+        to determine whether or not an account.move is a refund.
+        This function is for example overridden in pos_account_reports.
+        """
+        return "account_move.tax_cash_basis_rec_id IS NULL AND account_move.move_type in ('in_refund', 'out_refund')"
 
     def _compute_from_amls_taxes(self, options, dict_to_fill, period_number):
         """ Fills dict_to_fill with the data needed to generate the report, when

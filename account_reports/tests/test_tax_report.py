@@ -205,26 +205,6 @@ class TestTaxReport(TestAccountReportsCommon):
             ],
         )
 
-    def _create_tax_report_line(self, name, report, tag_name=None, parent_line=None, sequence=None, code=None, formula=None):
-        """ Creates a tax report line
-        """
-        create_vals = {
-            'name': name,
-            'report_id': report.id,
-        }
-        if tag_name:
-            create_vals['tag_name'] = tag_name
-        if parent_line:
-            create_vals['parent_id'] = parent_line.id
-        if sequence != None:
-            create_vals['sequence'] = sequence
-        if code:
-            create_vals['code'] = code
-        if formula:
-            create_vals['formula'] = formula
-
-        return self.env['account.tax.report.line'].create(create_vals)
-
     def test_tax_report_grid(self):
         company = self.company_data['company']
         company.country_id = self.env['res.country'].create({

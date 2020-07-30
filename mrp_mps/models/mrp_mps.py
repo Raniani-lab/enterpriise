@@ -50,9 +50,8 @@ class MrpProductionSchedule(models.Model):
         :rtype: dict
         """
         self.ensure_one()
-        domain_confirm, domain_done = self._get_moves_domain(date_start, date_stop, 'outgoing')
-        domain = OR([domain_confirm, domain_done])
-        moves = self.env['stock.move'].search_read(domain, ['picking_id'])
+        domain_moves = self._get_moves_domain(date_start, date_stop, 'outgoing')
+        moves = self.env['stock.move'].search_read(domain_moves, ['picking_id'])
         picking_ids = [p['picking_id'][0] for p in moves if p['picking_id']]
         return {
             'type': 'ir.actions.act_window',
@@ -73,8 +72,8 @@ class MrpProductionSchedule(models.Model):
         :return: action values that open the forecast details wizard
         :rtype: dict
         """
-        domain_confirm, domain_done = self._get_moves_domain(date_start, date_stop, 'incoming')
-        move_ids = self.env['stock.move'].search(OR([domain_confirm, domain_done])).ids
+        domain_moves = self._get_moves_domain(date_start, date_stop, 'incoming')
+        move_ids = self.env['stock.move'].search(domain_moves).ids
 
         rfq_domain = self._get_rfq_domain(date_start, date_stop)
         purchase_order_line_ids = self.env['purchase.order.line'].search(rfq_domain).ids
@@ -564,28 +563,19 @@ class MrpProductionSchedule(models.Model):
         # Get quantity on incoming moves
         # TODO: issue since it will use one search by move. Should use a
         # read_group with a group by location.
-        domain_moves_confirmed, domain_moves_done = self._get_moves_domain(after_date, before_date, 'incoming')
-        stock_moves_confirmed = self.env['stock.move'].search(domain_moves_confirmed, order='date_expected')
-        stock_moves_done = self.env['stock.move'].search(domain_moves_done, order='date')
+        domain_moves = self._get_moves_domain(after_date, before_date, 'incoming')
+        stock_moves = self.env['stock.move'].search(domain_moves, order='date')
         index = 0
-        for move in stock_moves_confirmed:
+        for move in stock_moves:
             # Skip to the next time range if the planned date is not in the
             # current time interval.
-            while not (date_range[index][0] <= move.date_expected.date() and
-                    date_range[index][1] >= move.date_expected.date()):
+            while not (date_range[index][0] <= move.date.date() and date_range[index][1] >= move.date.date()):
                 index += 1
             key = (date_range[index], move.product_id, move.location_dest_id.get_warehouse())
-            incoming_qty[key] += move.product_qty
-
-        index = 0
-        for move in stock_moves_done:
-            # Skip to the next time range if the planned date is not in the
-            # current time interval.
-            while not (date_range[index][0] <= move.date.date() and
-                    date_range[index][1] >= move.date.date()):
-                index += 1
-            key = (date_range[index], move.product_id, move.location_dest_id.get_warehouse())
-            incoming_qty_done[key] += move.product_qty
+            if move.state == 'done':
+                incoming_qty_done[key] += move.product_qty
+            else:
+                incoming_qty[key] += move.product_qty
 
         return incoming_qty, incoming_qty_done
 
@@ -705,25 +695,10 @@ class MrpProductionSchedule(models.Model):
         """ Return domain for incoming or outgoing moves """
         location = type == 'incoming' and 'location_dest_id' or 'location_id'
         location_dest = type == 'incoming' and 'location_id' or 'location_dest_id'
-        domain_confirmed = [
+        return [
             (location, 'child_of', self.mapped('warehouse_id.view_location_id').ids),
             ('product_id', 'in', self.mapped('product_id').ids),
-            ('state', 'not in', ['done', 'cancel', 'draft']),
-            (location + '.usage', '!=', 'inventory'),
-            '|',
-                (location_dest + '.usage', 'not in', ('internal', 'inventory')),
-                '&',
-                (location_dest + '.usage', '=', 'internal'),
-                '!',
-                    (location_dest, 'child_of', self.mapped('warehouse_id.view_location_id').ids),
-            ('inventory_id', '=', False),
-            ('date_expected', '>=', date_start),
-            ('date_expected', '<=', date_stop)
-        ]
-        domain_done = [
-            (location, 'child_of', self.mapped('warehouse_id.view_location_id').ids),
-            ('product_id', 'in', self.mapped('product_id').ids),
-            ('state', '=', 'done'),
+            ('state', 'not in', ['cancel', 'draft']),
             (location + '.usage', '!=', 'inventory'),
             '|',
                 (location_dest + '.usage', 'not in', ('internal', 'inventory')),
@@ -735,7 +710,6 @@ class MrpProductionSchedule(models.Model):
             ('date', '>=', date_start),
             ('date', '<=', date_stop)
         ]
-        return domain_confirmed, domain_done
 
     def _get_outgoing_qty(self, date_range):
         """ Get the outgoing quantity from existing moves.
@@ -748,31 +722,20 @@ class MrpProductionSchedule(models.Model):
         before_date = date_range[-1][1]
         # Get quantity on incoming moves
 
-        domain_moves_confirmed, domain_moves_done = self._get_moves_domain(after_date, before_date, 'outgoing')
-        domain_moves_confirmed = AND([domain_moves_confirmed, [('raw_material_production_id', '=', False)]])
-        domain_moves_done = AND([domain_moves_done, [('raw_material_production_id', '=', False)]])
-
-        stock_moves_confirmed = self.env['stock.move'].search(domain_moves_confirmed, order='date_expected')
+        domain_moves = self._get_moves_domain(after_date, before_date, 'outgoing')
+        domain_moves = AND([domain_moves, [('raw_material_production_id', '=', False)]])
+        stock_moves = self.env['stock.move'].search(domain_moves, order='date')
         index = 0
-        for move in stock_moves_confirmed:
+        for move in stock_moves:
             # Skip to the next time range if the planned date is not in the
             # current time interval.
-            while not (date_range[index][0] <= move.date_expected.date() and
-                    date_range[index][1] >= move.date_expected.date()):
+            while not (date_range[index][0] <= move.date.date() and date_range[index][1] >= move.date.date()):
                 index += 1
             key = (date_range[index], move.product_id, move.location_id.get_warehouse())
-            outgoing_qty[key] += move.product_uom_qty
-
-        stock_moves_done = self.env['stock.move'].search(domain_moves_done, order='date')
-        index = 0
-        for move in stock_moves_done:
-            # Skip to the next time range if the planned date is not in the
-            # current time interval.
-            while not (date_range[index][0] <= move.date.date() and
-                    date_range[index][1] >= move.date.date()):
-                index += 1
-            key = (date_range[index], move.product_id, move.location_id.get_warehouse())
-            outgoing_qty_done[key] += move.product_uom_qty
+            if move.state == 'done':
+                outgoing_qty_done[key] += move.product_uom_qty
+            else:
+                outgoing_qty[key] += move.product_uom_qty
 
         return outgoing_qty, outgoing_qty_done
 

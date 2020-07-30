@@ -153,7 +153,6 @@
             <graph string="Subscriptions" sample="1">
                 <field name="partner_id"/>
                 <field name="recurring_total" type="measure"/>
-                <field name="recurring_total_incl" type="measure"/>
             </graph>
         </field>
     </record>
@@ -165,7 +164,6 @@
             <pivot string="Subscriptions" sample="1">
                 <field name="partner_id"/>
                 <field name="recurring_total" type="measure"/>
-                <field name="recurring_total_incl" type="measure"/>
             </pivot>
         </field>
     </record>
@@ -279,17 +277,8 @@
                                             <field name="product_uom_category_id" invisible="1"/>
                                             <field name="uom_id" string="UoM" groups="uom.group_uom"  optional="show"/>
                                             <field name="price_unit" widget="monetary" />
-                                            <field
-                                                name="tax_ids"
-                                                widget="many2many_tags"
-                                                options="{'no_create': True}"
-                                                domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
-                                                optional="show"
-                                            />
                                             <field name="discount" groups="product.group_discount_per_so_line" optional="show"/>
                                             <field name="price_subtotal" widget="monetary" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                            <field name="price_total" widget="monetary" groups="account.group_show_line_subtotals_tax_included"/>
-                                            <field name="price_tax" invisible="1"/>
                                             <field name="currency_id" invisible="1"/>
                                         </tree>
                                         <form string="Subscription Lines">
@@ -303,7 +292,6 @@
                                                         <field name="uom_id"/>
                                                     </div>
                                                     <field name="price_unit"/>
-                                                    <field name="tax_ids" widget="many2many_tags"  options="{'no_create': True}" context="{'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"/>
                                                     <field name="discount" groups="product.group_discount_per_so_line"/>
                                                 </group>
                                             </group>
@@ -314,11 +302,6 @@
                                     <group name="group_note">
                                         <group class="oe_subtotal_footer oe_right" name="group_subscription_total">
                                             <field name="recurring_total" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                            <field name="recurring_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">
-                                                <label for="recurring_total_incl" />
-                                            </div>
-                                            <field name="recurring_total_incl" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                         </group>
                                     </group>
                                 </div>
@@ -353,7 +336,6 @@
                                    context="{'default_type':'invoice'}" options='{"always_reload": True}'/>
                                          <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address"
                                    context="{'default_type':'delivery'}" options='{"always_reload": True}'/>
-                                        <field name="fiscal_position_id" options="{'no_create': True}"/>
                                         <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                                         <field name="payment_mode" invisible="1"/>
                                         <field name="commercial_partner_id" invisible="1"/>
@@ -599,7 +581,6 @@
                 <field name="user_id"/>
                 <field name="stage_id" options="{'group_by_tooltip': {'description': 'Description'}}"/>
                 <field name="starred"/>
-                <field name="recurring_total_incl"/>
                 <field name="template_id"/>
                 <field name="currency_id"/>
                 <field name="activity_ids"/>
@@ -614,7 +595,7 @@
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                             <div class="oe_kanban_content">
                                 <strong class="float-right">
-                                    <field name="recurring_total_incl" widget="monetary"/>
+                                    <field name="recurring_total" widget="monetary"/>
                                 </strong>
                                 <div class="o_kanban_record_title">
                                     <field name="partner_id"/>

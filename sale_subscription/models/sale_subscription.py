@@ -55,7 +55,6 @@ class SaleSubscription(models.Model):
     partner_shipping_id = fields.Many2one(
         'res.partner', string='Service Address',
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", )
-    fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position')
     tag_ids = fields.Many2many('account.analytic.tag', string='Tags',
                                domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", check_company=True)
     date_start = fields.Date(string='Start Date', default=fields.Date.today)
@@ -71,9 +70,10 @@ class SaleSubscription(models.Model):
     recurring_interval = fields.Integer(string='Repeat Every', help="Repeat every (Days/Week/Month/Year)", related="template_id.recurring_interval", readonly=1)
     recurring_next_date = fields.Date(string='Date of Next Invoice', default=fields.Date.today, help="The next invoice will be created on this date then the period will be extended.")
     recurring_invoice_day = fields.Integer('Recurring Invoice Day', copy=False, default=lambda e: fields.Date.today().day)
-    recurring_total = fields.Float(compute='_amount_all', string="Untaxed Recurring Price", store=True, tracking=40)
-    recurring_tax = fields.Float('Taxes', compute="_amount_all", store=True)
-    recurring_total_incl = fields.Float('Recurring Price', compute="_amount_all", store=True, tracking=50)
+    recurring_total = fields.Float(compute='_amount_all', string="Recurring Price", store=True, tracking=40)
+    # add tax calculation
+    recurring_tax = fields.Float('Taxes', compute="_amount_all", compute_sudo=True, store=True)
+    recurring_total_incl = fields.Float('Total', compute="_amount_all", compute_sudo=True, store=True, tracking=50)
     recurring_monthly = fields.Float(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue", store=True)
     close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", copy=False, tracking=True)
     template_id = fields.Many2one(
@@ -192,9 +192,6 @@ class SaleSubscription(models.Model):
         """ Add an invoice line on the sales order for the specified option and add a discount
         to take the partial recurring period into account """
         order_line_obj = self.env['sale.order.line']
-        fpos = self.fiscal_position_id or self.fiscal_position_id.get_fiscal_position(self.partner_id.id)
-        taxes = option_line.product_id.taxes_id.filtered(lambda t: t.company_id == self.company_id)
-        taxes = fpos.map_tax(taxes, option_line.product_id, self.partner_id)
         ratio, message = self._partial_recurring_invoice_ratio(date_from=date_from)
         if message != "":
             sale_order.message_post(body=message)
@@ -208,7 +205,6 @@ class SaleSubscription(models.Model):
             'discount': _discount,
             'price_unit': self.pricelist_id.with_context(uom=option_line.uom_id.id).get_product_price(option_line.product_id, 1, False),
             'name': option_line.name,
-            'tax_id': [(6, 0, taxes.ids)]
         }
         return order_line_obj.create(values)
 
@@ -267,18 +263,23 @@ class SaleSubscription(models.Model):
         for account in self:
             account.website_url = '/my/subscription/%s/%s' % (account.id, account.uuid)
 
-    @api.depends('recurring_invoice_line_ids.price_total')
+    @api.depends('recurring_invoice_line_ids.price_subtotal')
     def _amount_all(self):
         """
         Compute the total amounts of the subscription.
         """
         for subscription in self:
-            amount_untaxed = sum(subscription.recurring_invoice_line_ids.mapped('price_subtotal'))
-            amount_tax = sum(subscription.recurring_invoice_line_ids.mapped('price_tax'))
+            amount_tax = 0.0
+            recurring_total = 0.0
+            for line in subscription.recurring_invoice_line_ids:
+                recurring_total += line.price_subtotal
+                # _amount_line_tax needs singleton
+                amount_tax += line._amount_line_tax()
+            recurring_tax = subscription.currency_id and subscription.currency_id.round(amount_tax) or 0.0
             subscription.update({
-                'recurring_total': amount_untaxed,
-                'recurring_tax': amount_tax,
-                'recurring_total_incl': amount_untaxed + amount_tax
+                'recurring_total': recurring_total,
+                'recurring_tax': recurring_tax,
+                'recurring_total_incl': recurring_tax + recurring_total,
             })
 
     @api.depends('recurring_invoice_line_ids.product_id')
@@ -297,7 +298,6 @@ class SaleSubscription(models.Model):
     def onchange_partner_id(self):
         if self.partner_id:
             self.pricelist_id = self.partner_id.with_company(self.company_id).property_product_pricelist.id
-            self.fiscal_position_id = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
             self.payment_term_id = self.partner_id.with_company(self.company_id).property_payment_term_id.id
             addresses = self.partner_id.address_get(['delivery', 'invoice'])
             self.partner_shipping_id = addresses['delivery']
@@ -322,14 +322,6 @@ class SaleSubscription(models.Model):
     def on_change_template(self):
         for subscription in self.filtered('template_id'):
             subscription.description = subscription.template_id.description
-
-    @api.onchange('fiscal_position_id')
-    def _compute_tax_id(self):
-        """
-        Trigger the recompute of the taxes if the fiscal position is changed on the Subscription.
-        """
-        for subscription in self:
-            subscription.recurring_invoice_line_ids._compute_tax_id()
 
     @api.model
     def create(self, vals):
@@ -623,8 +615,10 @@ class SaleSubscription(models.Model):
         return recurring_next_date
 
     def _prepare_invoice_line(self, line, fiscal_position, date_start=False, date_stop=False):
-        fpos = self.env['account.fiscal.position'].browse(fiscal_position or None)
-        accounts = line.product_id.product_tmpl_id.get_product_accounts(fiscal_pos=fpos)
+        company = self.env.company or line.analytic_account_id.company_id
+        tax_ids = line.product_id.taxes_id.filtered(lambda t: t.company_id == company)
+        if fiscal_position:
+            tax_ids = self.env['account.fiscal.position'].browse(fiscal_position).map_tax(tax_ids)
         return {
             'name': line.name,
             'subscription_id': line.analytic_account_id.id,
@@ -633,8 +627,7 @@ class SaleSubscription(models.Model):
             'quantity': line.quantity,
             'product_uom_id': line.uom_id.id,
             'product_id': line.product_id.id,
-            'account_id': accounts['income'],
-            'tax_ids': [(6, 0, line.tax_ids.ids)],
+            'tax_ids': [(6, 0, tax_ids.ids)],
             'analytic_account_id': line.analytic_account_id.analytic_account_id.id,
             'analytic_tag_ids': [(6, 0, line.analytic_account_id.tag_ids.ids)],
             'subscription_start_date': date_start,
@@ -692,7 +685,6 @@ class SaleSubscription(models.Model):
                     'product_uom_qty': line.quantity,
                     'price_unit': line.price_unit,
                     'discount': line.discount,
-                    'tax_id': [(6, 0, line.tax_ids.ids)]
                 }))
             if new_lines_ids:
                 # Add products during the renewal (sort of upsell)
@@ -1058,24 +1050,22 @@ class SaleSubscriptionLine(models.Model):
     product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id', readonly=True)
     price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price')
     discount = fields.Float(string='Discount (%)', digits='Discount')
-    tax_ids = fields.Many2many('account.tax', string='Taxes')
     price_subtotal = fields.Float(compute='_compute_amount', string='Subtotal', digits='Account', store=True)
-    price_tax = fields.Float(compute='_compute_amount', string='Total Tax', digits='Account', store=True)
-    price_total = fields.Float(compute='_compute_amount', string='Total', digits='Account', store=True)
     currency_id = fields.Many2one('res.currency', 'Currency', related='analytic_account_id.currency_id', store=True)
 
-    @api.depends('quantity', 'discount', 'price_unit', 'tax_ids', 'analytic_account_id.pricelist_id', 'uom_id')
+    @api.depends('quantity', 'discount', 'price_unit', 'analytic_account_id.pricelist_id', 'uom_id')
     def _compute_amount(self):
         """
         Compute the amounts of the Subscription line.
         """
+        AccountTax = self.env['account.tax']
         for line in self:
-            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-            taxes = line.tax_ids.compute_all(price, line.analytic_account_id.currency_id, line.quantity, product=line.product_id, partner=line.analytic_account_id.partner_id)
+            price = AccountTax._fix_tax_included_price(line.price_unit, line.product_id.sudo().taxes_id, AccountTax)
+            price_subtotal = line.quantity * price * (100.0 - line.discount) / 100.0
+            if line.analytic_account_id.pricelist_id.sudo().currency_id:
+                price_subtotal = line.analytic_account_id.pricelist_id.sudo().currency_id.round(price_subtotal)
             line.update({
-                'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
-                'price_total': taxes['total_included'],
-                'price_subtotal': taxes['total_excluded'],
+                'price_subtotal': price_subtotal,
             })
 
     @api.onchange('product_id')
@@ -1087,7 +1077,6 @@ class SaleSubscriptionLine(models.Model):
 
         self.name = product.get_product_multiline_description_sale()
         self.uom_id = product.uom_id.id
-        self._compute_tax_id()
 
     @api.onchange('product_id', 'quantity')
     def onchange_product_quantity(self):
@@ -1132,15 +1121,6 @@ class SaleSubscriptionLine(models.Model):
             self.price_unit = 0.0
         else:
             return self.onchange_product_quantity()
-
-
-    def _compute_tax_id(self):
-        for line in self:
-            line = line.with_company(line.company_id)
-            fpos = line.analytic_account_id.fiscal_position_id or self.env['account.fiscal.position'].get_fiscal_position(line.analytic_account_id.partner_id.id)
-            # If company_id is set, always filter taxes by the company
-            taxes = line.product_id.taxes_id.filtered(lambda t: t.company_id == line.company_id)
-            line.tax_ids = fpos.map_tax(taxes, line.product_id, line.analytic_account_id.partner_id)
 
     def get_template_option_line(self):
         """ Return the account.analytic.invoice.line.option which has the same product_id as

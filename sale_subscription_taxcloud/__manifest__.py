@@ -8,10 +8,6 @@
     """,
     "category": 'Sales/Subscriptions',
     "depends": ["sale_subscription", "account_taxcloud"],
-    "data": [
-        "views/subscription_portal_templates.xml",
-        "views/sale_subscription_views.xml",
-    ],
     "auto_install": True,
     "license": "OEEL-1",
 }

@@ -89,7 +89,6 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
 
             sub = self.subscription.copy()
             with patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription.send_success_mail', wraps=self._mock_send_success_mail):
-                sub.recurring_invoice_line_ids.tax_ids = self.tax_10
                 sub.with_context(auto_commit=False)._recurring_create_invoice(automatic=True)
 
                 # check success mail is not sent yet

@@ -17,8 +17,6 @@ class TestSubscriptionCommon(TestSaleCommon):
         SubTemplate = cls.env['sale.subscription.template'].with_context(context_no_mail)
         SaleOrder = cls.env['sale.order'].with_context(context_no_mail)
         Tax = cls.env['account.tax'].with_context(context_no_mail)
-        FPos = cls.env['account.fiscal.position'].with_context(context_no_mail)
-        FPosMap = cls.env['account.fiscal.position.tax'].with_context(context_no_mail)
         ProductTmpl = cls.env['product.template'].with_context(context_no_mail)
 
         # Minimal CoA & taxes setup
@@ -36,29 +34,6 @@ class TestSubscriptionCommon(TestSaleCommon):
             'amount_type': 'percent',
             'amount': 20,
         })
-        cls.tax_0 =  Tax.create({
-            'name': "0% tax",
-            'amount_type': 'percent',
-            'amount': 0,
-        })
-        cls.fpos = FPos.create({
-            'name': 'FPOS-TEST',
-        })
-        FPosMap.create({
-            'position_id': cls.fpos.id,
-            'tax_src_id': cls.tax_10.id,
-            'tax_dest_id': cls.tax_0.id,
-        })
-
-        cls.fpos_partner = FPos.create({
-            'name': 'FPOS-PARTNER-TEST',
-        })
-        FPosMap.create({
-            'position_id': cls.fpos_partner.id,
-            'tax_src_id': cls.tax_0.id,
-            'tax_dest_id': cls.tax_20.id,
-        })
-
         cls.journal = cls.company_data['default_journal_sale']
 
         # Test Subscription Template
@@ -132,7 +107,7 @@ class TestSubscriptionCommon(TestSaleCommon):
         cls.product4 = cls.product_tmpl_4.product_variant_id
         cls.product4.write({
             'price': 15.0,
-            'taxes_id': [(6, 0, [cls.tax_10.id])],
+            'taxes_id': [(6, 0, [cls.tax_20.id])],
             'property_account_income_id': cls.account_income.id,
         })
 
@@ -146,7 +121,6 @@ class TestSubscriptionCommon(TestSaleCommon):
             'groups_id': [(6, 0, [group_portal_id])],
             'property_account_payable_id': cls.account_payable.id,
             'property_account_receivable_id': cls.account_receivable.id,
-            'property_account_position_id': cls.fpos_partner.id,
             'company_id': cls.company_data['company'].id,
         })
 

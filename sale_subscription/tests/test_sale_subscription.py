@@ -174,9 +174,17 @@ class TestSubscription(TestSubscriptionCommon):
 
         invoice_id = self.subscription.action_subscription_invoice()['res_id']
         invoice = self.env['account.move'].browse(invoice_id)
-        self.assertEqual(invoice.amount_total, self.subscription.recurring_total_incl, 'website_subscription: the total of the invoice created should be the same as the subscription')
-        self.assertTrue(all(line.tax_ids.ids == self.tax_10.ids for line in invoice.invoice_line_ids), 'website_subscription: All lines of the recurring invoice created should have the 10% tax set on the subscription products')
-        self.assertTrue(all(tax_line.tax_id == self.tax_10 for tax_line in invoice.invoice_line_ids.tax_line_id), 'The invoice tax lines should be set and should all use the tax set on the subscription products')
+        recurring_total_with_taxes = self.subscription.recurring_total + (
+                    self.subscription.recurring_total * (self.tax_10.amount / 100.0))
+        self.assertEqual(invoice.amount_total, recurring_total_with_taxes,
+                         'website_subscription: the total of the recurring invoice created should be the subscription '
+                         'recurring total + the products taxes')
+        self.assertTrue(all(line.tax_ids.ids == self.tax_10.ids for line in invoice.invoice_line_ids),
+                        'website_subscription: All lines of the recurring invoice created should have the percent tax '
+                        'set on the subscription products')
+        self.assertTrue(
+            all(tax_line.tax_line_id == self.tax_10 for tax_line in invoice.line_ids.filtered('tax_line_id')),
+            'The invoice tax lines should be set and should all use the tax set on the subscription products')
 
         for patcher in patchers:
             patcher.stop()
@@ -405,24 +413,6 @@ class TestSubscription(TestSubscriptionCommon):
         sub.generate_recurring_invoice()
         self.assertEqual(sub.recurring_next_date, datetime.date(2018, 6, 30), '`Date of Next Invoice` should be 30th June 2018.')
 
-    def test_15_taxes(self):
-        """Check tax behaviours for subscriptions."""
-        # update tax & fpos on initial SO to use another tax
-        self.sale_order_2.fiscal_position_id = self.fpos_partner
-        self.sale_order_2.order_line.tax_id = self.tax_20
-        self.sale_order_2.order_line._compute_amount()
-        self.sale_order_2.action_confirm()
-        sub = self.sale_order_2.order_line.subscription_id
-        # check fpos & taxes forwarding to subscription & amount
-        self.assertEqual(sub.recurring_invoice_line_ids.tax_ids, self.tax_20, 'Tax must be forwarded from SO line to subscription line')
-        self.assertEqual(sub.recurring_total_incl, self.sale_order_2.amount_total, 'Taxed totals must be equal between SO and created subscription')
-        self.assertEqual(sub.fiscal_position_id, self.fpos_partner, 'Fiscal position must be forward from SO to subscription')
-        # check fpos & taxes forwarding to invoice & amount
-        inv = sub._recurring_create_invoice()
-        self.assertEqual(inv.invoice_line_ids.tax_ids, self.tax_20, 'Tax should be forwarded from subscription line to invoice line')
-        self.assertEqual(sub.recurring_total_incl, inv.amount_total, 'Taxed totals should be equal between subscription and generated invoice')
-        self.assertEqual(inv.fiscal_position_id, self.fpos_partner, 'Fiscal position must be forward from SO to subscription')
-
     def test_16_product_change(self):
         """Check behaviour of the product onchange (taxes mostly)."""
         # check default tax
@@ -430,17 +420,24 @@ class TestSubscription(TestSubscriptionCommon):
         with sub_form.recurring_invoice_line_ids.new() as line:
             line.product_id = self.product
         sub = sub_form.save()
-        self.assertEqual(sub.recurring_invoice_line_ids.tax_ids, self.tax_10, 'Default tax for product should have been applied.')
-        # check fpos mapping
-        sub_form = Form(self.subscription)
-        sub_form.fiscal_position_id = self.fpos
-        sub_form.save()
-        sub_form = Form(self.subscription)
-        with sub_form.recurring_invoice_line_ids.edit(0) as line:
-            line.product_id = self.product
-        sub = sub_form.save()
-        # MAP tax takes the maximum, it cannot be tax_0
-        self.assertEqual(sub.recurring_invoice_line_ids.tax_ids, self.tax_0, 'Fiscal position should have applied its mapping on the product tax in the onchange.')
+        self.assertEqual(sub.recurring_invoice_line_ids.product_id.taxes_id, self.tax_10, 'Default tax for product should have been applied.')
+        self.assertEqual(sub.recurring_tax, 5.0,
+                         'Default tax for product should have been applied.')
+        self.assertEqual(sub.recurring_total_incl, 55.0,
+                         'Default tax for product should have been applied.')
+        # Change the product
+        line_id = sub.recurring_invoice_line_ids.ids
+        sub.write({
+            'recurring_invoice_line_ids': [(1, line_id[0], {'product_id': self.product4.id})]
+        })
+        # As we update only the product id, the price on the line remains the same.
+        self.assertEqual(sub.recurring_invoice_line_ids.product_id.taxes_id, self.tax_20,
+                         'Default tax for product should have been applied.')
+        self.assertEqual(sub.recurring_tax, 10.0,
+                         'Default tax for product should have been applied.')
+        self.assertEqual(sub.recurring_total_incl, 60.0,
+                         'Default tax for product should have been applied.')
+
 
     def test_17_renew_archived_products(self):
         """Check behaviour of renewal of archived products."""

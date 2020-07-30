@@ -14,8 +14,8 @@ class ResConfigSettings(models.TransientModel):
         ('approved', "Approved timesheets only"),
     ], default=DEFAULT_INVOICED_TIMESHEET, string="Timesheets Invoicing", config_parameter='sale.invoiced_timesheet')
 
-    def execute(self):
-        """ Override execute to recompute the qty_delivered for each sale.order.line
+    def set_values(self):
+        """ Override set_values to recompute the qty_delivered for each sale.order.line
             where :
                 -   the sale.order has the state to 'sale',
                 -   the type of the product is a 'service',
@@ -46,5 +46,4 @@ class ResConfigSettings(models.TransientModel):
                     sale_order_lines._compute_qty_delivered()
                     sale_order_lines._get_to_invoice_qty()
                     sale_order_lines._compute_invoice_status()
-        res = super(ResConfigSettings, self).execute()
-        return res
+        return super(ResConfigSettings, self).set_values()

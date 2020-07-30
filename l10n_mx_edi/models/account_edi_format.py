@@ -48,7 +48,10 @@ class AccountEdiFormat(models.Model):
         '''
         addenda_values = {'record': move}
 
-        addenda = addenda._render(values=addenda_values)
+        addenda = addenda._render(values=addenda_values).strip()
+        if not addenda:
+            return cfdi
+
         cfdi_node = fromstring(cfdi)
         addenda_node = fromstring(addenda)
 

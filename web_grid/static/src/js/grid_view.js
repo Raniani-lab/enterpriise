@@ -81,6 +81,7 @@ var GridView = AbstractView.extend({
         this.rendererParams.hideLineTotal = !!JSON.parse(arch.attrs.hide_line_total || '0');
         this.rendererParams.hideColumnTotal = !!JSON.parse(arch.attrs.hide_column_total || '0');
         this.rendererParams.hasBarChartTotal = !!JSON.parse(arch.attrs.barchart_total || '0');
+        this.rendererParams.createInline = !!JSON.parse(arch.attrs.create_inline || 'false');
 
         // controller
         this.controllerParams.formViewID = false;
@@ -101,6 +102,7 @@ var GridView = AbstractView.extend({
             .map(function (c) { return c.attrs; });
         this.controllerParams.adjustment = arch.attrs.adjustment;
         this.controllerParams.adjustName = arch.attrs.adjust_name;
+        this.controllerParams.createInline = this.rendererParams.createInline;
     },
 
     //--------------------------------------------------------------------------

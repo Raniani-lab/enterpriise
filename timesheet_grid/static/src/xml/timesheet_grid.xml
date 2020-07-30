@@ -111,6 +111,13 @@
         </xpath>
     </t>
 
+    <t t-name="timesheet_grid.AddLineRow" t-inherit="web_grid.AddLineRow" t-inherit-mode="extension" owl="1">
+        <xpath expr="//tr[@class='o_grid_add_line_row']/th[2]/div" position="attributes">
+            <attribute name="class"></attribute>
+            <attribute name="t-attf-class">{{showEmployeeAvatar ? '' : 'ml-3'}}</attribute>
+        </xpath>
+    </t>
+
     <span t-name="timesheet_grid.start_timer" class="d-inline-flex" owl="1">
         <button type="button" t-on-click="_onClickTimer()" class="btn_timer_line" t-att-class="iconClass">
             <span t-esc="letter"/>

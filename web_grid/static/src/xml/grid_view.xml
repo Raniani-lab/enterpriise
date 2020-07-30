@@ -14,6 +14,27 @@
         </div>
     </div>
 
+    <t t-name="web_grid.AddLineRow" owl="1">
+        <tr class="o_grid_add_line_row">
+            <th t-if="showTimerButton" class="o_grid_timer_header">
+                \u00A0
+            </th>
+            <th>
+                <div class="ml-3">
+                    <div>
+                        <a href="javascript:void(0)" role="button" t-on-click="_onClickCreateInline">Add a line</a>
+                    </div>
+                </div>
+            </th>
+            <t t-foreach="columns" t-as="column" t-key="column_index">
+                <td t-att-class="{o_grid_current: column.is_current, o_grid_unavailable: column.is_unavailable}"></td>
+            </t>
+            <t t-if="!props.hideLineTotal and props.range !== 'day'" >
+                <td class="o_grid_total"/>
+            </t>
+        </tr>
+    </t>
+
     <t t-name="web_grid.Table" owl="1">
         <div class="o_view_grid table-responsive">
             <table class="table table-hover table-sm table-striped">
@@ -149,6 +170,9 @@
                 </t>
             </tbody>
         </t>
+        <tbody t-if="props.canCreate and props.createInline" class="o_grid_section">
+            <t t-call="web_grid.AddLineRow"></t>
+        </tbody>
     </t>
 
     <t t-name="web_grid.UnGroupedGridBody" owl="1">
@@ -170,6 +194,7 @@
                     </t>
                 </tr>
             </t>
+            <t t-if="props.canCreate and props.createInline" t-call="web_grid.AddLineRow"/>
         </tbody>
     </t>
 

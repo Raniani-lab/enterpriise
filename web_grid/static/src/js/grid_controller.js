@@ -13,6 +13,7 @@ var _t = core._t;
 
 var GridController = AbstractController.extend({
     custom_events: Object.assign({}, AbstractController.prototype.custom_events, {
+        'create_inline': '_addLine',
         'cell_edited': '_onCellEdited',
         'cell_edited_temporary': '_onCellEditedTemporary',
         'open_cell_information': '_onOpenCellInformation',
@@ -32,6 +33,7 @@ var GridController = AbstractController.extend({
         this.adjustment = params.adjustment;
         this.adjustName = params.adjustName;
         this.canCreate = params.activeActions.create;
+        this.createInline = params.createInline;
         this.mutex = new concurrency.Mutex();
     },
 
@@ -71,6 +73,7 @@ var GridController = AbstractController.extend({
             return;
         }
         const state = this.model.get();
+        this.$buttons.find('.o_grid_button_add').toggleClass('d-none', this.createInline && !!state.data[0].rows.length);
         this.$buttons.find('.grid_arrow_previous').toggleClass('d-none', !state.data[0].prev);
         this.$buttons.find('.grid_arrow_next').toggleClass('d-none', !state.data[0].next);
         this.$buttons.find('.grid_button_initial').toggleClass('d-none', !state.data[0].initial);
@@ -82,6 +85,25 @@ var GridController = AbstractController.extend({
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * Open a form View to create a new entry in the grid
+     * @private
+     */
+    _addLine: function () {
+        var context = this.model.getContext();
+        var formContext = _.extend({}, context, {view_grid_add_line: true});
+        // TODO: document quick_create_view (?) context key
+        var formViewID = context.quick_create_view || this.formViewID || false;
+        new dialogs.FormViewDialog(this, {
+            res_model: this.modelName,
+            res_id: false,
+            context: formContext,
+            view_id: formViewID,
+            title: _t("Add a Line"),
+            disable_multiple_selection: true,
+            on_saved: this.reload.bind(this, {}),
+        }).open();
+    },
     /**
      * @private
      * @param {Object} cell
@@ -143,20 +165,7 @@ var GridController = AbstractController.extend({
      */
     _onAddLine: function (event) {
         event.preventDefault();
-
-        var context = this.model.getContext();
-        var formContext = _.extend({}, context, {view_grid_add_line: true});
-        // TODO: document quick_create_view (?) context key
-        var formViewID = context.quick_create_view || this.formViewID || false;
-        new dialogs.FormViewDialog(this, {
-            res_model: this.modelName,
-            res_id: false,
-            context: formContext,
-            view_id: formViewID,
-            title: _t("Add a Line"),
-            disable_multiple_selection: true,
-            on_saved: this.reload.bind(this, {}),
-        }).open();
+        this._addLine();
     },
 
     /**

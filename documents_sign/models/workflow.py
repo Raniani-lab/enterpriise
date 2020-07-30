@@ -6,7 +6,7 @@ class WorkflowActionRuleSign(models.Model):
     _inherit = ['documents.workflow.rule']
 
     has_business_option = fields.Boolean(default=True, compute='_get_business')
-    create_model = fields.Selection(selection_add=[('sign.template.new', "Create signature request"),
+    create_model = fields.Selection(selection_add=[('sign.template.new', "Signature request"),
                                                    ('sign.template.direct', "Sign directly")])
 
     def _compute_limited_to_single_record(self):
